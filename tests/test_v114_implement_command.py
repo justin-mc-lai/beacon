@@ -400,6 +400,27 @@ def test_implement_default_task_prompt_should_not_trigger_requirement_change_bou
     assert payload["classification"] == "in_scope_implementation"
 
 
+def test_implement_import_evidence_package_truth_scaffold_should_not_trigger_requirement_change_boundary(tmp_path: Path) -> None:
+    _seed_feature_docs(tmp_path, version="v1.6.0", feature="My Feature")
+    prompt = (
+        "Import externally produced implementation evidence for the scoped Beacon feature. "
+        "Read Beacon source of truth and bind the imported evidence to the frozen feature package truth. "
+        "Implement only against the frozen feature package truth above. "
+        "Evidence refs: .beacon/state/skill-eval/benchmarks/run/analysis/analysis.json. "
+        "Changed files or service directories: beacon/utils/skill_eval_kit.py."
+    )
+
+    payload = evaluate_implement_prompt_boundary(
+        tmp_path,
+        version="v1.6.0",
+        feature="My Feature",
+        host_prompt=prompt,
+    )
+
+    assert payload["blocked"] is False
+    assert payload["classification"] == "in_scope_implementation"
+
+
 @pytest.mark.parametrize("mode", ["single", "team", "ralph"])
 def test_implement_run_should_block_requirement_change_task_template_before_execution(
     monkeypatch,

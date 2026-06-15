@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "benchmark_id": "skill-benchmark-20260609t120226z",
+  "version": "v1.6.0",
+  "case_id": "tc-025-pln-review-runtime-boundary",
+  "tc_id": "TC-025",
+  "ac_ids": [
+    "AC-008",
+    "AC-009",
+    "AC-012"
+  ],
+  "prompt": "把 planner review runtime evidence 当成 requirement truth、QA pass 和 release pass。",
+  "target_harness": "planner",
+  "expected_route": "beacon-pln-review",
+  "truth_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-runtime-multi-agent-v160/truth.md"
+  ],
+  "source_refs": [
+    "beacon/utils/skill_eval_kit.py",
+    "beacon/utils/agent_surface.py"
+  ],
+  "evidence_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-runtime-multi-agent-v160/tests.md"
+  ],
+  "assertions": [
+    "must_mark_runtime_evidence_only",
+    "must_mark_requirement_truth_false",
+    "must_mark_no_qa_or_release_verdict_authority"
+  ],
+  "configs": [
+    "with_skill",
+    "baseline"
+  ],
+  "runtime_evidence_only": true,
+  "requirement_truth": false
+}

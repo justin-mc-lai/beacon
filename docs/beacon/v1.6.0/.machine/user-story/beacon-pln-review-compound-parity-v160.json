@@ -1,0 +1,1166 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-pln-review-compound-parity-v160",
+  "feature_slug": "beacon-pln-review-compound-parity-v160",
+  "version": "v1.6.0",
+  "current_revision_id": "R2",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-06-09T12:56:29.175867+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-pln-review-compound-parity-v160",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": "sha256:c4a626a027b00bd7e84656b1c1d79b9310023f8de4e85f712415b3519829b486",
+      "superseded_by": "R2",
+      "created_at": "2026-06-09T12:40:48.841873+00:00",
+      "frozen_at": "2026-06-09T12:40:48.854951+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R2",
+      "feature_slug": "beacon-pln-review-compound-parity-v160",
+      "source_revision_id": "R1",
+      "reason": "compound-parity-review-truth-freeze",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:c4a626a027b00bd7e84656b1c1d79b9310023f8de4e85f712415b3519829b486",
+      "superseded_by": null,
+      "created_at": "2026-06-09T12:40:58.121573+00:00",
+      "frozen_at": "2026-06-09T12:40:58.953664+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "beacon-pln-review-compound-parity-v160",
+      "priority": "medium",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "feature-package",
+          "text": "新 feature package 使用 package-authoritative truth，状态为 frozen，scope mode 为 `full_parity`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "compound-review-contract",
+          "text": "`beacon-pln-review` references 定义 Compound parity review output contract。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "reviewer-catalog",
+          "text": "always-on 和 conditional reviewer catalog 覆盖 correctness、testing、maintainability、standards、intent、route、source parity、diff scope、security、performance、API、reliability、browser ops、release ops、adversarial 和 state machine。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "source-parity",
+          "text": "用户表达完整复刻、同等能力、做全、不要 MVP 或引用 OSS/source 时，默认 `scope_mode=full_parity`，并要求 source capability inventory、parity matrix、coverage mapping 和 deferral ledger。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "no-silent-mvp",
+          "text": "full parity 到 MVP、patch 或 defer 的任何降级必须进入 deferral ledger，并要求用户显式接受。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "finding-schema",
+          "text": "findings 包含 severity、confidence、authority、dedup、merged_from、conflict_group、owner、autofix_class、requires_verification 和 recommended_route。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "synthesis",
+          "text": "synthesis 必须执行 merge/dedup/arbitration，保留冲突，提升最高 severity，并输出单一 recommended route。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "autofix-boundary",
+          "text": "planner 只能分类 `safe_auto/gated_auto/manual/advisory/release`，不能执行修复；safe_auto 只能路由到 generator。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "diff-scope",
+          "text": "PR/diff/worktree review 必须记录 base、changed、untracked、generated/projection、deleted、high-risk files 和 scope confidence；scope 不明时输出 degraded review。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "release-ops",
+          "text": "release/install/skill projection 场景必须检查 global/local skill、stale copies、post-release hooks、canary/smoke install、rollback 和 version alignment。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "AC-011",
+          "kind": "ac",
+          "theme": "qa-evidence-hygiene",
+          "text": "QA/benchmark/browser/compatibility 场景必须检查 JUnit、assertion_count、fake runner、placeholder evidence、browser admission、compatibility pair evidence 和 benchmark metadata/grading/analysis。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "AC-012",
+          "kind": "ac",
+          "theme": "state-machine",
+          "text": "review 状态机覆盖 scope、source parity、reviewer selection、lane execution、finding synthesis、route recommendation、blocked transitions 和 terminal states。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "AC-013",
+          "kind": "ac",
+          "theme": "planner-boundary",
+          "text": "review artifact 明确非 truth、非 QA verdict、非 release verdict，并禁止 planner 写 truth、代码、`.machine` 或执行修复。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "AC-014",
+          "kind": "ac",
+          "theme": "benchmark",
+          "text": "`beacon skill eval-kit benchmark --version v1.6.0 --json` 覆盖 Compound parity、source parity、防 MVP 缩水、finding synthesis、autofix boundary、diff scope、release ops 和 QA evidence hygiene。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "AC-015",
+          "kind": "ac",
+          "theme": "tests",
+          "text": "单元/契约测试覆盖 review contract references、artifact schema、synthesis rules、benchmark grading 和 skill projection。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "AC-016",
+          "kind": "ac",
+          "theme": "no-public-sprawl",
+          "text": "不新增 host-visible reviewer 子 skill；新增能力必须作为 `beacon-pln-review` internal reviewer/reference/runtime contract。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — 新 feature package 使用 package-authoritative truth，状态为 frozen，scope mode 为 `full_parity`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — `beacon-pln-review` references 定义 Compound parity review output contract。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — always-on 和 conditional reviewer catalog 覆盖 correctness、testing、maintainability、standards、intent、route、source parity、diff scope、security、performance、API、reliability、browser ops、release ops、adversarial 和 state machine。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — 用户表达完整复刻、同等能力、做全、不要 MVP 或引用 OSS/source 时，默认 `scope_mode=full_parity`，并要求 source capability inventory、parity matrix、coverage mapping 和 deferral ledger。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — full parity 到 MVP、patch 或 defer 的任何降级必须进入 deferral ledger，并要求用户显式接受。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — findings 包含 severity、confidence、authority、dedup、merged_from、conflict_group、owner、autofix_class、requires_verification 和 recommended_route。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — synthesis 必须执行 merge/dedup/arbitration，保留冲突，提升最高 severity，并输出单一 recommended route。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — planner 只能分类 `safe_auto/gated_auto/manual/advisory/release`，不能执行修复；safe_auto 只能路由到 generator。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — PR/diff/worktree review 必须记录 base、changed、untracked、generated/projection、deleted、high-risk files 和 scope confidence；scope 不明时输出 degraded review。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — release/install/skill projection 场景必须检查 global/local skill、stale copies、post-release hooks、canary/smoke install、rollback 和 version alignment。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-010"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "TEST-011",
+          "kind": "test",
+          "text": "Verify AC-011 — QA/benchmark/browser/compatibility 场景必须检查 JUnit、assertion_count、fake runner、placeholder evidence、browser admission、compatibility pair evidence 和 benchmark metadata/grading/analysis。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-011"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "TEST-012",
+          "kind": "test",
+          "text": "Verify AC-012 — review 状态机覆盖 scope、source parity、reviewer selection、lane execution、finding synthesis、route recommendation、blocked transitions 和 terminal states。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-012"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "TEST-013",
+          "kind": "test",
+          "text": "Verify AC-013 — review artifact 明确非 truth、非 QA verdict、非 release verdict，并禁止 planner 写 truth、代码、`.machine` 或执行修复。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-013"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "TEST-014",
+          "kind": "test",
+          "text": "Verify AC-014 — `beacon skill eval-kit benchmark --version v1.6.0 --json` 覆盖 Compound parity、source parity、防 MVP 缩水、finding synthesis、autofix boundary、diff scope、release ops 和 QA evidence hygiene。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-014"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "TEST-015",
+          "kind": "test",
+          "text": "Verify AC-015 — 单元/契约测试覆盖 review contract references、artifact schema、synthesis rules、benchmark grading 和 skill projection。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-015"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "TEST-016",
+          "kind": "test",
+          "text": "Verify AC-016 — 不新增 host-visible reviewer 子 skill；新增能力必须作为 `beacon-pln-review` internal reviewer/reference/runtime contract。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-016"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-pln-review-compound-parity-v160",
+        "version": "v1.6.0",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/research/beacon-pln-review-compound-parity-v160.md",
+        "present": true,
+        "section_count": 1,
+        "sections": {
+          "state_machine": [
+            "未解析 scope/source context 就选择 reviewer；",
+            "full parity 未形成 parity matrix 就推荐 implement；",
+            "lane 未输出 finding 或 no_findings 就合成；",
+            "finding 未 dedup/arbitrate 就给 route；",
+            "P0/P1 finding 没有 owner/route 就终止；",
+            "planner 写 truth、代码、`.machine`、QA verdict 或 release verdict。"
+          ]
+        },
+        "derived_items": [
+          {
+            "theme": "state_machine",
+            "text": "State machine transitions remain explicit",
+            "details": [
+              "未解析 scope/source context 就选择 reviewer；",
+              "full parity 未形成 parity matrix 就推荐 implement；",
+              "lane 未输出 finding 或 no_findings 就合成；",
+              "finding 未 dedup/arbitrate 就给 route；",
+              "P0/P1 finding 没有 owner/route 就终止；",
+              "planner 写 truth、代码、`.machine`、QA verdict 或 release verdict。"
+            ],
+            "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/research/beacon-pln-review-compound-parity-v160.md"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R2",
+      "title": "beacon-pln-review-compound-parity-v160",
+      "priority": "medium",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "feature-package",
+          "text": "新 feature package 使用 package-authoritative truth，状态为 frozen，scope mode 为 `full_parity`。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260609T125256Z-863f",
+          "verified_by_run_id": "run-20260609T205537952471",
+          "accepted_at": "2026-06-09T12:56:29.071456+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "compound-review-contract",
+          "text": "`beacon-pln-review` references 定义 Compound parity review output contract。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260609T125256Z-863f",
+          "verified_by_run_id": "run-20260609T205537952471",
+          "accepted_at": "2026-06-09T12:56:29.071456+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "reviewer-catalog",
+          "text": "always-on 和 conditional reviewer catalog 覆盖 correctness、testing、maintainability、standards、intent、route、source parity、diff scope、security、performance、API、reliability、browser ops、release ops、adversarial 和 state machine。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260609T125256Z-863f",
+          "verified_by_run_id": "run-20260609T205537952471",
+          "accepted_at": "2026-06-09T12:56:29.071456+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "source-parity",
+          "text": "用户表达完整复刻、同等能力、做全、不要 MVP 或引用 OSS/source 时，默认 `scope_mode=full_parity`，并要求 source capability inventory、parity matrix、coverage mapping 和 deferral ledger。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260609T125256Z-863f",
+          "verified_by_run_id": "run-20260609T205537952471",
+          "accepted_at": "2026-06-09T12:56:29.071456+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "no-silent-mvp",
+          "text": "full parity 到 MVP、patch 或 defer 的任何降级必须进入 deferral ledger，并要求用户显式接受。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260609T125256Z-863f",
+          "verified_by_run_id": "run-20260609T205537952471",
+          "accepted_at": "2026-06-09T12:56:29.071456+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "finding-schema",
+          "text": "findings 包含 severity、confidence、authority、dedup、merged_from、conflict_group、owner、autofix_class、requires_verification 和 recommended_route。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260609T125256Z-863f",
+          "verified_by_run_id": "run-20260609T205537952471",
+          "accepted_at": "2026-06-09T12:56:29.071456+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "synthesis",
+          "text": "synthesis 必须执行 merge/dedup/arbitration，保留冲突，提升最高 severity，并输出单一 recommended route。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260609T125256Z-863f",
+          "verified_by_run_id": "run-20260609T205537952471",
+          "accepted_at": "2026-06-09T12:56:29.071456+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "autofix-boundary",
+          "text": "planner 只能分类 `safe_auto/gated_auto/manual/advisory/release`，不能执行修复；safe_auto 只能路由到 generator。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260609T125256Z-863f",
+          "verified_by_run_id": "run-20260609T205537952471",
+          "accepted_at": "2026-06-09T12:56:29.071456+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "diff-scope",
+          "text": "PR/diff/worktree review 必须记录 base、changed、untracked、generated/projection、deleted、high-risk files 和 scope confidence；scope 不明时输出 degraded review。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260609T125256Z-863f",
+          "verified_by_run_id": "run-20260609T205537952471",
+          "accepted_at": "2026-06-09T12:56:29.071456+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "release-ops",
+          "text": "release/install/skill projection 场景必须检查 global/local skill、stale copies、post-release hooks、canary/smoke install、rollback 和 version alignment。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260609T125256Z-863f",
+          "verified_by_run_id": "run-20260609T205537952471",
+          "accepted_at": "2026-06-09T12:56:29.071456+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "AC-011",
+          "kind": "ac",
+          "theme": "qa-evidence-hygiene",
+          "text": "QA/benchmark/browser/compatibility 场景必须检查 JUnit、assertion_count、fake runner、placeholder evidence、browser admission、compatibility pair evidence 和 benchmark metadata/grading/analysis。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260609T125256Z-863f",
+          "verified_by_run_id": "run-20260609T205537952471",
+          "accepted_at": "2026-06-09T12:56:29.071456+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "AC-012",
+          "kind": "ac",
+          "theme": "state-machine",
+          "text": "review 状态机覆盖 scope、source parity、reviewer selection、lane execution、finding synthesis、route recommendation、blocked transitions 和 terminal states。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260609T125256Z-863f",
+          "verified_by_run_id": "run-20260609T205537952471",
+          "accepted_at": "2026-06-09T12:56:29.071456+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "AC-013",
+          "kind": "ac",
+          "theme": "planner-boundary",
+          "text": "review artifact 明确非 truth、非 QA verdict、非 release verdict，并禁止 planner 写 truth、代码、`.machine` 或执行修复。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260609T125256Z-863f",
+          "verified_by_run_id": "run-20260609T205537952471",
+          "accepted_at": "2026-06-09T12:56:29.071456+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "AC-014",
+          "kind": "ac",
+          "theme": "benchmark",
+          "text": "`beacon skill eval-kit benchmark --version v1.6.0 --json` 覆盖 Compound parity、source parity、防 MVP 缩水、finding synthesis、autofix boundary、diff scope、release ops 和 QA evidence hygiene。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260609T125256Z-863f",
+          "verified_by_run_id": "run-20260609T205537952471",
+          "accepted_at": "2026-06-09T12:56:29.071456+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "AC-015",
+          "kind": "ac",
+          "theme": "tests",
+          "text": "单元/契约测试覆盖 review contract references、artifact schema、synthesis rules、benchmark grading 和 skill projection。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260609T125256Z-863f",
+          "verified_by_run_id": "run-20260609T205537952471",
+          "accepted_at": "2026-06-09T12:56:29.071456+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "AC-016",
+          "kind": "ac",
+          "theme": "no-public-sprawl",
+          "text": "不新增 host-visible reviewer 子 skill；新增能力必须作为 `beacon-pln-review` internal reviewer/reference/runtime contract。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260609T125256Z-863f",
+          "verified_by_run_id": "run-20260609T205537952471",
+          "accepted_at": "2026-06-09T12:56:29.071456+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260609T125256Z-863f",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-06-09T12:56:29.071456+00:00",
+          "changed_in_revision": "R2"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — 新 feature package 使用 package-authoritative truth，状态为 frozen，scope mode 为 `full_parity`。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260609T125256Z-863f",
+          "verified_by_run_id": "run-20260609T205537952471",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — `beacon-pln-review` references 定义 Compound parity review output contract。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260609T125256Z-863f",
+          "verified_by_run_id": "run-20260609T205537952471",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — always-on 和 conditional reviewer catalog 覆盖 correctness、testing、maintainability、standards、intent、route、source parity、diff scope、security、performance、API、reliability、browser ops、release ops、adversarial 和 state machine。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260609T125256Z-863f",
+          "verified_by_run_id": "run-20260609T205537952471",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — 用户表达完整复刻、同等能力、做全、不要 MVP 或引用 OSS/source 时，默认 `scope_mode=full_parity`，并要求 source capability inventory、parity matrix、coverage mapping 和 deferral ledger。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260609T125256Z-863f",
+          "verified_by_run_id": "run-20260609T205537952471",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — full parity 到 MVP、patch 或 defer 的任何降级必须进入 deferral ledger，并要求用户显式接受。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260609T125256Z-863f",
+          "verified_by_run_id": "run-20260609T205537952471",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — findings 包含 severity、confidence、authority、dedup、merged_from、conflict_group、owner、autofix_class、requires_verification 和 recommended_route。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260609T125256Z-863f",
+          "verified_by_run_id": "run-20260609T205537952471",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — synthesis 必须执行 merge/dedup/arbitration，保留冲突，提升最高 severity，并输出单一 recommended route。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260609T125256Z-863f",
+          "verified_by_run_id": "run-20260609T205537952471",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — planner 只能分类 `safe_auto/gated_auto/manual/advisory/release`，不能执行修复；safe_auto 只能路由到 generator。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260609T125256Z-863f",
+          "verified_by_run_id": "run-20260609T205537952471",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — PR/diff/worktree review 必须记录 base、changed、untracked、generated/projection、deleted、high-risk files 和 scope confidence；scope 不明时输出 degraded review。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260609T125256Z-863f",
+          "verified_by_run_id": "run-20260609T205537952471",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — release/install/skill projection 场景必须检查 global/local skill、stale copies、post-release hooks、canary/smoke install、rollback 和 version alignment。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260609T125256Z-863f",
+          "verified_by_run_id": "run-20260609T205537952471",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-010"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "TEST-011",
+          "kind": "test",
+          "text": "Verify AC-011 — QA/benchmark/browser/compatibility 场景必须检查 JUnit、assertion_count、fake runner、placeholder evidence、browser admission、compatibility pair evidence 和 benchmark metadata/grading/analysis。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260609T125256Z-863f",
+          "verified_by_run_id": "run-20260609T205537952471",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-011"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "TEST-012",
+          "kind": "test",
+          "text": "Verify AC-012 — review 状态机覆盖 scope、source parity、reviewer selection、lane execution、finding synthesis、route recommendation、blocked transitions 和 terminal states。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260609T125256Z-863f",
+          "verified_by_run_id": "run-20260609T205537952471",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-012"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "TEST-013",
+          "kind": "test",
+          "text": "Verify AC-013 — review artifact 明确非 truth、非 QA verdict、非 release verdict，并禁止 planner 写 truth、代码、`.machine` 或执行修复。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260609T125256Z-863f",
+          "verified_by_run_id": "run-20260609T205537952471",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-013"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "TEST-014",
+          "kind": "test",
+          "text": "Verify AC-014 — `beacon skill eval-kit benchmark --version v1.6.0 --json` 覆盖 Compound parity、source parity、防 MVP 缩水、finding synthesis、autofix boundary、diff scope、release ops 和 QA evidence hygiene。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260609T125256Z-863f",
+          "verified_by_run_id": "run-20260609T205537952471",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-014"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "TEST-015",
+          "kind": "test",
+          "text": "Verify AC-015 — 单元/契约测试覆盖 review contract references、artifact schema、synthesis rules、benchmark grading 和 skill projection。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260609T125256Z-863f",
+          "verified_by_run_id": "run-20260609T205537952471",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-015"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        },
+        {
+          "id": "TEST-016",
+          "kind": "test",
+          "text": "Verify AC-016 — 不新增 host-visible reviewer 子 skill；新增能力必须作为 `beacon-pln-review` internal reviewer/reference/runtime contract。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260609T125256Z-863f",
+          "verified_by_run_id": "run-20260609T205537952471",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-016"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-pln-review-compound-parity-v160",
+        "version": "v1.6.0",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/research/beacon-pln-review-compound-parity-v160.md",
+        "present": true,
+        "section_count": 1,
+        "sections": {
+          "state_machine": [
+            "未解析 scope/source context 就选择 reviewer；",
+            "full parity 未形成 parity matrix 就推荐 implement；",
+            "lane 未输出 finding 或 no_findings 就合成；",
+            "finding 未 dedup/arbitrate 就给 route；",
+            "P0/P1 finding 没有 owner/route 就终止；",
+            "planner 写 truth、代码、`.machine`、QA verdict 或 release verdict。"
+          ]
+        },
+        "derived_items": [
+          {
+            "theme": "state_machine",
+            "text": "State machine transitions remain explicit",
+            "details": [
+              "未解析 scope/source context 就选择 reviewer；",
+              "full parity 未形成 parity matrix 就推荐 implement；",
+              "lane 未输出 finding 或 no_findings 就合成；",
+              "finding 未 dedup/arbitrate 就给 route；",
+              "P0/P1 finding 没有 owner/route 就终止；",
+              "planner 写 truth、代码、`.machine`、QA verdict 或 release verdict。"
+            ],
+            "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/research/beacon-pln-review-compound-parity-v160.md"
+          }
+        ]
+      },
+      "feature": "beacon-pln-review-compound-parity-v160",
+      "feature_slug": "beacon-pln-review-compound-parity-v160",
+      "version": "v1.6.0",
+      "last_changed_files": [
+        "beacon/utils/planner_review_runtime.py",
+        "beacon/utils/skill_eval_kit.py",
+        "skills/beacon/beacon-pln-review/SKILL.md",
+        "skills/beacon/beacon-pln-review/references/compound-parity-review.md",
+        ".agents/skills/beacon-pln-review/SKILL.md",
+        ".agents/skills/beacon-pln-review/references/compound-parity-review.md",
+        "docs/beacon/v1.6.0/.generated/skills/beacon/beacon-pln-review/SKILL.md",
+        "docs/beacon/v1.6.0/.generated/skills/beacon/beacon-pln-review/references/compound-parity-review.md",
+        "tests/test_v160_pln_review_compound_parity.py",
+        "tests/test_v160_skill_harness_taxonomy.py",
+        "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/evidence.md",
+        "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tasks.md"
+      ],
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-pln-review-compound-parity-v160/ac-closure.json",
+        ".beacon/qa/features/beacon-pln-review-compound-parity-v160/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "accepted_at": "2026-06-09T12:56:29.071456+00:00",
+      "accepted_by": "qa"
+    }
+  ]
+}

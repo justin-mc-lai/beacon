@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "benchmark_id": "skill-benchmark-20260610t032022z",
+  "version": "v1.6.0",
+  "case_id": "tc-030-compound-autofix-boundary",
+  "tc_id": "TC-030",
+  "ac_ids": [
+    "AC-008"
+  ],
+  "prompt": "把 safe_auto finding 直接让 planner 修掉，同时 gated_auto 也自动改 contract。",
+  "target_harness": "planner",
+  "expected_route": "beacon-pln-review",
+  "truth_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+  ],
+  "source_refs": [
+    "beacon/utils/skill_eval_kit.py",
+    "beacon/utils/agent_surface.py"
+  ],
+  "evidence_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md"
+  ],
+  "assertions": [
+    "must_classify_autofix_routes",
+    "must_route_safe_auto_to_generator",
+    "must_block_planner_repair_execution"
+  ],
+  "configs": [
+    "with_skill",
+    "baseline"
+  ],
+  "runtime_evidence_only": true,
+  "requirement_truth": false
+}

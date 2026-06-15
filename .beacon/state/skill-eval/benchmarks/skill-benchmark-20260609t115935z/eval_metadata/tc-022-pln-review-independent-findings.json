@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "benchmark_id": "skill-benchmark-20260609t115935z",
+  "version": "v1.6.0",
+  "case_id": "tc-022-pln-review-independent-findings",
+  "tc_id": "TC-022",
+  "ac_ids": [
+    "AC-005"
+  ],
+  "prompt": "多代理 review 每个 reviewer lane 必须独立输出 finding 或 no_findings，不能只有一个综合段落。",
+  "target_harness": "planner",
+  "expected_route": "beacon-pln-review",
+  "truth_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-runtime-multi-agent-v160/truth.md"
+  ],
+  "source_refs": [
+    "beacon/utils/skill_eval_kit.py",
+    "beacon/utils/agent_surface.py"
+  ],
+  "evidence_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-runtime-multi-agent-v160/tests.md"
+  ],
+  "assertions": [
+    "must_emit_independent_lane_findings",
+    "must_allow_no_findings_status",
+    "must_not_emit_only_summary"
+  ],
+  "configs": [
+    "with_skill",
+    "baseline"
+  ],
+  "runtime_evidence_only": true,
+  "requirement_truth": false
+}

@@ -1,0 +1,551 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-06-09T09:03:25.563582+00:00",
+  "feature": "beacon-skill-harness-taxonomy-v160",
+  "feature_slug": "beacon-skill-harness-taxonomy-v160",
+  "version": "v1.6.0",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+    "tests": "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+    "tasks": "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tasks.md",
+    "evidence": "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "9956bf016a8af723c96ca3d8da090a376dbb67e5590e2b9d4d3a608461132eae",
+    "tests": "d2c38d771359dec71e3075378fe42e8280574406969e3cc15712675a86723991",
+    "tasks": "f603cee9656ace2ad8311bc8401ff684a69f3ddde447c615cd86c2bccff834c6",
+    "evidence": "4db16be75715dfd73203fc8990d767caf08ed61badf6b65cb7577da0714b0c54"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-skill-harness-taxonomy-v160",
+    "version": "v1.6.0",
+    "status": "frozen",
+    "language": "zh",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "user_story": "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "test_case": "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md"
+    },
+    "parser_contract": "beacon-feature-package-v1",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "lifecycle-language",
+      "description": "v1.6.0 用户可见文档把生命周期描述为 `plan -> truth -> generate -> evaluate -> release`，而不是 `prd -> user-story -> test-case`。"
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "package-authority",
+      "description": "v1.6.0 truth 仍由 resolver 选择的 `features/<slug>/{truth,tests,tasks,evidence}.md` 承载；generated JSON 和 legacy triptych surfaces 不能赢得 authority。"
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "compact-harness-prefix",
+      "description": "每个 v1.6.0 host-visible skill 都使用 `beacon-<harness-code>-<function-code>`，其中 harness code 只能是 `pln/gen/eval/gov`，并分别映射到 `planner/generator/evaluator/governor`。"
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "no-old-skill-aliases",
+      "description": "v1.6.0 host-visible skill package 不保留旧 skill aliases，例如 `beacon-brainstorm`、`beacon-prd`、`beacon-user-story`、`beacon-test-case`、`beacon-implement`、`beacon-qa` 或 `beacon-release`。"
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "shared-preamble",
+      "description": "每个 v1.6.0 host-visible skill 都包含共享生成 preamble，覆盖湖/海、先搜再造、用户主权、不假交付和 harness 边界。"
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "planner-hard-gate",
+      "description": "Planner skills 只能产出 research/planning artifacts 和 route recommendations；不能写 implementation、frozen truth、QA verdicts 或 release verdicts。"
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "generator-hard-gate",
+      "description": "Generator skills 可在自身 authority 内产出 truth 或 implementation artifacts，但不能缺少 evaluator evidence 就声称完成，也不能用 fake delivery 闭环。"
+    },
+    {
+      "ac_id": "AC-008",
+      "theme": "evaluator-hard-gate",
+      "description": "Evaluator skills 负责判断 evidence 并 route/block，但不能改写 truth，也不能把修复 implementation 混入 verdict。"
+    },
+    {
+      "ac_id": "AC-009",
+      "theme": "governor-hard-gate",
+      "description": "Governor skills 管理 context、archive、memory、hooks、automation、metadata 和 status，不能成为人类主链阶段。"
+    },
+    {
+      "ac_id": "AC-010",
+      "theme": "rough-prompt-routing",
+      "description": "粗粒度用户提示词必须先被归约为 outcome、source/truth/evidence refs、湖/海分类、truth gap、test gap、implementation risk、verification risk 和推荐 harness route。"
+    },
+    {
+      "ac_id": "AC-011",
+      "theme": "no-fake-delivery",
+      "description": "Placeholder implementation、docs-only completion、fake runner evidence、zero assertions 或 placeholder evidence 都不能满足 implementation、QA 或 release closure。"
+    },
+    {
+      "ac_id": "AC-012",
+      "theme": "migration-docs",
+      "description": "Migration docs 必须定义 old-to-new skill mapping、旧 alias 移除、CLI compatibility boundary 和 operator next steps。"
+    },
+    {
+      "ac_id": "AC-013",
+      "theme": "default-truth-language-zh",
+      "description": "除非用户显式指定其他语言，Beacon v1.6.0 的需求真相、验收标准、测试断言、任务台账、迁移说明和 host-visible skill preamble 默认以中文为主语言；英文只能作为稳定术语或路径标识保留。"
+    },
+    {
+      "ac_id": "AC-014",
+      "theme": "planner-research-contract",
+      "description": "v1.6.0 把 `docs/beacon/<version>/research/<feature-slug>.md` 定义为 planner artifact surface，authority 为 `support_advisory`；research 必须包含 outcome、湖/海、truth/source/evidence refs、gaps、risks、recommended_route、user_decision 和 promotion_ref，才能被路由或升级。"
+    },
+    {
+      "ac_id": "AC-015",
+      "theme": "research-to-truth-promotion",
+      "description": "Research artifact 不能自动成为需求真相；只有 `user_decision=accepted/promoted` 且存在 `promotion_ref` 时，才能通过 `beacon-gen-change` 或 `beacon-gen-refreeze` 进入 package truth 并冻结。"
+    },
+    {
+      "ac_id": "AC-016",
+      "theme": "skill-rename-rewrite-contract",
+      "description": "v1.6.0 skill 改名必须生成新 `beacon-<harness-code>-<function-code>` compact host-visible skill，更新 frontmatter/name/description/preamble/boundary，移除旧 host-visible aliases 和第一版完整 harness 长名 aliases，并把旧名限制在 migration/archive/release notes。"
+    },
+    {
+      "ac_id": "AC-017",
+      "theme": "harness-hard-gate-injection",
+      "description": "每个 v1.6.0 host-visible skill 必须在共享 preamble 后注入 harness-specific `HARD GATE`，显式禁止跨 harness skill 调用、越权写 truth、越权 implementation、越权 QA/release verdict 和假交付闭环，并声明唯一允许产物；agent-surface verify 必须扫描并阻断缺失或不匹配的 gate。"
+    },
+    {
+      "ac_id": "AC-018",
+      "theme": "skill-eval-benchmark-artifacts",
+      "description": "`beacon skill eval-kit benchmark --version v1.6.0` 必须输出 `eval_metadata/`、`grading/`、`benchmark/`、`analysis/` 四类 runtime evidence artifact，并标记 `runtime_evidence_only=true`、`requirement_truth=false`。"
+    },
+    {
+      "ac_id": "AC-019",
+      "theme": "behavior-evidence-upgrade",
+      "description": "Benchmark 必须覆盖 TC-006 到 TC-011、TC-017，把 planner/generator/evaluator/governor 边界、rough routing、no-fake-delivery 和 hard-gate injection 从静态或 replay-only 证明升级为行为证据。"
+    },
+    {
+      "ac_id": "AC-020",
+      "theme": "benchmark-baseline-comparison",
+      "description": "Benchmark 每个关键 case 必须同时记录 `with_skill` 与 `baseline` 配置，并聚合 pass rate、boundary violation、fake delivery block 和 delta；baseline 只能作为对照证据，不能替代 gate。"
+    },
+    {
+      "ac_id": "AC-021",
+      "theme": "grader-critique",
+      "description": "Grading artifact 必须包含 assertion evidence、reason codes、fake-delivery critique 和 weak-assertion critique；弱断言或假证据不能被记为 release-ready。"
+    },
+    {
+      "ac_id": "AC-022",
+      "theme": "benchmark-analysis",
+      "description": "Analysis artifact 必须产出跨 case failure patterns、covered AC/TC、static-only AC/TC、recommended route，并说明 benchmark evidence 不能替代 formal evaluator/release verdict。"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "docs",
+      "command": "`rg \"plan -> truth -> generate -> evaluate -> release\" docs/beacon/v1.6.0`",
+      "assertion": "v1.6.0 文档使用 `plan -> truth -> generate -> evaluate -> release` 作为用户可见生命周期。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "contract",
+      "command": "`beacon truth-map resolve beacon-skill-harness-taxonomy-v160 --project . --version v1.6.0 --json`",
+      "assertion": "`beacon truth-map resolve` 为 v1.6.0 选择 `features/<slug>/{truth,tests,tasks,evidence}.md` 作为 authority。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "contract",
+      "command": "`beacon skill package verify --project-root . --version v1.6.0 --json`",
+      "assertion": "每个 v1.6.0 host-visible skill 名称都匹配 `beacon-<code>-<function-code>`，其中 code 只能是 `pln/gen/eval/gov`，并能映射到完整 harness `planner/generator/evaluator/governor`。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "negative",
+      "command": "`beacon skill package verify --project-root . --version v1.6.0 --json`",
+      "assertion": "v1.6.0 skill package 中不存在旧 host-visible skill aliases。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-005",
+      "layer": "contract",
+      "command": "`beacon skill package verify --project-root . --version v1.6.0 --json`",
+      "assertion": "每个 v1.6.0 host-visible skill 都包含共享生成 preamble。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-006",
+      "layer": "negative",
+      "command": "`beacon skill eval-kit benchmark --version v1.6.0`",
+      "assertion": "Planner skills 不能写 implementation、frozen truth、QA verdicts 或 release verdicts。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-007",
+      "tc_id": "TC-007",
+      "layer": "negative",
+      "command": "`beacon skill eval-kit benchmark --version v1.6.0`",
+      "assertion": "Generator skills 不能在缺少 evaluator evidence 或 fake delivery 检查时声称完成。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-008",
+      "tc_id": "TC-008",
+      "layer": "negative",
+      "command": "`beacon skill eval-kit benchmark --version v1.6.0`",
+      "assertion": "Evaluator skills 不能在生成 verdict 的同时改写 truth 或修复 implementation。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-009",
+      "tc_id": "TC-009",
+      "layer": "contract",
+      "command": "`beacon skill eval-kit benchmark --version v1.6.0`",
+      "assertion": "Governor skills 被分类为 support/governance surfaces，不能成为 human mainline stages。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-010",
+      "tc_id": "TC-010",
+      "layer": "integration",
+      "command": "`beacon skill eval-kit benchmark --version v1.6.0`",
+      "assertion": "Rough prompt routing 输出 outcome、source/truth/evidence refs、湖/海分类、gaps、risks 和 harness route。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-011",
+      "tc_id": "TC-011",
+      "layer": "negative",
+      "command": "`beacon skill eval-kit benchmark --version v1.6.0`",
+      "assertion": "Placeholder implementation、docs-only completion、fake runner evidence、zero assertions 和 placeholder evidence 都会被拒绝为 closure。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-012",
+      "tc_id": "TC-012",
+      "layer": "docs",
+      "command": "`rg \"Rename Matrix\" docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md`",
+      "assertion": "Migration docs 包含 old-to-new mapping、old alias removal、CLI compatibility boundary 和 operator next steps。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-013",
+      "tc_id": "TC-013",
+      "layer": "docs",
+      "command": "`rg \"默认语言策略\" docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md`",
+      "assertion": "v1.6.0 canonical requirement truth、AC、测试断言、任务台账、迁移说明和 skill preamble 默认以中文为主语言；英文只作为稳定术语或路径标识保留。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-014",
+      "tc_id": "TC-014",
+      "layer": "contract",
+      "command": "`beacon skill package verify-research <feature> --project-root . --version v1.6.0 --json`",
+      "assertion": "`research/<feature-slug>.md` 被识别为 planner `support_advisory` artifact，并包含 outcome、湖/海、truth/source/evidence refs、gaps、risks、recommended_route、user_decision 和 promotion_ref。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-015",
+      "tc_id": "TC-015",
+      "layer": "negative",
+      "command": "`beacon skill package verify-promotion <feature> --project-root . --version v1.6.0 --json`",
+      "assertion": "没有 `user_decision=accepted/promoted` 和 `promotion_ref` 的 research artifact 不能写入 package truth，也不能作为 implementation、QA 或 release closure。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-016",
+      "tc_id": "TC-016",
+      "layer": "contract",
+      "command": "`beacon skill package verify --project-root . --version v1.6.0 --json`",
+      "assertion": "v1.6.0 host-visible skill 迁移产物必须只有 `beacon-<harness-code>-<function-code>` compact 新名，且 `SKILL.md` frontmatter/name/description/preamble/boundary 与 Rename Matrix 对齐；旧 aliases 和第一版完整 harness 长名 aliases 均不得保留。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-017",
+      "tc_id": "TC-017",
+      "layer": "contract",
+      "command": "`beacon skill package verify --project-root . --version v1.6.0 --json`",
+      "assertion": "扫描所有 v1.6.0 host-visible `SKILL.md`，验证共享 preamble 后存在匹配 harness 的 `HARD GATE`，并覆盖禁止跨 harness 调用、越权 truth/implementation/QA/release 动作、假交付闭环和唯一允许产物；缺失或不匹配时 agent-surface verify 必须失败。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-018",
+      "tc_id": "TC-018",
+      "layer": "behavior",
+      "command": "`beacon skill eval-kit benchmark --version v1.6.0`",
+      "assertion": "`beacon skill eval-kit benchmark --version v1.6.0` 输出 `eval_metadata/`、`grading/`、`benchmark/`、`analysis/` 四类 runtime evidence artifact，且标记 `runtime_evidence_only=true`、`requirement_truth=false`。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-019",
+      "tc_id": "TC-019",
+      "layer": "behavior",
+      "command": "`beacon skill eval-kit benchmark --version v1.6.0`",
+      "assertion": "Benchmark 覆盖 TC-006 到 TC-011、TC-017，把 planner/generator/evaluator/governor 边界、rough routing、no-fake-delivery 和 hard-gate injection 从静态/replay 证明升级为行为证据。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-020",
+      "tc_id": "TC-020",
+      "layer": "behavior",
+      "command": "`beacon skill eval-kit benchmark --version v1.6.0`",
+      "assertion": "Benchmark 每个关键 case 同时记录 `with_skill` 与 `baseline` 配置，并聚合 pass rate、boundary violation、fake delivery block 和 delta；baseline 只能作为对照证据，不能替代 gate。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-021",
+      "tc_id": "TC-021",
+      "layer": "behavior",
+      "command": "`beacon skill eval-kit benchmark --version v1.6.0`",
+      "assertion": "Grading artifact 必须包含 assertion evidence、reason codes、fake-delivery critique 和 weak-assertion critique；弱断言或假证据不能被记为 release-ready。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-022",
+      "tc_id": "TC-022",
+      "layer": "behavior",
+      "command": "`beacon skill eval-kit benchmark --version v1.6.0`",
+      "assertion": "Analysis artifact 必须产出跨 case failure patterns、covered AC/TC、static-only AC/TC、recommended route，并说明 benchmark evidence 不能替代 formal evaluator/release verdict。",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "更新 v1.6.0 lifecycle language 为 `plan -> truth -> generate -> evaluate -> release`。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "保持 v1.5.2+ feature package authority 作为 v1.6.0 truth 来源。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "生成或物化使用 `beacon-<harness-code>-<function-code>` 的 v1.6.0 compact host-visible skill names，其中 code 只能是 `pln/gen/eval/gov`。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "从 v1.6.0 skill package 移除旧 host-visible skill aliases。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "把共享 v1.6.0 skill preamble 生成进所有 host-visible skills。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "增加 planner hard gates：只允许 research-only routing，禁止 implementation/truth/verdict writes。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "增加 generator hard gates：限定 authority 内 artifact generation，并禁止 self-certified completion。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-008",
+      "title": "增加 evaluator hard gates：只做 evidence judgment，不改写 truth，不修复 implementation。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-009",
+      "title": "增加 governor hard gates：只做 support/governance context、archive、memory、hooks、automation、metadata 和 status。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-010",
+      "title": "实现或文档化 rough prompt routing，输出 outcome、refs、湖/海分类、gaps、risks 和 harness route。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-011",
+      "title": "在 implementation、QA 和 release surfaces 强制 no-fake-delivery checks。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-012",
+      "title": "编写 v1.6.0 migration docs，包含 old-to-new skill mapping 和 compatibility boundaries。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-013",
+      "title": "把 v1.6.0 需求真相、AC、测试断言、任务台账、迁移说明和 skill preamble 默认中文主语言策略落入生成/校验规则。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-014",
+      "title": "定义 planner research contract，把 `docs/beacon/<version>/research/<feature-slug>.md` 固定为 `support_advisory` artifact surface，并要求 outcome、湖/海、refs、gaps、risks、route、user_decision、promotion_ref。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-015",
+      "title": "实现或文档化 research 到 truth/change/refreeze 的 promotion gate：没有用户确认和 promotion_ref 时，research 不得自动写 truth 或作为交付闭环。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-016",
+      "title": "实现 skill rename rewrite contract：生成 `beacon-<harness-code>-<function-code>` compact 新 skill，更新 frontmatter/name/description/preamble/boundary，并移除旧 host-visible aliases 和第一版完整 harness 长名 aliases。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-017",
+      "title": "实现 harness-specific HARD GATE 模板注入和 agent-surface verify 扫描：planner/generator/evaluator/governor 各自生成禁止动作、唯一允许产物和跨 harness route 规则，缺失或不匹配时阻断 v1.6.0 skill package。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-018",
+      "title": "实现 `beacon skill eval-kit benchmark --version v1.6.0`，输出 `eval_metadata/`、`grading/`、`benchmark/`、`analysis/` runtime evidence。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-019",
+      "title": "将 TC-006 到 TC-011、TC-017 纳入 benchmark 行为 case，覆盖 harness 越权阻断、rough routing、no-fake-delivery 和 HARD GATE 注入。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-020",
+      "title": "为 benchmark 增加 `with_skill` 与 `baseline` 对照聚合，输出 pass rate、boundary violation、fake delivery block 和 delta。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-021",
+      "title": "为 grading 增加 fake-delivery critique 与 weak-assertion critique，阻断假证据或弱断言被当成 release-ready。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-022",
+      "title": "为 analysis 增加跨 case failure patterns、covered AC/TC、static-only AC/TC 和 recommended route。",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-brainstorm",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.5.2/research/beacon-skill-harness-taxonomy-v160.md",
+      "status": "adopted",
+      "route": "truth.define"
+    },
+    {
+      "surface": "version-plan",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.0/version/beacon-skill-harness-taxonomy-v160.md",
+      "status": "indexed",
+      "route": "truth.define"
+    },
+    {
+      "surface": "feature-package",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "status": "authoritative",
+      "route": "truth.define"
+    },
+    {
+      "surface": "package-tests",
+      "authority": "test_truth",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+      "status": "authoritative",
+      "route": "truth.coverage"
+    },
+    {
+      "surface": "package-tasks",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tasks.md",
+      "status": "task-intent-indexed",
+      "route": "implement"
+    },
+    {
+      "surface": "package-evidence",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/evidence.md",
+      "status": "evidence-indexed",
+      "route": "qa"
+    },
+    {
+      "surface": "gstack-ethos-study",
+      "authority": "support_advisory",
+      "canonical_artifact": "/Users/apple/Developer/Personal/personal-brain/sources/web-notes/mp-weixin-qq-com-yc-50-ai/2026-06-08-142327.md",
+      "status": "indexed",
+      "route": "planner"
+    },
+    {
+      "surface": "codex-workflow-study",
+      "authority": "support_advisory",
+      "canonical_artifact": "/Users/apple/Developer/Personal/personal-brain/sources/web-notes/baoyu-io-codex-codex/2026-06-08-132909.md",
+      "status": "indexed",
+      "route": "planner"
+    },
+    {
+      "surface": "slow-uni-bmtop-friction",
+      "authority": "support_advisory",
+      "canonical_artifact": "/Users/apple/Developer/Personal/products/slow_uni_bmtop/.beacon/analysis/friction-intake-fit-20260608T053823Z.md",
+      "status": "indexed",
+      "route": "no-fake-delivery"
+    },
+    {
+      "surface": "default-truth-language-zh",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "status": "adopted",
+      "route": "truth.define"
+    },
+    {
+      "surface": "planner-research-contract",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "status": "adopted",
+      "route": "truth.define"
+    },
+    {
+      "surface": "skill-rename-rewrite-contract",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "status": "adopted",
+      "route": "truth.define"
+    },
+    {
+      "surface": "harness-hard-gate-injection",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "status": "adopted",
+      "route": "truth.define"
+    },
+    {
+      "surface": "skill-creator-eval-harness-research",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.0/research/skill-creator-eval-harness-research.md",
+      "status": "accepted-for-change",
+      "route": "change/refreeze"
+    },
+    {
+      "surface": "skill-eval-benchmark-contract",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "status": "adopted",
+      "route": "truth.define"
+    }
+  ]
+}

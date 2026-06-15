@@ -23,7 +23,6 @@ from beacon.utils.artifact_paths import (
 )
 from beacon.utils.branch_governance import evaluate_branch_governance
 from beacon.utils.archive_governance import load_feature_archive_boundary
-from beacon.utils.automation_runtime import load_feature_automation_runtime
 from beacon.utils.circuit_breaker import CircuitBreaker
 from beacon.utils.artifact_update_obligations import write_artifact_update_obligations
 from beacon.utils.change_surface import build_change_command
@@ -121,6 +120,17 @@ from beacon.utils.workflow_memory import (
 from beacon.utils.writeback import record_implementation_writeback
 
 app = typer.Typer(name="implement", help="Run implementation via configured skill adapters")
+
+
+def _uses_compact_skill_names(version: str) -> bool:
+    text = str(version or "").strip().lower().lstrip("v")
+    parts: list[int] = []
+    for raw in text.split(".")[:3]:
+        digits = "".join(ch for ch in raw if ch.isdigit())
+        parts.append(int(digits or "0"))
+    while len(parts) < 3:
+        parts.append(0)
+    return tuple(parts[:3]) >= (1, 6, 0)
 
 
 def _with_implement_surface(
@@ -481,8 +491,8 @@ def _build_import_evidence_prompt_boundary(
     touched = ", ".join([*changed_files, *service_dirs])
     prompt = (
         "Import externally produced implementation evidence for the scoped Beacon feature. "
-        "Read Beacon source of truth and bind the imported evidence to the frozen PRD, user-story, "
-        "and test-case truth. Implement only against the frozen PRD, user-story, and test-case truth above. "
+        "Read Beacon source of truth and bind the imported evidence to the frozen feature package truth. "
+        "Implement only against the frozen feature package truth above. "
         f"Evidence refs: {refs}. Changed files or service directories: {touched}."
     )
     payload = evaluate_implement_prompt_boundary(
@@ -897,47 +907,16 @@ def _requirement_closure_preflight(project_root: Path, *, version: str, feature:
 
 def _automation_runtime_preflight(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
-    runtime = load_feature_automation_runtime(project_root, feature=feature)
-    next_route = str(runtime.get("next_route") or "").strip()
-    truth_recompiled_pending = bool(runtime.get("truth_recompiled_pending", False))
-    support_review = runtime.get("support_review") if isinstance(runtime.get("support_review"), dict) else {}
-    truth_gate = runtime.get("truth_recompile_gate") if isinstance(runtime.get("truth_recompile_gate"), dict) else {}
-
-    blocked = False
-    reason_code = ""
-    recommended_command = ""
-    if next_route == "support_review" or bool(support_review.get("required", False)):
-        blocked = True
-        reason_code = "automation_support_review_required"
-        executor = str(support_review.get("executor") or "deep").strip() or "deep"
-        recommended_command = f'beacon {executor} run "{feature}" --project-root {project_root}'
-    elif truth_recompiled_pending or bool(truth_gate.get("required", False)):
-        blocked = True
-        reason_code = "automation_truth_recompile_pending"
-        recommended_command = f'beacon doctor sync-materials --project-root {project_root} --version {resolved_version} --all-features'
-    elif next_route == "change_refreeze":
-        blocked = True
-        reason_code = "automation_truth_refreeze_required"
-        recommended_command = build_change_command(
-            feature=feature,
-            project_root=project_root,
-            version=resolved_version,
-            reason="automation-truth-refreeze-required",
-        )
-
     return {
         "enabled": True,
-        "status": "blocked" if blocked else "pass",
-        "blocked": blocked,
-        "reason_code": reason_code,
-        "recommended_command": recommended_command,
+        "status": "retired",
+        "blocked": False,
+        "reason_code": "",
+        "recommended_command": "beacon-loop goal",
         "feature": feature,
         "version": resolved_version,
-        "runtime_path": str(project_root / ".beacon" / "automation" / "features" / _slug(feature) / "runtime.json"),
-        "next_route": next_route,
-        "truth_recompiled_pending": truth_recompiled_pending,
-        "support_review": support_review,
-        "truth_recompile_gate": truth_gate,
+        "runtime_path": "",
+        "retired": True,
     }
 
 
@@ -1137,6 +1116,7 @@ def _run_ralph_controller(  # noqa: PLR0913
     host_runtime: str | None,
     max_rounds: int,
 ) -> tuple[int, dict[str, Any]]:
+    project_root = Path(project_root).expanduser().resolve()
     resolved_version = resolve_target_version(project_root, version)
     requested_runner = None if str(runner or "").strip().lower() == "auto" else runner
     executor_mode = "single" if str(requested_runner or "").strip() == "native-single" else "team"
@@ -2428,6 +2408,7 @@ def run_implement_stage(  # noqa: PLR0913
     auto_switch_branch: bool | None = None,
     team_runtime: str | None = None,
 ) -> tuple[int, dict[str, Any]]:
+    project_root = Path(project_root).expanduser().resolve()
     resolved_version = resolve_target_version(project_root, version)
     prompt_boundary_payload = prompt_boundary if isinstance(prompt_boundary, dict) else {}
     archive_boundary = load_feature_archive_boundary(project_root, version=resolved_version, feature=feature)
@@ -4114,7 +4095,7 @@ def import_evidence(
         "feature_slug": slug,
         "version": resolved_version,
         "runner": "import-evidence",
-        "skill": "beacon-implement",
+        "skill": "beacon-gen-implement" if _uses_compact_skill_names(resolved_version) else "beacon-implement",
         "status": "completed",
         "imported": True,
         "source_refs": source_refs,
@@ -4148,7 +4129,7 @@ def import_evidence(
             "implementation_marker": str(marker.relative_to(project_root)),
             "writeback": writeback_payload,
             "next_route": {
-                "target_surface": "beacon-qa",
+                "target_surface": "beacon-eval-qa" if _uses_compact_skill_names(resolved_version) else "beacon-qa",
                 "command": f'beacon qa run "{feature}" --project {project_root} --version {resolved_version}',
             },
         },
@@ -4193,7 +4174,7 @@ def run(
     json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
 ):
     """Run implementation using the resolved skill adapter."""
-    project_root = Path(project) if project else Path.cwd()
+    project_root = (Path(project) if project else Path.cwd()).expanduser().resolve()
     prompt_boundary = _resolve_host_prompt_boundary(
         project_root=project_root,
         version=version,
@@ -4570,7 +4551,7 @@ def sync_git_workflow(
     json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
 ):
     """Materialize or refresh the versioned git workflow contract for a feature."""
-    project_root = Path(project) if project else Path.cwd()
+    project_root = (Path(project) if project else Path.cwd()).expanduser().resolve()
     resolved_version = resolve_target_version(project_root, version)
     payload = ensure_implementation_git_workflow_contract(
         project_root,

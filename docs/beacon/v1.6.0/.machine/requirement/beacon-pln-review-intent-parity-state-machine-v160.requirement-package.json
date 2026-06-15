@@ -1,0 +1,467 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-06-10T03:24:27.377080+00:00",
+  "feature": "beacon-pln-review-intent-parity-state-machine-v160",
+  "feature_slug": "beacon-pln-review-intent-parity-state-machine-v160",
+  "version": "v1.6.0",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.0/features/beacon-pln-review-intent-parity-state-machine-v160/truth.md",
+    "tests": "docs/beacon/v1.6.0/features/beacon-pln-review-intent-parity-state-machine-v160/tests.md",
+    "tasks": "docs/beacon/v1.6.0/features/beacon-pln-review-intent-parity-state-machine-v160/tasks.md",
+    "evidence": "docs/beacon/v1.6.0/features/beacon-pln-review-intent-parity-state-machine-v160/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "c149e6af24fd6f300991aacdd54b2538d11c1702613f21ac76bcd4f15d048907",
+    "tests": "7770ed5db63cf77c9b3ead953141a26d870d0c114b900531c2301c9140c212ee",
+    "tasks": "09c833a1a4ee3bbe8b91bcb649013593b4582df6efad8df56367200cfe0e029b",
+    "evidence": "695e33fc5531642d68a5f845414d1e88df4f9ca7308609aba6706f5f51328843"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-pln-review-intent-parity-state-machine-v160",
+    "version": "v1.6.0",
+    "status": "frozen",
+    "language": "zh",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.0/features/beacon-pln-review-intent-parity-state-machine-v160/truth.md",
+      "user_story": "docs/beacon/v1.6.0/features/beacon-pln-review-intent-parity-state-machine-v160/truth.md",
+      "test_case": "docs/beacon/v1.6.0/features/beacon-pln-review-intent-parity-state-machine-v160/tests.md"
+    },
+    "parser_contract": "beacon-feature-package-v1",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "public-surface",
+      "description": "v1.6.0 planner public surface 收敛为 `beacon-pln-brainstorm`、`beacon-pln-source`、`beacon-pln-review`、`beacon-pln-friction`。"
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "internal-reviewer-catalog",
+      "description": "founder/security/performance/doubt/context/simplify/adr/design/deep 等过细 planner 能力进入 `beacon-pln-review` references/reviewer catalog，不作为默认 public route。"
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "thin-skill",
+      "description": "`beacon-pln-review/SKILL.md` 是薄入口，详细 reviewer、finding、artifact、state-machine 和 skill-package 规则进入直接引用的 `references/`。"
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "boundary",
+      "description": "`beacon-pln-review` 遵守 planner HARD GATE，不能写 truth、代码、`.machine/`、QA verdict 或 release verdict。"
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "intent-fidelity",
+      "description": "review artifact 必须保留 `intent_snapshot`，并识别强意图词，防止完整意图被静默弱化。"
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "full-parity-default",
+      "description": "用户说“完整复刻”“同等能力”“做全”或同类表达时，默认 `scope_mode=full_parity`。"
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "source-parity",
+      "description": "source 项目存在时，必须生成 `source_capability_inventory` 和 `parity_matrix`，否则不能 freeze/implement。"
+    },
+    {
+      "ac_id": "AC-008",
+      "theme": "deferral-sovereignty",
+      "description": "任何 MVP、延期、裁剪或未覆盖能力必须进入 `deferral_ledger` 并要求用户显式接受。"
+    },
+    {
+      "ac_id": "AC-009",
+      "theme": "state-machine-reviewer",
+      "description": "reviewer catalog 必须包含 `state-machine` reviewer，并在 lifecycle/workflow/loop/recovery/permission/source-parity 场景触发。"
+    },
+    {
+      "ac_id": "AC-010",
+      "theme": "state-model-output",
+      "description": "state-machine reviewer 必须输出 states、transitions、invalid transitions、side effects、recovery paths、terminal states、state axes 和 coverage implications。"
+    },
+    {
+      "ac_id": "AC-011",
+      "theme": "truth-state-landing",
+      "description": "package truth 必须支持 `State Model` / `Diagram Truth Layer` 落点；缺失时 route `beacon-gen-truth` 或 `beacon-gen-change`。"
+    },
+    {
+      "ac_id": "AC-012",
+      "theme": "coverage-state-landing",
+      "description": "package tests 必须覆盖状态转移、非法转移、恢复路径和状态轴组合。"
+    },
+    {
+      "ac_id": "AC-013",
+      "theme": "research-support-boundary",
+      "description": "research 中的状态机图/业务流图是 `support_advisory`；只有用户接受并存在 `promotion_ref` 后才能进入 truth/change。"
+    },
+    {
+      "ac_id": "AC-014",
+      "theme": "finding-schema",
+      "description": "所有 findings 必须包含 reviewer、severity、confidence、authority_level、evidence_refs、affected_truth_surface、recommended_route 和 user_decision_required。"
+    },
+    {
+      "ac_id": "AC-015",
+      "theme": "no-autofix",
+      "description": "planner findings 默认 `autofix_allowed=false`，不能由 planner 自动改 truth 或实现。"
+    },
+    {
+      "ac_id": "AC-016",
+      "theme": "route-synthesis",
+      "description": "多 reviewer 输出必须 merge/dedup/synthesize 成单一 route recommendation，不能把多个 reviewer 的互斥结论直接丢给用户。"
+    },
+    {
+      "ac_id": "AC-017",
+      "theme": "skill-creator-standard",
+      "description": "Beacon public skills 必须符合 skill-creator anatomy：frontmatter、精简入口、直接 references、metadata/eval 约束。"
+    },
+    {
+      "ac_id": "AC-018",
+      "theme": "eval-contract",
+      "description": "`beacon-pln-review` 必须有 skill eval/benchmark cases 覆盖 intent parity、source parity、state-machine、boundary negative 和 finding schema。"
+    },
+    {
+      "ac_id": "AC-019",
+      "theme": "no-main-lifecycle-change",
+      "description": "本 feature 不改变 Beacon 主生命周期，也不新增 truth/generate/evaluate/release 之外的新主阶段。"
+    },
+    {
+      "ac_id": "AC-020",
+      "theme": "install-projection",
+      "description": "materialized/installed v1.6.0 skill package 必须只暴露收敛后的 public planner surface；旧细分 planner 能力只作为 internal reviewer/reference 出现。"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "contract",
+      "command": "`beacon skill package verify --project-root . --version v1.6.0 --json`",
+      "assertion": "v1.6.0 materialized skill package 的 public planner surface 只包含 `beacon-pln-brainstorm`、`beacon-pln-source`、`beacon-pln-review`、`beacon-pln-friction`。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "contract",
+      "command": "`python3 -c 'import json, pathlib; text=pathlib.Path(\"skills/beacon/beacon-pln-review/references/reviewer-catalog.md\").read_text(); terms=[\"founder-business\",\"adversarial-doubt\",\"security-boundary\",\"performance-boundary\",\"context-engineering\",\"simplification-risk\",\"adr-documentation\",\"design-flow\",\"state-machine\",\"not host-visible public skills\"]; checks=[{\"name\": term, \"status\": \"pass\"} for term in terms if term in text]; assert len(checks)==len(terms), sorted(set(terms)-set(c[\"name\"] for c in checks)); print(json.dumps({\"status\":\"pass\",\"checks\":checks}))'`",
+      "assertion": "founder/security/performance/doubt/context/simplify/adr/design/deep 均作为 internal reviewer 或 references 出现，不作为默认 public planner route。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "contract",
+      "command": "`python3 -c 'import json, pathlib; text=pathlib.Path(\"skills/beacon/beacon-pln-review/SKILL.md\").read_text(); refs=[\"references/reviewer-catalog.md\",\"references/finding-schema.md\",\"references/intent-parity-artifacts.md\",\"references/state-machine-review.md\",\"references/skill-package-standard.md\"]; checks=[{\"name\": ref, \"status\": \"pass\"} for ref in refs if ref in text]; assert len(checks)==len(refs), sorted(set(refs)-set(c[\"name\"] for c in checks)); assert len(text.splitlines()) < 120; print(json.dumps({\"status\":\"pass\",\"checks\":checks+[{\"name\":\"thin_skill_entry\",\"status\":\"pass\"}]}))'`",
+      "assertion": "`SKILL.md` 是薄入口，并直接引用 reviewer catalog、finding schema、intent parity artifacts、state-machine review 和 skill package standard references。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "negative",
+      "command": "`beacon skill eval-kit benchmark --version v1.6.0`",
+      "assertion": "planner 被要求写 truth、写代码、改 `.machine`、给 QA/release verdict 时，`beacon-pln-review` 被 HARD GATE 阻断并 route。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-005",
+      "layer": "behavior",
+      "command": "`beacon skill eval-kit benchmark --version v1.6.0`",
+      "assertion": "planner review artifact 保留用户原始强意图词和 `intent_snapshot`。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-006",
+      "layer": "behavior",
+      "command": "`beacon skill eval-kit benchmark --version v1.6.0`",
+      "assertion": "含“完整复刻/同等能力/做全”的 prompt 默认输出 `scope_mode=full_parity`，不得自动降级 MVP。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-007",
+      "tc_id": "TC-007",
+      "layer": "negative",
+      "command": "`beacon skill eval-kit benchmark --version v1.6.0`",
+      "assertion": "source refs 存在但缺少 `source_capability_inventory` 或 `parity_matrix` 时，freeze/implement route 被阻断。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-008",
+      "tc_id": "TC-008",
+      "layer": "negative",
+      "command": "`beacon skill eval-kit benchmark --version v1.6.0`",
+      "assertion": "存在 MVP、延期、裁剪或未覆盖能力但缺少 `deferral_ledger` 和 user decision 时，review 输出 P0/P1 finding。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-009",
+      "tc_id": "TC-009",
+      "layer": "contract",
+      "command": "`python3 -c 'import json, pathlib; text=(pathlib.Path(\"skills/beacon/beacon-pln-review/references/reviewer-catalog.md\").read_text()+\"\\n\"+pathlib.Path(\"skills/beacon/beacon-pln-review/references/state-machine-review.md\").read_text()).lower(); terms=[\"state-machine\",\"lifecycle\",\"workflow\",\"loop\",\"resume\",\"stop\",\"recovery\",\"permission\",\"source parity\"]; checks=[{\"name\": term, \"status\": \"pass\"} for term in terms if term in text]; assert len(checks)==len(terms), sorted(set(terms)-set(c[\"name\"] for c in checks)); print(json.dumps({\"status\":\"pass\",\"checks\":checks}))'`",
+      "assertion": "reviewer catalog 包含 `state-machine` reviewer，且触发条件覆盖 lifecycle、workflow、loop、resume/stop/recovery、permission 和 source parity。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-010",
+      "tc_id": "TC-010",
+      "layer": "behavior",
+      "command": "`beacon skill eval-kit benchmark --version v1.6.0`",
+      "assertion": "state-machine reviewer 输出 states、transitions、invalid transitions、side effects、recovery paths、terminal states、state axes 和 coverage implications。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-011",
+      "tc_id": "TC-011",
+      "layer": "negative",
+      "command": "`beacon skill eval-kit benchmark --version v1.6.0 --json`",
+      "assertion": "复杂 feature 需要 state-machine 但 `truth.md` 缺少 `State Model` / `Diagram Truth Layer` 时，review route 指向 `beacon-gen-truth` 或 `beacon-gen-change`。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-012",
+      "tc_id": "TC-012",
+      "layer": "negative",
+      "command": "`beacon skill eval-kit benchmark --version v1.6.0 --json`",
+      "assertion": "复杂 feature 需要 state-machine 但 `tests.md` 缺少状态转移、非法转移、恢复路径或状态轴组合覆盖时，review route 指向 `beacon-gen-truth` coverage。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-013",
+      "tc_id": "TC-013",
+      "layer": "contract",
+      "command": "`beacon skill package verify-research <feature> --project-root . --version v1.6.0 --json`",
+      "assertion": "research 状态机图/业务流图被识别为 `support_advisory`，没有 `user_decision` 和 `promotion_ref` 时不能成为 truth closure。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-014",
+      "tc_id": "TC-014",
+      "layer": "contract",
+      "command": "`python3 -c 'import json, pathlib; text=pathlib.Path(\"skills/beacon/beacon-pln-review/references/finding-schema.md\").read_text(); fields=[\"reviewer\",\"severity\",\"confidence\",\"authority_level\",\"evidence_refs\",\"affected_truth_surface\",\"recommended_route\",\"user_decision_required\"]; checks=[{\"name\": field, \"status\": \"pass\"} for field in fields if field in text]; assert len(checks)==len(fields), sorted(set(fields)-set(c[\"name\"] for c in checks)); print(json.dumps({\"status\":\"pass\",\"checks\":checks}))'`",
+      "assertion": "findings 包含 reviewer、severity、confidence、authority_level、evidence_refs、affected_truth_surface、recommended_route 和 user_decision_required。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-015",
+      "tc_id": "TC-015",
+      "layer": "negative",
+      "command": "`python3 -c 'import json, pathlib; text=pathlib.Path(\"skills/beacon/beacon-pln-review/references/finding-schema.md\").read_text().lower(); checks=[{\"name\":\"autofix_allowed_default_false\",\"status\":\"pass\"},{\"name\":\"planner_routes_instead_of_fixing\",\"status\":\"pass\"}]; assert \"autofix_allowed` defaults to `false\" in text or \"autofix_allowed` defaults to `false`\" in text; assert \"planner cannot mark qa/release pass\" in text; print(json.dumps({\"status\":\"pass\",\"checks\":checks}))'`",
+      "assertion": "planner findings 默认 `autofix_allowed=false`，不得声明 planner 可自动改 truth 或实现。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-016",
+      "tc_id": "TC-016",
+      "layer": "behavior",
+      "command": "`beacon skill eval-kit benchmark --version v1.6.0`",
+      "assertion": "多 reviewer 输出被 merge/dedup/synthesize 为单一 route recommendation，并保留冲突/置信度。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-017",
+      "tc_id": "TC-017",
+      "layer": "contract",
+      "command": "`python3 -c 'import json, pathlib, yaml; root=pathlib.Path(\"skills/beacon/beacon-pln-review\"); skill=(root/\"SKILL.md\").read_text(); meta=yaml.safe_load(skill.split(\"---\",2)[1]); checks=[{\"name\":\"frontmatter_name\",\"status\":\"pass\"},{\"name\":\"description_boundary\",\"status\":\"pass\"},{\"name\":\"direct_references\",\"status\":\"pass\"},{\"name\":\"openai_metadata\",\"status\":\"pass\"},{\"name\":\"eval_contract\",\"status\":\"pass\"}]; assert meta[\"name\"]==\"beacon-pln-review\"; assert \"without writing truth, code, QA verdicts, or release verdicts\" in meta[\"description\"]; assert \"references/skill-package-standard.md\" in skill; assert (root/\"agents/openai.yaml\").exists(); assert \"Eval Contract\" in (root/\"references/skill-package-standard.md\").read_text(); print(json.dumps({\"status\":\"pass\",\"checks\":checks}))'`",
+      "assertion": "public skills 的 frontmatter、description、references、metadata 和 eval contract 符合 skill-creator anatomy。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-018",
+      "tc_id": "TC-018",
+      "layer": "behavior",
+      "command": "`beacon skill eval-kit benchmark --version v1.6.0`",
+      "assertion": "eval/benchmark 覆盖 intent parity、source parity、state-machine、boundary negative 和 finding schema。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-019",
+      "tc_id": "TC-019",
+      "layer": "docs",
+      "command": "`rg \"plan -> truth -> generate -> evaluate -> release\" docs/beacon/v1.6.0 skills/beacon`",
+      "assertion": "本 feature 没有新增 Beacon 主生命周期 stage。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-020",
+      "tc_id": "TC-020",
+      "layer": "integration",
+      "command": "`beacon doctor verify-agent-surface --project-root . --version v1.6.0 --agent codex --strict --json`",
+      "assertion": "安装/投影到 agent surface 后，只暴露收敛后的 public planner surface；细分 planner 能力只以 internal reviewer/reference 存在。",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "新增 `skills/beacon/beacon-pln-review/SKILL.md`，并注入 v1.6.0 shared preamble 和 planner HARD GATE。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "为 `beacon-pln-review` 增加 `agents/openai.yaml` 或等价 metadata。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "增加 `references/reviewer-catalog.md`，定义 always-on 和 conditional reviewer。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "增加 `references/finding-schema.md`，定义 planner review finding schema 和 route rules。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "增加 `references/intent-parity-artifacts.md`，定义 intent snapshot、scope mode、source inventory、parity matrix、promotion diff 和 deferral ledger。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "增加 `references/state-machine-review.md`，定义状态机 reviewer 的触发条件、输出字段和 truth/tests 落点。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "增加 `references/skill-package-standard.md`，吸收 qi-dev/OpenAI/Anthropic skill-creator package 标准。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-008",
+      "title": "更新 v1.6.0 skill projection / rename matrix，使 `beacon-pln-review` 成为 public planner skill。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-009",
+      "title": "收敛 v1.6.0 public planner projection，只默认暴露 `beacon-pln-brainstorm`、`beacon-pln-source`、`beacon-pln-review`、`beacon-pln-friction`。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-010",
+      "title": "将 founder/security/performance/doubt/context/simplify/adr/design/deep 降级为 internal reviewer/reference，避免作为默认 public route。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-011",
+      "title": "更新 root `skills/beacon/SKILL.md` 和 metadata，反映收敛后的 planner public surface。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-012",
+      "title": "更新 skill package verify 规则，检测 unexpected public planner skills。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-013",
+      "title": "更新 skill eval benchmark cases，覆盖 intent parity、source parity、deferral ledger、state-machine reviewer 和 boundary negative。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-014",
+      "title": "更新 tests，覆盖 materialize/verify/agent surface projection 和 reviewer references。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-015",
+      "title": "运行 OpenAI/Anthropic quick validation 或 Beacon equivalent verify，证明 skill package anatomy 合格。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-016",
+      "title": "运行 focused tests 和 formal QA handoff；生成 implementation evidence，但不自证 QA/release。",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "planner-research",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.0/research/beacon-pln-review-intent-parity-state-machine-v160.md",
+      "status": "accepted-for-change",
+      "route": "truth.define"
+    },
+    {
+      "surface": "feature-package",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-pln-review-intent-parity-state-machine-v160/truth.md",
+      "status": "authoritative",
+      "route": "truth.define"
+    },
+    {
+      "surface": "package-tests",
+      "authority": "test_truth",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-pln-review-intent-parity-state-machine-v160/tests.md",
+      "status": "authoritative",
+      "route": "truth.coverage"
+    },
+    {
+      "surface": "package-tasks",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-pln-review-intent-parity-state-machine-v160/tasks.md",
+      "status": "task-intent-indexed",
+      "route": "generate"
+    },
+    {
+      "surface": "package-evidence",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-pln-review-intent-parity-state-machine-v160/evidence.md",
+      "status": "evidence-indexed",
+      "route": "evaluate"
+    },
+    {
+      "surface": "compound-skill-pattern",
+      "authority": "support_advisory",
+      "canonical_artifact": "/Users/apple/.codex/skills/compound-engineering/ce-code-review/SKILL.md",
+      "status": "indexed",
+      "route": "source-study"
+    },
+    {
+      "surface": "compound-reviewer-catalog",
+      "authority": "support_advisory",
+      "canonical_artifact": "/Users/apple/.codex/skills/compound-engineering/ce-code-review/references/persona-catalog.md",
+      "status": "indexed",
+      "route": "source-study"
+    },
+    {
+      "surface": "qi-dev-skill-creator",
+      "authority": "support_advisory",
+      "canonical_artifact": "/Users/apple/Developer/Personal/products/justin-mc-lai-skills/skills/qi-dev/references/personal-skill-creator-spec.md",
+      "status": "indexed",
+      "route": "source-study"
+    },
+    {
+      "surface": "state-machine-checklist",
+      "authority": "support_advisory",
+      "canonical_artifact": "skills/beacon/references/state-machine-checklist.md",
+      "status": "indexed",
+      "route": "source-study"
+    },
+    {
+      "surface": "diagram-truth-runtime",
+      "authority": "support_advisory",
+      "canonical_artifact": "beacon/utils/diagram_truth.py",
+      "status": "indexed",
+      "route": "source-study"
+    },
+    {
+      "surface": "requirement-clarity-runtime",
+      "authority": "support_advisory",
+      "canonical_artifact": "beacon/utils/requirement_clarity.py",
+      "status": "indexed",
+      "route": "source-study"
+    }
+  ]
+}

@@ -17,6 +17,7 @@ from beacon.utils.release_scorecard import build_release_scorecard, summarize_re
 from beacon.utils.qa_feature import _build_story_scenario_map, _closure_outcome, _evidence_sufficiency, _resolve_entry_command
 from beacon.utils.qa9 import default_command_for_qa_type
 from beacon.utils.test_contract_governance import (
+    _classify_lane,
     CANONICAL_TEST_CONTRACT_LANES,
     QA_FIRST_PRINCIPLES_ORDER,
     TEST_CONTRACT_REASON_CODES,
@@ -203,6 +204,23 @@ def test_doctor_build_and_verify_commands(tmp_path: Path) -> None:
     verify_payload = json.loads(verify.stdout)
     assert verify_payload["action"] == "verify-test-contract-index"
     assert verify_payload["result"]["gate"]["status"] == "pass"
+
+
+def test_gate_rebuilds_in_memory_when_global_index_belongs_to_other_feature(tmp_path: Path) -> None:
+    _seed_project(tmp_path)
+    build_test_contract_index(tmp_path, version=VERSION, feature=FEATURE, write=True)
+    index_path = contract_index_path(tmp_path, VERSION)
+    payload = json.loads(index_path.read_text(encoding="utf-8"))
+    payload["feature"] = "other-feature"
+    payload["feature_slug"] = "other-feature"
+    payload["source_hashes"] = {"truth": "sha256:other"}
+    index_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    gate = build_test_contract_gate_payload(tmp_path, version=VERSION, feature=FEATURE)
+
+    assert gate["blocked"] is False
+    assert gate["release_gate"]["blocked"] is False
+    assert "test_contract_index_stale" not in gate["release_gate"]["reason_codes"]
 
 
 def test_verify_missing_index_has_repair_route(tmp_path: Path) -> None:
@@ -568,6 +586,18 @@ def test_legacy_snapshot_not_release_blocker_by_default(tmp_path: Path) -> None:
 
     assert legacy_entries
     assert all(item["release_blocking"] is False for item in legacy_entries)
+
+
+def test_reason_code_legacy_cutover_required_stays_release_facing() -> None:
+    entry = {
+        "ac_id": "AC-068",
+        "layer": "integration",
+        "command": "cd packages/beacon-run && pnpm exec vitest run -t implement-preflight-demote",
+        "assertion": "`revision_not_frozen` / `legacy_cutover_required` 不空烧 cap；phase demote + truth-promotion 记录 cutover。",
+    }
+    ac_item = {"theme": "generate frozen gate", "text": "Generate entry requires frozen truth"}
+
+    assert _classify_lane(entry, ac_item) == "feature_release_facing"
 
 
 def test_browser_runtime_admission_lane_is_classified_and_release_blocking(tmp_path: Path) -> None:

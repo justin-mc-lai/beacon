@@ -1,0 +1,232 @@
+{
+  "schema_version": "1.0",
+  "run_id": "prd-bootstrap-20260615T092735Z",
+  "feature": "beacon-agent-eval-v161",
+  "feature_slug": "beacon-agent-eval-v161",
+  "description": "v1.6.1 Agent Eval full parity：统一 eval 分数面、能力目录全 harness 覆盖、live/replay/simulated 分层 runner、with_skill vs baseline 行为证据、继承 v1.6.0 skill-eval benchmark 契约并闭合 AC-018..022、program harness 与 public CLI 纳入 catalog、产出 composite 0-100 scorecard（runtime_evidence_only，不替代 formal QA/release）",
+  "version": "v1.6.1",
+  "generated_at": "2026-06-15T09:27:35.032517+00:00",
+  "mode": "apply",
+  "dry_run": false,
+  "no_overwrite": true,
+  "strict_context_verify": false,
+  "targets": {
+    "prd": "docs/beacon/v1.6.1/prd/beacon-agent-eval-v161.md",
+    "user_story": "docs/beacon/v1.6.1/user-story/beacon-agent-eval-v161.md",
+    "test_case": "docs/beacon/v1.6.1/qa/test-cases/beacon-agent-eval-v161.md"
+  },
+  "package_state": "empty",
+  "missing_layers": [
+    "prd",
+    "user_story",
+    "test_case"
+  ],
+  "generated_layers": [
+    "prd",
+    "user_story",
+    "test_case"
+  ],
+  "derived_layers": [],
+  "reverse_derived_layers": [],
+  "drift_digest": [],
+  "closure_verdict": "draft_generated",
+  "readiness_verdict": "supplement_required",
+  "closure_analysis": {
+    "ok": true,
+    "checks": {
+      "goal_defined": true,
+      "main_flow_defined": true,
+      "scope_defined": true,
+      "acceptance_coverage_sufficient": true,
+      "blocking_unknowns": false
+    },
+    "missing_evidence": [],
+    "blocking_items": []
+  },
+  "supplement_tasks": [],
+  "gap_digest": [
+    {
+      "gap_id": "GAP-001",
+      "theme": "missing-context",
+      "question": "当前仅基于意图生成 draft package，仍需补充边界与异常。",
+      "blocks": [
+        "freeze_ready",
+        "implementation_pending"
+      ]
+    }
+  ],
+  "quality": {
+    "max_placeholders": 0,
+    "total_placeholders": 0,
+    "per_doc": {
+      "prd": 0,
+      "user_story": 0,
+      "test_case": 0
+    },
+    "ok": true
+  },
+  "consistency": {
+    "story_ac_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005",
+      "AC-018"
+    ],
+    "test_case_ac_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005",
+      "AC-018"
+    ],
+    "missing_in_test_case": [],
+    "ok": true
+  },
+  "context_verify": {
+    "ok": true,
+    "status": "pass",
+    "checks": []
+  },
+  "status": "applied",
+  "reason_code": "",
+  "recommended_command": "",
+  "write_actions": [
+    {
+      "target": "prd",
+      "path": "docs/beacon/v1.6.1/prd/beacon-agent-eval-v161.md",
+      "action": "created",
+      "backup_path": ""
+    },
+    {
+      "target": "user_story",
+      "path": "docs/beacon/v1.6.1/user-story/beacon-agent-eval-v161.md",
+      "action": "created",
+      "backup_path": ""
+    },
+    {
+      "target": "test_case",
+      "path": "docs/beacon/v1.6.1/qa/test-cases/beacon-agent-eval-v161.md",
+      "action": "created",
+      "backup_path": ""
+    }
+  ],
+  "rollback_plan": [
+    {
+      "action": "delete",
+      "path": "docs/beacon/v1.6.1/prd/beacon-agent-eval-v161.md"
+    },
+    {
+      "action": "delete",
+      "path": "docs/beacon/v1.6.1/user-story/beacon-agent-eval-v161.md"
+    },
+    {
+      "action": "delete",
+      "path": "docs/beacon/v1.6.1/qa/test-cases/beacon-agent-eval-v161.md"
+    }
+  ],
+  "feature_package": {
+    "schema_version": "1.0",
+    "feature": "beacon-agent-eval-v161",
+    "feature_slug": "beacon-agent-eval-v161",
+    "version": "v1.6.1",
+    "status": "materialized",
+    "package_dir": "docs/beacon/v1.6.1/features/beacon-agent-eval-v161",
+    "written": [
+      "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md",
+      "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/tests.md",
+      "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/tasks.md",
+      "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/evidence.md"
+    ],
+    "skipped": [],
+    "validation": {
+      "schema_version": "1.0",
+      "feature": "beacon-agent-eval-v161",
+      "feature_slug": "beacon-agent-eval-v161",
+      "version": "v1.6.1",
+      "status": "pass",
+      "blocked": false,
+      "reason_code": "",
+      "generated_at": "2026-06-15T09:27:35.055042+00:00",
+      "package_dir": "docs/beacon/v1.6.1/features/beacon-agent-eval-v161",
+      "truth_frontmatter": {
+        "slug": "beacon-agent-eval-v161",
+        "version": "v1.6.1",
+        "status": "draft",
+        "language": "en",
+        "canonical_refs": {
+          "prd": "docs/beacon/v1.6.1/prd/beacon-agent-eval-v161.md",
+          "user_story": "docs/beacon/v1.6.1/user-story/beacon-agent-eval-v161.md",
+          "test_case": "docs/beacon/v1.6.1/qa/test-cases/beacon-agent-eval-v161.md"
+        },
+        "parser_contract": "beacon-feature-package-v1"
+      },
+      "ac_count": 5,
+      "test_count": 0,
+      "checkbox_count": 5,
+      "evidence_row_count": 4,
+      "gate_authority": "canonical_surfaces_preserved",
+      "checkbox_gate_bypass": false,
+      "evidence_gate_truth": false,
+      "diagnostics": [
+        {
+          "severity": "warn",
+          "code": "tests_coverage_table_missing",
+          "path": "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/tests.md"
+        }
+      ],
+      "truth_map_contract": "beacon-truth-map-v1",
+      "truth_source_model": "feature_package_authoritative",
+      "truth_package_contract": "beacon-feature-package-v2",
+      "machine_json_role": "generated_state_not_truth",
+      "generated_by": "beacon.truth_map.resolver",
+      "truth_authority": "markdown_feature_package",
+      "json_authority": false,
+      "source_paths": {
+        "truth": "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md",
+        "tests": "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/tests.md",
+        "tasks": "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/tasks.md",
+        "evidence": "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/evidence.md"
+      },
+      "source_hashes": {
+        "truth": "9997e4c89a7cdbe81381a4111c297d42d72791480947ec8889a625a5186aeb27",
+        "tests": "82d147ff48076436c498a375a5caf909cee3f8db9b3ae6ffc2857b4692ac2b0c",
+        "tasks": "921911ad611f837ff1bd3786c6f035b19526b4ddda8afb814b9d030f81726611",
+        "evidence": "900fb2ba6b9685f437414dad218894556fe887229a806b1468cf79c337ab5a84"
+      },
+      "runtime_json_requires_markdown_twin": false,
+      "report_path": "docs/beacon/v1.6.1/.machine/requirement/feature-package-validation.json"
+    }
+  },
+  "truth_read_refs": {
+    "schema_version": "1.0",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "truth_source_model": "feature_package_authoritative",
+    "route_mode": "truth_center_resolver",
+    "feature": "beacon-agent-eval-v161",
+    "feature_slug": "beacon-agent-eval-v161",
+    "version": "v1.6.1",
+    "consumer": "prd-bootstrap",
+    "authority_state": "feature_package_authoritative",
+    "authority_flip_allowed": true,
+    "source_refs": {
+      "truth": "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md",
+      "tests": "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/tests.md",
+      "tasks": "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/tasks.md",
+      "evidence": "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/evidence.md"
+    },
+    "requirement_refs": {
+      "source_of_truth_root": "docs/beacon/v1.6.1/features/beacon-agent-eval-v161",
+      "prd": "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md",
+      "user_story": "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md",
+      "test_case": "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/tests.md",
+      "truth": "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md",
+      "tests": "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/tests.md",
+      "tasks": "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/tasks.md",
+      "evidence": "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/evidence.md"
+    },
+    "json_authority": false
+  }
+}

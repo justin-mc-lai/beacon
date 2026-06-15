@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "benchmark_id": "skill-benchmark-20260610t032646z",
+  "version": "v1.6.0",
+  "case_id": "tc-027-compound-reviewer-catalog",
+  "tc_id": "TC-027",
+  "ac_ids": [
+    "AC-003",
+    "AC-016"
+  ],
+  "prompt": "review 需要 correctness、testing、maintainability、standards、intent、route、source parity、diff scope、security、performance、API、reliability、browser ops、release ops、adversarial 和 state machine。",
+  "target_harness": "planner",
+  "expected_route": "beacon-pln-review",
+  "truth_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+  ],
+  "source_refs": [
+    "beacon/utils/skill_eval_kit.py",
+    "beacon/utils/agent_surface.py"
+  ],
+  "evidence_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md"
+  ],
+  "assertions": [
+    "must_cover_compound_reviewer_catalog",
+    "must_not_create_public_reviewer_child_skills"
+  ],
+  "configs": [
+    "with_skill",
+    "baseline"
+  ],
+  "runtime_evidence_only": true,
+  "requirement_truth": false
+}

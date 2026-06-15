@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "case_id": "tc-017-hard-gate-injection",
+  "tc_id": "TC-017",
+  "config": "baseline",
+  "target_harness": "evaluator",
+  "expected_route": "beacon-eval-qa",
+  "actual_route": "baseline-unrouted",
+  "status": "fail",
+  "assertions": [
+    {
+      "assertion": "must_verify_hard_gate_terms",
+      "passed": false,
+      "evidence": "",
+      "critique": ""
+    },
+    {
+      "assertion": "must_reference_agent_surface_verify",
+      "passed": false,
+      "evidence": "",
+      "critique": ""
+    }
+  ],
+  "reason_codes": [
+    "assertion_failed"
+  ],
+  "boundary_violation": false,
+  "fake_delivery_blocked": false,
+  "hard_gate_verified": false,
+  "weak_assertion_critique": "baseline passed at least one route-shape assertion; do not treat this as skill proof",
+  "fake_delivery_critique": "",
+  "runtime_evidence_only": true,
+  "requirement_truth": false
+}

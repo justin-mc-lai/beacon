@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0",
+  "case_id": "tc-008-evaluator-repair-mixing",
+  "tc_id": "TC-008",
+  "config": "baseline",
+  "target_harness": "evaluator",
+  "expected_route": "beacon-evaluator-qa",
+  "actual_route": "baseline-unrouted",
+  "status": "fail",
+  "assertions": [
+    {
+      "assertion": "must_block_implementation_repair",
+      "passed": false,
+      "evidence": "",
+      "critique": ""
+    },
+    {
+      "assertion": "must_emit_reason_code",
+      "passed": false,
+      "evidence": "",
+      "critique": ""
+    }
+  ],
+  "reason_codes": [
+    "boundary_violation_not_blocked",
+    "assertion_failed"
+  ],
+  "boundary_violation": true,
+  "fake_delivery_blocked": false,
+  "hard_gate_verified": false,
+  "weak_assertion_critique": "baseline passed at least one route-shape assertion; do not treat this as skill proof",
+  "fake_delivery_critique": "",
+  "runtime_evidence_only": true,
+  "requirement_truth": false
+}

@@ -1,0 +1,659 @@
+{
+  "schema_version": "1.0",
+  "transaction_id": "tx-change-refreeze-beacon-pln-review-compound-parity-v160-20260609t124055z",
+  "feature": "beacon-pln-review-compound-parity-v160",
+  "feature_slug": "beacon-pln-review-compound-parity-v160",
+  "version": "v1.6.0",
+  "change_reason": "compound-parity-review-truth-freeze",
+  "touched_surfaces": [
+    "change",
+    "truth",
+    "tests",
+    "tasks",
+    "evidence",
+    "requirement_clarity",
+    "freeze",
+    "feature_package_validation"
+  ],
+  "surface_statuses": {
+    "change": {
+      "path": "docs/beacon/v1.6.0/change/beacon-pln-review-compound-parity-v160.md",
+      "exists": false,
+      "status": "package_change_optional",
+      "required": false,
+      "authority": "change_record_not_requirement_truth"
+    },
+    "truth": {
+      "path": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "tests": {
+      "path": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "tasks": {
+      "path": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tasks.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "evidence": {
+      "path": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/evidence.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "requirement_clarity": {
+      "path": "docs/beacon/v1.6.0/.machine/execution/requirement-clarity-beacon-pln-review-compound-parity-v160.json",
+      "exists": true,
+      "status": "passed",
+      "required": true
+    },
+    "freeze": {
+      "path": "docs/beacon/v1.6.0/.machine/change/beacon-pln-review-compound-parity-v160.refreeze-transaction.json",
+      "exists": true,
+      "status": "complete",
+      "required": true
+    },
+    "feature_package_validation": {
+      "path": "docs/beacon/v1.6.0/.machine/requirement/feature-package-validation.json",
+      "exists": true,
+      "status": "passed",
+      "required": true,
+      "diagnostics": []
+    }
+  },
+  "truth_revision_before": {
+    "revision_id": "R1",
+    "doc_status": "frozen",
+    "lifecycle_status": "idle",
+    "baseline_hash": "sha256:c4a626a027b00bd7e84656b1c1d79b9310023f8de4e85f712415b3519829b486"
+  },
+  "truth_revision_after": {
+    "revision_id": "R2",
+    "doc_status": "frozen",
+    "lifecycle_status": "frozen",
+    "baseline_hash": "sha256:c4a626a027b00bd7e84656b1c1d79b9310023f8de4e85f712415b3519829b486"
+  },
+  "refreeze_status": "complete",
+  "next_route": {
+    "target_surface": "beacon-gen-implement",
+    "command": "beacon implement \"beacon-pln-review-compound-parity-v160\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.0",
+    "why": "refreeze transaction completed; implementation may plan against the refreshed frozen truth"
+  },
+  "blocked_reason": "",
+  "delivery_execution": {
+    "implement_executed": false,
+    "qa_executed": false,
+    "release_executed": false
+  },
+  "created_at": "2026-06-09T12:40:55.866360+00:00",
+  "previous_revision": {
+    "revision_id": "R1",
+    "doc_status": "superseded",
+    "lifecycle_status": "superseded",
+    "baseline_hash": "sha256:c4a626a027b00bd7e84656b1c1d79b9310023f8de4e85f712415b3519829b486"
+  },
+  "opened_revision": {
+    "revision_id": "R2",
+    "doc_status": "draft",
+    "lifecycle_status": "draft",
+    "baseline_hash": ""
+  },
+  "story_reopen": {
+    "current_revision_id": "R2",
+    "lifecycle_status": "draft"
+  },
+  "requirement_package": {
+    "schema_version": "1.0",
+    "project_root": "/Users/apple/Developer/Personal/products/beacon",
+    "version": "v1.6.0",
+    "feature": "beacon-pln-review-compound-parity-v160",
+    "status": "synced",
+    "authority_state": "feature_package_authoritative",
+    "truth_authority": "markdown_feature_package",
+    "requirement_refs": {
+      "source_of_truth_root": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160",
+      "prd": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md",
+      "user_story": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md",
+      "test_case": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
+      "truth": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md",
+      "tests": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
+      "tasks": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tasks.md",
+      "evidence": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/evidence.md"
+    },
+    "story_path": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md",
+    "qa_matrix_path": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
+    "qa9_matrix_path": "",
+    "story_scenario_map_path": "",
+    "machine_rebuild": {
+      "schema_version": "1.0",
+      "truth_map_contract": "beacon-truth-map-v1",
+      "truth_source_model": "feature_package_authoritative",
+      "truth_package_contract": "beacon-feature-package-v2",
+      "machine_json_role": "generated_state_not_truth",
+      "generated_by": "beacon.truth_map.resolver",
+      "feature": "beacon-pln-review-compound-parity-v160",
+      "feature_slug": "beacon-pln-review-compound-parity-v160",
+      "version": "v1.6.0",
+      "status": "rebuilt",
+      "blocked": false,
+      "validation_status": "pass",
+      "source_paths": {
+        "truth": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md",
+        "tests": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
+        "tasks": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tasks.md",
+        "evidence": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/evidence.md"
+      },
+      "source_hashes": {
+        "truth": "0427a11a92e8e388092b7d1328f9086c416b8ebce3cce8b17dc7a9756193320f",
+        "tests": "62b83e62ad0eae06445cb455001ac2393cbb5fbfb22b918971c718568df7d3db",
+        "tasks": "580f988bb30818bd494ab5066dfb068d51a7d74610207a1126c9a33b106b0555",
+        "evidence": "cbf417a62b744a608523171055d0a03438e02855f6daac0ac2af764dde162bc5"
+      },
+      "plan": {
+        "schema_version": "1.0",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "truth_source_model": "feature_package_authoritative",
+        "truth_package_contract": "beacon-feature-package-v2",
+        "machine_json_role": "generated_state_not_truth",
+        "generated_by": "beacon.truth_map.resolver",
+        "feature": "beacon-pln-review-compound-parity-v160",
+        "feature_slug": "beacon-pln-review-compound-parity-v160",
+        "version": "v1.6.0",
+        "source_paths": {
+          "truth": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md",
+          "tests": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
+          "tasks": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tasks.md",
+          "evidence": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/evidence.md"
+        },
+        "outputs": {
+          "truth_map_projection": "docs/beacon/v1.6.0/.machine/requirement/beacon-pln-review-compound-parity-v160.truth-map.json",
+          "requirement_package_state": "docs/beacon/v1.6.0/.machine/requirement/beacon-pln-review-compound-parity-v160.requirement-package.json",
+          "feature_package_validation": "docs/beacon/v1.6.0/.machine/requirement/feature-package-validation.json"
+        },
+        "runtime_json_exemption": {
+          "role": "runtime_process_record_not_requirement_truth",
+          "applies_to": [
+            ".beacon/runs/**",
+            ".beacon/qa/**",
+            "runtime/process execution records"
+          ],
+          "requires_markdown_twin": false,
+          "requirement_authority": false
+        },
+        "routes": {
+          "doctor_rebuild": {
+            "status": "legacy_output_only",
+            "command": "beacon truth-map rebuild-machine beacon-pln-review-compound-parity-v160 --version v1.6.0"
+          },
+          "change_absorb": {
+            "status": "package_truth_target_only",
+            "command": "beacon change beacon-pln-review-compound-parity-v160 --version v1.6.0 --reason absorb-legacy-truth-into-feature-package"
+          }
+        }
+      },
+      "written": [
+        "docs/beacon/v1.6.0/.machine/requirement/beacon-pln-review-compound-parity-v160.truth-map.json",
+        "docs/beacon/v1.6.0/.machine/requirement/beacon-pln-review-compound-parity-v160.requirement-package.json",
+        "docs/beacon/v1.6.0/.machine/requirement/feature-package-validation.json"
+      ]
+    },
+    "story_sync": {
+      "path": "docs/beacon/v1.6.0/.machine/user-story/beacon-pln-review-compound-parity-v160.json",
+      "feature": "beacon-pln-review-compound-parity-v160",
+      "version": "v1.6.0",
+      "revision_id": "R2",
+      "ac_count": 16,
+      "test_count": 16,
+      "story_ids": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    }
+  },
+  "requirement_clarity": {
+    "gate": {
+      "schema_version": "1.0",
+      "feature": "beacon-pln-review-compound-parity-v160",
+      "feature_slug": "beacon-pln-review-compound-parity-v160",
+      "version": "v1.6.0",
+      "runtime_version": "v1.5.2",
+      "runtime_capability_line": "v1.3.3",
+      "required": true,
+      "reason_code": "",
+      "blocked": false,
+      "status": "pass",
+      "findings": [],
+      "report_json_path": "docs/beacon/v1.6.0/.machine/execution/requirement-clarity-beacon-pln-review-compound-parity-v160.json",
+      "report_markdown_path": "docs/beacon/v1.6.0/execution/requirement-clarity-beacon-pln-review-compound-parity-v160.md",
+      "state_path": ".beacon/state/requirement-clarity-beacon-pln-review-compound-parity-v160.json",
+      "diagram_truth": {
+        "schema_version": "1.0",
+        "version": "v1.6.0",
+        "supported": true,
+        "required": false,
+        "ready": true,
+        "diagram_types": [],
+        "state_axes": [],
+        "missing_diagram_types": [],
+        "missing_state_axes": false,
+        "complexity_signals": [],
+        "review_gates": [],
+        "qa_coverage_hints": [],
+        "evidence_lines": {},
+        "generated_at": "2026-06-09T12:40:58.717495+00:00",
+        "feature": "beacon-pln-review-compound-parity-v160",
+        "feature_slug": "beacon-pln-review-compound-parity-v160",
+        "prd_ref": "docs/beacon/v1.6.0/prd/beacon-pln-review-compound-parity-v160.md",
+        "user_story_ref": "docs/beacon/v1.6.0/user-story/beacon-pln-review-compound-parity-v160.md"
+      },
+      "human_closure_contract": {
+        "required": false,
+        "research_path": "docs/beacon/v1.6.0/research/beacon-pln-review-compound-parity-v160.md",
+        "research_exists": true,
+        "source_architecture_path": "docs/beacon/v1.6.0/source-architecture/index.md",
+        "source_architecture_exists": true,
+        "required_sections": [
+          "architecture",
+          "business_flow"
+        ],
+        "missing_sections": [
+          "architecture",
+          "business_flow"
+        ],
+        "diagram_types": [],
+        "complexity_signals": []
+      },
+      "requirement_closure_contract": {
+        "required": true,
+        "chain_order": [
+          "research",
+          "prd",
+          "user_story",
+          "test_case",
+          "requirement_clarity",
+          "freeze"
+        ],
+        "human_closure_required": false,
+        "paths": {
+          "research": "docs/beacon/v1.6.0/research/beacon-pln-review-compound-parity-v160.md",
+          "prd": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md",
+          "user_story": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md",
+          "test_case": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md"
+        },
+        "exists": {
+          "research": true,
+          "prd": true,
+          "user_story": true,
+          "test_case": true
+        },
+        "required_research_sections": [],
+        "missing_research_sections": [],
+        "ac_projection": {
+          "prd_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008",
+            "AC-009",
+            "AC-010",
+            "AC-011",
+            "AC-012",
+            "AC-013",
+            "AC-014",
+            "AC-015",
+            "AC-016"
+          ],
+          "user_story_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008",
+            "AC-009",
+            "AC-010",
+            "AC-011",
+            "AC-012",
+            "AC-013",
+            "AC-014",
+            "AC-015",
+            "AC-016"
+          ],
+          "test_case_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008",
+            "AC-009",
+            "AC-010",
+            "AC-011",
+            "AC-012",
+            "AC-013",
+            "AC-014",
+            "AC-015",
+            "AC-016"
+          ],
+          "upstream_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008",
+            "AC-009",
+            "AC-010",
+            "AC-011",
+            "AC-012",
+            "AC-013",
+            "AC-014",
+            "AC-015",
+            "AC-016"
+          ],
+          "missing_test_case_ac_ids": []
+        }
+      },
+      "version_projection_truth_contract": {
+        "required": true,
+        "supported": true,
+        "projection_types": [
+          "state_machine"
+        ],
+        "research_path": "docs/beacon/v1.6.0/research/beacon-pln-review-compound-parity-v160.md",
+        "research_exists": true,
+        "required_fields": [
+          "prd_refs",
+          "user_story_refs",
+          "test_case_refs",
+          "coverage_notes",
+          "out_of_scope_notes"
+        ],
+        "field_presence": {
+          "prd_refs": true,
+          "user_story_refs": true,
+          "test_case_refs": true,
+          "coverage_notes": true,
+          "out_of_scope_notes": true
+        },
+        "missing_fields": [],
+        "required_refs": {
+          "prd_refs": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md",
+          "user_story_refs": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md",
+          "test_case_refs": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md"
+        },
+        "missing_ref_targets": [],
+        "ready": true
+      },
+      "support_write_topology_contract": {
+        "schema_version": "1.0",
+        "supported": true,
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "diagnostics": []
+      },
+      "required_artifacts": [],
+      "scanned_files": [
+        "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md",
+        "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
+        "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tasks.md",
+        "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/evidence.md",
+        "docs/beacon/v1.6.0/research/beacon-pln-review-compound-parity-v160.md"
+      ]
+    },
+    "report": {
+      "json": "docs/beacon/v1.6.0/.machine/execution/requirement-clarity-beacon-pln-review-compound-parity-v160.json",
+      "markdown": "docs/beacon/v1.6.0/execution/requirement-clarity-beacon-pln-review-compound-parity-v160.md"
+    },
+    "writeback": {
+      "schema_version": "1.0",
+      "feature": "beacon-pln-review-compound-parity-v160",
+      "feature_slug": "beacon-pln-review-compound-parity-v160",
+      "version": "v1.6.0",
+      "status": "pass",
+      "blocked": false,
+      "reason_code": "",
+      "report_json_path": "docs/beacon/v1.6.0/.machine/execution/requirement-clarity-beacon-pln-review-compound-parity-v160.json",
+      "report_markdown_path": "docs/beacon/v1.6.0/execution/requirement-clarity-beacon-pln-review-compound-parity-v160.md",
+      "finding_count": 0,
+      "run_id": "",
+      "source": "change.refreeze-chain",
+      "written_at": "2026-06-09T12:40:58.947124+00:00",
+      "state_path": ".beacon/state/requirement-clarity-beacon-pln-review-compound-parity-v160.json"
+    }
+  },
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "beacon-pln-review-compound-parity-v160",
+    "feature_slug": "beacon-pln-review-compound-parity-v160",
+    "version": "v1.6.0",
+    "revision_id": "R2",
+    "source_revision_id": "R1",
+    "status": "ready",
+    "cleanup_required": false,
+    "removed_requirement_count": 0,
+    "added_requirement_count": 0,
+    "retained_requirement_count": 16,
+    "removed_requirement_surfaces": [],
+    "added_requirement_surfaces": [],
+    "retained_requirement_surfaces": [
+      {
+        "revision_id": "R2",
+        "id": "AC-008",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "autofix-boundary",
+        "text": "planner 只能分类 `safe_auto/gated_auto/manual/advisory/release`，不能执行修复；safe_auto 只能路由到 generator。",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md",
+        "signature": "ac::::autofix-boundary::planner 只能分类 `safe_auto/gated_auto/manual/advisory/release`，不能执行修复；safe_auto 只能路由到 generator。::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-014",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "benchmark",
+        "text": "`beacon skill eval-kit benchmark --version v1.6.0 --json` 覆盖 Compound parity、source parity、防 MVP 缩水、finding synthesis、autofix boundary、diff scope、release ops 和 QA evidence hygiene。",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md",
+        "signature": "ac::::benchmark::`beacon skill eval-kit benchmark --version v1.6.0 --json` 覆盖 compound parity、source parity、防 mvp 缩水、finding synthesis、autofix boundary、diff scope、release ops 和 qa evidence hygiene。::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-002",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "compound-review-contract",
+        "text": "`beacon-pln-review` references 定义 Compound parity review output contract。",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md",
+        "signature": "ac::::compound-review-contract::`beacon-pln-review` references 定义 compound parity review output contract。::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-009",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "diff-scope",
+        "text": "PR/diff/worktree review 必须记录 base、changed、untracked、generated/projection、deleted、high-risk files 和 scope confidence；scope 不明时输出 degraded review。",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md",
+        "signature": "ac::::diff-scope::pr/diff/worktree review 必须记录 base、changed、untracked、generated/projection、deleted、high-risk files 和 scope confidence；scope 不明时输出 degraded review。::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "feature-package",
+        "text": "新 feature package 使用 package-authoritative truth，状态为 frozen，scope mode 为 `full_parity`。",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md",
+        "signature": "ac::::feature-package::新 feature package 使用 package-authoritative truth，状态为 frozen，scope mode 为 `full_parity`。::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-006",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "finding-schema",
+        "text": "findings 包含 severity、confidence、authority、dedup、merged_from、conflict_group、owner、autofix_class、requires_verification 和 recommended_route。",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md",
+        "signature": "ac::::finding-schema::findings 包含 severity、confidence、authority、dedup、merged_from、conflict_group、owner、autofix_class、requires_verification 和 recommended_route。::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-016",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "no-public-sprawl",
+        "text": "不新增 host-visible reviewer 子 skill；新增能力必须作为 `beacon-pln-review` internal reviewer/reference/runtime contract。",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md",
+        "signature": "ac::::no-public-sprawl::不新增 host-visible reviewer 子 skill；新增能力必须作为 `beacon-pln-review` internal reviewer/reference/runtime contract。::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-005",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "no-silent-mvp",
+        "text": "full parity 到 MVP、patch 或 defer 的任何降级必须进入 deferral ledger，并要求用户显式接受。",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md",
+        "signature": "ac::::no-silent-mvp::full parity 到 mvp、patch 或 defer 的任何降级必须进入 deferral ledger，并要求用户显式接受。::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-013",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "planner-boundary",
+        "text": "review artifact 明确非 truth、非 QA verdict、非 release verdict，并禁止 planner 写 truth、代码、`.machine` 或执行修复。",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md",
+        "signature": "ac::::planner-boundary::review artifact 明确非 truth、非 qa verdict、非 release verdict，并禁止 planner 写 truth、代码、`.machine` 或执行修复。::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-011",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "qa-evidence-hygiene",
+        "text": "QA/benchmark/browser/compatibility 场景必须检查 JUnit、assertion_count、fake runner、placeholder evidence、browser admission、compatibility pair evidence 和 benchmark metadata/grading/analysis。",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md",
+        "signature": "ac::::qa-evidence-hygiene::qa/benchmark/browser/compatibility 场景必须检查 junit、assertion_count、fake runner、placeholder evidence、browser admission、compatibility pair evidence 和 benchmark metadata/grading/analysis。::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-010",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "release-ops",
+        "text": "release/install/skill projection 场景必须检查 global/local skill、stale copies、post-release hooks、canary/smoke install、rollback 和 version alignment。",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md",
+        "signature": "ac::::release-ops::release/install/skill projection 场景必须检查 global/local skill、stale copies、post-release hooks、canary/smoke install、rollback 和 version alignment。::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-003",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "reviewer-catalog",
+        "text": "always-on 和 conditional reviewer catalog 覆盖 correctness、testing、maintainability、standards、intent、route、source parity、diff scope、security、performance、API、reliability、browser ops、release ops、adversarial 和 state machine。",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md",
+        "signature": "ac::::reviewer-catalog::always-on 和 conditional reviewer catalog 覆盖 correctness、testing、maintainability、standards、intent、route、source parity、diff scope、security、performance、api、reliability、browser ops、release ops、adversarial 和 state machine。::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-004",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "source-parity",
+        "text": "用户表达完整复刻、同等能力、做全、不要 MVP 或引用 OSS/source 时，默认 `scope_mode=full_parity`，并要求 source capability inventory、parity matrix、coverage mapping 和 deferral ledger。",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md",
+        "signature": "ac::::source-parity::用户表达完整复刻、同等能力、做全、不要 mvp 或引用 oss/source 时，默认 `scope_mode=full_parity`，并要求 source capability inventory、parity matrix、coverage mapping 和 deferral ledger。::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-012",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "state-machine",
+        "text": "review 状态机覆盖 scope、source parity、reviewer selection、lane execution、finding synthesis、route recommendation、blocked transitions 和 terminal states。",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md",
+        "signature": "ac::::state-machine::review 状态机覆盖 scope、source parity、reviewer selection、lane execution、finding synthesis、route recommendation、blocked transitions 和 terminal states。::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-007",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "synthesis",
+        "text": "synthesis 必须执行 merge/dedup/arbitration，保留冲突，提升最高 severity，并输出单一 recommended route。",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md",
+        "signature": "ac::::synthesis::synthesis 必须执行 merge/dedup/arbitration，保留冲突，提升最高 severity，并输出单一 recommended route。::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-015",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "tests",
+        "text": "单元/契约测试覆盖 review contract references、artifact schema、synthesis rules、benchmark grading 和 skill projection。",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md",
+        "signature": "ac::::tests::单元/契约测试覆盖 review contract references、artifact schema、synthesis rules、benchmark grading 和 skill projection。::"
+      }
+    ],
+    "current_baseline_hash": "sha256:c4a626a027b00bd7e84656b1c1d79b9310023f8de4e85f712415b3519829b486",
+    "source_baseline_hash": "sha256:c4a626a027b00bd7e84656b1c1d79b9310023f8de4e85f712415b3519829b486",
+    "story_state_ref": "docs/beacon/v1.6.0/.machine/user-story/beacon-pln-review-compound-parity-v160.json",
+    "generated_at": "2026-06-09T12:40:58.959607+00:00",
+    "json_ref": "docs/beacon/v1.6.0/.machine/execution/revision-delta-beacon-pln-review-compound-parity-v160.json",
+    "markdown_ref": "docs/beacon/v1.6.0/execution/revision-delta-beacon-pln-review-compound-parity-v160.md"
+  }
+}

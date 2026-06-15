@@ -224,6 +224,11 @@ def feature_package_authoritative(version: str | None) -> bool:
     return truth_source_model_for_version(version) == TRUTH_SOURCE_MODEL_AUTHORITATIVE
 
 
+def feature_package_authoritative_feature(project_root: Path, *, version: str, feature: str) -> bool:
+    """Return True if version >= v1.5.2 OR the feature package physically exists on disk."""
+    return feature_package_authoritative(version) or feature_package_ready(project_root, version=version, feature=feature)
+
+
 def _rel(root: Path, path: Path) -> str:
     try:
         return str(path.relative_to(root))
@@ -1162,6 +1167,13 @@ def verify_truth_map(project_root: Path, *, version: str, feature: str, strict: 
         checked_machine_json.append(rel_path)
         if name == "feature_package_validation":
             validation_payload = read_json(path, {})
+            validation_feature = str(
+                (validation_payload.get("feature_slug") if isinstance(validation_payload, dict) else "")
+                or (validation_payload.get("feature") if isinstance(validation_payload, dict) else "")
+                or ""
+            ).strip()
+            if validation_feature and feature_slug(validation_feature) != slug:
+                continue
             validation_hashes = (
                 validation_payload.get("source_hashes")
                 if isinstance(validation_payload, dict) and isinstance(validation_payload.get("source_hashes"), dict)

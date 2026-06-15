@@ -60,6 +60,73 @@ def _seed_docs(root: Path, *, include_test_case: bool = True) -> None:
     freeze_story_state(root, VERSION, FEATURE)
 
 
+def _seed_feature_package_docs(root: Path, *, version: str = "v0.0.1") -> None:
+    _init_git_repo(root)
+    slug = "feature-package-refreeze"
+    feature_dir = root / "docs" / "beacon" / version / "features" / slug
+    (root / "docs" / "beacon").mkdir(parents=True, exist_ok=True)
+    (root / "docs" / "beacon" / "global-boundaries.md").write_text("# Global Boundaries\n", encoding="utf-8")
+    (root / "docs" / "beacon" / version / "SUMMARY.md").parent.mkdir(parents=True, exist_ok=True)
+    (root / "docs" / "beacon" / version / "SUMMARY.md").write_text("# Summary\n", encoding="utf-8")
+    (root / "docs" / "beacon" / version / "execution").mkdir(parents=True, exist_ok=True)
+    (root / "docs" / "beacon" / version / "execution" / "index.md").write_text("# Execution\n", encoding="utf-8")
+    feature_dir.mkdir(parents=True, exist_ok=True)
+    (feature_dir / "truth.md").write_text(
+        "\n".join(
+            [
+                "---",
+                f"slug: {slug}",
+                f"version: {version}",
+                "status: frozen",
+                "language: zh",
+                "canonical_refs:",
+                f"  prd: docs/beacon/{version}/features/{slug}/truth.md",
+                f"  user_story: docs/beacon/{version}/features/{slug}/truth.md",
+                f"  test_case: docs/beacon/{version}/features/{slug}/tests.md",
+                "parser_contract: beacon-feature-package-v1",
+                "truth_source_model: feature_package_authoritative",
+                "---",
+                "",
+                "# Feature Truth",
+                "",
+                "## Acceptance Criteria",
+                "",
+                "| AC ID | Theme | Description |",
+                "|---|---|---|",
+                "| AC-001 | package-refreeze | Package truth refreezes without legacy mirrors. |",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    (feature_dir / "tests.md").write_text(
+        "\n".join(
+            [
+                "# Tests",
+                "",
+                "| AC ID | TC ID | Layer | Command | Assertion |",
+                "|---|---|---|---|---|",
+                "| AC-001 | TC-001 | contract | `pytest` | package refreeze does not require legacy triptych |",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    (feature_dir / "tasks.md").write_text("# Tasks\n\n- [x] `TASK-001` Package refreeze proof\n", encoding="utf-8")
+    (feature_dir / "evidence.md").write_text(
+        "\n".join(
+            [
+                "# Evidence",
+                "",
+                "| Surface | Authority | Path | Status | Owner |",
+                "|---|---|---|---|---|",
+                f"| feature-package | requirement_truth | docs/beacon/{version}/features/{slug}/truth.md | frozen | change |",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    freeze_revision_state(root, version=version, feature="feature package refreeze")
+    freeze_story_state(root, version, "feature package refreeze")
+
+
 def test_change_refreeze_entry_is_support_only(tmp_path: Path) -> None:
     _seed_docs(tmp_path)
     result = _invoke(
@@ -149,6 +216,29 @@ def test_partial_truth_refresh_fail_closes(tmp_path: Path) -> None:
     assert payload["next_route"]["target_surface"] == "beacon-change"
 
 
+def test_feature_package_refreeze_uses_package_surfaces_for_project_docs_version(tmp_path: Path) -> None:
+    version = "v0.0.1"
+    feature = "feature package refreeze"
+    _seed_feature_package_docs(tmp_path, version=version)
+    result = _invoke(["change", feature, "--project", str(tmp_path), "--version", version, "--refreeze-chain", "--json"])
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["refreeze_status"] == "complete"
+    assert payload["touched_surfaces"] == [
+        "change",
+        "truth",
+        "tests",
+        "tasks",
+        "evidence",
+        "requirement_clarity",
+        "freeze",
+        "feature_package_validation",
+    ]
+    assert "prd" not in payload["surface_statuses"]
+    assert "user-story" not in payload["surface_statuses"]
+    assert "test-case" not in payload["surface_statuses"]
+
+
 def test_execution_routes_block_until_refreeze_complete(tmp_path: Path) -> None:
     _seed_docs(tmp_path, include_test_case=False)
     result = _invoke(["change", FEATURE, "--project", str(tmp_path), "--version", VERSION, "--refreeze-chain", "--json"])
@@ -180,8 +270,8 @@ def test_one_shot_refreeze_does_not_execute_delivery_stages(tmp_path: Path) -> N
 def test_change_skill_exposes_one_shot_refreeze_operator_route() -> None:
     root = Path(__file__).resolve().parents[1]
     for path in [
-        root / "skills" / "beacon" / "beacon-change" / "SKILL.md",
-        root / ".agents" / "skills" / "beacon-change" / "SKILL.md",
+        root / "skills" / "beacon" / "beacon-gen-refreeze" / "SKILL.md",
+        root / ".agents" / "skills" / "beacon-gen-refreeze" / "SKILL.md",
     ]:
         text = path.read_text(encoding="utf-8")
         assert "`beacon change ... --refreeze-chain`" in text

@@ -1,0 +1,1091 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-06-12T11:12:27.106423+00:00",
+  "feature": "beacon-loop-goal-closed-loop-orchestrator",
+  "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
+  "version": "v1.6.0",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+    "tests": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+    "tasks": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tasks.md",
+    "evidence": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "1878c06216353f568a9a9bf07e749a9e31e0a9d26b8de731a45591c793e71a19",
+    "tests": "bd242d3a0e234c18c3a29d27df73a9be8ae9223f95457ee27915cb6f91ab1f2e",
+    "tasks": "a8002e427c898989fa54f804825106264af5e83cb114f12d9ac79d57f991952a",
+    "evidence": "6d05ee71f2cabaaf418a40a91bebc28bed522e4bb6ebce626d5e7c25b05f37d9"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-loop-goal-closed-loop-orchestrator",
+    "version": "v1.6.0",
+    "status": "frozen",
+    "revision_id": "R10",
+    "language": "zh",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+      "user_story": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+      "test_case": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md"
+    },
+    "parser_contract": "beacon-feature-package-v1",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "parent_feature": "beacon-loop-native-runner-and-automation-retirement"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-031",
+      "theme": "`beacon-loop goal \"<utterance>\"` 在 run 目录写入 `intent-capture.json`（verbatim utterance）与 `intent-contract.json`；不得丢失用户原话。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-032",
+      "theme": "意图分类对相同 `utterance` + `rules_hash` 产出相同 `intent_class` 与 `scope_mode`；`determinism.rules_hash` 可复算。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-033",
+      "theme": "`delivery` 与 `review-only` 模式自动调用 planner review runtime，写入 `review-artifact.json`，含 `intent_snapshot`、`scope_mode`、`findings`、`runtime_evidence_only=true`。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-034",
+      "theme": "`truth-map resolve` blocked 或 review 判定 truth gap 时，进入 `truth_fill` 子链并记录 `truth-promotion.json`；禁止 silent MVP 降级。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-035",
+      "theme": "truth 未 frozen 时禁止进入 `implement_loop`；`execute-only` 模式必须 `--feature` 且 resolve pass。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-036",
+      "theme": "`--mode delivery` 在 implementation candidate 后自动 invoke import-evidence、beacon qa、beacon release；loop 输出 `closure_verdict=not_provided_by_beacon_loop` 与 beacon verdict refs。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-037",
+      "theme": "beacon qa fail 时进入 `repair_from_qa` 并回灌 `implement_loop`（findings 写入 notes），直至 cap 或 qa pass。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-038",
+      "theme": "`delivery-state.json` 记录 Delivery Loop 全状态；`resume` 可恢复；illegal transition 有测试阻断。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-039",
+      "theme": "E2E 契约：utterance → review artifact → truth frozen → implement → import → qa → release invoke；formal verdict 仅来自 Beacon evaluator。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-040",
+      "theme": "**Green-light LLM tie-break**：`delivery` 默认启用；规则 `ambiguous`/低 confidence 时写 `intent-tiebreak.json` 并 **continue**；不得仅因 ambiguous 进入 `user_decision_pending`；hard stop 仅限 intent drift 未 ack、P0 finding、illegal transition、cap。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-041",
+      "theme": "**并行 review lane**：planner review runtime `execution_mode=parallel_subagent_review`（或等价真并行）；`review-artifact.json` 含 per-lane evidence ref。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-042",
+      "theme": "**Beacon lifecycle auto-route**：无 AskUser UI；loop 消费 `review-artifact.synthesis.recommended_route` 与 Beacon gov route 续跑；`--strict-interrupt` 为 opt-in。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-043",
+      "theme": "**Host skill 对齐 gnhf**：agent surface（`using-beacon` 或等价）文档化 `beacon-loop goal` 的 Hands-Off / Companion launch、steer prompt 模板、hard stop 条件；Skill 给 Host 看，不进入 subprocess。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-044",
+      "theme": "**`implement_loop` harness worker**：必须 subprocess `beacon implement run \"<feature>\" … --runner <runner> --json`；loop **禁止**直接 `spawn codex exec`（测试与 doctor 可检测 bypass）。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-045",
+      "theme": "**output-schema 契约**：每 run 写 `output-schema.json`；worker 使用 `--output-schema` + strict JSON 校验；parse 失败 = iteration failure。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-046",
+      "theme": "**gnhf iteration prompt**：prompt 模板对齐 gnhf（notes 只读、no-op=false、验证后再 JSON、禁止 agent commit）；落盘 `prompt.md` / `iteration-*-prompt.txt`。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-047",
+      "theme": "**no-op delivery gate**：no-op iteration 或 zero commit 时禁止进入 `evidence_import` / `qa_pending`；`delivery-state` 记录 `implement_no_op_blocked`。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-048",
+      "theme": "**Harness stage worker 路由表**：frozen contract 映射 delivery state → harness → beacon CLI；`truth-promotion.json` 记录 worker command + runner id。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-049",
+      "theme": "**`repair_from_qa` harness 一致性**：回灌 `implement_loop` 时使用与 AC-044 相同 implement runner，不得回退裸 codex。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-019",
+      "theme": "**Parent failure backoff（继承 parent）**：`implement_loop` 复用 parent orchestrator AC-019：agent-reported failure 立即下一轮；retryable hard error 指数退避；连续失败达上限 abort；no-op iteration 计为 failure。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-050",
+      "theme": "**Parent runner 语义不回归**：接入 AC-044 后，parent AC-016..AC-019（多轮、caps、stop-when、notes、no-op failure）在 implement 路径仍 pass；delivery-state 与 runner state 合成正确。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-051",
+      "theme": "**真 implement runner E2E**：非 fixture-only 路径下，delivery 跑通且 worktree **≥1 commit** 后才允许 `qa_pending`（verdict 仍 Beacon evaluator）。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-052",
+      "theme": "**`beacon-loop doctor`** 检查 implement runner 可用性、Codex、`output-schema` 路径；`--diagnose` 给出 repair route。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-053",
+      "theme": "**`packages/beacon-run`** 自 `packages/gnhf` fork，保留 gnhf `Orchestrator` + `createAgent`（codex/claude/opencode/acp）；CLI `beacon-run run` 为 R4 主入口。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-054",
+      "theme": "**Beacon phase prompt**：每轮 iteration prompt 注入当前 Beacon 阶段、allowed/forbidden harness 命令、Skills 职责摘要（非 subprocess 读 MD）；落盘 `beacon-phase.json` + prompt 正文。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-055",
+      "theme": "**全迭代 agent backend**：truth/generate/repair 阶段均通过 agent adapter 执行；不得仅 implement 单层调 codex。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-056",
+      "theme": "**非模板 truth 默认**：冷启动默认走 agent truth phase；`prd-bootstrap` 模板链仅 `--truth-bootstrap=fallback`；drill utterance 须产出含 OSS/parity 信号的 research 而非纯脚手架 AC。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-057",
+      "theme": "**Harness 阶段检查点**：迭代间强制可记账 harness 调用（resolve/freeze/qa/release）；`truth-promotion.json` 含 phase + command + exit_code。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-058",
+      "theme": "**beacon-loop 降级**：`packages/beacon-loop` 冻结为 R3 参考；新 AC 实现于 `beacon-run`；`beacon-loop goal` 可委托 beacon-run（deprecated 文档化）。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-059",
+      "theme": "**Core CLI 契约对齐**：`beacon implement run` 支持 `--output-schema`（与 AC-045 一致）；branch/dirty preflight 错误须 doctor 可诊断。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-060",
+      "theme": "**真项目 drill E2E**：greenfield + utterance（gum choose/filter）经 beacon-run：≥1 agent iteration on truth、≥1 commit on generate、qa invoke；verdict 仅 Beacon evaluator。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-061",
+      "theme": "**Worktree harness project root**：`beacon-run --worktree --beacon` 时，truth/generate/qa/release harness subprocess 的 `--project-root` / `--project` **必须与 agent `effectiveCwd`（worktree）一致**；禁止对主仓跑 greenfield feature 的 `sync-materials` / `verify-context`；`truth-promotion.json` 记录的 command 须含 worktree 绝对路径。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-062",
+      "theme": "**Requirement clarity domain vocabulary**：`requirement_clarity` 的 `inline_marker`（TBD/TODO/??? 等）须用词界或上下文过滤，**不得**因 feature slug、路径、`canonical_refs` 行、frontmatter 中的合法领域词（如 `go-todo-crud-smoke`）误 block `freeze`；须含回归 fixture：`go-todo-crud-smoke` 材料完整时 clarity gate PASS。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-063",
+      "theme": "**Smoke truth exit（reconciled）**：当 target feature `scope_mode=smoke` 或 `minimal_smoke` 时，truth phase exit **不得**要求 `beacon doctor sync-materials`；但 **在 promote 到 `generate` 之前** 仍须通过 **`truth_freeze_gate`**（见 AC-068）：`truth-map resolve` PASS + `features/<slug>/truth.md` package ready + **`beacon freeze` PASS**。AC-035 对 smoke **无例外**。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-064",
+      "theme": "**Phase promotion visibility**：harness exit 失败时 `beacon-phase.json` 须区分 `phases_completed`（agent 迭代完成）与 `phase_promoted`（harness 放行）；TUI / `gnhf.log` 须输出结构化 `harness_exit_failed`（含 `reason_code`、command、exit_code）。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-068",
+      "theme": "**`truth_freeze_gate`（beacon-run）**：`packages/beacon-run` 在 truth→generate 间 **必须** fail-closed 执行 freeze gate，对齐 Delivery Loop `truth_freeze_gate` 与 beacon-loop `truth-fill` 末尾 `beacon freeze` 链。**禁止** draft truth 下 `phase_promoted=true` 或 agent 进入 `generate` 写产品代码。truth exit 序列：`resolve` →（full_parity：`sync-materials`）→（按需 `sync-requirement-clarity`）→ **`beacon freeze --json`**；失败时 `phase` 保持 `truth`，`reason_code=truth_not_frozen`。`generate` **entry** 须 `isFeatureTruthFrozen===true`，否则不得 `run_agent`。`generate` exit 若 preflight 为 `revision_not_frozen` 或 `legacy_cutover_required`，须 **phase demote** 到 truth freeze repair（可 harness 尝试 `beacon truth-cutover run … --apply`），**不得** 空烧 iteration cap。truth phase `allowed_harness` 须含 `beacon freeze`。`truth-promotion.json` 须记录 freeze/cutover command。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-069",
+      "theme": "**v1.6.1 — worktree+freeze 不断链（E2E）**：在 `go-todo-crud-smoke` 回归夹具上，`beacon-loop goal \"<utterance>\" --worktree --beacon --feature go-todo-crud-smoke --version v1.6.0` **必须** 完成：`truth-promotion.json` 内全部 harness 的 `--project-root`/`cwd` = worktree；**不得** 出现 `test_case_sync_failed`（主仓 sync）；**不得** 在 draft truth 下进入 `generate`；truth frozen 后 **必须** promote 到 `generate` 且 `implement run` **不得** 因 `revision_not_frozen` 空转。强化 AC-061 + AC-068 的 **real-project opt-in E2E**（`BEACON_RUN_E2E_GO_TODO=1`）。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-070",
+      "theme": "**v1.6.1 — state spine 文档+查询**：新增 execution 文档 `docs/beacon/v1.6.0/execution/beacon-loop-state-spine.md` 定义 **单一 operator 进度账本**：权威文件（`beacon-phase.json`、`run-package.json`、`.beacon/loop/runs/<id>/`、`ledger`）与 **done / in_progress / next_action** 语义。CLI **`beacon-loop spine show [--run-id]`**（或等价 `status --spine`）输出 machine-readable JSON：`phase`、`phases_completed`、`phase_promoted`、`next_harness`、`authoritative_paths[]`、`run_id`；**不得** 要求 operator 手工拼四份 state 文件。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-071",
+      "theme": "**v1.6.1 — stop-when 可执行检查（maker≠checker）**：当 `--stop-when <condition>` 非空时，loop **禁止** 仅因 agent structured output / summary 自报「stop-when matched」而终止 iteration 环。每轮 agent 后 **必须** 至少执行一种 **外部可验证检查**：**(a)** 已配置的 harness gate（默认：`beacon qa run` 或 phase-appropriate harness）exit 0；**(b)** `--stop-check-cmd` 显式 shell 命令 exit 0；**(c)** lifecycle phase 已达 terminal harness（qa/release evaluator）。Agent 自报 alone → `reason_code=stop_when_unverified`，**continue** 下一 iteration 或进入 repair（不得 silent done）。对齐 [Loop Engineering `/goal`](https://addyosmani.com/blog/loop-engineering/)「写代码的人不能给自己打分 done」；**defer** 独立 judge 小模型至 v2（D-le-001）。",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-031",
+      "tc_id": "TC-031",
+      "layer": "contract",
+      "command": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"intent-capture\"`",
+      "assertion": "`goal` 启动后在 run 目录生成 `intent-capture.json`（含 verbatim `utterance`）与 `intent-contract.json`。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-032",
+      "tc_id": "TC-032",
+      "layer": "behavior",
+      "command": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"intent-classify-deterministic\"`",
+      "assertion": "相同 utterance + rules_hash 两次分类产出相同 `intent_class`、`scope_mode`；`rules_hash` 与 classifier 版本一致。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-033",
+      "tc_id": "TC-033",
+      "layer": "integration",
+      "command": "`cd packages/beacon-loop && BEACON_LOOP_TEST_REVIEW=fixture npm test -- --test-name-pattern \"planner-review-artifact\"`",
+      "assertion": "`delivery`/`review-only` 写入 `review-artifact.json`，含 `intent_snapshot`、`scope_mode`、`findings`、`runtime_evidence_only=true`、`formal_verdict_authority=false`。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-034",
+      "tc_id": "TC-034",
+      "layer": "integration",
+      "command": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"truth-fill-on-blocked\"`",
+      "assertion": "resolve blocked 时进入 `truth_fill`，`truth-promotion.json` 记录 beacon CLI 序列；无 accepted defer 时不写入 implicit mvp scope。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-035",
+      "tc_id": "TC-035",
+      "layer": "negative",
+      "command": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"frozen-gate-before-implement\"`",
+      "assertion": "truth 未 frozen 时 `delivery-state` 不得进入 `implement_loop`；`execute-only` 无 `--feature` 或 resolve fail 时 blocked。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-036",
+      "tc_id": "TC-036",
+      "layer": "integration",
+      "command": "`cd packages/beacon-loop && BEACON_LOOP_TEST_EVAL_CHAIN=fixture npm test -- --test-name-pattern \"delivery-eval-chain\"`",
+      "assertion": "`--mode delivery` 依次 invoke import/qa/release stubs；payload 含 `closure_verdict=not_provided_by_beacon_loop` 与 beacon verdict refs。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-037",
+      "tc_id": "TC-037",
+      "layer": "behavior",
+      "command": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"qa-fail-repair-loop\"`",
+      "assertion": "qa fail fixture 触发 `repair_from_qa` → `implement_loop`；`notes.md` 含 qa finding 摘要；cap 后停止。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-038",
+      "tc_id": "TC-038",
+      "layer": "contract",
+      "command": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"delivery-state-machine\"`",
+      "assertion": "`delivery-state.json` 状态转移符合 truth State Model；非法转移测试失败；`resume` 从 `repair_from_qa`/`user_decision_pending` 恢复。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-039",
+      "tc_id": "TC-039",
+      "layer": "e2e",
+      "command": "`cd packages/beacon-loop && BEACON_LOOP_E2E_DELIVERY=1 npm test -- --test-name-pattern \"e2e-utterance-to-release\"`",
+      "assertion": "scripted E2E：utterance → review → truth frozen fixture → implement → import → qa → release invoke；release verdict 来自 beacon fixture 非 loop。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-040",
+      "tc_id": "TC-042",
+      "layer": "behavior",
+      "command": "`cd packages/beacon-loop && BEACON_LOOP_TEST_TIEBREAK=fixture npm test -- --test-name-pattern \"llm-tiebreak-green-light\"`",
+      "assertion": "规则 `ambiguous=true` 时写 `intent-tiebreak.json` 且 `delivery-state` 进入 `truth_gap_scan`（非 `user_decision_pending`）；默认 mode 无 `--strict-interrupt`。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-041",
+      "tc_id": "TC-043",
+      "layer": "integration",
+      "command": "`cd packages/beacon-loop && BEACON_LOOP_TEST_REVIEW=parallel-fixture npm test -- --test-name-pattern \"parallel-review-lanes\"`",
+      "assertion": "review runtime parallel 模式；`review-artifact.json` 含 per-lane refs。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-042",
+      "tc_id": "TC-044",
+      "layer": "behavior",
+      "command": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"lifecycle-auto-route\"`",
+      "assertion": "P1 finding 默认 continue；`recommended_route` 驱动下一状态；无 AskUser subprocess。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-043",
+      "tc_id": "TC-045",
+      "layer": "contract",
+      "command": "`beacon doctor verify-agent-surface --project-root . --agent cursor --strict`",
+      "assertion": "agent surface / using-beacon 含 `beacon-loop goal` launch、steer、hard stop；无 subprocess skill load 要求。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-044",
+      "tc_id": "TC-046",
+      "layer": "integration",
+      "command": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"implement-harness-worker\"`",
+      "assertion": "`implement_loop` subprocess 为 `beacon implement run … --runner`；grep/ shim 证明无裸 `codex exec` bypass。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-045",
+      "tc_id": "TC-047",
+      "layer": "contract",
+      "command": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"output-schema\"`",
+      "assertion": "run 目录存在 `output-schema.json`；adapter 传 `--output-schema`；invalid JSON → iteration failure。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-046",
+      "tc_id": "TC-048",
+      "layer": "behavior",
+      "command": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"gnhf-iteration-prompt\"`",
+      "assertion": "prompt 含 notes 只读、no-op=false、禁 agent commit；结构对齐 gnhf template 必填节。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-047",
+      "tc_id": "TC-049",
+      "layer": "negative",
+      "command": "`cd packages/beacon-loop && BEACON_LOOP_TEST_AGENT_RESULT=noop npm test -- --test-name-pattern \"noop-blocks-qa\"`",
+      "assertion": "no-op iteration 后 `delivery-state` 不得进入 `qa_pending`；含 `implement_no_op_blocked`。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-048",
+      "tc_id": "TC-050",
+      "layer": "contract",
+      "command": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"harness-worker-route\"`",
+      "assertion": "各 delivery stage 映射 harness worker；`truth-promotion.json` 记录 command + runner id。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-049",
+      "tc_id": "TC-051",
+      "layer": "integration",
+      "command": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"repair-harness-worker\"`",
+      "assertion": "`repair_from_qa` 回灌使用同一 implement runner 路径。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-050",
+      "tc_id": "TC-052",
+      "layer": "regression",
+      "command": "`cd packages/beacon-loop && npm test`",
+      "assertion": "AC-044 接入后 parent orchestrator 测试仍 pass（caps/stop/notes/no-op）。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-051",
+      "tc_id": "TC-053",
+      "layer": "e2e",
+      "command": "`cd packages/beacon-loop && BEACON_LOOP_E2E_HARNESS=1 npm test -- --test-name-pattern \"e2e-implement-runner-commit\"`",
+      "assertion": "真 implement runner 路径；worktree ≥1 commit 后才 `qa_pending`（可 CI opt-in）。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-052",
+      "tc_id": "TC-054",
+      "layer": "integration",
+      "command": "`cd packages/beacon-loop && node dist/cli.js doctor --project .. --diagnose --json`",
+      "assertion": "doctor 报告 implement runner / codex / schema 分桶与 repair route。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-053",
+      "tc_id": "TC-055",
+      "layer": "contract",
+      "command": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"orchestrator\"`",
+      "assertion": "`packages/beacon-run` 自 gnhf fork；`createAgent` 支持 codex/claude/opencode；CLI `beacon-run run` 存在。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-054",
+      "tc_id": "TC-056",
+      "layer": "behavior",
+      "command": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"beacon-phase-prompt\"`",
+      "assertion": "iteration prompt 含 Beacon phase、skill boundary digest、`beacon-phase.json` 落盘；无 subprocess Skill MD。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-055",
+      "tc_id": "TC-057",
+      "layer": "integration",
+      "command": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"truth-phase-agent\"`",
+      "assertion": "truth phase 使用 agent adapter（非仅 harness 模板）；mock agent 记录 phase=truth。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-056",
+      "tc_id": "TC-058",
+      "layer": "negative",
+      "command": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"no-default-template-truth\"`",
+      "assertion": "默认配置不调用 `prd-bootstrap`；仅 `--truth-bootstrap=fallback` 启用模板链。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-057",
+      "tc_id": "TC-059",
+      "layer": "contract",
+      "command": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"harness-checkpoint\"`",
+      "assertion": "迭代间 harness 调用写入 `truth-promotion.json`（phase、command、exit_code）。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-058",
+      "tc_id": "TC-060",
+      "layer": "regression",
+      "command": "`cd packages/beacon-loop && npm test`",
+      "assertion": "冻结的 `packages/beacon-loop` 参考实现测试仍 pass；新 AC 实现于 `beacon-run`。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-059",
+      "tc_id": "TC-061",
+      "layer": "integration",
+      "command": "`beacon implement run --help`",
+      "assertion": "CLI 暴露 `--output-schema`；与 beacon-run adapter 契约一致。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-060",
+      "tc_id": "TC-062",
+      "layer": "e2e",
+      "command": "`cd packages/beacon-run && BEACON_RUN_E2E_DRILL=1 pnpm run build && pnpm exec vitest run -t \"e2e-gum-drill\"`",
+      "assertion": "drill repo utterance：truth agent iteration + ≥1 commit + qa invoke；verdict 来自 beacon。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-061",
+      "tc_id": "TC-063",
+      "layer": "integration",
+      "command": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"worktree-harness-project-root\"`",
+      "assertion": "`--worktree --beacon` 时 truth exit harness command cwd/`--project-root` = worktree；`truth-promotion.json` 不含主仓 path（mock spawn）。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-062",
+      "tc_id": "TC-064",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_requirement_clarity_domain_vocab_r5.py -q`",
+      "assertion": "clarity gate 不因 slug/path 中 todo 误 block；`beacon freeze go-todo-crud-smoke` 在材料 merge 后 PASS。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-063",
+      "tc_id": "TC-065",
+      "layer": "behavior",
+      "command": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"smoke-truth-exit\"`",
+      "assertion": "target feature `scope_mode=smoke` 时 truth exit 不调用 `sync-materials`；resolve + truth.md → advance `generate`。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-064",
+      "tc_id": "TC-066",
+      "layer": "contract",
+      "command": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"phase-promotion-visibility\"`",
+      "assertion": "harness exit fail 时 `beacon-phase.json` 含 `phase_promoted` false + reason；不 silent 留 `phase=truth`。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-068",
+      "tc_id": "TC-068",
+      "layer": "behavior",
+      "command": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"truth-freeze-gate\"`",
+      "assertion": "draft truth 时 truth exit / generate entry **不得** promote 到 generate；freeze PASS 后 promote；`revision_not_frozen` 触发 demote/repair route。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-068",
+      "tc_id": "TC-069",
+      "layer": "negative",
+      "command": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"generate-blocked-without-frozen\"`",
+      "assertion": "`isFeatureTruthFrozen===false` 时 generate phase **不得** `run_agent` 写产品代码。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-068",
+      "tc_id": "TC-070",
+      "layer": "integration",
+      "command": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"implement-preflight-demote\"`",
+      "assertion": "`revision_not_frozen` / `legacy_cutover_required` 不空烧 cap；phase demote + truth-promotion 记录 cutover。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-063",
+      "tc_id": "TC-067",
+      "layer": "e2e",
+      "command": "`cd examples/go-todo-crud && go test ./...`",
+      "assertion": "smoke 交付物可构建可测；完整 agent goal 路径为 CI opt-in（`BEACON_RUN_E2E_GO_TODO=1`），**须 truth frozen 后进 generate**。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-069",
+      "tc_id": "TC-071",
+      "layer": "e2e",
+      "command": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"TC-071\"`",
+      "assertion": "worktree delegate dry-run 含 `--worktree`、`--project-root`、`--beacon` 与 `go-todo-crud-smoke`；live worktree+freeze 为 opt-in（`BEACON_RUN_E2E_GO_TODO=1`，见 `packages/beacon-run/e2e/e2e-go-todo-worktree.test.ts`）。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-070",
+      "tc_id": "TC-072",
+      "layer": "contract",
+      "command": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"spine-show\"`",
+      "assertion": "`spine show`（或 `status --spine`）JSON 含 `phase`、`next_action`、`authoritative_paths`；execution doc 存在。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-071",
+      "tc_id": "TC-073",
+      "layer": "negative",
+      "command": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"stop-when-exec-gate\"`",
+      "assertion": "agent 自报 stop  alone 不终止；harness/`--stop-check-cmd` exit 0 才 stop；`stop_when_unverified` 继续。",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-041",
+      "title": "新增 `packages/beacon-loop/src/intent/capture.ts` 与 `classify.ts`，落盘 `intent-capture.json` / `intent-contract.json`。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-042",
+      "title": "实现 `beacon-loop-intent-v1` 规则表与 `rules_hash` 计算（AC-032）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-043",
+      "title": "扩展 `startGoal()`：utterance 与 feature slug 解耦；`--feature` 显式化；禁止仅 `slugify(utterance)`。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-044",
+      "title": "新增 `packages/beacon-loop/src/delivery/state.ts` 与 `delivery-state.json` 读写。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-045",
+      "title": "实现 planner review subprocess 适配器，写入 `review-artifact.json`（AC-033）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-046",
+      "title": "CLI：`--mode delivery|execute-only|intent-only|review-only`（默认 `delivery`）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-047",
+      "title": "CLI：`--strict-interrupt`（opt-in）、`--ack-intent-drift`；`--ask-on` deprecated。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-048",
+      "title": "测试 TC-031..TC-033、TC-038 骨架。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-049",
+      "title": "实现 `truth_gap_scan`：resolve + review parity 缺口合成。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-050",
+      "title": "实现 `truth_fill` 子链编排器，记录 `truth-promotion.json`（beacon gen-* CLI 序列）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-051",
+      "title": "实现 `truth_freeze_gate`：frozen 前 block `implement_loop`（AC-035）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-052",
+      "title": "`execute-only` 模式：强制 `--feature` + resolve pass。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-053",
+      "title": "测试 TC-034、TC-035、TC-038b。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-054",
+      "title": "`--mode delivery` 自动链：import-evidence → beacon qa → beacon release（subprocess + JSON 解析）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-055",
+      "title": "输出 payload：`closure_verdict`、`beacon_qa_verdict_ref`、`beacon_release_verdict_ref`。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-056",
+      "title": "实现 `repair_from_qa`：qa findings 注入 notes，回灌 `implement_loop`。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-057",
+      "title": "测试 TC-036、TC-037。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-058",
+      "title": "`resume` 扩展：恢复 `delivery-state`（含 `user_decision_pending`、`repair_from_qa`）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-059",
+      "title": "非法转移 guard 与 TC-038a..d。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-060",
+      "title": "scripted E2E `e2e-delivery-closed-loop.mjs`（AC-039 / TC-039）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-061",
+      "title": "实现 AC-041：review lane 真并行（`execution_mode=parallel_subagent_review`）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-062",
+      "title": "更新 `evidence.md`；parent 回归 TC-040、TC-041。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-063",
+      "title": "`beacon qa run` + release gate 正式验收本 feature（R1 AC-031..039）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-064",
+      "title": "实现 LLM intent tie-break adapter + `intent-tiebreak.json` 落盘（AC-040）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-065",
+      "title": "默认 green-light：`orchestrator` 移除 ambiguous→`user_decision_pending`；hard stop 白名单。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-066",
+      "title": "CLI：`--strict-interrupt` opt-in；deprecate `--auto-decide deferrals` 作为 ambiguous 门控。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-067",
+      "title": "实现 AC-042：`recommended_route` / Beacon lifecycle auto-route；无 AskUser UI。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-068",
+      "title": "测试 TC-042..TC-044；更新 deferral ledger 运行时校验（rejected D-009..011）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-069",
+      "title": "R2 implement evidence + `beacon-eval-qa` 正式验收 AC-040..042。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-070",
+      "title": "更新 agent surface / `using-beacon`：gnhf 级 launch、steer、companion 文档（AC-043）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-071",
+      "title": "`implement_loop` 改为 subprocess `beacon implement run --runner <runner>`；移除裸 `codex exec` 路径（AC-044）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-072",
+      "title": "写入 `output-schema.json`；adapter strict parse + `--output-schema`（AC-045）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-073",
+      "title": "gnhf 级 `iteration-prompt` 模板；no-op=false 语义（AC-046）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-074",
+      "title": "delivery FSM：`implement_no_op_blocked`；禁止 no-op → `qa_pending`（AC-047）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-075",
+      "title": "frozen harness worker 路由表 + `truth-promotion.json` worker 记录（AC-048）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-076",
+      "title": "`repair_from_qa` 复用 implement harness worker（AC-049）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-077",
+      "title": "parent orchestrator 回归 + doctor implement runner 检查（AC-050、AC-052）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-078",
+      "title": "真 implement runner E2E opt-in（AC-051 / TC-053）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-079",
+      "title": "测试 TC-045..TC-054；`beacon change … --refreeze-chain` 冻结 R3 truth package。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-080",
+      "title": "fork `packages/gnhf` → `packages/beacon-run`；package/bin 重命名；保留 gnhf 测试基线。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-081",
+      "title": "实现 `beacon-phase-prompt` 模块：注入 Beacon 阶段 + skill boundary digest；落盘 `beacon-phase.json`（AC-054）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-082",
+      "title": "truth phase：默认 agent iteration 路径；`--truth-bootstrap=fallback` 回退模板链（AC-055、AC-056）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-083",
+      "title": "迭代间 harness checkpoint + `truth-promotion.json` 扩展 phase 字段（AC-057）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-084",
+      "title": "`beacon-loop goal` 薄委托 `beacon-run` + deprecated 文档（AC-058）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-085",
+      "title": "Core：`beacon implement run --output-schema` 与 branch preflight doctor 消息（AC-059）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-086",
+      "title": "drill E2E `e2e-gum-drill` opt-in（AC-060 / TC-062）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-087",
+      "title": "R4 refreeze（`beacon change --refreeze-chain` complete，R3→R4）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-088",
+      "title": "Phase K implement + `beacon-eval-qa` 验收 AC-053..060。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-089",
+      "title": "`beacon-run`：`--worktree --beacon` 时 harness `projectRoot = effectiveCwd`；beacon-loop delegate 文档化（AC-061）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-090",
+      "title": "测试 TC-063：`worktree-harness-project-root`（mock harness，assert truth-promotion path）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-091",
+      "title": "`requirement_clarity`：拉丁 marker 词界 + frontmatter/path 豁免；TC-064 fixture `go-todo-crud-smoke`（AC-062）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-092",
+      "title": "`buildPhaseHarnessArgs` / phase-controller：读 target `scope_mode`；smoke truth exit 跳过 sync-materials（AC-063）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-093",
+      "title": "`beacon-phase.json`：`phase_promoted` + harness 失败日志（AC-064）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-094",
+      "title": "merge `go-todo-crud-smoke` 材料入主仓；opt-in E2E TC-067（AC-063 回归）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-095",
+      "title": "R5 refreeze（`beacon change ... --refreeze-chain`）+ `beacon-eval-qa` AC-061..064。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-096",
+      "title": "`harness-checkpoint` + `phase-controller`：`truth_freeze_gate` 序列（clarity + freeze + cutover）；smoke 跳过 sync-materials 但不跳过 freeze（AC-063/068）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-097",
+      "title": "`phase-prompt`：truth allowed 含 `beacon freeze`；generate entry frozen gate（AC-068）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-098",
+      "title": "`scope-mode`：`minimal_smoke` → smoke；`isFeatureTruthFrozen` 共享检查（AC-063）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-099",
+      "title": "测试 TC-068..TC-070 + 更新 TC-065 smoke-truth-exit 断言（AC-068）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-100",
+      "title": "R7/R8 refreeze（`beacon change ... --refreeze-chain` + cutover + `beacon freeze`）；`refreeze_status=complete`。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-101",
+      "title": "闭合 AC-069：`BEACON_RUN_E2E_GO_TODO=1` worktree+freeze E2E；回归 `go-todo-crud-smoke` 不断链。（TC-071 QA passed；live opt-in 见 `packages/beacon-run/e2e/e2e-go-todo-worktree.test.ts`）",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-102",
+      "title": "闭合 AC-070：新增 `docs/beacon/v1.6.0/execution/beacon-loop-state-spine.md`；实现 `beacon-loop spine show`（或 `status --spine`）+ TC-072。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-103",
+      "title": "闭合 AC-071：`stop-when` 外部可执行 gate（harness / `--stop-check-cmd`）；`stop_when_unverified` 路径 + TC-073。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-104",
+      "title": "R10 交付闭环：`implementation-first-reconciliation` refreeze + QA `run-20260612T182801183358` + import-evidence `run-20260612T110636Z-c038` + `beacon release check v1.6.0` 产物归档。",
+      "status": "checked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "user-confirmed-architecture",
+      "authority": "support_advisory",
+      "canonical_artifact": "conversation: delivery orchestrator AC-031..039",
+      "status": "accepted-for-change",
+      "route": "change"
+    },
+    {
+      "surface": "change-record",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.0/change/beacon-loop-goal-closed-loop-orchestrator.md",
+      "status": "accepted-for-change",
+      "route": "refreeze"
+    },
+    {
+      "surface": "planner-research",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.0/research/beacon-loop-goal-closed-loop-orchestrator.md",
+      "status": "promoted",
+      "route": "truth.define"
+    },
+    {
+      "surface": "feature-package",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+      "status": "**frozen R10**",
+      "route": "implement"
+    },
+    {
+      "surface": "package-tests",
+      "authority": "test_truth",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "status": "authoritative",
+      "route": "truth.coverage"
+    },
+    {
+      "surface": "package-tasks",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tasks.md",
+      "status": "task-intent-indexed",
+      "route": "generate"
+    },
+    {
+      "surface": "package-evidence",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/evidence.md",
+      "status": "evidence-indexed",
+      "route": "evaluate"
+    },
+    {
+      "surface": "parent-feature",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-loop-native-runner-and-automation-retirement/truth.md",
+      "status": "frozen",
+      "route": "dependency"
+    },
+    {
+      "surface": "planner-review-contract",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-pln-review-intent-parity-state-machine-v160/truth.md",
+      "status": "frozen",
+      "route": "dependency"
+    },
+    {
+      "surface": "planner-review-runtime",
+      "authority": "support_advisory",
+      "canonical_artifact": "beacon/utils/planner_review_runtime.py",
+      "status": "indexed",
+      "route": "generate"
+    },
+    {
+      "surface": "parent-implementation",
+      "authority": "support_advisory",
+      "canonical_artifact": "packages/beacon-loop/",
+      "status": "extended R3",
+      "route": "qa"
+    },
+    {
+      "surface": "gnhf-work-copy",
+      "authority": "support_advisory",
+      "canonical_artifact": "packages/gnhf/",
+      "status": "cloned fe202c4",
+      "route": "R4 fork"
+    },
+    {
+      "surface": "r3-backup",
+      "authority": "support_advisory",
+      "canonical_artifact": "packages/beacon-loop.r3-backup-20260610/",
+      "status": "frozen snapshot",
+      "route": "R4 reference"
+    },
+    {
+      "surface": "drill-evidence",
+      "authority": "support_advisory",
+      "canonical_artifact": "/private/tmp/beacon-loop-drill run-20260610214545-infh8c",
+      "status": "template-truth + implement blocked",
+      "route": "R4 pivot"
+    },
+    {
+      "surface": "application-boundaries",
+      "authority": "support_advisory",
+      "canonical_artifact": "personal-brain/projects/notes/beacon/application-boundaries.md",
+      "status": "compiled truth",
+      "route": "R4 architecture"
+    },
+    {
+      "surface": "delivery-orchestrator",
+      "authority": "support_advisory",
+      "canonical_artifact": "packages/beacon-loop/src/delivery/orchestrator.ts; state.ts; eval-chain.ts; truth-fill.ts; review.ts; review-gate.ts",
+      "status": "implemented",
+      "route": "qa"
+    },
+    {
+      "surface": "intent-capture",
+      "authority": "support_advisory",
+      "canonical_artifact": "packages/beacon-loop/src/intent/capture.ts; classify.ts; rules.ts; tiebreak.ts",
+      "status": "implemented",
+      "route": "qa"
+    },
+    {
+      "surface": "runner-delivery-integration",
+      "authority": "support_advisory",
+      "canonical_artifact": "packages/beacon-loop/src/runner/run.ts",
+      "status": "implemented",
+      "route": "qa"
+    },
+    {
+      "surface": "delivery-tests",
+      "authority": "support_advisory",
+      "canonical_artifact": "packages/beacon-loop/tests/delivery-orchestrator.test.mjs (12 cases, AC-031..039 + AC-040..042)",
+      "status": "implemented",
+      "route": "qa"
+    },
+    {
+      "surface": "parent-test-compat",
+      "authority": "support_advisory",
+      "canonical_artifact": "packages/beacon-loop/tests/beacon-loop.test.mjs (execute-only default migration)",
+      "status": "implemented",
+      "route": "qa"
+    },
+    {
+      "surface": "implement-import-r1",
+      "authority": "support_advisory",
+      "canonical_artifact": "run-20260610T091306Z-c638",
+      "status": "imported",
+      "route": "qa"
+    },
+    {
+      "surface": "implement-import-r2",
+      "authority": "support_advisory",
+      "canonical_artifact": "run-20260610T112829Z-717e",
+      "status": "imported",
+      "route": "qa"
+    },
+    {
+      "surface": "writeback-ledger",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.0/.machine/execution/implementation-writeback-ledger-beacon-loop-goal-closed-loop-orchestrator.json (R1 + R2)",
+      "status": "indexed",
+      "route": "evaluate"
+    },
+    {
+      "surface": "test-contract-index",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.0/.machine/testing/test-contract-index.json (12 TC, TC-042..044)",
+      "status": "indexed",
+      "route": "evaluate"
+    },
+    {
+      "surface": "qa-acceptance-envelope",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.0/.machine/execution/qa-acceptance-beacon-loop-goal-closed-loop-orchestrator.json",
+      "status": "indexed",
+      "route": "evaluate"
+    },
+    {
+      "surface": "qa-run-r2",
+      "authority": "support_advisory",
+      "canonical_artifact": "run-20260610T192844576131",
+      "status": "indexed",
+      "route": "evaluate"
+    },
+    {
+      "surface": "release-gate-artifact",
+      "authority": "support_advisory",
+      "canonical_artifact": ".beacon/release-gate-report.json (stage=release, run_id=run-20260610T192844576131)",
+      "status": "indexed",
+      "route": "release"
+    },
+    {
+      "surface": "release-checklist",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.0/release/checklist-v1.6.0.md",
+      "status": "indexed",
+      "route": "release"
+    }
+  ]
+}

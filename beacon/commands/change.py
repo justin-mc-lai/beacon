@@ -12,6 +12,11 @@ from beacon.commands.reopen import _reopen_impl
 from beacon.utils.change_refreeze import run_change_refreeze_chain
 from beacon.utils.help_support import build_help_payload
 from beacon.utils.change_surface import build_change_command
+from beacon.utils.program_change_intent import (
+    append_change_intent_log,
+    require_promotion_diff_before_refreeze,
+    rerun_program_freeze_after_structural_refreeze,
+)
 from beacon.utils.versioning import resolve_target_version
 
 
@@ -52,10 +57,44 @@ def _change_impl(
     reason: str,
     reopen_now: bool,
     refreeze_chain: bool,
+    program: Optional[str],
     json_output: bool,
 ) -> int:
     project_root = (Path(project) if project else Path.cwd()).expanduser().resolve()
     resolved_version = resolve_target_version(project_root, version)
+    change_intent_log: dict[str, str] = {}
+    if program:
+        log_path = append_change_intent_log(
+            project_root,
+            version=resolved_version,
+            program_slug=program,
+            utterance=reason,
+            affected_slugs=[feature],
+        )
+        change_intent_log = {"path": str(log_path.relative_to(project_root))}
+    if refreeze_chain and program:
+        promo_gate = require_promotion_diff_before_refreeze(
+            project_root,
+            version=resolved_version,
+            program_slug=program,
+        )
+        if promo_gate.get("blocked"):
+            payload = {
+                "schema_version": "1.0",
+                "status": "blocked",
+                "reason_code": promo_gate.get("reason_code"),
+                "feature": feature,
+                "program": program,
+                "version": resolved_version,
+                "recommended_command": promo_gate.get("recommended_command"),
+                "change_intent_log": change_intent_log,
+            }
+            if json_output:
+                typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+            else:
+                typer.echo(f"Change blocked: {payload.get('reason_code')}")
+                typer.echo(f"Next route: {payload.get('recommended_command')}")
+            return 2
     if refreeze_chain:
         payload = run_change_refreeze_chain(
             project_root,
@@ -63,6 +102,12 @@ def _change_impl(
             feature=feature,
             reason=reason,
         )
+        if program and payload.get("refreeze_status") == "complete":
+            payload["program_freeze_rerun"] = rerun_program_freeze_after_structural_refreeze(
+                project_root,
+                version=resolved_version,
+                program_slug=program,
+            )
         if json_output:
             typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         else:
@@ -74,6 +119,9 @@ def _change_impl(
     if reopen_now:
         return _reopen_impl(feature, str(project_root), resolved_version, reason, json_output)
     payload = _change_payload(project_root, version=resolved_version, feature=feature, reason=reason)
+    if change_intent_log:
+        payload["change_intent_log"] = change_intent_log
+        payload["next_route_hint"] = "beacon-pln-review (promotion_diff) before refreeze"
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
@@ -87,9 +135,12 @@ def change_entry(
     project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p", help="Project root"),
     version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
     reason: str = typer.Option("change-request", "--reason", help="Reason for reopening truth"),
+    program: Optional[str] = typer.Option(None, "--program", help="Program slug for change-intent-log.jsonl append"),
     reopen_now: bool = typer.Option(False, "--reopen-now", help="Immediately reopen the active revision"),
     refreeze_chain: bool = typer.Option(False, "--refreeze-chain", help="Run governed change -> PRD -> story -> test-case -> clarity -> freeze closure"),
     json_output: bool = typer.Option(False, "--json", help="Emit JSON payload"),
 ):
     """Prepare the change loop or optionally reopen immediately."""
-    raise typer.Exit(code=_change_impl(feature, project, version, reason, reopen_now, refreeze_chain, json_output))
+    raise typer.Exit(
+        code=_change_impl(feature, project, version, reason, reopen_now, refreeze_chain, program, json_output)
+    )

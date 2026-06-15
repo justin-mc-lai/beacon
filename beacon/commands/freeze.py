@@ -8,15 +8,16 @@ from typing import Optional
 
 import typer
 
+from beacon.utils.feature_package import sync_truth_frontmatter_status, validate_feature_package
+from beacon.utils.material_sync import sync_change_loop_requirement_package
 from beacon.utils.requirement_clarity import (
-    build_requirement_clarity_gate_payload,
     write_requirement_clarity_report,
     write_requirement_clarity_writeback,
 )
-from beacon.utils.material_sync import sync_change_loop_requirement_package
 from beacon.utils.revision_delta import materialize_revision_delta
 from beacon.utils.revision_state import freeze_revision_state
 from beacon.utils.story_state import freeze_story_state, feature_slug
+from beacon.utils.truth_integrity import build_truth_integrity_gate
 from beacon.utils.versioning import resolve_target_version
 
 app = typer.Typer(name="freeze", help="Freeze current feature revision as implementation baseline", invoke_without_command=True, no_args_is_help=False)
@@ -25,7 +26,13 @@ app = typer.Typer(name="freeze", help="Freeze current feature revision as implem
 def _freeze_impl(feature: str, project: Optional[str], version: str, json_output: bool) -> int:
     project_root = (Path(project) if project else Path.cwd()).expanduser().resolve()
     resolved_version = resolve_target_version(project_root, version)
-    clarity_gate = build_requirement_clarity_gate_payload(project_root, version=resolved_version, feature=feature)
+    integrity_gate = build_truth_integrity_gate(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        mode="block",
+    )
+    clarity_gate = integrity_gate.get("requirement_clarity") if isinstance(integrity_gate.get("requirement_clarity"), dict) else {}
     clarity_report = write_requirement_clarity_report(
         project_root,
         version=resolved_version,
@@ -40,13 +47,14 @@ def _freeze_impl(feature: str, project: Optional[str], version: str, json_output
         report=clarity_report,
         source="freeze",
     )
-    if bool(clarity_gate.get("blocked")):
+    if bool(integrity_gate.get("blocked")):
         payload = {
             "schema_version": "1.0",
             "feature": feature,
             "version": resolved_version,
             "status": "blocked",
-            "reason_code": str(clarity_gate.get("reason_code") or "requirement_clarity_open"),
+            "reason_code": str(integrity_gate.get("reason_code") or "truth_integrity_blocked"),
+            "truth_integrity_gate": integrity_gate,
             "requirement_clarity_gate": clarity_gate,
             "requirement_clarity_report": clarity_report,
             "requirement_clarity_writeback": clarity_writeback,
@@ -54,7 +62,7 @@ def _freeze_impl(feature: str, project: Optional[str], version: str, json_output
         if json_output:
             typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         else:
-            typer.echo("Beacon freeze blocked: requirement clarity issues remain")
+            typer.echo("Beacon freeze blocked: truth integrity gate failed")
         return 2
     try:
         requirement_package = sync_change_loop_requirement_package(
@@ -70,6 +78,7 @@ def _freeze_impl(feature: str, project: Optional[str], version: str, json_output
             "status": "blocked",
             "reason_code": "requirement_package_sync_failed",
             "message": f"failed to sync machine requirement package: {exc}",
+            "truth_integrity_gate": integrity_gate,
             "requirement_clarity_gate": clarity_gate,
             "requirement_clarity_report": clarity_report,
             "requirement_clarity_writeback": clarity_writeback,
@@ -79,8 +88,38 @@ def _freeze_impl(feature: str, project: Optional[str], version: str, json_output
         else:
             typer.echo("Beacon freeze blocked: machine requirement package sync failed")
         return 2
+    post_validation = validate_feature_package(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        write_report=True,
+    )
+    if str(post_validation.get("status") or "").lower() == "blocked":
+        payload = {
+            "schema_version": "1.0",
+            "feature": feature,
+            "version": resolved_version,
+            "status": "blocked",
+            "reason_code": "feature_package_validation_failed",
+            "truth_integrity_gate": integrity_gate,
+            "feature_package_validation": post_validation,
+            "requirement_clarity_gate": clarity_gate,
+            "requirement_clarity_report": clarity_report,
+            "requirement_clarity_writeback": clarity_writeback,
+        }
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo("Beacon freeze blocked: feature package validation failed")
+        return 2
     revision = freeze_revision_state(project_root, version=resolved_version, feature=feature)
     freeze_story_state(project_root, version=resolved_version, feature=feature)
+    truth_frontmatter_sync = sync_truth_frontmatter_status(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        status="frozen",
+    )
     revision_delta = materialize_revision_delta(project_root, version=resolved_version, feature=feature)
     payload = {
         "schema_version": "1.0",
@@ -92,6 +131,8 @@ def _freeze_impl(feature: str, project: Optional[str], version: str, json_output
         "story_path": str((project_root / "docs" / "beacon" / resolved_version / ".machine" / "user-story" / f"{feature_slug(feature)}.json").relative_to(project_root)),
         "requirement_package": requirement_package,
         "revision_delta": revision_delta,
+        "truth_frontmatter_sync": truth_frontmatter_sync,
+        "truth_integrity_gate": integrity_gate,
         "requirement_clarity_gate": clarity_gate,
         "requirement_clarity_report": clarity_report,
         "requirement_clarity_writeback": clarity_writeback,

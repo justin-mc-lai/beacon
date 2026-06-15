@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0",
+  "case_id": "tc-011-no-fake-delivery",
+  "tc_id": "TC-011",
+  "config": "baseline",
+  "status": "fail",
+  "passed_assertions": [
+    {
+      "assertion": "must_block_fake_delivery",
+      "passed": false,
+      "evidence": "",
+      "critique": "fake_delivery_critique"
+    },
+    {
+      "assertion": "must_emit_fake_delivery_reason",
+      "passed": false,
+      "evidence": "",
+      "critique": "fake_delivery_critique"
+    }
+  ],
+  "failed_assertions": [
+    {
+      "assertion": "must_block_fake_delivery",
+      "passed": false,
+      "evidence": "",
+      "critique": "fake_delivery_critique"
+    },
+    {
+      "assertion": "must_emit_fake_delivery_reason",
+      "passed": false,
+      "evidence": "",
+      "critique": "fake_delivery_critique"
+    }
+  ],
+  "fake_delivery_critique": true,
+  "weak_assertion_critique": false,
+  "runtime_evidence_only": true,
+  "formal_verdict_authority": false,
+  "release_verdict_authority": false
+}

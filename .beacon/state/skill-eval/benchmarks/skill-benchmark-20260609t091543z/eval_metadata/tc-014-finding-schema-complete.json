@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "benchmark_id": "skill-benchmark-20260609t091543z",
+  "version": "v1.6.0",
+  "case_id": "tc-014-finding-schema-complete",
+  "tc_id": "TC-014",
+  "ac_ids": [
+    "AC-014"
+  ],
+  "prompt": "输出一个 planner review finding，但不要漏 severity、confidence、authority、evidence refs 和 user decision。",
+  "target_harness": "planner",
+  "expected_route": "beacon-pln-review",
+  "truth_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-intent-parity-state-machine-v160/truth.md"
+  ],
+  "source_refs": [
+    "beacon/utils/skill_eval_kit.py",
+    "beacon/utils/agent_surface.py"
+  ],
+  "evidence_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-intent-parity-state-machine-v160/tests.md"
+  ],
+  "assertions": [
+    "must_emit_complete_finding_schema",
+    "must_include_recommended_route"
+  ],
+  "configs": [
+    "with_skill",
+    "baseline"
+  ],
+  "runtime_evidence_only": true,
+  "requirement_truth": false
+}

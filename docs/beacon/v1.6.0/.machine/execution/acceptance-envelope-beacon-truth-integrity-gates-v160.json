@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-truth-integrity-gates-v160",
+  "feature_slug": "beacon-truth-integrity-gates-v160",
+  "version": "v1.6.0",
+  "status": "pass",
+  "verdict": "accepted",
+  "source": "qa_status_embedded_scorecard",
+  "evidence_done": true,
+  "release_ready": true,
+  "layer_verdicts": {
+    "skill-contract": "pass",
+    "scenario-suite": "pass",
+    "trace-scorecard": "pass",
+    "real-project-proof": "pass"
+  },
+  "layer_details": [
+    {
+      "name": "skill-contract",
+      "status": "pass",
+      "reason": "TIG-DC gate operational, placeholder block + hollow warn-only"
+    },
+    {
+      "name": "scenario-suite",
+      "status": "pass",
+      "reason": "27 tests passed: 16 TIG + 9 intent-first + 2 contract"
+    },
+    {
+      "name": "trace-scorecard",
+      "status": "pass",
+      "reason": "All v1.6.0 features placeholder_count=0, hollow_template_count=0"
+    },
+    {
+      "name": "real-project-proof",
+      "status": "pass",
+      "reason": "beacon doctor verify-truth-quality passes on all 8 features"
+    }
+  ],
+  "coverage_current": {
+    "required_scenarios": 16,
+    "executed_scenarios": 16,
+    "coverage_rate": 1.0,
+    "required_scenario_families": ["unit", "integration", "contract"],
+    "covered_scenario_families": ["unit", "integration", "contract"],
+    "missing_scenario_families": [],
+    "missing_test_case_ids": []
+  },
+  "generated_at": "2026-06-15T02:35:00Z"
+}

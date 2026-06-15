@@ -6,10 +6,10 @@ from typing import Any
 
 
 _SKILL_DIR_MAP = {
-    "prd": "beacon-prd",
-    "implement": "beacon-implement",
-    "qa": "beacon-qa",
-    "release": "beacon-release",
+    "prd": "beacon-gen-truth",
+    "implement": "beacon-gen-implement",
+    "qa": "beacon-eval-qa",
+    "release": "beacon-eval-release",
 }
 
 _SECTION_MAP = {

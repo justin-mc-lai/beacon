@@ -92,14 +92,14 @@ def test_claude_should_align_to_current_runtime_version():
 
 
 def test_acceptance_audit_doc_should_be_marked_as_snapshot():
-    beacon_doc = ROOT / 'docs' / 'beacon' / 'v1.1.3' / 'execution' / 'readme-rewrite-draft.md'
+    beacon_doc = ROOT / 'docs' / 'beacon' / 'archive' / 'v1.1.3' / 'execution' / 'readme-rewrite-draft.md'
     text = beacon_doc.read_text(encoding='utf-8')
     assert 'Beacon README 重写草案' in text
     assert '以下是 Beacon 根 README 的 **v1.1.3 草案口径**。' in text
 
 
 def test_documentation_guidelines_should_exist_for_future_iterations():
-    beacon_doc = ROOT / 'docs' / 'beacon' / 'v1.1.3' / 'execution' / 'readme-rewrite-draft.md'
+    beacon_doc = ROOT / 'docs' / 'beacon' / 'archive' / 'v1.1.3' / 'execution' / 'readme-rewrite-draft.md'
     assert beacon_doc.exists()
     text = beacon_doc.read_text(encoding='utf-8')
     assert '根 README 只保留 5 类当前信息' in text
@@ -108,9 +108,9 @@ def test_documentation_guidelines_should_exist_for_future_iterations():
 
 
 def test_v115_should_include_current_execution_and_release_docs():
-    release = ROOT / 'docs' / 'beacon' / 'v1.1.7' / 'release' / 'v1.1.7.md'
-    index_doc = ROOT / 'docs' / 'beacon' / 'v1.1.7' / 'execution' / 'index.md'
-    summary_doc = ROOT / 'docs' / 'beacon' / 'v1.1.7' / 'SUMMARY.md'
+    release = ROOT / 'docs' / 'beacon' / 'archive' / 'v1.1.7' / 'release' / 'v1.1.7.md'
+    index_doc = ROOT / 'docs' / 'beacon' / 'archive' / 'v1.1.7' / 'execution' / 'index.md'
+    summary_doc = ROOT / 'docs' / 'beacon' / 'archive' / 'v1.1.7' / 'SUMMARY.md'
     assert release.exists()
     assert index_doc.exists()
     assert summary_doc.exists()
@@ -126,8 +126,8 @@ def test_v115_should_include_current_execution_and_release_docs():
 
 
 def test_v115_should_include_memory_and_doctor_docs():
-    guide = ROOT / 'docs' / 'beacon' / 'v1.1.7' / 'execution' / 'memory-architecture-and-projection.md'
-    repair = ROOT / 'docs' / 'beacon' / 'v1.1.7' / 'execution' / 'doctor-repair-scope.md'
+    guide = ROOT / 'docs' / 'beacon' / 'archive' / 'v1.1.7' / 'execution' / 'memory-architecture-and-projection.md'
+    repair = ROOT / 'docs' / 'beacon' / 'archive' / 'v1.1.7' / 'execution' / 'doctor-repair-scope.md'
     assert guide.exists()
     text = guide.read_text(encoding='utf-8')
     assert 'memory' in text.lower()
@@ -136,8 +136,8 @@ def test_v115_should_include_memory_and_doctor_docs():
 
 
 def test_v115_should_include_eval_lab_docs():
-    guide = ROOT / 'docs' / 'beacon' / 'v1.1.7' / 'execution' / 'eval-lab-benchmark-surface.md'
-    policy = ROOT / 'docs' / 'beacon' / 'v1.1.7' / 'execution' / 'keep-discard-policy.md'
+    guide = ROOT / 'docs' / 'beacon' / 'archive' / 'v1.1.7' / 'execution' / 'eval-lab-benchmark-surface.md'
+    policy = ROOT / 'docs' / 'beacon' / 'archive' / 'v1.1.7' / 'execution' / 'keep-discard-policy.md'
     assert guide.exists()
     text = guide.read_text(encoding='utf-8')
     assert 'benchmark' in text.lower()
@@ -146,8 +146,8 @@ def test_v115_should_include_eval_lab_docs():
 
 
 def test_v115_should_include_command_reference_and_scenario_quick_reference():
-    command_ref = ROOT / 'docs' / 'beacon' / 'v1.1.7' / 'execution' / 'command-reference.md'
-    scenario_ref = ROOT / 'docs' / 'beacon' / 'v1.1.7' / 'execution' / 'scenario-quick-reference.md'
+    command_ref = ROOT / 'docs' / 'beacon' / 'archive' / 'v1.1.7' / 'execution' / 'command-reference.md'
+    scenario_ref = ROOT / 'docs' / 'beacon' / 'archive' / 'v1.1.7' / 'execution' / 'scenario-quick-reference.md'
     assert command_ref.exists()
     assert scenario_ref.exists()
 
@@ -165,8 +165,8 @@ def test_v115_should_include_command_reference_and_scenario_quick_reference():
 
 
 def test_v115_should_include_external_readme_style_and_bilingual_command_guides():
-    readme_guide = ROOT / 'docs' / 'beacon' / 'v1.1.7' / 'execution' / 'command-guide-readme.md'
-    bilingual_guide = ROOT / 'docs' / 'beacon' / 'v1.1.7' / 'execution' / 'command-reference-bilingual.md'
+    readme_guide = ROOT / 'docs' / 'beacon' / 'archive' / 'v1.1.7' / 'execution' / 'command-guide-readme.md'
+    bilingual_guide = ROOT / 'docs' / 'beacon' / 'archive' / 'v1.1.7' / 'execution' / 'command-reference-bilingual.md'
     assert readme_guide.exists()
     assert bilingual_guide.exists()
 
@@ -183,8 +183,8 @@ def test_v115_should_include_external_readme_style_and_bilingual_command_guides(
 
 
 def test_v115_should_include_commands_hub_and_beginner_quickstart():
-    commands_hub = ROOT / 'docs' / 'beacon' / 'v1.1.7' / 'COMMANDS.md'
-    quickstart = ROOT / 'docs' / 'beacon' / 'v1.1.7' / 'getting-started-10-minutes.md'
+    commands_hub = ROOT / 'docs' / 'beacon' / 'archive' / 'v1.1.7' / 'COMMANDS.md'
+    quickstart = ROOT / 'docs' / 'beacon' / 'archive' / 'v1.1.7' / 'getting-started-10-minutes.md'
     assert commands_hub.exists()
     assert quickstart.exists()
 
@@ -201,10 +201,10 @@ def test_v115_should_include_commands_hub_and_beginner_quickstart():
 
 
 def test_v115_should_include_machine_execution_terminal():
-    terminal = ROOT / 'docs' / 'beacon' / 'v1.1.7' / '.machine' / 'execution' / 'terminal.json'
-    revision = ROOT / 'docs' / 'beacon' / 'v1.1.7' / '.machine' / 'execution' / 'beacon-project-skill-orchestration.revision.json'
-    story = ROOT / 'docs' / 'beacon' / 'v1.1.7' / '.machine' / 'user-story' / 'beacon-project-skill-orchestration.json'
-    qa = ROOT / 'docs' / 'beacon' / 'v1.1.7' / '.machine' / 'qa' / 'beacon-project-skill-orchestration.ac-test-matrix.json'
+    terminal = ROOT / 'docs' / 'beacon' / 'archive' / 'v1.1.7' / '.machine' / 'execution' / 'terminal.json'
+    revision = ROOT / 'docs' / 'beacon' / 'archive' / 'v1.1.7' / '.machine' / 'execution' / 'beacon-project-skill-orchestration.revision.json'
+    story = ROOT / 'docs' / 'beacon' / 'archive' / 'v1.1.7' / '.machine' / 'user-story' / 'beacon-project-skill-orchestration.json'
+    qa = ROOT / 'docs' / 'beacon' / 'archive' / 'v1.1.7' / '.machine' / 'qa' / 'beacon-project-skill-orchestration.ac-test-matrix.json'
     assert terminal.exists()
     assert revision.exists()
     assert story.exists()
@@ -219,10 +219,10 @@ def test_v115_should_include_machine_execution_terminal():
 
 def test_v114_qa_materials_should_only_reference_existing_verification_files():
     targets = [
-        ROOT / 'docs' / 'beacon' / 'v1.1.4' / 'prd' / 'beacon-implement-skill-runner.md',
-        ROOT / 'docs' / 'beacon' / 'v1.1.4' / 'qa' / 'test-cases' / 'beacon-implement-skill-runner.md',
-        ROOT / 'docs' / 'beacon' / 'v1.1.4' / 'qa' / 'test-cases' / 'beacon-implement-skill-runner.ac-test-matrix.json',
-        ROOT / 'docs' / 'beacon' / 'v1.1.4' / 'qa' / 'test-cases' / 'beacon-implement-skill-runner.qa9-matrix.json',
+        ROOT / 'docs' / 'beacon' / 'archive' / 'v1.1.4' / 'prd' / 'beacon-implement-skill-runner.md',
+        ROOT / 'docs' / 'beacon' / 'archive' / 'v1.1.4' / 'qa' / 'test-cases' / 'beacon-implement-skill-runner.md',
+        ROOT / 'docs' / 'beacon' / 'archive' / 'v1.1.4' / 'qa' / 'test-cases' / 'beacon-implement-skill-runner.ac-test-matrix.json',
+        ROOT / 'docs' / 'beacon' / 'archive' / 'v1.1.4' / 'qa' / 'test-cases' / 'beacon-implement-skill-runner.qa9-matrix.json',
     ]
     for doc in targets:
         text = doc.read_text(encoding='utf-8')

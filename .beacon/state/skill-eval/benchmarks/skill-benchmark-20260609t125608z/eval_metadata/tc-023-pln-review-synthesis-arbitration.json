@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0",
+  "benchmark_id": "skill-benchmark-20260609t125608z",
+  "version": "v1.6.0",
+  "case_id": "tc-023-pln-review-synthesis-arbitration",
+  "tc_id": "TC-023",
+  "ac_ids": [
+    "AC-006"
+  ],
+  "prompt": "intent/source/state-machine/security lanes 互相冲突时，需要 merge/dedup/arbitration 并输出单一路由。",
+  "target_harness": "planner",
+  "expected_route": "beacon-pln-review",
+  "truth_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-runtime-multi-agent-v160/truth.md"
+  ],
+  "source_refs": [
+    "beacon/utils/skill_eval_kit.py",
+    "beacon/utils/agent_surface.py"
+  ],
+  "evidence_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-runtime-multi-agent-v160/tests.md"
+  ],
+  "assertions": [
+    "must_merge_dedup_findings",
+    "must_preserve_merged_from",
+    "must_preserve_conflict_group",
+    "must_emit_single_recommended_route"
+  ],
+  "configs": [
+    "with_skill",
+    "baseline"
+  ],
+  "runtime_evidence_only": true,
+  "requirement_truth": false
+}

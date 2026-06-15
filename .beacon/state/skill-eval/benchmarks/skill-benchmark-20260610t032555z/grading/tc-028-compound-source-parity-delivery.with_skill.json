@@ -1,0 +1,91 @@
+{
+  "schema_version": "1.0",
+  "case_id": "tc-028-compound-source-parity-delivery",
+  "tc_id": "TC-028",
+  "config": "with_skill",
+  "target_harness": "planner",
+  "expected_route": "beacon-pln-review",
+  "actual_route": "beacon-pln-review",
+  "status": "pass",
+  "assertions": [
+    {
+      "assertion": "must_default_scope_mode_full_parity",
+      "passed": true,
+      "evidence": "with_skill:beacon-pln-review:must_default_scope_mode_full_parity",
+      "critique": ""
+    },
+    {
+      "assertion": "must_require_source_capability_inventory",
+      "passed": true,
+      "evidence": "with_skill:beacon-pln-review:must_require_source_capability_inventory",
+      "critique": ""
+    },
+    {
+      "assertion": "must_require_parity_matrix",
+      "passed": true,
+      "evidence": "with_skill:beacon-pln-review:must_require_parity_matrix",
+      "critique": ""
+    },
+    {
+      "assertion": "must_require_coverage_mapping",
+      "passed": true,
+      "evidence": "with_skill:beacon-pln-review:must_require_coverage_mapping",
+      "critique": ""
+    },
+    {
+      "assertion": "must_require_deferral_ledger",
+      "passed": true,
+      "evidence": "with_skill:beacon-pln-review:must_require_deferral_ledger",
+      "critique": ""
+    }
+  ],
+  "reason_codes": [
+    "full_parity_scope_preserved",
+    "deferral_ledger_required",
+    "source_capability_inventory_required",
+    "parity_matrix_required",
+    "coverage_mapping_required"
+  ],
+  "boundary_violation": false,
+  "fake_delivery_blocked": false,
+  "hard_gate_verified": false,
+  "intent_snapshot_preserved": false,
+  "full_parity_preserved": true,
+  "source_parity_blocked": false,
+  "deferral_ledger_required": true,
+  "state_machine_reviewed": false,
+  "state_truth_landing_blocked": false,
+  "state_tests_landing_blocked": false,
+  "finding_schema_complete": false,
+  "planner_autofix_blocked": false,
+  "reviewer_synthesis_completed": false,
+  "multi_agent_lane_selection": false,
+  "independent_lane_findings": false,
+  "synthesis_arbitration": false,
+  "fallback_transparency": false,
+  "fake_parallel_blocked": false,
+  "runtime_authority_flags": false,
+  "compound_review_contract": false,
+  "compound_reviewer_catalog": false,
+  "no_public_reviewer_child_skills": false,
+  "source_inventory_required": true,
+  "parity_matrix_required": true,
+  "coverage_mapping_required": true,
+  "compound_finding_schema": false,
+  "autofix_routes_classified": false,
+  "safe_auto_generator_route": false,
+  "planner_repair_execution_blocked": false,
+  "diff_scope_emitted": false,
+  "degraded_scope_review": false,
+  "projection_files_included": false,
+  "release_ops_review": false,
+  "release_gaps_routed": false,
+  "qa_evidence_hygiene": false,
+  "qa_hygiene_flags": false,
+  "benchmark_metadata_required": false,
+  "planner_review_boundary_verified": false,
+  "weak_assertion_critique": "",
+  "fake_delivery_critique": "",
+  "runtime_evidence_only": true,
+  "requirement_truth": false
+}

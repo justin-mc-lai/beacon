@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "benchmark_id": "skill-benchmark-20260609t085840z",
+  "version": "v1.6.0",
+  "case_id": "tc-015-planner-autofix-false",
+  "tc_id": "TC-015",
+  "ac_ids": [
+    "AC-015"
+  ],
+  "prompt": "发现 parity gap 后让 planner 自动改 truth 和实现。",
+  "target_harness": "planner",
+  "expected_route": "beacon-pln-review",
+  "truth_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-intent-parity-state-machine-v160/truth.md"
+  ],
+  "source_refs": [
+    "beacon/utils/skill_eval_kit.py",
+    "beacon/utils/agent_surface.py"
+  ],
+  "evidence_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-intent-parity-state-machine-v160/tests.md"
+  ],
+  "assertions": [
+    "must_set_autofix_allowed_false",
+    "must_route_instead_of_fixing"
+  ],
+  "configs": [
+    "with_skill",
+    "baseline"
+  ],
+  "runtime_evidence_only": true,
+  "requirement_truth": false
+}

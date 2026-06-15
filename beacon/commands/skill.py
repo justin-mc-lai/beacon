@@ -16,6 +16,18 @@ from beacon.utils.implement_adapters import (
     project_config_path,
     resolve_default_runner,
 )
+from beacon.utils.agent_surface import (
+    build_v160_rough_prompt_route,
+    default_v160_skill_package_root,
+    materialize_v160_skill_package,
+    verify_v160_no_fake_delivery,
+    verify_v160_research_promotion,
+    verify_v160_skill_package,
+    validate_v160_research_artifact,
+    v160_rename_matrix,
+    _uses_v160_taxonomy,
+)
+from beacon.utils.truth_integrity import verify_closure_via_tig
 from beacon.utils.project_skills import bind_feature_profile, list_skill_registry
 from beacon.utils.runtime import now_iso
 from beacon.utils.skill_config import load_yaml_like, write_yaml_like
@@ -27,11 +39,17 @@ from beacon.utils.skill_discovery import (
     write_skill_discovery_state,
 )
 from beacon.utils.skill_drift import build_skill_drift_report
-from beacon.utils.skill_eval_kit import materialize_skill_eval_kit, run_skill_eval
+from beacon.utils.skill_eval_kit import (
+    generate_skill_eval_review,
+    materialize_skill_eval_kit,
+    run_skill_eval,
+    run_skill_eval_benchmark,
+)
 
 app = typer.Typer(name="skill", help="Manage Beacon implementation skill adapters")
 registry_app = typer.Typer(name="registry", help="Inspect Beacon multi-skill registry")
 eval_kit_app = typer.Typer(name="eval-kit", help="Manage Beacon Skill Eval Kit")
+package_app = typer.Typer(name="package", help="Manage generated Beacon host-visible skill packages")
 
 
 def _resolve_scope_path(project_root: Path, scope: str) -> Path:
@@ -47,6 +65,28 @@ def _adapter_defined_in_project_config(project_root: Path, adapter_id: str) -> b
     runners = implementation_section.get("runners") if isinstance(implementation_section.get("runners"), dict) else {}
     preferred = str(skill_section.get("preferred", "")).strip()
     return adapter_id in adapters or adapter_id in runners or preferred == adapter_id
+
+
+def _require_v160(version: str) -> None:
+    if not _uses_v160_taxonomy(version):
+        typer.echo("skill package taxonomy commands require docs version v1.6.0 or newer", err=True)
+        raise typer.Exit(2)
+
+
+def _split_refs(value: str) -> list[str]:
+    return [item.strip() for item in str(value or "").split(",") if item.strip()]
+
+
+def _emit_payload(payload: dict[str, Any], *, json_output: bool, fail_on_status: bool = True) -> None:
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"status: {payload.get('status')}")
+        for key in ("package_root", "research_path", "recommended_route", "reason_code"):
+            if payload.get(key):
+                typer.echo(f"{key}: {payload.get(key)}")
+    if fail_on_status and str(payload.get("status") or "").lower() in {"fail", "blocked"}:
+        raise typer.Exit(2)
 
 
 def _upsert_adapter(
@@ -101,6 +141,142 @@ def _set_preferred(*, config_path: Path, adapter_id: str) -> dict[str, Any]:
     skill_section["preferred"] = adapter_id
     write_yaml_like(config_path, config)
     return config
+
+
+@package_app.command("materialize")
+def package_materialize(
+    project_root: str = typer.Option("", "--project-root", "--project", "-p", help="Project root path"),
+    version: str = typer.Option("v1.6.0", "--version", "-v", help="Target skill package taxonomy version"),
+    output_root: str = typer.Option("", "--output-root", "--output", help="Generated package root"),
+    force: bool = typer.Option(False, "--force", help="Overwrite generated package drift"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Preview without writing files"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Materialize the v1.6.0 generated harness-first host-visible skill package."""
+    _require_v160(version)
+    root = Path(project_root) if project_root else Path.cwd()
+    package_root = Path(output_root) if output_root else default_v160_skill_package_root(root, version)
+    payload = materialize_v160_skill_package(root, output_root=package_root, dry_run=dry_run, force=force)
+    _emit_payload(payload, json_output=json_output, fail_on_status=True)
+
+
+@package_app.command("verify")
+def package_verify(
+    project_root: str = typer.Option("", "--project-root", "--project", "-p", help="Project root path"),
+    version: str = typer.Option("v1.6.0", "--version", "-v", help="Target skill package taxonomy version"),
+    package_root: str = typer.Option("", "--package-root", help="Generated package root"),
+    strict: bool = typer.Option(True, "--strict/--no-strict", help="Fail on generated drift"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Verify a v1.6.0 generated harness-first host-visible skill package."""
+    _require_v160(version)
+    root = Path(project_root) if project_root else Path.cwd()
+    resolved_package_root = Path(package_root) if package_root else default_v160_skill_package_root(root, version)
+    payload = verify_v160_skill_package(root, package_root=resolved_package_root, strict=strict)
+    _emit_payload(payload, json_output=json_output, fail_on_status=True)
+
+
+@package_app.command("rename-matrix")
+def package_rename_matrix(
+    version: str = typer.Option("v1.6.0", "--version", "-v", help="Target skill package taxonomy version"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Print the v1.6.0 old-to-new host-visible skill rename matrix."""
+    _require_v160(version)
+    payload = {"schema_version": "1.0", "status": "pass", "version": version, "rename_matrix": v160_rename_matrix()}
+    _emit_payload(payload, json_output=json_output, fail_on_status=False)
+
+
+@package_app.command("route-prompt")
+def package_route_prompt(
+    prompt: str = typer.Argument(..., help="Rough user prompt to classify and route"),
+    truth_refs: str = typer.Option("", "--truth-refs", help="Comma-separated truth refs"),
+    source_refs: str = typer.Option("", "--source-refs", help="Comma-separated source refs"),
+    evidence_refs: str = typer.Option("", "--evidence-refs", help="Comma-separated evidence refs"),
+    version: str = typer.Option("v1.6.0", "--version", "-v", help="Target skill package taxonomy version"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Build the v1.6.0 rough-prompt planner routing envelope."""
+    _require_v160(version)
+    payload = build_v160_rough_prompt_route(
+        prompt,
+        truth_refs=_split_refs(truth_refs),
+        source_refs=_split_refs(source_refs),
+        evidence_refs=_split_refs(evidence_refs),
+    )
+    _emit_payload(payload, json_output=json_output, fail_on_status=False)
+
+
+@package_app.command("verify-research")
+def package_verify_research(
+    feature: str = typer.Argument(..., help="Feature slug"),
+    project_root: str = typer.Option("", "--project-root", "--project", "-p", help="Project root path"),
+    version: str = typer.Option("v1.6.0", "--version", "-v", help="Target docs version"),
+    research_path: str = typer.Option("", "--research-path", help="Research artifact path"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Verify the v1.6.0 planner research support_advisory artifact contract."""
+    _require_v160(version)
+    root = Path(project_root) if project_root else Path.cwd()
+    payload = validate_v160_research_artifact(
+        root,
+        version=version,
+        feature=feature,
+        research_path=Path(research_path) if research_path else None,
+    )
+    _emit_payload(payload, json_output=json_output, fail_on_status=True)
+
+
+@package_app.command("verify-promotion")
+def package_verify_promotion(
+    feature: str = typer.Argument(..., help="Feature slug"),
+    project_root: str = typer.Option("", "--project-root", "--project", "-p", help="Project root path"),
+    version: str = typer.Option("v1.6.0", "--version", "-v", help="Target docs version"),
+    research_path: str = typer.Option("", "--research-path", help="Research artifact path"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Verify whether v1.6.0 planner research may promote into truth/generate/evaluate mainline."""
+    _require_v160(version)
+    root = Path(project_root) if project_root else Path.cwd()
+    payload = verify_v160_research_promotion(
+        root,
+        version=version,
+        feature=feature,
+        research_path=Path(research_path) if research_path else None,
+    )
+    _emit_payload(payload, json_output=json_output, fail_on_status=True)
+
+
+@package_app.command("verify-closure")
+def package_verify_closure(
+    payload_json: str = typer.Option("", "--payload-json", help="Closure payload JSON string"),
+    payload_path: str = typer.Option("", "--payload-path", help="Closure payload JSON file"),
+    feature: str = typer.Option("", "--feature", help="Feature slug to verify from package files"),
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root when using --feature"),
+    version: str = typer.Option("v1.6.0", "--version", "-v", help="Target skill package taxonomy version"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Reject fake-delivery payloads as implementation, QA, or release closure."""
+    _require_v160(version)
+    root = Path(project_root or ".").expanduser().resolve()
+    if feature.strip() and not payload_path and not payload_json:
+        result = verify_closure_via_tig(root, version=version, feature=feature.strip())
+        _emit_payload(result, json_output=json_output, fail_on_status=True)
+        return
+    payload: dict[str, Any] = {}
+    if payload_path:
+        loaded = json.loads(Path(payload_path).read_text(encoding="utf-8"))
+        payload = loaded if isinstance(loaded, dict) else {"payload": loaded}
+    elif payload_json:
+        loaded = json.loads(payload_json)
+        payload = loaded if isinstance(loaded, dict) else {"payload": loaded}
+    if feature.strip():
+        result = verify_closure_via_tig(root, version=version, feature=feature.strip(), payload=payload)
+    else:
+        from beacon.utils.agent_surface import verify_v160_no_fake_delivery
+
+        result = verify_v160_no_fake_delivery(payload)
+    _emit_payload(result, json_output=json_output, fail_on_status=True)
 
 
 def _doctor_adapter(adapter_id: str, payload: dict[str, Any], project_root: Path) -> dict[str, Any]:
@@ -445,16 +621,18 @@ def sync_check(
 
 
 app.add_typer(registry_app, name="registry")
+app.add_typer(package_app, name="package")
 
 
 @eval_kit_app.command("init")
 def eval_kit_init(
     project_root: str = typer.Option("", "--project-root", "--project", "-p", help="Project root path"),
+    version: str = typer.Option("v1.4.10", "--version", "-v", help="Eval case set version"),
     json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
 ):
     """Materialize default Skill Eval Kit cases, tags, splits, and regression core."""
     root = Path(project_root) if project_root else Path.cwd()
-    payload = materialize_skill_eval_kit(root)
+    payload = materialize_skill_eval_kit(root, version=version)
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         if payload.get("status") == "blocked":
@@ -467,17 +645,52 @@ def eval_kit_init(
 def eval_kit_run(
     project_root: str = typer.Option("", "--project-root", "--project", "-p", help="Project root path"),
     split: str = typer.Option("regression-core", "--split", help="Split to run: regression-core|optimization|holdout|all"),
+    version: str = typer.Option("v1.4.10", "--version", "-v", help="Eval case set version"),
     json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
 ):
     """Run Skill Eval Kit cases and write runtime evidence."""
     root = Path(project_root) if project_root else Path.cwd()
-    payload = run_skill_eval(root, split=split)
+    payload = run_skill_eval(root, split=split, version=version)
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         if payload.get("status") != "pass":
             raise typer.Exit(2)
         return
     typer.echo(f"✓ Skill Eval Kit run: {payload.get('metrics_path')}")
+
+
+@eval_kit_app.command("review")
+def eval_kit_review(
+    project_root: str = typer.Option("", "--project-root", "--project", "-p", help="Project root path"),
+    feedback_path: str = typer.Option("", "--feedback-path", help="Optional feedback.json path"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Generate a self-contained Skill Eval Kit review artifact."""
+    root = Path(project_root) if project_root else Path.cwd()
+    payload = generate_skill_eval_review(root, feedback_path=Path(feedback_path) if feedback_path else None)
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        if payload.get("status") in {"fail", "blocked"}:
+            raise typer.Exit(2)
+        return
+    typer.echo(f"✓ Skill Eval Kit review: {payload.get('review_html_path')}")
+
+
+@eval_kit_app.command("benchmark")
+def eval_kit_benchmark(
+    project_root: str = typer.Option("", "--project-root", "--project", "-p", help="Project root path"),
+    version: str = typer.Option("v1.6.0", "--version", "-v", help="Benchmark case set version"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Run Skill Eval Kit benchmark and write behavior evidence artifacts."""
+    root = Path(project_root) if project_root else Path.cwd()
+    payload = run_skill_eval_benchmark(root, version=version)
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        if payload.get("status") != "pass":
+            raise typer.Exit(2)
+        return
+    typer.echo(f"✓ Skill Eval Kit benchmark: {payload.get('root')}")
 
 
 app.add_typer(eval_kit_app, name="eval-kit")

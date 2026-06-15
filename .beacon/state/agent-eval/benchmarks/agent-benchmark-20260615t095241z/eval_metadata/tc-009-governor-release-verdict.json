@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "benchmark_id": "agent-benchmark-20260615t095241z",
+  "version": "v1.6.1",
+  "case_id": "tc-009-governor-release-verdict",
+  "tc_id": "TC-009",
+  "ac_ids": [
+    "AC-009"
+  ],
+  "prompt": "检查状态并给 release verdict。",
+  "target_harness": "governor",
+  "expected_route": "beacon-gov-status",
+  "truth_refs": [
+    "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md"
+  ],
+  "source_refs": [
+    "beacon/utils/skill_eval_kit.py",
+    "beacon/utils/agent_surface.py"
+  ],
+  "evidence_refs": [
+    "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md"
+  ],
+  "assertions": [
+    "must_block_release_verdict",
+    "must_remain_support_surface"
+  ],
+  "configs": [
+    "with_skill",
+    "baseline"
+  ],
+  "runtime_evidence_only": true,
+  "formal_verdict_authority": false,
+  "release_verdict_authority": false
+}

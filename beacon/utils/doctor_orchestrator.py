@@ -16,6 +16,7 @@ from beacon.utils.technical_review_contract import technical_review_contract_jso
 from beacon.utils.version_aggregate_projection import (
     PROJECTION_ROLE,
     write_feature_change_projection,
+    write_version_aggregate_projection,
 )
 from beacon.utils.versioning import describe_project_version_context, resolve_target_version
 from beacon.utils.writeback import acceptance_projection_transaction_contract
@@ -468,6 +469,44 @@ def run_requirement_clarity_sync(
     return DoctorExecutionResult(payload=payload, exit_code=0)
 
 
+def run_truth_integrity_verify(
+    *,
+    project_root: str,
+    version: str,
+    feature: str,
+    mode: str = "audit",
+    strict: bool = False,
+) -> DoctorExecutionResult:
+    """Run Truth Integrity Gate for one feature (audit or block mode)."""
+    from beacon.utils.truth_integrity import build_truth_integrity_gate
+
+    ctx = build_doctor_execution_context(project_root, version=version)
+    gate_mode = "audit" if str(mode).strip().lower() == "audit" else "block"
+    gate = build_truth_integrity_gate(
+        ctx.project_root,
+        version=version,
+        feature=feature,
+        mode=gate_mode,
+    )
+    status = str(gate.get("status") or "pass").upper()
+    if strict and int(gate.get("finding_count") or 0) > 0:
+        status = "BLOCKED"
+    exit_code = 0
+    if gate_mode == "block" and bool(gate.get("blocked")):
+        exit_code = 2
+    elif strict and int(gate.get("finding_count") or 0) > 0:
+        exit_code = 2
+    elif status in {"FAIL", "BLOCKED"}:
+        exit_code = 2
+    payload = {
+        "schema_version": "2.0",
+        "action": "verify-truth-integrity",
+        "status": status,
+        "result": gate,
+    }
+    return DoctorExecutionResult(payload=payload, exit_code=exit_code)
+
+
 def run_technical_review_contract_sync(
     *,
     project_root: str,
@@ -582,23 +621,7 @@ def run_version_aggregate_projection_repair(
         overwrite=overwrite_feature_projection,
     )
 
-    from beacon.commands import release as release_command
-
-    version_payload = release_command._build_version_change_payload(ctx.project_root, version=resolved_version)
-    version_payload = release_command._stabilize_version_change_payload(
-        ctx.project_root,
-        version=resolved_version,
-        payload=version_payload,
-    )
-    version_change_md = change_docs_file(ctx.project_root, resolved_version, f"{resolved_version}.md")
-    version_change_json = change_file_output(ctx.project_root, resolved_version, f"{resolved_version}.json")
-    version_change_md.parent.mkdir(parents=True, exist_ok=True)
-    version_change_json.parent.mkdir(parents=True, exist_ok=True)
-    version_change_md.write_text(release_command._render_version_change_markdown(version_payload), encoding="utf-8")
-    version_change_json.write_text(
-        json.dumps(version_payload, ensure_ascii=False, indent=2),
-        encoding="utf-8",
-    )
+    version_aggregate = write_version_aggregate_projection(ctx.project_root, version=resolved_version)
 
     test_index = build_test_contract_index(ctx.project_root, version=resolved_version, feature=feature, write=True)
     test_gate = build_test_contract_gate_payload(ctx.project_root, version=resolved_version, feature=feature)
@@ -619,17 +642,11 @@ def run_version_aggregate_projection_repair(
             "release_publish_action": False,
             "feature_projection": feature_projection,
             "version_aggregate_projection": {
-                "markdown_path": str(version_change_md.relative_to(ctx.project_root)),
-                "json_path": str(version_change_json.relative_to(ctx.project_root)),
-                "feature_count": int(version_payload.get("feature_count") or 0),
-                "feature_slugs": [
-                    str(item.get("feature_slug") or "")
-                    for item in version_payload.get("features", [])
-                    if isinstance(item, dict) and str(item.get("feature_slug") or "")
-                ],
-                "implementation_order": version_payload.get("implementation_order")
-                if isinstance(version_payload.get("implementation_order"), dict)
-                else {},
+                "markdown_path": version_aggregate["markdown_path"],
+                "json_path": version_aggregate["json_path"],
+                "feature_count": version_aggregate["feature_count"],
+                "feature_slugs": version_aggregate["feature_slugs"],
+                "implementation_order": version_aggregate["implementation_order"],
             },
             "test_contract_index": test_index,
             "test_contract_verify": test_gate,
@@ -1147,11 +1164,13 @@ def run_agent_surface_verify(
 ) -> DoctorExecutionResult:
     """Verify project-local Beacon agent surface files."""
     ctx = build_doctor_execution_context(project_root, version=version or None, strict=strict)
+    docs_version = str((ctx.version_context or {}).get("docs_version", "") or ctx.runtime_version)
     result = run_doctor_handler(
         "host.verify.agent-surface",
         project_root=ctx.project_root,
         agent=agent,
         runtime_version=ctx.runtime_version,
+        docs_version=docs_version,
         strict=strict,
     )
     payload = {
@@ -1159,7 +1178,7 @@ def run_agent_surface_verify(
         "action": "verify-agent-surface",
         "status": _map_verify_status(str(result.get("status", "warn")).lower()),
         "runtime_version": ctx.runtime_version,
-        "docs_version": str((ctx.version_context or {}).get("docs_version", "") or ctx.runtime_version),
+        "docs_version": docs_version,
         "version_context": ctx.version_context or {},
         "version_semantics": (ctx.version_context or {}).get("version_semantics", {}),
         "result": result,

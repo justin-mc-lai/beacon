@@ -1,0 +1,305 @@
+{
+  "schema_version": "1.0",
+  "feature": "go-todo-crud-smoke",
+  "feature_slug": "go-todo-crud-smoke",
+  "version": "v1.6.0",
+  "current_revision_id": "R1",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-06-11T08:20:18.724172+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "go-todo-crud-smoke",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:5c5241c9b51a89a4a7f668fb03cf7c993a447ac757b4ffab4becaa56c9f10138",
+      "superseded_by": null,
+      "created_at": "2026-06-11T06:58:49.233338+00:00",
+      "frozen_at": "2026-06-11T08:20:18.733514+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "go-todo-crud-smoke",
+      "priority": "medium",
+      "status": "frozen",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "go-mod-init",
+          "text": "`examples/go-todo-crud/` 目录包含有效的 `go.mod`，模块路径为 `examples/go-todo-crud`，Go >= 1.21；`go build ./...` 成功。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/go-todo-crud-smoke/truth.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "get-list",
+          "text": "`GET /todos` 返回 HTTP 200 + JSON 数组；空列表返回 `[]`；每个元素含 `id`(int)、`title`(string)、`completed`(bool)。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/go-todo-crud-smoke/truth.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "post-create",
+          "text": "`POST /todos` 接受 `{\"title\": \"...\"}`，返回 HTTP 201 + 创建的 TODO（默认 `completed: false`）；空 title 返回 400。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/go-todo-crud-smoke/truth.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "get-by-id",
+          "text": "`GET /todos/{id}` 存在时返回 200 + JSON；不存在时返回 404。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/go-todo-crud-smoke/truth.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "put-update",
+          "text": "`PUT /todos/{id}` 接受 `{\"title\": \"...\", \"completed\": true/false}`，成功返回 200 + 更新后 JSON；不存在返回 404；空 title 返回 400。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/go-todo-crud-smoke/truth.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "delete",
+          "text": "`DELETE /todos/{id}` 成功返回 204 无 body；不存在返回 404；后续 GET 不应包含。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/go-todo-crud-smoke/truth.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "concurrency",
+          "text": "使用 `sync.RWMutex` 保护内存存储；并发读写无 race（`go test -race` 通过）。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/go-todo-crud-smoke/truth.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "test-coverage",
+          "text": "`go test ./...` 通过，使用 `httptest.Server` 端到端验证，覆盖 happy path 和 error path。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/go-todo-crud-smoke/truth.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — `examples/go-todo-crud/` 目录包含有效的 `go.mod`，模块路径为 `examples/go-todo-crud`，Go >= 1.21；`go build ./...` 成功。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/go-todo-crud-smoke/truth.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — `GET /todos` 返回 HTTP 200 + JSON 数组；空列表返回 `[]`；每个元素含 `id`(int)、`title`(string)、`completed`(bool)。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/go-todo-crud-smoke/truth.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — `POST /todos` 接受 `{\"title\": \"...\"}`，返回 HTTP 201 + 创建的 TODO（默认 `completed: false`）；空 title 返回 400。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/go-todo-crud-smoke/truth.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — `GET /todos/{id}` 存在时返回 200 + JSON；不存在时返回 404。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/go-todo-crud-smoke/truth.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — `PUT /todos/{id}` 接受 `{\"title\": \"...\", \"completed\": true/false}`，成功返回 200 + 更新后 JSON；不存在返回 404；空 title 返回 400。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/go-todo-crud-smoke/truth.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — `DELETE /todos/{id}` 成功返回 204 无 body；不存在返回 404；后续 GET 不应包含。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/go-todo-crud-smoke/truth.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — 使用 `sync.RWMutex` 保护内存存储；并发读写无 race（`go test -race` 通过）。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/go-todo-crud-smoke/truth.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — `go test ./...` 通过，使用 `httptest.Server` 端到端验证，覆盖 happy path 和 error path。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/go-todo-crud-smoke/truth.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "go-todo-crud-smoke",
+        "version": "v1.6.0",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/research/go-todo-crud-smoke.md",
+        "present": false,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      }
+    }
+  ]
+}

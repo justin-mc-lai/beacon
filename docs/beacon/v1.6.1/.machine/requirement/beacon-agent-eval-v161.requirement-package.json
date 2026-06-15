@@ -1,0 +1,694 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-06-15T11:23:40.089218+00:00",
+  "feature": "beacon-agent-eval-v161",
+  "feature_slug": "beacon-agent-eval-v161",
+  "version": "v1.6.1",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md",
+    "tests": "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/tests.md",
+    "tasks": "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/tasks.md",
+    "evidence": "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "1699eabc50bbfd070f1a8c9c4c86f05b4fb3899deeeae99451ff7054e19a33da",
+    "tests": "32c9982544ef96a4ee771cc2cb4732bb7bf7d3ceb0c21b23537702e455950700",
+    "tasks": "6ee150f83ddf0ced47ad5ff50ea5daa6d633da6582a4812a3a2a4556cbd16626",
+    "evidence": "b50d10b1c1ffe39e38b5f64f3c8db77798aa299daa621d66e08b8ae164e36637"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-agent-eval-v161",
+    "version": "v1.6.1",
+    "status": "frozen",
+    "revision_id": "R2",
+    "language": "zh",
+    "change_reason": "用户坚持全 skill live；PB-AE-001 从 post-freeze 拉回 P0 closure",
+    "source_revision_id": "R1",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md",
+      "user_story": "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md",
+      "test_case": "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/tests.md"
+    },
+    "parser_contract": "beacon-feature-package-v1",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "state_machine_required": "true"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-AE-001",
+      "theme": "public-cli",
+      "description": "`beacon eval catalog"
+    },
+    {
+      "ac_id": "AC-AE-002",
+      "theme": "catalog-materialize",
+      "description": "`beacon eval catalog --json` materialize `agent-eval-capability-catalog-v161.json` 且含四类 harness P0 条目"
+    },
+    {
+      "ac_id": "AC-AE-003",
+      "theme": "catalog-coverage",
+      "description": "Catalog 覆盖 pln/gen/eval/gov、program CLI、qa/release/skill/doctor/change 公共面"
+    },
+    {
+      "ac_id": "AC-AE-004",
+      "theme": "eval-run-traces",
+      "description": "`beacon eval run --split regression-core --runner replay --json` 产出 traces + metrics.json"
+    },
+    {
+      "ac_id": "AC-AE-005",
+      "theme": "scorecard-dimensions",
+      "description": "`beacon eval scorecard --json` 产出六维 0–100 + composite_score"
+    },
+    {
+      "ac_id": "AC-AE-006",
+      "theme": "scorecard-authority",
+      "description": "Scorecard 必含 `runtime_evidence_only=true`、`formal_verdict_authority=false`"
+    },
+    {
+      "ac_id": "AC-AE-007",
+      "theme": "simulated-degraded",
+      "description": "`--runner simulated` 时 `degraded=true` 且 `simulated_composite_score` 存在；composite 封顶 85"
+    },
+    {
+      "ac_id": "AC-AE-008",
+      "theme": "live-admission",
+      "description": "无 admission 时 `--runner live` 返回 blocked + `agent_eval_live_runner_not_admitted`"
+    },
+    {
+      "ac_id": "AC-AE-009",
+      "theme": "live-admission-pass",
+      "description": "存在有效 `agent-eval-runner-admission.json` 时 live run 可启动并写 trace"
+    },
+    {
+      "ac_id": "AC-AE-010",
+      "theme": "benchmark-artifacts",
+      "description": "`beacon eval benchmark --version v1.6.1` 输出 eval_metadata/grading/benchmark/analysis 四类目录"
+    },
+    {
+      "ac_id": "AC-AE-011",
+      "theme": "benchmark-baseline",
+      "description": "每个 P0 case 含 with_skill 与 baseline 双配置"
+    },
+    {
+      "ac_id": "AC-AE-012",
+      "theme": "grader-critique",
+      "description": "grading artifact 含 fake-delivery 与 weak-assertion critique"
+    },
+    {
+      "ac_id": "AC-AE-013",
+      "theme": "analysis-route",
+      "description": "analysis 声明 benchmark 不替代 formal QA/release"
+    },
+    {
+      "ac_id": "AC-AE-014",
+      "theme": "v160-parity",
+      "description": "v1.6.1 benchmark 覆盖 v1.6.0 TC-006..011、TC-017 行为轴"
+    },
+    {
+      "ac_id": "AC-AE-015",
+      "theme": "boundary-negative",
+      "description": "Regression-core 含 planner/generator/evaluator/governor HARD GATE 负例 case"
+    },
+    {
+      "ac_id": "AC-AE-016",
+      "theme": "eval-agent-skill",
+      "description": "`beacon-eval-agent` skill 存在且 HARD GATE 禁止 truth/release 越权"
+    },
+    {
+      "ac_id": "AC-AE-017",
+      "theme": "fsm-contract",
+      "description": "truth 声明 AgentEvalState；单测覆盖非法转移"
+    },
+    {
+      "ac_id": "AC-AE-018",
+      "theme": "fsm-recovery",
+      "description": "live blocked 时 recovery 降级 replay/simulated"
+    },
+    {
+      "ac_id": "AC-AE-019",
+      "theme": "program-catalog",
+      "description": "Catalog 含 `beacon plan start` 与 `beacon program *` 条目"
+    },
+    {
+      "ac_id": "AC-AE-020",
+      "theme": "acceptance-kit-bridge",
+      "description": "scorecard 可写入 acceptance-kit trace-scorecard supplement ref"
+    },
+    {
+      "ac_id": "AC-AE-021",
+      "theme": "anti-fake-delivery",
+      "description": "空壳断言或无效证据 case 不得计 pass（TIG 对齐）"
+    },
+    {
+      "ac_id": "AC-AE-022",
+      "theme": "chinese-truth",
+      "description": "本 feature truth/tests/tasks 主语言为中文"
+    },
+    {
+      "ac_id": "AC-AE-023",
+      "theme": "summary-index",
+      "description": "v1.6.1 SUMMARY 索引本 feature"
+    },
+    {
+      "ac_id": "AC-AE-024",
+      "theme": "skill-eval-kit-bridge",
+      "description": "`beacon skill eval-kit` 与 `beacon eval` 共享 case root 或显式 migration 文档"
+    },
+    {
+      "ac_id": "AC-AE-025",
+      "theme": "doctor-surface",
+      "description": "Catalog 含 `beacon doctor verify-agent-surface` 条目"
+    },
+    {
+      "ac_id": "AC-AE-026",
+      "theme": "composite-weights",
+      "description": "Scorecard 附录或 JSON 含六维权重且与 truth 一致"
+    },
+    {
+      "ac_id": "AC-AE-027",
+      "theme": "regression-core-pass",
+      "description": "regression-core split 全 pass 时 scorecard composite ≥ 阈值 70（P0 gate）"
+    },
+    {
+      "ac_id": "AC-AE-028",
+      "theme": "scope-mode",
+      "description": "truth 声明 `scope_mode=full_parity` 且 deferral ledger 无未决 MVP 削减"
+    },
+    {
+      "ac_id": "AC-AE-029",
+      "theme": "research-promoted",
+      "description": "`research/beacon-agent-eval-v161.md` 含 `user_decision=promoted` 与 `promotion_ref`"
+    },
+    {
+      "ac_id": "AC-AE-030",
+      "theme": "live-skill-matrix",
+      "description": "`agent-eval-live-skill-matrix-v161.json` 条目数 = v160 projection（36）+ `beacon-eval-agent`"
+    },
+    {
+      "ac_id": "AC-AE-031",
+      "theme": "live-case-per-skill",
+      "description": "`--runner live --split regression-core` 对 matrix 每条产出 trace 或 per-skill blocked reason"
+    },
+    {
+      "ac_id": "AC-AE-032",
+      "theme": "live-skill-pass-rate",
+      "description": "admission 启用时 `live_skill_pass/live_skill_total=100%`；禁 admission 时 matrix 仍完整且 scorecard 报告 blocked 计数"
+    },
+    {
+      "ac_id": "AC-AE-033",
+      "theme": "change-r2-intent",
+      "description": "truth 含 R2 change_reason + User Intent Snapshot 全 skill live 确认；PB-AE-001 不在 Phased Backlog"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-AE-001",
+      "tc_id": "TC-AE-001",
+      "layer": "contract",
+      "command": "`mkdir -p .beacon/qa-tmp && beacon eval --help >.beacon/qa-tmp/TC-AE-001.txt 2>&1 && rg -q 'catalog' .beacon/qa-tmp/TC-AE-001.txt && rg -q 'scorecard' .beacon/qa-tmp/TC-AE-001.txt && python3 -m pytest tests/test_v161_agent_eval.py::test_agent_eval_help_lists_subcommands -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "exit 0 或 BLOCKED:Phase-A",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-002",
+      "tc_id": "TC-AE-002",
+      "layer": "contract",
+      "command": "`mkdir -p .beacon/qa-tmp && beacon eval catalog --project-root . --version v1.6.1 --json >.beacon/qa-tmp/TC-AE-002.json 2>&1 && test -f docs/beacon/v1.6.1/.machine/execution/agent-eval-capability-catalog-v161.json`",
+      "assertion": "catalog JSON 存在",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-003",
+      "tc_id": "TC-AE-003",
+      "layer": "contract",
+      "command": "`python3 -c \"import json; c=json.load(open('docs/beacon/v1.6.1/.machine/execution/agent-eval-capability-catalog-v161.json')); h=set(x.get('harness') for x in c.get('entries',[])); assert {'pln','gen','eval','gov'}.issubset(h)\"`",
+      "assertion": "四类 harness 在 catalog",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-004",
+      "tc_id": "TC-AE-004",
+      "layer": "integration",
+      "command": "`mkdir -p .beacon/qa-tmp && BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 beacon eval run --project-root . --split regression-core --runner replay --version v1.6.1 --json >.beacon/qa-tmp/TC-AE-004.json 2>&1 && python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-AE-004.json')); assert d.get('traces_path') or d.get('status')=='blocked'\" && python3 -m pytest tests/test_v161_agent_eval.py::test_agent_eval_catalog_materialize -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "traces 或明确 blocked",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-005",
+      "tc_id": "TC-AE-005",
+      "layer": "integration",
+      "command": "`mkdir -p .beacon/qa-tmp && BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 beacon eval scorecard --project-root . --version v1.6.1 --json >.beacon/qa-tmp/TC-AE-005.json 2>&1 && python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-AE-005.json')); dims=d.get('dimensions',{}); assert len(dims)>=6 and 'composite_score' in d\"`",
+      "assertion": "六维 + composite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-006",
+      "tc_id": "TC-AE-006",
+      "layer": "contract",
+      "command": "`mkdir -p .beacon/qa-tmp && BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 beacon eval scorecard --project-root . --version v1.6.1 --json >.beacon/qa-tmp/TC-AE-006.json 2>&1 && python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-AE-006.json')); a=d.get('authority',d); assert d.get('runtime_evidence_only') is True and d.get('formal_verdict_authority') is False\"`",
+      "assertion": "authority 字段正确",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-007",
+      "tc_id": "TC-AE-007",
+      "layer": "integration",
+      "command": "`mkdir -p .beacon/qa-tmp && BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 beacon eval scorecard --project-root . --version v1.6.1 --runner simulated --json >.beacon/qa-tmp/TC-AE-007.json 2>&1 && python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-AE-007.json')); assert d.get('degraded') is True and 'simulated_composite_score' in d\"`",
+      "assertion": "simulated 降级标记",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-008",
+      "tc_id": "TC-AE-008",
+      "layer": "negative",
+      "command": "`mkdir -p .beacon/qa-tmp && BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 beacon eval run --project-root . --runner live --version v1.6.1 --json >.beacon/qa-tmp/TC-AE-008.json 2>&1; python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-AE-008.json')); assert d.get('status')=='blocked' and d.get('reason_code')=='agent_eval_live_runner_not_admitted'\"`",
+      "assertion": "无 admission 时 blocked",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-009",
+      "tc_id": "TC-AE-009",
+      "layer": "integration",
+      "command": "`test -f docs/beacon/v1.6.1/.machine/execution/agent-eval-runner-admission.json && mkdir -p .beacon/qa-tmp && BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 beacon eval run --project-root . --runner live --version v1.6.1 --json >.beacon/qa-tmp/TC-AE-009.json 2>&1 && python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-AE-009.json')); assert d.get('status') in ('pass','running','completed')\"`",
+      "assertion": "admission 存在时可启动",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-010",
+      "tc_id": "TC-AE-010",
+      "layer": "integration",
+      "command": "`mkdir -p .beacon/qa-tmp && BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 beacon eval benchmark --version v1.6.1 --json >.beacon/qa-tmp/TC-AE-010.json 2>&1 && python3 -c \"import json,glob; d=json.load(open('.beacon/qa-tmp/TC-AE-010.json')); root=d.get('root',''); assert all(glob.glob(root+'/**/'+x, recursive=True) or x in str(d) for x in ['eval_metadata','grading','benchmark','analysis'])\"`",
+      "assertion": "四类 artifact 目录",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-011",
+      "tc_id": "TC-AE-011",
+      "layer": "contract",
+      "command": "`python3 -c \"import json,glob; import pathlib; b=pathlib.Path('.beacon/state/agent-eval/benchmarks'); bs=sorted(b.glob('*'))[-1] if b.exists() else None; g=list(bs.glob('grading/*.json')) if bs else []; assert len(g)>=2\"`",
+      "assertion": "grading 含多配置",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-012",
+      "tc_id": "TC-AE-012",
+      "layer": "contract",
+      "command": "`python3 -c \"import json,pathlib; b=pathlib.Path('.beacon/state/agent-eval/benchmarks'); bs=sorted(b.glob('*'))[-1] if b.exists() else None; found=any('critique' in str(v) for p in (bs.glob('grading/*.json') if bs else []) for v in json.load(open(p)).values()); assert found\"`",
+      "assertion": "grading 含 critique",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-013",
+      "tc_id": "TC-AE-013",
+      "layer": "contract",
+      "command": "`test -f .beacon/state/agent-eval/benchmarks/*/analysis/analysis.md||rg -q 'formal.*QA' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md`",
+      "assertion": "analysis 声明不替代 QA",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-014",
+      "tc_id": "TC-AE-014",
+      "layer": "contract",
+      "command": "`rg -q 'TC-006' beacon/utils/skill_eval_kit.py && rg -q 'TC-017' beacon/utils/skill_eval_kit.py && rg -q 'v1.6.1' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md`",
+      "assertion": "v1.6.1 继承 v1.6.0 行为轴",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-015",
+      "tc_id": "TC-AE-015",
+      "layer": "contract",
+      "command": "`rg -q 'hard-gate' .beacon/state/skill-eval/cases.json 2>/dev/null||rg -q 'boundary' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md`",
+      "assertion": "boundary 负例在 case 或 truth",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-016",
+      "tc_id": "TC-AE-016",
+      "layer": "contract",
+      "command": "`test -f skills/beacon/beacon-eval-agent/SKILL.md && rg -q 'HARD GATE' skills/beacon/beacon-eval-agent/SKILL.md && rg -q 'release verdict' skills/beacon/beacon-eval-agent/SKILL.md`",
+      "assertion": "eval-agent skill + gate",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-017",
+      "tc_id": "TC-AE-017",
+      "layer": "unit",
+      "command": "`rg -q 'AgentEvalState' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md && python3 -m pytest tests/test_agent_eval_state_contract.py -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "FSM 单测",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-018",
+      "tc_id": "TC-AE-018",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_agent_eval_state_contract.py -q -k recovery`",
+      "assertion": "recovery 路径单测",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-019",
+      "tc_id": "TC-AE-019",
+      "layer": "contract",
+      "command": "`python3 -c \"import json; c=json.load(open('docs/beacon/v1.6.1/.machine/execution/agent-eval-capability-catalog-v161.json')); ids=[x.get('id','') for x in c.get('entries',[])]; assert any('plan start' in i or 'plan.start' in i for i in ids)\"`",
+      "assertion": "catalog 含 plan start",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-020",
+      "tc_id": "TC-AE-020",
+      "layer": "contract",
+      "command": "`rg -q 'trace-scorecard' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md && rg -q 'acceptance-kit' beacon/utils/acceptance_kit.py`",
+      "assertion": "acceptance kit 桥接声明",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-021",
+      "tc_id": "TC-AE-021",
+      "layer": "contract",
+      "command": "`rg -q 'anti-fake-delivery' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md && rg -q 'fake_delivery' beacon/utils/skill_eval_kit.py`",
+      "assertion": "anti-fake-delivery",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-022",
+      "tc_id": "TC-AE-022",
+      "layer": "docs",
+      "command": "`rg -q 'Agent Eval' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md && rg -q '验收标准' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md`",
+      "assertion": "中文 truth",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-023",
+      "tc_id": "TC-AE-023",
+      "layer": "docs",
+      "command": "`rg -q 'beacon-agent-eval-v161' docs/beacon/v1.6.1/SUMMARY.md`",
+      "assertion": "SUMMARY 索引",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-024",
+      "tc_id": "TC-AE-024",
+      "layer": "contract",
+      "command": "`rg -q 'skill.eval' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md && rg -q 'skill_eval' beacon/utils/skill_eval_kit.py`",
+      "assertion": "skill eval kit 桥接",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-025",
+      "tc_id": "TC-AE-025",
+      "layer": "contract",
+      "command": "`python3 -c \"import json; c=json.load(open('docs/beacon/v1.6.1/.machine/execution/agent-eval-capability-catalog-v161.json')); ids=' '.join(x.get('id','') for x in c.get('entries',[])); assert 'verify-agent-surface' in ids\"`",
+      "assertion": "doctor surface 在 catalog",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-026",
+      "tc_id": "TC-AE-026",
+      "layer": "contract",
+      "command": "`rg -q 'route_stability' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md && rg -q '15%' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md`",
+      "assertion": "权重在 truth",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-027",
+      "tc_id": "TC-AE-027",
+      "layer": "integration",
+      "command": "`mkdir -p .beacon/qa-tmp && BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 beacon eval run --split regression-core --runner replay --version v1.6.1 --json >.beacon/qa-tmp/TC-AE-027-run.json 2>&1 && BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 beacon eval scorecard --version v1.6.1 --json >.beacon/qa-tmp/TC-AE-027-sc.json 2>&1 && python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-AE-027-sc.json')); assert d.get('composite_score',0)>=70 or d.get('status')=='blocked'\"`",
+      "assertion": "regression pass 时 composite≥70",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-028",
+      "tc_id": "TC-AE-028",
+      "layer": "contract",
+      "command": "`rg -q 'full_parity' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md && rg -q 'Deferral Ledger' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md`",
+      "assertion": "scope_mode + deferral 表",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-029",
+      "tc_id": "TC-AE-029",
+      "layer": "contract",
+      "command": "`rg -q '## user_decision' docs/beacon/v1.6.1/research/beacon-agent-eval-v161.md && rg -q '^promoted$' docs/beacon/v1.6.1/research/beacon-agent-eval-v161.md && rg -q 'promotion_ref' docs/beacon/v1.6.1/research/beacon-agent-eval-v161.md`",
+      "assertion": "exit 0",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-030",
+      "tc_id": "TC-AE-030",
+      "layer": "contract",
+      "command": "`python3 -c \"import json; from beacon.utils.agent_surface import v160_skill_package_projection; m=json.load(open('docs/beacon/v1.6.1/.machine/execution/agent-eval-live-skill-matrix-v161.json')); ids={x['skill_id'] for x in m.get('entries',[])}; exp={p.id for p in v160_skill_package_projection()}|{'beacon-eval-agent'}; assert ids==exp\"`",
+      "assertion": "matrix 37 条与 projection 一致",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-031",
+      "tc_id": "TC-AE-031",
+      "layer": "integration",
+      "command": "`mkdir -p .beacon/qa-tmp && BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 beacon eval run --project-root . --split regression-core --runner live --version v1.6.1 --json >.beacon/qa-tmp/TC-AE-031.json 2>&1 && python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-AE-031.json')); per=d.get('per_skill',[]); assert len(per)>=37\"`",
+      "assertion": "每条 skill 有 trace 或 blocked",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-032",
+      "tc_id": "TC-AE-032",
+      "layer": "integration",
+      "command": "`mkdir -p .beacon/qa-tmp && BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 beacon eval scorecard --project-root . --version v1.6.1 --runner live --json >.beacon/qa-tmp/TC-AE-032.json 2>&1 && python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-AE-032.json')); t=d.get('live_skill_total',0); assert t>=37; p=d.get('live_skill_pass',0); assert p==t or d.get('live_coverage_blocked') is True\"`",
+      "assertion": "100% live pass 或全量 blocked 报告",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-033",
+      "tc_id": "TC-AE-033",
+      "layer": "contract",
+      "command": "`python3 -c \"import re; t=open('docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md').read(); pb=re.search(r'## Phased Backlog.*?(?=\\\\n## )', t, re.S); section=pb.group(0) if pb else ''; assert '全 skill live' in t and 'change_reason' in t and '|PB-AE-001|' not in section\"`",
+      "assertion": "R2 change intent 写入",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "LINE-7",
+      "title": "TASK-AE-R01 创建 research promoted artifact。evidence: `docs/beacon/v1.6.1/research/beacon-agent-eval-v161.md`",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-8",
+      "title": "TASK-AE-R02 TIG hygiene + verify-closure + freeze CLI R1。evidence: baseline `sha256:13809725…ebd2c`",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-12",
+      "title": "TASK-AE-R03 `beacon change --reopen-now` R1→R2。reason: 全 skill live P0",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-13",
+      "title": "TASK-AE-R04 truth/tests/tasks 写入 live skill matrix（§I）+ AC-AE-030..033",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-14",
+      "title": "TASK-AE-R05 freeze R2 + TIG pass。evidence: baseline `sha256:72b97d62…482e`",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-AE-001",
+      "title": "新增 `docs/beacon/v1.6.1/execution/agent-eval-contract.md`（normative CLI + scorecard schema）",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-AE-002",
+      "title": "实现 `beacon eval` 顶层 typer 子树（catalog / run / scorecard / benchmark）",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-AE-003",
+      "title": "实现 `materialize_agent_eval_catalog()` → `agent-eval-capability-catalog-v161.json`",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-AE-004",
+      "title": "更新 v1.6.1 SUMMARY 索引本 feature",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-AE-005",
+      "title": "新建 `beacon/utils/agent_eval_kit.py`（或扩展 `skill_eval_kit.py`）统一 case root",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-AE-006",
+      "title": "实现 `beacon eval run --runner replay` traces + metrics.json",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-AE-007",
+      "title": "实现 `beacon eval scorecard` 六维分 + composite + authority 字段",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-AE-008",
+      "title": "实现 simulated 模式：`degraded` + `simulated_composite_score` + composite 封顶 85",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-AE-009",
+      "title": "扩展 benchmark 至 `--version v1.6.1`（继承 taxonomy-v160 条目 018–022 + TC-006..011/017）",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-AE-010",
+      "title": "with_skill / baseline 双配置 grading + analysis.md",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-AE-011",
+      "title": "fake-delivery / weak-assertion critique 写入 grading artifact",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-AE-012",
+      "title": "定义 `agent-eval-runner-admission.json` schema + doctor 校验",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-AE-013",
+      "title": "实现 live runner 启动与 trace 落盘（host adapter 抽象）",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-AE-014",
+      "title": "无 admission 时 blocked + `agent_eval_live_runner_not_admitted`",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-41",
+      "title": "TASK-AE-014a 实现 `materialize_agent_eval_live_skill_matrix()` → `agent-eval-live-skill-matrix-v161.json`（37 条，doctor strict 对齐）",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-42",
+      "title": "TASK-AE-014b live regression-core 逐 skill 执行 + per_skill trace/blocked 输出（AC-AE-031/032）",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-AE-015",
+      "title": "实现 `AgentEvalState` + `beacon/utils/agent_eval_state.py`",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-AE-016",
+      "title": "新增 `tests/test_agent_eval_state_contract.py`（非法转移 + recovery）",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-AE-017",
+      "title": "物化 `beacon-eval-agent` host skill + agent surface verify",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-AE-018",
+      "title": "Acceptance Kit trace-scorecard supplement 汇入 hook",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-AE-019",
+      "title": "`beacon test-case create` 同步 qa/test-cases + `.machine/qa` matrix",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-AE-020",
+      "title": "`beacon truth-map rebuild-machine` + TIG block mode pass",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-AE-021",
+      "title": "`beacon skill package verify-closure` pass",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-AE-022",
+      "title": "`beacon qa run beacon-agent-eval-v161` 33/33 + acceptance-kit materialize",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-AE-023",
+      "title": "Research artifact：`docs/beacon/v1.6.1/research/beacon-agent-eval-v161.md` + user_decision promoted",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-AE-024",
+      "title": "Truth freeze R2（full_parity scope_mode 确认）",
+      "status": "checked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "planner-research",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.1/research/beacon-agent-eval-v161.md",
+      "status": "promoted",
+      "route": "truth.define"
+    },
+    {
+      "surface": "planner-review",
+      "authority": "support_advisory",
+      "canonical_artifact": ".beacon/state/planner-review/beacon-agent-eval-v161/pln-review-20260615t090341z.json",
+      "status": "indexed",
+      "route": "research"
+    },
+    {
+      "surface": "feature-package",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md",
+      "status": "frozen R2",
+      "route": "implement"
+    },
+    {
+      "surface": "package-tests",
+      "authority": "test_truth",
+      "canonical_artifact": "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/tests.md",
+      "status": "authoritative",
+      "route": "truth.coverage"
+    },
+    {
+      "surface": "change-intent",
+      "authority": "support_advisory",
+      "canonical_artifact": "user utterance：坚持全 skill live",
+      "status": "accepted",
+      "route": "beacon-gen-change"
+    },
+    {
+      "surface": "upstream-harness-taxonomy",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "status": "frozen",
+      "route": "dependency"
+    },
+    {
+      "surface": "upstream-program-plan",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
+      "status": "frozen R2",
+      "route": "dependency"
+    },
+    {
+      "surface": "upstream-tig",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-truth-integrity-gates-v160/truth.md",
+      "status": "frozen",
+      "route": "dependency"
+    }
+  ]
+}

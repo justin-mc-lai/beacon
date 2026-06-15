@@ -9,6 +9,7 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
+from beacon import __toolkit_version__
 from beacon.utils.runtime import generate_run_id, now_iso, write_json
 from beacon.utils.skill_config import SkillConfigError, _Parser
 from beacon.utils.v115_delivery import refresh_evidence_manifest
@@ -506,14 +507,15 @@ def _run_beacon_post_release_local_install(project_root: Path, *, version: str, 
         "beacon": _command_output(["beacon", "--version"]),
         "beacon-cli": _command_output(["beacon-cli", "--version"]),
     }
-    expected = version.strip()
+    expected_runtime_version = str(__toolkit_version__).strip()
+    expected = expected_runtime_version
     if expected:
         for name, row in cli_versions.items():
             output = str(row.get("stdout") or "")
             if row.get("status") != "pass":
                 blocked_reasons.append(f"{name}_version_command_failed")
             elif expected not in output:
-                blocked_reasons.append(f"{name}_version_mismatch")
+                blocked_reasons.append(f"{name}_runtime_version_mismatch")
 
     return {
         "schema_version": "1.0",
@@ -523,6 +525,7 @@ def _run_beacon_post_release_local_install(project_root: Path, *, version: str, 
         "status": "blocked" if blocked_reasons else "pass",
         "blocked": bool(blocked_reasons),
         "reason_codes": blocked_reasons,
+        "expected_runtime_version": expected_runtime_version,
         "agent_surfaces": agent_results,
         "launcher_setup": launcher_setup.payload,
         "cli_versions": cli_versions,

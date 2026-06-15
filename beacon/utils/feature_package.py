@@ -21,7 +21,11 @@ REQUIRED_TRUTH_FRONTMATTER = ("slug", "version", "status", "language", "canonica
 PARSER_CONTRACT = "beacon-feature-package-v1"
 ALLOWED_EVIDENCE_AUTHORITIES = {"support_advisory", "qa_verdict", "release_verdict"}
 FORBIDDEN_EVIDENCE_FIELDS = ("final_verdict", "gate_truth", "release_ready", "qa_passed", "source_of_truth")
-CHECKBOX_RE = re.compile(r"^\s*-\s+\[(?P<mark>[ xX-])\]\s+`?(?P<id>[A-Z]+-\d{3,})`?\s+(?P<title>.+?)\s*$")
+CHECKBOX_RE = re.compile(
+    r"^\s*-\s+\[(?P<mark>[ xX-])\]\s+(?:`?(?P<id>[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)*-\d{3,})`?\s+)?(?P<title>.+?)\s*$"
+)
+_SOFT_TEST_ONLY_CELL_RE = re.compile(r"^(integration|目录存在|fixture|可选)$", re.IGNORECASE)
+_HARD_TEST_COMMAND_RE = re.compile(r"cargo|beacon\s|pnpm|npm test|BLOCKED:", re.IGNORECASE)
 
 
 def _semver_tuple(version: str | None) -> tuple[int, int, int]:
@@ -81,12 +85,34 @@ def _extract_ac_rows(markdown: str) -> list[dict[str, str]]:
             continue
         if in_table and all(set(cell) <= {"-"} for cell in cells if cell):
             continue
-        if in_table and cells and re.match(r"AC-\d{3}", cells[0]):
+        if in_table and cells and re.match(r"AC-[A-Z0-9]+(?:-[A-Z0-9]+)*", cells[0]):
             rows.append(
                 {
                     "ac_id": cells[0],
                     "theme": cells[1] if len(cells) > 1 else "",
                     "description": cells[2] if len(cells) > 2 else "",
+                }
+            )
+    if rows:
+        return rows
+    for line in markdown.splitlines():
+        bullet = re.match(r"^\s*[-*]\s+(AC-[A-Z0-9]+(?:-[A-Z0-9]+)*)[：:\s]+(.+)$", line.strip())
+        if bullet:
+            rows.append(
+                {
+                    "ac_id": bullet.group(1),
+                    "theme": "",
+                    "description": bullet.group(2).strip(),
+                }
+            )
+            continue
+        bold = re.search(r"\*\*(AC-[A-Z0-9]+(?:-[A-Z0-9]+)*)\*\*", line)
+        if bold:
+            rows.append(
+                {
+                    "ac_id": bold.group(1),
+                    "theme": "",
+                    "description": line.strip(),
                 }
             )
     return rows
@@ -110,7 +136,7 @@ def _extract_test_rows(markdown: str) -> list[dict[str, str]]:
             continue
         if in_table and all(set(cell) <= {"-"} for cell in cells if cell):
             continue
-        if in_table and cells and re.match(r"AC-\d{3}", cells[0]):
+        if in_table and cells and re.match(r"AC-[A-Z0-9]+(?:-[A-Z0-9]+)*", cells[0]):
             if headers and len(cells) > len(headers) and ("command" in headers or "planned_command" in headers):
                 command_index = headers.index("command") if "command" in headers else headers.index("planned_command")
                 tail_count = len(headers) - command_index - 1
@@ -186,7 +212,8 @@ def _parse_checkboxes(markdown: str) -> tuple[list[dict[str, str]], list[str]]:
             status = "blocked"
         else:
             status = "unchecked"
-        tasks.append({"id": match.group("id"), "title": match.group("title").strip(), "status": status})
+        task_id = match.group("id") or f"LINE-{line_number}"
+        tasks.append({"id": task_id, "title": match.group("title").strip(), "status": status})
     return tasks, errors
 
 
@@ -430,6 +457,28 @@ def validate_feature_package(
     test_rows = _extract_test_rows(tests)
     if not test_rows:
         diagnostics.append({"severity": "warn", "code": "tests_coverage_table_missing", "path": _rel(project_root, paths["tests"])})
+    for index, row in enumerate(test_rows, start=1):
+        command = str(row.get("command") or "").strip()
+        assertion = str(row.get("assertion") or "").strip()
+        combined = f"{command} {assertion}"
+        if not command and "BLOCKED:" not in combined:
+            diagnostics.append(
+                {
+                    "severity": "error",
+                    "code": "test_command_missing_or_blocked",
+                    "path": _rel(project_root, paths["tests"]),
+                    "tc_id": row.get("tc_id") or f"row-{index}",
+                }
+            )
+        elif _SOFT_TEST_ONLY_CELL_RE.match(command) and not _HARD_TEST_COMMAND_RE.search(combined):
+            diagnostics.append(
+                {
+                    "severity": "error",
+                    "code": "soft_test_command_only",
+                    "path": _rel(project_root, paths["tests"]),
+                    "tc_id": row.get("tc_id") or f"row-{index}",
+                }
+            )
 
     checkbox_rows, checkbox_errors = _parse_checkboxes(tasks_md)
     for error in checkbox_errors:
@@ -509,3 +558,44 @@ def validate_feature_package(
         payload["report_path"] = _rel(project_root, report_path)
         refresh_evidence_manifest(project_root, refs=[payload["report_path"]], version=version)
     return payload
+
+
+def sync_truth_frontmatter_status(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+    status: str,
+) -> dict[str, Any]:
+    """Align features/<slug>/truth.md frontmatter status with machine freeze state."""
+    paths = package_paths(project_root, version=version, feature=feature)
+    truth_path = paths["truth"]
+    if not truth_path.exists():
+        return {"updated": False, "reason": "truth_missing", "path": _rel(project_root, truth_path)}
+
+    text = _read_text(truth_path)
+    if not text.startswith("---\n"):
+        return {"updated": False, "reason": "frontmatter_missing", "path": _rel(project_root, truth_path)}
+
+    end = text.find("\n---", 4)
+    if end < 0:
+        return {"updated": False, "reason": "frontmatter_unclosed", "path": _rel(project_root, truth_path)}
+
+    block = text[4:end]
+    current_match = re.search(r"^status:\s*(\S+)", block, re.MULTILINE)
+    current = current_match.group(1) if current_match else ""
+    if current == status:
+        return {"updated": False, "status": current, "path": _rel(project_root, truth_path)}
+
+    if current_match:
+        block = re.sub(r"^status:\s*\S+", f"status: {status}", block, count=1, flags=re.MULTILINE)
+    else:
+        block = f"status: {status}\n{block}"
+
+    truth_path.write_text(f"---\n{block}\n---{text[end + 4:]}", encoding="utf-8")
+    return {
+        "updated": True,
+        "status": status,
+        "previous_status": current,
+        "path": _rel(project_root, truth_path),
+    }

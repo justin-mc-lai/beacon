@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "benchmark_id": "skill-benchmark-20260609t085839z",
+  "version": "v1.6.0",
+  "case_id": "tc-006-full-parity-scope-mode",
+  "tc_id": "TC-006",
+  "ac_ids": [
+    "AC-006"
+  ],
+  "prompt": "这个 source 项目要做全、同等能力、same capability，不要先切成最小 MVP。",
+  "target_harness": "planner",
+  "expected_route": "beacon-pln-review",
+  "truth_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-intent-parity-state-machine-v160/truth.md"
+  ],
+  "source_refs": [
+    "beacon/utils/skill_eval_kit.py",
+    "beacon/utils/agent_surface.py"
+  ],
+  "evidence_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-intent-parity-state-machine-v160/tests.md"
+  ],
+  "assertions": [
+    "must_default_scope_mode_full_parity",
+    "must_not_silent_mvp_downgrade"
+  ],
+  "configs": [
+    "with_skill",
+    "baseline"
+  ],
+  "runtime_evidence_only": true,
+  "requirement_truth": false
+}

@@ -7,6 +7,7 @@ from typer.testing import CliRunner
 
 from beacon.commands.test_case import _build_entries_from_qa_case_rows
 from beacon.cli_factory import build_app
+from beacon.utils import project_hooks
 from beacon.utils.project_hooks import ALLOWED_HOOK_CODES, plan_hook, run_hook, validate_hook_contract
 from beacon.utils.requirement_parsing import extract_qa_case_rows
 
@@ -137,9 +138,10 @@ def test_human_toolkit_commands(tmp_path: Path) -> None:
 
 
 def test_project_hooks_human_facing_skill_packaged() -> None:
-    skill_text = Path("skills/beacon/beacon-project-hooks/SKILL.md").read_text(encoding="utf-8")
+    skill_text = Path("skills/beacon/beacon-gov-hooks/SKILL.md").read_text(encoding="utf-8")
 
-    assert "name: beacon-project-hooks" in skill_text
+    assert "name: beacon-gov-hooks" in skill_text
+    assert "beacon-project-hooks` -> `beacon-gov-hooks" in skill_text
     assert "beacon hooks list --project ." in skill_text
     assert 'beacon hooks plan "<hook-id>" --project . --version <version> --feature "<feature>"' in skill_text
     assert 'beacon hooks run "<hook-id>" --project . --version <version> --feature "<feature>" --dry-run' in skill_text
@@ -189,7 +191,7 @@ def test_unsafe_hook_requests_fail_closed(tmp_path: Path) -> None:
 
 
 def test_explicit_gate_pytest_with_manual_confirmation_name_stays_automated() -> None:
-    qa_path = Path("docs/beacon/v1.4.10/qa/test-cases/project-lifecycle-hook-skill-toolkit-contract.md")
+    qa_path = Path("docs/beacon/archive/v1.4.10/qa/test-cases/project-lifecycle-hook-skill-toolkit-contract.md")
     rows = extract_qa_case_rows(qa_path.read_text(encoding="utf-8"), f"qa:test-cases:{qa_path}")
     entries = _build_entries_from_qa_case_rows(
         feature=FEATURE,
@@ -285,6 +287,51 @@ def test_beacon_source_release_hook_confirmed_followup(tmp_path: Path, monkeypat
     assert followup["launcher_setup"]["status"] == "PASS"
     assert VERSION in followup["cli_versions"]["beacon"]["stdout"]
     assert VERSION in followup["cli_versions"]["beacon-cli"]["stdout"]
+
+
+def test_beacon_source_release_hook_checks_runtime_cli_version_not_docs_version(tmp_path: Path, monkeypatch) -> None:
+    _copy_beacon_source_hook(tmp_path)
+
+    class Result:
+        exit_code = 0
+
+        def __init__(self, payload: dict) -> None:
+            self.payload = payload
+
+    monkeypatch.setattr(project_hooks, "__toolkit_version__", "v1.5.2")
+    monkeypatch.setattr(
+        "beacon.utils.doctor_orchestrator.run_agent_surface_setup",
+        lambda **_: Result({"status": "PASS", "result": {}}),
+    )
+    monkeypatch.setattr(
+        "beacon.utils.doctor_orchestrator.run_agent_surface_verify",
+        lambda **_: Result({"status": "PASS", "result": {}}),
+    )
+    monkeypatch.setattr(
+        "beacon.utils.doctor_orchestrator.run_launcher_setup",
+        lambda **_: Result({"status": "PASS"}),
+    )
+    monkeypatch.setattr(
+        project_hooks,
+        "_command_output",
+        lambda args: {"stdout": "Beacon CLI v1.5.2", "status": "pass", "returncode": 0, "command": args},
+    )
+
+    payload = run_hook(
+        tmp_path,
+        "beacon-post-release-local-install",
+        version="v1.6.0",
+        feature="beacon-skill-harness-taxonomy-v160",
+        hook_code="post_release",
+        confirm=True,
+    )
+
+    assert payload["blocked"] is False
+    followup = payload["post_release_followup"]
+    assert followup["status"] == "pass"
+    assert followup["version"] == "v1.6.0"
+    assert followup["expected_runtime_version"] == "v1.5.2"
+    assert not any("version_mismatch" in reason for reason in followup["reason_codes"])
 
 
 def test_beacon_source_release_hook_collects_installation_evidence(tmp_path: Path, monkeypatch) -> None:

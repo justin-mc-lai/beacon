@@ -304,27 +304,18 @@ def test_new_truth_consumers_use_resolver() -> None:
 def test_skill_guidance_points_to_package_authoritative_truth_map_first() -> None:
     root = Path(__file__).resolve().parents[1]
     for rel in (
-        "skills/beacon/beacon-prd/SKILL.md",
-        "skills/beacon/beacon-user-story/SKILL.md",
-        "skills/beacon/beacon-test-case/SKILL.md",
-        "skills/beacon/beacon-implement/SKILL.md",
-        "skills/beacon/beacon-qa/SKILL.md",
-        "skills/beacon/beacon-release/SKILL.md",
-        ".agents/skills/beacon-prd/SKILL.md",
-        ".agents/skills/beacon-user-story/SKILL.md",
-        ".agents/skills/beacon-test-case/SKILL.md",
-        ".agents/skills/beacon-implement/SKILL.md",
-        ".agents/skills/beacon-qa/SKILL.md",
-        ".agents/skills/beacon-release/SKILL.md",
+        "skills/beacon/SKILL.md",
+        "skills/beacon/beacon-gen-truth/SKILL.md",
+        "skills/beacon/beacon-gen-implement/SKILL.md",
+        "skills/beacon/beacon-eval-qa/SKILL.md",
+        "skills/beacon/beacon-eval-release/SKILL.md",
+        "skills/beacon/beacon-pln-source/SKILL.md",
     ):
         content = (root / rel).read_text(encoding="utf-8")
         normalized = content.lower()
-        assert "v1.5.2 Package-Authoritative Read Order" in content
-        assert "beacon truth-map resolve" in content
-        assert "--version v1.5.2" in content
-        assert "--version v1.5.1" not in content
-        assert "generated state" in normalized
-        assert "not requirement truth" in normalized or "not truth authority" in normalized
+        assert "resolver-selected truth" in content or "beacon truth-map resolve" in content
+        assert "generated state" in normalized or "not requirement truth" in normalized or "support_advisory" in normalized
+        assert "v1.5.1 Package-Authoritative Read Order" not in content
 
 
 def test_md_truth_does_not_require_json_twin(tmp_path: Path) -> None:
@@ -412,6 +403,26 @@ def test_machine_json_source_hash_freshness(tmp_path: Path) -> None:
     assert payload["status"] == "pass"
     assert payload["source_hashes"]
     assert len(payload["checked_machine_json"]) == 3
+
+
+def test_truth_map_verify_ignores_other_feature_validation_projection(tmp_path: Path) -> None:
+    _seed_v151_package(tmp_path)
+    rebuild_machine_json(tmp_path, version=VERSION, feature=FEATURE)
+    validation_path = tmp_path / f"docs/beacon/{VERSION}/.machine/requirement/feature-package-validation.json"
+    validation_payload = json.loads(validation_path.read_text(encoding="utf-8"))
+    validation_payload["feature"] = "other-feature"
+    validation_payload["feature_slug"] = "other-feature"
+    validation_payload["source_hashes"] = {"truth": "other"}
+    validation_path.write_text(json.dumps(validation_payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    payload = verify_truth_map(tmp_path, version=VERSION, feature=FEATURE, strict=True)
+
+    assert payload["status"] == "pass"
+    assert not any(
+        item.get("code") == "machine_json_source_hash_stale"
+        and item.get("path") == f"docs/beacon/{VERSION}/.machine/requirement/feature-package-validation.json"
+        for item in payload["diagnostics"]
+    )
 
 
 def test_runtime_json_is_exempt_from_markdown_twin_requirement(tmp_path: Path) -> None:

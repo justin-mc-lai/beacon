@@ -109,6 +109,23 @@ def _seed_self_repo_surfaces(root: Path, *, manifest_package: str = "1.4.0", man
     )
 
 
+def _seed_self_repo_surfaces_with_planning_agent_surface(root: Path) -> None:
+    _seed_self_repo_surfaces(root, manifest_package="1.5.2", manifest_runtime="v1.5.2")
+    manifest_path = root / "beacon" / "version-truth.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["lines"]["v1.6.0"] = {"status": "planning_only"}
+    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    state_path = root / ".beacon" / "state" / "agent-surfaces.json"
+    state = json.loads(state_path.read_text(encoding="utf-8"))
+    state["runtime_version"] = "v1.5.2"
+    state["docs_version"] = "v1.6.0"
+    state["agents"] = {
+        "codex": {"agent": "codex", "taxonomy_version": "v1.6.0"},
+        "claude": {"agent": "claude", "taxonomy_version": "v1.6.0"},
+    }
+    state_path.write_text(json.dumps(state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
 def test_sync_version_surfaces_should_project_manifest_into_managed_surfaces(tmp_path: Path):
     _seed_self_repo_surfaces(tmp_path)
 
@@ -151,6 +168,25 @@ def test_sync_version_surfaces_should_project_manifest_into_managed_surfaces(tmp
     assert state["docs_version"] == "v1.4.0"
 
 
+def test_sync_version_surfaces_should_preserve_planning_agent_surface_docs_version(tmp_path: Path):
+    _seed_self_repo_surfaces_with_planning_agent_surface(tmp_path)
+
+    result = _invoke(
+        [
+            "doctor",
+            "sync-version-surfaces",
+            "--project-root",
+            str(tmp_path),
+            "--json",
+        ]
+    )
+
+    assert result.exit_code == 0, result.stdout
+    state = json.loads((tmp_path / ".beacon" / "state" / "agent-surfaces.json").read_text(encoding="utf-8"))
+    assert state["runtime_version"] == "v1.5.2"
+    assert state["docs_version"] == "v1.6.0"
+
+
 def test_verify_version_surfaces_should_block_when_drift_exists_in_strict_mode(tmp_path: Path):
     _seed_self_repo_surfaces(tmp_path)
 
@@ -174,6 +210,29 @@ def test_verify_version_surfaces_should_block_when_drift_exists_in_strict_mode(t
     assert failed["root_skill_md_surface"] == "fail"
     assert failed["trae_rules_surface"] == "fail"
     assert failed["agent_surface_state"] == "fail"
+
+
+def test_verify_version_surfaces_should_accept_planning_agent_surface_docs_version(tmp_path: Path):
+    _seed_self_repo_surfaces_with_planning_agent_surface(tmp_path)
+    sync = _invoke(["doctor", "sync-version-surfaces", "--project-root", str(tmp_path)])
+    assert sync.exit_code == 0, sync.stdout
+
+    verify = _invoke(
+        [
+            "doctor",
+            "verify-version-surfaces",
+            "--project-root",
+            str(tmp_path),
+            "--strict",
+            "--json",
+        ]
+    )
+
+    assert verify.exit_code == 0, verify.stdout
+    payload = json.loads(verify.stdout)
+    checks = {item["name"]: item for item in payload["result"]["checks"]}
+    assert checks["agent_surface_state"]["status"] == "pass"
+    assert "v1.6.0" in checks["agent_surface_state"]["details"]["allowed_docs_versions"]
 
 
 def test_verify_version_surfaces_should_pass_after_sync(tmp_path: Path):

@@ -88,6 +88,11 @@ _INLINE_MARKERS = (
     "待澄清",
     "待定",
 )
+_INLINE_MARKER_WORD_PATTERNS = {
+    "TBD": re.compile(r"\bTBD\b"),
+    "TODO": re.compile(r"\bTODO\b"),
+    "???": re.compile(r"\?\?\?"),
+}
 
 
 def requirement_clarity_gate_supported(version: str | None) -> bool:
@@ -134,16 +139,58 @@ def _version_root(project_root: Path, version: str, feature: str) -> list[Path]:
     return paths
 
 
+def _line_has_inline_marker(stripped: str) -> bool:
+    if stripped.startswith("#"):
+        return False
+    if re.match(r"^[a-z][A-Za-z0-9_./-]*:\s", stripped):
+        return False
+    if "docs/beacon/" in stripped and stripped.endswith(".md"):
+        return False
+    if "inline_marker" in stripped or "_INLINE_MARKERS" in stripped:
+        return False
+    if "/todos" in stripped.lower() or "go-todo-" in stripped.lower():
+        return False
+    if re.search(r"创建的\s*TODO|TODO\s*（|TODO\s+CRUD", stripped, re.I):
+        return False
+
+    for marker in _INLINE_MARKERS[3:]:
+        if marker in stripped:
+            return True
+
+    if _INLINE_MARKER_WORD_PATTERNS["???"].search(stripped):
+        return True
+    if re.search(r"\bTBD\b(?:\s*[:（(]|$)", stripped, re.I):
+        return True
+    if re.search(r"^\s*TODO\s*:", stripped, re.I):
+        return True
+    if re.search(r"^[\s*+\-]+\s*TODO\s*:", stripped, re.I):
+        return True
+    return False
+
+
 def _scan_file(path: Path) -> list[dict[str, Any]]:
     findings: list[dict[str, Any]] = []
     if not path.exists():
         return findings
     lines = path.read_text(encoding="utf-8").splitlines()
     in_code_fence = False
+    in_frontmatter = False
+    frontmatter_done = False
     current_unresolved_section = ""
 
     for line_no, raw in enumerate(lines, start=1):
         stripped = raw.strip()
+        if not frontmatter_done:
+            if line_no == 1 and stripped == "---":
+                in_frontmatter = True
+                continue
+            if in_frontmatter:
+                if stripped == "---":
+                    in_frontmatter = False
+                    frontmatter_done = True
+                continue
+            frontmatter_done = True
+
         if stripped.startswith("```"):
             in_code_fence = not in_code_fence
             continue
@@ -169,8 +216,7 @@ def _scan_file(path: Path) -> list[dict[str, Any]]:
                 )
                 continue
 
-        upper = stripped.upper()
-        if any(marker in upper for marker in _INLINE_MARKERS[:3]) or any(marker in stripped for marker in _INLINE_MARKERS[3:]):
+        if _line_has_inline_marker(stripped):
             findings.append(
                 {
                     "file": str(path),

@@ -1,0 +1,300 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-skill-harness-taxonomy-v160",
+  "feature_slug": "beacon-skill-harness-taxonomy-v160",
+  "version": "v1.6.0",
+  "revision_id": "R8",
+  "source_revision_id": "R7",
+  "status": "ready",
+  "cleanup_required": true,
+  "removed_requirement_count": 3,
+  "added_requirement_count": 3,
+  "retained_requirement_count": 19,
+  "removed_requirement_surfaces": [
+    {
+      "revision_id": "R7",
+      "id": "AC-003",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "harness-prefix",
+      "text": "每个 v1.6.0 host-visible skill 都使用 `beacon-<harness>-<function>`，其中 harness 只能是 `planner/generator/evaluator/governor`。",
+      "details": [],
+      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "signature": "ac::::harness-prefix::每个 v1.6.0 host-visible skill 都使用 `beacon-<harness>-<function>`，其中 harness 只能是 `planner/generator/evaluator/governor`。::"
+    },
+    {
+      "revision_id": "R7",
+      "id": "AC-015",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "research-to-truth-promotion",
+      "text": "Research artifact 不能自动成为需求真相；只有 `user_decision=accepted/promoted` 且存在 `promotion_ref` 时，才能通过 `beacon-generator-truth-change` 或 `beacon-generator-truth-refreeze` 进入 package truth 并冻结。",
+      "details": [],
+      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "signature": "ac::::research-to-truth-promotion::research artifact 不能自动成为需求真相；只有 `user_decision=accepted/promoted` 且存在 `promotion_ref` 时，才能通过 `beacon-generator-truth-change` 或 `beacon-generator-truth-refreeze` 进入 package truth 并冻结。::"
+    },
+    {
+      "revision_id": "R7",
+      "id": "AC-016",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "skill-rename-rewrite-contract",
+      "text": "v1.6.0 skill 改名必须生成新 `beacon-<harness>-<function>` host-visible skill，更新 frontmatter/name/description/preamble/boundary，移除旧 host-visible aliases，并把旧名限制在 migration/archive/release notes。",
+      "details": [],
+      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "signature": "ac::::skill-rename-rewrite-contract::v1.6.0 skill 改名必须生成新 `beacon-<harness>-<function>` host-visible skill，更新 frontmatter/name/description/preamble/boundary，移除旧 host-visible aliases，并把旧名限制在 migration/archive/release notes。::"
+    }
+  ],
+  "added_requirement_surfaces": [
+    {
+      "revision_id": "R8",
+      "id": "AC-003",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "compact-harness-prefix",
+      "text": "每个 v1.6.0 host-visible skill 都使用 `beacon-<harness-code>-<function-code>`，其中 harness code 只能是 `pln/gen/eval/gov`，并分别映射到 `planner/generator/evaluator/governor`。",
+      "details": [],
+      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "signature": "ac::::compact-harness-prefix::每个 v1.6.0 host-visible skill 都使用 `beacon-<harness-code>-<function-code>`，其中 harness code 只能是 `pln/gen/eval/gov`，并分别映射到 `planner/generator/evaluator/governor`。::"
+    },
+    {
+      "revision_id": "R8",
+      "id": "AC-015",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "research-to-truth-promotion",
+      "text": "Research artifact 不能自动成为需求真相；只有 `user_decision=accepted/promoted` 且存在 `promotion_ref` 时，才能通过 `beacon-gen-change` 或 `beacon-gen-refreeze` 进入 package truth 并冻结。",
+      "details": [],
+      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "signature": "ac::::research-to-truth-promotion::research artifact 不能自动成为需求真相；只有 `user_decision=accepted/promoted` 且存在 `promotion_ref` 时，才能通过 `beacon-gen-change` 或 `beacon-gen-refreeze` 进入 package truth 并冻结。::"
+    },
+    {
+      "revision_id": "R8",
+      "id": "AC-016",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "skill-rename-rewrite-contract",
+      "text": "v1.6.0 skill 改名必须生成新 `beacon-<harness-code>-<function-code>` compact host-visible skill，更新 frontmatter/name/description/preamble/boundary，移除旧 host-visible aliases 和第一版完整 harness 长名 aliases，并把旧名限制在 migration/archive/release notes。",
+      "details": [],
+      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "signature": "ac::::skill-rename-rewrite-contract::v1.6.0 skill 改名必须生成新 `beacon-<harness-code>-<function-code>` compact host-visible skill，更新 frontmatter/name/description/preamble/boundary，移除旧 host-visible aliases 和第一版完整 harness 长名 aliases，并把旧名限制在 migration/archive/release notes。::"
+    }
+  ],
+  "retained_requirement_surfaces": [
+    {
+      "revision_id": "R8",
+      "id": "AC-019",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "behavior-evidence-upgrade",
+      "text": "Benchmark 必须覆盖 TC-006 到 TC-011、TC-017，把 planner/generator/evaluator/governor 边界、rough routing、no-fake-delivery 和 hard-gate injection 从静态或 replay-only 证明升级为行为证据。",
+      "details": [],
+      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "signature": "ac::::behavior-evidence-upgrade::benchmark 必须覆盖 tc-006 到 tc-011、tc-017，把 planner/generator/evaluator/governor 边界、rough routing、no-fake-delivery 和 hard-gate injection 从静态或 replay-only 证明升级为行为证据。::"
+    },
+    {
+      "revision_id": "R8",
+      "id": "AC-022",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "benchmark-analysis",
+      "text": "Analysis artifact 必须产出跨 case failure patterns、covered AC/TC、static-only AC/TC、recommended route，并说明 benchmark evidence 不能替代 formal evaluator/release verdict。",
+      "details": [],
+      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "signature": "ac::::benchmark-analysis::analysis artifact 必须产出跨 case failure patterns、covered ac/tc、static-only ac/tc、recommended route，并说明 benchmark evidence 不能替代 formal evaluator/release verdict。::"
+    },
+    {
+      "revision_id": "R8",
+      "id": "AC-020",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "benchmark-baseline-comparison",
+      "text": "Benchmark 每个关键 case 必须同时记录 `with_skill` 与 `baseline` 配置，并聚合 pass rate、boundary violation、fake delivery block 和 delta；baseline 只能作为对照证据，不能替代 gate。",
+      "details": [],
+      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "signature": "ac::::benchmark-baseline-comparison::benchmark 每个关键 case 必须同时记录 `with_skill` 与 `baseline` 配置，并聚合 pass rate、boundary violation、fake delivery block 和 delta；baseline 只能作为对照证据，不能替代 gate。::"
+    },
+    {
+      "revision_id": "R8",
+      "id": "AC-013",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "default-truth-language-zh",
+      "text": "除非用户显式指定其他语言，Beacon v1.6.0 的需求真相、验收标准、测试断言、任务台账、迁移说明和 host-visible skill preamble 默认以中文为主语言；英文只能作为稳定术语或路径标识保留。",
+      "details": [],
+      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "signature": "ac::::default-truth-language-zh::除非用户显式指定其他语言，beacon v1.6.0 的需求真相、验收标准、测试断言、任务台账、迁移说明和 host-visible skill preamble 默认以中文为主语言；英文只能作为稳定术语或路径标识保留。::"
+    },
+    {
+      "revision_id": "R8",
+      "id": "AC-008",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "evaluator-hard-gate",
+      "text": "Evaluator skills 负责判断 evidence 并 route/block，但不能改写 truth，也不能把修复 implementation 混入 verdict。",
+      "details": [],
+      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "signature": "ac::::evaluator-hard-gate::evaluator skills 负责判断 evidence 并 route/block，但不能改写 truth，也不能把修复 implementation 混入 verdict。::"
+    },
+    {
+      "revision_id": "R8",
+      "id": "AC-007",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "generator-hard-gate",
+      "text": "Generator skills 可在自身 authority 内产出 truth 或 implementation artifacts，但不能缺少 evaluator evidence 就声称完成，也不能用 fake delivery 闭环。",
+      "details": [],
+      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "signature": "ac::::generator-hard-gate::generator skills 可在自身 authority 内产出 truth 或 implementation artifacts，但不能缺少 evaluator evidence 就声称完成，也不能用 fake delivery 闭环。::"
+    },
+    {
+      "revision_id": "R8",
+      "id": "AC-009",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "governor-hard-gate",
+      "text": "Governor skills 管理 context、archive、memory、hooks、automation、metadata 和 status，不能成为人类主链阶段。",
+      "details": [],
+      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "signature": "ac::::governor-hard-gate::governor skills 管理 context、archive、memory、hooks、automation、metadata 和 status，不能成为人类主链阶段。::"
+    },
+    {
+      "revision_id": "R8",
+      "id": "AC-021",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "grader-critique",
+      "text": "Grading artifact 必须包含 assertion evidence、reason codes、fake-delivery critique 和 weak-assertion critique；弱断言或假证据不能被记为 release-ready。",
+      "details": [],
+      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "signature": "ac::::grader-critique::grading artifact 必须包含 assertion evidence、reason codes、fake-delivery critique 和 weak-assertion critique；弱断言或假证据不能被记为 release-ready。::"
+    },
+    {
+      "revision_id": "R8",
+      "id": "AC-017",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "harness-hard-gate-injection",
+      "text": "每个 v1.6.0 host-visible skill 必须在共享 preamble 后注入 harness-specific `HARD GATE`，显式禁止跨 harness skill 调用、越权写 truth、越权 implementation、越权 QA/release verdict 和假交付闭环，并声明唯一允许产物；agent-surface verify 必须扫描并阻断缺失或不匹配的 gate。",
+      "details": [],
+      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "signature": "ac::::harness-hard-gate-injection::每个 v1.6.0 host-visible skill 必须在共享 preamble 后注入 harness-specific `hard gate`，显式禁止跨 harness skill 调用、越权写 truth、越权 implementation、越权 qa/release verdict 和假交付闭环，并声明唯一允许产物；agent-surface verify 必须扫描并阻断缺失或不匹配的 gate。::"
+    },
+    {
+      "revision_id": "R8",
+      "id": "AC-001",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "lifecycle-language",
+      "text": "v1.6.0 用户可见文档把生命周期描述为 `plan -> truth -> generate -> evaluate -> release`，而不是 `prd -> user-story -> test-case`。",
+      "details": [],
+      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "signature": "ac::::lifecycle-language::v1.6.0 用户可见文档把生命周期描述为 `plan -> truth -> generate -> evaluate -> release`，而不是 `prd -> user-story -> test-case`。::"
+    },
+    {
+      "revision_id": "R8",
+      "id": "AC-012",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "migration-docs",
+      "text": "Migration docs 必须定义 old-to-new skill mapping、旧 alias 移除、CLI compatibility boundary 和 operator next steps。",
+      "details": [],
+      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "signature": "ac::::migration-docs::migration docs 必须定义 old-to-new skill mapping、旧 alias 移除、cli compatibility boundary 和 operator next steps。::"
+    },
+    {
+      "revision_id": "R8",
+      "id": "AC-011",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "no-fake-delivery",
+      "text": "Placeholder implementation、docs-only completion、fake runner evidence、zero assertions 或 placeholder evidence 都不能满足 implementation、QA 或 release closure。",
+      "details": [],
+      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "signature": "ac::::no-fake-delivery::placeholder implementation、docs-only completion、fake runner evidence、zero assertions 或 placeholder evidence 都不能满足 implementation、qa 或 release closure。::"
+    },
+    {
+      "revision_id": "R8",
+      "id": "AC-004",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "no-old-skill-aliases",
+      "text": "v1.6.0 host-visible skill package 不保留旧 skill aliases，例如 `beacon-brainstorm`、`beacon-prd`、`beacon-user-story`、`beacon-test-case`、`beacon-implement`、`beacon-qa` 或 `beacon-release`。",
+      "details": [],
+      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "signature": "ac::::no-old-skill-aliases::v1.6.0 host-visible skill package 不保留旧 skill aliases，例如 `beacon-brainstorm`、`beacon-prd`、`beacon-user-story`、`beacon-test-case`、`beacon-implement`、`beacon-qa` 或 `beacon-release`。::"
+    },
+    {
+      "revision_id": "R8",
+      "id": "AC-002",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "package-authority",
+      "text": "v1.6.0 truth 仍由 resolver 选择的 `features/<slug>/{truth,tests,tasks,evidence}.md` 承载；generated JSON 和 legacy triptych surfaces 不能赢得 authority。",
+      "details": [],
+      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "signature": "ac::::package-authority::v1.6.0 truth 仍由 resolver 选择的 `features/<slug>/{truth,tests,tasks,evidence}.md` 承载；generated json 和 legacy triptych surfaces 不能赢得 authority。::"
+    },
+    {
+      "revision_id": "R8",
+      "id": "AC-006",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "planner-hard-gate",
+      "text": "Planner skills 只能产出 research/planning artifacts 和 route recommendations；不能写 implementation、frozen truth、QA verdicts 或 release verdicts。",
+      "details": [],
+      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "signature": "ac::::planner-hard-gate::planner skills 只能产出 research/planning artifacts 和 route recommendations；不能写 implementation、frozen truth、qa verdicts 或 release verdicts。::"
+    },
+    {
+      "revision_id": "R8",
+      "id": "AC-014",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "planner-research-contract",
+      "text": "v1.6.0 把 `docs/beacon/<version>/research/<feature-slug>.md` 定义为 planner artifact surface，authority 为 `support_advisory`；research 必须包含 outcome、湖/海、truth/source/evidence refs、gaps、risks、recommended_route、user_decision 和 promotion_ref，才能被路由或升级。",
+      "details": [],
+      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "signature": "ac::::planner-research-contract::v1.6.0 把 `docs/beacon/<version>/research/<feature-slug>.md` 定义为 planner artifact surface，authority 为 `support_advisory`；research 必须包含 outcome、湖/海、truth/source/evidence refs、gaps、risks、recommended_route、user_decision 和 promotion_ref，才能被路由或升级。::"
+    },
+    {
+      "revision_id": "R8",
+      "id": "AC-010",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "rough-prompt-routing",
+      "text": "粗粒度用户提示词必须先被归约为 outcome、source/truth/evidence refs、湖/海分类、truth gap、test gap、implementation risk、verification risk 和推荐 harness route。",
+      "details": [],
+      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "signature": "ac::::rough-prompt-routing::粗粒度用户提示词必须先被归约为 outcome、source/truth/evidence refs、湖/海分类、truth gap、test gap、implementation risk、verification risk 和推荐 harness route。::"
+    },
+    {
+      "revision_id": "R8",
+      "id": "AC-005",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "shared-preamble",
+      "text": "每个 v1.6.0 host-visible skill 都包含共享生成 preamble，覆盖湖/海、先搜再造、用户主权、不假交付和 harness 边界。",
+      "details": [],
+      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "signature": "ac::::shared-preamble::每个 v1.6.0 host-visible skill 都包含共享生成 preamble，覆盖湖/海、先搜再造、用户主权、不假交付和 harness 边界。::"
+    },
+    {
+      "revision_id": "R8",
+      "id": "AC-018",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "skill-eval-benchmark-artifacts",
+      "text": "`beacon skill eval-kit benchmark --version v1.6.0` 必须输出 `eval_metadata/`、`grading/`、`benchmark/`、`analysis/` 四类 runtime evidence artifact，并标记 `runtime_evidence_only=true`、`requirement_truth=false`。",
+      "details": [],
+      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "signature": "ac::::skill-eval-benchmark-artifacts::`beacon skill eval-kit benchmark --version v1.6.0` 必须输出 `eval_metadata/`、`grading/`、`benchmark/`、`analysis/` 四类 runtime evidence artifact，并标记 `runtime_evidence_only=true`、`requirement_truth=false`。::"
+    }
+  ],
+  "current_baseline_hash": "sha256:efd8c5e106134ffc0081f8f4964e639b3a01153acda4c2f400b4f1a52a37ac84",
+  "source_baseline_hash": "sha256:3e1086fa8b190e48cce9e1b0a4d18ac5418e36fcd35237aa014ac7e229bc1809",
+  "story_state_ref": "docs/beacon/v1.6.0/.machine/user-story/beacon-skill-harness-taxonomy-v160.json",
+  "generated_at": "2026-06-09T02:14:37.398136+00:00",
+  "json_ref": "docs/beacon/v1.6.0/.machine/execution/revision-delta-beacon-skill-harness-taxonomy-v160.json",
+  "markdown_ref": "docs/beacon/v1.6.0/execution/revision-delta-beacon-skill-harness-taxonomy-v160.md"
+}

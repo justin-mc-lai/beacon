@@ -1364,6 +1364,19 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
                 payload["status"] = "blocked"
                 payload["evidence_done"] = False
                 payload["release_ready"] = False
+            reused_feature_scorecard = (
+                payload.get("feature_scorecard")
+                if isinstance(payload.get("feature_scorecard"), dict)
+                else {}
+            )
+            release_gate_ref = _write_release_gate_projection(
+                project_root,
+                version=version,
+                run_id=current_run_id or str(plan.get("implementation_run_id") or "feature-qa"),
+                qa_status=payload,
+                feature_scorecard=reused_feature_scorecard,
+            )
+            payload["release_gate_report_path"] = release_gate_ref
             _with_delivery_contract(
                 payload,
                 requirement_binding={
@@ -1372,6 +1385,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
                 },
                 traceability_refs=[
                     str(feature_qa_matrix_path(project_root, feature=feature).relative_to(project_root)),
+                    release_gate_ref,
                     str(handoff.get("summary_ref") or ""),
                     str(handoff.get("technical_archive_ref") or ""),
                 ],
@@ -1392,6 +1406,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             manifest_refs = [
                 str(feature_status_file.relative_to(project_root)),
                 str(feature_qa_plan_path(project_root, feature=feature).relative_to(project_root)),
+                release_gate_ref,
             ]
             for candidate in (
                 project_root / ".beacon" / "auto-test-status.json",

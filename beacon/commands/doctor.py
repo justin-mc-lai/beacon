@@ -32,6 +32,7 @@ from beacon.utils.doctor_orchestrator import (
     run_package_upgrade,
     run_quiet_worktree,
     run_requirement_clarity_sync,
+    run_truth_integrity_verify,
     run_runtime_ledger_export,
     run_runtime_ledger_rebuild,
     run_runtime_ledger_verify,
@@ -849,6 +850,94 @@ def sync_requirement_clarity(
     raise typer.Exit(code=execution.exit_code)
 
 
+@app.command("verify-truth-integrity")
+def verify_truth_integrity(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("latest-docs", "--version", "-v", help="Target docs version"),
+    mode: str = typer.Option("audit", "--mode", help="Gate mode: audit or block"),
+    strict: bool = typer.Option(False, "--strict", help="Treat audit findings as blocking"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Verify feature package truth integrity (TIG) before freeze or for audit."""
+    execution = run_truth_integrity_verify(
+        project_root=project_root,
+        version=version,
+        feature=feature,
+        mode=mode,
+        strict=strict,
+    )
+    output = execution.payload
+    result = output.get("result", {}) if isinstance(output.get("result"), dict) else {}
+    if json_output:
+        typer.echo(json.dumps(output, ensure_ascii=False, indent=2))
+    else:
+        typer.echo("Beacon Doctor Truth Integrity")
+        typer.echo("=" * 30)
+        typer.echo(f"feature: {feature}")
+        typer.echo(f"status: {result.get('status', '')}")
+        typer.echo(f"blocked: {result.get('blocked', False)}")
+        typer.echo(f"finding_count: {result.get('finding_count', 0)}")
+        typer.echo(f"reason_code: {result.get('reason_code', '')}")
+    raise typer.Exit(code=execution.exit_code)
+
+
+@app.command("verify-truth-quality")
+def verify_truth_quality(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("latest-docs", "--version", "-v", help="Target docs version"),
+    mode: str = typer.Option("audit", "--mode", help="Gate mode: audit or block"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Verify truth determinism quality (TIG-DC): placeholder words and hollow templates."""
+    from beacon.utils.truth_integrity import build_truth_integrity_gate
+
+    root = Path(project_root).expanduser().resolve() if project_root else Path.cwd()
+    gate = build_truth_integrity_gate(root, version=version, feature=feature, mode=mode)
+    dc_findings = [
+        f for f in gate.get("findings", [])
+        if isinstance(f, dict)
+        and str(f.get("reason_code", "")) in {
+            "TRUTH_DETERMINISM_PLACEHOLDER",
+            "TRUTH_DETERMINISM_HOLLOW_TEMPLATE",
+        }
+    ]
+    determinism = gate.get("determinism_check", {})
+    result = {
+        "feature": feature,
+        "version": gate.get("version", version),
+        "mode": mode,
+        "status": gate.get("status", ""),
+        "blocked": gate.get("blocked", False),
+        "placeholder_count": determinism.get("placeholder_count", 0),
+        "hollow_template_count": determinism.get("hollow_template_count", 0),
+        "findings": dc_findings,
+        "finding_count": len(dc_findings),
+    }
+    payload = {"schema_version": "1.0", "action": "doctor-verify-truth-quality", "result": result}
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo("Beacon Doctor Truth Quality (TIG-DC)")
+        typer.echo("=" * 37)
+        typer.echo(f"feature: {feature}")
+        typer.echo(f"status: {result['status']}")
+        typer.echo(f"blocked: {result['blocked']}")
+        typer.echo(f"placeholder_count: {result['placeholder_count']}")
+        typer.echo(f"hollow_template_count: {result['hollow_template_count']}")
+        if dc_findings:
+            typer.echo("\nFindings")
+            typer.echo("-" * 37)
+            for f in dc_findings:
+                kind = str(f.get("kind", ""))
+                line = int(f.get("line", 0))
+                text = str(f.get("text", "")).strip()
+                typer.echo(f"- {kind} (L{line}): {text[:80]}")
+    exit_code = 2 if result["blocked"] else 0
+    raise typer.Exit(code=exit_code)
+
+
 @app.command("sync-technical-review-contract")
 def sync_technical_review_contract(
     feature: str = typer.Argument(..., help="Feature name"),
@@ -1615,6 +1704,38 @@ def verify_version_truth_catalog_command(
         for check in result.get("checks") or []:
             if isinstance(check, dict):
                 typer.echo(f"- {check.get('name')}: {check.get('status')} ({check.get('reason_code', '')})")
+    exit_code = 0
+    if result.get("status") == "fail":
+        exit_code = 2
+    elif strict and result.get("status") == "skipped":
+        exit_code = 2
+    raise typer.Exit(code=exit_code)
+
+
+@app.command("verify-agent-eval-admission")
+def verify_agent_eval_admission_command(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("auto", "--version", "-v", help="Target docs version"),
+    strict: bool = typer.Option(False, "--strict", help="Fail when admission file is missing"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Verify agent-eval live runner admission JSON for v1.6.1 agent eval."""
+    from beacon.utils.agent_eval_kit import verify_agent_eval_admission
+    from beacon.utils.versioning import resolve_target_version
+
+    root = Path(project_root).expanduser().resolve() if project_root else Path.cwd()
+    resolved_version = resolve_target_version(root, version)
+    result = verify_agent_eval_admission(root, version=resolved_version)
+    payload = {"schema_version": "1.0", "action": "doctor-verify-agent-eval-admission", "result": result}
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo("Beacon Doctor Agent Eval Admission Verify")
+        typer.echo(f"status: {result.get('status')}")
+        if result.get("reason_code"):
+            typer.echo(f"reason_code: {result.get('reason_code')}")
+        if result.get("path"):
+            typer.echo(f"path: {result.get('path')}")
     exit_code = 0
     if result.get("status") == "fail":
         exit_code = 2

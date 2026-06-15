@@ -20,7 +20,7 @@ from beacon.utils.material_audit import build_requirement_package_gate
 from beacon.utils.memory import append_memory_entry
 from beacon.utils.project_metadata import metadata_machine_path, verify_project_metadata
 from beacon.utils.project_hooks import build_lifecycle_hook_advisory
-from beacon.utils.release_scorecard import build_ceo_challenge_coverage, build_release_scorecard
+from beacon.utils.release_scorecard import build_release_scorecard
 from beacon.utils.v115_delivery import refresh_evidence_manifest
 from beacon.utils.revision_state import load_revision_state
 from beacon.utils.runtime_projection_store import runtime_projection_transaction_contract
@@ -325,26 +325,6 @@ def _normalize_string_list(values: object) -> list[str]:
     return out
 
 
-def _render_ceo_challenge_release_section(release_scorecard: dict[str, Any]) -> str:
-    ceo_review = release_scorecard.get("ceo_review") if isinstance(release_scorecard.get("ceo_review"), dict) else {}
-    coverage = (
-        release_scorecard.get("ceo_challenge_coverage")
-        if isinstance(release_scorecard.get("ceo_challenge_coverage"), dict)
-        else build_ceo_challenge_coverage(ceo_review)
-    )
-    covered_axes = [str(item).strip() for item in (coverage.get("covered_axes") or []) if str(item).strip()]
-    missing_axes = [str(item).strip() for item in (coverage.get("missing_axes") or []) if str(item).strip()]
-    needs_challenge = bool(coverage.get("needs_challenge", False))
-    return (
-        "## CEO Challenge Coverage\n\n"
-        f"- status: `{str(coverage.get('status') or 'missing')}`\n"
-        f"- decision: `{str(coverage.get('decision') or 'none')}`\n"
-        f"- covered_axes: `{', '.join(covered_axes) or 'none'}`\n"
-        f"- missing_axes: `{', '.join(missing_axes) or 'none'}`\n"
-        f"- needs_challenge: `{needs_challenge}`\n"
-        f"- gap_status: `{str(coverage.get('gap_status') or 'warn')}`\n"
-        f"- next_route: `{str(coverage.get('latest_next_route') or 'none')}`\n"
-    )
 
 
 def _feature_order_sort_key(item: dict) -> tuple[str, str, str, str]:
@@ -648,7 +628,6 @@ def create(
     version_change_md_ref = str(version_change_md.relative_to(project_root))
     version_change_json_ref = str(version_change_json.relative_to(project_root))
     release_scorecard = build_release_scorecard(project_root, version=resolved_version)
-    ceo_challenge_section = _render_ceo_challenge_release_section(release_scorecard)
 
     release_content = f"""# Release Checklist: {resolved_version}
 
@@ -693,7 +672,6 @@ def create(
 
 ---
 
-{ceo_challenge_section}
 
 ---
 
@@ -1229,22 +1207,6 @@ def check(
                 )
             )
 
-        ceo_challenge_coverage = (
-            release_scorecard.get("ceo_challenge_coverage")
-            if isinstance(release_scorecard.get("ceo_challenge_coverage"), dict)
-            else {}
-        )
-        checks.append(
-            (
-                "ceo challenge coverage current",
-                "warn" if bool(ceo_challenge_coverage.get("needs_challenge", False)) else "pass",
-                (
-                    f"status={ceo_challenge_coverage.get('status') or 'missing'}, "
-                    f"missing_axes={','.join(str(item) for item in (ceo_challenge_coverage.get('missing_axes') or [])) or 'none'}, "
-                    f"decision={ceo_challenge_coverage.get('decision') or 'none'}"
-                ),
-            )
-        )
 
     if bool(version_surface_governance.get("configured", False)):
         repair_commands = version_surface_repair_commands(project_root)

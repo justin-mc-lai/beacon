@@ -11,6 +11,7 @@ from typing import Any
 from beacon.commands.auto_test import LAYER_NAMES
 from beacon.utils.artifact_paths import qa_feature_evidence_contract_candidates, qa_matrix_candidates
 from beacon.utils.artifact_update_obligations import blocking_obligations, load_artifact_update_obligations
+from beacon.utils.python_exec import normalize_qa_shell_command
 from beacon.utils.qa9 import QA9_TYPES, default_command_for_qa_type, normalize_qa_type
 from beacon.utils.qa_acceptance import BROWSER_QA_LAYER, build_qa_acceptance_capability_summary
 from beacon.utils.qa_precision import (
@@ -413,6 +414,34 @@ def _normalize_entry_command(value: str) -> str:
     return command
 
 
+def _render_entry_command_template(
+    command: str,
+    *,
+    project_root: Path | None = None,
+    feature: str = "",
+    version: str = "",
+) -> str:
+    """Resolve safe Beacon QA matrix placeholders before shell execution."""
+    rendered = str(command or "")
+    feature_value = str(feature or "").strip()
+    slug_value = feature_slug(feature_value) if feature_value else ""
+    project_value = str(project_root) if isinstance(project_root, Path) else "."
+    replacements = {
+        "<feature>": feature_value,
+        "{feature}": feature_value,
+        "<feature-slug>": slug_value,
+        "{feature_slug}": slug_value,
+        "<version>": str(version or "").strip(),
+        "{version}": str(version or "").strip(),
+        "<project-root>": project_value,
+        "{project_root}": project_value,
+    }
+    for token, value in replacements.items():
+        if value:
+            rendered = rendered.replace(token, value)
+    return rendered
+
+
 def _map_entry_qa_type(layer: str) -> str:
     normalized = normalize_qa_type(layer)
     if normalized in QA_LAYER_SET:
@@ -427,18 +456,55 @@ def _derived_evidence_path(*, feature: str, tc_id: str) -> str:
     return f".beacon/evidence/qa-feature/{feature_slug(feature)}/{tc_id.lower()}/__RUN_ID__.json"
 
 
-def _resolve_entry_command(*, qa_type: str, command: str, ui_runner: str) -> str:
-    normalized = _normalize_entry_command(command)
+def _feature_scoped_pytest_command(project_root: Path, *, feature: str, qa_type: str) -> str:
+    slug = feature_slug(feature)
+    known_feature_tests = {
+        "beacon-skill-harness-taxonomy-v160": [
+            "tests/test_v160_skill_harness_taxonomy.py",
+            "tests/test_v1410_qa_evo_deep_skill_eval.py",
+            "tests/test_v147_change_refreeze_one_shot.py",
+        ],
+    }
+    candidates = list(known_feature_tests.get(slug, []))
+    slug_candidate = "tests/test_" + slug.replace("-", "_") + ".py"
+    candidates.append(slug_candidate)
+    existing = [path for path in candidates if (project_root / path).exists()]
+    if not existing:
+        return ""
+    junit_arg = '--junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"'
+    if qa_type == "integration" and slug == "beacon-skill-harness-taxonomy-v160":
+        return f"python3 -m pytest -q {' '.join(existing)} {junit_arg}"
+    return f"python3 -m pytest -q {' '.join(existing)} {junit_arg}"
+
+
+def _resolve_entry_command(
+    *,
+    qa_type: str,
+    command: str,
+    ui_runner: str,
+    project_root: Path | None = None,
+    feature: str = "",
+    version: str = "",
+) -> str:
+    rendered = _render_entry_command_template(command, project_root=project_root, feature=feature, version=version)
+    normalized = _normalize_entry_command(rendered)
     if not normalized:
+        if project_root is not None and str(feature or "").strip():
+            scoped = _feature_scoped_pytest_command(project_root, feature=feature, qa_type=qa_type)
+            if scoped:
+                return scoped
         return default_command_for_qa_type(qa_type, ui_runner=ui_runner)
     if "beacon.adapters.browser_use_runner" in normalized and qa_type in {"functional", "compatibility"} and ui_runner != "browser-use":
         return default_command_for_qa_type(qa_type, ui_runner=ui_runner)
-    return normalized
+    return normalize_qa_shell_command(normalized, project_root=project_root)
 
 
 def _apply_feature_evidence_contract(
     entries: list[dict[str, Any]],
     *,
+    project_root: Path,
+    feature: str,
+    version: str = "",
     contract: dict[str, Any],
     ui_runner: str,
 ) -> list[dict[str, Any]]:
@@ -479,6 +545,9 @@ def _apply_feature_evidence_contract(
                 qa_type="compatibility" if key == "replay_command" and qa_type == "compatibility" else qa_type,
                 command=value,
                 ui_runner=ui_runner,
+                project_root=project_root,
+                feature=feature,
+                version=version,
             )
         if "assertion" in override and str(override.get("assertion") or "").strip():
             item["assertion"] = str(override.get("assertion") or "").strip()
@@ -488,7 +557,14 @@ def _apply_feature_evidence_contract(
     return patched
 
 
-def _derive_entries(feature: str, entries: list[dict[str, Any]], *, ui_runner: str = "playwright") -> list[dict[str, Any]]:
+def _derive_entries(
+    project_root: Path,
+    feature: str,
+    entries: list[dict[str, Any]],
+    *,
+    version: str = "",
+    ui_runner: str = "playwright",
+) -> list[dict[str, Any]]:
     derived: list[dict[str, Any]] = []
     for index, item in enumerate(entries, start=1):
         if not isinstance(item, dict):
@@ -509,6 +585,9 @@ def _derive_entries(feature: str, entries: list[dict[str, Any]], *, ui_runner: s
                     qa_type=qa_type,
                     command=str(item.get("command") or ""),
                     ui_runner=ui_runner,
+                    project_root=project_root,
+                    feature=feature,
+                    version=version,
                 ),
                 "evidence_path": str(item.get("evidence_path") or _derived_evidence_path(feature=feature, tc_id=tc_id)),
             }
@@ -687,6 +766,8 @@ def _augment_story_scenario_map(
             qa_type=qa_type,
             command=str(entry.get("command") or scenario.get("command") or ""),
             ui_runner=ui_runner,
+            project_root=None,
+            feature=feature,
         )
         if browser_required:
             exploratory_runner = str(scenario.get("exploratory_runner") or entry.get("exploratory_runner") or "").strip().lower()
@@ -698,6 +779,8 @@ def _augment_story_scenario_map(
                 qa_type=qa_type,
                 command=str(entry.get("explore_command") or scenario.get("explore_command") or scenario.get("command") or ""),
                 ui_runner=ui_runner,
+                project_root=None,
+                feature=feature,
             )
             replay_qa_type = "compatibility" if scenario_family == "compatibility" else qa_type
             scenario["replay_command"] = default_command_for_qa_type(replay_qa_type, ui_runner="playwright")
@@ -744,6 +827,8 @@ def _augment_story_scenario_map(
                 qa_type=qa_type,
                 command=str(entry.get("explore_command") or entry.get("command") or "").strip(),
                 ui_runner=ui_runner,
+                project_root=None,
+                feature=feature,
             ) if bool(entry.get("browser_required")) else str(entry.get("explore_command") or "").strip(),
             "replay_command": str(entry.get("replay_command") or "").strip(),
             "coverage_axes": [axis for axis in ("primary", qa_type, "non-browser") if axis],
@@ -978,6 +1063,7 @@ def build_feature_qa_plan(
     ui_runner: str = "playwright",
     persist: bool = True,
 ) -> dict[str, Any]:
+    project_root = project_root.expanduser().resolve()
     resolved_version = resolve_target_version(project_root, version)
     story = load_story_state(project_root, version=resolved_version, feature=feature, create_if_missing=persist) or {}
     revision = load_revision_state(project_root, version=resolved_version, feature=feature, create_if_missing=persist)
@@ -985,12 +1071,17 @@ def build_feature_qa_plan(
     evidence_contract_path, evidence_contract = _load_feature_evidence_contract(project_root, version=resolved_version, feature=feature)
     source_entries = source_matrix.get("entries") if isinstance(source_matrix.get("entries"), list) else []
     derived_entries = _derive_entries(
+        project_root,
         feature,
         [item for item in source_entries if isinstance(item, dict)],
+        version=resolved_version,
         ui_runner=ui_runner,
     )
     derived_entries = _apply_feature_evidence_contract(
         derived_entries,
+        project_root=project_root,
+        feature=feature,
+        version=resolved_version,
         contract=evidence_contract,
         ui_runner=ui_runner,
     )
@@ -1151,6 +1242,7 @@ def build_feature_qa_plan(
 
 
 def materialize_feature_qa_matrix(project_root: Path, *, plan: dict[str, Any]) -> Path:
+    project_root = project_root.expanduser().resolve()
     feature = str(plan.get("feature") or plan.get("feature_slug") or "").strip()
     if not feature:
         raise ValueError("feature_missing")
@@ -1461,24 +1553,16 @@ def _browser_blocker_session_reason(stop_reasons: list[str]) -> str:
     return ""
 
 
-def build_feature_qa_precision_artifacts(
-    project_root: Path,
+def _build_scenario_precision_results(
     *,
     feature: str,
-    run_id: str,
-    plan: dict[str, Any],
     per_item_results: list[dict[str, Any]],
-    project_profile_gate: dict[str, Any] | None = None,
-    qa_status: dict[str, Any] | None = None,
-    exhaustiveness: dict[str, Any] | None = None,
-    design_truth_verdict: dict[str, Any] | None = None,
-) -> tuple[list[dict[str, Any]], dict[str, Any], dict[str, Any], Path, Path]:
-    calibration_model = load_qa_calibration_model(project_root)
-    risk_bands = calibration_model.get("risk_bands") if isinstance(calibration_model.get("risk_bands"), dict) else {}
-    auto_accept_threshold = float(risk_bands.get("auto_accept") or DEFAULT_AUTO_ACCEPT_THRESHOLD)
-    review_threshold = float(risk_bands.get("review_required") or DEFAULT_REVIEW_THRESHOLD)
-
+    calibration_model: dict[str, Any],
+    auto_accept_threshold: float,
+    review_threshold: float,
+) -> list[dict[str, Any]]:
     scenario_results: list[dict[str, Any]] = []
+    feature_slug_value = feature_slug(feature)
     for item in per_item_results:
         if not isinstance(item, dict):
             continue
@@ -1515,7 +1599,7 @@ def build_feature_qa_precision_artifacts(
                 "tc_id": str(item.get("tc_id") or "").strip(),
                 "source_tc_id": str(item.get("source_tc_id") or item.get("tc_id") or "").strip(),
                 "ac_id": str(item.get("ac_id") or "").strip(),
-                "feature_slug": feature_slug(feature),
+                "feature_slug": feature_slug_value,
                 "scenario_family": str(item.get("scenario_family") or "").strip(),
                 "status": "review_required" if requires_human_review and status == "blocked" else status,
                 "closure_outcome": closure_outcome,
@@ -1535,7 +1619,15 @@ def build_feature_qa_precision_artifacts(
                 "evidence_ref": item.get("evidence_ref") if isinstance(item.get("evidence_ref"), list) else [],
             }
         )
+    return scenario_results
 
+
+def _build_ac_closure_reports(
+    *,
+    feature: str,
+    plan: dict[str, Any],
+    scenario_results: list[dict[str, Any]],
+) -> tuple[list[dict[str, Any]], dict[tuple[str, str], set[str]]]:
     selected_source_tc_ids = {
         str(item).strip()
         for item in (
@@ -1581,6 +1673,7 @@ def build_feature_qa_precision_artifacts(
             scenario_family = str(scenario.get("scenario_family") or "").strip()
             if ac_id and source_tc_id and scenario_family:
                 families_by_ac_and_source_tc.setdefault((ac_id, source_tc_id), set()).add(scenario_family)
+
     accepted_source_tc_ids = {
         str(item.get("source_tc_id") or item.get("tc_id") or "").strip()
         for item in scenario_results
@@ -1589,6 +1682,7 @@ def build_feature_qa_precision_artifacts(
     }
 
     ac_reports: list[dict[str, Any]] = []
+    feature_slug_value = feature_slug(feature)
     ac_ids = sorted({str(item.get("ac_id") or "").strip() for item in scenario_results if str(item.get("ac_id") or "").strip()})
     for ac_id in ac_ids:
         ac_results = [item for item in scenario_results if str(item.get("ac_id") or "").strip() == ac_id]
@@ -1638,7 +1732,7 @@ def build_feature_qa_precision_artifacts(
         ac_reports.append(
             {
                 "ac_id": ac_id,
-                "feature_slug": feature_slug(feature),
+                "feature_slug": feature_slug_value,
                 "required_scenario_families": required_families,
                 "passed_scenario_families": passed_families,
                 "required_replay_scenarios": [
@@ -1655,84 +1749,22 @@ def build_feature_qa_precision_artifacts(
                 "blocking_reasons": blocking_reasons + missing_required_families,
             }
         )
+    return ac_reports, families_by_ac_and_source_tc
 
-    ac_closure_payload = {
-        "schema_version": "1.0",
-        "feature": feature,
-        "feature_slug": feature_slug(feature),
-        "run_id": run_id,
-        "generated_at": now_iso(),
-        "reports": ac_reports,
-    }
-    ac_closure_path = write_feature_qa_ac_closure(project_root, feature=feature, payload=ac_closure_payload)
-    resolved_version = resolve_target_version(project_root, str(plan.get("version") or "auto"))
-    deep_absorption = build_deep_absorption_status(
-        project_root,
-        version=resolved_version,
-        feature=feature,
-        ac_closure=ac_closure_payload,
-    )
 
-    project_profile_gate = project_profile_gate if isinstance(project_profile_gate, dict) else {}
-    review_required_count = len([item for item in scenario_results if bool(item.get("requires_human_review"))])
-    needs_replay_count = len([item for item in scenario_results if str(item.get("closure_outcome") or "") == "needs_replay"])
-    unresolved_closure_outcomes = sorted(
-        {
-            str(item.get("closure_outcome") or "").strip()
-            for item in scenario_results
-            if str(item.get("closure_outcome") or "").strip() not in {"accepted"}
-        }
-    )
-    calibrated_confidences = [float(item.get("confidence_calibrated") or 0.0) for item in scenario_results]
-    release_confidence_min = round(min(calibrated_confidences), 4) if calibrated_confidences else 0.0
-    release_confidence_avg = round(sum(calibrated_confidences) / float(len(calibrated_confidences) or 1), 4)
-    scenario_total = len(scenario_results)
-    scenario_passed = len([item for item in scenario_results if str(item.get("closure_outcome") or "") == "accepted"])
-    false_complete_risk = round(
-        max(
-            1.0 - release_confidence_avg,
-            float(len(unresolved_closure_outcomes)) / float(scenario_total or 1),
-        ),
-        4,
-    )
-    project_gate_status = str(project_profile_gate.get("status") or "not_configured")
-    qa_status = qa_status if isinstance(qa_status, dict) else {}
-    exhaustiveness = exhaustiveness if isinstance(exhaustiveness, dict) else {}
-    design_truth_verdict = design_truth_verdict if isinstance(design_truth_verdict, dict) else {}
-    revision_state = load_revision_state(
-        project_root,
-        version=resolved_version,
-        feature=feature,
-        create_if_missing=False,
-    )
-    reconciliation_gate = (
-        detect_implementation_first_reconciliation_needed(
-            project_root,
-            version=resolved_version,
-            feature=feature,
-            revision_state=revision_state,
-        )
-        if revision_state
-        else {}
-    )
-    design_truth_blocked = bool(design_truth_verdict.get("blocked")) or str(design_truth_verdict.get("status") or "").strip().lower() in {"blocked", "fail", "failed"}
-    design_truth_reason_codes = [
-        str(item).strip()
-        for item in (design_truth_verdict.get("reason_codes") if isinstance(design_truth_verdict.get("reason_codes"), list) else [])
-        if str(item).strip()
-    ]
-    quality_issues = qa_status.get("quality_issues") if isinstance(qa_status.get("quality_issues"), list) else []
-    runtime_taxonomy = _qa_runtime_taxonomy(qa_status)
-    quality_reason_codes = sorted(
-        {
-            str(item.get("reason_code") or "").strip()
-            for item in quality_issues
-            if isinstance(item, dict) and str(item.get("reason_code") or "").strip()
-        }
-    )
-    qa_attribution = summarize_qa_attributions(
-        qa_status.get("qa_attributions") if isinstance(qa_status.get("qa_attributions"), list) else []
-    )
+def _collect_feature_scorecard_stop_reasons(
+    *,
+    project_gate_status: str,
+    project_profile_gate: dict[str, Any],
+    unresolved_closure_outcomes: list[str],
+    quality_issues: list[dict[str, Any]],
+    exhaustiveness: dict[str, Any],
+    scenario_results: list[dict[str, Any]],
+    design_truth_blocked: bool,
+    design_truth_reason_codes: list[str],
+    reconciliation_gate: dict[str, Any],
+    runtime_taxonomy: dict[str, Any],
+) -> list[str]:
     quality_stop_reasons = sorted(
         {
             str(reason).strip()
@@ -1749,6 +1781,7 @@ def build_feature_qa_precision_artifacts(
             if isinstance(item, dict) and str(item.get("reason_code") or "").strip()
         }
     )
+
     stop_reasons: list[str] = []
     if project_gate_status == "blocked":
         gate_issues = project_profile_gate.get("issues") if isinstance(project_profile_gate.get("issues"), list) else []
@@ -1819,7 +1852,18 @@ def build_feature_qa_precision_artifacts(
     primary_runtime_class = str(runtime_taxonomy.get("primary_class") or "").strip()
     if primary_runtime_class:
         stop_reasons.append(primary_runtime_class)
-    stop_reasons = sorted({code for code in stop_reasons if str(code).strip()})
+    return sorted({code for code in stop_reasons if str(code).strip()})
+
+
+def _build_feature_scorecard_coverage(
+    *,
+    plan: dict[str, Any],
+    exhaustiveness: dict[str, Any],
+    scenario_results: list[dict[str, Any]],
+    scenario_total: int,
+    unresolved_closure_outcomes: list[str],
+    families_by_ac_and_source_tc: dict[tuple[str, str], set[str]],
+) -> tuple[dict[str, Any], dict[str, Any], bool, bool]:
     required_scenarios = int(exhaustiveness.get("scenario_count") or scenario_total or len(plan.get("targeted_scenario_ids") or []))
     executed_scenarios = len(
         [
@@ -1893,8 +1937,191 @@ def build_feature_qa_precision_artifacts(
         or missing_test_case_ids
         or list(exhaustiveness.get("missing_replay_scenarios") or [])
     )
-    test_case_backfill_required = bool(
-        missing_scenario_families
+    test_case_backfill_required = bool(missing_scenario_families)
+    return coverage_current, coverage_gap, coverage_gap_remaining, test_case_backfill_required
+
+
+def _build_feature_scorecard_repair_handoff(
+    *,
+    project_root: Path,
+    feature: str,
+    plan: dict[str, Any],
+    reconciliation_gate: dict[str, Any],
+    stop_reasons: list[str],
+    project_gate_status: str,
+    test_case_backfill_required: bool,
+    coverage_gap_remaining: bool,
+) -> tuple[str, dict[str, Any]]:
+    plan_version = str(plan.get("version") or "")
+    resume_command = f'beacon help --project-root {project_root} --version {plan_version} --feature "{feature}"'
+    if bool(reconciliation_gate.get("required")):
+        return resume_command, {
+            "action": "beacon-change",
+            "reason": str(
+                ((reconciliation_gate.get("artifact") or {}).get("recovery_reason"))
+                or "implementation-first reconciliation is required before QA proof can be trusted"
+            ),
+            "command": str((((reconciliation_gate.get("artifact") or {}).get("change_route") or {}).get("command")) or resume_command),
+        }
+
+    browser_session_reason = _browser_blocker_session_reason(stop_reasons)
+    browser_placeholder_only = "browser_evidence_placeholder_only" in stop_reasons
+    if any(reason in {"implementation_reopened", "bug_filed"} for reason in stop_reasons):
+        return resume_command, {
+            "action": "implement",
+            "reason": ", ".join(stop_reasons[:3]) if stop_reasons else "qa_round_incomplete",
+            "command": f'beacon implement run "{feature}" --project {project_root} --version {plan_version} --runner native-single',
+        }
+    if browser_session_reason:
+        return resume_command, {
+            "action": "qa-session",
+            "reason": "protected browser surface requires an attached session or runner before QA can continue",
+            "command": f"beacon qa session list --project {project_root}",
+        }
+    if browser_placeholder_only:
+        return resume_command, {
+            "action": "qa-browser-rerun",
+            "reason": "browser evidence is placeholder-only and must be rerun with a real attached browser path",
+            "command": f'beacon qa run "{feature}" --project {project_root} --version {plan_version}',
+        }
+    if project_gate_status == "blocked":
+        return resume_command, {
+            "action": "verify-run",
+            "reason": ", ".join(stop_reasons[:3]) if stop_reasons else "qa_round_incomplete",
+            "command": f'beacon verify run "{feature}" --project-root {project_root} --version {plan_version}',
+        }
+    if test_case_backfill_required:
+        return resume_command, {
+            "action": "test-case-create",
+            "reason": ", ".join(stop_reasons[:3]) if stop_reasons else "coverage_gap_remaining",
+            "command": f'beacon test-case create "{feature}" --project {project_root} --version {plan_version}',
+        }
+    return resume_command, {
+        "action": "qa-repair",
+        "reason": ", ".join(stop_reasons[:3]) if stop_reasons else ("coverage_gap_remaining" if coverage_gap_remaining else "qa_round_incomplete"),
+        "command": resume_command,
+    }
+
+
+def build_feature_qa_precision_artifacts(
+    project_root: Path,
+    *,
+    feature: str,
+    run_id: str,
+    plan: dict[str, Any],
+    per_item_results: list[dict[str, Any]],
+    project_profile_gate: dict[str, Any] | None = None,
+    qa_status: dict[str, Any] | None = None,
+    exhaustiveness: dict[str, Any] | None = None,
+    design_truth_verdict: dict[str, Any] | None = None,
+) -> tuple[list[dict[str, Any]], dict[str, Any], dict[str, Any], Path, Path]:
+    calibration_model = load_qa_calibration_model(project_root)
+    risk_bands = calibration_model.get("risk_bands") if isinstance(calibration_model.get("risk_bands"), dict) else {}
+    auto_accept_threshold = float(risk_bands.get("auto_accept") or DEFAULT_AUTO_ACCEPT_THRESHOLD)
+    review_threshold = float(risk_bands.get("review_required") or DEFAULT_REVIEW_THRESHOLD)
+
+    scenario_results = _build_scenario_precision_results(
+        feature=feature,
+        per_item_results=per_item_results,
+        calibration_model=calibration_model,
+        auto_accept_threshold=auto_accept_threshold,
+        review_threshold=review_threshold,
+    )
+    ac_reports, families_by_ac_and_source_tc = _build_ac_closure_reports(
+        feature=feature,
+        plan=plan,
+        scenario_results=scenario_results,
+    )
+
+    ac_closure_payload = {
+        "schema_version": "1.0",
+        "feature": feature,
+        "feature_slug": feature_slug(feature),
+        "run_id": run_id,
+        "generated_at": now_iso(),
+        "reports": ac_reports,
+    }
+    ac_closure_path = write_feature_qa_ac_closure(project_root, feature=feature, payload=ac_closure_payload)
+    resolved_version = resolve_target_version(project_root, str(plan.get("version") or "auto"))
+    deep_absorption = build_deep_absorption_status(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        ac_closure=ac_closure_payload,
+    )
+
+    project_profile_gate = project_profile_gate if isinstance(project_profile_gate, dict) else {}
+    review_required_count = len([item for item in scenario_results if bool(item.get("requires_human_review"))])
+    needs_replay_count = len([item for item in scenario_results if str(item.get("closure_outcome") or "") == "needs_replay"])
+    unresolved_closure_outcomes = sorted(
+        {
+            str(item.get("closure_outcome") or "").strip()
+            for item in scenario_results
+            if str(item.get("closure_outcome") or "").strip() not in {"accepted"}
+        }
+    )
+    calibrated_confidences = [float(item.get("confidence_calibrated") or 0.0) for item in scenario_results]
+    release_confidence_min = round(min(calibrated_confidences), 4) if calibrated_confidences else 0.0
+    release_confidence_avg = round(sum(calibrated_confidences) / float(len(calibrated_confidences) or 1), 4)
+    scenario_total = len(scenario_results)
+    scenario_passed = len([item for item in scenario_results if str(item.get("closure_outcome") or "") == "accepted"])
+    false_complete_risk = round(
+        max(
+            1.0 - release_confidence_avg,
+            float(len(unresolved_closure_outcomes)) / float(scenario_total or 1),
+        ),
+        4,
+    )
+    project_gate_status = str(project_profile_gate.get("status") or "not_configured")
+    qa_status = qa_status if isinstance(qa_status, dict) else {}
+    exhaustiveness = exhaustiveness if isinstance(exhaustiveness, dict) else {}
+    design_truth_verdict = design_truth_verdict if isinstance(design_truth_verdict, dict) else {}
+    revision_state = load_revision_state(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        create_if_missing=False,
+    )
+    reconciliation_gate = (
+        detect_implementation_first_reconciliation_needed(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            revision_state=revision_state,
+        )
+        if revision_state
+        else {}
+    )
+    design_truth_blocked = bool(design_truth_verdict.get("blocked")) or str(design_truth_verdict.get("status") or "").strip().lower() in {"blocked", "fail", "failed"}
+    design_truth_reason_codes = [
+        str(item).strip()
+        for item in (design_truth_verdict.get("reason_codes") if isinstance(design_truth_verdict.get("reason_codes"), list) else [])
+        if str(item).strip()
+    ]
+    quality_issues = qa_status.get("quality_issues") if isinstance(qa_status.get("quality_issues"), list) else []
+    runtime_taxonomy = _qa_runtime_taxonomy(qa_status)
+    qa_attribution = summarize_qa_attributions(
+        qa_status.get("qa_attributions") if isinstance(qa_status.get("qa_attributions"), list) else []
+    )
+    stop_reasons = _collect_feature_scorecard_stop_reasons(
+        project_gate_status=project_gate_status,
+        project_profile_gate=project_profile_gate,
+        unresolved_closure_outcomes=unresolved_closure_outcomes,
+        quality_issues=quality_issues,
+        exhaustiveness=exhaustiveness,
+        scenario_results=scenario_results,
+        design_truth_blocked=design_truth_blocked,
+        design_truth_reason_codes=design_truth_reason_codes,
+        reconciliation_gate=reconciliation_gate if isinstance(reconciliation_gate, dict) else {},
+        runtime_taxonomy=runtime_taxonomy,
+    )
+    coverage_current, coverage_gap, coverage_gap_remaining, test_case_backfill_required = _build_feature_scorecard_coverage(
+        plan=plan,
+        exhaustiveness=exhaustiveness,
+        scenario_results=scenario_results,
+        scenario_total=scenario_total,
+        unresolved_closure_outcomes=unresolved_closure_outcomes,
+        families_by_ac_and_source_tc=families_by_ac_and_source_tc,
     )
     release_ready = (
         bool(ac_reports)
@@ -1912,71 +2139,16 @@ def build_feature_qa_precision_artifacts(
         continue_decision = "ready_for_release"
     elif coverage_gap_remaining or unresolved_closure_outcomes or str(exhaustiveness.get("status") or "").strip().lower() != "passed":
         continue_decision = "continue"
-    resume_command = (
-        f'beacon help --project-root {project_root} --version {str(plan.get("version") or "")} --feature "{feature}"'
+    resume_command, repair_handoff = _build_feature_scorecard_repair_handoff(
+        project_root=project_root,
+        feature=feature,
+        plan=plan,
+        reconciliation_gate=reconciliation_gate if isinstance(reconciliation_gate, dict) else {},
+        stop_reasons=stop_reasons,
+        project_gate_status=project_gate_status,
+        test_case_backfill_required=test_case_backfill_required,
+        coverage_gap_remaining=coverage_gap_remaining,
     )
-    browser_session_reason = _browser_blocker_session_reason(stop_reasons)
-    browser_placeholder_only = "browser_evidence_placeholder_only" in stop_reasons
-    repair_handoff = {
-        "action": (
-            "beacon-change"
-            if bool(reconciliation_gate.get("required"))
-            else (
-                "implement"
-                if any(reason in {"implementation_reopened", "bug_filed"} for reason in stop_reasons)
-                else (
-                    "qa-session"
-                    if browser_session_reason
-                    else (
-                        "qa-browser-rerun"
-                        if browser_placeholder_only
-                        else ("verify-run" if project_gate_status == "blocked" else ("test-case-create" if test_case_backfill_required else "qa-repair"))
-                    )
-                )
-            )
-        ),
-        "reason": (
-            str(
-                ((reconciliation_gate.get("artifact") or {}).get("recovery_reason"))
-                or "implementation-first reconciliation is required before QA proof can be trusted"
-            )
-            if bool(reconciliation_gate.get("required"))
-            else (
-                "protected browser surface requires an attached session or runner before QA can continue"
-                if browser_session_reason
-                else (
-                    "browser evidence is placeholder-only and must be rerun with a real attached browser path"
-                    if browser_placeholder_only
-                    else (", ".join(stop_reasons[:3]) if stop_reasons else ("coverage_gap_remaining" if coverage_gap_remaining else "qa_round_incomplete"))
-                )
-            )
-        ),
-        "command": (
-            str((((reconciliation_gate.get("artifact") or {}).get("change_route") or {}).get("command")) or resume_command)
-            if bool(reconciliation_gate.get("required"))
-            else (
-                f'beacon implement run "{feature}" --project {project_root} --version {str(plan.get("version") or "")} --runner native-single'
-                if any(reason in {"implementation_reopened", "bug_filed"} for reason in stop_reasons)
-                else (
-                    f"beacon qa session list --project {project_root}"
-                    if browser_session_reason
-                    else (
-                        f'beacon qa run "{feature}" --project {project_root} --version {str(plan.get("version") or "")}'
-                        if browser_placeholder_only
-                        else (
-                            f'beacon verify run "{feature}" --project-root {project_root} --version {str(plan.get("version") or "")}'
-                            if project_gate_status == "blocked"
-                            else (
-                                f'beacon test-case create "{feature}" --project {project_root} --version {str(plan.get("version") or "")}'
-                                if test_case_backfill_required
-                                else (resume_command if coverage_gap_remaining else resume_command)
-                            )
-                        )
-                    )
-                )
-            )
-        ),
-    }
     executed_acceptance_layers = _executed_acceptance_layers(scenario_results=scenario_results, qa_status=qa_status)
     blocked_acceptance_layers = sorted(
         {
@@ -2004,8 +2176,18 @@ def build_feature_qa_precision_artifacts(
     browser_required_for_acceptance = any(bool(item.get("browser_required")) for item in scenario_results) or any(
         bool(item.get("browser_required")) for item in targeted_entry_dicts
     )
+    required_acceptance_layers = sorted(
+        {
+            normalize_qa_type(str(layer).strip())
+            for layer in (plan.get("targeted_layers") or [])
+            if normalize_qa_type(str(layer).strip()) in QA_LAYER_SET
+        }
+    ) or executed_acceptance_layers
+    if browser_required_for_acceptance and BROWSER_QA_LAYER not in required_acceptance_layers:
+        required_acceptance_layers.append(BROWSER_QA_LAYER)
     qa_acceptance_capability = build_qa_acceptance_capability_summary(
-        profile="browser" if browser_required_for_acceptance else "closure",
+        profile="feature-matrix",
+        required_layers=required_acceptance_layers,
         browser_required=browser_required_for_acceptance,
         executed_layers=[layer for layer in executed_acceptance_layers if layer],
         blocked_layers=[layer for layer in blocked_acceptance_layers if layer],

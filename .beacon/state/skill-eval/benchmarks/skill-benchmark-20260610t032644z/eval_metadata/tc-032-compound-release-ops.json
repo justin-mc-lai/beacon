@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "benchmark_id": "skill-benchmark-20260610t032644z",
+  "version": "v1.6.0",
+  "case_id": "tc-032-compound-release-ops",
+  "tc_id": "TC-032",
+  "ac_ids": [
+    "AC-010"
+  ],
+  "prompt": "release/install/skill projection 需要检查 global/local skill、stale copies、post-release hooks、canary、rollback 和 version alignment。",
+  "target_harness": "planner",
+  "expected_route": "beacon-pln-review",
+  "truth_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+  ],
+  "source_refs": [
+    "beacon/utils/skill_eval_kit.py",
+    "beacon/utils/agent_surface.py"
+  ],
+  "evidence_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md"
+  ],
+  "assertions": [
+    "must_emit_release_ops_review",
+    "must_route_release_gaps_to_release_or_governor"
+  ],
+  "configs": [
+    "with_skill",
+    "baseline"
+  ],
+  "runtime_evidence_only": true,
+  "requirement_truth": false
+}

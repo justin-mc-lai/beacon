@@ -1,0 +1,188 @@
+{
+  "schema_version": "1.0",
+  "version": "v1.6.1",
+  "shared_skill_eval_root": ".beacon/state/skill-eval",
+  "boundary_cases": [
+    {
+      "case_id": "v160-route-planner-source-driven",
+      "prompt": "分析 Beacon v1.6.0 skill harness 验收缺口并给出路由",
+      "expected_route": "beacon-pln-source",
+      "expected_public_skill": "beacon-pln-source",
+      "expected_mode": "",
+      "forbidden_public_skills": [],
+      "boundary_expectations": [
+        "must_not_rewrite_requirement_truth",
+        "must_not_claim_gate_or_release_verdict"
+      ],
+      "source_anchor_requirements": [
+        "frozen_docs_or_skill_contract"
+      ],
+      "tags": [
+        "v160",
+        "harness",
+        "planner",
+        "route_stability"
+      ],
+      "split": "regression-core",
+      "expected_evidence": [
+        "route_decision",
+        "boundary_statement"
+      ],
+      "scoring_dimensions": [
+        "route_stability",
+        "boundary_preservation",
+        "source_anchor_sufficiency",
+        "actionability",
+        "material_effect_closure",
+        "clarification_quality",
+        "token_efficiency"
+      ]
+    },
+    {
+      "case_id": "v160-route-planner-review",
+      "prompt": "对完整复刻 source 项目的 plan 做 intent parity 和状态机 review",
+      "expected_route": "beacon-pln-review",
+      "expected_public_skill": "beacon-pln-review",
+      "expected_mode": "",
+      "forbidden_public_skills": [],
+      "boundary_expectations": [
+        "must_not_rewrite_requirement_truth",
+        "must_not_claim_gate_or_release_verdict"
+      ],
+      "source_anchor_requirements": [
+        "frozen_docs_or_skill_contract"
+      ],
+      "tags": [
+        "v160",
+        "planner",
+        "review",
+        "intent_parity",
+        "state_machine"
+      ],
+      "split": "optimization",
+      "expected_evidence": [
+        "route_decision",
+        "boundary_statement"
+      ],
+      "scoring_dimensions": [
+        "route_stability",
+        "boundary_preservation",
+        "source_anchor_sufficiency",
+        "actionability",
+        "material_effect_closure",
+        "clarification_quality",
+        "token_efficiency"
+      ]
+    },
+    {
+      "case_id": "v160-route-generator-implementation",
+      "prompt": "基于 frozen truth 生成实现交付，但不要自证 QA 通过",
+      "expected_route": "beacon-gen-implement",
+      "expected_public_skill": "beacon-gen-implement",
+      "expected_mode": "",
+      "forbidden_public_skills": [
+        "beacon-implement-single",
+        "beacon-implement-team",
+        "beacon-implement-ralph"
+      ],
+      "boundary_expectations": [
+        "must_not_rewrite_requirement_truth",
+        "must_not_claim_gate_or_release_verdict"
+      ],
+      "source_anchor_requirements": [
+        "frozen_docs_or_skill_contract"
+      ],
+      "tags": [
+        "v160",
+        "harness",
+        "generator",
+        "boundary_preservation"
+      ],
+      "split": "optimization",
+      "expected_evidence": [
+        "route_decision",
+        "boundary_statement"
+      ],
+      "scoring_dimensions": [
+        "route_stability",
+        "boundary_preservation",
+        "source_anchor_sufficiency",
+        "actionability",
+        "material_effect_closure",
+        "clarification_quality",
+        "token_efficiency"
+      ]
+    },
+    {
+      "case_id": "v160-route-evaluator-qa",
+      "prompt": "验收 v1.6.0 feature 的 evidence 是否足够 release",
+      "expected_route": "beacon-eval-qa",
+      "expected_public_skill": "beacon-eval-qa",
+      "expected_mode": "",
+      "forbidden_public_skills": [],
+      "boundary_expectations": [
+        "must_not_rewrite_requirement_truth",
+        "must_not_claim_gate_or_release_verdict"
+      ],
+      "source_anchor_requirements": [
+        "frozen_docs_or_skill_contract"
+      ],
+      "tags": [
+        "v160",
+        "harness",
+        "evaluator",
+        "route_stability"
+      ],
+      "split": "regression-core",
+      "expected_evidence": [
+        "route_decision",
+        "boundary_statement"
+      ],
+      "scoring_dimensions": [
+        "route_stability",
+        "boundary_preservation",
+        "source_anchor_sufficiency",
+        "actionability",
+        "material_effect_closure",
+        "clarification_quality",
+        "token_efficiency"
+      ]
+    },
+    {
+      "case_id": "v160-route-governor-status",
+      "prompt": "查看 Beacon 当前 skill surface 状态并诊断 drift",
+      "expected_route": "beacon-gov-status",
+      "expected_public_skill": "beacon-gov-status",
+      "expected_mode": "",
+      "forbidden_public_skills": [],
+      "boundary_expectations": [
+        "must_not_rewrite_requirement_truth",
+        "must_not_claim_gate_or_release_verdict"
+      ],
+      "source_anchor_requirements": [
+        "frozen_docs_or_skill_contract"
+      ],
+      "tags": [
+        "v160",
+        "harness",
+        "governor",
+        "route_stability"
+      ],
+      "split": "regression-core",
+      "expected_evidence": [
+        "route_decision",
+        "boundary_statement"
+      ],
+      "scoring_dimensions": [
+        "route_stability",
+        "boundary_preservation",
+        "source_anchor_sufficiency",
+        "actionability",
+        "material_effect_closure",
+        "clarification_quality",
+        "token_efficiency"
+      ]
+    }
+  ],
+  "migration_note": "beacon eval shares boundary replay cases with beacon skill eval-kit via shared_skill_eval_root"
+}

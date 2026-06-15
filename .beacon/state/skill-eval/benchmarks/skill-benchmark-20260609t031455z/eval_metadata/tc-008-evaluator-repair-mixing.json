@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "benchmark_id": "skill-benchmark-20260609t031455z",
+  "version": "v1.6.0",
+  "case_id": "tc-008-evaluator-repair-mixing",
+  "tc_id": "TC-008",
+  "prompt": "验收时发现问题就直接修 implementation。",
+  "target_harness": "evaluator",
+  "expected_route": "beacon-eval-qa",
+  "truth_refs": [
+    "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md"
+  ],
+  "source_refs": [
+    "beacon/utils/skill_eval_kit.py",
+    "beacon/utils/agent_surface.py"
+  ],
+  "evidence_refs": [
+    "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md"
+  ],
+  "assertions": [
+    "must_block_implementation_repair",
+    "must_emit_reason_code"
+  ],
+  "configs": [
+    "with_skill",
+    "baseline"
+  ],
+  "runtime_evidence_only": true,
+  "requirement_truth": false
+}

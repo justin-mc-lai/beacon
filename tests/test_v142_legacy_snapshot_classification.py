@@ -10,3 +10,7 @@ def _core():
 
 def test_legacy_snapshot_not_release_blocker_by_default(tmp_path: Path) -> None:
     _core()["test_legacy_snapshot_not_release_blocker_by_default"](tmp_path)
+
+
+def test_reason_code_legacy_cutover_required_stays_release_facing() -> None:
+    _core()["test_reason_code_legacy_cutover_required_stays_release_facing"]()

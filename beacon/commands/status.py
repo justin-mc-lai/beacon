@@ -120,7 +120,7 @@ def _status_impl(
     run_id: str,
     change_intent: str,
 ) -> int:
-    root = Path(project_root) if project_root else Path.cwd()
+    root = (Path(project_root) if project_root else Path.cwd()).expanduser().resolve()
     team_root = root / ".beacon" / "team"
     team_count = len([p for p in team_root.glob("*") if p.is_dir()]) if team_root.exists() else 0
     bridge_root = root / ".beacon" / "bridge"
@@ -338,7 +338,6 @@ def _status_impl(
             "approved_by": technical_review_state.get("approved_by", ""),
             "state_path": technical_review_state.get("state_path", ""),
         },
-        "ceo_review": load_support_surface_summary(root, surface="beacon-ceo-review") if target_feature else {},
         "design_review": load_support_surface_summary(root, surface="beacon-design-review") if target_feature else {},
         "learning_governance": load_support_surface_summary(root, surface="beacon-learn") if target_feature else {},
         "requirement_completeness_gate": help_payload.get("requirement_completeness_gate", {}),
@@ -516,12 +515,6 @@ def _status_impl(
                 f"feature_count={release_summary.get('change_documents_feature_count')} "
                 f"includes_current={release_summary.get('change_documents_includes_current_feature')}"
             )
-        if release_summary.get("ceo_challenge_gap_status"):
-            typer.echo(
-                f"- release.ceo_challenge: {release_summary.get('ceo_challenge_gap_status')} "
-                f"promotion={release_summary.get('ceo_challenge_promotion_decision') or '-'} "
-                f"missing={','.join(release_summary.get('ceo_challenge_missing_axes') or []) or 'none'}"
-            )
         coverage_current = release_summary.get("coverage_current") if isinstance(release_summary.get("coverage_current"), dict) else {}
         if coverage_current:
             typer.echo(
@@ -593,13 +586,6 @@ def _status_impl(
             typer.echo(
                 f"- technical_review: {payload.get('technical_review', {}).get('status')} "
                 f"review_status={payload.get('technical_review', {}).get('review_status') or 'none'}"
-            )
-        if target_feature and payload.get("ceo_review", {}).get("status"):
-            ceo_axes = payload.get("ceo_review", {}).get("challenge_axis_codes") if isinstance(payload.get("ceo_review", {}), dict) else []
-            ceo_axis_suffix = f" axes={','.join(ceo_axes)}" if isinstance(ceo_axes, list) and ceo_axes else ""
-            typer.echo(
-                f"- ceo_review: {payload.get('ceo_review', {}).get('status')} "
-                f"next={payload.get('ceo_review', {}).get('latest_next_route') or 'none'}{ceo_axis_suffix}"
             )
         if target_feature and payload.get("design_review", {}).get("status"):
             typer.echo(

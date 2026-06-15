@@ -10,72 +10,64 @@ from beacon.main import app
 
 ROOT = Path(__file__).resolve().parents[1]
 PACKAGED = ROOT / "skills" / "beacon"
-AGENTS = ROOT / ".agents" / "skills"
 
 
 def _read(path: Path) -> str:
     return path.read_text(encoding="utf-8")
 
 
-def test_beacon_truth_skill_exists_in_packaged_and_agent_surfaces() -> None:
-    for root in (PACKAGED, AGENTS):
-        text = _read(root / "beacon-truth" / "SKILL.md")
-        assert text.startswith("---\n")
-        assert "name: beacon-truth" in text
-        assert "truth.define" in text
-        assert "truth.acceptance" in text
-        assert "truth.coverage" in text
+def test_beacon_truth_skill_exists_in_packaged_surface_as_v160_generator() -> None:
+    text = _read(PACKAGED / "beacon-gen-truth" / "SKILL.md")
+    assert text.startswith("---\n")
+    assert "name: beacon-gen-truth" in text
+    assert "Beacon v1.6.0 共享 Preamble" in text
+    assert "HARD GATE:" in text
+    assert "你正在运行 generator skill" in text
+    assert "beacon-truth` -> `beacon-gen-truth" in text
 
 
-def test_beacon_truth_preserves_distinct_modes_and_change_route() -> None:
-    for root in (PACKAGED, AGENTS):
-        text = _read(root / "beacon-truth" / "SKILL.md")
-        assert "truth.define" in text
-        assert "truth.acceptance" in text
-        assert "truth.coverage" in text
-        assert "truth.change" in text
-        assert "freeform truth surface" in text
+def test_beacon_truth_preserves_distinct_change_and_refreeze_routes() -> None:
+    change = _read(PACKAGED / "beacon-gen-change" / "SKILL.md")
+    refreeze = _read(PACKAGED / "beacon-gen-refreeze" / "SKILL.md")
+    bootstrap = _read(PACKAGED / "beacon-gen-truth-init" / "SKILL.md")
+    assert "beacon-change` -> `beacon-gen-change" in change
+    assert "beacon-change-refreeze` -> `beacon-gen-refreeze" in refreeze
+    assert "beacon-prd-bootstrap` -> `beacon-gen-truth-init" in bootstrap
+    assert "禁止自证完成" in change
 
 
 def test_beacon_truth_is_resolver_first_and_package_authoritative() -> None:
-    for root in (PACKAGED, AGENTS):
-        text = _read(root / "beacon-truth" / "SKILL.md")
-        assert "beacon truth-map resolve <feature> --project . --version v1.5.2 --json" in text
-        assert "features/<slug>/truth.md" in text
-        assert "features/<slug>/tests.md" in text
-        assert "markdown feature package" in text.lower()
+    text = _read(PACKAGED / "beacon-gen-truth" / "SKILL.md")
+    root_skill = _read(PACKAGED / "SKILL.md")
+    assert "resolver-selected truth" in text
+    assert "docs/beacon/<version>/research/<feature-slug>.md" in text
+    assert "beacon truth-map resolve <feature> --project . --version <version> --json" in root_skill
+    assert "docs/beacon/<version>/features/<slug>/{truth,tests,tasks,evidence}.md" in root_skill
 
 
-def test_legacy_truth_skills_are_marked_compatibility_aliases() -> None:
-    for root in (PACKAGED, AGENTS):
-        assert "compatibility alias" in _read(root / "beacon-prd" / "SKILL.md")
-        assert "truth.define" in _read(root / "beacon-prd" / "SKILL.md")
-        assert "compatibility alias" in _read(root / "beacon-user-story" / "SKILL.md")
-        assert "truth.acceptance" in _read(root / "beacon-user-story" / "SKILL.md")
-        assert "compatibility alias" in _read(root / "beacon-test-case" / "SKILL.md")
-        assert "truth.coverage" in _read(root / "beacon-test-case" / "SKILL.md")
+def test_legacy_truth_skills_are_removed_from_v160_packaged_surface() -> None:
+    for old_name in ("beacon-prd", "beacon-user-story", "beacon-test-case", "beacon-truth"):
+        assert not (PACKAGED / old_name / "SKILL.md").exists()
 
 
 def test_root_and_brainstorm_prefer_truth_mode_lifecycle_language() -> None:
     root_skill = _read(PACKAGED / "SKILL.md")
-    assert "truth.define -> truth.acceptance -> truth.coverage" in root_skill
-    assert "`beacon-truth`" in root_skill
-    assert "compatibility aliases" in root_skill
+    assert "plan -> truth -> generate -> evaluate -> release" in root_skill
+    assert "`beacon-gen-truth`" in root_skill
+    assert "Old host-visible aliases" in root_skill
 
-    for root in (PACKAGED, AGENTS):
-        brainstorm = _read(root / "beacon-brainstorm" / "SKILL.md")
-        assert "truth.define -> truth.acceptance -> truth.coverage" in brainstorm
-        assert "`beacon-truth`" in brainstorm
+    brainstorm = _read(PACKAGED / "beacon-pln-brainstorm" / "SKILL.md")
+    assert "你正在运行 planner skill" in brainstorm
+    assert "route recommendation" in brainstorm
 
 
 def test_beacon_truth_does_not_inflate_support_or_gate_surfaces() -> None:
-    for root in (PACKAGED, AGENTS):
-        text = _read(root / "beacon-truth" / "SKILL.md").lower()
-        assert "not a truth authority" in text
-        assert "not a gate source" in text
-        assert "not a new lifecycle stage" in text
-        assert "does not execute qa" in text
-        assert "does not issue release verdicts" in text
+    text = _read(PACKAGED / "beacon-gen-truth" / "SKILL.md").lower()
+    assert "禁止自证完成" in text
+    assert "禁止给 qa/release verdict" in text
+    assert "fake-runner" in text
+    evaluator = _read(PACKAGED / "beacon-eval-qa" / "SKILL.md").lower()
+    assert "禁止改写 requirement truth" in evaluator
 
 
 def test_validate_feature_package_cli_for_truth_skill_lifecycle_package() -> None:

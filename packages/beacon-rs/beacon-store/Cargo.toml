@@ -1,0 +1,17 @@
+[package]
+name = "beacon-store"
+description = "Beacon v2 global SQLite store (~/.beacon/beacon.db)"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+beacon-core = { workspace = true }
+rusqlite = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+chrono = { workspace = true }
+
+[dev-dependencies]
+tempfile = "3"

@@ -15,7 +15,6 @@ CORE_COMMANDS = (
 )
 
 SUPPORT_COMMANDS = (
-    "automation",
     "board",
     "code2truth",
     "help",
@@ -32,6 +31,8 @@ SUPPORT_COMMANDS = (
     "friction-intake",
     "feedback",
     "freeze",
+    "plan",
+    "program",
     "reopen",
     "remember",
     "recall",
@@ -103,7 +104,6 @@ COMMAND_LAYER_ORDER = (
 
 # Keep the canonical ordering stable for auto-generated docs/tests.
 SUPPORTED_SUBCOMMANDS = (
-    "automation",
     "ask",
     "analyze",
     "archive",
@@ -139,6 +139,9 @@ SUPPORTED_SUBCOMMANDS = (
     "prd",
     "qa",
     "orchestrate",
+    "plan",
+    "program",
+    "planner-review",
     "ralph-bridge",
     "real-project-validation",
     "recall",

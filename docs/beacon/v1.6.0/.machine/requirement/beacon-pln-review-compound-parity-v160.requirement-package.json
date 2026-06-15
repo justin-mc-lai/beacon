@@ -1,0 +1,436 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-06-09T12:55:21.625864+00:00",
+  "feature": "beacon-pln-review-compound-parity-v160",
+  "feature_slug": "beacon-pln-review-compound-parity-v160",
+  "version": "v1.6.0",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md",
+    "tests": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
+    "tasks": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tasks.md",
+    "evidence": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "0427a11a92e8e388092b7d1328f9086c416b8ebce3cce8b17dc7a9756193320f",
+    "tests": "62b83e62ad0eae06445cb455001ac2393cbb5fbfb22b918971c718568df7d3db",
+    "tasks": "e0d158152e42729fa6ed4425029c6a44270be4a551cf29bf5ab4c7adc8666be5",
+    "evidence": "1278fc5e6a9afbd3bb8bbdcb9c7d51da53ec28dae4b4b0885b978982a2e879ef"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-pln-review-compound-parity-v160",
+    "version": "v1.6.0",
+    "status": "frozen",
+    "language": "zh",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md",
+      "user_story": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md",
+      "test_case": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md"
+    },
+    "parser_contract": "beacon-feature-package-v1",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "feature-package",
+      "description": "新 feature package 使用 package-authoritative truth，状态为 frozen，scope mode 为 `full_parity`。"
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "compound-review-contract",
+      "description": "`beacon-pln-review` references 定义 Compound parity review output contract。"
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "reviewer-catalog",
+      "description": "always-on 和 conditional reviewer catalog 覆盖 correctness、testing、maintainability、standards、intent、route、source parity、diff scope、security、performance、API、reliability、browser ops、release ops、adversarial 和 state machine。"
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "source-parity",
+      "description": "用户表达完整复刻、同等能力、做全、不要 MVP 或引用 OSS/source 时，默认 `scope_mode=full_parity`，并要求 source capability inventory、parity matrix、coverage mapping 和 deferral ledger。"
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "no-silent-mvp",
+      "description": "full parity 到 MVP、patch 或 defer 的任何降级必须进入 deferral ledger，并要求用户显式接受。"
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "finding-schema",
+      "description": "findings 包含 severity、confidence、authority、dedup、merged_from、conflict_group、owner、autofix_class、requires_verification 和 recommended_route。"
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "synthesis",
+      "description": "synthesis 必须执行 merge/dedup/arbitration，保留冲突，提升最高 severity，并输出单一 recommended route。"
+    },
+    {
+      "ac_id": "AC-008",
+      "theme": "autofix-boundary",
+      "description": "planner 只能分类 `safe_auto/gated_auto/manual/advisory/release`，不能执行修复；safe_auto 只能路由到 generator。"
+    },
+    {
+      "ac_id": "AC-009",
+      "theme": "diff-scope",
+      "description": "PR/diff/worktree review 必须记录 base、changed、untracked、generated/projection、deleted、high-risk files 和 scope confidence；scope 不明时输出 degraded review。"
+    },
+    {
+      "ac_id": "AC-010",
+      "theme": "release-ops",
+      "description": "release/install/skill projection 场景必须检查 global/local skill、stale copies、post-release hooks、canary/smoke install、rollback 和 version alignment。"
+    },
+    {
+      "ac_id": "AC-011",
+      "theme": "qa-evidence-hygiene",
+      "description": "QA/benchmark/browser/compatibility 场景必须检查 JUnit、assertion_count、fake runner、placeholder evidence、browser admission、compatibility pair evidence 和 benchmark metadata/grading/analysis。"
+    },
+    {
+      "ac_id": "AC-012",
+      "theme": "state-machine",
+      "description": "review 状态机覆盖 scope、source parity、reviewer selection、lane execution、finding synthesis、route recommendation、blocked transitions 和 terminal states。"
+    },
+    {
+      "ac_id": "AC-013",
+      "theme": "planner-boundary",
+      "description": "review artifact 明确非 truth、非 QA verdict、非 release verdict，并禁止 planner 写 truth、代码、`.machine` 或执行修复。"
+    },
+    {
+      "ac_id": "AC-014",
+      "theme": "benchmark",
+      "description": "`beacon skill eval-kit benchmark --version v1.6.0 --json` 覆盖 Compound parity、source parity、防 MVP 缩水、finding synthesis、autofix boundary、diff scope、release ops 和 QA evidence hygiene。"
+    },
+    {
+      "ac_id": "AC-015",
+      "theme": "tests",
+      "description": "单元/契约测试覆盖 review contract references、artifact schema、synthesis rules、benchmark grading 和 skill projection。"
+    },
+    {
+      "ac_id": "AC-016",
+      "theme": "no-public-sprawl",
+      "description": "不新增 host-visible reviewer 子 skill；新增能力必须作为 `beacon-pln-review` internal reviewer/reference/runtime contract。"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "contract",
+      "command": "`beacon validate-feature-package beacon-pln-review-compound-parity-v160 --project . --version v1.6.0 --json`",
+      "assertion": "feature package 为 package-authoritative truth，frontmatter 状态为 frozen，并声明 `full_parity`。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "contract",
+      "command": "`python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_compound_review_contract_reference_exists --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "`beacon-pln-review` references 包含 Compound parity output contract 字段。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "unit",
+      "command": "`python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_reviewer_catalog_covers_compound_and_beacon_reviewers --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "always-on 和 conditional reviewer catalog 覆盖 correctness、testing、maintainability、standards、intent、route、source parity、diff scope、security、performance、API、reliability、browser ops、release ops、adversarial 和 state machine。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "unit",
+      "command": "`python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_full_parity_prompt_requires_source_inventory_and_parity_matrix --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "完整复刻、同等能力、做全、不要 MVP 或 source refs 触发 `full_parity`、source capability inventory、parity matrix、coverage mapping 和 deferral ledger。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-005",
+      "layer": "negative",
+      "command": "`python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_unapproved_mvp_downgrade_is_blocked --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "full parity 被降级为 MVP/patch/defer 且无 user decision 时，产生 P0/P1 finding 并阻断 implement/freeze route。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-006",
+      "layer": "unit",
+      "command": "`python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_finding_schema_contains_synthesis_and_routing_fields --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "findings 包含 severity、confidence、authority、dedup、merged_from、conflict_group、owner、autofix_class、requires_verification 和 recommended_route。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-007",
+      "tc_id": "TC-007",
+      "layer": "unit",
+      "command": "`python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_synthesis_dedups_conflicts_and_selects_conservative_route --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "synthesis 合并重复 finding，保留冲突，提升最高 severity，并输出单一 recommended route。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-008",
+      "tc_id": "TC-008",
+      "layer": "negative",
+      "command": "`python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_planner_autofix_classification_does_not_execute_repairs --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "planner 只分类 `safe_auto/gated_auto/manual/advisory/release`，不改 truth 或代码；safe_auto 路由到 generator。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-009",
+      "tc_id": "TC-009",
+      "layer": "unit",
+      "command": "`python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_diff_scope_review_records_worktree_surfaces --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "diff scope 包含 base、changed、untracked、generated/projection、deleted、high-risk files 和 scope confidence；scope 不明时 degraded。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-010",
+      "tc_id": "TC-010",
+      "layer": "unit",
+      "command": "`python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_release_ops_review_routes_install_and_projection_gaps --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "release ops review 检查 global/local skill、stale copies、post-release hooks、canary/smoke install、rollback 和 version alignment。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-011",
+      "tc_id": "TC-011",
+      "layer": "unit",
+      "command": "`python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_qa_evidence_hygiene_flags_junit_assertion_and_placeholder_gaps --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "QA evidence hygiene 对 JUnit、assertion_count、fake runner、placeholder evidence、browser admission、compatibility pair evidence 和 benchmark metadata/grading/analysis 产生 finding。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-012",
+      "tc_id": "TC-012",
+      "layer": "contract",
+      "command": "`python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_compound_parity_state_machine_contract_is_materialized --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "状态机覆盖 scope、source parity、reviewer selection、lane execution、finding synthesis、route recommendation、blocked transitions 和 terminal states。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-013",
+      "tc_id": "TC-013",
+      "layer": "negative",
+      "command": "`python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_planner_review_artifact_has_no_truth_or_verdict_authority --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "review artifact 标记非 truth、非 QA verdict、非 release verdict，并禁止 planner 写 truth、代码、`.machine` 或执行修复。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-014",
+      "tc_id": "TC-014",
+      "layer": "behavior",
+      "command": "`beacon skill eval-kit benchmark --version v1.6.0 --json`",
+      "assertion": "benchmark 覆盖 Compound parity、source parity、防 MVP 缩水、finding synthesis、autofix boundary、diff scope、release ops 和 QA evidence hygiene。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-015",
+      "tc_id": "TC-015",
+      "layer": "regression",
+      "command": "`python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py tests/test_v160_pln_review_multi_agent.py tests/test_v160_skill_harness_taxonomy.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "review contract references、artifact schema、synthesis rules、benchmark grading、multi-agent runtime 和 skill projection 回归通过。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-016",
+      "tc_id": "TC-016",
+      "layer": "integration",
+      "command": "`beacon skill package verify --project-root . --version v1.6.0 --json`",
+      "assertion": "不新增 host-visible reviewer 子 skill；新增能力作为 `beacon-pln-review` internal reviewer/reference/runtime contract 投影。",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "创建 package-authoritative feature package，并冻结 `full_parity` scope。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "更新 `beacon-pln-review` references，新增 Compound parity review contract。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "扩展 reviewer catalog，覆盖 Compound reviewer、Beacon intent/source parity reviewer 和 release/QA evidence reviewer。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "实现 source parity delivery artifact schema。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "实现 finding synthesis schema、dedup、conflict 和 route selection。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "实现 autofix classification routing，确保 planner 不执行修复。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "实现 diff/PR/worktree scope review artifact。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-008",
+      "title": "实现 release ops closure review artifact。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-009",
+      "title": "实现 QA evidence hygiene review artifact。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-010",
+      "title": "扩展 planner review runtime/state-machine contract。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-011",
+      "title": "扩展 `beacon skill eval-kit benchmark --version v1.6.0` 覆盖新 cases。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-012",
+      "title": "增加 `tests/test_v160_pln_review_compound_parity.py`。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-013",
+      "title": "重新 materialize skill package、generated projection 和 agent surface。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-014",
+      "title": "导入 implementation evidence。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-015",
+      "title": "路由到 `beacon-eval-qa` 做 formal QA。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-016",
+      "title": "路由到 `beacon-eval-release` 做 release readiness。",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "user-request",
+      "authority": "support_advisory",
+      "canonical_artifact": "当前用户确认“使用 beacon-gen-change 落 beacon-pln-review-compound-parity-v160”",
+      "status": "accepted-for-change",
+      "route": "truth.define"
+    },
+    {
+      "surface": "planner-analysis",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.0/research/beacon-pln-review-compound-parity-v160.md",
+      "status": "promoted",
+      "route": "truth.define"
+    },
+    {
+      "surface": "feature-package",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md",
+      "status": "authoritative",
+      "route": "truth.define"
+    },
+    {
+      "surface": "package-tests",
+      "authority": "test_truth",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
+      "status": "authoritative",
+      "route": "truth.coverage"
+    },
+    {
+      "surface": "prior-intent-parity",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-pln-review-intent-parity-state-machine-v160/truth.md",
+      "status": "indexed",
+      "route": "source-study"
+    },
+    {
+      "surface": "prior-runtime-multi-agent",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-pln-review-runtime-multi-agent-v160/truth.md",
+      "status": "indexed",
+      "route": "source-study"
+    },
+    {
+      "surface": "compound-reference",
+      "authority": "support_advisory",
+      "canonical_artifact": "/Users/apple/.codex/skills/compound-engineering/ce-code-review/SKILL.md",
+      "status": "indexed",
+      "route": "source-study"
+    },
+    {
+      "surface": "beacon-review-skill",
+      "authority": "support_advisory",
+      "canonical_artifact": "skills/beacon/beacon-pln-review/SKILL.md",
+      "status": "implemented",
+      "route": "generate"
+    },
+    {
+      "surface": "compound-reference",
+      "authority": "support_advisory",
+      "canonical_artifact": "skills/beacon/beacon-pln-review/references/compound-parity-review.md",
+      "status": "implemented",
+      "route": "generate"
+    },
+    {
+      "surface": "planner-runtime",
+      "authority": "support_advisory",
+      "canonical_artifact": "beacon/utils/planner_review_runtime.py",
+      "status": "implemented",
+      "route": "generate"
+    },
+    {
+      "surface": "skill-eval-kit",
+      "authority": "support_advisory",
+      "canonical_artifact": "beacon/utils/skill_eval_kit.py",
+      "status": "implemented",
+      "route": "generate"
+    },
+    {
+      "surface": "unit-tests",
+      "authority": "support_advisory",
+      "canonical_artifact": "tests/test_v160_pln_review_compound_parity.py",
+      "status": "passed",
+      "route": "qa"
+    },
+    {
+      "surface": "benchmark",
+      "authority": "support_advisory",
+      "canonical_artifact": ".beacon/state/skill-eval/benchmarks/skill-benchmark-20260609t125148z",
+      "status": "passed",
+      "route": "qa"
+    },
+    {
+      "surface": "skill-package-verify",
+      "authority": "support_advisory",
+      "canonical_artifact": "beacon skill package verify --project-root . --version v1.6.0 --json",
+      "status": "passed",
+      "route": "qa"
+    }
+  ]
+}

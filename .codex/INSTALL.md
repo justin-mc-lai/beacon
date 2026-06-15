@@ -1,6 +1,6 @@
 # Installing Beacon Host Skills for Codex
 
-Enable Beacon's `v1.4.5` host-visible workflow pack in Codex through native skill discovery.
+Enable Beacon's `v1.6.0` harness-first host-visible workflow pack in Codex through native skill discovery.
 
 ## Installed skill root
 
@@ -21,29 +21,14 @@ Those paths create duplicate discovery and can make Codex restart onto a stale B
 
 ## Public host-visible skills
 
-- umbrella:
-  - `beacon`
-  - `using-beacon`
-- primary:
-  - `beacon-prd`
-  - `beacon-user-story`
-  - `beacon-test-case`
-  - `beacon-prototype`
-  - `beacon-implement`
-  - `beacon-qa`
-  - `beacon-release`
-- support:
-  - `beacon-help`
-  - `beacon-status`
-  - `beacon-doctor`
-  - `beacon-archive`
+Beacon v1.6.0 uses only harness-first skill names:
 
-## Optional supplemental skills
+- `beacon-pln-*`
+- `beacon-gen-*`
+- `beacon-eval-*`
+- `beacon-gov-*`
 
-- `beacon-toolkit-lighthouse`
-- `beacon-prd-bootstrap`
-- `beacon-brainstorm`
-- `beacon-real-project-validation`
+Old aliases such as `using-beacon`, `beacon-prd`, `beacon-user-story`, `beacon-test-case`, `beacon-implement`, `beacon-qa`, `beacon-release`, and `beacon-brainstorm` are intentionally not emitted in the packaged host-visible skill root.
 
 ## Installation
 
@@ -83,23 +68,24 @@ beacon --version
 beacon --help
 find ~/.agents/skills/beacon -maxdepth 2 -name SKILL.md | sort
 python3 scripts/check_skill_drift.py --project-root . --json
-beacon doctor verify-codex-hud-hook --project-root . --version v1.4.5 --json
+beacon skill package verify --project-root . --version v1.6.0 --package-root skills/beacon --json
+beacon doctor verify-codex-hud-hook --project-root . --version v1.6.0 --json
 ```
 
 Expected:
 
 - exactly one Codex Beacon root at `~/.agents/skills/beacon`
 - no `~/.codex/skills/beacon`
-- `beacon --version` prints `v1.4.5`
-- `beacon --help` does not expose a `change` subcommand
+- `beacon skill package verify --package-root skills/beacon --version v1.6.0` passes
+- no old host-visible aliases exist under `skills/beacon`
 
 ## HUD hook recovery
 
 Use the doctor-managed hook instead of ad hoc config edits:
 
 ```bash
-beacon doctor setup-codex-hud-hook --project-root . --version v1.4.5 --apply --json
-beacon doctor verify-codex-hud-hook --project-root . --version v1.4.5 --json
+beacon doctor setup-codex-hud-hook --project-root . --version v1.6.0 --apply --json
+beacon doctor verify-codex-hud-hook --project-root . --version v1.6.0 --json
 ```
 
 ## Notes
@@ -107,5 +93,5 @@ beacon doctor verify-codex-hud-hook --project-root . --version v1.4.5 --json
 - `~/.agents/skills/beacon` is the canonical install root.
 - `~/.codex/skills/beacon` is not a supported install location.
 - `brainstorm`, `team`, `implement-team`, and `qa-team` remain hidden machine lanes, not public skills.
-- The nested public skills exist to make the `v1.4.5` host-visible surface prompt-triggerable.
-- `beacon-change` is a host skill route, not a `beacon change` CLI subcommand. The CLI change-loop entry remains `beacon reopen ...`.
+- The nested public skills exist to make the `v1.6.0` harness-first surface prompt-triggerable.
+- CLI compatibility may keep legacy commands, but old names must not reappear as host-visible skill directories in `skills/beacon`.

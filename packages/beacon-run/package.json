@@ -1,0 +1,57 @@
+{
+  "name": "beacon-run",
+  "version": "0.1.0-beacon-r4",
+  "packageManager": "pnpm@11.1.1",
+  "description": "Beacon Long-Runner — gnhf-class agent orchestration with Beacon lifecycle phase prompts",
+  "type": "module",
+  "bin": {
+    "beacon-run": "dist/cli.mjs"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "start": "node dist/cli.mjs",
+    "lint": "eslint src",
+    "format": "prettier --write src",
+    "format:check": "prettier --check src",
+    "typecheck": "tsc -p tsconfig.typecheck.json --noEmit",
+    "test": "pnpm run build && vitest run",
+    "test:e2e": "pnpm run build && vitest run e2e/",
+    "test:coverage": "vitest run --coverage --exclude \"e2e/**\""
+  },
+  "dependencies": {
+    "commander": "^14.0.3",
+    "js-yaml": "^4.1.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^22.0.0",
+    "@vitest/coverage-v8": "^4.1.2",
+    "acp-mock": "^1.1.0",
+    "acpx": "^0.6.1",
+    "eslint": "^9.0.0",
+    "eslint-config-prettier": "^10.0.0",
+    "prettier": "^3.0.0",
+    "tsdown": "^0.21.7",
+    "typescript": "^5.8.0",
+    "typescript-eslint": "^8.0.0",
+    "vitest": "^4.1.2"
+  },
+  "files": [
+    "dist",
+    "skills",
+    "LICENSE",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kunchenguid/gnhf"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

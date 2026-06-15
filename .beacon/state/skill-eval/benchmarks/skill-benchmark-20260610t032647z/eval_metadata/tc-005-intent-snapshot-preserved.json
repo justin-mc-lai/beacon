@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "benchmark_id": "skill-benchmark-20260610t032647z",
+  "version": "v1.6.0",
+  "case_id": "tc-005-intent-snapshot-preserved",
+  "tc_id": "TC-005",
+  "ac_ids": [
+    "AC-005"
+  ],
+  "prompt": "参考 Compound、OpenSpec、Spec Kit、gstack，完整复刻同等能力，不要 MVP，并保持 Beacon 真相唯一交付。",
+  "target_harness": "planner",
+  "expected_route": "beacon-pln-review",
+  "truth_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-intent-parity-state-machine-v160/truth.md"
+  ],
+  "source_refs": [
+    "beacon/utils/skill_eval_kit.py",
+    "beacon/utils/agent_surface.py"
+  ],
+  "evidence_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-intent-parity-state-machine-v160/tests.md"
+  ],
+  "assertions": [
+    "must_emit_intent_snapshot",
+    "must_preserve_user_strength_words"
+  ],
+  "configs": [
+    "with_skill",
+    "baseline"
+  ],
+  "runtime_evidence_only": true,
+  "requirement_truth": false
+}

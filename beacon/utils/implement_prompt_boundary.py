@@ -85,11 +85,18 @@ def _match_patterns(prompt: str, patterns: tuple[str, ...]) -> list[str]:
 
 def _has_expected_beacon_scaffold(prompt: str) -> bool:
     normalized = str(prompt or "").lower()
-    return (
+    legacy_truth_scaffold = (
         "implement the scoped beacon feature" in normalized
         and "read beacon source of truth" in normalized
         and "implement only against the frozen prd, user-story, and test-case truth above" in normalized
     )
+    package_truth_scaffold = (
+        "import externally produced implementation evidence for the scoped beacon feature" in normalized
+        and "read beacon source of truth" in normalized
+        and "bind the imported evidence to the frozen feature package truth" in normalized
+        and "implement only against the frozen feature package truth above" in normalized
+    )
+    return legacy_truth_scaffold or package_truth_scaffold
 
 
 def evaluate_implement_prompt_boundary(

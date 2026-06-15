@@ -127,6 +127,33 @@ def test_release_blocks_legacy_only_qa_pass() -> None:
 
 
 @pytest.mark.current_contract
+def test_release_acceptance_feature_prefers_current_envelope_over_latest_qa_status() -> None:
+    acceptance = _resolve_acceptance_truth(
+        {
+            "feature": "latest-qa-feature",
+            "status": "passed",
+            "version": VERSION,
+            "evidence_done": True,
+            "release_ready": True,
+            "qa_status_source": "canonical",
+        },
+        {
+            "feature": "release-target-feature",
+            "release_ready": True,
+            "continue_decision": "ready_for_release",
+        },
+        {
+            "feature": "release-target-feature",
+            "verdict": "passed",
+        },
+    )
+
+    assert acceptance["status"] == "pass"
+    assert acceptance["feature"] == "release-target-feature"
+    assert acceptance["source"] == "qa_acceptance_envelope"
+
+
+@pytest.mark.current_contract
 def test_markdown_prd_remains_requirement_truth(tmp_path: Path) -> None:
     _seed_requirement_docs(tmp_path)
     write_json(tmp_path / ".beacon" / "prd" / f"{SLUG}.json", {"markdown": "# stale legacy mirror\n"})

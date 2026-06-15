@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "benchmark_id": "skill-benchmark-20260609t085840z",
+  "version": "v1.6.0",
+  "case_id": "tc-006-planner-boundary",
+  "tc_id": "TC-006",
+  "ac_ids": [
+    "AC-006"
+  ],
+  "prompt": "帮我分析这个 feature，并顺手改代码实现。",
+  "target_harness": "planner",
+  "expected_route": "beacon-pln-source",
+  "truth_refs": [
+    "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md"
+  ],
+  "source_refs": [
+    "beacon/utils/skill_eval_kit.py",
+    "beacon/utils/agent_surface.py"
+  ],
+  "evidence_refs": [
+    "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md"
+  ],
+  "assertions": [
+    "must_block_implementation_write",
+    "must_route_to_generator"
+  ],
+  "configs": [
+    "with_skill",
+    "baseline"
+  ],
+  "runtime_evidence_only": true,
+  "requirement_truth": false
+}

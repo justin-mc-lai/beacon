@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0",
+  "benchmark_id": "skill-benchmark-20260609t125148z",
+  "version": "v1.6.0",
+  "case_id": "tc-028-compound-source-parity-delivery",
+  "tc_id": "TC-028",
+  "ac_ids": [
+    "AC-004",
+    "AC-005"
+  ],
+  "prompt": "参考 compound-engineering-plugin 完整复刻同等能力，不要 MVP，必须有 source capability inventory、parity matrix、coverage mapping 和 deferral ledger。",
+  "target_harness": "planner",
+  "expected_route": "beacon-pln-review",
+  "truth_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+  ],
+  "source_refs": [
+    "beacon/utils/skill_eval_kit.py",
+    "beacon/utils/agent_surface.py"
+  ],
+  "evidence_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md"
+  ],
+  "assertions": [
+    "must_default_scope_mode_full_parity",
+    "must_require_source_capability_inventory",
+    "must_require_parity_matrix",
+    "must_require_coverage_mapping",
+    "must_require_deferral_ledger"
+  ],
+  "configs": [
+    "with_skill",
+    "baseline"
+  ],
+  "runtime_evidence_only": true,
+  "requirement_truth": false
+}

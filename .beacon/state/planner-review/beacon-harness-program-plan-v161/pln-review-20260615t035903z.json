@@ -1,0 +1,1078 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-harness-program-plan-v161",
+  "version": "v1.6.1",
+  "review_id": "pln-review-20260615t035903z",
+  "execution_mode": "single_process_multi_reviewer",
+  "host_runtime": "codex",
+  "subagent_runtime_available": false,
+  "fallback_reason": "subagent_runtime_unavailable_explicit_deterministic_fallback",
+  "input_context": {
+    "prompt": "审核 v1.6.1 需求是否闭环冻结并与用户意图对齐：双模式 program plan、OSS 复刻海湖拆分、书籍真相、治理、change 闭环",
+    "truth_refs": [],
+    "source_refs": [
+      "truth",
+      "tests",
+      "tasks",
+      "evidence"
+    ],
+    "evidence_refs": []
+  },
+  "intent_snapshot": {
+    "user_prompt": "审核 v1.6.1 需求是否闭环冻结并与用户意图对齐：双模式 program plan、OSS 复刻海湖拆分、书籍真相、治理、change 闭环",
+    "strength_words": [],
+    "silent_scope_change_allowed": false
+  },
+  "scope_mode": "brownfield_takeover",
+  "diff_scope": {
+    "base_ref": "",
+    "base_reason": "base_ref_not_provided",
+    "changed_files": [],
+    "untracked_files": [],
+    "generated_projection_files": [],
+    "deleted_files": [],
+    "touched_harness_surfaces": [],
+    "high_risk_file_categories": [],
+    "scope_confidence": 50,
+    "degraded": true
+  },
+  "source_capability_inventory": [
+    {
+      "source_ref": "truth",
+      "capabilities": [
+        "reviewer_catalog",
+        "finding_schema",
+        "synthesis_pipeline",
+        "autofix_routing",
+        "scope_detection"
+      ],
+      "inventory_required": true,
+      "inventory_source": "fallback_defaults"
+    },
+    {
+      "source_ref": "tests",
+      "capabilities": [
+        "reviewer_catalog",
+        "finding_schema",
+        "synthesis_pipeline",
+        "autofix_routing",
+        "scope_detection"
+      ],
+      "inventory_required": true,
+      "inventory_source": "fallback_defaults"
+    },
+    {
+      "source_ref": "tasks",
+      "capabilities": [
+        "reviewer_catalog",
+        "finding_schema",
+        "synthesis_pipeline",
+        "autofix_routing",
+        "scope_detection"
+      ],
+      "inventory_required": true,
+      "inventory_source": "fallback_defaults"
+    },
+    {
+      "source_ref": "evidence",
+      "capabilities": [
+        "reviewer_catalog",
+        "finding_schema",
+        "synthesis_pipeline",
+        "autofix_routing",
+        "scope_detection"
+      ],
+      "inventory_required": true,
+      "inventory_source": "fallback_defaults"
+    }
+  ],
+  "selected_reviewers": [
+    "correctness-reviewer",
+    "testing-reviewer",
+    "maintainability-reviewer",
+    "project-standards-reviewer",
+    "intent-fidelity",
+    "scope-mode",
+    "coverage-shape",
+    "route-boundary",
+    "state-machine",
+    "source-parity",
+    "source-parity-reviewer",
+    "diff-scope-reviewer",
+    "evidence-proof-shape"
+  ],
+  "reviewer_lanes": [
+    {
+      "reviewer": "correctness-reviewer",
+      "lane_id": "lane-correctness-reviewer",
+      "role": "Check logic, state transitions, edge cases, and error propagation.",
+      "trigger_reason": "always_on",
+      "input_refs": [
+        "truth",
+        "tests",
+        "tasks",
+        "evidence"
+      ],
+      "output_status": "finding",
+      "finding_ids": [
+        "finding-4920d8dea7"
+      ],
+      "confidence": 50,
+      "authority_level": "source_evidence",
+      "runtime_evidence_ref": ".beacon/state/planner-review/beacon-harness-program-plan-v161/pln-review-20260615t035903z.json"
+    },
+    {
+      "reviewer": "testing-reviewer",
+      "lane_id": "lane-testing-reviewer",
+      "role": "Check test coverage, assertion strength, mock-only risk, and evidence shape.",
+      "trigger_reason": "always_on",
+      "input_refs": [
+        "truth",
+        "tests",
+        "tasks",
+        "evidence"
+      ],
+      "output_status": "finding",
+      "finding_ids": [
+        "finding-0bee77da03"
+      ],
+      "confidence": 50,
+      "authority_level": "source_evidence",
+      "runtime_evidence_ref": ".beacon/state/planner-review/beacon-harness-program-plan-v161/pln-review-20260615t035903z.json"
+    },
+    {
+      "reviewer": "maintainability-reviewer",
+      "lane_id": "lane-maintainability-reviewer",
+      "role": "Check complexity, coupling, naming, duplication, and long-term maintainability.",
+      "trigger_reason": "always_on",
+      "input_refs": [
+        "truth",
+        "tests",
+        "tasks",
+        "evidence"
+      ],
+      "output_status": "finding",
+      "finding_ids": [
+        "finding-3fb5152431"
+      ],
+      "confidence": 50,
+      "authority_level": "source_evidence",
+      "runtime_evidence_ref": ".beacon/state/planner-review/beacon-harness-program-plan-v161/pln-review-20260615t035903z.json"
+    },
+    {
+      "reviewer": "project-standards-reviewer",
+      "lane_id": "lane-project-standards-reviewer",
+      "role": "Check AGENTS, skill-creator, Beacon harness, package truth, and path conventions.",
+      "trigger_reason": "always_on",
+      "input_refs": [
+        "truth",
+        "tests",
+        "tasks",
+        "evidence"
+      ],
+      "output_status": "finding",
+      "finding_ids": [
+        "finding-bb7329483d"
+      ],
+      "confidence": 50,
+      "authority_level": "source_evidence",
+      "runtime_evidence_ref": ".beacon/state/planner-review/beacon-harness-program-plan-v161/pln-review-20260615t035903z.json"
+    },
+    {
+      "reviewer": "intent-fidelity",
+      "lane_id": "lane-intent-fidelity",
+      "role": "Preserve user intent and strength words.",
+      "trigger_reason": "always_on",
+      "input_refs": [
+        "truth",
+        "tests",
+        "tasks",
+        "evidence"
+      ],
+      "output_status": "finding",
+      "finding_ids": [
+        "finding-a20a8dc935"
+      ],
+      "confidence": 75,
+      "authority_level": "user_quote",
+      "runtime_evidence_ref": ".beacon/state/planner-review/beacon-harness-program-plan-v161/pln-review-20260615t035903z.json"
+    },
+    {
+      "reviewer": "scope-mode",
+      "lane_id": "lane-scope-mode",
+      "role": "Classify full_parity, mvp, patch, research, brownfield, or compatibility scope.",
+      "trigger_reason": "always_on",
+      "input_refs": [
+        "truth",
+        "tests",
+        "tasks",
+        "evidence"
+      ],
+      "output_status": "finding",
+      "finding_ids": [
+        "finding-3f6caa3f68"
+      ],
+      "confidence": 50,
+      "authority_level": "user_quote",
+      "runtime_evidence_ref": ".beacon/state/planner-review/beacon-harness-program-plan-v161/pln-review-20260615t035903z.json"
+    },
+    {
+      "reviewer": "coverage-shape",
+      "lane_id": "lane-coverage-shape",
+      "role": "Check whether acceptance can become behavior evidence.",
+      "trigger_reason": "always_on",
+      "input_refs": [
+        "truth",
+        "tests",
+        "tasks",
+        "evidence"
+      ],
+      "output_status": "no_findings",
+      "finding_ids": [],
+      "confidence": 50,
+      "authority_level": "runtime_evidence",
+      "runtime_evidence_ref": ".beacon/state/planner-review/beacon-harness-program-plan-v161/pln-review-20260615t035903z.json"
+    },
+    {
+      "reviewer": "route-boundary",
+      "lane_id": "lane-route-boundary",
+      "role": "Keep planner inside research and route recommendations.",
+      "trigger_reason": "always_on",
+      "input_refs": [
+        "truth",
+        "tests",
+        "tasks",
+        "evidence"
+      ],
+      "output_status": "no_findings",
+      "finding_ids": [],
+      "confidence": 50,
+      "authority_level": "runtime_evidence",
+      "runtime_evidence_ref": ".beacon/state/planner-review/beacon-harness-program-plan-v161/pln-review-20260615t035903z.json"
+    },
+    {
+      "reviewer": "state-machine",
+      "lane_id": "lane-state-machine",
+      "role": "Review lifecycle, transitions, recovery, terminal states, and axes.",
+      "trigger_reason": "always_on",
+      "input_refs": [
+        "truth",
+        "tests",
+        "tasks",
+        "evidence"
+      ],
+      "output_status": "finding",
+      "finding_ids": [
+        "finding-ac0ae066a8"
+      ],
+      "confidence": 75,
+      "authority_level": "source_evidence",
+      "runtime_evidence_ref": ".beacon/state/planner-review/beacon-harness-program-plan-v161/pln-review-20260615t035903z.json"
+    },
+    {
+      "reviewer": "source-parity",
+      "lane_id": "lane-source-parity",
+      "role": "Conditional review for source-parity.",
+      "trigger_reason": "oss",
+      "input_refs": [
+        "truth",
+        "tests",
+        "tasks",
+        "evidence"
+      ],
+      "output_status": "finding",
+      "finding_ids": [
+        "finding-017c1b5866"
+      ],
+      "confidence": 75,
+      "authority_level": "source_evidence",
+      "runtime_evidence_ref": ".beacon/state/planner-review/beacon-harness-program-plan-v161/pln-review-20260615t035903z.json"
+    },
+    {
+      "reviewer": "source-parity-reviewer",
+      "lane_id": "lane-source-parity-reviewer",
+      "role": "Conditional review for source-parity-reviewer.",
+      "trigger_reason": "oss",
+      "input_refs": [
+        "truth",
+        "tests",
+        "tasks",
+        "evidence"
+      ],
+      "output_status": "finding",
+      "finding_ids": [
+        "finding-365e56f9c3"
+      ],
+      "confidence": 75,
+      "authority_level": "source_evidence",
+      "runtime_evidence_ref": ".beacon/state/planner-review/beacon-harness-program-plan-v161/pln-review-20260615t035903z.json"
+    },
+    {
+      "reviewer": "diff-scope-reviewer",
+      "lane_id": "lane-diff-scope-reviewer",
+      "role": "Conditional review for diff-scope-reviewer.",
+      "trigger_reason": "pr",
+      "input_refs": [
+        "truth",
+        "tests",
+        "tasks",
+        "evidence"
+      ],
+      "output_status": "finding",
+      "finding_ids": [
+        "finding-8b914e2440"
+      ],
+      "confidence": 50,
+      "authority_level": "source_evidence",
+      "runtime_evidence_ref": ".beacon/state/planner-review/beacon-harness-program-plan-v161/pln-review-20260615t035903z.json"
+    },
+    {
+      "reviewer": "evidence-proof-shape",
+      "lane_id": "lane-evidence-proof-shape",
+      "role": "Conditional review for evidence-proof-shape.",
+      "trigger_reason": "evidence",
+      "input_refs": [
+        "truth",
+        "tests",
+        "tasks",
+        "evidence"
+      ],
+      "output_status": "finding",
+      "finding_ids": [
+        "finding-797295ab92"
+      ],
+      "confidence": 50,
+      "authority_level": "source_evidence",
+      "runtime_evidence_ref": ".beacon/state/planner-review/beacon-harness-program-plan-v161/pln-review-20260615t035903z.json"
+    }
+  ],
+  "findings": [
+    {
+      "finding_id": "finding-4920d8dea7",
+      "reviewer": "correctness-reviewer",
+      "lane_id": "lane-correctness-reviewer",
+      "severity": "P2",
+      "confidence": 50,
+      "authority_level": "source_evidence",
+      "issue": "Logic, state, edge-case, and error propagation risks need review.",
+      "evidence_refs": [
+        "truth",
+        "tests",
+        "tasks",
+        "evidence"
+      ],
+      "affected_truth_surface": "support",
+      "affected_surface": "support",
+      "recommended_route": "beacon-pln-friction",
+      "user_decision_required": false,
+      "autofix_allowed": false,
+      "owner": "planner",
+      "autofix_class": "advisory",
+      "requires_verification": false,
+      "merged_from": [],
+      "dedup_key": "support:beacon-pln-friction:correctness",
+      "conflict_group": ""
+    },
+    {
+      "finding_id": "finding-0bee77da03",
+      "reviewer": "testing-reviewer",
+      "lane_id": "lane-testing-reviewer",
+      "severity": "P2",
+      "confidence": 50,
+      "authority_level": "source_evidence",
+      "issue": "Test coverage, assertion strength, and evidence shape need review.",
+      "evidence_refs": [
+        "truth",
+        "tests",
+        "tasks",
+        "evidence"
+      ],
+      "affected_truth_surface": "support",
+      "affected_surface": "support",
+      "recommended_route": "beacon-eval-qa",
+      "user_decision_required": false,
+      "autofix_allowed": false,
+      "owner": "evaluator",
+      "autofix_class": "manual",
+      "requires_verification": true,
+      "merged_from": [],
+      "dedup_key": "support:beacon-eval-qa:testing",
+      "conflict_group": ""
+    },
+    {
+      "finding_id": "finding-3fb5152431",
+      "reviewer": "maintainability-reviewer",
+      "lane_id": "lane-maintainability-reviewer",
+      "severity": "P2",
+      "confidence": 50,
+      "authority_level": "source_evidence",
+      "issue": "Complexity, coupling, duplication, and naming risks need review.",
+      "evidence_refs": [
+        "truth",
+        "tests",
+        "tasks",
+        "evidence"
+      ],
+      "affected_truth_surface": "support",
+      "affected_surface": "support",
+      "recommended_route": "beacon-pln-friction",
+      "user_decision_required": false,
+      "autofix_allowed": false,
+      "owner": "planner",
+      "autofix_class": "advisory",
+      "requires_verification": false,
+      "merged_from": [],
+      "dedup_key": "support:beacon-pln-friction:maintainability",
+      "conflict_group": ""
+    },
+    {
+      "finding_id": "finding-bb7329483d",
+      "reviewer": "project-standards-reviewer",
+      "lane_id": "lane-project-standards-reviewer",
+      "severity": "P2",
+      "confidence": 50,
+      "authority_level": "source_evidence",
+      "issue": "AGENTS, skill-creator, Beacon harness, package truth, and path conventions need review.",
+      "evidence_refs": [
+        "truth",
+        "tests",
+        "tasks",
+        "evidence"
+      ],
+      "affected_truth_surface": "support",
+      "affected_surface": "support",
+      "recommended_route": "beacon-pln-friction",
+      "user_decision_required": false,
+      "autofix_allowed": false,
+      "owner": "planner",
+      "autofix_class": "advisory",
+      "requires_verification": false,
+      "merged_from": [],
+      "dedup_key": "support:beacon-pln-friction:project",
+      "conflict_group": ""
+    },
+    {
+      "finding_id": "finding-a20a8dc935",
+      "reviewer": "intent-fidelity",
+      "lane_id": "lane-intent-fidelity",
+      "severity": "P1",
+      "confidence": 75,
+      "authority_level": "user_quote",
+      "issue": "Verify that strong user intent is not weakened into MVP.",
+      "evidence_refs": [
+        "truth",
+        "tests",
+        "tasks",
+        "evidence"
+      ],
+      "affected_truth_surface": "truth",
+      "affected_surface": "truth",
+      "recommended_route": "beacon-gen-change",
+      "user_decision_required": true,
+      "autofix_allowed": false,
+      "owner": "generator",
+      "autofix_class": "manual",
+      "requires_verification": false,
+      "merged_from": [],
+      "dedup_key": "truth:beacon-gen-change:intent",
+      "conflict_group": ""
+    },
+    {
+      "finding_id": "finding-3f6caa3f68",
+      "reviewer": "scope-mode",
+      "lane_id": "lane-scope-mode",
+      "severity": "P2",
+      "confidence": 50,
+      "authority_level": "user_quote",
+      "issue": "Scope mode must be explicit before truth/change routing.",
+      "evidence_refs": [
+        "truth",
+        "tests",
+        "tasks",
+        "evidence"
+      ],
+      "affected_truth_surface": "truth",
+      "affected_surface": "truth",
+      "recommended_route": "beacon-gen-change",
+      "user_decision_required": true,
+      "autofix_allowed": false,
+      "owner": "generator",
+      "autofix_class": "manual",
+      "requires_verification": false,
+      "merged_from": [],
+      "dedup_key": "truth:beacon-gen-change:scope",
+      "conflict_group": ""
+    },
+    {
+      "finding_id": "finding-ac0ae066a8",
+      "reviewer": "state-machine",
+      "lane_id": "lane-state-machine",
+      "severity": "P1",
+      "confidence": 75,
+      "authority_level": "source_evidence",
+      "issue": "State-machine implications must be reflected in truth and coverage.",
+      "evidence_refs": [
+        "truth",
+        "tests",
+        "tasks",
+        "evidence"
+      ],
+      "affected_truth_surface": "truth",
+      "affected_surface": "truth",
+      "recommended_route": "beacon-gen-change",
+      "user_decision_required": false,
+      "autofix_allowed": false,
+      "owner": "generator",
+      "autofix_class": "manual",
+      "requires_verification": false,
+      "merged_from": [],
+      "dedup_key": "truth:beacon-gen-change:state",
+      "conflict_group": ""
+    },
+    {
+      "finding_id": "finding-017c1b5866",
+      "reviewer": "source-parity",
+      "lane_id": "lane-source-parity",
+      "severity": "P1",
+      "confidence": 75,
+      "authority_level": "source_evidence",
+      "issue": "Source parity requires inventory and parity matrix before freeze or implement.",
+      "evidence_refs": [
+        "truth",
+        "tests",
+        "tasks",
+        "evidence"
+      ],
+      "affected_truth_surface": "truth",
+      "affected_surface": "truth",
+      "recommended_route": "beacon-gen-change",
+      "user_decision_required": true,
+      "autofix_allowed": false,
+      "owner": "generator",
+      "autofix_class": "gated_auto",
+      "requires_verification": true,
+      "merged_from": [],
+      "dedup_key": "truth:beacon-gen-change:source",
+      "conflict_group": ""
+    },
+    {
+      "finding_id": "finding-365e56f9c3",
+      "reviewer": "source-parity-reviewer",
+      "lane_id": "lane-source-parity-reviewer",
+      "severity": "P1",
+      "confidence": 75,
+      "authority_level": "source_evidence",
+      "issue": "Source parity requires inventory, parity matrix, coverage mapping, and deferral ledger.",
+      "evidence_refs": [
+        "truth",
+        "tests",
+        "tasks",
+        "evidence"
+      ],
+      "affected_truth_surface": "truth",
+      "affected_surface": "truth",
+      "recommended_route": "beacon-gen-change",
+      "user_decision_required": true,
+      "autofix_allowed": false,
+      "owner": "generator",
+      "autofix_class": "gated_auto",
+      "requires_verification": true,
+      "merged_from": [],
+      "dedup_key": "truth:beacon-gen-change:source",
+      "conflict_group": ""
+    },
+    {
+      "finding_id": "finding-8b914e2440",
+      "reviewer": "diff-scope-reviewer",
+      "lane_id": "lane-diff-scope-reviewer",
+      "severity": "P2",
+      "confidence": 50,
+      "authority_level": "source_evidence",
+      "issue": "Diff, PR, and worktree scope must be explicit before claiming complete review.",
+      "evidence_refs": [
+        "truth",
+        "tests",
+        "tasks",
+        "evidence"
+      ],
+      "affected_truth_surface": "support",
+      "affected_surface": "support",
+      "recommended_route": "beacon-pln-friction",
+      "user_decision_required": false,
+      "autofix_allowed": false,
+      "owner": "planner",
+      "autofix_class": "advisory",
+      "requires_verification": false,
+      "merged_from": [],
+      "dedup_key": "support:beacon-pln-friction:diff",
+      "conflict_group": ""
+    },
+    {
+      "finding_id": "finding-797295ab92",
+      "reviewer": "evidence-proof-shape",
+      "lane_id": "lane-evidence-proof-shape",
+      "severity": "P2",
+      "confidence": 50,
+      "authority_level": "source_evidence",
+      "issue": "Evidence and benchmark claims need proof-shape classification.",
+      "evidence_refs": [
+        "truth",
+        "tests",
+        "tasks",
+        "evidence"
+      ],
+      "affected_truth_surface": "support",
+      "affected_surface": "support",
+      "recommended_route": "beacon-eval-qa",
+      "user_decision_required": false,
+      "autofix_allowed": false,
+      "owner": "evaluator",
+      "autofix_class": "manual",
+      "requires_verification": true,
+      "merged_from": [],
+      "dedup_key": "support:beacon-eval-qa:evidence",
+      "conflict_group": ""
+    }
+  ],
+  "synthesis": {
+    "status": "pass",
+    "merged_findings": [
+      {
+        "finding_id": "finding-4920d8dea7",
+        "reviewer": "correctness-reviewer",
+        "lane_id": "lane-correctness-reviewer",
+        "severity": "P2",
+        "confidence": 50,
+        "authority_level": "source_evidence",
+        "issue": "Logic, state, edge-case, and error propagation risks need review.",
+        "evidence_refs": [
+          "truth",
+          "tests",
+          "tasks",
+          "evidence"
+        ],
+        "affected_truth_surface": "support",
+        "affected_surface": "support",
+        "recommended_route": "beacon-pln-friction",
+        "user_decision_required": false,
+        "autofix_allowed": false,
+        "owner": "planner",
+        "autofix_class": "advisory",
+        "requires_verification": false,
+        "merged_from": [
+          "lane-correctness-reviewer"
+        ],
+        "dedup_key": "support:beacon-pln-friction:correctness",
+        "conflict_group": "conflict-route-001"
+      },
+      {
+        "finding_id": "finding-0bee77da03",
+        "reviewer": "testing-reviewer",
+        "lane_id": "lane-testing-reviewer",
+        "severity": "P2",
+        "confidence": 50,
+        "authority_level": "source_evidence",
+        "issue": "Test coverage, assertion strength, and evidence shape need review.",
+        "evidence_refs": [
+          "truth",
+          "tests",
+          "tasks",
+          "evidence"
+        ],
+        "affected_truth_surface": "support",
+        "affected_surface": "support",
+        "recommended_route": "beacon-eval-qa",
+        "user_decision_required": false,
+        "autofix_allowed": false,
+        "owner": "evaluator",
+        "autofix_class": "manual",
+        "requires_verification": true,
+        "merged_from": [
+          "lane-testing-reviewer"
+        ],
+        "dedup_key": "support:beacon-eval-qa:testing",
+        "conflict_group": "conflict-route-001"
+      },
+      {
+        "finding_id": "finding-3fb5152431",
+        "reviewer": "maintainability-reviewer",
+        "lane_id": "lane-maintainability-reviewer",
+        "severity": "P2",
+        "confidence": 50,
+        "authority_level": "source_evidence",
+        "issue": "Complexity, coupling, duplication, and naming risks need review.",
+        "evidence_refs": [
+          "truth",
+          "tests",
+          "tasks",
+          "evidence"
+        ],
+        "affected_truth_surface": "support",
+        "affected_surface": "support",
+        "recommended_route": "beacon-pln-friction",
+        "user_decision_required": false,
+        "autofix_allowed": false,
+        "owner": "planner",
+        "autofix_class": "advisory",
+        "requires_verification": false,
+        "merged_from": [
+          "lane-maintainability-reviewer"
+        ],
+        "dedup_key": "support:beacon-pln-friction:maintainability",
+        "conflict_group": "conflict-route-001"
+      },
+      {
+        "finding_id": "finding-bb7329483d",
+        "reviewer": "project-standards-reviewer",
+        "lane_id": "lane-project-standards-reviewer",
+        "severity": "P2",
+        "confidence": 50,
+        "authority_level": "source_evidence",
+        "issue": "AGENTS, skill-creator, Beacon harness, package truth, and path conventions need review.",
+        "evidence_refs": [
+          "truth",
+          "tests",
+          "tasks",
+          "evidence"
+        ],
+        "affected_truth_surface": "support",
+        "affected_surface": "support",
+        "recommended_route": "beacon-pln-friction",
+        "user_decision_required": false,
+        "autofix_allowed": false,
+        "owner": "planner",
+        "autofix_class": "advisory",
+        "requires_verification": false,
+        "merged_from": [
+          "lane-project-standards-reviewer"
+        ],
+        "dedup_key": "support:beacon-pln-friction:project",
+        "conflict_group": "conflict-route-001"
+      },
+      {
+        "finding_id": "finding-a20a8dc935",
+        "reviewer": "intent-fidelity",
+        "lane_id": "lane-intent-fidelity",
+        "severity": "P1",
+        "confidence": 75,
+        "authority_level": "user_quote",
+        "issue": "Verify that strong user intent is not weakened into MVP.",
+        "evidence_refs": [
+          "truth",
+          "tests",
+          "tasks",
+          "evidence"
+        ],
+        "affected_truth_surface": "truth",
+        "affected_surface": "truth",
+        "recommended_route": "beacon-gen-change",
+        "user_decision_required": true,
+        "autofix_allowed": false,
+        "owner": "generator",
+        "autofix_class": "manual",
+        "requires_verification": false,
+        "merged_from": [
+          "lane-intent-fidelity"
+        ],
+        "dedup_key": "truth:beacon-gen-change:intent",
+        "conflict_group": "conflict-route-001"
+      },
+      {
+        "finding_id": "finding-3f6caa3f68",
+        "reviewer": "scope-mode",
+        "lane_id": "lane-scope-mode",
+        "severity": "P2",
+        "confidence": 50,
+        "authority_level": "user_quote",
+        "issue": "Scope mode must be explicit before truth/change routing.",
+        "evidence_refs": [
+          "truth",
+          "tests",
+          "tasks",
+          "evidence"
+        ],
+        "affected_truth_surface": "truth",
+        "affected_surface": "truth",
+        "recommended_route": "beacon-gen-change",
+        "user_decision_required": true,
+        "autofix_allowed": false,
+        "owner": "generator",
+        "autofix_class": "manual",
+        "requires_verification": false,
+        "merged_from": [
+          "lane-scope-mode"
+        ],
+        "dedup_key": "truth:beacon-gen-change:scope",
+        "conflict_group": "conflict-route-001"
+      },
+      {
+        "finding_id": "finding-ac0ae066a8",
+        "reviewer": "state-machine",
+        "lane_id": "lane-state-machine",
+        "severity": "P1",
+        "confidence": 75,
+        "authority_level": "source_evidence",
+        "issue": "State-machine implications must be reflected in truth and coverage.",
+        "evidence_refs": [
+          "truth",
+          "tests",
+          "tasks",
+          "evidence"
+        ],
+        "affected_truth_surface": "truth",
+        "affected_surface": "truth",
+        "recommended_route": "beacon-gen-change",
+        "user_decision_required": false,
+        "autofix_allowed": false,
+        "owner": "generator",
+        "autofix_class": "manual",
+        "requires_verification": false,
+        "merged_from": [
+          "lane-state-machine"
+        ],
+        "dedup_key": "truth:beacon-gen-change:state",
+        "conflict_group": "conflict-route-001"
+      },
+      {
+        "finding_id": "finding-017c1b5866",
+        "reviewer": "source-parity",
+        "lane_id": "lane-source-parity",
+        "severity": "P1",
+        "confidence": 75,
+        "authority_level": "source_evidence",
+        "issue": "Source parity requires inventory and parity matrix before freeze or implement.",
+        "evidence_refs": [
+          "truth",
+          "tests",
+          "tasks",
+          "evidence"
+        ],
+        "affected_truth_surface": "truth",
+        "affected_surface": "truth",
+        "recommended_route": "beacon-gen-change",
+        "user_decision_required": true,
+        "autofix_allowed": false,
+        "owner": "generator",
+        "autofix_class": "gated_auto",
+        "requires_verification": true,
+        "merged_from": [
+          "lane-source-parity",
+          "lane-source-parity-reviewer"
+        ],
+        "dedup_key": "truth:beacon-gen-change:source",
+        "conflict_group": "conflict-route-001"
+      },
+      {
+        "finding_id": "finding-8b914e2440",
+        "reviewer": "diff-scope-reviewer",
+        "lane_id": "lane-diff-scope-reviewer",
+        "severity": "P2",
+        "confidence": 50,
+        "authority_level": "source_evidence",
+        "issue": "Diff, PR, and worktree scope must be explicit before claiming complete review.",
+        "evidence_refs": [
+          "truth",
+          "tests",
+          "tasks",
+          "evidence"
+        ],
+        "affected_truth_surface": "support",
+        "affected_surface": "support",
+        "recommended_route": "beacon-pln-friction",
+        "user_decision_required": false,
+        "autofix_allowed": false,
+        "owner": "planner",
+        "autofix_class": "advisory",
+        "requires_verification": false,
+        "merged_from": [
+          "lane-diff-scope-reviewer"
+        ],
+        "dedup_key": "support:beacon-pln-friction:diff",
+        "conflict_group": "conflict-route-001"
+      },
+      {
+        "finding_id": "finding-797295ab92",
+        "reviewer": "evidence-proof-shape",
+        "lane_id": "lane-evidence-proof-shape",
+        "severity": "P2",
+        "confidence": 50,
+        "authority_level": "source_evidence",
+        "issue": "Evidence and benchmark claims need proof-shape classification.",
+        "evidence_refs": [
+          "truth",
+          "tests",
+          "tasks",
+          "evidence"
+        ],
+        "affected_truth_surface": "support",
+        "affected_surface": "support",
+        "recommended_route": "beacon-eval-qa",
+        "user_decision_required": false,
+        "autofix_allowed": false,
+        "owner": "evaluator",
+        "autofix_class": "manual",
+        "requires_verification": true,
+        "merged_from": [
+          "lane-evidence-proof-shape"
+        ],
+        "dedup_key": "support:beacon-eval-qa:evidence",
+        "conflict_group": "conflict-route-001"
+      }
+    ],
+    "finding_count": 10,
+    "conflict_groups": [
+      "conflict-route-001"
+    ],
+    "highest_severity": "P1",
+    "user_decision_required": true,
+    "recommended_route": "beacon-gen-change",
+    "route_rationale": "selected most conservative route from reviewer lane findings"
+  },
+  "coverage_mapping": [
+    {
+      "source": "qa_evidence_hygiene",
+      "test_axis": "evidence_shape",
+      "required": true,
+      "status": "mapped"
+    }
+  ],
+  "autofix_routing": {
+    "planner_executes_repairs": false,
+    "generator_required_for_safe_auto": true,
+    "buckets": {
+      "safe_auto": [],
+      "gated_auto": [
+        "finding-017c1b5866",
+        "finding-365e56f9c3"
+      ],
+      "manual": [
+        "finding-0bee77da03",
+        "finding-a20a8dc935",
+        "finding-3f6caa3f68",
+        "finding-ac0ae066a8",
+        "finding-797295ab92"
+      ],
+      "advisory": [
+        "finding-4920d8dea7",
+        "finding-3fb5152431",
+        "finding-bb7329483d",
+        "finding-8b914e2440"
+      ],
+      "human": [],
+      "release": []
+    }
+  },
+  "release_ops_review": {
+    "triggered": false,
+    "checks": [
+      "repo_source_skill",
+      "project_agents_skills_projection",
+      "global_agent_skill_projection",
+      "stale_duplicate_skill_copies",
+      "post_release_hook_evidence",
+      "canary_or_smoke_install_evidence",
+      "rollback_or_cleanup_route",
+      "version_surface_alignment"
+    ],
+    "missing_evidence_route": "beacon-eval-release or beacon-gov-doctor",
+    "release_ready_authority": false
+  },
+  "qa_evidence_hygiene": {
+    "triggered": false,
+    "checks": [
+      "real_command",
+      "junit_xml",
+      "assertion_count_gt_zero",
+      "fake_runner_absent",
+      "placeholder_evidence_absent",
+      "browser_admission_explained",
+      "compatibility_pair_evidence",
+      "benchmark_metadata_grading_analysis"
+    ],
+    "reason_codes": [],
+    "recommended_route": "beacon-eval-qa"
+  },
+  "state_model": {
+    "required": true,
+    "states": [
+      "ReviewRequested",
+      "ContextResolved",
+      "ScopeResolved",
+      "SourceParityResolved",
+      "ReviewerSelection",
+      "LaneExecution",
+      "FindingSynthesis",
+      "RouteRecommendation",
+      "Terminal"
+    ],
+    "allowed_transitions": [
+      "ReviewRequested->ContextResolved",
+      "ContextResolved->ScopeResolved",
+      "ScopeResolved->SourceParityResolved",
+      "SourceParityResolved->ReviewerSelection",
+      "ContextResolved->ReviewerSelection",
+      "ReviewerSelection->LaneExecution",
+      "LaneExecution->FindingSynthesis",
+      "FindingSynthesis->RouteRecommendation",
+      "RouteRecommendation->Terminal"
+    ],
+    "invalid_transitions": [
+      "ReviewRequested->LaneExecution",
+      "ReviewRequested->ReviewerSelection",
+      "SourceParityResolved->RouteRecommendation",
+      "ReviewerSelection->FindingSynthesis",
+      "LaneExecution->FindingSynthesis_without_lane_outputs",
+      "FindingSynthesis->truth_write",
+      "FindingSynthesis->code_write",
+      "RouteRecommendation->Terminal_without_owner_or_route",
+      "fallback->parallel_subagent_claim"
+    ],
+    "recovery_paths": [
+      "missing_input_refs->beacon-pln-source",
+      "missing_lane_output->conservative_synthesis",
+      "subagent_unavailable->single_process_multi_reviewer",
+      "schema_invalid->beacon-gen-implement"
+    ],
+    "terminal_states": [
+      "review_ready_for_truth_change",
+      "review_ready_for_implementation",
+      "review_blocked_needs_user_decision",
+      "review_degraded_scope_unknown",
+      "review_queued_or_deferred"
+    ],
+    "state_axes": [
+      "scope_resolution",
+      "source_parity_resolution",
+      "reviewer_selection",
+      "lane_execution",
+      "synthesis",
+      "fallback"
+    ],
+    "coverage_implications": [
+      "lane selection",
+      "independent findings",
+      "synthesis arbitration",
+      "fallback transparency",
+      "planner boundary"
+    ]
+  },
+  "parity_matrix": [],
+  "deferral_ledger": [],
+  "recommended_route": "beacon-gen-change",
+  "user_decision_required": true,
+  "planner_boundary": {
+    "truth_write_allowed": false,
+    "code_write_allowed": false,
+    "machine_write_allowed": false,
+    "qa_verdict_allowed": false,
+    "release_verdict_allowed": false
+  },
+  "evidence_paths": {
+    "runtime": ".beacon/state/planner-review/beacon-harness-program-plan-v161/pln-review-20260615t035903z.json"
+  },
+  "runtime_evidence_only": true,
+  "requirement_truth": false,
+  "formal_verdict_authority": false,
+  "release_verdict_authority": false,
+  "generated_at": "2026-06-15T03:59:03.058046+00:00"
+}

@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "benchmark_id": "skill-benchmark-20260610t032555z",
+  "version": "v1.6.0",
+  "case_id": "tc-026-compound-parity-review-contract",
+  "tc_id": "TC-026",
+  "ac_ids": [
+    "AC-002",
+    "AC-013"
+  ],
+  "prompt": "用 beacon-pln-review 做 Compound-style review，必须输出 intent、scope、diff、source inventory、parity matrix、findings、synthesis、autofix routing、release ops 和 QA hygiene。",
+  "target_harness": "planner",
+  "expected_route": "beacon-pln-review",
+  "truth_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+  ],
+  "source_refs": [
+    "beacon/utils/skill_eval_kit.py",
+    "beacon/utils/agent_surface.py"
+  ],
+  "evidence_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md"
+  ],
+  "assertions": [
+    "must_emit_compound_review_contract",
+    "must_mark_no_qa_or_release_verdict_authority"
+  ],
+  "configs": [
+    "with_skill",
+    "baseline"
+  ],
+  "runtime_evidence_only": true,
+  "requirement_truth": false
+}
