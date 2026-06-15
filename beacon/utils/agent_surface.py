@@ -60,6 +60,9 @@ _V160_PUBLIC_PLANNER_SKILLS = (
     "beacon-pln-program-auto",
     "beacon-pln-program-interactive",
 )
+_V160_PUBLIC_EVALUATOR_SKILLS = (
+    "beacon-eval-agent",
+)
 
 
 @dataclass(frozen=True)
@@ -661,18 +664,20 @@ def _v160_skill_projections() -> list[SkillProjection]:
                 files=extra_files,
             )
         )
-    projections = _append_v160_native_planner_projections(projections, source_root)
+    projections = _append_v160_native_packaged_projections(projections, source_root, _V160_PUBLIC_PLANNER_SKILLS)
+    projections = _append_v160_native_packaged_projections(projections, source_root, _V160_PUBLIC_EVALUATOR_SKILLS)
     return sorted(projections, key=lambda item: item.id)
 
 
-def _append_v160_native_planner_projections(
+def _append_v160_native_packaged_projections(
     projections: list[SkillProjection],
     source_root: Path,
+    skill_ids: tuple[str, ...],
 ) -> list[SkillProjection]:
-    """Include net-new planner skills packaged under skills/beacon/ but absent from rename matrix."""
+    """Include net-new packaged skills under skills/beacon/ but absent from rename matrix."""
     existing_ids = {item.id for item in projections}
     extra: list[SkillProjection] = []
-    for skill_id in _V160_PUBLIC_PLANNER_SKILLS:
+    for skill_id in skill_ids:
         if skill_id in existing_ids:
             continue
         source_skill = source_root / skill_id
