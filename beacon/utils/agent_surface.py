@@ -269,6 +269,16 @@ _V160_FORBIDDEN_ROUTE_PHRASES = (
     "use the old skill names",
     "compatibility aliases remain available",
 )
+_BEACON_SKILL_BACKUP_PREFIXES = (
+    ".beacon-v160-legacy-backup",
+    ".beacon-v160-planner-deprecated-cleanup",
+    ".beacon-legacy-cleanup",
+)
+_GLOBAL_LEGACY_SKILL_ROOTS = (
+    "claude",
+    "codex",
+    "agents",
+)
 
 _V160_SHARED_PREAMBLE = """## Beacon v1.6.0 共享 Preamble
 
@@ -745,18 +755,138 @@ def _verify_v160_skill_content(skill_id: str, text: str) -> list[str]:
     return errors
 
 
+def _is_beacon_skill_backup_dir(name: str) -> bool:
+    return any(name.startswith(prefix) for prefix in _BEACON_SKILL_BACKUP_PREFIXES)
+
+
+def _collect_beacon_skill_backup_dirs(skills_root: Path) -> list[Path]:
+    if not skills_root.exists():
+        return []
+    return sorted(
+        (item for item in skills_root.iterdir() if item.is_dir() and _is_beacon_skill_backup_dir(item.name)),
+        key=lambda item: item.name,
+    )
+
+
+def _remove_beacon_skill_backup_dirs(skills_root: Path, *, dry_run: bool) -> list[str]:
+    removed: list[str] = []
+    for backup_dir in _collect_beacon_skill_backup_dirs(skills_root):
+        removed.append(str(backup_dir))
+        if not dry_run:
+            shutil.rmtree(backup_dir)
+    return removed
+
+
+def _remove_skill_path(path: Path) -> None:
+    if path.is_symlink():
+        path.unlink()
+        return
+    if path.is_dir():
+        shutil.rmtree(path)
+        return
+    if path.exists():
+        path.unlink()
+
+
+def _global_legacy_skill_roots(home: Path | None = None) -> dict[str, Path]:
+    base = (home or Path.home()).expanduser()
+    return {
+        "claude": base / ".claude" / "skills",
+        "codex": base / ".codex" / "skills",
+        "agents": base / ".agents" / "skills",
+    }
+
+
+def cleanup_legacy_beacon_skills(
+    project_root: Path | str,
+    *,
+    agent: str = "all",
+    scope: str = "all",
+    runtime_version: str,
+    docs_version: str | None = None,
+    dry_run: bool = False,
+    force: bool = False,
+) -> dict[str, Any]:
+    """Remove v1.6.0 backup trees and pre-taxonomy Beacon skill aliases from agent skill roots."""
+    root = Path(project_root).resolve()
+    source_skills = _expected_skill_projections(
+        packaged_beacon_skill_root(),
+        runtime_version=runtime_version,
+        docs_version=docs_version,
+    )
+    expected_ids = {item.id for item in source_skills}
+    v160_taxonomy = _uses_v160_taxonomy(docs_version, runtime_version)
+    targets: list[tuple[str, Path]] = []
+
+    normalized_scope = str(scope or "all").strip().lower()
+    normalized_agent = str(agent or "all").strip().lower()
+    if normalized_scope in {"project", "all"}:
+        agents = ("trae", "claude", "codex", "cursor", "windsurf") if normalized_agent == "all" else (normalized_agent,)
+        for agent_name in agents:
+            target = resolve_agent_surface_target(root, agent_name)
+            targets.append((f"project:{agent_name}", target.skills_root))
+    if normalized_scope in {"global", "all"}:
+        for label, skills_root in _global_legacy_skill_roots().items():
+            if normalized_agent not in {"all", label, "codex"}:
+                continue
+            if normalized_agent == "codex" and label not in {"codex", "agents"}:
+                continue
+            targets.append((f"global:{label}", skills_root))
+
+    removed: list[dict[str, Any]] = []
+    for target_label, skills_root in targets:
+        if not skills_root.exists():
+            continue
+        for backup_dir in _collect_beacon_skill_backup_dirs(skills_root):
+            removed.append({"target": target_label, "path": str(backup_dir), "kind": "backup"})
+            if not dry_run:
+                shutil.rmtree(backup_dir)
+        if not v160_taxonomy:
+            continue
+        for child in sorted(skills_root.iterdir(), key=lambda item: item.name):
+            name = child.name
+            if name == "beacon":
+                continue
+            if child.is_file():
+                if force and (name.startswith("beacon-") or name in {"using-beacon", "beacon-cli"}):
+                    removed.append({"target": target_label, "path": str(child), "kind": "legacy_file"})
+                    if not dry_run:
+                        _remove_skill_path(child)
+                continue
+            if not (child.is_dir() or child.is_symlink()):
+                continue
+            stale = name in _V160_OLD_ALIAS_IDS or name == "using-beacon"
+            unexpected = (name.startswith("beacon-") or name == "using-beacon") and name not in expected_ids
+            if stale or (force and unexpected):
+                removed.append({"target": target_label, "path": str(child), "kind": "legacy_alias" if stale else "unexpected"})
+                if not dry_run:
+                    _remove_skill_path(child)
+
+    return {
+        "project_root": str(root),
+        "scope": normalized_scope,
+        "agent": normalized_agent,
+        "dry_run": dry_run,
+        "force": force,
+        "taxonomy_version": _V160_TAXONOMY_VERSION if v160_taxonomy else "",
+        "removed": removed,
+        "removed_count": len(removed),
+    }
+
+
 def _verify_v160_surface(target: AgentSurfaceTarget, expected_ids: list[str]) -> dict[str, Any]:
+    backup_dirs = sorted(item.name for item in _collect_beacon_skill_backup_dirs(target.skills_root))
     unexpected = sorted(
         item.name
         for item in target.skills_root.iterdir()
-        if item.is_dir()
+        if (item.is_dir() or item.is_symlink())
         and (item.name.startswith("beacon-") or item.name == "using-beacon")
         and item.name not in expected_ids
     ) if target.skills_root.exists() else []
     old_aliases = sorted(
         item.name
         for item in target.skills_root.iterdir()
-        if item.is_dir() and item.name in _V160_OLD_ALIAS_IDS
+        if (item.is_dir() or item.is_symlink()) and item.name in _V160_OLD_ALIAS_IDS
     ) if target.skills_root.exists() else []
     wrong_names = [skill_id for skill_id in expected_ids if _harness_from_skill_id(skill_id) not in _V160_HARNESSES]
     gate_errors: dict[str, list[str]] = {}
@@ -773,6 +903,7 @@ def _verify_v160_surface(target: AgentSurfaceTarget, expected_ids: list[str]) ->
         if stale_route_errors:
             route_errors[skill_id] = stale_route_errors
     return {
+        "backup_dirs": backup_dirs,
         "unexpected": unexpected,
         "old_aliases": old_aliases,
         "wrong_names": wrong_names,
@@ -1434,6 +1565,8 @@ def setup_agent_surface(
     if not dry_run:
         target.skills_root.mkdir(parents=True, exist_ok=True)
 
+    removed.extend(_remove_beacon_skill_backup_dirs(target.skills_root, dry_run=dry_run))
+
     source_names = {item.id for item in source_skills}
     stale_ids = sorted(previously_managed - source_names)
     if v160_taxonomy and target.skills_root.exists():
@@ -1595,6 +1728,11 @@ def verify_agent_surface(
                     "name": "v160_harness_skill_names",
                     "status": "pass" if not v160_surface["wrong_names"] else "fail",
                     "details": {"wrong_names": v160_surface["wrong_names"]},
+                },
+                {
+                    "name": "v160_no_skill_backup_directories",
+                    "status": "pass" if not v160_surface["backup_dirs"] else "fail",
+                    "details": {"backup_dirs": v160_surface["backup_dirs"]},
                 },
                 {
                     "name": "v160_no_old_host_visible_aliases",
