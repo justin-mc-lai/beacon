@@ -7,7 +7,7 @@
 - baseline_hash: `sha256:72b97d62c01867b78abe0bbdd3ca59acaf23d831afe76f294ceb286a837e482e`
 - delivery_baseline_id: `impl-delivery-baseline-v1.6.1-beacon-agent-eval-v161-R2`
 - delivery_baseline_source_hash: `sha256:7a732e6b4bb174b584039534030d5ccf4d4dee6562ecbd7b072ad0b77382b886`
-- plan_hash: `sha256:7575667dbb0da1b9485f81ca097055f0c224ea36d6c5b550b9284718bc745078`
+- plan_hash: `sha256:7b669fcda34fa2e2e8f2ffa2eb986e730a310ea5c16aa4863a5af590a8893851`
 - status: `completed`
 
 ## Source Refs

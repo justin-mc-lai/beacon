@@ -5,7 +5,7 @@
   "version": "v1.6.1",
   "current_revision_id": "R2",
   "lifecycle_status": "frozen",
-  "updated_at": "2026-06-15T11:46:47.384496+00:00",
+  "updated_at": "2026-06-16T11:39:25.160825+00:00",
   "revisions": [
     {
       "revision_id": "R1",
@@ -136,9 +136,9 @@
           "kind": "test",
           "text": "Verify AC-001 — Acceptance criteria TBD",
           "required": true,
-          "status": "accepted",
+          "status": "passed",
           "implemented_by_run_id": "run-20260615T100826Z-b337",
-          "verified_by_run_id": "review.accept",
+          "verified_by_run_id": "run-20260616T193819829443",
           "accepted_at": "2026-06-15T11:46:47.374564+00:00",
           "changed_in_revision": "R2",
           "covers": [
@@ -168,10 +168,16 @@
         "beacon/commands/doctor.py"
       ],
       "verification_evidence": [
-        ".beacon/auto-test-status.json"
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.6.1/.machine/qa/beacon-agent-eval-v161.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-agent-eval-v161/ac-closure.json",
+        ".beacon/qa/features/beacon-agent-eval-v161/scorecard.json",
+        ".beacon/release-gate-report.json"
       ],
-      "accepted_at": "2026-06-15T11:46:47.374564+00:00",
-      "accepted_by": "implement-session"
+      "accepted_at": "2026-06-16T11:39:24.974268+00:00",
+      "accepted_by": "qa"
     }
   ]
 }

@@ -63,8 +63,8 @@
       "execution_method": "`mkdir -p .beacon/qa-tmp && beacon eval --help >.beacon/qa-tmp/TC-AE-001.txt 2>&1 && rg -q 'catalog' .beacon/qa-tmp/TC-AE-001.txt && rg -q 'scorecard' .beacon/qa-tmp/TC-AE-001.txt && python3 -m pytest tests/test_v161_agent_eval.py::test_agent_eval_help_lists_subcommands -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
       "scenario": "exit 0 或 BLOCKED:Phase-A",
       "steps": "",
-      "last_run_id": "run-20260615T192502770578",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-001/command.txt"
+      "last_run_id": "run-20260616T193819829443",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-001/command.txt"
     },
     {
       "tc_id": "TC-AE-002",
@@ -90,8 +90,8 @@
       "execution_method": "`mkdir -p .beacon/qa-tmp && beacon eval catalog --project-root . --version v1.6.1 --json >.beacon/qa-tmp/TC-AE-002.json 2>&1 && test -f docs/beacon/v1.6.1/.machine/execution/agent-eval-capability-catalog-v161.json`",
       "scenario": "catalog JSON 存在",
       "steps": "",
-      "last_run_id": "run-20260615T192502770578",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-002/command.txt"
+      "last_run_id": "run-20260616T193819829443",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-002/command.txt"
     },
     {
       "tc_id": "TC-AE-003",
@@ -117,8 +117,8 @@
       "execution_method": "`python3 -c \"import json; c=json.load(open('docs/beacon/v1.6.1/.machine/execution/agent-eval-capability-catalog-v161.json')); h=set(x.get('harness') for x in c.get('entries',[])); assert {'pln','gen','eval','gov'}.issubset(h)\"`",
       "scenario": "四类 harness 在 catalog",
       "steps": "",
-      "last_run_id": "run-20260615T192502770578",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-003/command.txt"
+      "last_run_id": "run-20260616T193819829443",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-003/command.txt"
     },
     {
       "tc_id": "TC-AE-004",
@@ -144,8 +144,8 @@
       "execution_method": "`mkdir -p .beacon/qa-tmp && BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 beacon eval run --project-root . --split regression-core --runner replay --version v1.6.1 --json >.beacon/qa-tmp/TC-AE-004.json 2>&1 && python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-AE-004.json')); assert d.get('traces_path') or d.get('status')=='blocked'\" && python3 -m pytest tests/test_v161_agent_eval.py::test_agent_eval_catalog_materialize -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
       "scenario": "traces 或明确 blocked",
       "steps": "",
-      "last_run_id": "run-20260615T192502770578",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-004/command.txt"
+      "last_run_id": "run-20260616T193819829443",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-004/command.txt"
     },
     {
       "tc_id": "TC-AE-005",
@@ -171,8 +171,8 @@
       "execution_method": "`mkdir -p .beacon/qa-tmp && BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 beacon eval scorecard --project-root . --version v1.6.1 --json >.beacon/qa-tmp/TC-AE-005.json 2>&1 && python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-AE-005.json')); dims=d.get('dimensions',{}); assert len(dims)>=6 and 'composite_score' in d\"`",
       "scenario": "六维 + composite",
       "steps": "",
-      "last_run_id": "run-20260615T192502770578",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-005/command.txt"
+      "last_run_id": "run-20260616T193819829443",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-005/command.txt"
     },
     {
       "tc_id": "TC-AE-006",
@@ -198,8 +198,8 @@
       "execution_method": "`mkdir -p .beacon/qa-tmp && BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 beacon eval scorecard --project-root . --version v1.6.1 --json >.beacon/qa-tmp/TC-AE-006.json 2>&1 && python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-AE-006.json')); a=d.get('authority',d); assert d.get('runtime_evidence_only') is True and d.get('formal_verdict_authority') is False\"`",
       "scenario": "authority 字段正确",
       "steps": "",
-      "last_run_id": "run-20260615T192502770578",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-006/command.txt"
+      "last_run_id": "run-20260616T193819829443",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-006/command.txt"
     },
     {
       "tc_id": "TC-AE-007",
@@ -225,8 +225,8 @@
       "execution_method": "`mkdir -p .beacon/qa-tmp && BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 beacon eval scorecard --project-root . --version v1.6.1 --runner simulated --json >.beacon/qa-tmp/TC-AE-007.json 2>&1 && python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-AE-007.json')); assert d.get('degraded') is True and 'simulated_composite_score' in d\"`",
       "scenario": "simulated 降级标记",
       "steps": "",
-      "last_run_id": "run-20260615T192502770578",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-007/command.txt"
+      "last_run_id": "run-20260616T193819829443",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-007/command.txt"
     },
     {
       "tc_id": "TC-AE-008",
@@ -252,8 +252,8 @@
       "execution_method": "`mkdir -p .beacon/qa-tmp && BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 beacon eval run --project-root . --runner live --version v1.6.1 --json >.beacon/qa-tmp/TC-AE-008.json 2>&1; python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-AE-008.json')); assert d.get('status')=='blocked' and d.get('reason_code')=='agent_eval_live_runner_not_admitted'\"`",
       "scenario": "无 admission 时 blocked",
       "steps": "",
-      "last_run_id": "run-20260615T192502770578",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-008/command.txt"
+      "last_run_id": "run-20260616T193819829443",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-008/command.txt"
     },
     {
       "tc_id": "TC-AE-009",
@@ -279,8 +279,8 @@
       "execution_method": "`test -f docs/beacon/v1.6.1/.machine/execution/agent-eval-runner-admission.json && mkdir -p .beacon/qa-tmp && BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 beacon eval run --project-root . --runner live --version v1.6.1 --json >.beacon/qa-tmp/TC-AE-009.json 2>&1 && python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-AE-009.json')); assert d.get('status') in ('pass','running','completed')\"`",
       "scenario": "admission 存在时可启动",
       "steps": "",
-      "last_run_id": "run-20260615T192502770578",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-009/command.txt"
+      "last_run_id": "run-20260616T193819829443",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-009/command.txt"
     },
     {
       "tc_id": "TC-AE-010",
@@ -306,8 +306,8 @@
       "execution_method": "`mkdir -p .beacon/qa-tmp && BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 beacon eval benchmark --version v1.6.1 --json >.beacon/qa-tmp/TC-AE-010.json 2>&1 && python3 -c \"import json,glob; d=json.load(open('.beacon/qa-tmp/TC-AE-010.json')); root=d.get('root',''); assert all(glob.glob(root+'/**/'+x, recursive=True) or x in str(d) for x in ['eval_metadata','grading','benchmark','analysis'])\"`",
       "scenario": "四类 artifact 目录",
       "steps": "",
-      "last_run_id": "run-20260615T192502770578",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-010/command.txt"
+      "last_run_id": "run-20260616T193819829443",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-010/command.txt"
     },
     {
       "tc_id": "TC-AE-011",
@@ -333,8 +333,8 @@
       "execution_method": "`python3 -c \"import json,glob; import pathlib; b=pathlib.Path('.beacon/state/agent-eval/benchmarks'); bs=sorted(b.glob('*'))[-1] if b.exists() else None; g=list(bs.glob('grading/*.json')) if bs else []; assert len(g)>=2\"`",
       "scenario": "grading 含多配置",
       "steps": "",
-      "last_run_id": "run-20260615T192502770578",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-011/command.txt"
+      "last_run_id": "run-20260616T193819829443",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-011/command.txt"
     },
     {
       "tc_id": "TC-AE-012",
@@ -360,8 +360,8 @@
       "execution_method": "`python3 -c \"import json,pathlib; b=pathlib.Path('.beacon/state/agent-eval/benchmarks'); bs=sorted(b.glob('*'))[-1] if b.exists() else None; found=any('critique' in str(v) for p in (bs.glob('grading/*.json') if bs else []) for v in json.load(open(p)).values()); assert found\"`",
       "scenario": "grading 含 critique",
       "steps": "",
-      "last_run_id": "run-20260615T192502770578",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-012/command.txt"
+      "last_run_id": "run-20260616T193819829443",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-012/command.txt"
     },
     {
       "tc_id": "TC-AE-013",
@@ -374,7 +374,7 @@
       "automation": "auto",
       "command": "`test -f .beacon/state/agent-eval/benchmarks/*/analysis/analysis.md",
       "assertion": "Provider/consumer contract assertions pass",
-      "evidence_path": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-013/command.txt",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-013/command.txt",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -387,8 +387,8 @@
       "execution_method": "`test -f .beacon/state/agent-eval/benchmarks/*/analysis/analysis.md",
       "scenario": "",
       "steps": "",
-      "last_run_id": "run-20260615T192502770578",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-013/command.txt"
+      "last_run_id": "run-20260616T193819829443",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-013/command.txt"
     },
     {
       "tc_id": "TC-AE-014",
@@ -414,8 +414,8 @@
       "execution_method": "`rg -q 'TC-006' beacon/utils/skill_eval_kit.py && rg -q 'TC-017' beacon/utils/skill_eval_kit.py && rg -q 'v1.6.1' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md`",
       "scenario": "v1.6.1 继承 v1.6.0 行为轴",
       "steps": "",
-      "last_run_id": "run-20260615T192502770578",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-014/command.txt"
+      "last_run_id": "run-20260616T193819829443",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-014/command.txt"
     },
     {
       "tc_id": "TC-AE-015",
@@ -428,7 +428,7 @@
       "automation": "auto",
       "command": "`rg -q 'hard-gate' .beacon/state/skill-eval/cases.json 2>/dev/null",
       "assertion": "Provider/consumer contract assertions pass",
-      "evidence_path": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-015/command.txt",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-015/command.txt",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -441,8 +441,8 @@
       "execution_method": "`rg -q 'hard-gate' .beacon/state/skill-eval/cases.json 2>/dev/null",
       "scenario": "",
       "steps": "",
-      "last_run_id": "run-20260615T192502770578",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-015/command.txt"
+      "last_run_id": "run-20260616T193819829443",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-015/command.txt"
     },
     {
       "tc_id": "TC-AE-016",
@@ -468,8 +468,8 @@
       "execution_method": "`test -f skills/beacon/beacon-eval-agent/SKILL.md && rg -q 'HARD GATE' skills/beacon/beacon-eval-agent/SKILL.md && rg -q 'release verdict' skills/beacon/beacon-eval-agent/SKILL.md`",
       "scenario": "eval-agent skill + gate",
       "steps": "",
-      "last_run_id": "run-20260615T192502770578",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-016/command.txt"
+      "last_run_id": "run-20260616T193819829443",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-016/command.txt"
     },
     {
       "tc_id": "TC-AE-017",
@@ -495,8 +495,8 @@
       "execution_method": "`rg -q 'AgentEvalState' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md && python3 -m pytest tests/test_agent_eval_state_contract.py -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
       "scenario": "FSM 单测",
       "steps": "",
-      "last_run_id": "run-20260615T192502770578",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-017/command.txt"
+      "last_run_id": "run-20260616T193819829443",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-017/command.txt"
     },
     {
       "tc_id": "TC-AE-018",
@@ -522,8 +522,8 @@
       "execution_method": "`python3 -m pytest tests/test_agent_eval_state_contract.py -q -k recovery`",
       "scenario": "recovery 路径单测",
       "steps": "",
-      "last_run_id": "run-20260615T192502770578",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-018/command.txt"
+      "last_run_id": "run-20260616T193819829443",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-018/command.txt"
     },
     {
       "tc_id": "TC-AE-019",
@@ -549,8 +549,8 @@
       "execution_method": "`python3 -c \"import json; c=json.load(open('docs/beacon/v1.6.1/.machine/execution/agent-eval-capability-catalog-v161.json')); ids=[x.get('id','') for x in c.get('entries',[])]; assert any('plan start' in i or 'plan.start' in i for i in ids)\"`",
       "scenario": "catalog 含 plan start",
       "steps": "",
-      "last_run_id": "run-20260615T192502770578",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-019/command.txt"
+      "last_run_id": "run-20260616T193819829443",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-019/command.txt"
     },
     {
       "tc_id": "TC-AE-020",
@@ -576,8 +576,8 @@
       "execution_method": "`rg -q 'trace-scorecard' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md && rg -q 'acceptance-kit' beacon/utils/acceptance_kit.py`",
       "scenario": "acceptance kit 桥接声明",
       "steps": "",
-      "last_run_id": "run-20260615T192502770578",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-020/command.txt"
+      "last_run_id": "run-20260616T193819829443",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-020/command.txt"
     },
     {
       "tc_id": "TC-AE-021",
@@ -603,8 +603,8 @@
       "execution_method": "`rg -q 'anti-fake-delivery' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md && rg -q 'fake_delivery' beacon/utils/skill_eval_kit.py`",
       "scenario": "anti-fake-delivery",
       "steps": "",
-      "last_run_id": "run-20260615T192502770578",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-021/command.txt"
+      "last_run_id": "run-20260616T193819829443",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-021/command.txt"
     },
     {
       "tc_id": "TC-AE-022",
@@ -630,8 +630,8 @@
       "execution_method": "`rg -q 'Agent Eval' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md && rg -q '验收标准' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md`",
       "scenario": "中文 truth",
       "steps": "",
-      "last_run_id": "run-20260615T192502770578",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-022/command.txt"
+      "last_run_id": "run-20260616T193819829443",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-022/command.txt"
     },
     {
       "tc_id": "TC-AE-023",
@@ -657,8 +657,8 @@
       "execution_method": "`rg -q 'beacon-agent-eval-v161' docs/beacon/v1.6.1/SUMMARY.md`",
       "scenario": "SUMMARY 索引",
       "steps": "",
-      "last_run_id": "run-20260615T192502770578",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-023/command.txt"
+      "last_run_id": "run-20260616T193819829443",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-023/command.txt"
     },
     {
       "tc_id": "TC-AE-024",
@@ -684,8 +684,8 @@
       "execution_method": "`rg -q 'skill.eval' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md && rg -q 'skill_eval' beacon/utils/skill_eval_kit.py`",
       "scenario": "skill eval kit 桥接",
       "steps": "",
-      "last_run_id": "run-20260615T192502770578",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-024/command.txt"
+      "last_run_id": "run-20260616T193819829443",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-024/command.txt"
     },
     {
       "tc_id": "TC-AE-025",
@@ -711,8 +711,8 @@
       "execution_method": "`python3 -c \"import json; c=json.load(open('docs/beacon/v1.6.1/.machine/execution/agent-eval-capability-catalog-v161.json')); ids=' '.join(x.get('id','') for x in c.get('entries',[])); assert 'verify-agent-surface' in ids\"`",
       "scenario": "doctor surface 在 catalog",
       "steps": "",
-      "last_run_id": "run-20260615T192502770578",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-025/command.txt"
+      "last_run_id": "run-20260616T193819829443",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-025/command.txt"
     },
     {
       "tc_id": "TC-AE-026",
@@ -738,8 +738,8 @@
       "execution_method": "`rg -q 'route_stability' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md && rg -q '15%' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md`",
       "scenario": "权重在 truth",
       "steps": "",
-      "last_run_id": "run-20260615T192502770578",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-026/command.txt"
+      "last_run_id": "run-20260616T193819829443",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-026/command.txt"
     },
     {
       "tc_id": "TC-AE-027",
@@ -765,8 +765,8 @@
       "execution_method": "`mkdir -p .beacon/qa-tmp && BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 beacon eval run --split regression-core --runner replay --version v1.6.1 --json >.beacon/qa-tmp/TC-AE-027-run.json 2>&1 && BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 beacon eval scorecard --version v1.6.1 --json >.beacon/qa-tmp/TC-AE-027-sc.json 2>&1 && python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-AE-027-sc.json')); assert d.get('composite_score',0)>=70 or d.get('status')=='blocked'\"`",
       "scenario": "regression pass 时 composite≥70",
       "steps": "",
-      "last_run_id": "run-20260615T192502770578",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-027/command.txt"
+      "last_run_id": "run-20260616T193819829443",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-027/command.txt"
     },
     {
       "tc_id": "TC-AE-028",
@@ -792,8 +792,8 @@
       "execution_method": "`rg -q 'full_parity' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md && rg -q 'Deferral Ledger' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md`",
       "scenario": "scope_mode + deferral 表",
       "steps": "",
-      "last_run_id": "run-20260615T192502770578",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-028/command.txt"
+      "last_run_id": "run-20260616T193819829443",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-028/command.txt"
     },
     {
       "tc_id": "TC-AE-029",
@@ -819,8 +819,8 @@
       "execution_method": "`rg -q '## user_decision' docs/beacon/v1.6.1/research/beacon-agent-eval-v161.md && rg -q '^promoted$' docs/beacon/v1.6.1/research/beacon-agent-eval-v161.md && rg -q 'promotion_ref' docs/beacon/v1.6.1/research/beacon-agent-eval-v161.md`",
       "scenario": "exit 0",
       "steps": "",
-      "last_run_id": "run-20260615T192502770578",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-029/command.txt"
+      "last_run_id": "run-20260616T193819829443",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-029/command.txt"
     },
     {
       "tc_id": "TC-AE-030",
@@ -833,7 +833,7 @@
       "automation": "auto",
       "command": "`python3 -c \"import json; from beacon.utils.agent_surface import v160_skill_package_projection; m=json.load(open('docs/beacon/v1.6.1/.machine/execution/agent-eval-live-skill-matrix-v161.json')); ids={x['skill_id'] for x in m.get('entries',[])}; exp={p.id for p in v160_skill_package_projection()}",
       "assertion": "{'beacon-eval-agent'}; assert ids==exp\"`",
-      "evidence_path": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-030/command.txt",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-030/command.txt",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -846,8 +846,8 @@
       "execution_method": "`python3 -c \"import json; from beacon.utils.agent_surface import v160_skill_package_projection; m=json.load(open('docs/beacon/v1.6.1/.machine/execution/agent-eval-live-skill-matrix-v161.json')); ids={x['skill_id'] for x in m.get('entries',[])}; exp={p.id for p in v160_skill_package_projection()}",
       "scenario": "{'beacon-eval-agent'}; assert ids==exp\"`",
       "steps": "",
-      "last_run_id": "run-20260615T192502770578",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-030/command.txt"
+      "last_run_id": "run-20260616T193819829443",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-030/command.txt"
     },
     {
       "tc_id": "TC-AE-031",
@@ -873,8 +873,8 @@
       "execution_method": "`mkdir -p .beacon/qa-tmp && BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 beacon eval run --project-root . --split regression-core --runner live --version v1.6.1 --json >.beacon/qa-tmp/TC-AE-031.json 2>&1 && python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-AE-031.json')); per=d.get('per_skill',[]); assert len(per)>=37\"`",
       "scenario": "每条 skill 有 trace 或 blocked",
       "steps": "",
-      "last_run_id": "run-20260615T192502770578",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-031/command.txt"
+      "last_run_id": "run-20260616T193819829443",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-031/command.txt"
     },
     {
       "tc_id": "TC-AE-032",
@@ -900,8 +900,8 @@
       "execution_method": "`mkdir -p .beacon/qa-tmp && BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 beacon eval scorecard --project-root . --version v1.6.1 --runner live --json >.beacon/qa-tmp/TC-AE-032.json 2>&1 && python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-AE-032.json')); t=d.get('live_skill_total',0); assert t>=37; p=d.get('live_skill_pass',0); assert p==t or d.get('live_coverage_blocked') is True\"`",
       "scenario": "100% live pass 或全量 blocked 报告",
       "steps": "",
-      "last_run_id": "run-20260615T192502770578",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-032/command.txt"
+      "last_run_id": "run-20260616T193819829443",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-032/command.txt"
     },
     {
       "tc_id": "TC-AE-033",
@@ -914,7 +914,7 @@
       "automation": "auto",
       "command": "`python3 -c \"import re; t=open('docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md').read(); pb=re.search(r'## Phased Backlog.*?(?=\\\\n## )', t, re.S); section=pb.group(0) if pb else ''; assert '全 skill live' in t and 'change_reason' in t and '",
       "assertion": "PB-AE-001",
-      "evidence_path": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-033/command.txt",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-033/command.txt",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -927,8 +927,8 @@
       "execution_method": "`python3 -c \"import re; t=open('docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md').read(); pb=re.search(r'## Phased Backlog.*?(?=\\\\n## )', t, re.S); section=pb.group(0) if pb else ''; assert '全 skill live' in t and 'change_reason' in t and '",
       "scenario": "PB-AE-001",
       "steps": "",
-      "last_run_id": "run-20260615T192502770578",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260615T192502770578/qa9-tc/TC-AE-033/command.txt"
+      "last_run_id": "run-20260616T193819829443",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260616T193819829443/qa9-tc/TC-AE-033/command.txt"
     }
   ],
   "research_projection": {
