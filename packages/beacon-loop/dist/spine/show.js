@@ -117,6 +117,13 @@ export function showSpine(projectRoot, runId = "") {
     authoritative_paths.push(join(selected.run_dir, "prompt.md"));
     authoritative_paths.push(join(selected.run_dir, "notes.md"));
 
+    for (const evalName of ["eval-matrix.json", "eval-scorecard.json"]) {
+      const absEval = join(selected.abs_run_dir, evalName);
+      if (existsSync(absEval)) {
+        authoritative_paths.push(join(selected.run_dir, evalName));
+      }
+    }
+
     const phaseState = readJson(join(selected.abs_run_dir, "beacon-phase.json"), {});
     phase = phaseState.phase || "";
     phases_completed = phaseState.phases_completed || [];
@@ -137,6 +144,19 @@ export function showSpine(projectRoot, runId = "") {
 
   const next = inferNextAction(phase, phase_promoted, phases_completed);
 
+  const eval_refs = [];
+  if (selected) {
+    for (const evalName of ["eval-matrix.json", "eval-scorecard.json"]) {
+      const abs = join(selected.abs_run_dir, evalName);
+      if (existsSync(abs)) {
+        eval_refs.push({
+          path: join(selected.run_dir, evalName),
+          formal_verdict_authority: false,
+        });
+      }
+    }
+  }
+
   return {
     schema_version: "1.0",
     surface: "beacon-loop",
@@ -151,6 +171,7 @@ export function showSpine(projectRoot, runId = "") {
     next_action: next.action,
     progress_status: next.status,
     authoritative_paths: [...new Set(authoritative_paths.filter(Boolean))],
+    ...(eval_refs.length ? { eval_refs } : {}),
     delegation: selected ? "beacon-run" : loopRunId ? "beacon-loop-legacy" : "none",
     doc_ref: "docs/beacon/v1.6.0/execution/beacon-loop-state-spine.md",
   };

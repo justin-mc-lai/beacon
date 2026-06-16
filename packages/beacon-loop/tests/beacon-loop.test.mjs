@@ -586,3 +586,55 @@ test("TC-071 go-todo worktree delegate dry-run routes worktree harness", () => {
   assert.match(payload.beacon_run_command, /go-todo-crud-smoke/);
   assert.match(payload.beacon_run_command, /--beacon/);
 });
+
+test("TC-v161 ambiguous scope dry-run bypasses MCQ but surfaces scope metadata", () => {
+  const repoRoot = join(root, "..", "..");
+  const result = spawnSync(
+    "node",
+    [
+      cli,
+      "goal",
+      "在 examples/go-todo-crud 实现最小 Go HTTP CRUD",
+      "--project",
+      repoRoot,
+      "--version",
+      "v1.6.1",
+      "--feature",
+      "go-todo-crud-smoke",
+      "--dry-run",
+      "--json",
+    ],
+    { cwd: root, encoding: "utf8" },
+  );
+  assert.equal(result.status, 0, result.stderr);
+  const payload = JSON.parse(result.stdout);
+  assert.equal(payload.status, "dry_run");
+  assert.equal(payload.delivery_mode, "delivery");
+  assert.equal(payload.scope?.ambiguous, true);
+  assert.ok(payload.scope?.mcq);
+  assert.match(payload.beacon_run_command, /--lake-or-ocean/);
+});
+
+test("TC-v161 ambiguous scope without dry-run blocks on scope MCQ", () => {
+  const repoRoot = join(root, "..", "..");
+  const result = spawnSync(
+    "node",
+    [
+      cli,
+      "goal",
+      "在 examples/go-todo-crud 实现最小 Go HTTP CRUD",
+      "--project",
+      repoRoot,
+      "--version",
+      "v1.6.1",
+      "--feature",
+      "go-todo-crud-smoke",
+      "--json",
+    ],
+    { cwd: root, encoding: "utf8" },
+  );
+  assert.equal(result.status, 3, result.stderr);
+  const payload = JSON.parse(result.stdout);
+  assert.equal(payload.status, "blocked");
+  assert.equal(payload.reason_code, "scope_mcq_required");
+});
