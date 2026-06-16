@@ -34,8 +34,10 @@
       "slug": "beacon-harness-program-plan-v161",
       "version": "v1.6.1",
       "status": "frozen",
-      "revision_id": "R2",
+      "revision_id": "R4",
+      "source_revision_id": "R3",
       "language": "zh",
+      "change_reason": "R4 implementation-first-reconciliation refreeze；承接 R3 真实 program FSM + goal 单入口 + loop v161 对接",
       "canonical_refs": {
         "prd": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
         "user_story": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
@@ -59,10 +61,10 @@
       "evidence": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/evidence.md"
     },
     "source_hashes": {
-      "truth": "82d7e09308c0e11d7738bc57c48cb53c6cae7eec8ac02fa2f086899a4b0629a1",
-      "tests": "ff7b58dcfc887ac651574222e20dee1892e4929a2e9250dfadeefa4986900a8a",
-      "tasks": "a8d2d803dc5041219396c4443b858012f6ad0d895844f567cae1c3c92c709376",
-      "evidence": "ef12b7226bbd74cd210cc1e8dc1be69b8450680198ae03aed78c7447f9414880"
+      "truth": "ee1d72bc76c07118270f6c8ec6c398b792db3b7841db5521e4aa8c6de0cbd0ee",
+      "tests": "cc2991f2d0686f16f7074abd3a20e6b7b1e00a9b9998775c64862494408c8232",
+      "tasks": "c3f2910099200f59f9440d2a2eb2976297323a3605d9286e49cbcdceeb1b3a6c",
+      "evidence": "e182072126cdedddad282f43549065b0c2ae18e0d16bfd3bbafbcc09228a315d"
     },
     "surfaces": {
       "truth": {
@@ -77,7 +79,7 @@
         "filename": "truth.md",
         "path": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
         "exists": true,
-        "source_hash": "82d7e09308c0e11d7738bc57c48cb53c6cae7eec8ac02fa2f086899a4b0629a1",
+        "source_hash": "ee1d72bc76c07118270f6c8ec6c398b792db3b7841db5521e4aa8c6de0cbd0ee",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -93,7 +95,7 @@
         "filename": "tests.md",
         "path": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
         "exists": true,
-        "source_hash": "ff7b58dcfc887ac651574222e20dee1892e4929a2e9250dfadeefa4986900a8a",
+        "source_hash": "cc2991f2d0686f16f7074abd3a20e6b7b1e00a9b9998775c64862494408c8232",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -109,7 +111,7 @@
         "filename": "tasks.md",
         "path": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tasks.md",
         "exists": true,
-        "source_hash": "a8d2d803dc5041219396c4443b858012f6ad0d895844f567cae1c3c92c709376",
+        "source_hash": "c3f2910099200f59f9440d2a2eb2976297323a3605d9286e49cbcdceeb1b3a6c",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -125,7 +127,7 @@
         "filename": "evidence.md",
         "path": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/evidence.md",
         "exists": true,
-        "source_hash": "ef12b7226bbd74cd210cc1e8dc1be69b8450680198ae03aed78c7447f9414880",
+        "source_hash": "e182072126cdedddad282f43549065b0c2ae18e0d16bfd3bbafbcc09228a315d",
         "authority": "markdown_feature_package",
         "json_authority": false
       }
@@ -247,7 +249,7 @@
         "truth_authority": true,
         "json_authority": false,
         "generated_governance_state": false,
-        "source_hash": "d11c770e539a85bcaedfeb6fcc256813e1fb2cd4fa4960aaa56eb561546fd461"
+        "source_hash": "55e25e617fddadb77280bd344c1075db301a79849155e93c81947ae685328df3"
       },
       "execution_boundaries": {
         "schema_version": "1.0",
@@ -264,7 +266,7 @@
         "truth_authority": true,
         "json_authority": false,
         "generated_governance_state": false,
-        "source_hash": "d723f3517b0fa4503ea8239a3ab51a2eac7a01019cb7bf331375ea6cd54e9544"
+        "source_hash": "d84ac6cb15b9442319c362a2690de77f485812b3d9e3f6f0097a79c52af00788"
       },
       "project_skill_blueprint": {
         "schema_version": "1.0",
@@ -368,7 +370,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "fd60aa2c248d786d7afb0dbf71cfcfdae68b147abedbd9d7dc4701ed4e591adc"
+        "source_hash": "8ad5f507e75f1caacef5b2008472a143182ae86bb4002a21c74a0387732e983a"
       },
       "evidence_manifest": {
         "schema_version": "1.0",
@@ -385,7 +387,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "535668b1c511509ccd6d42eb1a3bff7e183c8e6d91deb87b0f335dd357119395"
+        "source_hash": "9c413ee356232b4d4e259fc133a9d71767004a63d6224c773f57507a426462dd"
       },
       "qa_status": {
         "schema_version": "1.0",
@@ -402,7 +404,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "7fd4bbc173dd51f485317c3d5beedb2fe01aa8deb5257ed676f6e767fc1116bf"
+        "source_hash": "072443e17d729b46e5930f19e0ada7919ca7a54612b65db80537084e70cd64a9"
       },
       "release_gate_report": {
         "schema_version": "1.0",
@@ -419,7 +421,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "64ba1f78e1cac94529baf6301526bbba2dee9b6d44deaa8f857990b7140a6438"
+        "source_hash": "7c33bd62ce72526accd150386d0232358f7124d102cbe15b5400bda9b123a596"
       }
     },
     "manifest_authority": false,
@@ -611,7 +613,7 @@
     "diagnostics": []
   },
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-06-15T08:16:27.104975+00:00",
+  "generated_at": "2026-06-16T07:50:14.792596+00:00",
   "truth_authority": false,
   "source_paths": {
     "truth": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
@@ -620,9 +622,9 @@
     "evidence": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/evidence.md"
   },
   "source_hashes": {
-    "truth": "82d7e09308c0e11d7738bc57c48cb53c6cae7eec8ac02fa2f086899a4b0629a1",
-    "tests": "ff7b58dcfc887ac651574222e20dee1892e4929a2e9250dfadeefa4986900a8a",
-    "tasks": "a8d2d803dc5041219396c4443b858012f6ad0d895844f567cae1c3c92c709376",
-    "evidence": "ef12b7226bbd74cd210cc1e8dc1be69b8450680198ae03aed78c7447f9414880"
+    "truth": "ee1d72bc76c07118270f6c8ec6c398b792db3b7841db5521e4aa8c6de0cbd0ee",
+    "tests": "cc2991f2d0686f16f7074abd3a20e6b7b1e00a9b9998775c64862494408c8232",
+    "tasks": "c3f2910099200f59f9440d2a2eb2976297323a3605d9286e49cbcdceeb1b3a6c",
+    "evidence": "e182072126cdedddad282f43549065b0c2ae18e0d16bfd3bbafbcc09228a315d"
   }
 }

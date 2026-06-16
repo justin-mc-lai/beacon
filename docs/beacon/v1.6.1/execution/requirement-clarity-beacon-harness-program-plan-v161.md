@@ -10,8 +10,8 @@
 - required: `False`
 - research_path: `docs/beacon/v1.6.1/research/beacon-harness-program-plan-v161.md`
 - research_exists: `True`
-- source_architecture_path: `docs/beacon/v1.6.1/source-architecture/beacon-harness-program-plan-v161.md`
-- source_architecture_exists: `False`
+- source_architecture_path: `docs/beacon/v1.6.1/source-architecture/index.md`
+- source_architecture_exists: `True`
 - required_sections: architecture, business_flow
 - missing_sections: architecture, business_flow
 
@@ -22,7 +22,7 @@
 - prd_path: `docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md` exists=`True`
 - user_story_path: `docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md` exists=`True`
 - test_case_path: `docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md` exists=`True`
-- upstream_ac_ids: 
+- upstream_ac_ids: AC-068, AC-072
 - missing_test_case_ac_ids: 
 
 ## Version Projection Truth Contract

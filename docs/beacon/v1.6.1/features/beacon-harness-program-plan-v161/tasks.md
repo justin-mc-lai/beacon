@@ -33,3 +33,11 @@
 ## Phase F — State tests
 
 - [x] TASK-PBP-F01 `tests/test_program_plan_state_contract.py`。maps: AC-PBP-022
+
+## Phase G — R3 real program FSM + goal resume（AC-PBP-016, AC-PBP-027, AC-PBP-029, AC-PBP-030）
+
+- [ ] TASK-PBP-G01 `beacon-run --mode program` 真实 P0–P6 FSM + `program-run-state.json`。（TC-PBP-016）
+- [x] TASK-PBP-G02 更新 operator docs：`beacon-loop goal` 长任务主入口；`plan start` scaffold only。（`execution/long-task-operator-guide.md` / TC-PBP-027）
+- [ ] TASK-PBP-G03 goal/plan 共享 resume 状态文件与 resume 路径。（TC-PBP-029）
+- [ ] TASK-PBP-G04 与 `beacon-loop-goal-closed-loop-orchestrator-v161` R1 对接：嵌套 delivery + eval supplement 不 gate qa。（TC-PBP-030）
+- [x] TASK-PBP-G05 R3 refreeze（`beacon freeze … --version v1.6.1`）+ 路由 `beacon-gen-implement`。

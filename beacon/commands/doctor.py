@@ -12,6 +12,7 @@ from beacon.utils.branch_governance import render_branch_governance_markdown
 from beacon.utils.doctor_orchestrator import (
     run_agent_surface_setup,
     run_agent_surface_verify,
+    run_legacy_beacon_skills_cleanup,
     run_codex_hud_hook_setup,
     run_codex_hud_hook_verify,
     run_config_verify,
@@ -1641,6 +1642,39 @@ def verify_agent_surface_command(
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
         _print_agent_surface_verify_result(payload.get("result", {}))
+    raise typer.Exit(code=execution.exit_code)
+
+
+@app.command("cleanup-legacy-beacon-skills")
+def cleanup_legacy_beacon_skills_command(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("auto", "--version", "-v", help="Target docs version"),
+    agent: str = typer.Option("all", "--agent", help="Agent host filter: trae|claude|codex|cursor|windsurf|all"),
+    scope: str = typer.Option("all", "--scope", help="Cleanup scope: project|global|all"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Preview removals without deleting files"),
+    force: bool = typer.Option(False, "--force", help="Also remove unexpected beacon-* directories outside expected taxonomy"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Remove v1.6.0 backup trees and pre-taxonomy Beacon skill aliases from agent skill roots."""
+    execution = run_legacy_beacon_skills_cleanup(
+        project_root=project_root,
+        version=version,
+        agent=agent,
+        scope=scope,
+        dry_run=dry_run,
+        force=force,
+    )
+    payload = execution.payload
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        result = payload.get("result", {})
+        typer.echo("Beacon Doctor Legacy Beacon Skill Cleanup")
+        typer.echo(f"scope: {result.get('scope')} agent: {result.get('agent')} removed: {result.get('removed_count', 0)}")
+        for item in result.get("removed", [])[:20]:
+            typer.echo(f"  - [{item.get('kind')}] {item.get('path')}")
+        if int(result.get("removed_count", 0) or 0) > 20:
+            typer.echo(f"  ... and {int(result.get('removed_count', 0)) - 20} more")
     raise typer.Exit(code=execution.exit_code)
 
 

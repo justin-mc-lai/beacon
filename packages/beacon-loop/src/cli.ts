@@ -81,7 +81,11 @@ Options:
   --branch-mode <worktree|current-branch|run-branch>
   --isolated-worktree
   --agent <codex|claude|acp:target>
-  --mode <delivery|execute-only|intent-only|review-only>
+  --mode <delivery|program|execute-only|intent-only|review-only>
+  --program <slug>        (sea program slug; with --mode program)
+  --lake-or-ocean <湖|海>  (scope override; UD-007 MCQ via env BEACON_LOOP_SCOPE_MCQ)
+  --eval-matrix           (opt-in eval supplement; never gates qa/release)
+  --eval-scorecard        (opt-in eval supplement; never gates qa/release)
   --feature <slug>
   --legacy-delivery     (R3 delivery FSM; default goal delegates to beacon-run)
   --truth-bootstrap <agent|fallback>
@@ -182,12 +186,23 @@ if (command === "goal") {
       truthBootstrap: option(args, "--truth-bootstrap", "agent"),
       implementRunner: resolvedForDelegate.implementRunner,
       dryRun: resolvedForDelegate.dryRun,
+      mode: option(args, "--mode", ""),
+      program: option(args, "--program", ""),
+      lakeOrOcean: option(args, "--lake-or-ocean", ""),
+      mcqAnswer: option(args, "--mcq-answer", process.env.BEACON_LOOP_SCOPE_MCQ || ""),
+      evalMatrix: flag(args, "--eval-matrix"),
+      evalScorecard: flag(args, "--eval-scorecard"),
     });
     const payload = formatDelegatePayload(goal, delegate);
+    if (delegate.status === "blocked" && delegate.reason_code === "scope_mcq_required") {
+      payload.mcq = delegate.mcq;
+    }
     emit(payload, jsonOutput);
     const exitCode =
       delegate.status === "blocked"
-        ? 2
+        ? delegate.reason_code === "scope_mcq_required"
+          ? 3
+          : 2
         : delegate.status === "dry_run"
           ? 0
           : delegate.exit_code === 0

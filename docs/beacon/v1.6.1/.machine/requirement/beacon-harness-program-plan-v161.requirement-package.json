@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-06-15T08:16:27.116614+00:00",
+  "generated_at": "2026-06-16T07:50:14.804588+00:00",
   "feature": "beacon-harness-program-plan-v161",
   "feature_slug": "beacon-harness-program-plan-v161",
   "version": "v1.6.1",
@@ -18,17 +18,19 @@
     "evidence": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/evidence.md"
   },
   "source_hashes": {
-    "truth": "82d7e09308c0e11d7738bc57c48cb53c6cae7eec8ac02fa2f086899a4b0629a1",
-    "tests": "ff7b58dcfc887ac651574222e20dee1892e4929a2e9250dfadeefa4986900a8a",
-    "tasks": "a8d2d803dc5041219396c4443b858012f6ad0d895844f567cae1c3c92c709376",
-    "evidence": "ef12b7226bbd74cd210cc1e8dc1be69b8450680198ae03aed78c7447f9414880"
+    "truth": "ee1d72bc76c07118270f6c8ec6c398b792db3b7841db5521e4aa8c6de0cbd0ee",
+    "tests": "cc2991f2d0686f16f7074abd3a20e6b7b1e00a9b9998775c64862494408c8232",
+    "tasks": "c3f2910099200f59f9440d2a2eb2976297323a3605d9286e49cbcdceeb1b3a6c",
+    "evidence": "e182072126cdedddad282f43549065b0c2ae18e0d16bfd3bbafbcc09228a315d"
   },
   "truth_frontmatter": {
     "slug": "beacon-harness-program-plan-v161",
     "version": "v1.6.1",
     "status": "frozen",
-    "revision_id": "R2",
+    "revision_id": "R4",
+    "source_revision_id": "R3",
     "language": "zh",
+    "change_reason": "R4 implementation-first-reconciliation refreeze；承接 R3 真实 program FSM + goal 单入口 + loop v161 对接",
     "canonical_refs": {
       "prd": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
       "user_story": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
@@ -119,7 +121,7 @@
     {
       "ac_id": "AC-PBP-016",
       "theme": "run-mode-program",
-      "description": "`beacon-run`（或 loop 委托）支持 `--mode program` 映射 P0–P6 外层 FSM。"
+      "description": "`beacon-run`（`beacon-loop goal` 委托）实现 **真实** `--mode program` 外层 FSM（P0–P6），状态写入 `program-run-state.json`；**禁止** 仅以 CLI help 暴露 `mode`/`prevent-sleep` 视同本 AC 闭合；P4 user ack 前不得 spawn per-lake delivery。"
     },
     {
       "ac_id": "AC-PBP-017",
@@ -174,12 +176,22 @@
     {
       "ac_id": "AC-PBP-027",
       "theme": "cognitive-load-single-entry",
-      "description": "SUMMARY 或 truth 声明操作者单一公共入口 `beacon plan start` / `beacon-pln-program`；artifact 仅 `programs/<slug>/`。"
+      "description": "truth/SUMMARY 声明 **长任务** 单一公共入口为 `beacon-loop goal`；`beacon plan start` / `beacon-pln-program` 为 program scaffold + `plan_mode`；artifact 仅 `programs/<slug>/`。"
     },
     {
       "ac_id": "AC-PBP-028",
       "theme": "interactive-brainstorm-bridge",
       "description": "Interactive 子 skill 要求 BR 阶段调用 `beacon-pln-brainstorm`；auto 子 skill 要求 P0 对齐 `beacon-pln-source`。"
+    },
+    {
+      "ac_id": "AC-PBP-029",
+      "theme": "goal-resume-state",
+      "description": "`beacon-loop goal` 与 `beacon plan start` 共享 resume 状态（`programs/<slug>/program-run-state.json` 或 run-dir 等价）；`plan start` 后 `goal` 须 resume 而非重 scaffold；状态含 `program_slug`、`plan_mode`、`program_phase`、`next_action`。"
+    },
+    {
+      "ac_id": "AC-PBP-030",
+      "theme": "loop-orchestrator-handoff",
+      "description": "对接 `beacon-loop-goal-closed-loop-orchestrator-v161` R1（AC-072..075；upstream v1.6.0 R10）：`--mode program` 嵌套 per-lake delivery 不得破坏 AC-068 `truth_freeze_gate`；eval supplement opt-in 不得 gate qa/release。"
     }
   ],
   "test_rows": [
@@ -187,8 +199,8 @@
       "ac_id": "AC-PBP-001",
       "tc_id": "TC-PBP-001",
       "layer": "contract",
-      "command": "`test -f docs/beacon/v1.6.1/execution/program-plan-contract.md && rg -q 'feature-graph.json' docs/beacon/v1.6.1/execution/program-plan-contract.md`",
-      "assertion": "exit 0；contract 定义 program 目录与 P0–P6",
+      "command": "`python3 -m pytest tests/test_v161_program_plan_release_gate.py::test_program_plan_contract_defines_graph_and_fsm -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "contract 定义 program 目录与 P0–P6",
       "evidence_path": ""
     },
     {
@@ -243,8 +255,8 @@
       "ac_id": "AC-PBP-008",
       "tc_id": "TC-PBP-008",
       "layer": "unit",
-      "command": "`mkdir -p .beacon/qa-tmp && beacon doctor verify-truth-integrity beacon-harness-program-plan-v161 --project-root . --version v1.6.1 --mode block --json >.beacon/qa-tmp/TC-PBP-008.json && python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-PBP-008.json')); raise SystemExit(0 if d.get('result',{}).get('blocked') is False else 1)\"`",
-      "assertion": "exit 0",
+      "command": "`python3 -m pytest tests/test_program_plan_state_contract.py tests/test_program_plan_cli.py tests/test_v161_program_plan_release_gate.py -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "pytest 通过；含 truth-integrity 与 program plan 释放门禁",
       "evidence_path": ""
     },
     {
@@ -307,8 +319,8 @@
       "ac_id": "AC-PBP-016",
       "tc_id": "TC-PBP-016",
       "layer": "contract",
-      "command": "`mkdir -p .beacon/qa-tmp && node packages/beacon-run/dist/cli.mjs run --help >.beacon/qa-tmp/TC-PBP-016.txt 2>/dev/null && rg -i 'mode' .beacon/qa-tmp/TC-PBP-016.txt`",
-      "assertion": "exit 0；help 暴露 mode（Phase E 补 program preset）",
+      "command": "`rg -q 'program-run-state' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md && mkdir -p .beacon/qa-tmp && node packages/beacon-run/dist/cli.mjs run --help >.beacon/qa-tmp/TC-PBP-016-R3.txt 2>&1 && rg -i 'program' .beacon/qa-tmp/TC-PBP-016-R3.txt`",
+      "assertion": "truth 要求真实 P0–P6 FSM；runtime **BLOCKED:Phase-G** 直至 `--mode program` 实现。",
       "evidence_path": ""
     },
     {
@@ -395,8 +407,8 @@
       "ac_id": "AC-PBP-027",
       "tc_id": "TC-PBP-027",
       "layer": "docs",
-      "command": "`rg -q 'beacon plan start' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md`",
-      "assertion": "单一公共入口写入 truth",
+      "command": "`test -f docs/beacon/v1.6.1/execution/long-task-operator-guide.md && rg -q 'beacon-loop goal' docs/beacon/v1.6.1/execution/long-task-operator-guide.md && rg -q 'scaffold' docs/beacon/v1.6.1/execution/long-task-operator-guide.md`",
+      "assertion": "operator guide：长任务主入口 `goal`；`plan start` 仅 scaffold。",
       "evidence_path": ""
     },
     {
@@ -405,6 +417,22 @@
       "layer": "contract",
       "command": "`rg -q 'beacon-pln-brainstorm' skills/beacon/beacon-pln-program-interactive/SKILL.md && rg -q 'beacon-pln-source' skills/beacon/beacon-pln-program-auto/SKILL.md`",
       "assertion": "interactive/auto 桥接既有 planner skill",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PBP-029",
+      "tc_id": "TC-PBP-029",
+      "layer": "contract",
+      "command": "`rg -q 'AC-PBP-029' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md && rg -q 'program-run-state' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md`",
+      "assertion": "goal/plan 共享 resume 契约在 truth；runtime **BLOCKED:Phase-G**。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PBP-030",
+      "tc_id": "TC-PBP-030",
+      "layer": "contract",
+      "command": "`rg -q 'beacon-loop-goal-closed-loop-orchestrator-v161' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md && rg -q 'truth_freeze_gate' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md`",
+      "assertion": "loop v161 R1 对接 + eval 不 gate qa/release。",
       "evidence_path": ""
     }
   ],
@@ -488,6 +516,31 @@
       "id": "LINE-35",
       "title": "TASK-PBP-F01 `tests/test_program_plan_state_contract.py`。maps: AC-PBP-022",
       "status": "checked"
+    },
+    {
+      "id": "LINE-39",
+      "title": "TASK-PBP-G01 `beacon-run --mode program` 真实 P0–P6 FSM + `program-run-state.json`。（TC-PBP-016）",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-40",
+      "title": "TASK-PBP-G02 更新 operator docs：`beacon-loop goal` 长任务主入口；`plan start` scaffold only。（`execution/long-task-operator-guide.md` / TC-PBP-027）",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-41",
+      "title": "TASK-PBP-G03 goal/plan 共享 resume 状态文件与 resume 路径。（TC-PBP-029）",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-42",
+      "title": "TASK-PBP-G04 与 `beacon-loop-goal-closed-loop-orchestrator-v161` R1 对接：嵌套 delivery + eval supplement 不 gate qa。（TC-PBP-030）",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-43",
+      "title": "TASK-PBP-G05 R3 refreeze（`beacon freeze … --version v1.6.1`）+ 路由 `beacon-gen-implement`。",
+      "status": "checked"
     }
   ],
   "checkbox_errors": [],
@@ -510,8 +563,15 @@
       "surface": "feature-package",
       "authority": "requirement_truth",
       "canonical_artifact": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
-      "status": "frozen R2",
+      "status": "frozen R4",
       "route": "implement"
+    },
+    {
+      "surface": "operator-guide",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.1/execution/long-task-operator-guide.md",
+      "status": "present",
+      "route": "operator"
     },
     {
       "surface": "package-tests",
@@ -552,7 +612,14 @@
       "surface": "upstream-loop-orchestrator",
       "authority": "requirement_truth",
       "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
-      "status": "frozen",
+      "status": "frozen R10",
+      "route": "dependency"
+    },
+    {
+      "surface": "upstream-loop-v161",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.1/features/beacon-loop-goal-closed-loop-orchestrator-v161/truth.md",
+      "status": "frozen R1",
       "route": "dependency"
     }
   ]

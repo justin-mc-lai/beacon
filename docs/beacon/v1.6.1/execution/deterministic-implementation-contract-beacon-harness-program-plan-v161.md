@@ -2,10 +2,10 @@
 
 - feature: `beacon-harness-program-plan-v161`
 - version: `v1.6.1`
-- revision_id: `R2`
+- revision_id: `R4`
 - review_status: `approved`
-- approved_by: `implement-session`
-- reviewed_at: `2026-06-15T07:56:00Z`
+- approved_by: `cursor-agent`
+- reviewed_at: `2026-06-16T07:31:50.011602+00:00`
 
 ## Git
 - base_branch: `pre-main`

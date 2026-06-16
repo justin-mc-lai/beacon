@@ -65,7 +65,7 @@ Program P6 **must not** pass unless every lake in `feature-graph.json` has `trut
 3. else brainstorm/探讨/对齐 signals → `interactive`
 4. else low confidence → umbrella asks **one** multiple-choice question; record `plan_mode` + `reason` in `program-manifest.md` frontmatter
 
-**Operator cognitive load:** one public entry — `beacon plan start` or `beacon-pln-program`; artifacts only under `programs/<slug>/`.
+**Operator cognitive load:** long tasks → **`beacon-loop goal`**; program scaffold → **`beacon plan start`** or **`beacon-pln-program`**; artifacts only under `programs/<slug>/`. See `long-task-operator-guide.md`.
 
 ## CLI (normative, Phase E)
 

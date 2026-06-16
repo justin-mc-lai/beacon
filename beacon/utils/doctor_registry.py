@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any, Callable
 
 from beacon.utils.codex_hud_hook import setup_codex_hud_hook, verify_codex_hud_hook
-from beacon.utils.agent_surface import setup_agent_surface, verify_agent_surface
+from beacon.utils.agent_surface import cleanup_legacy_beacon_skills, setup_agent_surface, verify_agent_surface
 from beacon.utils.context_files import setup_context_files, verify_context_files
 from beacon.utils.doctor_diagnostics import build_doctor_payload
 from beacon.utils.doctor_setup import install_launchers, uninstall_launchers
@@ -419,6 +419,27 @@ def _host_verify_agent_surface(
     )
 
 
+def _host_cleanup_legacy_beacon_skills(
+    *,
+    project_root: Path,
+    agent: str,
+    scope: str,
+    runtime_version: str,
+    docs_version: str,
+    dry_run: bool,
+    force: bool,
+) -> dict[str, Any]:
+    return cleanup_legacy_beacon_skills(
+        project_root,
+        agent=agent,
+        scope=scope,
+        runtime_version=runtime_version,
+        docs_version=docs_version,
+        dry_run=dry_run,
+        force=force,
+    )
+
+
 def _host_sync_version_surfaces(
     *,
     project_root: Path,
@@ -789,6 +810,19 @@ def get_doctor_registry() -> dict[str, DoctorHandlerSpec]:
             supports_dry_run=False,
             participates_in_parent_flows=("verify-agent-surface",),
             handler=_host_verify_agent_surface,
+        ),
+        DoctorHandlerSpec(
+            key="host.cleanup.legacy-beacon-skills",
+            domain="host",
+            action="cleanup",
+            handler_id="legacy-beacon-skills",
+            description="Remove v1.6.0 backup trees and pre-taxonomy Beacon skill aliases from agent skill roots.",
+            reads=("project_root", "agent", "scope", "runtime_version", "docs_version"),
+            writes=("agent_skill_roots",),
+            safe_by_default=False,
+            supports_dry_run=True,
+            participates_in_parent_flows=("cleanup-legacy-beacon-skills",),
+            handler=_host_cleanup_legacy_beacon_skills,
         ),
         DoctorHandlerSpec(
             key="host.sync.version-surfaces",

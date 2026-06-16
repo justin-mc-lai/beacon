@@ -1188,6 +1188,40 @@ def run_agent_surface_verify(
     return DoctorExecutionResult(payload=payload, exit_code=0 if payload["status"] != "BLOCKED" else 2)
 
 
+def run_legacy_beacon_skills_cleanup(
+    *,
+    project_root: str,
+    version: str,
+    agent: str,
+    scope: str,
+    dry_run: bool,
+    force: bool,
+) -> DoctorExecutionResult:
+    """Remove backup and pre-taxonomy Beacon skill directories from agent hosts."""
+    ctx = build_doctor_execution_context(project_root, version=version or None, dry_run=dry_run)
+    docs_version = str((ctx.version_context or {}).get("docs_version", "") or ctx.runtime_version)
+    result = run_doctor_handler(
+        "host.cleanup.legacy-beacon-skills",
+        project_root=ctx.project_root,
+        agent=agent,
+        scope=scope,
+        runtime_version=ctx.runtime_version,
+        docs_version=docs_version,
+        dry_run=dry_run,
+        force=force,
+    )
+    payload = {
+        "schema_version": "2.0",
+        "action": "cleanup-legacy-beacon-skills",
+        "status": "PASS",
+        "runtime_version": ctx.runtime_version,
+        "docs_version": docs_version,
+        "version_context": ctx.version_context or {},
+        "result": result,
+    }
+    return DoctorExecutionResult(payload=payload, exit_code=0)
+
+
 def run_version_surfaces_sync(
     *,
     project_root: str,

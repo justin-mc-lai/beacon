@@ -345,3 +345,76 @@ def test_verify_agent_surface_v160_should_fail_when_stale_route_reference_exists
     errors = checks["v160_canonical_route_references"]["details"]["route_errors"]
     assert "beacon-gov-router" in errors
     assert any("`beacon-release` should be `beacon-eval-release`" in item for item in errors["beacon-gov-router"])
+
+
+def test_setup_agent_surface_should_remove_beacon_skill_backup_directories(tmp_path: Path):
+    skills_root = tmp_path / ".claude" / "skills"
+    backup = skills_root / ".beacon-v160-legacy-backup-20260608T1410" / "beacon-qa"
+    backup.mkdir(parents=True)
+    (backup / "SKILL.md").write_text("---\nname: beacon-qa\n---\n# Backup\n", encoding="utf-8")
+
+    setup = _invoke(
+        [
+            "doctor",
+            "setup-agent-surface",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "v1.6.0",
+            "--agent",
+            "claude",
+            "--force",
+        ]
+    )
+    assert setup.exit_code == 0, setup.stdout
+    assert not backup.exists()
+
+    verify = _invoke(
+        [
+            "doctor",
+            "verify-agent-surface",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "v1.6.0",
+            "--agent",
+            "claude",
+            "--strict",
+            "--json",
+        ]
+    )
+    assert verify.exit_code == 0, verify.stdout
+    payload = json.loads(verify.stdout)
+    checks = {item["name"]: item for item in payload["result"]["checks"]}
+    assert checks["v160_no_skill_backup_directories"]["status"] == "pass"
+
+
+def test_cleanup_legacy_beacon_skills_should_remove_global_old_aliases(tmp_path: Path, monkeypatch):
+    global_root = tmp_path / "global-claude-skills"
+    alias = global_root / "beacon-qa"
+    alias.mkdir(parents=True)
+    (alias / "SKILL.md").write_text("---\nname: beacon-qa\n---\n# Old Alias\n", encoding="utf-8")
+    monkeypatch.setattr(
+        "beacon.utils.agent_surface._global_legacy_skill_roots",
+        lambda home=None: {"claude": global_root},
+    )
+
+    cleanup = _invoke(
+        [
+            "doctor",
+            "cleanup-legacy-beacon-skills",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "v1.6.0",
+            "--scope",
+            "global",
+            "--agent",
+            "claude",
+            "--json",
+        ]
+    )
+    assert cleanup.exit_code == 0, cleanup.stdout
+    payload = json.loads(cleanup.stdout)
+    assert payload["result"]["removed_count"] >= 1
+    assert not alias.exists()

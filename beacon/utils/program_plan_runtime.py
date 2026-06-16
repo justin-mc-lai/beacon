@@ -48,6 +48,50 @@ def program_artifacts_root(project_root: Path, version: str, program_slug: str) 
     return project_root / "docs" / "beacon" / version / "programs" / program_slug
 
 
+def program_run_state_path(project_root: Path, version: str, program_slug: str) -> Path:
+    return program_artifacts_root(project_root, version, program_slug) / "program-run-state.json"
+
+
+def write_program_run_state(
+    project_root: Path,
+    *,
+    version: str,
+    program_slug: str,
+    plan_mode: str,
+    lake_or_ocean: str = "海",
+    program_phase: str = "P0",
+    fsm_state: str = "program_intent_captured",
+    p4_ack: bool = False,
+    next_action: str = "",
+) -> Path:
+    path = program_run_state_path(project_root, version, program_slug)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "schema_version": "1.0",
+        "program_slug": program_slug,
+        "version": version,
+        "plan_mode": plan_mode,
+        "program_phase": program_phase,
+        "fsm_state": fsm_state,
+        "lake_or_ocean": lake_or_ocean,
+        "p4_ack": p4_ack,
+        "next_action": next_action or f"program_phase:{program_phase}",
+        "updated_at": now_iso(),
+    }
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    return path
+
+
+def read_program_run_state(project_root: Path, version: str, program_slug: str) -> dict[str, Any] | None:
+    path = program_run_state_path(project_root, version, program_slug)
+    if not path.exists():
+        return None
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return None
+
+
 def build_plan_start_payload(
     project_root: Path,
     *,
@@ -81,6 +125,7 @@ def build_plan_start_payload(
                     f"plan_mode: {plan_mode}",
                     f"plan_mode_reason: {classification['reason']}",
                     "scope_mode: full_parity",
+                    "lake_or_ocean: 海",
                     "---",
                     "",
                     "# Program Manifest",
@@ -91,6 +136,23 @@ def build_plan_start_payload(
             ),
             encoding="utf-8",
         )
+    existing_state = read_program_run_state(project_root, version, slug)
+    program_phase = "P0"
+    fsm_state = state_to
+    if existing_state:
+        program_phase = str(existing_state.get("program_phase") or "P0")
+        fsm_state = str(existing_state.get("fsm_state") or state_to)
+    state_path = write_program_run_state(
+        project_root,
+        version=version,
+        program_slug=slug,
+        plan_mode=plan_mode,
+        lake_or_ocean=str(existing_state.get("lake_or_ocean") if existing_state else "海"),
+        program_phase=program_phase,
+        fsm_state=fsm_state,
+        p4_ack=bool(existing_state.get("p4_ack")) if existing_state else False,
+        next_action=str(existing_state.get("next_action") if existing_state else f"program_phase:{program_phase}"),
+    )
     return {
         "schema_version": "1.0",
         "version": version,
@@ -100,6 +162,8 @@ def build_plan_start_payload(
         "plan_mode_classification": classification,
         "delegate_skill": delegate_skill,
         "state": state_to,
+        "program_phase": program_phase,
+        "program_run_state_path": str(state_path.relative_to(project_root)),
         "fsm_states": list(PROGRAM_PLAN_STATES),
         "transition": transition_result.__dict__ if transition_result else None,
         "artifact_root": str(artifact_root.relative_to(project_root)),

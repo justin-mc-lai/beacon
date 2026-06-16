@@ -1,0 +1,315 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-loop-goal-closed-loop-orchestrator-v161",
+  "feature_slug": "beacon-loop-goal-closed-loop-orchestrator-v161",
+  "version": "v1.6.1",
+  "generated_at": "2026-06-16T03:39:59.818859+00:00",
+  "expansion_profile": "pua-web",
+  "scenario_depth": "standard",
+  "families_required": [
+    "happy",
+    "negative",
+    "boundary",
+    "recovery",
+    "compatibility"
+  ],
+  "stories": [
+    {
+      "ac_id": "AC-001",
+      "theme": "AC-031..AC-071、Delivery Loop FSM、`truth_freeze_gate`、spine、stop-when",
+      "text": "AC-031..AC-071、Delivery Loop FSM、`truth_freeze_gate`、spine、stop-when",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "AC-072",
+      "text": "missing",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "AC-073",
+      "text": "missing",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "AC-074",
+      "text": "missing",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "AC-075",
+      "text": "missing",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "AC-069..071 @ v1.6.0",
+      "text": "**frozen upstream**",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "general",
+      "text": "** `truth_freeze_gate`。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-072",
+      "theme": "",
+      "text": "truth 定义统一 goal + 湖/海；runtime **BLOCKED:Phase-A** 直至 implement。",
+      "scenario_ids": [
+        "SC-AUTO-TC-LOOP-072"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-LOOP-072",
+          "source_tc_id": "TC-LOOP-072",
+          "tc_id": "TC-LOOP-072-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-073",
+      "theme": "",
+      "text": "`--mode program` P0–P6 + P4 gate；**BLOCKED:Phase-B** 直至实现。",
+      "scenario_ids": [
+        "SC-AUTO-TC-LOOP-073"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-LOOP-073",
+          "source_tc_id": "TC-LOOP-073",
+          "tc_id": "TC-LOOP-073-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-074",
+      "theme": "",
+      "text": "eval supplement 契约；runtime **BLOCKED:Phase-C**。",
+      "scenario_ids": [
+        "SC-AUTO-TC-LOOP-074"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-LOOP-074",
+          "source_tc_id": "TC-LOOP-074",
+          "tc_id": "TC-LOOP-074-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-075",
+      "theme": "",
+      "text": "海级 program E2E opt-in；**BLOCKED:Phase-D**。",
+      "scenario_ids": [
+        "SC-AUTO-TC-LOOP-075"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-LOOP-075",
+          "source_tc_id": "TC-LOOP-075",
+          "tc_id": "TC-LOOP-075-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "SC-AUTO-TC-LOOP-072",
+      "source_tc_id": "TC-LOOP-072",
+      "tc_id": "TC-LOOP-072-PRIMARY",
+      "ac_id": "AC-072",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "truth 定义统一 goal + 湖/海；runtime **BLOCKED:Phase-A** 直至 implement。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "rg -q 'AC-072' docs/beacon/v1.6.1/features/beacon-loop-goal-closed-loop-orchestrator-v161/truth.md && rg -q 'beacon-loop goal' docs/beacon/v1.6.1/features/beacon-loop-goal-closed-loop-orchestrator-v161/truth.md && python3 -m pytest tests/test_v161_loop_goal_closed_loop_orchestrator.py::test_truth_ac072_unified_goal_and_scope -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "truth 定义统一 goal + 湖/海；runtime **BLOCKED:Phase-A** 直至 implement。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator-v161/tc-loop-072/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-LOOP-073",
+      "source_tc_id": "TC-LOOP-073",
+      "tc_id": "TC-LOOP-073-PRIMARY",
+      "ac_id": "AC-073",
+      "qa_type": "contract",
+      "layer": "behavior",
+      "scenario_family": "primary",
+      "title": "`--mode program` P0–P6 + P4 gate；**BLOCKED:Phase-B** 直至实现。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v161_loop_goal_closed_loop_orchestrator.py::test_program_outer_fsm_vitest_gate -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`--mode program` P0–P6 + P4 gate；**BLOCKED:Phase-B** 直至实现。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator-v161/tc-loop-073/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-LOOP-074",
+      "source_tc_id": "TC-LOOP-074",
+      "tc_id": "TC-LOOP-074-PRIMARY",
+      "ac_id": "AC-074",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "eval supplement 契约；runtime **BLOCKED:Phase-C**。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "rg -q 'eval-matrix' docs/beacon/v1.6.1/features/beacon-loop-goal-closed-loop-orchestrator-v161/truth.md && rg -q 'formal_verdict_authority=false' docs/beacon/v1.6.1/features/beacon-loop-goal-closed-loop-orchestrator-v161/truth.md && python3 -m pytest tests/test_v161_loop_goal_closed_loop_orchestrator.py::test_truth_ac074_eval_supplement_contract -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "eval supplement 契约；runtime **BLOCKED:Phase-C**。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator-v161/tc-loop-074/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-LOOP-075",
+      "source_tc_id": "TC-LOOP-075",
+      "tc_id": "TC-LOOP-075-PRIMARY",
+      "ac_id": "AC-075",
+      "qa_type": "contract",
+      "layer": "e2e",
+      "scenario_family": "primary",
+      "title": "海级 program E2E opt-in；**BLOCKED:Phase-D**。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v161_loop_goal_closed_loop_orchestrator.py::test_e2e_program_sea_vitest_gate -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "海级 program E2E opt-in；**BLOCKED:Phase-D**。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator-v161/tc-loop-075/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
+}

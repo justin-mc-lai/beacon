@@ -64,7 +64,7 @@ promoted
 - prd_refs: docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md
 - user_story_refs: docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md
 - test_case_refs: docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md
-- coverage_notes: AC-PBP-001..028 map 1:1 TC-PBP-001..028；Phase B–F integration 允许 BLOCKED:Phase-* 直至 CLI 落地；State Model 在 truth + TC-PBP-022；双模式 skill triad 在 AC-PBP-023..028。
+- coverage_notes: AC-PBP-001..030 map TC-PBP-001..030；Phase B–G integration 允许 BLOCKED:Phase-* 直至 CLI/FSM 落地；R3 收紧 AC-PBP-016、新增 AC-PBP-029/030。
 - out_of_scope_notes: 不实现被复刻 OSS 产品代码；PB-001..003 为 Phased Backlog；program artifact 须 promote 才成 package truth。
 
 ## Decision Summary

@@ -57,9 +57,11 @@ import {
   type CommitMessageConfig,
 } from "./core/commit-message.js";
 import { Orchestrator } from "./core/orchestrator.js";
-import { resolveBeaconRunContext } from "./beacon/context.js";
+import { resolveBeaconRunContext, readBeaconVersionFile } from "./beacon/context.js";
 import { createBeaconOrchestratorHooks } from "./beacon/hooks.js";
 import { BeaconPhaseController } from "./beacon/phase-controller.js";
+import { runEvalSupplement } from "./beacon/eval-supplement.js";
+import { prepareProgramRun, assertProgramDeliveryAllowed } from "./beacon/program-mode.js";
 import { renderExitSummary } from "./core/exit-summary.js";
 import { MockOrchestrator } from "./mock-orchestrator.js";
 import { Renderer } from "./renderer.js";
@@ -579,6 +581,22 @@ function parseTruthBootstrapMode(value: string): "agent" | "fallback" {
   throw new InvalidArgumentError('Expected "agent" or "fallback"');
 }
 
+function parseDeliveryMode(value: string): "delivery" | "program" {
+  if (value === "delivery" || value === "program") {
+    return value;
+  }
+  throw new InvalidArgumentError('Expected "delivery" or "program"');
+}
+
+function parseLakeOrOcean(value: string): "湖" | "海" {
+  const normalized = value.trim();
+  if (normalized === "湖" || normalized === "lake") return "湖";
+  if (normalized === "海" || normalized === "sea" || normalized === "ocean") {
+    return "海";
+  }
+  throw new InvalidArgumentError('Expected "湖|海" (or lake|sea|ocean)');
+}
+
 const program = new Command();
 
 program
@@ -664,6 +682,31 @@ program
     "--implement-runner <runner>",
     "Implement runner id for generate-phase harness checkpoint",
   )
+  .option(
+    "--mode <mode>",
+    "Beacon delivery mode: delivery (per-lake) or program (sea outer FSM P0–P6)",
+    parseDeliveryMode,
+    "delivery",
+  )
+  .option(
+    "--program <slug>",
+    "Program slug when --mode program (defaults to utterance slugify)",
+  )
+  .option(
+    "--lake-or-ocean <scope>",
+    "Scope classifier override: 湖|海 (lake|sea|ocean)",
+    parseLakeOrOcean,
+  )
+  .option(
+    "--eval-matrix",
+    "Opt-in Agent Eval matrix supplement (never gates qa/release)",
+    false,
+  )
+  .option(
+    "--eval-scorecard",
+    "Opt-in Agent Eval scorecard supplement (never gates qa/release)",
+    false,
+  )
   .action(
     async (
       promptArg: string | undefined,
@@ -685,6 +728,11 @@ program
         feature?: string;
         truthBootstrap?: "agent" | "fallback";
         implementRunner?: string;
+        mode?: "delivery" | "program";
+        program?: string;
+        lakeOrOcean?: "湖" | "海";
+        evalMatrix?: boolean;
+        evalScorecard?: boolean;
       },
     ) => {
       if (options.mock) {
@@ -1064,6 +1112,46 @@ program
           console.error(beaconContext.error);
           process.exit(1);
         }
+
+        const deliveryMode = options.mode ?? "delivery";
+        let programPrepResult: ReturnType<typeof prepareProgramRun> | null = null;
+        if (deliveryMode === "program") {
+          programPrepResult = prepareProgramRun({
+            projectRoot: beaconProjectRoot,
+            version: beaconContext.ctx.version,
+            utterance: prompt,
+            programSlug: options.program,
+            runDir: runInfo.runDir,
+            deliveryMode: "program",
+            lakeOrOcean: options.lakeOrOcean,
+          });
+          if (!programPrepResult.ok) {
+            console.error(programPrepResult.message);
+            process.exit(2);
+          }
+          appendDebugLog("beacon:program-mode", {
+            program_slug: programPrepResult.state.program_slug,
+            program_phase: programPrepResult.state.program_phase,
+            fsm_state: programPrepResult.state.fsm_state,
+            state_path: programPrepResult.state_path,
+          });
+          if (programPrepResult.state.program_phase >= "P5") {
+            const deliveryGate = assertProgramDeliveryAllowed(
+              beaconProjectRoot,
+              programPrepResult.state,
+            );
+            if (!deliveryGate.ok) {
+              console.error(deliveryGate.message);
+              process.exit(2);
+            }
+          }
+        } else if (options.lakeOrOcean === "湖") {
+          appendDebugLog("beacon:lake-scope", {
+            lake_or_ocean: "湖",
+            skip_program_outer: true,
+          });
+        }
+
         const phaseController = BeaconPhaseController.fromRunDir(
           runInfo.runDir,
           { ...beaconContext.ctx, utterance: prompt },
@@ -1240,6 +1328,36 @@ program
           commitCount: finalState.commitCount,
           worktreePath,
         });
+
+        if (
+          options.beacon &&
+          (options.evalMatrix || options.evalScorecard)
+        ) {
+          const evalProjectRoot = options.worktree
+            ? effectiveCwd
+            : options.projectRoot || effectiveCwd;
+          const evalVersion =
+            options.beaconVersion ||
+            readBeaconVersionFile(evalProjectRoot) ||
+            "v1.6.1";
+          try {
+            const supplement = runEvalSupplement({
+              projectRoot: evalProjectRoot,
+              version: evalVersion,
+              runDir: runInfo.runDir,
+              evalMatrix: options.evalMatrix,
+              evalScorecard: options.evalScorecard,
+            });
+            appendDebugLog("beacon:eval-supplement", {
+              paths: supplement.paths,
+              formal_verdict_authority: false,
+            });
+          } catch (error) {
+            appendDebugLog("beacon:eval-supplement-error", {
+              error: serializeError(error),
+            });
+          }
+        }
 
         telemetry.track("run", {
           agent: telemetryAgent,

@@ -1,12 +1,12 @@
 # Change Refreeze Summary: beacon-loop-goal-closed-loop-orchestrator
 
 - version: `v1.6.0`
-- change_reason: `implementation-first-reconciliation`
-- refreeze_status: `complete`
-- blocked_reason: ``
-- next_route: `beacon-gen-implement`
-- revision_before: `R9`
-- revision_after: `R10`
+- change_reason: `R11: unified goal + program FSM + eval supplement`
+- refreeze_status: `blocked`
+- blocked_reason: `legacy_cutover_required`
+- next_route: `beacon-truth-cutover`
+- revision_before: `R10`
+- revision_after: ``
 
 ## Surface Statuses
 - `change`: `present` (docs/beacon/v1.6.0/change/beacon-loop-goal-closed-loop-orchestrator.md)
@@ -14,13 +14,13 @@
 - `tests`: `present` (docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md)
 - `tasks`: `present` (docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tasks.md)
 - `evidence`: `present` (docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/evidence.md)
-- `requirement_clarity`: `passed` (docs/beacon/v1.6.0/.machine/execution/requirement-clarity-beacon-loop-goal-closed-loop-orchestrator.json)
-- `freeze`: `complete` (docs/beacon/v1.6.0/.machine/change/beacon-loop-goal-closed-loop-orchestrator.refreeze-transaction.json)
+- `requirement_clarity`: `pending` (docs/beacon/v1.6.0/.machine/execution/requirement-clarity-beacon-loop-goal-closed-loop-orchestrator.json)
+- `freeze`: `pending` (docs/beacon/v1.6.0/.machine/change/beacon-loop-goal-closed-loop-orchestrator.refreeze-transaction.json)
 - `feature_package_validation`: `passed` (docs/beacon/v1.6.0/.machine/requirement/feature-package-validation.json)
 
 ## Refreshed Surfaces
 
-- change, truth, tests, tasks, evidence, requirement_clarity, freeze, feature_package_validation
+- change, truth, tests, tasks, evidence, feature_package_validation
 
 ## Boundary
 
