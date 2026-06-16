@@ -2,8 +2,10 @@
 slug: beacon-harness-program-plan-v161
 version: v1.6.1
 status: frozen
-revision_id: R2
+revision_id: R4
+source_revision_id: R3
 language: zh
+change_reason: R4 implementation-first-reconciliation refreeze；承接 R3 真实 program FSM + goal 单入口 + loop v161 对接
 canonical_refs:
   prd: docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md
   user_story: docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md
@@ -21,6 +23,10 @@ state_machine_required: true
 `beacon-harness-program-plan-v161` 在 v1.6.0 harness / planner review / TIG / loop orchestrator 之上，新增 **版本级 program plan harness**：把海级用户 utterance（如「完整复刻某 GitHub 项目全功能」）编排为 **书籍形真相**——**目录（program-manifest）+ 大纲（module-map）+ 章节（feature 湖）**，对每个湖调用既有 **Truth Freeze Intent Loop（7 轮）** 煮干并 freeze，最后经 **Program Freeze Gate** 证明全书与用户意图 parity closed；**beacon change** 路径保留 change 用户意图并经 plan review 后 refreeze。
 
 本 feature **不**新增 Beacon 主生命周期 stage；**不**让 planner 写 package truth；**不**让 loop/runner 产出 QA/release verdict。
+
+**R3**：收紧 **真实** `--mode program` 外层 FSM；操作者 **长任务单一公共入口** 改为 `beacon-loop goal`（`beacon plan start` 仅 scaffold）；`goal` 与 `plan start` 共享 `program-run-state.json` resume 契约；与 **`beacon-loop-goal-closed-loop-orchestrator-v161` R1**（AC-072..075）对接。
+
+**R4（本 revision，frozen）**：`implementation-first-reconciliation` refreeze；R3 交付范围不变；machine revision 与 R4 实现 writeback / QA / release 投影对齐。操作者文档见 `docs/beacon/v1.6.1/execution/long-task-operator-guide.md`（AC-PBP-027 / TASK-LOOP-A03）。
 
 ## User Intent（一行）
 
@@ -75,13 +81,13 @@ v1.6.1 交付版本级海→湖 program harness（umbrella + auto/interactive �
 
 ### G. Integration surfaces（R2：双模式 skill + CLI）
 
-**认知减负原则**：操作者只记一个公共入口 — `beacon plan start` 或 host skill `beacon-pln-program`；`plan_mode` 由显式 flag 或 umbrella **一次**澄清完成，不在子 skill 层重复盘问。
+**认知减负原则**：操作者长任务只记 **`beacon-loop goal "<utterance>"`**（薄委托 `beacon-run`）；program scaffold 用 **`beacon plan start`** 或 host skill **`beacon-pln-program`**；`plan_mode` 由显式 flag 或 umbrella **一次**澄清完成，不在子 skill 层重复盘问。
 
 **Skill 三层（稳定触发）**：
 
 | Skill | Harness | 角色 | 触发 |
 |-------|---------|------|------|
-| `beacon-pln-program` | planner | **唯一推荐公共入口**；分类 `plan_mode` 并委派 | `/beacon-pln-program`、`beacon plan start` |
+| `beacon-pln-program` | planner | program scaffold **推荐入口**（`plan_mode` 分类 + 委派）；长 FSM 仍由 `beacon-loop goal` 续跑 | `/beacon-pln-program`、`beacon plan start` |
 | `beacon-pln-program-auto` | planner | 子 skill：机器 P0、分段 P4 ack | 仅 umbrella 委派或 `--mode auto` |
 | `beacon-pln-program-interactive` | planner | 子 skill：BR 轮 + `beacon-pln-brainstorm` | 仅 umbrella 委派或 `--mode interactive` |
 
@@ -100,7 +106,8 @@ beacon plan start "<utterance>" \
 
 - `beacon plan auto` / `beacon plan interactive` 为 `start --mode` 的稳定别名（实现可选）。
 - CLI 与 skill 共享同一 P0–P4 artifact 路径（`programs/<slug>/`）；不得出现第二套 plan 目录。
-- `beacon-run --mode program` 外层 FSM 在 P4 ack 后嵌套 per-lake delivery；内层不替代 umbrella 分类。
+- `beacon-run --mode program` 外层 FSM 在 P4 ack 后嵌套 per-lake delivery；内层不替代 umbrella 分类；状态与 run-dir `program-run-state.json` 及 `programs/<slug>/` 对齐（AC-PBP-029）。
+- `beacon-loop goal` 为海级长任务 resume 面；`plan start` 后 **不得** 要求 operator 重 scaffold 才能续跑外层 FSM。
 
 **废弃 R1 模糊表述**：不再「`beacon-pln-program` 或 brainstorm program mode 二选一」；以 **umbrella + 双子 skill + CLI start** 为唯一 normative 组合。
 
@@ -164,7 +171,7 @@ Append-only `change-intent-log.jsonl`；每次 change 必须 `promotion_diff` �
 | AC-PBP-013 | change-intent-log | `beacon-gen-change` program 路径 append `change-intent-log.jsonl` 条目（utterance、slugs、timestamp）。 |
 | AC-PBP-014 | change-review | Change 后 mandatory pln-review 产出 `promotion_diff` 对照 change intent 与 frozen truth。 |
 | AC-PBP-015 | change-refreeze | User ack 后 `beacon-gen-refreeze` + TIG block；结构变更重跑 AC-PBP-007。 |
-| AC-PBP-016 | run-mode-program | `beacon-run`（或 loop 委托）支持 `--mode program` 映射 P0–P6 外层 FSM。 |
+| AC-PBP-016 | run-mode-program | `beacon-run`（`beacon-loop goal` 委托）实现 **真实** `--mode program` 外层 FSM（P0–P6），状态写入 `program-run-state.json`；**禁止** 仅以 CLI help 暴露 `mode`/`prevent-sleep` 视同本 AC 闭合；P4 user ack 前不得 spawn per-lake delivery。 |
 | AC-PBP-017 | public-planner-route | 存在 **`beacon-pln-program`** umbrella skill；实现 Phase E 时同步 CLI `beacon plan start`。 |
 | AC-PBP-018 | maker-checker-program | P6 pass 必须含 machine-readable 每湖 frozen 证据；不得仅 planner JSON 自报。 |
 | AC-PBP-019 | deferral-sovereignty | Program/lake deferral 未决时 block program freeze 与 refreeze。 |
@@ -175,8 +182,10 @@ Append-only `change-intent-log.jsonl`；每次 change 必须 `promotion_diff` �
 | AC-PBP-024 | cli-plan-start | `beacon plan start --help` 暴露 `--mode auto\|interactive\|auto-detect` 与 `--program`；或 BLOCKED:Phase-E。 |
 | AC-PBP-025 | plan-mode-classifier | `program-plan-contract.md` 定义 deterministic `plan_mode` 分类规则与低置信度停问。 |
 | AC-PBP-026 | umbrella-delegation | Umbrella skill 正文要求委派子 skill；子 skill 禁止写 `features/*/truth.md`。 |
-| AC-PBP-027 | cognitive-load-single-entry | SUMMARY 或 truth 声明操作者单一公共入口 `beacon plan start` / `beacon-pln-program`；artifact 仅 `programs/<slug>/`。 |
+| AC-PBP-027 | cognitive-load-single-entry | truth/SUMMARY 声明 **长任务** 单一公共入口为 `beacon-loop goal`；`beacon plan start` / `beacon-pln-program` 为 program scaffold + `plan_mode`；artifact 仅 `programs/<slug>/`。 |
 | AC-PBP-028 | interactive-brainstorm-bridge | Interactive 子 skill 要求 BR 阶段调用 `beacon-pln-brainstorm`；auto 子 skill 要求 P0 对齐 `beacon-pln-source`。 |
+| AC-PBP-029 | goal-resume-state | `beacon-loop goal` 与 `beacon plan start` 共享 resume 状态（`programs/<slug>/program-run-state.json` 或 run-dir 等价）；`plan start` 后 `goal` 须 resume 而非重 scaffold；状态含 `program_slug`、`plan_mode`、`program_phase`、`next_action`。 |
+| AC-PBP-030 | loop-orchestrator-handoff | 对接 `beacon-loop-goal-closed-loop-orchestrator-v161` R1（AC-072..075；upstream v1.6.0 R10）：`--mode program` 嵌套 per-lake delivery 不得破坏 AC-068 `truth_freeze_gate`；eval supplement opt-in 不得 gate qa/release。 |
 
 ## Non-goals
 
@@ -195,6 +204,7 @@ Append-only `change-intent-log.jsonl`；每次 change 必须 `promotion_diff` �
 | D | change-intent-log + review + refreeze | AC-PBP-013..015 |
 | E | beacon-run program mode + planner triad + CLI plan start | AC-PBP-016..018, AC-PBP-023..028 |
 | F | state machine tests + eval | AC-PBP-021..022 |
+| G | R3 real program FSM + goal resume + loop handoff | AC-PBP-016, AC-PBP-027, AC-PBP-029, AC-PBP-030 |
 
 ## Revision History
 
@@ -202,3 +212,5 @@ Append-only `change-intent-log.jsonl`；每次 change 必须 `promotion_diff` �
 |----------|---------|
 | R1 | Initial freeze：覆盖书籍 program harness、海湖、治理、change 闭环 |
 | R2 | 双模式 program plan：umbrella + auto/interactive 子 skill、CLI `beacon plan start`、plan_mode FSM、cognitive-load 单一入口 |
+| R3 | 真实 `--mode program` FSM；`beacon-loop goal` 为长任务主入口；goal/plan 共享 resume；loop orchestrator v161 对接 |
+| R4 | implementation-first-reconciliation refreeze；operator guide；R3 范围冻结 + R4 writeback/QA/release 对齐 |

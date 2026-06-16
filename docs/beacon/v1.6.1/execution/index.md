@@ -3,6 +3,7 @@
 ## Human Primary Surface
 
 - `boundaries.md`
+- `long-task-operator-guide.md`
 - Markdown execution notes and release-facing guidance
 
 ## Machine Secondary Surface

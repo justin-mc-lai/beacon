@@ -22,8 +22,9 @@ docs/beacon/<version>/programs/<program-slug>/
 
 Primary v1.6.1 features:
 
-- `beacon-harness-program-plan-v161` — program plan loop, **dual-mode skill triad** (`beacon-pln-program` + auto/interactive), `beacon plan start` CLI, feature graph, program freeze gate, change-intent closure, TIG-aligned governance (**frozen R2**)
+- `beacon-harness-program-plan-v161` — program plan loop, **dual-mode skill triad** (`beacon-pln-program` + auto/interactive), `beacon plan start` CLI, feature graph, program freeze gate, change-intent closure, TIG-aligned governance（**frozen R4**）
 - `beacon-agent-eval-v161` — **Agent Eval full parity（R2：全 skill live）**：统一 `beacon eval` 分数面、**37 条 live skill matrix**、composite 0–100 scorecard（`runtime_evidence_only`，不替代 formal QA/release）（**frozen R2**）
+- `beacon-loop-goal-closed-loop-orchestrator-v161` — **长任务统一入口** `beacon-loop goal`、湖/海 scope 分类、海级 program 外层 FSM（P0–P6）、opt-in eval supplement（**frozen R1**；upstream v1.6.0 loop R10）
 
 Upstream frozen dependencies (v1.6.0):
 
@@ -31,4 +32,4 @@ Upstream frozen dependencies (v1.6.0):
 - `beacon-pln-review-intent-parity-state-machine-v160`
 - `beacon-pln-review-compound-parity-v160`
 - `beacon-truth-integrity-gates-v160`
-- `beacon-loop-goal-closed-loop-orchestrator`
+- `beacon-loop-goal-closed-loop-orchestrator`（R10 frozen；v1.6.1 delta 在 `-v161` package）

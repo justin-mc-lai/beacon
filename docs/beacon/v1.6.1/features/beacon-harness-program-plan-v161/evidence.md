@@ -6,18 +6,30 @@
 |---------|-----------|--------------------|--------|-------|
 | planner-research | support_advisory | docs/beacon/v1.6.1/research/beacon-harness-program-plan-v161.md | promoted | truth.define |
 | change-record | support_advisory | docs/beacon/v1.6.1/change/beacon-harness-program-plan-v161.md | accepted-for-change | refreeze |
-| feature-package | requirement_truth | docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md | frozen R2 | implement |
+| feature-package | requirement_truth | docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md | frozen R4 | implement |
+| operator-guide | support_advisory | docs/beacon/v1.6.1/execution/long-task-operator-guide.md | present | operator |
 | package-tests | test_truth | docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md | authoritative | truth.coverage |
 | program-contract | support_advisory | docs/beacon/v1.6.1/execution/program-plan-contract.md | normative | implement |
 | upstream-harness-taxonomy | requirement_truth | docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md | frozen | dependency |
 | upstream-pln-review | requirement_truth | docs/beacon/v1.6.0/features/beacon-pln-review-intent-parity-state-machine-v160/truth.md | frozen | dependency |
 | upstream-tig | requirement_truth | docs/beacon/v1.6.0/features/beacon-truth-integrity-gates-v160/truth.md | frozen | dependency |
-| upstream-loop-orchestrator | requirement_truth | docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md | frozen | dependency |
+| upstream-loop-orchestrator | requirement_truth | docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md | frozen R10 | dependency |
+| upstream-loop-v161 | requirement_truth | docs/beacon/v1.6.1/features/beacon-loop-goal-closed-loop-orchestrator-v161/truth.md | frozen R1 | dependency |
 
 ## 决策记录
 
 - 用户确认：v1.6.1 冻结 program harness，覆盖书籍目录章节、海湖、治理、change 闭环。
+- **R4（2026-06-16）**：implementation-first-reconciliation refreeze + operator guide + v1.6.1 release line GO。
+- **R3（2026-06-15）**：真实 `--mode program` FSM + `beacon-loop goal` 主入口 + loop v161 handoff（路线 A：pre-main）。
 - 版本线：`beacon/version-truth.json` 升级 `v1.6.1` 为 current_runtime_release。
+
+## Gate 证据（R3 freeze — 2026-06-15）
+
+| gate | command | status | notes |
+|------|---------|--------|-------|
+| TIG | `beacon doctor verify-truth-integrity … --mode block` | pass (0 findings) | cross-package AC-068/072 delegated |
+| refreeze-chain | `beacon change … --refreeze-chain` | blocked:legacy_cutover_required | 与 R2 同路径 |
+| freeze R3 | `beacon freeze … --version v1.6.1` | frozen | AC-PBP-016/027/029/030 truth 闭合 |
 
 ## Gate 证据（R2 hygiene refreeze — 2026-06-15）
 

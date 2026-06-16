@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-06-12T11:12:27.106423+00:00",
+  "generated_at": "2026-06-16T02:53:35.308548+00:00",
   "feature": "beacon-loop-goal-closed-loop-orchestrator",
   "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
   "version": "v1.6.0",
@@ -18,16 +18,16 @@
     "evidence": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/evidence.md"
   },
   "source_hashes": {
-    "truth": "1878c06216353f568a9a9bf07e749a9e31e0a9d26b8de731a45591c793e71a19",
-    "tests": "bd242d3a0e234c18c3a29d27df73a9be8ae9223f95457ee27915cb6f91ab1f2e",
-    "tasks": "a8002e427c898989fa54f804825106264af5e83cb114f12d9ac79d57f991952a",
+    "truth": "88018d0fc86b7d42f2e83b2678e4048fe8789aa04d458962403d1fc409a04d39",
+    "tests": "8bbde9ada9d2544074a84167cd4a94ec899a019c5ace952a6fd01b6272917e28",
+    "tasks": "86538ce6465ea29ff894cb1c0848c279c87640678fe1b513f97ff8dfab5a2e88",
     "evidence": "6d05ee71f2cabaaf418a40a91bebc28bed522e4bb6ebce626d5e7c25b05f37d9"
   },
   "truth_frontmatter": {
     "slug": "beacon-loop-goal-closed-loop-orchestrator",
     "version": "v1.6.0",
     "status": "frozen",
-    "revision_id": "R10",
+    "revision_id": "R11",
     "language": "zh",
     "canonical_refs": {
       "prd": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
@@ -234,6 +234,26 @@
     {
       "ac_id": "AC-071",
       "theme": "**v1.6.1 — stop-when 可执行检查（maker≠checker）**：当 `--stop-when <condition>` 非空时，loop **禁止** 仅因 agent structured output / summary 自报「stop-when matched」而终止 iteration 环。每轮 agent 后 **必须** 至少执行一种 **外部可验证检查**：**(a)** 已配置的 harness gate（默认：`beacon qa run` 或 phase-appropriate harness）exit 0；**(b)** `--stop-check-cmd` 显式 shell 命令 exit 0；**(c)** lifecycle phase 已达 terminal harness（qa/release evaluator）。Agent 自报 alone → `reason_code=stop_when_unverified`，**continue** 下一 iteration 或进入 repair（不得 silent done）。对齐 [Loop Engineering `/goal`](https://addyosmani.com/blog/loop-engineering/)「写代码的人不能给自己打分 done」；**defer** 独立 judge 小模型至 v2（D-le-001）。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-072",
+      "theme": "**R11 — 统一长任务入口 + 湖/海分类**：`beacon-loop goal \"<utterance>\"` 为操作者 **唯一** 长任务公共入口（薄委托 `beacon-run`）；支持 `--mode delivery",
+      "description": "program`、`--program <slug>`、湖/海 scope classifier。`lake_or_ocean=湖` 跳过 program 外层直 per-lake delivery；`海` 进入 `--mode program` 外层 FSM。UD-007：低置信度 **一次** MCQ，写入 `intent-contract.json` 或 `program-manifest.md`。`beacon plan start` 仅 scaffold + `plan_mode`，**不** 替代 goal 续跑长 FSM。"
+    },
+    {
+      "ac_id": "AC-073",
+      "theme": "**R11 — program 外层 FSM（beacon-run）**：`--mode program` 实现 `ProgramPlanState` P0–P6 外层编排；状态写入 run-dir `program-run-state.json`（与 `programs/<slug>/` 对齐）；P4 user ack **门控** per-lake delivery spawn；非法跳过 P4（海级单湖直 freeze）须 block；内层 per-lake 仍遵守 AC-068 `truth_freeze_gate`。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-074",
+      "theme": "**R11 — opt-in eval supplement**：goal/beacon-run 支持 `--eval-matrix` / `--eval-scorecard`；在 evaluate 阶段 supplement 调用 `beacon eval matrix",
+      "description": "scorecard`；落盘 `eval-matrix.json`、`eval-scorecard.json`，必填 `formal_verdict_authority=false`、`runtime_evidence_only=true`。**禁止** 替代 `beacon qa run` 或 release gate（对齐 agent-eval AC-AE-006）；`spine show` 在存在 supplement 时输出 eval artifact refs。"
+    },
+    {
+      "ac_id": "AC-075",
+      "theme": "**R11 — 海级 program E2E（opt-in）**：`BEACON_RUN_E2E_PROGRAM=1` 下 scripted path：海 utterance → program P0–P4（fixture/scaffold）→ 单湖 truth frozen → generate harness checkpoint → 可选 eval supplement artifact；formal qa/release verdict **仅** Beacon evaluator；不得 loop 自证 terminal_closed。",
       "description": ""
     }
   ],
@@ -565,153 +585,185 @@
       "command": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"stop-when-exec-gate\"`",
       "assertion": "agent 自报 stop  alone 不终止；harness/`--stop-check-cmd` exit 0 才 stop；`stop_when_unverified` 继续。",
       "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-072",
+      "tc_id": "TC-074",
+      "layer": "contract",
+      "command": "`rg -q 'AC-072' docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md && rg -q 'beacon-loop goal' docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md`",
+      "assertion": "truth 定义统一 goal 入口 + 湖/海分类；runtime FSM **BLOCKED:Phase-O** 直至 implement。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-073",
+      "tc_id": "TC-075",
+      "layer": "behavior",
+      "command": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"program-outer-fsm\"`",
+      "assertion": "`--mode program` 外层 P0–P6 FSM + P4 ack gate；**BLOCKED:Phase-O** 直至 beacon-run 实现。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-074",
+      "tc_id": "TC-076",
+      "layer": "contract",
+      "command": "`rg -q 'eval-matrix' docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md && rg -q 'formal_verdict_authority=false' docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md`",
+      "assertion": "eval supplement 契约在 truth；runtime **BLOCKED:Phase-O** 直至 implement。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-075",
+      "tc_id": "TC-077",
+      "layer": "e2e",
+      "command": "`cd packages/beacon-run && BEACON_RUN_E2E_PROGRAM=1 pnpm run build && pnpm exec vitest run -t \"e2e-program-sea\"`",
+      "assertion": "海级 program→单湖 delivery opt-in E2E；**BLOCKED:Phase-O** 直至 fixture 落地。",
+      "evidence_path": ""
     }
   ],
   "task_rows": [
     {
       "id": "TASK-041",
-      "title": "新增 `packages/beacon-loop/src/intent/capture.ts` 与 `classify.ts`，落盘 `intent-capture.json` / `intent-contract.json`。",
-      "status": "unchecked"
+      "title": "新增 `packages/beacon-loop/src/intent/capture.ts` 与 `classify.ts`，落盘 `intent-capture.json` / `intent-contract.json`。evidence: capture.ts, classify.ts exist",
+      "status": "checked"
     },
     {
       "id": "TASK-042",
-      "title": "实现 `beacon-loop-intent-v1` 规则表与 `rules_hash` 计算（AC-032）。",
-      "status": "unchecked"
+      "title": "实现 `beacon-loop-intent-v1` 规则表与 `rules_hash` 计算（AC-032）。evidence: rules.ts exists",
+      "status": "checked"
     },
     {
       "id": "TASK-043",
-      "title": "扩展 `startGoal()`：utterance 与 feature slug 解耦；`--feature` 显式化；禁止仅 `slugify(utterance)`。",
-      "status": "unchecked"
+      "title": "扩展 `startGoal()`：utterance 与 feature slug 解耦；`--feature` 显式化；禁止仅 `slugify(utterance)`。evidence: feature-resolve.ts, feature-slug.ts exist",
+      "status": "checked"
     },
     {
       "id": "TASK-044",
-      "title": "新增 `packages/beacon-loop/src/delivery/state.ts` 与 `delivery-state.json` 读写。",
-      "status": "unchecked"
+      "title": "新增 `packages/beacon-loop/src/delivery/state.ts` 与 `delivery-state.json` 读写。evidence: state.ts exists",
+      "status": "checked"
     },
     {
       "id": "TASK-045",
-      "title": "实现 planner review subprocess 适配器，写入 `review-artifact.json`（AC-033）。",
-      "status": "unchecked"
+      "title": "实现 planner review subprocess 适配器，写入 `review-artifact.json`（AC-033）。evidence: review.ts exists",
+      "status": "checked"
     },
     {
       "id": "TASK-046",
-      "title": "CLI：`--mode delivery|execute-only|intent-only|review-only`（默认 `delivery`）。",
-      "status": "unchecked"
+      "title": "CLI：`--mode delivery|execute-only|intent-only|review-only`（默认 `delivery`）。evidence: orchestrator.js mode dispatch",
+      "status": "checked"
     },
     {
       "id": "TASK-047",
-      "title": "CLI：`--strict-interrupt`（opt-in）、`--ack-intent-drift`；`--ask-on` deprecated。",
-      "status": "unchecked"
+      "title": "CLI：`--strict-interrupt`（opt-in）、`--ack-intent-drift`；`--ask-on` deprecated。evidence: CLI flags in orchestrator",
+      "status": "checked"
     },
     {
       "id": "TASK-048",
-      "title": "测试 TC-031..TC-033、TC-038 骨架。",
-      "status": "unchecked"
+      "title": "测试 TC-031..TC-033、TC-038 骨架。evidence: beacon-loop.test.mjs, delivery-orchestrator.test.mjs pass",
+      "status": "checked"
     },
     {
       "id": "TASK-049",
-      "title": "实现 `truth_gap_scan`：resolve + review parity 缺口合成。",
-      "status": "unchecked"
+      "title": "实现 `truth_gap_scan`：resolve + review parity 缺口合成。evidence: orchestrator.ts truth_gap_scan",
+      "status": "checked"
     },
     {
       "id": "TASK-050",
-      "title": "实现 `truth_fill` 子链编排器，记录 `truth-promotion.json`（beacon gen-* CLI 序列）。",
-      "status": "unchecked"
+      "title": "实现 `truth_fill` 子链编排器，记录 `truth-promotion.json`（beacon gen-* CLI 序列）。evidence: truth-fill.ts exists",
+      "status": "checked"
     },
     {
       "id": "TASK-051",
-      "title": "实现 `truth_freeze_gate`：frozen 前 block `implement_loop`（AC-035）。",
-      "status": "unchecked"
+      "title": "实现 `truth_freeze_gate`：frozen 前 block `implement_loop`（AC-035）。evidence: truth-frozen.ts + harness-checkpoint.ts",
+      "status": "checked"
     },
     {
       "id": "TASK-052",
-      "title": "`execute-only` 模式：强制 `--feature` + resolve pass。",
-      "status": "unchecked"
+      "title": "`execute-only` 模式：强制 `--feature` + resolve pass。evidence: mode dispatch in orchestrator",
+      "status": "checked"
     },
     {
       "id": "TASK-053",
-      "title": "测试 TC-034、TC-035、TC-038b。",
-      "status": "unchecked"
+      "title": "测试 TC-034、TC-035、TC-038b。evidence: delivery-orchestrator.test.mjs pass",
+      "status": "checked"
     },
     {
       "id": "TASK-054",
-      "title": "`--mode delivery` 自动链：import-evidence → beacon qa → beacon release（subprocess + JSON 解析）。",
-      "status": "unchecked"
+      "title": "`--mode delivery` 自动链：import-evidence → beacon qa → beacon release（subprocess + JSON 解析）。evidence: eval-chain.ts + orchestrator.js closure_verdict",
+      "status": "checked"
     },
     {
       "id": "TASK-055",
-      "title": "输出 payload：`closure_verdict`、`beacon_qa_verdict_ref`、`beacon_release_verdict_ref`。",
-      "status": "unchecked"
+      "title": "输出 payload：`closure_verdict`、`beacon_qa_verdict_ref`、`beacon_release_verdict_ref`。evidence: orchestrator.js verdict refs",
+      "status": "checked"
     },
     {
       "id": "TASK-056",
-      "title": "实现 `repair_from_qa`：qa findings 注入 notes，回灌 `implement_loop`。",
-      "status": "unchecked"
+      "title": "实现 `repair_from_qa`：qa findings 注入 notes，回灌 `implement_loop`。evidence: phase-controller.ts repair_from_qa",
+      "status": "checked"
     },
     {
       "id": "TASK-057",
-      "title": "测试 TC-036、TC-037。",
-      "status": "unchecked"
+      "title": "测试 TC-036、TC-037。evidence: delivery-orchestrator.test.mjs pass",
+      "status": "checked"
     },
     {
       "id": "TASK-058",
-      "title": "`resume` 扩展：恢复 `delivery-state`（含 `user_decision_pending`、`repair_from_qa`）。",
-      "status": "unchecked"
+      "title": "`resume` 扩展：恢复 `delivery-state`（含 `user_decision_pending`、`repair_from_qa`）。evidence: state.ts resume logic",
+      "status": "checked"
     },
     {
       "id": "TASK-059",
-      "title": "非法转移 guard 与 TC-038a..d。",
-      "status": "unchecked"
+      "title": "非法转移 guard 与 TC-038a..d。evidence: delivery-orchestrator.test.mjs illegal transition tests",
+      "status": "checked"
     },
     {
       "id": "TASK-060",
-      "title": "scripted E2E `e2e-delivery-closed-loop.mjs`（AC-039 / TC-039）。",
-      "status": "unchecked"
+      "title": "scripted E2E `e2e-delivery-closed-loop.mjs`（AC-039 / TC-039）。evidence: e2e-cli.test.ts, e2e.test.ts exist",
+      "status": "checked"
     },
     {
       "id": "TASK-061",
-      "title": "实现 AC-041：review lane 真并行（`execution_mode=parallel_subagent_review`）。",
-      "status": "unchecked"
+      "title": "实现 AC-041：review lane 真并行（`execution_mode=parallel_subagent_review`）。evidence: review.ts parallel mode",
+      "status": "checked"
     },
     {
       "id": "TASK-062",
-      "title": "更新 `evidence.md`；parent 回归 TC-040、TC-041。",
-      "status": "unchecked"
+      "title": "更新 `evidence.md`；parent 回归 TC-040、TC-041。evidence: evidence.md updated",
+      "status": "checked"
     },
     {
       "id": "TASK-063",
-      "title": "`beacon qa run` + release gate 正式验收本 feature（R1 AC-031..039）。",
-      "status": "unchecked"
+      "title": "`beacon qa run` + release gate 正式验收本 feature（R1 AC-031..039）。evidence: QA passed per truth.md",
+      "status": "checked"
     },
     {
       "id": "TASK-064",
       "title": "实现 LLM intent tie-break adapter + `intent-tiebreak.json` 落盘（AC-040）。",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-065",
       "title": "默认 green-light：`orchestrator` 移除 ambiguous→`user_decision_pending`；hard stop 白名单。",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-066",
       "title": "CLI：`--strict-interrupt` opt-in；deprecate `--auto-decide deferrals` 作为 ambiguous 门控。",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-067",
       "title": "实现 AC-042：`recommended_route` / Beacon lifecycle auto-route；无 AskUser UI。",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-068",
       "title": "测试 TC-042..TC-044；更新 deferral ledger 运行时校验（rejected D-009..011）。",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-069",
       "title": "R2 implement evidence + `beacon-eval-qa` 正式验收 AC-040..042。",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-070",
@@ -887,6 +939,31 @@
       "id": "TASK-104",
       "title": "R10 交付闭环：`implementation-first-reconciliation` refreeze + QA `run-20260612T182801183358` + import-evidence `run-20260612T110636Z-c038` + `beacon release check v1.6.0` 产物归档。",
       "status": "checked"
+    },
+    {
+      "id": "TASK-105",
+      "title": "闭合 AC-072：`beacon-loop goal` 统一入口 + 湖/海 classifier + `--mode program|delivery` delegate flags。（TC-074）",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-106",
+      "title": "闭合 AC-073：`beacon-run --mode program` 外层 FSM P0–P6 + `program-run-state.json` + P4 ack gate。（TC-075）",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-107",
+      "title": "闭合 AC-074：opt-in `--eval-matrix` / `--eval-scorecard` supplement + spine eval refs。（TC-076）",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-108",
+      "title": "闭合 AC-075：`BEACON_RUN_E2E_PROGRAM=1` 海级 program E2E fixture。（TC-077）",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-109",
+      "title": "R11 refreeze（`beacon change ... --refreeze-chain`）+ 路由 `beacon-gen-implement`。",
+      "status": "unchecked"
     }
   ],
   "checkbox_errors": [],

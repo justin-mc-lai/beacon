@@ -3,21 +3,49 @@
   "feature": "beacon-harness-program-plan-v161",
   "feature_slug": "beacon-harness-program-plan-v161",
   "version": "v1.6.1",
-  "current_revision_id": "R1",
+  "current_revision_id": "R3",
   "lifecycle_status": "frozen",
-  "updated_at": "2026-06-15T08:16:48.680720+00:00",
+  "updated_at": "2026-06-16T07:58:39.914866+00:00",
   "revisions": [
     {
       "revision_id": "R1",
       "feature_slug": "beacon-harness-program-plan-v161",
       "source_revision_id": null,
       "reason": "draft",
-      "doc_status": "frozen",
-      "delivery_status": "idle",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
       "baseline_hash": "sha256:18bbd908a8395b2a13baef2b2d5fe3e593f6976331c79ba3467767d7f22b8aa5",
-      "superseded_by": null,
+      "superseded_by": "R2",
       "created_at": "2026-06-15T03:20:16.414873+00:00",
       "frozen_at": "2026-06-15T04:02:56.320473+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R2",
+      "feature_slug": "beacon-harness-program-plan-v161",
+      "source_revision_id": "R1",
+      "reason": "R3: real --mode program + goal resume contract",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": "sha256:dc5df8ed4d1c09338124946819145b4901dffcf0def11a7ced94b6cf10e8a13c",
+      "superseded_by": "R3",
+      "created_at": "2026-06-16T03:11:21.494539+00:00",
+      "frozen_at": "2026-06-16T03:11:59.676019+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R3",
+      "feature_slug": "beacon-harness-program-plan-v161",
+      "source_revision_id": "R2",
+      "reason": "implementation-first-reconciliation",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:fcc291344e9ff5ae23c1614e1438bb02f76cc8af3c41d69601e005e9710176d5",
+      "superseded_by": null,
+      "created_at": "2026-06-16T07:28:12.908675+00:00",
+      "frozen_at": "2026-06-16T07:28:15.004095+00:00",
       "accepted_at": null,
       "accepted_by": null
     }
@@ -28,7 +56,7 @@
       "revision_id": "R1",
       "title": "beacon-harness-program-plan-v161",
       "priority": "medium",
-      "status": "accepted",
+      "status": "superseded",
       "items": [
         {
           "id": "AC-001",
@@ -112,6 +140,152 @@
         ".beacon/release-gate-report.json"
       ],
       "accepted_at": "2026-06-15T08:16:48.562744+00:00",
+      "accepted_by": "qa"
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R2",
+      "title": "beacon-harness-program-plan-v161",
+      "priority": "medium",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "loop-orchestrator-handoff",
+          "text": "对接 `beacon-loop-goal-closed-loop-orchestrator-v161` R1（AC-072..075；upstream v1.6.0 R10）：`--mode program` 嵌套 per-lake delivery 不得破坏 AC-068 `truth_freeze_gate`；eval supplement opt-in 不得 gate qa/release。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — 对接 `beacon-loop-goal-closed-loop-orchestrator-v161` R1（AC-072..075；upstream v1.6.0 R10）：`--mode program` 嵌套 per-lake delivery 不得破坏 AC-068 `truth_freeze_gate`；eval supplement opt-in 不得 gate qa/release。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-harness-program-plan-v161",
+        "version": "v1.6.1",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.1/research/beacon-harness-program-plan-v161.md",
+        "present": true,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      }
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R3",
+      "title": "beacon-harness-program-plan-v161",
+      "priority": "medium",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "loop-orchestrator-handoff",
+          "text": "对接 `beacon-loop-goal-closed-loop-orchestrator-v161` R1（AC-072..075；upstream v1.6.0 R10）：`--mode program` 嵌套 per-lake delivery 不得破坏 AC-068 `truth_freeze_gate`；eval supplement opt-in 不得 gate qa/release。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260616T073000Z-pbp-r4",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260616T073000Z-pbp-r4",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-06-16T07:31:01.411588+00:00",
+          "changed_in_revision": "R4"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — 对接 `beacon-loop-goal-closed-loop-orchestrator-v161` R1（AC-072..075；upstream v1.6.0 R10）：`--mode program` 嵌套 per-lake delivery 不得破坏 AC-068 `truth_freeze_gate`；eval supplement opt-in 不得 gate qa/release。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260616T073000Z-pbp-r4",
+          "verified_by_run_id": "run-20260616T155821182142",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-harness-program-plan-v161",
+        "version": "v1.6.1",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.1/research/beacon-harness-program-plan-v161.md",
+        "present": true,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      },
+      "feature": "beacon-harness-program-plan-v161",
+      "feature_slug": "beacon-harness-program-plan-v161",
+      "version": "v1.6.1",
+      "last_changed_files": [
+        "beacon/utils/program_plan_runtime.py",
+        "packages/beacon-run/src/beacon/program-outer-fsm.ts",
+        "packages/beacon-run/src/beacon/program-mode.ts",
+        "packages/beacon-run/src/beacon/eval-supplement.ts",
+        "packages/beacon-run/src/cli.ts",
+        "packages/beacon-loop/src/beacon-run-delegate.ts",
+        "packages/beacon-loop/src/intent/scope-classify.ts",
+        "tests/test_program_plan_state_contract.py"
+      ],
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.6.1/.machine/qa/beacon-harness-program-plan-v161.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-harness-program-plan-v161/ac-closure.json",
+        ".beacon/qa/features/beacon-harness-program-plan-v161/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "accepted_at": "2026-06-16T07:58:39.792865+00:00",
       "accepted_by": "qa"
     }
   ]

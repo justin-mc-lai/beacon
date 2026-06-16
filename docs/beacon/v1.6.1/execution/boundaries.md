@@ -5,7 +5,8 @@ Inherits `docs/beacon/v1.6.0/execution/boundaries.md`.
 ## v1.6.1 additions
 
 - **Program planner triad**: `beacon-pln-program` (umbrella) delegates to `beacon-pln-program-auto` or `beacon-pln-program-interactive`; sub-skills must not write `features/*/truth.md`.
-- **Single operator entry**: `beacon plan start` (CLI) or `/beacon-pln-program` (host); `plan_mode` recorded in program-manifest.
+- **Long-task primary entry**: `beacon-loop goal`（薄委托 `beacon-run`）；见 `execution/long-task-operator-guide.md`.
+- **Program scaffold**: `beacon plan start` (CLI) or `/beacon-pln-program` (host); `plan_mode` recorded in program-manifest.
 - **Program freeze** requires all lakes in `feature-graph.json` to be `status=frozen` and program parity matrix to have zero orphan capabilities.
 - **Change** must append `change-intent-log.jsonl` before mutating promoted program or lake truth.
 - **Sea utterances** must not collapse to a single lake without P3 feature-graph and user ack (P4).
