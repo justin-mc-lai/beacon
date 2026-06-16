@@ -65,7 +65,7 @@
       ]
     },
     "project_type": "ai-agent-skill",
-    "generated_at": "2026-06-15T16:16:24.867581",
+    "generated_at": "2026-06-16T15:50:22.307440",
     "prompt_ref": "beacon.qa9.llm.plan.v1.0.2",
     "skip_reason": "",
     "qa_types": [
@@ -82,7 +82,7 @@
   },
   "qa_strategy": {
     "schema_version": "1.0.2",
-    "generated_at": "2026-06-15T16:16:24.866619",
+    "generated_at": "2026-06-16T15:50:22.306442",
     "project_type": "ai-agent-skill",
     "project_scan": {
       "language": "python",
@@ -270,11 +270,11 @@
       "story_id": "",
       "layer": "contract",
       "qa_type": "contract",
-      "title": "beacon-harness-program-plan-v161 AC-PBP-001 :: exit 0；contract 定义 program 目录与 P0–P6",
+      "title": "beacon-harness-program-plan-v161 AC-PBP-001 :: contract 定义 program 目录与 P0–P6",
       "priority": "P1",
       "automation": "auto",
-      "command": "test -f docs/beacon/v1.6.1/execution/program-plan-contract.md && rg -q 'feature-graph.json' docs/beacon/v1.6.1/execution/program-plan-contract.md",
-      "assertion": "exit 0；contract 定义 program 目录与 P0–P6",
+      "command": "python3 -m pytest tests/test_v161_program_plan_release_gate.py::test_program_plan_contract_defines_graph_and_fsm -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "contract 定义 program 目录与 P0–P6",
       "evidence_path": ".beacon/evidence/test-results/beacon-harness-program-plan-v161/{run_id}/TC-PBP-001.json",
       "required_files": [
         "command.txt",
@@ -285,8 +285,8 @@
       ],
       "status": "pending",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-      "execution_method": "`test -f docs/beacon/v1.6.1/execution/program-plan-contract.md && rg -q 'feature-graph.json' docs/beacon/v1.6.1/execution/program-plan-contract.md`",
-      "scenario": "exit 0；contract 定义 program 目录与 P0–P6",
+      "execution_method": "`python3 -m pytest tests/test_v161_program_plan_release_gate.py::test_program_plan_contract_defines_graph_and_fsm -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "scenario": "contract 定义 program 目录与 P0–P6",
       "steps": ""
     },
     {
@@ -445,11 +445,11 @@
       "story_id": "",
       "layer": "unit",
       "qa_type": "unit",
-      "title": "beacon-harness-program-plan-v161 AC-PBP-008 :: exit 0",
+      "title": "beacon-harness-program-plan-v161 AC-PBP-008 :: pytest 通过；含 truth-integrity 与 program plan 释放门禁",
       "priority": "P0",
       "automation": "auto",
-      "command": "mkdir -p .beacon/qa-tmp && beacon doctor verify-truth-integrity beacon-harness-program-plan-v161 --project-root . --version v1.6.1 --mode block --json >.beacon/qa-tmp/TC-PBP-008.json && python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-PBP-008.json')); raise SystemExit(0 if d.get('result',{}).get('blocked') is False else 1)\"",
-      "assertion": "exit 0",
+      "command": "python3 -m pytest tests/test_program_plan_state_contract.py tests/test_program_plan_cli.py tests/test_v161_program_plan_release_gate.py -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "pytest 通过；含 truth-integrity 与 program plan 释放门禁",
       "evidence_path": ".beacon/evidence/test-results/beacon-harness-program-plan-v161/{run_id}/TC-PBP-008.json",
       "required_files": [
         "command.txt",
@@ -460,8 +460,8 @@
       ],
       "status": "pending",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-      "execution_method": "`mkdir -p .beacon/qa-tmp && beacon doctor verify-truth-integrity beacon-harness-program-plan-v161 --project-root . --version v1.6.1 --mode block --json >.beacon/qa-tmp/TC-PBP-008.json && python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-PBP-008.json')); raise SystemExit(0 if d.get('result',{}).get('blocked') is False else 1)\"`",
-      "scenario": "exit 0",
+      "execution_method": "`python3 -m pytest tests/test_program_plan_state_contract.py tests/test_program_plan_cli.py tests/test_v161_program_plan_release_gate.py -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "scenario": "pytest 通过；含 truth-integrity 与 program plan 释放门禁",
       "steps": ""
     },
     {
@@ -645,11 +645,11 @@
       "story_id": "",
       "layer": "contract",
       "qa_type": "contract",
-      "title": "beacon-harness-program-plan-v161 AC-PBP-016 :: exit 0；help 暴露 mode（Phase E 补 program preset）",
+      "title": "beacon-harness-program-plan-v161 AC-PBP-016 :: truth 要求真实 P0–P6 FSM；runtime **BLOCKED:Phase-G** 直至 `--mode program` 实现。",
       "priority": "P1",
       "automation": "auto",
-      "command": "mkdir -p .beacon/qa-tmp && node packages/beacon-run/dist/cli.mjs run --help >.beacon/qa-tmp/TC-PBP-016.txt 2>/dev/null && rg -i 'mode' .beacon/qa-tmp/TC-PBP-016.txt",
-      "assertion": "exit 0；help 暴露 mode（Phase E 补 program preset）",
+      "command": "rg -q 'program-run-state' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md && mkdir -p .beacon/qa-tmp && node packages/beacon-run/dist/cli.mjs run --help >.beacon/qa-tmp/TC-PBP-016-R3.txt 2>&1 && rg -i 'program' .beacon/qa-tmp/TC-PBP-016-R3.txt",
+      "assertion": "truth 要求真实 P0–P6 FSM；runtime **BLOCKED:Phase-G** 直至 `--mode program` 实现。",
       "evidence_path": ".beacon/evidence/test-results/beacon-harness-program-plan-v161/{run_id}/TC-PBP-016.json",
       "required_files": [
         "command.txt",
@@ -660,8 +660,8 @@
       ],
       "status": "pending",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-      "execution_method": "`mkdir -p .beacon/qa-tmp && node packages/beacon-run/dist/cli.mjs run --help >.beacon/qa-tmp/TC-PBP-016.txt 2>/dev/null && rg -i 'mode' .beacon/qa-tmp/TC-PBP-016.txt`",
-      "scenario": "exit 0；help 暴露 mode（Phase E 补 program preset）",
+      "execution_method": "`rg -q 'program-run-state' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md && mkdir -p .beacon/qa-tmp && node packages/beacon-run/dist/cli.mjs run --help >.beacon/qa-tmp/TC-PBP-016-R3.txt 2>&1 && rg -i 'program' .beacon/qa-tmp/TC-PBP-016-R3.txt`",
+      "scenario": "truth 要求真实 P0–P6 FSM；runtime **BLOCKED:Phase-G** 直至 `--mode program` 实现。",
       "steps": ""
     },
     {
@@ -920,11 +920,11 @@
       "story_id": "",
       "layer": "contract",
       "qa_type": "contract",
-      "title": "beacon-harness-program-plan-v161 AC-PBP-027 :: 单一公共入口写入 truth",
+      "title": "beacon-harness-program-plan-v161 AC-PBP-027 :: operator guide：长任务主入口 `goal`；`plan start` 仅 scaffold。",
       "priority": "P1",
       "automation": "auto",
-      "command": "rg -q 'beacon plan start' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
-      "assertion": "单一公共入口写入 truth",
+      "command": "test -f docs/beacon/v1.6.1/execution/long-task-operator-guide.md && rg -q 'beacon-loop goal' docs/beacon/v1.6.1/execution/long-task-operator-guide.md && rg -q 'scaffold' docs/beacon/v1.6.1/execution/long-task-operator-guide.md",
+      "assertion": "operator guide：长任务主入口 `goal`；`plan start` 仅 scaffold。",
       "evidence_path": ".beacon/evidence/test-results/beacon-harness-program-plan-v161/{run_id}/TC-PBP-027.json",
       "required_files": [
         "command.txt",
@@ -935,8 +935,8 @@
       ],
       "status": "pending",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-      "execution_method": "`rg -q 'beacon plan start' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md`",
-      "scenario": "单一公共入口写入 truth",
+      "execution_method": "`test -f docs/beacon/v1.6.1/execution/long-task-operator-guide.md && rg -q 'beacon-loop goal' docs/beacon/v1.6.1/execution/long-task-operator-guide.md && rg -q 'scaffold' docs/beacon/v1.6.1/execution/long-task-operator-guide.md`",
+      "scenario": "operator guide：长任务主入口 `goal`；`plan start` 仅 scaffold。",
       "steps": ""
     },
     {
@@ -963,13 +963,113 @@
       "execution_method": "`rg -q 'beacon-pln-brainstorm' skills/beacon/beacon-pln-program-interactive/SKILL.md && rg -q 'beacon-pln-source' skills/beacon/beacon-pln-program-auto/SKILL.md`",
       "scenario": "interactive/auto 桥接既有 planner skill",
       "steps": ""
+    },
+    {
+      "tc_id": "TC-PBP-029",
+      "ac_id": "AC-PBP-029",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-harness-program-plan-v161 AC-PBP-029 :: goal/plan 共享 resume 契约在 truth；runtime **BLOCKED:Phase-G**。",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "rg -q 'AC-PBP-029' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md && rg -q 'program-run-state' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
+      "assertion": "goal/plan 共享 resume 契约在 truth；runtime **BLOCKED:Phase-G**。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-harness-program-plan-v161/{run_id}/TC-PBP-029.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
+      "execution_method": "`rg -q 'AC-PBP-029' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md && rg -q 'program-run-state' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md`",
+      "scenario": "goal/plan 共享 resume 契约在 truth；runtime **BLOCKED:Phase-G**。",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-PBP-030",
+      "ac_id": "AC-PBP-030",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-harness-program-plan-v161 AC-PBP-030 :: loop v161 R1 对接 + eval 不 gate qa/release。",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "rg -q 'beacon-loop-goal-closed-loop-orchestrator-v161' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md && rg -q 'truth_freeze_gate' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
+      "assertion": "loop v161 R1 对接 + eval 不 gate qa/release。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-harness-program-plan-v161/{run_id}/TC-PBP-030.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
+      "execution_method": "`rg -q 'beacon-loop-goal-closed-loop-orchestrator-v161' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md && rg -q 'truth_freeze_gate' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md`",
+      "scenario": "loop v161 R1 对接 + eval 不 gate qa/release。",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-PBP-X-068",
+      "ac_id": "AC-068",
+      "story_id": "",
+      "layer": "upstream",
+      "qa_type": "upstream",
+      "title": "beacon-harness-program-plan-v161 AC-068 :: 由 upstream v1.6.0 loop R10 权威；program 嵌套 delivery 不得破坏。",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "rg -q 'truth_freeze_gate' docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+      "assertion": "由 upstream v1.6.0 loop R10 权威；program 嵌套 delivery 不得破坏。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-harness-program-plan-v161/{run_id}/TC-PBP-X-068.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
+      "execution_method": "`rg -q 'truth_freeze_gate' docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md`",
+      "scenario": "由 upstream v1.6.0 loop R10 权威；program 嵌套 delivery 不得破坏。",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-PBP-X-072",
+      "ac_id": "AC-072",
+      "story_id": "",
+      "layer": "upstream",
+      "qa_type": "upstream",
+      "title": "beacon-harness-program-plan-v161 AC-072 :: 由 loop v161 R1 权威；本 package 仅声明 handoff（AC-PBP-030）。",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "rg -q 'AC-072' docs/beacon/v1.6.1/features/beacon-loop-goal-closed-loop-orchestrator-v161/truth.md",
+      "assertion": "由 loop v161 R1 权威；本 package 仅声明 handoff（AC-PBP-030）。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-harness-program-plan-v161/{run_id}/TC-PBP-X-072.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
+      "execution_method": "`rg -q 'AC-072' docs/beacon/v1.6.1/features/beacon-loop-goal-closed-loop-orchestrator-v161/truth.md`",
+      "scenario": "由 loop v161 R1 权威；本 package 仅声明 handoff（AC-PBP-030）。",
+      "steps": ""
     }
   ],
   "markdown_matrix_contract": {
     "truth_mode": "markdown",
     "fail_closed": true,
     "source": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-    "row_count": 28,
+    "row_count": 32,
     "enrichment_disabled": true
   },
   "compatibility_matrix": {
@@ -997,7 +1097,7 @@
       }
     ]
   },
-  "generated_at": "2026-06-15T16:16:24.867619",
+  "generated_at": "2026-06-16T15:50:22.307489",
   "research_projection": {
     "schema_version": "1.0",
     "feature": "beacon-harness-program-plan-v161",

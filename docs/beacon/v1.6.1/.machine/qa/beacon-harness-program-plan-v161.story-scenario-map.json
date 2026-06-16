@@ -3,7 +3,7 @@
   "feature": "beacon-harness-program-plan-v161",
   "feature_slug": "beacon-harness-program-plan-v161",
   "version": "v1.6.1",
-  "generated_at": "2026-06-15T08:16:24.868103+00:00",
+  "generated_at": "2026-06-16T07:50:22.307797+00:00",
   "expansion_profile": "pua-web",
   "scenario_depth": "standard",
   "families_required": [
@@ -16,8 +16,9 @@
   "stories": [
     {
       "ac_id": "AC-001",
-      "theme": "general",
-      "text": "Acceptance criteria TBD",
+      "theme": "loop-orchestrator-handoff",
+      "text_hash": "sha256:a602d53cf01607e57a7310d0d98b71ba2eeb31f9558c2942d9ea51e3c7cdb70a",
+      "text_bytes": 232,
       "scenario_ids": [],
       "scenario_families": [],
       "required_families": [],
@@ -26,7 +27,7 @@
     {
       "ac_id": "AC-PBP-001",
       "theme": "",
-      "text": "exit 0；contract 定义 program 目录与 P0–P6",
+      "text": "contract 定义 program 目录与 P0–P6",
       "scenario_ids": [
         "SC-AUTO-TC-PBP-001"
       ],
@@ -187,7 +188,7 @@
     {
       "ac_id": "AC-PBP-008",
       "theme": "",
-      "text": "exit 0",
+      "text": "pytest 通过；含 truth-integrity 与 program plan 释放门禁",
       "scenario_ids": [
         "SC-AUTO-TC-PBP-008"
       ],
@@ -371,7 +372,7 @@
     {
       "ac_id": "AC-PBP-016",
       "theme": "",
-      "text": "exit 0；help 暴露 mode（Phase E 补 program preset）",
+      "text": "truth 要求真实 P0–P6 FSM；runtime **BLOCKED:Phase-G** 直至 `--mode program` 实现。",
       "scenario_ids": [
         "SC-AUTO-TC-PBP-016"
       ],
@@ -624,7 +625,7 @@
     {
       "ac_id": "AC-PBP-027",
       "theme": "",
-      "text": "单一公共入口写入 truth",
+      "text": "operator guide：长任务主入口 `goal`；`plan start` 仅 scaffold。",
       "scenario_ids": [
         "SC-AUTO-TC-PBP-027"
       ],
@@ -666,6 +667,52 @@
           "replay_required": false
         }
       ]
+    },
+    {
+      "ac_id": "AC-PBP-029",
+      "theme": "",
+      "text": "goal/plan 共享 resume 契约在 truth；runtime **BLOCKED:Phase-G**。",
+      "scenario_ids": [
+        "SC-AUTO-TC-PBP-029"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-PBP-029",
+          "source_tc_id": "TC-PBP-029",
+          "tc_id": "TC-PBP-029-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-PBP-030",
+      "theme": "",
+      "text": "loop v161 R1 对接 + eval 不 gate qa/release。",
+      "scenario_ids": [
+        "SC-AUTO-TC-PBP-030"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-PBP-030",
+          "source_tc_id": "TC-PBP-030",
+          "tc_id": "TC-PBP-030-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
     }
   ],
   "scenarios": [
@@ -677,7 +724,7 @@
       "qa_type": "contract",
       "layer": "contract",
       "scenario_family": "primary",
-      "title": "exit 0；contract 定义 program 目录与 P0–P6",
+      "title": "contract 定义 program 目录与 P0–P6",
       "browser_required": false,
       "replay_required": false,
       "exploratory_runner": "native",
@@ -692,8 +739,8 @@
       "depends_on": [],
       "stop_on_fail": false,
       "automation": "auto",
-      "command": "test -f docs/beacon/v1.6.1/execution/program-plan-contract.md && rg -q 'feature-graph.json' docs/beacon/v1.6.1/execution/program-plan-contract.md",
-      "assertion": "exit 0；contract 定义 program 目录与 P0–P6",
+      "command": "python3 -m pytest tests/test_v161_program_plan_release_gate.py::test_program_plan_contract_defines_graph_and_fsm -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "contract 定义 program 目录与 P0–P6",
       "priority": "P1",
       "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-001/__RUN_ID__.json",
       "required_files": [
@@ -922,7 +969,7 @@
       "qa_type": "unit",
       "layer": "unit",
       "scenario_family": "primary",
-      "title": "exit 0",
+      "title": "pytest 通过；含 truth-integrity 与 program plan 释放门禁",
       "browser_required": false,
       "replay_required": false,
       "exploratory_runner": "native",
@@ -937,8 +984,8 @@
       "depends_on": [],
       "stop_on_fail": false,
       "automation": "auto",
-      "command": "mkdir -p .beacon/qa-tmp && beacon doctor verify-truth-integrity beacon-harness-program-plan-v161 --project-root . --version v1.6.1 --mode block --json >.beacon/qa-tmp/TC-PBP-008.json && python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-PBP-008.json')); raise SystemExit(0 if d.get('result',{}).get('blocked') is False else 1)\"",
-      "assertion": "exit 0",
+      "command": "python3 -m pytest tests/test_program_plan_state_contract.py tests/test_program_plan_cli.py tests/test_v161_program_plan_release_gate.py -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "pytest 通过；含 truth-integrity 与 program plan 释放门禁",
       "priority": "P1",
       "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-008/__RUN_ID__.json",
       "required_files": [
@@ -1202,7 +1249,7 @@
       "qa_type": "contract",
       "layer": "contract",
       "scenario_family": "primary",
-      "title": "exit 0；help 暴露 mode（Phase E 补 program preset）",
+      "title": "truth 要求真实 P0–P6 FSM；runtime **BLOCKED:Phase-G** 直至 `--mode program` 实现。",
       "browser_required": false,
       "replay_required": false,
       "exploratory_runner": "native",
@@ -1217,8 +1264,8 @@
       "depends_on": [],
       "stop_on_fail": false,
       "automation": "auto",
-      "command": "mkdir -p .beacon/qa-tmp && node packages/beacon-run/dist/cli.mjs run --help >.beacon/qa-tmp/TC-PBP-016.txt 2>/dev/null && rg -i 'mode' .beacon/qa-tmp/TC-PBP-016.txt",
-      "assertion": "exit 0；help 暴露 mode（Phase E 补 program preset）",
+      "command": "rg -q 'program-run-state' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md && mkdir -p .beacon/qa-tmp && node packages/beacon-run/dist/cli.mjs run --help >.beacon/qa-tmp/TC-PBP-016-R3.txt 2>&1 && rg -i 'program' .beacon/qa-tmp/TC-PBP-016-R3.txt",
+      "assertion": "truth 要求真实 P0–P6 FSM；runtime **BLOCKED:Phase-G** 直至 `--mode program` 实现。",
       "priority": "P1",
       "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-016/__RUN_ID__.json",
       "required_files": [
@@ -1587,7 +1634,7 @@
       "qa_type": "contract",
       "layer": "docs",
       "scenario_family": "primary",
-      "title": "单一公共入口写入 truth",
+      "title": "operator guide：长任务主入口 `goal`；`plan start` 仅 scaffold。",
       "browser_required": false,
       "replay_required": false,
       "exploratory_runner": "native",
@@ -1602,8 +1649,8 @@
       "depends_on": [],
       "stop_on_fail": false,
       "automation": "auto",
-      "command": "rg -q 'beacon plan start' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
-      "assertion": "单一公共入口写入 truth",
+      "command": "test -f docs/beacon/v1.6.1/execution/long-task-operator-guide.md && rg -q 'beacon-loop goal' docs/beacon/v1.6.1/execution/long-task-operator-guide.md && rg -q 'scaffold' docs/beacon/v1.6.1/execution/long-task-operator-guide.md",
+      "assertion": "operator guide：长任务主入口 `goal`；`plan start` 仅 scaffold。",
       "priority": "P1",
       "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-027/__RUN_ID__.json",
       "required_files": [
@@ -1648,6 +1695,76 @@
         "result.json",
         "junit.xml"
       ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-PBP-029",
+      "source_tc_id": "TC-PBP-029",
+      "tc_id": "TC-PBP-029-PRIMARY",
+      "ac_id": "AC-PBP-029",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "goal/plan 共享 resume 契约在 truth；runtime **BLOCKED:Phase-G**。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "rg -q 'AC-PBP-029' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md && rg -q 'program-run-state' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
+      "assertion": "goal/plan 共享 resume 契约在 truth；runtime **BLOCKED:Phase-G**。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-029/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-PBP-030",
+      "source_tc_id": "TC-PBP-030",
+      "tc_id": "TC-PBP-030-PRIMARY",
+      "ac_id": "AC-PBP-030",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "loop v161 R1 对接 + eval 不 gate qa/release。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "rg -q 'beacon-loop-goal-closed-loop-orchestrator-v161' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md && rg -q 'truth_freeze_gate' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
+      "assertion": "loop v161 R1 对接 + eval 不 gate qa/release。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-030/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
     }
   ],
   "research_projection": {
@@ -1664,7 +1781,7 @@
     "truth_mode": "markdown",
     "fail_closed": true,
     "source": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-    "row_count": 28,
+    "row_count": 32,
     "enrichment_disabled": true
   }
 }
