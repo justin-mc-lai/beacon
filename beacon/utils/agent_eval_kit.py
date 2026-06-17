@@ -6,10 +6,15 @@ import json
 from pathlib import Path
 from typing import Any
 
+from beacon.utils.agent_eval_grader import grade_host_behavior_transcript
+from beacon.utils.agent_eval_live_executor import execute_host_prompt, write_transcript
 from beacon.utils.agent_eval_state import (
     AGENT_EVAL_STATES,
+    LIVE_ORCHESTRATION_STATES,
     catalog_missing_recovery_route,
     live_blocked_recovery_route,
+    live_orchestration_transition,
+    surface_only_inflates_behavior_evidence,
     transition,
 )
 from beacon.utils.agent_surface import v160_skill_package_projection
@@ -28,6 +33,9 @@ AGENT_EVAL_VERSION = "v1.6.1"
 CATALOG_FILENAME = "agent-eval-capability-catalog-v161.json"
 MATRIX_FILENAME = "agent-eval-live-skill-matrix-v161.json"
 ADMISSION_FILENAME = "agent-eval-runner-admission.json"
+LIVE_EXECUTION_TIERS = ("local_admitted", "release_hook", "ci_default")
+DEFAULT_CI_SMOKE_SKILL_ID = "beacon-eval-agent"
+PROMPT_FIXTURE_ROOT = "fixtures/agent-eval/v161/live"
 
 COMPOSITE_WEIGHTS: dict[str, float] = {
     "route_stability": 0.15,
@@ -76,6 +84,79 @@ def _authority_flags() -> dict[str, bool]:
         "formal_verdict_authority": False,
         "release_verdict_authority": False,
     }
+
+
+def _next_hint_for_skill(skill_id: str) -> str:
+    parts = skill_id.split("-")
+    if len(parts) >= 3 and parts[0] == "beacon":
+        family = parts[1]
+        mapping = {"pln": "plan", "gen": "implement", "eval": "qa", "gov": "doctor"}
+        subcommand = mapping.get(family, family)
+        return f"beacon {subcommand} via {skill_id}"
+    return f"beacon route {skill_id}"
+
+
+def materialize_agent_eval_prompt_fixtures(project_root: Path, *, version: str = AGENT_EVAL_VERSION) -> dict[str, Any]:
+    entries = _load_matrix_entries(project_root, version=version)
+    if not entries:
+        materialize_agent_eval_live_skill_matrix(project_root, version=version)
+        entries = _load_matrix_entries(project_root, version=version)
+    written: list[str] = []
+    missing: list[str] = []
+    for entry in entries:
+        skill_id = str(entry.get("skill_id") or "")
+        rel_ref = str(entry.get("prompt_fixture_ref") or f"{PROMPT_FIXTURE_ROOT}/{skill_id}.prompt.txt")
+        path = project_root / rel_ref
+        expected_route = str(entry.get("expected_route_surface") or skill_id)
+        if not path.exists():
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(
+                f"ROUTE: {expected_route}\nNEXT: {_next_hint_for_skill(skill_id)}\n",
+                encoding="utf-8",
+            )
+            written.append(rel_ref)
+        elif not path.read_text(encoding="utf-8").strip():
+            missing.append(rel_ref)
+    all_refs = [str(entry.get("prompt_fixture_ref") or "") for entry in entries]
+    refs_exist = all((project_root / ref).exists() for ref in all_refs if ref)
+    blocked = bool(missing) or not refs_exist
+    return {
+        "schema_version": "1.0",
+        "status": "blocked" if blocked else "pass",
+        "blocked": blocked,
+        "reason_code": "prompt_fixture_missing" if blocked else "",
+        "written_count": len(written),
+        "written": written,
+        "entry_count": len(entries),
+        "fixture_root": PROMPT_FIXTURE_ROOT,
+    }
+
+
+def resolve_live_tier(
+    admission: dict[str, Any],
+    *,
+    cli_tier: str | None = None,
+) -> str:
+    tier = str(cli_tier or admission.get("default_live_tier") or "local_admitted").strip()
+    allowed = admission.get("live_execution_tiers")
+    if isinstance(allowed, list) and allowed and tier not in allowed:
+        tier = str(allowed[0])
+    if tier not in LIVE_EXECUTION_TIERS:
+        tier = "local_admitted"
+    return tier
+
+
+def _live_execution_mode_for_entry(
+    *,
+    live_tier: str,
+    skill_id: str,
+    ci_smoke_skill_id: str,
+) -> str:
+    if live_tier in {"local_admitted", "release_hook"}:
+        return "host_behavior"
+    if live_tier == "ci_default":
+        return "host_behavior" if skill_id == ci_smoke_skill_id else "surface_only"
+    return "surface_only"
 
 
 def _harness_short_from_skill_id(skill_id: str) -> str:
@@ -245,6 +326,7 @@ def materialize_agent_eval_catalog(
     materialize_matrix: bool = True,
 ) -> dict[str, Any]:
     matrix_result = materialize_agent_eval_live_skill_matrix(project_root, version=version) if materialize_matrix else {}
+    fixture_result = materialize_agent_eval_prompt_fixtures(project_root, version=version) if materialize_matrix else {}
     skill_entries = _skill_catalog_entries(project_root)
     entries = (
         skill_entries
@@ -280,16 +362,21 @@ def materialize_agent_eval_catalog(
             "migration_note": "beacon eval shares boundary replay cases with beacon skill eval-kit via shared_skill_eval_root",
         },
     )
-    blocked = bool(missing_harnesses) or bool(matrix_result.get("blocked"))
+    blocked = bool(missing_harnesses) or bool(matrix_result.get("blocked")) or bool(fixture_result.get("blocked"))
     return {
         "schema_version": "1.0",
         "status": "blocked" if blocked else "pass",
         "blocked": blocked,
-        "reason_code": "catalog_harness_missing" if missing_harnesses else matrix_result.get("reason_code", ""),
+        "reason_code": (
+            "catalog_harness_missing"
+            if missing_harnesses
+            else fixture_result.get("reason_code") or matrix_result.get("reason_code", "")
+        ),
         "missing_harnesses": missing_harnesses,
         "path": str(path.relative_to(project_root)),
         "entry_count": len(entries),
         "matrix": matrix_result,
+        "fixtures": fixture_result,
         "catalog": payload,
         **_authority_flags(),
     }
@@ -389,6 +476,25 @@ def verify_agent_eval_admission(project_root: Path, *, version: str = AGENT_EVAL
             "path": rel_path,
             "version": version,
         }
+    if bool(payload.get("admitted")):
+        tiers = payload.get("live_execution_tiers")
+        if not isinstance(tiers, list) or not tiers:
+            return {
+                "schema_version": "1.0",
+                "status": "fail",
+                "reason_code": "agent_eval_admission_live_tiers_missing",
+                "path": rel_path,
+                "version": version,
+            }
+        smoke = str(payload.get("ci_smoke_skill_id") or "").strip()
+        if not smoke:
+            return {
+                "schema_version": "1.0",
+                "status": "fail",
+                "reason_code": "agent_eval_admission_ci_smoke_missing",
+                "path": rel_path,
+                "version": version,
+            }
     return {
         "schema_version": "1.0",
         "status": "pass",
@@ -429,17 +535,54 @@ def _boundary_replay_cases(project_root: Path) -> list[dict[str, Any]]:
     return default_v160_harness_cases()
 
 
+def _surface_preflight(
+    project_root: Path,
+    *,
+    skill_id: str,
+    prompt_fixture_ref: str,
+) -> tuple[bool, str]:
+    fixture_path = project_root / prompt_fixture_ref
+    if not fixture_path.exists():
+        return False, "prompt_fixture_missing"
+    skill_file = project_root / "skills" / "beacon" / skill_id / "SKILL.md"
+    if not skill_file.exists():
+        return False, "skill_surface_missing"
+    text = skill_file.read_text(encoding="utf-8")
+    if "HARD GATE" not in text:
+        return False, "hard_gate_missing"
+    fixture_text = fixture_path.read_text(encoding="utf-8")
+    if not fixture_text.strip().upper().startswith("ROUTE:"):
+        return False, "prompt_fixture_route_line_missing"
+    return True, ""
+
+
 def _execute_live_per_skill(
     project_root: Path,
     *,
     matrix_entries: list[dict[str, Any]],
     admitted: bool,
     traces_dir: Path,
+    live_tier: str,
+    admission: dict[str, Any],
 ) -> list[dict[str, Any]]:
     per_skill: list[dict[str, Any]] = []
+    ci_smoke_skill_id = str(admission.get("ci_smoke_skill_id") or DEFAULT_CI_SMOKE_SKILL_ID)
+    host = str(admission.get("host") or "cursor")
+    timeout_seconds = float(admission.get("timeout_seconds") or 300)
+    transcripts_dir = traces_dir / "transcripts"
+    modes_seen: set[str] = set()
+
     for entry in matrix_entries:
         skill_id = str(entry.get("skill_id") or "")
-        skill_file = project_root / "skills" / "beacon" / skill_id / "SKILL.md"
+        prompt_fixture_ref = str(entry.get("prompt_fixture_ref") or f"{PROMPT_FIXTURE_ROOT}/{skill_id}.prompt.txt")
+        expected_route = str(entry.get("expected_route_surface") or skill_id)
+        live_execution_mode = _live_execution_mode_for_entry(
+            live_tier=live_tier,
+            skill_id=skill_id,
+            ci_smoke_skill_id=ci_smoke_skill_id,
+        )
+        modes_seen.add(live_execution_mode)
+
         if not admitted:
             trace = {
                 "schema_version": "1.0",
@@ -447,29 +590,145 @@ def _execute_live_per_skill(
                 "status": "blocked",
                 "reason_code": "agent_eval_live_runner_not_admitted",
                 "runner": "live",
+                "live_execution_tier": live_tier,
+                "live_execution_mode": live_execution_mode,
             }
-        elif not skill_file.exists():
+            write_json(traces_dir / f"{skill_id}.json", trace)
+            per_skill.append(trace)
+            continue
+
+        preflight_ok, preflight_reason = _surface_preflight(
+            project_root,
+            skill_id=skill_id,
+            prompt_fixture_ref=prompt_fixture_ref,
+        )
+        live_orchestration_transition("SurfacePreflight", "HostExecution")
+
+        if live_execution_mode == "surface_only":
             trace = {
                 "schema_version": "1.0",
                 "skill_id": skill_id,
-                "status": "blocked",
-                "reason_code": "skill_surface_missing",
+                "status": "pass" if preflight_ok else "fail",
+                "reason_code": "" if preflight_ok else preflight_reason,
                 "runner": "live",
+                "live_execution_tier": live_tier,
+                "live_execution_mode": "surface_only",
+                "expected_route_surface": expected_route,
+                "prompt_fixture_ref": prompt_fixture_ref,
+                "orchestration": {
+                    "surface_preflight": "pass" if preflight_ok else "fail",
+                    "host_execution": "skipped",
+                    "grading": "skipped",
+                },
             }
-        else:
-            text = skill_file.read_text(encoding="utf-8")
-            has_gate = "HARD GATE" in text
+            write_json(traces_dir / f"{skill_id}.json", trace)
+            per_skill.append(trace)
+            continue
+
+        if not preflight_ok:
             trace = {
                 "schema_version": "1.0",
                 "skill_id": skill_id,
-                "status": "pass" if has_gate else "fail",
-                "reason_code": "" if has_gate else "hard_gate_missing",
+                "status": "fail",
+                "reason_code": preflight_reason,
                 "runner": "live",
-                "expected_route_surface": entry.get("expected_route_surface"),
-                "prompt_fixture_ref": entry.get("prompt_fixture_ref"),
+                "live_execution_tier": live_tier,
+                "live_execution_mode": "host_behavior",
+                "expected_route_surface": expected_route,
+                "prompt_fixture_ref": prompt_fixture_ref,
+                "orchestration": {
+                    "surface_preflight": "fail",
+                    "host_execution": "blocked",
+                    "grading": "blocked",
+                },
             }
+            write_json(traces_dir / f"{skill_id}.json", trace)
+            per_skill.append(trace)
+            continue
+
+        prompt_text = (project_root / prompt_fixture_ref).read_text(encoding="utf-8")
+        execution = execute_host_prompt(
+            project_root,
+            skill_id=skill_id,
+            prompt_text=prompt_text,
+            host=host,
+            timeout_seconds=timeout_seconds,
+        )
+        live_orchestration_transition("HostExecution", "Grading")
+        transcript_ref = ""
+        if execution.transcript:
+            transcript_name = write_transcript(transcripts_dir, skill_id, execution.transcript)
+            transcript_ref = str((transcripts_dir / transcript_name).relative_to(traces_dir))
+
+        if not execution.ok:
+            trace = {
+                "schema_version": "1.0",
+                "skill_id": skill_id,
+                "status": "fail",
+                "reason_code": execution.reason_code or "host_executor_failed",
+                "runner": "live",
+                "live_execution_tier": live_tier,
+                "live_execution_mode": "host_behavior",
+                "expected_route_surface": expected_route,
+                "prompt_fixture_ref": prompt_fixture_ref,
+                "transcript_ref": transcript_ref,
+                "executor": execution.executor,
+                "orchestration": {
+                    "surface_preflight": "pass",
+                    "host_execution": "fail",
+                    "grading": "blocked",
+                },
+            }
+            write_json(traces_dir / f"{skill_id}.json", trace)
+            per_skill.append(trace)
+            continue
+
+        grading = grade_host_behavior_transcript(
+            execution.transcript,
+            expected_route_surface=expected_route,
+        )
+        live_orchestration_transition("Grading", "LaneExecution")
+        passed = grading.passed
+        trace = {
+            "schema_version": "1.0",
+            "skill_id": skill_id,
+            "status": "pass" if passed else "fail",
+            "reason_code": "" if passed else grading.reason_code,
+            "runner": "live",
+            "live_execution_tier": live_tier,
+            "live_execution_mode": "host_behavior",
+            "expected_route_surface": expected_route,
+            "prompt_fixture_ref": prompt_fixture_ref,
+            "transcript_ref": transcript_ref,
+            "executor": execution.executor,
+            "executor_degraded": execution.degraded,
+            "grading": grading.as_dict(),
+            "orchestration": {
+                "surface_preflight": "pass",
+                "host_execution": "pass",
+                "grading": "pass" if passed else "fail",
+            },
+        }
         write_json(traces_dir / f"{skill_id}.json", trace)
         per_skill.append(trace)
+
+    if surface_only_inflates_behavior_evidence(
+        surface_pass_count=sum(
+            1 for item in per_skill if item.get("live_execution_mode") == "surface_only" and item.get("status") == "pass"
+        ),
+        host_pass_count=sum(
+            1 for item in per_skill if item.get("live_execution_mode") == "host_behavior" and item.get("status") == "pass"
+        ),
+        matrix_total=len(matrix_entries),
+    ):
+        for item in per_skill:
+            if item.get("live_execution_mode") == "surface_only" and item.get("status") == "pass":
+                item["surface_only_behavior_guard"] = True
+
+    aggregate_mode = "mixed" if len(modes_seen) > 1 else (next(iter(modes_seen)) if modes_seen else "")
+    for item in per_skill:
+        item.setdefault("live_execution_mode_aggregate", aggregate_mode)
+
     return per_skill
 
 
@@ -479,9 +738,12 @@ def run_agent_eval(
     split: str = "regression-core",
     runner: str = "replay",
     version: str = AGENT_EVAL_VERSION,
+    live_tier: str | None = None,
 ) -> dict[str, Any]:
     catalog = materialize_agent_eval_catalog(project_root, version=version)
     matrix_entries = _load_matrix_entries(project_root, version=version)
+    admission = load_runner_admission(project_root, version=version)
+    resolved_live_tier = resolve_live_tier(admission, cli_tier=live_tier) if runner == "live" else None
     admitted = is_live_runner_admitted(project_root, version=version)
     if runner == "live" and not admitted:
         blocked_dir = agent_eval_root(project_root) / "runs" / "blocked-live" / "traces"
@@ -491,6 +753,8 @@ def run_agent_eval(
             matrix_entries=matrix_entries,
             admitted=False,
             traces_dir=blocked_dir,
+            live_tier=resolved_live_tier or "local_admitted",
+            admission=admission,
         )
         return {
             "schema_version": "1.0",
@@ -546,26 +810,51 @@ def run_agent_eval(
             matrix_entries=matrix_entries,
             admitted=admitted,
             traces_dir=live_dir,
+            live_tier=resolved_live_tier or "local_admitted",
+            admission=admission,
         )
-        live_failures = [item for item in per_skill if item.get("status") != "pass"]
+        live_failures = [item for item in per_skill if item.get("status") not in {"pass"}]
         failures.extend(live_failures)
 
-    live_pass = sum(1 for item in per_skill if item.get("status") == "pass")
+    host_pass = sum(
+        1
+        for item in per_skill
+        if item.get("live_execution_mode") == "host_behavior" and item.get("status") == "pass"
+    )
+    surface_pass = sum(
+        1
+        for item in per_skill
+        if item.get("live_execution_mode") == "surface_only" and item.get("status") == "pass"
+    )
+    smoke_pass = 1 if any(
+        item.get("live_execution_mode") == "host_behavior"
+        and item.get("skill_id") == str(admission.get("ci_smoke_skill_id") or DEFAULT_CI_SMOKE_SKILL_ID)
+        and item.get("status") == "pass"
+        for item in per_skill
+    ) else 0
     live_blocked = sum(1 for item in per_skill if item.get("status") == "blocked")
+    live_modes = {str(item.get("live_execution_mode") or "") for item in per_skill if item.get("live_execution_mode")}
+    live_execution_mode = "mixed" if len(live_modes) > 1 else (next(iter(live_modes)) if live_modes else None)
+
     metrics = {
         "schema_version": "1.0",
         "run_id": run_id,
         "version": version,
         "split": split,
         "runner": runner,
+        "live_execution_tier": resolved_live_tier,
+        "live_execution_mode": live_execution_mode,
         "case_count": len(traces),
         "failure_count": len(failures),
         "status": "pass" if not failures else "fail",
         "failures": failures,
         "generated_at": now_iso(),
         "live_skill_total": len(per_skill),
-        "live_skill_pass": live_pass,
+        "live_skill_pass": host_pass,
+        "live_surface_pass": surface_pass,
+        "live_smoke_pass": smoke_pass,
         "live_skill_blocked": live_blocked,
+        "behavior_evidence_source": "host_behavior_only",
     }
     write_json(run_dir / "metrics.json", metrics)
     fsm = transition("EvalRequested", "CatalogResolved")
@@ -580,8 +869,13 @@ def run_agent_eval(
         "traces_path": str(traces_dir.relative_to(project_root)),
         "per_skill": per_skill,
         "live_skill_total": len(per_skill),
-        "live_skill_pass": live_pass,
+        "live_skill_pass": host_pass,
+        "live_surface_pass": surface_pass,
+        "live_smoke_pass": smoke_pass,
         "live_skill_blocked": live_blocked,
+        "live_execution_tier": resolved_live_tier,
+        "live_execution_mode": live_execution_mode,
+        "behavior_evidence_source": "host_behavior_only",
         "fsm_transition": {"from": fsm.from_state, "to": fsm.to_state, "ok": fsm.ok},
         "catalog": catalog,
         **_authority_flags(),
@@ -624,9 +918,15 @@ def _compute_dimension_scores(
     source_score = round(min(100.0, route_score + 5.0), 2)
 
     live_total = int(metrics.get("live_skill_total") or 0)
-    live_pass = int(metrics.get("live_skill_pass") or 0)
-    if live_total:
-        behavior_score = round(live_pass / live_total * 100.0, 2)
+    live_host_pass = int(metrics.get("live_skill_pass") or 0)
+    live_tier = str(metrics.get("live_execution_tier") or "")
+    if runner == "live" and live_total:
+        if live_tier in {"local_admitted", "release_hook"}:
+            behavior_score = round(live_host_pass / live_total * 100.0, 2)
+        elif live_tier == "ci_default":
+            behavior_score = round(live_host_pass * 100.0, 2) if live_host_pass else 0.0
+        else:
+            behavior_score = round(live_host_pass / live_total * 100.0, 2)
     elif runner == "simulated":
         behavior_score = 75.0
     else:
@@ -663,8 +963,13 @@ def build_agent_eval_scorecard(
     admitted = is_live_runner_admitted(project_root, version=version)
     live_total = int(metrics.get("live_skill_total") or len(_load_matrix_entries(project_root, version=version)))
     live_pass = int(metrics.get("live_skill_pass") or 0)
+    live_surface_pass = int(metrics.get("live_surface_pass") or 0)
+    live_smoke_pass = int(metrics.get("live_smoke_pass") or 0)
     live_blocked = int(metrics.get("live_skill_blocked") or 0)
+    live_execution_tier = metrics.get("live_execution_tier")
+    live_execution_mode = metrics.get("live_execution_mode")
     live_coverage_blocked = effective_runner == "live" and not admitted
+    ci_tier = str(live_execution_tier or "") == "ci_default"
 
     dimensions = _compute_dimension_scores(
         project_root,
@@ -674,7 +979,13 @@ def build_agent_eval_scorecard(
         catalog=catalog_payload,
     )
     composite = round(sum(dimensions[key] * COMPOSITE_WEIGHTS[key] for key in SCORECARD_DIMENSIONS), 2)
-    degraded = effective_runner == "simulated" or live_coverage_blocked or not admitted
+    degraded = (
+        effective_runner == "simulated"
+        or live_coverage_blocked
+        or not admitted
+        or ci_tier
+        or str(live_execution_mode) == "surface_only"
+    )
     simulated_composite = min(composite, SIMULATED_COMPOSITE_CAP) if effective_runner == "simulated" else composite
     if effective_runner == "simulated":
         composite = min(composite, SIMULATED_COMPOSITE_CAP)
@@ -687,6 +998,8 @@ def build_agent_eval_scorecard(
         "scorecard_id": scorecard_id,
         "version": version,
         "execution_mode": effective_runner,
+        "live_execution_tier": live_execution_tier,
+        "live_execution_mode": live_execution_mode,
         "degraded": degraded,
         "authority": _authority_flags(),
         "dimensions": dimensions,
@@ -696,8 +1009,11 @@ def build_agent_eval_scorecard(
         "formal_qa_overlay": {},
         "live_skill_total": live_total,
         "live_skill_pass": live_pass,
+        "live_surface_pass": live_surface_pass,
+        "live_smoke_pass": live_smoke_pass,
         "live_skill_blocked": live_blocked,
         "live_coverage_blocked": live_coverage_blocked,
+        "behavior_evidence_source": "host_behavior_only",
         "generated_at": now_iso(),
         "acceptance_kit_bridge": {
             "layer": "trace-scorecard",

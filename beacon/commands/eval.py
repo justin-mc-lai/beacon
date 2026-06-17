@@ -55,12 +55,23 @@ def run_cmd(
     version: str = typer.Option("auto", "--version", "-v", help="Docs version"),
     split: str = typer.Option("regression-core", "--split", help="regression-core|optimization|holdout|all"),
     runner: str = typer.Option("replay", "--runner", help="replay|simulated|live"),
+    live_tier: Optional[str] = typer.Option(
+        None,
+        "--live-tier",
+        help="local_admitted|release_hook|ci_default (live runner only)",
+    ),
     json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
 ):
     """Run Agent Eval cases and write runtime traces."""
     root = Path(project_root).resolve() if project_root else Path.cwd()
     resolved_version = resolve_target_version(root, version)
-    payload = run_agent_eval(root, split=split, runner=runner, version=resolved_version)
+    payload = run_agent_eval(
+        root,
+        split=split,
+        runner=runner,
+        version=resolved_version,
+        live_tier=live_tier,
+    )
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         if payload.get("status") == "blocked" or payload.get("status") == "fail":
@@ -74,11 +85,18 @@ def scorecard_cmd(
     project_root: str = typer.Option("", "--project-root", "--project", "-p", help="Project root path"),
     version: str = typer.Option("auto", "--version", "-v", help="Docs version"),
     runner: Optional[str] = typer.Option(None, "--runner", help="replay|simulated|live"),
+    live_tier: Optional[str] = typer.Option(
+        None,
+        "--live-tier",
+        help="local_admitted|release_hook|ci_default (when synthesizing from live run)",
+    ),
     json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
 ):
     """Synthesize Agent Eval dimension scores and composite scorecard."""
     root = Path(project_root).resolve() if project_root else Path.cwd()
     resolved_version = resolve_target_version(root, version)
+    if runner == "live" and live_tier:
+        run_agent_eval(root, split="regression-core", runner="live", version=resolved_version, live_tier=live_tier)
     payload = build_agent_eval_scorecard(root, version=resolved_version, runner=runner)
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))

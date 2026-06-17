@@ -20,6 +20,25 @@ PSEUDO_STATES: Final[tuple[str, ...]] = (
     "release_ready",
     "formal_qa_pass",
     "truth_write",
+    "Pass",
+    "behavior_evidence_quality=100",
+)
+
+LIVE_ORCHESTRATION_STATES: Final[tuple[str, ...]] = (
+    "SurfacePreflight",
+    "HostExecution",
+    "Grading",
+)
+
+LIVE_ORCHESTRATION_TRANSITIONS: Final[dict[str, tuple[str, ...]]] = {
+    "SurfacePreflight": ("HostExecution",),
+    "HostExecution": ("Grading",),
+    "Grading": ("LaneExecution",),
+}
+
+LIVE_ORCHESTRATION_INVALID: Final[tuple[tuple[str, str], ...]] = (
+    ("RunnerAdmission", "Pass"),
+    ("SurfacePreflight", "behavior_evidence_quality=100"),
 )
 
 VALID_TRANSITIONS: Final[dict[str, tuple[str, ...]]] = {
@@ -114,3 +133,43 @@ def live_blocked_recovery_route() -> str:
 
 def catalog_missing_recovery_route() -> str:
     return "beacon eval catalog --materialize"
+
+
+def live_orchestration_transition(from_state: str, to_state: str) -> TransitionResult:
+    if (from_state, to_state) in LIVE_ORCHESTRATION_INVALID:
+        return TransitionResult(
+            ok=False,
+            from_state=from_state,
+            to_state=to_state,
+            reason_code="invalid_transition",
+        )
+    if from_state in PSEUDO_STATES or to_state in PSEUDO_STATES:
+        return TransitionResult(
+            ok=False,
+            from_state=from_state,
+            to_state=to_state,
+            reason_code="invalid_transition",
+        )
+    if from_state not in LIVE_ORCHESTRATION_STATES or to_state not in LIVE_ORCHESTRATION_STATES + ("LaneExecution",):
+        return TransitionResult(
+            ok=False,
+            from_state=from_state,
+            to_state=to_state,
+            reason_code="unknown_state",
+        )
+    allowed = LIVE_ORCHESTRATION_TRANSITIONS.get(from_state, ())
+    if to_state not in allowed:
+        return TransitionResult(
+            ok=False,
+            from_state=from_state,
+            to_state=to_state,
+            reason_code="transition_not_allowed",
+        )
+    return TransitionResult(ok=True, from_state=from_state, to_state=to_state)
+
+
+def surface_only_inflates_behavior_evidence(*, surface_pass_count: int, host_pass_count: int, matrix_total: int) -> bool:
+    """Return True when surface-only passes would incorrectly imply full behavior closure."""
+    if matrix_total <= 0:
+        return False
+    return surface_pass_count >= matrix_total and host_pass_count < matrix_total

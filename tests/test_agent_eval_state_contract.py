@@ -5,9 +5,13 @@ import pytest
 from beacon.utils.agent_eval_state import (
     AGENT_EVAL_STATES,
     INVALID_TRANSITIONS,
+    LIVE_ORCHESTRATION_INVALID,
+    LIVE_ORCHESTRATION_STATES,
     catalog_missing_recovery_route,
     is_valid_transition,
     live_blocked_recovery_route,
+    live_orchestration_transition,
+    surface_only_inflates_behavior_evidence,
     transition,
 )
 
@@ -64,6 +68,34 @@ def test_recovery_live_blocked_route():
 def test_recovery_catalog_missing_route():
     assert "catalog" in catalog_missing_recovery_route()
     assert "--materialize" in catalog_missing_recovery_route()
+
+
+def test_live_orchestration_states_declared():
+    for state in ("SurfacePreflight", "HostExecution", "Grading"):
+        assert state in LIVE_ORCHESTRATION_STATES
+
+
+@pytest.mark.parametrize("from_state,to_state", LIVE_ORCHESTRATION_INVALID)
+def test_live_orchestration_invalid(from_state: str, to_state: str):
+    result = live_orchestration_transition(from_state, to_state)
+    assert result.ok is False
+    assert result.reason_code == "invalid_transition"
+
+
+def test_live_orchestration_happy_path():
+    chain = [
+        ("SurfacePreflight", "HostExecution"),
+        ("HostExecution", "Grading"),
+        ("Grading", "LaneExecution"),
+    ]
+    for from_state, to_state in chain:
+        result = live_orchestration_transition(from_state, to_state)
+        assert result.ok is True, (from_state, to_state, result.reason_code)
+
+
+def test_surface_only_does_not_inflate_behavior_evidence():
+    assert surface_only_inflates_behavior_evidence(surface_pass_count=37, host_pass_count=0, matrix_total=37) is True
+    assert surface_only_inflates_behavior_evidence(surface_pass_count=37, host_pass_count=37, matrix_total=37) is False
 
 
 @pytest.mark.parametrize(
