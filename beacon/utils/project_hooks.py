@@ -483,6 +483,14 @@ def _run_beacon_post_release_local_install(project_root: Path, *, version: str, 
         force=True,
     )
 
+    from beacon.utils.agent_surface import install_global_claude_beacon_skills, verify_global_claude_beacon_skills
+
+    claude_global_install = install_global_claude_beacon_skills(
+        beacon_root=project_root,
+        dry_run=False,
+    )
+    claude_global_verify = verify_global_claude_beacon_skills()
+
     agent_results: dict[str, Any] = {}
     blocked_reasons: list[str] = []
     for agent in ("codex", "claude"):
@@ -509,6 +517,9 @@ def _run_beacon_post_release_local_install(project_root: Path, *, version: str, 
             blocked_reasons.append(f"{agent}_agent_surface_setup_failed")
         if verify.exit_code != 0 or verify.payload.get("status") != "PASS":
             blocked_reasons.append(f"{agent}_agent_surface_verify_failed")
+
+    if claude_global_verify.get("status") != "pass":
+        blocked_reasons.append("claude_global_beacon_subskills_verify_failed")
 
     launcher_setup = run_launcher_setup(bin_dir="", launcher_source="", force=True, dry_run=False)
     if launcher_setup.exit_code != 0 or launcher_setup.payload.get("status") != "PASS":
@@ -551,12 +562,15 @@ def _run_beacon_post_release_local_install(project_root: Path, *, version: str, 
         "reason_codes": blocked_reasons,
         "expected_runtime_version": expected_runtime_version,
         "legacy_skill_cleanup": legacy_cleanup.payload.get("result", {}),
+        "claude_global_skill_install": claude_global_install,
+        "claude_global_skill_verify": claude_global_verify,
         "agent_surfaces": agent_results,
         "launcher_setup": launcher_setup.payload,
         "cli_versions": cli_versions,
         "agent_eval_release_hook": agent_eval_release_hook,
         "commands_confirmed": [
             f"python3 -m beacon.main doctor cleanup-legacy-beacon-skills --project-root . --version {version} --scope all --force --json",
+            f"python3 -c \"from beacon.utils.agent_surface import install_global_claude_beacon_skills, verify_global_claude_beacon_skills; install_global_claude_beacon_skills(beacon_root='{project_root}'); verify_global_claude_beacon_skills()\"",
             f"python3 -m beacon.main doctor setup-agent-surface --project-root . --version {version} --agent codex --force --json",
             f"python3 -m beacon.main doctor verify-agent-surface --project-root . --version {version} --agent codex --strict --json",
             f"python3 -m beacon.main doctor setup-agent-surface --project-root . --version {version} --agent claude --force --json",

@@ -7,6 +7,9 @@ trigger_policy: manual_confirmed
 skill: beacon-project-hooks
 command_template: "beacon hooks run beacon-post-release-local-install --project . --version {version} --feature {feature} --confirm"
 produces_evidence:
+  - legacy_beacon_skill_cleanup
+  - claude_global_beacon_subskills_install
+  - claude_global_beacon_subskills_verify
   - codex_agent_surface_setup
   - codex_agent_surface_verify
   - claude_agent_surface_setup
@@ -24,6 +27,8 @@ failure_route: release
 
 After a Beacon source release is accepted, this project-level hook records the local operator follow-up that keeps the Beacon development environment usable:
 
+- remove legacy Beacon skill backups, aliases, and duplicate global materializations;
+- reinstall Claude Code global flat `~/.claude/skills/beacon-*` symlinks (Claude only discovers first-level skills);
 - materialize Beacon host-visible skills into the local Codex agent surface;
 - materialize Beacon host-visible skills into the local Claude agent surface;
 - verify those local agent surfaces against the released Beacon line;
@@ -68,6 +73,10 @@ The hook runtime has a restricted built-in follow-up for this hook id. It does n
 Expected operator commands for the side-effect follow-up are:
 
 ```bash
+python3 -m beacon.main doctor cleanup-legacy-beacon-skills --project-root . --version <version> --scope all --force --json
+python3 -c "from beacon.utils.agent_surface import install_global_claude_beacon_skills, verify_global_claude_beacon_skills; install_global_claude_beacon_skills(); verify_global_claude_beacon_skills()"
+# equivalent shell installer:
+./scripts/install_claude_skills.sh
 python3 -m beacon.main doctor setup-agent-surface --project-root . --version <version> --agent codex --force --json
 python3 -m beacon.main doctor verify-agent-surface --project-root . --version <version> --agent codex --strict --json
 python3 -m beacon.main doctor setup-agent-surface --project-root . --version <version> --agent claude --force --json
@@ -85,6 +94,9 @@ qi_dev.sh macmini health
 
 The hook evidence must record, or be accompanied by, these release follow-up facts:
 
+- Legacy Beacon skill cleanup completed for project and global host roots (`scope all`, `force`).
+- Claude Code global flat sub-skill install completed (`~/.claude/skills/beacon-*`).
+- Claude Code global flat sub-skill verification status is `pass`.
 - Codex agent surface setup status is `PASS`.
 - Codex agent surface verification status is `PASS`.
 - Claude agent surface setup status is `PASS`.

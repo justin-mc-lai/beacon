@@ -418,3 +418,79 @@ def test_cleanup_legacy_beacon_skills_should_remove_global_old_aliases(tmp_path:
     payload = json.loads(cleanup.stdout)
     assert payload["result"]["removed_count"] >= 1
     assert not alias.exists()
+
+
+def test_cleanup_legacy_beacon_skills_should_preserve_global_claude_flat_subskills(tmp_path: Path, monkeypatch):
+    global_root = tmp_path / "global-claude-skills"
+    global_root.mkdir(parents=True)
+    packaged = tmp_path / "packaged-beacon"
+    packaged.mkdir()
+    canonical = global_root / "beacon"
+    canonical.symlink_to(packaged)
+    flat_subskill = global_root / "beacon-eval-qa"
+    flat_subskill.symlink_to(packaged / "beacon-eval-qa")
+    (packaged / "beacon-eval-qa").mkdir(parents=True)
+    (packaged / "beacon-eval-qa" / "SKILL.md").write_text("---\nname: beacon-eval-qa\n---\n# QA\n", encoding="utf-8")
+    monkeypatch.setattr(
+        "beacon.utils.agent_surface._global_legacy_skill_roots",
+        lambda home=None: {"claude": global_root},
+    )
+
+    cleanup = _invoke(
+        [
+            "doctor",
+            "cleanup-legacy-beacon-skills",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "v1.6.0",
+            "--scope",
+            "global",
+            "--agent",
+            "claude",
+            "--force",
+            "--json",
+        ]
+    )
+    assert cleanup.exit_code == 0, cleanup.stdout
+    assert flat_subskill.exists()
+    assert flat_subskill.is_symlink()
+
+
+def test_cleanup_legacy_beacon_skills_should_remove_global_materialized_duplicates(tmp_path: Path, monkeypatch):
+    global_root = tmp_path / "global-agents-skills"
+    global_root.mkdir(parents=True)
+    packaged = tmp_path / "packaged-beacon"
+    packaged.mkdir()
+    canonical = global_root / "beacon"
+    canonical.symlink_to(packaged)
+    duplicate = global_root / "beacon-eval-qa"
+    duplicate.mkdir()
+    (duplicate / "SKILL.md").write_text("---\nname: beacon-eval-qa\n---\n# Duplicate\n", encoding="utf-8")
+    monkeypatch.setattr(
+        "beacon.utils.agent_surface._global_legacy_skill_roots",
+        lambda home=None: {"agents": global_root},
+    )
+
+    cleanup = _invoke(
+        [
+            "doctor",
+            "cleanup-legacy-beacon-skills",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "v1.6.0",
+            "--scope",
+            "global",
+            "--agent",
+            "codex",
+            "--force",
+            "--json",
+        ]
+    )
+    assert cleanup.exit_code == 0, cleanup.stdout
+    payload = json.loads(cleanup.stdout)
+    kinds = {item["kind"] for item in payload["result"]["removed"]}
+    assert "global_materialized_duplicate" in kinds
+    assert canonical.exists()
+    assert not duplicate.exists()

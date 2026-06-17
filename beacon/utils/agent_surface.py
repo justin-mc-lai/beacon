@@ -788,6 +788,155 @@ def _remove_skill_path(path: Path) -> None:
         path.unlink()
 
 
+def global_claude_skills_root(home: Path | None = None) -> Path:
+    """Return Claude Code global skill discovery root."""
+    return (home or Path.home()).expanduser() / ".claude" / "skills"
+
+
+def install_global_claude_beacon_skills(
+    *,
+    beacon_root: Path | str | None = None,
+    dry_run: bool = False,
+    home: Path | None = None,
+) -> dict[str, Any]:
+    """Install flat ~/.claude/skills/beacon-* symlinks required for Claude Code discovery."""
+    skills_source = packaged_beacon_skill_root()
+    default_repo_root = skills_source.parent.parent.resolve()
+    repo_root = default_repo_root
+    if beacon_root is not None:
+        candidate = Path(beacon_root).resolve()
+        if (candidate / "skills" / "beacon").exists():
+            repo_root = candidate
+    claude_dir = global_claude_skills_root(home)
+    source_skills = list_host_visible_skills(skills_source)
+    installed: list[dict[str, Any]] = []
+    skipped: list[dict[str, Any]] = []
+
+    if not dry_run:
+        claude_dir.mkdir(parents=True, exist_ok=True)
+
+    canonical = claude_dir / "beacon"
+    canonical_action = "unchanged"
+    if not canonical.exists():
+        canonical_action = "planned" if dry_run else "created"
+        if not dry_run:
+            if canonical.is_symlink() or canonical.exists():
+                _remove_skill_path(canonical)
+            canonical.symlink_to(repo_root)
+    elif canonical.is_symlink() and canonical.resolve() != repo_root.resolve():
+        canonical_action = "planned" if dry_run else "updated"
+        if not dry_run:
+            canonical.unlink()
+            canonical.symlink_to(repo_root)
+    installed.append(
+        {
+            "id": "beacon",
+            "path": str(canonical),
+            "target": str(repo_root),
+            "action": canonical_action,
+        }
+    )
+
+    for source_skill in source_skills:
+        skill_id = source_skill.name
+        destination = claude_dir / skill_id
+        source_path = (skills_source / skill_id).resolve()
+        action = "unchanged"
+        if not destination.exists():
+            action = "planned" if dry_run else "created"
+        elif destination.is_symlink() and destination.resolve() != source_path:
+            action = "planned" if dry_run else "updated"
+        elif destination.is_dir() and not destination.is_symlink():
+            skipped.append({"id": skill_id, "path": str(destination), "reason": "unmanaged_existing_directory"})
+            continue
+
+        if action != "unchanged":
+            if not dry_run:
+                if destination.exists() or destination.is_symlink():
+                    _remove_skill_path(destination)
+                destination.symlink_to(source_path)
+        installed.append(
+            {
+                "id": skill_id,
+                "path": str(destination),
+                "target": str(source_path),
+                "action": action,
+            }
+        )
+
+    return {
+        "skills_root": str(claude_dir),
+        "repo_root": str(repo_root),
+        "source_root": str(skills_source),
+        "installed": installed,
+        "skipped": skipped,
+        "installed_count": len(installed),
+        "skipped_count": len(skipped),
+        "dry_run": dry_run,
+    }
+
+
+def verify_global_claude_beacon_skills(*, home: Path | None = None) -> dict[str, Any]:
+    """Verify Claude Code global flat beacon-* symlinks match packaged host-visible skills."""
+    skills_source = packaged_beacon_skill_root()
+    repo_root = skills_source.parent.parent.resolve()
+    claude_dir = global_claude_skills_root(home)
+    expected_ids = {item.name for item in list_host_visible_skills(skills_source)}
+    missing: list[str] = []
+    wrong_target: list[dict[str, str]] = []
+
+    canonical = claude_dir / "beacon"
+    canonical_ok = canonical.is_symlink() and canonical.resolve() == repo_root
+    if not canonical_ok:
+        missing.append("beacon")
+
+    for skill_id in sorted(expected_ids):
+        link = claude_dir / skill_id
+        expected_path = (skills_source / skill_id).resolve()
+        if not link.is_symlink():
+            missing.append(skill_id)
+            continue
+        if link.resolve() != expected_path:
+            wrong_target.append(
+                {
+                    "id": skill_id,
+                    "path": str(link),
+                    "expected": str(expected_path),
+                    "actual": str(link.resolve()),
+                }
+            )
+
+    status = "pass" if canonical_ok and not missing and not wrong_target else "fail"
+    return {
+        "status": status,
+        "ok": status == "pass",
+        "skills_root": str(claude_dir),
+        "expected_count": len(expected_ids) + 1,
+        "missing": missing,
+        "wrong_target": wrong_target,
+    }
+
+
+def _remove_global_canonical_beacon_duplicates(skills_root: Path, *, dry_run: bool) -> list[str]:
+    """Drop materialized beacon-* copies when a global host root already keeps canonical `beacon`."""
+    removed: list[str] = []
+    if not skills_root.exists():
+        return removed
+    canonical = skills_root / "beacon"
+    if not (canonical.is_symlink() or canonical.is_dir()):
+        return removed
+    for child in sorted(skills_root.iterdir(), key=lambda item: item.name):
+        name = child.name
+        if name == "beacon" or not name.startswith("beacon-"):
+            continue
+        if not (child.is_dir() or child.is_symlink()):
+            continue
+        removed.append(str(child))
+        if not dry_run:
+            _remove_skill_path(child)
+    return removed
+
+
 def _global_legacy_skill_roots(home: Path | None = None) -> dict[str, Path]:
     base = (home or Path.home()).expanduser()
     return {
@@ -841,6 +990,14 @@ def cleanup_legacy_beacon_skills(
             removed.append({"target": target_label, "path": str(backup_dir), "kind": "backup"})
             if not dry_run:
                 shutil.rmtree(backup_dir)
+        if target_label.startswith("global:"):
+            host_kind = target_label.split(":", 1)[1]
+            # Claude Code only discovers first-level ~/.claude/skills/beacon-* symlinks.
+            if host_kind != "claude":
+                for duplicate_path in _remove_global_canonical_beacon_duplicates(skills_root, dry_run=dry_run):
+                    removed.append(
+                        {"target": target_label, "path": duplicate_path, "kind": "global_materialized_duplicate"}
+                    )
         if not v160_taxonomy:
             continue
         for child in sorted(skills_root.iterdir(), key=lambda item: item.name):
