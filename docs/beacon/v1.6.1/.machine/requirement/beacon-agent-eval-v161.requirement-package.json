@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-06-15T11:23:40.089218+00:00",
+  "generated_at": "2026-06-17T07:54:20.507000+00:00",
   "feature": "beacon-agent-eval-v161",
   "feature_slug": "beacon-agent-eval-v161",
   "version": "v1.6.1",
@@ -18,19 +18,19 @@
     "evidence": "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/evidence.md"
   },
   "source_hashes": {
-    "truth": "1699eabc50bbfd070f1a8c9c4c86f05b4fb3899deeeae99451ff7054e19a33da",
-    "tests": "32c9982544ef96a4ee771cc2cb4732bb7bf7d3ceb0c21b23537702e455950700",
-    "tasks": "6ee150f83ddf0ced47ad5ff50ea5daa6d633da6582a4812a3a2a4556cbd16626",
-    "evidence": "b50d10b1c1ffe39e38b5f64f3c8db77798aa299daa621d66e08b8ae164e36637"
+    "truth": "d8fcd12ab112d07b28973d9136bcb45fc945c404542ef0572d36bdbd9ca4bd67",
+    "tests": "9531ba1eac0691d2aa587ba1b1b31dedbba92e667eb82ce9247b0759dc3be7be",
+    "tasks": "3bd24e363a9424e0b67fcf57bc65cf37c07115f242127709e344d99e12f55897",
+    "evidence": "6da2ebff16b1fc5ccf64c3d23a8f8c189e3648ffd3f9171c61c59cbe86fb717f"
   },
   "truth_frontmatter": {
     "slug": "beacon-agent-eval-v161",
     "version": "v1.6.1",
     "status": "frozen",
-    "revision_id": "R2",
+    "revision_id": "R3",
     "language": "zh",
-    "change_reason": "用户坚持全 skill live；PB-AE-001 从 post-freeze 拉回 P0 closure",
-    "source_revision_id": "R1",
+    "change_reason": "R3 tiered live closure — planner review option A；local/release admitted 37/37 host behavior；CI surface+grader+1 smoke",
+    "source_revision_id": "R2",
     "canonical_refs": {
       "prd": "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md",
       "user_story": "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md",
@@ -196,17 +196,57 @@
     {
       "ac_id": "AC-AE-031",
       "theme": "live-case-per-skill",
-      "description": "`--runner live --split regression-core` 对 matrix 每条产出 trace 或 per-skill blocked reason"
+      "description": "`--runner live --split regression-core` 对 matrix 每条产出 trace（含 `live_execution_mode`）或 per-skill blocked reason"
     },
     {
-      "ac_id": "AC-AE-032",
-      "theme": "live-skill-pass-rate",
-      "description": "admission 启用时 `live_skill_pass/live_skill_total=100%`；禁 admission 时 matrix 仍完整且 scorecard 报告 blocked 计数"
+      "ac_id": "AC-AE-032a",
+      "theme": "live-host-behavior-local-release",
+      "description": "tier `local_admitted` 或 `release_hook` + admission 启用时：`live_skill_pass/live_skill_total=100%`（host_behavior only）"
+    },
+    {
+      "ac_id": "AC-AE-032b",
+      "theme": "live-ci-tier",
+      "description": "tier `ci_default`：37/37 surface_only pass + grader 单测 pass + 1 smoke host_behavior pass；`degraded=true`"
     },
     {
       "ac_id": "AC-AE-033",
       "theme": "change-r2-intent",
       "description": "truth 含 R2 change_reason + User Intent Snapshot 全 skill live 确认；PB-AE-001 不在 Phased Backlog"
+    },
+    {
+      "ac_id": "AC-AE-034",
+      "theme": "live-tier-contract",
+      "description": "truth §C/§I 声明三 tier + `--live-tier`；admission JSON 含 `live_execution_tiers` + `ci_smoke_skill_id`"
+    },
+    {
+      "ac_id": "AC-AE-035",
+      "theme": "prompt-fixture-materialize",
+      "description": "37 条 `prompt_fixture_ref` materialize 为 `fixtures/agent-eval/v161/live/*.prompt.txt`；缺失 blocked"
+    },
+    {
+      "ac_id": "AC-AE-036",
+      "theme": "live-grader",
+      "description": "grader 模块解析 `ROUTE:` + boundary 负例；pytest 单测覆盖 pass/fail"
+    },
+    {
+      "ac_id": "AC-AE-037",
+      "theme": "release-hook-live-tier",
+      "description": "post-release hook 文档/实现触发 `--live-tier release_hook`；admitted 失败有 reason_code"
+    },
+    {
+      "ac_id": "AC-AE-038",
+      "theme": "behavior-evidence-host-only",
+      "description": "scorecard `behavior_evidence_quality` 仅 host_behavior；surface_only 不得满分 behavior"
+    },
+    {
+      "ac_id": "AC-AE-039",
+      "theme": "live-executor-trace",
+      "description": "host_behavior trace 含 `transcript_ref` 或等效 executor 证据；禁止仅 HARD GATE 字符串匹配"
+    },
+    {
+      "ac_id": "AC-AE-040",
+      "theme": "change-r3-intent",
+      "description": "truth 含 R3 change_reason + Option A tier + deferral ledger DL-LIVE-*"
     }
   ],
   "test_rows": [
@@ -454,16 +494,24 @@
       "ac_id": "AC-AE-031",
       "tc_id": "TC-AE-031",
       "layer": "integration",
-      "command": "`mkdir -p .beacon/qa-tmp && BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 beacon eval run --project-root . --split regression-core --runner live --version v1.6.1 --json >.beacon/qa-tmp/TC-AE-031.json 2>&1 && python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-AE-031.json')); per=d.get('per_skill',[]); assert len(per)>=37\"`",
-      "assertion": "每条 skill 有 trace 或 blocked",
+      "command": "`mkdir -p .beacon/qa-tmp && BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 beacon eval run --project-root . --split regression-core --runner live --live-tier ci_default --version v1.6.1 --json >.beacon/qa-tmp/TC-AE-031.json 2>&1 && python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-AE-031.json')); per=d.get('per_skill',[]); assert len(per)>=37; assert all('live_execution_mode' in x for x in per)\"`",
+      "assertion": "每条 skill trace 含 execution_mode",
       "evidence_path": ""
     },
     {
-      "ac_id": "AC-AE-032",
-      "tc_id": "TC-AE-032",
+      "ac_id": "AC-AE-032a",
+      "tc_id": "TC-AE-032a",
       "layer": "integration",
-      "command": "`mkdir -p .beacon/qa-tmp && BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 beacon eval scorecard --project-root . --version v1.6.1 --runner live --json >.beacon/qa-tmp/TC-AE-032.json 2>&1 && python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-AE-032.json')); t=d.get('live_skill_total',0); assert t>=37; p=d.get('live_skill_pass',0); assert p==t or d.get('live_coverage_blocked') is True\"`",
-      "assertion": "100% live pass 或全量 blocked 报告",
+      "command": "`mkdir -p .beacon/qa-tmp && test -f docs/beacon/v1.6.1/.machine/execution/agent-eval-runner-admission.json && BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 beacon eval run --project-root . --runner live --live-tier local_admitted --version v1.6.1 --json >.beacon/qa-tmp/TC-AE-032a-run.json 2>&1 && BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 beacon eval scorecard --project-root . --runner live --live-tier local_admitted --version v1.6.1 --json >.beacon/qa-tmp/TC-AE-032a-sc.json 2>&1 && python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-AE-032a-sc.json')); t=d.get('live_skill_total',0); p=d.get('live_skill_pass',0); assert t>=37 and (p==t or d.get('live_coverage_blocked') is True)\"`",
+      "assertion": "local tier host 100% 或 blocked",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-032b",
+      "tc_id": "TC-AE-032b",
+      "layer": "integration",
+      "command": "`mkdir -p .beacon/qa-tmp && BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 beacon eval run --project-root . --runner live --live-tier ci_default --version v1.6.1 --json >.beacon/qa-tmp/TC-AE-032b-run.json 2>&1 && BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 beacon eval scorecard --project-root . --runner live --live-tier ci_default --version v1.6.1 --json >.beacon/qa-tmp/TC-AE-032b-sc.json 2>&1 && python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-AE-032b-sc.json')); assert d.get('degraded') is True; assert d.get('live_smoke_pass',0) in (0,1)\"`",
+      "assertion": "CI tier degraded + smoke 计数",
       "evidence_path": ""
     },
     {
@@ -472,6 +520,62 @@
       "layer": "contract",
       "command": "`python3 -c \"import re; t=open('docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md').read(); pb=re.search(r'## Phased Backlog.*?(?=\\\\n## )', t, re.S); section=pb.group(0) if pb else ''; assert '全 skill live' in t and 'change_reason' in t and '|PB-AE-001|' not in section\"`",
       "assertion": "R2 change intent 写入",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-034",
+      "tc_id": "TC-AE-034",
+      "layer": "contract",
+      "command": "`rg -q 'live_execution_tier' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md && rg -q 'ci_default' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md && rg -q 'live-tier' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md`",
+      "assertion": "tier 契约在 truth",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-035",
+      "tc_id": "TC-AE-035",
+      "layer": "contract",
+      "command": "`python3 -c \"import json,glob; m=json.load(open('docs/beacon/v1.6.1/.machine/execution/agent-eval-live-skill-matrix-v161.json')); refs=[e['prompt_fixture_ref'] for e in m['entries']]; assert len(refs)>=37; assert all(__import__('pathlib').Path(r).exists() for r in refs)\"`",
+      "assertion": "37 fixture 文件存在",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-036",
+      "tc_id": "TC-AE-036",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v161_agent_eval_grader.py -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "grader ROUTE/boundary 单测",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-037",
+      "tc_id": "TC-AE-037",
+      "layer": "contract",
+      "command": "`rg -q 'release_hook' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md && rg -q 'post-release' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md`",
+      "assertion": "release hook tier 契约在 truth",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-038",
+      "tc_id": "TC-AE-038",
+      "layer": "contract",
+      "command": "`rg -q 'behavior_evidence_source: host_behavior_only' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md && rg -q 'surface_only' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md`",
+      "assertion": "behavior 仅 host",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-039",
+      "tc_id": "TC-AE-039",
+      "layer": "contract",
+      "command": "`rg -q 'transcript_ref' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md && rg -q 'host_behavior' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md`",
+      "assertion": "host trace 契约声明",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-AE-040",
+      "tc_id": "TC-AE-040",
+      "layer": "contract",
+      "command": "`rg -q 'R3 tiered live closure' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md && rg -q 'DL-LIVE-002' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md && rg -q 'Option A' docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md`",
+      "assertion": "R3 change + deferral",
       "evidence_path": ""
     }
   ],
@@ -627,8 +731,58 @@
       "status": "checked"
     },
     {
-      "id": "TASK-AE-024",
-      "title": "Truth freeze R2（full_parity scope_mode 确认）",
+      "id": "LINE-60",
+      "title": "TASK-AE-R06 `beacon change --reopen-now` R2→R3。reason: tiered live closure",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-61",
+      "title": "TASK-AE-R07 truth/tests/tasks 写入 §I-R3 tier + AC-AE-034..040 + deferral DL-LIVE-*",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-62",
+      "title": "TASK-AE-R08 `beacon change --refreeze-chain` 冻结 R3 + TIG pass。evidence: `sha256:b7d4ed19a7a31629eb448182c258e54572e145ae943051926645553f96406bdb`",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-AE-025",
+      "title": "materialize 37 prompt fixtures + catalog validate（AC-AE-035）",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-AE-026",
+      "title": "`agent_eval_grader.py` + pytest（AC-AE-036）",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-AE-027",
+      "title": "live tier orchestration + `--live-tier` CLI（AC-AE-034/031/032a/032b）",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-AE-028",
+      "title": "host executor adapter + transcript trace（AC-AE-039）",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-AE-029",
+      "title": "scorecard behavior_evidence host-only split（AC-AE-038）",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-AE-030",
+      "title": "post-release hook `--live-tier release_hook`（AC-AE-037）",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-AE-031",
+      "title": "FSM 单测扩展 SurfacePreflight/HostExecution/Grading（AC-AE-017）",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-AE-032",
+      "title": "`beacon qa run` delta + acceptance-kit 更新",
       "status": "checked"
     }
   ],
@@ -652,8 +806,8 @@
       "surface": "feature-package",
       "authority": "requirement_truth",
       "canonical_artifact": "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md",
-      "status": "frozen R2",
-      "route": "implement"
+      "status": "frozen R3",
+      "route": "implement Phase G"
     },
     {
       "surface": "package-tests",
@@ -666,8 +820,22 @@
       "surface": "change-intent",
       "authority": "support_advisory",
       "canonical_artifact": "user utterance：坚持全 skill live",
-      "status": "accepted",
+      "status": "accepted R2",
       "route": "beacon-gen-change"
+    },
+    {
+      "surface": "change-intent-r3",
+      "authority": "support_advisory",
+      "canonical_artifact": "planner review Option A：local/release 37/37 host behavior；CI surface+grader+1 smoke",
+      "status": "**accepted 2026-06-17**",
+      "route": "beacon-gen-change R3"
+    },
+    {
+      "surface": "planner-review-r3",
+      "authority": "support_advisory",
+      "canonical_artifact": ".beacon/state/planner-review/beacon-agent-eval-v161/pln-review-20260617t022016z.json",
+      "status": "indexed",
+      "route": "change R3"
     },
     {
       "surface": "upstream-harness-taxonomy",

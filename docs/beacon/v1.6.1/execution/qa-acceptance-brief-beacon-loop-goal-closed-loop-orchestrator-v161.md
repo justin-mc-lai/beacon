@@ -4,7 +4,7 @@
 - feature: `beacon-loop-goal-closed-loop-orchestrator-v161`
 - revision_id: `R1`
 - verdict: `passed`
-- accepted_at: `2026-06-16T07:38:28.985154+00:00`
+- accepted_at: `2026-06-17T08:40:30.848022+00:00`
 - accepted_by: `qa`
 
 ## Summary

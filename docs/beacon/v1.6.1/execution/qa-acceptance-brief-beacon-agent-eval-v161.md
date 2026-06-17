@@ -2,9 +2,9 @@
 
 - version: `v1.6.1`
 - feature: `beacon-agent-eval-v161`
-- revision_id: `R2`
+- revision_id: `R3`
 - verdict: `passed`
-- accepted_at: `2026-06-16T11:39:24.974268+00:00`
+- accepted_at: `2026-06-17T08:40:07.645716+00:00`
 - accepted_by: `qa`
 
 ## Summary
@@ -32,5 +32,5 @@
 ## Verdict Summary
 - required_ac_count: `0`
 - required_test_count: `0`
-- story_status: `verified`
-- revision_delivery_status: `verified`
+- story_status: `accepted`
+- revision_delivery_status: `accepted`

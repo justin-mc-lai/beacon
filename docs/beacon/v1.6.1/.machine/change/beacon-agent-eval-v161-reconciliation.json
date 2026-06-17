@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0",
+  "artifact": "implementation_first_reconciliation",
+  "feature": "beacon-agent-eval-v161",
+  "feature_slug": "beacon-agent-eval-v161",
+  "version": "v1.6.1",
+  "status": "required",
+  "reason_code": "implementation_first_reconciliation_required",
+  "recovery_kind": "implementation_first_reconciliation",
+  "delivery_mode": "recovery_not_normal_delivery",
+  "drift_detected_at": "2026-06-17T06:42:25.618133+00:00",
+  "detected_revision_id": "R3",
+  "source_revision_id": "R2",
+  "implementation_artifacts": [
+    {
+      "revision_id": "R2",
+      "run_id": "run-20260615T100826Z-b337",
+      "recorded_at": "2026-06-15T10:08:26.016510+00:00",
+      "implemented_item_ids": [
+        "AC-001",
+        "TEST-001",
+        "TASK-001"
+      ],
+      "changed_files": [
+        "beacon/utils/agent_eval_kit.py",
+        "beacon/commands/eval.py",
+        "beacon/utils/agent_eval_state.py",
+        "beacon/commands/doctor.py"
+      ]
+    }
+  ],
+  "missing_truth_surfaces": [
+    "prd",
+    "user-story",
+    "qa/test-cases"
+  ],
+  "recovery_reason": "implementation evidence exists on earlier revision lineage and must be reconciled through beacon-change without erasing provenance",
+  "truth_surfaces_backfilled": [
+    "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md",
+    "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md",
+    "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/tests.md"
+  ],
+  "re_freeze_status": "completed",
+  "reprojection_targets": [
+    "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/truth.md",
+    "docs/beacon/v1.6.1/features/beacon-agent-eval-v161/tests.md",
+    "qa_proof",
+    "release_facing_proof"
+  ],
+  "provenance": {
+    "post_hoc_writeback_occurred": true,
+    "preserve_drift_history": true,
+    "current_revision_id": "R3",
+    "current_delivery_status": "accepted"
+  },
+  "change_route": {
+    "action": "beacon-change",
+    "command": "beacon change \"beacon-agent-eval-v161\" --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.1 --reason \"implementation-first-reconciliation\""
+  }
+}

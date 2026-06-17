@@ -1,13 +1,13 @@
 # Beacon Implementation Plan
 
-- plan_id: `plan-beacon-agent-eval-v161-r2`
+- plan_id: `plan-beacon-agent-eval-v161-r3`
 - feature: `beacon-agent-eval-v161`
 - version: `v1.6.1`
-- revision_id: `R2`
-- baseline_hash: `sha256:72b97d62c01867b78abe0bbdd3ca59acaf23d831afe76f294ceb286a837e482e`
-- delivery_baseline_id: `impl-delivery-baseline-v1.6.1-beacon-agent-eval-v161-R2`
-- delivery_baseline_source_hash: `sha256:7a732e6b4bb174b584039534030d5ccf4d4dee6562ecbd7b072ad0b77382b886`
-- plan_hash: `sha256:7b669fcda34fa2e2e8f2ffa2eb986e730a310ea5c16aa4863a5af590a8893851`
+- revision_id: `R3`
+- baseline_hash: `sha256:b7d4ed19a7a31629eb448182c258e54572e145ae943051926645553f96406bdb`
+- delivery_baseline_id: `impl-delivery-baseline-v1.6.1-beacon-agent-eval-v161-R3`
+- delivery_baseline_source_hash: `sha256:3b93d943eb68285421eedc632c44ef90cdae7a7e9077db30623223485fb23f32`
+- plan_hash: `sha256:665e81dc2ff0647c273f0372cf099b49894ed207a1536be9c1efbf6aacc88259`
 - status: `completed`
 
 ## Source Refs
@@ -68,8 +68,8 @@
 - section_count: `0`
 
 ## Revision Delta
-- revision_id: `R2`
-- source_revision_id: `R1`
+- revision_id: `R3`
+- source_revision_id: `R2`
 - cleanup_required: `False`
 - revision_delta_ref: `docs/beacon/v1.6.1/.machine/execution/revision-delta-beacon-agent-eval-v161.json`
 

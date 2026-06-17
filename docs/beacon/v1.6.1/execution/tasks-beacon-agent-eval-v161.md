@@ -2,8 +2,8 @@
 
 - feature: `beacon-agent-eval-v161`
 - version: `v1.6.1`
-- plan_id: `plan-beacon-agent-eval-v161-r2`
-- revision_id: `R2`
+- plan_id: `plan-beacon-agent-eval-v161-r3`
+- revision_id: `R3`
 - progress: `1/1`
 - status: `completed`
 - next_task: ``

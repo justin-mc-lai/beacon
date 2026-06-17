@@ -13,7 +13,7 @@
   "truth_authority": false,
   "lifecycle_stage": false,
   "release_publish_action": false,
-  "feature_count": 2,
+  "feature_count": 3,
   "features": [
     {
       "feature": "beacon-agent-eval-v161",
@@ -26,23 +26,39 @@
       "feature_slug": "beacon-harness-program-plan-v161",
       "summary": "Maintains release-facing version aggregate projection guards so QA accepted features are included in version change scope before release check.",
       "status": "completed"
+    },
+    {
+      "feature": "beacon-loop-goal-closed-loop-orchestrator-v161",
+      "feature_slug": "beacon-loop-goal-closed-loop-orchestrator-v161",
+      "summary": "Maintains release-facing version aggregate projection guards so QA accepted features are included in version change scope before release check.",
+      "status": "completed"
     }
   ],
   "implementation_order": {
     "status": "analyzed",
-    "feature_count": 2,
+    "feature_count": 3,
     "ordered_feature_slugs": [
-      "beacon-agent-eval-v161",
-      "beacon-harness-program-plan-v161"
+      "beacon-loop-goal-closed-loop-orchestrator-v161",
+      "beacon-harness-program-plan-v161",
+      "beacon-agent-eval-v161"
     ],
     "waves": [
       {
         "wave": 1,
-        "parallelizable": false,
+        "parallelizable": true,
         "features": [
           {
-            "feature": "beacon-agent-eval-v161",
-            "feature_slug": "beacon-agent-eval-v161",
+            "feature": "beacon-loop-goal-closed-loop-orchestrator-v161",
+            "feature_slug": "beacon-loop-goal-closed-loop-orchestrator-v161",
+            "depends_on_features": [],
+            "direct_delivery_services": [],
+            "writable_services": [],
+            "parallelizable": true,
+            "reason_code": "parallel_no_conflict"
+          },
+          {
+            "feature": "beacon-harness-program-plan-v161",
+            "feature_slug": "beacon-harness-program-plan-v161",
             "depends_on_features": [],
             "direct_delivery_services": [
               "."
@@ -60,10 +76,10 @@
         "parallelizable": false,
         "features": [
           {
-            "feature": "beacon-harness-program-plan-v161",
-            "feature_slug": "beacon-harness-program-plan-v161",
+            "feature": "beacon-agent-eval-v161",
+            "feature_slug": "beacon-agent-eval-v161",
             "depends_on_features": [
-              "beacon-agent-eval-v161"
+              "beacon-harness-program-plan-v161"
             ],
             "direct_delivery_services": [
               "."
@@ -84,17 +100,23 @@
     "[beacon-agent-eval-v161] Repair-only projection rebuild path for release preflight artifacts",
     "[beacon-harness-program-plan-v161] Feature-level release projection input for QA accepted current feature",
     "[beacon-harness-program-plan-v161] Version aggregate projection inclusion guard and repair metadata",
-    "[beacon-harness-program-plan-v161] Repair-only projection rebuild path for release preflight artifacts"
+    "[beacon-harness-program-plan-v161] Repair-only projection rebuild path for release preflight artifacts",
+    "[beacon-loop-goal-closed-loop-orchestrator-v161] Feature-level release projection input for QA accepted current feature",
+    "[beacon-loop-goal-closed-loop-orchestrator-v161] Version aggregate projection inclusion guard and repair metadata",
+    "[beacon-loop-goal-closed-loop-orchestrator-v161] Repair-only projection rebuild path for release preflight artifacts"
   ],
   "removed": [
     "[beacon-agent-eval-v161] Manual-only version aggregate projection repair before release check",
-    "[beacon-harness-program-plan-v161] Manual-only version aggregate projection repair before release check"
+    "[beacon-harness-program-plan-v161] Manual-only version aggregate projection repair before release check",
+    "[beacon-loop-goal-closed-loop-orchestrator-v161] Manual-only version aggregate projection repair before release check"
   ],
   "fixed": [
     "[beacon-agent-eval-v161] Release check can route missing current feature projection to an actionable repair path",
     "[beacon-agent-eval-v161] Version aggregate projection remains a read model instead of requirement truth",
     "[beacon-harness-program-plan-v161] Release check can route missing current feature projection to an actionable repair path",
-    "[beacon-harness-program-plan-v161] Version aggregate projection remains a read model instead of requirement truth"
+    "[beacon-harness-program-plan-v161] Version aggregate projection remains a read model instead of requirement truth",
+    "[beacon-loop-goal-closed-loop-orchestrator-v161] Release check can route missing current feature projection to an actionable repair path",
+    "[beacon-loop-goal-closed-loop-orchestrator-v161] Version aggregate projection remains a read model instead of requirement truth"
   ],
   "traceability_refs": [
     "docs/beacon/v1.6.1/change/beacon-agent-eval-v161.md",
@@ -110,7 +132,14 @@
     "docs/beacon/v1.6.1/qa/test-cases/beacon-harness-program-plan-v161.md",
     "docs/beacon/v1.6.1/.machine/execution/beacon-harness-program-plan-v161.revision.json",
     "docs/beacon/v1.6.1/.machine/execution/qa-acceptance-beacon-harness-program-plan-v161.json",
-    "docs/beacon/v1.6.1/.machine/change/beacon-harness-program-plan-v161.json"
+    "docs/beacon/v1.6.1/.machine/change/beacon-harness-program-plan-v161.json",
+    "docs/beacon/v1.6.1/change/beacon-loop-goal-closed-loop-orchestrator-v161.md",
+    "docs/beacon/v1.6.1/prd/beacon-loop-goal-closed-loop-orchestrator-v161.md",
+    "docs/beacon/v1.6.1/user-story/beacon-loop-goal-closed-loop-orchestrator-v161.md",
+    "docs/beacon/v1.6.1/qa/test-cases/beacon-loop-goal-closed-loop-orchestrator-v161.md",
+    "docs/beacon/v1.6.1/.machine/execution/beacon-loop-goal-closed-loop-orchestrator-v161.revision.json",
+    "docs/beacon/v1.6.1/.machine/execution/qa-acceptance-beacon-loop-goal-closed-loop-orchestrator-v161.json",
+    "docs/beacon/v1.6.1/.machine/change/beacon-loop-goal-closed-loop-orchestrator-v161.json"
   ],
-  "generated_at": "2026-06-16 15:28"
+  "generated_at": "2026-06-17 17:20"
 }

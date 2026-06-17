@@ -2,8 +2,16 @@
   "schema_version": "1.0",
   "admitted": true,
   "host": "cursor",
+  "executor": "cursor_stub",
   "trace_format": "agent-eval-live-v1",
   "timeout_seconds": 300,
   "cost_guardrail_usd": 5.0,
-  "notes": "Live runner admission for beacon-agent-eval-v161 QA and local eval. TC-AE-008 uses BEACON_TC_ID isolation."
+  "default_live_tier": "local_admitted",
+  "live_execution_tiers": [
+    "local_admitted",
+    "release_hook",
+    "ci_default"
+  ],
+  "ci_smoke_skill_id": "beacon-eval-agent",
+  "notes": "Live runner admission for beacon-agent-eval-v161 QA and local eval. TC-AE-008 uses BEACON_TC_ID isolation. Set BEACON_AGENT_EVAL_EXECUTOR=mock for deterministic CI grader tests."
 }

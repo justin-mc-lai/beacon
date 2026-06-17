@@ -5,444 +5,80 @@
   "runtime_line": "v1.6.1",
   "runtime_release_line": "v1.6.1",
   "docs_line": "v1.6.1",
-  "feature": "beacon-harness-program-plan-v161",
-  "feature_slug": "beacon-harness-program-plan-v161",
+  "feature": "beacon-loop-goal-closed-loop-orchestrator-v161",
+  "feature_slug": "beacon-loop-goal-closed-loop-orchestrator-v161",
   "feature_line_status": "current_runtime_release",
   "truth_refs": {
-    "truth": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
-    "tests": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-    "tasks": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tasks.md",
-    "evidence": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/evidence.md",
-    "ac_matrix": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-    "story_state": "docs/beacon/v1.6.1/.machine/user-story/beacon-harness-program-plan-v161.json"
+    "truth": "docs/beacon/v1.6.1/features/beacon-loop-goal-closed-loop-orchestrator-v161/truth.md",
+    "tests": "docs/beacon/v1.6.1/features/beacon-loop-goal-closed-loop-orchestrator-v161/tests.md",
+    "tasks": "docs/beacon/v1.6.1/features/beacon-loop-goal-closed-loop-orchestrator-v161/tasks.md",
+    "evidence": "docs/beacon/v1.6.1/features/beacon-loop-goal-closed-loop-orchestrator-v161/evidence.md",
+    "ac_matrix": "docs/beacon/v1.6.1/features/beacon-loop-goal-closed-loop-orchestrator-v161/tests.md",
+    "story_state": "docs/beacon/v1.6.1/.machine/user-story/beacon-loop-goal-closed-loop-orchestrator-v161.json"
   },
   "source_hashes": {
-    "truth": "sha256:ee1d72bc76c07118270f6c8ec6c398b792db3b7841db5521e4aa8c6de0cbd0ee",
-    "tests": "sha256:cc2991f2d0686f16f7074abd3a20e6b7b1e00a9b9998775c64862494408c8232",
-    "tasks": "sha256:c3f2910099200f59f9440d2a2eb2976297323a3605d9286e49cbcdceeb1b3a6c",
-    "evidence": "sha256:e182072126cdedddad282f43549065b0c2ae18e0d16bfd3bbafbcc09228a315d",
-    "ac_matrix": "sha256:cc2991f2d0686f16f7074abd3a20e6b7b1e00a9b9998775c64862494408c8232",
-    "story_state": "sha256:809bd63b51f98f48f7b0d6520651355135fbfe834a3ca8ea566a132278d2627e"
+    "truth": "sha256:775691b4fb80c9557344f1842a317c0991ce07ef86aab5e8eb091b54b9b3e4da",
+    "tests": "sha256:59fbc694a759ed1476da8d3419930b7f93acba360a9967b2d4b330b47f340a72",
+    "tasks": "sha256:3f7a1c3f1b1b324731d964ceca200567957dcb08e1937c026cb78689ccd25fc2",
+    "evidence": "sha256:2dfd0e9e88e11d1b8c6e6dd2e4014c372cc8b892891ea1e06c4b37e5d981aaf2",
+    "ac_matrix": "sha256:59fbc694a759ed1476da8d3419930b7f93acba360a9967b2d4b330b47f340a72",
+    "story_state": "sha256:18fe9828fb18cbb7be7d3179dc388bc0d0ef597b60bb5db5e8d51c87ebd0c73a"
   },
   "lanes": {
     "feature_release_facing": [
       {
-        "tc_id": "TC-PBP-001",
-        "ac_id": "AC-PBP-001",
+        "tc_id": "TC-LOOP-072",
+        "ac_id": "AC-072",
         "ac_theme": "",
         "lane": "feature_release_facing",
         "layer": "contract",
-        "command": "python3 -m pytest tests/test_v161_program_plan_release_gate.py::test_program_plan_contract_defines_graph_and_fsm -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "contract 定义 program 目录与 P0–P6",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-001/__RUN_ID__.json",
+        "command": "rg -q 'AC-072' docs/beacon/v1.6.1/features/beacon-loop-goal-closed-loop-orchestrator-v161/truth.md && rg -q 'beacon-loop goal' docs/beacon/v1.6.1/features/beacon-loop-goal-closed-loop-orchestrator-v161/truth.md && python3 -m pytest tests/test_v161_loop_goal_closed_loop_orchestrator.py::test_truth_ac072_unified_goal_and_scope -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "truth 定义统一 goal + 湖/海；delegate 源码存在。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator-v161/tc-loop-072/__RUN_ID__.json",
         "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
+        "source": "feature-package:docs/beacon/v1.6.1/features/beacon-loop-goal-closed-loop-orchestrator-v161/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
       },
       {
-        "tc_id": "TC-PBP-002",
-        "ac_id": "AC-PBP-002",
+        "tc_id": "TC-LOOP-073",
+        "ac_id": "AC-073",
         "ac_theme": "",
         "lane": "feature_release_facing",
-        "layer": "docs",
-        "command": "rg -q 'beacon-harness-program-plan-v161' docs/beacon/v1.6.1/SUMMARY.md",
-        "assertion": "exit 0；SUMMARY 声明 primary feature",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-002/__RUN_ID__.json",
+        "layer": "behavior",
+        "command": "python3 -m pytest tests/test_v161_loop_goal_closed_loop_orchestrator.py::test_program_outer_fsm_vitest_gate -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "`--mode program` P0–P6 + P4 gate（vitest program-outer-fsm）。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator-v161/tc-loop-073/__RUN_ID__.json",
         "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
+        "source": "feature-package:docs/beacon/v1.6.1/features/beacon-loop-goal-closed-loop-orchestrator-v161/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
       },
       {
-        "tc_id": "TC-PBP-003",
-        "ac_id": "AC-PBP-003",
-        "ac_theme": "",
-        "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "rg -q '## user_decision' docs/beacon/v1.6.1/research/beacon-harness-program-plan-v161.md && rg -q '^promoted$' docs/beacon/v1.6.1/research/beacon-harness-program-plan-v161.md && rg -q 'promotion_ref' docs/beacon/v1.6.1/research/beacon-harness-program-plan-v161.md",
-        "assertion": "exit 0",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-003/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-PBP-004",
-        "ac_id": "AC-PBP-004",
+        "tc_id": "TC-LOOP-074",
+        "ac_id": "AC-074",
         "ac_theme": "",
         "lane": "feature_release_facing",
         "layer": "contract",
-        "command": "mkdir -p .beacon/qa-tmp && beacon program validate-graph --help >.beacon/qa-tmp/TC-PBP-004.txt 2>&1 && rg -q 'validate-graph' .beacon/qa-tmp/TC-PBP-004.txt",
-        "assertion": "exit 0 或 BLOCKED:Phase-B（CLI 未实现）",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-004/__RUN_ID__.json",
+        "command": "rg -q 'eval-matrix' docs/beacon/v1.6.1/features/beacon-loop-goal-closed-loop-orchestrator-v161/truth.md && rg -q 'formal_verdict_authority=false' docs/beacon/v1.6.1/features/beacon-loop-goal-closed-loop-orchestrator-v161/truth.md && python3 -m pytest tests/test_v161_loop_goal_closed_loop_orchestrator.py::test_truth_ac074_eval_supplement_contract -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "eval supplement 契约 + runtime 模块存在。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator-v161/tc-loop-074/__RUN_ID__.json",
         "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
+        "source": "feature-package:docs/beacon/v1.6.1/features/beacon-loop-goal-closed-loop-orchestrator-v161/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
       },
       {
-        "tc_id": "TC-PBP-005",
-        "ac_id": "AC-PBP-005",
+        "tc_id": "TC-LOOP-075",
+        "ac_id": "AC-075",
         "ac_theme": "",
         "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "mkdir -p .beacon/qa-tmp && beacon program guard-sea-single-lake --help >.beacon/qa-tmp/TC-PBP-005.txt 2>&1 && rg -q 'guard-sea' .beacon/qa-tmp/TC-PBP-005.txt",
-        "assertion": "exit 0 或 BLOCKED:Phase-B",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-005/__RUN_ID__.json",
+        "layer": "e2e",
+        "command": "python3 -m pytest tests/test_v161_loop_goal_closed_loop_orchestrator.py::test_e2e_program_sea_vitest_gate -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "海级 program E2E opt-in fixture（vitest e2e-program-sea）。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator-v161/tc-loop-075/__RUN_ID__.json",
         "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-PBP-006",
-        "ac_id": "AC-PBP-006",
-        "ac_theme": "",
-        "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "test -f docs/beacon/v1.6.1/execution/program-plan-contract.md && rg -q 'truth-promotion' docs/beacon/v1.6.1/execution/program-plan-contract.md",
-        "assertion": "exit 0；contract 要求 per-lake 七轮证据",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-006/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-PBP-007",
-        "ac_id": "AC-PBP-007",
-        "ac_theme": "",
-        "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "mkdir -p .beacon/qa-tmp && beacon program freeze --help >.beacon/qa-tmp/TC-PBP-007.txt 2>&1 && rg -q 'program' .beacon/qa-tmp/TC-PBP-007.txt",
-        "assertion": "exit 0 或 BLOCKED:Phase-C",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-007/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-PBP-008",
-        "ac_id": "AC-PBP-008",
-        "ac_theme": "",
-        "lane": "feature_release_facing",
-        "layer": "unit",
-        "command": "python3 -m pytest tests/test_program_plan_state_contract.py tests/test_program_plan_cli.py tests/test_v161_program_plan_release_gate.py -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "pytest 通过；含 truth-integrity 与 program plan 释放门禁",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-008/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-PBP-009",
-        "ac_id": "AC-PBP-009",
-        "ac_theme": "",
-        "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "mkdir -p .beacon/qa-tmp && beacon skill package verify-closure --feature beacon-harness-program-plan-v161 --project-root . --version v1.6.1 --json >.beacon/qa-tmp/TC-PBP-009.json && python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-PBP-009.json')); raise SystemExit(0 if d.get('closure_allowed') else 1)\"",
-        "assertion": "closure_allowed=true",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-009/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-PBP-010",
-        "ac_id": "AC-PBP-010",
-        "ac_theme": "",
-        "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "rg -q 'must not write.*features/\\*/truth' docs/beacon/v1.6.1/execution/boundaries.md && rg -q 'HARD GATE' .cursor/skills/beacon-pln-brainstorm/SKILL.md",
-        "assertion": "planner 边界文档与 skill gate 存在",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-010/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-PBP-011",
-        "ac_id": "AC-PBP-011",
-        "ac_theme": "",
-        "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "rg -q 'full_parity' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
-        "assertion": "truth 声明 full_parity 默认",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-011/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-PBP-012",
-        "ac_id": "AC-PBP-012",
-        "ac_theme": "",
-        "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "rg -q 'program-parity-matrix' docs/beacon/v1.6.1/execution/program-plan-contract.md",
-        "assertion": "parity matrix 在 contract 中",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-012/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-PBP-013",
-        "ac_id": "AC-PBP-013",
-        "ac_theme": "",
-        "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "mkdir -p .beacon/qa-tmp && beacon change --help >.beacon/qa-tmp/TC-PBP-013.txt 2>&1 && rg -q 'change' .beacon/qa-tmp/TC-PBP-013.txt",
-        "assertion": "exit 0",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-013/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-PBP-014",
-        "ac_id": "AC-PBP-014",
-        "ac_theme": "",
-        "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "rg -q 'promotion_diff' docs/beacon/v1.6.1/execution/program-plan-contract.md",
-        "assertion": "change 路径要求 promotion_diff",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-014/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-PBP-015",
-        "ac_id": "AC-PBP-015",
-        "ac_theme": "",
-        "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "mkdir -p .beacon/qa-tmp && beacon change --help >.beacon/qa-tmp/TC-PBP-015.txt 2>&1 && rg -q 'refreeze-chain' .beacon/qa-tmp/TC-PBP-015.txt",
-        "assertion": "exit 0；change 暴露受治理 refreeze-chain",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-015/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-PBP-016",
-        "ac_id": "AC-PBP-016",
-        "ac_theme": "",
-        "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "rg -q 'program-run-state' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md && mkdir -p .beacon/qa-tmp && node packages/beacon-run/dist/cli.mjs run --help >.beacon/qa-tmp/TC-PBP-016-R3.txt 2>&1 && rg -i 'program' .beacon/qa-tmp/TC-PBP-016-R3.txt",
-        "assertion": "truth 要求真实 P0–P6 FSM；runtime **BLOCKED:Phase-G** 直至 `--mode program` 实现。",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-016/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-PBP-017",
-        "ac_id": "AC-PBP-017",
-        "ac_theme": "",
-        "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "test -f skills/beacon/beacon-pln-program/SKILL.md && rg -q 'beacon-pln-program' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
-        "assertion": "umbrella skill 存在且 truth 引用",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-017/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-PBP-018",
-        "ac_id": "AC-PBP-018",
-        "ac_theme": "",
-        "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "rg -q 'machine-readable' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
-        "assertion": "AC-PBP-018 maker-checker 写入 truth",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-018/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-PBP-019",
-        "ac_id": "AC-PBP-019",
-        "ac_theme": "",
-        "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "rg -q 'deferral-sovereignty' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md && rg -q 'accepted' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
-        "assertion": "exit 0；deferral 表均为 accepted",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-019/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-PBP-020",
-        "ac_id": "AC-PBP-020",
-        "ac_theme": "",
-        "lane": "feature_release_facing",
-        "layer": "docs",
-        "command": "rg 'plan -> truth -> generate -> evaluate -> release' docs/beacon/v1.6.1/SUMMARY.md docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
-        "assertion": "未新增主 lifecycle stage",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-020/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-PBP-021",
-        "ac_id": "AC-PBP-021",
-        "ac_theme": "",
-        "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "rg -q 'ProgramPlanState' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
-        "assertion": "State Model 在 truth",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-021/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-PBP-022",
-        "ac_id": "AC-PBP-022",
-        "ac_theme": "",
-        "lane": "feature_release_facing",
-        "layer": "unit",
-        "command": "python3 -m pytest tests/test_program_plan_state_contract.py tests/test_program_plan_cli.py -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "pytest 覆盖非法转移与 program CLI",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-022/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-PBP-023",
-        "ac_id": "AC-PBP-023",
-        "ac_theme": "",
-        "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "test -f skills/beacon/beacon-pln-program/SKILL.md && test -f skills/beacon/beacon-pln-program-auto/SKILL.md && test -f skills/beacon/beacon-pln-program-interactive/SKILL.md && rg -q 'HARD GATE' skills/beacon/beacon-pln-program/SKILL.md && rg -q 'delegation' skills/beacon/beacon-pln-program-auto/SKILL.md",
-        "assertion": "三 skill 存在且 auto 声明委派",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-023/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-PBP-024",
-        "ac_id": "AC-PBP-024",
-        "ac_theme": "",
-        "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "mkdir -p .beacon/qa-tmp && beacon plan start --help >.beacon/qa-tmp/TC-PBP-024.txt 2>&1 && rg -q 'mode' .beacon/qa-tmp/TC-PBP-024.txt",
-        "assertion": "exit 0 或 BLOCKED:Phase-E",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-024/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-PBP-025",
-        "ac_id": "AC-PBP-025",
-        "ac_theme": "",
-        "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "rg -q 'plan_mode' docs/beacon/v1.6.1/execution/program-plan-contract.md && rg -q 'auto-detect' docs/beacon/v1.6.1/execution/program-plan-contract.md",
-        "assertion": "contract 含分类规则",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-025/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-PBP-026",
-        "ac_id": "AC-PBP-026",
-        "ac_theme": "",
-        "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "rg -q 'Delegate' skills/beacon/beacon-pln-program/SKILL.md && rg -q 'Does not write features' skills/beacon/beacon-pln-program-auto/SKILL.md",
-        "assertion": "umbrella 委派 + 子 skill 边界",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-026/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-PBP-027",
-        "ac_id": "AC-PBP-027",
-        "ac_theme": "",
-        "lane": "feature_release_facing",
-        "layer": "docs",
-        "command": "test -f docs/beacon/v1.6.1/execution/long-task-operator-guide.md && rg -q 'beacon-loop goal' docs/beacon/v1.6.1/execution/long-task-operator-guide.md && rg -q 'scaffold' docs/beacon/v1.6.1/execution/long-task-operator-guide.md",
-        "assertion": "operator guide：长任务主入口 `goal`；`plan start` 仅 scaffold。",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-027/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-PBP-028",
-        "ac_id": "AC-PBP-028",
-        "ac_theme": "",
-        "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "rg -q 'beacon-pln-brainstorm' skills/beacon/beacon-pln-program-interactive/SKILL.md && rg -q 'beacon-pln-source' skills/beacon/beacon-pln-program-auto/SKILL.md",
-        "assertion": "interactive/auto 桥接既有 planner skill",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-028/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-PBP-029",
-        "ac_id": "AC-PBP-029",
-        "ac_theme": "",
-        "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "rg -q 'AC-PBP-029' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md && rg -q 'program-run-state' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
-        "assertion": "goal/plan 共享 resume 契约在 truth；runtime **BLOCKED:Phase-G**。",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-029/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-PBP-030",
-        "ac_id": "AC-PBP-030",
-        "ac_theme": "",
-        "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "rg -q 'beacon-loop-goal-closed-loop-orchestrator-v161' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md && rg -q 'truth_freeze_gate' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
-        "assertion": "loop v161 R1 对接 + eval 不 gate qa/release。",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-030/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
+        "source": "feature-package:docs/beacon/v1.6.1/features/beacon-loop-goal-closed-loop-orchestrator-v161/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
       }
@@ -454,7 +90,7 @@
     "browser_runtime_admission": []
   },
   "lane_counts": {
-    "feature_release_facing": 30,
+    "feature_release_facing": 4,
     "current_runtime_contract": 0,
     "generated_surface_sync": 0,
     "compatibility_contract": 0,
@@ -471,516 +107,74 @@
   ],
   "test_refs": [
     {
-      "tc_id": "TC-PBP-001",
-      "ac_id": "AC-PBP-001",
+      "tc_id": "TC-LOOP-072",
+      "ac_id": "AC-072",
       "ac_theme": "",
       "lane": "feature_release_facing",
       "layer": "contract",
-      "command": "python3 -m pytest tests/test_v161_program_plan_release_gate.py::test_program_plan_contract_defines_graph_and_fsm -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "contract 定义 program 目录与 P0–P6",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-001/__RUN_ID__.json",
+      "command": "rg -q 'AC-072' docs/beacon/v1.6.1/features/beacon-loop-goal-closed-loop-orchestrator-v161/truth.md && rg -q 'beacon-loop goal' docs/beacon/v1.6.1/features/beacon-loop-goal-closed-loop-orchestrator-v161/truth.md && python3 -m pytest tests/test_v161_loop_goal_closed_loop_orchestrator.py::test_truth_ac072_unified_goal_and_scope -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "truth 定义统一 goal + 湖/海；delegate 源码存在。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator-v161/tc-loop-072/__RUN_ID__.json",
       "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
+      "source": "feature-package:docs/beacon/v1.6.1/features/beacon-loop-goal-closed-loop-orchestrator-v161/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
     },
     {
-      "tc_id": "TC-PBP-002",
-      "ac_id": "AC-PBP-002",
+      "tc_id": "TC-LOOP-073",
+      "ac_id": "AC-073",
       "ac_theme": "",
       "lane": "feature_release_facing",
-      "layer": "docs",
-      "command": "rg -q 'beacon-harness-program-plan-v161' docs/beacon/v1.6.1/SUMMARY.md",
-      "assertion": "exit 0；SUMMARY 声明 primary feature",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-002/__RUN_ID__.json",
+      "layer": "behavior",
+      "command": "python3 -m pytest tests/test_v161_loop_goal_closed_loop_orchestrator.py::test_program_outer_fsm_vitest_gate -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`--mode program` P0–P6 + P4 gate（vitest program-outer-fsm）。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator-v161/tc-loop-073/__RUN_ID__.json",
       "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
+      "source": "feature-package:docs/beacon/v1.6.1/features/beacon-loop-goal-closed-loop-orchestrator-v161/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
     },
     {
-      "tc_id": "TC-PBP-003",
-      "ac_id": "AC-PBP-003",
-      "ac_theme": "",
-      "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "rg -q '## user_decision' docs/beacon/v1.6.1/research/beacon-harness-program-plan-v161.md && rg -q '^promoted$' docs/beacon/v1.6.1/research/beacon-harness-program-plan-v161.md && rg -q 'promotion_ref' docs/beacon/v1.6.1/research/beacon-harness-program-plan-v161.md",
-      "assertion": "exit 0",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-003/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-PBP-004",
-      "ac_id": "AC-PBP-004",
+      "tc_id": "TC-LOOP-074",
+      "ac_id": "AC-074",
       "ac_theme": "",
       "lane": "feature_release_facing",
       "layer": "contract",
-      "command": "mkdir -p .beacon/qa-tmp && beacon program validate-graph --help >.beacon/qa-tmp/TC-PBP-004.txt 2>&1 && rg -q 'validate-graph' .beacon/qa-tmp/TC-PBP-004.txt",
-      "assertion": "exit 0 或 BLOCKED:Phase-B（CLI 未实现）",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-004/__RUN_ID__.json",
+      "command": "rg -q 'eval-matrix' docs/beacon/v1.6.1/features/beacon-loop-goal-closed-loop-orchestrator-v161/truth.md && rg -q 'formal_verdict_authority=false' docs/beacon/v1.6.1/features/beacon-loop-goal-closed-loop-orchestrator-v161/truth.md && python3 -m pytest tests/test_v161_loop_goal_closed_loop_orchestrator.py::test_truth_ac074_eval_supplement_contract -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "eval supplement 契约 + runtime 模块存在。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator-v161/tc-loop-074/__RUN_ID__.json",
       "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
+      "source": "feature-package:docs/beacon/v1.6.1/features/beacon-loop-goal-closed-loop-orchestrator-v161/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
     },
     {
-      "tc_id": "TC-PBP-005",
-      "ac_id": "AC-PBP-005",
+      "tc_id": "TC-LOOP-075",
+      "ac_id": "AC-075",
       "ac_theme": "",
       "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "mkdir -p .beacon/qa-tmp && beacon program guard-sea-single-lake --help >.beacon/qa-tmp/TC-PBP-005.txt 2>&1 && rg -q 'guard-sea' .beacon/qa-tmp/TC-PBP-005.txt",
-      "assertion": "exit 0 或 BLOCKED:Phase-B",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-005/__RUN_ID__.json",
+      "layer": "e2e",
+      "command": "python3 -m pytest tests/test_v161_loop_goal_closed_loop_orchestrator.py::test_e2e_program_sea_vitest_gate -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "海级 program E2E opt-in fixture（vitest e2e-program-sea）。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator-v161/tc-loop-075/__RUN_ID__.json",
       "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-PBP-006",
-      "ac_id": "AC-PBP-006",
-      "ac_theme": "",
-      "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "test -f docs/beacon/v1.6.1/execution/program-plan-contract.md && rg -q 'truth-promotion' docs/beacon/v1.6.1/execution/program-plan-contract.md",
-      "assertion": "exit 0；contract 要求 per-lake 七轮证据",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-006/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-PBP-007",
-      "ac_id": "AC-PBP-007",
-      "ac_theme": "",
-      "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "mkdir -p .beacon/qa-tmp && beacon program freeze --help >.beacon/qa-tmp/TC-PBP-007.txt 2>&1 && rg -q 'program' .beacon/qa-tmp/TC-PBP-007.txt",
-      "assertion": "exit 0 或 BLOCKED:Phase-C",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-007/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-PBP-008",
-      "ac_id": "AC-PBP-008",
-      "ac_theme": "",
-      "lane": "feature_release_facing",
-      "layer": "unit",
-      "command": "python3 -m pytest tests/test_program_plan_state_contract.py tests/test_program_plan_cli.py tests/test_v161_program_plan_release_gate.py -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "pytest 通过；含 truth-integrity 与 program plan 释放门禁",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-008/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-PBP-009",
-      "ac_id": "AC-PBP-009",
-      "ac_theme": "",
-      "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "mkdir -p .beacon/qa-tmp && beacon skill package verify-closure --feature beacon-harness-program-plan-v161 --project-root . --version v1.6.1 --json >.beacon/qa-tmp/TC-PBP-009.json && python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-PBP-009.json')); raise SystemExit(0 if d.get('closure_allowed') else 1)\"",
-      "assertion": "closure_allowed=true",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-009/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-PBP-010",
-      "ac_id": "AC-PBP-010",
-      "ac_theme": "",
-      "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "rg -q 'must not write.*features/\\*/truth' docs/beacon/v1.6.1/execution/boundaries.md && rg -q 'HARD GATE' .cursor/skills/beacon-pln-brainstorm/SKILL.md",
-      "assertion": "planner 边界文档与 skill gate 存在",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-010/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-PBP-011",
-      "ac_id": "AC-PBP-011",
-      "ac_theme": "",
-      "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "rg -q 'full_parity' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
-      "assertion": "truth 声明 full_parity 默认",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-011/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-PBP-012",
-      "ac_id": "AC-PBP-012",
-      "ac_theme": "",
-      "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "rg -q 'program-parity-matrix' docs/beacon/v1.6.1/execution/program-plan-contract.md",
-      "assertion": "parity matrix 在 contract 中",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-012/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-PBP-013",
-      "ac_id": "AC-PBP-013",
-      "ac_theme": "",
-      "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "mkdir -p .beacon/qa-tmp && beacon change --help >.beacon/qa-tmp/TC-PBP-013.txt 2>&1 && rg -q 'change' .beacon/qa-tmp/TC-PBP-013.txt",
-      "assertion": "exit 0",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-013/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-PBP-014",
-      "ac_id": "AC-PBP-014",
-      "ac_theme": "",
-      "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "rg -q 'promotion_diff' docs/beacon/v1.6.1/execution/program-plan-contract.md",
-      "assertion": "change 路径要求 promotion_diff",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-014/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-PBP-015",
-      "ac_id": "AC-PBP-015",
-      "ac_theme": "",
-      "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "mkdir -p .beacon/qa-tmp && beacon change --help >.beacon/qa-tmp/TC-PBP-015.txt 2>&1 && rg -q 'refreeze-chain' .beacon/qa-tmp/TC-PBP-015.txt",
-      "assertion": "exit 0；change 暴露受治理 refreeze-chain",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-015/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-PBP-016",
-      "ac_id": "AC-PBP-016",
-      "ac_theme": "",
-      "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "rg -q 'program-run-state' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md && mkdir -p .beacon/qa-tmp && node packages/beacon-run/dist/cli.mjs run --help >.beacon/qa-tmp/TC-PBP-016-R3.txt 2>&1 && rg -i 'program' .beacon/qa-tmp/TC-PBP-016-R3.txt",
-      "assertion": "truth 要求真实 P0–P6 FSM；runtime **BLOCKED:Phase-G** 直至 `--mode program` 实现。",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-016/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-PBP-017",
-      "ac_id": "AC-PBP-017",
-      "ac_theme": "",
-      "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "test -f skills/beacon/beacon-pln-program/SKILL.md && rg -q 'beacon-pln-program' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
-      "assertion": "umbrella skill 存在且 truth 引用",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-017/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-PBP-018",
-      "ac_id": "AC-PBP-018",
-      "ac_theme": "",
-      "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "rg -q 'machine-readable' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
-      "assertion": "AC-PBP-018 maker-checker 写入 truth",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-018/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-PBP-019",
-      "ac_id": "AC-PBP-019",
-      "ac_theme": "",
-      "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "rg -q 'deferral-sovereignty' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md && rg -q 'accepted' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
-      "assertion": "exit 0；deferral 表均为 accepted",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-019/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-PBP-020",
-      "ac_id": "AC-PBP-020",
-      "ac_theme": "",
-      "lane": "feature_release_facing",
-      "layer": "docs",
-      "command": "rg 'plan -> truth -> generate -> evaluate -> release' docs/beacon/v1.6.1/SUMMARY.md docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
-      "assertion": "未新增主 lifecycle stage",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-020/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-PBP-021",
-      "ac_id": "AC-PBP-021",
-      "ac_theme": "",
-      "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "rg -q 'ProgramPlanState' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
-      "assertion": "State Model 在 truth",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-021/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-PBP-022",
-      "ac_id": "AC-PBP-022",
-      "ac_theme": "",
-      "lane": "feature_release_facing",
-      "layer": "unit",
-      "command": "python3 -m pytest tests/test_program_plan_state_contract.py tests/test_program_plan_cli.py -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "pytest 覆盖非法转移与 program CLI",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-022/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-PBP-023",
-      "ac_id": "AC-PBP-023",
-      "ac_theme": "",
-      "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "test -f skills/beacon/beacon-pln-program/SKILL.md && test -f skills/beacon/beacon-pln-program-auto/SKILL.md && test -f skills/beacon/beacon-pln-program-interactive/SKILL.md && rg -q 'HARD GATE' skills/beacon/beacon-pln-program/SKILL.md && rg -q 'delegation' skills/beacon/beacon-pln-program-auto/SKILL.md",
-      "assertion": "三 skill 存在且 auto 声明委派",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-023/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-PBP-024",
-      "ac_id": "AC-PBP-024",
-      "ac_theme": "",
-      "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "mkdir -p .beacon/qa-tmp && beacon plan start --help >.beacon/qa-tmp/TC-PBP-024.txt 2>&1 && rg -q 'mode' .beacon/qa-tmp/TC-PBP-024.txt",
-      "assertion": "exit 0 或 BLOCKED:Phase-E",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-024/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-PBP-025",
-      "ac_id": "AC-PBP-025",
-      "ac_theme": "",
-      "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "rg -q 'plan_mode' docs/beacon/v1.6.1/execution/program-plan-contract.md && rg -q 'auto-detect' docs/beacon/v1.6.1/execution/program-plan-contract.md",
-      "assertion": "contract 含分类规则",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-025/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-PBP-026",
-      "ac_id": "AC-PBP-026",
-      "ac_theme": "",
-      "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "rg -q 'Delegate' skills/beacon/beacon-pln-program/SKILL.md && rg -q 'Does not write features' skills/beacon/beacon-pln-program-auto/SKILL.md",
-      "assertion": "umbrella 委派 + 子 skill 边界",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-026/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-PBP-027",
-      "ac_id": "AC-PBP-027",
-      "ac_theme": "",
-      "lane": "feature_release_facing",
-      "layer": "docs",
-      "command": "test -f docs/beacon/v1.6.1/execution/long-task-operator-guide.md && rg -q 'beacon-loop goal' docs/beacon/v1.6.1/execution/long-task-operator-guide.md && rg -q 'scaffold' docs/beacon/v1.6.1/execution/long-task-operator-guide.md",
-      "assertion": "operator guide：长任务主入口 `goal`；`plan start` 仅 scaffold。",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-027/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-PBP-028",
-      "ac_id": "AC-PBP-028",
-      "ac_theme": "",
-      "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "rg -q 'beacon-pln-brainstorm' skills/beacon/beacon-pln-program-interactive/SKILL.md && rg -q 'beacon-pln-source' skills/beacon/beacon-pln-program-auto/SKILL.md",
-      "assertion": "interactive/auto 桥接既有 planner skill",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-028/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-PBP-029",
-      "ac_id": "AC-PBP-029",
-      "ac_theme": "",
-      "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "rg -q 'AC-PBP-029' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md && rg -q 'program-run-state' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
-      "assertion": "goal/plan 共享 resume 契约在 truth；runtime **BLOCKED:Phase-G**。",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-029/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-PBP-030",
-      "ac_id": "AC-PBP-030",
-      "ac_theme": "",
-      "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "rg -q 'beacon-loop-goal-closed-loop-orchestrator-v161' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md && rg -q 'truth_freeze_gate' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
-      "assertion": "loop v161 R1 对接 + eval 不 gate qa/release。",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-harness-program-plan-v161/tc-pbp-030/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
+      "source": "feature-package:docs/beacon/v1.6.1/features/beacon-loop-goal-closed-loop-orchestrator-v161/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
     }
   ],
   "ac_to_test_refs": {
-    "AC-PBP-001": [
-      "TC-PBP-001"
+    "AC-072": [
+      "TC-LOOP-072"
     ],
-    "AC-PBP-002": [
-      "TC-PBP-002"
+    "AC-073": [
+      "TC-LOOP-073"
     ],
-    "AC-PBP-003": [
-      "TC-PBP-003"
+    "AC-074": [
+      "TC-LOOP-074"
     ],
-    "AC-PBP-004": [
-      "TC-PBP-004"
-    ],
-    "AC-PBP-005": [
-      "TC-PBP-005"
-    ],
-    "AC-PBP-006": [
-      "TC-PBP-006"
-    ],
-    "AC-PBP-007": [
-      "TC-PBP-007"
-    ],
-    "AC-PBP-008": [
-      "TC-PBP-008"
-    ],
-    "AC-PBP-009": [
-      "TC-PBP-009"
-    ],
-    "AC-PBP-010": [
-      "TC-PBP-010"
-    ],
-    "AC-PBP-011": [
-      "TC-PBP-011"
-    ],
-    "AC-PBP-012": [
-      "TC-PBP-012"
-    ],
-    "AC-PBP-013": [
-      "TC-PBP-013"
-    ],
-    "AC-PBP-014": [
-      "TC-PBP-014"
-    ],
-    "AC-PBP-015": [
-      "TC-PBP-015"
-    ],
-    "AC-PBP-016": [
-      "TC-PBP-016"
-    ],
-    "AC-PBP-017": [
-      "TC-PBP-017"
-    ],
-    "AC-PBP-018": [
-      "TC-PBP-018"
-    ],
-    "AC-PBP-019": [
-      "TC-PBP-019"
-    ],
-    "AC-PBP-020": [
-      "TC-PBP-020"
-    ],
-    "AC-PBP-021": [
-      "TC-PBP-021"
-    ],
-    "AC-PBP-022": [
-      "TC-PBP-022"
-    ],
-    "AC-PBP-023": [
-      "TC-PBP-023"
-    ],
-    "AC-PBP-024": [
-      "TC-PBP-024"
-    ],
-    "AC-PBP-025": [
-      "TC-PBP-025"
-    ],
-    "AC-PBP-026": [
-      "TC-PBP-026"
-    ],
-    "AC-PBP-027": [
-      "TC-PBP-027"
-    ],
-    "AC-PBP-028": [
-      "TC-PBP-028"
-    ],
-    "AC-PBP-029": [
-      "TC-PBP-029"
-    ],
-    "AC-PBP-030": [
-      "TC-PBP-030"
+    "AC-075": [
+      "TC-LOOP-075"
     ]
   },
   "qa_order_contract": {
@@ -1016,6 +210,6 @@
   "status": "pass",
   "blocked": false,
   "reason_codes": [],
-  "generated_at": "2026-06-16T07:59:36.611476+00:00",
+  "generated_at": "2026-06-17T09:20:09.216728+00:00",
   "index_path": "docs/beacon/v1.6.1/.machine/testing/test-contract-index.json"
 }

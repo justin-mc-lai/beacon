@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-06-16T07:20:53.349883+00:00",
+  "generated_at": "2026-06-17T08:32:23.229575+00:00",
   "feature": "beacon-loop-goal-closed-loop-orchestrator-v161",
   "feature_slug": "beacon-loop-goal-closed-loop-orchestrator-v161",
   "version": "v1.6.1",
@@ -18,10 +18,10 @@
     "evidence": "docs/beacon/v1.6.1/features/beacon-loop-goal-closed-loop-orchestrator-v161/evidence.md"
   },
   "source_hashes": {
-    "truth": "c7854e1f8284db4116c3995e53ee7f6dc29c617816c72c79fa100fd3793278f3",
+    "truth": "775691b4fb80c9557344f1842a317c0991ce07ef86aab5e8eb091b54b9b3e4da",
     "tests": "59fbc694a759ed1476da8d3419930b7f93acba360a9967b2d4b330b47f340a72",
-    "tasks": "2c0272e55cb20522e9d7f2eb529558d55397eb4dcf5ec5b485c5565215ef2943",
-    "evidence": "6810e960379057849957c1a736938a75dfd299d122028bba8685c2d1e4806728"
+    "tasks": "3f7a1c3f1b1b324731d964ceca200567957dcb08e1937c026cb78689ccd25fc2",
+    "evidence": "2dfd0e9e88e11d1b8c6e6dd2e4014c372cc8b892891ea1e06c4b37e5d981aaf2"
   },
   "truth_frontmatter": {
     "slug": "beacon-loop-goal-closed-loop-orchestrator-v161",
@@ -112,8 +112,8 @@
     },
     {
       "id": "LINE-7",
-      "title": "TASK-LOOP-A03 operator docs：`goal` 为长任务主入口；`plan start` scaffold only。",
-      "status": "unchecked"
+      "title": "TASK-LOOP-A03 operator docs：`goal` 为长任务主入口；`plan start` scaffold only。（`execution/long-task-operator-guide.md`）",
+      "status": "checked"
     },
     {
       "id": "LINE-11",
@@ -180,8 +180,15 @@
       "surface": "upstream-program-plan",
       "authority": "requirement_truth",
       "canonical_artifact": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
-      "status": "frozen R2→R3",
+      "status": "frozen R4",
       "route": "dependency"
+    },
+    {
+      "surface": "operator-guide",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.1/execution/long-task-operator-guide.md",
+      "status": "present",
+      "route": "operator"
     },
     {
       "surface": "upstream-agent-eval",
