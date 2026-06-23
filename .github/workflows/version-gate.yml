@@ -1,0 +1,77 @@
+name: Version Truth Gate
+
+on:
+  push:
+    branches: [main, pre-main, "beacon/v*", "fix/*", "feat/*", "release/*"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  version-gate:
+    name: Verify version consistency across all truth sources
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read canonical version from version-truth.json
+        id: truth
+        run: |
+          python3 - <<'EOF'
+          import json, os
+          d = json.load(open('beacon/version-truth.json'))
+          v = d.get('canonical_version') or d.get('package_version') or d.get('version')
+          if not v:
+              raise SystemExit('No version key found in beacon/version-truth.json')
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f'version={v}\n')
+          print(f'Canonical version: {v}')
+          EOF
+
+      - name: Check pyproject.toml matches canonical
+        env:
+          CANONICAL: ${{ steps.truth.outputs.version }}
+        run: |
+          python3 - <<'EOF'
+          import re, sys, os
+          canonical = os.environ['CANONICAL']
+          content = open('pyproject.toml').read()
+          m = re.search(r'^version\s*=\s*"([^"]+)"', content, re.MULTILINE)
+          if not m:
+              sys.exit('Could not find version in pyproject.toml')
+          actual = m.group(1)
+          if actual != canonical:
+              sys.exit(f'FAIL pyproject.toml={actual!r} != canonical={canonical!r}')
+          print(f'OK pyproject.toml={actual}')
+          EOF
+
+      - name: Check README.md mentions canonical version
+        run: |
+          CANONICAL="${{ steps.truth.outputs.version }}"
+          if grep -q "$CANONICAL" README.md; then
+            echo "OK README.md mentions $CANONICAL"
+          else
+            echo "::error file=README.md::README.md does not mention $CANONICAL — update version reference"
+            exit 1
+          fi
+
+      - name: Check SKILL.md mentions version
+        run: |
+          CANONICAL="${{ steps.truth.outputs.version }}"
+          MINOR="${CANONICAL%.*}"
+          if grep -qi "$CANONICAL\|$MINOR" SKILL.md; then
+            echo "OK SKILL.md mentions version"
+          else
+            echo "::warning file=SKILL.md::SKILL.md does not reference $CANONICAL or $MINOR"
+          fi
+
+      - name: Check CHANGELOG.md has entry
+        run: |
+          CANONICAL="${{ steps.truth.outputs.version }}"
+          if grep -q "\[$CANONICAL\]" CHANGELOG.md; then
+            echo "OK CHANGELOG.md has entry for [$CANONICAL]"
+          else
+            echo "::warning file=CHANGELOG.md::No [$CANONICAL] entry in CHANGELOG.md — add one"
+          fi
+
+      - name: Gate summary
+        run: echo "Version truth gate passed for v${{ steps.truth.outputs.version }}"
