@@ -71,6 +71,7 @@ def test_doctor_upgrade_package_should_expose_append_only_registry_for_future_ve
         "v1.1.5-machine-surface",
         "v1.1.10-source-architecture",
         "v1.1.12-implementation-plan-support",
+        "v1.1.13-release-stub",
     ]
     assert [_semver_tuple(item["min_version"]) for item in registry] == sorted(_semver_tuple(item["min_version"]) for item in registry)
     assert all("append" in str(item.get("future_rule", "")).lower() for item in registry)

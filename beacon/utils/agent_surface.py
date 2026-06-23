@@ -11,6 +11,11 @@ from pathlib import Path
 from typing import Any
 
 from beacon.utils.runtime import now_iso, write_json
+from beacon.utils.workspace_admission import (
+    GIT_ADMISSION_SKILLS,
+    TIER_A_SKILLS,
+    inject_git_admission_into_skill_text,
+)
 
 _RULE_BLOCK_START = "<!-- BEACON:AGENT_SURFACE:START -->"
 _RULE_BLOCK_END = "<!-- BEACON:AGENT_SURFACE:END -->"
@@ -507,17 +512,20 @@ def _write_projected_skill(destination: Path, content: str, files: dict[str, str
 
 
 def _copy_projected_skill(destination: Path, projection: SkillProjection) -> None:
+    skill_content = projection.content
+    if skill_content is not None:
+        skill_content = inject_git_admission_into_skill_text(projection.id, skill_content)
     if projection.source_dir is not None:
         shutil.copytree(projection.source_dir, destination)
-        if projection.content is not None:
-            (destination / "SKILL.md").write_text(projection.content, encoding="utf-8")
+        if skill_content is not None:
+            (destination / "SKILL.md").write_text(skill_content, encoding="utf-8")
         for relative, file_content in (projection.files or {}).items():
             path = destination / relative
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text(file_content, encoding="utf-8")
         return
-    if projection.content is not None:
-        _write_projected_skill(destination, projection.content, projection.files)
+    if skill_content is not None:
+        _write_projected_skill(destination, skill_content, projection.files)
         return
     raise ValueError(f"skill projection {projection.id} has no source")
 
@@ -651,6 +659,7 @@ def _v160_skill_projections() -> list[SkillProjection]:
         source_skill = source_root / row["new"]
         if (source_skill / "SKILL.md").exists():
             normalized_content = normalize_v160_skill_content((source_skill / "SKILL.md").read_text(encoding="utf-8"))
+            normalized_content = inject_git_admission_into_skill_text(row["new"], normalized_content)
             projections.append(
                 SkillProjection(
                     id=row["new"],
@@ -663,6 +672,7 @@ def _v160_skill_projections() -> list[SkillProjection]:
             )
             continue
         content = _render_v160_skill(row)
+        content = inject_git_admission_into_skill_text(row["new"], content)
         extra_files = _v160_extra_skill_files(row["new"])
         projections.append(
             SkillProjection(
@@ -694,6 +704,7 @@ def _append_v160_native_packaged_projections(
         if not (source_skill / "SKILL.md").exists():
             continue
         normalized_content = normalize_v160_skill_content((source_skill / "SKILL.md").read_text(encoding="utf-8"))
+        normalized_content = inject_git_admission_into_skill_text(skill_id, normalized_content)
         extra.append(
             SkillProjection(
                 id=skill_id,
@@ -752,6 +763,9 @@ def _verify_v160_skill_content(skill_id: str, text: str) -> list[str]:
     for term in _V160_REQUIRED_GATE_TERMS.get(harness, ()):
         if term not in text:
             errors.append(f"HARD GATE missing required term: {term}")
+    if skill_id in TIER_A_SKILLS:
+        if "GIT_ADMISSION" not in text or "workspace admit" not in text:
+            errors.append("GIT_ADMISSION preamble missing for Tier A skill")
     return errors
 
 
@@ -1929,6 +1943,37 @@ def verify_agent_surface(
             "details": {"path": str(state_path), "exists": state_exists},
         }
     )
+
+    if target.agent == "cursor":
+        hook_script = root / ".cursor/hooks/beacon-workspace-admission-gate.py"
+        hook_registered = False
+        hooks_config = root / ".cursor/hooks.json"
+        if hooks_config.is_file():
+            try:
+                hooks_payload = json.loads(hooks_config.read_text(encoding="utf-8"))
+                pre_hooks = hooks_payload.get("hooks", {}).get("preToolUse", [])
+                if isinstance(pre_hooks, list):
+                    for entry in pre_hooks:
+                        if not isinstance(entry, dict):
+                            continue
+                        command = str(entry.get("command") or "")
+                        matcher = str(entry.get("matcher") or "")
+                        if "beacon-workspace-admission-gate.py" in command and "Write" in matcher:
+                            hook_registered = True
+                            break
+            except json.JSONDecodeError:
+                hook_registered = False
+        checks.append(
+            {
+                "name": "workspace_admission_hook",
+                "status": "pass" if hook_script.is_file() and hook_registered else "warn",
+                "details": {
+                    "script": str(hook_script),
+                    "script_exists": hook_script.is_file(),
+                    "registered_in_hooks_json": hook_registered,
+                },
+            }
+        )
 
     status = "pass"
     if any(str(item.get("status")) == "fail" for item in checks):

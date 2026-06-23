@@ -14,9 +14,12 @@
 - max_evidence_budget: `20`
 
 ## Subject Surface
-- `execution_baseline`
-- `requirement_rewrite`
-- `debug_recovery_policy`
+- `qa_policy`
+- `design_policy`
+- `contract_policy`
+- `rewrite_policy`
+- `debug_policy`
+- `benchmark_policy`
 
 ## Program Surface
 - `benchmark_corpus`
@@ -29,8 +32,8 @@
 - ledger: `.beacon/state/evo/ledgers/latest.json`
 
 ## Latest Experiment
-- run_id: `evo-20260331T143934.331848+0000`
-- label: `Beacon v1.1.12 design governance autoresearch`
-- selected_candidates: `2`
-- verdict: `discard`
+- run_id: `-`
+- label: `-`
+- selected_candidates: `0`
+- verdict: `-`
 

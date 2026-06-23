@@ -64,6 +64,8 @@ from beacon.utils.qa_runtime import (
 )
 from beacon.utils.qa_evo_deep import run_qa_evo_deep
 from beacon.utils.story_state import feature_slug
+from beacon.utils.versioning import resolve_target_version
+from beacon.utils.workspace_admission import gate_workspace_admission_or_block
 from beacon.utils.skill_decision_surface import attach_skill_decision_surface
 from beacon.utils.subagent_readiness import (
     delegation_readiness_precheck,
@@ -1085,6 +1087,25 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
                 typer.echo(json.dumps(blocked_payload, ensure_ascii=False, indent=2))
             else:
                 typer.echo("Beacon QA blocked: legacy cutover required", err=True)
+            return 2, blocked_payload
+
+        resolved_version = resolve_target_version(project_root, version if version != "auto" else "auto")
+        workspace_admission_block = gate_workspace_admission_or_block(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            cwd=Path.cwd(),
+        )
+        if workspace_admission_block:
+            blocked_payload = _with_qa_surface({
+                **workspace_admission_block,
+                "feature": feature,
+                "version": resolved_version,
+            }, blocked=True)
+            if json_output:
+                typer.echo(json.dumps(blocked_payload, ensure_ascii=False, indent=2))
+            else:
+                typer.echo("Beacon QA blocked: workspace admission required", err=True)
             return 2, blocked_payload
 
     if metadata_machine_path(project_root).exists():

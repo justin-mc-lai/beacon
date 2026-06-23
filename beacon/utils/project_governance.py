@@ -110,8 +110,12 @@ def _assign_version_kv(contract: dict[str, Any], key: str, value: str) -> None:
         "hotfix_branch_naming_rule",
         "worktree_mode",
         "worktree_path",
+        "admission_invalidation",
     }:
         contract[key] = value
+        return
+    if key == "require_workspace_admission":
+        contract[key] = value.lower() in {"true", "1", "yes", "on"}
         return
     if key == "allow_worktree_when_feature_dirty":
         contract[key] = value.lower() in {"true", "1", "yes"}
@@ -319,6 +323,13 @@ def render_governance_markdown(payload: dict[str, Any]) -> str:
             lines.append(f"- worktree_mode: `{worktree_mode}`")
         if worktree_path:
             lines.append(f"- worktree_path: `{worktree_path}`")
+        if contract.get("require_workspace_admission") is not None:
+            lines.append(
+                f"- require_workspace_admission: `{str(bool(contract.get('require_workspace_admission'))).lower()}`"
+            )
+        invalidation = str(contract.get("admission_invalidation") or "").strip()
+        if invalidation:
+            lines.append(f"- admission_invalidation: `{invalidation}`")
         for policy in contract.get("merge_direction_policy") or []:
             lines.append(f"- merge_direction_policy: `{policy}`")
         for forbidden in contract.get("forbidden_directions") or []:

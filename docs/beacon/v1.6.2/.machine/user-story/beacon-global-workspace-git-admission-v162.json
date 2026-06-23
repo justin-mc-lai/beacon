@@ -1,0 +1,988 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-global-workspace-git-admission-v162",
+  "feature_slug": "beacon-global-workspace-git-admission-v162",
+  "version": "v1.6.2",
+  "current_revision_id": "R3",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-06-23T07:11:18.541088+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-global-workspace-git-admission-v162",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": null,
+      "superseded_by": "R2",
+      "created_at": "2026-06-23T03:05:19.427830+00:00",
+      "frozen_at": null,
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R2",
+      "feature_slug": "beacon-global-workspace-git-admission-v162",
+      "source_revision_id": "R1",
+      "reason": "R2 scheme A truth revision",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": "sha256:7c232f82dba5a30d907cb013f49396096a396ad9a9cd6e43469b82605d8cdc65",
+      "superseded_by": "R3",
+      "created_at": "2026-06-23T03:05:19.428129+00:00",
+      "frozen_at": "2026-06-23T03:07:26.836561+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R3",
+      "feature_slug": "beacon-global-workspace-git-admission-v162",
+      "source_revision_id": "R2",
+      "reason": "R3 version-line package operator closure",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:b1d10720f1b837d42bd72f952039dcf8c4c6ac581ad5467cdb315a307876a406",
+      "superseded_by": null,
+      "created_at": "2026-06-23T04:11:57.926414+00:00",
+      "frozen_at": "2026-06-23T04:11:58.408317+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "beacon-global-workspace-git-admission-v162",
+      "priority": "medium",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "general",
+          "text": "Acceptance criteria TBD",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": ""
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Acceptance criteria TBD",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": ""
+        }
+      ]
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R2",
+      "title": "beacon-global-workspace-git-admission-v162",
+      "priority": "medium",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "workspace-admit",
+          "text": "`beacon workspace admit` 解析 v1.6.2 → `beacon/v1.6.2/<feature>` + worktree_path + artifact（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "cli-fail-closed",
+          "text": "无/脏 admission → `implement run` / `qa run` blocked + stable reason_code（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "skill-preamble",
+          "text": "Tier A host skills 含 GIT_ADMISSION Step 0；setup-agent-surface 物化一致（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "cursor-hook",
+          "text": "Cursor hook：missing/dirty artifact → Write deny；valid → allow（**Should**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "claude-hook",
+          "text": "Claude hook parity 同 AC-004（**Should**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "verify-surface",
+          "text": "verify-agent-surface：缺 preamble **fail**；缺 hook **warn** only（**Should**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "trellis-isolation",
+          "text": "`TRELLIS_DISABLE_HOOKS=1` 后 Beacon admission hook 仍注册（**Should**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "governance-md",
+          "text": "governance MD v1.6.2 block + `admission_invalidation: dirty_only`（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "dirty-invalidation",
+          "text": "branch/head/cwd 变化 → invalid；**无 git 变化时时间流逝仍 valid**（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "alias-compat",
+          "text": "`check-branch` alias + `dev-run` 先 admit；现有调用方不 break（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-011",
+          "kind": "ac",
+          "theme": "slash-skill-p0",
+          "text": "`/beacon-gen-implement v1.6.2 <slug>` → Step 0 admit → worktree 再写（**Must**，UD-011）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — `beacon workspace admit` 解析 v1.6.2 → `beacon/v1.6.2/<feature>` + worktree_path + artifact（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — 无/脏 admission → `implement run` / `qa run` blocked + stable reason_code（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Tier A host skills 含 GIT_ADMISSION Step 0；setup-agent-surface 物化一致（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Cursor hook：missing/dirty artifact → Write deny；valid → allow（**Should**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Claude hook parity 同 AC-004（**Should**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — verify-agent-surface：缺 preamble **fail**；缺 hook **warn** only（**Should**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — `TRELLIS_DISABLE_HOOKS=1` 后 Beacon admission hook 仍注册（**Should**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — governance MD v1.6.2 block + `admission_invalidation: dirty_only`（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — branch/head/cwd 变化 → invalid；**无 git 变化时时间流逝仍 valid**（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — `check-branch` alias + `dev-run` 先 admit；现有调用方不 break（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-010"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-011",
+          "kind": "test",
+          "text": "Verify AC-011 — `/beacon-gen-implement v1.6.2 <slug>` → Step 0 admit → worktree 再写（**Must**，UD-011）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-011"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-global-workspace-git-admission-v162",
+        "version": "v1.6.2",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.2/research/beacon-global-workspace-git-admission-v162.md",
+        "present": false,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      }
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R3",
+      "title": "beacon-global-workspace-git-admission-v162",
+      "priority": "medium",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "workspace-admit",
+          "text": "`beacon workspace admit` 解析 v1.6.2 → `beacon/v1.6.2/<feature>` + worktree_path + artifact（**Must**）",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260623T150649563270",
+          "verified_by_run_id": "run-20260623T151038003087",
+          "accepted_at": "2026-06-23T07:11:18.512776+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "cli-fail-closed",
+          "text": "无/脏 admission → `implement run` / `qa run` blocked + stable reason_code（**Must**）",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260623T150649563270",
+          "verified_by_run_id": "run-20260623T151038003087",
+          "accepted_at": "2026-06-23T07:11:18.512776+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "skill-preamble",
+          "text": "Tier A host skills 含 GIT_ADMISSION Step 0；setup-agent-surface 物化一致（**Must**）",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260623T150649563270",
+          "verified_by_run_id": "run-20260623T151038003087",
+          "accepted_at": "2026-06-23T07:11:18.512776+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "cursor-hook",
+          "text": "Cursor hook：missing/dirty artifact → Write deny；valid → allow（**Should**）",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260623T150649563270",
+          "verified_by_run_id": "run-20260623T151038003087",
+          "accepted_at": "2026-06-23T07:11:18.512776+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "claude-hook",
+          "text": "Claude hook parity 同 AC-004（**Should**）",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260623T150649563270",
+          "verified_by_run_id": "run-20260623T151038003087",
+          "accepted_at": "2026-06-23T07:11:18.512776+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "verify-surface",
+          "text": "verify-agent-surface：缺 preamble **fail**；缺 hook **warn** only（**Should**）",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260623T150649563270",
+          "verified_by_run_id": "run-20260623T151038003087",
+          "accepted_at": "2026-06-23T07:11:18.512776+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "trellis-isolation",
+          "text": "`TRELLIS_DISABLE_HOOKS=1` 后 Beacon admission hook 仍注册（**Should**）",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260623T150649563270",
+          "verified_by_run_id": "run-20260623T151038003087",
+          "accepted_at": "2026-06-23T07:11:18.512776+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "governance-md",
+          "text": "governance MD v1.6.2 block + `admission_invalidation: dirty_only`（**Must**）",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260623T150649563270",
+          "verified_by_run_id": "run-20260623T151038003087",
+          "accepted_at": "2026-06-23T07:11:18.512776+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "dirty-invalidation",
+          "text": "branch/head/cwd 变化 → invalid；**无 git 变化时时间流逝仍 valid**（**Must**）",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260623T150649563270",
+          "verified_by_run_id": "run-20260623T151038003087",
+          "accepted_at": "2026-06-23T07:11:18.512776+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "alias-compat",
+          "text": "`check-branch` alias + `dev-run` 先 admit；现有调用方不 break（**Must**）",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260623T150649563270",
+          "verified_by_run_id": "run-20260623T151038003087",
+          "accepted_at": "2026-06-23T07:11:18.512776+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-011",
+          "kind": "ac",
+          "theme": "slash-skill-p0",
+          "text": "`/beacon-gen-implement v1.6.2 <slug>` → Step 0 admit → worktree 再写（**Must**，UD-011）",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260623T150649563270",
+          "verified_by_run_id": "run-20260623T151038003087",
+          "accepted_at": "2026-06-23T07:11:18.512776+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-012",
+          "kind": "ac",
+          "theme": "upgrade-package-release",
+          "text": "upgrade-package 写入 release stub（**Must**，UD-013）",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260623T150649563270",
+          "verified_by_run_id": "run-20260623T151038003087",
+          "accepted_at": "2026-06-23T07:11:18.512776+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-013",
+          "kind": "ac",
+          "theme": "package-gate-routing",
+          "text": "version-line 缺失 → upgrade-package repair（**Must**，UD-012）",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260623T150649563270",
+          "verified_by_run_id": "run-20260623T151038003087",
+          "accepted_at": "2026-06-23T07:11:18.512776+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-014",
+          "kind": "ac",
+          "theme": "repair-commands",
+          "text": "blocked payload 含 repair_commands 序列（**Must**）",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260623T150649563270",
+          "verified_by_run_id": "run-20260623T151038003087",
+          "accepted_at": "2026-06-23T07:11:18.512776+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-015",
+          "kind": "ac",
+          "theme": "verify-materials-pass",
+          "text": "v1.6.2 upgrade-package 后 verify-materials strict pass（**Must**）",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260623T150649563270",
+          "verified_by_run_id": "run-20260623T151038003087",
+          "accepted_at": "2026-06-23T07:11:18.512776+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260623T150649563270",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-06-23T07:11:18.512776+00:00",
+          "changed_in_revision": "R3"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — `beacon workspace admit` 解析 v1.6.2 → `beacon/v1.6.2/<feature>` + worktree_path + artifact（**Must**）",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260623T150649563270",
+          "verified_by_run_id": "run-20260623T151038003087",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — 无/脏 admission → `implement run` / `qa run` blocked + stable reason_code（**Must**）",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260623T150649563270",
+          "verified_by_run_id": "run-20260623T151038003087",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Tier A host skills 含 GIT_ADMISSION Step 0；setup-agent-surface 物化一致（**Must**）",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260623T150649563270",
+          "verified_by_run_id": "run-20260623T070231Z-0d91-tester",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Cursor hook：missing/dirty artifact → Write deny；valid → allow（**Should**）",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260623T150649563270",
+          "verified_by_run_id": "run-20260623T070231Z-0d91-tester",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Claude hook parity 同 AC-004（**Should**）",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260623T150649563270",
+          "verified_by_run_id": "run-20260623T070231Z-0d91-tester",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — verify-agent-surface：缺 preamble **fail**；缺 hook **warn** only（**Should**）",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260623T150649563270",
+          "verified_by_run_id": "run-20260623T070231Z-0d91-tester",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — `TRELLIS_DISABLE_HOOKS=1` 后 Beacon admission hook 仍注册（**Should**）",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260623T150649563270",
+          "verified_by_run_id": "run-20260623T070231Z-0d91-tester",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — governance MD v1.6.2 block + `admission_invalidation: dirty_only`（**Must**）",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260623T150649563270",
+          "verified_by_run_id": "run-20260623T070231Z-0d91-tester",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — branch/head/cwd 变化 → invalid；**无 git 变化时时间流逝仍 valid**（**Must**）",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260623T150649563270",
+          "verified_by_run_id": "run-20260623T070231Z-0d91-tester",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — `check-branch` alias + `dev-run` 先 admit；现有调用方不 break（**Must**）",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260623T150649563270",
+          "verified_by_run_id": "run-20260623T151038003087",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-010"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-011",
+          "kind": "test",
+          "text": "Verify AC-011 — `/beacon-gen-implement v1.6.2 <slug>` → Step 0 admit → worktree 再写（**Must**，UD-011）",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260623T150649563270",
+          "verified_by_run_id": "run-20260623T151038003087",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-011"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-012",
+          "kind": "test",
+          "text": "Verify AC-012 — upgrade-package 写入 release stub（**Must**，UD-013）",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260623T150649563270",
+          "verified_by_run_id": "run-20260623T070231Z-0d91-tester",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-012"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-013",
+          "kind": "test",
+          "text": "Verify AC-013 — version-line 缺失 → upgrade-package repair（**Must**，UD-012）",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260623T150649563270",
+          "verified_by_run_id": "run-20260623T070231Z-0d91-tester",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-013"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-014",
+          "kind": "test",
+          "text": "Verify AC-014 — blocked payload 含 repair_commands 序列（**Must**）",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260623T150649563270",
+          "verified_by_run_id": "run-20260623T070231Z-0d91-tester",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-014"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-015",
+          "kind": "test",
+          "text": "Verify AC-015 — v1.6.2 upgrade-package 后 verify-materials strict pass（**Must**）",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260623T150649563270",
+          "verified_by_run_id": "run-20260623T070231Z-0d91-tester",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-015"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-global-workspace-git-admission-v162",
+        "version": "v1.6.2",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.2/research/beacon-global-workspace-git-admission-v162.md",
+        "present": false,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      },
+      "feature": "beacon-global-workspace-git-admission-v162",
+      "feature_slug": "beacon-global-workspace-git-admission-v162",
+      "version": "v1.6.2",
+      "last_changed_files": [
+        "docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/tests.md"
+      ],
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-global-workspace-git-admission-v162/ac-closure.json",
+        ".beacon/qa/features/beacon-global-workspace-git-admission-v162/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "accepted_at": "2026-06-23T07:11:18.512776+00:00",
+      "accepted_by": "qa"
+    }
+  ]
+}
