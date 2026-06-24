@@ -461,7 +461,7 @@
       "depends_on": [],
       "stop_on_fail": false,
       "automation": "auto",
-      "command": "mkdir -p .beacon/qa-tmp && beacon workspace admit --project-root . --version v1.6.2 --feature beacon-global-workspace-git-admission-v162 --json >.beacon/qa-tmp/TC-WS-001.json 2>&1; python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-WS-001.json')); assert d.get('status')=='pass' and 'worktree_path' in d\"",
+      "command": "python3 -m pytest tests/test_v162_workspace_admit.py::test_workspace_admit_issues_artifact_without_expires_at -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "Integration flow assertions pass",
       "priority": "P1",
       "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-ws-001/__RUN_ID__.json",

@@ -4,7 +4,7 @@
 - feature: `beacon-global-workspace-git-admission-v162`
 - revision_id: `R3`
 - verdict: `passed`
-- accepted_at: `2026-06-23T07:11:18.512776+00:00`
+- accepted_at: `2026-06-23T07:29:06.190709+00:00`
 - accepted_by: `qa`
 
 ## Summary
@@ -31,5 +31,5 @@
 ## Verdict Summary
 - required_ac_count: `15`
 - required_test_count: `0`
-- story_status: `implemented`
-- revision_delivery_status: `implemented`
+- story_status: `accepted`
+- revision_delivery_status: `accepted`

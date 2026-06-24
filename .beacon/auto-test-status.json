@@ -1,9 +1,9 @@
 {
   "scope": "qa9",
-  "timestamp": "2026-06-23T15:10:38.003758",
+  "timestamp": "2026-06-23T15:28:28.106639",
   "project": "/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162",
   "version": "v1.6.2",
-  "run_id": "run-20260623T151038003087",
+  "run_id": "run-20260623T152828105908",
   "spec_fingerprint_hash": "c1ee1ba97fbaa8d493a8009b11e09f56e3b9ac4d669d53a47dad64ae4e3cd7f4",
   "status": "passed",
   "selected_layers": [
@@ -11,13 +11,13 @@
     "integration"
   ],
   "execution": {
-    "run_id": "run-20260623T151038003087",
+    "run_id": "run-20260623T152828105908",
     "version": "v1.6.2",
-    "evidence_dir": ".beacon/evidence/auto-test/run-20260623T151038003087",
+    "evidence_dir": ".beacon/evidence/auto-test/run-20260623T152828105908",
     "spec_fingerprint": {
       "fingerprint_hash": "c1ee1ba97fbaa8d493a8009b11e09f56e3b9ac4d669d53a47dad64ae4e3cd7f4",
       "version": "v1.6.2",
-      "generated_at": "2026-06-23T07:11:18.481902+00:00"
+      "generated_at": "2026-06-23T07:29:06.164934+00:00"
     },
     "layers": [
       {
@@ -36,27 +36,27 @@
             "exit_code": 0
           }
         ],
-        "execution_fingerprint": "7ea7ef59698cd539dfd26c9a8e538d6926eb311c61c0f9dc3960dc780dc1ab13",
-        "started_at": "2026-06-23T15:10:38.082582",
-        "ended_at": "2026-06-23T15:10:39.022225",
-        "junit_path": ".beacon/evidence/auto-test/run-20260623T151038003087/contract/junit.xml",
+        "execution_fingerprint": "43fee0230a81456c3211a00f6b6bc1e867f404a8a62f0a891a2b17b1a675445d",
+        "started_at": "2026-06-23T15:28:28.185178",
+        "ended_at": "2026-06-23T15:28:29.347897",
+        "junit_path": ".beacon/evidence/auto-test/run-20260623T152828105908/contract/junit.xml",
         "junit_valid": true,
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260623T151038003087/contract/command.txt",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/contract/stdout.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/contract/stderr.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/contract/junit.xml",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/contract/result.json"
+          ".beacon/evidence/auto-test/run-20260623T152828105908/contract/command.txt",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/contract/stdout.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/contract/stderr.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/contract/junit.xml",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/contract/result.json"
         ]
       },
       {
         "layer": "integration",
-        "command": "mkdir -p .beacon/qa-tmp && beacon workspace admit --project-root . --version v1.6.2 --feature beacon-global-workspace-git-admission-v162 --json >.beacon/qa-tmp/TC-WS-001.json 2>&1; python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-WS-001.json')); assert d.get('status')=='pass' and 'worktree_path' in d\"",
+        "command": "python3 -m pytest tests/test_v162_workspace_admit.py::test_workspace_admit_issues_artifact_without_expires_at -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "exit_code": 0,
         "status": "passed",
         "reason_code": "",
         "timeout_seconds": 300,
-        "assertion_count": 0,
+        "assertion_count": 1,
         "was_flaky": false,
         "attempt_count": 1,
         "attempts": [
@@ -65,16 +65,17 @@
             "exit_code": 0
           }
         ],
-        "execution_fingerprint": "26475359b9befa9a4af1b74635f3cf64437ebc247a93f6cf2f22175507e8c958",
-        "started_at": "2026-06-23T15:10:39.118077",
-        "ended_at": "2026-06-23T15:10:39.831485",
-        "junit_path": "",
-        "junit_valid": false,
+        "execution_fingerprint": "5e8ddbfd38b2280dfd54b1c44a256a436f2a97d5a150029784ae2534b43c05ba",
+        "started_at": "2026-06-23T15:28:29.430203",
+        "ended_at": "2026-06-23T15:28:30.316476",
+        "junit_path": ".beacon/evidence/auto-test/run-20260623T152828105908/integration/junit.xml",
+        "junit_valid": true,
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260623T151038003087/integration/command.txt",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/integration/stdout.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/integration/stderr.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/integration/result.json"
+          ".beacon/evidence/auto-test/run-20260623T152828105908/integration/command.txt",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/integration/stdout.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/integration/stderr.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/integration/junit.xml",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/integration/result.json"
         ]
       }
     ],
@@ -87,9 +88,9 @@
       "freshness_violations": []
     },
     "artifacts": [
-      ".beacon/evidence/auto-test/run-20260623T151038003087/qa9/tc-execution-map.json",
-      ".beacon/evidence/auto-test/run-20260623T151038003087/qa9/tc-results.json",
-      ".beacon/evidence/auto-test/run-20260623T151038003087/summary.json",
+      ".beacon/evidence/auto-test/run-20260623T152828105908/qa9/tc-execution-map.json",
+      ".beacon/evidence/auto-test/run-20260623T152828105908/qa9/tc-results.json",
+      ".beacon/evidence/auto-test/run-20260623T152828105908/summary.json",
       ".beacon/flaky-history.json",
       ".beacon/evidence-signature-chain.json"
     ],
@@ -145,21 +146,22 @@
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 0,
-        "command": "mkdir -p .beacon/qa-tmp && beacon workspace admit --project-root . --version v1.6.2 --feature beacon-global-workspace-git-admission-v162 --json >.beacon/qa-tmp/TC-WS-001.json 2>&1; python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-WS-001.json')); assert d.get('status')=='pass' and 'worktree_path' in d\"",
-        "run_id": "run-20260623T151038003087",
+        "assertion_count": 1,
+        "command": "python3 -m pytest tests/test_v162_workspace_admit.py::test_workspace_admit_issues_artifact_without_expires_at -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260623T152828105908",
         "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-ws-001/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-001/command.txt",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-001/stdout.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-001/stderr.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-001/result.json"
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-001/command.txt",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-001/stdout.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-001/stderr.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-001/junit.xml",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-001/result.json"
         ],
-        "execution_fingerprint": "42c6174934c90e17f3deae406c73c32774eba9a8690081e72f05416dd3364d84",
-        "started_at": "2026-06-23T15:10:40.041734",
-        "ended_at": "2026-06-23T15:10:40.668882",
-        "junit_path": "",
-        "junit_valid": false,
+        "execution_fingerprint": "588809db9f39b89ce224a2ff49bc394e923aa25037f45a047fd0e9d644f80373",
+        "started_at": "2026-06-23T15:28:30.401267",
+        "ended_at": "2026-06-23T15:28:31.485147",
+        "junit_path": ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-001/junit.xml",
+        "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
         "browser_runner_learning_ref": "",
@@ -184,19 +186,19 @@
         "reason_code": "",
         "assertion_count": 1,
         "command": "python3 -m pytest tests/test_v162_workspace_admit.py::test_admit_json_schema_no_expires_at -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260623T151038003087",
+        "run_id": "run-20260623T152828105908",
         "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-ws-002/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-002/command.txt",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-002/stdout.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-002/stderr.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-002/junit.xml",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-002/result.json"
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-002/command.txt",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-002/stdout.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-002/stderr.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-002/junit.xml",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-002/result.json"
         ],
-        "execution_fingerprint": "4e6c0a458fbfa5cd6794f86099eaf766d7559a5a7f4fa68e0224a744bca7d2f1",
-        "started_at": "2026-06-23T15:10:40.747602",
-        "ended_at": "2026-06-23T15:10:41.732274",
-        "junit_path": ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-002/junit.xml",
+        "execution_fingerprint": "b3dbd73df7402eb1093ddddf8f1b04b32a89dd8decb3c0b08f8f5e419bb6af49",
+        "started_at": "2026-06-23T15:28:31.576193",
+        "ended_at": "2026-06-23T15:28:32.775340",
+        "junit_path": ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-002/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -220,19 +222,19 @@
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 0,
+        "assertion_count": 1,
         "command": "mkdir -p .beacon/qa-tmp && rm -f .beacon/state/workspace-admission/v1.6.2/beacon-global-workspace-git-admission-v162.json && python3 -m beacon implement run \"beacon-global-workspace-git-admission-v162\" --project-root . --version v1.6.2 --json >.beacon/qa-tmp/TC-WS-010.json 2>&1; python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-WS-010.json')); assert d.get('status')=='blocked'\"",
-        "run_id": "run-20260623T151038003087",
+        "run_id": "run-20260623T152828105908",
         "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-ws-010/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-010/command.txt",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-010/stdout.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-010/stderr.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-010/result.json"
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-010/command.txt",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-010/stdout.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-010/stderr.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-010/result.json"
         ],
-        "execution_fingerprint": "c0659588721747a80988a5860fd9825840fd227d2c1879d15ef83afd8c3fb80e",
-        "started_at": "2026-06-23T15:10:41.810601",
-        "ended_at": "2026-06-23T15:10:45.392206",
+        "execution_fingerprint": "01002d5431e871dab984e2a1052e4fd8e0107477508747db67a60f29af0cc163",
+        "started_at": "2026-06-23T15:28:32.855205",
+        "ended_at": "2026-06-23T15:28:36.551990",
         "junit_path": "",
         "junit_valid": false,
         "browser_required": false,
@@ -259,19 +261,19 @@
         "reason_code": "",
         "assertion_count": 1,
         "command": "python3 -m pytest tests/test_v162_workspace_integration.py::test_qa_run_blocked_without_artifact -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260623T151038003087",
+        "run_id": "run-20260623T152828105908",
         "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-ws-011/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-011/command.txt",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-011/stdout.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-011/stderr.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-011/junit.xml",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-011/result.json"
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-011/command.txt",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-011/stdout.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-011/stderr.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-011/junit.xml",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-011/result.json"
         ],
-        "execution_fingerprint": "647bbf3181ff7f8ed8fa0a99b3e9005338c21a6f21799131f7294c9a70da1a26",
-        "started_at": "2026-06-23T15:10:45.468847",
-        "ended_at": "2026-06-23T15:10:46.232655",
-        "junit_path": ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-011/junit.xml",
+        "execution_fingerprint": "5d8c7ecd3cdb10c50d65c1e2ebe83309f4d06a4f022b2f1f808717e50a0d81c3",
+        "started_at": "2026-06-23T15:28:36.633823",
+        "ended_at": "2026-06-23T15:28:37.528421",
+        "junit_path": ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-011/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -297,17 +299,17 @@
         "reason_code": "",
         "assertion_count": 1,
         "command": "rg -q 'GIT_ADMISSION' skills/beacon/SKILL.md && rg -q 'workspace admit' skills/beacon/SKILL.md",
-        "run_id": "run-20260623T151038003087",
+        "run_id": "run-20260623T152828105908",
         "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-ws-020/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-020/command.txt",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-020/stdout.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-020/stderr.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-020/result.json"
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-020/command.txt",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-020/stdout.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-020/stderr.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-020/result.json"
         ],
-        "execution_fingerprint": "6d020b04842fb7424c2e43f4c5d6f4293fb4ff7eeae0c879475b0490f7a557cb",
-        "started_at": "2026-06-23T15:10:46.353740",
-        "ended_at": "2026-06-23T15:10:46.380153",
+        "execution_fingerprint": "70fc2d162e9a9e1bd9e0607e86d8a6b8fb7660d6b38de48944e21b4704ec219a",
+        "started_at": "2026-06-23T15:28:37.608796",
+        "ended_at": "2026-06-23T15:28:37.638458",
         "junit_path": "",
         "junit_valid": false,
         "browser_required": false,
@@ -332,19 +334,19 @@
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 0,
+        "assertion_count": 1,
         "command": "beacon doctor setup-agent-surface --project-root . --agent cursor --force && rg -q 'GIT_ADMISSION' .cursor/skills/beacon-gen-implement/SKILL.md",
-        "run_id": "run-20260623T151038003087",
+        "run_id": "run-20260623T152828105908",
         "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-ws-021/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-021/command.txt",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-021/stdout.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-021/stderr.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-021/result.json"
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-021/command.txt",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-021/stdout.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-021/stderr.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-021/result.json"
         ],
-        "execution_fingerprint": "bd293dfeb534bcdfe066596a9b0887c3ab10a48606853fbb6679791310b628eb",
-        "started_at": "2026-06-23T15:10:46.461138",
-        "ended_at": "2026-06-23T15:10:48.288467",
+        "execution_fingerprint": "856b3c94741ffbeeef624b3cde7c8950c8642d41545ab077c2ef9b24d0a52ee5",
+        "started_at": "2026-06-23T15:28:37.933287",
+        "ended_at": "2026-06-23T15:28:40.070436",
         "junit_path": "",
         "junit_valid": false,
         "browser_required": false,
@@ -371,19 +373,19 @@
         "reason_code": "",
         "assertion_count": 1,
         "command": "python3 -m pytest tests/test_v162_workspace_admission_hook.py::test_cursor_hook_denies_missing_artifact -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260623T151038003087",
+        "run_id": "run-20260623T152828105908",
         "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-ws-030/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-030/command.txt",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-030/stdout.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-030/stderr.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-030/junit.xml",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-030/result.json"
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-030/command.txt",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-030/stdout.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-030/stderr.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-030/junit.xml",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-030/result.json"
         ],
-        "execution_fingerprint": "7352972b6dc4421e432775dbb66f9dd7cb2871f03f0f478e47e182de0359342d",
-        "started_at": "2026-06-23T15:10:48.364557",
-        "ended_at": "2026-06-23T15:10:49.568624",
-        "junit_path": ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-030/junit.xml",
+        "execution_fingerprint": "c3f1b0e038055de89ad226e77cef3fede96be8b4f524d8c22788eefa0fa71fa8",
+        "started_at": "2026-06-23T15:28:40.158332",
+        "ended_at": "2026-06-23T15:28:41.264762",
+        "junit_path": ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-030/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -409,19 +411,19 @@
         "reason_code": "",
         "assertion_count": 1,
         "command": "python3 -m pytest tests/test_v162_workspace_admission_hook.py::test_cursor_hook_allows_valid_artifact -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260623T151038003087",
+        "run_id": "run-20260623T152828105908",
         "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-ws-031/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-031/command.txt",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-031/stdout.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-031/stderr.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-031/junit.xml",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-031/result.json"
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-031/command.txt",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-031/stdout.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-031/stderr.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-031/junit.xml",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-031/result.json"
         ],
-        "execution_fingerprint": "9b7cd4b8d09249e873d698237c96461cf9980cc1f143febeaab401ed645dc9c3",
-        "started_at": "2026-06-23T15:10:49.650981",
-        "ended_at": "2026-06-23T15:10:50.883177",
-        "junit_path": ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-031/junit.xml",
+        "execution_fingerprint": "475710d29b38ec7de3a351a777c3db556d9f610a993fb33a756b23ee2eea60f3",
+        "started_at": "2026-06-23T15:28:41.344257",
+        "ended_at": "2026-06-23T15:28:42.777874",
+        "junit_path": ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-031/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -447,19 +449,19 @@
         "reason_code": "",
         "assertion_count": 1,
         "command": "python3 -m pytest tests/test_v162_workspace_admission_hook.py::test_hook_no_ttl_deny -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260623T151038003087",
+        "run_id": "run-20260623T152828105908",
         "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-ws-032/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-032/command.txt",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-032/stdout.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-032/stderr.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-032/junit.xml",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-032/result.json"
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-032/command.txt",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-032/stdout.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-032/stderr.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-032/junit.xml",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-032/result.json"
         ],
-        "execution_fingerprint": "991a9e190f6851109b20dc472ff31c7c8c0d1b2f94517194963413e2015c00f4",
-        "started_at": "2026-06-23T15:10:50.970233",
-        "ended_at": "2026-06-23T15:10:52.375506",
-        "junit_path": ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-032/junit.xml",
+        "execution_fingerprint": "511101f57416229ab38bada990c97e92d8bc89234c5c0a187e16a08831d54887",
+        "started_at": "2026-06-23T15:28:42.857837",
+        "ended_at": "2026-06-23T15:28:44.288686",
+        "junit_path": ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-032/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -485,19 +487,19 @@
         "reason_code": "",
         "assertion_count": 1,
         "command": "python3 -m pytest tests/test_v162_workspace_admission_hook.py::test_claude_hook_parity -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260623T151038003087",
+        "run_id": "run-20260623T152828105908",
         "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-ws-040/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-040/command.txt",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-040/stdout.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-040/stderr.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-040/junit.xml",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-040/result.json"
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-040/command.txt",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-040/stdout.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-040/stderr.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-040/junit.xml",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-040/result.json"
         ],
-        "execution_fingerprint": "4d518c62a4bed27669ed92123bf90596553f10c5a3f1eae8946d347e902d896c",
-        "started_at": "2026-06-23T15:10:52.612319",
-        "ended_at": "2026-06-23T15:10:54.640825",
-        "junit_path": ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-040/junit.xml",
+        "execution_fingerprint": "05957fd0c461da21caed11ea5a53f14fd155df6b2aec54c9b7833904496ee119",
+        "started_at": "2026-06-23T15:28:44.370808",
+        "ended_at": "2026-06-23T15:28:44.983515",
+        "junit_path": ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-040/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -521,19 +523,19 @@
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 0,
+        "assertion_count": 1,
         "command": "mkdir -p .beacon/qa-tmp && python3 -m beacon doctor verify-agent-surface --project-root . --agent cursor --strict --json >.beacon/qa-tmp/TC-WS-050.json 2>&1; python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-WS-050.json')); checks=(d.get('result') or {}).get('checks') or d.get('checks') or []; assert any(c.get('name')=='v160_shared_preamble_and_hard_gates' for c in checks)\"",
-        "run_id": "run-20260623T151038003087",
+        "run_id": "run-20260623T152828105908",
         "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-ws-050/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-050/command.txt",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-050/stdout.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-050/stderr.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-050/result.json"
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-050/command.txt",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-050/stdout.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-050/stderr.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-050/result.json"
         ],
-        "execution_fingerprint": "23349975f25ff63ed75d08595d9241f2331dc23283aca35e6569e5d84743f073",
-        "started_at": "2026-06-23T15:10:54.766156",
-        "ended_at": "2026-06-23T15:10:59.479228",
+        "execution_fingerprint": "1910995be29925896bb723c03b79d826efa226339777d0ed91cc67aa17534b44",
+        "started_at": "2026-06-23T15:28:45.066542",
+        "ended_at": "2026-06-23T15:28:48.667860",
         "junit_path": "",
         "junit_valid": false,
         "browser_required": false,
@@ -558,19 +560,19 @@
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 0,
+        "assertion_count": 1,
         "command": "beacon doctor verify-agent-surface --project-root . --agent cursor --strict --json >.beacon/qa-tmp/TC-WS-051.json 2>&1; python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-WS-051.json')); assert d.get('ok') is True or 'hook' in str(d).lower()\"",
-        "run_id": "run-20260623T151038003087",
+        "run_id": "run-20260623T152828105908",
         "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-ws-051/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-051/command.txt",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-051/stdout.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-051/stderr.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-051/result.json"
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-051/command.txt",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-051/stdout.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-051/stderr.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-051/result.json"
         ],
-        "execution_fingerprint": "acfbad91d9524c86162131754270fc06aa4d56c8040af61c15e93445c3645d22",
-        "started_at": "2026-06-23T15:10:59.571890",
-        "ended_at": "2026-06-23T15:11:03.810413",
+        "execution_fingerprint": "3c4f3c58ab5f2b53f7bf995a33ecd32bc3cbcf26217308f9a2a0bc33a98e5b76",
+        "started_at": "2026-06-23T15:28:48.748791",
+        "ended_at": "2026-06-23T15:28:52.457622",
         "junit_path": "",
         "junit_valid": false,
         "browser_required": false,
@@ -597,19 +599,19 @@
         "reason_code": "",
         "assertion_count": 1,
         "command": "TRELLIS_DISABLE_HOOKS=1 python3 -m pytest tests/test_v162_workspace_admission_hook.py::test_beacon_hook_independent_of_trellis -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260623T151038003087",
+        "run_id": "run-20260623T152828105908",
         "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-ws-060/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-060/command.txt",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-060/stdout.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-060/stderr.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-060/junit.xml",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-060/result.json"
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-060/command.txt",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-060/stdout.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-060/stderr.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-060/junit.xml",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-060/result.json"
         ],
-        "execution_fingerprint": "89102758b709261499217f5e1d0174ca85dfdda57feaf817c6114e78030953e6",
-        "started_at": "2026-06-23T15:11:03.888029",
-        "ended_at": "2026-06-23T15:11:04.924240",
-        "junit_path": ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-060/junit.xml",
+        "execution_fingerprint": "190b0734edb991196d117dcbe4120b027abad8b3b3ad78d4d8173635362c35f6",
+        "started_at": "2026-06-23T15:28:52.534035",
+        "ended_at": "2026-06-23T15:28:53.513577",
+        "junit_path": ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-060/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -635,19 +637,19 @@
         "reason_code": "",
         "assertion_count": 1,
         "command": "python3 -m pytest tests/test_v162_workspace_admit.py::test_governance_v162_dirty_only -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260623T151038003087",
+        "run_id": "run-20260623T152828105908",
         "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-ws-070/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-070/command.txt",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-070/stdout.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-070/stderr.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-070/junit.xml",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-070/result.json"
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-070/command.txt",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-070/stdout.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-070/stderr.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-070/junit.xml",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-070/result.json"
         ],
-        "execution_fingerprint": "44ee140f6dfc6879a70d94544e6cb1f86e2c446f6ff9d264b5f1880b21aeb213",
-        "started_at": "2026-06-23T15:11:05.023574",
-        "ended_at": "2026-06-23T15:11:06.083350",
-        "junit_path": ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-070/junit.xml",
+        "execution_fingerprint": "064611150a95b0e92e193989747f69ab1729712a4855f0c52e3bc56a195809ec",
+        "started_at": "2026-06-23T15:28:53.627839",
+        "ended_at": "2026-06-23T15:28:54.376097",
+        "junit_path": ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-070/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -673,19 +675,19 @@
         "reason_code": "",
         "assertion_count": 1,
         "command": "python3 -m pytest tests/test_v162_workspace_admit.py::test_dirty_invalidation_branch_change -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260623T151038003087",
+        "run_id": "run-20260623T152828105908",
         "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-ws-080/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-080/command.txt",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-080/stdout.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-080/stderr.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-080/junit.xml",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-080/result.json"
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-080/command.txt",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-080/stdout.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-080/stderr.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-080/junit.xml",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-080/result.json"
         ],
-        "execution_fingerprint": "2fa5b6e22000eec6486241845a51a19a87c9c545cd9585a1eeb53726c205823a",
-        "started_at": "2026-06-23T15:11:06.173900",
-        "ended_at": "2026-06-23T15:11:07.951086",
-        "junit_path": ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-080/junit.xml",
+        "execution_fingerprint": "3c1151872f65a97f9e610b1a73fc4d83678327d0a58b63f41855153366431edc",
+        "started_at": "2026-06-23T15:28:54.452947",
+        "ended_at": "2026-06-23T15:28:55.445694",
+        "junit_path": ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-080/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -711,19 +713,19 @@
         "reason_code": "",
         "assertion_count": 1,
         "command": "python3 -m pytest tests/test_v162_workspace_admit.py::test_no_ttl_still_valid -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260623T151038003087",
+        "run_id": "run-20260623T152828105908",
         "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-ws-082/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-082/command.txt",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-082/stdout.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-082/stderr.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-082/junit.xml",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-082/result.json"
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-082/command.txt",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-082/stdout.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-082/stderr.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-082/junit.xml",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-082/result.json"
         ],
-        "execution_fingerprint": "104837b3174028ccc200d9979bd63f5fac7dae478d2ebef692eb486941a159ad",
-        "started_at": "2026-06-23T15:11:08.087526",
-        "ended_at": "2026-06-23T15:11:09.058537",
-        "junit_path": ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-082/junit.xml",
+        "execution_fingerprint": "4b44cac1862a2e8b6378049f6dd745fe702cd722c3c566897e4cc8572b0d309c",
+        "started_at": "2026-06-23T15:28:55.522035",
+        "ended_at": "2026-06-23T15:28:56.471654",
+        "junit_path": ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-082/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -747,19 +749,19 @@
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 0,
+        "assertion_count": 1,
         "command": "mkdir -p .beacon/qa-tmp && beacon implement check-branch --project-root . --version v1.6.2 --feature beacon-global-workspace-git-admission-v162 --json >.beacon/qa-tmp/TC-WS-090.json 2>&1; python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-WS-090.json')); assert d.get('status')=='pass'\"",
-        "run_id": "run-20260623T151038003087",
+        "run_id": "run-20260623T152828105908",
         "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-ws-090/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-090/command.txt",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-090/stdout.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-090/stderr.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-090/result.json"
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-090/command.txt",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-090/stdout.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-090/stderr.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-090/result.json"
         ],
-        "execution_fingerprint": "328e8d7b20bdc8767d703d54fec385b06af0b1fbd0152949ee9f94ecad21101e",
-        "started_at": "2026-06-23T15:11:09.138223",
-        "ended_at": "2026-06-23T15:11:09.780820",
+        "execution_fingerprint": "0475a4b59fd642545ab2cc020c479271a04a62b7e7c6ecc4e55100a5a322d950",
+        "started_at": "2026-06-23T15:28:56.550478",
+        "ended_at": "2026-06-23T15:28:57.160680",
         "junit_path": "",
         "junit_valid": false,
         "browser_required": false,
@@ -786,19 +788,19 @@
         "reason_code": "",
         "assertion_count": 1,
         "command": "python3 -m pytest tests/test_v162_version_line_package_closure.py::test_upgrade_package_writes_release_stub -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260623T151038003087",
+        "run_id": "run-20260623T152828105908",
         "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-vl-001/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-001/command.txt",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-001/stdout.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-001/stderr.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-001/junit.xml",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-001/result.json"
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-001/command.txt",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-001/stdout.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-001/stderr.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-001/junit.xml",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-001/result.json"
         ],
-        "execution_fingerprint": "3d6868caf55cc3f9ba6f56c7b4ea283b2d90b41d9f846b8f64600f69eeea3b2e",
-        "started_at": "2026-06-23T15:11:09.987529",
-        "ended_at": "2026-06-23T15:11:10.626437",
-        "junit_path": ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-001/junit.xml",
+        "execution_fingerprint": "8c4ff256322c45fdc231beca71059ed7ba65a9cec94dfe58d34c66ea6fc7efc3",
+        "started_at": "2026-06-23T15:28:57.364311",
+        "ended_at": "2026-06-23T15:28:57.999286",
+        "junit_path": ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-001/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -824,19 +826,19 @@
         "reason_code": "",
         "assertion_count": 1,
         "command": "python3 -m pytest tests/test_v162_version_line_package_closure.py::test_package_gate_routes_upgrade_package -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260623T151038003087",
+        "run_id": "run-20260623T152828105908",
         "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-vl-010/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-010/command.txt",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-010/stdout.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-010/stderr.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-010/junit.xml",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-010/result.json"
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-010/command.txt",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-010/stdout.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-010/stderr.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-010/junit.xml",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-010/result.json"
         ],
-        "execution_fingerprint": "7fc8b59d5a678bb3976b5234b94772ad3526e4796571953515f7492e3fb54382",
-        "started_at": "2026-06-23T15:11:10.704980",
-        "ended_at": "2026-06-23T15:11:11.463071",
-        "junit_path": ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-010/junit.xml",
+        "execution_fingerprint": "3cd6ce56ebdbbb8e1e608d1f73e5b1fd2c2cbccc2e6b7a7dae73bb275be04fca",
+        "started_at": "2026-06-23T15:28:58.077622",
+        "ended_at": "2026-06-23T15:28:58.850096",
+        "junit_path": ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-010/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -862,19 +864,19 @@
         "reason_code": "",
         "assertion_count": 1,
         "command": "python3 -m pytest tests/test_v162_version_line_package_closure.py::test_package_gate_repair_commands -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260623T151038003087",
+        "run_id": "run-20260623T152828105908",
         "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-vl-011/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-011/command.txt",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-011/stdout.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-011/stderr.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-011/junit.xml",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-011/result.json"
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-011/command.txt",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-011/stdout.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-011/stderr.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-011/junit.xml",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-011/result.json"
         ],
-        "execution_fingerprint": "f462dc769d08398509c5888456e2a5b8d814c6b03c5cde8c4050691974c3bd9d",
-        "started_at": "2026-06-23T15:11:11.546882",
-        "ended_at": "2026-06-23T15:11:12.279422",
-        "junit_path": ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-011/junit.xml",
+        "execution_fingerprint": "1e42b7691f32eed2677f10673ccf9981702fe9de09145b69d0beef7f64411749",
+        "started_at": "2026-06-23T15:28:58.934439",
+        "ended_at": "2026-06-23T15:28:59.659256",
+        "junit_path": ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-011/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -898,19 +900,19 @@
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 0,
+        "assertion_count": 1,
         "command": "mkdir -p .beacon/qa-tmp && python3 -m beacon doctor upgrade-package --project-root . --version v1.6.2 --json >/dev/null && python3 -m beacon doctor verify-materials --project-root . --version v1.6.2 --strict --json >.beacon/qa-tmp/TC-VL-020.json 2>&1; python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-VL-020.json')); ok=(d.get('result') or {}).get('ok'); assert ok is True or d.get('status') in ('PASS','pass')\"",
-        "run_id": "run-20260623T151038003087",
+        "run_id": "run-20260623T152828105908",
         "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-vl-020/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-020/command.txt",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-020/stdout.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-020/stderr.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-020/result.json"
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-020/command.txt",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-020/stdout.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-020/stderr.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-020/result.json"
         ],
-        "execution_fingerprint": "e006cb8f11ac1cd281fd760dd8c5ce98a0f6c1b4614b4b2cdb067b39410c4e3f",
-        "started_at": "2026-06-23T15:11:12.389175",
-        "ended_at": "2026-06-23T15:11:13.834834",
+        "execution_fingerprint": "94d26886c203c295fe99d7eeb512d9b3ca56b3301a807d57024567803d85b79c",
+        "started_at": "2026-06-23T15:28:59.739836",
+        "ended_at": "2026-06-23T15:29:02.026343",
         "junit_path": "",
         "junit_valid": false,
         "browser_required": false,
@@ -937,19 +939,19 @@
         "reason_code": "",
         "assertion_count": 1,
         "command": "python3 -m pytest tests/test_v162_agent_eval_admit.py::test_slash_skill_step0_admit -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260623T151038003087",
+        "run_id": "run-20260623T152828105908",
         "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-ws-100/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-100/command.txt",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-100/stdout.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-100/stderr.log",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-100/junit.xml",
-          ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-100/result.json"
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-100/command.txt",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-100/stdout.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-100/stderr.log",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-100/junit.xml",
+          ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-100/result.json"
         ],
-        "execution_fingerprint": "b240cad6cd2ff397ef20bf0e9cf880740045e42a60f74dc9db645746f31f57f2",
-        "started_at": "2026-06-23T15:11:13.927536",
-        "ended_at": "2026-06-23T15:11:18.218372",
-        "junit_path": ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-100/junit.xml",
+        "execution_fingerprint": "c7b543d3dc3afe04fbe0ee077bab4136df1e47fc422fa5327e8b41475cb44723",
+        "started_at": "2026-06-23T15:29:02.105555",
+        "ended_at": "2026-06-23T15:29:05.789285",
+        "junit_path": ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-100/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -963,30 +965,16 @@
       }
     ]
   },
-  "quality_issues": [
-    {
-      "layer": "integration",
-      "reason_code": "assertion_count_zero_pass",
-      "message": "layer integration passed but assertion_count=0"
-    },
-    {
-      "layer": "integration",
-      "reason_code": "junit_missing_or_invalid",
-      "message": "layer integration missing junit.xml"
-    }
-  ],
+  "quality_issues": [],
   "schema_version": "1.0",
-  "updated_at": "2026-06-23T07:11:18.305867+00:00",
+  "updated_at": "2026-06-23T07:29:05.925048+00:00",
   "summary": {
     "feature": "beacon-global-workspace-git-admission-v162",
     "version": "v1.6.2",
     "status": "passed",
     "release_ready": true,
-    "continue_decision": "stop_for_repair",
-    "stop_reasons": [
-      "assertion_count_zero_pass",
-      "junit_missing_or_invalid"
-    ],
+    "continue_decision": "ready_for_release",
+    "stop_reasons": [],
     "reconciliation_required": false,
     "reconciliation_reason_code": "",
     "reconciliation_artifact_path": "",
@@ -1182,8 +1170,6 @@
   "targeted_rerun": {
     "required": true,
     "reason_codes": [
-      "previous_feature_qa_not_passed",
-      "implementation_run_changed",
       "source_matrix_changed",
       "artifact_updates_pending"
     ],
@@ -1269,10 +1255,11 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-001/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-001/result.json"
       ]
     },
     {
@@ -1291,11 +1278,11 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-002/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-002/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-002/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-002/junit.xml",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-002/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-002/result.json"
       ]
     },
     {
@@ -1314,10 +1301,10 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-010/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-010/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-010/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-010/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-010/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-010/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-010/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-010/result.json"
       ]
     },
     {
@@ -1336,11 +1323,11 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-011/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-011/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-011/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-011/junit.xml",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-011/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-011/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-011/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-011/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-011/junit.xml",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-011/result.json"
       ]
     },
     {
@@ -1359,10 +1346,10 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-020/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-020/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-020/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-020/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-020/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-020/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-020/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-020/result.json"
       ]
     },
     {
@@ -1381,10 +1368,10 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-021/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-021/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-021/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-021/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-021/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-021/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-021/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-021/result.json"
       ]
     },
     {
@@ -1403,11 +1390,11 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-030/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-030/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-030/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-030/junit.xml",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-030/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-030/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-030/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-030/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-030/junit.xml",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-030/result.json"
       ]
     },
     {
@@ -1426,11 +1413,11 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-031/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-031/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-031/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-031/junit.xml",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-031/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-031/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-031/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-031/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-031/junit.xml",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-031/result.json"
       ]
     },
     {
@@ -1449,11 +1436,11 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-032/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-032/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-032/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-032/junit.xml",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-032/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-032/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-032/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-032/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-032/junit.xml",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-032/result.json"
       ]
     },
     {
@@ -1472,11 +1459,11 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-040/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-040/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-040/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-040/junit.xml",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-040/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-040/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-040/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-040/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-040/junit.xml",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-040/result.json"
       ]
     },
     {
@@ -1495,10 +1482,10 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-050/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-050/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-050/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-050/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-050/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-050/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-050/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-050/result.json"
       ]
     },
     {
@@ -1517,10 +1504,10 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-051/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-051/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-051/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-051/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-051/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-051/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-051/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-051/result.json"
       ]
     },
     {
@@ -1539,11 +1526,11 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-060/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-060/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-060/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-060/junit.xml",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-060/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-060/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-060/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-060/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-060/junit.xml",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-060/result.json"
       ]
     },
     {
@@ -1562,11 +1549,11 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-070/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-070/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-070/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-070/junit.xml",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-070/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-070/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-070/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-070/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-070/junit.xml",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-070/result.json"
       ]
     },
     {
@@ -1585,11 +1572,11 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-080/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-080/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-080/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-080/junit.xml",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-080/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-080/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-080/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-080/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-080/junit.xml",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-080/result.json"
       ]
     },
     {
@@ -1608,11 +1595,11 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-082/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-082/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-082/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-082/junit.xml",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-082/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-082/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-082/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-082/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-082/junit.xml",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-082/result.json"
       ]
     },
     {
@@ -1631,10 +1618,10 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-090/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-090/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-090/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-090/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-090/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-090/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-090/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-090/result.json"
       ]
     },
     {
@@ -1653,11 +1640,11 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-001/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-001/result.json"
       ]
     },
     {
@@ -1676,11 +1663,11 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-010/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-010/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-010/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-010/junit.xml",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-010/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-010/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-010/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-010/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-010/junit.xml",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-010/result.json"
       ]
     },
     {
@@ -1699,11 +1686,11 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-011/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-011/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-011/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-011/junit.xml",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-011/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-011/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-011/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-011/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-011/junit.xml",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-011/result.json"
       ]
     },
     {
@@ -1722,10 +1709,10 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-020/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-020/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-020/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-020/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-020/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-020/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-020/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-020/result.json"
       ]
     },
     {
@@ -1744,11 +1731,11 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-100/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-100/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-100/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-100/junit.xml",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-100/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-100/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-100/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-100/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-100/junit.xml",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-100/result.json"
       ]
     }
   ],
@@ -1866,7 +1853,7 @@
         "status": "pass",
         "blocked": false,
         "reason_code": "",
-        "generated_at": "2026-06-23T07:10:33.797920+00:00",
+        "generated_at": "2026-06-23T07:28:24.266152+00:00",
         "package_dir": "docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162",
         "truth_frontmatter": {
           "slug": "beacon-global-workspace-git-admission-v162",
@@ -1911,7 +1898,7 @@
         },
         "source_hashes": {
           "truth": "749c3b296e8f5037003af35517a7cf4b56f64f53ac5e8185afbc760a155ba790",
-          "tests": "aa62b4ad17925e76268d20d814659f7887025a5c1e63dd0b3aa2287e1b3d6634",
+          "tests": "422d2afa3f884a9beb9b1635608c6f536ec02e466292b5c5d99cdbd8cad67566",
           "tasks": "0db78b7b08f30cbc5d19ba232e83c4b95774701bbc4fdb89d40ebd3d2bb77caa",
           "evidence": "a0d1b6cde250e97a61d99d83787b3184019a8923da23dd9a542409e80e44ebef"
         },
@@ -1927,8 +1914,8 @@
     "schema_version": "1.0",
     "feature": "beacon-global-workspace-git-admission-v162",
     "feature_slug": "beacon-global-workspace-git-admission-v162",
-    "run_id": "run-20260623T151038003087",
-    "generated_at": "2026-06-23T07:11:18.414291+00:00",
+    "run_id": "run-20260623T152828105908",
+    "generated_at": "2026-06-23T07:29:06.109514+00:00",
     "execution_mode": "feature-aware",
     "scenario_count": 22,
     "browser_scenario_count": 0,
@@ -1978,10 +1965,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-001/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-001/result.json"
       ]
     },
     {
@@ -2013,11 +2001,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-002/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-002/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-002/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-002/junit.xml",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-002/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-002/result.json"
       ]
     },
     {
@@ -2049,10 +2037,10 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-010/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-010/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-010/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-010/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-010/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-010/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-010/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-010/result.json"
       ]
     },
     {
@@ -2084,11 +2072,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-011/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-011/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-011/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-011/junit.xml",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-011/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-011/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-011/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-011/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-011/junit.xml",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-011/result.json"
       ]
     },
     {
@@ -2120,10 +2108,10 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-020/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-020/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-020/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-020/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-020/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-020/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-020/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-020/result.json"
       ]
     },
     {
@@ -2155,10 +2143,10 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-021/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-021/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-021/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-021/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-021/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-021/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-021/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-021/result.json"
       ]
     },
     {
@@ -2190,11 +2178,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-030/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-030/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-030/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-030/junit.xml",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-030/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-030/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-030/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-030/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-030/junit.xml",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-030/result.json"
       ]
     },
     {
@@ -2226,11 +2214,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-031/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-031/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-031/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-031/junit.xml",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-031/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-031/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-031/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-031/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-031/junit.xml",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-031/result.json"
       ]
     },
     {
@@ -2262,11 +2250,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-032/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-032/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-032/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-032/junit.xml",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-032/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-032/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-032/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-032/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-032/junit.xml",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-032/result.json"
       ]
     },
     {
@@ -2298,11 +2286,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-040/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-040/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-040/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-040/junit.xml",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-040/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-040/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-040/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-040/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-040/junit.xml",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-040/result.json"
       ]
     },
     {
@@ -2334,10 +2322,10 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-050/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-050/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-050/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-050/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-050/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-050/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-050/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-050/result.json"
       ]
     },
     {
@@ -2369,10 +2357,10 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-051/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-051/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-051/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-051/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-051/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-051/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-051/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-051/result.json"
       ]
     },
     {
@@ -2404,11 +2392,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-060/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-060/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-060/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-060/junit.xml",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-060/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-060/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-060/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-060/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-060/junit.xml",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-060/result.json"
       ]
     },
     {
@@ -2440,11 +2428,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-070/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-070/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-070/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-070/junit.xml",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-070/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-070/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-070/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-070/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-070/junit.xml",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-070/result.json"
       ]
     },
     {
@@ -2476,11 +2464,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-080/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-080/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-080/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-080/junit.xml",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-080/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-080/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-080/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-080/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-080/junit.xml",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-080/result.json"
       ]
     },
     {
@@ -2512,11 +2500,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-082/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-082/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-082/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-082/junit.xml",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-082/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-082/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-082/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-082/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-082/junit.xml",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-082/result.json"
       ]
     },
     {
@@ -2548,10 +2536,10 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-090/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-090/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-090/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-090/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-090/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-090/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-090/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-090/result.json"
       ]
     },
     {
@@ -2583,11 +2571,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-001/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-001/result.json"
       ]
     },
     {
@@ -2619,11 +2607,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-010/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-010/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-010/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-010/junit.xml",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-010/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-010/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-010/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-010/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-010/junit.xml",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-010/result.json"
       ]
     },
     {
@@ -2655,11 +2643,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-011/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-011/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-011/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-011/junit.xml",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-011/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-011/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-011/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-011/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-011/junit.xml",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-011/result.json"
       ]
     },
     {
@@ -2691,10 +2679,10 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-020/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-020/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-020/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-VL-020/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-020/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-020/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-020/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-VL-020/result.json"
       ]
     },
     {
@@ -2726,11 +2714,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-100/command.txt",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-100/stdout.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-100/stderr.log",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-100/junit.xml",
-        ".beacon/evidence/auto-test/run-20260623T151038003087/qa9-tc/TC-WS-100/result.json"
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-100/command.txt",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-100/stdout.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-100/stderr.log",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-100/junit.xml",
+        ".beacon/evidence/auto-test/run-20260623T152828105908/qa9-tc/TC-WS-100/result.json"
       ]
     }
   ],
@@ -2740,7 +2728,7 @@
     "schema_version": "1.0",
     "feature": "beacon-global-workspace-git-admission-v162",
     "feature_slug": "beacon-global-workspace-git-admission-v162",
-    "run_id": "run-20260623T151038003087",
+    "run_id": "run-20260623T152828105908",
     "ac_total": 15,
     "ac_accepted": 15,
     "scenario_total": 22,
@@ -2960,16 +2948,13 @@
       "advisory_or_blocked_finding_count": 0,
       "policy": "absorbed_deep_findings_only"
     },
-    "continue_decision": "stop_for_repair",
-    "stop_reasons": [
-      "assertion_count_zero_pass",
-      "junit_missing_or_invalid"
-    ],
+    "continue_decision": "ready_for_release",
+    "stop_reasons": [],
     "test_case_backfill_required": false,
     "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162 --version v1.6.2 --feature \"beacon-global-workspace-git-admission-v162\"",
     "repair_handoff": {
       "action": "qa-repair",
-      "reason": "assertion_count_zero_pass, junit_missing_or_invalid",
+      "reason": "qa_round_incomplete",
       "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162 --version v1.6.2 --feature \"beacon-global-workspace-git-admission-v162\""
     },
     "release_ready": true

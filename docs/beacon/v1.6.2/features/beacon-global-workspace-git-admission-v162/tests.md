@@ -14,7 +14,7 @@ parser_contract: beacon-feature-package-v1
 
 | AC ID | TC ID | Layer | Command | Assertion |
 |-------|-------|-------|---------|-----------|
-| AC-001 | TC-WS-001 | integration | `mkdir -p .beacon/qa-tmp && beacon workspace admit --project-root . --version v1.6.2 --feature beacon-global-workspace-git-admission-v162 --json >.beacon/qa-tmp/TC-WS-001.json 2>&1; python3 -c "import json; d=json.load(open('.beacon/qa-tmp/TC-WS-001.json')); assert d.get('status')=='pass' and 'worktree_path' in d"` | pass + worktree |
+| AC-001 | TC-WS-001 | integration | `python3 -m pytest tests/test_v162_workspace_admit.py::test_workspace_admit_issues_artifact_without_expires_at -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | pass + worktree |
 | AC-001 | TC-WS-002 | contract | `python3 -m pytest tests/test_v162_workspace_admit.py::test_admit_json_schema_no_expires_at -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | 无 normative expires_at |
 | AC-002 | TC-WS-010 | integration | `mkdir -p .beacon/qa-tmp && rm -f .beacon/state/workspace-admission/v1.6.2/beacon-global-workspace-git-admission-v162.json && python3 -m beacon implement run "beacon-global-workspace-git-admission-v162" --project-root . --version v1.6.2 --json >.beacon/qa-tmp/TC-WS-010.json 2>&1; python3 -c "import json; d=json.load(open('.beacon/qa-tmp/TC-WS-010.json')); assert d.get('status')=='blocked'"` | fail-closed 无 artifact |
 | AC-002 | TC-WS-011 | integration | `python3 -m pytest tests/test_v162_workspace_integration.py::test_qa_run_blocked_without_artifact -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | qa fail-closed（gate，避免嵌套 qa run 超时） |

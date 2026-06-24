@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-06-23T07:10:17.279286+00:00",
+  "generated_at": "2026-06-23T07:28:19.898228+00:00",
   "feature": "beacon-global-workspace-git-admission-v162",
   "feature_slug": "beacon-global-workspace-git-admission-v162",
   "version": "v1.6.2",
@@ -19,7 +19,7 @@
   },
   "source_hashes": {
     "truth": "749c3b296e8f5037003af35517a7cf4b56f64f53ac5e8185afbc760a155ba790",
-    "tests": "aa62b4ad17925e76268d20d814659f7887025a5c1e63dd0b3aa2287e1b3d6634",
+    "tests": "422d2afa3f884a9beb9b1635608c6f536ec02e466292b5c5d99cdbd8cad67566",
     "tasks": "0db78b7b08f30cbc5d19ba232e83c4b95774701bbc4fdb89d40ebd3d2bb77caa",
     "evidence": "a0d1b6cde250e97a61d99d83787b3184019a8923da23dd9a542409e80e44ebef"
   },
@@ -126,7 +126,7 @@
       "ac_id": "AC-001",
       "tc_id": "TC-WS-001",
       "layer": "integration",
-      "command": "`mkdir -p .beacon/qa-tmp && beacon workspace admit --project-root . --version v1.6.2 --feature beacon-global-workspace-git-admission-v162 --json >.beacon/qa-tmp/TC-WS-001.json 2>&1; python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-WS-001.json')); assert d.get('status')=='pass' and 'worktree_path' in d\"`",
+      "command": "`python3 -m pytest tests/test_v162_workspace_admit.py::test_workspace_admit_issues_artifact_without_expires_at -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
       "assertion": "pass + worktree",
       "evidence_path": ""
     },
