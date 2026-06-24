@@ -67,8 +67,37 @@ __pycache__/
 *.py[cod]
 # BEACON:GITIGNORE:END
 
+# =============================================
+# === P0 additions: build artifacts & state ===
+# =============================================
 
+# Python build artifacts (never commit)
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+.pytest_cache/
+.coverage
+htmlcov/
 
+# Node / beacon-loop build outputs
+node_modules/
+packages/*/node_modules/
+packages/*/dist/
+packages/*/build/
+packages/*/.turbo/
+*.tsbuildinfo
+
+# Beacon test results (evidence — store in Release artifacts, not VCS)
+test-results/
+
+# IDE / OS noise
+.DS_Store
+Thumbs.db
+.idea/
+*.swp
+*~
 
 .understand-anything/
 
