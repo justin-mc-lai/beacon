@@ -3,25 +3,18 @@
   "feature": "beacon-agent-eval-v161",
   "feature_slug": "beacon-agent-eval-v161",
   "version": "v1.6.1",
-  "revision_id": "R2",
-  "source_revision_id": "R1",
+  "revision_id": "R3",
+  "source_revision_id": "R2",
   "reason": "freeze",
   "doc_status": "frozen",
   "delivery_status": "accepted",
   "lifecycle_status": "accepted",
-  "baseline_hash": "sha256:72b97d62c01867b78abe0bbdd3ca59acaf23d831afe76f294ceb286a837e482e",
+  "baseline_hash": "sha256:b7d4ed19a7a31629eb448182c258e54572e145ae943051926645553f96406bdb",
   "superseded_by": "",
-  "created_at": "2026-06-15T09:43:00.687607+00:00",
-  "frozen_at": "2026-06-15T09:45:14.547256+00:00",
-  "accepted_at": "2026-06-16T11:39:24.974268+00:00",
-  "last_implementation_run_id": "run-20260615T100826Z-b337",
-  "changed_files": [
-    "beacon/utils/agent_eval_kit.py",
-    "beacon/commands/eval.py",
-    "beacon/utils/agent_eval_state.py",
-    "beacon/commands/doctor.py"
-  ],
-  "last_verification_run_id": "run-20260616T193819829443",
+  "created_at": "2026-06-17T03:01:34.507466+00:00",
+  "frozen_at": "2026-06-17T03:05:41.209689+00:00",
+  "accepted_at": "2026-06-17T08:40:07.645716+00:00",
+  "last_verification_run_id": "run-20260617T163839698732",
   "verification_evidence": [
     ".beacon/auto-test-status.json",
     ".beacon/qa/status.json",
@@ -31,5 +24,15 @@
     ".beacon/qa/features/beacon-agent-eval-v161/scorecard.json",
     ".beacon/release-gate-report.json"
   ],
-  "accepted_by": "qa"
+  "accepted_by": "qa",
+  "last_implementation_run_id": "run-20260617T-r3-tiered-live-closure",
+  "changed_files": [
+    "beacon/utils/agent_eval_grader.py",
+    "beacon/utils/agent_eval_live_executor.py",
+    "beacon/utils/agent_eval_kit.py",
+    "beacon/utils/agent_eval_state.py",
+    "beacon/commands/eval.py",
+    "tests/test_v161_agent_eval_grader.py",
+    "tests/test_v161_agent_eval_live_tier.py"
+  ]
 }

@@ -866,17 +866,58 @@ def evaluate_implement_version_governance_preflight(
             }
         )
 
+    admission_satisfied = False
+    try:
+        from beacon.utils.workspace_admission import load_admission_contract, validate_workspace_admission
+
+        admission_contract = load_admission_contract(root, version=version)
+        if admission_contract.get("require_workspace_admission"):
+            admission_validation = validate_workspace_admission(
+                root,
+                version=version,
+                feature=feature,
+                cwd=Path.cwd(),
+                contract=admission_contract,
+            )
+            admission_satisfied = bool(admission_validation.get("valid"))
+    except Exception:  # noqa: BLE001
+        admission_satisfied = False
+
     if not reason_code and str(metadata_verdict.get("status") or "") == "fail":
+        failing_checks = [
+            item
+            for item in (metadata_verdict.get("checks") or [])
+            if isinstance(item, dict) and str(item.get("status") or "") == "fail"
+        ]
         branch_failures = [item for item in _branch_contract_checks(metadata_verdict) if item.get("status") == "fail"]
-        reason_code = "implement_metadata_branch_mismatch" if branch_failures else "implement_metadata_contract_blocked"
-        diagnostics.append(
-            {
-                "severity": "error",
-                "code": reason_code,
-                "message": "project metadata branch contract failed before implement",
-                "branch_failures": branch_failures,
-            }
-        )
+        non_branch_failures = [
+            item
+            for item in failing_checks
+            if not str(item.get("name", "") or "").startswith("branch_contract:")
+        ]
+        if admission_satisfied and failing_checks and not non_branch_failures:
+            failing_checks = []
+            branch_failures = []
+        if branch_failures:
+            reason_code = "implement_metadata_branch_mismatch"
+            diagnostics.append(
+                {
+                    "severity": "error",
+                    "code": reason_code,
+                    "message": "project metadata branch contract failed before implement",
+                    "branch_failures": branch_failures,
+                }
+            )
+        elif non_branch_failures:
+            reason_code = "implement_metadata_contract_blocked"
+            diagnostics.append(
+                {
+                    "severity": "error",
+                    "code": reason_code,
+                    "message": "project metadata contract failed before implement",
+                    "metadata_failures": non_branch_failures,
+                }
+            )
 
     if (
         not reason_code

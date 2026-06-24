@@ -56,6 +56,91 @@ def test_agent_eval_catalog_materialize(tmp_path: Path):
     assert matrix.exists()
     matrix_payload = json.loads(matrix.read_text(encoding="utf-8"))
     assert matrix_payload.get("entry_count") == 37
+    fixtures = payload.get("fixtures") or {}
+    assert fixtures.get("entry_count") == 37
+    assert len(list((root / "fixtures/agent-eval/v161/live").glob("*.prompt.txt"))) >= 37
+
+
+def test_agent_eval_live_local_admitted_host_behavior(tmp_path: Path):
+    root = Path(__file__).resolve().parents[1]
+    payload = _invoke(
+        [
+            "eval",
+            "run",
+            "--project-root",
+            str(root),
+            "--version",
+            "v1.6.1",
+            "--runner",
+            "live",
+            "--live-tier",
+            "local_admitted",
+            "--json",
+        ],
+        cwd=root,
+    )
+    assert payload.get("status") == "pass"
+    assert payload.get("live_skill_pass") == 37
+    assert payload.get("live_skill_total") == 37
+    assert payload.get("live_execution_tier") == "local_admitted"
+    host_traces = [
+        item
+        for item in payload.get("per_skill") or []
+        if item.get("live_execution_mode") == "host_behavior" and item.get("status") == "pass"
+    ]
+    assert len(host_traces) == 37
+    assert all(item.get("transcript_ref") for item in host_traces)
+
+
+def test_agent_eval_live_ci_default_tier(tmp_path: Path):
+    root = Path(__file__).resolve().parents[1]
+    payload = _invoke(
+        [
+            "eval",
+            "run",
+            "--project-root",
+            str(root),
+            "--version",
+            "v1.6.1",
+            "--runner",
+            "live",
+            "--live-tier",
+            "ci_default",
+            "--json",
+        ],
+        cwd=root,
+    )
+    assert payload.get("status") == "pass"
+    assert payload.get("live_surface_pass") == 36
+    assert payload.get("live_smoke_pass") == 1
+    assert payload.get("live_execution_tier") == "ci_default"
+
+
+def test_agent_eval_scorecard_behavior_evidence_host_only(tmp_path: Path):
+    root = Path(__file__).resolve().parents[1]
+    _invoke(
+        [
+            "eval",
+            "run",
+            "--project-root",
+            str(root),
+            "--version",
+            "v1.6.1",
+            "--runner",
+            "live",
+            "--live-tier",
+            "ci_default",
+            "--json",
+        ],
+        cwd=root,
+    )
+    payload = _invoke(
+        ["eval", "scorecard", "--project-root", str(root), "--version", "v1.6.1", "--runner", "live", "--json"],
+        cwd=root,
+    )
+    assert payload.get("behavior_evidence_source") == "host_behavior_only"
+    assert payload.get("live_execution_tier") == "ci_default"
+    assert payload.get("degraded") is True
 
 
 def test_agent_eval_live_blocked_per_skill(tmp_path: Path):

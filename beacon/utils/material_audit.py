@@ -87,6 +87,32 @@ def _feature_names(directory: Path) -> set[str]:
     return names
 
 
+
+_VERSION_LINE_MATERIAL_CHECK_NAMES = frozenset(
+    {
+        "formal_release_present",
+        "formal_boundaries_present",
+        "formal_project_skill_blueprint_present",
+        "formal_source_architecture_present",
+        "version_governance_resolver_first",
+    }
+)
+
+
+def _is_version_line_material_failure(categories: list[str], failing_checks: list[dict[str, Any]]) -> bool:
+    failing_names = {
+        str(item.get("name") or "").strip()
+        for item in failing_checks
+        if isinstance(item, dict) and str(item.get("status") or "").lower() == "fail"
+    }
+    if failing_names & _VERSION_LINE_MATERIAL_CHECK_NAMES:
+        return True
+    return any(
+        str(category or "").startswith("material_check_failed:formal_")
+        or str(category or "") == "material_check_failed:version_governance_resolver_first"
+        for category in categories
+    )
+
 def _requirement_package_failure_summary(checks: list[dict[str, Any]]) -> dict[str, Any]:
     categories: list[str] = []
     details: list[dict[str, Any]] = []
@@ -1004,6 +1030,7 @@ def build_requirement_package_gate(
     recommended_reason = ""
     remediation_mode = "none" if status == "pass" else "verify"
     recommended_command = ""
+    repair_commands: list[str] = []
     if status != "pass":
         if str(feature or "").strip() and any(category in drift_categories for category in failure_categories):
             remediation_mode = "change-loop"
@@ -1015,11 +1042,24 @@ def build_requirement_package_gate(
                 version=resolved_version,
                 reason="change-request",
             )
+        elif _is_version_line_material_failure(failure_categories, failing_checks):
+            remediation_mode = "upgrade-package"
+            recommended_action = "doctor-upgrade-package"
+            recommended_reason = (
+                "version-line delivery package is incomplete; run cumulative doctor upgrade "
+                "(do not manually copy prior-version docs)"
+            )
+            recommended_command = f"beacon doctor upgrade-package --project-root {root} --version {resolved_version} --apply"
+            repair_commands = [
+                recommended_command,
+                f"beacon doctor verify-materials --project-root {root} --version {resolved_version} --strict",
+            ]
         else:
             remediation_mode = "verify"
             recommended_action = "doctor-verify-materials"
             recommended_reason = "version-line requirement package closure is incomplete and must be diagnosed before repair"
             recommended_command = f"beacon doctor verify-materials --project-root {root} --version {resolved_version} --strict"
+            repair_commands = [recommended_command]
     # v1.4.12+: Check truth format compliance for frozen features
     if str(feature or "").strip() and _parse_semver_tuple(resolved_version) >= (1, 4, 12):
         from beacon.utils.truth_format import validate_prd_format, validate_user_story_format, validate_test_case_format
@@ -1064,4 +1104,5 @@ def build_requirement_package_gate(
         "recommended_reason": recommended_reason,
         "audit": audit,
         "recommended_command": recommended_command,
+        "repair_commands": repair_commands,
     }

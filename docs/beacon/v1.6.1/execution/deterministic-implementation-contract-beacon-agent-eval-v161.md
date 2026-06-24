@@ -2,7 +2,7 @@
 
 - feature: `beacon-agent-eval-v161`
 - version: `v1.6.1`
-- revision_id: `R2`
+- revision_id: `R3`
 - review_status: `approved`
 - approved_by: `implement-session`
 - reviewed_at: `2026-06-15T12:00:00Z`

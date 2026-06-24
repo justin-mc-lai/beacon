@@ -98,6 +98,7 @@ def build_app(*, package_version: str) -> typer.Typer:
     from .commands.prd import app as prd_app
     from .commands.test_case import app as test_case_app
     from .commands.workflow import app as workflow_app
+    from .commands.workspace import app as workspace_app
 
     # Planning & Analysis commands
     from .commands.analyze import app as analyze_app
@@ -166,6 +167,7 @@ def build_app(*, package_version: str) -> typer.Typer:
     app.command("materialize-feature-package")(materialize_feature_package_entry)
     app.command("validate-feature-package")(validate_feature_package_entry)
     app.add_typer(workflow_app, name="workflow", hidden=True)
+    app.add_typer(workspace_app, name="workspace")
     app.add_typer(init_app, name="init")
     app.add_typer(profile_app, name="profile")
     app.add_typer(skill_app, name="skill")

@@ -55,7 +55,22 @@
 - [x] TASK-AE-021 `beacon skill package verify-closure` pass
 - [x] TASK-AE-022 `beacon qa run beacon-agent-eval-v161` 33/33 + acceptance-kit materialize
 - [x] TASK-AE-023 Research artifact：`docs/beacon/v1.6.1/research/beacon-agent-eval-v161.md` + user_decision promoted
-- [x] TASK-AE-024 Truth freeze R2（full_parity scope_mode 确认）
+### Phase R3 — Change: tiered live closure（Option A，用户确认 2026-06-17）
+
+- [x] TASK-AE-R06 `beacon change --reopen-now` R2→R3。reason: tiered live closure
+- [x] TASK-AE-R07 truth/tests/tasks 写入 §I-R3 tier + AC-AE-034..040 + deferral DL-LIVE-*
+- [x] TASK-AE-R08 `beacon change --refreeze-chain` 冻结 R3 + TIG pass。evidence: `sha256:b7d4ed19a7a31629eb448182c258e54572e145ae943051926645553f96406bdb`
+
+### Phase G — R3 implementation（post-freeze）
+
+- [x] TASK-AE-025 materialize 37 prompt fixtures + catalog validate（AC-AE-035）
+- [x] TASK-AE-026 `agent_eval_grader.py` + pytest（AC-AE-036）
+- [x] TASK-AE-027 live tier orchestration + `--live-tier` CLI（AC-AE-034/031/032a/032b）
+- [x] TASK-AE-028 host executor adapter + transcript trace（AC-AE-039）
+- [x] TASK-AE-029 scorecard behavior_evidence host-only split（AC-AE-038）
+- [x] TASK-AE-030 post-release hook `--live-tier release_hook`（AC-AE-037）
+- [x] TASK-AE-031 FSM 单测扩展 SurfacePreflight/HostExecution/Grading（AC-AE-017）
+- [x] TASK-AE-032 `beacon qa run` delta + acceptance-kit 更新
 
 ## Boundary
 
@@ -69,6 +84,7 @@ Checkboxes 仅为任务台账；implement / QA / release 完成须由既有 gate
 | TC-AE-004..007 | Phase-B |
 | TC-AE-008..009 | Phase-D |
 | TC-AE-030..032 | Phase-D |
+| TC-AE-034..040 | Phase-G |
 | TC-AE-010..012 | Phase-C |
 | TC-AE-017..018 | Phase-E |
 | TC-AE-027 | Phase-F |

@@ -3,10 +3,10 @@ schema_version: "1.0"
 project_root: "/Users/apple/Developer/Personal/products/beacon"
 topology_kind: "single_repo"
 default_execution_service: "beacon"
-transaction_id: "tx-project-governance-ca056180d70b2e88"
-committed_at: "2026-06-15T06:03:54.557989+00:00"
-source_hash: "ca056180d70b2e88ffaba3a9b3803989e502e5fe50df46c8b7e1a66f4de9267a"
-event_type: "update"
+transaction_id: "tx-project-governance-4e79744af696ead5"
+committed_at: "2026-06-23T06:45:02.656000+00:00"
+source_hash: "4e79744af696ead54d5d51cdfe1259f926040bfcd1d5bda5cfc8bf558d08d5f7"
+event_type: "worktree-resync"
 parser_contract: "beacon-project-governance-v1"
 ---
 
@@ -59,3 +59,17 @@ parser_contract: "beacon-project-governance-v1"
 - per_service_canonical_branch:
   - `beacon`: `pre-main`
 - branch_governance_template: `standard-feature`
+
+### v1.6.2
+- participating_services: `beacon`
+- branch_guard_mode: `strict`
+- validation_state: `active`
+- per_service_canonical_branch:
+  - `beacon`: `beacon/v1.6.2`
+- branch_governance_template: `standard-feature`
+- previous_version_baseline_branch: `pre-main`
+- next_version_feature_branch: `beacon/v1.6.2/<feature-slug>`
+- worktree_mode: `dedicated`
+- worktree_path: `.beacon/worktrees/v1.6.2`
+- require_workspace_admission: `true`
+- admission_invalidation: `dirty_only`

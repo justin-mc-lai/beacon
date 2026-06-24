@@ -4,7 +4,7 @@
 - feature: `beacon-harness-program-plan-v161`
 - revision_id: `R4`
 - verdict: `passed`
-- accepted_at: `2026-06-16T07:58:39.792865+00:00`
+- accepted_at: `2026-06-17T08:38:26.818433+00:00`
 - accepted_by: `qa`
 
 ## Summary
@@ -32,5 +32,5 @@
 ## Verdict Summary
 - required_ac_count: `0`
 - required_test_count: `0`
-- story_status: `implemented`
+- story_status: `accepted`
 - revision_delivery_status: `accepted`

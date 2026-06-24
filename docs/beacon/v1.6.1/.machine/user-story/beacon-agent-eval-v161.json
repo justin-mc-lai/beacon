@@ -3,9 +3,9 @@
   "feature": "beacon-agent-eval-v161",
   "feature_slug": "beacon-agent-eval-v161",
   "version": "v1.6.1",
-  "current_revision_id": "R2",
+  "current_revision_id": "R3",
   "lifecycle_status": "frozen",
-  "updated_at": "2026-06-16T11:39:25.160825+00:00",
+  "updated_at": "2026-06-17T08:40:07.820943+00:00",
   "revisions": [
     {
       "revision_id": "R1",
@@ -26,12 +26,26 @@
       "feature_slug": "beacon-agent-eval-v161",
       "source_revision_id": "R1",
       "reason": "用户坚持全 skill live：PB-AE-001 从 post-freeze 拉回 P0 closure",
-      "doc_status": "frozen",
-      "delivery_status": "idle",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
       "baseline_hash": "sha256:72b97d62c01867b78abe0bbdd3ca59acaf23d831afe76f294ceb286a837e482e",
-      "superseded_by": null,
+      "superseded_by": "R3",
       "created_at": "2026-06-15T09:43:00.688748+00:00",
       "frozen_at": "2026-06-15T09:45:14.550099+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R3",
+      "feature_slug": "beacon-agent-eval-v161",
+      "source_revision_id": "R2",
+      "reason": "R3: live runner tiered closure — local/release 37/37 host behavior; CI surface+grader+1 smoke",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:b7d4ed19a7a31629eb448182c258e54572e145ae943051926645553f96406bdb",
+      "superseded_by": null,
+      "created_at": "2026-06-17T03:01:34.508764+00:00",
+      "frozen_at": "2026-06-17T03:05:41.210989+00:00",
       "accepted_at": null,
       "accepted_by": null
     }
@@ -103,7 +117,7 @@
       "revision_id": "R2",
       "title": "beacon-agent-eval-v161",
       "priority": "medium",
-      "status": "accepted",
+      "status": "superseded",
       "items": [
         {
           "id": "AC-001",
@@ -178,6 +192,90 @@
       ],
       "accepted_at": "2026-06-16T11:39:24.974268+00:00",
       "accepted_by": "qa"
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R3",
+      "title": "beacon-agent-eval-v161",
+      "priority": "medium",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "general",
+          "text": "Acceptance criteria TBD",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260617T-r3-tiered-live-closure",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "fallback"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260617T-r3-tiered-live-closure",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-06-17T08:37:42.198240+00:00",
+          "changed_in_revision": "R3"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Acceptance criteria TBD",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260617T-r3-tiered-live-closure",
+          "verified_by_run_id": "run-20260617T163839698732",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "fallback"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-agent-eval-v161",
+        "version": "v1.6.1",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.1/research/beacon-agent-eval-v161.md",
+        "present": true,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      },
+      "feature": "beacon-agent-eval-v161",
+      "feature_slug": "beacon-agent-eval-v161",
+      "version": "v1.6.1",
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.6.1/.machine/qa/beacon-agent-eval-v161.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-agent-eval-v161/ac-closure.json",
+        ".beacon/qa/features/beacon-agent-eval-v161/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "accepted_at": "2026-06-17T08:40:07.645716+00:00",
+      "accepted_by": "qa",
+      "last_changed_files": [
+        "beacon/utils/agent_eval_grader.py",
+        "beacon/utils/agent_eval_live_executor.py",
+        "beacon/utils/agent_eval_kit.py",
+        "beacon/utils/agent_eval_state.py",
+        "beacon/commands/eval.py",
+        "tests/test_v161_agent_eval_grader.py",
+        "tests/test_v161_agent_eval_live_tier.py"
+      ]
     }
   ]
 }

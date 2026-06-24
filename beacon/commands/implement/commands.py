@@ -93,6 +93,12 @@ from beacon.utils.ralph_runtime import (
 )
 from beacon.utils.runtime import generate_run_id, now_iso, read_json, write_json
 from beacon.utils.story_state import load_story_state
+from beacon.utils.workspace_admission import (
+    build_workspace_admission_branch_preflight,
+    gate_workspace_admission_or_block,
+    load_admission_contract,
+    run_workspace_admit,
+)
 from beacon.utils.skill_decision_surface import attach_skill_decision_surface
 from beacon.utils.subagent_readiness import (
     delegation_readiness_precheck,
@@ -2145,6 +2151,15 @@ def _run_branch_preflight(
     service_worktree_map: dict[str, str] | None = None,
 ) -> dict[str, Any]:
     feature_slug = _slug(feature)
+    admission_branch_preflight = build_workspace_admission_branch_preflight(
+        project_root,
+        version=version,
+        feature=feature,
+        run_id=run_id,
+        cwd=Path.cwd(),
+    )
+    if admission_branch_preflight is not None:
+        return admission_branch_preflight
     branch_preflight = build_implement_branch_guard_payload(
         project_root,
         version,
@@ -2516,6 +2531,21 @@ def run_implement_stage(  # noqa: PLR0913
                     reason="automation-runtime-blocked",
                 )
             ),
+        }, blocked=True)
+        return 2, payload
+    workspace_admission_block = gate_workspace_admission_or_block(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        cwd=Path.cwd(),
+    )
+    if workspace_admission_block:
+        payload = _with_implement_surface({
+            **workspace_admission_block,
+            "feature": feature,
+            "feature_slug": _slug(feature),
+            "requirement_package_gate": requirement_package_gate,
+            "closure_preflight": closure_preflight,
         }, blocked=True)
         return 2, payload
     resolved_mode = _normalize_mode(mode)
@@ -4276,8 +4306,28 @@ def check_branch(
     json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
 ):
     """Check or repair the required Beacon implementation branch before coding."""
-    project_root = Path(project) if project else Path.cwd()
+    project_root = Path(project).expanduser().resolve() if project else Path.cwd().resolve()
     resolved_version = resolve_target_version(project_root, version)
+    admission_contract = load_admission_contract(project_root, version=resolved_version)
+    if admission_contract.get("require_workspace_admission"):
+        payload = run_workspace_admit(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+        )
+        payload["alias_of"] = "beacon workspace admit"
+        payload["surface"] = "implement check-branch"
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(f"Beacon implement check-branch (workspace admit): {payload.get('status')}")
+            if payload.get("worktree_path"):
+                typer.echo(f"worktree_path: {payload.get('worktree_path')}")
+            if payload.get("branch"):
+                typer.echo(f"branch: {payload.get('branch')}")
+            if payload.get("reason_code"):
+                typer.echo(f"reason_code: {payload.get('reason_code')}")
+        raise typer.Exit(code=2 if payload.get("status") != "pass" else 0)
     branch_guard_inputs = _branch_guard_inputs(project_root, version=resolved_version, feature=feature)
     expected_branch_override = str(branch_guard_inputs.get("expected_branch", "") or "").strip()
     branch_prefix_override = str(branch_guard_inputs.get("branch_prefix", "beacon/") or "beacon/").strip() or "beacon/"
@@ -4423,6 +4473,45 @@ def dev_run(
         else:
             typer.echo(f"Beacon implement dev-run blocked: {payload.get('reason_code')}")
         raise typer.Exit(code=2)
+
+    admission_contract = load_admission_contract(project_root, version=resolved_version)
+    if admission_contract.get("require_workspace_admission"):
+        admit_payload = run_workspace_admit(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+        )
+        preflight_resolution["steps"].append(
+            {
+                "gate": "workspace_admission",
+                "status": "pass" if admit_payload.get("status") == "pass" else "blocked",
+                "reason_code": str(admit_payload.get("reason_code") or ""),
+                "worktree_path": str(admit_payload.get("worktree_path") or ""),
+            }
+        )
+        if admit_payload.get("status") != "pass":
+            payload = _with_implement_surface({
+                "schema_version": "1.0",
+                "status": "blocked",
+                "reason_code": str(admit_payload.get("reason_code") or "workspace_admission_required"),
+                "feature": feature,
+                "feature_slug": _slug(feature),
+                "version": resolved_version,
+                "workspace_admission": admit_payload,
+                "preflight_resolution": {
+                    **preflight_resolution,
+                    "status": "blocked",
+                },
+                "recommended_command": (
+                    f"beacon workspace admit --project-root {project_root} "
+                    f"--version {resolved_version} --feature {_slug(feature)} --json"
+                ),
+            }, blocked=True)
+            if json_output:
+                typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+            else:
+                typer.echo(f"Beacon implement dev-run blocked: {payload.get('reason_code')}")
+            raise typer.Exit(code=2)
 
     branch_guard_inputs = _branch_guard_inputs(project_root, version=resolved_version, feature=feature)
     preflight_run_id = generate_run_id(project_root)

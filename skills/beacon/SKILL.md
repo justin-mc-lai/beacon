@@ -38,6 +38,14 @@ Route by authority boundary, not by old stage names or tool familiarity.
 4. 不假交付：placeholder implementation、docs-only completion、fake runner、zero assertions 或 placeholder evidence 不能算闭环。
 5. Harness 边界：planner 不实现；generator 不裁决自身完成；evaluator 不改写 truth；governor 不成为主生命周期阶段。
 
+## GIT_ADMISSION (mandatory — Tier A/B when version+feature known)
+
+Before ANY repo write or implement/qa/release route:
+1. `beacon workspace admit --project-root . --version <v> --feature <slug> --json`
+2. If status != pass → STOP; show reason_codes; do NOT edit files
+3. Set cwd to worktree_path from payload
+4. Do NOT git checkout elsewhere to "fix" branch
+
 ## Harness Routing
 
 - `planner`: 拆分粗提示词，判断湖/海规模，读取 truth/source/evidence，并产出 research/planning artifact 或 route recommendation。

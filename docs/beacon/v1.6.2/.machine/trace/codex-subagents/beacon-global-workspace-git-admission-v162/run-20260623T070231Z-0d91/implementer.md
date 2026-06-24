@@ -1,0 +1,81 @@
+# Native Team Role Report: implementer
+
+- role: `implementer`
+- status: `completed`
+- revision_id: `R3`
+- summary: implementation writeback recorded for planned items
+
+## implemented_item_ids
+- `AC-001`
+- `AC-002`
+- `AC-003`
+- `AC-004`
+- `AC-005`
+- `AC-006`
+- `AC-007`
+- `AC-008`
+- `AC-009`
+- `AC-010`
+- `AC-011`
+- `AC-012`
+- `AC-013`
+- `AC-014`
+- `AC-015`
+- `TASK-001`
+
+## changed_files
+- `.agents/skills/beacon-eval-qa/SKILL.md`
+- `.agents/skills/beacon-eval-release/SKILL.md`
+- `.agents/skills/beacon-gen-change/SKILL.md`
+- `.agents/skills/beacon-gen-implement/SKILL.md`
+- `.agents/skills/beacon-gen-truth/SKILL.md`
+- `.agents/skills/beacon-gov-branch/SKILL.md`
+- `.agents/skills/beacon-gov-debug/SKILL.md`
+- `.agents/skills/beacon-gov-doctor/SKILL.md`
+- `.agents/skills/beacon-gov-router/SKILL.md`
+- `.agents/skills/beacon-pln-brainstorm/SKILL.md`
+- `.agents/skills/beacon-pln-friction/SKILL.md`
+- `.agents/skills/beacon-pln-review/SKILL.md`
+- `.agents/skills/beacon-pln-source/SKILL.md`
+- `.beacon/auto-test-status.json`
+- `.beacon/coverage-summary.json`
+- `.beacon/evidence-manifest.json`
+- `.beacon/evidence-signature-chain.json`
+- `.beacon/gate-report.json`
+- `.beacon/memory/memory-v1.json`
+- `.beacon/memory/workflow-lifecycle.index.json`
+- `.beacon/memory/workflow-lifecycle.json`
+- `.beacon/qa/status.json`
+- `.beacon/raw-command-log.jsonl`
+- `.beacon/release-gate-report.json`
+- `.beacon/state/agent-surfaces.json`
+- `.cursor/hooks.json`
+- `.cursor/rules/beacon-agent-surface.mdc`
+- `.cursor/skills/beacon-eval-qa/SKILL.md`
+- `.cursor/skills/beacon-eval-release/SKILL.md`
+- `.cursor/skills/beacon-gen-change/SKILL.md`
+- `.cursor/skills/beacon-gen-implement/SKILL.md`
+- `.cursor/skills/beacon-gen-truth/SKILL.md`
+- `.cursor/skills/beacon-gov-branch/SKILL.md`
+- `.cursor/skills/beacon-gov-debug/SKILL.md`
+- `.cursor/skills/beacon-gov-doctor/SKILL.md`
+- `.cursor/skills/beacon-gov-router/SKILL.md`
+- `.cursor/skills/beacon-pln-brainstorm/SKILL.md`
+- `.cursor/skills/beacon-pln-friction/SKILL.md`
+- `.cursor/skills/beacon-pln-review/SKILL.md`
+- `.cursor/skills/beacon-pln-source/SKILL.md`
+- `beacon/cli_factory.py`
+- `beacon/commands/implement/commands.py`
+- `beacon/commands/qa.py`
+- `beacon/utils/agent_surface.py`
+- `beacon/utils/material_audit.py`
+- `beacon/utils/project_governance.py`
+- `beacon/utils/truth_map.py`
+- `beacon/utils/version_package_upgrade.py`
+- `docs/beacon/governance/project-version-governance.md`
+- `skills/beacon/SKILL.md`
+- `tests/test_v112_doctor_upgrade_package.py`
+
+## recommendations
+- Follow the implementation-architect execution note when present.
+- Run reviewer gate to confirm no scope/spec drift.

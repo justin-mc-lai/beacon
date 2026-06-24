@@ -466,11 +466,30 @@ def _command_output(args: list[str]) -> dict[str, Any]:
 
 
 def _run_beacon_post_release_local_install(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
+    from beacon.utils.agent_eval_kit import is_live_runner_admitted, run_agent_eval
     from beacon.utils.doctor_orchestrator import (
         run_agent_surface_setup,
         run_agent_surface_verify,
         run_launcher_setup,
+        run_legacy_beacon_skills_cleanup,
     )
+
+    legacy_cleanup = run_legacy_beacon_skills_cleanup(
+        project_root=str(project_root),
+        version=version,
+        agent="all",
+        scope="all",
+        dry_run=False,
+        force=True,
+    )
+
+    from beacon.utils.agent_surface import install_global_claude_beacon_skills, verify_global_claude_beacon_skills
+
+    claude_global_install = install_global_claude_beacon_skills(
+        beacon_root=project_root,
+        dry_run=False,
+    )
+    claude_global_verify = verify_global_claude_beacon_skills()
 
     agent_results: dict[str, Any] = {}
     blocked_reasons: list[str] = []
@@ -499,6 +518,9 @@ def _run_beacon_post_release_local_install(project_root: Path, *, version: str, 
         if verify.exit_code != 0 or verify.payload.get("status") != "PASS":
             blocked_reasons.append(f"{agent}_agent_surface_verify_failed")
 
+    if claude_global_verify.get("status") != "pass":
+        blocked_reasons.append("claude_global_beacon_subskills_verify_failed")
+
     launcher_setup = run_launcher_setup(bin_dir="", launcher_source="", force=True, dry_run=False)
     if launcher_setup.exit_code != 0 or launcher_setup.payload.get("status") != "PASS":
         blocked_reasons.append("global_cli_launcher_setup_failed")
@@ -517,6 +539,19 @@ def _run_beacon_post_release_local_install(project_root: Path, *, version: str, 
             elif expected not in output:
                 blocked_reasons.append(f"{name}_runtime_version_mismatch")
 
+    agent_eval_release_hook: dict[str, Any] | None = None
+    eval_version = version if version.startswith("v") else "v1.6.1"
+    if is_live_runner_admitted(project_root, version=eval_version):
+        agent_eval_release_hook = run_agent_eval(
+            project_root,
+            split="regression-core",
+            runner="live",
+            version=eval_version,
+            live_tier="release_hook",
+        )
+        if agent_eval_release_hook.get("status") != "pass":
+            blocked_reasons.append("agent_eval_release_hook_failed")
+
     return {
         "schema_version": "1.0",
         "hook_id": BEACON_POST_RELEASE_LOCAL_INSTALL_HOOK_ID,
@@ -526,10 +561,16 @@ def _run_beacon_post_release_local_install(project_root: Path, *, version: str, 
         "blocked": bool(blocked_reasons),
         "reason_codes": blocked_reasons,
         "expected_runtime_version": expected_runtime_version,
+        "legacy_skill_cleanup": legacy_cleanup.payload.get("result", {}),
+        "claude_global_skill_install": claude_global_install,
+        "claude_global_skill_verify": claude_global_verify,
         "agent_surfaces": agent_results,
         "launcher_setup": launcher_setup.payload,
         "cli_versions": cli_versions,
+        "agent_eval_release_hook": agent_eval_release_hook,
         "commands_confirmed": [
+            f"python3 -m beacon.main doctor cleanup-legacy-beacon-skills --project-root . --version {version} --scope all --force --json",
+            f"python3 -c \"from beacon.utils.agent_surface import install_global_claude_beacon_skills, verify_global_claude_beacon_skills; install_global_claude_beacon_skills(beacon_root='{project_root}'); verify_global_claude_beacon_skills()\"",
             f"python3 -m beacon.main doctor setup-agent-surface --project-root . --version {version} --agent codex --force --json",
             f"python3 -m beacon.main doctor verify-agent-surface --project-root . --version {version} --agent codex --strict --json",
             f"python3 -m beacon.main doctor setup-agent-surface --project-root . --version {version} --agent claude --force --json",
@@ -537,6 +578,7 @@ def _run_beacon_post_release_local_install(project_root: Path, *, version: str, 
             "python3 -m beacon.main doctor setup --force --json",
             "beacon --version",
             "beacon-cli --version",
+            f"beacon eval run --runner live --live-tier release_hook --split regression-core --version {eval_version} --json",
         ],
     }
 

@@ -215,6 +215,9 @@ def test_beacon_source_release_hook_contract_exists() -> None:
 
     assert payload["blocked"] is False
     assert payload["contract"]["trigger_policy"] == "manual_confirmed"
+    assert "legacy_beacon_skill_cleanup" in payload["contract"]["produces_evidence"]
+    assert "claude_global_beacon_subskills_install" in payload["contract"]["produces_evidence"]
+    assert "claude_global_beacon_subskills_verify" in payload["contract"]["produces_evidence"]
     assert "codex_agent_surface_verify" in payload["contract"]["produces_evidence"]
     assert "global_beacon_cli_version" in payload["contract"]["produces_evidence"]
 
@@ -312,6 +315,10 @@ def test_beacon_source_release_hook_checks_runtime_cli_version_not_docs_version(
         lambda **_: Result({"status": "PASS"}),
     )
     monkeypatch.setattr(
+        "beacon.utils.doctor_orchestrator.run_legacy_beacon_skills_cleanup",
+        lambda **_: Result({"status": "PASS", "result": {"removed_count": 0, "removed": []}}),
+    )
+    monkeypatch.setattr(
         project_hooks,
         "_command_output",
         lambda args: {"stdout": "Beacon CLI v1.5.2", "status": "pass", "returncode": 0, "command": args},
@@ -336,3 +343,57 @@ def test_beacon_source_release_hook_checks_runtime_cli_version_not_docs_version(
 
 def test_beacon_source_release_hook_collects_installation_evidence(tmp_path: Path, monkeypatch) -> None:
     test_beacon_source_release_hook_confirmed_followup(tmp_path, monkeypatch)
+
+
+def test_beacon_source_release_hook_runs_legacy_skill_cleanup(tmp_path: Path, monkeypatch) -> None:
+    _copy_beacon_source_hook(tmp_path)
+    calls: list[dict[str, object]] = []
+
+    class Result:
+        exit_code = 0
+
+        def __init__(self, payload: dict) -> None:
+            self.payload = payload
+
+    def fake_cleanup(**kwargs):
+        calls.append(kwargs)
+        return Result({"status": "PASS", "result": {"removed_count": 2, "removed": []}})
+
+    monkeypatch.setattr(
+        "beacon.utils.doctor_orchestrator.run_legacy_beacon_skills_cleanup",
+        fake_cleanup,
+    )
+    monkeypatch.setattr(
+        "beacon.utils.doctor_orchestrator.run_agent_surface_setup",
+        lambda **_: Result({"status": "PASS", "result": {}}),
+    )
+    monkeypatch.setattr(
+        "beacon.utils.doctor_orchestrator.run_agent_surface_verify",
+        lambda **_: Result({"status": "PASS", "result": {}}),
+    )
+    monkeypatch.setattr(
+        "beacon.utils.doctor_orchestrator.run_launcher_setup",
+        lambda **_: Result({"status": "PASS"}),
+    )
+    monkeypatch.setattr(
+        project_hooks,
+        "_command_output",
+        lambda args: {"stdout": "Beacon CLI v1.6.0", "status": "pass", "returncode": 0, "command": args},
+    )
+    monkeypatch.setattr(project_hooks, "__toolkit_version__", "v1.6.0")
+
+    payload = run_hook(
+        tmp_path,
+        "beacon-post-release-local-install",
+        version=VERSION,
+        feature="beacon-skill-harness-taxonomy-v160",
+        hook_code="post_release",
+        confirm=True,
+    )
+
+    assert payload["blocked"] is False
+    assert calls
+    assert calls[0]["scope"] == "all"
+    assert calls[0]["force"] is True
+    followup = payload["post_release_followup"]
+    assert followup["legacy_skill_cleanup"]["removed_count"] == 2

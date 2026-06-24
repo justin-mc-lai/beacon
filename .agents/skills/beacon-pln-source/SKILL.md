@@ -98,6 +98,14 @@ HARD GATE:
 你的唯一产出是 research/planning artifact、gap/risk 分析、湖/海判断和 route recommendation。
 如需进入 truth/change/refreeze/generate/evaluate，必须停止并路由，等待用户确认。
 
+## GIT_ADMISSION (mandatory — Tier A/B when version+feature known)
+
+Before ANY repo write or implement/qa/release route:
+1. `beacon workspace admit --project-root . --version <v> --feature <slug> --json`
+2. If status != pass → STOP; show reason_codes; do NOT edit files
+3. Set cwd to worktree_path from payload
+4. Do NOT git checkout elsewhere to "fix" branch
+
 ## v1.6.0 Harness Migration
 
 - Harness：`planner`。

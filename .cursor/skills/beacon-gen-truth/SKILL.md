@@ -293,6 +293,14 @@ HARD GATE:
 只能在 resolver-selected truth、用户已接受 scope 和本 skill authority 内写 truth 或 delivery artifact。
 如需判断是否通过，必须路由到 evaluator。
 
+## GIT_ADMISSION (mandatory — Tier A/B when version+feature known)
+
+Before ANY repo write or implement/qa/release route:
+1. `beacon workspace admit --project-root . --version <v> --feature <slug> --json`
+2. If status != pass → STOP; show reason_codes; do NOT edit files
+3. Set cwd to worktree_path from payload
+4. Do NOT git checkout elsewhere to "fix" branch
+
 ## v1.6.0 Harness Migration
 
 - Harness：`generator`。
