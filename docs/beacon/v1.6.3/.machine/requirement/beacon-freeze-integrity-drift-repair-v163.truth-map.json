@@ -33,7 +33,7 @@
     "frontmatter": {
       "slug": "beacon-freeze-integrity-drift-repair-v163",
       "version": "v1.6.3",
-      "status": "draft",
+      "status": "frozen",
       "revision_id": "R1",
       "language": "zh",
       "change_reason": "R1 — 修复冻结流程校验器自身 4 处漂移（dogfooding P0-3 冻结时暴露）",
@@ -63,10 +63,10 @@
       "evidence": "docs/beacon/v1.6.3/features/beacon-freeze-integrity-drift-repair-v163/evidence.md"
     },
     "source_hashes": {
-      "truth": "f2946e71810dc668b305fdfed7726ff14fab5cac214344d21c70b91ca70ae25c",
+      "truth": "fad7259b681f30df106b3f7f6e5faccc8365e39fbb64d2177b6a4e0443a16a40",
       "tests": "32f555f8bc25bd99f7b5aa2ef9612fec04a4bc104018c8f4f7938e63058f6696",
-      "tasks": "ead3ec1b74bb553d4131dd52d687e026e87b0d67dadabee84a07f007437c44f2",
-      "evidence": "476e9e9941c1fccd02af16b4d60aee5c23cc5efed897dcb3ddeabd6a637f8835"
+      "tasks": "df0afce14337a7710ed3d991cb45266d0b1708771ff6ea16702ed3597de95717",
+      "evidence": "2b55eaf570eceb0eca020c4701ce80e479535739e0844b85f10f1f23e8d4dcd3"
     },
     "surfaces": {
       "truth": {
@@ -81,7 +81,7 @@
         "filename": "truth.md",
         "path": "docs/beacon/v1.6.3/features/beacon-freeze-integrity-drift-repair-v163/truth.md",
         "exists": true,
-        "source_hash": "f2946e71810dc668b305fdfed7726ff14fab5cac214344d21c70b91ca70ae25c",
+        "source_hash": "fad7259b681f30df106b3f7f6e5faccc8365e39fbb64d2177b6a4e0443a16a40",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -113,7 +113,7 @@
         "filename": "tasks.md",
         "path": "docs/beacon/v1.6.3/features/beacon-freeze-integrity-drift-repair-v163/tasks.md",
         "exists": true,
-        "source_hash": "ead3ec1b74bb553d4131dd52d687e026e87b0d67dadabee84a07f007437c44f2",
+        "source_hash": "df0afce14337a7710ed3d991cb45266d0b1708771ff6ea16702ed3597de95717",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -129,7 +129,7 @@
         "filename": "evidence.md",
         "path": "docs/beacon/v1.6.3/features/beacon-freeze-integrity-drift-repair-v163/evidence.md",
         "exists": true,
-        "source_hash": "476e9e9941c1fccd02af16b4d60aee5c23cc5efed897dcb3ddeabd6a637f8835",
+        "source_hash": "2b55eaf570eceb0eca020c4701ce80e479535739e0844b85f10f1f23e8d4dcd3",
         "authority": "markdown_feature_package",
         "json_authority": false
       }
@@ -183,8 +183,8 @@
     "truth_source_model": "feature_package_authoritative",
     "resolver_mode": "resolver_first",
     "version": "v1.6.3",
-    "status": "blocked",
-    "blocked": true,
+    "status": "pass",
+    "blocked": false,
     "authority_classification": {
       "feature_truth": "markdown_feature_package",
       "feature_truth_model": "feature_package_authoritative",
@@ -217,7 +217,7 @@
         "truth_authority": true,
         "json_authority": false,
         "generated_governance_state": false,
-        "source_hash": "b051b9ea7a69972b73b6871502c924c43ea31fa9bf9d08289d3e19222fbe46ba"
+        "source_hash": "d328ca9f479a8b638af62c063b722dec147f4f4bacb971ee3838ebdbe569a38b"
       },
       "global_boundaries": {
         "schema_version": "1.0",
@@ -244,14 +244,14 @@
         "version": "v1.6.3",
         "surface": "summary",
         "path": "docs/beacon/v1.6.3/SUMMARY.md",
-        "exists": false,
+        "exists": true,
         "required": true,
         "role": "version_governance_truth",
         "authority": "version_governance_truth",
         "truth_authority": true,
         "json_authority": false,
         "generated_governance_state": false,
-        "source_hash": ""
+        "source_hash": "89a9bff8434fa4bdd829a5e724834ea47d9a399c0f5b55e10ca8fc069c03bb8d"
       },
       "execution_boundaries": {
         "schema_version": "1.0",
@@ -261,14 +261,14 @@
         "version": "v1.6.3",
         "surface": "execution_boundaries",
         "path": "docs/beacon/v1.6.3/execution/boundaries.md",
-        "exists": false,
+        "exists": true,
         "required": true,
         "role": "version_governance_truth",
         "authority": "version_governance_truth",
         "truth_authority": true,
         "json_authority": false,
         "generated_governance_state": false,
-        "source_hash": ""
+        "source_hash": "7738e2252ff673a752461e2a1464d3d35e5feb180c3d38f8659c25e3ca8ba19e"
       },
       "project_skill_blueprint": {
         "schema_version": "1.0",
@@ -331,14 +331,14 @@
         "version": "v1.6.3",
         "surface": "version_feature_manifest",
         "path": "docs/beacon/v1.6.3/.machine/manifest/version-features.json",
-        "exists": false,
+        "exists": true,
         "required": false,
         "role": "generated_governance_state_not_truth",
         "authority": "generated_governance_state_not_truth",
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": ""
+        "source_hash": "caec3025a24bde23c3536b5edee478816651a4ae8e98f25ea92ffe57418c5e78"
       },
       "project_version_metadata": {
         "schema_version": "1.0",
@@ -372,7 +372,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "dd0f92591004db1325003e57f8a60c5e3e6a76e07fb06aff82b1d5fd8c86449a"
+        "source_hash": "b6dd1a06cec4223bb46155b402dafdfc58ade7634f24cfad5f334e1ce0153d7f"
       },
       "evidence_manifest": {
         "schema_version": "1.0",
@@ -389,7 +389,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "429ea1159970631fd6c2d87231923417b7af5dd9a7afa979f8e5bb53d8f7bec8"
+        "source_hash": "e0f0a243766cdecaef8b512e40cf75a54487d53b9f18c4827c139ad680520569"
       },
       "qa_status": {
         "schema_version": "1.0",
@@ -423,25 +423,12 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "2f74088842fb789b1b58aaa6e1a5e30008b8642c57519866e7c9f6c33a98dd07"
+        "source_hash": "9cbc6507c65e66591f112e2d52f9fc8147f049a8d09562fc8f9094c007217f4c"
       }
     },
     "manifest_authority": false,
     "json_authority": false,
-    "diagnostics": [
-      {
-        "severity": "error",
-        "code": "version_governance_truth_missing",
-        "surface": "summary",
-        "path": "docs/beacon/v1.6.3/SUMMARY.md"
-      },
-      {
-        "severity": "error",
-        "code": "version_governance_truth_missing",
-        "surface": "execution_boundaries",
-        "path": "docs/beacon/v1.6.3/execution/boundaries.md"
-      }
-    ]
+    "diagnostics": []
   },
   "entrypoint_inventory": {
     "schema_version": "1.0",
@@ -628,7 +615,7 @@
     "diagnostics": []
   },
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-06-25T03:15:39.921095+00:00",
+  "generated_at": "2026-06-25T09:59:46.780523+00:00",
   "truth_authority": false,
   "source_paths": {
     "truth": "docs/beacon/v1.6.3/features/beacon-freeze-integrity-drift-repair-v163/truth.md",
@@ -637,9 +624,9 @@
     "evidence": "docs/beacon/v1.6.3/features/beacon-freeze-integrity-drift-repair-v163/evidence.md"
   },
   "source_hashes": {
-    "truth": "f2946e71810dc668b305fdfed7726ff14fab5cac214344d21c70b91ca70ae25c",
+    "truth": "fad7259b681f30df106b3f7f6e5faccc8365e39fbb64d2177b6a4e0443a16a40",
     "tests": "32f555f8bc25bd99f7b5aa2ef9612fec04a4bc104018c8f4f7938e63058f6696",
-    "tasks": "ead3ec1b74bb553d4131dd52d687e026e87b0d67dadabee84a07f007437c44f2",
-    "evidence": "476e9e9941c1fccd02af16b4d60aee5c23cc5efed897dcb3ddeabd6a637f8835"
+    "tasks": "df0afce14337a7710ed3d991cb45266d0b1708771ff6ea16702ed3597de95717",
+    "evidence": "2b55eaf570eceb0eca020c4701ce80e479535739e0844b85f10f1f23e8d4dcd3"
   }
 }

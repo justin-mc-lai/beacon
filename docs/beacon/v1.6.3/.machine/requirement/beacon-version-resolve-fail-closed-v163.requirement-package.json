@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-06-25T05:12:47.465776+00:00",
+  "generated_at": "2026-06-25T09:59:47.291081+00:00",
   "feature": "beacon-version-resolve-fail-closed-v163",
   "feature_slug": "beacon-version-resolve-fail-closed-v163",
   "version": "v1.6.3",
@@ -18,15 +18,15 @@
     "evidence": "docs/beacon/v1.6.3/features/beacon-version-resolve-fail-closed-v163/evidence.md"
   },
   "source_hashes": {
-    "truth": "7c8558029c39fdc4e6f4607cf3860bcdc6f08a047e433528a5f9b508fbf41498",
+    "truth": "3a4fbe32af6c4f5ef172c6a7aecf342e5efabce12eaacb38c2dbeeeb0ac649e1",
     "tests": "2c7eab3e83112b4f20114ca89e3b528bb59a051d5fe69fd697d9c0c228266738",
-    "tasks": "a47120e9167538312f9fd32e1bab799971912749dc69b189a5df93aa8e19dce2",
-    "evidence": "12ea14e948913dcb1e013e1442bd07caa57ae44bb5820121ca018343687222f5"
+    "tasks": "0c91c4d350bc6777d2ba7c9b61d7ebf76881d63d97e44d95149fee7fb936340d",
+    "evidence": "325af90c42243277e6265e55314cd1a72f2ba0c051d37ebd158761522bae8e40"
   },
   "truth_frontmatter": {
     "slug": "beacon-version-resolve-fail-closed-v163",
     "version": "v1.6.3",
-    "status": "draft",
+    "status": "frozen",
     "revision_id": "R1",
     "language": "zh",
     "change_reason": "R1 — 修复版本解析硬编码 fallback + 加 runtime↔docs 漂移 fail-closed 守卫（P0-1 免疫系统修复）",
@@ -142,43 +142,48 @@
   "task_rows": [
     {
       "id": "LINE-15",
-      "title": "TC-VR-001..007 测试文件 `tests/test_v163_version_resolve_fail_closed.py` 创建（BLOCKED:Phase-A）",
-      "status": "unchecked"
+      "title": "TC-VR-001..007 测试文件 `tests/test_v163_version_resolve_fail_closed.py` 创建（9 TC）",
+      "status": "checked"
     },
     {
       "id": "LINE-16",
-      "title": "`beacon/utils/project_hooks.py:543` 改 `resolve_target_version(project_root, version)`",
-      "status": "unchecked"
+      "title": "`beacon/utils/project_hooks.py` 新增 `_resolve_eval_version` 纯函数，调 `resolve_target_version`，消除 `:543` 硬编码 `v1.6.1` fallback",
+      "status": "checked"
     },
     {
       "id": "LINE-20",
       "title": "post-release hook payload 加 `runtime_version`/`docs_version`/`drift` 字段",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "LINE-21",
-      "title": "`resolve_target_version` 解析失败 → fail-closed `version_resolve_failed`",
-      "status": "unchecked"
+      "title": "`resolve_target_version` 解析失败 → fail-closed `version_resolve_failed`（短路重操作）",
+      "status": "checked"
     },
     {
       "id": "LINE-25",
-      "title": "`beacon/utils/agent_eval_kit.py` is_live_runner_admitted 运行时 resolve 版本",
-      "status": "unchecked"
+      "title": "`is_live_runner_admitted` 提到模块级 import，hook 传 resolved `eval_version`（AC-005）",
+      "status": "checked"
     },
     {
       "id": "LINE-26",
-      "title": "`AGENT_EVAL_VERSION` 常量降为最终 fallback，默认参数不再硬编码蔓延",
-      "status": "unchecked"
+      "title": "`AGENT_EVAL_VERSION` 常量保留作函数默认 fallback（UD-004，不改 11 处签名以控制范围）",
+      "status": "checked"
     },
     {
       "id": "TC-VR-006",
-      "title": "runtime==docs 正常场景不误 block",
-      "status": "unchecked"
+      "title": "runtime==docs 正常场景不误 block（drift=False）",
+      "status": "checked"
     },
     {
       "id": "TC-VR-007",
-      "title": "runtime≠docs 合法 drift 不 block",
-      "status": "unchecked"
+      "title": "runtime≠docs 合法 drift 不 block（drift informational）",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-32",
+      "title": "9/9 TC pass；51 个 project_hooks/agent_eval 回归测试无 break",
+      "status": "checked"
     }
   ],
   "checkbox_errors": [],

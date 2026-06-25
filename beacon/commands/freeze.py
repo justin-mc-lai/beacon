@@ -18,6 +18,7 @@ from beacon.utils.revision_delta import materialize_revision_delta
 from beacon.utils.revision_state import freeze_revision_state
 from beacon.utils.story_state import freeze_story_state, feature_slug
 from beacon.utils.truth_integrity import build_truth_integrity_gate
+from beacon.utils.truth_map import rebuild_machine_json
 from beacon.utils.versioning import resolve_target_version
 
 app = typer.Typer(name="freeze", help="Freeze current feature revision as implementation baseline", invoke_without_command=True, no_args_is_help=False)
@@ -121,6 +122,10 @@ def _freeze_impl(feature: str, project: Optional[str], version: str, json_output
         status="frozen",
     )
     revision_delta = materialize_revision_delta(project_root, version=resolved_version, feature=feature)
+    # Rebuild machine json so .machine source hashes stay in sync with frozen
+    # truth. Without this, any post-freeze truth edit leaves .machine stale and
+    # truth-map verify reports machine_json_source_hash_stale.
+    machine_rebuild = rebuild_machine_json(project_root, version=resolved_version, feature=feature)
     payload = {
         "schema_version": "1.0",
         "feature": feature,
@@ -131,6 +136,7 @@ def _freeze_impl(feature: str, project: Optional[str], version: str, json_output
         "story_path": str((project_root / "docs" / "beacon" / resolved_version / ".machine" / "user-story" / f"{feature_slug(feature)}.json").relative_to(project_root)),
         "requirement_package": requirement_package,
         "revision_delta": revision_delta,
+        "machine_rebuild": machine_rebuild,
         "truth_frontmatter_sync": truth_frontmatter_sync,
         "truth_integrity_gate": integrity_gate,
         "requirement_clarity_gate": clarity_gate,

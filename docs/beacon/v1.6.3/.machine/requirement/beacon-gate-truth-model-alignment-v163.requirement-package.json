@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-06-25T03:06:13.291043+00:00",
+  "generated_at": "2026-06-25T09:59:47.035888+00:00",
   "feature": "beacon-gate-truth-model-alignment-v163",
   "feature_slug": "beacon-gate-truth-model-alignment-v163",
   "version": "v1.6.3",
@@ -18,15 +18,15 @@
     "evidence": "docs/beacon/v1.6.3/features/beacon-gate-truth-model-alignment-v163/evidence.md"
   },
   "source_hashes": {
-    "truth": "38023ec7bedbcc97addc38d8fa198186180761842b067c97a11b053a3271a9ba",
+    "truth": "16d98529c5f76418ac64282a3407c1c726c7d9736345e671d6e6c4a3424e4c1b",
     "tests": "581ef026e038fd18c39ffb68d882e5ae8c56d1e04fafa1c9734404a3f4cf368e",
-    "tasks": "8a1008f875ff53a3a0c34b337180236e0f0d27b6c61945bb06d12939128bd778",
-    "evidence": "24da5904fb1e6e0fbbf003ec0dd7ea705b93b71d2eb72af61d6c75df282952cb"
+    "tasks": "a51b65240783eb9c57db429eb1feaf854a869c034313869caf669b26567c75ab",
+    "evidence": "7e133ec84300e5ee8e5420249b94f936d6f9db05d812e046ff81d03f0f81c7f5"
   },
   "truth_frontmatter": {
     "slug": "beacon-gate-truth-model-alignment-v163",
     "version": "v1.6.3",
-    "status": "draft",
+    "status": "frozen",
     "revision_id": "R1",
     "language": "zh",
     "change_reason": "R1 — gate release 检查器对齐 package-authoritative truth 模型（P0-3 免疫系统修复）",
@@ -142,38 +142,48 @@
   "task_rows": [
     {
       "id": "LINE-15",
-      "title": "TC-GT-001..007 测试文件 `tests/test_v163_gate_model_alignment.py` 创建（BLOCKED:Phase-A）",
-      "status": "unchecked"
+      "title": "TC-GT-001..007 测试文件 `tests/test_v163_gate_model_alignment.py` 创建",
+      "status": "checked"
     },
     {
       "id": "LINE-16",
       "title": "`beacon/commands/gate.py:2308` 加 semver 分流：`<v1.5.2` 走原契约，`≥v1.5.2` 走 feature 包闭环",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "LINE-17",
       "title": "新 reason_code `feature_package_closure_missing`（≥v1.5.2 无 feature 包时）",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "LINE-18",
       "title": "version-line 材料（SUMMARY/execution/boundaries/source-architecture/release）校验保留",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "LINE-22",
-      "title": "`beacon/commands/review.py:747` 同名检查同步分流（若存在相同硬编码）",
-      "status": "unchecked"
+      "title": "N/A：`beacon/commands/review.py:747` 走 `build_material_audit`，非同一硬编码，无需同步",
+      "status": "checked"
     },
     {
       "id": "AC-006",
-      "title": "本项目 v1.6.2 gate check release 不再因顶层目录 block",
-      "status": "unchecked"
+      "title": "本项目 v1.6.2 gate check release 不再因顶层目录 block（closure 检查 0 issues）",
+      "status": "checked"
     },
     {
       "id": "AC-003",
-      "title": "v1.4.10 旧版本契约不 break",
-      "status": "unchecked"
+      "title": "v1.4.10 旧版本契约不 break（TC-GT-003 pass）",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-28",
+      "title": "7/7 TC pass；65 个现有 gate 测试无回归",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-29",
+      "title": "release gate blocked_count 65 → 4（P0-3 blocker 消除）",
+      "status": "checked"
     }
   ],
   "checkbox_errors": [],

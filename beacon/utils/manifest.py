@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Any
 
 from beacon.utils.versioning import normalize_version, resolve_target_version
+from beacon.utils.truth_map import feature_package_authoritative
 
 
 MANIFEST_FILENAME = "version-features.json"
@@ -225,6 +226,14 @@ def sync_manifest(project_root: Path, version: str) -> dict[str, Any]:
             for path in dir_path.glob("*.md"):
                 if path.stem != "index" and path.is_file():
                     slugs.add(path.stem)
+
+    # Package-authoritative (>=v1.5.2): also scan features/<slug>/ packages.
+    if feature_package_authoritative(resolved):
+        features_dir = base / "features"
+        if features_dir.exists():
+            for entry in features_dir.iterdir():
+                if entry.is_dir() and (entry / "truth.md").exists():
+                    slugs.add(entry.name)
 
     # Add discovered features
     for slug in sorted(slugs):

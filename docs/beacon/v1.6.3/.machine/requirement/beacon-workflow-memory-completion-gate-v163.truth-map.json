@@ -33,7 +33,7 @@
     "frontmatter": {
       "slug": "beacon-workflow-memory-completion-gate-v163",
       "version": "v1.6.3",
-      "status": "draft",
+      "status": "frozen",
       "revision_id": "R1",
       "language": "zh",
       "change_reason": "R1 — 修复 workflow memory completion truth 缺失时软放行（P0-2 免疫系统修复）",
@@ -63,10 +63,10 @@
       "evidence": "docs/beacon/v1.6.3/features/beacon-workflow-memory-completion-gate-v163/evidence.md"
     },
     "source_hashes": {
-      "truth": "1acdcc1dea6e516d8fa31d70c58388b2730a1ebe7c0c46bc5d23d3e7af64d56d",
+      "truth": "5bb1ffe663de0dc0332e88dde4382f56ebbd8c5ef7c4df1d6297f27baf8da407",
       "tests": "6b693ed309f2354cfa342adc6fe8eae58f6781c22807ad07104c03e18b2a5114",
-      "tasks": "e55bfe8ac5366cf9ea0e8345d4b5d996f9cdd0cbc6b7a9e07797e34f1d46a0db",
-      "evidence": "fd1c082ac0426d4f02c4e0e8ac210a94922f21458ac62dadd2a3491034c60bd1"
+      "tasks": "a3e081c1f52bcfdd21d0313844ac88e04db9212519b096ea3567dd3523e2beca",
+      "evidence": "465353f6983d20eeb0e60b69d0cf455d1053617d9670c7088a120f3d0832bfe6"
     },
     "surfaces": {
       "truth": {
@@ -81,7 +81,7 @@
         "filename": "truth.md",
         "path": "docs/beacon/v1.6.3/features/beacon-workflow-memory-completion-gate-v163/truth.md",
         "exists": true,
-        "source_hash": "1acdcc1dea6e516d8fa31d70c58388b2730a1ebe7c0c46bc5d23d3e7af64d56d",
+        "source_hash": "5bb1ffe663de0dc0332e88dde4382f56ebbd8c5ef7c4df1d6297f27baf8da407",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -113,7 +113,7 @@
         "filename": "tasks.md",
         "path": "docs/beacon/v1.6.3/features/beacon-workflow-memory-completion-gate-v163/tasks.md",
         "exists": true,
-        "source_hash": "e55bfe8ac5366cf9ea0e8345d4b5d996f9cdd0cbc6b7a9e07797e34f1d46a0db",
+        "source_hash": "a3e081c1f52bcfdd21d0313844ac88e04db9212519b096ea3567dd3523e2beca",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -129,7 +129,7 @@
         "filename": "evidence.md",
         "path": "docs/beacon/v1.6.3/features/beacon-workflow-memory-completion-gate-v163/evidence.md",
         "exists": true,
-        "source_hash": "fd1c082ac0426d4f02c4e0e8ac210a94922f21458ac62dadd2a3491034c60bd1",
+        "source_hash": "465353f6983d20eeb0e60b69d0cf455d1053617d9670c7088a120f3d0832bfe6",
         "authority": "markdown_feature_package",
         "json_authority": false
       }
@@ -183,8 +183,8 @@
     "truth_source_model": "feature_package_authoritative",
     "resolver_mode": "resolver_first",
     "version": "v1.6.3",
-    "status": "blocked",
-    "blocked": true,
+    "status": "pass",
+    "blocked": false,
     "authority_classification": {
       "feature_truth": "markdown_feature_package",
       "feature_truth_model": "feature_package_authoritative",
@@ -217,7 +217,7 @@
         "truth_authority": true,
         "json_authority": false,
         "generated_governance_state": false,
-        "source_hash": "b051b9ea7a69972b73b6871502c924c43ea31fa9bf9d08289d3e19222fbe46ba"
+        "source_hash": "d328ca9f479a8b638af62c063b722dec147f4f4bacb971ee3838ebdbe569a38b"
       },
       "global_boundaries": {
         "schema_version": "1.0",
@@ -244,14 +244,14 @@
         "version": "v1.6.3",
         "surface": "summary",
         "path": "docs/beacon/v1.6.3/SUMMARY.md",
-        "exists": false,
+        "exists": true,
         "required": true,
         "role": "version_governance_truth",
         "authority": "version_governance_truth",
         "truth_authority": true,
         "json_authority": false,
         "generated_governance_state": false,
-        "source_hash": ""
+        "source_hash": "89a9bff8434fa4bdd829a5e724834ea47d9a399c0f5b55e10ca8fc069c03bb8d"
       },
       "execution_boundaries": {
         "schema_version": "1.0",
@@ -261,14 +261,14 @@
         "version": "v1.6.3",
         "surface": "execution_boundaries",
         "path": "docs/beacon/v1.6.3/execution/boundaries.md",
-        "exists": false,
+        "exists": true,
         "required": true,
         "role": "version_governance_truth",
         "authority": "version_governance_truth",
         "truth_authority": true,
         "json_authority": false,
         "generated_governance_state": false,
-        "source_hash": ""
+        "source_hash": "7738e2252ff673a752461e2a1464d3d35e5feb180c3d38f8659c25e3ca8ba19e"
       },
       "project_skill_blueprint": {
         "schema_version": "1.0",
@@ -331,14 +331,14 @@
         "version": "v1.6.3",
         "surface": "version_feature_manifest",
         "path": "docs/beacon/v1.6.3/.machine/manifest/version-features.json",
-        "exists": false,
+        "exists": true,
         "required": false,
         "role": "generated_governance_state_not_truth",
         "authority": "generated_governance_state_not_truth",
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": ""
+        "source_hash": "caec3025a24bde23c3536b5edee478816651a4ae8e98f25ea92ffe57418c5e78"
       },
       "project_version_metadata": {
         "schema_version": "1.0",
@@ -372,7 +372,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "7e69079d16f4826e6cbff11239556a85a5267348fa8484499813f76391967d1c"
+        "source_hash": "b6dd1a06cec4223bb46155b402dafdfc58ade7634f24cfad5f334e1ce0153d7f"
       },
       "evidence_manifest": {
         "schema_version": "1.0",
@@ -389,7 +389,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "4e181f69a7a8ff9d4c573239ee04f0133c16a9419a73370112562701c5bff196"
+        "source_hash": "e22912c2ea6026bd134126ea68c4b369c427299bf15786f5806d2d81f56b0be4"
       },
       "qa_status": {
         "schema_version": "1.0",
@@ -423,25 +423,12 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "fb79d11a068dd8928e498ed1f1c484c7fcf563e564ed99a9b57aea3839a63d60"
+        "source_hash": "9cbc6507c65e66591f112e2d52f9fc8147f049a8d09562fc8f9094c007217f4c"
       }
     },
     "manifest_authority": false,
     "json_authority": false,
-    "diagnostics": [
-      {
-        "severity": "error",
-        "code": "version_governance_truth_missing",
-        "surface": "summary",
-        "path": "docs/beacon/v1.6.3/SUMMARY.md"
-      },
-      {
-        "severity": "error",
-        "code": "version_governance_truth_missing",
-        "surface": "execution_boundaries",
-        "path": "docs/beacon/v1.6.3/execution/boundaries.md"
-      }
-    ]
+    "diagnostics": []
   },
   "entrypoint_inventory": {
     "schema_version": "1.0",
@@ -628,7 +615,7 @@
     "diagnostics": []
   },
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-06-25T05:54:56.173336+00:00",
+  "generated_at": "2026-06-25T09:59:47.513554+00:00",
   "truth_authority": false,
   "source_paths": {
     "truth": "docs/beacon/v1.6.3/features/beacon-workflow-memory-completion-gate-v163/truth.md",
@@ -637,9 +624,9 @@
     "evidence": "docs/beacon/v1.6.3/features/beacon-workflow-memory-completion-gate-v163/evidence.md"
   },
   "source_hashes": {
-    "truth": "1acdcc1dea6e516d8fa31d70c58388b2730a1ebe7c0c46bc5d23d3e7af64d56d",
+    "truth": "5bb1ffe663de0dc0332e88dde4382f56ebbd8c5ef7c4df1d6297f27baf8da407",
     "tests": "6b693ed309f2354cfa342adc6fe8eae58f6781c22807ad07104c03e18b2a5114",
-    "tasks": "e55bfe8ac5366cf9ea0e8345d4b5d996f9cdd0cbc6b7a9e07797e34f1d46a0db",
-    "evidence": "fd1c082ac0426d4f02c4e0e8ac210a94922f21458ac62dadd2a3491034c60bd1"
+    "tasks": "a3e081c1f52bcfdd21d0313844ac88e04db9212519b096ea3567dd3523e2beca",
+    "evidence": "465353f6983d20eeb0e60b69d0cf455d1053617d9670c7088a120f3d0832bfe6"
   }
 }

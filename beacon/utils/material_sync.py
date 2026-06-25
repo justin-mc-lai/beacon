@@ -134,17 +134,30 @@ def sync_project_requirement_materials(
     resolved_version = resolve_target_version(project_root, version)
     features = [feature] if str(feature or "").strip() and not all_features else _discover_features(project_root, resolved_version)
     results: list[dict[str, Any]] = []
+    # Package-authoritative (>=v1.5.2): rebuild machine json so source hashes
+    # stay in sync with frozen truth. Legacy path falls through to
+    # sync_feature_requirement_materials below.
+    use_rebuild = feature_package_authoritative(resolved_version) and not dry_run
     for name in features:
-        results.append(
-            sync_feature_requirement_materials(
-                project_root,
-                version=resolved_version,
-                feature=name,
-                dry_run=dry_run,
-                overwrite_test_doc=overwrite_test_doc,
-                ui_runner=ui_runner,
+        if use_rebuild:
+            rebuilt = rebuild_machine_json(project_root, version=resolved_version, feature=name)
+            results.append({
+                "feature": name,
+                "version": resolved_version,
+                "status": "synced" if str(rebuilt.get("validation_status") or "") == "pass" else "blocked",
+                "machine_rebuild": rebuilt,
+            })
+        else:
+            results.append(
+                sync_feature_requirement_materials(
+                    project_root,
+                    version=resolved_version,
+                    feature=name,
+                    dry_run=dry_run,
+                    overwrite_test_doc=overwrite_test_doc,
+                    ui_runner=ui_runner,
+                )
             )
-        )
     return {
         "schema_version": "1.0",
         "project_root": str(project_root),
