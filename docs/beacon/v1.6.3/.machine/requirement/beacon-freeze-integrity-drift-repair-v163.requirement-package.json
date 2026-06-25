@@ -1,0 +1,262 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-06-25T03:15:39.932629+00:00",
+  "feature": "beacon-freeze-integrity-drift-repair-v163",
+  "feature_slug": "beacon-freeze-integrity-drift-repair-v163",
+  "version": "v1.6.3",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.3/features/beacon-freeze-integrity-drift-repair-v163/truth.md",
+    "tests": "docs/beacon/v1.6.3/features/beacon-freeze-integrity-drift-repair-v163/tests.md",
+    "tasks": "docs/beacon/v1.6.3/features/beacon-freeze-integrity-drift-repair-v163/tasks.md",
+    "evidence": "docs/beacon/v1.6.3/features/beacon-freeze-integrity-drift-repair-v163/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "f2946e71810dc668b305fdfed7726ff14fab5cac214344d21c70b91ca70ae25c",
+    "tests": "32f555f8bc25bd99f7b5aa2ef9612fec04a4bc104018c8f4f7938e63058f6696",
+    "tasks": "ead3ec1b74bb553d4131dd52d687e026e87b0d67dadabee84a07f007437c44f2",
+    "evidence": "476e9e9941c1fccd02af16b4d60aee5c23cc5efed897dcb3ddeabd6a637f8835"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-freeze-integrity-drift-repair-v163",
+    "version": "v1.6.3",
+    "status": "draft",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "R1 — 修复冻结流程校验器自身 4 处漂移（dogfooding P0-3 冻结时暴露）",
+    "source_revision_id": "null",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.3/features/beacon-freeze-integrity-drift-repair-v163/truth.md",
+      "user_story": "docs/beacon/v1.6.3/features/beacon-freeze-integrity-drift-repair-v163/truth.md",
+      "test_case": "docs/beacon/v1.6.3/features/beacon-freeze-integrity-drift-repair-v163/tests.md"
+    },
+    "parser_contract": "beacon-feature-package-v1",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "state_machine_required": "false",
+    "upstream_feature": "null",
+    "promotion_ref": "null"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "parser-contract-single-source",
+      "description": "feature 包 `parser_contract` 为 resolver 声明版本（v1 或 v2）时通过；仅未知版本报 `parser_contract_mismatch`（**Must**）"
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "forbidden-field-word-boundary",
+      "description": "evidence 含 `gate_truth` 子串（路径/文件名）**不**触发 `evidence_forbidden_gate_truth_field`；authority 字段实际用 forbidden 名仍报（**Must**）"
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "pytest-hard-marker",
+      "description": "tests.md 行 Layer=integration + `pytest` command 不被 `soft_test_assertion` 标记；`_HARD_TEST_MARKERS_RE` 含 `pytest`（**Must**）"
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "error-self-describing",
+      "description": "`evidence_authority_table_missing` 与 `evidence_invalid_authority` 的 diagnostics 含 `allowed_authorities` 与所需 `surface/authority` 列（**Must**）"
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "backward-compat-v1",
+      "description": "已冻结 v1.6.2 feature 包修复后仍 pass validation（**Must**）"
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "no-regression-p03",
+      "description": "已冻结的 `beacon-gate-truth-model-alignment-v163` 包修复后仍 pass validation（**Must**）"
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "no-real-violation-relax",
+      "description": "真实 forbidden field 违规（authority=source_of_truth）与真实 weak-assertion（无 hard command 的 integration 行）仍 block（**Must**）"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-FI-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_freeze_integrity_drift_repair.py::test_parser_contract_v2_accepted -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "parser_contract=v2 的包通过 validation，无 parser_contract_mismatch",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-FI-002",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_freeze_integrity_drift_repair.py::test_parser_contract_v1_still_accepted -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "parser_contract=v1 的包仍通过",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-FI-003",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_freeze_integrity_drift_repair.py::test_unknown_contract_still_mismatch -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "parser_contract=beacon-feature-package-v9 仍报 parser_contract_mismatch",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-FI-010",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_freeze_integrity_drift_repair.py::test_forbidden_field_substring_not_banned -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "evidence 含路径子串 gate-truth 不触发 evidence_forbidden_gate_truth_field",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-FI-011",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_freeze_integrity_drift_repair.py::test_real_forbidden_authority_still_banned -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "authority=source_of_truth 仍报 evidence_invalid_authority",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-FI-020",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_freeze_integrity_drift_repair.py::test_integration_pytest_not_soft -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Layer=integration + pytest command 行无 soft_test_assertion finding",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-FI-021",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_freeze_integrity_drift_repair.py::test_hard_markers_regex_includes_pytest -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "_HARD_TEST_MARKERS_RE.search 含 pytest 的字符串命中",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-FI-030",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_freeze_integrity_drift_repair.py::test_authority_table_error_self_describing -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "evidence_authority_table_missing diagnostic 含 allowed_authorities 与 surface/authority 列提示",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-FI-031",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_freeze_integrity_drift_repair.py::test_invalid_authority_error_self_describing -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "evidence_invalid_authority diagnostic 含 allowed_authorities 列表",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-FI-040",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_freeze_integrity_drift_repair.py::test_v1_package_backward_compat -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "v1.6.2 已冻结 feature 包修复后仍 pass validation",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-FI-050",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_freeze_integrity_drift_repair.py::test_p03_package_no_regression -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "beacon-gate-truth-model-alignment-v163 包修复后仍 pass validation",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-007",
+      "tc_id": "TC-FI-060",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_freeze_integrity_drift_repair.py::test_real_weak_assertion_still_blocked -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Layer=integration 且无 hard command 的行仍被 soft_test_assertion 标记",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "LINE-15",
+      "title": "TC-FI-001..003 测试文件 `tests/test_v163_freeze_integrity_drift_repair.py` 创建（BLOCKED:Phase-A）",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-16",
+      "title": "`beacon/utils/feature_package.py:448` 接受 resolver 声明的 v1/v2，未知版本仍 mismatch",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-20",
+      "title": "TC-FI-010..011",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-21",
+      "title": "`beacon/utils/feature_package.py:490` 改词边界/字段级匹配",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-25",
+      "title": "TC-FI-020..021",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-26",
+      "title": "`beacon/utils/truth_integrity.py:60` `_HARD_TEST_MARKERS_RE` 增加 pytest",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-27",
+      "title": "`beacon/utils/truth_integrity.py:316` integration 行有 hard command 不判软",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-31",
+      "title": "TC-FI-030..031",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-32",
+      "title": "`beacon/utils/feature_package.py:495,500` diagnostics 含 allowed_authorities + 所需列",
+      "status": "unchecked"
+    },
+    {
+      "id": "TC-FI-040",
+      "title": "v1.6.2 包兼容",
+      "status": "unchecked"
+    },
+    {
+      "id": "TC-FI-050",
+      "title": "P0-3 包无回归",
+      "status": "unchecked"
+    },
+    {
+      "id": "TC-FI-060",
+      "title": "真实违规仍 block",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "truth.md",
+      "authority": "requirement_truth",
+      "artifact": "docs/beacon/v1.6.3/features/beacon-freeze-integrity-drift-repair-v163/truth.md"
+    },
+    {
+      "surface": "tests.md",
+      "authority": "test_truth",
+      "artifact": "docs/beacon/v1.6.3/features/beacon-freeze-integrity-drift-repair-v163/tests.md"
+    },
+    {
+      "surface": "tasks.md",
+      "authority": "requirement_truth",
+      "artifact": "docs/beacon/v1.6.3/features/beacon-freeze-integrity-drift-repair-v163/tasks.md"
+    }
+  ]
+}

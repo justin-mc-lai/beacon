@@ -1,0 +1,274 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-gate-truth-model-alignment-v163",
+  "feature_slug": "beacon-gate-truth-model-alignment-v163",
+  "version": "v1.6.3",
+  "current_revision_id": "R1",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-06-25T03:06:13.312393+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-gate-truth-model-alignment-v163",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:70df06ae0e0665c6975d316f99394b4324d470ee411f31ca695cd0304ce7a2f6",
+      "superseded_by": null,
+      "created_at": "2026-06-25T03:06:13.307098+00:00",
+      "frozen_at": "2026-06-25T03:06:13.390028+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "beacon-gate-truth-model-alignment-v163",
+      "priority": "medium",
+      "status": "frozen",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "semver-fork",
+          "text": "`check_formal_version_package_closure` 对 `≥v1.5.2` 版本不再要求 `prd/`/`user-story/`/`qa/test-cases/` 顶层目录（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-gate-truth-model-alignment-v163/truth.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "feature-package-closure",
+          "text": "`≥v1.5.2` 版本改为校验 `features/<slug>/` 下至少一个 feature 包含 `truth.md`+`tests.md`（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-gate-truth-model-alignment-v163/truth.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "legacy-compat",
+          "text": "`<v1.5.2` 版本（如 v1.4.10）保持原 `prd/`+`user-story/`+`qa/test-cases/` 顶层目录契约不变（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-gate-truth-model-alignment-v163/truth.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "version-line-preserved",
+          "text": "SUMMARY/execution/boundaries/source-architecture/release 校验对所有版本保留，不因分流放松（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-gate-truth-model-alignment-v163/truth.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "missing-feature-block",
+          "text": "`≥v1.5.2` 版本无任何 feature 包 → critical block，reason_code `feature_package_closure_missing`，**不**误报顶层目录缺失（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-gate-truth-model-alignment-v163/truth.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "regression-v162",
+          "text": "v1.6.2 实测 `gate check release` 的 `formal_package_closure_missing` 不再因顶层目录缺失出现（**Must**，回归 P0-3）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-gate-truth-model-alignment-v163/truth.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "no-empty-dir-bypass",
+          "text": "空目录（`prd/` 存在但无 `.md`）不再使 `≥v1.5.2` 版本通过；通过需真实 feature 包（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-gate-truth-model-alignment-v163/truth.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — `check_formal_version_package_closure` 对 `≥v1.5.2` 版本不再要求 `prd/`/`user-story/`/`qa/test-cases/` 顶层目录（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-gate-truth-model-alignment-v163/truth.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — `≥v1.5.2` 版本改为校验 `features/<slug>/` 下至少一个 feature 包含 `truth.md`+`tests.md`（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-gate-truth-model-alignment-v163/truth.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — `<v1.5.2` 版本（如 v1.4.10）保持原 `prd/`+`user-story/`+`qa/test-cases/` 顶层目录契约不变（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-gate-truth-model-alignment-v163/truth.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — SUMMARY/execution/boundaries/source-architecture/release 校验对所有版本保留，不因分流放松（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-gate-truth-model-alignment-v163/truth.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — `≥v1.5.2` 版本无任何 feature 包 → critical block，reason_code `feature_package_closure_missing`，**不**误报顶层目录缺失（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-gate-truth-model-alignment-v163/truth.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — v1.6.2 实测 `gate check release` 的 `formal_package_closure_missing` 不再因顶层目录缺失出现（**Must**，回归 P0-3）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-gate-truth-model-alignment-v163/truth.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — 空目录（`prd/` 存在但无 `.md`）不再使 `≥v1.5.2` 版本通过；通过需真实 feature 包（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-gate-truth-model-alignment-v163/truth.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-gate-truth-model-alignment-v163",
+        "version": "v1.6.3",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/research/beacon-gate-truth-model-alignment-v163.md",
+        "present": false,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      }
+    }
+  ]
+}

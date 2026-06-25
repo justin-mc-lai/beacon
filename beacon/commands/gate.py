@@ -2317,17 +2317,42 @@ def check_formal_version_package_closure(
 
     resolved_version = _resolved_gate_version(project_root, version)
     root = project_root / "docs" / "beacon" / resolved_version
-    required = {
+    semver = _parse_semver_tuple(resolved_version)
+    required: dict[str, bool] = {
         "SUMMARY.md": (root / "SUMMARY.md").exists(),
         "execution/boundaries.md": (root / "execution" / "boundaries.md").exists(),
-        "prd/": (root / "prd").exists() and any((root / "prd").glob("*.md")),
-        "user-story/": (root / "user-story").exists() and any((root / "user-story").glob("*.md")),
-        "qa/test-cases/": (root / "qa" / "test-cases").exists() and any((root / "qa" / "test-cases").glob("*.md")),
         "release/": (root / "release").exists() and any((root / "release").glob("*.md")),
     }
-    if _parse_semver_tuple(resolved_version) >= (1, 1, 10):
+    if semver >= (1, 1, 10):
         required["execution/project-skill-qa-evolution-blueprint.md"] = (root / "execution" / "project-skill-qa-evolution-blueprint.md").exists()
         required["source-architecture/index.md"] = (root / "source-architecture" / "index.md").exists()
+    # Truth model fork: <v1.5.2 uses legacy top-dir contract; >=v1.5.2 is
+    # package-authoritative — truth lives in features/<slug>/{truth,tests}.md.
+    if semver < _PACKAGE_AUTHORITATIVE_CUTOVER:
+        required["prd/"] = (root / "prd").exists() and any((root / "prd").glob("*.md"))
+        required["user-story/"] = (root / "user-story").exists() and any((root / "user-story").glob("*.md"))
+        required["qa/test-cases/"] = (root / "qa" / "test-cases").exists() and any((root / "qa" / "test-cases").glob("*.md"))
+    else:
+        features_dir = root / "features"
+        has_feature_package = False
+        if features_dir.exists():
+            for entry in features_dir.iterdir():
+                if entry.is_dir() and (entry / "truth.md").exists() and (entry / "tests.md").exists():
+                    has_feature_package = True
+                    break
+        if not has_feature_package:
+            issues.append(
+                {
+                    "reason_code": "feature_package_closure_missing",
+                    "severity": "critical",
+                    "message": (
+                        f"feature package closure missing for {resolved_version}: "
+                        f"no features/<slug>/ with truth.md + tests.md"
+                    ),
+                    "blocked": True,
+                    "details": {"version": resolved_version},
+                }
+            )
     missing = [name for name, ok in required.items() if not ok]
     if missing:
         issues.append(
@@ -4109,6 +4134,11 @@ def check_coverage_metrics(
         }
     )
     return issues
+
+
+# Version at which truth became package-authoritative (features/<slug>/).
+# Before this, gate required top-level prd/ user-story/ qa/test-cases/ dirs.
+_PACKAGE_AUTHORITATIVE_CUTOVER = (1, 5, 2)
 
 
 def _parse_semver_tuple(value: str) -> tuple[int, int, int]:

@@ -1,0 +1,197 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-06-25T03:06:13.291043+00:00",
+  "feature": "beacon-gate-truth-model-alignment-v163",
+  "feature_slug": "beacon-gate-truth-model-alignment-v163",
+  "version": "v1.6.3",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.3/features/beacon-gate-truth-model-alignment-v163/truth.md",
+    "tests": "docs/beacon/v1.6.3/features/beacon-gate-truth-model-alignment-v163/tests.md",
+    "tasks": "docs/beacon/v1.6.3/features/beacon-gate-truth-model-alignment-v163/tasks.md",
+    "evidence": "docs/beacon/v1.6.3/features/beacon-gate-truth-model-alignment-v163/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "38023ec7bedbcc97addc38d8fa198186180761842b067c97a11b053a3271a9ba",
+    "tests": "581ef026e038fd18c39ffb68d882e5ae8c56d1e04fafa1c9734404a3f4cf368e",
+    "tasks": "8a1008f875ff53a3a0c34b337180236e0f0d27b6c61945bb06d12939128bd778",
+    "evidence": "24da5904fb1e6e0fbbf003ec0dd7ea705b93b71d2eb72af61d6c75df282952cb"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-gate-truth-model-alignment-v163",
+    "version": "v1.6.3",
+    "status": "draft",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "R1 — gate release 检查器对齐 package-authoritative truth 模型（P0-3 免疫系统修复）",
+    "source_revision_id": "null",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.3/features/beacon-gate-truth-model-alignment-v163/truth.md",
+      "user_story": "docs/beacon/v1.6.3/features/beacon-gate-truth-model-alignment-v163/truth.md",
+      "test_case": "docs/beacon/v1.6.3/features/beacon-gate-truth-model-alignment-v163/tests.md"
+    },
+    "parser_contract": "beacon-feature-package-v1",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "state_machine_required": "false",
+    "upstream_feature": "null",
+    "promotion_ref": "null"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "semver-fork",
+      "description": "`check_formal_version_package_closure` 对 `≥v1.5.2` 版本不再要求 `prd/`/`user-story/`/`qa/test-cases/` 顶层目录（**Must**）"
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "feature-package-closure",
+      "description": "`≥v1.5.2` 版本改为校验 `features/<slug>/` 下至少一个 feature 包含 `truth.md`+`tests.md`（**Must**）"
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "legacy-compat",
+      "description": "`<v1.5.2` 版本（如 v1.4.10）保持原 `prd/`+`user-story/`+`qa/test-cases/` 顶层目录契约不变（**Must**）"
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "version-line-preserved",
+      "description": "SUMMARY/execution/boundaries/source-architecture/release 校验对所有版本保留，不因分流放松（**Must**）"
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "missing-feature-block",
+      "description": "`≥v1.5.2` 版本无任何 feature 包 → critical block，reason_code `feature_package_closure_missing`，**不**误报顶层目录缺失（**Must**）"
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "regression-v162",
+      "description": "v1.6.2 实测 `gate check release` 的 `formal_package_closure_missing` 不再因顶层目录缺失出现（**Must**，回归 P0-3）"
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "no-empty-dir-bypass",
+      "description": "空目录（`prd/` 存在但无 `.md`）不再使 `≥v1.5.2` 版本通过；通过需真实 feature 包（**Must**）"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-GT-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_gate_truth_model_alignment.py::test_semver_fork_v162_no_legacy_top_dirs_required -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "≥v1.5.2 版本 issues 中无 `formal_package_closure_missing` 因 prd/user-story/qa/test-cases 缺失",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-GT-002",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_gate_truth_model_alignment.py::test_feature_package_closure_satisfied -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "≥v1.5.2 版本有 features/<slug>/{truth,tests}.md 时 issues 为空",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-GT-003",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_gate_truth_model_alignment.py::test_legacy_v1410_keeps_top_dir_contract -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "<v1.5.2 版本缺 prd/user-story/qa/test-cases 仍报 `formal_package_closure_missing`",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-GT-004",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_gate_truth_model_alignment.py::test_version_line_materials_still_checked -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "≥v1.5.2 版本缺 SUMMARY/execution/boundaries 仍 critical block",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-GT-005",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_gate_truth_model_alignment.py::test_missing_feature_package_blocks -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "≥v1.5.2 版本无任何 feature 包 → reason_code `feature_package_closure_missing`，message 不含 prd/user-story/qa/test-cases",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-GT-006",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_gate_model_alignment.py::test_regression_v162_no_top_dir_block -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "对本项目 v1.6.2 跑 check_formal_version_package_closure，issues 中无 missing prd/user-story/qa/test-cases",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-007",
+      "tc_id": "TC-GT-007",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_gate_truth_model_alignment.py::test_empty_dir_no_bypass -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "≥v1.5.2 版本仅有空 prd/ 目录无 feature 包 → 仍 block，空目录不绕过",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "LINE-15",
+      "title": "TC-GT-001..007 测试文件 `tests/test_v163_gate_model_alignment.py` 创建（BLOCKED:Phase-A）",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-16",
+      "title": "`beacon/commands/gate.py:2308` 加 semver 分流：`<v1.5.2` 走原契约，`≥v1.5.2` 走 feature 包闭环",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-17",
+      "title": "新 reason_code `feature_package_closure_missing`（≥v1.5.2 无 feature 包时）",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-18",
+      "title": "version-line 材料（SUMMARY/execution/boundaries/source-architecture/release）校验保留",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-22",
+      "title": "`beacon/commands/review.py:747` 同名检查同步分流（若存在相同硬编码）",
+      "status": "unchecked"
+    },
+    {
+      "id": "AC-006",
+      "title": "本项目 v1.6.2 gate check release 不再因顶层目录 block",
+      "status": "unchecked"
+    },
+    {
+      "id": "AC-003",
+      "title": "v1.4.10 旧版本契约不 break",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "truth.md",
+      "authority": "requirement_truth",
+      "artifact": "docs/beacon/v1.6.3/features/beacon-gate-truth-model-alignment-v163/truth.md"
+    },
+    {
+      "surface": "tests.md",
+      "authority": "test_truth",
+      "artifact": "docs/beacon/v1.6.3/features/beacon-gate-truth-model-alignment-v163/tests.md"
+    },
+    {
+      "surface": "tasks.md",
+      "authority": "requirement_truth",
+      "artifact": "docs/beacon/v1.6.3/features/beacon-gate-truth-model-alignment-v163/tasks.md"
+    }
+  ]
+}

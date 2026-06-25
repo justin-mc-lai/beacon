@@ -19,8 +19,13 @@ from beacon.utils.versioning import normalize_version
 
 REQUIRED_TRUTH_FRONTMATTER = ("slug", "version", "status", "language", "canonical_refs", "parser_contract")
 PARSER_CONTRACT = "beacon-feature-package-v1"
+# parser_contract versions the resolver may declare; validator accepts all of
+# these (single source of truth — resolver and validator must not disagree).
+ALLOWED_PARSER_CONTRACTS = ("beacon-feature-package-v1", "beacon-feature-package-v2")
 ALLOWED_EVIDENCE_AUTHORITIES = {"support_advisory", "qa_verdict", "release_verdict"}
+EXTRA_VALID_EVIDENCE_AUTHORITIES = {"requirement_truth", "acceptance_truth", "test_truth"}
 FORBIDDEN_EVIDENCE_FIELDS = ("final_verdict", "gate_truth", "release_ready", "qa_passed", "source_of_truth")
+EVIDENCE_REQUIRED_COLUMNS = ("surface", "authority")
 CHECKBOX_RE = re.compile(
     r"^\s*-\s+\[(?P<mark>[ xX-])\]\s+(?:`?(?P<id>[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)*-\d{3,})`?\s+)?(?P<title>.+?)\s*$"
 )
@@ -445,8 +450,8 @@ def validate_feature_package(
     for key in REQUIRED_TRUTH_FRONTMATTER:
         if key not in frontmatter:
             diagnostics.append({"severity": "error", "code": f"frontmatter_missing_{key}", "path": _rel(project_root, paths["truth"])})
-    if str(frontmatter.get("parser_contract") or "") != PARSER_CONTRACT:
-        diagnostics.append({"severity": "error", "code": "parser_contract_mismatch", "path": _rel(project_root, paths["truth"])})
+    if str(frontmatter.get("parser_contract") or "") not in ALLOWED_PARSER_CONTRACTS:
+        diagnostics.append({"severity": "error", "code": "parser_contract_mismatch", "path": _rel(project_root, paths["truth"]), "allowed_contracts": list(ALLOWED_PARSER_CONTRACTS)})
     if frontmatter.get("slug") and str(frontmatter.get("slug")) != slug:
         diagnostics.append({"severity": "error", "code": "frontmatter_slug_mismatch", "path": _rel(project_root, paths["truth"])})
 
@@ -486,22 +491,51 @@ def validate_feature_package(
     if not checkbox_rows:
         diagnostics.append({"severity": "error", "code": "checkbox_ledger_missing", "path": _rel(project_root, paths["tasks"])})
 
-    evidence_lower = evidence.lower()
-    for field in FORBIDDEN_EVIDENCE_FIELDS:
-        if field in evidence_lower:
-            diagnostics.append({"severity": "error", "code": f"evidence_forbidden_gate_truth_field:{field}", "path": _rel(project_root, paths["evidence"])})
     evidence_rows = _extract_evidence_rows(evidence)
     if not evidence_rows:
-        diagnostics.append({"severity": "error", "code": "evidence_authority_table_missing", "path": _rel(project_root, paths["evidence"])})
+        diagnostics.append(
+            {
+                "severity": "error",
+                "code": "evidence_authority_table_missing",
+                "path": _rel(project_root, paths["evidence"]),
+                "required_columns": list(EVIDENCE_REQUIRED_COLUMNS),
+                "allowed_authorities": sorted(ALLOWED_EVIDENCE_AUTHORITIES | EXTRA_VALID_EVIDENCE_AUTHORITIES),
+            }
+        )
+    # Forbidden gate-truth fields: flag when used as a declared key (`field:`)
+    # or as an authority cell value — never on a path/filename substring.
+    for field in FORBIDDEN_EVIDENCE_FIELDS:
+        if re.search(rf"(?<![\w/]){re.escape(field)}\s*:", evidence, re.IGNORECASE):
+            diagnostics.append(
+                {
+                    "severity": "error",
+                    "code": f"evidence_forbidden_gate_truth_field:{field}",
+                    "path": _rel(project_root, paths["evidence"]),
+                    "allowed_authorities": sorted(ALLOWED_EVIDENCE_AUTHORITIES | EXTRA_VALID_EVIDENCE_AUTHORITIES),
+                }
+            )
     for index, row in enumerate(evidence_rows, start=1):
         authority = str(row.get("authority") or "").strip()
-        if authority not in ALLOWED_EVIDENCE_AUTHORITIES and authority not in {"requirement_truth", "acceptance_truth", "test_truth"}:
+        # Word-boundary: only flag when a forbidden name is actually used as an
+        # authority cell value — never on a path/filename substring match.
+        if authority in FORBIDDEN_EVIDENCE_FIELDS:
+            diagnostics.append(
+                {
+                    "severity": "error",
+                    "code": f"evidence_forbidden_gate_truth_field:{authority}",
+                    "path": _rel(project_root, paths["evidence"]),
+                    "row": index,
+                    "allowed_authorities": sorted(ALLOWED_EVIDENCE_AUTHORITIES | EXTRA_VALID_EVIDENCE_AUTHORITIES),
+                }
+            )
+        elif authority not in ALLOWED_EVIDENCE_AUTHORITIES and authority not in EXTRA_VALID_EVIDENCE_AUTHORITIES:
             diagnostics.append(
                 {
                     "severity": "error",
                     "code": f"evidence_invalid_authority:{authority or '<empty>'}",
                     "path": _rel(project_root, paths["evidence"]),
                     "row": index,
+                    "allowed_authorities": sorted(ALLOWED_EVIDENCE_AUTHORITIES | EXTRA_VALID_EVIDENCE_AUTHORITIES),
                 }
             )
 
