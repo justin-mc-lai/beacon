@@ -13,6 +13,8 @@ from beacon import __toolkit_version__
 from beacon.utils.runtime import generate_run_id, now_iso, write_json
 from beacon.utils.skill_config import SkillConfigError, _Parser
 from beacon.utils.v115_delivery import refresh_evidence_manifest
+from beacon.utils.versioning import resolve_target_version
+from beacon.utils.agent_eval_kit import is_live_runner_admitted
 
 ALLOWED_HOOK_CODES = {
     "post_implement_pre_qa",
@@ -465,14 +467,37 @@ def _command_output(args: list[str]) -> dict[str, Any]:
     return payload
 
 
+def _resolve_eval_version(project_root: Path, version: str) -> tuple[str, str | None]:
+    """Resolve the hook's working version via the centralized resolver.
+
+    Returns (resolved_version, error_reason). error_reason is None on success,
+    or "version_resolve_failed" when resolution raises — callers must fail
+    closed on a non-None error_reason. Replaces the old hardcoded v1.6.1
+    fallback that bypassed resolve_target_version.
+    """
+    try:
+        resolved = resolve_target_version(project_root, version)
+    except Exception:
+        return ("", "version_resolve_failed")
+    return (resolved, None)
+
+
 def _run_beacon_post_release_local_install(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
-    from beacon.utils.agent_eval_kit import is_live_runner_admitted, run_agent_eval
+    from beacon.utils.agent_eval_kit import run_agent_eval
     from beacon.utils.doctor_orchestrator import (
         run_agent_surface_setup,
         run_agent_surface_verify,
         run_launcher_setup,
         run_legacy_beacon_skills_cleanup,
     )
+
+    runtime_version = str(__toolkit_version__).strip()
+    eval_version, resolve_error = _resolve_eval_version(project_root, version)
+    docs_version = eval_version or ""
+    drift = bool(runtime_version and docs_version and runtime_version != docs_version)
+    blocked_reasons: list[str] = []
+    if resolve_error:
+        blocked_reasons.append(resolve_error)
 
     legacy_cleanup = run_legacy_beacon_skills_cleanup(
         project_root=str(project_root),
@@ -492,7 +517,6 @@ def _run_beacon_post_release_local_install(project_root: Path, *, version: str, 
     claude_global_verify = verify_global_claude_beacon_skills()
 
     agent_results: dict[str, Any] = {}
-    blocked_reasons: list[str] = []
     for agent in ("codex", "claude"):
         setup = run_agent_surface_setup(
             project_root=str(project_root),
@@ -540,8 +564,7 @@ def _run_beacon_post_release_local_install(project_root: Path, *, version: str, 
                 blocked_reasons.append(f"{name}_runtime_version_mismatch")
 
     agent_eval_release_hook: dict[str, Any] | None = None
-    eval_version = version if version.startswith("v") else "v1.6.1"
-    if is_live_runner_admitted(project_root, version=eval_version):
+    if not resolve_error and is_live_runner_admitted(project_root, version=eval_version):
         agent_eval_release_hook = run_agent_eval(
             project_root,
             split="regression-core",
@@ -561,6 +584,9 @@ def _run_beacon_post_release_local_install(project_root: Path, *, version: str, 
         "blocked": bool(blocked_reasons),
         "reason_codes": blocked_reasons,
         "expected_runtime_version": expected_runtime_version,
+        "runtime_version": runtime_version,
+        "docs_version": docs_version,
+        "drift": drift,
         "legacy_skill_cleanup": legacy_cleanup.payload.get("result", {}),
         "claude_global_skill_install": claude_global_install,
         "claude_global_skill_verify": claude_global_verify,

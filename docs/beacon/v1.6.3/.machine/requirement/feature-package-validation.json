@@ -1,25 +1,25 @@
 {
   "schema_version": "1.0",
-  "feature": "beacon-freeze-integrity-drift-repair-v163",
-  "feature_slug": "beacon-freeze-integrity-drift-repair-v163",
+  "feature": "beacon-version-resolve-fail-closed-v163",
+  "feature_slug": "beacon-version-resolve-fail-closed-v163",
   "version": "v1.6.3",
   "status": "pass",
   "blocked": false,
   "reason_code": "",
-  "generated_at": "2026-06-25T03:15:39.958338+00:00",
-  "package_dir": "docs/beacon/v1.6.3/features/beacon-freeze-integrity-drift-repair-v163",
+  "generated_at": "2026-06-25T05:12:47.492520+00:00",
+  "package_dir": "docs/beacon/v1.6.3/features/beacon-version-resolve-fail-closed-v163",
   "truth_frontmatter": {
-    "slug": "beacon-freeze-integrity-drift-repair-v163",
+    "slug": "beacon-version-resolve-fail-closed-v163",
     "version": "v1.6.3",
     "status": "draft",
     "revision_id": "R1",
     "language": "zh",
-    "change_reason": "R1 — 修复冻结流程校验器自身 4 处漂移（dogfooding P0-3 冻结时暴露）",
+    "change_reason": "R1 — 修复版本解析硬编码 fallback + 加 runtime↔docs 漂移 fail-closed 守卫（P0-1 免疫系统修复）",
     "source_revision_id": "null",
     "canonical_refs": {
-      "prd": "docs/beacon/v1.6.3/features/beacon-freeze-integrity-drift-repair-v163/truth.md",
-      "user_story": "docs/beacon/v1.6.3/features/beacon-freeze-integrity-drift-repair-v163/truth.md",
-      "test_case": "docs/beacon/v1.6.3/features/beacon-freeze-integrity-drift-repair-v163/tests.md"
+      "prd": "docs/beacon/v1.6.3/features/beacon-version-resolve-fail-closed-v163/truth.md",
+      "user_story": "docs/beacon/v1.6.3/features/beacon-version-resolve-fail-closed-v163/truth.md",
+      "test_case": "docs/beacon/v1.6.3/features/beacon-version-resolve-fail-closed-v163/tests.md"
     },
     "parser_contract": "beacon-feature-package-v1",
     "truth_source_model": "feature_package_authoritative",
@@ -29,8 +29,8 @@
     "promotion_ref": "null"
   },
   "ac_count": 7,
-  "test_count": 12,
-  "checkbox_count": 12,
+  "test_count": 7,
+  "checkbox_count": 8,
   "evidence_row_count": 3,
   "gate_authority": "canonical_surfaces_preserved",
   "checkbox_gate_bypass": false,
@@ -44,16 +44,16 @@
   "truth_authority": "markdown_feature_package",
   "json_authority": false,
   "source_paths": {
-    "truth": "docs/beacon/v1.6.3/features/beacon-freeze-integrity-drift-repair-v163/truth.md",
-    "tests": "docs/beacon/v1.6.3/features/beacon-freeze-integrity-drift-repair-v163/tests.md",
-    "tasks": "docs/beacon/v1.6.3/features/beacon-freeze-integrity-drift-repair-v163/tasks.md",
-    "evidence": "docs/beacon/v1.6.3/features/beacon-freeze-integrity-drift-repair-v163/evidence.md"
+    "truth": "docs/beacon/v1.6.3/features/beacon-version-resolve-fail-closed-v163/truth.md",
+    "tests": "docs/beacon/v1.6.3/features/beacon-version-resolve-fail-closed-v163/tests.md",
+    "tasks": "docs/beacon/v1.6.3/features/beacon-version-resolve-fail-closed-v163/tasks.md",
+    "evidence": "docs/beacon/v1.6.3/features/beacon-version-resolve-fail-closed-v163/evidence.md"
   },
   "source_hashes": {
-    "truth": "f2946e71810dc668b305fdfed7726ff14fab5cac214344d21c70b91ca70ae25c",
-    "tests": "32f555f8bc25bd99f7b5aa2ef9612fec04a4bc104018c8f4f7938e63058f6696",
-    "tasks": "ead3ec1b74bb553d4131dd52d687e026e87b0d67dadabee84a07f007437c44f2",
-    "evidence": "476e9e9941c1fccd02af16b4d60aee5c23cc5efed897dcb3ddeabd6a637f8835"
+    "truth": "7c8558029c39fdc4e6f4607cf3860bcdc6f08a047e433528a5f9b508fbf41498",
+    "tests": "2c7eab3e83112b4f20114ca89e3b528bb59a051d5fe69fd697d9c0c228266738",
+    "tasks": "a47120e9167538312f9fd32e1bab799971912749dc69b189a5df93aa8e19dce2",
+    "evidence": "12ea14e948913dcb1e013e1442bd07caa57ae44bb5820121ca018343687222f5"
   },
   "runtime_json_requires_markdown_twin": false
 }
