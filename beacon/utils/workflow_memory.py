@@ -1266,21 +1266,25 @@ def workflow_memory_transaction_contract(
 ) -> dict[str, Any]:
     target_run_id = resolve_workflow_run_id(project_root, run_id=run_id, version=version, feature=feature)
     if not target_run_id:
+        # No run resolved (fresh project / not started). Informational warn,
+        # not blocked — distinguishes "no run" from "run without completion truth".
         return {
             "status": "warn",
             "blocked": False,
-            "reason_code": "workflow_memory_transaction_missing",
-            "message": "workflow memory transaction record missing",
+            "reason_code": "workflow_memory_no_run_resolved",
+            "message": "no workflow run resolved; completion truth not applicable",
             "run_id": "",
             "details": {},
         }
     items = list_workflow_transactions(project_root, run_id=target_run_id)
     if not items:
+        # Run exists but has no completion transaction record — completion truth
+        # is missing, so fail closed (gate.py blocks on status=="fail").
         return {
-            "status": "warn",
-            "blocked": False,
+            "status": "fail",
+            "blocked": True,
             "reason_code": "workflow_memory_transaction_missing",
-            "message": "workflow memory transaction record missing",
+            "message": "workflow memory transaction record missing for resolved run; completion truth absent",
             "run_id": target_run_id,
             "details": {},
         }
