@@ -1,10 +1,50 @@
 {
   "stage": "release",
   "mode": "strict",
-  "status": "Pass",
-  "issues": [],
-  "blocked_count": 0,
-  "run_id": "run-20260623T152828105908",
+  "profile": "release-global",
+  "status": "Blocked",
+  "issues": [
+    {
+      "reason_code": "git_alignment_blocked",
+      "severity": "critical",
+      "message": "git alignment blocked: ['git_branch_target_mismatch', 'git_version_ref_not_satisfied']",
+      "blocked": true
+    },
+    {
+      "reason_code": "technical_review_state_missing",
+      "severity": "critical",
+      "message": "technical review state missing for feature beacon-global-workspace-git-admission-v162",
+      "blocked": true
+    },
+    {
+      "reason_code": "technical_review_not_approved",
+      "severity": "critical",
+      "message": "technical review contract not approved for feature beacon-global-workspace-git-admission-v162",
+      "blocked": true
+    },
+    {
+      "reason_code": "baseline_snapshot_missing",
+      "severity": "critical",
+      "message": "baseline snapshot missing for version=v1.6.2",
+      "blocked": true
+    }
+  ],
+  "doc_impl_verdict": {
+    "enabled": true,
+    "version": "v1.6.2",
+    "status": "blocked",
+    "baseline_present": false,
+    "baseline_id": "",
+    "expected_spec_fingerprint": "",
+    "actual_spec_fingerprint": "c1ee1ba97fbaa8d493a8009b11e09f56e3b9ac4d669d53a47dad64ae4e3cd7f4",
+    "reason_codes": [
+      "baseline_snapshot_missing"
+    ]
+  },
+  "blocked_count": 4,
+  "force": false,
+  "dry_run": false,
   "version": "v1.6.2",
-  "updated_at": "2026-06-23T07:29:06.115970+00:00"
+  "run_id": "run-20260623T152828105908",
+  "updated_at": "2026-06-25T03:23:58.924438+00:00"
 }
