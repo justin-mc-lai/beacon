@@ -508,7 +508,7 @@ def _run_beacon_post_release_local_install(project_root: Path, *, version: str, 
         force=True,
     )
 
-    from beacon.utils.agent_surface import install_global_claude_beacon_skills, verify_global_claude_beacon_skills
+    from beacon.utils.agent_surface import install_global_claude_beacon_skills, verify_global_claude_beacon_skills, SUPPORTED_HOST_AGENTS
 
     claude_global_install = install_global_claude_beacon_skills(
         beacon_root=project_root,
@@ -517,7 +517,7 @@ def _run_beacon_post_release_local_install(project_root: Path, *, version: str, 
     claude_global_verify = verify_global_claude_beacon_skills()
 
     agent_results: dict[str, Any] = {}
-    for agent in ("codex", "claude"):
+    for agent in SUPPORTED_HOST_AGENTS:
         setup = run_agent_surface_setup(
             project_root=str(project_root),
             version=version,

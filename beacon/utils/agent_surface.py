@@ -1492,6 +1492,11 @@ def verify_v160_no_fake_delivery(payload: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+# Canonical list of supported host agents. Single source of truth — post-release
+# hook and other surfaces should iterate this, not hardcode a subset.
+SUPPORTED_HOST_AGENTS: tuple[str, ...] = ("trae", "claude", "codex", "cursor", "windsurf")
+
+
 def resolve_agent_surface_target(project_root: Path | str, agent: str) -> AgentSurfaceTarget:
     """Resolve project-local installation target for one supported agent."""
     root = Path(project_root).resolve()
