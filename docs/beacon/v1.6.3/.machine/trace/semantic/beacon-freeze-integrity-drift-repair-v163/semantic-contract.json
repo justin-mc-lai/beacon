@@ -1,0 +1,399 @@
+{
+  "schema_version": "1.0",
+  "semantic_contract_version": "1.0",
+  "feature": "beacon-freeze-integrity-drift-repair-v163",
+  "feature_slug": "beacon-freeze-integrity-drift-repair-v163",
+  "version": "v1.6.3",
+  "stage": "implement",
+  "generated_at": "2026-06-26T01:27:10.052024+00:00",
+  "source_hash": "b6e5d4b37277d8804713e223f881cf27bc99545bdb9bc22a6521e3dba21d2d8e",
+  "projection_seq": "semantic-b6e5d4b37277d880",
+  "transaction_id": "tx-semantic-beacon-freeze-integrity-drift-repair-v163-semantic-b6e5d4b37277d880",
+  "source_documents": [
+    {
+      "type": "prd",
+      "path": "docs/beacon/v1.6.3/features/beacon-freeze-integrity-drift-repair-v163/truth.md",
+      "fingerprint": "fad7259b681f30df106b3f7f6e5faccc8365e39fbb64d2177b6a4e0443a16a40"
+    },
+    {
+      "type": "user-story",
+      "path": "docs/beacon/v1.6.3/features/beacon-freeze-integrity-drift-repair-v163/truth.md",
+      "fingerprint": "fad7259b681f30df106b3f7f6e5faccc8365e39fbb64d2177b6a4e0443a16a40"
+    },
+    {
+      "type": "test-case",
+      "path": "docs/beacon/v1.6.3/features/beacon-freeze-integrity-drift-repair-v163/tests.md",
+      "fingerprint": "32f555f8bc25bd99f7b5aa2ef9612fec04a4bc104018c8f4f7938e63058f6696"
+    }
+  ],
+  "stage_context": {
+    "schema_version": "1.0",
+    "run_id": "run-20260626T012709Z-25e3",
+    "stage": "implement",
+    "feature": "beacon-freeze-integrity-drift-repair-v163",
+    "version": "v1.6.3",
+    "generated_at": "2026-06-26T01:27:10.021465+00:00",
+    "memory_recall": [
+      {
+        "memory_id": "e1585d89-203d-45ac-b568-8e645ed4671a",
+        "type": "decision",
+        "status": "active",
+        "content": "[qa] beacon-gate-truth-model-alignment-v163 => accepted",
+        "content_hash": "sha256:3f7944e5f5673e233457e37ac0ff587189728b0f5aa30651002d0c283ed17b88",
+        "source_session_id": "run-20260626T092619623274",
+        "source": "workflow.qa.writeback",
+        "evidence_ref": [
+          ".beacon/auto-test-status.json",
+          ".beacon/qa/status.json",
+          "docs/beacon/v1.6.3/.machine/qa/beacon-gate-truth-model-alignment-v163.ac-test-matrix.json",
+          ".beacon/coverage-summary.json",
+          ".beacon/qa/features/beacon-gate-truth-model-alignment-v163/ac-closure.json",
+          ".beacon/qa/features/beacon-gate-truth-model-alignment-v163/scorecard.json",
+          ".beacon/release-gate-report.json"
+        ],
+        "reason_codes": [],
+        "confidence": 0.8,
+        "tags": [
+          "accepted",
+          "qa",
+          "workflow-lifecycle"
+        ],
+        "created_at": "2026-06-26T01:26:26.421913+00:00",
+        "updated_at": "2026-06-26T01:26:26.421913+00:00",
+        "decision": "[qa] beacon-gate-truth-model-alignment-v163 => accepted",
+        "run_id": "run-20260626T092619623274",
+        "stage": "qa",
+        "feature": "beacon-gate-truth-model-alignment-v163",
+        "version": "",
+        "transaction_id": "tx-wf-run-20260626T092619623274-qa-memory_writeback-579c5c663436",
+        "source_hash": "579c5c663436f3189fc1b70d895de9c965aae7e14c6c2d2682ce1b9b9f0e66e7",
+        "projection_seq": "wf-579c5c663436f318",
+        "attempt_seq": 1
+      },
+      {
+        "memory_id": "76f59f77-f8cc-41cc-8a7a-b05b6618dc2a",
+        "type": "decision",
+        "status": "active",
+        "content": "[requirement-review] beacon-gate-truth-model-alignment-v163 => cleared",
+        "content_hash": "sha256:bb017a98303d8d8eb419bdb974427bc4b9798f7ec85e1652c84b109db2c14a54",
+        "source_session_id": "run-20260625T082744Z-e564",
+        "source": "workflow.requirement-review.writeback",
+        "evidence_ref": [
+          "docs/beacon/v1.6.3/.machine/execution/requirement-clarity-beacon-gate-truth-model-alignment-v163.json",
+          "docs/beacon/v1.6.3/execution/requirement-clarity-beacon-gate-truth-model-alignment-v163.md",
+          ".beacon/state/requirement-clarity-beacon-gate-truth-model-alignment-v163.json"
+        ],
+        "reason_codes": [],
+        "confidence": 0.8,
+        "tags": [
+          "cleared",
+          "requirement-review",
+          "workflow-lifecycle"
+        ],
+        "created_at": "2026-06-26T01:26:12.220750+00:00",
+        "updated_at": "2026-06-26T01:26:12.220750+00:00",
+        "decision": "[requirement-review] beacon-gate-truth-model-alignment-v163 => cleared",
+        "run_id": "run-20260625T082744Z-e564",
+        "stage": "requirement-review",
+        "feature": "beacon-gate-truth-model-alignment-v163",
+        "version": "v1.6.3",
+        "transaction_id": "tx-wf-run-20260625T082744Z-e564-requirement-review-memory_writeback-c67dbe2ee769",
+        "source_hash": "c67dbe2ee7692a669ff22ef55a39ccee6de4f396c7ce6d0faba60545cb327747",
+        "projection_seq": "wf-c67dbe2ee7692a66",
+        "attempt_seq": 1
+      },
+      {
+        "memory_id": "4090b252-65e5-4d89-a21b-6b1023cbc58e",
+        "type": "decision",
+        "status": "active",
+        "content": "[implement] beacon-gate-truth-model-alignment-v163 => completed",
+        "content_hash": "sha256:5aca5aa0b9b6b1de30fa91267683353d483af99a375647959382deb900ac48a9",
+        "source_session_id": "run-20260625T082744Z-e564",
+        "source": "workflow.implement.writeback",
+        "evidence_ref": [
+          "docs/beacon/v1.6.3/.machine/execution/implementation-summary-beacon-gate-truth-model-alignment-v163.json",
+          "docs/beacon/v1.6.3/execution/implementation-brief-beacon-gate-truth-model-alignment-v163.md",
+          ".beacon/state/implementation-beacon-gate-truth-model-alignment-v163.json"
+        ],
+        "reason_codes": [],
+        "confidence": 0.8,
+        "tags": [
+          "completed",
+          "implement",
+          "workflow-lifecycle"
+        ],
+        "created_at": "2026-06-26T01:22:55.639116+00:00",
+        "updated_at": "2026-06-26T01:22:55.639116+00:00",
+        "decision": "[implement] beacon-gate-truth-model-alignment-v163 => completed",
+        "run_id": "run-20260625T082744Z-e564",
+        "stage": "implement",
+        "feature": "beacon-gate-truth-model-alignment-v163",
+        "version": "v1.6.3",
+        "transaction_id": "tx-wf-run-20260625T082744Z-e564-implement-memory_writeback-5c9b5010edad",
+        "source_hash": "5c9b5010edad39ae6871eb2261f8fb753d7f36447e718aa748ae7d1863d83b6e",
+        "projection_seq": "wf-5c9b5010edad39ae",
+        "attempt_seq": 1
+      },
+      {
+        "memory_id": "a80be0f1-f976-4ddd-a222-5ca6473775c8",
+        "type": "decision",
+        "status": "active",
+        "content": "[team:implement-team-run-20260626T012253Z-e3ee] terminal_status=Pass",
+        "content_hash": "sha256:3ef4987e2af1cbf5e352cdf0638cd47707c9cd7f65fe9bd2c5f2fcf4d76022a0",
+        "source_session_id": "team:implement-team-run-20260626T012253Z-e3ee",
+        "source": "team.team_terminal_reached",
+        "evidence_ref": [
+          ".beacon/team/implement-team-run-20260626T012253Z-e3ee/manifest.json"
+        ],
+        "reason_codes": [],
+        "confidence": 0.75,
+        "tags": [
+          "team",
+          "team_terminal_reached",
+          "workflow-loop"
+        ],
+        "created_at": "2026-06-26T01:22:54.695378+00:00",
+        "updated_at": "2026-06-26T01:22:54.695378+00:00",
+        "decision": "[team:implement-team-run-20260626T012253Z-e3ee] terminal_status=Pass"
+      },
+      {
+        "memory_id": "4bda384f-aec6-449c-94d5-d24c085d6121",
+        "type": "decision",
+        "status": "active",
+        "content": "[technical-review] beacon-gate-truth-model-alignment-v163 => approved",
+        "content_hash": "sha256:e2cb1ae48adb285845ab4259f9020c786b2608b9de6d74766052c64c8db6d333",
+        "source_session_id": "run-20260625T082744Z-e564",
+        "source": "workflow.technical-review.writeback",
+        "evidence_ref": [
+          "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-gate-truth-model-alignment-v163.json",
+          "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-gate-truth-model-alignment-v163.md",
+          ".beacon/state/technical-review-contract-beacon-gate-truth-model-alignment-v163.json"
+        ],
+        "reason_codes": [],
+        "confidence": 0.8,
+        "tags": [
+          "approved",
+          "technical-review",
+          "workflow-lifecycle"
+        ],
+        "created_at": "2026-06-26T01:22:38.659616+00:00",
+        "updated_at": "2026-06-26T01:22:38.659616+00:00",
+        "decision": "[technical-review] beacon-gate-truth-model-alignment-v163 => approved",
+        "run_id": "run-20260625T082744Z-e564",
+        "stage": "technical-review",
+        "feature": "beacon-gate-truth-model-alignment-v163",
+        "version": "v1.6.3",
+        "transaction_id": "tx-wf-run-20260625T082744Z-e564-technical-review-memory_writeback-c5f5c4ce0961",
+        "source_hash": "c5f5c4ce09611d6fae6c6346e54708a0b958817c60344f96caa464162bdccd40",
+        "projection_seq": "wf-c5f5c4ce09611d6f",
+        "attempt_seq": 1
+      },
+      {
+        "memory_id": "ceec2f7f-3f8d-40ef-af57-369cb4c4a712",
+        "type": "decision",
+        "status": "active",
+        "content": "[technical-review] beacon-gate-truth-model-alignment-v163 => approved",
+        "content_hash": "sha256:e2cb1ae48adb285845ab4259f9020c786b2608b9de6d74766052c64c8db6d333",
+        "source_session_id": "run-20260625T082744Z-e564",
+        "source": "workflow.technical-review.writeback",
+        "evidence_ref": [
+          "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-gate-truth-model-alignment-v163.json",
+          "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-gate-truth-model-alignment-v163.md",
+          ".beacon/state/technical-review-contract-beacon-gate-truth-model-alignment-v163.json"
+        ],
+        "reason_codes": [],
+        "confidence": 0.8,
+        "tags": [
+          "approved",
+          "technical-review",
+          "workflow-lifecycle"
+        ],
+        "created_at": "2026-06-26T01:21:45.506679+00:00",
+        "updated_at": "2026-06-26T01:21:45.506679+00:00",
+        "decision": "[technical-review] beacon-gate-truth-model-alignment-v163 => approved",
+        "run_id": "run-20260625T082744Z-e564",
+        "stage": "technical-review",
+        "feature": "beacon-gate-truth-model-alignment-v163",
+        "version": "v1.6.3",
+        "transaction_id": "tx-wf-run-20260625T082744Z-e564-technical-review-memory_writeback-bddf77a050a4",
+        "source_hash": "bddf77a050a45a4b861ad199a57ef45d16edab52451bc4e8e330ddfe01b06197",
+        "projection_seq": "wf-bddf77a050a45a4b",
+        "attempt_seq": 1
+      },
+      {
+        "memory_id": "5a1e703f-a9a0-4d90-a9c3-53899255664a",
+        "type": "decision",
+        "status": "active",
+        "content": "[workflow.release-profile] run=run-20260625T082744Z-e564 status=completed reason=review_accept_completed",
+        "content_hash": "sha256:8dec4b4d6b0df193e6314de6fe8d3900edfe4900bd4f0503b70395f76a062cda",
+        "source_session_id": "run-20260625T082744Z-e564",
+        "source": "workflow.release-profile",
+        "evidence_ref": [
+          ".beacon/auto-test-status.json",
+          ".beacon/gate-report.json",
+          ".beacon/raw-command-log.jsonl",
+          ".beacon/runs/run-20260625T082744Z-e564/state.json",
+          "docs/beacon/v1.6.3/.machine/execution/terminal.json",
+          "docs/beacon/v1.6.3/execution/boundaries.md"
+        ],
+        "reason_codes": [],
+        "confidence": 0.82,
+        "tags": [
+          "completed",
+          "release",
+          "workflow-loop"
+        ],
+        "created_at": "2026-06-26T01:20:11.137004+00:00",
+        "updated_at": "2026-06-26T01:20:11.137004+00:00",
+        "decision": "[workflow.release-profile] run=run-20260625T082744Z-e564 status=completed reason=review_accept_completed"
+      },
+      {
+        "memory_id": "26fedb1f-eea2-4e2a-8adc-63749797d0e4",
+        "type": "decision",
+        "status": "active",
+        "content": "[release] beacon-gate-truth-model-alignment-v163 => completed",
+        "content_hash": "sha256:d9f33b1d81f35f09705a510665af04da7585671f802641ae8298c5977b15c1e2",
+        "source_session_id": "run-20260625T082744Z-e564",
+        "source": "workflow.release.writeback",
+        "evidence_ref": [
+          ".beacon/gate-report.json",
+          ".beacon/evidence-manifest.json",
+          "docs/beacon/v1.6.3/.machine/execution/terminal.json"
+        ],
+        "reason_codes": [],
+        "confidence": 0.8,
+        "tags": [
+          "completed",
+          "release",
+          "workflow-lifecycle"
+        ],
+        "created_at": "2026-06-26T01:20:10.216541+00:00",
+        "updated_at": "2026-06-26T01:20:10.216541+00:00",
+        "decision": "[release] beacon-gate-truth-model-alignment-v163 => completed",
+        "run_id": "run-20260625T082744Z-e564",
+        "stage": "release",
+        "feature": "beacon-gate-truth-model-alignment-v163",
+        "version": "v1.6.3",
+        "transaction_id": "tx-wf-run-20260625T082744Z-e564-release-memory_writeback-e2f5b2f96db9",
+        "source_hash": "e2f5b2f96db90b4103e5e13592a23d8baa4dfc63ae493c730c45bb9ba9fc9ac8",
+        "projection_seq": "wf-e2f5b2f96db90b41",
+        "attempt_seq": 1
+      }
+    ],
+    "lifecycle_events": [],
+    "requirement_refs": [
+      "docs/beacon/v1.6.3/qa/test-cases/beacon-freeze-integrity-drift-repair-v163.md",
+      "docs/beacon/v1.6.3/release/v1.6.3.md"
+    ],
+    "evidence_refs": [],
+    "decision_trace": [],
+    "blockers": [],
+    "transaction_lineage": {
+      "current_transaction_id": "",
+      "projection_seq": "",
+      "source_hash": "",
+      "previous_transaction_id": "",
+      "recent_transaction_ids": [],
+      "attempt_seq": null,
+      "action": ""
+    },
+    "semantic_context_source": "workflow-memory"
+  },
+  "official_language": {
+    "page_names": [
+      {
+        "label": "beacon-freeze-integrity-drift-repair-v163",
+        "slug": "beacon-freeze-integrity-drift-repair-v163",
+        "source": "requirement_truth"
+      }
+    ],
+    "status_labels": [
+      "降级",
+      "错误",
+      "正常",
+      "阻塞",
+      "加载中"
+    ],
+    "module_labels": [
+      "头部摘要",
+      "状态反馈",
+      "推荐动作"
+    ],
+    "action_labels": [
+      "查看详情",
+      "进入详情",
+      "返回总览"
+    ],
+    "preferred_terms": [
+      {
+        "from": "implementation",
+        "to": "implement",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "verify",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "review",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "delivery",
+        "to": "release",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "raw runtime log",
+        "to": "运行摘要",
+        "scope": "product_copy"
+      },
+      {
+        "from": "machine contract",
+        "to": "机器内部契约",
+        "scope": "product_copy"
+      }
+    ],
+    "banned_terms": [
+      "implementation",
+      "verify",
+      "review",
+      "delivery",
+      "machine contract",
+      "canonical-envelope",
+      "raw runtime log",
+      "transaction_id",
+      "projection_seq"
+    ]
+  },
+  "usage_guidelines": [
+    "先引用 semantic-contract.json，再进入 prototype 或 implement，不要在阶段内临时翻译需求。",
+    "页面名、状态名、模块名优先复用官方词表，避免 implementation / verify / delivery 这类旧阶段词汇出现在前台。",
+    "允许 taste-skill 做设计增强，但不得覆盖 requirement truth 或反向改写 semantic contract。",
+    "发现语义漂移时，优先重建 semantic layer，再继续 prototype freeze 或 implement delivery。"
+  ],
+  "default_design_bridge": {
+    "repo": "https://github.com/Leonxlnx/taste-skill",
+    "skill_id": "taste-skill",
+    "entry": "",
+    "detected": false,
+    "kind": "external-default-bridge",
+    "supported_stages": [
+      "prototype",
+      "implement"
+    ],
+    "capabilities": [
+      "prototype",
+      "implement",
+      "taste-design",
+      "semantic-normalization"
+    ],
+    "install_hint": "npx skills add https://github.com/Leonxlnx/taste-skill --skill taste-skill"
+  },
+  "compiler": {
+    "semantic_context_source": "workflow-memory",
+    "capability_snapshot": {}
+  }
+}

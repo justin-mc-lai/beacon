@@ -5,23 +5,23 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-06-26T01:04:11.241773+00:00",
+  "generated_at": "2026-06-26T01:28:54.925013+00:00",
   "feature": "beacon-truth-format-package-auth-skip-v163",
   "feature_slug": "beacon-truth-format-package-auth-skip-v163",
   "version": "v1.6.3",
   "truth_authority": false,
   "json_authority": false,
   "source_paths": {
-    "truth": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/truth.md",
-    "tests": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tests.md",
-    "tasks": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tasks.md",
-    "evidence": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/evidence.md"
+    "truth": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/truth.md",
+    "tests": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tests.md",
+    "tasks": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tasks.md",
+    "evidence": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/evidence.md"
   },
   "source_hashes": {
     "truth": "be9a01a9fc369d55085b0d6e876e00b22aadeee9626692b87e15b9c49c2e846e",
     "tests": "cf6b94ab912ae6b6c52245742d39eac9811ecf60a726f8bd0c61948703df9b3b",
-    "tasks": "111f5563394c8ae881f9f36f5caee734045517ca0d188792af87f8e828a455b8",
-    "evidence": "635bb724cdc7d5d636c466a17c90cfe440cfc0810afd60e43369d569098ffb97"
+    "tasks": "f584a9648dec3c5cce5bb19ecd13327f22c49cc7e3328bbf57112c548df7b8c1",
+    "evidence": "f0896e06530e98ddb845e374f89b84e7d5c91d15d202c8b057826ee4856e07e0"
   },
   "truth_frontmatter": {
     "slug": "beacon-truth-format-package-auth-skip-v163",
@@ -142,48 +142,58 @@
   "task_rows": [
     {
       "id": "LINE-15",
-      "title": "TC-TF-001..007 测试文件 `tests/test_v163_truth_format_package_auth_skip.py` 创建（BLOCKED:Phase-A）",
-      "status": "unchecked"
+      "title": "TC-TF-001..007 测试文件 `tests/test_v163_truth_format_package_auth_skip.py` 创建（8 TC）",
+      "status": "checked"
     },
     {
       "id": "LINE-16",
       "title": "`beacon/utils/manifest.py compute_feature_paths` 对 ≥v1.5.2 返回 features/ 路径",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "LINE-20",
       "title": "`beacon/utils/manifest.py sync_manifest` package-auth 包 status 取自 truth.md frontmatter",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TC-TF-002",
       "title": "frozen 包 status=frozen",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "LINE-25",
-      "title": "`beacon/utils/material_audit.py` truth_format 校验对 ≥v1.5.2 跳过",
-      "status": "unchecked"
+      "title": "`beacon/utils/material_audit.py` truth_format 校验对 ≥v1.5.2 跳过（<v1.5.2 保持）",
+      "status": "checked"
     },
     {
       "id": "LINE-26",
       "title": "TC-TF-003/005 不报 truth_format_non_compliant",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TC-TF-004",
-      "title": "legacy 兼容",
-      "status": "unchecked"
+      "title": "legacy 兼容（truth_format 现真正触发，非假 pass）",
+      "status": "checked"
     },
     {
       "id": "TC-TF-006",
       "title": "v1.6.2 无回归",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TC-TF-007",
       "title": "feature_package.validate 仍调用",
-      "status": "unchecked"
+      "status": "checked"
+    },
+    {
+      "id": "LINE-33",
+      "title": "8/8 TC pass；17 预存在失败均为旧包状态债（stash 对照 0 回归）",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-34",
+      "title": "实测：implement run 格式门禁通，只剩 implement_branch_guard（真实分支门禁）",
+      "status": "checked"
     }
   ],
   "checkbox_errors": [],

@@ -5,23 +5,23 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-06-25T09:59:46.547869+00:00",
+  "generated_at": "2026-06-26T01:28:46.223834+00:00",
   "feature": "beacon-ecosystem-discovery-sync-drift-v163",
   "feature_slug": "beacon-ecosystem-discovery-sync-drift-v163",
   "version": "v1.6.3",
   "truth_authority": false,
   "json_authority": false,
   "source_paths": {
-    "truth": "docs/beacon/v1.6.3/features/beacon-ecosystem-discovery-sync-drift-v163/truth.md",
-    "tests": "docs/beacon/v1.6.3/features/beacon-ecosystem-discovery-sync-drift-v163/tests.md",
-    "tasks": "docs/beacon/v1.6.3/features/beacon-ecosystem-discovery-sync-drift-v163/tasks.md",
-    "evidence": "docs/beacon/v1.6.3/features/beacon-ecosystem-discovery-sync-drift-v163/evidence.md"
+    "truth": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-ecosystem-discovery-sync-drift-v163/truth.md",
+    "tests": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-ecosystem-discovery-sync-drift-v163/tests.md",
+    "tasks": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-ecosystem-discovery-sync-drift-v163/tasks.md",
+    "evidence": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-ecosystem-discovery-sync-drift-v163/evidence.md"
   },
   "source_hashes": {
     "truth": "1279d42c38b77bed241b12f54f16bf7073c2cd63222b7913ff7254158616fd92",
     "tests": "648e73ba37fee0be4c30cbd8be9c8455b23e0209cb2d0b1cf77a4bdbc750f353",
-    "tasks": "a04525339d0f159d55f70626c22920d17e1a49bc1a9883be4faf59821a0a2e53",
-    "evidence": "0b6c11f15d2bd535dfd15add7b60c5e245093b02da09d584447df485f67ed346"
+    "tasks": "3ea58be2d18f047ac560704a03329e4d751ae8f460b966561becb4fa5619f745",
+    "evidence": "bbe85fcab4b2b8b8477fa18ac4efd06b208b81f932441ef6cc04d4e815baa540"
   },
   "truth_frontmatter": {
     "slug": "beacon-ecosystem-discovery-sync-drift-v163",
@@ -142,53 +142,63 @@
   "task_rows": [
     {
       "id": "LINE-15",
-      "title": "TC-EC-001..007 测试文件 `tests/test_v163_ecosystem_discovery_sync_drift.py` 创建（BLOCKED:Phase-A）",
-      "status": "unchecked"
+      "title": "TC-EC-001..007 测试文件 `tests/test_v163_ecosystem_discovery_sync_drift.py` 创建（7 TC）",
+      "status": "checked"
     },
     {
       "id": "LINE-16",
-      "title": "`beacon/utils/manifest.py:222 sync_manifest` 对 ≥v1.5.2 额外扫 `features/<slug>/`",
-      "status": "unchecked"
+      "title": "`beacon/utils/manifest.py sync_manifest` 对 ≥v1.5.2 额外扫 `features/<slug>/`",
+      "status": "checked"
     },
     {
       "id": "LINE-20",
       "title": "`beacon/utils/material_sync.py` sync_project_requirement_materials 对 package-authoritative 调 rebuild_machine_json",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TC-EC-002",
       "title": "sync-materials 后无 hash stale",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "LINE-25",
       "title": "`beacon/commands/freeze.py _freeze_impl` 调 rebuild_machine_json",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TC-EC-003",
       "title": "freeze 后 hash 一致",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TC-EC-004",
       "title": "legacy 兼容",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TC-EC-005",
       "title": "v1.6.2 无回归",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TC-EC-006",
       "title": "v1.6.3 四包无回归",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TC-EC-007",
       "title": "_discover_features 正确",
-      "status": "unchecked"
+      "status": "checked"
+    },
+    {
+      "id": "LINE-34",
+      "title": "7/7 TC pass；78 预存在失败均为旧包状态债（stash 对照 0 回归）",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-35",
+      "title": "实测：manifest sync 自动扫到 5 包；sync-materials 后 4 包 verify pass",
+      "status": "checked"
     }
   ],
   "checkbox_errors": [],

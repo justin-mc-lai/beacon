@@ -2,10 +2,10 @@
 
 - feature: `beacon-workflow-memory-completion-gate-v163`
 - version: `v1.6.3`
-- revision_id: ``
-- review_status: `draft`
-- approved_by: ``
-- reviewed_at: ``
+- revision_id: `R1`
+- review_status: `approved`
+- approved_by: `kunqi.lai`
+- reviewed_at: `2026-06-26T01:27:48.390949+00:00`
 
 ## Git
 - base_branch: `main`
