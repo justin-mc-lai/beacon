@@ -1,27 +1,27 @@
 {
   "scope": "qa9",
-  "timestamp": "2026-06-26T11:10:07.368747",
+  "timestamp": "2026-06-26T16:35:48.669838",
   "project": "/Users/apple/Developer/Personal/products/beacon",
   "version": "v1.6.3",
-  "run_id": "run-20260626T111007368177",
-  "spec_fingerprint_hash": "49475acb11d0e3d41a556581c58b4ba1524c1494587205ddfa3cd1347aa60d03",
+  "run_id": "run-20260626T163548667695",
+  "spec_fingerprint_hash": "39016cd136c2410f3fc9771bcff6d46fb444760169a2d6411ffecd0400cfb482",
   "status": "passed",
   "selected_layers": [
     "contract"
   ],
   "execution": {
-    "run_id": "run-20260626T111007368177",
+    "run_id": "run-20260626T163548667695",
     "version": "v1.6.3",
-    "evidence_dir": ".beacon/evidence/auto-test/run-20260626T111007368177",
+    "evidence_dir": ".beacon/evidence/auto-test/run-20260626T163548667695",
     "spec_fingerprint": {
-      "fingerprint_hash": "49475acb11d0e3d41a556581c58b4ba1524c1494587205ddfa3cd1347aa60d03",
+      "fingerprint_hash": "39016cd136c2410f3fc9771bcff6d46fb444760169a2d6411ffecd0400cfb482",
       "version": "v1.6.3",
-      "generated_at": "2026-06-26T03:10:13.594856+00:00"
+      "generated_at": "2026-06-26T08:35:55.328499+00:00"
     },
     "layers": [
       {
         "layer": "contract",
-        "command": "python3 -m pytest tests/test_v163_spec_fingerprint_package_auth_paths.py::test_user_story_layer_package_auth -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "command": "python3 -m pytest tests/test_v163_post_release_hook_agent_coverage.py::test_hook_covers_5_agents -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "exit_code": 0,
         "status": "passed",
         "reason_code": "",
@@ -35,32 +35,32 @@
             "exit_code": 0
           }
         ],
-        "execution_fingerprint": "5e4735990dce23cc687107683fd67d6b7d6cae64028cda370cf53f702c264225",
-        "started_at": "2026-06-26T11:10:07.444329",
-        "ended_at": "2026-06-26T11:10:08.067234",
-        "junit_path": ".beacon/evidence/auto-test/run-20260626T111007368177/contract/junit.xml",
+        "execution_fingerprint": "b47c5f0f9b0579d98904e046b7c695626e3a18e8e2bc13da1a7350931df2ee10",
+        "started_at": "2026-06-26T16:35:48.771935",
+        "ended_at": "2026-06-26T16:35:49.544172",
+        "junit_path": ".beacon/evidence/auto-test/run-20260626T163548667695/contract/junit.xml",
         "junit_valid": true,
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260626T111007368177/contract/command.txt",
-          ".beacon/evidence/auto-test/run-20260626T111007368177/contract/stdout.log",
-          ".beacon/evidence/auto-test/run-20260626T111007368177/contract/stderr.log",
-          ".beacon/evidence/auto-test/run-20260626T111007368177/contract/junit.xml",
-          ".beacon/evidence/auto-test/run-20260626T111007368177/contract/result.json"
+          ".beacon/evidence/auto-test/run-20260626T163548667695/contract/command.txt",
+          ".beacon/evidence/auto-test/run-20260626T163548667695/contract/stdout.log",
+          ".beacon/evidence/auto-test/run-20260626T163548667695/contract/stderr.log",
+          ".beacon/evidence/auto-test/run-20260626T163548667695/contract/junit.xml",
+          ".beacon/evidence/auto-test/run-20260626T163548667695/contract/result.json"
         ]
       }
     ],
     "ui_action_evidence": {},
     "matrix_report": {
       "status": "ok",
-      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/matrix.qa9.json",
+      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/beacon-post-release-hook-agent-coverage-v163/matrix.qa9.json",
       "evidence_generated": 7,
       "entry_count": 7,
       "freshness_violations": []
     },
     "artifacts": [
-      ".beacon/evidence/auto-test/run-20260626T111007368177/qa9/tc-execution-map.json",
-      ".beacon/evidence/auto-test/run-20260626T111007368177/qa9/tc-results.json",
-      ".beacon/evidence/auto-test/run-20260626T111007368177/summary.json",
+      ".beacon/evidence/auto-test/run-20260626T163548667695/qa9/tc-execution-map.json",
+      ".beacon/evidence/auto-test/run-20260626T163548667695/qa9/tc-results.json",
+      ".beacon/evidence/auto-test/run-20260626T163548667695/summary.json",
       ".beacon/flaky-history.json",
       ".beacon/evidence-signature-chain.json"
     ],
@@ -77,7 +77,7 @@
     "qa_types": [
       "contract"
     ],
-    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/matrix.qa9.json",
+    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/beacon-post-release-hook-agent-coverage-v163/matrix.qa9.json",
     "ui_runner": "playwright",
     "quality_requirements": {
       "require_junit": true,
@@ -104,9 +104,9 @@
     },
     "tc_results": [
       {
-        "tc_id": "TC-SF-001",
+        "tc_id": "TC-HK-001",
         "ac_id": "AC-001",
-        "source_tc_id": "TC-SF-001",
+        "source_tc_id": "TC-HK-001",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -116,20 +116,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest tests/test_v163_spec_fingerprint_package_auth_paths.py::test_user_story_layer_package_auth -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260626T111007368177",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-spec-fingerprint-package-auth-paths-v163/tc-sf-001/__RUN_ID__.json",
+        "command": "python3 -m pytest tests/test_v163_post_release_hook_agent_coverage.py::test_hook_covers_5_agents -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260626T163548667695",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-post-release-hook-agent-coverage-v163/tc-hk-001/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-001/command.txt",
-          ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-001/stdout.log",
-          ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-001/stderr.log",
-          ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-001/junit.xml",
-          ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-001/result.json"
+          ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-001/command.txt",
+          ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-001/stdout.log",
+          ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-001/stderr.log",
+          ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-001/junit.xml",
+          ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-001/result.json"
         ],
-        "execution_fingerprint": "0e39819eb16e2fb3e886b54f63b8d2f814a34cccb64532e92501712dd5e2a399",
-        "started_at": "2026-06-26T11:10:08.147791",
-        "ended_at": "2026-06-26T11:10:09.105236",
-        "junit_path": ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-001/junit.xml",
+        "execution_fingerprint": "0ad3d51039f2c6ce3219b1d7e7324b0df681cc2ed6b702df18da4ec4eb59640b",
+        "started_at": "2026-06-26T16:35:49.654438",
+        "ended_at": "2026-06-26T16:35:50.345154",
+        "junit_path": ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-001/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -142,9 +142,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-SF-002",
+        "tc_id": "TC-HK-002",
         "ac_id": "AC-002",
-        "source_tc_id": "TC-SF-002",
+        "source_tc_id": "TC-HK-002",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -154,20 +154,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest tests/test_v163_spec_fingerprint_package_auth_paths.py::test_prd_layer_package_auth -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260626T111007368177",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-spec-fingerprint-package-auth-paths-v163/tc-sf-002/__RUN_ID__.json",
+        "command": "python3 -m pytest tests/test_v163_post_release_hook_agent_coverage.py::test_all_agents_setup_verify_in_payload -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260626T163548667695",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-post-release-hook-agent-coverage-v163/tc-hk-002/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-002/command.txt",
-          ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-002/stdout.log",
-          ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-002/stderr.log",
-          ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-002/junit.xml",
-          ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-002/result.json"
+          ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-002/command.txt",
+          ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-002/stdout.log",
+          ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-002/stderr.log",
+          ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-002/junit.xml",
+          ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-002/result.json"
         ],
-        "execution_fingerprint": "97a6bdbde8ab24191a80beb774ccdcb5724db7b7b54ac6115aa88ef86cb454b0",
-        "started_at": "2026-06-26T11:10:09.178803",
-        "ended_at": "2026-06-26T11:10:10.167127",
-        "junit_path": ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-002/junit.xml",
+        "execution_fingerprint": "3bda2b967455d6ef91d2f4fc7d7df792ee66c732d0cd72f742cb594769446883",
+        "started_at": "2026-06-26T16:35:50.437068",
+        "ended_at": "2026-06-26T16:35:51.171677",
+        "junit_path": ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-002/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -180,9 +180,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-SF-003",
+        "tc_id": "TC-HK-003",
         "ac_id": "AC-003",
-        "source_tc_id": "TC-SF-003",
+        "source_tc_id": "TC-HK-003",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -192,20 +192,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest tests/test_v163_spec_fingerprint_package_auth_paths.py::test_truth_change_detected -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260626T111007368177",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-spec-fingerprint-package-auth-paths-v163/tc-sf-003/__RUN_ID__.json",
+        "command": "python3 -m pytest tests/test_v163_post_release_hook_agent_coverage.py::test_drift_blocks_hook -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260626T163548667695",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-post-release-hook-agent-coverage-v163/tc-hk-003/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-003/command.txt",
-          ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-003/stdout.log",
-          ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-003/stderr.log",
-          ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-003/junit.xml",
-          ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-003/result.json"
+          ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-003/command.txt",
+          ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-003/stdout.log",
+          ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-003/stderr.log",
+          ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-003/junit.xml",
+          ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-003/result.json"
         ],
-        "execution_fingerprint": "6021a385d54e8760c557735e8c51662c9af24df3901d9de176b37d1b5f9566f9",
-        "started_at": "2026-06-26T11:10:10.242794",
-        "ended_at": "2026-06-26T11:10:10.799723",
-        "junit_path": ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-003/junit.xml",
+        "execution_fingerprint": "7685901232291b463062f07a5676e7d081ce6257df4d76d13973339f0372a409",
+        "started_at": "2026-06-26T16:35:51.259655",
+        "ended_at": "2026-06-26T16:35:52.010487",
+        "junit_path": ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-003/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -218,9 +218,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-SF-004",
+        "tc_id": "TC-HK-004",
         "ac_id": "AC-004",
-        "source_tc_id": "TC-SF-004",
+        "source_tc_id": "TC-HK-004",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -230,20 +230,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest tests/test_v163_spec_fingerprint_package_auth_paths.py::test_legacy_find_layer_files_unchanged -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260626T111007368177",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-spec-fingerprint-package-auth-paths-v163/tc-sf-004/__RUN_ID__.json",
+        "command": "python3 -m pytest tests/test_v163_post_release_hook_agent_coverage.py::test_claude_global_preserved -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260626T163548667695",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-post-release-hook-agent-coverage-v163/tc-hk-004/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-004/command.txt",
-          ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-004/stdout.log",
-          ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-004/stderr.log",
-          ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-004/junit.xml",
-          ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-004/result.json"
+          ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-004/command.txt",
+          ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-004/stdout.log",
+          ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-004/stderr.log",
+          ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-004/junit.xml",
+          ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-004/result.json"
         ],
-        "execution_fingerprint": "90321ef7b3257042770f39985b621f257fcf84d180b9a74f4d2d06444a425949",
-        "started_at": "2026-06-26T11:10:10.878143",
-        "ended_at": "2026-06-26T11:10:11.465005",
-        "junit_path": ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-004/junit.xml",
+        "execution_fingerprint": "eb1370198517c0d6debec276f55f801d10ceb476f0913389b8bc29552fcf77dc",
+        "started_at": "2026-06-26T16:35:52.103012",
+        "ended_at": "2026-06-26T16:35:52.872817",
+        "junit_path": ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-004/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -256,9 +256,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-SF-005",
+        "tc_id": "TC-HK-005",
         "ac_id": "AC-005",
-        "source_tc_id": "TC-SF-005",
+        "source_tc_id": "TC-HK-005",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -268,20 +268,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest tests/test_v163_spec_fingerprint_package_auth_paths.py::test_case_layer_preserved -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260626T111007368177",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-spec-fingerprint-package-auth-paths-v163/tc-sf-005/__RUN_ID__.json",
+        "command": "python3 -m pytest tests/test_v163_post_release_hook_agent_coverage.py::test_no_regression_codex_claude -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260626T163548667695",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-post-release-hook-agent-coverage-v163/tc-hk-005/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-005/command.txt",
-          ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-005/stdout.log",
-          ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-005/stderr.log",
-          ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-005/junit.xml",
-          ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-005/result.json"
+          ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-005/command.txt",
+          ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-005/stdout.log",
+          ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-005/stderr.log",
+          ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-005/junit.xml",
+          ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-005/result.json"
         ],
-        "execution_fingerprint": "912c9e5196445bc919fcca471f1d8c63e311be533d49058ac6880043cc6a9f59",
-        "started_at": "2026-06-26T11:10:11.551293",
-        "ended_at": "2026-06-26T11:10:12.105274",
-        "junit_path": ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-005/junit.xml",
+        "execution_fingerprint": "11e728ca336407042926bb3b8d0461abdb9d0e8925be6eec8af12e23678b857b",
+        "started_at": "2026-06-26T16:35:52.966376",
+        "ended_at": "2026-06-26T16:35:53.626015",
+        "junit_path": ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-005/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -294,9 +294,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-SF-006",
+        "tc_id": "TC-HK-006",
         "ac_id": "AC-006",
-        "source_tc_id": "TC-SF-006",
+        "source_tc_id": "TC-HK-006",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -306,20 +306,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest tests/test_v163_spec_fingerprint_package_auth_paths.py::test_no_regression_v163_release -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260626T111007368177",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-spec-fingerprint-package-auth-paths-v163/tc-sf-006/__RUN_ID__.json",
+        "command": "python3 -m pytest tests/test_v163_post_release_hook_agent_coverage.py::test_no_regression_block_reasons -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260626T163548667695",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-post-release-hook-agent-coverage-v163/tc-hk-006/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-006/command.txt",
-          ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-006/stdout.log",
-          ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-006/stderr.log",
-          ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-006/junit.xml",
-          ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-006/result.json"
+          ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-006/command.txt",
+          ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-006/stdout.log",
+          ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-006/stderr.log",
+          ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-006/junit.xml",
+          ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-006/result.json"
         ],
-        "execution_fingerprint": "5f62525c06b7aa0204e55c08506be33204ef7f8816dc30c1a75175a0e4c6974f",
-        "started_at": "2026-06-26T11:10:12.182873",
-        "ended_at": "2026-06-26T11:10:12.748739",
-        "junit_path": ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-006/junit.xml",
+        "execution_fingerprint": "929a1e7042030690e5595814445aab6dd44284f272513c2a6ed67da630ec0169",
+        "started_at": "2026-06-26T16:35:53.712255",
+        "ended_at": "2026-06-26T16:35:54.310490",
+        "junit_path": ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-006/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -332,9 +332,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-SF-007",
+        "tc_id": "TC-HK-007",
         "ac_id": "AC-007",
-        "source_tc_id": "TC-SF-007",
+        "source_tc_id": "TC-HK-007",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -344,20 +344,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest tests/test_v163_spec_fingerprint_package_auth_paths.py::test_no_regression_v162 -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260626T111007368177",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-spec-fingerprint-package-auth-paths-v163/tc-sf-007/__RUN_ID__.json",
+        "command": "python3 -m pytest tests/test_v163_post_release_hook_agent_coverage.py::test_agent_constant_reused -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260626T163548667695",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-post-release-hook-agent-coverage-v163/tc-hk-007/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-007/command.txt",
-          ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-007/stdout.log",
-          ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-007/stderr.log",
-          ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-007/junit.xml",
-          ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-007/result.json"
+          ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-007/command.txt",
+          ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-007/stdout.log",
+          ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-007/stderr.log",
+          ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-007/junit.xml",
+          ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-007/result.json"
         ],
-        "execution_fingerprint": "7b38d4598fda07616ba558cdfd2d5b5a8d15eab3124b95f8144888e786333f9d",
-        "started_at": "2026-06-26T11:10:12.826419",
-        "ended_at": "2026-06-26T11:10:13.378233",
-        "junit_path": ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-007/junit.xml",
+        "execution_fingerprint": "5efef0704b225cb0bda4515635fec080cb945f6f28f01f8d875917b2bfab9808",
+        "started_at": "2026-06-26T16:35:54.394478",
+        "ended_at": "2026-06-26T16:35:55.005517",
+        "junit_path": ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-007/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -373,9 +373,9 @@
   },
   "quality_issues": [],
   "schema_version": "1.0",
-  "updated_at": "2026-06-26T03:10:13.458033+00:00",
+  "updated_at": "2026-06-26T08:35:55.174326+00:00",
   "summary": {
-    "feature": "beacon-spec-fingerprint-package-auth-paths-v163",
+    "feature": "beacon-post-release-hook-agent-coverage-v163",
     "version": "v1.6.3",
     "status": "passed",
     "release_ready": true,
@@ -386,24 +386,24 @@
     "reconciliation_artifact_path": "",
     "reconciliation_reprojection_targets": [],
     "repair_action": "qa-repair",
-    "repair_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.3 --feature \"beacon-spec-fingerprint-package-auth-paths-v163\""
+    "repair_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.3 --feature \"beacon-post-release-hook-agent-coverage-v163\""
   },
   "qa_status_source": "canonical",
   "governance_state_role": "generated_governance_state_not_truth",
   "truth_authority": false,
   "json_authority": false,
   "resolver_mode": "resolver_first",
-  "feature": "beacon-spec-fingerprint-package-auth-paths-v163",
-  "feature_slug": "beacon-spec-fingerprint-package-auth-paths-v163",
+  "feature": "beacon-post-release-hook-agent-coverage-v163",
+  "feature_slug": "beacon-post-release-hook-agent-coverage-v163",
   "implementation_done": true,
   "evidence_done": true,
   "story_sequence": [
     {
       "ac_id": "AC-001",
-      "theme": "fingerprint-user-story-layer",
-      "text": "≥v1.5.2 包 fingerprint user_story 层 count>0（扫 features/<slug>/truth.md）（**Must**）",
+      "theme": "hook-covers-5-agents",
+      "text": "`_run_beacon_post_release_local_install` 的 agent 循环含 trae/claude/codex/cursor/windsurf 全 5 个（**Must**）",
       "tc_ids": [
-        "TC-SF-001"
+        "TC-HK-001"
       ],
       "qa_types": [
         "contract"
@@ -411,10 +411,10 @@
     },
     {
       "ac_id": "AC-002",
-      "theme": "fingerprint-prd-layer",
-      "text": "≥v1.5.2 包 fingerprint prd 层 count>0（**Must**）",
+      "theme": "all-agents-setup-verify",
+      "text": "hook payload 的 `agent_surfaces` 含 5 个 agent 的 setup_status + verify_status（**Must**）",
       "tc_ids": [
-        "TC-SF-002"
+        "TC-HK-002"
       ],
       "qa_types": [
         "contract"
@@ -422,10 +422,10 @@
     },
     {
       "ac_id": "AC-003",
-      "theme": "truth-change-detected",
-      "text": "改 truth.md 后 fingerprint hash 改变（spec drift 检测对 truth 有效）（**Must**）",
+      "theme": "drift-blocks-hook",
+      "text": "任一 agent verify 报 `host_visible_skills_drift` 时 hook block，reason_code 含 `{agent}_agent_surface_verify_failed`（**Must**）",
       "tc_ids": [
-        "TC-SF-003"
+        "TC-HK-003"
       ],
       "qa_types": [
         "contract"
@@ -433,10 +433,10 @@
     },
     {
       "ac_id": "AC-004",
-      "theme": "legacy-compat",
-      "text": "<v1.5.2 `_find_layer_files` 行为不变（**Must**）",
+      "theme": "claude-global-preserved",
+      "text": "hook 仍调 `install_global_claude_beacon_skills` + `verify_global_claude_beacon_skills`（**Must**）",
       "tc_ids": [
-        "TC-SF-004"
+        "TC-HK-004"
       ],
       "qa_types": [
         "contract"
@@ -444,10 +444,10 @@
     },
     {
       "ac_id": "AC-005",
-      "theme": "test-case-layer-preserved",
-      "text": "test_case 层仍扫 `.machine/qa/*.ac-test-matrix.json`（**Must**）",
+      "theme": "no-regression-codex-claude",
+      "text": "codex/claude 的 setup/verify 行为不变（仍 force=True + strict=True）（**Must**）",
       "tc_ids": [
-        "TC-SF-005"
+        "TC-HK-005"
       ],
       "qa_types": [
         "contract"
@@ -455,10 +455,10 @@
     },
     {
       "ac_id": "AC-006",
-      "theme": "no-regression-v163-release",
-      "text": "v1.6.3 release gate 修复后仍 pass（fingerprint 重生成后 expected=actual）（**Must**）",
+      "theme": "no-regression-block-reasons",
+      "text": "现有 block reason_codes（setup_failed/verify_failed）语义不变（**Must**）",
       "tc_ids": [
-        "TC-SF-006"
+        "TC-HK-006"
       ],
       "qa_types": [
         "contract"
@@ -466,10 +466,10 @@
     },
     {
       "ac_id": "AC-007",
-      "theme": "no-regression-v162",
-      "text": "v1.6.2 fingerprint 行为不变（**Must**）",
+      "theme": "agent-constant-reused",
+      "text": "循环复用 agent_surface 的全 agent 常量，不新增硬编码（**Must**）",
       "tc_ids": [
-        "TC-SF-007"
+        "TC-HK-007"
       ],
       "qa_types": [
         "contract"
@@ -495,13 +495,13 @@
       "AC-007"
     ],
     "targeted_tc_ids": [
-      "TC-SF-001",
-      "TC-SF-002",
-      "TC-SF-003",
-      "TC-SF-004",
-      "TC-SF-005",
-      "TC-SF-006",
-      "TC-SF-007"
+      "TC-HK-001",
+      "TC-HK-002",
+      "TC-HK-003",
+      "TC-HK-004",
+      "TC-HK-005",
+      "TC-HK-006",
+      "TC-HK-007"
     ],
     "targeted_scenario_ids": [],
     "targeted_scenario_families": []
@@ -513,7 +513,7 @@
     "targeted_scope_only": true,
     "verification_item_count": 7
   },
-  "feature_matrix_path": ".beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/matrix.qa9.json",
+  "feature_matrix_path": ".beacon/qa/features/beacon-post-release-hook-agent-coverage-v163/matrix.qa9.json",
   "blocking_artifact_updates": [
     {
       "artifact": "review_quality",
@@ -526,8 +526,8 @@
   "per_item_results": [
     {
       "ac_id": "AC-001",
-      "tc_id": "TC-SF-001",
-      "source_tc_id": "TC-SF-001",
+      "tc_id": "TC-HK-001",
+      "source_tc_id": "TC-HK-001",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-001",
@@ -540,17 +540,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-001/result.json"
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-001/result.json"
       ]
     },
     {
       "ac_id": "AC-002",
-      "tc_id": "TC-SF-002",
-      "source_tc_id": "TC-SF-002",
+      "tc_id": "TC-HK-002",
+      "source_tc_id": "TC-HK-002",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-002",
@@ -563,17 +563,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-002/command.txt",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-002/stdout.log",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-002/stderr.log",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-002/junit.xml",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-002/result.json"
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-002/result.json"
       ]
     },
     {
       "ac_id": "AC-003",
-      "tc_id": "TC-SF-003",
-      "source_tc_id": "TC-SF-003",
+      "tc_id": "TC-HK-003",
+      "source_tc_id": "TC-HK-003",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-003",
@@ -586,17 +586,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-003/command.txt",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-003/stdout.log",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-003/stderr.log",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-003/junit.xml",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-003/result.json"
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-003/result.json"
       ]
     },
     {
       "ac_id": "AC-004",
-      "tc_id": "TC-SF-004",
-      "source_tc_id": "TC-SF-004",
+      "tc_id": "TC-HK-004",
+      "source_tc_id": "TC-HK-004",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-004",
@@ -609,17 +609,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-004/command.txt",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-004/stdout.log",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-004/stderr.log",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-004/junit.xml",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-004/result.json"
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-004/result.json"
       ]
     },
     {
       "ac_id": "AC-005",
-      "tc_id": "TC-SF-005",
-      "source_tc_id": "TC-SF-005",
+      "tc_id": "TC-HK-005",
+      "source_tc_id": "TC-HK-005",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-005",
@@ -632,17 +632,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-005/command.txt",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-005/stdout.log",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-005/stderr.log",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-005/junit.xml",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-005/result.json"
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-005/result.json"
       ]
     },
     {
       "ac_id": "AC-006",
-      "tc_id": "TC-SF-006",
-      "source_tc_id": "TC-SF-006",
+      "tc_id": "TC-HK-006",
+      "source_tc_id": "TC-HK-006",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-006",
@@ -655,17 +655,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-006/command.txt",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-006/stdout.log",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-006/stderr.log",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-006/junit.xml",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-006/result.json"
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-006/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-006/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-006/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-006/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-006/result.json"
       ]
     },
     {
       "ac_id": "AC-007",
-      "tc_id": "TC-SF-007",
-      "source_tc_id": "TC-SF-007",
+      "tc_id": "TC-HK-007",
+      "source_tc_id": "TC-HK-007",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-007",
@@ -678,11 +678,11 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-007/command.txt",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-007/stdout.log",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-007/stderr.log",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-007/junit.xml",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-007/result.json"
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-007/result.json"
       ]
     }
   ],
@@ -715,17 +715,17 @@
     "blocked": false,
     "reason_code": "requirement_completeness_projection_missing",
     "target_stage": "qa",
-    "feature": "beacon-spec-fingerprint-package-auth-paths-v163",
+    "feature": "beacon-post-release-hook-agent-coverage-v163",
     "version": "v1.6.3",
     "stage_ready": true,
     "paths": {
-      "envelope": "docs/beacon/v1.6.3/.machine/requirement/beacon-spec-fingerprint-package-auth-paths-v163.envelope.json",
-      "candidate_ledger": "docs/beacon/v1.6.3/.machine/requirement/beacon-spec-fingerprint-package-auth-paths-v163.candidate-ledger.json",
-      "decision_log": "docs/beacon/v1.6.3/.machine/requirement/beacon-spec-fingerprint-package-auth-paths-v163.supplement-decision-log.json",
-      "freeze_contract": "docs/beacon/v1.6.3/.machine/requirement/beacon-spec-fingerprint-package-auth-paths-v163.freeze-contract.json",
-      "completeness": "docs/beacon/v1.6.3/.machine/requirement/beacon-spec-fingerprint-package-auth-paths-v163.completeness.json",
-      "supplement_task": "docs/beacon/v1.6.3/.machine/requirement/beacon-spec-fingerprint-package-auth-paths-v163.supplement-task.json",
-      "re_freeze_transaction": "docs/beacon/v1.6.3/.machine/requirement/beacon-spec-fingerprint-package-auth-paths-v163.re-freeze-transaction.json"
+      "envelope": "docs/beacon/v1.6.3/.machine/requirement/beacon-post-release-hook-agent-coverage-v163.envelope.json",
+      "candidate_ledger": "docs/beacon/v1.6.3/.machine/requirement/beacon-post-release-hook-agent-coverage-v163.candidate-ledger.json",
+      "decision_log": "docs/beacon/v1.6.3/.machine/requirement/beacon-post-release-hook-agent-coverage-v163.supplement-decision-log.json",
+      "freeze_contract": "docs/beacon/v1.6.3/.machine/requirement/beacon-post-release-hook-agent-coverage-v163.freeze-contract.json",
+      "completeness": "docs/beacon/v1.6.3/.machine/requirement/beacon-post-release-hook-agent-coverage-v163.completeness.json",
+      "supplement_task": "docs/beacon/v1.6.3/.machine/requirement/beacon-post-release-hook-agent-coverage-v163.supplement-task.json",
+      "re_freeze_transaction": "docs/beacon/v1.6.3/.machine/requirement/beacon-post-release-hook-agent-coverage-v163.re-freeze-transaction.json"
     },
     "projection_status": "package_authoritative",
     "recommended_command": "",
@@ -738,13 +738,13 @@
         "summary": "machine completeness projection is missing, but v1.5.2 package truth and coverage are valid authority",
         "details": {
           "paths": {
-            "envelope": "docs/beacon/v1.6.3/.machine/requirement/beacon-spec-fingerprint-package-auth-paths-v163.envelope.json",
-            "candidate_ledger": "docs/beacon/v1.6.3/.machine/requirement/beacon-spec-fingerprint-package-auth-paths-v163.candidate-ledger.json",
-            "decision_log": "docs/beacon/v1.6.3/.machine/requirement/beacon-spec-fingerprint-package-auth-paths-v163.supplement-decision-log.json",
-            "freeze_contract": "docs/beacon/v1.6.3/.machine/requirement/beacon-spec-fingerprint-package-auth-paths-v163.freeze-contract.json",
-            "completeness": "docs/beacon/v1.6.3/.machine/requirement/beacon-spec-fingerprint-package-auth-paths-v163.completeness.json",
-            "supplement_task": "docs/beacon/v1.6.3/.machine/requirement/beacon-spec-fingerprint-package-auth-paths-v163.supplement-task.json",
-            "re_freeze_transaction": "docs/beacon/v1.6.3/.machine/requirement/beacon-spec-fingerprint-package-auth-paths-v163.re-freeze-transaction.json"
+            "envelope": "docs/beacon/v1.6.3/.machine/requirement/beacon-post-release-hook-agent-coverage-v163.envelope.json",
+            "candidate_ledger": "docs/beacon/v1.6.3/.machine/requirement/beacon-post-release-hook-agent-coverage-v163.candidate-ledger.json",
+            "decision_log": "docs/beacon/v1.6.3/.machine/requirement/beacon-post-release-hook-agent-coverage-v163.supplement-decision-log.json",
+            "freeze_contract": "docs/beacon/v1.6.3/.machine/requirement/beacon-post-release-hook-agent-coverage-v163.freeze-contract.json",
+            "completeness": "docs/beacon/v1.6.3/.machine/requirement/beacon-post-release-hook-agent-coverage-v163.completeness.json",
+            "supplement_task": "docs/beacon/v1.6.3/.machine/requirement/beacon-post-release-hook-agent-coverage-v163.supplement-task.json",
+            "re_freeze_transaction": "docs/beacon/v1.6.3/.machine/requirement/beacon-post-release-hook-agent-coverage-v163.re-freeze-transaction.json"
           },
           "projection_status": "package_authoritative"
         }
@@ -795,26 +795,26 @@
       "status": "pass",
       "validation": {
         "schema_version": "1.0",
-        "feature": "beacon-spec-fingerprint-package-auth-paths-v163",
-        "feature_slug": "beacon-spec-fingerprint-package-auth-paths-v163",
+        "feature": "beacon-post-release-hook-agent-coverage-v163",
+        "feature_slug": "beacon-post-release-hook-agent-coverage-v163",
         "version": "v1.6.3",
         "status": "pass",
         "blocked": false,
         "reason_code": "",
-        "generated_at": "2026-06-26T03:10:05.066748+00:00",
-        "package_dir": "docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163",
+        "generated_at": "2026-06-26T08:35:45.208017+00:00",
+        "package_dir": "docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163",
         "truth_frontmatter": {
-          "slug": "beacon-spec-fingerprint-package-auth-paths-v163",
+          "slug": "beacon-post-release-hook-agent-coverage-v163",
           "version": "v1.6.3",
           "status": "frozen",
           "revision_id": "R1",
           "language": "zh",
-          "change_reason": "R1 — 修复 spec fingerprint 对 package-authoritative 包只反映 test_case 层的路径残留",
+          "change_reason": "R1 — 修复 post-release hook 只覆盖 codex+claude、漏 cursor/windsurf/trae 的 agent 覆盖缺陷",
           "source_revision_id": "null",
           "canonical_refs": {
-            "prd": "docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/truth.md",
-            "user_story": "docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/truth.md",
-            "test_case": "docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/tests.md"
+            "prd": "docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163/truth.md",
+            "user_story": "docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163/truth.md",
+            "test_case": "docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163/tests.md"
           },
           "parser_contract": "beacon-feature-package-v1",
           "truth_source_model": "feature_package_authoritative",
@@ -825,7 +825,7 @@
         },
         "ac_count": 7,
         "test_count": 7,
-        "checkbox_count": 7,
+        "checkbox_count": 8,
         "evidence_row_count": 3,
         "gate_authority": "canonical_surfaces_preserved",
         "checkbox_gate_bypass": false,
@@ -839,16 +839,16 @@
         "truth_authority": "markdown_feature_package",
         "json_authority": false,
         "source_paths": {
-          "truth": "docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/truth.md",
-          "tests": "docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/tests.md",
-          "tasks": "docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/tasks.md",
-          "evidence": "docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/evidence.md"
+          "truth": "docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163/truth.md",
+          "tests": "docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163/tests.md",
+          "tasks": "docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163/tasks.md",
+          "evidence": "docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163/evidence.md"
         },
         "source_hashes": {
-          "truth": "fa686554256ee9cc36557f0c9f507408bbe0a59d812d7ebdf5a70bc45a5930f7",
-          "tests": "039eddb30717d14cecb1c45d1ed936bbb0f6ea102e0310fc2ec48bf412bbecba",
-          "tasks": "3b0d2e4408d7eb94dcb77b3bae410d6ecb1d5e04b4aacc9a757e42b837c12321",
-          "evidence": "c9a29cce8bc316165d5123b94ed144c9f4d0713683decd14acb0a8665e9ce169"
+          "truth": "0c1f6b57150728e6d0627463c7b41dbbaf46553bd39726ac0c4aa445c7560d2f",
+          "tests": "5050b66994078f52db4dda6970c0430139944f2855589e2500b61b23a9a7c362",
+          "tasks": "45dc16b0993ca1996892cf4efbb5862c8e747b3e8cf508f13308969141ca7fd0",
+          "evidence": "b67f629925f720d84f69e82745e46125897a7368d316d9d65618087c5a025685"
         },
         "runtime_json_requires_markdown_twin": false
       }
@@ -857,13 +857,13 @@
     "freeze_contract": {}
   },
   "requirement_completeness_verdict": "pass",
-  "requirement_completeness_ref": "docs/beacon/v1.6.3/.machine/requirement/beacon-spec-fingerprint-package-auth-paths-v163.completeness.json",
+  "requirement_completeness_ref": "docs/beacon/v1.6.3/.machine/requirement/beacon-post-release-hook-agent-coverage-v163.completeness.json",
   "exhaustiveness": {
     "schema_version": "1.0",
-    "feature": "beacon-spec-fingerprint-package-auth-paths-v163",
-    "feature_slug": "beacon-spec-fingerprint-package-auth-paths-v163",
-    "run_id": "run-20260626T111007368177",
-    "generated_at": "2026-06-26T03:10:13.540340+00:00",
+    "feature": "beacon-post-release-hook-agent-coverage-v163",
+    "feature_slug": "beacon-post-release-hook-agent-coverage-v163",
+    "run_id": "run-20260626T163548667695",
+    "generated_at": "2026-06-26T08:35:55.271115+00:00",
     "execution_mode": "feature-aware",
     "scenario_count": 7,
     "browser_scenario_count": 0,
@@ -885,11 +885,11 @@
   },
   "scenario_results_v2": [
     {
-      "scenario_id": "TC-SF-001",
-      "tc_id": "TC-SF-001",
-      "source_tc_id": "TC-SF-001",
+      "scenario_id": "TC-HK-001",
+      "tc_id": "TC-HK-001",
+      "source_tc_id": "TC-HK-001",
       "ac_id": "AC-001",
-      "feature_slug": "beacon-spec-fingerprint-package-auth-paths-v163",
+      "feature_slug": "beacon-post-release-hook-agent-coverage-v163",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -913,19 +913,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-001/result.json"
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-001/result.json"
       ]
     },
     {
-      "scenario_id": "TC-SF-002",
-      "tc_id": "TC-SF-002",
-      "source_tc_id": "TC-SF-002",
+      "scenario_id": "TC-HK-002",
+      "tc_id": "TC-HK-002",
+      "source_tc_id": "TC-HK-002",
       "ac_id": "AC-002",
-      "feature_slug": "beacon-spec-fingerprint-package-auth-paths-v163",
+      "feature_slug": "beacon-post-release-hook-agent-coverage-v163",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -949,19 +949,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-002/command.txt",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-002/stdout.log",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-002/stderr.log",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-002/junit.xml",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-002/result.json"
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-002/result.json"
       ]
     },
     {
-      "scenario_id": "TC-SF-003",
-      "tc_id": "TC-SF-003",
-      "source_tc_id": "TC-SF-003",
+      "scenario_id": "TC-HK-003",
+      "tc_id": "TC-HK-003",
+      "source_tc_id": "TC-HK-003",
       "ac_id": "AC-003",
-      "feature_slug": "beacon-spec-fingerprint-package-auth-paths-v163",
+      "feature_slug": "beacon-post-release-hook-agent-coverage-v163",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -985,19 +985,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-003/command.txt",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-003/stdout.log",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-003/stderr.log",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-003/junit.xml",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-003/result.json"
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-003/result.json"
       ]
     },
     {
-      "scenario_id": "TC-SF-004",
-      "tc_id": "TC-SF-004",
-      "source_tc_id": "TC-SF-004",
+      "scenario_id": "TC-HK-004",
+      "tc_id": "TC-HK-004",
+      "source_tc_id": "TC-HK-004",
       "ac_id": "AC-004",
-      "feature_slug": "beacon-spec-fingerprint-package-auth-paths-v163",
+      "feature_slug": "beacon-post-release-hook-agent-coverage-v163",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1021,19 +1021,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-004/command.txt",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-004/stdout.log",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-004/stderr.log",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-004/junit.xml",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-004/result.json"
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-004/result.json"
       ]
     },
     {
-      "scenario_id": "TC-SF-005",
-      "tc_id": "TC-SF-005",
-      "source_tc_id": "TC-SF-005",
+      "scenario_id": "TC-HK-005",
+      "tc_id": "TC-HK-005",
+      "source_tc_id": "TC-HK-005",
       "ac_id": "AC-005",
-      "feature_slug": "beacon-spec-fingerprint-package-auth-paths-v163",
+      "feature_slug": "beacon-post-release-hook-agent-coverage-v163",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1057,19 +1057,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-005/command.txt",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-005/stdout.log",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-005/stderr.log",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-005/junit.xml",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-005/result.json"
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-005/result.json"
       ]
     },
     {
-      "scenario_id": "TC-SF-006",
-      "tc_id": "TC-SF-006",
-      "source_tc_id": "TC-SF-006",
+      "scenario_id": "TC-HK-006",
+      "tc_id": "TC-HK-006",
+      "source_tc_id": "TC-HK-006",
       "ac_id": "AC-006",
-      "feature_slug": "beacon-spec-fingerprint-package-auth-paths-v163",
+      "feature_slug": "beacon-post-release-hook-agent-coverage-v163",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1093,19 +1093,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-006/command.txt",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-006/stdout.log",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-006/stderr.log",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-006/junit.xml",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-006/result.json"
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-006/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-006/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-006/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-006/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-006/result.json"
       ]
     },
     {
-      "scenario_id": "TC-SF-007",
-      "tc_id": "TC-SF-007",
-      "source_tc_id": "TC-SF-007",
+      "scenario_id": "TC-HK-007",
+      "tc_id": "TC-HK-007",
+      "source_tc_id": "TC-HK-007",
       "ac_id": "AC-007",
-      "feature_slug": "beacon-spec-fingerprint-package-auth-paths-v163",
+      "feature_slug": "beacon-post-release-hook-agent-coverage-v163",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1129,21 +1129,21 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-007/command.txt",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-007/stdout.log",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-007/stderr.log",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-007/junit.xml",
-        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9-tc/TC-SF-007/result.json"
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T163548667695/qa9-tc/TC-HK-007/result.json"
       ]
     }
   ],
-  "ac_closure_path": ".beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/ac-closure.json",
-  "feature_scorecard_path": ".beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/scorecard.json",
+  "ac_closure_path": ".beacon/qa/features/beacon-post-release-hook-agent-coverage-v163/ac-closure.json",
+  "feature_scorecard_path": ".beacon/qa/features/beacon-post-release-hook-agent-coverage-v163/scorecard.json",
   "feature_scorecard": {
     "schema_version": "1.0",
-    "feature": "beacon-spec-fingerprint-package-auth-paths-v163",
-    "feature_slug": "beacon-spec-fingerprint-package-auth-paths-v163",
-    "run_id": "run-20260626T111007368177",
+    "feature": "beacon-post-release-hook-agent-coverage-v163",
+    "feature_slug": "beacon-post-release-hook-agent-coverage-v163",
+    "run_id": "run-20260626T163548667695",
     "ac_total": 7,
     "ac_accepted": 7,
     "scenario_total": 7,
@@ -1364,18 +1364,18 @@
     "continue_decision": "ready_for_release",
     "stop_reasons": [],
     "test_case_backfill_required": false,
-    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.3 --feature \"beacon-spec-fingerprint-package-auth-paths-v163\"",
+    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.3 --feature \"beacon-post-release-hook-agent-coverage-v163\"",
     "repair_handoff": {
       "action": "qa-repair",
       "reason": "qa_round_incomplete",
-      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.3 --feature \"beacon-spec-fingerprint-package-auth-paths-v163\""
+      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.3 --feature \"beacon-post-release-hook-agent-coverage-v163\""
     },
     "release_ready": true
   },
   "release_ready": true,
   "delivery_contract": {
     "schema_version": "1.0",
-    "feature": "beacon-spec-fingerprint-package-auth-paths-v163",
+    "feature": "beacon-post-release-hook-agent-coverage-v163",
     "version": "v1.6.3",
     "requested_mode": "feature-aware",
     "effective_mode": "feature-aware",
@@ -1396,16 +1396,16 @@
     "subagent_prechecks": {},
     "requirement_binding": {
       "source_of_truth_root": "docs/beacon/v1.6.3",
-      "feature_matrix_path": ".beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/matrix.qa9.json",
+      "feature_matrix_path": ".beacon/qa/features/beacon-post-release-hook-agent-coverage-v163/matrix.qa9.json",
       "canonical_matrix_path": ""
     },
     "traceability_refs": [
-      ".beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/matrix.qa9.json",
-      ".beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/ac-closure.json",
-      ".beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/scorecard.json",
+      ".beacon/qa/features/beacon-post-release-hook-agent-coverage-v163/matrix.qa9.json",
+      ".beacon/qa/features/beacon-post-release-hook-agent-coverage-v163/ac-closure.json",
+      ".beacon/qa/features/beacon-post-release-hook-agent-coverage-v163/scorecard.json",
       ".beacon/release-gate-report.json",
-      "docs/beacon/v1.6.3/.machine/execution/implementation-summary-beacon-spec-fingerprint-package-auth-paths-v163.json",
-      "docs/beacon/v1.6.3/.machine/execution/technical-implementation-beacon-spec-fingerprint-package-auth-paths-v163.json"
+      "docs/beacon/v1.6.3/.machine/execution/implementation-summary-beacon-post-release-hook-agent-coverage-v163.json",
+      "docs/beacon/v1.6.3/.machine/execution/technical-implementation-beacon-post-release-hook-agent-coverage-v163.json"
     ],
     "runner": "",
     "adapter_type": "",
@@ -1418,7 +1418,7 @@
   },
   "host_native_delivery": {
     "schema_version": "1.0",
-    "feature": "beacon-spec-fingerprint-package-auth-paths-v163",
+    "feature": "beacon-post-release-hook-agent-coverage-v163",
     "version": "v1.6.3",
     "requested_mode": "feature-aware",
     "effective_mode": "feature-aware",
@@ -1439,16 +1439,16 @@
     "subagent_prechecks": {},
     "requirement_binding": {
       "source_of_truth_root": "docs/beacon/v1.6.3",
-      "feature_matrix_path": ".beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/matrix.qa9.json",
+      "feature_matrix_path": ".beacon/qa/features/beacon-post-release-hook-agent-coverage-v163/matrix.qa9.json",
       "canonical_matrix_path": ""
     },
     "traceability_refs": [
-      ".beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/matrix.qa9.json",
-      ".beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/ac-closure.json",
-      ".beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/scorecard.json",
+      ".beacon/qa/features/beacon-post-release-hook-agent-coverage-v163/matrix.qa9.json",
+      ".beacon/qa/features/beacon-post-release-hook-agent-coverage-v163/ac-closure.json",
+      ".beacon/qa/features/beacon-post-release-hook-agent-coverage-v163/scorecard.json",
       ".beacon/release-gate-report.json",
-      "docs/beacon/v1.6.3/.machine/execution/implementation-summary-beacon-spec-fingerprint-package-auth-paths-v163.json",
-      "docs/beacon/v1.6.3/.machine/execution/technical-implementation-beacon-spec-fingerprint-package-auth-paths-v163.json"
+      "docs/beacon/v1.6.3/.machine/execution/implementation-summary-beacon-post-release-hook-agent-coverage-v163.json",
+      "docs/beacon/v1.6.3/.machine/execution/technical-implementation-beacon-post-release-hook-agent-coverage-v163.json"
     ],
     "runner": "",
     "adapter_type": "",
@@ -1459,5 +1459,5 @@
     "release_ready": true,
     "risk_flags": []
   },
-  "current_spec_fingerprint_hash": "49475acb11d0e3d41a556581c58b4ba1524c1494587205ddfa3cd1347aa60d03"
+  "current_spec_fingerprint_hash": "39016cd136c2410f3fc9771bcff6d46fb444760169a2d6411ffecd0400cfb482"
 }

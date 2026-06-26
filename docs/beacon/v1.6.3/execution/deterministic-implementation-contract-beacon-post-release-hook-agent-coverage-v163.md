@@ -5,7 +5,7 @@
 - revision_id: `R1`
 - review_status: `approved`
 - approved_by: `kunqi.lai`
-- reviewed_at: `2026-06-26T08:30:40.597903+00:00`
+- reviewed_at: `2026-06-26T08:35:31.298983+00:00`
 
 ## Git
 - base_branch: `beacon/v1.6.3`

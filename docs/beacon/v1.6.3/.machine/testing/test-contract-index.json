@@ -5,139 +5,39 @@
   "runtime_line": "v1.6.3",
   "runtime_release_line": "v1.6.1",
   "docs_line": "v1.6.3",
-  "feature": "beacon-spec-fingerprint-package-auth-paths-v163",
-  "feature_slug": "beacon-spec-fingerprint-package-auth-paths-v163",
+  "feature": "beacon-post-release-hook-agent-coverage-v163",
+  "feature_slug": "beacon-post-release-hook-agent-coverage-v163",
   "feature_line_status": "planning_only",
   "truth_refs": {
-    "truth": "docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/truth.md",
-    "tests": "docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/tests.md",
-    "tasks": "docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/tasks.md",
-    "evidence": "docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/evidence.md",
-    "ac_matrix": "docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/tests.md",
-    "story_state": "docs/beacon/v1.6.3/.machine/user-story/beacon-spec-fingerprint-package-auth-paths-v163.json"
+    "truth": "docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163/truth.md",
+    "tests": "docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163/tests.md",
+    "tasks": "docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163/tasks.md",
+    "evidence": "docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163/evidence.md",
+    "ac_matrix": "docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163/tests.md",
+    "story_state": "docs/beacon/v1.6.3/.machine/user-story/beacon-post-release-hook-agent-coverage-v163.json"
   },
   "source_hashes": {
-    "truth": "sha256:fa686554256ee9cc36557f0c9f507408bbe0a59d812d7ebdf5a70bc45a5930f7",
-    "tests": "sha256:039eddb30717d14cecb1c45d1ed936bbb0f6ea102e0310fc2ec48bf412bbecba",
-    "tasks": "sha256:3b0d2e4408d7eb94dcb77b3bae410d6ecb1d5e04b4aacc9a757e42b837c12321",
-    "evidence": "sha256:c9a29cce8bc316165d5123b94ed144c9f4d0713683decd14acb0a8665e9ce169",
-    "ac_matrix": "sha256:039eddb30717d14cecb1c45d1ed936bbb0f6ea102e0310fc2ec48bf412bbecba",
-    "story_state": "sha256:1a160ddd1e0718847bab92469749397ae6ca4de114a8997c08de4ca62cbc874b"
+    "truth": "",
+    "tests": "",
+    "tasks": "",
+    "evidence": "",
+    "ac_matrix": "",
+    "story_state": ""
   },
   "lanes": {
-    "feature_release_facing": [
-      {
-        "tc_id": "TC-SF-001",
-        "ac_id": "AC-001",
-        "ac_theme": "fingerprint-user-story-layer",
-        "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "python3 -m pytest tests/test_v163_spec_fingerprint_package_auth_paths.py::test_user_story_layer_package_auth -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "≥v1.5.2 包 fingerprint user_story 层 count>0",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-spec-fingerprint-package-auth-paths-v163/tc-sf-001/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-SF-002",
-        "ac_id": "AC-002",
-        "ac_theme": "fingerprint-prd-layer",
-        "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "python3 -m pytest tests/test_v163_spec_fingerprint_package_auth_paths.py::test_prd_layer_package_auth -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "≥v1.5.2 包 fingerprint prd 层 count>0",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-spec-fingerprint-package-auth-paths-v163/tc-sf-002/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-SF-003",
-        "ac_id": "AC-003",
-        "ac_theme": "truth-change-detected",
-        "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "python3 -m pytest tests/test_v163_spec_fingerprint_package_auth_paths.py::test_truth_change_detected -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "改 truth.md 后 fingerprint hash 改变",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-spec-fingerprint-package-auth-paths-v163/tc-sf-003/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-SF-005",
-        "ac_id": "AC-005",
-        "ac_theme": "test-case-layer-preserved",
-        "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "python3 -m pytest tests/test_v163_spec_fingerprint_package_auth_paths.py::test_case_layer_preserved -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "test_case 层仍扫 .machine/qa/*.ac-test-matrix.json",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-spec-fingerprint-package-auth-paths-v163/tc-sf-005/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-SF-006",
-        "ac_id": "AC-006",
-        "ac_theme": "no-regression-v163-release",
-        "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "python3 -m pytest tests/test_v163_spec_fingerprint_package_auth_paths.py::test_no_regression_v163_release -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "v1.6.3 release gate 重生成 fingerprint 后仍 pass",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-spec-fingerprint-package-auth-paths-v163/tc-sf-006/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-SF-007",
-        "ac_id": "AC-007",
-        "ac_theme": "no-regression-v162",
-        "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "python3 -m pytest tests/test_v163_spec_fingerprint_package_auth_paths.py::test_no_regression_v162 -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "v1.6.2 fingerprint 行为不变",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-spec-fingerprint-package-auth-paths-v163/tc-sf-007/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      }
-    ],
+    "feature_release_facing": [],
     "current_runtime_contract": [],
     "generated_surface_sync": [],
     "compatibility_contract": [],
-    "legacy_snapshot": [
-      {
-        "tc_id": "TC-SF-004",
-        "ac_id": "AC-004",
-        "ac_theme": "legacy-compat",
-        "lane": "legacy_snapshot",
-        "layer": "contract",
-        "command": "python3 -m pytest tests/test_v163_spec_fingerprint_package_auth_paths.py::test_legacy_find_layer_files_unchanged -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "<v1.5.2 _find_layer_files 行为不变",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-spec-fingerprint-package-auth-paths-v163/tc-sf-004/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/tests.md",
-        "release_blocking": false,
-        "mapping_status": "pass"
-      }
-    ],
+    "legacy_snapshot": [],
     "browser_runtime_admission": []
   },
   "lane_counts": {
-    "feature_release_facing": 6,
+    "feature_release_facing": 0,
     "current_runtime_contract": 0,
     "generated_surface_sync": 0,
     "compatibility_contract": 0,
-    "legacy_snapshot": 1,
+    "legacy_snapshot": 0,
     "browser_runtime_admission": 0
   },
   "canonical_lanes": [
@@ -148,129 +48,8 @@
     "legacy_snapshot",
     "browser_runtime_admission"
   ],
-  "test_refs": [
-    {
-      "tc_id": "TC-SF-001",
-      "ac_id": "AC-001",
-      "ac_theme": "fingerprint-user-story-layer",
-      "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "python3 -m pytest tests/test_v163_spec_fingerprint_package_auth_paths.py::test_user_story_layer_package_auth -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "≥v1.5.2 包 fingerprint user_story 层 count>0",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-spec-fingerprint-package-auth-paths-v163/tc-sf-001/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-SF-002",
-      "ac_id": "AC-002",
-      "ac_theme": "fingerprint-prd-layer",
-      "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "python3 -m pytest tests/test_v163_spec_fingerprint_package_auth_paths.py::test_prd_layer_package_auth -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "≥v1.5.2 包 fingerprint prd 层 count>0",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-spec-fingerprint-package-auth-paths-v163/tc-sf-002/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-SF-003",
-      "ac_id": "AC-003",
-      "ac_theme": "truth-change-detected",
-      "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "python3 -m pytest tests/test_v163_spec_fingerprint_package_auth_paths.py::test_truth_change_detected -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "改 truth.md 后 fingerprint hash 改变",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-spec-fingerprint-package-auth-paths-v163/tc-sf-003/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-SF-004",
-      "ac_id": "AC-004",
-      "ac_theme": "legacy-compat",
-      "lane": "legacy_snapshot",
-      "layer": "contract",
-      "command": "python3 -m pytest tests/test_v163_spec_fingerprint_package_auth_paths.py::test_legacy_find_layer_files_unchanged -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "<v1.5.2 _find_layer_files 行为不变",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-spec-fingerprint-package-auth-paths-v163/tc-sf-004/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/tests.md",
-      "release_blocking": false,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-SF-005",
-      "ac_id": "AC-005",
-      "ac_theme": "test-case-layer-preserved",
-      "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "python3 -m pytest tests/test_v163_spec_fingerprint_package_auth_paths.py::test_case_layer_preserved -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "test_case 层仍扫 .machine/qa/*.ac-test-matrix.json",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-spec-fingerprint-package-auth-paths-v163/tc-sf-005/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-SF-006",
-      "ac_id": "AC-006",
-      "ac_theme": "no-regression-v163-release",
-      "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "python3 -m pytest tests/test_v163_spec_fingerprint_package_auth_paths.py::test_no_regression_v163_release -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "v1.6.3 release gate 重生成 fingerprint 后仍 pass",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-spec-fingerprint-package-auth-paths-v163/tc-sf-006/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-SF-007",
-      "ac_id": "AC-007",
-      "ac_theme": "no-regression-v162",
-      "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "python3 -m pytest tests/test_v163_spec_fingerprint_package_auth_paths.py::test_no_regression_v162 -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "v1.6.2 fingerprint 行为不变",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-spec-fingerprint-package-auth-paths-v163/tc-sf-007/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    }
-  ],
-  "ac_to_test_refs": {
-    "AC-001": [
-      "TC-SF-001"
-    ],
-    "AC-002": [
-      "TC-SF-002"
-    ],
-    "AC-003": [
-      "TC-SF-003"
-    ],
-    "AC-004": [
-      "TC-SF-004"
-    ],
-    "AC-005": [
-      "TC-SF-005"
-    ],
-    "AC-006": [
-      "TC-SF-006"
-    ],
-    "AC-007": [
-      "TC-SF-007"
-    ]
-  },
+  "test_refs": [],
+  "ac_to_test_refs": {},
   "qa_order_contract": {
     "sequence": [
       "user_story_ac_order",
@@ -301,9 +80,11 @@
     "current_runtime_release_line": "v1.6.1",
     "feature_line_status": "planning_only"
   },
-  "status": "pass",
-  "blocked": false,
-  "reason_codes": [],
-  "generated_at": "2026-06-26T08:08:29.228575+00:00",
+  "status": "blocked",
+  "blocked": true,
+  "reason_codes": [
+    "ac_test_mapping_missing"
+  ],
+  "generated_at": "2026-06-26T08:33:04.918181+00:00",
   "index_path": "docs/beacon/v1.6.3/.machine/testing/test-contract-index.json"
 }
