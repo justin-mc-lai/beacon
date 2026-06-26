@@ -575,6 +575,15 @@ def _run_beacon_post_release_local_install(project_root: Path, *, version: str, 
         if agent_eval_release_hook.get("status") != "pass":
             blocked_reasons.append("agent_eval_release_hook_failed")
 
+    # Runtime alignment: detect runtime!=docs and route to sync-version-surfaces.
+    # Hook does NOT auto pip install — it advises the operator. This closes the
+    # skills/runtime split where hook publishes v1.6.3 skills but beacon --version
+    # still reports the old runtime.
+    runtime_aligned = bool(runtime_version and docs_version and runtime_version == docs_version)
+    runtime_recommended = "" if runtime_aligned else (
+        f"beacon doctor sync-version-surfaces --project-root {project_root}"
+    )
+
     return {
         "schema_version": "1.0",
         "hook_id": BEACON_POST_RELEASE_LOCAL_INSTALL_HOOK_ID,
@@ -587,6 +596,12 @@ def _run_beacon_post_release_local_install(project_root: Path, *, version: str, 
         "runtime_version": runtime_version,
         "docs_version": docs_version,
         "drift": drift,
+        "runtime_alignment": {
+            "runtime_version": runtime_version,
+            "docs_version": docs_version,
+            "aligned": runtime_aligned,
+            "recommended_command": runtime_recommended,
+        },
         "legacy_skill_cleanup": legacy_cleanup.payload.get("result", {}),
         "claude_global_skill_install": claude_global_install,
         "claude_global_skill_verify": claude_global_verify,

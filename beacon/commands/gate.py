@@ -2302,6 +2302,43 @@ def check_delivery_execution_artifacts(project_root: Path, mode: GateMode, stage
     return issues
 
 
+def check_runtime_release_alignment(
+    project_root: Path,
+    mode: GateMode,
+    stage: str,
+    version: Optional[str] = None,
+    *,
+    runtime_version: Optional[str] = None,
+    docs_version: Optional[str] = None,
+) -> List[Dict[str, Any]]:
+    """Release stage requires runtime == docs target; dev stages allow drift.
+
+    Dual-version model is legal during development (runtime may lag docs), but
+    a release must not ship a split state (skills v1.6.3 on runtime v1.6.1).
+    """
+    issues: list[dict[str, Any]] = []
+    if stage != "release":
+        return issues
+    if mode not in {GateMode.STRICT, GateMode.DEBUG}:
+        return issues
+    rt = str(runtime_version or resolve_runtime_version(project_root, "auto") or "").strip()
+    dt = str(docs_version or _resolved_gate_version(project_root, version) or "").strip()
+    if rt and dt and rt != dt:
+        issues.append(
+            {
+                "reason_code": "runtime_docs_release_drift",
+                "severity": "critical",
+                "message": (
+                    f"runtime/docs version drift at release: runtime={rt} docs={dt}; "
+                    f"run `beacon doctor sync-version-surfaces --project-root {project_root}` to align"
+                ),
+                "blocked": True,
+                "details": {"runtime_version": rt, "docs_version": dt},
+            }
+        )
+    return issues
+
+
 def check_formal_version_package_closure(
     project_root: Path,
     mode: GateMode,
@@ -4524,6 +4561,7 @@ def run_gate_checks(
             typer.echo("[DEBUG] [release-global] Checking delivery execution artifacts...")
         all_issues.extend(check_delivery_execution_artifacts(project_root, mode, stage, version))
         all_issues.extend(check_formal_version_package_closure(project_root, mode, stage, version))
+        all_issues.extend(check_runtime_release_alignment(project_root, mode, stage, version))
         all_issues.extend(check_v119_control_learning_contract(project_root, mode, stage, version))
         all_issues.extend(check_v112_implementation_plan_contract(project_root, mode, stage, version))
         all_issues.extend(check_v137_implement_prompt_boundary_contract(project_root, mode, stage, version))
