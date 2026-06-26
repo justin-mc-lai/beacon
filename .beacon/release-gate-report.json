@@ -2,22 +2,104 @@
   "stage": "release",
   "mode": "strict",
   "profile": "release-global",
-  "status": "Pass",
-  "issues": [],
+  "status": "Blocked",
+  "issues": [
+    {
+      "reason_code": "evidence_sha256_manifest_mismatch",
+      "severity": "critical",
+      "message": "Hash mismatch for .beacon/transactions/qa-acceptance-beacon-global-workspace-git-admission-v162.json",
+      "blocked": true
+    },
+    {
+      "reason_code": "evidence_sha256_manifest_mismatch",
+      "severity": "critical",
+      "message": "Hash mismatch for docs/beacon/v1.6.2/.machine/execution/qa-acceptance-beacon-global-workspace-git-admission-v162.json",
+      "blocked": true
+    },
+    {
+      "reason_code": "evidence_sha256_manifest_mismatch",
+      "severity": "critical",
+      "message": "Hash mismatch for docs/beacon/v1.6.2/execution/qa-acceptance-brief-beacon-global-workspace-git-admission-v162.md",
+      "blocked": true
+    },
+    {
+      "reason_code": "git_alignment_blocked",
+      "severity": "critical",
+      "message": "git alignment blocked: ['git_branch_target_mismatch', 'git_version_ref_not_satisfied']",
+      "blocked": true
+    },
+    {
+      "reason_code": "test_contract_index_stale",
+      "severity": "critical",
+      "message": "test contract governance blocked release: ['test_contract_index_stale']",
+      "blocked": true,
+      "recommended_command": "beacon doctor build-test-contract-index \"beacon-global-workspace-git-admission-v162\" --project-root . --version v1.6.2 --json",
+      "repair": [
+        "beacon doctor build-test-contract-index \"beacon-global-workspace-git-admission-v162\" --project-root . --version v1.6.2 --json",
+        "beacon doctor verify-test-contract-index \"beacon-global-workspace-git-admission-v162\" --project-root . --version v1.6.2 --strict --json"
+      ],
+      "details": {
+        "reason_codes": [
+          "test_contract_index_stale"
+        ],
+        "index_path": "docs/beacon/v1.6.2/.machine/testing/test-contract-index.json",
+        "lane_counts": {
+          "feature_release_facing": 22,
+          "current_runtime_contract": 0,
+          "generated_surface_sync": 0,
+          "compatibility_contract": 0,
+          "legacy_snapshot": 0,
+          "browser_runtime_admission": 0
+        }
+      }
+    },
+    {
+      "reason_code": "memory_lifecycle_missing",
+      "severity": "critical",
+      "message": "workflow memory closure is incomplete: missing stages=['prd', 'user-story', 'test-case', 'implement', 'qa', 'release']",
+      "blocked": true,
+      "details": {
+        "missing_stages": [
+          "prd",
+          "user-story",
+          "test-case",
+          "implement",
+          "qa",
+          "release"
+        ],
+        "run_id": "run-20260626T111007368177"
+      }
+    },
+    {
+      "reason_code": "baseline_snapshot_missing",
+      "severity": "critical",
+      "message": "baseline snapshot missing for version=v1.6.2",
+      "blocked": true
+    },
+    {
+      "reason_code": "spec_impl_drift_detected",
+      "severity": "critical",
+      "message": "spec fingerprint mismatch between docs and execution evidence (expected=3e0dad923aeb, actual=49475acb11d0)",
+      "blocked": true
+    }
+  ],
   "doc_impl_verdict": {
     "enabled": true,
-    "version": "v1.6.3",
-    "status": "pass",
-    "baseline_present": true,
-    "baseline_id": "bl-run-v163-release-001-003",
-    "expected_spec_fingerprint": "49475acb11d0e3d41a556581c58b4ba1524c1494587205ddfa3cd1347aa60d03",
+    "version": "v1.6.2",
+    "status": "blocked",
+    "baseline_present": false,
+    "baseline_id": "",
+    "expected_spec_fingerprint": "3e0dad923aeb38302494973a4c6a231164f819dd2ab5d152f12f4851210b7b2e",
     "actual_spec_fingerprint": "49475acb11d0e3d41a556581c58b4ba1524c1494587205ddfa3cd1347aa60d03",
-    "reason_codes": []
+    "reason_codes": [
+      "baseline_snapshot_missing",
+      "spec_impl_drift_detected"
+    ]
   },
-  "blocked_count": 0,
+  "blocked_count": 8,
   "force": false,
   "dry_run": false,
-  "version": "v1.6.3",
+  "version": "v1.6.2",
   "run_id": "run-20260626T111007368177",
-  "updated_at": "2026-06-26T03:15:41.826015+00:00"
+  "updated_at": "2026-06-26T03:18:40.207222+00:00"
 }

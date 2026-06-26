@@ -3,10 +3,10 @@ schema_version: "1.0"
 project_root: "/Users/apple/Developer/Personal/products/beacon"
 topology_kind: "single_repo"
 default_execution_service: "beacon"
-transaction_id: "tx-project-governance-6c6a1a74e1790bdb"
-committed_at: "2026-06-25T09:30:19.717318+00:00"
-source_hash: "6c6a1a74e1790bdb4da9b417366b9f032ca007c889b8a97f81107ee55c3efda6"
-event_type: "update"
+transaction_id: "tx-project-governance-b84ea5e95ac2ecbe"
+committed_at: "2026-06-26T03:36:40.503433+00:00"
+source_hash: "b84ea5e95ac2ecbec7c291dadbd977e8f5ead201267b4c5cb0a3a38b4031bad7"
+event_type: "archive-version"
 parser_contract: "beacon-project-governance-v1"
 ---
 
@@ -63,7 +63,7 @@ parser_contract: "beacon-project-governance-v1"
 ### v1.6.2
 - participating_services: `beacon`
 - branch_guard_mode: `strict`
-- validation_state: `active`
+- validation_state: `archived`
 - per_service_canonical_branch:
   - `beacon`: `beacon/v1.6.2`
 - branch_governance_template: `standard-feature`
