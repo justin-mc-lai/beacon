@@ -1,0 +1,916 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-version-resolve-fail-closed-v163-r1",
+  "feature": "beacon-version-resolve-fail-closed-v163",
+  "feature_slug": "beacon-version-resolve-fail-closed-v163",
+  "version": "v1.6.3",
+  "revision_id": "R1",
+  "baseline_hash": "sha256:6345c4a85545b52a692654e71544054899bdbbe7560beccada5b07a87149b13a",
+  "plan_hash": "sha256:6e5dbd15a730bc4455a9c117e85bd9b48de3a9547742373e1e2772db711ab629",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.6.3/features/beacon-version-resolve-fail-closed-v163/truth.md",
+    "prd": "docs/beacon/v1.6.3/features/beacon-version-resolve-fail-closed-v163/truth.md",
+    "test_case": "docs/beacon/v1.6.3/features/beacon-version-resolve-fail-closed-v163/tests.md",
+    "truth": "docs/beacon/v1.6.3/features/beacon-version-resolve-fail-closed-v163/truth.md",
+    "tests": "docs/beacon/v1.6.3/features/beacon-version-resolve-fail-closed-v163/tests.md",
+    "tasks": "docs/beacon/v1.6.3/features/beacon-version-resolve-fail-closed-v163/tasks.md",
+    "evidence": "docs/beacon/v1.6.3/features/beacon-version-resolve-fail-closed-v163/evidence.md",
+    "source_of_truth_root": "docs/beacon/v1.6.3/features/beacon-version-resolve-fail-closed-v163",
+    "ac_matrix": "docs/beacon/v1.6.3/.machine/qa/beacon-version-resolve-fail-closed-v163.ac-test-matrix.json",
+    "story_scenario_map": "docs/beacon/v1.6.3/.machine/qa/beacon-version-resolve-fail-closed-v163.story-scenario-map.json",
+    "qa9_matrix": "docs/beacon/v1.6.3/.machine/qa/beacon-version-resolve-fail-closed-v163.qa9-matrix.json",
+    "research_projection": "docs/beacon/v1.6.3/.machine/user-story/beacon-version-resolve-fail-closed-v163.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.6.3/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007"
+      ]
+    }
+  ],
+  "task_mapping_source": "acceptance-criteria",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.3",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-06-26T01:27:31.351704+00:00",
+    "feature": "beacon-version-resolve-fail-closed-v163",
+    "feature_slug": "beacon-version-resolve-fail-closed-v163",
+    "prd_ref": "docs/beacon/v1.6.3/prd/beacon-version-resolve-fail-closed-v163.md",
+    "user_story_ref": "docs/beacon/v1.6.3/user-story/beacon-version-resolve-fail-closed-v163.md"
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "beacon-version-resolve-fail-closed-v163",
+    "version": "v1.6.3",
+    "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/research/beacon-version-resolve-fail-closed-v163.md",
+    "present": false,
+    "section_count": 0,
+    "sections": {},
+    "derived_items": [],
+    "source_artifact": "docs/beacon/v1.6.3/.machine/user-story/beacon-version-resolve-fail-closed-v163.json"
+  },
+  "review_gates": [],
+  "qa_coverage_hints": [],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "AC-001 `project_hooks.py:543` 不再含硬编码 `v1.6.1` 字面量；改用 `resolve_target_version...",
+      "description": "`project_hooks.py:543` 不再含硬编码 `v1.6.1` 字面量；改用 `resolve_target_version`（**Must**）",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001"
+      ],
+      "mapped_test_ids": [
+        "TC-VR-001"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-VR-001"
+      ],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260626T012735Z-9943",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260626T012735Z-9943-tester",
+        ".beacon/qa/features/beacon-version-resolve-fail-closed-v163/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260626T092742455034",
+        "docs/beacon/v1.6.3/.machine/qa/beacon-version-resolve-fail-closed-v163.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-version-resolve-fail-closed-v163/ac-closure.json",
+        ".beacon/qa/features/beacon-version-resolve-fail-closed-v163/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-freeze-integrity-drift-repair-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-version-resolve-fail-closed-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.6.3/.machine/qa/beacon-freeze-integrity-drift-repair-v163.ac-test-matrix.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/execution/architecture-blueprint.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-26T01:27:36.110361+00:00",
+      "completed_at": "2026-06-26T01:27:36.199164+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "AC-002 version=`auto`/空/`latest` 时 eval_version 解析为 docs 实际版本（如 v1.6.3），非 v1...",
+      "description": "version=`auto`/空/`latest` 时 eval_version 解析为 docs 实际版本（如 v1.6.3），非 v1.6.1（**Must**）",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TC-VR-002"
+      ],
+      "mapped_scenario_ids": [
+        "SC-002"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-VR-002"
+      ],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260626T012735Z-9943",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260626T012735Z-9943-tester",
+        ".beacon/qa/features/beacon-version-resolve-fail-closed-v163/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260626T092742455034",
+        "docs/beacon/v1.6.3/.machine/qa/beacon-version-resolve-fail-closed-v163.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-version-resolve-fail-closed-v163/ac-closure.json",
+        ".beacon/qa/features/beacon-version-resolve-fail-closed-v163/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-freeze-integrity-drift-repair-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-version-resolve-fail-closed-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.6.3/.machine/qa/beacon-freeze-integrity-drift-repair-v163.ac-test-matrix.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/execution/architecture-blueprint.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-26T01:27:36.199177+00:00",
+      "completed_at": "2026-06-26T01:27:36.199178+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "AC-003 post-release hook payload 含 `runtime_version`/`docs_version`/`drift`...",
+      "description": "post-release hook payload 含 `runtime_version`/`docs_version`/`drift` 字段（**Must**）",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-003"
+      ],
+      "mapped_test_ids": [
+        "TC-VR-003"
+      ],
+      "mapped_scenario_ids": [
+        "SC-003"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-VR-003"
+      ],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260626T012735Z-9943",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260626T012735Z-9943-tester",
+        ".beacon/qa/features/beacon-version-resolve-fail-closed-v163/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260626T092742455034",
+        "docs/beacon/v1.6.3/.machine/qa/beacon-version-resolve-fail-closed-v163.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-version-resolve-fail-closed-v163/ac-closure.json",
+        ".beacon/qa/features/beacon-version-resolve-fail-closed-v163/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-freeze-integrity-drift-repair-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-version-resolve-fail-closed-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.6.3/.machine/qa/beacon-freeze-integrity-drift-repair-v163.ac-test-matrix.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/execution/architecture-blueprint.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-26T01:27:36.199188+00:00",
+      "completed_at": "2026-06-26T01:27:36.199189+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "AC-004 `resolve_target_version` 解析失败/抛异常时 hook fail-closed block，reason_code...",
+      "description": "`resolve_target_version` 解析失败/抛异常时 hook fail-closed block，reason_code `version_resolve_failed`（**Must**）",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-004"
+      ],
+      "mapped_test_ids": [
+        "TC-VR-004"
+      ],
+      "mapped_scenario_ids": [
+        "SC-004"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-VR-004"
+      ],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260626T012735Z-9943",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260626T012735Z-9943-tester",
+        ".beacon/qa/features/beacon-version-resolve-fail-closed-v163/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260626T092742455034",
+        "docs/beacon/v1.6.3/.machine/qa/beacon-version-resolve-fail-closed-v163.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-version-resolve-fail-closed-v163/ac-closure.json",
+        ".beacon/qa/features/beacon-version-resolve-fail-closed-v163/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-freeze-integrity-drift-repair-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-version-resolve-fail-closed-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.6.3/.machine/qa/beacon-freeze-integrity-drift-repair-v163.ac-test-matrix.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/execution/architecture-blueprint.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-26T01:27:36.199198+00:00",
+      "completed_at": "2026-06-26T01:27:36.199199+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "AC-005 `agent_eval_kit.is_live_runner_admitted` 运行时用 resolve 版本，不依赖硬编码 `AGEN...",
+      "description": "`agent_eval_kit.is_live_runner_admitted` 运行时用 resolve 版本，不依赖硬编码 `AGENT_EVAL_VERSION` 默认（**Must**）",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-005"
+      ],
+      "mapped_test_ids": [
+        "TC-VR-005"
+      ],
+      "mapped_scenario_ids": [
+        "SC-005"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-VR-005"
+      ],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260626T012735Z-9943",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260626T012735Z-9943-tester",
+        ".beacon/qa/features/beacon-version-resolve-fail-closed-v163/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260626T092742455034",
+        "docs/beacon/v1.6.3/.machine/qa/beacon-version-resolve-fail-closed-v163.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-version-resolve-fail-closed-v163/ac-closure.json",
+        ".beacon/qa/features/beacon-version-resolve-fail-closed-v163/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-freeze-integrity-drift-repair-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-version-resolve-fail-closed-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.6.3/.machine/qa/beacon-freeze-integrity-drift-repair-v163.ac-test-matrix.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/execution/architecture-blueprint.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-26T01:27:36.199208+00:00",
+      "completed_at": "2026-06-26T01:27:36.199209+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "AC-006 现有 post-release hook 在 runtime==docs（正常）场景仍 pass，不误 block（**Must**）",
+      "description": "现有 post-release hook 在 runtime==docs（正常）场景仍 pass，不误 block（**Must**）",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-006"
+      ],
+      "mapped_test_ids": [
+        "TC-VR-006"
+      ],
+      "mapped_scenario_ids": [
+        "SC-006"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-VR-006"
+      ],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260626T012735Z-9943",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260626T012735Z-9943-tester",
+        ".beacon/qa/features/beacon-version-resolve-fail-closed-v163/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260626T092742455034",
+        "docs/beacon/v1.6.3/.machine/qa/beacon-version-resolve-fail-closed-v163.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-version-resolve-fail-closed-v163/ac-closure.json",
+        ".beacon/qa/features/beacon-version-resolve-fail-closed-v163/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-freeze-integrity-drift-repair-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-version-resolve-fail-closed-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.6.3/.machine/qa/beacon-freeze-integrity-drift-repair-v163.ac-test-matrix.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/execution/architecture-blueprint.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-26T01:27:36.199221+00:00",
+      "completed_at": "2026-06-26T01:27:36.199222+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "AC-007 runtime≠docs（双版本合法推进）时 `drift=true` 但**不** block（仅记录）（**Must**，UD-006）",
+      "description": "runtime≠docs（双版本合法推进）时 `drift=true` 但**不** block（仅记录）（**Must**，UD-006）",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-007"
+      ],
+      "mapped_test_ids": [
+        "TC-VR-007"
+      ],
+      "mapped_scenario_ids": [
+        "SC-007"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-VR-007"
+      ],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260626T012735Z-9943",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260626T012735Z-9943-tester",
+        ".beacon/qa/features/beacon-version-resolve-fail-closed-v163/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260626T092742455034/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260626T092742455034",
+        "docs/beacon/v1.6.3/.machine/qa/beacon-version-resolve-fail-closed-v163.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-version-resolve-fail-closed-v163/ac-closure.json",
+        ".beacon/qa/features/beacon-version-resolve-fail-closed-v163/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-freeze-integrity-drift-repair-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-version-resolve-fail-closed-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.6.3/.machine/qa/beacon-freeze-integrity-drift-repair-v163.ac-test-matrix.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/execution/architecture-blueprint.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-26T01:27:36.199231+00:00",
+      "completed_at": "2026-06-26T01:27:36.199232+00:00",
+      "active_run_id": ""
+    }
+  ],
+  "task_alignment": {
+    "schema_version": "1.0",
+    "status": "aligned",
+    "blocked": false,
+    "reason_code": "",
+    "feature": "beacon-version-resolve-fail-closed-v163",
+    "feature_slug": "beacon-version-resolve-fail-closed-v163",
+    "version": "v1.6.3",
+    "authority": "markdown_feature_package",
+    "package_tasks_path": "docs/beacon/v1.6.3/features/beacon-version-resolve-fail-closed-v163/tasks.md",
+    "task_count": 0,
+    "resolved": true,
+    "alignment_mode": "package_tasks_to_implementation_plan",
+    "progress_write_target": "docs/beacon/<version>/.machine/execution and docs/beacon/<version>/execution",
+    "package_tasks_mutated": false,
+    "tasks": [],
+    "draft_implementation_tasks": []
+  },
+  "revision_delta": {},
+  "revision_delta_ref": "",
+  "revision_delta_markdown_ref": "",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"beacon-version-resolve-fail-closed-v163\" --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.3",
+    "run_command": "beacon implement team-run \"beacon-version-resolve-fail-closed-v163\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.3",
+    "dev_run_command": "beacon implement dev-run \"beacon-version-resolve-fail-closed-v163\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.3",
+    "ralph_command": "beacon implement run \"beacon-version-resolve-fail-closed-v163\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.3 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"beacon-version-resolve-fail-closed-v163\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.3",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-version-resolve-fail-closed-v163",
+    "feature_slug": "beacon-version-resolve-fail-closed-v163",
+    "version": "v1.6.3",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.6.3",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": "/Users/apple/Developer/Personal/products/beacon",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.6.3.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-06-26T01:27:31.353333+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.6.3-beacon-version-resolve-fail-closed-v163-R1",
+    "transaction_id": "tx-14c82d0040e389b76",
+    "source_hash": "sha256:f41277d983f6d44d2c9468fdf4d278e7b6508a97fd9bb32d21b5f32a13cd5e2f",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-version-resolve-fail-closed-v163.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.6.3/.machine/execution/git-workflow-beacon-version-resolve-fail-closed-v163.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.6.3/execution/git-workflow-beacon-version-resolve-fail-closed-v163.md",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.6.3",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": "/Users/apple/Developer/Personal/products/beacon",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {
+      "test_case": "docs/beacon/v1.6.3/qa/test-cases/beacon-version-resolve-fail-closed-v163.md"
+    },
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.6.3-beacon-version-resolve-fail-closed-v163-R1",
+    "transaction_id": "tx-14c82d0040e389b76",
+    "source_hash": "sha256:f41277d983f6d44d2c9468fdf4d278e7b6508a97fd9bb32d21b5f32a13cd5e2f",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-version-resolve-fail-closed-v163.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-version-resolve-fail-closed-v163.json",
+  "generated_at": "2026-06-26T01:27:31.474718+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.6.3-beacon-version-resolve-fail-closed-v163-R1",
+  "transaction_id": "tx-14c82d0040e389b76",
+  "source_hash": "sha256:f41277d983f6d44d2c9468fdf4d278e7b6508a97fd9bb32d21b5f32a13cd5e2f",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-06-26T01:27:47.859609+00:00",
+  "accepted_at": "2026-06-26T01:27:47.859571+00:00",
+  "accepted_by": "qa"
+}

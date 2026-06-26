@@ -23,13 +23,13 @@
 
 - keep: `2`
 - review: `1`
-- discard: `0`
+- discard: `5`
 
 ## Latest Score Delta
 
-- main_kpi_score: `-`
-- score_delta.main_kpi_score: `-`
-- score_delta.false_complete_rate: `-`
+- main_kpi_score: `0.0`
+- score_delta.main_kpi_score: `None`
+- score_delta.false_complete_rate: `None`
 
 ## Artifacts
 

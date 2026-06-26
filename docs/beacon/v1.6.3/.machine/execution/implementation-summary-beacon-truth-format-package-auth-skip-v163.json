@@ -1,0 +1,1238 @@
+{
+  "schema_version": "1.0",
+  "run_id": "run-20260626T012944Z-1d69",
+  "feature": "beacon-truth-format-package-auth-skip-v163",
+  "feature_slug": "beacon-truth-format-package-auth-skip-v163",
+  "version": "v1.6.3",
+  "mode": "",
+  "host_runtime": "codex",
+  "runner": "codex-subagents",
+  "adapter_type": "native",
+  "request_path": ".beacon/implement/run-20260626T012944Z-1d69/request.json",
+  "result_path": ".beacon/implement/run-20260626T012944Z-1d69/result.json",
+  "branch_preflight_path": ".beacon/implement/run-20260626T012944Z-1d69/branch-preflight.json",
+  "plan_preflight_path": ".beacon/implement/run-20260626T012944Z-1d69/plan-preflight.json",
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "beacon-truth-format-package-auth-skip-v163",
+    "feature_slug": "beacon-truth-format-package-auth-skip-v163",
+    "version": "v1.6.3",
+    "revision_id": "R1",
+    "source_revision_id": "",
+    "status": "not_applicable",
+    "cleanup_required": false,
+    "removed_requirement_count": 0,
+    "added_requirement_count": 0,
+    "retained_requirement_count": 0,
+    "removed_requirement_surfaces": [],
+    "added_requirement_surfaces": [],
+    "retained_requirement_surfaces": [],
+    "current_baseline_hash": "sha256:a8f512e1b7e70420f4fd7f4b706885706b9659630f9c72d26376e031a75a9a43",
+    "source_baseline_hash": "",
+    "story_state_ref": "docs/beacon/v1.6.3/.machine/user-story/beacon-truth-format-package-auth-skip-v163.json",
+    "generated_at": "2026-06-26T01:04:10.989520+00:00",
+    "json_ref": "docs/beacon/v1.6.3/.machine/execution/revision-delta-beacon-truth-format-package-auth-skip-v163.json",
+    "markdown_ref": "docs/beacon/v1.6.3/execution/revision-delta-beacon-truth-format-package-auth-skip-v163.md"
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-truth-format-package-auth-skip-v163",
+    "feature_slug": "beacon-truth-format-package-auth-skip-v163",
+    "version": "v1.6.3",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.6.3",
+    "branch_prefix": "beacon/",
+    "base_branch": "beacon/v1.6.3",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": "/Users/apple/Developer/Personal/products/beacon",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.6.3.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-06-26T01:29:41.362997+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.6.3-beacon-truth-format-package-auth-skip-v163-R1",
+    "transaction_id": "tx-f774dc70dc7041f74",
+    "source_hash": "sha256:f57069d4b2f995705871f43437f5c4f36de7824b8fb86dfe76e9216734ac45e4",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-truth-format-package-auth-skip-v163.json",
+    "projection_source": "implementation_delivery_baseline_envelope",
+    "execution_branch_contract": {
+      "source": "execution_markdown",
+      "version": "v1.6.3",
+      "feature": "beacon-truth-format-package-auth-skip-v163",
+      "material_paths": [
+        "docs/beacon/v1.6.3/execution/git-workflow-beacon-truth-format-package-auth-skip-v163.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-truth-format-package-auth-skip-v163.md"
+      ],
+      "loaded_material_types": [
+        "git-workflow",
+        "deterministic-implementation-contract"
+      ],
+      "service_branch_map": {},
+      "service_worktree_map": {},
+      "expected_branch": "beacon/v1.6.3",
+      "branch_prefix": "beacon/",
+      "base_branch": "beacon/v1.6.3",
+      "require_clean_worktree_for_switch": true,
+      "worktree_root": "/Users/apple/Developer/Personal/products/beacon",
+      "direct_delivery_services": [
+        "."
+      ],
+      "service_directories": [
+        "."
+      ],
+      "git_roots": [
+        "."
+      ],
+      "branch_authority": "markdown_project_governance",
+      "execution_branch_override_blocked": true
+    }
+  },
+  "generated_at": "2026-06-26T01:29:46.164864+00:00",
+  "status": "completed",
+  "subagent_prechecks": {
+    "required": true,
+    "host_runtime": "codex",
+    "runtime_readiness": {
+      "schema_version": "1.0",
+      "check": "runtime-readiness",
+      "status": "pass",
+      "reason_code": "",
+      "host_runtime": "codex",
+      "required": false,
+      "checks": [],
+      "blocked_checks": [],
+      "detail": "Local native team runtime for this Beacon surface is driven by Beacon-managed execution artifacts; project AGENTS/CLAUDE context files are not required to proceed.",
+      "recommended_command": ""
+    },
+    "delegation_readiness": {
+      "schema_version": "1.0",
+      "check": "delegation-readiness",
+      "status": "pass",
+      "reason_code": "",
+      "feature": "beacon-truth-format-package-auth-skip-v163",
+      "version": "v1.6.3",
+      "checks": [
+        {
+          "name": "package_truth_present",
+          "ok": true,
+          "detail": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/truth.md"
+        },
+        {
+          "name": "package_tests_present",
+          "ok": true,
+          "detail": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tests.md"
+        },
+        {
+          "name": "package_tasks_present",
+          "ok": true,
+          "detail": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tasks.md"
+        },
+        {
+          "name": "package_evidence_present",
+          "ok": true,
+          "detail": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/evidence.md"
+        },
+        {
+          "name": "truth_map_verify_pass",
+          "ok": true,
+          "detail": "beacon truth-map verify"
+        },
+        {
+          "name": "implementation_plan_present",
+          "ok": true,
+          "detail": "docs/beacon/v1.6.3/.machine/execution/implementation-plan-beacon-truth-format-package-auth-skip-v163.json"
+        },
+        {
+          "name": "git_workflow_present",
+          "ok": true,
+          "detail": "docs/beacon/v1.6.3/.machine/execution/git-workflow-beacon-truth-format-package-auth-skip-v163.json"
+        },
+        {
+          "name": "qa_baseline_bundle_present",
+          "ok": true,
+          "detail": "docs/beacon/v1.6.3/.machine/qa"
+        }
+      ],
+      "blocked_checks": [],
+      "recommended_command": ""
+    }
+  },
+  "semantic_layer": {
+    "artifacts": {
+      "semantic_contract": "docs/beacon/v1.6.3/.machine/trace/semantic/beacon-truth-format-package-auth-skip-v163/semantic-contract.json",
+      "semantic_dictionary": "docs/beacon/v1.6.3/.machine/trace/semantic/beacon-truth-format-package-auth-skip-v163/semantic-dictionary.md",
+      "semantic_usage_guidelines": "docs/beacon/v1.6.3/.machine/trace/semantic/beacon-truth-format-package-auth-skip-v163/semantic-usage-guidelines.md",
+      "semantic_review": "docs/beacon/v1.6.3/.machine/trace/semantic/beacon-truth-format-package-auth-skip-v163/semantic-review.json"
+    },
+    "default_design_bridge": {
+      "repo": "https://github.com/Leonxlnx/taste-skill",
+      "skill_id": "taste-skill",
+      "entry": "",
+      "detected": false,
+      "kind": "external-default-bridge",
+      "supported_stages": [
+        "prototype",
+        "implement"
+      ],
+      "capabilities": [
+        "prototype",
+        "implement",
+        "taste-design",
+        "semantic-normalization"
+      ],
+      "install_hint": "npx skills add https://github.com/Leonxlnx/taste-skill --skill taste-skill"
+    }
+  },
+  "design_truth": {
+    "schema_version": "1.0",
+    "status": "not_applicable",
+    "feature": "beacon-truth-format-package-auth-skip-v163",
+    "feature_slug": "beacon-truth-format-package-auth-skip-v163",
+    "version": "v1.6.3",
+    "source_surface": "prototype-adapter",
+    "consumption_surface": "implement",
+    "mode": "design-result-adapter",
+    "required": false,
+    "allowed_inputs": [],
+    "blocked_human_inputs": [],
+    "refs": {},
+    "missing_refs": [],
+    "design_preset": "",
+    "canonical_design_preset": "",
+    "preset_source": "",
+    "preset_family": "",
+    "template_catalog_count": 0,
+    "anti_ai_ui_contract": {},
+    "template_layout_rules": [],
+    "interaction_discipline_rules": []
+  },
+  "skill_admission": {},
+  "delivery_contract": {
+    "schema_version": "1.0",
+    "feature": "beacon-truth-format-package-auth-skip-v163",
+    "version": "v1.6.3",
+    "requested_mode": "codex-subagents",
+    "effective_mode": "codex-subagents",
+    "generator_mode": "codex-subagents",
+    "execution_mode": "codex-subagents",
+    "runner_mode": "codex-subagents",
+    "host_runtime": "codex",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "skill_admission_status": "",
+      "skill_admission_mode": "",
+      "skill_id": "",
+      "skill_surface_kind": "",
+      "skill_non_code_supported": false,
+      "schema_version": "1.0",
+      "host_runtime": "codex",
+      "subagent_required": true,
+      "subagent_runtime_status": "pass",
+      "subagent_delegation_status": "pass",
+      "host_semantic_ready": false,
+      "provider_available": false
+    },
+    "subagent_prechecks": {
+      "required": true,
+      "host_runtime": "codex",
+      "runtime_readiness": {
+        "schema_version": "1.0",
+        "check": "runtime-readiness",
+        "status": "pass",
+        "reason_code": "",
+        "host_runtime": "codex",
+        "required": false,
+        "checks": [],
+        "blocked_checks": [],
+        "detail": "Local native team runtime for this Beacon surface is driven by Beacon-managed execution artifacts; project AGENTS/CLAUDE context files are not required to proceed.",
+        "recommended_command": ""
+      },
+      "delegation_readiness": {
+        "schema_version": "1.0",
+        "check": "delegation-readiness",
+        "status": "pass",
+        "reason_code": "",
+        "feature": "beacon-truth-format-package-auth-skip-v163",
+        "version": "v1.6.3",
+        "checks": [
+          {
+            "name": "package_truth_present",
+            "ok": true,
+            "detail": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/truth.md"
+          },
+          {
+            "name": "package_tests_present",
+            "ok": true,
+            "detail": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tests.md"
+          },
+          {
+            "name": "package_tasks_present",
+            "ok": true,
+            "detail": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tasks.md"
+          },
+          {
+            "name": "package_evidence_present",
+            "ok": true,
+            "detail": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/evidence.md"
+          },
+          {
+            "name": "truth_map_verify_pass",
+            "ok": true,
+            "detail": "beacon truth-map verify"
+          },
+          {
+            "name": "implementation_plan_present",
+            "ok": true,
+            "detail": "docs/beacon/v1.6.3/.machine/execution/implementation-plan-beacon-truth-format-package-auth-skip-v163.json"
+          },
+          {
+            "name": "git_workflow_present",
+            "ok": true,
+            "detail": "docs/beacon/v1.6.3/.machine/execution/git-workflow-beacon-truth-format-package-auth-skip-v163.json"
+          },
+          {
+            "name": "qa_baseline_bundle_present",
+            "ok": true,
+            "detail": "docs/beacon/v1.6.3/.machine/qa"
+          }
+        ],
+        "blocked_checks": [],
+        "recommended_command": ""
+      }
+    },
+    "requirement_binding": {
+      "source_of_truth_root": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163",
+      "prd": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/truth.md",
+      "user_story": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/truth.md",
+      "test_case": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tests.md",
+      "ac_matrix": "docs/beacon/v1.6.3/.machine/qa/beacon-truth-format-package-auth-skip-v163.ac-test-matrix.json",
+      "requirement_completeness_ref": "",
+      "requirement_completeness_verdict": "",
+      "revision_id": "R1",
+      "implemented_item_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "TASK-001"
+      ],
+      "implemented_task_ids": [],
+      "verified_task_ids": []
+    },
+    "traceability_refs": [
+      "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/truth.md",
+      "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tests.md",
+      "docs/beacon/v1.6.3/.machine/qa/beacon-truth-format-package-auth-skip-v163.ac-test-matrix.json",
+      "docs/beacon/v1.6.3/.machine/execution/revision-delta-beacon-truth-format-package-auth-skip-v163.json",
+      ".beacon/implement/run-20260626T012944Z-1d69/request.json",
+      ".beacon/implement/run-20260626T012944Z-1d69/result.json"
+    ],
+    "runner": "codex-subagents",
+    "adapter_type": "native",
+    "execution_surface": "codex-subagents",
+    "team_mode": false,
+    "qa_status": "",
+    "gate_status": "",
+    "release_ready": false,
+    "risk_flags": []
+  },
+  "host_native_delivery": {
+    "schema_version": "1.0",
+    "feature": "beacon-truth-format-package-auth-skip-v163",
+    "version": "v1.6.3",
+    "requested_mode": "codex-subagents",
+    "effective_mode": "codex-subagents",
+    "generator_mode": "codex-subagents",
+    "execution_mode": "codex-subagents",
+    "runner_mode": "codex-subagents",
+    "host_runtime": "codex",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "skill_admission_status": "",
+      "skill_admission_mode": "",
+      "skill_id": "",
+      "skill_surface_kind": "",
+      "skill_non_code_supported": false,
+      "schema_version": "1.0",
+      "host_runtime": "codex",
+      "subagent_required": true,
+      "subagent_runtime_status": "pass",
+      "subagent_delegation_status": "pass",
+      "host_semantic_ready": false,
+      "provider_available": false
+    },
+    "subagent_prechecks": {
+      "required": true,
+      "host_runtime": "codex",
+      "runtime_readiness": {
+        "schema_version": "1.0",
+        "check": "runtime-readiness",
+        "status": "pass",
+        "reason_code": "",
+        "host_runtime": "codex",
+        "required": false,
+        "checks": [],
+        "blocked_checks": [],
+        "detail": "Local native team runtime for this Beacon surface is driven by Beacon-managed execution artifacts; project AGENTS/CLAUDE context files are not required to proceed.",
+        "recommended_command": ""
+      },
+      "delegation_readiness": {
+        "schema_version": "1.0",
+        "check": "delegation-readiness",
+        "status": "pass",
+        "reason_code": "",
+        "feature": "beacon-truth-format-package-auth-skip-v163",
+        "version": "v1.6.3",
+        "checks": [
+          {
+            "name": "package_truth_present",
+            "ok": true,
+            "detail": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/truth.md"
+          },
+          {
+            "name": "package_tests_present",
+            "ok": true,
+            "detail": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tests.md"
+          },
+          {
+            "name": "package_tasks_present",
+            "ok": true,
+            "detail": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tasks.md"
+          },
+          {
+            "name": "package_evidence_present",
+            "ok": true,
+            "detail": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/evidence.md"
+          },
+          {
+            "name": "truth_map_verify_pass",
+            "ok": true,
+            "detail": "beacon truth-map verify"
+          },
+          {
+            "name": "implementation_plan_present",
+            "ok": true,
+            "detail": "docs/beacon/v1.6.3/.machine/execution/implementation-plan-beacon-truth-format-package-auth-skip-v163.json"
+          },
+          {
+            "name": "git_workflow_present",
+            "ok": true,
+            "detail": "docs/beacon/v1.6.3/.machine/execution/git-workflow-beacon-truth-format-package-auth-skip-v163.json"
+          },
+          {
+            "name": "qa_baseline_bundle_present",
+            "ok": true,
+            "detail": "docs/beacon/v1.6.3/.machine/qa"
+          }
+        ],
+        "blocked_checks": [],
+        "recommended_command": ""
+      }
+    },
+    "requirement_binding": {
+      "source_of_truth_root": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163",
+      "prd": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/truth.md",
+      "user_story": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/truth.md",
+      "test_case": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tests.md",
+      "ac_matrix": "docs/beacon/v1.6.3/.machine/qa/beacon-truth-format-package-auth-skip-v163.ac-test-matrix.json",
+      "requirement_completeness_ref": "",
+      "requirement_completeness_verdict": "",
+      "revision_id": "R1",
+      "implemented_item_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "TASK-001"
+      ],
+      "implemented_task_ids": [],
+      "verified_task_ids": []
+    },
+    "traceability_refs": [
+      "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/truth.md",
+      "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tests.md",
+      "docs/beacon/v1.6.3/.machine/qa/beacon-truth-format-package-auth-skip-v163.ac-test-matrix.json",
+      "docs/beacon/v1.6.3/.machine/execution/revision-delta-beacon-truth-format-package-auth-skip-v163.json",
+      ".beacon/implement/run-20260626T012944Z-1d69/request.json",
+      ".beacon/implement/run-20260626T012944Z-1d69/result.json"
+    ],
+    "runner": "codex-subagents",
+    "adapter_type": "native",
+    "execution_surface": "codex-subagents",
+    "team_mode": false,
+    "qa_status": "",
+    "gate_status": "",
+    "release_ready": false,
+    "risk_flags": []
+  },
+  "prompt_boundary": {
+    "schema_version": "1.0",
+    "feature": "beacon-truth-format-package-auth-skip-v163",
+    "feature_slug": "beacon-truth-format-package-auth-skip-v163",
+    "version": "v1.6.3",
+    "required": true,
+    "prompt": "Implement the scoped Beacon feature.\nFeature: beacon-truth-format-package-auth-skip-v163\nVersion: v1.6.3\nRead Beacon source of truth:\n- docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/truth.md\n- docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tests.md\n- docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tasks.md\n- docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/evidence.md\n- docs/beacon/v1.6.3/.machine/execution/implementation-plan-beacon-truth-format-package-auth-skip-v163.json\nReuse Beacon semantic layer:\n- docs/beacon/v1.6.3/.machine/trace/semantic/beacon-truth-format-package-auth-skip-v163/semantic-contract.json\n- docs/beacon/v1.6.3/.machine/trace/semantic/beacon-truth-format-package-auth-skip-v163/semantic-dictionary.md\n- docs/beacon/v1.6.3/.machine/trace/semantic/beacon-truth-format-package-auth-skip-v163/semantic-usage-guidelines.md\nDefault design bridge (augmentation only): taste-skill @ https://github.com/Leonxlnx/taste-skill\nFollow Beacon boundary defaults:\n- Record explicit assumptions and ambiguity tradeoffs instead of silently picking one interpretation.\n- Prefer the smallest correct change; avoid speculative abstraction or future-facing config unless required.\n- Keep changes surgical; only touch files in the current scope and only clean up orphan artifacts you introduce.\n- Bind work to verification signals; include acceptance/test mapping or concrete evidence for non-trivial tasks.\n- For obvious typo or single-line copy fixes, stay lightweight but do not expand scope or touch unrelated files.\nImplement only against the frozen PRD, user-story, and test-case truth above.\nAlso align with project-level PRODUCT.md / DESIGN.md truth when those files are listed above.\nDo not invent new user stories, acceptance criteria, or test scope.\nIf the work would require requirement change or conflicts with frozen truth, stop and route to beacon-change/refreeze instead of coding around it.\nStructured result should include: assumptions, simplicity_notes, scope_guard, ac_coverage_matrix, verification.\nBefore QA handoff, AC coverage matrix must list every frozen AC with status pass | partial | blocked and evidence or blocking_note.\nFor changed revisions with cleanup obligation, structured result must also include: cleanup_review_completed, removed_surfaces, retained_legacy_surfaces, cleanup_rationale.\nRun relevant verification.\nWrite structured result to .beacon/implement/run-20260626T012944Z-1d69/result.json",
+    "classification": "in_scope_implementation",
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "next_action": "",
+    "recommended_command": "",
+    "matched_signals": [],
+    "frozen_refs": [
+      "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/truth.md",
+      "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tests.md",
+      "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tasks.md",
+      "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/evidence.md"
+    ],
+    "surface": "task_prompt"
+  },
+  "skill": "",
+  "summary": "codex-subagents implementation completed via implement-team flow",
+  "changed_files": [
+    ".beacon/auto-test-status.json",
+    ".beacon/coverage-summary.json",
+    ".beacon/evidence-manifest.json",
+    ".beacon/evidence-signature-chain.json",
+    ".beacon/gate-report.json",
+    ".beacon/qa/status.json",
+    ".beacon/release-gate-report.json",
+    "docs/beacon/v1.6.3/.machine/execution/beacon-ecosystem-discovery-sync-drift-v163.revision.json",
+    "docs/beacon/v1.6.3/.machine/execution/beacon-freeze-integrity-drift-repair-v163.revision.json",
+    "docs/beacon/v1.6.3/.machine/execution/beacon-truth-format-package-auth-skip-v163.revision.json",
+    "docs/beacon/v1.6.3/.machine/execution/beacon-version-resolve-fail-closed-v163.revision.json",
+    "docs/beacon/v1.6.3/.machine/execution/beacon-workflow-memory-completion-gate-v163.revision.json",
+    "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.json",
+    "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.json",
+    "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-workflow-memory-completion-gate-v163.json",
+    "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-freeze-integrity-drift-repair-v163.json",
+    "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-version-resolve-fail-closed-v163.json",
+    "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-workflow-memory-completion-gate-v163.json",
+    "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json",
+    "docs/beacon/v1.6.3/.machine/qa/beacon-freeze-integrity-drift-repair-v163.ac-test-matrix.json",
+    "docs/beacon/v1.6.3/.machine/qa/beacon-version-resolve-fail-closed-v163.ac-test-matrix.json",
+    "docs/beacon/v1.6.3/.machine/qa/beacon-workflow-memory-completion-gate-v163.ac-test-matrix.json",
+    "docs/beacon/v1.6.3/.machine/requirement/beacon-ecosystem-discovery-sync-drift-v163.requirement-package.json",
+    "docs/beacon/v1.6.3/.machine/requirement/beacon-ecosystem-discovery-sync-drift-v163.truth-map.json",
+    "docs/beacon/v1.6.3/.machine/requirement/beacon-truth-format-package-auth-skip-v163.requirement-package.json",
+    "docs/beacon/v1.6.3/.machine/requirement/beacon-truth-format-package-auth-skip-v163.truth-map.json",
+    "docs/beacon/v1.6.3/.machine/requirement/feature-package-validation.json",
+    "docs/beacon/v1.6.3/.machine/user-story/beacon-ecosystem-discovery-sync-drift-v163.json",
+    "docs/beacon/v1.6.3/.machine/user-story/beacon-freeze-integrity-drift-repair-v163.json",
+    "docs/beacon/v1.6.3/.machine/user-story/beacon-truth-format-package-auth-skip-v163.json",
+    "docs/beacon/v1.6.3/.machine/user-story/beacon-version-resolve-fail-closed-v163.json",
+    "docs/beacon/v1.6.3/.machine/user-story/beacon-workflow-memory-completion-gate-v163.json",
+    "docs/beacon/v1.6.3/execution/architecture-blueprint.md",
+    "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.md",
+    "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.md",
+    "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-workflow-memory-completion-gate-v163.md"
+  ],
+  "verification": [
+    {
+      "command": "beacon implement run --runner codex-subagents",
+      "status": "passed"
+    },
+    {
+      "command": "auto-test-status",
+      "status": "passed",
+      "evidence": ".beacon/auto-test-status.json"
+    }
+  ],
+  "implemented_task_ids": [],
+  "verified_task_ids": [],
+  "blocked_task_ids": [],
+  "failed_task_ids": [],
+  "artifact_updates": {
+    "user_story": {
+      "required": false,
+      "reason": "story machine state writeback recorded"
+    },
+    "review_quality": {
+      "required": true,
+      "reason": "run quality review after native implementation"
+    },
+    "acceptance": {
+      "required": true,
+      "reason": "acceptance remains a formal post-verify action"
+    }
+  },
+  "branch_preflight": {
+    "schema_version": "1.0",
+    "status": "pass",
+    "summary": "implement branch preflight passed on workspace branch beacon/v1.6.3",
+    "blocked": false,
+    "version": "v1.6.3",
+    "expected_branch": "beacon/v1.6.3",
+    "current_branch": "beacon/v1.6.3",
+    "current_tag": "",
+    "branch_exists": true,
+    "dirty_worktree": true,
+    "require_clean_worktree_for_switch": true,
+    "recommended_command": "",
+    "recommended_commands": [],
+    "direct_delivery_services": [
+      "beacon"
+    ],
+    "service_scope": {
+      "status": "pass",
+      "direct_delivery_services": [
+        "beacon"
+      ],
+      "verified_roots": [
+        "/Users/apple/Developer/Personal/products/beacon"
+      ],
+      "unresolved_services": []
+    },
+    "reason_codes": [],
+    "git_alignment": {
+      "mode": "workspace",
+      "repo_detected": true,
+      "target_branch": "beacon/v1.6.3",
+      "worktree_path": "/Users/apple/Developer/Personal/products/beacon",
+      "workspace_repos": [
+        {
+          "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+          "relative_root": "/Users/apple/Developer/Personal/products/beacon",
+          "dirty_worktree": true,
+          "repo_url": "https://github.com/justin-mc-lai/beacon.git",
+          "base_branch": "beacon/v1.6.3",
+          "target_branch": "beacon/v1.6.3",
+          "current_branch": "beacon/v1.6.3",
+          "current_commit": "6a7521faaa9752b8b8e3b6f08e2ffa084a779149",
+          "current_tag": "",
+          "worktree_path": "/Users/apple/Developer/Personal/products/beacon",
+          "version_ref": "v1.6.3",
+          "allowed_refs": [
+            "branch"
+          ],
+          "enforce_branch_prefix": "beacon/",
+          "branch_matches_target": true,
+          "branch_has_required_prefix": true,
+          "tag_matches_version": false,
+          "version_ref_satisfied": true,
+          "reason_codes": [],
+          "blocked": false,
+          "detached_head": false,
+          "repo_detected": true
+        }
+      ],
+      "blocked": false,
+      "reason_codes": []
+    },
+    "run_id": "run-20260626T012944Z-1d69",
+    "feature": "beacon-truth-format-package-auth-skip-v163",
+    "feature_slug": "beacon-truth-format-package-auth-skip-v163",
+    "generated_at": "2026-06-26T01:29:45.578234+00:00",
+    "branch_governance": {
+      "schema_version": "1.0",
+      "tool_name": "beacon-toolkit-branch-governance",
+      "feature": "",
+      "version": "v1.6.3",
+      "template_name": "standard-feature",
+      "template_source": "project_metadata",
+      "service_key": "beacon",
+      "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+      "base_branch": "beacon/v1.6.3",
+      "current_branch": "beacon/v1.6.3",
+      "target_branch": "beacon/v1.6.3",
+      "worktree_mode": "branch-only",
+      "worktree_path": "/Users/apple/Developer/Personal/products/beacon",
+      "current_worktree_path": "/Users/apple/Developer/Personal/products/beacon",
+      "previous_version_baseline_branch": "pre-main",
+      "next_version_feature_branch": "beacon/v1.6.3/<feature-slug>",
+      "hotfix_branch_naming_rule": "",
+      "allow_worktree_when_feature_dirty": false,
+      "merge_direction_policy": [],
+      "forbidden_directions": [],
+      "evidence_contract": [],
+      "evidence": {},
+      "status": "pass",
+      "blocked": false,
+      "reason_codes": [],
+      "blocked_reason": "",
+      "recommended_action": "",
+      "missing_evidence_fields": [],
+      "evidence_contract_status": "pass",
+      "human_markdown": "## Branch Governance\n\n- toolkit: `beacon-toolkit-branch-governance`\n- template_name: `standard-feature`\n- template_source: `project_metadata`\n- service_key: `beacon`\n- repo_root: `/Users/apple/Developer/Personal/products/beacon`\n- base_branch: `beacon/v1.6.3`\n- current_branch: `beacon/v1.6.3`\n- target_branch: `beacon/v1.6.3`\n- worktree_mode: `branch-only`\n- worktree_path: `/Users/apple/Developer/Personal/products/beacon`\n- evidence_contract_status: `pass`\n- blocked_reason: ``\n- recommended_action: ``\n\n### Flow Diagram\n```text\nbeacon/v1.6.3 [current]\n    -> beacon/v1.6.3 [current]\n    -> uat\n```\n\n### Allowed Paths\n- `base_branch->feature_branch`\n\n### Forbidden Paths\n- none\n\n### Evidence Contract\n- none\n"
+    },
+    "git_workflow": {
+      "schema_version": "1.0",
+      "feature": "beacon-truth-format-package-auth-skip-v163",
+      "feature_slug": "beacon-truth-format-package-auth-skip-v163",
+      "version": "v1.6.3",
+      "mode": "single-repo",
+      "expected_branch": "beacon/v1.6.3",
+      "branch_prefix": "beacon/",
+      "base_branch": "beacon/v1.6.3",
+      "use_git_worktree": false,
+      "require_clean_worktree_for_switch": true,
+      "service_directories": [
+        "."
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "writable_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "git_roots": [
+        "."
+      ],
+      "worktree_root": "/Users/apple/Developer/Personal/products/beacon",
+      "implementation_preflight": [
+        "Before implementation, verify the target service belongs to: .",
+        "Before implementation, verify the current branch is beacon/v1.6.3.",
+        "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+      ],
+      "source": "technical_review_contract",
+      "generated_at": "2026-06-26T01:29:41.362997+00:00",
+      "baseline_id": "impl-delivery-baseline-v1.6.3-beacon-truth-format-package-auth-skip-v163-R1",
+      "transaction_id": "tx-f774dc70dc7041f74",
+      "source_hash": "sha256:f57069d4b2f995705871f43437f5c4f36de7824b8fb86dfe76e9216734ac45e4",
+      "projection_seq": 1,
+      "canonical_envelope_ref": "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-truth-format-package-auth-skip-v163.json",
+      "projection_source": "implementation_delivery_baseline_envelope",
+      "execution_branch_contract": {
+        "source": "execution_markdown",
+        "version": "v1.6.3",
+        "feature": "beacon-truth-format-package-auth-skip-v163",
+        "material_paths": [
+          "docs/beacon/v1.6.3/execution/git-workflow-beacon-truth-format-package-auth-skip-v163.md",
+          "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-truth-format-package-auth-skip-v163.md"
+        ],
+        "loaded_material_types": [
+          "git-workflow",
+          "deterministic-implementation-contract"
+        ],
+        "service_branch_map": {},
+        "service_worktree_map": {},
+        "expected_branch": "beacon/v1.6.3",
+        "branch_prefix": "beacon/",
+        "base_branch": "beacon/v1.6.3",
+        "require_clean_worktree_for_switch": true,
+        "worktree_root": "/Users/apple/Developer/Personal/products/beacon",
+        "direct_delivery_services": [
+          "."
+        ],
+        "service_directories": [
+          "."
+        ],
+        "git_roots": [
+          "."
+        ],
+        "branch_authority": "markdown_project_governance",
+        "execution_branch_override_blocked": true
+      }
+    },
+    "branch_preflight_path": ".beacon/implement/run-20260626T012944Z-1d69/branch-preflight.json"
+  },
+  "plan_preflight": {
+    "schema_version": "1.0",
+    "run_id": "run-20260626T012944Z-1d69",
+    "feature": "beacon-truth-format-package-auth-skip-v163",
+    "feature_slug": "beacon-truth-format-package-auth-skip-v163",
+    "version": "v1.6.3",
+    "expected_plan": "docs/beacon/v1.6.3/.machine/execution/implementation-plan-beacon-truth-format-package-auth-skip-v163.json",
+    "expected_revision_id": "R1",
+    "baseline_hash": "sha256:a8f512e1b7e70420f4fd7f4b706885706b9659630f9c72d26376e031a75a9a43",
+    "recommended_command": "beacon implement plan \"beacon-truth-format-package-auth-skip-v163\" --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.3",
+    "generated_at": "2026-06-26T01:29:45.580684+00:00",
+    "required": true,
+    "architecture_blueprint_projection_gate": {
+      "status": "pass",
+      "blocked": false,
+      "reason_code": "",
+      "path": "docs/beacon/v1.6.3/execution/architecture-blueprint.md",
+      "feature": "beacon-truth-format-package-auth-skip-v163",
+      "version": "v1.6.3",
+      "issues": []
+    },
+    "material_gate_preflight": {
+      "schema_version": "1.0",
+      "version": "v1.6.3",
+      "feature": "beacon-truth-format-package-auth-skip-v163",
+      "feature_slug": "beacon-truth-format-package-auth-skip-v163",
+      "status": "pass",
+      "blocked": false,
+      "reason_code": "",
+      "gates": {
+        "execution_host_required_surfaces": {
+          "schema_version": "1.0",
+          "version": "v1.6.3",
+          "feature": "beacon-truth-format-package-auth-skip-v163",
+          "feature_slug": "beacon-truth-format-package-auth-skip-v163",
+          "required": true,
+          "status": "pass",
+          "blocked": false,
+          "reason_code": "",
+          "missing_surfaces": [],
+          "surfaces": {
+            "execution_index": {
+              "path": "docs/beacon/v1.6.3/execution/index.md",
+              "exists": true,
+              "required": true
+            },
+            "architecture_blueprint": {
+              "path": "docs/beacon/v1.6.3/execution/architecture-blueprint.md",
+              "exists": true,
+              "required": true
+            },
+            "delivery_baseline": {
+              "path": "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-truth-format-package-auth-skip-v163.json",
+              "exists": true,
+              "required": true
+            },
+            "git_workflow": {
+              "path": "docs/beacon/v1.6.3/.machine/execution/git-workflow-beacon-truth-format-package-auth-skip-v163.json",
+              "exists": true,
+              "required": true
+            },
+            "technical_review_contract": {
+              "path": "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-truth-format-package-auth-skip-v163.json",
+              "exists": true,
+              "required": true
+            }
+          }
+        },
+        "architecture_blueprint_projection": {
+          "status": "pass",
+          "blocked": false,
+          "reason_code": "",
+          "path": "docs/beacon/v1.6.3/execution/architecture-blueprint.md",
+          "feature": "beacon-truth-format-package-auth-skip-v163",
+          "version": "v1.6.3",
+          "issues": []
+        },
+        "explicit_delivery_facts": {
+          "schema_version": "1.0",
+          "version": "v1.6.3",
+          "feature": "beacon-truth-format-package-auth-skip-v163",
+          "feature_slug": "beacon-truth-format-package-auth-skip-v163",
+          "status": "pass",
+          "blocked": false,
+          "reason_code": "",
+          "diagnostics": [],
+          "repair_route": "beacon-toolkit-branch-governance"
+        },
+        "diagnostics": {
+          "schema_version": "1.0",
+          "status": "pass",
+          "blocked": false,
+          "reason_code": "",
+          "diagnostics": []
+        }
+      }
+    },
+    "status": "pass",
+    "blocked": false,
+    "plan_id": "plan-beacon-truth-format-package-auth-skip-v163-r1",
+    "plan_path": "docs/beacon/v1.6.3/.machine/execution/implementation-plan-beacon-truth-format-package-auth-skip-v163.json",
+    "progress_path": "docs/beacon/v1.6.3/.machine/execution/implementation-plan-beacon-truth-format-package-auth-skip-v163.progress.json"
+  },
+  "implementation_marker": ".beacon/state/implementation-beacon-truth-format-package-auth-skip-v163.json",
+  "technical_archive": {
+    "json": "docs/beacon/v1.6.3/.machine/execution/technical-implementation-beacon-truth-format-package-auth-skip-v163.json",
+    "md": "docs/beacon/v1.6.3/.machine/trace/implementation/beacon-truth-format-package-auth-skip-v163/technical-implementation-beacon-truth-format-package-auth-skip-v163.md"
+  },
+  "implementation_plan": "docs/beacon/v1.6.3/.machine/execution/implementation-plan-beacon-truth-format-package-auth-skip-v163.json",
+  "implementation_plan_progress": {
+    "schema_version": "1.0",
+    "plan_id": "plan-beacon-truth-format-package-auth-skip-v163-r1",
+    "feature": "beacon-truth-format-package-auth-skip-v163",
+    "version": "v1.6.3",
+    "revision_id": "R1",
+    "plan_path": "docs/beacon/v1.6.3/.machine/execution/implementation-plan-beacon-truth-format-package-auth-skip-v163.json",
+    "progress_path": "docs/beacon/v1.6.3/.machine/execution/implementation-plan-beacon-truth-format-package-auth-skip-v163.progress.json",
+    "status": "completed",
+    "counts": {
+      "total": 7,
+      "draft": 0,
+      "planned": 0,
+      "in_progress": 0,
+      "blocked": 0,
+      "completed": 7
+    },
+    "blocked_task_ids": [],
+    "blocked_task_titles": [],
+    "completed_task_ids": [
+      "ITASK-001",
+      "ITASK-002",
+      "ITASK-003",
+      "ITASK-004",
+      "ITASK-005",
+      "ITASK-006",
+      "ITASK-007"
+    ],
+    "next_task_id": "",
+    "next_task_title": "",
+    "task_states": [
+      {
+        "task_id": "ITASK-001",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-001"
+        ],
+        "mapped_test_ids": [
+          "TEST-001",
+          "TC-TF-001"
+        ],
+        "mapped_scenario_ids": [
+          "SC-001"
+        ],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-002",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-002"
+        ],
+        "mapped_test_ids": [
+          "TEST-002",
+          "TC-TF-002"
+        ],
+        "mapped_scenario_ids": [
+          "SC-002"
+        ],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-003",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-003"
+        ],
+        "mapped_test_ids": [
+          "TEST-003",
+          "TC-TF-003"
+        ],
+        "mapped_scenario_ids": [
+          "SC-003"
+        ],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-004",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-004"
+        ],
+        "mapped_test_ids": [
+          "TEST-004",
+          "TC-TF-004"
+        ],
+        "mapped_scenario_ids": [
+          "SC-004"
+        ],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-005",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-005"
+        ],
+        "mapped_test_ids": [
+          "TEST-005",
+          "TC-TF-005"
+        ],
+        "mapped_scenario_ids": [
+          "SC-005"
+        ],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-006",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-006"
+        ],
+        "mapped_test_ids": [
+          "TEST-006",
+          "TC-TF-006"
+        ],
+        "mapped_scenario_ids": [
+          "SC-006"
+        ],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-007",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-007"
+        ],
+        "mapped_test_ids": [
+          "TEST-007",
+          "TC-TF-007"
+        ],
+        "mapped_scenario_ids": [
+          "SC-007"
+        ],
+        "mapped_qa_case_ids": []
+      }
+    ],
+    "updated_at": "2026-06-26T01:29:46.070939+00:00",
+    "task_ledger_path": "docs/beacon/v1.6.3/execution/tasks-beacon-truth-format-package-auth-skip-v163.md"
+  },
+  "implementation_order": {},
+  "requirement_traceability": {
+    "source_of_truth_root": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163",
+    "prd": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/truth.md",
+    "user_story": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/truth.md",
+    "test_case": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tests.md",
+    "ac_matrix": "docs/beacon/v1.6.3/.machine/qa/beacon-truth-format-package-auth-skip-v163.ac-test-matrix.json",
+    "requirement_completeness_ref": "",
+    "requirement_completeness_verdict": "",
+    "revision_id": "R1",
+    "implemented_item_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005",
+      "AC-006",
+      "AC-007",
+      "TASK-001"
+    ],
+    "implemented_task_ids": [],
+    "verified_task_ids": []
+  },
+  "delivery_surfaces": {
+    "runtime_mode": "codex-subagents",
+    "shipped_surfaces": [],
+    "partial_surfaces": [],
+    "deferred_surfaces": [],
+    "downgrade_rationale": ""
+  },
+  "revision_cleanup": {
+    "schema_version": "1.0",
+    "revision_id": "R1",
+    "source_revision_id": "",
+    "revision_delta_ref": "docs/beacon/v1.6.3/.machine/execution/revision-delta-beacon-truth-format-package-auth-skip-v163.json",
+    "revision_delta_markdown_ref": "docs/beacon/v1.6.3/execution/revision-delta-beacon-truth-format-package-auth-skip-v163.md",
+    "cleanup_required": false,
+    "cleanup_review_completed": true,
+    "removed_requirement_surfaces": [],
+    "removed_surfaces": [],
+    "retained_legacy_surfaces": [],
+    "cleanup_rationale": ""
+  },
+  "traceability_refs": [
+    "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/truth.md",
+    "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tests.md",
+    "docs/beacon/v1.6.3/.machine/qa/beacon-truth-format-package-auth-skip-v163.ac-test-matrix.json",
+    "docs/beacon/v1.6.3/.machine/execution/revision-delta-beacon-truth-format-package-auth-skip-v163.json",
+    ".beacon/implement/run-20260626T012944Z-1d69/request.json",
+    ".beacon/implement/run-20260626T012944Z-1d69/result.json"
+  ],
+  "implemented_items": [
+    "AC-001",
+    "AC-002",
+    "AC-003",
+    "AC-004",
+    "AC-005",
+    "AC-006",
+    "AC-007",
+    "TASK-001"
+  ],
+  "verified_items": [
+    "AC-001",
+    "AC-002",
+    "AC-003",
+    "AC-004",
+    "AC-005",
+    "AC-006",
+    "AC-007",
+    "TEST-001",
+    "TEST-002",
+    "TEST-003",
+    "TEST-004",
+    "TEST-005",
+    "TEST-006",
+    "TEST-007"
+  ],
+  "blocked_items": [],
+  "runner_mode": "codex-subagents",
+  "revision_id": "R1",
+  "team_execution": {
+    "team_name": "implement-team-run-20260626T012944Z-1d69",
+    "team_surface": "implement-team",
+    "state_path": ".beacon/team/implement-team-run-20260626T012944Z-1d69/manifest.json",
+    "artifact_dir": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-truth-format-package-auth-skip-v163/run-20260626T012944Z-1d69",
+    "final_state": "terminal",
+    "terminal_status": "Pass",
+    "runtime": "file",
+    "tmux_session": "",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_reports": {
+      "planner": {
+        "role": "planner",
+        "status": "completed",
+        "json": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-truth-format-package-auth-skip-v163/run-20260626T012944Z-1d69/planner.json",
+        "markdown": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-truth-format-package-auth-skip-v163/run-20260626T012944Z-1d69/planner.md"
+      },
+      "implementation-architect": {
+        "role": "implementation-architect",
+        "status": "completed",
+        "json": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-truth-format-package-auth-skip-v163/run-20260626T012944Z-1d69/implementation-architect.json",
+        "markdown": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-truth-format-package-auth-skip-v163/run-20260626T012944Z-1d69/implementation-architect.md"
+      },
+      "implementer": {
+        "role": "implementer",
+        "status": "completed",
+        "json": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-truth-format-package-auth-skip-v163/run-20260626T012944Z-1d69/implementer.json",
+        "markdown": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-truth-format-package-auth-skip-v163/run-20260626T012944Z-1d69/implementer.md"
+      },
+      "reviewer": {
+        "role": "reviewer",
+        "status": "pass",
+        "json": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-truth-format-package-auth-skip-v163/run-20260626T012944Z-1d69/reviewer.json",
+        "markdown": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-truth-format-package-auth-skip-v163/run-20260626T012944Z-1d69/reviewer.md"
+      },
+      "tester": {
+        "role": "tester",
+        "status": "completed",
+        "json": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-truth-format-package-auth-skip-v163/run-20260626T012944Z-1d69/tester.json",
+        "markdown": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-truth-format-package-auth-skip-v163/run-20260626T012944Z-1d69/tester.md"
+      }
+    },
+    "review_gates": {
+      "spec": {
+        "status": "pass",
+        "reviewer": "reviewer"
+      },
+      "quality": {
+        "status": "pass",
+        "reviewer": "tester"
+      }
+    },
+    "implemented_items": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005",
+      "AC-006",
+      "AC-007",
+      "TASK-001"
+    ],
+    "verified_items": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005",
+      "AC-006",
+      "AC-007",
+      "TEST-001",
+      "TEST-002",
+      "TEST-003",
+      "TEST-004",
+      "TEST-005",
+      "TEST-006",
+      "TEST-007"
+    ],
+    "blocked_items": [],
+    "verification_entries": [
+      {
+        "command": "auto-test-status",
+        "status": "passed",
+        "evidence": ".beacon/auto-test-status.json"
+      }
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs/beacon/<version>/user-story",
+        "docs/beacon/<version>/prd",
+        "implementation-plan"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "story_writeback",
+        "evidence_refs"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context"
+    },
+    "hud": {
+      "json": ".beacon/state/team-hud/implement-team-run-20260626T012944Z-1d69.json",
+      "html": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-truth-format-package-auth-skip-v163/run-20260626T012944Z-1d69/index.html"
+    }
+  },
+  "team_surface": "implement-team",
+  "context_isolation": {
+    "role_plane": "implementation",
+    "isolated_from": [
+      "qa-team"
+    ],
+    "shared_inputs": [
+      "docs/beacon/<version>/user-story",
+      "docs/beacon/<version>/prd",
+      "implementation-plan"
+    ],
+    "shared_outputs": [
+      "implementation_summary",
+      "technical_archive",
+      "story_writeback",
+      "evidence_refs"
+    ],
+    "rule": "qa_must_not_inherit_implement_private_context"
+  },
+  "artifact_writeback_obligations": ".beacon/state/artifact-update-obligations/beacon-truth-format-package-auth-skip-v163.json",
+  "artifact_writeback_open_count": 2,
+  "requirement_rewrite_input": "docs/beacon/v1.6.3/.machine/execution/requirement-rewrite-input-beacon-truth-format-package-auth-skip-v163.json",
+  "implement_to_qa_handoff": ".beacon/handoffs/implement-to-qa/beacon-truth-format-package-auth-skip-v163/run-20260626T012944Z-1d69.json",
+  "auto_qa": {
+    "enabled": false,
+    "triggered": false,
+    "args": [],
+    "follow_handoff": false,
+    "max_rounds": 2
+  }
+}

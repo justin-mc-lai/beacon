@@ -58,7 +58,7 @@ _ILLEGAL_CLOSURE_RE = re.compile(
 )
 _SOFT_TEST_CELL_RE = re.compile(r"^(integration|目录存在|fixture|可选)$", re.IGNORECASE)
 _HARD_TEST_MARKERS_RE = re.compile(
-    r"cargo|beacon\s|pnpm|npm test|BLOCKED:", re.IGNORECASE
+    r"cargo|beacon\s|pnpm|npm test|pytest|BLOCKED:", re.IGNORECASE
 )
 _OCEAN_MARKERS_RE = re.compile(
     r"scope_mode\s*[:=]\s*[`\"']?ocean[`\"']?|scope:\s*ocean", re.IGNORECASE

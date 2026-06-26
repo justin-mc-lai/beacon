@@ -1,0 +1,678 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-freeze-integrity-drift-repair-v163",
+  "feature_slug": "beacon-freeze-integrity-drift-repair-v163",
+  "version": "v1.6.3",
+  "generated_at": "2026-06-25T09:23:00.269916+00:00",
+  "expansion_profile": "pua-web",
+  "scenario_depth": "standard",
+  "families_required": [
+    "happy",
+    "negative",
+    "boundary",
+    "recovery",
+    "compatibility"
+  ],
+  "stories": [
+    {
+      "ac_id": "AC-001",
+      "theme": "parser-contract-single-source",
+      "text_hash": "sha256:544b8660800fc30d2c5f983ff30fa12e27ed39895fb54300e71e831982d68019",
+      "text_bytes": 141,
+      "scenario_ids": [
+        "SC-001",
+        "SC-002",
+        "SC-003"
+      ],
+      "scenario_families": [
+        "primary",
+        "primary",
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-001",
+          "source_tc_id": "TC-FI-001",
+          "tc_id": "TC-FI-001-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-002",
+          "source_tc_id": "TC-FI-002",
+          "tc_id": "TC-FI-002-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-003",
+          "source_tc_id": "TC-FI-003",
+          "tc_id": "TC-FI-003-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "forbidden-field-word-boundary",
+      "text_hash": "sha256:2ddffe0427cb24c3101ddebf9785a04176742abe242b28749e920df379a8faa4",
+      "text_bytes": 167,
+      "scenario_ids": [
+        "SC-004",
+        "SC-005"
+      ],
+      "scenario_families": [
+        "primary",
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-004",
+          "source_tc_id": "TC-FI-010",
+          "tc_id": "TC-FI-010-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-005",
+          "source_tc_id": "TC-FI-011",
+          "tc_id": "TC-FI-011-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "pytest-hard-marker",
+      "text_hash": "sha256:e83bcb00c014a813b6ffe60c8a1b50e3e6bfe131245f0c2704802b4d10cd5e10",
+      "text_bytes": 138,
+      "scenario_ids": [
+        "SC-006",
+        "SC-007"
+      ],
+      "scenario_families": [
+        "primary",
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-006",
+          "source_tc_id": "TC-FI-020",
+          "tc_id": "TC-FI-020-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-007",
+          "source_tc_id": "TC-FI-021",
+          "tc_id": "TC-FI-021-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "error-self-describing",
+      "text_hash": "sha256:ed8a53589e8c4369b13787cbd5fd0c0110774521091d8b005b23b9e87b9ca2c0",
+      "text_bytes": 157,
+      "scenario_ids": [
+        "SC-008",
+        "SC-009"
+      ],
+      "scenario_families": [
+        "primary",
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-008",
+          "source_tc_id": "TC-FI-030",
+          "tc_id": "TC-FI-030-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-009",
+          "source_tc_id": "TC-FI-031",
+          "tc_id": "TC-FI-031-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "backward-compat-v1",
+      "text": "已冻结 v1.6.2 feature 包修复后仍 pass validation（**Must**）",
+      "scenario_ids": [
+        "SC-010"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-010",
+          "source_tc_id": "TC-FI-040",
+          "tc_id": "TC-FI-040-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "no-regression-p03",
+      "text": "已冻结的 `beacon-gate-truth-model-alignment-v163` 包修复后仍 pass validation（**Must**）",
+      "scenario_ids": [
+        "SC-011"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-011",
+          "source_tc_id": "TC-FI-050",
+          "tc_id": "TC-FI-050-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "no-real-violation-relax",
+      "text_hash": "sha256:ab231eaf3c460f621e4c7412aa6d775a362ab05c50c95cef4f3a60a397dd30a8",
+      "text_bytes": 149,
+      "scenario_ids": [
+        "SC-012"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-012",
+          "source_tc_id": "TC-FI-060",
+          "tc_id": "TC-FI-060-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "source_tc_id": "TC-FI-001",
+      "tc_id": "TC-FI-001-PRIMARY",
+      "ac_id": "AC-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-001 primary path :: parser_contract=v2 的包通过 validation，无 parser_contract_mismatch",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v163_freeze_integrity_drift_repair.py::test_parser_contract_v2_accepted -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-freeze-integrity-drift-repair-v163/{run_id}/TC-FI-001-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-002",
+      "source_tc_id": "TC-FI-002",
+      "tc_id": "TC-FI-002-PRIMARY",
+      "ac_id": "AC-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-001 primary path :: parser_contract=v1 的包仍通过",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v163_freeze_integrity_drift_repair.py::test_parser_contract_v1_still_accepted -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-freeze-integrity-drift-repair-v163/{run_id}/TC-FI-002-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-003",
+      "source_tc_id": "TC-FI-003",
+      "tc_id": "TC-FI-003-PRIMARY",
+      "ac_id": "AC-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-001 primary path :: parser_contract=beacon-feature-package-v9 仍报 parser_contract_mismatch",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v163_freeze_integrity_drift_repair.py::test_unknown_contract_still_mismatch -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-freeze-integrity-drift-repair-v163/{run_id}/TC-FI-003-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-004",
+      "source_tc_id": "TC-FI-010",
+      "tc_id": "TC-FI-010-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-002 primary path :: evidence 含路径子串 gate-truth 不触发 evidence_forbidden_gate_truth_field",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v163_freeze_integrity_drift_repair.py::test_forbidden_field_substring_not_banned -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-freeze-integrity-drift-repair-v163/{run_id}/TC-FI-010-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-005",
+      "source_tc_id": "TC-FI-011",
+      "tc_id": "TC-FI-011-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-002 primary path :: authority=source_of_truth 仍报 evidence_invalid_authority",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v163_freeze_integrity_drift_repair.py::test_real_forbidden_authority_still_banned -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-freeze-integrity-drift-repair-v163/{run_id}/TC-FI-011-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-006",
+      "source_tc_id": "TC-FI-020",
+      "tc_id": "TC-FI-020-PRIMARY",
+      "ac_id": "AC-003",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-003 primary path :: Layer=integration + pytest command 行无 soft_test_assertion finding",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v163_freeze_integrity_drift_repair.py::test_integration_pytest_not_soft -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-freeze-integrity-drift-repair-v163/{run_id}/TC-FI-020-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-007",
+      "source_tc_id": "TC-FI-021",
+      "tc_id": "TC-FI-021-PRIMARY",
+      "ac_id": "AC-003",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-003 primary path :: _HARD_TEST_MARKERS_RE.search 含 pytest 的字符串命中",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v163_freeze_integrity_drift_repair.py::test_hard_markers_regex_includes_pytest -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-freeze-integrity-drift-repair-v163/{run_id}/TC-FI-021-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-008",
+      "source_tc_id": "TC-FI-030",
+      "tc_id": "TC-FI-030-PRIMARY",
+      "ac_id": "AC-004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-004 primary path :: evidence_authority_table_missing diagnostic 含 allowed_authorities 与 surface/authority 列提示",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v163_freeze_integrity_drift_repair.py::test_authority_table_error_self_describing -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-freeze-integrity-drift-repair-v163/{run_id}/TC-FI-030-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-009",
+      "source_tc_id": "TC-FI-031",
+      "tc_id": "TC-FI-031-PRIMARY",
+      "ac_id": "AC-004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-004 primary path :: evidence_invalid_authority diagnostic 含 allowed_authorities 列表",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v163_freeze_integrity_drift_repair.py::test_invalid_authority_error_self_describing -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-freeze-integrity-drift-repair-v163/{run_id}/TC-FI-031-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-010",
+      "source_tc_id": "TC-FI-040",
+      "tc_id": "TC-FI-040-PRIMARY",
+      "ac_id": "AC-005",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-005 primary path :: v1.6.2 已冻结 feature 包修复后仍 pass validation",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v163_freeze_integrity_drift_repair.py::test_v1_package_backward_compat -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-freeze-integrity-drift-repair-v163/{run_id}/TC-FI-040-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-011",
+      "source_tc_id": "TC-FI-050",
+      "tc_id": "TC-FI-050-PRIMARY",
+      "ac_id": "AC-006",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-006 primary path :: beacon-gate-truth-model-alignment-v163 包修复后仍 pass validation",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v163_freeze_integrity_drift_repair.py::test_p03_package_no_regression -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-freeze-integrity-drift-repair-v163/{run_id}/TC-FI-050-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-012",
+      "source_tc_id": "TC-FI-060",
+      "tc_id": "TC-FI-060-PRIMARY",
+      "ac_id": "AC-007",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-007 primary path :: Layer=integration 且无 hard command 的行仍被 soft_test_assertion 标记",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v163_freeze_integrity_drift_repair.py::test_real_weak_assertion_still_blocked -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-freeze-integrity-drift-repair-v163/{run_id}/TC-FI-060-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ],
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "beacon-freeze-integrity-drift-repair-v163",
+    "version": "v1.6.3",
+    "source": "research:missing",
+    "present": false,
+    "section_count": 0,
+    "sections": {},
+    "derived_items": []
+  },
+  "markdown_matrix_contract": {
+    "truth_mode": "markdown",
+    "fail_closed": true,
+    "source": "docs/beacon/v1.6.3/features/beacon-freeze-integrity-drift-repair-v163/tests.md",
+    "row_count": 12,
+    "enrichment_disabled": true
+  }
+}

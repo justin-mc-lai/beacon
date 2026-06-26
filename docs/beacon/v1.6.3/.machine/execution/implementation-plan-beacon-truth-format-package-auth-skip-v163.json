@@ -1,0 +1,1010 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-truth-format-package-auth-skip-v163-r1",
+  "feature": "beacon-truth-format-package-auth-skip-v163",
+  "feature_slug": "beacon-truth-format-package-auth-skip-v163",
+  "version": "v1.6.3",
+  "revision_id": "R1",
+  "baseline_hash": "sha256:a8f512e1b7e70420f4fd7f4b706885706b9659630f9c72d26376e031a75a9a43",
+  "plan_hash": "sha256:817f8561777c68d555d3d43296c17ab3e7b425d0193e90d8d577bfd9bf710a25",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/truth.md",
+    "prd": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/truth.md",
+    "test_case": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tests.md",
+    "truth": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/truth.md",
+    "tests": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tests.md",
+    "tasks": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tasks.md",
+    "evidence": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/evidence.md",
+    "source_of_truth_root": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163",
+    "story_scenario_map": "docs/beacon/v1.6.3/.machine/qa/beacon-truth-format-package-auth-skip-v163.story-scenario-map.json",
+    "research_projection": "docs/beacon/v1.6.3/.machine/user-story/beacon-truth-format-package-auth-skip-v163.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.6.3/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007"
+      ]
+    }
+  ],
+  "task_mapping_source": "acceptance-criteria",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.3",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-06-26T01:29:41.361300+00:00",
+    "feature": "beacon-truth-format-package-auth-skip-v163",
+    "feature_slug": "beacon-truth-format-package-auth-skip-v163",
+    "prd_ref": "docs/beacon/v1.6.3/prd/beacon-truth-format-package-auth-skip-v163.md",
+    "user_story_ref": "docs/beacon/v1.6.3/user-story/beacon-truth-format-package-auth-skip-v163.md"
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "beacon-truth-format-package-auth-skip-v163",
+    "version": "v1.6.3",
+    "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/research/beacon-truth-format-package-auth-skip-v163.md",
+    "present": false,
+    "section_count": 0,
+    "sections": {},
+    "derived_items": [],
+    "source_artifact": "docs/beacon/v1.6.3/.machine/user-story/beacon-truth-format-package-auth-skip-v163.json"
+  },
+  "review_gates": [],
+  "qa_coverage_hints": [],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "AC-001 `compute_feature_paths` 对 ≥v1.5.2 返回 `features/<slug>/{truth,tests}.m...",
+      "description": "`compute_feature_paths` 对 ≥v1.5.2 返回 `features/<slug>/{truth,tests}.md` 路径（**Must**）",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001"
+      ],
+      "mapped_test_ids": [
+        "TEST-001",
+        "TC-TF-001"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260626T012944Z-1d69",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260626T012944Z-1d69-tester",
+        ".beacon/qa/features/beacon-truth-format-package-auth-skip-v163/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260626T092952313666",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-truth-format-package-auth-skip-v163/ac-closure.json",
+        ".beacon/qa/features/beacon-truth-format-package-auth-skip-v163/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-ecosystem-discovery-sync-drift-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-freeze-integrity-drift-repair-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-truth-format-package-auth-skip-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-version-resolve-fail-closed-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-workflow-memory-completion-gate-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-workflow-memory-completion-gate-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-workflow-memory-completion-gate-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.6.3/.machine/qa/beacon-freeze-integrity-drift-repair-v163.ac-test-matrix.json",
+        "docs/beacon/v1.6.3/.machine/qa/beacon-version-resolve-fail-closed-v163.ac-test-matrix.json",
+        "docs/beacon/v1.6.3/.machine/qa/beacon-workflow-memory-completion-gate-v163.ac-test-matrix.json",
+        "docs/beacon/v1.6.3/.machine/requirement/beacon-ecosystem-discovery-sync-drift-v163.requirement-package.json",
+        "docs/beacon/v1.6.3/.machine/requirement/beacon-ecosystem-discovery-sync-drift-v163.truth-map.json",
+        "docs/beacon/v1.6.3/.machine/requirement/beacon-truth-format-package-auth-skip-v163.requirement-package.json",
+        "docs/beacon/v1.6.3/.machine/requirement/beacon-truth-format-package-auth-skip-v163.truth-map.json",
+        "docs/beacon/v1.6.3/.machine/requirement/feature-package-validation.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-ecosystem-discovery-sync-drift-v163.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-truth-format-package-auth-skip-v163.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-workflow-memory-completion-gate-v163.json",
+        "docs/beacon/v1.6.3/execution/architecture-blueprint.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-workflow-memory-completion-gate-v163.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-26T01:29:45.968087+00:00",
+      "completed_at": "2026-06-26T01:29:46.058290+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "AC-002 package-auth 包 manifest status 取自 truth.md frontmatter `status`（froze...",
+      "description": "package-auth 包 manifest status 取自 truth.md frontmatter `status`（frozen 包显示 frozen）（**Must**）",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TEST-002",
+        "TC-TF-002"
+      ],
+      "mapped_scenario_ids": [
+        "SC-002"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260626T012944Z-1d69",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260626T012944Z-1d69-tester",
+        ".beacon/qa/features/beacon-truth-format-package-auth-skip-v163/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260626T092952313666",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-truth-format-package-auth-skip-v163/ac-closure.json",
+        ".beacon/qa/features/beacon-truth-format-package-auth-skip-v163/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-ecosystem-discovery-sync-drift-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-freeze-integrity-drift-repair-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-truth-format-package-auth-skip-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-version-resolve-fail-closed-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-workflow-memory-completion-gate-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-workflow-memory-completion-gate-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-workflow-memory-completion-gate-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.6.3/.machine/qa/beacon-freeze-integrity-drift-repair-v163.ac-test-matrix.json",
+        "docs/beacon/v1.6.3/.machine/qa/beacon-version-resolve-fail-closed-v163.ac-test-matrix.json",
+        "docs/beacon/v1.6.3/.machine/qa/beacon-workflow-memory-completion-gate-v163.ac-test-matrix.json",
+        "docs/beacon/v1.6.3/.machine/requirement/beacon-ecosystem-discovery-sync-drift-v163.requirement-package.json",
+        "docs/beacon/v1.6.3/.machine/requirement/beacon-ecosystem-discovery-sync-drift-v163.truth-map.json",
+        "docs/beacon/v1.6.3/.machine/requirement/beacon-truth-format-package-auth-skip-v163.requirement-package.json",
+        "docs/beacon/v1.6.3/.machine/requirement/beacon-truth-format-package-auth-skip-v163.truth-map.json",
+        "docs/beacon/v1.6.3/.machine/requirement/feature-package-validation.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-ecosystem-discovery-sync-drift-v163.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-truth-format-package-auth-skip-v163.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-workflow-memory-completion-gate-v163.json",
+        "docs/beacon/v1.6.3/execution/architecture-blueprint.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-workflow-memory-completion-gate-v163.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-26T01:29:46.058305+00:00",
+      "completed_at": "2026-06-26T01:29:46.058307+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "AC-003 `build_requirement_package_gate` 对 ≥v1.5.2 包不报 `truth_format_non_comp...",
+      "description": "`build_requirement_package_gate` 对 ≥v1.5.2 包不报 `truth_format_non_compliant_*`（**Must**）",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-003"
+      ],
+      "mapped_test_ids": [
+        "TEST-003",
+        "TC-TF-003"
+      ],
+      "mapped_scenario_ids": [
+        "SC-003"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260626T012944Z-1d69",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260626T012944Z-1d69-tester",
+        ".beacon/qa/features/beacon-truth-format-package-auth-skip-v163/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260626T092952313666",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-truth-format-package-auth-skip-v163/ac-closure.json",
+        ".beacon/qa/features/beacon-truth-format-package-auth-skip-v163/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-ecosystem-discovery-sync-drift-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-freeze-integrity-drift-repair-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-truth-format-package-auth-skip-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-version-resolve-fail-closed-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-workflow-memory-completion-gate-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-workflow-memory-completion-gate-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-workflow-memory-completion-gate-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.6.3/.machine/qa/beacon-freeze-integrity-drift-repair-v163.ac-test-matrix.json",
+        "docs/beacon/v1.6.3/.machine/qa/beacon-version-resolve-fail-closed-v163.ac-test-matrix.json",
+        "docs/beacon/v1.6.3/.machine/qa/beacon-workflow-memory-completion-gate-v163.ac-test-matrix.json",
+        "docs/beacon/v1.6.3/.machine/requirement/beacon-ecosystem-discovery-sync-drift-v163.requirement-package.json",
+        "docs/beacon/v1.6.3/.machine/requirement/beacon-ecosystem-discovery-sync-drift-v163.truth-map.json",
+        "docs/beacon/v1.6.3/.machine/requirement/beacon-truth-format-package-auth-skip-v163.requirement-package.json",
+        "docs/beacon/v1.6.3/.machine/requirement/beacon-truth-format-package-auth-skip-v163.truth-map.json",
+        "docs/beacon/v1.6.3/.machine/requirement/feature-package-validation.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-ecosystem-discovery-sync-drift-v163.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-truth-format-package-auth-skip-v163.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-workflow-memory-completion-gate-v163.json",
+        "docs/beacon/v1.6.3/execution/architecture-blueprint.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-workflow-memory-completion-gate-v163.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-26T01:29:46.058320+00:00",
+      "completed_at": "2026-06-26T01:29:46.058322+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "AC-004 <v1.5.2 版本 truth_format 校验行为不变（**Must**）",
+      "description": "<v1.5.2 版本 truth_format 校验行为不变（**Must**）",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-004"
+      ],
+      "mapped_test_ids": [
+        "TEST-004",
+        "TC-TF-004"
+      ],
+      "mapped_scenario_ids": [
+        "SC-004"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260626T012944Z-1d69",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260626T012944Z-1d69-tester",
+        ".beacon/qa/features/beacon-truth-format-package-auth-skip-v163/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260626T092952313666",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-truth-format-package-auth-skip-v163/ac-closure.json",
+        ".beacon/qa/features/beacon-truth-format-package-auth-skip-v163/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-ecosystem-discovery-sync-drift-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-freeze-integrity-drift-repair-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-truth-format-package-auth-skip-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-version-resolve-fail-closed-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-workflow-memory-completion-gate-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-workflow-memory-completion-gate-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-workflow-memory-completion-gate-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.6.3/.machine/qa/beacon-freeze-integrity-drift-repair-v163.ac-test-matrix.json",
+        "docs/beacon/v1.6.3/.machine/qa/beacon-version-resolve-fail-closed-v163.ac-test-matrix.json",
+        "docs/beacon/v1.6.3/.machine/qa/beacon-workflow-memory-completion-gate-v163.ac-test-matrix.json",
+        "docs/beacon/v1.6.3/.machine/requirement/beacon-ecosystem-discovery-sync-drift-v163.requirement-package.json",
+        "docs/beacon/v1.6.3/.machine/requirement/beacon-ecosystem-discovery-sync-drift-v163.truth-map.json",
+        "docs/beacon/v1.6.3/.machine/requirement/beacon-truth-format-package-auth-skip-v163.requirement-package.json",
+        "docs/beacon/v1.6.3/.machine/requirement/beacon-truth-format-package-auth-skip-v163.truth-map.json",
+        "docs/beacon/v1.6.3/.machine/requirement/feature-package-validation.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-ecosystem-discovery-sync-drift-v163.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-truth-format-package-auth-skip-v163.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-workflow-memory-completion-gate-v163.json",
+        "docs/beacon/v1.6.3/execution/architecture-blueprint.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-workflow-memory-completion-gate-v163.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-26T01:29:46.058334+00:00",
+      "completed_at": "2026-06-26T01:29:46.058335+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "AC-005 v1.6.3 frozen 包 `implement run`/`qa run` 不再因 `truth_format_non_compli...",
+      "description": "v1.6.3 frozen 包 `implement run`/`qa run` 不再因 `truth_format_non_compliant` blocked（**Must**）",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-005"
+      ],
+      "mapped_test_ids": [
+        "TEST-005",
+        "TC-TF-005"
+      ],
+      "mapped_scenario_ids": [
+        "SC-005"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260626T012944Z-1d69",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260626T012944Z-1d69-tester",
+        ".beacon/qa/features/beacon-truth-format-package-auth-skip-v163/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260626T092952313666",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-truth-format-package-auth-skip-v163/ac-closure.json",
+        ".beacon/qa/features/beacon-truth-format-package-auth-skip-v163/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-ecosystem-discovery-sync-drift-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-freeze-integrity-drift-repair-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-truth-format-package-auth-skip-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-version-resolve-fail-closed-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-workflow-memory-completion-gate-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-workflow-memory-completion-gate-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-workflow-memory-completion-gate-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.6.3/.machine/qa/beacon-freeze-integrity-drift-repair-v163.ac-test-matrix.json",
+        "docs/beacon/v1.6.3/.machine/qa/beacon-version-resolve-fail-closed-v163.ac-test-matrix.json",
+        "docs/beacon/v1.6.3/.machine/qa/beacon-workflow-memory-completion-gate-v163.ac-test-matrix.json",
+        "docs/beacon/v1.6.3/.machine/requirement/beacon-ecosystem-discovery-sync-drift-v163.requirement-package.json",
+        "docs/beacon/v1.6.3/.machine/requirement/beacon-ecosystem-discovery-sync-drift-v163.truth-map.json",
+        "docs/beacon/v1.6.3/.machine/requirement/beacon-truth-format-package-auth-skip-v163.requirement-package.json",
+        "docs/beacon/v1.6.3/.machine/requirement/beacon-truth-format-package-auth-skip-v163.truth-map.json",
+        "docs/beacon/v1.6.3/.machine/requirement/feature-package-validation.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-ecosystem-discovery-sync-drift-v163.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-truth-format-package-auth-skip-v163.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-workflow-memory-completion-gate-v163.json",
+        "docs/beacon/v1.6.3/execution/architecture-blueprint.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-workflow-memory-completion-gate-v163.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-26T01:29:46.058347+00:00",
+      "completed_at": "2026-06-26T01:29:46.058349+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "AC-006 v1.6.2 包修复后 `build_requirement_package_gate` 仍 pass（不因路径修复而 break）（**...",
+      "description": "v1.6.2 包修复后 `build_requirement_package_gate` 仍 pass（不因路径修复而 break）（**Must**）",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-006"
+      ],
+      "mapped_test_ids": [
+        "TEST-006",
+        "TC-TF-006"
+      ],
+      "mapped_scenario_ids": [
+        "SC-006"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260626T012944Z-1d69",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260626T012944Z-1d69-tester",
+        ".beacon/qa/features/beacon-truth-format-package-auth-skip-v163/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260626T092952313666",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-truth-format-package-auth-skip-v163/ac-closure.json",
+        ".beacon/qa/features/beacon-truth-format-package-auth-skip-v163/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-ecosystem-discovery-sync-drift-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-freeze-integrity-drift-repair-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-truth-format-package-auth-skip-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-version-resolve-fail-closed-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-workflow-memory-completion-gate-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-workflow-memory-completion-gate-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-workflow-memory-completion-gate-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.6.3/.machine/qa/beacon-freeze-integrity-drift-repair-v163.ac-test-matrix.json",
+        "docs/beacon/v1.6.3/.machine/qa/beacon-version-resolve-fail-closed-v163.ac-test-matrix.json",
+        "docs/beacon/v1.6.3/.machine/qa/beacon-workflow-memory-completion-gate-v163.ac-test-matrix.json",
+        "docs/beacon/v1.6.3/.machine/requirement/beacon-ecosystem-discovery-sync-drift-v163.requirement-package.json",
+        "docs/beacon/v1.6.3/.machine/requirement/beacon-ecosystem-discovery-sync-drift-v163.truth-map.json",
+        "docs/beacon/v1.6.3/.machine/requirement/beacon-truth-format-package-auth-skip-v163.requirement-package.json",
+        "docs/beacon/v1.6.3/.machine/requirement/beacon-truth-format-package-auth-skip-v163.truth-map.json",
+        "docs/beacon/v1.6.3/.machine/requirement/feature-package-validation.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-ecosystem-discovery-sync-drift-v163.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-truth-format-package-auth-skip-v163.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-workflow-memory-completion-gate-v163.json",
+        "docs/beacon/v1.6.3/execution/architecture-blueprint.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-workflow-memory-completion-gate-v163.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-26T01:29:46.058366+00:00",
+      "completed_at": "2026-06-26T01:29:46.058368+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "AC-007 package-auth 包仍经 `feature_package.validate_feature_package` 校验（未绕过真校验...",
+      "description": "package-auth 包仍经 `feature_package.validate_feature_package` 校验（未绕过真校验）（**Must**）",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-007"
+      ],
+      "mapped_test_ids": [
+        "TEST-007",
+        "TC-TF-007"
+      ],
+      "mapped_scenario_ids": [
+        "SC-007"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260626T012944Z-1d69",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260626T012944Z-1d69-tester",
+        ".beacon/qa/features/beacon-truth-format-package-auth-skip-v163/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260626T092952313666/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260626T092952313666",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-truth-format-package-auth-skip-v163/ac-closure.json",
+        ".beacon/qa/features/beacon-truth-format-package-auth-skip-v163/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-ecosystem-discovery-sync-drift-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-freeze-integrity-drift-repair-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-truth-format-package-auth-skip-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-version-resolve-fail-closed-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/beacon-workflow-memory-completion-gate-v163.revision.json",
+        "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-workflow-memory-completion-gate-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-workflow-memory-completion-gate-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.6.3/.machine/qa/beacon-freeze-integrity-drift-repair-v163.ac-test-matrix.json",
+        "docs/beacon/v1.6.3/.machine/qa/beacon-version-resolve-fail-closed-v163.ac-test-matrix.json",
+        "docs/beacon/v1.6.3/.machine/qa/beacon-workflow-memory-completion-gate-v163.ac-test-matrix.json",
+        "docs/beacon/v1.6.3/.machine/requirement/beacon-ecosystem-discovery-sync-drift-v163.requirement-package.json",
+        "docs/beacon/v1.6.3/.machine/requirement/beacon-ecosystem-discovery-sync-drift-v163.truth-map.json",
+        "docs/beacon/v1.6.3/.machine/requirement/beacon-truth-format-package-auth-skip-v163.requirement-package.json",
+        "docs/beacon/v1.6.3/.machine/requirement/beacon-truth-format-package-auth-skip-v163.truth-map.json",
+        "docs/beacon/v1.6.3/.machine/requirement/feature-package-validation.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-ecosystem-discovery-sync-drift-v163.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-freeze-integrity-drift-repair-v163.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-truth-format-package-auth-skip-v163.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-version-resolve-fail-closed-v163.json",
+        "docs/beacon/v1.6.3/.machine/user-story/beacon-workflow-memory-completion-gate-v163.json",
+        "docs/beacon/v1.6.3/execution/architecture-blueprint.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.md",
+        "docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-workflow-memory-completion-gate-v163.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-26T01:29:46.058379+00:00",
+      "completed_at": "2026-06-26T01:29:46.058381+00:00",
+      "active_run_id": ""
+    }
+  ],
+  "task_alignment": {
+    "schema_version": "1.0",
+    "status": "aligned",
+    "blocked": false,
+    "reason_code": "",
+    "feature": "beacon-truth-format-package-auth-skip-v163",
+    "feature_slug": "beacon-truth-format-package-auth-skip-v163",
+    "version": "v1.6.3",
+    "authority": "markdown_feature_package",
+    "package_tasks_path": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tasks.md",
+    "task_count": 0,
+    "resolved": true,
+    "alignment_mode": "package_tasks_to_implementation_plan",
+    "progress_write_target": "docs/beacon/<version>/.machine/execution and docs/beacon/<version>/execution",
+    "package_tasks_mutated": false,
+    "tasks": [],
+    "draft_implementation_tasks": []
+  },
+  "revision_delta": {},
+  "revision_delta_ref": "",
+  "revision_delta_markdown_ref": "",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"beacon-truth-format-package-auth-skip-v163\" --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.3",
+    "run_command": "beacon implement team-run \"beacon-truth-format-package-auth-skip-v163\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.3",
+    "dev_run_command": "beacon implement dev-run \"beacon-truth-format-package-auth-skip-v163\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.3",
+    "ralph_command": "beacon implement run \"beacon-truth-format-package-auth-skip-v163\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.3 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"beacon-truth-format-package-auth-skip-v163\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.3",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-truth-format-package-auth-skip-v163",
+    "feature_slug": "beacon-truth-format-package-auth-skip-v163",
+    "version": "v1.6.3",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.6.3",
+    "branch_prefix": "beacon/",
+    "base_branch": "beacon/v1.6.3",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": "/Users/apple/Developer/Personal/products/beacon",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.6.3.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-06-26T01:29:41.362997+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.6.3-beacon-truth-format-package-auth-skip-v163-R1",
+    "transaction_id": "tx-f774dc70dc7041f74",
+    "source_hash": "sha256:f57069d4b2f995705871f43437f5c4f36de7824b8fb86dfe76e9216734ac45e4",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-truth-format-package-auth-skip-v163.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.6.3/.machine/execution/git-workflow-beacon-truth-format-package-auth-skip-v163.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.6.3/execution/git-workflow-beacon-truth-format-package-auth-skip-v163.md",
+  "base_branch": "beacon/v1.6.3",
+  "target_branch": "beacon/v1.6.3",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": "/Users/apple/Developer/Personal/products/beacon",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {},
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.6.3-beacon-truth-format-package-auth-skip-v163-R1",
+    "transaction_id": "tx-f774dc70dc7041f74",
+    "source_hash": "sha256:f57069d4b2f995705871f43437f5c4f36de7824b8fb86dfe76e9216734ac45e4",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-truth-format-package-auth-skip-v163.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-truth-format-package-auth-skip-v163.json",
+  "generated_at": "2026-06-26T01:29:41.484681+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.6.3-beacon-truth-format-package-auth-skip-v163-R1",
+  "transaction_id": "tx-f774dc70dc7041f74",
+  "source_hash": "sha256:f57069d4b2f995705871f43437f5c4f36de7824b8fb86dfe76e9216734ac45e4",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-06-26T01:29:58.975505+00:00",
+  "accepted_at": "2026-06-26T01:29:58.975469+00:00",
+  "accepted_by": "qa"
+}

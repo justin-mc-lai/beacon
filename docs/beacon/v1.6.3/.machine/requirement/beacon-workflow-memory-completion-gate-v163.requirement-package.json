@@ -1,0 +1,207 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-06-25T09:59:47.527092+00:00",
+  "feature": "beacon-workflow-memory-completion-gate-v163",
+  "feature_slug": "beacon-workflow-memory-completion-gate-v163",
+  "version": "v1.6.3",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.3/features/beacon-workflow-memory-completion-gate-v163/truth.md",
+    "tests": "docs/beacon/v1.6.3/features/beacon-workflow-memory-completion-gate-v163/tests.md",
+    "tasks": "docs/beacon/v1.6.3/features/beacon-workflow-memory-completion-gate-v163/tasks.md",
+    "evidence": "docs/beacon/v1.6.3/features/beacon-workflow-memory-completion-gate-v163/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "5bb1ffe663de0dc0332e88dde4382f56ebbd8c5ef7c4df1d6297f27baf8da407",
+    "tests": "6b693ed309f2354cfa342adc6fe8eae58f6781c22807ad07104c03e18b2a5114",
+    "tasks": "a3e081c1f52bcfdd21d0313844ac88e04db9212519b096ea3567dd3523e2beca",
+    "evidence": "465353f6983d20eeb0e60b69d0cf455d1053617d9670c7088a120f3d0832bfe6"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-workflow-memory-completion-gate-v163",
+    "version": "v1.6.3",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "R1 — 修复 workflow memory completion truth 缺失时软放行（P0-2 免疫系统修复）",
+    "source_revision_id": "null",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.3/features/beacon-workflow-memory-completion-gate-v163/truth.md",
+      "user_story": "docs/beacon/v1.6.3/features/beacon-workflow-memory-completion-gate-v163/truth.md",
+      "test_case": "docs/beacon/v1.6.3/features/beacon-workflow-memory-completion-gate-v163/tests.md"
+    },
+    "parser_contract": "beacon-feature-package-v1",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "state_machine_required": "false",
+    "upstream_feature": "null",
+    "promotion_ref": "null"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "no-run-warn",
+      "description": "`target_run_id=None`（无 run）→ `status: warn / blocked: False`，reason_code `workflow_memory_no_run_resolved`（**Must**）"
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "run-without-tx-fail",
+      "description": "run 存在但无 transaction record → `status: fail / blocked: True`，reason_code `workflow_memory_transaction_missing`（**Must**）"
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "gate-blocks-on-missing",
+      "description": "有 run 无 transaction 时 gate check release 对应 issue `blocked: True`（**Must**）"
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "fresh-project-not-blocked",
+      "description": "真无 run 的 fresh project 不因本修复误 block release gate（**Must**）"
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "existing-semantics-preserved",
+      "description": "`failed_transaction`→fail、`drift`→fail、ok→pass 语义不变（**Must**）"
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "status-distinguishes",
+      "description": "`beacon status` 的 `memory_transaction` 在无 run vs 有 run 无 transaction 时 reason_code 不同（**Must**）"
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "no-regression-pass",
+      "description": "有 run 且 transaction ok 时仍 `status: pass / blocked: False`（**Must**）"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-WM-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_workflow_memory_completion_gate.py::test_no_run_resolved_warns -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "target_run_id=None → status=warn, blocked=False, reason_code=workflow_memory_no_run_resolved",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-WM-002",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_workflow_memory_completion_gate.py::test_run_without_transaction_fails -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "run 存在但无 transaction → status=fail, blocked=True, reason_code=workflow_memory_transaction_missing",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-WM-003",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_workflow_memory_completion_gate.py::test_gate_blocks_on_missing_transaction -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "有 run 无 transaction 时 gate issue blocked=True",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-WM-004",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_workflow_memory_completion_gate.py::test_fresh_project_not_blocked -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "无 run 的 fresh project gate 不因 memory_transaction 误 block",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-WM-005",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_workflow_memory_completion_gate.py::test_existing_semantics_preserved -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "failed_transaction→fail, drift→fail, ok→pass 语义不变",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-WM-006",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_workflow_memory_completion_gate.py::test_status_distinguishes_reason_codes -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "no-run vs run-without-tx 的 reason_code 不同",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-007",
+      "tc_id": "TC-WM-007",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_workflow_memory_completion_gate.py::test_pass_when_transaction_ok -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "run 且 transaction ok → status=pass, blocked=False",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "LINE-15",
+      "title": "TC-WM-001..007 测试文件 `tests/test_v163_workflow_memory_completion_gate.py` 创建（7 TC）",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-16",
+      "title": "`beacon/utils/workflow_memory.py:1268` target_run_id=None → warn `workflow_memory_no_run_resolved`",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-17",
+      "title": "`beacon/utils/workflow_memory.py:1278` run 无 items → fail `workflow_memory_transaction_missing` (blocked: True)",
+      "status": "checked"
+    },
+    {
+      "id": "TC-WM-003",
+      "title": "contract 返回 fail/blocked，gate.py:1054 接线 fail→block（UD-003）",
+      "status": "checked"
+    },
+    {
+      "id": "TC-WM-004",
+      "title": "fresh project 无 run → warn 不 block",
+      "status": "checked"
+    },
+    {
+      "id": "TC-WM-005",
+      "title": "failed_transaction/drift 语义不变",
+      "status": "checked"
+    },
+    {
+      "id": "TC-WM-007",
+      "title": "transaction ok 仍 pass",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-28",
+      "title": "7/7 TC pass；48 预存在失败均为旧包状态债（stash 对照 0 回归）",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-29",
+      "title": "实测 `beacon status` reason_code 从笼统 missing → 区分 no_run_resolved",
+      "status": "checked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "truth.md",
+      "authority": "requirement_truth",
+      "artifact": "docs/beacon/v1.6.3/features/beacon-workflow-memory-completion-gate-v163/truth.md"
+    },
+    {
+      "surface": "tests.md",
+      "authority": "test_truth",
+      "artifact": "docs/beacon/v1.6.3/features/beacon-workflow-memory-completion-gate-v163/tests.md"
+    },
+    {
+      "surface": "tasks.md",
+      "authority": "requirement_truth",
+      "artifact": "docs/beacon/v1.6.3/features/beacon-workflow-memory-completion-gate-v163/tasks.md"
+    }
+  ]
+}

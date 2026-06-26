@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Any
 
 from beacon.utils.versioning import normalize_version, resolve_target_version
+from beacon.utils.truth_map import feature_package_authoritative
 
 
 MANIFEST_FILENAME = "version-features.json"
@@ -64,6 +65,22 @@ def compute_feature_paths(project_root: Path, version: str, slug: str) -> dict[s
     """Compute all fixed paths for a feature based on version and slug."""
     base = _version_root(project_root, version)
     rel_base = f"docs/beacon/{version}"
+    if feature_package_authoritative(version):
+        # Package-authoritative (>=v1.5.2): truth lives in features/<slug>/.
+        return {
+            "prd": f"{rel_base}/features/{slug}/truth.md",
+            "user_story": f"{rel_base}/features/{slug}/truth.md",
+            "test_case": f"{rel_base}/features/{slug}/tests.md",
+            "truth": f"{rel_base}/features/{slug}/truth.md",
+            "tests": f"{rel_base}/features/{slug}/tests.md",
+            "tasks": f"{rel_base}/features/{slug}/tasks.md",
+            "evidence": f"{rel_base}/features/{slug}/evidence.md",
+            "research": f"{rel_base}/research/{slug}.md",
+            "source_architecture": f"{rel_base}/source-architecture/{slug}.md",
+            "change": f"{rel_base}/change/{version}.md",
+            "qa_matrix": f"{rel_base}/.machine/qa/{slug}.evidence-contract.json",
+            "freeze_state": f"{rel_base}/.machine/requirement/{slug}.freeze-state.json",
+        }
     return {
         "prd": f"{rel_base}/prd/{slug}.md",
         "user_story": f"{rel_base}/user-story/{slug}.md",
@@ -226,6 +243,14 @@ def sync_manifest(project_root: Path, version: str) -> dict[str, Any]:
                 if path.stem != "index" and path.is_file():
                     slugs.add(path.stem)
 
+    # Package-authoritative (>=v1.5.2): also scan features/<slug>/ packages.
+    if feature_package_authoritative(resolved):
+        features_dir = base / "features"
+        if features_dir.exists():
+            for entry in features_dir.iterdir():
+                if entry.is_dir() and (entry / "truth.md").exists():
+                    slugs.add(entry.name)
+
     # Add discovered features
     for slug in sorted(slugs):
         truth_paths = compute_feature_paths(project_root, resolved, slug)
@@ -241,15 +266,31 @@ def sync_manifest(project_root: Path, version: str) -> dict[str, Any]:
                         language = lang_val if lang_val in ("en", "zh") else "en"
                         break
 
-        # Determine status from freeze-state
+        # Determine status: package-authoritative reads truth.md frontmatter;
+        # legacy reads .machine/requirement/<slug>.freeze-state.json.
         status = "template"
-        freeze_path = base / ".machine" / "requirement" / f"{slug}.freeze-state.json"
-        if freeze_path.exists():
-            try:
-                freeze_data = json.loads(freeze_path.read_text(encoding="utf-8"))
-                status = freeze_data.get("status", "template")
-            except (json.JSONDecodeError, OSError):
-                pass
+        if feature_package_authoritative(resolved):
+            truth_file = base / "features" / slug / "truth.md"
+            if truth_file.exists():
+                try:
+                    fm_text = truth_file.read_text(encoding="utf-8")
+                    if fm_text.lstrip().startswith("---"):
+                        end = fm_text.find("---", 3)
+                        if end > 0:
+                            for line in fm_text[3:end].splitlines():
+                                if line.strip().startswith("status:"):
+                                    status = line.split(":", 1)[1].strip() or "template"
+                                    break
+                except OSError:
+                    pass
+        else:
+            freeze_path = base / ".machine" / "requirement" / f"{slug}.freeze-state.json"
+            if freeze_path.exists():
+                try:
+                    freeze_data = json.loads(freeze_path.read_text(encoding="utf-8"))
+                    status = freeze_data.get("status", "template")
+                except (json.JSONDecodeError, OSError):
+                    pass
 
         feature_entry = {
             "slug": slug,

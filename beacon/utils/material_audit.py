@@ -1060,8 +1060,16 @@ def build_requirement_package_gate(
             recommended_reason = "version-line requirement package closure is incomplete and must be diagnosed before repair"
             recommended_command = f"beacon doctor verify-materials --project-root {root} --version {resolved_version} --strict"
             repair_commands = [recommended_command]
-    # v1.4.12+: Check truth format compliance for frozen features
-    if str(feature or "").strip() and _parse_semver_tuple(resolved_version) >= (1, 4, 12):
+    # v1.4.12+: Check truth format compliance for frozen features.
+    # Package-authoritative (>=v1.5.2) skips this legacy validator — its
+    # prd/user-story/test-case format contract does not apply to features/<slug>/
+    # packages, which are validated by feature_package.validate_feature_package
+    # (run elsewhere in the gate). Skipping avoids a path-existence mask where
+    # legacy paths never existed, hiding the format mismatch.
+    if (
+        str(feature or "").strip()
+        and (1, 4, 12) <= _parse_semver_tuple(resolved_version) < (1, 5, 2)
+    ):
         from beacon.utils.truth_format import validate_prd_format, validate_user_story_format, validate_test_case_format
         from beacon.utils.manifest import load_manifest_or_fail, ManifestMissingError as _MFErr_gate
         _slug = str(feature or "").strip().lower().replace(" ", "-")

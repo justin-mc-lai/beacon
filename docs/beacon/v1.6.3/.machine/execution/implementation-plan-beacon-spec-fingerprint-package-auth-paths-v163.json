@@ -1,0 +1,819 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-spec-fingerprint-package-auth-paths-v163-r1",
+  "feature": "beacon-spec-fingerprint-package-auth-paths-v163",
+  "feature_slug": "beacon-spec-fingerprint-package-auth-paths-v163",
+  "version": "v1.6.3",
+  "revision_id": "R1",
+  "baseline_hash": "sha256:20bc74b72bf5c8d4f721566c66cf32e94922f1b27efa9d43123544cad5278255",
+  "plan_hash": "sha256:1bb060497fd48a9e1f017e5ac10ed1b6b3cf5b119633580d73265bfb0444ba65",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/truth.md",
+    "prd": "docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/truth.md",
+    "test_case": "docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/tests.md",
+    "truth": "docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/truth.md",
+    "tests": "docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/tests.md",
+    "tasks": "docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/tasks.md",
+    "evidence": "docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/evidence.md",
+    "source_of_truth_root": "docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163",
+    "story_scenario_map": "docs/beacon/v1.6.3/.machine/qa/beacon-spec-fingerprint-package-auth-paths-v163.story-scenario-map.json",
+    "research_projection": "docs/beacon/v1.6.3/.machine/user-story/beacon-spec-fingerprint-package-auth-paths-v163.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.6.3/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007"
+      ]
+    }
+  ],
+  "task_mapping_source": "acceptance-criteria",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.3",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-06-26T03:15:07.913779+00:00",
+    "feature": "beacon-spec-fingerprint-package-auth-paths-v163",
+    "feature_slug": "beacon-spec-fingerprint-package-auth-paths-v163",
+    "prd_ref": "docs/beacon/v1.6.3/prd/beacon-spec-fingerprint-package-auth-paths-v163.md",
+    "user_story_ref": "docs/beacon/v1.6.3/user-story/beacon-spec-fingerprint-package-auth-paths-v163.md"
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "beacon-spec-fingerprint-package-auth-paths-v163",
+    "version": "v1.6.3",
+    "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/research/beacon-spec-fingerprint-package-auth-paths-v163.md",
+    "present": false,
+    "section_count": 0,
+    "sections": {},
+    "derived_items": [],
+    "source_artifact": "docs/beacon/v1.6.3/.machine/user-story/beacon-spec-fingerprint-package-auth-paths-v163.json"
+  },
+  "review_gates": [],
+  "qa_coverage_hints": [],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "AC-001 ≥v1.5.2 包 fingerprint user_story 层 count>0（扫 features/<slug>/truth.md...",
+      "description": "≥v1.5.2 包 fingerprint user_story 层 count>0（扫 features/<slug>/truth.md）（**Must**）",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001"
+      ],
+      "mapped_test_ids": [
+        "TEST-001",
+        "TC-SF-001"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260626T031000Z-78c2",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260626T031000Z-78c2-tester",
+        ".beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260626T111007368177",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/ac-closure.json",
+        ".beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/state/change-impact/run-v163-release-001.json",
+        "beacon/utils/v110_baseline.py",
+        "docs/beacon/.machine/hooks/beacon-post-release-local-install.latest.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.6.3/.machine/requirement/feature-package-validation.json",
+        "docs/beacon/v1.6.3/execution/architecture-blueprint.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-26T03:10:01.253577+00:00",
+      "completed_at": "2026-06-26T03:10:01.337716+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "AC-002 ≥v1.5.2 包 fingerprint prd 层 count>0（**Must**）",
+      "description": "≥v1.5.2 包 fingerprint prd 层 count>0（**Must**）",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TEST-002",
+        "TC-SF-002"
+      ],
+      "mapped_scenario_ids": [
+        "SC-002"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260626T031000Z-78c2",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260626T031000Z-78c2-tester",
+        ".beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260626T111007368177",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/ac-closure.json",
+        ".beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/state/change-impact/run-v163-release-001.json",
+        "beacon/utils/v110_baseline.py",
+        "docs/beacon/.machine/hooks/beacon-post-release-local-install.latest.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.6.3/.machine/requirement/feature-package-validation.json",
+        "docs/beacon/v1.6.3/execution/architecture-blueprint.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-26T03:10:01.337726+00:00",
+      "completed_at": "2026-06-26T03:10:01.337727+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "AC-003 改 truth.md 后 fingerprint hash 改变（spec drift 检测对 truth 有效）（**Must**）",
+      "description": "改 truth.md 后 fingerprint hash 改变（spec drift 检测对 truth 有效）（**Must**）",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-003"
+      ],
+      "mapped_test_ids": [
+        "TEST-003",
+        "TC-SF-003"
+      ],
+      "mapped_scenario_ids": [
+        "SC-003"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260626T031000Z-78c2",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260626T031000Z-78c2-tester",
+        ".beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260626T111007368177",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/ac-closure.json",
+        ".beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/state/change-impact/run-v163-release-001.json",
+        "beacon/utils/v110_baseline.py",
+        "docs/beacon/.machine/hooks/beacon-post-release-local-install.latest.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.6.3/.machine/requirement/feature-package-validation.json",
+        "docs/beacon/v1.6.3/execution/architecture-blueprint.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-26T03:10:01.337734+00:00",
+      "completed_at": "2026-06-26T03:10:01.337735+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "AC-004 <v1.5.2 `_find_layer_files` 行为不变（**Must**）",
+      "description": "<v1.5.2 `_find_layer_files` 行为不变（**Must**）",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-004"
+      ],
+      "mapped_test_ids": [
+        "TEST-004",
+        "TC-SF-004"
+      ],
+      "mapped_scenario_ids": [
+        "SC-004"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260626T031000Z-78c2",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260626T031000Z-78c2-tester",
+        ".beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260626T111007368177",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/ac-closure.json",
+        ".beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/state/change-impact/run-v163-release-001.json",
+        "beacon/utils/v110_baseline.py",
+        "docs/beacon/.machine/hooks/beacon-post-release-local-install.latest.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.6.3/.machine/requirement/feature-package-validation.json",
+        "docs/beacon/v1.6.3/execution/architecture-blueprint.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-26T03:10:01.337741+00:00",
+      "completed_at": "2026-06-26T03:10:01.337743+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "AC-005 test_case 层仍扫 `.machine/qa/*.ac-test-matrix.json`（**Must**）",
+      "description": "test_case 层仍扫 `.machine/qa/*.ac-test-matrix.json`（**Must**）",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-005"
+      ],
+      "mapped_test_ids": [
+        "TEST-005",
+        "TC-SF-005"
+      ],
+      "mapped_scenario_ids": [
+        "SC-005"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260626T031000Z-78c2",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260626T031000Z-78c2-tester",
+        ".beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260626T111007368177",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/ac-closure.json",
+        ".beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/state/change-impact/run-v163-release-001.json",
+        "beacon/utils/v110_baseline.py",
+        "docs/beacon/.machine/hooks/beacon-post-release-local-install.latest.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.6.3/.machine/requirement/feature-package-validation.json",
+        "docs/beacon/v1.6.3/execution/architecture-blueprint.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-26T03:10:01.337749+00:00",
+      "completed_at": "2026-06-26T03:10:01.337750+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "AC-006 v1.6.3 release gate 修复后仍 pass（fingerprint 重生成后 expected=actual）（**Mus...",
+      "description": "v1.6.3 release gate 修复后仍 pass（fingerprint 重生成后 expected=actual）（**Must**）",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-006"
+      ],
+      "mapped_test_ids": [
+        "TEST-006",
+        "TC-SF-006"
+      ],
+      "mapped_scenario_ids": [
+        "SC-006"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260626T031000Z-78c2",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260626T031000Z-78c2-tester",
+        ".beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260626T111007368177",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/ac-closure.json",
+        ".beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/state/change-impact/run-v163-release-001.json",
+        "beacon/utils/v110_baseline.py",
+        "docs/beacon/.machine/hooks/beacon-post-release-local-install.latest.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.6.3/.machine/requirement/feature-package-validation.json",
+        "docs/beacon/v1.6.3/execution/architecture-blueprint.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-26T03:10:01.337756+00:00",
+      "completed_at": "2026-06-26T03:10:01.337757+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "AC-007 v1.6.2 fingerprint 行为不变（**Must**）",
+      "description": "v1.6.2 fingerprint 行为不变（**Must**）",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-007"
+      ],
+      "mapped_test_ids": [
+        "TEST-007",
+        "TC-SF-007"
+      ],
+      "mapped_scenario_ids": [
+        "SC-007"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260626T031000Z-78c2",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260626T031000Z-78c2-tester",
+        ".beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260626T111007368177/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260626T111007368177",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/ac-closure.json",
+        ".beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/state/change-impact/run-v163-release-001.json",
+        "beacon/utils/v110_baseline.py",
+        "docs/beacon/.machine/hooks/beacon-post-release-local-install.latest.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.6.3/.machine/requirement/feature-package-validation.json",
+        "docs/beacon/v1.6.3/execution/architecture-blueprint.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-26T03:10:01.337765+00:00",
+      "completed_at": "2026-06-26T03:10:01.337767+00:00",
+      "active_run_id": ""
+    }
+  ],
+  "task_alignment": {
+    "schema_version": "1.0",
+    "status": "aligned",
+    "blocked": false,
+    "reason_code": "",
+    "feature": "beacon-spec-fingerprint-package-auth-paths-v163",
+    "feature_slug": "beacon-spec-fingerprint-package-auth-paths-v163",
+    "version": "v1.6.3",
+    "authority": "markdown_feature_package",
+    "package_tasks_path": "docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/tasks.md",
+    "task_count": 0,
+    "resolved": true,
+    "alignment_mode": "package_tasks_to_implementation_plan",
+    "progress_write_target": "docs/beacon/<version>/.machine/execution and docs/beacon/<version>/execution",
+    "package_tasks_mutated": false,
+    "tasks": [],
+    "draft_implementation_tasks": []
+  },
+  "revision_delta": {},
+  "revision_delta_ref": "",
+  "revision_delta_markdown_ref": "",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"beacon-spec-fingerprint-package-auth-paths-v163\" --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.3",
+    "run_command": "beacon implement team-run \"beacon-spec-fingerprint-package-auth-paths-v163\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.3",
+    "dev_run_command": "beacon implement dev-run \"beacon-spec-fingerprint-package-auth-paths-v163\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.3",
+    "ralph_command": "beacon implement run \"beacon-spec-fingerprint-package-auth-paths-v163\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.3 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"beacon-spec-fingerprint-package-auth-paths-v163\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.3",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-spec-fingerprint-package-auth-paths-v163",
+    "feature_slug": "beacon-spec-fingerprint-package-auth-paths-v163",
+    "version": "v1.6.3",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.6.3",
+    "branch_prefix": "beacon/",
+    "base_branch": "beacon/v1.6.3",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": "/Users/apple/Developer/Personal/products/beacon",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.6.3.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-06-26T03:15:07.915589+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.6.3-beacon-spec-fingerprint-package-auth-paths-v163-R1",
+    "transaction_id": "tx-a1ebad476d63434e0",
+    "source_hash": "sha256:507cae08b5a304af17437679796208689633a28366526115c5fe63d75af9c6d5",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-spec-fingerprint-package-auth-paths-v163.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.6.3/.machine/execution/git-workflow-beacon-spec-fingerprint-package-auth-paths-v163.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.6.3/execution/git-workflow-beacon-spec-fingerprint-package-auth-paths-v163.md",
+  "base_branch": "beacon/v1.6.3",
+  "target_branch": "beacon/v1.6.3",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": "/Users/apple/Developer/Personal/products/beacon",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {},
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.6.3-beacon-spec-fingerprint-package-auth-paths-v163-R1",
+    "transaction_id": "tx-a1ebad476d63434e0",
+    "source_hash": "sha256:507cae08b5a304af17437679796208689633a28366526115c5fe63d75af9c6d5",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-spec-fingerprint-package-auth-paths-v163.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-spec-fingerprint-package-auth-paths-v163.json",
+  "generated_at": "2026-06-26T03:15:08.017247+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.6.3-beacon-spec-fingerprint-package-auth-paths-v163-R1",
+  "transaction_id": "tx-a1ebad476d63434e0",
+  "source_hash": "sha256:507cae08b5a304af17437679796208689633a28366526115c5fe63d75af9c6d5",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-06-26T03:15:08.017312+00:00"
+}

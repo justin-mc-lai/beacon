@@ -1,0 +1,342 @@
+{
+  "schema_version": "1.0",
+  "version": "v1.6.3",
+  "status": "generated",
+  "artifact_role": "version_aggregate_projection",
+  "projection_role": {
+    "artifact_role": "version_aggregate_projection",
+    "truth_source": false,
+    "gate_source": false,
+    "lifecycle_stage": false,
+    "release_publish_action": false
+  },
+  "truth_authority": false,
+  "lifecycle_stage": false,
+  "release_publish_action": false,
+  "feature_count": 6,
+  "features": [
+    {
+      "feature": "beacon-truth-format-package-auth-skip-v163",
+      "feature_slug": "beacon-truth-format-package-auth-skip-v163",
+      "summary": "Maintains release-facing version aggregate projection guards so QA accepted features are included in version change scope before release check.",
+      "status": "completed"
+    },
+    {
+      "feature": "beacon-ecosystem-discovery-sync-drift-v163",
+      "feature_slug": "beacon-ecosystem-discovery-sync-drift-v163",
+      "summary": "codex-subagents implementation completed via implement-team flow",
+      "status": "completed"
+    },
+    {
+      "feature": "beacon-freeze-integrity-drift-repair-v163",
+      "feature_slug": "beacon-freeze-integrity-drift-repair-v163",
+      "summary": "codex-subagents implementation completed via implement-team flow",
+      "status": "completed"
+    },
+    {
+      "feature": "beacon-gate-truth-model-alignment-v163",
+      "feature_slug": "beacon-gate-truth-model-alignment-v163",
+      "summary": "codex-subagents implementation completed via implement-team flow",
+      "status": "completed"
+    },
+    {
+      "feature": "beacon-version-resolve-fail-closed-v163",
+      "feature_slug": "beacon-version-resolve-fail-closed-v163",
+      "summary": "codex-subagents implementation completed via implement-team flow",
+      "status": "completed"
+    },
+    {
+      "feature": "beacon-workflow-memory-completion-gate-v163",
+      "feature_slug": "beacon-workflow-memory-completion-gate-v163",
+      "summary": "codex-subagents implementation completed via implement-team flow",
+      "status": "completed"
+    }
+  ],
+  "implementation_order": {
+    "status": "analyzed",
+    "feature_count": 6,
+    "ordered_feature_slugs": [
+      "beacon-freeze-integrity-drift-repair-v163",
+      "beacon-version-resolve-fail-closed-v163",
+      "beacon-workflow-memory-completion-gate-v163",
+      "beacon-ecosystem-discovery-sync-drift-v163",
+      "beacon-truth-format-package-auth-skip-v163",
+      "beacon-gate-truth-model-alignment-v163"
+    ],
+    "waves": [
+      {
+        "wave": 1,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "beacon-freeze-integrity-drift-repair-v163",
+            "feature_slug": "beacon-freeze-integrity-drift-repair-v163",
+            "depends_on_features": [],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": true,
+            "reason_code": "parallel_no_conflict"
+          }
+        ]
+      },
+      {
+        "wave": 2,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "beacon-version-resolve-fail-closed-v163",
+            "feature_slug": "beacon-version-resolve-fail-closed-v163",
+            "depends_on_features": [
+              "beacon-freeze-integrity-drift-repair-v163"
+            ],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": false,
+            "reason_code": "shared_delivery_service_conflict"
+          }
+        ]
+      },
+      {
+        "wave": 3,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "beacon-workflow-memory-completion-gate-v163",
+            "feature_slug": "beacon-workflow-memory-completion-gate-v163",
+            "depends_on_features": [
+              "beacon-version-resolve-fail-closed-v163"
+            ],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": false,
+            "reason_code": "shared_delivery_service_conflict"
+          }
+        ]
+      },
+      {
+        "wave": 4,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "beacon-ecosystem-discovery-sync-drift-v163",
+            "feature_slug": "beacon-ecosystem-discovery-sync-drift-v163",
+            "depends_on_features": [
+              "beacon-workflow-memory-completion-gate-v163"
+            ],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": false,
+            "reason_code": "shared_delivery_service_conflict"
+          }
+        ]
+      },
+      {
+        "wave": 5,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "beacon-truth-format-package-auth-skip-v163",
+            "feature_slug": "beacon-truth-format-package-auth-skip-v163",
+            "depends_on_features": [
+              "beacon-ecosystem-discovery-sync-drift-v163"
+            ],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": false,
+            "reason_code": "shared_delivery_service_conflict"
+          }
+        ]
+      },
+      {
+        "wave": 6,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "beacon-gate-truth-model-alignment-v163",
+            "feature_slug": "beacon-gate-truth-model-alignment-v163",
+            "depends_on_features": [
+              "beacon-truth-format-package-auth-skip-v163"
+            ],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": false,
+            "reason_code": "shared_delivery_service_conflict"
+          }
+        ]
+      }
+    ]
+  },
+  "added": [
+    "[beacon-truth-format-package-auth-skip-v163] Feature-level release projection input for QA accepted current feature",
+    "[beacon-truth-format-package-auth-skip-v163] Version aggregate projection inclusion guard and repair metadata",
+    "[beacon-truth-format-package-auth-skip-v163] Repair-only projection rebuild path for release preflight artifacts"
+  ],
+  "removed": [
+    "[beacon-truth-format-package-auth-skip-v163] Manual-only version aggregate projection repair before release check"
+  ],
+  "fixed": [
+    "[beacon-truth-format-package-auth-skip-v163] Release check can route missing current feature projection to an actionable repair path",
+    "[beacon-truth-format-package-auth-skip-v163] Version aggregate projection remains a read model instead of requirement truth",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `.beacon/auto-test-status.json`",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `.beacon/coverage-summary.json`",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `.beacon/evidence-manifest.json`",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `.beacon/evidence-signature-chain.json`",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `.beacon/gate-report.json`",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `.beacon/qa/status.json`",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `.beacon/release-gate-report.json`",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `docs/beacon/v1.6.3/.machine/execution/beacon-ecosystem-discovery-sync-drift-v163.revision.json`",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `docs/beacon/v1.6.3/.machine/execution/beacon-freeze-integrity-drift-repair-v163.revision.json`",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `docs/beacon/v1.6.3/.machine/execution/beacon-truth-format-package-auth-skip-v163.revision.json`",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `docs/beacon/v1.6.3/.machine/execution/beacon-version-resolve-fail-closed-v163.revision.json`",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `docs/beacon/v1.6.3/.machine/execution/beacon-workflow-memory-completion-gate-v163.revision.json`",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.json`",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.json`",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-workflow-memory-completion-gate-v163.json`",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-freeze-integrity-drift-repair-v163.json`",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-version-resolve-fail-closed-v163.json`",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-workflow-memory-completion-gate-v163.json`",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json`",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `docs/beacon/v1.6.3/.machine/qa/beacon-freeze-integrity-drift-repair-v163.ac-test-matrix.json`",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `docs/beacon/v1.6.3/.machine/qa/beacon-version-resolve-fail-closed-v163.ac-test-matrix.json`",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `docs/beacon/v1.6.3/.machine/qa/beacon-workflow-memory-completion-gate-v163.ac-test-matrix.json`",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `docs/beacon/v1.6.3/.machine/requirement/beacon-ecosystem-discovery-sync-drift-v163.requirement-package.json`",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `docs/beacon/v1.6.3/.machine/requirement/beacon-ecosystem-discovery-sync-drift-v163.truth-map.json`",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `docs/beacon/v1.6.3/.machine/requirement/beacon-truth-format-package-auth-skip-v163.requirement-package.json`",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `docs/beacon/v1.6.3/.machine/requirement/beacon-truth-format-package-auth-skip-v163.truth-map.json`",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `docs/beacon/v1.6.3/.machine/requirement/feature-package-validation.json`",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `docs/beacon/v1.6.3/.machine/user-story/beacon-ecosystem-discovery-sync-drift-v163.json`",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `docs/beacon/v1.6.3/.machine/user-story/beacon-freeze-integrity-drift-repair-v163.json`",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `docs/beacon/v1.6.3/.machine/user-story/beacon-truth-format-package-auth-skip-v163.json`",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `docs/beacon/v1.6.3/.machine/user-story/beacon-version-resolve-fail-closed-v163.json`",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `docs/beacon/v1.6.3/.machine/user-story/beacon-workflow-memory-completion-gate-v163.json`",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `docs/beacon/v1.6.3/execution/architecture-blueprint.md`",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.md`",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.md`",
+    "[beacon-ecosystem-discovery-sync-drift-v163] Updated `docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-workflow-memory-completion-gate-v163.md`",
+    "[beacon-freeze-integrity-drift-repair-v163] Updated `docs/beacon/v1.6.3/.machine/execution/beacon-freeze-integrity-drift-repair-v163.revision.json`",
+    "[beacon-freeze-integrity-drift-repair-v163] Updated `docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.json`",
+    "[beacon-freeze-integrity-drift-repair-v163] Updated `docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-freeze-integrity-drift-repair-v163.json`",
+    "[beacon-freeze-integrity-drift-repair-v163] Updated `docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json`",
+    "[beacon-freeze-integrity-drift-repair-v163] Updated `docs/beacon/v1.6.3/.machine/user-story/beacon-freeze-integrity-drift-repair-v163.json`",
+    "[beacon-freeze-integrity-drift-repair-v163] Updated `docs/beacon/v1.6.3/execution/architecture-blueprint.md`",
+    "[beacon-freeze-integrity-drift-repair-v163] Updated `docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.md`",
+    "[beacon-gate-truth-model-alignment-v163] Updated `.beacon/evidence-manifest.json`",
+    "[beacon-gate-truth-model-alignment-v163] Updated `.beacon/gate-report.json`",
+    "[beacon-gate-truth-model-alignment-v163] Updated `docs/beacon/v1.6.3/.machine/execution/beacon-gate-truth-model-alignment-v163.revision.json`",
+    "[beacon-gate-truth-model-alignment-v163] Updated `docs/beacon/v1.6.3/.machine/execution/change-impact.json`",
+    "[beacon-gate-truth-model-alignment-v163] Updated `docs/beacon/v1.6.3/.machine/execution/config.json`",
+    "[beacon-gate-truth-model-alignment-v163] Updated `docs/beacon/v1.6.3/.machine/execution/delivery-manifest.json`",
+    "[beacon-gate-truth-model-alignment-v163] Updated `docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-gate-truth-model-alignment-v163.json`",
+    "[beacon-gate-truth-model-alignment-v163] Updated `docs/beacon/v1.6.3/.machine/execution/git-alignment.json`",
+    "[beacon-gate-truth-model-alignment-v163] Updated `docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-gate-truth-model-alignment-v163.json`",
+    "[beacon-gate-truth-model-alignment-v163] Updated `docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json`",
+    "[beacon-gate-truth-model-alignment-v163] Updated `docs/beacon/v1.6.3/.machine/execution/source.json`",
+    "[beacon-gate-truth-model-alignment-v163] Updated `docs/beacon/v1.6.3/.machine/execution/terminal.json`",
+    "[beacon-gate-truth-model-alignment-v163] Updated `docs/beacon/v1.6.3/.machine/user-story/beacon-gate-truth-model-alignment-v163.json`",
+    "[beacon-version-resolve-fail-closed-v163] Updated `.beacon/auto-test-status.json`",
+    "[beacon-version-resolve-fail-closed-v163] Updated `.beacon/coverage-summary.json`",
+    "[beacon-version-resolve-fail-closed-v163] Updated `.beacon/evidence-manifest.json`",
+    "[beacon-version-resolve-fail-closed-v163] Updated `.beacon/evidence-signature-chain.json`",
+    "[beacon-version-resolve-fail-closed-v163] Updated `.beacon/gate-report.json`",
+    "[beacon-version-resolve-fail-closed-v163] Updated `.beacon/qa/status.json`",
+    "[beacon-version-resolve-fail-closed-v163] Updated `.beacon/release-gate-report.json`",
+    "[beacon-version-resolve-fail-closed-v163] Updated `docs/beacon/v1.6.3/.machine/execution/beacon-freeze-integrity-drift-repair-v163.revision.json`",
+    "[beacon-version-resolve-fail-closed-v163] Updated `docs/beacon/v1.6.3/.machine/execution/beacon-version-resolve-fail-closed-v163.revision.json`",
+    "[beacon-version-resolve-fail-closed-v163] Updated `docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.json`",
+    "[beacon-version-resolve-fail-closed-v163] Updated `docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.json`",
+    "[beacon-version-resolve-fail-closed-v163] Updated `docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-freeze-integrity-drift-repair-v163.json`",
+    "[beacon-version-resolve-fail-closed-v163] Updated `docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-version-resolve-fail-closed-v163.json`",
+    "[beacon-version-resolve-fail-closed-v163] Updated `docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json`",
+    "[beacon-version-resolve-fail-closed-v163] Updated `docs/beacon/v1.6.3/.machine/qa/beacon-freeze-integrity-drift-repair-v163.ac-test-matrix.json`",
+    "[beacon-version-resolve-fail-closed-v163] Updated `docs/beacon/v1.6.3/.machine/user-story/beacon-freeze-integrity-drift-repair-v163.json`",
+    "[beacon-version-resolve-fail-closed-v163] Updated `docs/beacon/v1.6.3/.machine/user-story/beacon-version-resolve-fail-closed-v163.json`",
+    "[beacon-version-resolve-fail-closed-v163] Updated `docs/beacon/v1.6.3/execution/architecture-blueprint.md`",
+    "[beacon-version-resolve-fail-closed-v163] Updated `docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.md`",
+    "[beacon-version-resolve-fail-closed-v163] Updated `docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.md`",
+    "[beacon-workflow-memory-completion-gate-v163] Updated `.beacon/auto-test-status.json`",
+    "[beacon-workflow-memory-completion-gate-v163] Updated `.beacon/coverage-summary.json`",
+    "[beacon-workflow-memory-completion-gate-v163] Updated `.beacon/evidence-manifest.json`",
+    "[beacon-workflow-memory-completion-gate-v163] Updated `.beacon/evidence-signature-chain.json`",
+    "[beacon-workflow-memory-completion-gate-v163] Updated `.beacon/gate-report.json`",
+    "[beacon-workflow-memory-completion-gate-v163] Updated `.beacon/qa/status.json`",
+    "[beacon-workflow-memory-completion-gate-v163] Updated `.beacon/release-gate-report.json`",
+    "[beacon-workflow-memory-completion-gate-v163] Updated `docs/beacon/v1.6.3/.machine/execution/beacon-freeze-integrity-drift-repair-v163.revision.json`",
+    "[beacon-workflow-memory-completion-gate-v163] Updated `docs/beacon/v1.6.3/.machine/execution/beacon-version-resolve-fail-closed-v163.revision.json`",
+    "[beacon-workflow-memory-completion-gate-v163] Updated `docs/beacon/v1.6.3/.machine/execution/beacon-workflow-memory-completion-gate-v163.revision.json`",
+    "[beacon-workflow-memory-completion-gate-v163] Updated `docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.json`",
+    "[beacon-workflow-memory-completion-gate-v163] Updated `docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.json`",
+    "[beacon-workflow-memory-completion-gate-v163] Updated `docs/beacon/v1.6.3/.machine/execution/deterministic-implementation-contract-beacon-workflow-memory-completion-gate-v163.json`",
+    "[beacon-workflow-memory-completion-gate-v163] Updated `docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-freeze-integrity-drift-repair-v163.json`",
+    "[beacon-workflow-memory-completion-gate-v163] Updated `docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-version-resolve-fail-closed-v163.json`",
+    "[beacon-workflow-memory-completion-gate-v163] Updated `docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-workflow-memory-completion-gate-v163.json`",
+    "[beacon-workflow-memory-completion-gate-v163] Updated `docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json`",
+    "[beacon-workflow-memory-completion-gate-v163] Updated `docs/beacon/v1.6.3/.machine/qa/beacon-freeze-integrity-drift-repair-v163.ac-test-matrix.json`",
+    "[beacon-workflow-memory-completion-gate-v163] Updated `docs/beacon/v1.6.3/.machine/qa/beacon-version-resolve-fail-closed-v163.ac-test-matrix.json`",
+    "[beacon-workflow-memory-completion-gate-v163] Updated `docs/beacon/v1.6.3/.machine/user-story/beacon-freeze-integrity-drift-repair-v163.json`",
+    "[beacon-workflow-memory-completion-gate-v163] Updated `docs/beacon/v1.6.3/.machine/user-story/beacon-version-resolve-fail-closed-v163.json`",
+    "[beacon-workflow-memory-completion-gate-v163] Updated `docs/beacon/v1.6.3/.machine/user-story/beacon-workflow-memory-completion-gate-v163.json`",
+    "[beacon-workflow-memory-completion-gate-v163] Updated `docs/beacon/v1.6.3/execution/architecture-blueprint.md`",
+    "[beacon-workflow-memory-completion-gate-v163] Updated `docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-freeze-integrity-drift-repair-v163.md`",
+    "[beacon-workflow-memory-completion-gate-v163] Updated `docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-version-resolve-fail-closed-v163.md`",
+    "[beacon-workflow-memory-completion-gate-v163] Updated `docs/beacon/v1.6.3/execution/deterministic-implementation-contract-beacon-workflow-memory-completion-gate-v163.md`"
+  ],
+  "traceability_refs": [
+    "docs/beacon/v1.6.3/change/beacon-truth-format-package-auth-skip-v163.md",
+    "docs/beacon/v1.6.3/prd/beacon-truth-format-package-auth-skip-v163.md",
+    "docs/beacon/v1.6.3/user-story/beacon-truth-format-package-auth-skip-v163.md",
+    "docs/beacon/v1.6.3/qa/test-cases/beacon-truth-format-package-auth-skip-v163.md",
+    "docs/beacon/v1.6.3/.machine/execution/beacon-truth-format-package-auth-skip-v163.revision.json",
+    "docs/beacon/v1.6.3/.machine/execution/qa-acceptance-beacon-truth-format-package-auth-skip-v163.json",
+    "docs/beacon/v1.6.3/.machine/change/beacon-truth-format-package-auth-skip-v163.json",
+    "docs/beacon/v1.6.3/.machine/execution/technical-implementation-beacon-ecosystem-discovery-sync-drift-v163.json",
+    "docs/beacon/v1.6.3/.machine/execution/implementation-summary-beacon-ecosystem-discovery-sync-drift-v163.json",
+    "docs/beacon/v1.6.3/execution/implementation-brief-beacon-ecosystem-discovery-sync-drift-v163.md",
+    "docs/beacon/v1.6.3/.machine/change/beacon-ecosystem-discovery-sync-drift-v163.json",
+    "docs/beacon/v1.6.3/change/beacon-ecosystem-discovery-sync-drift-v163.md",
+    "docs/beacon/v1.6.3/.machine/execution/technical-implementation-beacon-freeze-integrity-drift-repair-v163.json",
+    "docs/beacon/v1.6.3/.machine/execution/implementation-summary-beacon-freeze-integrity-drift-repair-v163.json",
+    "docs/beacon/v1.6.3/execution/implementation-brief-beacon-freeze-integrity-drift-repair-v163.md",
+    "docs/beacon/v1.6.3/.machine/change/beacon-freeze-integrity-drift-repair-v163.json",
+    "docs/beacon/v1.6.3/change/beacon-freeze-integrity-drift-repair-v163.md",
+    "docs/beacon/v1.6.3/.machine/execution/technical-implementation-beacon-gate-truth-model-alignment-v163.json",
+    "docs/beacon/v1.6.3/.machine/execution/implementation-summary-beacon-gate-truth-model-alignment-v163.json",
+    "docs/beacon/v1.6.3/execution/implementation-brief-beacon-gate-truth-model-alignment-v163.md",
+    "docs/beacon/v1.6.3/.machine/change/beacon-gate-truth-model-alignment-v163.json",
+    "docs/beacon/v1.6.3/change/beacon-gate-truth-model-alignment-v163.md",
+    "docs/beacon/v1.6.3/.machine/execution/technical-implementation-beacon-version-resolve-fail-closed-v163.json",
+    "docs/beacon/v1.6.3/.machine/execution/implementation-summary-beacon-version-resolve-fail-closed-v163.json",
+    "docs/beacon/v1.6.3/execution/implementation-brief-beacon-version-resolve-fail-closed-v163.md",
+    "docs/beacon/v1.6.3/.machine/change/beacon-version-resolve-fail-closed-v163.json",
+    "docs/beacon/v1.6.3/change/beacon-version-resolve-fail-closed-v163.md",
+    "docs/beacon/v1.6.3/.machine/execution/technical-implementation-beacon-workflow-memory-completion-gate-v163.json",
+    "docs/beacon/v1.6.3/.machine/execution/implementation-summary-beacon-workflow-memory-completion-gate-v163.json",
+    "docs/beacon/v1.6.3/execution/implementation-brief-beacon-workflow-memory-completion-gate-v163.md",
+    "docs/beacon/v1.6.3/.machine/change/beacon-workflow-memory-completion-gate-v163.json",
+    "docs/beacon/v1.6.3/change/beacon-workflow-memory-completion-gate-v163.md"
+  ],
+  "generated_at": "2026-06-26 09:31"
+}

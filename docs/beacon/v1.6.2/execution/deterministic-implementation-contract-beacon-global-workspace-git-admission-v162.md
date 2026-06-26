@@ -4,8 +4,8 @@
 - version: `v1.6.2`
 - revision_id: `R3`
 - review_status: `approved`
-- approved_by: `implement-operator`
-- reviewed_at: `2026-06-23T06:36:39.498803+00:00`
+- approved_by: `kunqi.lai`
+- reviewed_at: `2026-06-26T03:17:42.467942+00:00`
 
 ## Git
 - base_branch: `beacon/v1.6.2`

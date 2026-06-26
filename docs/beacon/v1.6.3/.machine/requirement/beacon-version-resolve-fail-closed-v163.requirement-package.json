@@ -1,0 +1,207 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-06-25T09:59:47.291081+00:00",
+  "feature": "beacon-version-resolve-fail-closed-v163",
+  "feature_slug": "beacon-version-resolve-fail-closed-v163",
+  "version": "v1.6.3",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.3/features/beacon-version-resolve-fail-closed-v163/truth.md",
+    "tests": "docs/beacon/v1.6.3/features/beacon-version-resolve-fail-closed-v163/tests.md",
+    "tasks": "docs/beacon/v1.6.3/features/beacon-version-resolve-fail-closed-v163/tasks.md",
+    "evidence": "docs/beacon/v1.6.3/features/beacon-version-resolve-fail-closed-v163/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "3a4fbe32af6c4f5ef172c6a7aecf342e5efabce12eaacb38c2dbeeeb0ac649e1",
+    "tests": "2c7eab3e83112b4f20114ca89e3b528bb59a051d5fe69fd697d9c0c228266738",
+    "tasks": "0c91c4d350bc6777d2ba7c9b61d7ebf76881d63d97e44d95149fee7fb936340d",
+    "evidence": "325af90c42243277e6265e55314cd1a72f2ba0c051d37ebd158761522bae8e40"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-version-resolve-fail-closed-v163",
+    "version": "v1.6.3",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "R1 — 修复版本解析硬编码 fallback + 加 runtime↔docs 漂移 fail-closed 守卫（P0-1 免疫系统修复）",
+    "source_revision_id": "null",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.3/features/beacon-version-resolve-fail-closed-v163/truth.md",
+      "user_story": "docs/beacon/v1.6.3/features/beacon-version-resolve-fail-closed-v163/truth.md",
+      "test_case": "docs/beacon/v1.6.3/features/beacon-version-resolve-fail-closed-v163/tests.md"
+    },
+    "parser_contract": "beacon-feature-package-v1",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "state_machine_required": "false",
+    "upstream_feature": "null",
+    "promotion_ref": "null"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "no-hardcoded-fallback",
+      "description": "`project_hooks.py:543` 不再含硬编码 `v1.6.1` 字面量；改用 `resolve_target_version`（**Must**）"
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "docs-version-resolved",
+      "description": "version=`auto`/空/`latest` 时 eval_version 解析为 docs 实际版本（如 v1.6.3），非 v1.6.1（**Must**）"
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "drift-guard-field",
+      "description": "post-release hook payload 含 `runtime_version`/`docs_version`/`drift` 字段（**Must**）"
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "resolve-failure-fail-closed",
+      "description": "`resolve_target_version` 解析失败/抛异常时 hook fail-closed block，reason_code `version_resolve_failed`（**Must**）"
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "agent-eval-version-resolved",
+      "description": "`agent_eval_kit.is_live_runner_admitted` 运行时用 resolve 版本，不依赖硬编码 `AGENT_EVAL_VERSION` 默认（**Must**）"
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "no-regression-release-hook",
+      "description": "现有 post-release hook 在 runtime==docs（正常）场景仍 pass，不误 block（**Must**）"
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "drift-not-blocked-legitimate",
+      "description": "runtime≠docs（双版本合法推进）时 `drift=true` 但**不** block（仅记录）（**Must**，UD-006）"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-VR-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_version_resolve_fail_closed.py::test_no_hardcoded_v161_fallback -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "project_hooks.py:543 区域无 v1.6.1 硬编码字面量作 fallback",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-VR-002",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_version_resolve_fail_closed.py::test_eval_version_resolves_docs_version -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "version=auto/空时 eval_version 解析为 docs 实际版本而非 v1.6.1",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-VR-003",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_version_resolve_fail_closed.py::test_hook_payload_has_drift_fields -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "post-release hook payload 含 runtime_version/docs_version/drift 字段",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-VR-004",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_version_resolve_fail_closed.py::test_resolve_failure_fail_closed -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "resolve_target_version 抛异常时 hook block 且 reason_code 含 version_resolve_failed",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-VR-005",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_version_resolve_fail_closed.py::test_agent_eval_uses_resolved_version -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "is_live_runner_admitted 运行时用 resolve 版本，不依赖硬编码默认",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-VR-006",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_version_resolve_fail_closed.py::test_no_regression_normal_scenario -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "runtime==docs 正常场景 hook 不误 block",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-007",
+      "tc_id": "TC-VR-007",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_version_resolve_fail_closed.py::test_drift_legitimate_not_blocked -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "runtime≠docs 时 drift=true 但 status 不因 drift 而 block",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "LINE-15",
+      "title": "TC-VR-001..007 测试文件 `tests/test_v163_version_resolve_fail_closed.py` 创建（9 TC）",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-16",
+      "title": "`beacon/utils/project_hooks.py` 新增 `_resolve_eval_version` 纯函数，调 `resolve_target_version`，消除 `:543` 硬编码 `v1.6.1` fallback",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-20",
+      "title": "post-release hook payload 加 `runtime_version`/`docs_version`/`drift` 字段",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-21",
+      "title": "`resolve_target_version` 解析失败 → fail-closed `version_resolve_failed`（短路重操作）",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-25",
+      "title": "`is_live_runner_admitted` 提到模块级 import，hook 传 resolved `eval_version`（AC-005）",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-26",
+      "title": "`AGENT_EVAL_VERSION` 常量保留作函数默认 fallback（UD-004，不改 11 处签名以控制范围）",
+      "status": "checked"
+    },
+    {
+      "id": "TC-VR-006",
+      "title": "runtime==docs 正常场景不误 block（drift=False）",
+      "status": "checked"
+    },
+    {
+      "id": "TC-VR-007",
+      "title": "runtime≠docs 合法 drift 不 block（drift informational）",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-32",
+      "title": "9/9 TC pass；51 个 project_hooks/agent_eval 回归测试无 break",
+      "status": "checked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "truth.md",
+      "authority": "requirement_truth",
+      "artifact": "docs/beacon/v1.6.3/features/beacon-version-resolve-fail-closed-v163/truth.md"
+    },
+    {
+      "surface": "tests.md",
+      "authority": "test_truth",
+      "artifact": "docs/beacon/v1.6.3/features/beacon-version-resolve-fail-closed-v163/tests.md"
+    },
+    {
+      "surface": "tasks.md",
+      "authority": "requirement_truth",
+      "artifact": "docs/beacon/v1.6.3/features/beacon-version-resolve-fail-closed-v163/tasks.md"
+    }
+  ]
+}
