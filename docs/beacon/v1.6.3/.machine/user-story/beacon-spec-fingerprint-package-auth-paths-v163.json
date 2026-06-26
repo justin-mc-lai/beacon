@@ -1,0 +1,298 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-spec-fingerprint-package-auth-paths-v163",
+  "feature_slug": "beacon-spec-fingerprint-package-auth-paths-v163",
+  "version": "v1.6.3",
+  "current_revision_id": "R1",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-06-26T03:10:13.729755+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-spec-fingerprint-package-auth-paths-v163",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:20bc74b72bf5c8d4f721566c66cf32e94922f1b27efa9d43123544cad5278255",
+      "superseded_by": null,
+      "created_at": "2026-06-26T03:03:05.891826+00:00",
+      "frozen_at": "2026-06-26T03:03:05.980257+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "beacon-spec-fingerprint-package-auth-paths-v163",
+      "priority": "medium",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "fingerprint-user-story-layer",
+          "text": "≥v1.5.2 包 fingerprint user_story 层 count>0（扫 features/<slug>/truth.md）（**Must**）",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260626T031000Z-78c2",
+          "verified_by_run_id": "run-20260626T111007368177",
+          "accepted_at": "2026-06-26T03:10:13.613425+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/truth.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "fingerprint-prd-layer",
+          "text": "≥v1.5.2 包 fingerprint prd 层 count>0（**Must**）",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260626T031000Z-78c2",
+          "verified_by_run_id": "run-20260626T111007368177",
+          "accepted_at": "2026-06-26T03:10:13.613425+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/truth.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "truth-change-detected",
+          "text": "改 truth.md 后 fingerprint hash 改变（spec drift 检测对 truth 有效）（**Must**）",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260626T031000Z-78c2",
+          "verified_by_run_id": "run-20260626T111007368177",
+          "accepted_at": "2026-06-26T03:10:13.613425+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/truth.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "legacy-compat",
+          "text": "<v1.5.2 `_find_layer_files` 行为不变（**Must**）",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260626T031000Z-78c2",
+          "verified_by_run_id": "run-20260626T111007368177",
+          "accepted_at": "2026-06-26T03:10:13.613425+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/truth.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "test-case-layer-preserved",
+          "text": "test_case 层仍扫 `.machine/qa/*.ac-test-matrix.json`（**Must**）",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260626T031000Z-78c2",
+          "verified_by_run_id": "run-20260626T111007368177",
+          "accepted_at": "2026-06-26T03:10:13.613425+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/truth.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "no-regression-v163-release",
+          "text": "v1.6.3 release gate 修复后仍 pass（fingerprint 重生成后 expected=actual）（**Must**）",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260626T031000Z-78c2",
+          "verified_by_run_id": "run-20260626T111007368177",
+          "accepted_at": "2026-06-26T03:10:13.613425+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/truth.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "no-regression-v162",
+          "text": "v1.6.2 fingerprint 行为不变（**Must**）",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260626T031000Z-78c2",
+          "verified_by_run_id": "run-20260626T111007368177",
+          "accepted_at": "2026-06-26T03:10:13.613425+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/truth.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260626T031000Z-78c2",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-06-26T03:10:13.613425+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — ≥v1.5.2 包 fingerprint user_story 层 count>0（扫 features/<slug>/truth.md）（**Must**）",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260626T111007368177",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/truth.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — ≥v1.5.2 包 fingerprint prd 层 count>0（**Must**）",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260626T111007368177",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/truth.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — 改 truth.md 后 fingerprint hash 改变（spec drift 检测对 truth 有效）（**Must**）",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260626T111007368177",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/truth.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — <v1.5.2 `_find_layer_files` 行为不变（**Must**）",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260626T111007368177",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/truth.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — test_case 层仍扫 `.machine/qa/*.ac-test-matrix.json`（**Must**）",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260626T111007368177",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/truth.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — v1.6.3 release gate 修复后仍 pass（fingerprint 重生成后 expected=actual）（**Must**）",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260626T111007368177",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/truth.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — v1.6.2 fingerprint 行为不变（**Must**）",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260626T111007368177",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-spec-fingerprint-package-auth-paths-v163/truth.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-spec-fingerprint-package-auth-paths-v163",
+        "version": "v1.6.3",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/research/beacon-spec-fingerprint-package-auth-paths-v163.md",
+        "present": false,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      },
+      "feature": "beacon-spec-fingerprint-package-auth-paths-v163",
+      "feature_slug": "beacon-spec-fingerprint-package-auth-paths-v163",
+      "version": "v1.6.3",
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/ac-closure.json",
+        ".beacon/qa/features/beacon-spec-fingerprint-package-auth-paths-v163/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "last_changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/state/change-impact/run-v163-release-001.json",
+        "beacon/utils/v110_baseline.py",
+        "docs/beacon/.machine/hooks/beacon-post-release-local-install.latest.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.6.3/.machine/requirement/feature-package-validation.json",
+        "docs/beacon/v1.6.3/execution/architecture-blueprint.md"
+      ],
+      "accepted_at": "2026-06-26T03:10:13.613425+00:00",
+      "accepted_by": "qa"
+    }
+  ]
+}

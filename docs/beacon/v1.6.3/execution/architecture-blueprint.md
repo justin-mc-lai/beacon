@@ -335,23 +335,6 @@
 - gates must block if projection metadata or service/branch/worktree fields drift.
 <!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:beacon-ecosystem-discovery-sync-drift-v163:END -->
 
-<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:START -->
-## Implementation Delivery Host
-
-- version: `v1.6.3`
-- feature_count: `6`
-- transaction_id: `tx-c093525959bb3139b`
-- source_hash: `sha256:4996e6b520b90d1d409b3f2c2d989085889c8c3a775a3352aaa63b1111707a27`
-
-### Registered Feature Baselines
-- `beacon-ecosystem-discovery-sync-drift-v163` | revision=`R1` | branch=`beacon/v1.6.3` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-ecosystem-discovery-sync-drift-v163.json`
-- `beacon-freeze-integrity-drift-repair-v163` | revision=`R1` | branch=`beacon/v1.6.3` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-freeze-integrity-drift-repair-v163.json`
-- `beacon-gate-truth-model-alignment-v163` | revision=`R1` | branch=`beacon/v1.6.3` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-gate-truth-model-alignment-v163.json`
-- `beacon-truth-format-package-auth-skip-v163` | revision=`R1` | branch=`beacon/v1.6.3` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-truth-format-package-auth-skip-v163.json`
-- `beacon-version-resolve-fail-closed-v163` | revision=`R1` | branch=`beacon/v1.6.3` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-version-resolve-fail-closed-v163.json`
-- `beacon-workflow-memory-completion-gate-v163` | revision=`R1` | branch=`beacon/v1.6.3` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-workflow-memory-completion-gate-v163.json`
-<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:END -->
-
 <!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:beacon-truth-format-package-auth-skip-v163:START -->
 ## Technical Delta Blueprint
 
@@ -418,3 +401,88 @@
 - deterministic implementation contract, git workflow contract, and implementation plan are projections.
 - gates must block if projection metadata or service/branch/worktree fields drift.
 <!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:beacon-truth-format-package-auth-skip-v163:END -->
+
+<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:START -->
+## Implementation Delivery Host
+
+- version: `v1.6.3`
+- feature_count: `7`
+- transaction_id: `tx-5b761e36fdf9bc62a`
+- source_hash: `sha256:e1955ee7ad92cb7f7c353b86783b7b445c6adfb64dcac1d7322e4315801ef37d`
+
+### Registered Feature Baselines
+- `beacon-ecosystem-discovery-sync-drift-v163` | revision=`R1` | branch=`beacon/v1.6.3` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-ecosystem-discovery-sync-drift-v163.json`
+- `beacon-freeze-integrity-drift-repair-v163` | revision=`R1` | branch=`beacon/v1.6.3` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-freeze-integrity-drift-repair-v163.json`
+- `beacon-gate-truth-model-alignment-v163` | revision=`R1` | branch=`beacon/v1.6.3` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-gate-truth-model-alignment-v163.json`
+- `beacon-spec-fingerprint-package-auth-paths-v163` | revision=`R1` | branch=`beacon/v1.6.3` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-spec-fingerprint-package-auth-paths-v163.json`
+- `beacon-truth-format-package-auth-skip-v163` | revision=`R1` | branch=`beacon/v1.6.3` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-truth-format-package-auth-skip-v163.json`
+- `beacon-version-resolve-fail-closed-v163` | revision=`R1` | branch=`beacon/v1.6.3` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-version-resolve-fail-closed-v163.json`
+- `beacon-workflow-memory-completion-gate-v163` | revision=`R1` | branch=`beacon/v1.6.3` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-workflow-memory-completion-gate-v163.json`
+<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:END -->
+
+<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:beacon-spec-fingerprint-package-auth-paths-v163:START -->
+## Technical Delta Blueprint
+
+- project_mode: `greenfield`
+- feature: `beacon-spec-fingerprint-package-auth-paths-v163`
+- version: `v1.6.3`
+
+### Source Refs
+- none
+
+### Delivery Change Surface
+- none
+### Available Entry Surfaces
+- none
+### Current Service Facts
+- none
+
+### Must Change
+- none
+
+### Can Reuse
+- none
+
+### No-Expand Guardrails
+- none
+
+### Compatibility Rules
+- none
+
+### Delivery Constraints
+- none
+
+### Implement Handoff
+- none
+<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:beacon-spec-fingerprint-package-auth-paths-v163:END -->
+
+<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:beacon-spec-fingerprint-package-auth-paths-v163:START -->
+## Implementation Delivery Baseline
+
+- baseline_id: `impl-delivery-baseline-v1.6.3-beacon-spec-fingerprint-package-auth-paths-v163-R1`
+- transaction_id: `tx-a1ebad476d63434e0`
+- source_hash: `sha256:507cae08b5a304af17437679796208689633a28366526115c5fe63d75af9c6d5`
+- projection_seq: `1`
+- version: `v1.6.3`
+- feature: `beacon-spec-fingerprint-package-auth-paths-v163`
+- lifecycle_role: `pre-implement delivery blueprint projection`
+- projection_refresh_trigger: `implement plan against the active frozen revision`
+- branch_strategy: `single-branch`
+- base_branch: `beacon/v1.6.3`
+- default_target_branch: `beacon/v1.6.3`
+- branch_prefix: `beacon/`
+- use_git_worktree: `False`
+- worktree_root: `/Users/apple/Developer/Personal/products/beacon`
+- workspace_root: `/Users/apple/Developer/Personal/products/beacon`
+
+### Delivery Service Scope
+- direct_delivery_services: .
+- writable_services: .
+- reference_only_services: docs
+- depends_on_features: -
+
+### Plan-Time Gate Contract
+- canonical envelope is the only delivery baseline source.
+- deterministic implementation contract, git workflow contract, and implementation plan are projections.
+- gates must block if projection metadata or service/branch/worktree fields drift.
+<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:beacon-spec-fingerprint-package-auth-paths-v163:END -->
