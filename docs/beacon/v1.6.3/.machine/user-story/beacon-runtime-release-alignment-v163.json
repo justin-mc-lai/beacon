@@ -1,0 +1,294 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-runtime-release-alignment-v163",
+  "feature_slug": "beacon-runtime-release-alignment-v163",
+  "version": "v1.6.3",
+  "current_revision_id": "R1",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-06-26T09:39:36.834052+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-runtime-release-alignment-v163",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:fb7c347d1de0317d2fdfa41200378e9605de13f042289606be2a17d89cfa2cf1",
+      "superseded_by": null,
+      "created_at": "2026-06-26T09:38:46.608147+00:00",
+      "frozen_at": "2026-06-26T09:39:12.123245+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "beacon-runtime-release-alignment-v163",
+      "priority": "medium",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "release-gate-drift-block",
+          "text": "release stage runtime≠docs target → critical block，reason_code `runtime_docs_release_drift`（**Must**）",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260626T093921Z-5ad9",
+          "verified_by_run_id": "run-20260626T173928734199",
+          "accepted_at": "2026-06-26T09:39:36.691874+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/truth.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "release-gate-pass-when-aligned",
+          "text": "runtime==docs 时 release gate 不因 drift block（**Must**）",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260626T093921Z-5ad9",
+          "verified_by_run_id": "run-20260626T173928734199",
+          "accepted_at": "2026-06-26T09:39:36.691874+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/truth.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "hook-runtime-alignment-step",
+          "text": "post-release hook payload 含 `runtime_alignment` 字段（runtime_version/docs_version/aligned/recommended_command）（**Must**）",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260626T093921Z-5ad9",
+          "verified_by_run_id": "run-20260626T173928734199",
+          "accepted_at": "2026-06-26T09:39:36.691874+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/truth.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "hook-routes-sync-version-surfaces",
+          "text": "runtime≠docs 时 hook `runtime_alignment.recommended_command` 含 `beacon doctor sync-version-surfaces`（**Must**）",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260626T093921Z-5ad9",
+          "verified_by_run_id": "run-20260626T173928734199",
+          "accepted_at": "2026-06-26T09:39:36.691874+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/truth.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "dev-stages-no-block",
+          "text": "plan/truth/implement/qa stage 不因 runtime≠docs block（开发期合法）（**Must**）",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260626T093921Z-5ad9",
+          "verified_by_run_id": "run-20260626T173928734199",
+          "accepted_at": "2026-06-26T09:39:36.691874+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/truth.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "no-auto-pip-install",
+          "text": "hook 不执行 pip install，只提示（**Must**，UD-004）",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260626T093921Z-5ad9",
+          "verified_by_run_id": "run-20260626T173928734199",
+          "accepted_at": "2026-06-26T09:39:36.691874+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/truth.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "no-regression-p01",
+          "text": "P0-1 的 `_resolve_eval_version` + resolve failure fail-closed 仍生效（**Must**）",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260626T093921Z-5ad9",
+          "verified_by_run_id": "run-20260626T173928734199",
+          "accepted_at": "2026-06-26T09:39:36.691874+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/truth.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260626T093921Z-5ad9",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-06-26T09:39:36.691874+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — release stage runtime≠docs target → critical block，reason_code `runtime_docs_release_drift`（**Must**）",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260626T173928734199",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/truth.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — runtime==docs 时 release gate 不因 drift block（**Must**）",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260626T173928734199",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/truth.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — post-release hook payload 含 `runtime_alignment` 字段（runtime_version/docs_version/aligned/recommended_command）（**Must**）",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260626T173928734199",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/truth.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — runtime≠docs 时 hook `runtime_alignment.recommended_command` 含 `beacon doctor sync-version-surfaces`（**Must**）",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260626T173928734199",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/truth.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — plan/truth/implement/qa stage 不因 runtime≠docs block（开发期合法）（**Must**）",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260626T173928734199",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/truth.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — hook 不执行 pip install，只提示（**Must**，UD-004）",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260626T173928734199",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/truth.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — P0-1 的 `_resolve_eval_version` + resolve failure fail-closed 仍生效（**Must**）",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260626T173928734199",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/truth.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-runtime-release-alignment-v163",
+        "version": "v1.6.3",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/research/beacon-runtime-release-alignment-v163.md",
+        "present": false,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      },
+      "feature": "beacon-runtime-release-alignment-v163",
+      "feature_slug": "beacon-runtime-release-alignment-v163",
+      "version": "v1.6.3",
+      "last_changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/state/agent-surfaces.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.6.3/.machine/requirement/feature-package-validation.json",
+        "docs/beacon/v1.6.3/execution/architecture-blueprint.md"
+      ],
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-runtime-release-alignment-v163/ac-closure.json",
+        ".beacon/qa/features/beacon-runtime-release-alignment-v163/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "accepted_at": "2026-06-26T09:39:36.691874+00:00",
+      "accepted_by": "qa"
+    }
+  ]
+}
