@@ -1,0 +1,309 @@
+{
+  "schema_version": "1.0",
+  "contract_kind": "beacon_test_contract_index",
+  "version": "v1.6.3",
+  "runtime_line": "v1.6.3",
+  "runtime_release_line": "v1.6.1",
+  "docs_line": "v1.6.3",
+  "feature": "beacon-truth-format-package-auth-skip-v163",
+  "feature_slug": "beacon-truth-format-package-auth-skip-v163",
+  "feature_line_status": "planning_only",
+  "truth_refs": {
+    "truth": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/truth.md",
+    "tests": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tests.md",
+    "tasks": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tasks.md",
+    "evidence": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/evidence.md",
+    "ac_matrix": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tests.md",
+    "story_state": "docs/beacon/v1.6.3/.machine/user-story/beacon-truth-format-package-auth-skip-v163.json"
+  },
+  "source_hashes": {
+    "truth": "sha256:be9a01a9fc369d55085b0d6e876e00b22aadeee9626692b87e15b9c49c2e846e",
+    "tests": "sha256:cf6b94ab912ae6b6c52245742d39eac9811ecf60a726f8bd0c61948703df9b3b",
+    "tasks": "sha256:f584a9648dec3c5cce5bb19ecd13327f22c49cc7e3328bbf57112c548df7b8c1",
+    "evidence": "sha256:f0896e06530e98ddb845e374f89b84e7d5c91d15d202c8b057826ee4856e07e0",
+    "ac_matrix": "sha256:cf6b94ab912ae6b6c52245742d39eac9811ecf60a726f8bd0c61948703df9b3b",
+    "story_state": "sha256:354332cc606d22393b8fdfaa46159cd730ba39c8820569b526d9363af0cdb614"
+  },
+  "lanes": {
+    "feature_release_facing": [
+      {
+        "tc_id": "TC-TF-001",
+        "ac_id": "AC-001",
+        "ac_theme": "feature-paths-package-auth",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v163_truth_format_package_auth_skip.py::test_feature_paths_package_auth -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "compute_feature_paths 对 ≥v1.5.2 返回 features/<slug>/truth.md 路径",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-format-package-auth-skip-v163/tc-tf-001/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-TF-002",
+        "ac_id": "AC-002",
+        "ac_theme": "manifest-status-from-frontmatter",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v163_truth_format_package_auth_skip.py::test_manifest_status_from_frontmatter -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "package-auth frozen 包 manifest status=frozen",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-format-package-auth-skip-v163/tc-tf-002/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-TF-003",
+        "ac_id": "AC-003",
+        "ac_theme": "truth-format-skip-package-auth",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v163_truth_format_package_auth_skip.py::test_truth_format_skip_package_auth -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "build_requirement_package_gate 对 ≥v1.5.2 不报 truth_format_non_compliant",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-format-package-auth-skip-v163/tc-tf-003/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-TF-005",
+        "ac_id": "AC-005",
+        "ac_theme": "implement-qa-unblocked-format",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v163_truth_format_package_auth_skip.py::test_implement_unblocked_format -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "v1.6.3 frozen 包 implement run 不因 truth_format blocked",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-format-package-auth-skip-v163/tc-tf-005/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-TF-006",
+        "ac_id": "AC-006",
+        "ac_theme": "no-regression-v162",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v163_truth_format_package_auth_skip.py::test_no_regression_v162 -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "v1.6.2 包 build_requirement_package_gate 仍 pass",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-format-package-auth-skip-v163/tc-tf-006/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-TF-007",
+        "ac_id": "AC-007",
+        "ac_theme": "feature-package-validate-still-runs",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v163_truth_format_package_auth_skip.py::test_feature_package_validate_still_runs -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "package-auth 包仍经 feature_package.validate 校验",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-format-package-auth-skip-v163/tc-tf-007/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      }
+    ],
+    "current_runtime_contract": [],
+    "generated_surface_sync": [],
+    "compatibility_contract": [],
+    "legacy_snapshot": [
+      {
+        "tc_id": "TC-TF-004",
+        "ac_id": "AC-004",
+        "ac_theme": "legacy-truth-format-preserved",
+        "lane": "legacy_snapshot",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v163_truth_format_package_auth_skip.py::test_legacy_truth_format_preserved -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "<v1.5.2 truth_format 校验行为不变",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-format-package-auth-skip-v163/tc-tf-004/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tests.md",
+        "release_blocking": false,
+        "mapping_status": "pass"
+      }
+    ],
+    "browser_runtime_admission": []
+  },
+  "lane_counts": {
+    "feature_release_facing": 6,
+    "current_runtime_contract": 0,
+    "generated_surface_sync": 0,
+    "compatibility_contract": 0,
+    "legacy_snapshot": 1,
+    "browser_runtime_admission": 0
+  },
+  "canonical_lanes": [
+    "feature_release_facing",
+    "current_runtime_contract",
+    "generated_surface_sync",
+    "compatibility_contract",
+    "legacy_snapshot",
+    "browser_runtime_admission"
+  ],
+  "test_refs": [
+    {
+      "tc_id": "TC-TF-001",
+      "ac_id": "AC-001",
+      "ac_theme": "feature-paths-package-auth",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v163_truth_format_package_auth_skip.py::test_feature_paths_package_auth -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "compute_feature_paths 对 ≥v1.5.2 返回 features/<slug>/truth.md 路径",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-format-package-auth-skip-v163/tc-tf-001/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-TF-002",
+      "ac_id": "AC-002",
+      "ac_theme": "manifest-status-from-frontmatter",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v163_truth_format_package_auth_skip.py::test_manifest_status_from_frontmatter -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "package-auth frozen 包 manifest status=frozen",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-format-package-auth-skip-v163/tc-tf-002/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-TF-003",
+      "ac_id": "AC-003",
+      "ac_theme": "truth-format-skip-package-auth",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v163_truth_format_package_auth_skip.py::test_truth_format_skip_package_auth -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "build_requirement_package_gate 对 ≥v1.5.2 不报 truth_format_non_compliant",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-format-package-auth-skip-v163/tc-tf-003/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-TF-004",
+      "ac_id": "AC-004",
+      "ac_theme": "legacy-truth-format-preserved",
+      "lane": "legacy_snapshot",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v163_truth_format_package_auth_skip.py::test_legacy_truth_format_preserved -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "<v1.5.2 truth_format 校验行为不变",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-format-package-auth-skip-v163/tc-tf-004/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tests.md",
+      "release_blocking": false,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-TF-005",
+      "ac_id": "AC-005",
+      "ac_theme": "implement-qa-unblocked-format",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v163_truth_format_package_auth_skip.py::test_implement_unblocked_format -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "v1.6.3 frozen 包 implement run 不因 truth_format blocked",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-format-package-auth-skip-v163/tc-tf-005/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-TF-006",
+      "ac_id": "AC-006",
+      "ac_theme": "no-regression-v162",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v163_truth_format_package_auth_skip.py::test_no_regression_v162 -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "v1.6.2 包 build_requirement_package_gate 仍 pass",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-format-package-auth-skip-v163/tc-tf-006/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-TF-007",
+      "ac_id": "AC-007",
+      "ac_theme": "feature-package-validate-still-runs",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v163_truth_format_package_auth_skip.py::test_feature_package_validate_still_runs -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "package-auth 包仍经 feature_package.validate 校验",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-format-package-auth-skip-v163/tc-tf-007/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    }
+  ],
+  "ac_to_test_refs": {
+    "AC-001": [
+      "TC-TF-001"
+    ],
+    "AC-002": [
+      "TC-TF-002"
+    ],
+    "AC-003": [
+      "TC-TF-003"
+    ],
+    "AC-004": [
+      "TC-TF-004"
+    ],
+    "AC-005": [
+      "TC-TF-005"
+    ],
+    "AC-006": [
+      "TC-TF-006"
+    ],
+    "AC-007": [
+      "TC-TF-007"
+    ]
+  },
+  "qa_order_contract": {
+    "sequence": [
+      "user_story_ac_order",
+      "scenario_divergence",
+      "current_round_execution",
+      "evidence_pack",
+      "coverage_current_gap",
+      "continue_decision",
+      "severe_blocker_stop_for_repair",
+      "repair_handoff",
+      "beacon_help_resume",
+      "next_qa_round_test_case_backfill",
+      "release_guidance"
+    ],
+    "source": "skills/beacon/references/usage-rules.md"
+  },
+  "deep_delta_policy": {
+    "owner": "deep",
+    "adoption_route": "test-case_or_supplemental_qa",
+    "executes_qa": false
+  },
+  "planning_line_safety": {
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "runtime_line": "v1.6.1",
+    "docs_default_line": "v1.6.1",
+    "current_runtime_release_line": "v1.6.1",
+    "feature_line_status": "planning_only"
+  },
+  "status": "pass",
+  "blocked": false,
+  "reason_codes": [],
+  "generated_at": "2026-06-26T01:32:21.655195+00:00",
+  "index_path": "docs/beacon/v1.6.3/.machine/testing/test-contract-index.json"
+}
