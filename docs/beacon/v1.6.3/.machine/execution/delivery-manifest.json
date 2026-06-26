@@ -3,21 +3,17 @@
   "version": "v1.6.3",
   "feature": "beacon-gate-truth-model-alignment-v163",
   "run_id": "run-20260625T082744Z-e564",
-  "generated_at": "2026-06-25T08:27:48.204096+00:00",
+  "generated_at": "2026-06-26T01:20:10.786378+00:00",
   "source_of_truth_root": "docs/beacon/v1.6.3",
-  "delivery_status": "draft",
-  "strict_delivery_ready": false,
-  "reason_codes": [
-    "git_branch_prefix_mismatch",
-    "git_branch_target_mismatch",
-    "git_version_ref_not_satisfied"
-  ],
+  "delivery_status": "completed",
+  "strict_delivery_ready": true,
+  "reason_codes": [],
   "affected_projects": [
     {
       "name": "beacon",
       "project_root": "/Users/apple/Developer/Personal/products/beacon",
       "repo_url": "https://github.com/justin-mc-lai/beacon.git",
-      "change_scope": "docs_governance",
+      "change_scope": "workflow_delivery",
       "changed_layers": [
         "research",
         "user-story",
@@ -27,14 +23,29 @@
       ],
       "base_branch": "main",
       "target_branch": "beacon/v1.6.3",
-      "current_branch": "pre-main",
-      "commit": "5e06a90d169260383466a2f1963705410d621df6",
+      "current_branch": "beacon/v1.6.3",
+      "commit": "dd0442f116859c515a7f58b9d5661543c89901a9",
       "tag": "",
       "worktree_path": "/Users/apple/Developer/Personal/products/beacon",
-      "alignment_status": "recorded_pending_alignment"
+      "alignment_status": "aligned"
     }
   ],
   "deliverables": [
+    {
+      "type": "test-case",
+      "path": "docs/beacon/v1.6.3/qa/test-cases/beacon-gate-truth-model-alignment-v163.md",
+      "status": "completed"
+    },
+    {
+      "type": "ac-matrix",
+      "path": "docs/beacon/v1.6.3/.machine/qa/beacon-gate-truth-model-alignment-v163.ac-test-matrix.json",
+      "status": "completed"
+    },
+    {
+      "type": "qa9-matrix",
+      "path": "docs/beacon/v1.6.3/.machine/qa/beacon-gate-truth-model-alignment-v163.qa9-matrix.json",
+      "status": "completed"
+    },
     {
       "type": "boundaries",
       "path": "docs/beacon/v1.6.3/execution/boundaries.md",
@@ -68,7 +79,7 @@
   ],
   "notes": [
     "多项目/多仓库交付范围必须通过 affected_projects 显式声明。",
-    "Current workflow status snapshot: blocked.",
+    "Current workflow status snapshot: completed.",
     "execution artifacts are emitted only under docs/beacon."
   ]
 }

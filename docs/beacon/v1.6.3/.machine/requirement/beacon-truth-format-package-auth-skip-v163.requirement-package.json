@@ -1,0 +1,207 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-06-26T01:04:11.241773+00:00",
+  "feature": "beacon-truth-format-package-auth-skip-v163",
+  "feature_slug": "beacon-truth-format-package-auth-skip-v163",
+  "version": "v1.6.3",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/truth.md",
+    "tests": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tests.md",
+    "tasks": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tasks.md",
+    "evidence": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "be9a01a9fc369d55085b0d6e876e00b22aadeee9626692b87e15b9c49c2e846e",
+    "tests": "cf6b94ab912ae6b6c52245742d39eac9811ecf60a726f8bd0c61948703df9b3b",
+    "tasks": "111f5563394c8ae881f9f36f5caee734045517ca0d188792af87f8e828a455b8",
+    "evidence": "635bb724cdc7d5d636c466a17c90cfe440cfc0810afd60e43369d569098ffb97"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-truth-format-package-auth-skip-v163",
+    "version": "v1.6.3",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "R1 — 修复 truth_format 校验与 feature paths 对 package-authoritative 的连环漂移（C 方向）",
+    "source_revision_id": "null",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/truth.md",
+      "user_story": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/truth.md",
+      "test_case": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tests.md"
+    },
+    "parser_contract": "beacon-feature-package-v1",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "state_machine_required": "false",
+    "upstream_feature": "null",
+    "promotion_ref": "null"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "feature-paths-package-auth",
+      "description": "`compute_feature_paths` 对 ≥v1.5.2 返回 `features/<slug>/{truth,tests}.md` 路径（**Must**）"
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "manifest-status-from-frontmatter",
+      "description": "package-auth 包 manifest status 取自 truth.md frontmatter `status`（frozen 包显示 frozen）（**Must**）"
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "truth-format-skip-package-auth",
+      "description": "`build_requirement_package_gate` 对 ≥v1.5.2 包不报 `truth_format_non_compliant_*`（**Must**）"
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "legacy-truth-format-preserved",
+      "description": "<v1.5.2 版本 truth_format 校验行为不变（**Must**）"
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "implement-qa-unblocked-format",
+      "description": "v1.6.3 frozen 包 `implement run`/`qa run` 不再因 `truth_format_non_compliant` blocked（**Must**）"
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "no-regression-v162",
+      "description": "v1.6.2 包修复后 `build_requirement_package_gate` 仍 pass（不因路径修复而 break）（**Must**）"
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "feature-package-validate-still-runs",
+      "description": "package-auth 包仍经 `feature_package.validate_feature_package` 校验（未绕过真校验）（**Must**）"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-TF-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_truth_format_package_auth_skip.py::test_feature_paths_package_auth -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "compute_feature_paths 对 ≥v1.5.2 返回 features/<slug>/truth.md 路径",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-TF-002",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_truth_format_package_auth_skip.py::test_manifest_status_from_frontmatter -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "package-auth frozen 包 manifest status=frozen",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-TF-003",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_truth_format_package_auth_skip.py::test_truth_format_skip_package_auth -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "build_requirement_package_gate 对 ≥v1.5.2 不报 truth_format_non_compliant",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-TF-004",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_truth_format_package_auth_skip.py::test_legacy_truth_format_preserved -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "<v1.5.2 truth_format 校验行为不变",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-TF-005",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_truth_format_package_auth_skip.py::test_implement_unblocked_format -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "v1.6.3 frozen 包 implement run 不因 truth_format blocked",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-TF-006",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_truth_format_package_auth_skip.py::test_no_regression_v162 -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "v1.6.2 包 build_requirement_package_gate 仍 pass",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-007",
+      "tc_id": "TC-TF-007",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_truth_format_package_auth_skip.py::test_feature_package_validate_still_runs -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "package-auth 包仍经 feature_package.validate 校验",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "LINE-15",
+      "title": "TC-TF-001..007 测试文件 `tests/test_v163_truth_format_package_auth_skip.py` 创建（BLOCKED:Phase-A）",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-16",
+      "title": "`beacon/utils/manifest.py compute_feature_paths` 对 ≥v1.5.2 返回 features/ 路径",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-20",
+      "title": "`beacon/utils/manifest.py sync_manifest` package-auth 包 status 取自 truth.md frontmatter",
+      "status": "unchecked"
+    },
+    {
+      "id": "TC-TF-002",
+      "title": "frozen 包 status=frozen",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-25",
+      "title": "`beacon/utils/material_audit.py` truth_format 校验对 ≥v1.5.2 跳过",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-26",
+      "title": "TC-TF-003/005 不报 truth_format_non_compliant",
+      "status": "unchecked"
+    },
+    {
+      "id": "TC-TF-004",
+      "title": "legacy 兼容",
+      "status": "unchecked"
+    },
+    {
+      "id": "TC-TF-006",
+      "title": "v1.6.2 无回归",
+      "status": "unchecked"
+    },
+    {
+      "id": "TC-TF-007",
+      "title": "feature_package.validate 仍调用",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "truth.md",
+      "authority": "requirement_truth",
+      "artifact": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/truth.md"
+    },
+    {
+      "surface": "tests.md",
+      "authority": "test_truth",
+      "artifact": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tests.md"
+    },
+    {
+      "surface": "tasks.md",
+      "authority": "requirement_truth",
+      "artifact": "docs/beacon/v1.6.3/features/beacon-truth-format-package-auth-skip-v163/tasks.md"
+    }
+  ]
+}

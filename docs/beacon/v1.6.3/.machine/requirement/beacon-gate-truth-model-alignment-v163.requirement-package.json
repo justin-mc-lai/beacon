@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-06-25T09:59:47.035888+00:00",
+  "generated_at": "2026-06-26T01:26:13.799728+00:00",
   "feature": "beacon-gate-truth-model-alignment-v163",
   "feature_slug": "beacon-gate-truth-model-alignment-v163",
   "version": "v1.6.3",
@@ -19,7 +19,7 @@
   },
   "source_hashes": {
     "truth": "16d98529c5f76418ac64282a3407c1c726c7d9736345e671d6e6c4a3424e4c1b",
-    "tests": "581ef026e038fd18c39ffb68d882e5ae8c56d1e04fafa1c9734404a3f4cf368e",
+    "tests": "7b91d51d02cd9d38532cfd1187334899ecadb8323b454fcb6f4e0d185f16bc80",
     "tasks": "a51b65240783eb9c57db429eb1feaf854a869c034313869caf669b26567c75ab",
     "evidence": "7e133ec84300e5ee8e5420249b94f936d6f9db05d812e046ff81d03f0f81c7f5"
   },
@@ -86,7 +86,7 @@
       "ac_id": "AC-001",
       "tc_id": "TC-GT-001",
       "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v163_gate_truth_model_alignment.py::test_semver_fork_v162_no_legacy_top_dirs_required -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "command": "`python3 -m pytest tests/test_v163_gate_model_alignment.py::test_semver_fork_v162_no_legacy_top_dirs_required -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
       "assertion": "≥v1.5.2 版本 issues 中无 `formal_package_closure_missing` 因 prd/user-story/qa/test-cases 缺失",
       "evidence_path": ""
     },
@@ -94,7 +94,7 @@
       "ac_id": "AC-002",
       "tc_id": "TC-GT-002",
       "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v163_gate_truth_model_alignment.py::test_feature_package_closure_satisfied -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "command": "`python3 -m pytest tests/test_v163_gate_model_alignment.py::test_feature_package_closure_satisfied -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
       "assertion": "≥v1.5.2 版本有 features/<slug>/{truth,tests}.md 时 issues 为空",
       "evidence_path": ""
     },
@@ -102,7 +102,7 @@
       "ac_id": "AC-003",
       "tc_id": "TC-GT-003",
       "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v163_gate_truth_model_alignment.py::test_legacy_v1410_keeps_top_dir_contract -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "command": "`python3 -m pytest tests/test_v163_gate_model_alignment.py::test_legacy_v1410_keeps_top_dir_contract -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
       "assertion": "<v1.5.2 版本缺 prd/user-story/qa/test-cases 仍报 `formal_package_closure_missing`",
       "evidence_path": ""
     },
@@ -110,7 +110,7 @@
       "ac_id": "AC-004",
       "tc_id": "TC-GT-004",
       "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v163_gate_truth_model_alignment.py::test_version_line_materials_still_checked -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "command": "`python3 -m pytest tests/test_v163_gate_model_alignment.py::test_version_line_materials_still_checked -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
       "assertion": "≥v1.5.2 版本缺 SUMMARY/execution/boundaries 仍 critical block",
       "evidence_path": ""
     },
@@ -118,7 +118,7 @@
       "ac_id": "AC-005",
       "tc_id": "TC-GT-005",
       "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v163_gate_truth_model_alignment.py::test_missing_feature_package_blocks -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "command": "`python3 -m pytest tests/test_v163_gate_model_alignment.py::test_missing_feature_package_blocks -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
       "assertion": "≥v1.5.2 版本无任何 feature 包 → reason_code `feature_package_closure_missing`，message 不含 prd/user-story/qa/test-cases",
       "evidence_path": ""
     },
@@ -134,7 +134,7 @@
       "ac_id": "AC-007",
       "tc_id": "TC-GT-007",
       "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v163_gate_truth_model_alignment.py::test_empty_dir_no_bypass -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "command": "`python3 -m pytest tests/test_v163_gate_model_alignment.py::test_empty_dir_no_bypass -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
       "assertion": "≥v1.5.2 版本仅有空 prd/ 目录无 feature 包 → 仍 block，空目录不绕过",
       "evidence_path": ""
     }
