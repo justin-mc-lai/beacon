@@ -3,11 +3,11 @@
   "contract_kind": "beacon_test_contract_index",
   "version": "v1.6.3",
   "runtime_line": "v1.6.3",
-  "runtime_release_line": "v1.6.1",
+  "runtime_release_line": "v1.6.3",
   "docs_line": "v1.6.3",
   "feature": "beacon-post-release-hook-agent-coverage-v163",
   "feature_slug": "beacon-post-release-hook-agent-coverage-v163",
-  "feature_line_status": "planning_only",
+  "feature_line_status": "current_runtime_release",
   "truth_refs": {
     "truth": "docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163/truth.md",
     "tests": "docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163/tests.md",
@@ -17,15 +17,114 @@
     "story_state": "docs/beacon/v1.6.3/.machine/user-story/beacon-post-release-hook-agent-coverage-v163.json"
   },
   "source_hashes": {
-    "truth": "",
-    "tests": "",
-    "tasks": "",
-    "evidence": "",
-    "ac_matrix": "",
-    "story_state": ""
+    "truth": "sha256:0c1f6b57150728e6d0627463c7b41dbbaf46553bd39726ac0c4aa445c7560d2f",
+    "tests": "sha256:5050b66994078f52db4dda6970c0430139944f2855589e2500b61b23a9a7c362",
+    "tasks": "sha256:45dc16b0993ca1996892cf4efbb5862c8e747b3e8cf508f13308969141ca7fd0",
+    "evidence": "sha256:b67f629925f720d84f69e82745e46125897a7368d316d9d65618087c5a025685",
+    "ac_matrix": "sha256:5050b66994078f52db4dda6970c0430139944f2855589e2500b61b23a9a7c362",
+    "story_state": "sha256:dcb52c416055151adee7ee903386f170b0deeeb1da50482d36b57975b7179a6c"
   },
   "lanes": {
-    "feature_release_facing": [],
+    "feature_release_facing": [
+      {
+        "tc_id": "TC-HK-001",
+        "ac_id": "AC-001",
+        "ac_theme": "hook-covers-5-agents",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v163_post_release_hook_agent_coverage.py::test_hook_covers_5_agents -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "hook agent 循环含 trae/claude/codex/cursor/windsurf 全 5 个",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-post-release-hook-agent-coverage-v163/tc-hk-001/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-HK-002",
+        "ac_id": "AC-002",
+        "ac_theme": "all-agents-setup-verify",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v163_post_release_hook_agent_coverage.py::test_all_agents_setup_verify_in_payload -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "agent_surfaces payload 含 5 agent 的 setup_status + verify_status",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-post-release-hook-agent-coverage-v163/tc-hk-002/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-HK-003",
+        "ac_id": "AC-003",
+        "ac_theme": "drift-blocks-hook",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v163_post_release_hook_agent_coverage.py::test_drift_blocks_hook -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "任一 agent drift 时 hook block 且 reason_code 含 verify_failed",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-post-release-hook-agent-coverage-v163/tc-hk-003/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-HK-004",
+        "ac_id": "AC-004",
+        "ac_theme": "claude-global-preserved",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v163_post_release_hook_agent_coverage.py::test_claude_global_preserved -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "hook 仍调 install_global_claude_beacon_skills + verify",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-post-release-hook-agent-coverage-v163/tc-hk-004/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-HK-005",
+        "ac_id": "AC-005",
+        "ac_theme": "no-regression-codex-claude",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v163_post_release_hook_agent_coverage.py::test_no_regression_codex_claude -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "codex/claude 仍 force=True + strict=True",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-post-release-hook-agent-coverage-v163/tc-hk-005/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-HK-006",
+        "ac_id": "AC-006",
+        "ac_theme": "no-regression-block-reasons",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v163_post_release_hook_agent_coverage.py::test_no_regression_block_reasons -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "setup_failed/verify_failed reason_code 语义不变",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-post-release-hook-agent-coverage-v163/tc-hk-006/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-HK-007",
+        "ac_id": "AC-007",
+        "ac_theme": "agent-constant-reused",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v163_post_release_hook_agent_coverage.py::test_agent_constant_reused -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "循环复用 agent_surface 全 agent 常量，无新硬编码",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-post-release-hook-agent-coverage-v163/tc-hk-007/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      }
+    ],
     "current_runtime_contract": [],
     "generated_surface_sync": [],
     "compatibility_contract": [],
@@ -33,7 +132,7 @@
     "browser_runtime_admission": []
   },
   "lane_counts": {
-    "feature_release_facing": 0,
+    "feature_release_facing": 7,
     "current_runtime_contract": 0,
     "generated_surface_sync": 0,
     "compatibility_contract": 0,
@@ -48,8 +147,129 @@
     "legacy_snapshot",
     "browser_runtime_admission"
   ],
-  "test_refs": [],
-  "ac_to_test_refs": {},
+  "test_refs": [
+    {
+      "tc_id": "TC-HK-001",
+      "ac_id": "AC-001",
+      "ac_theme": "hook-covers-5-agents",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v163_post_release_hook_agent_coverage.py::test_hook_covers_5_agents -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "hook agent 循环含 trae/claude/codex/cursor/windsurf 全 5 个",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-post-release-hook-agent-coverage-v163/tc-hk-001/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-HK-002",
+      "ac_id": "AC-002",
+      "ac_theme": "all-agents-setup-verify",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v163_post_release_hook_agent_coverage.py::test_all_agents_setup_verify_in_payload -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "agent_surfaces payload 含 5 agent 的 setup_status + verify_status",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-post-release-hook-agent-coverage-v163/tc-hk-002/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-HK-003",
+      "ac_id": "AC-003",
+      "ac_theme": "drift-blocks-hook",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v163_post_release_hook_agent_coverage.py::test_drift_blocks_hook -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "任一 agent drift 时 hook block 且 reason_code 含 verify_failed",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-post-release-hook-agent-coverage-v163/tc-hk-003/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-HK-004",
+      "ac_id": "AC-004",
+      "ac_theme": "claude-global-preserved",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v163_post_release_hook_agent_coverage.py::test_claude_global_preserved -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "hook 仍调 install_global_claude_beacon_skills + verify",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-post-release-hook-agent-coverage-v163/tc-hk-004/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-HK-005",
+      "ac_id": "AC-005",
+      "ac_theme": "no-regression-codex-claude",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v163_post_release_hook_agent_coverage.py::test_no_regression_codex_claude -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "codex/claude 仍 force=True + strict=True",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-post-release-hook-agent-coverage-v163/tc-hk-005/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-HK-006",
+      "ac_id": "AC-006",
+      "ac_theme": "no-regression-block-reasons",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v163_post_release_hook_agent_coverage.py::test_no_regression_block_reasons -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "setup_failed/verify_failed reason_code 语义不变",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-post-release-hook-agent-coverage-v163/tc-hk-006/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-HK-007",
+      "ac_id": "AC-007",
+      "ac_theme": "agent-constant-reused",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v163_post_release_hook_agent_coverage.py::test_agent_constant_reused -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "循环复用 agent_surface 全 agent 常量，无新硬编码",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-post-release-hook-agent-coverage-v163/tc-hk-007/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    }
+  ],
+  "ac_to_test_refs": {
+    "AC-001": [
+      "TC-HK-001"
+    ],
+    "AC-002": [
+      "TC-HK-002"
+    ],
+    "AC-003": [
+      "TC-HK-003"
+    ],
+    "AC-004": [
+      "TC-HK-004"
+    ],
+    "AC-005": [
+      "TC-HK-005"
+    ],
+    "AC-006": [
+      "TC-HK-006"
+    ],
+    "AC-007": [
+      "TC-HK-007"
+    ]
+  },
   "qa_order_contract": {
     "sequence": [
       "user_story_ac_order",
@@ -75,16 +295,14 @@
     "status": "pass",
     "blocked": false,
     "reason_code": "",
-    "runtime_line": "v1.6.1",
-    "docs_default_line": "v1.6.1",
-    "current_runtime_release_line": "v1.6.1",
-    "feature_line_status": "planning_only"
+    "runtime_line": "v1.6.3",
+    "docs_default_line": "v1.6.3",
+    "current_runtime_release_line": "v1.6.3",
+    "feature_line_status": "current_runtime_release"
   },
-  "status": "blocked",
-  "blocked": true,
-  "reason_codes": [
-    "ac_test_mapping_missing"
-  ],
-  "generated_at": "2026-06-26T08:33:04.918181+00:00",
+  "status": "pass",
+  "blocked": false,
+  "reason_codes": [],
+  "generated_at": "2026-06-26T09:13:58.939254+00:00",
   "index_path": "docs/beacon/v1.6.3/.machine/testing/test-contract-index.json"
 }

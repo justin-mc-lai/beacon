@@ -13,7 +13,7 @@
   "truth_authority": false,
   "lifecycle_stage": false,
   "release_publish_action": false,
-  "feature_count": 7,
+  "feature_count": 8,
   "features": [
     {
       "feature": "beacon-ecosystem-discovery-sync-drift-v163",
@@ -30,6 +30,12 @@
     {
       "feature": "beacon-gate-truth-model-alignment-v163",
       "feature_slug": "beacon-gate-truth-model-alignment-v163",
+      "summary": "codex-subagents implementation completed via implement-team flow",
+      "status": "completed"
+    },
+    {
+      "feature": "beacon-post-release-hook-agent-coverage-v163",
+      "feature_slug": "beacon-post-release-hook-agent-coverage-v163",
       "summary": "codex-subagents implementation completed via implement-team flow",
       "status": "completed"
     },
@@ -60,7 +66,7 @@
   ],
   "implementation_order": {
     "status": "analyzed",
-    "feature_count": 7,
+    "feature_count": 8,
     "ordered_feature_slugs": [
       "beacon-freeze-integrity-drift-repair-v163",
       "beacon-version-resolve-fail-closed-v163",
@@ -68,7 +74,8 @@
       "beacon-ecosystem-discovery-sync-drift-v163",
       "beacon-truth-format-package-auth-skip-v163",
       "beacon-gate-truth-model-alignment-v163",
-      "beacon-spec-fingerprint-package-auth-paths-v163"
+      "beacon-spec-fingerprint-package-auth-paths-v163",
+      "beacon-post-release-hook-agent-coverage-v163"
     ],
     "waves": [
       {
@@ -215,6 +222,27 @@
             "reason_code": "shared_delivery_service_conflict"
           }
         ]
+      },
+      {
+        "wave": 8,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "beacon-post-release-hook-agent-coverage-v163",
+            "feature_slug": "beacon-post-release-hook-agent-coverage-v163",
+            "depends_on_features": [
+              "beacon-spec-fingerprint-package-auth-paths-v163"
+            ],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": false,
+            "reason_code": "shared_delivery_service_conflict"
+          }
+        ]
       }
     ]
   },
@@ -287,6 +315,12 @@
     "[beacon-gate-truth-model-alignment-v163] Updated `docs/beacon/v1.6.3/.machine/execution/source.json`",
     "[beacon-gate-truth-model-alignment-v163] Updated `docs/beacon/v1.6.3/.machine/execution/terminal.json`",
     "[beacon-gate-truth-model-alignment-v163] Updated `docs/beacon/v1.6.3/.machine/user-story/beacon-gate-truth-model-alignment-v163.json`",
+    "[beacon-post-release-hook-agent-coverage-v163] Updated `.beacon/evidence-manifest.json`",
+    "[beacon-post-release-hook-agent-coverage-v163] Updated `docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json`",
+    "[beacon-post-release-hook-agent-coverage-v163] Updated `docs/beacon/v1.6.3/.machine/requirement/beacon-post-release-hook-agent-coverage-v163.requirement-package.json`",
+    "[beacon-post-release-hook-agent-coverage-v163] Updated `docs/beacon/v1.6.3/.machine/requirement/beacon-post-release-hook-agent-coverage-v163.truth-map.json`",
+    "[beacon-post-release-hook-agent-coverage-v163] Updated `docs/beacon/v1.6.3/.machine/requirement/feature-package-validation.json`",
+    "[beacon-post-release-hook-agent-coverage-v163] Updated `docs/beacon/v1.6.3/execution/architecture-blueprint.md`",
     "[beacon-spec-fingerprint-package-auth-paths-v163] Release check can route missing current feature projection to an actionable repair path",
     "[beacon-spec-fingerprint-package-auth-paths-v163] Version aggregate projection remains a read model instead of requirement truth",
     "[beacon-truth-format-package-auth-skip-v163] Release check can route missing current feature projection to an actionable repair path",
@@ -354,6 +388,11 @@
     "docs/beacon/v1.6.3/execution/implementation-brief-beacon-gate-truth-model-alignment-v163.md",
     "docs/beacon/v1.6.3/.machine/change/beacon-gate-truth-model-alignment-v163.json",
     "docs/beacon/v1.6.3/change/beacon-gate-truth-model-alignment-v163.md",
+    "docs/beacon/v1.6.3/.machine/execution/technical-implementation-beacon-post-release-hook-agent-coverage-v163.json",
+    "docs/beacon/v1.6.3/.machine/execution/implementation-summary-beacon-post-release-hook-agent-coverage-v163.json",
+    "docs/beacon/v1.6.3/execution/implementation-brief-beacon-post-release-hook-agent-coverage-v163.md",
+    "docs/beacon/v1.6.3/.machine/change/beacon-post-release-hook-agent-coverage-v163.json",
+    "docs/beacon/v1.6.3/change/beacon-post-release-hook-agent-coverage-v163.md",
     "docs/beacon/v1.6.3/change/beacon-spec-fingerprint-package-auth-paths-v163.md",
     "docs/beacon/v1.6.3/prd/beacon-spec-fingerprint-package-auth-paths-v163.md",
     "docs/beacon/v1.6.3/user-story/beacon-spec-fingerprint-package-auth-paths-v163.md",
@@ -379,5 +418,5 @@
     "docs/beacon/v1.6.3/.machine/change/beacon-workflow-memory-completion-gate-v163.json",
     "docs/beacon/v1.6.3/change/beacon-workflow-memory-completion-gate-v163.md"
   ],
-  "generated_at": "2026-06-26 16:08"
+  "generated_at": "2026-06-26 17:13"
 }
