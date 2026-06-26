@@ -68,61 +68,19 @@ __pycache__/
 # BEACON:GITIGNORE:END
 
 
-
-
-
 # Local runtime artifacts (outside managed block)
 .beacon/worktrees/
 .beacon/state/workspace-admission/
 .beacon/state/hooks/
 .beacon/state/agent-eval/
 *.bak-*
-# =============================================
-# === P0 additions: build artifacts & state ===
-# =============================================
 
-# Python build artifacts (never commit)
-*.egg-info/
-dist/
-build/
-*.egg
-.eggs/
-.pytest_cache/
-.coverage
-htmlcov/
 
-# Node / beacon-loop build outputs
-node_modules/
-packages/*/node_modules/
-packages/*/dist/
 
-# Python build artifacts (never commit)
-*.egg-info/
-dist/
-build/
-*.egg
-.eggs/
-.pytest_cache/
-.coverage
-htmlcov/
 
-# Node / beacon-loop build outputs
-node_modules/
-packages/*/node_modules/
-packages/*/dist/
-packages/*/build/
-packages/*/.turbo/
-*.tsbuildinfo
 
-# Beacon test results (evidence — store in Release artifacts, not VCS)
-test-results/
 
-# IDE / OS noise
-.DS_Store
-Thumbs.db
-.idea/
-*.swp
-*~
+
 
 .understand-anything/
 

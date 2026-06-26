@@ -2,18 +2,21 @@
 
 - feature: `beacon-runtime-release-alignment-v163`
 - version: `v1.6.3`
-- run_id: `run-20260626T093921Z-5ad9`
+- run_id: `run-20260626T122130Z-9617`
 - status: `completed`
 - runner: `codex-subagents`
 - adapter_type: `native`
 - host_runtime: `codex`
 
 ## Changed Files
-- `.beacon/evidence-manifest.json`
-- `.beacon/state/agent-surfaces.json`
+- `docs/beacon/v1.6.3/.machine/execution/git-workflow-beacon-runtime-release-alignment-v163.json`
+- `docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-runtime-release-alignment-v163.json`
 - `docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json`
-- `docs/beacon/v1.6.3/.machine/requirement/feature-package-validation.json`
+- `docs/beacon/v1.6.3/.machine/execution/implementation-plan-beacon-runtime-release-alignment-v163.json`
+- `docs/beacon/v1.6.3/.machine/execution/implementation-plan-beacon-runtime-release-alignment-v163.progress.json`
 - `docs/beacon/v1.6.3/execution/architecture-blueprint.md`
+- `docs/beacon/v1.6.3/execution/implementation-plan-beacon-runtime-release-alignment-v163.md`
+- `docs/beacon/v1.6.3/execution/tasks-beacon-runtime-release-alignment-v163.md`
 
 ## Verification
 - `passed`: beacon implement run --runner codex-subagents

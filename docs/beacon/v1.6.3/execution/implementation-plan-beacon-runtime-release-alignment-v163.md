@@ -7,7 +7,7 @@
 - baseline_hash: `sha256:fb7c347d1de0317d2fdfa41200378e9605de13f042289606be2a17d89cfa2cf1`
 - delivery_baseline_id: `impl-delivery-baseline-v1.6.3-beacon-runtime-release-alignment-v163-R1`
 - delivery_baseline_source_hash: `sha256:b7e765f9de2eb2b58dbccd3d05f00b7cfb578a4d99bd57ea04dfc2f84020de99`
-- plan_hash: `sha256:624ea1b68039944443deb4734dc1f74acd4aa28ab2d207f65249bba0f307df2c`
+- plan_hash: `sha256:25860212e362fc2bd92dd66c7559e4bf713019ccc61319aabefda3a0a01f48ba`
 - status: `completed`
 
 ## Source Refs
@@ -81,8 +81,8 @@
 ### ITASK-002 — AC-002 runtime==docs 时 release gate 不因 drift block（**Must**）
 - status: `completed`
 - mapped_ac_ids: AC-002
-- mapped_test_ids: TEST-002
-- mapped_scenario_ids: -
+- mapped_test_ids: TEST-002, TC-RA-002
+- mapped_scenario_ids: SC-AUTO-TC-RA-002
 - mapped_qa_case_ids: -
 - depends_on: ITASK-001
 - direct_delivery_services: .
@@ -93,8 +93,8 @@
 ### ITASK-003 — AC-003 post-release hook payload 含 `runtime_alignment` 字段（runtime_version/do...
 - status: `completed`
 - mapped_ac_ids: AC-003
-- mapped_test_ids: TEST-003
-- mapped_scenario_ids: -
+- mapped_test_ids: TEST-003, TC-RA-003
+- mapped_scenario_ids: SC-AUTO-TC-RA-003
 - mapped_qa_case_ids: -
 - depends_on: ITASK-002
 - direct_delivery_services: .
@@ -105,8 +105,8 @@
 ### ITASK-004 — AC-004 runtime≠docs 时 hook `runtime_alignment.recommended_command` 含 `beacon...
 - status: `completed`
 - mapped_ac_ids: AC-004
-- mapped_test_ids: TEST-004
-- mapped_scenario_ids: -
+- mapped_test_ids: TEST-004, TC-RA-004
+- mapped_scenario_ids: SC-AUTO-TC-RA-004
 - mapped_qa_case_ids: -
 - depends_on: ITASK-003
 - direct_delivery_services: .
@@ -117,8 +117,8 @@
 ### ITASK-005 — AC-005 plan/truth/implement/qa stage 不因 runtime≠docs block（开发期合法）（**Must**）
 - status: `completed`
 - mapped_ac_ids: AC-005
-- mapped_test_ids: TEST-005
-- mapped_scenario_ids: -
+- mapped_test_ids: TEST-005, TC-RA-005
+- mapped_scenario_ids: SC-AUTO-TC-RA-005
 - mapped_qa_case_ids: -
 - depends_on: ITASK-004
 - direct_delivery_services: .
@@ -129,8 +129,8 @@
 ### ITASK-006 — AC-006 hook 不执行 pip install，只提示（**Must**，UD-004）
 - status: `completed`
 - mapped_ac_ids: AC-006
-- mapped_test_ids: TEST-006
-- mapped_scenario_ids: -
+- mapped_test_ids: TEST-006, TC-RA-006
+- mapped_scenario_ids: SC-AUTO-TC-RA-006
 - mapped_qa_case_ids: -
 - depends_on: ITASK-005
 - direct_delivery_services: .
@@ -141,8 +141,8 @@
 ### ITASK-007 — AC-007 P0-1 的 `_resolve_eval_version` + resolve failure fail-closed 仍生效（**Mu...
 - status: `completed`
 - mapped_ac_ids: AC-007
-- mapped_test_ids: TEST-007
-- mapped_scenario_ids: -
+- mapped_test_ids: TEST-007, TC-RA-007
+- mapped_scenario_ids: SC-AUTO-TC-RA-007
 - mapped_qa_case_ids: -
 - depends_on: ITASK-006
 - direct_delivery_services: .
