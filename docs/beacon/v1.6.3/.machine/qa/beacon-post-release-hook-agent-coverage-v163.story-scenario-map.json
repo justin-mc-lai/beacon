@@ -1,0 +1,426 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-post-release-hook-agent-coverage-v163",
+  "feature_slug": "beacon-post-release-hook-agent-coverage-v163",
+  "version": "v1.6.3",
+  "generated_at": "2026-06-26T08:34:20.085975+00:00",
+  "expansion_profile": "pua-web",
+  "scenario_depth": "standard",
+  "families_required": [
+    "happy",
+    "negative",
+    "boundary",
+    "recovery",
+    "compatibility"
+  ],
+  "stories": [
+    {
+      "ac_id": "AC-001",
+      "theme": "general",
+      "text": "Acceptance criteria TBD",
+      "scenario_ids": [
+        "SC-001"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-001",
+          "source_tc_id": "TC-HK-001",
+          "tc_id": "TC-HK-001-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "all-agents-setup-verify",
+      "text": "hook payload 的 `agent_surfaces` 含 5 个 agent 的 setup_status + verify_status（**Must**）",
+      "scenario_ids": [
+        "SC-AUTO-TC-HK-002"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-HK-002",
+          "source_tc_id": "TC-HK-002",
+          "tc_id": "TC-HK-002-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "drift-blocks-hook",
+      "text": "任一 agent verify 报 `host_visible_skills_drift` 时 hook block，reason_code 含 `{agent}_agent_surface_verify_failed`（**Must**）",
+      "scenario_ids": [
+        "SC-AUTO-TC-HK-003"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-HK-003",
+          "source_tc_id": "TC-HK-003",
+          "tc_id": "TC-HK-003-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "claude-global-preserved",
+      "text": "hook 仍调 `install_global_claude_beacon_skills` + `verify_global_claude_beacon_skills`（**Must**）",
+      "scenario_ids": [
+        "SC-AUTO-TC-HK-004"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-HK-004",
+          "source_tc_id": "TC-HK-004",
+          "tc_id": "TC-HK-004-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "no-regression-codex-claude",
+      "text": "codex/claude 的 setup/verify 行为不变（仍 force=True + strict=True）（**Must**）",
+      "scenario_ids": [
+        "SC-AUTO-TC-HK-005"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-HK-005",
+          "source_tc_id": "TC-HK-005",
+          "tc_id": "TC-HK-005-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "no-regression-block-reasons",
+      "text": "现有 block reason_codes（setup_failed/verify_failed）语义不变（**Must**）",
+      "scenario_ids": [
+        "SC-AUTO-TC-HK-006"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-HK-006",
+          "source_tc_id": "TC-HK-006",
+          "tc_id": "TC-HK-006-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "agent-constant-reused",
+      "text": "循环复用 agent_surface 的全 agent 常量，不新增硬编码（**Must**）",
+      "scenario_ids": [
+        "SC-AUTO-TC-HK-007"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-HK-007",
+          "source_tc_id": "TC-HK-007",
+          "tc_id": "TC-HK-007-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "source_tc_id": "TC-HK-001",
+      "tc_id": "TC-HK-001-PRIMARY",
+      "ac_id": "AC-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-001 primary path :: hook agent 循环含 trae/claude/codex/cursor/windsurf 全 5 个",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v163_post_release_hook_agent_coverage.py::test_hook_covers_5_agents -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-post-release-hook-agent-coverage-v163/tc-hk-001/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-HK-002",
+      "source_tc_id": "TC-HK-002",
+      "tc_id": "TC-HK-002-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "agent_surfaces payload 含 5 agent 的 setup_status + verify_status",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v163_post_release_hook_agent_coverage.py::test_all_agents_setup_verify_in_payload -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "agent_surfaces payload 含 5 agent 的 setup_status + verify_status",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-post-release-hook-agent-coverage-v163/tc-hk-002/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-HK-003",
+      "source_tc_id": "TC-HK-003",
+      "tc_id": "TC-HK-003-PRIMARY",
+      "ac_id": "AC-003",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "任一 agent drift 时 hook block 且 reason_code 含 verify_failed",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v163_post_release_hook_agent_coverage.py::test_drift_blocks_hook -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "任一 agent drift 时 hook block 且 reason_code 含 verify_failed",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-post-release-hook-agent-coverage-v163/tc-hk-003/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-HK-004",
+      "source_tc_id": "TC-HK-004",
+      "tc_id": "TC-HK-004-PRIMARY",
+      "ac_id": "AC-004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "hook 仍调 install_global_claude_beacon_skills + verify",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v163_post_release_hook_agent_coverage.py::test_claude_global_preserved -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "hook 仍调 install_global_claude_beacon_skills + verify",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-post-release-hook-agent-coverage-v163/tc-hk-004/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-HK-005",
+      "source_tc_id": "TC-HK-005",
+      "tc_id": "TC-HK-005-PRIMARY",
+      "ac_id": "AC-005",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "codex/claude 仍 force=True + strict=True",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v163_post_release_hook_agent_coverage.py::test_no_regression_codex_claude -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "codex/claude 仍 force=True + strict=True",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-post-release-hook-agent-coverage-v163/tc-hk-005/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-HK-006",
+      "source_tc_id": "TC-HK-006",
+      "tc_id": "TC-HK-006-PRIMARY",
+      "ac_id": "AC-006",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "setup_failed/verify_failed reason_code 语义不变",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v163_post_release_hook_agent_coverage.py::test_no_regression_block_reasons -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "setup_failed/verify_failed reason_code 语义不变",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-post-release-hook-agent-coverage-v163/tc-hk-006/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-HK-007",
+      "source_tc_id": "TC-HK-007",
+      "tc_id": "TC-HK-007-PRIMARY",
+      "ac_id": "AC-007",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "循环复用 agent_surface 全 agent 常量，无新硬编码",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v163_post_release_hook_agent_coverage.py::test_agent_constant_reused -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "循环复用 agent_surface 全 agent 常量，无新硬编码",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-post-release-hook-agent-coverage-v163/tc-hk-007/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
+}

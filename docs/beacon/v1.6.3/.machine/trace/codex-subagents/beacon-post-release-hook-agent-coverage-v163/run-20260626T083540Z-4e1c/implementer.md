@@ -1,0 +1,28 @@
+# Native Team Role Report: implementer
+
+- role: `implementer`
+- status: `completed`
+- revision_id: `R1`
+- summary: implementation writeback recorded for planned items
+
+## implemented_item_ids
+- `AC-001`
+- `AC-002`
+- `AC-003`
+- `AC-004`
+- `AC-005`
+- `AC-006`
+- `AC-007`
+- `TASK-001`
+
+## changed_files
+- `.beacon/evidence-manifest.json`
+- `docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json`
+- `docs/beacon/v1.6.3/.machine/requirement/beacon-post-release-hook-agent-coverage-v163.requirement-package.json`
+- `docs/beacon/v1.6.3/.machine/requirement/beacon-post-release-hook-agent-coverage-v163.truth-map.json`
+- `docs/beacon/v1.6.3/.machine/requirement/feature-package-validation.json`
+- `docs/beacon/v1.6.3/execution/architecture-blueprint.md`
+
+## recommendations
+- Follow the implementation-architect execution note when present.
+- Run reviewer gate to confirm no scope/spec drift.
