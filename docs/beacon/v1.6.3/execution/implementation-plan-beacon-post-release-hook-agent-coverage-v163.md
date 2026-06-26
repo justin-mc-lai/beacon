@@ -7,7 +7,7 @@
 - baseline_hash: `sha256:59e52ff5d186636a8d6901aa29381e3e1c57c8ef81a2777e0cc781c57953c3aa`
 - delivery_baseline_id: `impl-delivery-baseline-v1.6.3-beacon-post-release-hook-agent-coverage-v163-R1`
 - delivery_baseline_source_hash: `sha256:d16653470c5e6964b8140ac2eb991acc0ec70c717c3d8fc54eb7bfddbecef1f5`
-- plan_hash: `sha256:132cf101d268ac842454634b811be680fab17d2477478ab0903d08c59bf825cd`
+- plan_hash: `sha256:4e82b7eb9249a69983f0c08c3b744da39822a6529e98b3343daa155eb856ba75`
 - status: `completed`
 
 ## Source Refs
