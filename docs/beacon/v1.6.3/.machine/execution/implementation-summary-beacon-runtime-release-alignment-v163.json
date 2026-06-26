@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "run_id": "run-20260626T093921Z-5ad9",
+  "run_id": "run-20260626T122130Z-9617",
   "feature": "beacon-runtime-release-alignment-v163",
   "feature_slug": "beacon-runtime-release-alignment-v163",
   "version": "v1.6.3",
@@ -8,10 +8,10 @@
   "host_runtime": "codex",
   "runner": "codex-subagents",
   "adapter_type": "native",
-  "request_path": ".beacon/implement/run-20260626T093921Z-5ad9/request.json",
-  "result_path": ".beacon/implement/run-20260626T093921Z-5ad9/result.json",
-  "branch_preflight_path": ".beacon/implement/run-20260626T093921Z-5ad9/branch-preflight.json",
-  "plan_preflight_path": ".beacon/implement/run-20260626T093921Z-5ad9/plan-preflight.json",
+  "request_path": ".beacon/implement/run-20260626T122130Z-9617/request.json",
+  "result_path": ".beacon/implement/run-20260626T122130Z-9617/result.json",
+  "branch_preflight_path": ".beacon/implement/run-20260626T122130Z-9617/branch-preflight.json",
+  "plan_preflight_path": ".beacon/implement/run-20260626T122130Z-9617/plan-preflight.json",
   "revision_delta": {
     "schema_version": "1.0",
     "feature": "beacon-runtime-release-alignment-v163",
@@ -67,7 +67,7 @@
       "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
     ],
     "source": "technical_review_contract",
-    "generated_at": "2026-06-26T09:39:17.967087+00:00",
+    "generated_at": "2026-06-26T12:21:26.604392+00:00",
     "baseline_id": "impl-delivery-baseline-v1.6.3-beacon-runtime-release-alignment-v163-R1",
     "transaction_id": "tx-7a963968c4e644695",
     "source_hash": "sha256:b7e765f9de2eb2b58dbccd3d05f00b7cfb578a4d99bd57ea04dfc2f84020de99",
@@ -106,7 +106,7 @@
       "execution_branch_override_blocked": true
     }
   },
-  "generated_at": "2026-06-26T09:39:22.938974+00:00",
+  "generated_at": "2026-06-26T12:21:31.615424+00:00",
   "status": "completed",
   "subagent_prechecks": {
     "required": true,
@@ -346,8 +346,8 @@
       "docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/tests.md",
       "docs/beacon/v1.6.3/.machine/qa/beacon-runtime-release-alignment-v163.ac-test-matrix.json",
       "docs/beacon/v1.6.3/.machine/execution/revision-delta-beacon-runtime-release-alignment-v163.json",
-      ".beacon/implement/run-20260626T093921Z-5ad9/request.json",
-      ".beacon/implement/run-20260626T093921Z-5ad9/result.json"
+      ".beacon/implement/run-20260626T122130Z-9617/request.json",
+      ".beacon/implement/run-20260626T122130Z-9617/result.json"
     ],
     "runner": "codex-subagents",
     "adapter_type": "native",
@@ -478,8 +478,8 @@
       "docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/tests.md",
       "docs/beacon/v1.6.3/.machine/qa/beacon-runtime-release-alignment-v163.ac-test-matrix.json",
       "docs/beacon/v1.6.3/.machine/execution/revision-delta-beacon-runtime-release-alignment-v163.json",
-      ".beacon/implement/run-20260626T093921Z-5ad9/request.json",
-      ".beacon/implement/run-20260626T093921Z-5ad9/result.json"
+      ".beacon/implement/run-20260626T122130Z-9617/request.json",
+      ".beacon/implement/run-20260626T122130Z-9617/result.json"
     ],
     "runner": "codex-subagents",
     "adapter_type": "native",
@@ -496,7 +496,7 @@
     "feature_slug": "beacon-runtime-release-alignment-v163",
     "version": "v1.6.3",
     "required": true,
-    "prompt": "Implement the scoped Beacon feature.\nFeature: beacon-runtime-release-alignment-v163\nVersion: v1.6.3\nRead Beacon source of truth:\n- docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/truth.md\n- docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/tests.md\n- docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/tasks.md\n- docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/evidence.md\n- docs/beacon/v1.6.3/.machine/execution/implementation-plan-beacon-runtime-release-alignment-v163.json\nReuse Beacon semantic layer:\n- docs/beacon/v1.6.3/.machine/trace/semantic/beacon-runtime-release-alignment-v163/semantic-contract.json\n- docs/beacon/v1.6.3/.machine/trace/semantic/beacon-runtime-release-alignment-v163/semantic-dictionary.md\n- docs/beacon/v1.6.3/.machine/trace/semantic/beacon-runtime-release-alignment-v163/semantic-usage-guidelines.md\nDefault design bridge (augmentation only): taste-skill @ https://github.com/Leonxlnx/taste-skill\nFollow Beacon boundary defaults:\n- Record explicit assumptions and ambiguity tradeoffs instead of silently picking one interpretation.\n- Prefer the smallest correct change; avoid speculative abstraction or future-facing config unless required.\n- Keep changes surgical; only touch files in the current scope and only clean up orphan artifacts you introduce.\n- Bind work to verification signals; include acceptance/test mapping or concrete evidence for non-trivial tasks.\n- For obvious typo or single-line copy fixes, stay lightweight but do not expand scope or touch unrelated files.\nImplement only against the frozen PRD, user-story, and test-case truth above.\nAlso align with project-level PRODUCT.md / DESIGN.md truth when those files are listed above.\nDo not invent new user stories, acceptance criteria, or test scope.\nIf the work would require requirement change or conflicts with frozen truth, stop and route to beacon-change/refreeze instead of coding around it.\nStructured result should include: assumptions, simplicity_notes, scope_guard, ac_coverage_matrix, verification.\nBefore QA handoff, AC coverage matrix must list every frozen AC with status pass | partial | blocked and evidence or blocking_note.\nFor changed revisions with cleanup obligation, structured result must also include: cleanup_review_completed, removed_surfaces, retained_legacy_surfaces, cleanup_rationale.\nRun relevant verification.\nWrite structured result to .beacon/implement/run-20260626T093921Z-5ad9/result.json",
+    "prompt": "Implement the scoped Beacon feature.\nFeature: beacon-runtime-release-alignment-v163\nVersion: v1.6.3\nRead Beacon source of truth:\n- docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/truth.md\n- docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/tests.md\n- docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/tasks.md\n- docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/evidence.md\n- docs/beacon/v1.6.3/.machine/execution/implementation-plan-beacon-runtime-release-alignment-v163.json\nReuse Beacon semantic layer:\n- docs/beacon/v1.6.3/.machine/trace/semantic/beacon-runtime-release-alignment-v163/semantic-contract.json\n- docs/beacon/v1.6.3/.machine/trace/semantic/beacon-runtime-release-alignment-v163/semantic-dictionary.md\n- docs/beacon/v1.6.3/.machine/trace/semantic/beacon-runtime-release-alignment-v163/semantic-usage-guidelines.md\nDefault design bridge (augmentation only): taste-skill @ https://github.com/Leonxlnx/taste-skill\nFollow Beacon boundary defaults:\n- Record explicit assumptions and ambiguity tradeoffs instead of silently picking one interpretation.\n- Prefer the smallest correct change; avoid speculative abstraction or future-facing config unless required.\n- Keep changes surgical; only touch files in the current scope and only clean up orphan artifacts you introduce.\n- Bind work to verification signals; include acceptance/test mapping or concrete evidence for non-trivial tasks.\n- For obvious typo or single-line copy fixes, stay lightweight but do not expand scope or touch unrelated files.\nImplement only against the frozen PRD, user-story, and test-case truth above.\nAlso align with project-level PRODUCT.md / DESIGN.md truth when those files are listed above.\nDo not invent new user stories, acceptance criteria, or test scope.\nIf the work would require requirement change or conflicts with frozen truth, stop and route to beacon-change/refreeze instead of coding around it.\nStructured result should include: assumptions, simplicity_notes, scope_guard, ac_coverage_matrix, verification.\nBefore QA handoff, AC coverage matrix must list every frozen AC with status pass | partial | blocked and evidence or blocking_note.\nFor changed revisions with cleanup obligation, structured result must also include: cleanup_review_completed, removed_surfaces, retained_legacy_surfaces, cleanup_rationale.\nRun relevant verification.\nWrite structured result to .beacon/implement/run-20260626T122130Z-9617/result.json",
     "classification": "in_scope_implementation",
     "blocked": false,
     "status": "pass",
@@ -515,11 +515,14 @@
   "skill": "",
   "summary": "codex-subagents implementation completed via implement-team flow",
   "changed_files": [
-    ".beacon/evidence-manifest.json",
-    ".beacon/state/agent-surfaces.json",
+    "docs/beacon/v1.6.3/.machine/execution/git-workflow-beacon-runtime-release-alignment-v163.json",
+    "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-runtime-release-alignment-v163.json",
     "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json",
-    "docs/beacon/v1.6.3/.machine/requirement/feature-package-validation.json",
-    "docs/beacon/v1.6.3/execution/architecture-blueprint.md"
+    "docs/beacon/v1.6.3/.machine/execution/implementation-plan-beacon-runtime-release-alignment-v163.json",
+    "docs/beacon/v1.6.3/.machine/execution/implementation-plan-beacon-runtime-release-alignment-v163.progress.json",
+    "docs/beacon/v1.6.3/execution/architecture-blueprint.md",
+    "docs/beacon/v1.6.3/execution/implementation-plan-beacon-runtime-release-alignment-v163.md",
+    "docs/beacon/v1.6.3/execution/tasks-beacon-runtime-release-alignment-v163.md"
   ],
   "verification": [
     {
@@ -592,7 +595,7 @@
           "base_branch": "beacon/v1.6.3",
           "target_branch": "beacon/v1.6.3",
           "current_branch": "beacon/v1.6.3",
-          "current_commit": "d19796bcf3da3e665fefb795c74c066a7208de9d",
+          "current_commit": "35302484e0fd265d4eba04879881bf81eb100bb0",
           "current_tag": "",
           "worktree_path": "/Users/apple/Developer/Personal/products/beacon",
           "version_ref": "v1.6.3",
@@ -613,10 +616,10 @@
       "blocked": false,
       "reason_codes": []
     },
-    "run_id": "run-20260626T093921Z-5ad9",
+    "run_id": "run-20260626T122130Z-9617",
     "feature": "beacon-runtime-release-alignment-v163",
     "feature_slug": "beacon-runtime-release-alignment-v163",
-    "generated_at": "2026-06-26T09:39:22.387266+00:00",
+    "generated_at": "2026-06-26T12:21:31.051437+00:00",
     "branch_governance": {
       "schema_version": "1.0",
       "tool_name": "beacon-toolkit-branch-governance",
@@ -682,7 +685,7 @@
         "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
       ],
       "source": "technical_review_contract",
-      "generated_at": "2026-06-26T09:39:17.967087+00:00",
+      "generated_at": "2026-06-26T12:21:26.604392+00:00",
       "baseline_id": "impl-delivery-baseline-v1.6.3-beacon-runtime-release-alignment-v163-R1",
       "transaction_id": "tx-7a963968c4e644695",
       "source_hash": "sha256:b7e765f9de2eb2b58dbccd3d05f00b7cfb578a4d99bd57ea04dfc2f84020de99",
@@ -721,11 +724,11 @@
         "execution_branch_override_blocked": true
       }
     },
-    "branch_preflight_path": ".beacon/implement/run-20260626T093921Z-5ad9/branch-preflight.json"
+    "branch_preflight_path": ".beacon/implement/run-20260626T122130Z-9617/branch-preflight.json"
   },
   "plan_preflight": {
     "schema_version": "1.0",
-    "run_id": "run-20260626T093921Z-5ad9",
+    "run_id": "run-20260626T122130Z-9617",
     "feature": "beacon-runtime-release-alignment-v163",
     "feature_slug": "beacon-runtime-release-alignment-v163",
     "version": "v1.6.3",
@@ -733,7 +736,7 @@
     "expected_revision_id": "R1",
     "baseline_hash": "sha256:fb7c347d1de0317d2fdfa41200378e9605de13f042289606be2a17d89cfa2cf1",
     "recommended_command": "beacon implement plan \"beacon-runtime-release-alignment-v163\" --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.3",
-    "generated_at": "2026-06-26T09:39:22.390153+00:00",
+    "generated_at": "2026-06-26T12:21:31.054418+00:00",
     "required": true,
     "architecture_blueprint_projection_gate": {
       "status": "pass",
@@ -887,9 +890,12 @@
           "AC-002"
         ],
         "mapped_test_ids": [
-          "TEST-002"
+          "TEST-002",
+          "TC-RA-002"
         ],
-        "mapped_scenario_ids": [],
+        "mapped_scenario_ids": [
+          "SC-AUTO-TC-RA-002"
+        ],
         "mapped_qa_case_ids": []
       },
       {
@@ -900,9 +906,12 @@
           "AC-003"
         ],
         "mapped_test_ids": [
-          "TEST-003"
+          "TEST-003",
+          "TC-RA-003"
         ],
-        "mapped_scenario_ids": [],
+        "mapped_scenario_ids": [
+          "SC-AUTO-TC-RA-003"
+        ],
         "mapped_qa_case_ids": []
       },
       {
@@ -913,9 +922,12 @@
           "AC-004"
         ],
         "mapped_test_ids": [
-          "TEST-004"
+          "TEST-004",
+          "TC-RA-004"
         ],
-        "mapped_scenario_ids": [],
+        "mapped_scenario_ids": [
+          "SC-AUTO-TC-RA-004"
+        ],
         "mapped_qa_case_ids": []
       },
       {
@@ -926,9 +938,12 @@
           "AC-005"
         ],
         "mapped_test_ids": [
-          "TEST-005"
+          "TEST-005",
+          "TC-RA-005"
         ],
-        "mapped_scenario_ids": [],
+        "mapped_scenario_ids": [
+          "SC-AUTO-TC-RA-005"
+        ],
         "mapped_qa_case_ids": []
       },
       {
@@ -939,9 +954,12 @@
           "AC-006"
         ],
         "mapped_test_ids": [
-          "TEST-006"
+          "TEST-006",
+          "TC-RA-006"
         ],
-        "mapped_scenario_ids": [],
+        "mapped_scenario_ids": [
+          "SC-AUTO-TC-RA-006"
+        ],
         "mapped_qa_case_ids": []
       },
       {
@@ -952,13 +970,16 @@
           "AC-007"
         ],
         "mapped_test_ids": [
-          "TEST-007"
+          "TEST-007",
+          "TC-RA-007"
         ],
-        "mapped_scenario_ids": [],
+        "mapped_scenario_ids": [
+          "SC-AUTO-TC-RA-007"
+        ],
         "mapped_qa_case_ids": []
       }
     ],
-    "updated_at": "2026-06-26T09:39:22.839204+00:00",
+    "updated_at": "2026-06-26T12:21:31.514649+00:00",
     "task_ledger_path": "docs/beacon/v1.6.3/execution/tasks-beacon-runtime-release-alignment-v163.md"
   },
   "implementation_order": {},
@@ -1009,8 +1030,8 @@
     "docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/tests.md",
     "docs/beacon/v1.6.3/.machine/qa/beacon-runtime-release-alignment-v163.ac-test-matrix.json",
     "docs/beacon/v1.6.3/.machine/execution/revision-delta-beacon-runtime-release-alignment-v163.json",
-    ".beacon/implement/run-20260626T093921Z-5ad9/request.json",
-    ".beacon/implement/run-20260626T093921Z-5ad9/result.json"
+    ".beacon/implement/run-20260626T122130Z-9617/request.json",
+    ".beacon/implement/run-20260626T122130Z-9617/result.json"
   ],
   "implemented_items": [
     "AC-001",
@@ -1042,10 +1063,10 @@
   "runner_mode": "codex-subagents",
   "revision_id": "R1",
   "team_execution": {
-    "team_name": "implement-team-run-20260626T093921Z-5ad9",
+    "team_name": "implement-team-run-20260626T122130Z-9617",
     "team_surface": "implement-team",
-    "state_path": ".beacon/team/implement-team-run-20260626T093921Z-5ad9/manifest.json",
-    "artifact_dir": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-runtime-release-alignment-v163/run-20260626T093921Z-5ad9",
+    "state_path": ".beacon/team/implement-team-run-20260626T122130Z-9617/manifest.json",
+    "artifact_dir": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-runtime-release-alignment-v163/run-20260626T122130Z-9617",
     "final_state": "terminal",
     "terminal_status": "Pass",
     "runtime": "file",
@@ -1061,32 +1082,32 @@
       "planner": {
         "role": "planner",
         "status": "completed",
-        "json": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-runtime-release-alignment-v163/run-20260626T093921Z-5ad9/planner.json",
-        "markdown": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-runtime-release-alignment-v163/run-20260626T093921Z-5ad9/planner.md"
+        "json": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-runtime-release-alignment-v163/run-20260626T122130Z-9617/planner.json",
+        "markdown": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-runtime-release-alignment-v163/run-20260626T122130Z-9617/planner.md"
       },
       "implementation-architect": {
         "role": "implementation-architect",
         "status": "completed",
-        "json": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-runtime-release-alignment-v163/run-20260626T093921Z-5ad9/implementation-architect.json",
-        "markdown": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-runtime-release-alignment-v163/run-20260626T093921Z-5ad9/implementation-architect.md"
+        "json": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-runtime-release-alignment-v163/run-20260626T122130Z-9617/implementation-architect.json",
+        "markdown": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-runtime-release-alignment-v163/run-20260626T122130Z-9617/implementation-architect.md"
       },
       "implementer": {
         "role": "implementer",
         "status": "completed",
-        "json": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-runtime-release-alignment-v163/run-20260626T093921Z-5ad9/implementer.json",
-        "markdown": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-runtime-release-alignment-v163/run-20260626T093921Z-5ad9/implementer.md"
+        "json": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-runtime-release-alignment-v163/run-20260626T122130Z-9617/implementer.json",
+        "markdown": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-runtime-release-alignment-v163/run-20260626T122130Z-9617/implementer.md"
       },
       "reviewer": {
         "role": "reviewer",
         "status": "pass",
-        "json": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-runtime-release-alignment-v163/run-20260626T093921Z-5ad9/reviewer.json",
-        "markdown": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-runtime-release-alignment-v163/run-20260626T093921Z-5ad9/reviewer.md"
+        "json": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-runtime-release-alignment-v163/run-20260626T122130Z-9617/reviewer.json",
+        "markdown": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-runtime-release-alignment-v163/run-20260626T122130Z-9617/reviewer.md"
       },
       "tester": {
         "role": "tester",
         "status": "completed",
-        "json": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-runtime-release-alignment-v163/run-20260626T093921Z-5ad9/tester.json",
-        "markdown": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-runtime-release-alignment-v163/run-20260626T093921Z-5ad9/tester.md"
+        "json": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-runtime-release-alignment-v163/run-20260626T122130Z-9617/tester.json",
+        "markdown": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-runtime-release-alignment-v163/run-20260626T122130Z-9617/tester.md"
       }
     },
     "review_gates": {
@@ -1152,8 +1173,8 @@
       "rule": "qa_must_not_inherit_implement_private_context"
     },
     "hud": {
-      "json": ".beacon/state/team-hud/implement-team-run-20260626T093921Z-5ad9.json",
-      "html": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-runtime-release-alignment-v163/run-20260626T093921Z-5ad9/index.html"
+      "json": ".beacon/state/team-hud/implement-team-run-20260626T122130Z-9617.json",
+      "html": "docs/beacon/v1.6.3/.machine/trace/codex-subagents/beacon-runtime-release-alignment-v163/run-20260626T122130Z-9617/index.html"
     }
   },
   "team_surface": "implement-team",
@@ -1178,7 +1199,7 @@
   "artifact_writeback_obligations": ".beacon/state/artifact-update-obligations/beacon-runtime-release-alignment-v163.json",
   "artifact_writeback_open_count": 2,
   "requirement_rewrite_input": "docs/beacon/v1.6.3/.machine/execution/requirement-rewrite-input-beacon-runtime-release-alignment-v163.json",
-  "implement_to_qa_handoff": ".beacon/handoffs/implement-to-qa/beacon-runtime-release-alignment-v163/run-20260626T093921Z-5ad9.json",
+  "implement_to_qa_handoff": ".beacon/handoffs/implement-to-qa/beacon-runtime-release-alignment-v163/run-20260626T122130Z-9617.json",
   "auto_qa": {
     "enabled": false,
     "triggered": false,

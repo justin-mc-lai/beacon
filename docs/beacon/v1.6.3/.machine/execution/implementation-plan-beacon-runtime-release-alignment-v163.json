@@ -6,7 +6,7 @@
   "version": "v1.6.3",
   "revision_id": "R1",
   "baseline_hash": "sha256:fb7c347d1de0317d2fdfa41200378e9605de13f042289606be2a17d89cfa2cf1",
-  "plan_hash": "sha256:624ea1b68039944443deb4734dc1f74acd4aa28ab2d207f65249bba0f307df2c",
+  "plan_hash": "sha256:25860212e362fc2bd92dd66c7559e4bf713019ccc61319aabefda3a0a01f48ba",
   "status": "completed",
   "source_refs": {
     "user_story": "docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/truth.md",
@@ -73,7 +73,7 @@
     "review_gates": [],
     "qa_coverage_hints": [],
     "evidence_lines": {},
-    "generated_at": "2026-06-26T09:39:17.965338+00:00",
+    "generated_at": "2026-06-26T12:23:28.123297+00:00",
     "feature": "beacon-runtime-release-alignment-v163",
     "feature_slug": "beacon-runtime-release-alignment-v163",
     "prd_ref": "docs/beacon/v1.6.3/prd/beacon-runtime-release-alignment-v163.md",
@@ -146,18 +146,35 @@
         ".beacon/coverage-summary.json",
         ".beacon/qa/features/beacon-runtime-release-alignment-v163/ac-closure.json",
         ".beacon/qa/features/beacon-runtime-release-alignment-v163/scorecard.json",
-        ".beacon/release-gate-report.json"
+        ".beacon/release-gate-report.json",
+        "run:run-20260626T122130Z-9617",
+        "verify:run-20260626T122130Z-9617-tester",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/summary.json",
+        "verify:run-20260626T202138507937"
       ],
       "changed_files": [
         ".beacon/evidence-manifest.json",
         ".beacon/state/agent-surfaces.json",
         "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json",
         "docs/beacon/v1.6.3/.machine/requirement/feature-package-validation.json",
-        "docs/beacon/v1.6.3/execution/architecture-blueprint.md"
+        "docs/beacon/v1.6.3/execution/architecture-blueprint.md",
+        "docs/beacon/v1.6.3/.machine/execution/git-workflow-beacon-runtime-release-alignment-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-runtime-release-alignment-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-plan-beacon-runtime-release-alignment-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-plan-beacon-runtime-release-alignment-v163.progress.json",
+        "docs/beacon/v1.6.3/execution/implementation-plan-beacon-runtime-release-alignment-v163.md",
+        "docs/beacon/v1.6.3/execution/tasks-beacon-runtime-release-alignment-v163.md"
       ],
       "blocked_reason": "",
       "started_at": "2026-06-26T09:39:22.740205+00:00",
-      "completed_at": "2026-06-26T09:39:22.827391+00:00",
+      "completed_at": "2026-06-26T12:21:31.501958+00:00",
       "active_run_id": ""
     },
     {
@@ -171,9 +188,12 @@
         "AC-002"
       ],
       "mapped_test_ids": [
-        "TEST-002"
+        "TEST-002",
+        "TC-RA-002"
       ],
-      "mapped_scenario_ids": [],
+      "mapped_scenario_ids": [
+        "SC-AUTO-TC-RA-002"
+      ],
       "mapped_qa_case_ids": [],
       "depends_on": [
         "ITASK-001"
@@ -212,18 +232,35 @@
         ".beacon/coverage-summary.json",
         ".beacon/qa/features/beacon-runtime-release-alignment-v163/ac-closure.json",
         ".beacon/qa/features/beacon-runtime-release-alignment-v163/scorecard.json",
-        ".beacon/release-gate-report.json"
+        ".beacon/release-gate-report.json",
+        "run:run-20260626T122130Z-9617",
+        "verify:run-20260626T122130Z-9617-tester",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/summary.json",
+        "verify:run-20260626T202138507937"
       ],
       "changed_files": [
         ".beacon/evidence-manifest.json",
         ".beacon/state/agent-surfaces.json",
         "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json",
         "docs/beacon/v1.6.3/.machine/requirement/feature-package-validation.json",
-        "docs/beacon/v1.6.3/execution/architecture-blueprint.md"
+        "docs/beacon/v1.6.3/execution/architecture-blueprint.md",
+        "docs/beacon/v1.6.3/.machine/execution/git-workflow-beacon-runtime-release-alignment-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-runtime-release-alignment-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-plan-beacon-runtime-release-alignment-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-plan-beacon-runtime-release-alignment-v163.progress.json",
+        "docs/beacon/v1.6.3/execution/implementation-plan-beacon-runtime-release-alignment-v163.md",
+        "docs/beacon/v1.6.3/execution/tasks-beacon-runtime-release-alignment-v163.md"
       ],
       "blocked_reason": "",
       "started_at": "2026-06-26T09:39:22.827402+00:00",
-      "completed_at": "2026-06-26T09:39:22.827403+00:00",
+      "completed_at": "2026-06-26T12:21:31.501979+00:00",
       "active_run_id": ""
     },
     {
@@ -237,9 +274,12 @@
         "AC-003"
       ],
       "mapped_test_ids": [
-        "TEST-003"
+        "TEST-003",
+        "TC-RA-003"
       ],
-      "mapped_scenario_ids": [],
+      "mapped_scenario_ids": [
+        "SC-AUTO-TC-RA-003"
+      ],
       "mapped_qa_case_ids": [],
       "depends_on": [
         "ITASK-002"
@@ -278,18 +318,35 @@
         ".beacon/coverage-summary.json",
         ".beacon/qa/features/beacon-runtime-release-alignment-v163/ac-closure.json",
         ".beacon/qa/features/beacon-runtime-release-alignment-v163/scorecard.json",
-        ".beacon/release-gate-report.json"
+        ".beacon/release-gate-report.json",
+        "run:run-20260626T122130Z-9617",
+        "verify:run-20260626T122130Z-9617-tester",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/summary.json",
+        "verify:run-20260626T202138507937"
       ],
       "changed_files": [
         ".beacon/evidence-manifest.json",
         ".beacon/state/agent-surfaces.json",
         "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json",
         "docs/beacon/v1.6.3/.machine/requirement/feature-package-validation.json",
-        "docs/beacon/v1.6.3/execution/architecture-blueprint.md"
+        "docs/beacon/v1.6.3/execution/architecture-blueprint.md",
+        "docs/beacon/v1.6.3/.machine/execution/git-workflow-beacon-runtime-release-alignment-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-runtime-release-alignment-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-plan-beacon-runtime-release-alignment-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-plan-beacon-runtime-release-alignment-v163.progress.json",
+        "docs/beacon/v1.6.3/execution/implementation-plan-beacon-runtime-release-alignment-v163.md",
+        "docs/beacon/v1.6.3/execution/tasks-beacon-runtime-release-alignment-v163.md"
       ],
       "blocked_reason": "",
       "started_at": "2026-06-26T09:39:22.827409+00:00",
-      "completed_at": "2026-06-26T09:39:22.827411+00:00",
+      "completed_at": "2026-06-26T12:21:31.501992+00:00",
       "active_run_id": ""
     },
     {
@@ -303,9 +360,12 @@
         "AC-004"
       ],
       "mapped_test_ids": [
-        "TEST-004"
+        "TEST-004",
+        "TC-RA-004"
       ],
-      "mapped_scenario_ids": [],
+      "mapped_scenario_ids": [
+        "SC-AUTO-TC-RA-004"
+      ],
       "mapped_qa_case_ids": [],
       "depends_on": [
         "ITASK-003"
@@ -344,18 +404,35 @@
         ".beacon/coverage-summary.json",
         ".beacon/qa/features/beacon-runtime-release-alignment-v163/ac-closure.json",
         ".beacon/qa/features/beacon-runtime-release-alignment-v163/scorecard.json",
-        ".beacon/release-gate-report.json"
+        ".beacon/release-gate-report.json",
+        "run:run-20260626T122130Z-9617",
+        "verify:run-20260626T122130Z-9617-tester",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/summary.json",
+        "verify:run-20260626T202138507937"
       ],
       "changed_files": [
         ".beacon/evidence-manifest.json",
         ".beacon/state/agent-surfaces.json",
         "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json",
         "docs/beacon/v1.6.3/.machine/requirement/feature-package-validation.json",
-        "docs/beacon/v1.6.3/execution/architecture-blueprint.md"
+        "docs/beacon/v1.6.3/execution/architecture-blueprint.md",
+        "docs/beacon/v1.6.3/.machine/execution/git-workflow-beacon-runtime-release-alignment-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-runtime-release-alignment-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-plan-beacon-runtime-release-alignment-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-plan-beacon-runtime-release-alignment-v163.progress.json",
+        "docs/beacon/v1.6.3/execution/implementation-plan-beacon-runtime-release-alignment-v163.md",
+        "docs/beacon/v1.6.3/execution/tasks-beacon-runtime-release-alignment-v163.md"
       ],
       "blocked_reason": "",
       "started_at": "2026-06-26T09:39:22.827416+00:00",
-      "completed_at": "2026-06-26T09:39:22.827418+00:00",
+      "completed_at": "2026-06-26T12:21:31.502004+00:00",
       "active_run_id": ""
     },
     {
@@ -369,9 +446,12 @@
         "AC-005"
       ],
       "mapped_test_ids": [
-        "TEST-005"
+        "TEST-005",
+        "TC-RA-005"
       ],
-      "mapped_scenario_ids": [],
+      "mapped_scenario_ids": [
+        "SC-AUTO-TC-RA-005"
+      ],
       "mapped_qa_case_ids": [],
       "depends_on": [
         "ITASK-004"
@@ -410,18 +490,35 @@
         ".beacon/coverage-summary.json",
         ".beacon/qa/features/beacon-runtime-release-alignment-v163/ac-closure.json",
         ".beacon/qa/features/beacon-runtime-release-alignment-v163/scorecard.json",
-        ".beacon/release-gate-report.json"
+        ".beacon/release-gate-report.json",
+        "run:run-20260626T122130Z-9617",
+        "verify:run-20260626T122130Z-9617-tester",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/summary.json",
+        "verify:run-20260626T202138507937"
       ],
       "changed_files": [
         ".beacon/evidence-manifest.json",
         ".beacon/state/agent-surfaces.json",
         "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json",
         "docs/beacon/v1.6.3/.machine/requirement/feature-package-validation.json",
-        "docs/beacon/v1.6.3/execution/architecture-blueprint.md"
+        "docs/beacon/v1.6.3/execution/architecture-blueprint.md",
+        "docs/beacon/v1.6.3/.machine/execution/git-workflow-beacon-runtime-release-alignment-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-runtime-release-alignment-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-plan-beacon-runtime-release-alignment-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-plan-beacon-runtime-release-alignment-v163.progress.json",
+        "docs/beacon/v1.6.3/execution/implementation-plan-beacon-runtime-release-alignment-v163.md",
+        "docs/beacon/v1.6.3/execution/tasks-beacon-runtime-release-alignment-v163.md"
       ],
       "blocked_reason": "",
       "started_at": "2026-06-26T09:39:22.827423+00:00",
-      "completed_at": "2026-06-26T09:39:22.827424+00:00",
+      "completed_at": "2026-06-26T12:21:31.502017+00:00",
       "active_run_id": ""
     },
     {
@@ -435,9 +532,12 @@
         "AC-006"
       ],
       "mapped_test_ids": [
-        "TEST-006"
+        "TEST-006",
+        "TC-RA-006"
       ],
-      "mapped_scenario_ids": [],
+      "mapped_scenario_ids": [
+        "SC-AUTO-TC-RA-006"
+      ],
       "mapped_qa_case_ids": [],
       "depends_on": [
         "ITASK-005"
@@ -476,18 +576,35 @@
         ".beacon/coverage-summary.json",
         ".beacon/qa/features/beacon-runtime-release-alignment-v163/ac-closure.json",
         ".beacon/qa/features/beacon-runtime-release-alignment-v163/scorecard.json",
-        ".beacon/release-gate-report.json"
+        ".beacon/release-gate-report.json",
+        "run:run-20260626T122130Z-9617",
+        "verify:run-20260626T122130Z-9617-tester",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/summary.json",
+        "verify:run-20260626T202138507937"
       ],
       "changed_files": [
         ".beacon/evidence-manifest.json",
         ".beacon/state/agent-surfaces.json",
         "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json",
         "docs/beacon/v1.6.3/.machine/requirement/feature-package-validation.json",
-        "docs/beacon/v1.6.3/execution/architecture-blueprint.md"
+        "docs/beacon/v1.6.3/execution/architecture-blueprint.md",
+        "docs/beacon/v1.6.3/.machine/execution/git-workflow-beacon-runtime-release-alignment-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-runtime-release-alignment-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-plan-beacon-runtime-release-alignment-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-plan-beacon-runtime-release-alignment-v163.progress.json",
+        "docs/beacon/v1.6.3/execution/implementation-plan-beacon-runtime-release-alignment-v163.md",
+        "docs/beacon/v1.6.3/execution/tasks-beacon-runtime-release-alignment-v163.md"
       ],
       "blocked_reason": "",
       "started_at": "2026-06-26T09:39:22.827429+00:00",
-      "completed_at": "2026-06-26T09:39:22.827431+00:00",
+      "completed_at": "2026-06-26T12:21:31.502029+00:00",
       "active_run_id": ""
     },
     {
@@ -501,9 +618,12 @@
         "AC-007"
       ],
       "mapped_test_ids": [
-        "TEST-007"
+        "TEST-007",
+        "TC-RA-007"
       ],
-      "mapped_scenario_ids": [],
+      "mapped_scenario_ids": [
+        "SC-AUTO-TC-RA-007"
+      ],
       "mapped_qa_case_ids": [],
       "depends_on": [
         "ITASK-006"
@@ -542,18 +662,35 @@
         ".beacon/coverage-summary.json",
         ".beacon/qa/features/beacon-runtime-release-alignment-v163/ac-closure.json",
         ".beacon/qa/features/beacon-runtime-release-alignment-v163/scorecard.json",
-        ".beacon/release-gate-report.json"
+        ".beacon/release-gate-report.json",
+        "run:run-20260626T122130Z-9617",
+        "verify:run-20260626T122130Z-9617-tester",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260626T202138507937/summary.json",
+        "verify:run-20260626T202138507937"
       ],
       "changed_files": [
         ".beacon/evidence-manifest.json",
         ".beacon/state/agent-surfaces.json",
         "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-host.json",
         "docs/beacon/v1.6.3/.machine/requirement/feature-package-validation.json",
-        "docs/beacon/v1.6.3/execution/architecture-blueprint.md"
+        "docs/beacon/v1.6.3/execution/architecture-blueprint.md",
+        "docs/beacon/v1.6.3/.machine/execution/git-workflow-beacon-runtime-release-alignment-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-runtime-release-alignment-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-plan-beacon-runtime-release-alignment-v163.json",
+        "docs/beacon/v1.6.3/.machine/execution/implementation-plan-beacon-runtime-release-alignment-v163.progress.json",
+        "docs/beacon/v1.6.3/execution/implementation-plan-beacon-runtime-release-alignment-v163.md",
+        "docs/beacon/v1.6.3/execution/tasks-beacon-runtime-release-alignment-v163.md"
       ],
       "blocked_reason": "",
       "started_at": "2026-06-26T09:39:22.827436+00:00",
-      "completed_at": "2026-06-26T09:39:22.827437+00:00",
+      "completed_at": "2026-06-26T12:21:31.502041+00:00",
       "active_run_id": ""
     }
   ],
@@ -722,7 +859,7 @@
       "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
     ],
     "source": "technical_review_contract",
-    "generated_at": "2026-06-26T09:39:17.967087+00:00",
+    "generated_at": "2026-06-26T12:23:28.124811+00:00",
     "baseline_id": "impl-delivery-baseline-v1.6.3-beacon-runtime-release-alignment-v163-R1",
     "transaction_id": "tx-7a963968c4e644695",
     "source_hash": "sha256:b7e765f9de2eb2b58dbccd3d05f00b7cfb578a4d99bd57ea04dfc2f84020de99",
@@ -763,13 +900,11 @@
     "projection_source": "implementation_delivery_baseline_envelope"
   },
   "canonical_envelope_ref": "docs/beacon/v1.6.3/.machine/execution/implementation-delivery-baseline-beacon-runtime-release-alignment-v163.json",
-  "generated_at": "2026-06-26T09:39:18.097937+00:00",
+  "generated_at": "2026-06-26T12:23:28.253707+00:00",
   "baseline_id": "impl-delivery-baseline-v1.6.3-beacon-runtime-release-alignment-v163-R1",
   "transaction_id": "tx-7a963968c4e644695",
   "source_hash": "sha256:b7e765f9de2eb2b58dbccd3d05f00b7cfb578a4d99bd57ea04dfc2f84020de99",
   "projection_seq": 1,
   "projection_source": "implementation_delivery_baseline_envelope",
-  "updated_at": "2026-06-26T09:39:36.836871+00:00",
-  "accepted_at": "2026-06-26T09:39:36.836794+00:00",
-  "accepted_by": "qa"
+  "updated_at": "2026-06-26T12:23:28.253750+00:00"
 }

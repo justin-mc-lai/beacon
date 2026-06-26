@@ -4,7 +4,7 @@
 - feature: `beacon-runtime-release-alignment-v163`
 - revision_id: `R1`
 - verdict: `passed`
-- accepted_at: `2026-06-26T09:39:36.691874+00:00`
+- accepted_at: `2026-06-26T12:21:45.383165+00:00`
 - accepted_by: `qa`
 
 ## Summary
