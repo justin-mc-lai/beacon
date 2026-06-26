@@ -1,25 +1,25 @@
 {
   "schema_version": "1.0",
-  "feature": "beacon-post-release-hook-agent-coverage-v163",
-  "feature_slug": "beacon-post-release-hook-agent-coverage-v163",
+  "feature": "beacon-runtime-release-alignment-v163",
+  "feature_slug": "beacon-runtime-release-alignment-v163",
   "version": "v1.6.3",
   "status": "pass",
   "blocked": false,
   "reason_code": "",
-  "generated_at": "2026-06-26T09:14:17.426188+00:00",
-  "package_dir": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163",
+  "generated_at": "2026-06-26T09:29:03.956395+00:00",
+  "package_dir": "docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163",
   "truth_frontmatter": {
-    "slug": "beacon-post-release-hook-agent-coverage-v163",
+    "slug": "beacon-runtime-release-alignment-v163",
     "version": "v1.6.3",
     "status": "frozen",
     "revision_id": "R1",
     "language": "zh",
-    "change_reason": "R1 — 修复 post-release hook 只覆盖 codex+claude、漏 cursor/windsurf/trae 的 agent 覆盖缺陷",
+    "change_reason": "R1 — 修复 release gate 不要求 runtime==docs + post-release hook 不 bump runtime，导致 skills/runtime 撕裂",
     "source_revision_id": "null",
     "canonical_refs": {
-      "prd": "docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163/truth.md",
-      "user_story": "docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163/truth.md",
-      "test_case": "docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163/tests.md"
+      "prd": "docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/truth.md",
+      "user_story": "docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/truth.md",
+      "test_case": "docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/tests.md"
     },
     "parser_contract": "beacon-feature-package-v1",
     "truth_source_model": "feature_package_authoritative",
@@ -44,16 +44,16 @@
   "truth_authority": "markdown_feature_package",
   "json_authority": false,
   "source_paths": {
-    "truth": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163/truth.md",
-    "tests": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163/tests.md",
-    "tasks": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163/tasks.md",
-    "evidence": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-post-release-hook-agent-coverage-v163/evidence.md"
+    "truth": "docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/truth.md",
+    "tests": "docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/tests.md",
+    "tasks": "docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/tasks.md",
+    "evidence": "docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/evidence.md"
   },
   "source_hashes": {
-    "truth": "0c1f6b57150728e6d0627463c7b41dbbaf46553bd39726ac0c4aa445c7560d2f",
-    "tests": "5050b66994078f52db4dda6970c0430139944f2855589e2500b61b23a9a7c362",
-    "tasks": "45dc16b0993ca1996892cf4efbb5862c8e747b3e8cf508f13308969141ca7fd0",
-    "evidence": "b67f629925f720d84f69e82745e46125897a7368d316d9d65618087c5a025685"
+    "truth": "3197f3955a20727fd50afeb2d1364ab91dc861c33972106d3edab934ba98df45",
+    "tests": "6495fd7d3f020f633344b09581590f372ca61f9c260142355b0edd01eb9c8a73",
+    "tasks": "5469cf093c03d539254c24168999cc18d57f714d9f21a22028ab49c7793765cd",
+    "evidence": "7d32b1dfb65513be16f8b5e7d40f88ad3735cb4ce7db144c71164529aeb028a1"
   },
   "runtime_json_requires_markdown_twin": false
 }

@@ -2,22 +2,74 @@
   "stage": "release",
   "mode": "strict",
   "profile": "release-global",
-  "status": "Pass",
-  "issues": [],
+  "status": "Blocked",
+  "issues": [
+    {
+      "reason_code": "implement_prompt_boundary_missing",
+      "severity": "critical",
+      "message": "implement prompt boundary verdict is not release-safe for feature beacon-runtime-release-alignment-v163: status=missing, classification=-, surface=-",
+      "blocked": true,
+      "details": {
+        "required": true,
+        "status": "missing",
+        "blocked": true,
+        "classification": "",
+        "reason_code": "implement_prompt_boundary_missing",
+        "next_action": "",
+        "recommended_command": "",
+        "surface": "",
+        "prompt": "",
+        "matched_signals": []
+      }
+    },
+    {
+      "reason_code": "feature_release_lane_missing",
+      "severity": "critical",
+      "message": "test contract governance blocked release: ['feature_release_lane_missing']",
+      "blocked": true,
+      "recommended_command": "beacon doctor build-test-contract-index \"beacon-runtime-release-alignment-v163\" --project-root . --version v1.6.3 --json",
+      "repair": [
+        "beacon doctor build-test-contract-index \"beacon-runtime-release-alignment-v163\" --project-root . --version v1.6.3 --json",
+        "beacon doctor verify-test-contract-index \"beacon-runtime-release-alignment-v163\" --project-root . --version v1.6.3 --strict --json"
+      ],
+      "details": {
+        "reason_codes": [
+          "feature_release_lane_missing"
+        ],
+        "index_path": "docs/beacon/v1.6.3/.machine/testing/test-contract-index.json",
+        "lane_counts": {
+          "feature_release_facing": 7,
+          "current_runtime_contract": 0,
+          "generated_surface_sync": 0,
+          "compatibility_contract": 0,
+          "legacy_snapshot": 0,
+          "browser_runtime_admission": 0
+        }
+      }
+    },
+    {
+      "reason_code": "spec_impl_drift_detected",
+      "severity": "critical",
+      "message": "spec fingerprint mismatch between docs and execution evidence (expected=2579a6e9609b, actual=39016cd136c2)",
+      "blocked": true
+    }
+  ],
   "doc_impl_verdict": {
     "enabled": true,
     "version": "v1.6.3",
-    "status": "pass",
+    "status": "blocked",
     "baseline_present": true,
-    "baseline_id": "bl-run-v163-release-001-004",
-    "expected_spec_fingerprint": "39016cd136c2410f3fc9771bcff6d46fb444760169a2d6411ffecd0400cfb482",
+    "baseline_id": "bl-run-20260625T082744Z-e564-002",
+    "expected_spec_fingerprint": "2579a6e9609bbb1129118aba9eadc3a28a4e956128cf383364b5c4ee24105b60",
     "actual_spec_fingerprint": "39016cd136c2410f3fc9771bcff6d46fb444760169a2d6411ffecd0400cfb482",
-    "reason_codes": []
+    "reason_codes": [
+      "spec_impl_drift_detected"
+    ]
   },
-  "blocked_count": 0,
+  "blocked_count": 3,
   "force": false,
   "dry_run": false,
   "version": "v1.6.3",
   "run_id": "run-20260626T163548667695",
-  "updated_at": "2026-06-26T09:21:21.127912+00:00"
+  "updated_at": "2026-06-26T09:37:26.282874+00:00"
 }
