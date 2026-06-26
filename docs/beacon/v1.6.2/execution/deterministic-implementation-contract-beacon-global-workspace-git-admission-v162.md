@@ -3,9 +3,9 @@
 - feature: `beacon-global-workspace-git-admission-v162`
 - version: `v1.6.2`
 - revision_id: `R3`
-- review_status: `approved`
-- approved_by: `implement-operator`
-- reviewed_at: `2026-06-23T06:36:39.498803+00:00`
+- review_status: `draft`
+- approved_by: ``
+- reviewed_at: ``
 
 ## Git
 - base_branch: `beacon/v1.6.2`
