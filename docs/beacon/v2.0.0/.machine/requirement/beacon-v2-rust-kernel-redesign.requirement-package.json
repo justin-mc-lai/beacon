@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-06-13T23:09:10.139656+00:00",
+  "generated_at": "2026-06-28T13:23:40.290746+00:00",
   "feature": "beacon-v2-rust-kernel-redesign",
   "feature_slug": "beacon-v2-rust-kernel-redesign",
   "version": "v2.0.0",
@@ -18,21 +18,22 @@
     "evidence": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/evidence.md"
   },
   "source_hashes": {
-    "truth": "53cc14aed816ab49dbc50499978cd8e076eba1d9c771ea1b7c9b80ea1a0ebbda",
-    "tests": "8c87c37a540c65902a717cb0f7f898a0b0cc1f7156ad4401c748c4e35f4dc0dd",
-    "tasks": "b08d044cbde9d7902a3f2ee1fd5388e5a11a8f9899e76ec6b917cf8deaf9615e",
-    "evidence": "8ee3404e6290203f17496840e079270c07d6a284156f242a766c9e374b5260f7"
+    "truth": "9e1e2cac9e0743ebb7c585d96fe8fa84ea177661b5155b17a3f386f286d4912c",
+    "tests": "6fe13f29ef6757d23675b48b3ddd21e27e2db4a210d4c4df2a8cf4b28105693f",
+    "tasks": "00ee635bd331347928a01ef95e41103166d22f746b32bccc1070dec0d7c8424c",
+    "evidence": "2cdcdb756b0ef22653e51afe1dc12ad1806c169e11a53afd9f19937c8781d1bc"
   },
   "truth_frontmatter": {
     "slug": "beacon-v2-rust-kernel-redesign",
     "version": "v2.0.0",
     "status": "frozen",
     "language": "zh",
-    "revision": "r4-frozen",
+    "revision": "r6-draft",
     "canonical_refs": {
-      "prd": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
-      "user_story": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
-      "test_case": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tests.md"
+      "truth": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
+      "tests": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tests.md",
+      "tasks": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tasks.md",
+      "evidence": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/evidence.md"
     },
     "parser_contract": "beacon-feature-package-v1",
     "truth_source_model": "feature_package_authoritative",
@@ -42,6 +43,16 @@
   },
   "frontmatter_errors": [],
   "acceptance_criteria": [
+    {
+      "ac_id": "AC-102",
+      "theme": "",
+      "description": "- **planner_review 多代理 runtime**（对齐 v1.6 `beacon-pln-review-runtime-multi-agent-v160`：reviewer lanes + synthesis + fallback，**AC-102**）"
+    },
+    {
+      "ac_id": "AC-101",
+      "theme": "",
+      "description": "- **Truth Integrity Gate**（对齐 v1.6 `beacon-truth-integrity-gates-v160`：freeze/refreeze hard block，**AC-101**）"
+    },
     {
       "ac_id": "AC-001",
       "theme": "",
@@ -280,7 +291,7 @@
     {
       "ac_id": "AC-100",
       "theme": "",
-      "description": "- **AC-100**（P3）：`ImplementHarnessBackend` 完成 1 次真 integration iteration（**D-V2-005 rejected defer**）：经 `beacon implement` harness 在 worktree 内跑通一轮；输出 schema 与 AC-042 一致；**非** subprocess 替身或空 contract。"
+      "description": "- **AC-100**（P3）：`ImplementHarnessBackend` 完成 1 次真 integration iteration（**D-V2-005 rejected defer**）：经 `beacon implement` harness 在 worktree 内跑通一轮；输出 schema 与 AC-042 一致；禁止 subprocess-only 冒充 harness 或 zero-assertion integration test。"
     },
     {
       "ac_id": "AC-047",
@@ -478,6 +489,26 @@
       "description": "- **AC-098**：frozen package 权威高于 plan；plan 变更须 promote。"
     },
     {
+      "ac_id": "AC-101",
+      "theme": "",
+      "description": "- **AC-101**（P3）：`beacon-gate` 在 freeze/refreeze 前执行 **Truth Integrity Gate**，语义对齐 v1.6 `build_truth_integrity_gate`：空缺 AC、软 TC、未拍板 deferral、假交付、package validation 失败 → hard block + `repair_route`；已 frozen 历史包默认 `audit_only` 不阻断。"
+    },
+    {
+      "ac_id": "AC-102",
+      "theme": "",
+      "description": "- **AC-102**（P2）：`beacon-orchestrator` 的 `planner_review()` 必须产出 v1.6 multi-agent runtime 同构字段（`reviewer_lanes`、`findings`、`synthesis`、`execution_mode`、`fallback_reason`、`runtime_evidence_only=true`）；artifact 写入 `artifact_refs`；无 subagent 时 **禁止** 声称 parallel execution。"
+    },
+    {
+      "ac_id": "AC-103",
+      "theme": "",
+      "description": "- **AC-103**（P3）：`beacon doctor verify-truth-integrity` 在 v2 路由到 gate 或 PyO3 compat；`--mode block` exit code 与 v1.6 一致。"
+    },
+    {
+      "ac_id": "AC-104",
+      "theme": "",
+      "description": "- **AC-104**（P0 证据）：`packages/beacon-rs/` workspace 六 crate + P0 unit tests **已完成**（2026-06-13，`cargo test --workspace` 12 passed）；见 `evidence.md` Implementation Candidate Evidence。"
+    },
+    {
       "ac_id": "AC-099",
       "theme": "",
       "description": "| D-V2-004 | worktree 全模式 parity | 用户拒绝延期 | **rejected**（in-scope **AC-099** P3） | — |"
@@ -493,7 +524,832 @@
       "description": "**AC**：AC-077–079, AC-092, **AC-011**"
     }
   ],
-  "test_rows": [],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "unit",
+      "command": "`test -d packages/beacon-rs/beacon-core`",
+      "assertion": "Rust workspace",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "unit",
+      "command": "`cargo build -p beacon-python`",
+      "assertion": "PyO3 可编译",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "unit",
+      "command": "verbose 仅 fallback 显示 compat_route=python",
+      "assertion": "新能力优先 Rust",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "contract",
+      "command": "`beacon truth-map resolve … --version v2.0.0 --json`",
+      "assertion": "truth package authority",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-005",
+      "layer": "unit",
+      "command": "schema 无 truth_body 列",
+      "assertion": "DB 无需求正文",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-006",
+      "layer": "contract",
+      "command": "`cargo test -p beacon-store storage_authority_non_supremacy` — spine gate 读 DB；仅改 `.beacon/gate-report.json` 不改变 `beacon spine gate --json`；schema 无 truth_body",
+      "assertion": "QA JSON 非权威",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-007",
+      "tc_id": "TC-007",
+      "layer": "contract",
+      "command": "`cargo test -p beacon-store three_layer_separation` — L1=MD resolve；L2=`~/.beacon/beacon.db`；L3=`<project>/.beacon/*` blob；写 truth 正文进 DB → `STORAGE_AUTHORITY_VIOLATION`",
+      "assertion": "三层分离",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-008",
+      "tc_id": "TC-008",
+      "layer": "contract",
+      "command": "`cargo test -p beacon-store per_project_db_forbidden` — register 后不创建 `<project>/.beacon/beacon.db`；Spine 仅读 `BEACON_STORE_PATH` 全局库",
+      "assertion": "否决 project db",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-009",
+      "tc_id": "TC-009",
+      "layer": "contract",
+      "command": "`cargo test -p beacon-store loop_runs_non_authority` — v2 运行时不写 `loop-runs.db`；migration fixture 导入 global 后 ledger 只读",
+      "assertion": "loop-runs 非权威",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-010",
+      "tc_id": "TC-010",
+      "layer": "unit",
+      "command": "hash 不匹配标 stale",
+      "assertion": "artifact stale",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-011",
+      "tc_id": "TC-011",
+      "layer": "contract",
+      "command": "`beacon doctor projection rebuild` 后 spine 字段一致",
+      "assertion": "projection rebuild",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-012",
+      "tc_id": "TC-012",
+      "layer": "unit",
+      "command": "无 UPDATE API",
+      "assertion": "events append-only",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-013",
+      "tc_id": "TC-013",
+      "layer": "unit",
+      "command": "qa run 后 count+1",
+      "assertion": "gate_results 写入",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-014",
+      "tc_id": "TC-014",
+      "layer": "unit",
+      "command": "run goal 后有 runs 行",
+      "assertion": "runs 启动写入",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-015",
+      "tc_id": "TC-015",
+      "layer": "unit",
+      "command": "无 blob 仍返回 lifecycle",
+      "assertion": "Spine DB-first",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-016",
+      "tc_id": "TC-016",
+      "layer": "unit",
+      "command": "双写检测 fail",
+      "assertion": "v1 JSON 仅迁移",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-017",
+      "tc_id": "TC-017",
+      "layer": "contract",
+      "command": "`beacon spine show --json`",
+      "assertion": "spine show",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-018",
+      "tc_id": "TC-018",
+      "layer": "contract",
+      "command": "`beacon spine list --json`",
+      "assertion": "spine list",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-019",
+      "tc_id": "TC-019",
+      "layer": "contract",
+      "command": "`beacon spine artifacts <run-id>`",
+      "assertion": "spine artifacts",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-020",
+      "tc_id": "TC-020",
+      "layer": "contract",
+      "command": "`beacon spine gate …`",
+      "assertion": "spine gate",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-021",
+      "tc_id": "TC-021",
+      "layer": "contract",
+      "command": "`beacon projects register --path . --json`; `beacon projects list --json \\",
+      "assertion": "projects",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-022",
+      "tc_id": "TC-022",
+      "layer": "unit",
+      "command": "`for c in core store orchestrator gate cli python; test -f packages/beacon-rs/beacon-$c/Cargo.toml; done`; `cargo metadata --no-deps \\",
+      "assertion": "六 crate",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-023",
+      "tc_id": "TC-023",
+      "layer": "unit",
+      "command": "`cargo tree -p beacon-cli`",
+      "assertion": "依赖无环",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-024",
+      "tc_id": "TC-024",
+      "layer": "unit",
+      "command": "`cargo build -p beacon-cli` 无 gRPC feature；truth 记录 D-V2-001 accepted",
+      "assertion": "无 proto 硬依赖",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-025",
+      "tc_id": "TC-025",
+      "layer": "unit",
+      "command": "wc -l 或 ADR",
+      "assertion": "500 行",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-026",
+      "tc_id": "TC-026",
+      "layer": "unit",
+      "command": "unit 非法值失败",
+      "assertion": "WorkflowStage enum",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-027",
+      "tc_id": "TC-027",
+      "layer": "unit",
+      "command": "unit Freeze→Think Err",
+      "assertion": "非法转换",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-028",
+      "tc_id": "TC-028",
+      "layer": "unit",
+      "command": "必带 reason_codes",
+      "assertion": "Blocked codes",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-029",
+      "tc_id": "TC-029",
+      "layer": "unit",
+      "command": "无 deferral id 拒绝",
+      "assertion": "Skipped deferral",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-030",
+      "tc_id": "TC-030",
+      "layer": "unit",
+      "command": "lifecycle_events 记录",
+      "assertion": "Crashed/Timeout",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-031",
+      "tc_id": "TC-031",
+      "layer": "unit",
+      "command": "CHECK 约束",
+      "assertion": "runs.status 12 态",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-032",
+      "tc_id": "TC-032",
+      "layer": "unit",
+      "command": "IntentCapture 等 event_type",
+      "assertion": "plan 链 events",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-033",
+      "tc_id": "TC-033",
+      "layer": "unit",
+      "command": "SIGINT vs --force",
+      "assertion": "stop 语义",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-034",
+      "tc_id": "TC-034",
+      "layer": "unit",
+      "command": "kind=repair",
+      "assertion": "Repairing artifact",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-035",
+      "tc_id": "TC-035",
+      "layer": "unit",
+      "command": "无 import 拒绝",
+      "assertion": "AwaitingQa 门禁",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-036",
+      "tc_id": "TC-036",
+      "layer": "unit",
+      "command": "orchestrator 不能直接 Closed",
+      "assertion": "Closed 门禁",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-037",
+      "tc_id": "TC-037",
+      "layer": "unit",
+      "command": "unit 字段",
+      "assertion": "EvidenceChain",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-038",
+      "tc_id": "TC-038",
+      "layer": "unit",
+      "command": "EVIDENCE_CHAIN_BROKEN",
+      "assertion": "断链",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-039",
+      "tc_id": "TC-039",
+      "layer": "contract",
+      "command": "`cargo test -p beacon-store migration_v1_chain -- --test fixture_v1_evidence_chain` — lifecycle_events 保留；runs.status 可映射 plan 主链",
+      "assertion": "v1 链迁移",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-040",
+      "tc_id": "TC-040",
+      "layer": "unit",
+      "command": "goal/resume/stop/status",
+      "assertion": "run 子命令",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-041",
+      "tc_id": "TC-041",
+      "layer": "unit",
+      "command": "blocked exit != 0",
+      "assertion": "truth-map preflight",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-043",
+      "tc_id": "TC-043",
+      "layer": "integration",
+      "command": "`cargo test -p beacon-orchestrator codex_backend_multi_iterate -- --test fixture_codex_two_rounds`",
+      "assertion": "Codex 真多轮",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-044",
+      "tc_id": "TC-044",
+      "layer": "integration",
+      "command": "`cargo test -p beacon-orchestrator subprocess_backend_iterate -- --test fixture_subprocess_harness`",
+      "assertion": "Subprocess 真一轮",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-045",
+      "tc_id": "TC-045",
+      "layer": "integration",
+      "command": "`cargo test -p beacon-orchestrator claude_backend_iterate`（cred 缺失 → `BLOCKED:missing_claude_cred`）",
+      "assertion": "Claude 真一轮",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-046",
+      "tc_id": "TC-046",
+      "layer": "integration",
+      "command": "`cargo test -p beacon-orchestrator acp_backend_iterate -- --target acp:fixture`",
+      "assertion": "ACP 真一轮",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-047",
+      "tc_id": "TC-047",
+      "layer": "unit",
+      "command": "lifecycle_events notes_injected",
+      "assertion": "checkpoint notes",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-048",
+      "tc_id": "TC-048",
+      "layer": "contract",
+      "command": "`cargo test -p beacon-orchestrator stop_when_qa_pass -- --fixture tests/fixtures/stop_when_qa_pass.json` — qa pass 触发早停→`Stopped`；未 pass 继续 iterate",
+      "assertion": "stop_when",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-049",
+      "tc_id": "TC-049",
+      "layer": "unit",
+      "command": "stdout 无 release_ready",
+      "assertion": "无 QA verdict",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-050",
+      "tc_id": "TC-050",
+      "layer": "unit",
+      "command": "metadata phase + events",
+      "assertion": "phase controller",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-051",
+      "tc_id": "TC-051",
+      "layer": "unit",
+      "command": "p95 < 100ms CI 归档",
+      "assertion": "冷启动 bench",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-052",
+      "tc_id": "TC-052",
+      "layer": "unit",
+      "command": "p95 < 50ms",
+      "assertion": "spine bench",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-053",
+      "tc_id": "TC-053",
+      "layer": "unit",
+      "command": "p95 < 200ms",
+      "assertion": "resolve bench",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-054",
+      "tc_id": "TC-054",
+      "layer": "unit",
+      "command": "p95 < 50ms",
+      "assertion": "gate bench",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-055",
+      "tc_id": "TC-055",
+      "layer": "unit",
+      "command": "p95 < 10ms/file",
+      "assertion": "evidence hash bench",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-056",
+      "tc_id": "TC-056",
+      "layer": "contract",
+      "command": "`cargo test -p beacon-store migration_duration -- --test fixture_typical_project` — wall time <60s；超时 test fail",
+      "assertion": "migration 时长",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-057",
+      "tc_id": "TC-057",
+      "layer": "unit",
+      "command": "bench < 100ms",
+      "assertion": "iteration 调度",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-058",
+      "tc_id": "TC-058",
+      "layer": "unit",
+      "command": "超 500MB 日志",
+      "assertion": "DB 体积 WARN",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-059",
+      "tc_id": "TC-059",
+      "layer": "unit",
+      "command": "doctor verify-context",
+      "assertion": "python shim",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-060",
+      "tc_id": "TC-060",
+      "layer": "unit",
+      "command": "Rust 路径",
+      "assertion": "BEACON_V2=1",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-061",
+      "tc_id": "TC-061",
+      "layer": "unit",
+      "command": "隔离库",
+      "assertion": "BEACON_STORE_PATH",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-062",
+      "tc_id": "TC-062",
+      "layer": "unit",
+      "command": "compat_route=python",
+      "assertion": "compat verbose",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-063",
+      "tc_id": "TC-063",
+      "layer": "contract",
+      "command": "`beacon skill list` 全量 + 每 skill 路由 smoke",
+      "assertion": "**33 skills 全量**",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-064",
+      "tc_id": "TC-064",
+      "layer": "unit",
+      "command": "全子命令",
+      "assertion": "CLI help snapshot",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-065",
+      "tc_id": "TC-065",
+      "layer": "unit",
+      "command": "spine/projects/run validate",
+      "assertion": "--json schema",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-066",
+      "tc_id": "TC-066",
+      "layer": "unit",
+      "command": "集成：5 codes gate 失败往返 + reason-codes.md",
+      "assertion": "reason_codes",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-067",
+      "tc_id": "TC-067",
+      "layer": "unit",
+      "command": "CRUD",
+      "assertion": "projects 表",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-068",
+      "tc_id": "TC-068",
+      "layer": "unit",
+      "command": "is_current 唯一",
+      "assertion": "project_versions",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-069",
+      "tc_id": "TC-069",
+      "layer": "unit",
+      "command": "slug 唯一",
+      "assertion": "feature_packages",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-070",
+      "tc_id": "TC-070",
+      "layer": "unit",
+      "command": "更新",
+      "assertion": "feature_lifecycle",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-071",
+      "tc_id": "TC-071",
+      "layer": "unit",
+      "command": "enum CHECK",
+      "assertion": "runs 表",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-072",
+      "tc_id": "TC-072",
+      "layer": "unit",
+      "command": "append only",
+      "assertion": "lifecycle_events",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-073",
+      "tc_id": "TC-073",
+      "layer": "unit",
+      "command": "gate_type+verdict",
+      "assertion": "gate_results",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-074",
+      "tc_id": "TC-074",
+      "layer": "unit",
+      "command": "hash+abs_path",
+      "assertion": "artifact_refs",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-075",
+      "tc_id": "TC-075",
+      "layer": "unit",
+      "command": "iteration 单调",
+      "assertion": "checkpoints",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-076",
+      "tc_id": "TC-076",
+      "layer": "unit",
+      "command": "unit 公开 API",
+      "assertion": "六 DAO",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-077",
+      "tc_id": "TC-077",
+      "layer": "contract",
+      "command": "`cargo test -p beacon-store migration_runtime_ledger -- --test fixture_runtime_ledger` — row count match；checksum 一致",
+      "assertion": "runtime-ledger 迁移",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-078",
+      "tc_id": "TC-078",
+      "layer": "contract",
+      "command": "`cargo test -p beacon-store migration_loop_runs -- --test fixture_loop_runs` — runs 导入 global；源 loop-runs.db 标记 read-only archive",
+      "assertion": "loop-runs 迁移",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-079",
+      "tc_id": "TC-079",
+      "layer": "contract",
+      "command": "`cargo test -p beacon-store migration_qa_history` — 有 v1 qa fixture 则 import≥1；无 fixture → `BLOCKED:phase-P3-no-qa-history-fixture`（非 skip）",
+      "assertion": "qa 历史迁移",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-080",
+      "tc_id": "TC-080",
+      "layer": "unit",
+      "command": "降级拒绝",
+      "assertion": "user_version",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-081",
+      "tc_id": "TC-081",
+      "layer": "unit",
+      "command": "字段 == SpineSnapshot",
+      "assertion": "SpineDao snapshot",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-082",
+      "tc_id": "TC-082",
+      "layer": "unit",
+      "command": "--status",
+      "assertion": "list 过滤",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-083",
+      "tc_id": "TC-083",
+      "layer": "unit",
+      "command": "相对路径 Err",
+      "assertion": "绝对路径",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-084",
+      "tc_id": "TC-084",
+      "layer": "unit",
+      "command": "core+store+skeleton tests",
+      "assertion": "P0 出口",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-085",
+      "tc_id": "TC-085",
+      "layer": "unit",
+      "command": "spine+projects",
+      "assertion": "P1 出口",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-086",
+      "tc_id": "TC-086",
+      "layer": "unit",
+      "command": "orchestrator+**TC-043/044**",
+      "assertion": "P2 出口",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-087",
+      "tc_id": "TC-087",
+      "layer": "unit",
+      "command": "gate+migration+**TC-045/046/099/100**",
+      "assertion": "P3 出口",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-088",
+      "tc_id": "TC-088",
+      "layer": "unit",
+      "command": "shim+**TC-063 全 skill**",
+      "assertion": "P4 出口",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-089",
+      "tc_id": "TC-089",
+      "layer": "unit",
+      "command": "**D-V2-001 accepted**：deferral ledger 有 accepted 记录；**无** P5 proto job；不阻塞 P6",
+      "assertion": "P5 跳过",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-090",
+      "tc_id": "TC-090",
+      "layer": "unit",
+      "command": "默认 v2+bench",
+      "assertion": "P6 出口",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-091",
+      "tc_id": "TC-091",
+      "layer": "unit",
+      "command": "GHA/job 跑 cargo test beacon-rs",
+      "assertion": "CI matrix",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-092",
+      "tc_id": "TC-092",
+      "layer": "unit",
+      "command": "迁移前 copy ledger",
+      "assertion": "migration 备份",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-093",
+      "tc_id": "TC-093",
+      "layer": "contract",
+      "command": "`cargo test -p beacon-store single_writer_authority` — DB gate 写入后 legacy JSON 双写被拒；reason_code=`DUAL_WRITE_FORBIDDEN`",
+      "assertion": "单一写者",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-094",
+      "tc_id": "TC-094",
+      "layer": "unit",
+      "command": "文档+测试 mock fail→doctor",
+      "assertion": "skill fail 路由",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-095",
+      "tc_id": "TC-095",
+      "layer": "unit",
+      "command": "regression >10% fail",
+      "assertion": "bench 回退阻断 P6",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-096",
+      "tc_id": "TC-096",
+      "layer": "unit",
+      "command": "CI phase jobs",
+      "assertion": "phase smoke",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-097",
+      "tc_id": "TC-097",
+      "layer": "unit",
+      "command": "beacon qa run 全矩阵",
+      "assertion": "evaluator closure",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-098",
+      "tc_id": "TC-098",
+      "layer": "unit",
+      "command": "promote 脚本",
+      "assertion": "plan drift",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-099",
+      "tc_id": "TC-099",
+      "layer": "integration",
+      "command": "`cargo test -p beacon-orchestrator e2e_worktree_modes -- --test fixture_worktree_modes`",
+      "assertion": "worktree 全模式",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-100",
+      "tc_id": "TC-100",
+      "layer": "integration",
+      "command": "`cargo test -p beacon-orchestrator e2e_worktree_harness -- --test fixture_worktree_implement`",
+      "assertion": "ImplementHarness 真一轮",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-101",
+      "tc_id": "TC-101",
+      "layer": "integration",
+      "command": "`cargo test -p beacon-gate tig_freeze_block`",
+      "assertion": "TIG freeze block",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-102",
+      "tc_id": "TC-102",
+      "layer": "integration",
+      "command": "`cargo test -p beacon-orchestrator planner_review_multi_agent`",
+      "assertion": "planner_review artifact",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-103",
+      "tc_id": "TC-103",
+      "layer": "contract",
+      "command": "`beacon doctor verify-truth-integrity <feature> --version v2.0.0 --mode block`",
+      "assertion": "verify-truth-integrity v2",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-104",
+      "tc_id": "TC-104",
+      "layer": "unit",
+      "command": "`cd packages/beacon-rs && cargo test --workspace`",
+      "assertion": "P0 workspace done",
+      "evidence_path": ""
+    }
+  ],
   "task_rows": [
     {
       "id": "TASK-P0-001",
@@ -576,6 +1432,11 @@
       "status": "unchecked"
     },
     {
+      "id": "TASK-P2-007",
+      "title": "**planner_review multi-agent runtime**（AC-102 / TC-102）：Rust orchestrator 调用 v1.6 同构 artifact（lanes/synthesis/fallback）；artifact_refs 持久化。",
+      "status": "unchecked"
+    },
+    {
       "id": "TASK-P3-001",
       "title": "gate 写 `gate_results` + reason_codes 集成测试（TC-066）。",
       "status": "unchecked"
@@ -613,6 +1474,16 @@
     {
       "id": "TASK-P3-008",
       "title": "integration：TC-045–046, TC-099–100, TC-077–079, TC-087, TC-011。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P3-009",
+      "title": "**TIG port**（AC-101 / TC-101）：freeze/refreeze hard block；frozen 历史 audit_only。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P3-010",
+      "title": "**verify-truth-integrity v2 路由**（AC-103 / TC-103）。",
       "status": "unchecked"
     },
     {
@@ -676,8 +1547,22 @@
       "surface": "feature-package-truth",
       "authority": "requirement_truth",
       "canonical_artifact": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
-      "status": "**frozen R1**",
+      "status": "**R2 draft** (r5)",
       "route": "truth.define"
+    },
+    {
+      "surface": "v16-pln-review-runtime",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-pln-review-runtime-multi-agent-v160/truth.md",
+      "status": "**frozen** upstream",
+      "route": "P2"
+    },
+    {
+      "surface": "v16-truth-integrity-gates",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-truth-integrity-gates-v160/truth.md",
+      "status": "**frozen** upstream",
+      "route": "P3"
     },
     {
       "surface": "planner-review-r2",

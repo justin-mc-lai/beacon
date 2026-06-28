@@ -1,13 +1,14 @@
 ---
 slug: beacon-v2-rust-kernel-redesign
 version: v2.0.0
-status: draft
+status: frozen
 language: zh
-revision: r5-draft
+revision: r6-draft
 canonical_refs:
-  prd: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
-  user_story: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
-  test_case: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tests.md
+  truth: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
+  tests: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tests.md
+  tasks: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tasks.md
+  evidence: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/evidence.md
 parser_contract: beacon-feature-package-v1
 truth_source_model: feature_package_authoritative
 truth_map_contract: beacon-truth-map-v1
@@ -34,6 +35,15 @@ beacon-python    -> PyO3 兼容层：33 skills + 现有 Python 业务逻辑渐�
 
 **需求真相** 仍只存在于 Markdown feature package（`docs/beacon/v2.0.0/` + `features/<slug>/truth.md`）。  
 **运行态权威** 迁入机器级全局 SQLite `~/.beacon/beacon.db`；大文件留在项目 `<project>/.beacon/` blob 层，DB 只存绝对路径 + hash 指针。
+
+### Truth 规范基准（R6 增补）
+
+v2.0.0 以 **v1.5.2 package-authoritative cutover** 为 truth 规范全新基准：
+
+- **文档结构**：v2 **不生成** `prd/<slug>.md`、`user-story/<slug>.md`、`qa/test-cases/<slug>.md` 等顶层 legacy 文档。需求真相唯一存在于 `features/<slug>/{truth,tests,tasks,evidence}.md`（v1.5.2 cutover 后已是事实，v2 显式声明继承）。
+- **frontmatter canonical_refs**：使用 package-authoritative 字段名 `truth/tests/tasks/evidence`，不用 legacy `prd/user_story/test_case`。
+- **Rust FSM stage 枚举**：`beacon-core::WorkflowStage`（Think/UserStory/Prd/TestCase/Prototype/Freeze/Implement/Qa/Release/Archive）是**类型层状态机变体名**，保留作 v1.6 兼容（转换表显式标注），**不**等同于文档结构。文档结构无 prd/user-story 顶层文件，与 Rust enum 变体名是两个层面。
+- **状态机真相**：`state_machine_required: true`；Rust 内核的 FSM（WorkflowStage / StageStatus / RunStatus / LifecycleEventType）是运行态权威的机器级投影，Markdown truth 是需求权威，二者通过 `beacon.db` 桥接（DB 存运行态，不存需求真相）。
 
 v2 不新增主生命周期阶段；human-facing 仍为：
 
@@ -76,11 +86,28 @@ plan -> truth -> generate -> evaluate -> release
 | `beacon-truth-integrity-gates-v160` | freeze/refreeze `mode=block`；历史 frozen 包 `audit_only` | P3 |
 | `beacon-loop-goal-closed-loop-orchestrator` | delivery FSM + spine + import/qa 链行为 parity | P2–P3 |
 
+#### v1.6.3 免疫系统修复（R6 增补，语义重现义务）
+
+v2 Rust 内核必须**语义重现**以下 v1.6.3 免疫修复（Rust 实现对齐行为，非仅引用），否则 v2 会重新带回 v1.6.3 之前已修好的漂移：
+
+| v1.6.3 frozen feature | v2 迁移义务（语义重现） | Phase |
+|----------------------|----------------------|-------|
+| `beacon-gate-truth-model-alignment-v163` | Rust `beacon-gate` 按 semver 分流：`<v1.5.2` 顶层目录契约；`≥v1.5.2` package-authoritative feature 包闭环校验 | P3 |
+| `beacon-freeze-integrity-drift-repair-v163` | Rust freeze 校验器：parser_contract 单一源（v1/v2 都合法）、forbidden field 词边界、pytest hard marker、错误自描述 | P3 |
+| `beacon-version-resolve-fail-closed-v163` | Rust 版本解析：消除硬编码 fallback，用 `resolve_target_version`，runtime↔docs drift 守卫 | P1 |
+| `beacon-workflow-memory-completion-gate-v163` | Rust `workflow_memory`：区分 no-run（warn）vs run-without-transaction（fail-closed） | P2 |
+| `beacon-ecosystem-discovery-sync-drift-v163` | Rust manifest sync 扫 features/、sync-materials 重算 hash、freeze 重物化 .machine | P2 |
+| `beacon-truth-format-package-auth-skip-v163` | Rust truth_format 校验对 ≥v1.5.2 跳过 legacy、feature paths 返回 features/、status 从 frontmatter | P3 |
+| `beacon-spec-fingerprint-package-auth-paths-v163` | Rust `_find_layer_files` 扫 features/<slug>/{truth,tests}.md，spec drift 检测对 truth 有效 | P3 |
+| `beacon-post-release-hook-agent-coverage-v163` | Rust post-release hook 覆盖全 5 agent（SUPPORTED_HOST_AGENTS），drift 阻断 | P4 |
+| `beacon-runtime-release-alignment-v163` | Rust release gate 阻断 runtime≠docs，hook 路由 sync-version-surfaces | P3 |
+
 语义源（只读，不复制进 DB）：
 
 - `docs/beacon/v1.6.0/features/beacon-pln-review-runtime-multi-agent-v160/truth.md`
 - `docs/beacon/v1.6.0/features/beacon-truth-integrity-gates-v160/truth.md`
 - `docs/beacon/v1.6.0/execution/beacon-loop-state-spine.md`
+- `docs/beacon/v1.6.3/features/beacon-{gate-truth-model-alignment,freeze-integrity-drift-repair,version-resolve-fail-closed,workflow-memory-completion-gate,ecosystem-discovery-sync-drift,truth-format-package-auth-skip,spec-fingerprint-package-auth-paths,post-release-hook-agent-coverage,runtime-release-alignment}-v163/truth.md`
 
 ## Scope Mode
 
@@ -433,7 +460,7 @@ optional stop_signal, token_usage, agent_name
 5. **无空壳-only AC**；agent/worktree/implement 类 AC 须 integration tier（AC-043–046, AC-099–100）。
 6. **v1.6 upstream**（AC-101–103）在对应 phase 有 behavior-level TC，不得仅用「后续移植」一句带过。
 
-**当前状态**：`draft` / **R2**（revision `r5-draft`）— 2026-06-13 reopen：补 v1.6 TIG + multi-agent planner review + P0 完成证据；待 refreeze。
+**当前状态**：`draft` / **R3**（revision `r6-draft`）— 2026-06-28 reopen：补 v1.6.3 9 个免疫修复 upstream 迁移义务（语义重现）+ Truth 规范基准（v1.5.2 package-authoritative，不生成 prd/user-story 顶层文档）+ canonical_refs 字段名对齐；待 refreeze。
 
 ## User Stories
 
@@ -471,3 +498,4 @@ optional stop_signal, token_usage, agent_name
 | r3.1 | User Intent Snapshot + Alignment Surface vs Phased Backlog；明确海级单包不煮干全 plan |
 | r4 | tests Alignment Surface 行为级 TC；research version projection binding；**frozen R1** |
 | r5 | R2 reopen：v1.6 TIG（AC-101）+ multi-agent planner review（AC-102–103）+ P0 done（AC-104）；upstream frozen inputs 表 |
+| r6 | R3 reopen：补 v1.6.3 9 个免疫修复进 upstream 表（语义重现义务）；Truth 规范基准段（v1.5.2 package-authoritative，不生成 prd/user-story 顶层文档）；canonical_refs 字段名对齐 truth/tests/tasks/evidence |
