@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import re
+import subprocess
 from pathlib import Path
 from typing import Any
 
@@ -259,6 +260,39 @@ def validate_workspace_admission(
     }
 
 
+def _merge_main_into_feature_branch(lane_root: Path, base_branch: str = "main") -> dict[str, Any]:
+    """Merge main into the feature branch before implementation (R4 §4.2, AC-017).
+
+    Ensures implementation bases on main-frozen truth, not a stale dev copy.
+    Returns {status: merged|conflict|up_to_date, base_branch, stdout/stderr}.
+    """
+    base = str(base_branch or "main").strip() or "main"
+    try:
+        result = subprocess.run(
+            ["git", "merge", base, "--no-edit", "--ff"],
+            cwd=str(lane_root),
+            capture_output=True,
+            text=True,
+            timeout=30,
+            check=False,
+        )
+    except Exception as exc:  # noqa: BLE001
+        return {"status": "conflict", "base_branch": base, "stderr": str(exc)}
+    stdout = str(result.stdout or "").strip()
+    stderr = str(result.stderr or "").strip()
+    if result.returncode == 0:
+        already = "Already up to date" in stdout
+        return {
+            "status": "up_to_date" if already else "merged",
+            "base_branch": base,
+            "stdout": stdout,
+            "stderr": stderr,
+        }
+    # conflict — abort to leave the lane clean
+    subprocess.run(["git", "merge", "--abort"], cwd=str(lane_root), capture_output=True, timeout=15, check=False)
+    return {"status": "conflict", "base_branch": base, "stdout": stdout, "stderr": stderr}
+
+
 def run_workspace_admit(
     project_root: Path,
     *,
@@ -313,6 +347,16 @@ def run_workspace_admit(
         payload["summary"] = "failed to create or switch governed worktree lane"
         return payload
     lane_root = Path(str(worktree_attempt.get("worktree_path") or worktree_path)).resolve()
+    # R4 §4.2 / AC-017: merge main into the feature branch so implementation
+    # bases on main-frozen truth, not a stale dev-branch copy.
+    merge_main = _merge_main_into_feature_branch(lane_root, base_branch=base_branch)
+    payload["merge_main"] = merge_main
+    if merge_main.get("status") == "conflict":
+        payload["status"] = "blocked"
+        payload["reason_codes"] = payload.get("reason_codes", []) + ["merge_main_conflict"]
+        payload["reason_code"] = "merge_main_conflict"
+        payload["summary"] = f"merge {base_branch} into {feature_branch} conflicted; resolve before implementing"
+        return payload
     git_head = git_output(lane_root, "rev-parse", "HEAD")
     current_branch = git_output(lane_root, "branch", "--show-current") or feature_branch
     artifact_payload = {
