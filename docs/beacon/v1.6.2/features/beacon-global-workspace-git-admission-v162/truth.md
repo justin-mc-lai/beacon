@@ -2,10 +2,10 @@
 slug: beacon-global-workspace-git-admission-v162
 version: v1.6.2
 status: frozen
-revision_id: R3
+revision_id: R4
 language: zh
-change_reason: R3 — R2 方案 A + version-line package operator closure（upgrade-package 路由；禁止手抄上版）
-source_revision_id: R2
+change_reason: R4 — truth 分支策略：beacon-gen-truth 降 Tier C（truth 在 main 写），implement 前 merge main（对齐 global-boundaries §4.2）
+source_revision_id: R3
 canonical_refs:
   prd: docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md
   user_story: docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md
@@ -188,9 +188,11 @@ flowchart TB
 
 | Tier | Skills | Gate |
 |------|--------|------|
-| **A** | `beacon-gen-implement`, `beacon-gen-change`, `beacon-gen-truth`, `beacon-eval-qa`, `beacon-eval-release`, `beacon-gov-branch` | **Mandatory Step 0** |
+| **A** | `beacon-gen-implement`, `beacon-gen-change`, `beacon-eval-qa`, `beacon-eval-release`, `beacon-gov-branch` | **Mandatory Step 0** |
 | **B** | `beacon-gov-router`, `beacon-gov-debug`, `beacon-gov-doctor`, write-routing planners | Admit when version+feature known |
-| **C** | Read-only skills | Exempt until write |
+| **C** | Read-only skills; `beacon-gen-truth`（truth 在 main 编写，不进 worktree） | Exempt until write |
+
+**R4 变更（truth 分支策略）**：`beacon-gen-truth` 从 Tier A 降级到 Tier C——需求真相在 `main` 主分支编写 + freeze + push（见 `global-boundaries.md` §4.2）。truth 是共享版本真相，不进 per-feature worktree，避免 fork 漂移。仅 implement/qa/release/change 保持 Tier A worktree 隔离。
 
 **Materialization：** `skills/beacon/SKILL.md` template → `setup-agent-surface` 生成各 host skill。
 
@@ -204,7 +206,12 @@ Before ANY repo write or implement/qa/release route:
 2. If status != pass → STOP; show reason_codes; do NOT edit files
 3. Set cwd to worktree_path from payload
 4. Do NOT git checkout elsewhere to "fix" branch
+5. (implement only) Before writing implementation, merge main into the
+   development branch to ensure the implementation bases on main-branch
+   frozen truth, not a stale dev-branch copy (see global-boundaries §4.2)
 ```
+
+**R4 变更**：步骤 5 新增——implement 前必从 `main` merge 到开发分支，确保需求真相来自主分支冻结事实。truth 编写（`beacon-gen-truth`）不走此 preamble（Tier C，在 main 直接写）。
 
 ## Hook Contract（Should — DEF-HOOK）
 
@@ -303,6 +310,36 @@ v1.6.2 feature 已 freeze，但 **version-line delivery package** 未闭合时�
 - 单一 skill 一键生成全部 version-line 树（仍由 doctor upgrade-package 累积步骤负责）
 - 新开 Beacon lifecycle stage
 - 用 release 正文 stub 代替 `beacon-eval-release` 阶段的发布叙事
+
+## Truth 分支策略 (R4)
+
+### 背景
+
+v1.6.2 admission 原把 `beacon-gen-truth` 列 Tier A（强制 worktree admission），导致需求真相在 per-feature worktree 编写——feature 分支 fork 后易与 main 漂移、合并冲突。truth 是共享版本真相，应在 main 积累单一真相源。此变更对齐 `global-boundaries.md` §4.2「Truth 分支策略」。
+
+### R4 User Decisions
+
+| ID | Decision | Value |
+|----|----------|-------|
+| UD-016 | truth 编写分支 | `main` 主分支编写 + freeze + push origin/main；不进 per-feature worktree |
+| UD-017 | beacon-gen-truth Tier | 从 Tier A 降级到 Tier C（read-only/exempt，truth 在 main 写不需 worktree admission） |
+| UD-018 | implement merge main | 开发分支（worktree）实现前必从 `main` merge，确保基于主分支冻结 truth |
+| UD-019 | Tier A 保留 | `beacon-gen-implement`/`beacon-gen-change`/`beacon-eval-qa`/`beacon-eval-release`/`beacon-gov-branch` 保持 Tier A worktree |
+| UD-020 | 代码层延后 | admission 代码实现 merge-main 步骤另开 feature（本次文档层先定） |
+
+### R4 Acceptance Criteria
+
+| AC ID | Theme | Description |
+|-------|-------|-------------|
+| AC-016 | truth-tier-downgrade | `beacon-gen-truth` 不在 Tier A（降级 C），truth 在 main 编写不进 worktree（**Must**） |
+| AC-017 | implement-merge-main | GIT_ADMISSION preamble 含「implement 前 merge main」步骤（**Must**，文档层） |
+| AC-018 | tier-a-preserved | implement/qa/release/change 保持 Tier A worktree（**Must**） |
+
+### R4 Non-Goals
+
+- admission 代码实现 merge-main（UD-020，另开 feature）
+- monorepo truth 分支策略（beacon single_repo）
+- 回溯对齐 v1.6.3 双分支 truth（规范定后单独处理）
 
 
 ## Downstream Routes（post-freeze）

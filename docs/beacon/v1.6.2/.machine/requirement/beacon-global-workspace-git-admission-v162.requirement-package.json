@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-06-23T07:28:19.898228+00:00",
+  "generated_at": "2026-06-28T14:05:09.338694+00:00",
   "feature": "beacon-global-workspace-git-admission-v162",
   "feature_slug": "beacon-global-workspace-git-admission-v162",
   "version": "v1.6.2",
@@ -18,8 +18,8 @@
     "evidence": "docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/evidence.md"
   },
   "source_hashes": {
-    "truth": "749c3b296e8f5037003af35517a7cf4b56f64f53ac5e8185afbc760a155ba790",
-    "tests": "422d2afa3f884a9beb9b1635608c6f536ec02e466292b5c5d99cdbd8cad67566",
+    "truth": "60411dc4b5bbc4819d5d06ab358d5683b2d2dbb33ec2949abe5a5a6076c8a335",
+    "tests": "f4f3b316c64c7a009a2f60effccf869083b49ee560de5e2441f39332e660ca12",
     "tasks": "0db78b7b08f30cbc5d19ba232e83c4b95774701bbc4fdb89d40ebd3d2bb77caa",
     "evidence": "a0d1b6cde250e97a61d99d83787b3184019a8923da23dd9a542409e80e44ebef"
   },
@@ -27,10 +27,10 @@
     "slug": "beacon-global-workspace-git-admission-v162",
     "version": "v1.6.2",
     "status": "frozen",
-    "revision_id": "R3",
+    "revision_id": "R4",
     "language": "zh",
-    "change_reason": "R3 — R2 方案 A + version-line package operator closure（upgrade-package 路由；禁止手抄上版）",
-    "source_revision_id": "R2",
+    "change_reason": "R4 — truth 分支策略：beacon-gen-truth 降 Tier C（truth 在 main 写），implement 前 merge main（对齐 global-boundaries §4.2）",
+    "source_revision_id": "R3",
     "canonical_refs": {
       "prd": "docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md",
       "user_story": "docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md",
@@ -296,6 +296,30 @@
       "layer": "integration",
       "command": "`python3 -m pytest tests/test_v162_agent_eval_admit.py::test_slash_skill_step0_admit -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
       "assertion": "exit 0 或 BLOCKED:Phase-D",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-016",
+      "tc_id": "TC-TB-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v162_truth_branch_strategy.py::test_truth_tier_downgrade -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "beacon-gen-truth 不在 Tier A，truth 在 main 编写",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-017",
+      "tc_id": "TC-TB-002",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v162_truth_branch_strategy.py::test_implement_merge_main_preamble -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "GIT_ADMISSION preamble 含 implement 前 merge main 步骤",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-018",
+      "tc_id": "TC-TB-003",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v162_truth_branch_strategy.py::test_tier_a_preserved -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "implement/qa/release/change 保持 Tier A worktree",
       "evidence_path": ""
     }
   ],

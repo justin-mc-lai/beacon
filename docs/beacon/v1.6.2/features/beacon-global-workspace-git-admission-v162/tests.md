@@ -36,6 +36,9 @@ parser_contract: beacon-feature-package-v1
 | AC-014 | TC-VL-011 | contract | `python3 -m pytest tests/test_v162_version_line_package_closure.py::test_package_gate_repair_commands -q` | repair_commands |
 | AC-015 | TC-VL-020 | integration | `mkdir -p .beacon/qa-tmp && python3 -m beacon doctor upgrade-package --project-root . --version v1.6.2 --json >/dev/null && python3 -m beacon doctor verify-materials --project-root . --version v1.6.2 --strict --json >.beacon/qa-tmp/TC-VL-020.json 2>&1; python3 -c "import json; d=json.load(open('.beacon/qa-tmp/TC-VL-020.json')); ok=(d.get('result') or {}).get('ok'); assert ok is True or d.get('status') in ('PASS','pass')"` | strict pass |
 | AC-011 | TC-WS-100 | integration | `python3 -m pytest tests/test_v162_agent_eval_admit.py::test_slash_skill_step0_admit -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | exit 0 或 BLOCKED:Phase-D |
+| AC-016 | TC-TB-001 | contract | `python3 -m pytest tests/test_v162_truth_branch_strategy.py::test_truth_tier_downgrade -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | beacon-gen-truth 不在 Tier A，truth 在 main 编写 |
+| AC-017 | TC-TB-002 | contract | `python3 -m pytest tests/test_v162_truth_branch_strategy.py::test_implement_merge_main_preamble -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | GIT_ADMISSION preamble 含 implement 前 merge main 步骤 |
+| AC-018 | TC-TB-003 | contract | `python3 -m pytest tests/test_v162_truth_branch_strategy.py::test_tier_a_preserved -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | implement/qa/release/change 保持 Tier A worktree |
 
 ## 验证说明
 

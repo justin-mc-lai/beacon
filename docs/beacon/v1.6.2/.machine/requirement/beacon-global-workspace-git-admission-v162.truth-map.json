@@ -34,10 +34,10 @@
       "slug": "beacon-global-workspace-git-admission-v162",
       "version": "v1.6.2",
       "status": "frozen",
-      "revision_id": "R3",
+      "revision_id": "R4",
       "language": "zh",
-      "change_reason": "R3 — R2 方案 A + version-line package operator closure（upgrade-package 路由；禁止手抄上版）",
-      "source_revision_id": "R2",
+      "change_reason": "R4 — truth 分支策略：beacon-gen-truth 降 Tier C（truth 在 main 写），implement 前 merge main（对齐 global-boundaries §4.2）",
+      "source_revision_id": "R3",
       "canonical_refs": {
         "prd": "docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md",
         "user_story": "docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md",
@@ -63,8 +63,8 @@
       "evidence": "docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/evidence.md"
     },
     "source_hashes": {
-      "truth": "749c3b296e8f5037003af35517a7cf4b56f64f53ac5e8185afbc760a155ba790",
-      "tests": "422d2afa3f884a9beb9b1635608c6f536ec02e466292b5c5d99cdbd8cad67566",
+      "truth": "60411dc4b5bbc4819d5d06ab358d5683b2d2dbb33ec2949abe5a5a6076c8a335",
+      "tests": "f4f3b316c64c7a009a2f60effccf869083b49ee560de5e2441f39332e660ca12",
       "tasks": "0db78b7b08f30cbc5d19ba232e83c4b95774701bbc4fdb89d40ebd3d2bb77caa",
       "evidence": "a0d1b6cde250e97a61d99d83787b3184019a8923da23dd9a542409e80e44ebef"
     },
@@ -81,7 +81,7 @@
         "filename": "truth.md",
         "path": "docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md",
         "exists": true,
-        "source_hash": "749c3b296e8f5037003af35517a7cf4b56f64f53ac5e8185afbc760a155ba790",
+        "source_hash": "60411dc4b5bbc4819d5d06ab358d5683b2d2dbb33ec2949abe5a5a6076c8a335",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -97,7 +97,7 @@
         "filename": "tests.md",
         "path": "docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/tests.md",
         "exists": true,
-        "source_hash": "422d2afa3f884a9beb9b1635608c6f536ec02e466292b5c5d99cdbd8cad67566",
+        "source_hash": "f4f3b316c64c7a009a2f60effccf869083b49ee560de5e2441f39332e660ca12",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -217,7 +217,7 @@
         "truth_authority": true,
         "json_authority": false,
         "generated_governance_state": false,
-        "source_hash": "b051b9ea7a69972b73b6871502c924c43ea31fa9bf9d08289d3e19222fbe46ba"
+        "source_hash": "9174d4dd3008638f67b27df0827c216766f59cd72cb2cdaa9e5c7a98ce1260ca"
       },
       "global_boundaries": {
         "schema_version": "1.0",
@@ -234,7 +234,7 @@
         "truth_authority": true,
         "json_authority": false,
         "generated_governance_state": false,
-        "source_hash": "abf77ffb9ddd5aee9bf8f4600e7b652c2b565eb60cb30f54ecc085778d6b681f"
+        "source_hash": "904a1fa52e1c0ee5830716fc42d0008304524c753392953947c58e21b66c19c9"
       },
       "summary": {
         "schema_version": "1.0",
@@ -319,7 +319,7 @@
         "truth_authority": true,
         "json_authority": false,
         "generated_governance_state": false,
-        "source_hash": "fb8d3c4eec503c4b57f88c1b58c44bbd8fd0de036b741a689dd9274d9dafd710"
+        "source_hash": "8ba0e1a6af1eacfbc4cbe9232ae594a3a4c509d6fd049527a629fe4b91541541"
       }
     },
     "generated_state_surfaces": {
@@ -372,7 +372,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "3be080c744d62ab989b4b15f8d6f3ff4e950392470b1066770d73b0dd1361a58"
+        "source_hash": "606e4db23c4842ea5b8b8fda6d692b972b904e714e9a9af1afe8f2b16038b582"
       },
       "evidence_manifest": {
         "schema_version": "1.0",
@@ -389,7 +389,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "94b600e891e60d4cbc39a431d3566d76c34412284da99ab15d09f83f0cf931fd"
+        "source_hash": "17b89a21d91962f473d7c8ac2f25e19c824e1f4c7a37407f5e32e9ea57f785a8"
       },
       "qa_status": {
         "schema_version": "1.0",
@@ -406,7 +406,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "d7d330f03d6486d6b9e354cd18c57dae18bec3d580b737f58276479b96c09e83"
+        "source_hash": "74ca30542659d716c8ff5bef67ea603ec83e7fdee0da5830261570bf355dc41a"
       },
       "release_gate_report": {
         "schema_version": "1.0",
@@ -423,7 +423,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "832080ab5aeaffb2bee2541738afcce3cd378df7aaa768f24a95b72570609827"
+        "source_hash": "d886c25e8d767c9406a12829a2c8afd07a6686281453b8775e9173e25f8f6545"
       }
     },
     "manifest_authority": false,
@@ -615,7 +615,7 @@
     "diagnostics": []
   },
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-06-23T07:28:19.884423+00:00",
+  "generated_at": "2026-06-28T14:05:09.327271+00:00",
   "truth_authority": false,
   "source_paths": {
     "truth": "docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md",
@@ -624,8 +624,8 @@
     "evidence": "docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/evidence.md"
   },
   "source_hashes": {
-    "truth": "749c3b296e8f5037003af35517a7cf4b56f64f53ac5e8185afbc760a155ba790",
-    "tests": "422d2afa3f884a9beb9b1635608c6f536ec02e466292b5c5d99cdbd8cad67566",
+    "truth": "60411dc4b5bbc4819d5d06ab358d5683b2d2dbb33ec2949abe5a5a6076c8a335",
+    "tests": "f4f3b316c64c7a009a2f60effccf869083b49ee560de5e2441f39332e660ca12",
     "tasks": "0db78b7b08f30cbc5d19ba232e83c4b95774701bbc4fdb89d40ebd3d2bb77caa",
     "evidence": "a0d1b6cde250e97a61d99d83787b3184019a8923da23dd9a542409e80e44ebef"
   }

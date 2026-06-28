@@ -22,7 +22,7 @@
 - prd_path: `docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md` exists=`True`
 - user_story_path: `docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md` exists=`True`
 - test_case_path: `docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/tests.md` exists=`True`
-- upstream_ac_ids: AC-001, AC-002, AC-003, AC-004, AC-005, AC-006, AC-007, AC-008, AC-009, AC-010, AC-011, AC-012, AC-013, AC-014, AC-015
+- upstream_ac_ids: AC-001, AC-002, AC-003, AC-004, AC-005, AC-006, AC-007, AC-008, AC-009, AC-010, AC-011, AC-012, AC-013, AC-014, AC-015, AC-016, AC-017, AC-018
 - missing_test_case_ac_ids: 
 
 ## Version Projection Truth Contract

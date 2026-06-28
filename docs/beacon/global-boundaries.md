@@ -101,6 +101,16 @@ Beacon 的多表面写入必须遵循单真值、多投影、事务一致的原�
 - `.machine/` and sqlite projections of the catalog are read/verify surfaces; drift against catalog MD must fail closed for freeze, qa, and release on the active plane.
 - Default resolver, doctor, status, and truth-map bulk scans use the catalog active set; explicit `--version` may target archived roots for inspect-only commands.
 
+### 4.2 Truth 分支策略（non-monorepo）
+
+非 monorepo 项目（`topology_kind: single_repo`）的 truth 分支职责：
+
+- **需求真相在主分支（main）编写**：`docs/beacon/<version>/` 与 `features/<slug>/{truth,tests,tasks,evidence}.md` 在 `main` 编写 + freeze + push `origin/main`。truth 是共享版本真相，**不进 per-feature worktree**——避免在 feature 分支 fork 后漂移、合并冲突。
+- **implement 用 git worktree 隔离**：`beacon-gen-implement` / `beacon-eval-qa` / `beacon-eval-release` 在专用 worktree（`beacon/v<x>/<feature>` 分支）执行，不污染 main。
+- **implement 前必 merge main**：开发分支（worktree）实现前，先从 `main` merge 到开发分支，确保实现基于主分支冻结的 truth 事实，而非开发分支的滞后副本。
+- **truth 不隔离、实现隔离**：truth 在 main 积累单一真相源；实现隔离避免主分支被半成品污染。两者职责分离。
+- monorepo 场景的 truth 分支策略另定（beacon 当前 single_repo）。
+
 ## 5. Skill 哲学边界
 
 Beacon 的通用 skill / prompt 默认不得退化成“替强模型编排操作剧本”的说明书。
