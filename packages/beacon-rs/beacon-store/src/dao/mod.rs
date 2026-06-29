@@ -8,6 +8,6 @@ mod spine;
 pub use artifact::ArtifactDao;
 pub use feature::FeatureDao;
 pub use gate::GateDao;
-pub use project::ProjectDao;
+pub use project::{ProjectDao, ProjectRow, ProjectShow};
 pub use run::RunDao;
-pub use spine::{SpineDao, SpineSnapshot};
+pub use spine::{ArtifactRef, GateResultSummary, SpineDao, SpineSnapshot};

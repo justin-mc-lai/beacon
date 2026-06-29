@@ -5,6 +5,7 @@ PRAGMA foreign_keys=ON;
 
 CREATE TABLE IF NOT EXISTS projects (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    project_key TEXT NOT NULL UNIQUE,
     root_path TEXT NOT NULL UNIQUE,
     name TEXT NOT NULL,
     registered_at TEXT NOT NULL DEFAULT (datetime('now'))
