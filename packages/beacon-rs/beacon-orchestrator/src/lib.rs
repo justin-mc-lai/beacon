@@ -4,7 +4,7 @@
 //! beacon-store, and honors stop_when. It does NOT issue QA/release verdicts (AC-049).
 
 use beacon_core::agent::{AgentBackend, IterationResult};
-use beacon_store::BeaconStore;
+use beacon_store::{BeaconStore, LifecycleEventDao, RunDao};
 use std::sync::atomic::{AtomicBool, Ordering};
 
 /// Stop condition for the iterate loop (AC-048 stop_when).
@@ -215,6 +215,113 @@ impl PlannerReviewResult {
             fallback_reason: "subagent_runtime_unavailable".to_string(),
             runtime_evidence_only: true,
         }
+    }
+}
+
+// ---- AC-041 truth-map preflight ----
+
+/// AC-041 truth-map preflight result.
+#[derive(Debug, Clone)]
+pub struct TruthMapPreflight {
+    pub status: String,
+    pub feature_status: String,
+    pub blocked: bool,
+    pub reason: String,
+}
+
+/// AC-041 read a truth.md frontmatter `status:` field. Returns blocked=true if
+/// the truth package is not frozen (status != "frozen"). The orchestrator must
+/// not start a run on a non-frozen truth.
+pub fn truth_map_preflight(truth_md_path: &std::path::Path) -> TruthMapPreflight {
+    let text = match std::fs::read_to_string(truth_md_path) {
+        Ok(t) => t,
+        Err(e) => {
+            return TruthMapPreflight {
+                status: "blocked".to_string(),
+                feature_status: String::new(),
+                blocked: true,
+                reason: format!("truth.md read failed: {e}"),
+            };
+        }
+    };
+    let feature_status = parse_frontmatter_status(&text).unwrap_or_default();
+    let blocked = feature_status != "frozen";
+    let reason = if blocked {
+        format!("truth status is `{feature_status}`, not frozen; run `beacon change` to reopen or `beacon freeze` to freeze")
+    } else {
+        String::new()
+    };
+    TruthMapPreflight {
+        status: if blocked { "blocked" } else { "pass" }.to_string(),
+        feature_status,
+        blocked,
+        reason,
+    }
+}
+
+fn parse_frontmatter_status(text: &str) -> Option<String> {
+    let trimmed = text.trim_start();
+    if !trimmed.starts_with("---") {
+        return None;
+    }
+    let rest = &trimmed[3..];
+    let end = rest.find("---")?;
+    let fm = &rest[..end];
+    for line in fm.lines() {
+        let line = line.trim();
+        if let Some(val) = line.strip_prefix("status:") {
+            return Some(val.trim().trim_matches('"').to_string());
+        }
+    }
+    None
+}
+
+// ---- AC-050 phase controller ----
+
+/// AC-050 phase controller — four phases written to runs.metadata_json and
+/// phase transitions written to lifecycle_events.
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct PhaseState {
+    pub phase: String,
+    pub phases_completed: Vec<String>,
+}
+
+impl PhaseState {
+    pub fn new() -> Self {
+        Self { phase: "plan".to_string(), phases_completed: vec![] }
+    }
+
+    /// Transition to a new phase. Writes metadata_json + lifecycle_event.
+    pub fn transition(
+        &mut self,
+        store: &BeaconStore,
+        run_id: i64,
+        feature_package_id: i64,
+        new_phase: &str,
+    ) -> Result<(), String> {
+        if self.phase != new_phase {
+            self.phases_completed.push(self.phase.clone());
+        }
+        self.phase = new_phase.to_string();
+        let metadata_json = serde_json::to_string(self).map_err(|e| format!("serialize: {e}"))?;
+        let conn = store.connection();
+        RunDao::update_metadata(conn, run_id, &metadata_json).map_err(|e| format!("store: {e}"))?;
+        let payload = serde_json::json!({ "from": self.phases_completed.last(), "to": new_phase });
+        LifecycleEventDao::insert(
+            conn,
+            Some(run_id),
+            feature_package_id,
+            "PhaseTransition",
+            Some(&payload.to_string()),
+        )
+        .map_err(|e| format!("store: {e}"))?;
+        Ok(())
+    }
+}
+
+impl Default for PhaseState {
+    fn default() -> Self {
+        Self::new()
     }
 }
 

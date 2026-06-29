@@ -53,4 +53,24 @@ impl RunDao {
         )
         .optional()
     }
+
+    /// AC-050 update runs.metadata_json (phase controller writes phase here).
+    pub fn update_metadata(conn: &Connection, run_id: i64, metadata_json: &str) -> rusqlite::Result<()> {
+        conn.execute(
+            "UPDATE runs SET metadata_json = ?1 WHERE id = ?2",
+            params![metadata_json, run_id],
+        )?;
+        Ok(())
+    }
+
+    /// AC-050 read runs.metadata_json.
+    pub fn get_metadata(conn: &Connection, run_id: i64) -> rusqlite::Result<Option<String>> {
+        conn.query_row(
+            "SELECT metadata_json FROM runs WHERE id = ?1",
+            [run_id],
+            |row| Ok(row.get::<_, Option<String>>(0)?),
+        )
+        .optional()
+        .map(|o| o.flatten())
+    }
 }
