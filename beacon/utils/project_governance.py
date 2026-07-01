@@ -111,6 +111,8 @@ def _assign_version_kv(contract: dict[str, Any], key: str, value: str) -> None:
         "worktree_mode",
         "worktree_path",
         "admission_invalidation",
+        "truth_canonical",
+        "runtime_mirror",
     }:
         contract[key] = value
         return
@@ -300,6 +302,12 @@ def render_governance_markdown(payload: dict[str, Any]) -> str:
             lines.append("- per_service_canonical_branch:")
             for service_key, branch in sorted(per_service.items()):
                 lines.append(f"  - `{service_key}`: `{branch}`")
+        truth_canonical = str(contract.get("truth_canonical") or "").strip()
+        if truth_canonical:
+            lines.append(f"- truth_canonical: `{truth_canonical}`")
+        runtime_mirror = str(contract.get("runtime_mirror") or "").strip()
+        if runtime_mirror:
+            lines.append(f"- runtime_mirror: `{runtime_mirror}`")
         governance = contract.get("branch_governance") if isinstance(contract.get("branch_governance"), dict) else {}
         template = str(contract.get("branch_governance_template") or governance.get("template_name") or "").strip()
         previous_baseline = str(

@@ -33,6 +33,7 @@ from beacon.utils.debug_feedback import (
 )
 from beacon.utils.evidence_manifest import merge_manifest_entries
 from beacon.utils.git_alignment import collect_git_alignment
+from beacon.utils.project_governance import load_governance_payload
 from beacon.utils.implement_prompt_boundary import evaluate_implement_prompt_boundary
 from beacon.utils.llm_loop import build_next_stage_trace, merge_token_usage
 from beacon.utils.memory import append_memory_entry
@@ -497,7 +498,23 @@ def _execution_roots(project_root: Path, version: str) -> list[Path]:
 
 
 def _git_metadata(project_root: Path, version: str) -> dict[str, Any]:
-    return collect_git_alignment(project_root, version, allow_tag=True, require_exact_branch=False)
+    # §4.2 truth-on-main: read truth_canonical from the governance contract so that
+    # git-alignment accepts the truth canonical branch (e.g. main) as a satisfied target.
+    truth_canonical = ""
+    try:
+        payload = load_governance_payload(project_root)
+        contract = payload.get("version_scoped_metadata", {}).get(version, {})
+        if isinstance(contract, dict):
+            truth_canonical = str(contract.get("truth_canonical") or "").strip()
+    except Exception:  # noqa: BLE001 — governance read must never break git-alignment
+        truth_canonical = ""
+    return collect_git_alignment(
+        project_root,
+        version,
+        allow_tag=True,
+        require_exact_branch=False,
+        truth_canonical=truth_canonical,
+    )
 
 
 def _existing_research_docs(project_root: Path, version: str) -> list[str]:
