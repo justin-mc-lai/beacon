@@ -1,0 +1,181 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-01T01:57:05.249685+00:00",
+  "feature": "beacon-governance-truth-canonical-schema",
+  "feature_slug": "beacon-governance-truth-canonical-schema",
+  "version": "v1.6.3",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.3/features/beacon-governance-truth-canonical-schema/truth.md",
+    "tests": "docs/beacon/v1.6.3/features/beacon-governance-truth-canonical-schema/tests.md",
+    "tasks": "docs/beacon/v1.6.3/features/beacon-governance-truth-canonical-schema/tasks.md",
+    "evidence": "docs/beacon/v1.6.3/features/beacon-governance-truth-canonical-schema/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "7c70bfdd99d071c09b085ee1f46918c1b958602b09dfb76cc6c0f2c2c094a7c0",
+    "tests": "93b5662dff22877b69ba32d54ed57ec6c70773002d817ccb1b93ad78f290f873",
+    "tasks": "4b9fc0f643e2e9b29cb6801cfe70c53c0ed9e525854335a8f1c8959f76135ffe",
+    "evidence": "9df29b4df7ed1d20b498e9575a85ed3b17ce925eece5498c25d187914b795084"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-governance-truth-canonical-schema",
+    "version": "v1.6.3",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "R1 — governance contract schema 字段化 truth_canonical/runtime_mirror，消除 per_service_canonical_branch 与 global-boundaries §4.2 truth-on-main 的主动矛盾，解除 git-alignment blocked",
+    "source_revision_id": "null",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.3/features/beacon-governance-truth-canonical-schema/truth.md",
+      "user_story": "docs/beacon/v1.6.3/features/beacon-governance-truth-canonical-schema/truth.md",
+      "test_case": "docs/beacon/v1.6.3/features/beacon-governance-truth-canonical-schema/tests.md"
+    },
+    "parser_contract": "beacon-feature-package-v1",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "schema-parse",
+      "description": "`_assign_version_kv` 识别并持久化 `truth_canonical` / `runtime_mirror` 两个新 key，不再静默丢弃；`_parse_version_contracts` 正确解析双字段到 contract payload（**Must**）"
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "schema-render",
+      "description": "`render_governance_markdown` 将双字段正确回写到 governance MD；`commit_governance_payload` 重算 transaction_id/source_hash 并 sync sqlite projection（**Must**）"
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "resolver-truth-canonical",
+      "description": "`doctor branch-governance` / `git-alignment` resolver 在 contract 含 `truth_canonical: main` 时，按 §4.2 接受 `main` 为 truth canonical base，不再因 current_branch=main 报 `git_branch_target_mismatch`（**Must**）"
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "backward-compat",
+      "description": "contract 仅含旧 `per_service_canonical_branch`（无双字段）时，resolver 行为不变（向后兼容，UD-002）（**Must**）"
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "git-alignment-unblock",
+      "description": "v1.6.3 contract 补双字段（`truth_canonical: main` / `runtime_mirror: beacon/v1.6.3`）后，`doctor verify-git-alignment` / `doctor verify-delivery --version v1.6.3` 的 git-alignment 不再因 current_branch=main 报 `blocked=true`（reason_codes 清空或转为可解释的 non-blocked 状态）。本 AC 验证对象限定 v1.6.3 单版本（**Must**，UD-003）"
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "no-flow-break",
+      "description": "现有 v1.6.3 worktree admission / branch-governance 流向不破坏（`beacon workspace admit` / `doctor branch-governance verify` 在双字段 contract 下行为可解释且不误阻断）（**Must**）"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-GTC-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_governance_truth_canonical_schema.py::test_assign_version_kv_recognizes_new_fields -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "`_assign_version_kv` 对 key=`truth_canonical`/`runtime_mirror` 写入 contract 且不静默丢弃；`_parse_version_contracts` 从含双字段的 governance MD 解析出 `truth_canonical`/`runtime_mirror` 值",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-GTC-002",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_governance_truth_canonical_schema.py::test_render_and_commit_roundtrip -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "`render_governance_markdown` 回写双字段到 MD；`commit_governance_payload` 后 transaction_id/source_hash 重算且 sqlite projection sync（payload 含双字段）",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-GTC-003",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_governance_truth_canonical_schema.py::test_resolver_accepts_main_as_truth_canonical -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "contract 含 `truth_canonical: main` 时，`doctor branch-governance`/`git-alignment` resolver 接受 current_branch=main 为 truth canonical base，不再产生 `git_branch_target_mismatch`",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-GTC-004",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_governance_truth_canonical_schema.py::test_backward_compat_legacy_contract -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "contract 仅含旧 `per_service_canonical_branch`（无双字段）时，resolver 行为与改动前一致（基线快照对比，无新阻断）",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-GTC-005",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_governance_truth_canonical_schema.py::test_git_alignment_unblocked_v163 -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "v1.6.3 contract 补双字段后，`beacon doctor verify-delivery --version v1.6.3` 的 git-alignment 不再 `blocked=true`（reason_codes 不含 git_branch_target_mismatch/git_branch_prefix_mismatch/git_version_ref_not_satisfied）",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-GTC-006",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v163_governance_truth_canonical_schema.py::test_no_worktree_admission_flow_break -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "双字段 contract 下 `beacon workspace admit`（dry-run）/`doctor branch-governance verify --version v1.6.3` 行为可解释且不误阻断（status=pass 或可解释 non-blocked reason）",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "truth.define — User Intent + scope + AC framing（R1 draft）",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "truth.acceptance — tighten AC-001..006（Round 3）",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "truth.coverage — behavior-level TC per AC（Round 4）",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "verify-closure pass（Round 5）",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "requirement-clarity materialize（Round 6）",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "freeze（Round 7, user-gated）",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "implement AC-001..006（downstream beacon-gen-implement）",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "truth.md",
+      "authority": "requirement_truth",
+      "artifact": "docs/beacon/v1.6.3/features/beacon-governance-truth-canonical-schema/truth.md"
+    },
+    {
+      "surface": "tests.md",
+      "authority": "test_truth",
+      "artifact": "docs/beacon/v1.6.3/features/beacon-governance-truth-canonical-schema/tests.md"
+    },
+    {
+      "surface": "tasks.md",
+      "authority": "requirement_truth",
+      "artifact": "docs/beacon/v1.6.3/features/beacon-governance-truth-canonical-schema/tasks.md"
+    }
+  ]
+}
