@@ -108,6 +108,7 @@ def collect_git_alignment(
     branch_prefix: str = "beacon/",
     base_branch: str = "main",
     expected_branch: str = "",
+    truth_canonical: str = "",
 ) -> dict[str, Any]:
     current_branch = git_output(project_root, "rev-parse", "--abbrev-ref", "HEAD")
     current_commit = git_output(project_root, "rev-parse", "HEAD")
@@ -117,7 +118,19 @@ def collect_git_alignment(
     branch_matches_target = bool(current_branch and current_branch == target_branch)
     branch_has_required_prefix = bool(current_branch and current_branch.startswith(branch_prefix))
     tag_matches_version = bool(current_tag and current_tag == version)
-    version_ref_satisfied = branch_matches_target or (allow_tag and tag_matches_version)
+    # §4.2 truth-on-main: when contract declares truth_canonical (e.g. main) and
+    # current_branch equals it, the truth plane is on the canonical branch — accept
+    # it as the satisfied target so git-alignment does not block truth-plane work.
+    on_truth_canonical = bool(
+        truth_canonical
+        and current_branch
+        and current_branch == truth_canonical
+    )
+    version_ref_satisfied = (
+        branch_matches_target
+        or on_truth_canonical
+        or (allow_tag and tag_matches_version)
+    )
     detached_head = current_branch == "HEAD"
     repo_detected = git_repo_exists(project_root)
     reason_codes: list[str] = []
@@ -126,19 +139,19 @@ def collect_git_alignment(
         reason_codes.append("git_repo_missing")
     if detached_head:
         reason_codes.append("git_detached_head")
-    if not branch_matches_target:
+    if not branch_matches_target and not on_truth_canonical:
         reason_codes.append("git_branch_target_mismatch")
-    if not branch_has_required_prefix:
+    if not branch_has_required_prefix and not on_truth_canonical:
         reason_codes.append("git_branch_prefix_mismatch")
     if not version_ref_satisfied:
         reason_codes.append("git_version_ref_not_satisfied")
-    if require_exact_branch and not branch_matches_target:
+    if require_exact_branch and not branch_matches_target and not on_truth_canonical:
         reason_codes.append("git_exact_branch_required")
 
     blocked = (
         (not repo_detected)
         or detached_head
-        or (require_exact_branch and not branch_matches_target)
+        or (require_exact_branch and not branch_matches_target and not on_truth_canonical)
         or (not version_ref_satisfied)
     )
 
@@ -157,6 +170,8 @@ def collect_git_alignment(
         "branch_has_required_prefix": branch_has_required_prefix,
         "tag_matches_version": tag_matches_version,
         "version_ref_satisfied": version_ref_satisfied,
+        "truth_canonical": truth_canonical,
+        "on_truth_canonical": on_truth_canonical,
         "reason_codes": list(dict.fromkeys(reason_codes)),
         "blocked": blocked,
         "detached_head": detached_head,

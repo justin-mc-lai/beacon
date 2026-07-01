@@ -1,0 +1,243 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-governance-truth-canonical-schema",
+  "feature_slug": "beacon-governance-truth-canonical-schema",
+  "version": "v1.6.3",
+  "current_revision_id": "R1",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-07-01T01:57:04.798014+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-governance-truth-canonical-schema",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:4f2d03afb33b71bfee62b0a08a7c27403473c3c5fcb39594e407f2a40bf99ac8",
+      "superseded_by": null,
+      "created_at": "2026-07-01T01:57:04.791787+00:00",
+      "frozen_at": "2026-07-01T01:57:04.894386+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "beacon-governance-truth-canonical-schema",
+      "priority": "medium",
+      "status": "frozen",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "schema-parse",
+          "text": "`_assign_version_kv` 识别并持久化 `truth_canonical` / `runtime_mirror` 两个新 key，不再静默丢弃；`_parse_version_contracts` 正确解析双字段到 contract payload（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-governance-truth-canonical-schema/truth.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "schema-render",
+          "text": "`render_governance_markdown` 将双字段正确回写到 governance MD；`commit_governance_payload` 重算 transaction_id/source_hash 并 sync sqlite projection（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-governance-truth-canonical-schema/truth.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "resolver-truth-canonical",
+          "text": "`doctor branch-governance` / `git-alignment` resolver 在 contract 含 `truth_canonical: main` 时，按 §4.2 接受 `main` 为 truth canonical base，不再因 current_branch=main 报 `git_branch_target_mismatch`（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-governance-truth-canonical-schema/truth.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "backward-compat",
+          "text": "contract 仅含旧 `per_service_canonical_branch`（无双字段）时，resolver 行为不变（向后兼容，UD-002）（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-governance-truth-canonical-schema/truth.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "git-alignment-unblock",
+          "text": "v1.6.3 contract 补双字段（`truth_canonical: main` / `runtime_mirror: beacon/v1.6.3`）后，`doctor verify-git-alignment` / `doctor verify-delivery --version v1.6.3` 的 git-alignment 不再因 current_branch=main 报 `blocked=true`（reason_codes 清空或转为可解释的 non-blocked 状态）。本 AC 验证对象限定 v1.6.3 单版本（**Must**，UD-003）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-governance-truth-canonical-schema/truth.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "no-flow-break",
+          "text": "现有 v1.6.3 worktree admission / branch-governance 流向不破坏（`beacon workspace admit` / `doctor branch-governance verify` 在双字段 contract 下行为可解释且不误阻断）（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-governance-truth-canonical-schema/truth.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — `_assign_version_kv` 识别并持久化 `truth_canonical` / `runtime_mirror` 两个新 key，不再静默丢弃；`_parse_version_contracts` 正确解析双字段到 contract payload（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-governance-truth-canonical-schema/truth.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — `render_governance_markdown` 将双字段正确回写到 governance MD；`commit_governance_payload` 重算 transaction_id/source_hash 并 sync sqlite projection（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-governance-truth-canonical-schema/truth.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — `doctor branch-governance` / `git-alignment` resolver 在 contract 含 `truth_canonical: main` 时，按 §4.2 接受 `main` 为 truth canonical base，不再因 current_branch=main 报 `git_branch_target_mismatch`（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-governance-truth-canonical-schema/truth.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — contract 仅含旧 `per_service_canonical_branch`（无双字段）时，resolver 行为不变（向后兼容，UD-002）（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-governance-truth-canonical-schema/truth.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — v1.6.3 contract 补双字段（`truth_canonical: main` / `runtime_mirror: beacon/v1.6.3`）后，`doctor verify-git-alignment` / `doctor verify-delivery --version v1.6.3` 的 git-alignment 不再因 current_branch=main 报 `blocked=true`（reason_codes 清空或转为可解释的 non-blocked 状态）。本 AC 验证对象限定 v1.6.3 单版本（**Must**，UD-003）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-governance-truth-canonical-schema/truth.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — 现有 v1.6.3 worktree admission / branch-governance 流向不破坏（`beacon workspace admit` / `doctor branch-governance verify` 在双字段 contract 下行为可解释且不误阻断）（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/features/beacon-governance-truth-canonical-schema/truth.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-governance-truth-canonical-schema",
+        "version": "v1.6.3",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.3/research/beacon-governance-truth-canonical-schema.md",
+        "present": false,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      }
+    }
+  ]
+}
