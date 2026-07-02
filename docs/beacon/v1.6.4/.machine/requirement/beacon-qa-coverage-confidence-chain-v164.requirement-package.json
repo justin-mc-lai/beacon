@@ -1,0 +1,163 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-02T02:47:06.539821+00:00",
+  "feature": "beacon-qa-coverage-confidence-chain-v164",
+  "feature_slug": "beacon-qa-coverage-confidence-chain-v164",
+  "version": "v1.6.4",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/truth.md",
+    "tests": "docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/tests.md",
+    "tasks": "docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/tasks.md",
+    "evidence": "docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "10b0f84b83da92345a447099a98cdf0f6f35f25c085b999ed87c4ca1ea9f8927",
+    "tests": "f2faf551a5a218a9cf8eeaac87e7990efd274bf8c87f616cde95de7a3c15d27d",
+    "tasks": "8f5ee83f78c1d7b6bf3616ef86507d4a2f2b53d17ee6346540a996f6f2a1483a",
+    "evidence": "1dd4a6238c024353832f000e1000245758a271fdb88b278fdafbfab1412eb1cc"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-qa-coverage-confidence-chain-v164",
+    "version": "v1.6.4",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "R1 — qa 层间置信度传递链（unit→...→browser_e2e），层间 gap 可见 + 断链 block",
+    "source_revision_id": "null",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/truth.md",
+      "user_story": "docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/truth.md",
+      "test_case": "docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/tests.md"
+    },
+    "parser_contract": "beacon-feature-package-v1",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "chain-model",
+      "description": "定义 QA 层置信度传递模型：每层置信度 = 自身覆盖 ∩ 下层覆盖传递；链方向 unit→...→browser_e2e（**Must**，UD-001）"
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "gap-detection",
+      "description": "层间 gap 检测：下层 skipped/missing/blocked 时，上层置信度被削弱并标记 `downstream_gap`（**Must**）"
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "confidence-chain-field",
+      "description": "`build_qa_profile_completeness` 输出含 `confidence_chain`（每层置信度 + 依赖来源 + gap 标记）；projection 同步（**Must**）"
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "break-block",
+      "description": "断链 fail-closed：链终点（browser_e2e）缺失或任一依赖层 gap → profile `partial/blocked`，不显示 complete（**Must**，UD-002）"
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "browser-e2e-integration",
+      "description": "browser_e2e 作为链终点纳入置信度链；与 Phase 1 的 `playwright-extension` runner 集成（e2e 置信度依赖下层 non-browser 覆盖）（**Must**）"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-CC-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v164_qa_confidence_chain.py::test_chain_model_bottom_up -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "置信度传递模型自下而上：unit→interface→...→browser_e2e；上层置信度依赖下层覆盖传递（下层缺失时上层置信度降低）",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-CC-002",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v164_qa_confidence_chain.py::test_gap_detection -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "下层 skipped/missing/blocked 时，上层标记 `downstream_gap`；gap 来源可追溯（哪一层断）",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-CC-003",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v164_qa_confidence_chain.py::test_confidence_chain_field -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "`build_qa_profile_completeness` 输出含 `confidence_chain`（每层置信度 + 依赖来源 + gap 标记）；projection JSON 同步该字段",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-CC-004",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v164_qa_confidence_chain.py::test_break_chain_blocks -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "链终点 browser_e2e 缺失 或 任一依赖层 gap → profile `partial`/`blocked`，不显示 `complete`；evidence 不被记为 full pass",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-CC-005",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_v164_qa_confidence_chain.py::test_browser_e2e_chain_terminal -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "browser_e2e 作为链终点纳入置信度链；e2e 置信度依赖下层 non-browser 覆盖；与 Phase 1 `playwright-extension` runner 注册表共存",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "truth.define + acceptance — R1 draft",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "truth.coverage — TC-CC-001..005（Round 4）",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "verify-closure pass（Round 5）",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "requirement-clarity materialize（Round 6）",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "freeze（Round 7, user-gated）",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "implement AC-001..005（downstream beacon-gen-implement）",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "truth.md",
+      "authority": "requirement_truth",
+      "artifact": "docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/truth.md"
+    },
+    {
+      "surface": "tests.md",
+      "authority": "test_truth",
+      "artifact": "docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/tests.md"
+    },
+    {
+      "surface": "tasks.md",
+      "authority": "requirement_truth",
+      "artifact": "docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/tasks.md"
+    }
+  ]
+}

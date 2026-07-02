@@ -1,0 +1,212 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-qa-coverage-confidence-chain-v164",
+  "feature_slug": "beacon-qa-coverage-confidence-chain-v164",
+  "version": "v1.6.4",
+  "current_revision_id": "R1",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-07-02T02:47:06.210002+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-qa-coverage-confidence-chain-v164",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:7e87af3fc839f33f338f4f437447abc8ea55cbdfd737559cd6bfe04ce870bb15",
+      "superseded_by": null,
+      "created_at": "2026-07-02T02:47:06.205155+00:00",
+      "frozen_at": "2026-07-02T02:47:06.293759+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "beacon-qa-coverage-confidence-chain-v164",
+      "priority": "medium",
+      "status": "frozen",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "chain-model",
+          "text": "定义 QA 层置信度传递模型：每层置信度 = 自身覆盖 ∩ 下层覆盖传递；链方向 unit→...→browser_e2e（**Must**，UD-001）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/truth.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "gap-detection",
+          "text": "层间 gap 检测：下层 skipped/missing/blocked 时，上层置信度被削弱并标记 `downstream_gap`（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/truth.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "confidence-chain-field",
+          "text": "`build_qa_profile_completeness` 输出含 `confidence_chain`（每层置信度 + 依赖来源 + gap 标记）；projection 同步（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/truth.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "break-block",
+          "text": "断链 fail-closed：链终点（browser_e2e）缺失或任一依赖层 gap → profile `partial/blocked`，不显示 complete（**Must**，UD-002）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/truth.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "browser-e2e-integration",
+          "text": "browser_e2e 作为链终点纳入置信度链；与 Phase 1 的 `playwright-extension` runner 集成（e2e 置信度依赖下层 non-browser 覆盖）（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/truth.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — 定义 QA 层置信度传递模型：每层置信度 = 自身覆盖 ∩ 下层覆盖传递；链方向 unit→...→browser_e2e（**Must**，UD-001）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/truth.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — 层间 gap 检测：下层 skipped/missing/blocked 时，上层置信度被削弱并标记 `downstream_gap`（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/truth.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — `build_qa_profile_completeness` 输出含 `confidence_chain`（每层置信度 + 依赖来源 + gap 标记）；projection 同步（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/truth.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — 断链 fail-closed：链终点（browser_e2e）缺失或任一依赖层 gap → profile `partial/blocked`，不显示 complete（**Must**，UD-002）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/truth.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — browser_e2e 作为链终点纳入置信度链；与 Phase 1 的 `playwright-extension` runner 集成（e2e 置信度依赖下层 non-browser 覆盖）（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/truth.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-qa-coverage-confidence-chain-v164",
+        "version": "v1.6.4",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/research/beacon-qa-coverage-confidence-chain-v164.md",
+        "present": false,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      }
+    }
+  ]
+}
