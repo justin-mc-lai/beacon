@@ -1,0 +1,215 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-02T02:40:32.253448+00:00",
+  "feature": "beacon-qa-chrome-extension-e2e-v164",
+  "feature_slug": "beacon-qa-chrome-extension-e2e-v164",
+  "version": "v1.6.4",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.4/features/beacon-qa-chrome-extension-e2e-v164/truth.md",
+    "tests": "docs/beacon/v1.6.4/features/beacon-qa-chrome-extension-e2e-v164/tests.md",
+    "tasks": "docs/beacon/v1.6.4/features/beacon-qa-chrome-extension-e2e-v164/tasks.md",
+    "evidence": "docs/beacon/v1.6.4/features/beacon-qa-chrome-extension-e2e-v164/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "60343c90bc2831912acde629446630b8ce61cf9e914046822db2c219053c703a",
+    "tests": "469e4a06e776ffb103222cccabe5b1dfcb094ab4cb423685970deb452960986c",
+    "tasks": "8a9446cf32b5e07cef41dbeb757829c51813a8736f210170f8142a8cf814a4e0",
+    "evidence": "4b29ffc3648ed727e77efc144d1ccc07cf5c174f70d2a466ca9d24be12bf523d"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-qa-chrome-extension-e2e-v164",
+    "version": "v1.6.4",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "R1 — beacon qa browser_e2e 层支持 Chrome 扩展 e2e 验收（--load-extension / extension ID / popup / service worker / fail-closed）",
+    "source_revision_id": "null",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.4/features/beacon-qa-chrome-extension-e2e-v164/truth.md",
+      "user_story": "docs/beacon/v1.6.4/features/beacon-qa-chrome-extension-e2e-v164/truth.md",
+      "test_case": "docs/beacon/v1.6.4/features/beacon-qa-chrome-extension-e2e-v164/tests.md"
+    },
+    "parser_contract": "beacon-feature-package-v1",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "runner-registered",
+      "description": "`BROWSER_RUNNER_REGISTRY` 含 `playwright-extension`；`default_browser_runner_command('playwright-extension')` 返回非空可执行命令（**Must**）"
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "load-extension",
+      "description": "runner adapter 透传 `--load-extension=<path>` 到 Chrome 启动参数；扩展包加载失败时 block（reason_code `extension_load_failed`）（**Must**）"
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "headless-new",
+      "description": "runner 使用 `--headless=new`（旧 headless 不支持扩展）；默认 headless 模式下扩展可加载（**Must**）"
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "extension-id-fixed",
+      "description": "支持固定 extension ID（manifest `key` field 或 computed key）；测试可解析并复用该 ID（**Must**）"
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "extension-page-nav",
+      "description": "runner 能导航到 `chrome-extension://<id>/<page>.html` 并断言页面内容（**Must**）"
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "popup-test",
+      "description": "popup 测试支持：`action.openPopup()` 或 tab-ID URL 注入（`popup.html?tab=<id>`）；能断言 popup DOM（**Must**）"
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "service-worker-target",
+      "description": "runner 能检测 service worker target（`waitForTarget(type==='service_worker')`）；能 evaluate SW 上下文（如 `chrome.storage`）；支持 SW 终止测试（**Must**）"
+    },
+    {
+      "ac_id": "AC-008",
+      "theme": "fail-closed",
+      "description": "扩展加载失败 / ID 不匹配 / SW 未就绪 → QA block，reason_code 明确，不记 false pass（`NON_ACCEPTANCE_EVIDENCE_KINDS` 拒绝 dry_run / 非验收 evidence）（**Must**，UD-002）"
+    },
+    {
+      "ac_id": "AC-009",
+      "theme": "evidence-axes-extension",
+      "description": "`BROWSER_EVIDENCE_AXES` 含 `extension_page` / `service_worker` / `popup`；qa_acceptance 校验扩展 evidence 形状（**Must**）"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-CX-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v164_qa_chrome_extension_e2e.py::test_runner_registered -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "`BROWSER_RUNNER_REGISTRY` 含 `playwright-extension`；`default_browser_runner_command('playwright-extension')` 返回非空字符串且含可执行入口",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-CX-002",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_v164_qa_chrome_extension_e2e.py::test_load_extension_passthrough -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "runner 启动参数含 `--load-extension=<path>`；构造损坏扩展包时 block 且 reason_code 含 `extension_load_failed`",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-CX-003",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_v164_qa_chrome_extension_e2e.py::test_headless_new_mode -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "runner 默认 headless 用 `--headless=new`；旧 headless 不被选用于扩展模式",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-CX-004",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_v164_qa_chrome_extension_e2e.py::test_extension_id_fixed -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "给定 manifest `key` field，runner 解析出固定 extension ID；两次启动 ID 一致",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-CX-005",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_v164_qa_chrome_extension_e2e.py::test_extension_page_navigation -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "runner 导航到 `chrome-extension://<id>/index.html` 并断言页面含预期 DOM 元素",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-CX-006",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_v164_qa_chrome_extension_e2e.py::test_popup_test -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "popup 测试通过 `action.openPopup()` 或 `popup.html?tab=<id>` 注入；断言 popup DOM 可访问",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-007",
+      "tc_id": "TC-CX-007",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_v164_qa_chrome_extension_e2e.py::test_service_worker_target -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "runner 检测到 service worker target（type==='service_worker'）；能 evaluate SW 上下文（如 `chrome.storage.local`）；SW 终止后能重新等待",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-008",
+      "tc_id": "TC-CX-008",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v164_qa_chrome_extension_e2e.py::test_fail_closed_no_false_pass -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "扩展加载失败 / ID 不匹配 / SW 未就绪三种场景 → QA `blocked=True`，reason_code 明确；evidence 不被记为 pass（`NON_ACCEPTANCE_EVIDENCE_KINDS` 拒绝）",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-009",
+      "tc_id": "TC-CX-009",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v164_qa_chrome_extension_e2e.py::test_evidence_axes_extension -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "`BROWSER_EVIDENCE_AXES` 含 `extension_page` / `service_worker` / `popup`；qa_acceptance 接受扩展 evidence 并校验形状",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "truth.define + acceptance — R1 draft",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "truth.coverage — TC-CX-001..009（Round 4）",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "verify-closure pass（Round 5）",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "requirement-clarity materialize（Round 6）",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "freeze（Round 7, user-gated）",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "implement AC-001..009（downstream beacon-gen-implement）",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "truth.md",
+      "authority": "requirement_truth",
+      "artifact": "docs/beacon/v1.6.4/features/beacon-qa-chrome-extension-e2e-v164/truth.md"
+    },
+    {
+      "surface": "tests.md",
+      "authority": "test_truth",
+      "artifact": "docs/beacon/v1.6.4/features/beacon-qa-chrome-extension-e2e-v164/tests.md"
+    },
+    {
+      "surface": "tasks.md",
+      "authority": "requirement_truth",
+      "artifact": "docs/beacon/v1.6.4/features/beacon-qa-chrome-extension-e2e-v164/tasks.md"
+    }
+  ]
+}
