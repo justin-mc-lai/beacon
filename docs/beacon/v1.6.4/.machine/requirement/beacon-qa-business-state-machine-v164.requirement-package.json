@@ -1,0 +1,176 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-02T02:50:37.606736+00:00",
+  "feature": "beacon-qa-business-state-machine-v164",
+  "feature_slug": "beacon-qa-business-state-machine-v164",
+  "version": "v1.6.4",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/truth.md",
+    "tests": "docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/tests.md",
+    "tasks": "docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/tasks.md",
+    "evidence": "docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "0cd2a2b23a0040014c539be9ee3cc5cecfcbfb556eff2b0c185a3d086de3404d",
+    "tests": "3101245dc715fa8fc17e5438317832b94e9afa5a0fbcdbcab6b48675bdb41006",
+    "tasks": "ecc96e12c686f9b97e11a7e81625fa615ffea879a5a99cef9ebee0a30a20d705",
+    "evidence": "b1cff75f721456e4f2469bb4737fa6f62b4a7362227a567d30236af2e4dba32b"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-qa-business-state-machine-v164",
+    "version": "v1.6.4",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "R1 — truth→业务状态机→边界用例 QA 管道（FSM 提取 + 状态覆盖 + 不可达态拒绝）",
+    "source_revision_id": "null",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/truth.md",
+      "user_story": "docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/truth.md",
+      "test_case": "docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/tests.md"
+    },
+    "parser_contract": "beacon-feature-package-v1",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "fsm-extract",
+      "description": "从 truth.md State Machine 段落 + AC 提取 FSM（状态集 + 转换集 + 边界态 + 不可达态）；提取失败时 block（reason_code `fsm_extract_failed`）（**Must**，UD-001）"
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "state-coverage-model",
+      "description": "状态覆盖模型：转换覆盖（每条转换至少 1 TC）+ 边界态覆盖（初始/终态/非法转换目标）（**Must**，UD-003）"
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "state-machine-coverage-field",
+      "description": "`build_qa_profile_completeness` 输出含 `state_machine_coverage`（转换覆盖率 + 边界态覆盖 + 不可达态列表 + gap）；projection 同步（**Must**）"
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "boundary-coverage",
+      "description": "边界态用例自动推导：从 FSM 生成边界 TC（初始态进入 / 终态退出 / 非法转换拒绝）；边界态未覆盖 → 标记 `boundary_gap`（**Must**）"
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "unreachable-reject",
+      "description": "不可达态被触达 → fail-closed block（reason_code `unreachable_state_reached`），不记 pass（**Must**，UD-002）"
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "confidence-chain-integration",
+      "description": "状态覆盖接入 Phase 2 `confidence_chain`：状态覆盖缺口削弱对应层置信度（`state_machine_gap` 标记）（**Must**，UD-003 from Phase 2）"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-SM-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v164_qa_business_state_machine.py::test_fsm_extract_from_truth -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "从 truth.md State Machine 段落 + AC 提取 FSM（states + transitions + boundary + unreachable）；提取失败（段落缺失/格式错）→ block，reason_code 含 `fsm_extract_failed`",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-SM-002",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v164_qa_business_state_machine.py::test_state_coverage_model -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "状态覆盖模型：每条转换至少 1 TC；边界态（初始/终态/非法转换目标）有覆盖；未覆盖转换标记 gap",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-SM-003",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v164_qa_business_state_machine.py::test_state_machine_coverage_field -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "`build_qa_profile_completeness` 输出含 `state_machine_coverage`（转换覆盖率 + 边界态覆盖 + 不可达态列表 + gap）；projection 同步",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-SM-004",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v164_qa_business_state_machine.py::test_boundary_coverage_derivation -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "从 FSM 自动推导边界 TC（初始态进入 / 终态退出 / 非法转换拒绝）；边界态未覆盖 → 标记 `boundary_gap`",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-SM-005",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v164_qa_business_state_machine.py::test_unreachable_state_reject -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "不可达态被触达 → fail-closed block，reason_code 含 `unreachable_state_reached`；evidence 不被记为 pass",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-SM-006",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_v164_qa_business_state_machine.py::test_confidence_chain_integration -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "状态覆盖缺口削弱对应层置信度（`state_machine_gap` 标记接入 Phase 2 `confidence_chain`）；与 Phase 2 字段共存",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "truth.define + acceptance — R1 draft",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "truth.coverage — TC-SM-001..006（Round 4）",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "verify-closure pass（Round 5）",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "requirement-clarity materialize（Round 6）",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "freeze（Round 7, user-gated）",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "implement AC-001..006（downstream beacon-gen-implement）",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "truth.md",
+      "authority": "requirement_truth",
+      "artifact": "docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/truth.md"
+    },
+    {
+      "surface": "tests.md",
+      "authority": "test_truth",
+      "artifact": "docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/tests.md"
+    },
+    {
+      "surface": "tasks.md",
+      "authority": "requirement_truth",
+      "artifact": "docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/tasks.md"
+    }
+  ]
+}

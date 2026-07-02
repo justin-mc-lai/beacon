@@ -1,0 +1,243 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-qa-business-state-machine-v164",
+  "feature_slug": "beacon-qa-business-state-machine-v164",
+  "version": "v1.6.4",
+  "current_revision_id": "R1",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-07-02T02:50:37.078892+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-qa-business-state-machine-v164",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:4889bb28e2bd02e4fd57cc21a42084de06e6c25abf273c27c0219915e41f7fb0",
+      "superseded_by": null,
+      "created_at": "2026-07-02T02:50:37.071745+00:00",
+      "frozen_at": "2026-07-02T02:50:37.243099+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "beacon-qa-business-state-machine-v164",
+      "priority": "medium",
+      "status": "frozen",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "fsm-extract",
+          "text": "从 truth.md State Machine 段落 + AC 提取 FSM（状态集 + 转换集 + 边界态 + 不可达态）；提取失败时 block（reason_code `fsm_extract_failed`）（**Must**，UD-001）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/truth.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "state-coverage-model",
+          "text": "状态覆盖模型：转换覆盖（每条转换至少 1 TC）+ 边界态覆盖（初始/终态/非法转换目标）（**Must**，UD-003）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/truth.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "state-machine-coverage-field",
+          "text": "`build_qa_profile_completeness` 输出含 `state_machine_coverage`（转换覆盖率 + 边界态覆盖 + 不可达态列表 + gap）；projection 同步（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/truth.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "boundary-coverage",
+          "text": "边界态用例自动推导：从 FSM 生成边界 TC（初始态进入 / 终态退出 / 非法转换拒绝）；边界态未覆盖 → 标记 `boundary_gap`（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/truth.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "unreachable-reject",
+          "text": "不可达态被触达 → fail-closed block（reason_code `unreachable_state_reached`），不记 pass（**Must**，UD-002）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/truth.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "confidence-chain-integration",
+          "text": "状态覆盖接入 Phase 2 `confidence_chain`：状态覆盖缺口削弱对应层置信度（`state_machine_gap` 标记）（**Must**，UD-003 from Phase 2）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/truth.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — 从 truth.md State Machine 段落 + AC 提取 FSM（状态集 + 转换集 + 边界态 + 不可达态）；提取失败时 block（reason_code `fsm_extract_failed`）（**Must**，UD-001）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/truth.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — 状态覆盖模型：转换覆盖（每条转换至少 1 TC）+ 边界态覆盖（初始/终态/非法转换目标）（**Must**，UD-003）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/truth.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — `build_qa_profile_completeness` 输出含 `state_machine_coverage`（转换覆盖率 + 边界态覆盖 + 不可达态列表 + gap）；projection 同步（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/truth.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — 边界态用例自动推导：从 FSM 生成边界 TC（初始态进入 / 终态退出 / 非法转换拒绝）；边界态未覆盖 → 标记 `boundary_gap`（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/truth.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — 不可达态被触达 → fail-closed block（reason_code `unreachable_state_reached`），不记 pass（**Must**，UD-002）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/truth.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — 状态覆盖接入 Phase 2 `confidence_chain`：状态覆盖缺口削弱对应层置信度（`state_machine_gap` 标记）（**Must**，UD-003 from Phase 2）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/truth.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-qa-business-state-machine-v164",
+        "version": "v1.6.4",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/research/beacon-qa-business-state-machine-v164.md",
+        "present": false,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      }
+    }
+  ]
+}
