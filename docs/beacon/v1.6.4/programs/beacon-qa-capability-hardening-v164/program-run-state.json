@@ -3,10 +3,16 @@
   "program_slug": "beacon-qa-capability-hardening-v164",
   "version": "v1.6.4",
   "plan_mode": "auto",
-  "program_phase": "P0",
-  "fsm_state": "plan_mode_selected",
+  "program_phase": "P4",
+  "fsm_state": "p4_acked",
   "lake_or_ocean": "海",
-  "p4_ack": false,
-  "next_action": "program_phase:P0",
-  "updated_at": "2026-07-02T02:21:18.519313+00:00"
+  "p4_ack": true,
+  "next_action": "route_gen_truth_phase_1",
+  "updated_at": "2026-07-02T02:21:18.519313+00:00",
+  "ack_decisions": {
+    "UD-1": "1->2->3->4 + 5 parallel",
+    "UD-2": "new playwright-extension runner",
+    "UD-3": "evaluate cross-version impact",
+    "UD-4": "per-phase independent freeze"
+  }
 }
