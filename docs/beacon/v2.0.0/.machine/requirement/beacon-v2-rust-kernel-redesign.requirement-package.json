@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-06-28T13:23:40.290746+00:00",
+  "generated_at": "2026-07-02T03:27:14.140584+00:00",
   "feature": "beacon-v2-rust-kernel-redesign",
   "feature_slug": "beacon-v2-rust-kernel-redesign",
   "version": "v2.0.0",
@@ -18,8 +18,8 @@
     "evidence": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/evidence.md"
   },
   "source_hashes": {
-    "truth": "9e1e2cac9e0743ebb7c585d96fe8fa84ea177661b5155b17a3f386f286d4912c",
-    "tests": "6fe13f29ef6757d23675b48b3ddd21e27e2db4a210d4c4df2a8cf4b28105693f",
+    "truth": "b36a0592a6b568e41cc54afaa3f490cbddb30867e25d08c299bd3d0bc9bdaa51",
+    "tests": "86722b84c029e0ee5610e17201b9e8759c1bb8885a60449122d00879673c370a",
     "tasks": "00ee635bd331347928a01ef95e41103166d22f746b32bccc1070dec0d7c8424c",
     "evidence": "2cdcdb756b0ef22653e51afe1dc12ad1806c169e11a53afd9f19937c8781d1bc"
   },
@@ -28,7 +28,7 @@
     "version": "v2.0.0",
     "status": "frozen",
     "language": "zh",
-    "revision": "r6-draft",
+    "revision": "r7-draft",
     "canonical_refs": {
       "truth": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
       "tests": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tests.md",
@@ -312,6 +312,26 @@
       "ac_id": "AC-050",
       "theme": "",
       "description": "- **AC-050**：Phase Controller 四阶段写入 `runs.metadata_json`；phase 转换写 `lifecycle_events`。"
+    },
+    {
+      "ac_id": "AC-105",
+      "theme": "",
+      "description": "- **AC-105**（P3）：`beacon-v2 run --agent <codex|claude|acp:*>` CLI 直接选 agent 跑长任务编码落地；agent 选择映射到对应 AgentBackend；loop 在 CLI 进程内跑，checkpoint/resume/信号（SIGINT graceful stop）保证 host 稳定，**无 daemon**。"
+    },
+    {
+      "ac_id": "AC-106",
+      "theme": "",
+      "description": "- **AC-106**（P3）：`stop_when` 对齐 v1.6 AC-071 **maker≠checker**——loop **禁止**仅因 agent 自报 `stop_signal` 而终止；每轮 agent 后必须执行外部可验证检查（harness gate exit 0 / `--stop-check-cmd` exit 0 / terminal evaluator）；agent 自报 alone → `reason_code=stop_when_unverified`，continue 下一 iteration。"
+    },
+    {
+      "ac_id": "AC-107",
+      "theme": "",
+      "description": "- **AC-107**（P3）：Developer Feedback Loop 人注入 checkpoint——`beacon-v2 run --feedback-checkpoint` 在每 N iteration 后暂停 loop，等待人注入上下文修正（写入 `lifecycle_events` notes_injected），resume 后基于修正重新 iterate；人注入是 harness 接口，不绕过 truth（truth 变更仍走 change/refreeze）。"
+    },
+    {
+      "ac_id": "AC-108",
+      "theme": "",
+      "description": "- **AC-108**（P3）：Loop Engineering 三层 Loop 可观测——spine snapshot 含 `loop_layer` 字段（coding/developer/realworld），标注当前 run 在哪层 Loop；Coding Loop 内的 iteration + Developer Feedback 的 checkpoint + Real-world 的 research 都可追溯。"
     },
     {
       "ac_id": "AC-059",
