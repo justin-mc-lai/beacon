@@ -15,7 +15,7 @@ Program: `programs/beacon-qa-capability-hardening-v164/`
 ## Status
 
 - **delivery**: `accepted` — implement + QA + release check passed (2026-07-02)
-- **runtime line**: v1.6.3 remains `current_runtime_release`; v1.6.4 docs/runtime alignment pending version bump
+- **runtime line**: `current_runtime_release` (v1.6.3 demoted to `historical_release`)
 - **contract tests**: 29 passed (`tests/test_v164_qa_*.py`)
 
 ## Features
