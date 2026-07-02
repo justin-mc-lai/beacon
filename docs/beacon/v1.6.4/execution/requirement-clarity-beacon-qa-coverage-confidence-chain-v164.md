@@ -10,8 +10,8 @@
 - required: `False`
 - research_path: `docs/beacon/v1.6.4/research/beacon-qa-coverage-confidence-chain-v164.md`
 - research_exists: `False`
-- source_architecture_path: `docs/beacon/v1.6.4/source-architecture/beacon-qa-coverage-confidence-chain-v164.md`
-- source_architecture_exists: `False`
+- source_architecture_path: `docs/beacon/v1.6.4/source-architecture/index.md`
+- source_architecture_exists: `True`
 - required_sections: architecture, business_flow
 - missing_sections: architecture, business_flow
 
