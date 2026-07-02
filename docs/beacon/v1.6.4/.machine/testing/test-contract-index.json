@@ -5,80 +5,108 @@
   "runtime_line": "v1.6.4",
   "runtime_release_line": "v1.6.3",
   "docs_line": "v1.6.4",
-  "feature": "beacon-qa-methodology-contract-v164",
-  "feature_slug": "beacon-qa-methodology-contract-v164",
+  "feature": "beacon-qa-business-state-machine-v164",
+  "feature_slug": "beacon-qa-business-state-machine-v164",
   "feature_line_status": "planning_only",
   "truth_refs": {
-    "truth": "docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/truth.md",
-    "tests": "docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tests.md",
-    "tasks": "docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tasks.md",
-    "evidence": "docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/evidence.md",
-    "ac_matrix": "docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tests.md",
-    "story_state": "docs/beacon/v1.6.4/.machine/user-story/beacon-qa-methodology-contract-v164.json"
+    "truth": "docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/truth.md",
+    "tests": "docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/tests.md",
+    "tasks": "docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/tasks.md",
+    "evidence": "docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/evidence.md",
+    "ac_matrix": "docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/tests.md",
+    "story_state": "docs/beacon/v1.6.4/.machine/user-story/beacon-qa-business-state-machine-v164.json"
   },
   "source_hashes": {
-    "truth": "sha256:f559b8df422a372845eb2e247cab272084269d1bdbd8d2c89e8e25b8743fa5f7",
-    "tests": "sha256:5c12c3bde7cb6c5ac7b15588f414128302db136decf550b6d25f4c0d667e44fa",
-    "tasks": "sha256:04ed103ba458441729c1e93ff9a191c9941b71adfc5e968dbf0f23e8b9d7c9e1",
-    "evidence": "sha256:2edbb151ada32f9adb48fdc7fecc943ba1e8ca473f3299e4a6580983ffc7dc5c",
-    "ac_matrix": "sha256:5c12c3bde7cb6c5ac7b15588f414128302db136decf550b6d25f4c0d667e44fa",
-    "story_state": "sha256:a019d77d35e5c4b7504d80d6346ee1dc50ed6f4f4b160c85760c5fe09c95ff51"
+    "truth": "sha256:0cd2a2b23a0040014c539be9ee3cc5cecfcbfb556eff2b0c185a3d086de3404d",
+    "tests": "sha256:3101245dc715fa8fc17e5438317832b94e9afa5a0fbcdbcab6b48675bdb41006",
+    "tasks": "sha256:ecc96e12c686f9b97e11a7e81625fa615ffea879a5a99cef9ebee0a30a20d705",
+    "evidence": "sha256:aef1d8ce7a51933b250c927b92238dd5999b9b59a8ab9715f0422f5f9b466127",
+    "ac_matrix": "sha256:3101245dc715fa8fc17e5438317832b94e9afa5a0fbcdbcab6b48675bdb41006",
+    "story_state": "sha256:c9e8d23ae8bb332713b5164899d76f7580c1c1ab90131d6de3bbbede3fb85392"
   },
   "lanes": {
     "feature_release_facing": [
       {
-        "tc_id": "TC-MC-001",
+        "tc_id": "TC-SM-001",
         "ac_id": "AC-001",
-        "ac_theme": "global-boundaries-first-principles",
+        "ac_theme": "fsm-extract",
         "lane": "feature_release_facing",
         "layer": "contract",
-        "command": "python3 -m pytest tests/test_v164_qa_methodology_contract.py::test_first_principles_clause -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "`global-boundaries.md §5` 含「第一性原理」条款（动手前回到根本 + 最小可验证单元 + 为什么）；§5 既有 4 条条款未被修改（纯增量校验）",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-methodology-contract-v164/tc-mc-001/__RUN_ID__.json",
+        "command": "python3 -m pytest tests/test_v164_qa_business_state_machine.py::test_fsm_extract_from_truth -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "从 truth.md State Machine 段落 + AC 提取 FSM（states + transitions + boundary + unreachable）；提取失败（段落缺失/格式错）→ block，reason_code 含 `fsm_extract_failed`",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-business-state-machine-v164/tc-sm-001/__RUN_ID__.json",
         "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tests.md",
+        "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
       },
       {
-        "tc_id": "TC-MC-002",
+        "tc_id": "TC-SM-002",
         "ac_id": "AC-002",
-        "ac_theme": "global-boundaries-adversarial",
+        "ac_theme": "state-coverage-model",
         "lane": "feature_release_facing",
         "layer": "contract",
-        "command": "python3 -m pytest tests/test_v164_qa_methodology_contract.py::test_adversarial_clause -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "`global-boundaries.md §5` 含「对抗式审查」条款（最挑剔审查 + 3-5 翻车点 + 验证证据 + 不接受看起来没问题）；纯增量校验",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-methodology-contract-v164/tc-mc-002/__RUN_ID__.json",
+        "command": "python3 -m pytest tests/test_v164_qa_business_state_machine.py::test_state_coverage_model -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "状态覆盖模型：每条转换至少 1 TC；边界态（初始/终态/非法转换目标）有覆盖；未覆盖转换标记 gap",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-business-state-machine-v164/tc-sm-002/__RUN_ID__.json",
         "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tests.md",
+        "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
       },
       {
-        "tc_id": "TC-MC-003",
+        "tc_id": "TC-SM-003",
         "ac_id": "AC-003",
-        "ac_theme": "qa-skill-contract-mandatory",
+        "ac_theme": "state-machine-coverage-field",
         "lane": "feature_release_facing",
         "layer": "contract",
-        "command": "python3 -m pytest tests/test_v164_qa_methodology_contract.py::test_qa_skill_contract_mandatory -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "`beacon-eval-qa` SKILL.md 含\"交付前对抗式审查\"强制契约；缺失翻车点/验证证据 → block（reason_code `adversarial_review_missing`）",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-methodology-contract-v164/tc-mc-003/__RUN_ID__.json",
+        "command": "python3 -m pytest tests/test_v164_qa_business_state_machine.py::test_state_machine_coverage_field -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "`build_qa_profile_completeness` 输出含 `state_machine_coverage`（转换覆盖率 + 边界态覆盖 + 不可达态列表 + gap）；projection 同步",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-business-state-machine-v164/tc-sm-003/__RUN_ID__.json",
         "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tests.md",
+        "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
       },
       {
-        "tc_id": "TC-MC-004",
+        "tc_id": "TC-SM-004",
         "ac_id": "AC-004",
-        "ac_theme": "adversarial-lane-mandatory",
+        "ac_theme": "boundary-coverage",
         "lane": "feature_release_facing",
         "layer": "contract",
-        "command": "python3 -m pytest tests/test_v164_qa_methodology_contract.py::test_adversarial_lane_mandatory -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "`planner_review_runtime` adversarial lane 在 qa release 前强制触发（非仅信号触发）；输出含 3-5 翻车点 + 验证证据形状；缺失 → block",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-methodology-contract-v164/tc-mc-004/__RUN_ID__.json",
+        "command": "python3 -m pytest tests/test_v164_qa_business_state_machine.py::test_boundary_coverage_derivation -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "从 FSM 自动推导边界 TC（初始态进入 / 终态退出 / 非法转换拒绝）；边界态未覆盖 → 标记 `boundary_gap`",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-business-state-machine-v164/tc-sm-004/__RUN_ID__.json",
         "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tests.md",
+        "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-SM-005",
+        "ac_id": "AC-005",
+        "ac_theme": "unreachable-reject",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v164_qa_business_state_machine.py::test_unreachable_state_reject -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "不可达态被触达 → fail-closed block，reason_code 含 `unreachable_state_reached`；evidence 不被记为 pass",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-business-state-machine-v164/tc-sm-005/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-SM-006",
+        "ac_id": "AC-006",
+        "ac_theme": "confidence-chain-integration",
+        "lane": "feature_release_facing",
+        "layer": "integration",
+        "command": "python3 -m pytest tests/test_v164_qa_business_state_machine.py::test_confidence_chain_integration -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "状态覆盖缺口削弱对应层置信度（`state_machine_gap` 标记接入 Phase 2 `confidence_chain`）；与 Phase 2 字段共存",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-business-state-machine-v164/tc-sm-006/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
       }
@@ -90,7 +118,7 @@
     "browser_runtime_admission": []
   },
   "lane_counts": {
-    "feature_release_facing": 4,
+    "feature_release_facing": 6,
     "current_runtime_contract": 0,
     "generated_surface_sync": 0,
     "compatibility_contract": 0,
@@ -107,74 +135,108 @@
   ],
   "test_refs": [
     {
-      "tc_id": "TC-MC-001",
+      "tc_id": "TC-SM-001",
       "ac_id": "AC-001",
-      "ac_theme": "global-boundaries-first-principles",
+      "ac_theme": "fsm-extract",
       "lane": "feature_release_facing",
       "layer": "contract",
-      "command": "python3 -m pytest tests/test_v164_qa_methodology_contract.py::test_first_principles_clause -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "`global-boundaries.md §5` 含「第一性原理」条款（动手前回到根本 + 最小可验证单元 + 为什么）；§5 既有 4 条条款未被修改（纯增量校验）",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-methodology-contract-v164/tc-mc-001/__RUN_ID__.json",
+      "command": "python3 -m pytest tests/test_v164_qa_business_state_machine.py::test_fsm_extract_from_truth -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "从 truth.md State Machine 段落 + AC 提取 FSM（states + transitions + boundary + unreachable）；提取失败（段落缺失/格式错）→ block，reason_code 含 `fsm_extract_failed`",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-business-state-machine-v164/tc-sm-001/__RUN_ID__.json",
       "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tests.md",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
     },
     {
-      "tc_id": "TC-MC-002",
+      "tc_id": "TC-SM-002",
       "ac_id": "AC-002",
-      "ac_theme": "global-boundaries-adversarial",
+      "ac_theme": "state-coverage-model",
       "lane": "feature_release_facing",
       "layer": "contract",
-      "command": "python3 -m pytest tests/test_v164_qa_methodology_contract.py::test_adversarial_clause -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "`global-boundaries.md §5` 含「对抗式审查」条款（最挑剔审查 + 3-5 翻车点 + 验证证据 + 不接受看起来没问题）；纯增量校验",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-methodology-contract-v164/tc-mc-002/__RUN_ID__.json",
+      "command": "python3 -m pytest tests/test_v164_qa_business_state_machine.py::test_state_coverage_model -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "状态覆盖模型：每条转换至少 1 TC；边界态（初始/终态/非法转换目标）有覆盖；未覆盖转换标记 gap",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-business-state-machine-v164/tc-sm-002/__RUN_ID__.json",
       "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tests.md",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
     },
     {
-      "tc_id": "TC-MC-003",
+      "tc_id": "TC-SM-003",
       "ac_id": "AC-003",
-      "ac_theme": "qa-skill-contract-mandatory",
+      "ac_theme": "state-machine-coverage-field",
       "lane": "feature_release_facing",
       "layer": "contract",
-      "command": "python3 -m pytest tests/test_v164_qa_methodology_contract.py::test_qa_skill_contract_mandatory -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "`beacon-eval-qa` SKILL.md 含\"交付前对抗式审查\"强制契约；缺失翻车点/验证证据 → block（reason_code `adversarial_review_missing`）",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-methodology-contract-v164/tc-mc-003/__RUN_ID__.json",
+      "command": "python3 -m pytest tests/test_v164_qa_business_state_machine.py::test_state_machine_coverage_field -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`build_qa_profile_completeness` 输出含 `state_machine_coverage`（转换覆盖率 + 边界态覆盖 + 不可达态列表 + gap）；projection 同步",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-business-state-machine-v164/tc-sm-003/__RUN_ID__.json",
       "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tests.md",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
     },
     {
-      "tc_id": "TC-MC-004",
+      "tc_id": "TC-SM-004",
       "ac_id": "AC-004",
-      "ac_theme": "adversarial-lane-mandatory",
+      "ac_theme": "boundary-coverage",
       "lane": "feature_release_facing",
       "layer": "contract",
-      "command": "python3 -m pytest tests/test_v164_qa_methodology_contract.py::test_adversarial_lane_mandatory -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "`planner_review_runtime` adversarial lane 在 qa release 前强制触发（非仅信号触发）；输出含 3-5 翻车点 + 验证证据形状；缺失 → block",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-methodology-contract-v164/tc-mc-004/__RUN_ID__.json",
+      "command": "python3 -m pytest tests/test_v164_qa_business_state_machine.py::test_boundary_coverage_derivation -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "从 FSM 自动推导边界 TC（初始态进入 / 终态退出 / 非法转换拒绝）；边界态未覆盖 → 标记 `boundary_gap`",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-business-state-machine-v164/tc-sm-004/__RUN_ID__.json",
       "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tests.md",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-SM-005",
+      "ac_id": "AC-005",
+      "ac_theme": "unreachable-reject",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v164_qa_business_state_machine.py::test_unreachable_state_reject -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "不可达态被触达 → fail-closed block，reason_code 含 `unreachable_state_reached`；evidence 不被记为 pass",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-business-state-machine-v164/tc-sm-005/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-SM-006",
+      "ac_id": "AC-006",
+      "ac_theme": "confidence-chain-integration",
+      "lane": "feature_release_facing",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v164_qa_business_state_machine.py::test_confidence_chain_integration -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "状态覆盖缺口削弱对应层置信度（`state_machine_gap` 标记接入 Phase 2 `confidence_chain`）；与 Phase 2 字段共存",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-business-state-machine-v164/tc-sm-006/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-business-state-machine-v164/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
     }
   ],
   "ac_to_test_refs": {
     "AC-001": [
-      "TC-MC-001"
+      "TC-SM-001"
     ],
     "AC-002": [
-      "TC-MC-002"
+      "TC-SM-002"
     ],
     "AC-003": [
-      "TC-MC-003"
+      "TC-SM-003"
     ],
     "AC-004": [
-      "TC-MC-004"
+      "TC-SM-004"
+    ],
+    "AC-005": [
+      "TC-SM-005"
+    ],
+    "AC-006": [
+      "TC-SM-006"
     ]
   },
   "qa_order_contract": {
@@ -210,6 +272,6 @@
   "status": "pass",
   "blocked": false,
   "reason_codes": [],
-  "generated_at": "2026-07-02T06:36:07.801466+00:00",
+  "generated_at": "2026-07-02T06:44:59.341515+00:00",
   "index_path": "docs/beacon/v1.6.4/.machine/testing/test-contract-index.json"
 }
