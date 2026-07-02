@@ -1,0 +1,740 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-qa-chrome-extension-e2e-v164",
+  "feature_slug": "beacon-qa-chrome-extension-e2e-v164",
+  "version": "v1.6.4",
+  "generated_at": "2026-07-02T06:43:56.932359+00:00",
+  "expansion_profile": "pua-web",
+  "scenario_depth": "standard",
+  "families_required": [
+    "happy",
+    "negative",
+    "boundary",
+    "recovery",
+    "compatibility"
+  ],
+  "stories": [
+    {
+      "ac_id": "AC-001",
+      "theme": "runner-registered",
+      "text": "`BROWSER_RUNNER_REGISTRY` 含 `playwright-extension`；`default_browser_runner_command('playwright-extension')` 返回非空可执行命令（**Must**）",
+      "scenario_ids": [
+        "SC-001"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-001",
+          "source_tc_id": "TC-CX-001",
+          "tc_id": "TC-CX-001-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "load-extension",
+      "text": "runner adapter 透传 `--load-extension=<path>` 到 Chrome 启动参数；扩展包加载失败时 block（reason_code `extension_load_failed`）（**Must**）",
+      "scenario_ids": [
+        "SC-002"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-002",
+          "source_tc_id": "TC-CX-002",
+          "tc_id": "TC-CX-002-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "integration",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "headless-new",
+      "text": "runner 使用 `--headless=new`（旧 headless 不支持扩展）；默认 headless 模式下扩展可加载（**Must**）",
+      "scenario_ids": [
+        "SC-003"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-003",
+          "source_tc_id": "TC-CX-003",
+          "tc_id": "TC-CX-003-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "integration",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "extension-id-fixed",
+      "text": "支持固定 extension ID（manifest `key` field 或 computed key）；测试可解析并复用该 ID（**Must**）",
+      "scenario_ids": [
+        "SC-004"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-004",
+          "source_tc_id": "TC-CX-004",
+          "tc_id": "TC-CX-004-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "integration",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "extension-page-nav",
+      "text": "runner 能导航到 `chrome-extension://<id>/<page>.html` 并断言页面内容（**Must**）",
+      "scenario_ids": [
+        "SC-005",
+        "SC-006",
+        "SC-007",
+        "SC-008",
+        "SC-009"
+      ],
+      "scenario_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "required_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "scenarios": [
+        {
+          "scenario_id": "SC-005",
+          "source_tc_id": "TC-CX-005",
+          "tc_id": "TC-CX-005-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "integration",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-006",
+          "source_tc_id": "TC-CX-005",
+          "tc_id": "TC-CX-005-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "integration",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-007",
+          "source_tc_id": "TC-CX-005",
+          "tc_id": "TC-CX-005-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "integration",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-008",
+          "source_tc_id": "TC-CX-005",
+          "tc_id": "TC-CX-005-RECOVERY",
+          "scenario_family": "recovery",
+          "qa_type": "integration",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-009",
+          "source_tc_id": "TC-CX-005",
+          "tc_id": "TC-CX-005-COMPATIBILITY",
+          "scenario_family": "compatibility",
+          "qa_type": "compatibility",
+          "browser_required": true,
+          "replay_required": true
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "popup-test",
+      "text": "popup 测试支持：`action.openPopup()` 或 tab-ID URL 注入（`popup.html?tab=<id>`）；能断言 popup DOM（**Must**）",
+      "scenario_ids": [
+        "SC-010"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-010",
+          "source_tc_id": "TC-CX-006",
+          "tc_id": "TC-CX-006-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "integration",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "service-worker-target",
+      "text": "runner 能检测 service worker target（`waitForTarget(type==='service_worker')`）；能 evaluate SW 上下文（如 `chrome.storage`）；支持 SW 终止测试（**Must**）",
+      "scenario_ids": [
+        "SC-011"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-011",
+          "source_tc_id": "TC-CX-007",
+          "tc_id": "TC-CX-007-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "integration",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-008",
+      "theme": "fail-closed",
+      "text": "扩展加载失败 / ID 不匹配 / SW 未就绪 → QA block，reason_code 明确，不记 false pass（`NON_ACCEPTANCE_EVIDENCE_KINDS` 拒绝 dry_run / 非验收 evidence）（**Must**，UD-002）",
+      "scenario_ids": [
+        "SC-012"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-012",
+          "source_tc_id": "TC-CX-008",
+          "tc_id": "TC-CX-008-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-009",
+      "theme": "evidence-axes-extension",
+      "text": "`BROWSER_EVIDENCE_AXES` 含 `extension_page` / `service_worker` / `popup`；qa_acceptance 校验扩展 evidence 形状（**Must**）",
+      "scenario_ids": [
+        "SC-013"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-013",
+          "source_tc_id": "TC-CX-009",
+          "tc_id": "TC-CX-009-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "source_tc_id": "TC-CX-001",
+      "tc_id": "TC-CX-001-PRIMARY",
+      "ac_id": "AC-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-001 primary path :: `BROWSER_RUNNER_REGISTRY` 含 `playwright-extension`；`default_browser_runner_command('playwright-e",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v164_qa_chrome_extension_e2e.py::test_runner_registered -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-chrome-extension-e2e-v164/tc-cx-001/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-002",
+      "source_tc_id": "TC-CX-002",
+      "tc_id": "TC-CX-002-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "primary",
+      "title": "AC-002 primary path :: runner 启动参数含 `--load-extension=<path>`；构造损坏扩展包时 block 且 reason_code 含 `extension_load_failed`",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "integration",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v164_qa_chrome_extension_e2e.py::test_load_extension_passthrough -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Integration flow assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-chrome-extension-e2e-v164/tc-cx-002/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-003",
+      "source_tc_id": "TC-CX-003",
+      "tc_id": "TC-CX-003-PRIMARY",
+      "ac_id": "AC-003",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "primary",
+      "title": "AC-003 primary path :: runner 默认 headless 用 `--headless=new`；旧 headless 不被选用于扩展模式",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "integration",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v164_qa_chrome_extension_e2e.py::test_headless_new_mode -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Integration flow assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-chrome-extension-e2e-v164/tc-cx-003/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-004",
+      "source_tc_id": "TC-CX-004",
+      "tc_id": "TC-CX-004-PRIMARY",
+      "ac_id": "AC-004",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "primary",
+      "title": "AC-004 primary path :: 给定 manifest `key` field，runner 解析出固定 extension ID；两次启动 ID 一致",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "integration",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v164_qa_chrome_extension_e2e.py::test_extension_id_fixed -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Integration flow assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-chrome-extension-e2e-v164/tc-cx-004/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-005",
+      "source_tc_id": "TC-CX-005",
+      "tc_id": "TC-CX-005-HAPPY",
+      "ac_id": "AC-005",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "happy",
+      "title": "AC-005 happy path :: runner 导航到 `chrome-extension://<id>/index.html` 并断言页面含预期 DOM 元素",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "playwright",
+      "deterministic_runner": "playwright",
+      "explore_command": "python3 -m pytest tests/test_v164_qa_chrome_extension_e2e.py::test_extension_page_navigation -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "replay_command": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "happy",
+        "integration",
+        "browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v164_qa_chrome_extension_e2e.py::test_extension_page_navigation -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "runner 导航到 `chrome-extension://<id>/index.html` 并断言页面含预期 DOM 元素 (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-chrome-extension-e2e-v164/tc-cx-005/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-006",
+      "source_tc_id": "TC-CX-005",
+      "tc_id": "TC-CX-005-NEGATIVE",
+      "ac_id": "AC-005",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "negative",
+      "title": "AC-005 negative path :: runner 导航到 `chrome-extension://<id>/index.html` 并断言页面含预期 DOM 元素",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "playwright",
+      "deterministic_runner": "playwright",
+      "explore_command": "python3 -m pytest tests/test_v164_qa_chrome_extension_e2e.py::test_extension_page_navigation -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "replay_command": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "negative",
+        "integration",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-005"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v164_qa_chrome_extension_e2e.py::test_extension_page_navigation -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "runner 导航到 `chrome-extension://<id>/index.html` 并断言页面含预期 DOM 元素 (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-chrome-extension-e2e-v164/tc-cx-005/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-007",
+      "source_tc_id": "TC-CX-005",
+      "tc_id": "TC-CX-005-BOUNDARY",
+      "ac_id": "AC-005",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "boundary",
+      "title": "AC-005 boundary path :: runner 导航到 `chrome-extension://<id>/index.html` 并断言页面含预期 DOM 元素",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "playwright",
+      "deterministic_runner": "playwright",
+      "explore_command": "python3 -m pytest tests/test_v164_qa_chrome_extension_e2e.py::test_extension_page_navigation -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "replay_command": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "boundary",
+        "integration",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-005"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v164_qa_chrome_extension_e2e.py::test_extension_page_navigation -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "runner 导航到 `chrome-extension://<id>/index.html` 并断言页面含预期 DOM 元素 (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-chrome-extension-e2e-v164/tc-cx-005/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-008",
+      "source_tc_id": "TC-CX-005",
+      "tc_id": "TC-CX-005-RECOVERY",
+      "ac_id": "AC-005",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "recovery",
+      "title": "AC-005 recovery path :: runner 导航到 `chrome-extension://<id>/index.html` 并断言页面含预期 DOM 元素",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "playwright",
+      "deterministic_runner": "playwright",
+      "explore_command": "python3 -m pytest tests/test_v164_qa_chrome_extension_e2e.py::test_extension_page_navigation -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "replay_command": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "recovery",
+        "integration",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-005"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v164_qa_chrome_extension_e2e.py::test_extension_page_navigation -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "runner 导航到 `chrome-extension://<id>/index.html` 并断言页面含预期 DOM 元素 (recovery path survives refresh/back/retry with evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-chrome-extension-e2e-v164/tc-cx-005/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-009",
+      "source_tc_id": "TC-CX-005",
+      "tc_id": "TC-CX-005-COMPATIBILITY",
+      "ac_id": "AC-005",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "compatibility",
+      "title": "AC-005 compatibility path :: runner 导航到 `chrome-extension://<id>/index.html` 并断言页面含预期 DOM 元素",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "playwright",
+      "deterministic_runner": "playwright",
+      "explore_command": "python3 -m pytest tests/test_v164_qa_chrome_extension_e2e.py::test_extension_page_navigation -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "replay_command": "if [ -f \"tools/beacon/functional-layer.sh\" ]; then bash tools/beacon/functional-layer.sh; exit $?; fi; if [ -f \"playwright.config.ts\" ] || [ -f \"playwright.config.js\" ]; then : && npx playwright test --project=chromium --project=firefox --project=webkit; exit $?; fi; if [ -f \"tournament_miniapp/playwright.config.ts\" ] || [ -f \"tournament_miniapp/playwright.config.js\" ]; then cd \"tournament_miniapp\" && npx playwright test --project=chromium --project=firefox --project=webkit; exit $?; fi; if [ -f \"frontend/playwright.config.ts\" ] || [ -f \"frontend/playwright.config.js\" ]; then cd \"frontend\" && npx playwright test --project=chromium --project=firefox --project=webkit; exit $?; fi; if [ -f \"web/playwright.config.ts\" ] || [ -f \"web/playwright.config.js\" ]; then cd \"web\" && npx playwright test --project=chromium --project=firefox --project=webkit; exit $?; fi; if [ -f \"app/playwright.config.ts\" ] || [ -f \"app/playwright.config.js\" ]; then cd \"app\" && npx playwright test --project=chromium --project=firefox --project=webkit; exit $?; fi; if [ -f \"client/playwright.config.ts\" ] || [ -f \"client/playwright.config.js\" ]; then cd \"client\" && npx playwright test --project=chromium --project=firefox --project=webkit; exit $?; fi; npx playwright test --project=chromium --project=firefox --project=webkit",
+      "coverage_axes": [
+        "compatibility",
+        "compatibility",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-005"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v164_qa_chrome_extension_e2e.py::test_extension_page_navigation -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "runner 导航到 `chrome-extension://<id>/index.html` 并断言页面含预期 DOM 元素 (compatibility path preserves behavior across browser/device pairs)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-chrome-extension-e2e-v164/tc-cx-005/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-010",
+      "source_tc_id": "TC-CX-006",
+      "tc_id": "TC-CX-006-PRIMARY",
+      "ac_id": "AC-006",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "primary",
+      "title": "AC-006 primary path :: popup 测试通过 `action.openPopup()` 或 `popup.html?tab=<id>` 注入；断言 popup DOM 可访问",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "integration",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v164_qa_chrome_extension_e2e.py::test_popup_test -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Integration flow assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-chrome-extension-e2e-v164/tc-cx-006/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-011",
+      "source_tc_id": "TC-CX-007",
+      "tc_id": "TC-CX-007-PRIMARY",
+      "ac_id": "AC-007",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "primary",
+      "title": "AC-007 primary path :: runner 检测到 service worker target（type==='service_worker'）；能 evaluate SW 上下文（如 `chrome.storage.lo",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "integration",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v164_qa_chrome_extension_e2e.py::test_service_worker_target -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Integration flow assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-chrome-extension-e2e-v164/tc-cx-007/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-012",
+      "source_tc_id": "TC-CX-008",
+      "tc_id": "TC-CX-008-PRIMARY",
+      "ac_id": "AC-008",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-008 primary path :: 扩展加载失败 / ID 不匹配 / SW 未就绪三种场景 → QA `blocked=True`，reason_code 明确；evidence 不被记为 pass（`NON_ACCEPTAN",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v164_qa_chrome_extension_e2e.py::test_fail_closed_no_false_pass -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-chrome-extension-e2e-v164/tc-cx-008/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-013",
+      "source_tc_id": "TC-CX-009",
+      "tc_id": "TC-CX-009-PRIMARY",
+      "ac_id": "AC-009",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-009 primary path :: `BROWSER_EVIDENCE_AXES` 含 `extension_page` / `service_worker` / `popup`；qa_acceptance 接受扩展 evide",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v164_qa_chrome_extension_e2e.py::test_evidence_axes_extension -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-chrome-extension-e2e-v164/tc-cx-009/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
+}
