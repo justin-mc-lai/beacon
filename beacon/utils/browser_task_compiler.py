@@ -105,4 +105,6 @@ def default_browser_runner_command(runner: str, *, qa_type: str) -> str:
         return f"python3 -m beacon.adapters.browser_use_runner --mode {mode}"
     if normalized_runner == "agent-browser":
         return f"python3 -m beacon.adapters.agent_browser_runner --mode {mode}"
+    if normalized_runner == "playwright-extension":
+        return f"python3 -m beacon.adapters.playwright_extension_runner --mode {mode}"
     return ""

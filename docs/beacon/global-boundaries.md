@@ -130,6 +130,17 @@ Beacon 的通用 skill / prompt 默认不得退化成“替强模型编排操作
 - `ceo-review`、`brainstorm`、`design-review`、`deep` 这类 guidance/support surface 必须优先贯彻这套哲学。
 - support surface 的主要职责是校准 framing、challenge scope、暴露关键工具、解释 route 与证据缺口，而不是把探索和判断过程硬编码成脚本。
 
+**第一性原理（v1.6.4+）**
+
+- 动手前回到根本问题：每个实现/验收决定必须能说明「为什么」，并拆到最小可验证单元。
+- truth / implement / qa 入口须校准根本问题与最小可验证单元，不得把第一性原理降格为文档装饰。
+
+**对抗式审查（v1.6.4+ QA release 前强制）**
+
+- 交付前切换为最挑剔审查者：主动列出 3–5 个翻车点，并为每个翻车点提供验证证据。
+- 不接受「看起来没问题」式放行；缺失翻车点清单或验证证据 → fail-closed block（reason_code `adversarial_review_missing`）。
+- qa skill 与 planner adversarial lane 在 qa release 前强制触发，非可选信号触发。
+
 ## 6. 强 Gate / Fail-Closed 例外边界
 
 Beacon 允许在强 gate 场景中使用比默认 skill 哲学更强的步骤约束，但必须有明确理由。
