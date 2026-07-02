@@ -5,80 +5,94 @@
   "runtime_line": "v1.6.4",
   "runtime_release_line": "v1.6.3",
   "docs_line": "v1.6.4",
-  "feature": "beacon-qa-methodology-contract-v164",
-  "feature_slug": "beacon-qa-methodology-contract-v164",
+  "feature": "beacon-qa-coverage-confidence-chain-v164",
+  "feature_slug": "beacon-qa-coverage-confidence-chain-v164",
   "feature_line_status": "planning_only",
   "truth_refs": {
-    "truth": "docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/truth.md",
-    "tests": "docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tests.md",
-    "tasks": "docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tasks.md",
-    "evidence": "docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/evidence.md",
-    "ac_matrix": "docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tests.md",
-    "story_state": "docs/beacon/v1.6.4/.machine/user-story/beacon-qa-methodology-contract-v164.json"
+    "truth": "docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/truth.md",
+    "tests": "docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/tests.md",
+    "tasks": "docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/tasks.md",
+    "evidence": "docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/evidence.md",
+    "ac_matrix": "docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/tests.md",
+    "story_state": "docs/beacon/v1.6.4/.machine/user-story/beacon-qa-coverage-confidence-chain-v164.json"
   },
   "source_hashes": {
-    "truth": "sha256:f559b8df422a372845eb2e247cab272084269d1bdbd8d2c89e8e25b8743fa5f7",
-    "tests": "sha256:5c12c3bde7cb6c5ac7b15588f414128302db136decf550b6d25f4c0d667e44fa",
-    "tasks": "sha256:04ed103ba458441729c1e93ff9a191c9941b71adfc5e968dbf0f23e8b9d7c9e1",
-    "evidence": "sha256:2edbb151ada32f9adb48fdc7fecc943ba1e8ca473f3299e4a6580983ffc7dc5c",
-    "ac_matrix": "sha256:5c12c3bde7cb6c5ac7b15588f414128302db136decf550b6d25f4c0d667e44fa",
-    "story_state": "sha256:a019d77d35e5c4b7504d80d6346ee1dc50ed6f4f4b160c85760c5fe09c95ff51"
+    "truth": "sha256:10b0f84b83da92345a447099a98cdf0f6f35f25c085b999ed87c4ca1ea9f8927",
+    "tests": "sha256:f2faf551a5a218a9cf8eeaac87e7990efd274bf8c87f616cde95de7a3c15d27d",
+    "tasks": "sha256:8f5ee83f78c1d7b6bf3616ef86507d4a2f2b53d17ee6346540a996f6f2a1483a",
+    "evidence": "sha256:6218ad0579fed517452a3e856e28243b2b5d1f406e4290372431ba4cdfcf109d",
+    "ac_matrix": "sha256:f2faf551a5a218a9cf8eeaac87e7990efd274bf8c87f616cde95de7a3c15d27d",
+    "story_state": "sha256:ba1857f1cf0e2af1b75e4c69cebe6f5f2a7b82679e8b8d506b719ad31cf15854"
   },
   "lanes": {
     "feature_release_facing": [
       {
-        "tc_id": "TC-MC-001",
+        "tc_id": "TC-CC-001",
         "ac_id": "AC-001",
-        "ac_theme": "global-boundaries-first-principles",
+        "ac_theme": "chain-model",
         "lane": "feature_release_facing",
         "layer": "contract",
-        "command": "python3 -m pytest tests/test_v164_qa_methodology_contract.py::test_first_principles_clause -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "`global-boundaries.md §5` 含「第一性原理」条款（动手前回到根本 + 最小可验证单元 + 为什么）；§5 既有 4 条条款未被修改（纯增量校验）",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-methodology-contract-v164/tc-mc-001/__RUN_ID__.json",
+        "command": "python3 -m pytest tests/test_v164_qa_confidence_chain.py::test_chain_model_bottom_up -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "置信度传递模型自下而上：unit→interface→...→browser_e2e；上层置信度依赖下层覆盖传递（下层缺失时上层置信度降低）",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-coverage-confidence-chain-v164/tc-cc-001/__RUN_ID__.json",
         "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tests.md",
+        "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
       },
       {
-        "tc_id": "TC-MC-002",
+        "tc_id": "TC-CC-002",
         "ac_id": "AC-002",
-        "ac_theme": "global-boundaries-adversarial",
+        "ac_theme": "gap-detection",
         "lane": "feature_release_facing",
         "layer": "contract",
-        "command": "python3 -m pytest tests/test_v164_qa_methodology_contract.py::test_adversarial_clause -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "`global-boundaries.md §5` 含「对抗式审查」条款（最挑剔审查 + 3-5 翻车点 + 验证证据 + 不接受看起来没问题）；纯增量校验",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-methodology-contract-v164/tc-mc-002/__RUN_ID__.json",
+        "command": "python3 -m pytest tests/test_v164_qa_confidence_chain.py::test_gap_detection -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "下层 skipped/missing/blocked 时，上层标记 `downstream_gap`；gap 来源可追溯（哪一层断）",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-coverage-confidence-chain-v164/tc-cc-002/__RUN_ID__.json",
         "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tests.md",
+        "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
       },
       {
-        "tc_id": "TC-MC-003",
+        "tc_id": "TC-CC-003",
         "ac_id": "AC-003",
-        "ac_theme": "qa-skill-contract-mandatory",
+        "ac_theme": "confidence-chain-field",
         "lane": "feature_release_facing",
         "layer": "contract",
-        "command": "python3 -m pytest tests/test_v164_qa_methodology_contract.py::test_qa_skill_contract_mandatory -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "`beacon-eval-qa` SKILL.md 含\"交付前对抗式审查\"强制契约；缺失翻车点/验证证据 → block（reason_code `adversarial_review_missing`）",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-methodology-contract-v164/tc-mc-003/__RUN_ID__.json",
+        "command": "python3 -m pytest tests/test_v164_qa_confidence_chain.py::test_confidence_chain_field -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "`build_qa_profile_completeness` 输出含 `confidence_chain`（每层置信度 + 依赖来源 + gap 标记）；projection JSON 同步该字段",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-coverage-confidence-chain-v164/tc-cc-003/__RUN_ID__.json",
         "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tests.md",
+        "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
       },
       {
-        "tc_id": "TC-MC-004",
+        "tc_id": "TC-CC-004",
         "ac_id": "AC-004",
-        "ac_theme": "adversarial-lane-mandatory",
+        "ac_theme": "break-block",
         "lane": "feature_release_facing",
         "layer": "contract",
-        "command": "python3 -m pytest tests/test_v164_qa_methodology_contract.py::test_adversarial_lane_mandatory -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "`planner_review_runtime` adversarial lane 在 qa release 前强制触发（非仅信号触发）；输出含 3-5 翻车点 + 验证证据形状；缺失 → block",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-methodology-contract-v164/tc-mc-004/__RUN_ID__.json",
+        "command": "python3 -m pytest tests/test_v164_qa_confidence_chain.py::test_break_chain_blocks -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "链终点 browser_e2e 缺失 或 任一依赖层 gap → profile `partial`/`blocked`，不显示 `complete`；evidence 不被记为 full pass",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-coverage-confidence-chain-v164/tc-cc-004/__RUN_ID__.json",
         "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tests.md",
+        "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-CC-005",
+        "ac_id": "AC-005",
+        "ac_theme": "browser-e2e-integration",
+        "lane": "feature_release_facing",
+        "layer": "integration",
+        "command": "python3 -m pytest tests/test_v164_qa_confidence_chain.py::test_browser_e2e_chain_terminal -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "browser_e2e 作为链终点纳入置信度链；e2e 置信度依赖下层 non-browser 覆盖；与 Phase 1 `playwright-extension` runner 注册表共存",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-coverage-confidence-chain-v164/tc-cc-005/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
       }
@@ -90,7 +104,7 @@
     "browser_runtime_admission": []
   },
   "lane_counts": {
-    "feature_release_facing": 4,
+    "feature_release_facing": 5,
     "current_runtime_contract": 0,
     "generated_surface_sync": 0,
     "compatibility_contract": 0,
@@ -107,74 +121,91 @@
   ],
   "test_refs": [
     {
-      "tc_id": "TC-MC-001",
+      "tc_id": "TC-CC-001",
       "ac_id": "AC-001",
-      "ac_theme": "global-boundaries-first-principles",
+      "ac_theme": "chain-model",
       "lane": "feature_release_facing",
       "layer": "contract",
-      "command": "python3 -m pytest tests/test_v164_qa_methodology_contract.py::test_first_principles_clause -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "`global-boundaries.md §5` 含「第一性原理」条款（动手前回到根本 + 最小可验证单元 + 为什么）；§5 既有 4 条条款未被修改（纯增量校验）",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-methodology-contract-v164/tc-mc-001/__RUN_ID__.json",
+      "command": "python3 -m pytest tests/test_v164_qa_confidence_chain.py::test_chain_model_bottom_up -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "置信度传递模型自下而上：unit→interface→...→browser_e2e；上层置信度依赖下层覆盖传递（下层缺失时上层置信度降低）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-coverage-confidence-chain-v164/tc-cc-001/__RUN_ID__.json",
       "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tests.md",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
     },
     {
-      "tc_id": "TC-MC-002",
+      "tc_id": "TC-CC-002",
       "ac_id": "AC-002",
-      "ac_theme": "global-boundaries-adversarial",
+      "ac_theme": "gap-detection",
       "lane": "feature_release_facing",
       "layer": "contract",
-      "command": "python3 -m pytest tests/test_v164_qa_methodology_contract.py::test_adversarial_clause -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "`global-boundaries.md §5` 含「对抗式审查」条款（最挑剔审查 + 3-5 翻车点 + 验证证据 + 不接受看起来没问题）；纯增量校验",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-methodology-contract-v164/tc-mc-002/__RUN_ID__.json",
+      "command": "python3 -m pytest tests/test_v164_qa_confidence_chain.py::test_gap_detection -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "下层 skipped/missing/blocked 时，上层标记 `downstream_gap`；gap 来源可追溯（哪一层断）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-coverage-confidence-chain-v164/tc-cc-002/__RUN_ID__.json",
       "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tests.md",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
     },
     {
-      "tc_id": "TC-MC-003",
+      "tc_id": "TC-CC-003",
       "ac_id": "AC-003",
-      "ac_theme": "qa-skill-contract-mandatory",
+      "ac_theme": "confidence-chain-field",
       "lane": "feature_release_facing",
       "layer": "contract",
-      "command": "python3 -m pytest tests/test_v164_qa_methodology_contract.py::test_qa_skill_contract_mandatory -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "`beacon-eval-qa` SKILL.md 含\"交付前对抗式审查\"强制契约；缺失翻车点/验证证据 → block（reason_code `adversarial_review_missing`）",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-methodology-contract-v164/tc-mc-003/__RUN_ID__.json",
+      "command": "python3 -m pytest tests/test_v164_qa_confidence_chain.py::test_confidence_chain_field -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`build_qa_profile_completeness` 输出含 `confidence_chain`（每层置信度 + 依赖来源 + gap 标记）；projection JSON 同步该字段",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-coverage-confidence-chain-v164/tc-cc-003/__RUN_ID__.json",
       "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tests.md",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
     },
     {
-      "tc_id": "TC-MC-004",
+      "tc_id": "TC-CC-004",
       "ac_id": "AC-004",
-      "ac_theme": "adversarial-lane-mandatory",
+      "ac_theme": "break-block",
       "lane": "feature_release_facing",
       "layer": "contract",
-      "command": "python3 -m pytest tests/test_v164_qa_methodology_contract.py::test_adversarial_lane_mandatory -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "`planner_review_runtime` adversarial lane 在 qa release 前强制触发（非仅信号触发）；输出含 3-5 翻车点 + 验证证据形状；缺失 → block",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-methodology-contract-v164/tc-mc-004/__RUN_ID__.json",
+      "command": "python3 -m pytest tests/test_v164_qa_confidence_chain.py::test_break_chain_blocks -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "链终点 browser_e2e 缺失 或 任一依赖层 gap → profile `partial`/`blocked`，不显示 `complete`；evidence 不被记为 full pass",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-coverage-confidence-chain-v164/tc-cc-004/__RUN_ID__.json",
       "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tests.md",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-CC-005",
+      "ac_id": "AC-005",
+      "ac_theme": "browser-e2e-integration",
+      "lane": "feature_release_facing",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v164_qa_confidence_chain.py::test_browser_e2e_chain_terminal -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "browser_e2e 作为链终点纳入置信度链；e2e 置信度依赖下层 non-browser 覆盖；与 Phase 1 `playwright-extension` runner 注册表共存",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-coverage-confidence-chain-v164/tc-cc-005/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
     }
   ],
   "ac_to_test_refs": {
     "AC-001": [
-      "TC-MC-001"
+      "TC-CC-001"
     ],
     "AC-002": [
-      "TC-MC-002"
+      "TC-CC-002"
     ],
     "AC-003": [
-      "TC-MC-003"
+      "TC-CC-003"
     ],
     "AC-004": [
-      "TC-MC-004"
+      "TC-CC-004"
+    ],
+    "AC-005": [
+      "TC-CC-005"
     ]
   },
   "qa_order_contract": {
@@ -210,6 +241,6 @@
   "status": "pass",
   "blocked": false,
   "reason_codes": [],
-  "generated_at": "2026-07-02T06:36:07.801466+00:00",
+  "generated_at": "2026-07-02T06:44:38.003021+00:00",
   "index_path": "docs/beacon/v1.6.4/.machine/testing/test-contract-index.json"
 }

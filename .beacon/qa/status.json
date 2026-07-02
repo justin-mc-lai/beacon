@@ -1,27 +1,28 @@
 {
   "scope": "qa9",
-  "timestamp": "2026-06-26T20:21:38.508494",
-  "project": "/Users/apple/Developer/Personal/products/beacon",
-  "version": "v1.6.3",
-  "run_id": "run-20260626T202138507937",
-  "spec_fingerprint_hash": "5d23582a1a5f3c48adbb271c2641e0063c5f8207aa20d005dc7d87cb9300bbce",
+  "timestamp": "2026-07-02T14:44:29.723358",
+  "project": "/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-qa-coverage-confidence-chain-v164",
+  "version": "v1.6.4",
+  "run_id": "run-20260702T144429722786",
+  "spec_fingerprint_hash": "810a4a28073e01b78969486a470d63194e64daff3d7c3343bc535bbb9234eca5",
   "status": "passed",
   "selected_layers": [
-    "contract"
+    "contract",
+    "integration"
   ],
   "execution": {
-    "run_id": "run-20260626T202138507937",
-    "version": "v1.6.3",
-    "evidence_dir": ".beacon/evidence/auto-test/run-20260626T202138507937",
+    "run_id": "run-20260702T144429722786",
+    "version": "v1.6.4",
+    "evidence_dir": ".beacon/evidence/auto-test/run-20260702T144429722786",
     "spec_fingerprint": {
-      "fingerprint_hash": "5d23582a1a5f3c48adbb271c2641e0063c5f8207aa20d005dc7d87cb9300bbce",
-      "version": "v1.6.3",
-      "generated_at": "2026-06-26T12:21:45.357715+00:00"
+      "fingerprint_hash": "810a4a28073e01b78969486a470d63194e64daff3d7c3343bc535bbb9234eca5",
+      "version": "v1.6.4",
+      "generated_at": "2026-07-02T06:44:37.328507+00:00"
     },
     "layers": [
       {
         "layer": "contract",
-        "command": "python3 -m pytest tests/test_v163_runtime_release_alignment.py::test_release_gate_blocks_drift -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "command": "python3 -m pytest tests/test_v164_qa_confidence_chain.py::test_chain_model_bottom_up -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "exit_code": 0,
         "status": "passed",
         "reason_code": "",
@@ -35,38 +36,67 @@
             "exit_code": 0
           }
         ],
-        "execution_fingerprint": "f79f3420b7832fffd59f574a2ef3604629e9ba3e5f354776675924db1f6cdb5d",
-        "started_at": "2026-06-26T20:21:38.592685",
-        "ended_at": "2026-06-26T20:21:39.285977",
-        "junit_path": ".beacon/evidence/auto-test/run-20260626T202138507937/contract/junit.xml",
+        "execution_fingerprint": "3fd070b481629b4d4123eb7a18e3d471a1ce30dd6e5643eccd9fcadba65da82e",
+        "started_at": "2026-07-02T14:44:29.845838",
+        "ended_at": "2026-07-02T14:44:32.119176",
+        "junit_path": ".beacon/evidence/auto-test/run-20260702T144429722786/contract/junit.xml",
         "junit_valid": true,
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260626T202138507937/contract/command.txt",
-          ".beacon/evidence/auto-test/run-20260626T202138507937/contract/stdout.log",
-          ".beacon/evidence/auto-test/run-20260626T202138507937/contract/stderr.log",
-          ".beacon/evidence/auto-test/run-20260626T202138507937/contract/junit.xml",
-          ".beacon/evidence/auto-test/run-20260626T202138507937/contract/result.json"
+          ".beacon/evidence/auto-test/run-20260702T144429722786/contract/command.txt",
+          ".beacon/evidence/auto-test/run-20260702T144429722786/contract/stdout.log",
+          ".beacon/evidence/auto-test/run-20260702T144429722786/contract/stderr.log",
+          ".beacon/evidence/auto-test/run-20260702T144429722786/contract/junit.xml",
+          ".beacon/evidence/auto-test/run-20260702T144429722786/contract/result.json"
+        ]
+      },
+      {
+        "layer": "integration",
+        "command": "python3 -m pytest tests/test_v164_qa_confidence_chain.py::test_browser_e2e_chain_terminal -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "exit_code": 0,
+        "status": "passed",
+        "reason_code": "",
+        "timeout_seconds": 300,
+        "assertion_count": 1,
+        "was_flaky": false,
+        "attempt_count": 1,
+        "attempts": [
+          {
+            "attempt": 1,
+            "exit_code": 0
+          }
+        ],
+        "execution_fingerprint": "7943c1cd588c9a5bf6b2113a68859d41d73e30ee6a0c767dc4b5654ec8a75ae4",
+        "started_at": "2026-07-02T14:44:32.202844",
+        "ended_at": "2026-07-02T14:44:32.809749",
+        "junit_path": ".beacon/evidence/auto-test/run-20260702T144429722786/integration/junit.xml",
+        "junit_valid": true,
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260702T144429722786/integration/command.txt",
+          ".beacon/evidence/auto-test/run-20260702T144429722786/integration/stdout.log",
+          ".beacon/evidence/auto-test/run-20260702T144429722786/integration/stderr.log",
+          ".beacon/evidence/auto-test/run-20260702T144429722786/integration/junit.xml",
+          ".beacon/evidence/auto-test/run-20260702T144429722786/integration/result.json"
         ]
       }
     ],
     "ui_action_evidence": {},
     "matrix_report": {
       "status": "ok",
-      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/beacon-runtime-release-alignment-v163/matrix.qa9.json",
-      "evidence_generated": 7,
-      "entry_count": 7,
+      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-qa-coverage-confidence-chain-v164/.beacon/qa/features/beacon-qa-coverage-confidence-chain-v164/matrix.qa9.json",
+      "evidence_generated": 5,
+      "entry_count": 5,
       "freshness_violations": []
     },
     "artifacts": [
-      ".beacon/evidence/auto-test/run-20260626T202138507937/qa9/tc-execution-map.json",
-      ".beacon/evidence/auto-test/run-20260626T202138507937/qa9/tc-results.json",
-      ".beacon/evidence/auto-test/run-20260626T202138507937/summary.json",
+      ".beacon/evidence/auto-test/run-20260702T144429722786/qa9/tc-execution-map.json",
+      ".beacon/evidence/auto-test/run-20260702T144429722786/qa9/tc-results.json",
+      ".beacon/evidence/auto-test/run-20260702T144429722786/summary.json",
       ".beacon/flaky-history.json",
       ".beacon/evidence-signature-chain.json"
     ],
     "qa9_matrix_schema_version": "1.0",
     "flaky": {
-      "pass_count": 1,
+      "pass_count": 2,
       "flaky_pass_count": 0,
       "flaky_rate": 0.0,
       "max_flaky_rate": 0.02
@@ -75,9 +105,10 @@
   "qa9": {
     "qa_profile": "web-full",
     "qa_types": [
-      "contract"
+      "contract",
+      "integration"
     ],
-    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/beacon-runtime-release-alignment-v163/matrix.qa9.json",
+    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-qa-coverage-confidence-chain-v164/.beacon/qa/features/beacon-qa-coverage-confidence-chain-v164/matrix.qa9.json",
     "ui_runner": "playwright",
     "quality_requirements": {
       "require_junit": true,
@@ -90,23 +121,23 @@
       "executed_pairs": []
     },
     "summary": {
-      "cases_total": 7,
-      "passed": 7,
+      "cases_total": 5,
+      "passed": 5,
       "failed": 0,
       "blocked": 0,
       "pending": 0,
       "pass_rate": 1.0,
       "automation_rate": 1.0,
-      "auto_cases_total": 7,
-      "auto_cases_executed": 7,
+      "auto_cases_total": 5,
+      "auto_cases_executed": 5,
       "round_stop_triggered": false,
       "round_stop_reasons": []
     },
     "tc_results": [
       {
-        "tc_id": "TC-RA-001",
+        "tc_id": "TC-CC-001",
         "ac_id": "AC-001",
-        "source_tc_id": "TC-RA-001",
+        "source_tc_id": "TC-CC-001",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -116,20 +147,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest tests/test_v163_runtime_release_alignment.py::test_release_gate_blocks_drift -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260626T202138507937",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-runtime-release-alignment-v163/tc-ra-001/__RUN_ID__.json",
+        "command": "python3 -m pytest tests/test_v164_qa_confidence_chain.py::test_chain_model_bottom_up -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260702T144429722786",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-coverage-confidence-chain-v164/tc-cc-001/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-001/command.txt",
-          ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-001/stdout.log",
-          ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-001/stderr.log",
-          ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-001/junit.xml",
-          ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-001/result.json"
+          ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-001/command.txt",
+          ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-001/stdout.log",
+          ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-001/stderr.log",
+          ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-001/junit.xml",
+          ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-001/result.json"
         ],
-        "execution_fingerprint": "a01b355014adcfb0d07feb0e826d34aa33a824917e4e06ca491fe7e64d52d999",
-        "started_at": "2026-06-26T20:21:39.372773",
-        "ended_at": "2026-06-26T20:21:39.961277",
-        "junit_path": ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-001/junit.xml",
+        "execution_fingerprint": "0f9113b3a2927041dca1d68f885e4291271a333df72f7f78cafaae278f546496",
+        "started_at": "2026-07-02T14:44:32.899686",
+        "ended_at": "2026-07-02T14:44:33.681753",
+        "junit_path": ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-001/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -142,9 +173,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-RA-002",
+        "tc_id": "TC-CC-002",
         "ac_id": "AC-002",
-        "source_tc_id": "TC-RA-002",
+        "source_tc_id": "TC-CC-002",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -154,20 +185,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest tests/test_v163_runtime_release_alignment.py::test_release_gate_pass_when_aligned -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260626T202138507937",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-runtime-release-alignment-v163/tc-ra-002/__RUN_ID__.json",
+        "command": "python3 -m pytest tests/test_v164_qa_confidence_chain.py::test_gap_detection -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260702T144429722786",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-coverage-confidence-chain-v164/tc-cc-002/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-002/command.txt",
-          ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-002/stdout.log",
-          ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-002/stderr.log",
-          ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-002/junit.xml",
-          ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-002/result.json"
+          ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-002/command.txt",
+          ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-002/stdout.log",
+          ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-002/stderr.log",
+          ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-002/junit.xml",
+          ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-002/result.json"
         ],
-        "execution_fingerprint": "d5392afd0e8e59160edbc34aaaaa6fbee9dd68cb1a4cb1f1af645307b9bbcbc3",
-        "started_at": "2026-06-26T20:21:40.037489",
-        "ended_at": "2026-06-26T20:21:40.868195",
-        "junit_path": ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-002/junit.xml",
+        "execution_fingerprint": "a83ffc2ebfb7af2e8f949964dfc5bda2704a7fd6f98c1991e539c7c3d67f3113",
+        "started_at": "2026-07-02T14:44:33.769901",
+        "ended_at": "2026-07-02T14:44:34.542716",
+        "junit_path": ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-002/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -180,9 +211,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-RA-003",
+        "tc_id": "TC-CC-003",
         "ac_id": "AC-003",
-        "source_tc_id": "TC-RA-003",
+        "source_tc_id": "TC-CC-003",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -192,20 +223,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest tests/test_v163_runtime_release_alignment.py::test_hook_runtime_alignment_field -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260626T202138507937",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-runtime-release-alignment-v163/tc-ra-003/__RUN_ID__.json",
+        "command": "python3 -m pytest tests/test_v164_qa_confidence_chain.py::test_confidence_chain_field -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260702T144429722786",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-coverage-confidence-chain-v164/tc-cc-003/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-003/command.txt",
-          ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-003/stdout.log",
-          ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-003/stderr.log",
-          ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-003/junit.xml",
-          ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-003/result.json"
+          ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-003/command.txt",
+          ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-003/stdout.log",
+          ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-003/stderr.log",
+          ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-003/junit.xml",
+          ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-003/result.json"
         ],
-        "execution_fingerprint": "2778d20b118fed2b27a40f327a00c9389088e27f9a0c4b0e586025d8e613f3ef",
-        "started_at": "2026-06-26T20:21:40.953764",
-        "ended_at": "2026-06-26T20:21:41.659192",
-        "junit_path": ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-003/junit.xml",
+        "execution_fingerprint": "c20e97eb528888844b23284b9bda8ab38e14179675cb3da046185e5166685482",
+        "started_at": "2026-07-02T14:44:34.625417",
+        "ended_at": "2026-07-02T14:44:35.453678",
+        "junit_path": ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-003/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -218,9 +249,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-RA-004",
+        "tc_id": "TC-CC-004",
         "ac_id": "AC-004",
-        "source_tc_id": "TC-RA-004",
+        "source_tc_id": "TC-CC-004",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -230,20 +261,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest tests/test_v163_runtime_release_alignment.py::test_hook_routes_sync_version_surfaces -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260626T202138507937",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-runtime-release-alignment-v163/tc-ra-004/__RUN_ID__.json",
+        "command": "python3 -m pytest tests/test_v164_qa_confidence_chain.py::test_break_chain_blocks -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260702T144429722786",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-coverage-confidence-chain-v164/tc-cc-004/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-004/command.txt",
-          ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-004/stdout.log",
-          ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-004/stderr.log",
-          ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-004/junit.xml",
-          ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-004/result.json"
+          ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-004/command.txt",
+          ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-004/stdout.log",
+          ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-004/stderr.log",
+          ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-004/junit.xml",
+          ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-004/result.json"
         ],
-        "execution_fingerprint": "373299c9b2953ad8b5baf563ec3499f55cbe2919ee52f63df1c20c9370bc5b4b",
-        "started_at": "2026-06-26T20:21:41.747903",
-        "ended_at": "2026-06-26T20:21:42.519938",
-        "junit_path": ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-004/junit.xml",
+        "execution_fingerprint": "55b5d008408d47143377cc12eeb8dc00156f5ddc577260c9d7a728a876d5dce2",
+        "started_at": "2026-07-02T14:44:35.542555",
+        "ended_at": "2026-07-02T14:44:36.202477",
+        "junit_path": ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-004/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -256,108 +287,32 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-RA-005",
+        "tc_id": "TC-CC-005",
         "ac_id": "AC-005",
-        "source_tc_id": "TC-RA-005",
+        "source_tc_id": "TC-CC-005",
         "scenario_id": "",
         "scenario_family": "",
-        "qa_type": "contract",
-        "layer": "contract",
+        "qa_type": "integration",
+        "layer": "integration",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest tests/test_v163_runtime_release_alignment.py::test_dev_stages_no_block -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260626T202138507937",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-runtime-release-alignment-v163/tc-ra-005/__RUN_ID__.json",
+        "command": "python3 -m pytest tests/test_v164_qa_confidence_chain.py::test_browser_e2e_chain_terminal -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260702T144429722786",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-coverage-confidence-chain-v164/tc-cc-005/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-005/command.txt",
-          ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-005/stdout.log",
-          ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-005/stderr.log",
-          ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-005/junit.xml",
-          ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-005/result.json"
+          ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-005/command.txt",
+          ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-005/stdout.log",
+          ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-005/stderr.log",
+          ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-005/junit.xml",
+          ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-005/result.json"
         ],
-        "execution_fingerprint": "ca9f257728f8f72250049b70578084902f22bd20d4580306548cd2eccc77a2ba",
-        "started_at": "2026-06-26T20:21:42.604574",
-        "ended_at": "2026-06-26T20:21:43.232057",
-        "junit_path": ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-005/junit.xml",
-        "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
-        "browser_runner_learning_ref": "",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-RA-006",
-        "ac_id": "AC-006",
-        "source_tc_id": "TC-RA-006",
-        "scenario_id": "",
-        "scenario_family": "",
-        "qa_type": "contract",
-        "layer": "contract",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest tests/test_v163_runtime_release_alignment.py::test_no_auto_pip_install -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260626T202138507937",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-runtime-release-alignment-v163/tc-ra-006/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-006/command.txt",
-          ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-006/stdout.log",
-          ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-006/stderr.log",
-          ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-006/junit.xml",
-          ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-006/result.json"
-        ],
-        "execution_fingerprint": "a9a5b94c831523cbddc421474f7ecd31ccb2d748926bd6443d9d931bb8a99b2e",
-        "started_at": "2026-06-26T20:21:43.315279",
-        "ended_at": "2026-06-26T20:21:43.977592",
-        "junit_path": ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-006/junit.xml",
-        "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
-        "browser_runner_learning_ref": "",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-RA-007",
-        "ac_id": "AC-007",
-        "source_tc_id": "TC-RA-007",
-        "scenario_id": "",
-        "scenario_family": "",
-        "qa_type": "contract",
-        "layer": "contract",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest tests/test_v163_runtime_release_alignment.py::test_no_regression_p01 -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260626T202138507937",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-runtime-release-alignment-v163/tc-ra-007/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-007/command.txt",
-          ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-007/stdout.log",
-          ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-007/stderr.log",
-          ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-007/junit.xml",
-          ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-007/result.json"
-        ],
-        "execution_fingerprint": "adfe8680debe03d5b28d8ad26d83e0d13db365db7390230d013a71423ad674bb",
-        "started_at": "2026-06-26T20:21:44.103016",
-        "ended_at": "2026-06-26T20:21:44.868414",
-        "junit_path": ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-007/junit.xml",
+        "execution_fingerprint": "8ab80376b1bf3be37bb6cfd6029b752ebc61766c8c57f1185a56567271d89b54",
+        "started_at": "2026-07-02T14:44:36.288306",
+        "ended_at": "2026-07-02T14:44:37.040777",
+        "junit_path": ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-005/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -373,10 +328,10 @@
   },
   "quality_issues": [],
   "schema_version": "1.0",
-  "updated_at": "2026-06-26T12:21:45.026521+00:00",
+  "updated_at": "2026-07-02T06:44:37.173612+00:00",
   "summary": {
-    "feature": "beacon-runtime-release-alignment-v163",
-    "version": "v1.6.3",
+    "feature": "beacon-qa-coverage-confidence-chain-v164",
+    "version": "v1.6.4",
     "status": "passed",
     "release_ready": true,
     "continue_decision": "ready_for_release",
@@ -386,24 +341,24 @@
     "reconciliation_artifact_path": "",
     "reconciliation_reprojection_targets": [],
     "repair_action": "qa-repair",
-    "repair_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.3 --feature \"beacon-runtime-release-alignment-v163\""
+    "repair_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-qa-coverage-confidence-chain-v164 --version v1.6.4 --feature \"beacon-qa-coverage-confidence-chain-v164\""
   },
   "qa_status_source": "canonical",
   "governance_state_role": "generated_governance_state_not_truth",
   "truth_authority": false,
   "json_authority": false,
   "resolver_mode": "resolver_first",
-  "feature": "beacon-runtime-release-alignment-v163",
-  "feature_slug": "beacon-runtime-release-alignment-v163",
+  "feature": "beacon-qa-coverage-confidence-chain-v164",
+  "feature_slug": "beacon-qa-coverage-confidence-chain-v164",
   "implementation_done": true,
   "evidence_done": true,
   "story_sequence": [
     {
       "ac_id": "AC-001",
-      "theme": "release-gate-drift-block",
-      "text": "release stage runtime≠docs target → critical block，reason_code `runtime_docs_release_drift`（**Must**）",
+      "theme": "chain-model",
+      "text": "定义 QA 层置信度传递模型：每层置信度 = 自身覆盖 ∩ 下层覆盖传递；链方向 unit→...→browser_e2e（**Must**，UD-001）",
       "tc_ids": [
-        "TC-RA-001"
+        "TC-CC-001"
       ],
       "qa_types": [
         "contract"
@@ -411,10 +366,10 @@
     },
     {
       "ac_id": "AC-002",
-      "theme": "release-gate-pass-when-aligned",
-      "text": "runtime==docs 时 release gate 不因 drift block（**Must**）",
+      "theme": "gap-detection",
+      "text": "层间 gap 检测：下层 skipped/missing/blocked 时，上层置信度被削弱并标记 `downstream_gap`（**Must**）",
       "tc_ids": [
-        "TC-RA-002"
+        "TC-CC-002"
       ],
       "qa_types": [
         "contract"
@@ -422,10 +377,10 @@
     },
     {
       "ac_id": "AC-003",
-      "theme": "hook-runtime-alignment-step",
-      "text": "post-release hook payload 含 `runtime_alignment` 字段（runtime_version/docs_version/aligned/recommended_command）（**Must**）",
+      "theme": "confidence-chain-field",
+      "text": "`build_qa_profile_completeness` 输出含 `confidence_chain`（每层置信度 + 依赖来源 + gap 标记）；projection 同步（**Must**）",
       "tc_ids": [
-        "TC-RA-003"
+        "TC-CC-003"
       ],
       "qa_types": [
         "contract"
@@ -433,10 +388,10 @@
     },
     {
       "ac_id": "AC-004",
-      "theme": "hook-routes-sync-version-surfaces",
-      "text": "runtime≠docs 时 hook `runtime_alignment.recommended_command` 含 `beacon doctor sync-version-surfaces`（**Must**）",
+      "theme": "break-block",
+      "text": "断链 fail-closed：链终点（browser_e2e）缺失或任一依赖层 gap → profile `partial/blocked`，不显示 complete（**Must**，UD-002）",
       "tc_ids": [
-        "TC-RA-004"
+        "TC-CC-004"
       ],
       "qa_types": [
         "contract"
@@ -444,64 +399,38 @@
     },
     {
       "ac_id": "AC-005",
-      "theme": "dev-stages-no-block",
-      "text": "plan/truth/implement/qa stage 不因 runtime≠docs block（开发期合法）（**Must**）",
+      "theme": "browser-e2e-integration",
+      "text": "browser_e2e 作为链终点纳入置信度链；与 Phase 1 的 `playwright-extension` runner 集成（e2e 置信度依赖下层 non-browser 覆盖）（**Must**）",
       "tc_ids": [
-        "TC-RA-005"
+        "TC-CC-005"
       ],
       "qa_types": [
-        "contract"
-      ]
-    },
-    {
-      "ac_id": "AC-006",
-      "theme": "no-auto-pip-install",
-      "text": "hook 不执行 pip install，只提示（**Must**，UD-004）",
-      "tc_ids": [
-        "TC-RA-006"
-      ],
-      "qa_types": [
-        "contract"
-      ]
-    },
-    {
-      "ac_id": "AC-007",
-      "theme": "no-regression-p01",
-      "text": "P0-1 的 `_resolve_eval_version` + resolve failure fail-closed 仍生效（**Must**）",
-      "tc_ids": [
-        "TC-RA-007"
-      ],
-      "qa_types": [
-        "contract"
+        "integration"
       ]
     }
   ],
   "targeted_rerun": {
     "required": true,
     "reason_codes": [
-      "implementation_run_changed",
-      "artifact_updates_pending"
+      "implementation_run_changed"
     ],
     "targeted_layers": [
-      "contract"
+      "contract",
+      "integration"
     ],
     "targeted_ac_ids": [
       "AC-001",
       "AC-002",
       "AC-003",
       "AC-004",
-      "AC-005",
-      "AC-006",
-      "AC-007"
+      "AC-005"
     ],
     "targeted_tc_ids": [
-      "TC-RA-001",
-      "TC-RA-002",
-      "TC-RA-003",
-      "TC-RA-004",
-      "TC-RA-005",
-      "TC-RA-006",
-      "TC-RA-007"
+      "TC-CC-001",
+      "TC-CC-002",
+      "TC-CC-003",
+      "TC-CC-004",
+      "TC-CC-005"
     ],
     "targeted_scenario_ids": [],
     "targeted_scenario_families": []
@@ -511,23 +440,15 @@
     "assumption_capture_required": true,
     "goal_driven_verification_required": true,
     "targeted_scope_only": true,
-    "verification_item_count": 7
+    "verification_item_count": 5
   },
-  "feature_matrix_path": ".beacon/qa/features/beacon-runtime-release-alignment-v163/matrix.qa9.json",
-  "blocking_artifact_updates": [
-    {
-      "artifact": "review_quality",
-      "required": true,
-      "reason": "run quality review after native implementation",
-      "status": "open",
-      "notes": ""
-    }
-  ],
+  "feature_matrix_path": ".beacon/qa/features/beacon-qa-coverage-confidence-chain-v164/matrix.qa9.json",
+  "blocking_artifact_updates": [],
   "per_item_results": [
     {
       "ac_id": "AC-001",
-      "tc_id": "TC-RA-001",
-      "source_tc_id": "TC-RA-001",
+      "tc_id": "TC-CC-001",
+      "source_tc_id": "TC-CC-001",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-001",
@@ -540,17 +461,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-001/result.json"
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-001/result.json"
       ]
     },
     {
       "ac_id": "AC-002",
-      "tc_id": "TC-RA-002",
-      "source_tc_id": "TC-RA-002",
+      "tc_id": "TC-CC-002",
+      "source_tc_id": "TC-CC-002",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-002",
@@ -563,17 +484,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-002/command.txt",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-002/stdout.log",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-002/stderr.log",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-002/junit.xml",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-002/result.json"
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-002/result.json"
       ]
     },
     {
       "ac_id": "AC-003",
-      "tc_id": "TC-RA-003",
-      "source_tc_id": "TC-RA-003",
+      "tc_id": "TC-CC-003",
+      "source_tc_id": "TC-CC-003",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-003",
@@ -586,17 +507,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-003/command.txt",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-003/stdout.log",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-003/stderr.log",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-003/junit.xml",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-003/result.json"
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-003/result.json"
       ]
     },
     {
       "ac_id": "AC-004",
-      "tc_id": "TC-RA-004",
-      "source_tc_id": "TC-RA-004",
+      "tc_id": "TC-CC-004",
+      "source_tc_id": "TC-CC-004",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-004",
@@ -609,80 +530,34 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-004/command.txt",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-004/stdout.log",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-004/stderr.log",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-004/junit.xml",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-004/result.json"
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-004/result.json"
       ]
     },
     {
       "ac_id": "AC-005",
-      "tc_id": "TC-RA-005",
-      "source_tc_id": "TC-RA-005",
+      "tc_id": "TC-CC-005",
+      "source_tc_id": "TC-CC-005",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-005",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "contract",
+      "qa_type": "integration",
       "browser_required": false,
       "replay_required": false,
       "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-005/command.txt",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-005/stdout.log",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-005/stderr.log",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-005/junit.xml",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-005/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-006",
-      "tc_id": "TC-RA-006",
-      "source_tc_id": "TC-RA-006",
-      "scenario_id": "",
-      "scenario_family": "",
-      "test_item_id": "TEST-006",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "contract",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-006/command.txt",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-006/stdout.log",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-006/stderr.log",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-006/junit.xml",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-006/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-007",
-      "tc_id": "TC-RA-007",
-      "source_tc_id": "TC-RA-007",
-      "scenario_id": "",
-      "scenario_family": "",
-      "test_item_id": "TEST-007",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "contract",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-007/command.txt",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-007/stdout.log",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-007/stderr.log",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-007/junit.xml",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-007/result.json"
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-005/result.json"
       ]
     }
   ],
@@ -705,7 +580,6 @@
     "reason_codes": [],
     "source_surface": "implement-to-qa-handoff",
     "verification_surface": "qa",
-    "refs": {},
     "findings": []
   },
   "requirement_completeness_gate": {
@@ -715,17 +589,17 @@
     "blocked": false,
     "reason_code": "requirement_completeness_projection_missing",
     "target_stage": "qa",
-    "feature": "beacon-runtime-release-alignment-v163",
-    "version": "v1.6.3",
+    "feature": "beacon-qa-coverage-confidence-chain-v164",
+    "version": "v1.6.4",
     "stage_ready": true,
     "paths": {
-      "envelope": "docs/beacon/v1.6.3/.machine/requirement/beacon-runtime-release-alignment-v163.envelope.json",
-      "candidate_ledger": "docs/beacon/v1.6.3/.machine/requirement/beacon-runtime-release-alignment-v163.candidate-ledger.json",
-      "decision_log": "docs/beacon/v1.6.3/.machine/requirement/beacon-runtime-release-alignment-v163.supplement-decision-log.json",
-      "freeze_contract": "docs/beacon/v1.6.3/.machine/requirement/beacon-runtime-release-alignment-v163.freeze-contract.json",
-      "completeness": "docs/beacon/v1.6.3/.machine/requirement/beacon-runtime-release-alignment-v163.completeness.json",
-      "supplement_task": "docs/beacon/v1.6.3/.machine/requirement/beacon-runtime-release-alignment-v163.supplement-task.json",
-      "re_freeze_transaction": "docs/beacon/v1.6.3/.machine/requirement/beacon-runtime-release-alignment-v163.re-freeze-transaction.json"
+      "envelope": "docs/beacon/v1.6.4/.machine/requirement/beacon-qa-coverage-confidence-chain-v164.envelope.json",
+      "candidate_ledger": "docs/beacon/v1.6.4/.machine/requirement/beacon-qa-coverage-confidence-chain-v164.candidate-ledger.json",
+      "decision_log": "docs/beacon/v1.6.4/.machine/requirement/beacon-qa-coverage-confidence-chain-v164.supplement-decision-log.json",
+      "freeze_contract": "docs/beacon/v1.6.4/.machine/requirement/beacon-qa-coverage-confidence-chain-v164.freeze-contract.json",
+      "completeness": "docs/beacon/v1.6.4/.machine/requirement/beacon-qa-coverage-confidence-chain-v164.completeness.json",
+      "supplement_task": "docs/beacon/v1.6.4/.machine/requirement/beacon-qa-coverage-confidence-chain-v164.supplement-task.json",
+      "re_freeze_transaction": "docs/beacon/v1.6.4/.machine/requirement/beacon-qa-coverage-confidence-chain-v164.re-freeze-transaction.json"
     },
     "projection_status": "package_authoritative",
     "recommended_command": "",
@@ -738,13 +612,13 @@
         "summary": "machine completeness projection is missing, but v1.5.2 package truth and coverage are valid authority",
         "details": {
           "paths": {
-            "envelope": "docs/beacon/v1.6.3/.machine/requirement/beacon-runtime-release-alignment-v163.envelope.json",
-            "candidate_ledger": "docs/beacon/v1.6.3/.machine/requirement/beacon-runtime-release-alignment-v163.candidate-ledger.json",
-            "decision_log": "docs/beacon/v1.6.3/.machine/requirement/beacon-runtime-release-alignment-v163.supplement-decision-log.json",
-            "freeze_contract": "docs/beacon/v1.6.3/.machine/requirement/beacon-runtime-release-alignment-v163.freeze-contract.json",
-            "completeness": "docs/beacon/v1.6.3/.machine/requirement/beacon-runtime-release-alignment-v163.completeness.json",
-            "supplement_task": "docs/beacon/v1.6.3/.machine/requirement/beacon-runtime-release-alignment-v163.supplement-task.json",
-            "re_freeze_transaction": "docs/beacon/v1.6.3/.machine/requirement/beacon-runtime-release-alignment-v163.re-freeze-transaction.json"
+            "envelope": "docs/beacon/v1.6.4/.machine/requirement/beacon-qa-coverage-confidence-chain-v164.envelope.json",
+            "candidate_ledger": "docs/beacon/v1.6.4/.machine/requirement/beacon-qa-coverage-confidence-chain-v164.candidate-ledger.json",
+            "decision_log": "docs/beacon/v1.6.4/.machine/requirement/beacon-qa-coverage-confidence-chain-v164.supplement-decision-log.json",
+            "freeze_contract": "docs/beacon/v1.6.4/.machine/requirement/beacon-qa-coverage-confidence-chain-v164.freeze-contract.json",
+            "completeness": "docs/beacon/v1.6.4/.machine/requirement/beacon-qa-coverage-confidence-chain-v164.completeness.json",
+            "supplement_task": "docs/beacon/v1.6.4/.machine/requirement/beacon-qa-coverage-confidence-chain-v164.supplement-task.json",
+            "re_freeze_transaction": "docs/beacon/v1.6.4/.machine/requirement/beacon-qa-coverage-confidence-chain-v164.re-freeze-transaction.json"
           },
           "projection_status": "package_authoritative"
         }
@@ -762,8 +636,8 @@
         "reason_code": "",
         "summary": "acceptance coverage is parseable from package tests",
         "details": {
-          "ac_count": 7,
-          "test_count": 7
+          "ac_count": 5,
+          "test_count": 5
         }
       },
       "downgrade_control": {
@@ -795,37 +669,34 @@
       "status": "pass",
       "validation": {
         "schema_version": "1.0",
-        "feature": "beacon-runtime-release-alignment-v163",
-        "feature_slug": "beacon-runtime-release-alignment-v163",
-        "version": "v1.6.3",
+        "feature": "beacon-qa-coverage-confidence-chain-v164",
+        "feature_slug": "beacon-qa-coverage-confidence-chain-v164",
+        "version": "v1.6.4",
         "status": "pass",
         "blocked": false,
         "reason_code": "",
-        "generated_at": "2026-06-26T12:21:35.767780+00:00",
-        "package_dir": "docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163",
+        "generated_at": "2026-07-02T06:44:28.439355+00:00",
+        "package_dir": "docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164",
         "truth_frontmatter": {
-          "slug": "beacon-runtime-release-alignment-v163",
-          "version": "v1.6.3",
+          "slug": "beacon-qa-coverage-confidence-chain-v164",
+          "version": "v1.6.4",
           "status": "frozen",
           "revision_id": "R1",
           "language": "zh",
-          "change_reason": "R1 — 修复 release gate 不要求 runtime==docs + post-release hook 不 bump runtime，导致 skills/runtime 撕裂",
+          "change_reason": "R1 — qa 层间置信度传递链（unit→...→browser_e2e），层间 gap 可见 + 断链 block",
           "source_revision_id": "null",
           "canonical_refs": {
-            "prd": "docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/truth.md",
-            "user_story": "docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/truth.md",
-            "test_case": "docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/tests.md"
+            "prd": "docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/truth.md",
+            "user_story": "docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/truth.md",
+            "test_case": "docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/tests.md"
           },
           "parser_contract": "beacon-feature-package-v1",
           "truth_source_model": "feature_package_authoritative",
-          "truth_map_contract": "beacon-truth-map-v1",
-          "state_machine_required": "false",
-          "upstream_feature": "null",
-          "promotion_ref": "null"
+          "truth_map_contract": "beacon-truth-map-v1"
         },
-        "ac_count": 7,
-        "test_count": 7,
-        "checkbox_count": 8,
+        "ac_count": 5,
+        "test_count": 5,
+        "checkbox_count": 6,
         "evidence_row_count": 3,
         "gate_authority": "canonical_surfaces_preserved",
         "checkbox_gate_bypass": false,
@@ -839,16 +710,16 @@
         "truth_authority": "markdown_feature_package",
         "json_authority": false,
         "source_paths": {
-          "truth": "docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/truth.md",
-          "tests": "docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/tests.md",
-          "tasks": "docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/tasks.md",
-          "evidence": "docs/beacon/v1.6.3/features/beacon-runtime-release-alignment-v163/evidence.md"
+          "truth": "docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/truth.md",
+          "tests": "docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/tests.md",
+          "tasks": "docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/tasks.md",
+          "evidence": "docs/beacon/v1.6.4/features/beacon-qa-coverage-confidence-chain-v164/evidence.md"
         },
         "source_hashes": {
-          "truth": "3197f3955a20727fd50afeb2d1364ab91dc861c33972106d3edab934ba98df45",
-          "tests": "6495fd7d3f020f633344b09581590f372ca61f9c260142355b0edd01eb9c8a73",
-          "tasks": "5469cf093c03d539254c24168999cc18d57f714d9f21a22028ab49c7793765cd",
-          "evidence": "7d32b1dfb65513be16f8b5e7d40f88ad3735cb4ce7db144c71164529aeb028a1"
+          "truth": "10b0f84b83da92345a447099a98cdf0f6f35f25c085b999ed87c4ca1ea9f8927",
+          "tests": "f2faf551a5a218a9cf8eeaac87e7990efd274bf8c87f616cde95de7a3c15d27d",
+          "tasks": "8f5ee83f78c1d7b6bf3616ef86507d4a2f2b53d17ee6346540a996f6f2a1483a",
+          "evidence": "6218ad0579fed517452a3e856e28243b2b5d1f406e4290372431ba4cdfcf109d"
         },
         "runtime_json_requires_markdown_twin": false
       }
@@ -857,15 +728,15 @@
     "freeze_contract": {}
   },
   "requirement_completeness_verdict": "pass",
-  "requirement_completeness_ref": "docs/beacon/v1.6.3/.machine/requirement/beacon-runtime-release-alignment-v163.completeness.json",
+  "requirement_completeness_ref": "docs/beacon/v1.6.4/.machine/requirement/beacon-qa-coverage-confidence-chain-v164.completeness.json",
   "exhaustiveness": {
     "schema_version": "1.0",
-    "feature": "beacon-runtime-release-alignment-v163",
-    "feature_slug": "beacon-runtime-release-alignment-v163",
-    "run_id": "run-20260626T202138507937",
-    "generated_at": "2026-06-26T12:21:45.196132+00:00",
+    "feature": "beacon-qa-coverage-confidence-chain-v164",
+    "feature_slug": "beacon-qa-coverage-confidence-chain-v164",
+    "run_id": "run-20260702T144429722786",
+    "generated_at": "2026-07-02T06:44:37.265477+00:00",
     "execution_mode": "feature-aware",
-    "scenario_count": 7,
+    "scenario_count": 5,
     "browser_scenario_count": 0,
     "required_families": [],
     "passed_families": [],
@@ -885,11 +756,11 @@
   },
   "scenario_results_v2": [
     {
-      "scenario_id": "TC-RA-001",
-      "tc_id": "TC-RA-001",
-      "source_tc_id": "TC-RA-001",
+      "scenario_id": "TC-CC-001",
+      "tc_id": "TC-CC-001",
+      "source_tc_id": "TC-CC-001",
       "ac_id": "AC-001",
-      "feature_slug": "beacon-runtime-release-alignment-v163",
+      "feature_slug": "beacon-qa-coverage-confidence-chain-v164",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -913,19 +784,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-001/result.json"
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-001/result.json"
       ]
     },
     {
-      "scenario_id": "TC-RA-002",
-      "tc_id": "TC-RA-002",
-      "source_tc_id": "TC-RA-002",
+      "scenario_id": "TC-CC-002",
+      "tc_id": "TC-CC-002",
+      "source_tc_id": "TC-CC-002",
       "ac_id": "AC-002",
-      "feature_slug": "beacon-runtime-release-alignment-v163",
+      "feature_slug": "beacon-qa-coverage-confidence-chain-v164",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -949,19 +820,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-002/command.txt",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-002/stdout.log",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-002/stderr.log",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-002/junit.xml",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-002/result.json"
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-002/result.json"
       ]
     },
     {
-      "scenario_id": "TC-RA-003",
-      "tc_id": "TC-RA-003",
-      "source_tc_id": "TC-RA-003",
+      "scenario_id": "TC-CC-003",
+      "tc_id": "TC-CC-003",
+      "source_tc_id": "TC-CC-003",
       "ac_id": "AC-003",
-      "feature_slug": "beacon-runtime-release-alignment-v163",
+      "feature_slug": "beacon-qa-coverage-confidence-chain-v164",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -985,19 +856,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-003/command.txt",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-003/stdout.log",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-003/stderr.log",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-003/junit.xml",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-003/result.json"
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-003/result.json"
       ]
     },
     {
-      "scenario_id": "TC-RA-004",
-      "tc_id": "TC-RA-004",
-      "source_tc_id": "TC-RA-004",
+      "scenario_id": "TC-CC-004",
+      "tc_id": "TC-CC-004",
+      "source_tc_id": "TC-CC-004",
       "ac_id": "AC-004",
-      "feature_slug": "beacon-runtime-release-alignment-v163",
+      "feature_slug": "beacon-qa-coverage-confidence-chain-v164",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1021,19 +892,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-004/command.txt",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-004/stdout.log",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-004/stderr.log",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-004/junit.xml",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-004/result.json"
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-004/result.json"
       ]
     },
     {
-      "scenario_id": "TC-RA-005",
-      "tc_id": "TC-RA-005",
-      "source_tc_id": "TC-RA-005",
+      "scenario_id": "TC-CC-005",
+      "tc_id": "TC-CC-005",
+      "source_tc_id": "TC-CC-005",
       "ac_id": "AC-005",
-      "feature_slug": "beacon-runtime-release-alignment-v163",
+      "feature_slug": "beacon-qa-coverage-confidence-chain-v164",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1057,97 +928,25 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-005/command.txt",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-005/stdout.log",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-005/stderr.log",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-005/junit.xml",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-005/result.json"
-      ]
-    },
-    {
-      "scenario_id": "TC-RA-006",
-      "tc_id": "TC-RA-006",
-      "source_tc_id": "TC-RA-006",
-      "ac_id": "AC-006",
-      "feature_slug": "beacon-runtime-release-alignment-v163",
-      "scenario_family": "",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": false,
-      "replay_required": false,
-      "replay_present": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-006/command.txt",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-006/stdout.log",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-006/stderr.log",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-006/junit.xml",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-006/result.json"
-      ]
-    },
-    {
-      "scenario_id": "TC-RA-007",
-      "tc_id": "TC-RA-007",
-      "source_tc_id": "TC-RA-007",
-      "ac_id": "AC-007",
-      "feature_slug": "beacon-runtime-release-alignment-v163",
-      "scenario_family": "",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": false,
-      "replay_required": false,
-      "replay_present": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-007/command.txt",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-007/stdout.log",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-007/stderr.log",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-007/junit.xml",
-        ".beacon/evidence/auto-test/run-20260626T202138507937/qa9-tc/TC-RA-007/result.json"
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260702T144429722786/qa9-tc/TC-CC-005/result.json"
       ]
     }
   ],
-  "ac_closure_path": ".beacon/qa/features/beacon-runtime-release-alignment-v163/ac-closure.json",
-  "feature_scorecard_path": ".beacon/qa/features/beacon-runtime-release-alignment-v163/scorecard.json",
+  "ac_closure_path": ".beacon/qa/features/beacon-qa-coverage-confidence-chain-v164/ac-closure.json",
+  "feature_scorecard_path": ".beacon/qa/features/beacon-qa-coverage-confidence-chain-v164/scorecard.json",
   "feature_scorecard": {
     "schema_version": "1.0",
-    "feature": "beacon-runtime-release-alignment-v163",
-    "feature_slug": "beacon-runtime-release-alignment-v163",
-    "run_id": "run-20260626T202138507937",
-    "ac_total": 7,
-    "ac_accepted": 7,
-    "scenario_total": 7,
-    "scenario_passed": 7,
+    "feature": "beacon-qa-coverage-confidence-chain-v164",
+    "feature_slug": "beacon-qa-coverage-confidence-chain-v164",
+    "run_id": "run-20260702T144429722786",
+    "ac_total": 5,
+    "ac_accepted": 5,
+    "scenario_total": 5,
+    "scenario_passed": 5,
     "release_confidence_min": 1.0,
     "release_confidence_avg": 1.0,
     "review_required_count": 0,
@@ -1157,8 +956,8 @@
     "project_profile_gate_status": "not_configured",
     "project_profile_id": "",
     "coverage_current": {
-      "required_scenarios": 7,
-      "executed_scenarios": 7,
+      "required_scenarios": 5,
+      "executed_scenarios": 5,
       "coverage_rate": 1.0,
       "required_scenario_families": [
         "boundary",
@@ -1185,7 +984,7 @@
       "boundary_principles": [],
       "assumption_capture_required": true,
       "goal_driven_verification_required": true,
-      "verification_item_count": 7,
+      "verification_item_count": 5,
       "targeted_scope_only": true
     },
     "design_truth_verdict": {
@@ -1195,7 +994,6 @@
       "reason_codes": [],
       "source_surface": "implement-to-qa-handoff",
       "verification_surface": "qa",
-      "refs": {},
       "findings": []
     },
     "qa_outcome_taxonomy": {
@@ -1240,8 +1038,8 @@
     },
     "qa_acceptance_capability": {
       "schema_version": "1.0",
-      "status": "pass",
-      "blocked": false,
+      "status": "blocked",
+      "blocked": true,
       "taxonomy": {
         "schema_version": "1.0",
         "status": "pass",
@@ -1282,7 +1080,8 @@
           "compatibility"
         ],
         "requested_layers": [
-          "contract"
+          "contract",
+          "integration"
         ],
         "unknown_layers": []
       },
@@ -1291,19 +1090,244 @@
         "profile": "feature-matrix",
         "browser_required": false,
         "required_layers": [
-          "contract"
+          "contract",
+          "integration"
         ],
         "executed_layers": [
-          "contract"
+          "contract",
+          "integration"
         ],
         "skipped_layers": [],
         "blocked_layers": [],
         "not_applicable_layers": [],
         "not_applicable_reasons": {},
         "missing_layers": [],
-        "is_complete": true,
-        "partial": false,
-        "status": "complete"
+        "confidence_chain": {
+          "schema_version": "1.0",
+          "layers": [
+            {
+              "layer": "unit",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit"
+              ]
+            },
+            {
+              "layer": "interface",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface"
+              ]
+            },
+            {
+              "layer": "contract",
+              "status": "executed",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface"
+              ]
+            },
+            {
+              "layer": "integration",
+              "status": "executed",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface",
+                "contract"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface"
+              ]
+            },
+            {
+              "layer": "smoke",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface",
+                "contract",
+                "integration"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface",
+                "smoke"
+              ]
+            },
+            {
+              "layer": "functional",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface",
+                "contract",
+                "integration",
+                "smoke"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface",
+                "smoke",
+                "functional"
+              ]
+            },
+            {
+              "layer": "regression",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface",
+                "contract",
+                "integration",
+                "smoke",
+                "functional"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface",
+                "smoke",
+                "functional",
+                "regression"
+              ]
+            },
+            {
+              "layer": "exception",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface",
+                "contract",
+                "integration",
+                "smoke",
+                "functional",
+                "regression"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface",
+                "smoke",
+                "functional",
+                "regression",
+                "exception"
+              ]
+            },
+            {
+              "layer": "compatibility",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface",
+                "contract",
+                "integration",
+                "smoke",
+                "functional",
+                "regression",
+                "exception"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface",
+                "smoke",
+                "functional",
+                "regression",
+                "exception",
+                "compatibility"
+              ]
+            },
+            {
+              "layer": "browser_e2e",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface",
+                "contract",
+                "integration",
+                "smoke",
+                "functional",
+                "regression",
+                "exception",
+                "compatibility"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface",
+                "smoke",
+                "functional",
+                "regression",
+                "exception",
+                "compatibility",
+                "browser_e2e"
+              ]
+            }
+          ],
+          "chain_direction": "unit_to_browser_e2e",
+          "terminal_layer": "browser_e2e",
+          "chain_broken": true,
+          "downstream_gap_layers": [
+            "browser_e2e",
+            "compatibility",
+            "exception",
+            "functional",
+            "interface",
+            "regression",
+            "smoke",
+            "unit"
+          ]
+        },
+        "state_machine_coverage": {},
+        "is_complete": false,
+        "partial": true,
+        "status": "partial"
       },
       "browser_evidence_contract": {
         "status": "not_required",
@@ -1311,6 +1335,7 @@
       },
       "browser_runner_registry": [
         "playwright",
+        "playwright-extension",
         "playwright-cli",
         "playwright-cdp",
         "browser-use",
@@ -1364,19 +1389,19 @@
     "continue_decision": "ready_for_release",
     "stop_reasons": [],
     "test_case_backfill_required": false,
-    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.3 --feature \"beacon-runtime-release-alignment-v163\"",
+    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-qa-coverage-confidence-chain-v164 --version v1.6.4 --feature \"beacon-qa-coverage-confidence-chain-v164\"",
     "repair_handoff": {
       "action": "qa-repair",
       "reason": "qa_round_incomplete",
-      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.3 --feature \"beacon-runtime-release-alignment-v163\""
+      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-qa-coverage-confidence-chain-v164 --version v1.6.4 --feature \"beacon-qa-coverage-confidence-chain-v164\""
     },
     "release_ready": true
   },
   "release_ready": true,
   "delivery_contract": {
     "schema_version": "1.0",
-    "feature": "beacon-runtime-release-alignment-v163",
-    "version": "v1.6.3",
+    "feature": "beacon-qa-coverage-confidence-chain-v164",
+    "version": "v1.6.4",
     "requested_mode": "feature-aware",
     "effective_mode": "feature-aware",
     "generator_mode": "feature-aware",
@@ -1395,17 +1420,15 @@
     },
     "subagent_prechecks": {},
     "requirement_binding": {
-      "source_of_truth_root": "docs/beacon/v1.6.3",
-      "feature_matrix_path": ".beacon/qa/features/beacon-runtime-release-alignment-v163/matrix.qa9.json",
+      "source_of_truth_root": "docs/beacon/v1.6.4",
+      "feature_matrix_path": ".beacon/qa/features/beacon-qa-coverage-confidence-chain-v164/matrix.qa9.json",
       "canonical_matrix_path": ""
     },
     "traceability_refs": [
-      ".beacon/qa/features/beacon-runtime-release-alignment-v163/matrix.qa9.json",
-      ".beacon/qa/features/beacon-runtime-release-alignment-v163/ac-closure.json",
-      ".beacon/qa/features/beacon-runtime-release-alignment-v163/scorecard.json",
-      ".beacon/release-gate-report.json",
-      "docs/beacon/v1.6.3/.machine/execution/implementation-summary-beacon-runtime-release-alignment-v163.json",
-      "docs/beacon/v1.6.3/.machine/execution/technical-implementation-beacon-runtime-release-alignment-v163.json"
+      ".beacon/qa/features/beacon-qa-coverage-confidence-chain-v164/matrix.qa9.json",
+      ".beacon/qa/features/beacon-qa-coverage-confidence-chain-v164/ac-closure.json",
+      ".beacon/qa/features/beacon-qa-coverage-confidence-chain-v164/scorecard.json",
+      ".beacon/release-gate-report.json"
     ],
     "runner": "",
     "adapter_type": "",
@@ -1418,8 +1441,8 @@
   },
   "host_native_delivery": {
     "schema_version": "1.0",
-    "feature": "beacon-runtime-release-alignment-v163",
-    "version": "v1.6.3",
+    "feature": "beacon-qa-coverage-confidence-chain-v164",
+    "version": "v1.6.4",
     "requested_mode": "feature-aware",
     "effective_mode": "feature-aware",
     "generator_mode": "feature-aware",
@@ -1438,17 +1461,15 @@
     },
     "subagent_prechecks": {},
     "requirement_binding": {
-      "source_of_truth_root": "docs/beacon/v1.6.3",
-      "feature_matrix_path": ".beacon/qa/features/beacon-runtime-release-alignment-v163/matrix.qa9.json",
+      "source_of_truth_root": "docs/beacon/v1.6.4",
+      "feature_matrix_path": ".beacon/qa/features/beacon-qa-coverage-confidence-chain-v164/matrix.qa9.json",
       "canonical_matrix_path": ""
     },
     "traceability_refs": [
-      ".beacon/qa/features/beacon-runtime-release-alignment-v163/matrix.qa9.json",
-      ".beacon/qa/features/beacon-runtime-release-alignment-v163/ac-closure.json",
-      ".beacon/qa/features/beacon-runtime-release-alignment-v163/scorecard.json",
-      ".beacon/release-gate-report.json",
-      "docs/beacon/v1.6.3/.machine/execution/implementation-summary-beacon-runtime-release-alignment-v163.json",
-      "docs/beacon/v1.6.3/.machine/execution/technical-implementation-beacon-runtime-release-alignment-v163.json"
+      ".beacon/qa/features/beacon-qa-coverage-confidence-chain-v164/matrix.qa9.json",
+      ".beacon/qa/features/beacon-qa-coverage-confidence-chain-v164/ac-closure.json",
+      ".beacon/qa/features/beacon-qa-coverage-confidence-chain-v164/scorecard.json",
+      ".beacon/release-gate-report.json"
     ],
     "runner": "",
     "adapter_type": "",
@@ -1459,5 +1480,5 @@
     "release_ready": true,
     "risk_flags": []
   },
-  "current_spec_fingerprint_hash": "5d23582a1a5f3c48adbb271c2641e0063c5f8207aa20d005dc7d87cb9300bbce"
+  "current_spec_fingerprint_hash": "810a4a28073e01b78969486a470d63194e64daff3d7c3343bc535bbb9234eca5"
 }
