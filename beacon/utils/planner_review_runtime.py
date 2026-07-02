@@ -630,3 +630,84 @@ def build_planner_review_runtime_artifact(
     if write:
         write_json(artifact_path, payload)
     return payload
+
+
+REASON_ADVERSARIAL_REVIEW_MISSING = "adversarial_review_missing"
+
+
+def ensure_qa_release_adversarial_lane(
+    reviewers: list[dict[str, Any]] | None = None,
+    *,
+    prompt: str = "",
+    truth_refs: list[str] | None = None,
+    source_refs: list[str] | None = None,
+    evidence_refs: list[str] | None = None,
+) -> list[dict[str, Any]]:
+    """Force adversarial reviewer lane before QA release (v1.6.4+)."""
+    selected = list(reviewers or select_reviewers(prompt=prompt, truth_refs=truth_refs, source_refs=source_refs, evidence_refs=evidence_refs))
+    adversarial_ids = {"adversarial-reviewer", "adversarial-doubt"}
+    if not any(str(item.get("reviewer") or "") in adversarial_ids for item in selected):
+        selected.append(
+            {
+                "reviewer": "adversarial-reviewer",
+                "role": "Mandatory adversarial review before QA release.",
+                "trigger_reason": "qa_release_mandatory",
+                "conditional": False,
+            }
+        )
+    return selected
+
+
+def validate_adversarial_review_delivery(review: dict[str, Any] | None) -> dict[str, Any]:
+    """Validate 3-5 failure points + verification evidence before QA release."""
+    payload = review if isinstance(review, dict) else {}
+    failure_points = [str(item).strip() for item in (payload.get("failure_points") or payload.get("翻车点") or []) if str(item).strip()]
+    verification_evidence = [
+        str(item).strip()
+        for item in (payload.get("verification_evidence") or payload.get("verification_evidence_refs") or [])
+        if str(item).strip()
+    ]
+    blocked = len(failure_points) < 3 or len(verification_evidence) < len(failure_points)
+    return {
+        "schema_version": "1.0",
+        "status": "blocked" if blocked else "pass",
+        "blocked": blocked,
+        "reason_code": REASON_ADVERSARIAL_REVIEW_MISSING if blocked else "",
+        "failure_points": failure_points,
+        "verification_evidence": verification_evidence,
+        "minimum_failure_points": 3,
+        "maximum_failure_points": 5,
+        "mandatory_before_qa_release": True,
+    }
+
+
+def build_qa_release_adversarial_review(
+    *,
+    prompt: str,
+    truth_refs: list[str] | None = None,
+    source_refs: list[str] | None = None,
+    evidence_refs: list[str] | None = None,
+    failure_points: list[str] | None = None,
+    verification_evidence: list[str] | None = None,
+) -> dict[str, Any]:
+    """Build mandatory adversarial review artifact for QA release gate."""
+    selected = ensure_qa_release_adversarial_lane(
+        prompt=prompt,
+        truth_refs=truth_refs,
+        source_refs=source_refs,
+        evidence_refs=evidence_refs,
+    )
+    delivery = validate_adversarial_review_delivery(
+        {
+            "failure_points": failure_points or [],
+            "verification_evidence": verification_evidence or [],
+        }
+    )
+    return {
+        "schema_version": "1.0",
+        "selected_reviewers": [str(item.get("reviewer") or "") for item in selected],
+        "adversarial_lane_mandatory": True,
+        "delivery_validation": delivery,
+        "blocked": bool(delivery.get("blocked")),
+        "reason_code": str(delivery.get("reason_code") or ""),
+    }

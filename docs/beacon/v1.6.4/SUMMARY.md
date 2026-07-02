@@ -2,16 +2,34 @@
 
 ## Scope
 
-v1.6.4 is a planning-only docs line for QA capability hardening:
-- Chrome extension e2e acceptance
-- QA skill robustness (truth/business-state-machine boundary QA, single-case→e2e confidence chain, real acceptance confidence, bug-fix loop)
-- First-principles + adversarial-review methodology
+v1.6.4 delivers QA capability hardening across five frozen features:
+
+- Chrome extension e2e acceptance (`playwright-extension` runner)
+- QA coverage confidence chain (single-case → e2e layered proof)
+- Business state machine boundary QA (truth → FSM extract, unreachable coverage)
+- Defect repair loop (classification, repair route, regression closure)
+- Methodology contract (first-principles + mandatory adversarial review)
+
+Program: `programs/beacon-qa-capability-hardening-v164/`
 
 ## Status
 
-- `planning_only` (v1.6.3 remains `current_runtime_release`)
-- Program: `programs/beacon-qa-capability-hardening-v164/`
+- **delivery**: `accepted` — implement + QA + release check passed (2026-07-02)
+- **runtime line**: v1.6.3 remains `current_runtime_release`; v1.6.4 docs/runtime alignment pending version bump
+- **contract tests**: 29 passed (`tests/test_v164_qa_*.py`)
 
 ## Features
 
-(pending — program P4 ack then per-lake truth freeze)
+| Phase | Feature slug | QA | Release |
+|-------|--------------|-----|---------|
+| 1 | `beacon-qa-chrome-extension-e2e-v164` | passed | ready |
+| 2 | `beacon-qa-coverage-confidence-chain-v164` | passed | ready |
+| 3 | `beacon-qa-business-state-machine-v164` | passed | ready |
+| 4 | `beacon-qa-defect-repair-loop-v164` | passed | ready |
+| 5 | `beacon-qa-methodology-contract-v164` | passed | ready |
+
+## Release artifacts
+
+- Version change projection: `change/v1.6.4.md`
+- Release checklist: `release/checklist-v1.6.4.md`
+- Test contract index: `.machine/testing/test-contract-index.json`

@@ -36,6 +36,15 @@ parser_contract: beacon-feature-package-v1
 - `grep -rnE "loadExtension|--load-extension|extension_id|chrome-extension://|action.openPopup|service_worker.*target" beacon/` → 零命中
 - `BROWSER_EVIDENCE_AXES` = (function/ui/ux/compatibility/session/state_data)，无 extension 维度
 
-## Implementation/QA evidence
+## Implementation evidence (generator handoff)
 
-由下游 `beacon-gen-implement` / `beacon-eval-qa` 阶段填充（truth 阶段不留 placeholder）。
+| 项 | 值 |
+|---|---|
+| harness | beacon-gen-implement (Ralph round 1) |
+| branch | beacon/v1.6.4/beacon-qa-chrome-extension-e2e-v164 |
+| AC 覆盖 | AC-001..009 |
+| contract tests | `tests/test_v164_qa_chrome_extension_e2e.py` |
+| full suite | `python3 -m pytest tests/test_v164_qa_*.py -q` → 29 passed |
+| changed surfaces | `beacon/utils/playwright_extension.py`, `beacon/adapters/playwright_extension_runner.py`, `beacon/utils/qa_acceptance.py`, `beacon/utils/browser_task_compiler.py`, `tests/test_v164_qa_chrome_extension_e2e.py`, `tests/fixtures/chrome-ext/` |
+| ralph trace | docs/beacon/v1.6.4/.machine/trace/ralph/beacon-qa-chrome-extension-e2e-v164/ |
+| next route | `beacon-eval-qa`（按 feature 分别验收，禁止 generator 自证 QA pass） |

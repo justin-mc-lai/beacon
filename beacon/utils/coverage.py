@@ -474,3 +474,13 @@ def write_coverage_summary(
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     return path
+
+
+def project_qa_layer_confidence(profile_completeness: dict[str, Any] | None) -> dict[str, Any]:
+    """Project confidence_chain / state_machine_coverage from qa profile completeness."""
+    payload = profile_completeness if isinstance(profile_completeness, dict) else {}
+    return {
+        "schema_version": "1.0",
+        "confidence_chain": payload.get("confidence_chain") if isinstance(payload.get("confidence_chain"), dict) else {},
+        "state_machine_coverage": payload.get("state_machine_coverage") if isinstance(payload.get("state_machine_coverage"), dict) else {},
+    }

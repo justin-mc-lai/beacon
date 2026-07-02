@@ -36,6 +36,15 @@ parser_contract: beacon-feature-package-v1
 - 无 state_machine_coverage 字段
 - 无 truth→FSM→边界用例 管道
 
-## Implementation/QA evidence
+## Implementation evidence (generator handoff)
 
-由下游 `beacon-gen-implement` / `beacon-eval-qa` 阶段填充（truth 阶段不留 placeholder）。
+| 项 | 值 |
+|---|---|
+| harness | beacon-gen-implement (Ralph round 1) |
+| branch | beacon/v1.6.4/beacon-qa-chrome-extension-e2e-v164 |
+| AC 覆盖 | AC-001..006 |
+| contract tests | `tests/test_v164_qa_business_state_machine.py` |
+| full suite | `python3 -m pytest tests/test_v164_qa_*.py -q` → 29 passed |
+| changed surfaces | `beacon/utils/qa_state_machine.py`, `beacon/utils/qa_acceptance.py`, `beacon/utils/coverage.py`, `tests/test_v164_qa_business_state_machine.py` |
+| ralph trace | docs/beacon/v1.6.4/.machine/trace/ralph/beacon-qa-business-state-machine-v164/ |
+| next route | `beacon-eval-qa`（按 feature 分别验收，禁止 generator 自证 QA pass） |
