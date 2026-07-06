@@ -183,12 +183,16 @@ def _program_level_from_parsed_markdown(
     local: dict[str, Any],
     resolved_version: str,
 ) -> dict[str, Any]:
+    try:
+        material_path = str(path.relative_to(project_root))
+    except ValueError:
+        material_path = str(path)
     return {
         **local,
         "source": "execution_markdown",
         "version": resolved_version,
         "program_slug": path.stem.replace("git-workflow-", ""),
-        "material_path": str(path.relative_to(project_root)),
+        "material_path": material_path,
     }
 
 
