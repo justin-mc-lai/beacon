@@ -118,6 +118,204 @@ def _parse_service_table(text: str) -> tuple[dict[str, str], dict[str, str]]:
     return branch_map, worktree_map
 
 
+def _normalized_path(value: Any, *, project_root: Path) -> str:
+    text = str(value or "").strip()
+    if not text:
+        return ""
+    path = Path(text).expanduser()
+    if not path.is_absolute():
+        path = (project_root / path).resolve()
+    else:
+        path = path.resolve()
+    return str(path)
+
+
+def _parse_git_workflow_markdown(path: Path, project_root: Path) -> dict[str, Any]:
+    text = _read_text(path)
+    if not text:
+        return {}
+    bullets = _parse_bullets(text)
+    local: dict[str, Any] = {}
+    if bullets.get("expected_branch"):
+        local["expected_branch"] = bullets["expected_branch"]
+    if bullets.get("target_branch"):
+        local["expected_branch"] = bullets["target_branch"]
+    if bullets.get("branch_prefix"):
+        local["branch_prefix"] = bullets["branch_prefix"]
+    if bullets.get("base_branch"):
+        local["base_branch"] = bullets["base_branch"]
+    if bullets.get("branch_resolution_mode"):
+        local["branch_resolution_mode"] = bullets["branch_resolution_mode"]
+    if bullets.get("dedicated_worktree_path"):
+        local["dedicated_worktree_path"] = _normalized_path(bullets["dedicated_worktree_path"], project_root=project_root)
+    if bullets.get("worktree_root"):
+        local["worktree_root"] = _normalized_path(bullets["worktree_root"], project_root=project_root)
+    if bullets.get("require_clean_worktree_for_switch"):
+        local["require_clean_worktree_for_switch"] = bullets["require_clean_worktree_for_switch"].lower() == "true"
+    if bullets.get("use_git_worktree"):
+        local["use_git_worktree"] = bullets["use_git_worktree"].lower() == "true"
+    services = _parse_section_list(text, "Direct Delivery Services") or _parse_section_list(text, "Writable Services")
+    if services:
+        local["direct_delivery_services"] = services
+        local["service_directories"] = services
+        local["git_roots"] = services
+    branch_map, worktree_map = _parse_service_table(text)
+    if branch_map:
+        local["service_branch_map"] = branch_map
+    if worktree_map:
+        local["service_worktree_map"] = worktree_map
+    return local
+
+
+def is_program_level_branch_contract(contract: dict[str, Any] | None) -> bool:
+    if not isinstance(contract, dict):
+        return False
+    mode = str(contract.get("branch_resolution_mode") or "").strip().lower()
+    if mode == "program-level":
+        return True
+    return bool(contract.get("dedicated_worktree_path") and contract.get("expected_branch"))
+
+
+def _program_level_from_parsed_markdown(
+    project_root: Path,
+    *,
+    path: Path,
+    local: dict[str, Any],
+    resolved_version: str,
+) -> dict[str, Any]:
+    return {
+        **local,
+        "source": "execution_markdown",
+        "version": resolved_version,
+        "program_slug": path.stem.replace("git-workflow-", ""),
+        "material_path": str(path.relative_to(project_root)),
+    }
+
+
+def infer_program_level_from_governance(
+    project_root: Path,
+    *,
+    version: str,
+    admission_contract: dict[str, Any] | None = None,
+) -> dict[str, Any] | None:
+    """Infer program-level branch/worktree from project-version-governance when git-workflow is off-main."""
+    from beacon.utils.project_governance import governance_md_path, load_governance_payload
+
+    resolved_version = resolve_target_version(project_root, version)
+    contract = admission_contract if isinstance(admission_contract, dict) else {}
+    root = project_root.expanduser().resolve()
+    payload = load_governance_payload(root)
+    version_meta = payload.get("version_scoped_metadata") if isinstance(payload.get("version_scoped_metadata"), dict) else {}
+    version_contract = version_meta.get(resolved_version) if isinstance(version_meta.get(resolved_version), dict) else {}
+    pattern = str(
+        contract.get("feature_branch_pattern")
+        or version_contract.get("next_version_feature_branch")
+        or ""
+    ).strip()
+    worktree_path = str(
+        contract.get("worktree_base")
+        or version_contract.get("worktree_path")
+        or ""
+    ).strip()
+    per_service = (
+        version_contract.get("per_service_canonical_branch")
+        if isinstance(version_contract.get("per_service_canonical_branch"), dict)
+        else {}
+    )
+    expected_branch = pattern
+    if not expected_branch and per_service:
+        expected_branch = str(next(iter(per_service.values()), "")).strip()
+    if not expected_branch or not worktree_path:
+        return None
+    if "<feature" in expected_branch.lower():
+        return None
+    gov_path = governance_md_path(root)
+    payload_out = {
+        "branch_resolution_mode": "program-level",
+        "expected_branch": expected_branch,
+        "dedicated_worktree_path": _normalized_path(worktree_path, project_root=root),
+        "source": "project_governance",
+        "version": resolved_version,
+        "program_slug": "",
+        "material_path": str(gov_path.relative_to(root)) if gov_path.is_file() else "",
+    }
+    return payload_out if is_program_level_branch_contract(payload_out) else None
+
+
+def find_program_level_git_workflow(project_root: Path, *, version: str) -> dict[str, Any] | None:
+    """Return the first program-level git-workflow contract for a version, if any."""
+    resolved_version = resolve_target_version(project_root, version)
+    root = project_root.expanduser().resolve()
+    search_roots: list[Path] = [root]
+    inferred = infer_program_level_from_governance(root, version=resolved_version)
+    if inferred:
+        dedicated = str(inferred.get("dedicated_worktree_path") or "").strip()
+        if dedicated:
+            dedicated_path = Path(dedicated)
+            if dedicated_path not in search_roots:
+                search_roots.append(dedicated_path)
+    for search_root in search_roots:
+        execution_dir = search_root / "docs" / "beacon" / resolved_version / "execution"
+        if not execution_dir.is_dir():
+            continue
+        for path in sorted(execution_dir.glob("git-workflow-*.md")):
+            local = _parse_git_workflow_markdown(path, root)
+            if not is_program_level_branch_contract(local):
+                continue
+            return _program_level_from_parsed_markdown(
+                root,
+                path=path,
+                local=local,
+                resolved_version=resolved_version,
+            )
+    return inferred
+
+
+def resolve_workspace_branch_targets(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+    admission_contract: dict[str, Any],
+) -> dict[str, Any]:
+    """Resolve governed branch/worktree for workspace admit (R5 program-level aware)."""
+    from beacon.utils.workspace_admission import resolve_feature_branch, resolve_worktree_path
+
+    root = project_root.expanduser().resolve()
+    program = find_program_level_git_workflow(root, version=version)
+    per_feature = load_execution_branch_contract(root, version=version, feature=feature)
+    ctx: dict[str, Any] | None = program
+    if not ctx:
+        ctx = infer_program_level_from_governance(
+            root,
+            version=version,
+            admission_contract={**admission_contract, "version": version},
+        )
+    if not ctx and is_program_level_branch_contract(per_feature):
+        ctx = per_feature
+    if ctx and is_program_level_branch_contract(ctx):
+        branch = str(ctx.get("expected_branch") or "").strip()
+        if not branch:
+            branch = resolve_feature_branch(admission_contract, feature=feature, version=version)
+        worktree_path = str(ctx.get("dedicated_worktree_path") or ctx.get("worktree_root") or "").strip()
+        if not worktree_path:
+            worktree_path = resolve_worktree_path(root, admission_contract, feature=feature)
+        return {
+            "branch_resolution_mode": "program-level",
+            "feature_branch": branch,
+            "worktree_path": worktree_path,
+            "program_slug": str(ctx.get("program_slug") or ctx.get("feature") or "").strip(),
+            "material_path": str(ctx.get("material_path") or (per_feature.get("material_paths") or [""])[0]).strip(),
+        }
+    return {
+        "branch_resolution_mode": "per-feature",
+        "feature_branch": resolve_feature_branch(admission_contract, feature=feature, version=version),
+        "worktree_path": resolve_worktree_path(root, admission_contract, feature=feature),
+        "program_slug": "",
+        "material_path": str((per_feature.get("material_paths") or [""])[0]).strip(),
+    }
+
+
 def _merge_non_empty(target: dict[str, Any], source: dict[str, Any]) -> None:
     for key, value in source.items():
         if isinstance(value, dict):
@@ -154,30 +352,33 @@ def load_execution_branch_contract(project_root: Path, *, version: str, feature:
             payload["loaded_material_types"].append("git-workflow")
         elif name.startswith("deterministic-implementation-contract-"):
             payload["loaded_material_types"].append("deterministic-implementation-contract")
-        bullets = _parse_bullets(text)
-        local: dict[str, Any] = {}
-        if bullets.get("expected_branch"):
-            local["expected_branch"] = bullets["expected_branch"]
-        if bullets.get("target_branch"):
-            local["expected_branch"] = bullets["target_branch"]
-        if bullets.get("branch_prefix"):
-            local["branch_prefix"] = bullets["branch_prefix"]
-        if bullets.get("base_branch"):
-            local["base_branch"] = bullets["base_branch"]
-        if bullets.get("require_clean_worktree_for_switch"):
-            local["require_clean_worktree_for_switch"] = bullets["require_clean_worktree_for_switch"].lower() == "true"
-        if bullets.get("worktree_root"):
-            local["worktree_root"] = bullets["worktree_root"]
-        services = _parse_section_list(text, "Direct Delivery Services") or _parse_section_list(text, "Writable Services")
-        if services:
-            local["direct_delivery_services"] = services
-            local["service_directories"] = services
-            local["git_roots"] = services
-        branch_map, worktree_map = _parse_service_table(text)
-        if branch_map:
-            local["service_branch_map"] = branch_map
-        if worktree_map:
-            local["service_worktree_map"] = worktree_map
+        if name.startswith("git-workflow-"):
+            local = _parse_git_workflow_markdown(path, project_root)
+        else:
+            bullets = _parse_bullets(text)
+            local = {}
+            if bullets.get("expected_branch"):
+                local["expected_branch"] = bullets["expected_branch"]
+            if bullets.get("target_branch"):
+                local["expected_branch"] = bullets["target_branch"]
+            if bullets.get("branch_prefix"):
+                local["branch_prefix"] = bullets["branch_prefix"]
+            if bullets.get("base_branch"):
+                local["base_branch"] = bullets["base_branch"]
+            if bullets.get("require_clean_worktree_for_switch"):
+                local["require_clean_worktree_for_switch"] = bullets["require_clean_worktree_for_switch"].lower() == "true"
+            if bullets.get("worktree_root"):
+                local["worktree_root"] = bullets["worktree_root"]
+            services = _parse_section_list(text, "Direct Delivery Services") or _parse_section_list(text, "Writable Services")
+            if services:
+                local["direct_delivery_services"] = services
+                local["service_directories"] = services
+                local["git_roots"] = services
+            branch_map, worktree_map = _parse_service_table(text)
+            if branch_map:
+                local["service_branch_map"] = branch_map
+            if worktree_map:
+                local["service_worktree_map"] = worktree_map
         _merge_non_empty(payload, local)
     payload["loaded_material_types"] = list(dict.fromkeys(payload["loaded_material_types"]))
     return payload

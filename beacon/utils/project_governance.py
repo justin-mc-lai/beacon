@@ -523,6 +523,7 @@ def governance_json_forbidden(project_root: Path, *, strict: bool = True) -> dic
 
 def resolve_project_governance(project_root: Path, *, version: str = "", include_archived: bool = False) -> dict[str, Any]:
     from beacon.utils.branch_governance import resolve_branch_governance_view
+    from beacon.utils.execution_branch_contract import find_program_level_git_workflow, infer_program_level_from_governance
 
     root = project_root.expanduser().resolve()
     payload = load_governance_payload(root)
@@ -600,9 +601,15 @@ def resolve_project_governance(project_root: Path, *, version: str = "", include
             "paths": result["paths"],
             "transaction": payload.get("transaction", {}),
         }
+        git_workflow = (
+            find_program_level_git_workflow(root, version=version)
+            or infer_program_level_from_governance(root, version=version)
+            or {}
+        )
         result["branch_governance"] = resolve_branch_governance_view(
             project_root=root,
             version=version,
             metadata_view=metadata_view,
+            git_workflow=git_workflow,
         )
     return result

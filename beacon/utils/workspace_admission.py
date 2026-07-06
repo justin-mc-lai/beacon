@@ -21,6 +21,7 @@ Before ANY repo write or implement/qa/release route:
 2. If status != pass → STOP; show reason_codes; do NOT edit files
 3. Set cwd to worktree_path from payload
 4. Do NOT git checkout elsewhere to "fix" branch
+5. When admission is soft-skipped (`require_workspace_admission=false`), still verify `current_branch == resolved target_branch` before repo writes (R5 UD-024)
 """
 
 TIER_A_SKILLS = frozenset(
@@ -211,12 +212,33 @@ def validate_workspace_admission(
     artifact = read_admission_artifact(artifact_file)
     reason_codes: list[str] = []
     if not contract.get("require_workspace_admission"):
+        from beacon.utils.execution_branch_contract import resolve_workspace_branch_targets
+
+        branch_targets = resolve_workspace_branch_targets(
+            root, version=version, feature=feature, admission_contract={**contract, "version": version}
+        )
+        expected_branch = str(branch_targets.get("feature_branch") or "").strip()
+        check_root = Path(cwd).expanduser().resolve() if cwd is not None else root
+        current_branch = git_output(check_root, "branch", "--show-current")
+        if expected_branch and current_branch and current_branch != expected_branch:
+            return {
+                "valid": False,
+                "status": "blocked",
+                "skipped": False,
+                "reason_code": "branch_alignment_required",
+                "reason_codes": ["branch_alignment_required"],
+                "artifact_path": str(artifact_file.relative_to(root)) if artifact_file.is_file() else "",
+                "expected_branch": expected_branch,
+                "current_branch": current_branch,
+                "branch_resolution": branch_targets,
+            }
         return {
             "valid": True,
             "status": "pass",
             "skipped": True,
             "reason_codes": [],
             "artifact_path": str(artifact_file.relative_to(root)) if artifact_file.is_file() else "",
+            "branch_resolution": branch_targets,
         }
     if not artifact:
         reason_codes.append("workspace_admission_missing")
@@ -300,11 +322,16 @@ def run_workspace_admit(
     feature: str,
     dry_run: bool = False,
 ) -> dict[str, Any]:
+    from beacon.utils.execution_branch_contract import resolve_workspace_branch_targets
+
     root = resolve_workspace_project_root(project_root)
     contract = load_admission_contract(root, version=version)
     slug = feature_slug(feature)
-    feature_branch = resolve_feature_branch(contract, feature=feature, version=version)
-    worktree_path = resolve_worktree_path(root, contract, feature=feature)
+    branch_targets = resolve_workspace_branch_targets(
+        root, version=version, feature=feature, admission_contract={**contract, "version": version}
+    )
+    feature_branch = str(branch_targets.get("feature_branch") or "").strip()
+    worktree_path = str(branch_targets.get("worktree_path") or "").strip()
     base_branch = str(contract.get("previous_version_baseline_branch") or contract.get("canonical_branch") or "main").strip()
     artifact_file = artifact_path(root, version=version, feature=feature)
     payload: dict[str, Any] = {
@@ -324,6 +351,7 @@ def run_workspace_admit(
             "admission_invalidation": contract.get("admission_invalidation"),
             "worktree_mode": contract.get("worktree_mode"),
         },
+        "branch_resolution": branch_targets,
     }
     if not contract.get("require_workspace_admission"):
         payload["skipped"] = True
@@ -455,8 +483,6 @@ def gate_workspace_admission_or_block(
     cwd: Path | str | None = None,
 ) -> dict[str, Any] | None:
     contract = load_admission_contract(project_root, version=version)
-    if not contract.get("require_workspace_admission"):
-        return None
     validation = validate_workspace_admission(
         project_root,
         version=version,
