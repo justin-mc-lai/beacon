@@ -2314,7 +2314,36 @@
         "baseline_id": "bl-run-20260322T132356Z-d5a5-001",
         "changed_layers": []
       }
+    },
+    {
+      "event_id": "5e035f45-99d0-43eb-878a-89f9f09f278d",
+      "run_id": "release:v1.6.4",
+      "stage": "release",
+      "event": "release_decision_recorded",
+      "source": "release.check",
+      "source_session_id": "release:v1.6.4",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.4/.machine/change/v1.6.4.json",
+        "docs/beacon/v1.6.4/change/v1.6.4.md"
+      ],
+      "ts": "2026-07-06T07:01:55.324384+00:00",
+      "details": {
+        "action": "check",
+        "version": "v1.6.4",
+        "status": "blocked",
+        "failed_checks": [
+          "coverage artifact ready",
+          "release scorecard ready",
+          "implement prompt boundary verdict pass"
+        ]
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
     }
   ],
-  "updated_at": "2026-03-22T13:23:57.108816+00:00"
+  "updated_at": "2026-07-06T07:01:55.324396+00:00"
 }

@@ -1,0 +1,948 @@
+{
+  "schema_version": "1.0",
+  "transaction_id": "tx-change-refreeze-beacon-global-workspace-git-admission-v162-20260709t065537z",
+  "feature": "beacon-global-workspace-git-admission-v162",
+  "feature_slug": "beacon-global-workspace-git-admission-v162",
+  "version": "v1.6.4",
+  "change_reason": "R6 program/lake aggregation branch governance contract; friction:e3fe3b33ecf9",
+  "touched_surfaces": [
+    "change",
+    "truth",
+    "tests",
+    "tasks",
+    "evidence",
+    "requirement_clarity",
+    "freeze",
+    "feature_package_validation"
+  ],
+  "surface_statuses": {
+    "change": {
+      "path": "docs/beacon/v1.6.4/change/beacon-global-workspace-git-admission-v162.md",
+      "exists": true,
+      "status": "present",
+      "required": false,
+      "authority": "change_record_not_requirement_truth"
+    },
+    "truth": {
+      "path": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "tests": {
+      "path": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "tasks": {
+      "path": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tasks.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "evidence": {
+      "path": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/evidence.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "requirement_clarity": {
+      "path": "docs/beacon/v1.6.4/.machine/execution/requirement-clarity-beacon-global-workspace-git-admission-v162.json",
+      "exists": true,
+      "status": "passed",
+      "required": true
+    },
+    "freeze": {
+      "path": "docs/beacon/v1.6.4/.machine/change/beacon-global-workspace-git-admission-v162.refreeze-transaction.json",
+      "exists": true,
+      "status": "complete",
+      "required": true
+    },
+    "feature_package_validation": {
+      "path": "docs/beacon/v1.6.4/.machine/requirement/feature-package-validation.json",
+      "exists": true,
+      "status": "passed",
+      "required": true,
+      "diagnostics": []
+    }
+  },
+  "truth_revision_before": {
+    "revision_id": "R1",
+    "doc_status": "frozen",
+    "lifecycle_status": "idle",
+    "baseline_hash": "sha256:51cb748ef773b88be60703b90dcb3e341b38d9f1f3d44e5458c6c93a8836c4f4"
+  },
+  "truth_revision_after": {
+    "revision_id": "R2",
+    "doc_status": "frozen",
+    "lifecycle_status": "frozen",
+    "baseline_hash": "sha256:51cb748ef773b88be60703b90dcb3e341b38d9f1f3d44e5458c6c93a8836c4f4"
+  },
+  "refreeze_status": "complete",
+  "next_route": {
+    "target_surface": "beacon-gen-implement",
+    "command": "beacon implement \"beacon-global-workspace-git-admission-v162\" --project /Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162 --version v1.6.4",
+    "why": "refreeze transaction completed; implementation may plan against the refreshed frozen truth"
+  },
+  "blocked_reason": "",
+  "delivery_execution": {
+    "implement_executed": false,
+    "qa_executed": false,
+    "release_executed": false
+  },
+  "created_at": "2026-07-09T06:55:37.740257+00:00",
+  "previous_revision": {
+    "revision_id": "R1",
+    "doc_status": "superseded",
+    "lifecycle_status": "superseded",
+    "baseline_hash": "sha256:51cb748ef773b88be60703b90dcb3e341b38d9f1f3d44e5458c6c93a8836c4f4"
+  },
+  "opened_revision": {
+    "revision_id": "R2",
+    "doc_status": "draft",
+    "lifecycle_status": "draft",
+    "baseline_hash": ""
+  },
+  "story_reopen": {
+    "current_revision_id": "R2",
+    "lifecycle_status": "draft"
+  },
+  "requirement_package": {
+    "schema_version": "1.0",
+    "project_root": "/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162",
+    "version": "v1.6.4",
+    "feature": "beacon-global-workspace-git-admission-v162",
+    "status": "synced",
+    "authority_state": "feature_package_authoritative",
+    "truth_authority": "markdown_feature_package",
+    "requirement_refs": {
+      "source_of_truth_root": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162",
+      "prd": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
+      "user_story": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
+      "test_case": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md",
+      "truth": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
+      "tests": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md",
+      "tasks": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tasks.md",
+      "evidence": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/evidence.md"
+    },
+    "story_path": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
+    "qa_matrix_path": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md",
+    "qa9_matrix_path": "",
+    "story_scenario_map_path": "",
+    "machine_rebuild": {
+      "schema_version": "1.0",
+      "truth_map_contract": "beacon-truth-map-v1",
+      "truth_source_model": "feature_package_authoritative",
+      "truth_package_contract": "beacon-feature-package-v2",
+      "machine_json_role": "generated_state_not_truth",
+      "generated_by": "beacon.truth_map.resolver",
+      "feature": "beacon-global-workspace-git-admission-v162",
+      "feature_slug": "beacon-global-workspace-git-admission-v162",
+      "version": "v1.6.4",
+      "status": "rebuilt",
+      "blocked": false,
+      "validation_status": "pass",
+      "source_paths": {
+        "truth": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
+        "tests": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md",
+        "tasks": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tasks.md",
+        "evidence": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/evidence.md"
+      },
+      "source_hashes": {
+        "truth": "e1e0aafa8e310681b2ad23f6902b0fc2127ad1e9b8aca8d85eb13f14d391dc5e",
+        "tests": "5c0b13d82d1036066ddb1b798315863c485cb709462913e1514d2deb06d0133a",
+        "tasks": "c3fe7e1e20513912d5aa36617d01585c38667e6797e2f0d264dbd3714d930cca",
+        "evidence": "1ffa7dba6681d3a9dcf89a061ec749d40e00adfe3bc962bb622ccf26002d2cd2"
+      },
+      "plan": {
+        "schema_version": "1.0",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "truth_source_model": "feature_package_authoritative",
+        "truth_package_contract": "beacon-feature-package-v2",
+        "machine_json_role": "generated_state_not_truth",
+        "generated_by": "beacon.truth_map.resolver",
+        "feature": "beacon-global-workspace-git-admission-v162",
+        "feature_slug": "beacon-global-workspace-git-admission-v162",
+        "version": "v1.6.4",
+        "source_paths": {
+          "truth": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
+          "tests": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md",
+          "tasks": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tasks.md",
+          "evidence": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/evidence.md"
+        },
+        "outputs": {
+          "truth_map_projection": "docs/beacon/v1.6.4/.machine/requirement/beacon-global-workspace-git-admission-v162.truth-map.json",
+          "requirement_package_state": "docs/beacon/v1.6.4/.machine/requirement/beacon-global-workspace-git-admission-v162.requirement-package.json",
+          "feature_package_validation": "docs/beacon/v1.6.4/.machine/requirement/feature-package-validation.json"
+        },
+        "runtime_json_exemption": {
+          "role": "runtime_process_record_not_requirement_truth",
+          "applies_to": [
+            ".beacon/runs/**",
+            ".beacon/qa/**",
+            "runtime/process execution records"
+          ],
+          "requires_markdown_twin": false,
+          "requirement_authority": false
+        },
+        "routes": {
+          "doctor_rebuild": {
+            "status": "legacy_output_only",
+            "command": "beacon truth-map rebuild-machine beacon-global-workspace-git-admission-v162 --version v1.6.4"
+          },
+          "change_absorb": {
+            "status": "package_truth_target_only",
+            "command": "beacon change beacon-global-workspace-git-admission-v162 --version v1.6.4 --reason absorb-legacy-truth-into-feature-package"
+          }
+        }
+      },
+      "written": [
+        "docs/beacon/v1.6.4/.machine/requirement/beacon-global-workspace-git-admission-v162.truth-map.json",
+        "docs/beacon/v1.6.4/.machine/requirement/beacon-global-workspace-git-admission-v162.requirement-package.json",
+        "docs/beacon/v1.6.4/.machine/requirement/feature-package-validation.json"
+      ]
+    },
+    "story_sync": {
+      "path": "docs/beacon/v1.6.4/.machine/user-story/beacon-global-workspace-git-admission-v162.json",
+      "feature": "beacon-global-workspace-git-admission-v162",
+      "version": "v1.6.4",
+      "revision_id": "R2",
+      "ac_count": 5,
+      "test_count": 5,
+      "story_ids": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    }
+  },
+  "requirement_clarity": {
+    "gate": {
+      "schema_version": "1.0",
+      "feature": "beacon-global-workspace-git-admission-v162",
+      "feature_slug": "beacon-global-workspace-git-admission-v162",
+      "version": "v1.6.4",
+      "runtime_version": "v1.6.4",
+      "runtime_capability_line": "v1.3.3",
+      "required": true,
+      "reason_code": "",
+      "blocked": false,
+      "status": "pass",
+      "findings": [],
+      "report_json_path": "docs/beacon/v1.6.4/.machine/execution/requirement-clarity-beacon-global-workspace-git-admission-v162.json",
+      "report_markdown_path": "docs/beacon/v1.6.4/execution/requirement-clarity-beacon-global-workspace-git-admission-v162.md",
+      "state_path": ".beacon/state/requirement-clarity-beacon-global-workspace-git-admission-v162.json",
+      "diagram_truth": {
+        "schema_version": "1.0",
+        "version": "v1.6.4",
+        "supported": true,
+        "required": false,
+        "ready": true,
+        "diagram_types": [],
+        "state_axes": [],
+        "missing_diagram_types": [],
+        "missing_state_axes": false,
+        "complexity_signals": [],
+        "review_gates": [],
+        "qa_coverage_hints": [],
+        "evidence_lines": {},
+        "generated_at": "2026-07-09T06:55:40.599516+00:00",
+        "feature": "beacon-global-workspace-git-admission-v162",
+        "feature_slug": "beacon-global-workspace-git-admission-v162",
+        "prd_ref": "docs/beacon/v1.6.4/prd/beacon-global-workspace-git-admission-v162.md",
+        "user_story_ref": "docs/beacon/v1.6.4/user-story/beacon-global-workspace-git-admission-v162.md"
+      },
+      "human_closure_contract": {
+        "required": false,
+        "research_path": "docs/beacon/v1.6.4/research/beacon-global-workspace-git-admission-v162.md",
+        "research_exists": false,
+        "source_architecture_path": "docs/beacon/v1.6.4/source-architecture/index.md",
+        "source_architecture_exists": true,
+        "required_sections": [
+          "architecture",
+          "business_flow"
+        ],
+        "missing_sections": [
+          "architecture",
+          "business_flow"
+        ],
+        "diagram_types": [],
+        "complexity_signals": []
+      },
+      "requirement_closure_contract": {
+        "required": true,
+        "chain_order": [
+          "research",
+          "prd",
+          "user_story",
+          "test_case",
+          "requirement_clarity",
+          "freeze"
+        ],
+        "human_closure_required": false,
+        "paths": {
+          "research": "docs/beacon/v1.6.4/research/beacon-global-workspace-git-admission-v162.md",
+          "prd": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
+          "user_story": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
+          "test_case": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md"
+        },
+        "exists": {
+          "research": false,
+          "prd": true,
+          "user_story": true,
+          "test_case": true
+        },
+        "required_research_sections": [],
+        "missing_research_sections": [],
+        "ac_projection": {
+          "prd_ac_ids": [
+            "AC-023",
+            "AC-024",
+            "AC-025",
+            "AC-026",
+            "AC-027"
+          ],
+          "user_story_ac_ids": [
+            "AC-023",
+            "AC-024",
+            "AC-025",
+            "AC-026",
+            "AC-027"
+          ],
+          "test_case_ac_ids": [
+            "AC-023",
+            "AC-024",
+            "AC-025",
+            "AC-026",
+            "AC-027"
+          ],
+          "upstream_ac_ids": [
+            "AC-023",
+            "AC-024",
+            "AC-025",
+            "AC-026",
+            "AC-027"
+          ],
+          "missing_test_case_ac_ids": []
+        }
+      },
+      "version_projection_truth_contract": {
+        "required": false,
+        "supported": true,
+        "projection_types": [],
+        "research_path": "docs/beacon/v1.6.4/research/beacon-global-workspace-git-admission-v162.md",
+        "research_exists": false,
+        "required_fields": [
+          "prd_refs",
+          "user_story_refs",
+          "test_case_refs",
+          "coverage_notes",
+          "out_of_scope_notes"
+        ],
+        "field_presence": {
+          "prd_refs": false,
+          "user_story_refs": false,
+          "test_case_refs": false,
+          "coverage_notes": false,
+          "out_of_scope_notes": false
+        },
+        "missing_fields": [],
+        "required_refs": {
+          "prd_refs": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
+          "user_story_refs": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
+          "test_case_refs": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md"
+        },
+        "missing_ref_targets": [],
+        "ready": false
+      },
+      "support_write_topology_contract": {
+        "schema_version": "1.0",
+        "supported": true,
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "diagnostics": []
+      },
+      "required_artifacts": [],
+      "scanned_files": [
+        "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
+        "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md",
+        "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tasks.md",
+        "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/evidence.md"
+      ]
+    },
+    "report": {
+      "json": "docs/beacon/v1.6.4/.machine/execution/requirement-clarity-beacon-global-workspace-git-admission-v162.json",
+      "markdown": "docs/beacon/v1.6.4/execution/requirement-clarity-beacon-global-workspace-git-admission-v162.md"
+    },
+    "writeback": {
+      "schema_version": "1.0",
+      "feature": "beacon-global-workspace-git-admission-v162",
+      "feature_slug": "beacon-global-workspace-git-admission-v162",
+      "version": "v1.6.4",
+      "status": "pass",
+      "blocked": false,
+      "reason_code": "",
+      "report_json_path": "docs/beacon/v1.6.4/.machine/execution/requirement-clarity-beacon-global-workspace-git-admission-v162.json",
+      "report_markdown_path": "docs/beacon/v1.6.4/execution/requirement-clarity-beacon-global-workspace-git-admission-v162.md",
+      "finding_count": 0,
+      "run_id": "",
+      "source": "change.refreeze-chain",
+      "written_at": "2026-07-09T06:55:40.627941+00:00",
+      "state_path": ".beacon/state/requirement-clarity-beacon-global-workspace-git-admission-v162.json"
+    }
+  },
+  "truth_integrity_gate": {
+    "schema_version": "1.0",
+    "feature": "beacon-global-workspace-git-admission-v162",
+    "feature_slug": "beacon-global-workspace-git-admission-v162",
+    "version": "v1.6.4",
+    "mode": "block",
+    "truth_status": "frozen",
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "findings": [],
+    "finding_count": 0,
+    "requirement_clarity": {
+      "schema_version": "1.0",
+      "feature": "beacon-global-workspace-git-admission-v162",
+      "feature_slug": "beacon-global-workspace-git-admission-v162",
+      "version": "v1.6.4",
+      "runtime_version": "v1.6.4",
+      "runtime_capability_line": "v1.3.3",
+      "required": true,
+      "reason_code": "",
+      "blocked": false,
+      "status": "pass",
+      "findings": [],
+      "report_json_path": "docs/beacon/v1.6.4/.machine/execution/requirement-clarity-beacon-global-workspace-git-admission-v162.json",
+      "report_markdown_path": "docs/beacon/v1.6.4/execution/requirement-clarity-beacon-global-workspace-git-admission-v162.md",
+      "state_path": ".beacon/state/requirement-clarity-beacon-global-workspace-git-admission-v162.json",
+      "diagram_truth": {
+        "schema_version": "1.0",
+        "version": "v1.6.4",
+        "supported": true,
+        "required": false,
+        "ready": true,
+        "diagram_types": [],
+        "state_axes": [],
+        "missing_diagram_types": [],
+        "missing_state_axes": false,
+        "complexity_signals": [],
+        "review_gates": [],
+        "qa_coverage_hints": [],
+        "evidence_lines": {},
+        "generated_at": "2026-07-09T06:55:40.634887+00:00",
+        "feature": "beacon-global-workspace-git-admission-v162",
+        "feature_slug": "beacon-global-workspace-git-admission-v162",
+        "prd_ref": "docs/beacon/v1.6.4/prd/beacon-global-workspace-git-admission-v162.md",
+        "user_story_ref": "docs/beacon/v1.6.4/user-story/beacon-global-workspace-git-admission-v162.md"
+      },
+      "human_closure_contract": {
+        "required": false,
+        "research_path": "docs/beacon/v1.6.4/research/beacon-global-workspace-git-admission-v162.md",
+        "research_exists": false,
+        "source_architecture_path": "docs/beacon/v1.6.4/source-architecture/index.md",
+        "source_architecture_exists": true,
+        "required_sections": [
+          "architecture",
+          "business_flow"
+        ],
+        "missing_sections": [
+          "architecture",
+          "business_flow"
+        ],
+        "diagram_types": [],
+        "complexity_signals": []
+      },
+      "requirement_closure_contract": {
+        "required": true,
+        "chain_order": [
+          "research",
+          "prd",
+          "user_story",
+          "test_case",
+          "requirement_clarity",
+          "freeze"
+        ],
+        "human_closure_required": false,
+        "paths": {
+          "research": "docs/beacon/v1.6.4/research/beacon-global-workspace-git-admission-v162.md",
+          "prd": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
+          "user_story": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
+          "test_case": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md"
+        },
+        "exists": {
+          "research": false,
+          "prd": true,
+          "user_story": true,
+          "test_case": true
+        },
+        "required_research_sections": [],
+        "missing_research_sections": [],
+        "ac_projection": {
+          "prd_ac_ids": [
+            "AC-023",
+            "AC-024",
+            "AC-025",
+            "AC-026",
+            "AC-027"
+          ],
+          "user_story_ac_ids": [
+            "AC-023",
+            "AC-024",
+            "AC-025",
+            "AC-026",
+            "AC-027"
+          ],
+          "test_case_ac_ids": [
+            "AC-023",
+            "AC-024",
+            "AC-025",
+            "AC-026",
+            "AC-027"
+          ],
+          "upstream_ac_ids": [
+            "AC-023",
+            "AC-024",
+            "AC-025",
+            "AC-026",
+            "AC-027"
+          ],
+          "missing_test_case_ac_ids": []
+        }
+      },
+      "version_projection_truth_contract": {
+        "required": false,
+        "supported": true,
+        "projection_types": [],
+        "research_path": "docs/beacon/v1.6.4/research/beacon-global-workspace-git-admission-v162.md",
+        "research_exists": false,
+        "required_fields": [
+          "prd_refs",
+          "user_story_refs",
+          "test_case_refs",
+          "coverage_notes",
+          "out_of_scope_notes"
+        ],
+        "field_presence": {
+          "prd_refs": false,
+          "user_story_refs": false,
+          "test_case_refs": false,
+          "coverage_notes": false,
+          "out_of_scope_notes": false
+        },
+        "missing_fields": [],
+        "required_refs": {
+          "prd_refs": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
+          "user_story_refs": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
+          "test_case_refs": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md"
+        },
+        "missing_ref_targets": [],
+        "ready": false
+      },
+      "support_write_topology_contract": {
+        "schema_version": "1.0",
+        "supported": true,
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "diagnostics": []
+      },
+      "required_artifacts": [],
+      "scanned_files": [
+        "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
+        "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md",
+        "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tasks.md",
+        "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/evidence.md"
+      ]
+    },
+    "fake_delivery": {
+      "schema_version": "1.0",
+      "status": "pass",
+      "ok": true,
+      "closure_allowed": true,
+      "detected": [],
+      "policy_terms": [
+        "placeholder implementation",
+        "docs-only completion",
+        "fake runner evidence",
+        "zero assertions",
+        "placeholder evidence"
+      ],
+      "reason_code": ""
+    },
+    "feature_package_validation": {
+      "schema_version": "1.0",
+      "feature": "beacon-global-workspace-git-admission-v162",
+      "feature_slug": "beacon-global-workspace-git-admission-v162",
+      "version": "v1.6.4",
+      "status": "pass",
+      "blocked": false,
+      "reason_code": "",
+      "generated_at": "2026-07-09T06:55:40.680200+00:00",
+      "package_dir": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162",
+      "truth_frontmatter": {
+        "slug": "beacon-global-workspace-git-admission-v162",
+        "version": "v1.6.4",
+        "status": "frozen",
+        "revision_id": "R6",
+        "language": "zh",
+        "change_reason": "R6 - program/lake aggregation branch governance contract; SidePilot v0.0.12 QA admission friction friction:e3fe3b33ecf9",
+        "source_revision_id": "R5",
+        "canonical_refs": {
+          "prd": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
+          "user_story": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
+          "test_case": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md"
+        },
+        "parser_contract": "beacon-feature-package-v1",
+        "truth_source_model": "feature_package_authoritative",
+        "truth_map_contract": "beacon-truth-map-v1"
+      },
+      "ac_count": 5,
+      "test_count": 6,
+      "checkbox_count": 7,
+      "evidence_row_count": 6,
+      "gate_authority": "canonical_surfaces_preserved",
+      "checkbox_gate_bypass": false,
+      "evidence_gate_truth": false,
+      "diagnostics": [],
+      "truth_map_contract": "beacon-truth-map-v1",
+      "truth_source_model": "feature_package_authoritative",
+      "truth_package_contract": "beacon-feature-package-v2",
+      "machine_json_role": "generated_state_not_truth",
+      "generated_by": "beacon.truth_map.resolver",
+      "truth_authority": "markdown_feature_package",
+      "json_authority": false,
+      "source_paths": {
+        "truth": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
+        "tests": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md",
+        "tasks": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tasks.md",
+        "evidence": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/evidence.md"
+      },
+      "source_hashes": {
+        "truth": "e1e0aafa8e310681b2ad23f6902b0fc2127ad1e9b8aca8d85eb13f14d391dc5e",
+        "tests": "5c0b13d82d1036066ddb1b798315863c485cb709462913e1514d2deb06d0133a",
+        "tasks": "c3fe7e1e20513912d5aa36617d01585c38667e6797e2f0d264dbd3714d930cca",
+        "evidence": "1ffa7dba6681d3a9dcf89a061ec749d40e00adfe3bc962bb622ccf26002d2cd2"
+      },
+      "runtime_json_requires_markdown_twin": false,
+      "report_path": "docs/beacon/v1.6.4/.machine/requirement/feature-package-validation.json"
+    },
+    "determinism_check": {
+      "placeholder_count": 0,
+      "hollow_template_count": 0
+    },
+    "closure_contract": {
+      "closure_allowed": true,
+      "detected": []
+    },
+    "recommended_action": ""
+  },
+  "truth_frontmatter_sync": {
+    "updated": false,
+    "status": "frozen",
+    "path": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+  },
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "beacon-global-workspace-git-admission-v162",
+    "feature_slug": "beacon-global-workspace-git-admission-v162",
+    "version": "v1.6.4",
+    "revision_id": "R2",
+    "source_revision_id": "R1",
+    "status": "ready",
+    "cleanup_required": false,
+    "removed_requirement_count": 0,
+    "added_requirement_count": 0,
+    "retained_requirement_count": 5,
+    "removed_requirement_surfaces": [],
+    "added_requirement_surfaces": [],
+    "retained_requirement_surfaces": [
+      {
+        "revision_id": "R2",
+        "id": "AC-004",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "per-feature-default-preserved",
+        "text": "Repos without program-level contract/topology continue to resolve `beacon/<version>/<feature-slug>`.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
+        "signature": "ac::::per-feature-default-preserved::repos without program-level contract/topology continue to resolve `beacon/<version>/<feature-slug>`.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-002",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "program-topology-with-git-workflow",
+        "text": "Program-level governance still resolves through explicit `git-workflow-*.md` when present.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
+        "signature": "ac::::program-topology-with-git-workflow::program-level governance still resolves through explicit `git-workflow-*.md` when present.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "program-topology-without-git-workflow",
+        "text": "Program-level governance resolves a lake to the aggregation branch from program/lake topology when `git-workflow-*.md` is absent.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
+        "signature": "ac::::program-topology-without-git-workflow::program-level governance resolves a lake to the aggregation branch from program/lake topology when `git-workflow-*.md` is absent.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-003",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "qa-run-aggregation-admission",
+        "text": "`beacon qa run <lake>` accepts the aggregation branch after workspace admission and does not block with `branch_alignment_required`.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
+        "signature": "ac::::qa-run-aggregation-admission::`beacon qa run <lake>` accepts the aggregation branch after workspace admission and does not block with `branch_alignment_required`.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-005",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "soft-admission-wrong-branch-blocks",
+        "text": "Soft admission still blocks wrong current branch with `branch_alignment_required` using the shared resolved target.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
+        "signature": "ac::::soft-admission-wrong-branch-blocks::soft admission still blocks wrong current branch with `branch_alignment_required` using the shared resolved target.::"
+      }
+    ],
+    "current_baseline_hash": "sha256:51cb748ef773b88be60703b90dcb3e341b38d9f1f3d44e5458c6c93a8836c4f4",
+    "source_baseline_hash": "sha256:51cb748ef773b88be60703b90dcb3e341b38d9f1f3d44e5458c6c93a8836c4f4",
+    "story_state_ref": "docs/beacon/v1.6.4/.machine/user-story/beacon-global-workspace-git-admission-v162.json",
+    "generated_at": "2026-07-09T06:55:40.765664+00:00",
+    "json_ref": "docs/beacon/v1.6.4/.machine/execution/revision-delta-beacon-global-workspace-git-admission-v162.json",
+    "markdown_ref": "docs/beacon/v1.6.4/execution/revision-delta-beacon-global-workspace-git-admission-v162.md"
+  },
+  "release_projection_sync": {
+    "status": "pass",
+    "truth_authority": false,
+    "lifecycle_stage": false,
+    "release_publish_action": false,
+    "feature_projection": {
+      "schema_version": "1.0",
+      "status": "pass",
+      "feature": "beacon-global-workspace-git-admission-v162",
+      "feature_slug": "beacon-global-workspace-git-admission-v162",
+      "version": "v1.6.4",
+      "json_path": "docs/beacon/v1.6.4/.machine/change/beacon-global-workspace-git-admission-v162.json",
+      "markdown_path": "docs/beacon/v1.6.4/change/beacon-global-workspace-git-admission-v162.md",
+      "json_written": true,
+      "markdown_exists": true,
+      "projection_role": {
+        "artifact_role": "version_aggregate_projection",
+        "truth_source": false,
+        "gate_source": false,
+        "lifecycle_stage": false,
+        "release_publish_action": false
+      },
+      "payload": {
+        "schema_version": "1.0",
+        "version": "v1.6.4",
+        "feature": "beacon-global-workspace-git-admission-v162",
+        "feature_slug": "beacon-global-workspace-git-admission-v162",
+        "summary": "Maintains release-facing version aggregate projection guards so QA accepted features are included in version change scope before release check.",
+        "status": "generated",
+        "accepted_at": "",
+        "revision_id": "R2",
+        "projection_role": {
+          "artifact_role": "version_aggregate_projection",
+          "truth_source": false,
+          "gate_source": false,
+          "lifecycle_stage": false,
+          "release_publish_action": false
+        },
+        "truth_authority": false,
+        "lifecycle_stage": false,
+        "added": [
+          "Feature-level release projection input for QA accepted current feature",
+          "Version aggregate projection inclusion guard and repair metadata",
+          "Repair-only projection rebuild path for release preflight artifacts"
+        ],
+        "removed": [
+          "Manual-only version aggregate projection repair before release check"
+        ],
+        "fixed": [
+          "Release check can route missing current feature projection to an actionable repair path",
+          "Version aggregate projection remains a read model instead of requirement truth"
+        ],
+        "traceability_refs": [
+          "docs/beacon/v1.6.4/change/beacon-global-workspace-git-admission-v162.md",
+          "docs/beacon/v1.6.4/prd/beacon-global-workspace-git-admission-v162.md",
+          "docs/beacon/v1.6.4/user-story/beacon-global-workspace-git-admission-v162.md",
+          "docs/beacon/v1.6.4/qa/test-cases/beacon-global-workspace-git-admission-v162.md",
+          "docs/beacon/v1.6.4/.machine/execution/beacon-global-workspace-git-admission-v162.revision.json"
+        ],
+        "generated_at": "2026-07-09T06:55:40.774427+00:00"
+      }
+    },
+    "version_aggregate_projection": {
+      "schema_version": "1.0",
+      "status": "pass",
+      "version": "v1.6.4",
+      "markdown_path": "docs/beacon/v1.6.4/change/v1.6.4.md",
+      "json_path": "docs/beacon/v1.6.4/.machine/change/v1.6.4.json",
+      "feature_count": 6,
+      "feature_slugs": [
+        "beacon-global-workspace-git-admission-v162",
+        "beacon-qa-business-state-machine-v164",
+        "beacon-qa-chrome-extension-e2e-v164",
+        "beacon-qa-coverage-confidence-chain-v164",
+        "beacon-qa-defect-repair-loop-v164",
+        "beacon-qa-methodology-contract-v164"
+      ],
+      "projection_role": {
+        "artifact_role": "version_aggregate_projection",
+        "truth_source": false,
+        "gate_source": false,
+        "lifecycle_stage": false,
+        "release_publish_action": false
+      },
+      "truth_authority": false,
+      "lifecycle_stage": false,
+      "release_publish_action": false,
+      "implementation_order": {
+        "status": "analyzed",
+        "feature_count": 6,
+        "ordered_feature_slugs": [
+          "beacon-qa-chrome-extension-e2e-v164",
+          "beacon-qa-coverage-confidence-chain-v164",
+          "beacon-qa-business-state-machine-v164",
+          "beacon-qa-defect-repair-loop-v164",
+          "beacon-qa-methodology-contract-v164",
+          "beacon-global-workspace-git-admission-v162"
+        ],
+        "waves": [
+          {
+            "wave": 1,
+            "parallelizable": true,
+            "features": [
+              {
+                "feature": "beacon-qa-chrome-extension-e2e-v164",
+                "feature_slug": "beacon-qa-chrome-extension-e2e-v164",
+                "depends_on_features": [],
+                "direct_delivery_services": [
+                  "."
+                ],
+                "writable_services": [
+                  "."
+                ],
+                "parallelizable": true,
+                "reason_code": "parallel_no_conflict"
+              },
+              {
+                "feature": "beacon-global-workspace-git-admission-v162",
+                "feature_slug": "beacon-global-workspace-git-admission-v162",
+                "depends_on_features": [],
+                "direct_delivery_services": [],
+                "writable_services": [],
+                "parallelizable": true,
+                "reason_code": "parallel_no_conflict"
+              }
+            ]
+          },
+          {
+            "wave": 2,
+            "parallelizable": false,
+            "features": [
+              {
+                "feature": "beacon-qa-coverage-confidence-chain-v164",
+                "feature_slug": "beacon-qa-coverage-confidence-chain-v164",
+                "depends_on_features": [
+                  "beacon-qa-chrome-extension-e2e-v164"
+                ],
+                "direct_delivery_services": [
+                  "."
+                ],
+                "writable_services": [
+                  "."
+                ],
+                "parallelizable": false,
+                "reason_code": "shared_delivery_service_conflict"
+              }
+            ]
+          },
+          {
+            "wave": 3,
+            "parallelizable": false,
+            "features": [
+              {
+                "feature": "beacon-qa-business-state-machine-v164",
+                "feature_slug": "beacon-qa-business-state-machine-v164",
+                "depends_on_features": [
+                  "beacon-qa-coverage-confidence-chain-v164"
+                ],
+                "direct_delivery_services": [
+                  "."
+                ],
+                "writable_services": [
+                  "."
+                ],
+                "parallelizable": false,
+                "reason_code": "shared_delivery_service_conflict"
+              }
+            ]
+          },
+          {
+            "wave": 4,
+            "parallelizable": false,
+            "features": [
+              {
+                "feature": "beacon-qa-defect-repair-loop-v164",
+                "feature_slug": "beacon-qa-defect-repair-loop-v164",
+                "depends_on_features": [
+                  "beacon-qa-business-state-machine-v164"
+                ],
+                "direct_delivery_services": [
+                  "."
+                ],
+                "writable_services": [
+                  "."
+                ],
+                "parallelizable": false,
+                "reason_code": "shared_delivery_service_conflict"
+              }
+            ]
+          },
+          {
+            "wave": 5,
+            "parallelizable": false,
+            "features": [
+              {
+                "feature": "beacon-qa-methodology-contract-v164",
+                "feature_slug": "beacon-qa-methodology-contract-v164",
+                "depends_on_features": [
+                  "beacon-qa-defect-repair-loop-v164"
+                ],
+                "direct_delivery_services": [
+                  "."
+                ],
+                "writable_services": [
+                  "."
+                ],
+                "parallelizable": false,
+                "reason_code": "shared_delivery_service_conflict"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

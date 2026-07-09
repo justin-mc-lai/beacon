@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import json
 import re
+import subprocess
 from pathlib import Path
 from typing import Any
 
@@ -173,7 +175,14 @@ def is_program_level_branch_contract(contract: dict[str, Any] | None) -> bool:
     mode = str(contract.get("branch_resolution_mode") or "").strip().lower()
     if mode == "program-level":
         return True
-    return bool(contract.get("dedicated_worktree_path") and contract.get("expected_branch"))
+    return bool(
+        (contract.get("dedicated_worktree_path") or contract.get("worktree_root") or contract.get("worktree_path"))
+        and (
+            contract.get("expected_branch")
+            or contract.get("aggregation_branch")
+            or contract.get("program_aggregation_branch")
+        )
+    )
 
 
 def _program_level_from_parsed_markdown(
@@ -212,15 +221,31 @@ def infer_program_level_from_governance(
     version_meta = payload.get("version_scoped_metadata") if isinstance(payload.get("version_scoped_metadata"), dict) else {}
     version_contract = version_meta.get(resolved_version) if isinstance(version_meta.get(resolved_version), dict) else {}
     pattern = str(
-        contract.get("feature_branch_pattern")
+        contract.get("aggregation_branch")
+        or contract.get("program_aggregation_branch")
+        or contract.get("expected_branch")
+        or version_contract.get("aggregation_branch")
+        or version_contract.get("program_aggregation_branch")
+        or version_contract.get("expected_branch")
+        or contract.get("feature_branch_pattern")
         or version_contract.get("next_version_feature_branch")
         or ""
     ).strip()
     worktree_path = str(
-        contract.get("worktree_base")
+        contract.get("dedicated_worktree_path")
+        or contract.get("worktree_path")
+        or contract.get("worktree_root")
+        or contract.get("worktree_base")
+        or version_contract.get("dedicated_worktree_path")
+        or version_contract.get("worktree_root")
         or version_contract.get("worktree_path")
         or ""
     ).strip()
+    mode = str(
+        contract.get("branch_resolution_mode")
+        or version_contract.get("branch_resolution_mode")
+        or ""
+    ).strip().lower()
     per_service = (
         version_contract.get("per_service_canonical_branch")
         if isinstance(version_contract.get("per_service_canonical_branch"), dict)
@@ -231,7 +256,7 @@ def infer_program_level_from_governance(
         expected_branch = str(next(iter(per_service.values()), "")).strip()
     if not expected_branch or not worktree_path:
         return None
-    if "<feature" in expected_branch.lower():
+    if mode != "program-level" and "<feature" in expected_branch.lower():
         return None
     gov_path = governance_md_path(root)
     payload_out = {
@@ -240,10 +265,152 @@ def infer_program_level_from_governance(
         "dedicated_worktree_path": _normalized_path(worktree_path, project_root=root),
         "source": "project_governance",
         "version": resolved_version,
-        "program_slug": "",
+        "program_slug": str(version_contract.get("program_slug") or contract.get("program_slug") or "").strip(),
         "material_path": str(gov_path.relative_to(root)) if gov_path.is_file() else "",
     }
     return payload_out if is_program_level_branch_contract(payload_out) else None
+
+
+def _read_json(path: Path) -> dict[str, Any]:
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:  # noqa: BLE001
+        return {}
+    return payload if isinstance(payload, dict) else {}
+
+
+def _parse_frontmatter(path: Path) -> dict[str, str]:
+    text = _read_text(path)
+    if not text.startswith("---"):
+        return {}
+    parts = text.split("---", 2)
+    if len(parts) < 3:
+        return {}
+    out: dict[str, str] = {}
+    for line in parts[1].splitlines():
+        if ":" not in line:
+            continue
+        key, value = line.split(":", 1)
+        out[_normalize_key(key)] = _clean_cell(value.strip().strip('"').strip("'"))
+    return out
+
+
+def _lake_slug_set(payload: dict[str, Any]) -> set[str]:
+    lakes = payload.get("lakes")
+    if not isinstance(lakes, list):
+        return set()
+    slugs: set[str] = set()
+    for lake in lakes:
+        if not isinstance(lake, dict):
+            continue
+        for key in ("feature_slug", "slug"):
+            slug = feature_slug(str(lake.get(key) or "").strip())
+            if slug:
+                slugs.add(slug)
+    return slugs
+
+
+def _current_branch(path: Path) -> str:
+    try:
+        result = subprocess.run(
+            ["git", "branch", "--show-current"],
+            cwd=path,
+            capture_output=True,
+            text=True,
+            timeout=5,
+            check=False,
+        )
+    except Exception:  # noqa: BLE001
+        return ""
+    return str(result.stdout or "").strip() if result.returncode == 0 else ""
+
+
+def _program_worktree_path(project_root: Path, *, version: str, preferred_root: Path | None = None) -> str:
+    expected_branch = f"beacon/{version}"
+    if preferred_root and preferred_root.exists() and _current_branch(preferred_root) == expected_branch:
+        return str(preferred_root.resolve())
+    root = project_root.expanduser().resolve()
+    if _current_branch(root) == expected_branch:
+        return str(root)
+    return str(root / ".beacon" / "worktrees" / version)
+
+
+def infer_program_level_from_program_topology(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+    admission_contract: dict[str, Any] | None = None,
+) -> dict[str, Any] | None:
+    """Infer aggregation branch from frozen program/lake topology surfaces."""
+
+    resolved_version = resolve_target_version(project_root, version)
+    root = project_root.expanduser().resolve()
+    contract = admission_contract if isinstance(admission_contract, dict) else {}
+    requested_root_raw = str(contract.get("requested_project_root") or "").strip()
+    requested_root = Path(requested_root_raw).expanduser().resolve() if requested_root_raw else root
+    slug = feature_slug(feature)
+    search_roots = list(dict.fromkeys([root, requested_root]))
+    if not any((candidate / "docs" / "beacon" / resolved_version / "programs").is_dir() for candidate in search_roots):
+        return None
+    expected_branch = str(
+        contract.get("aggregation_branch")
+        or contract.get("program_aggregation_branch")
+        or contract.get("expected_branch")
+        or ""
+    ).strip() or f"beacon/{resolved_version}"
+    mode = str(contract.get("branch_resolution_mode") or "").strip().lower()
+    worktree_path = str(
+        contract.get("dedicated_worktree_path")
+        or contract.get("worktree_path")
+        or contract.get("worktree_root")
+        or (contract.get("worktree_base") if mode == "program-level" else "")
+        or ""
+    ).strip()
+    if worktree_path and Path(worktree_path).name == slug:
+        worktree_path = str(Path(worktree_path).parent)
+    if not worktree_path:
+        worktree_path = _program_worktree_path(root, version=resolved_version, preferred_root=requested_root)
+
+    for search_root in search_roots:
+        programs_root = search_root / "docs" / "beacon" / resolved_version / "programs"
+        if not programs_root.is_dir():
+            continue
+        for program_dir in sorted(path for path in programs_root.iterdir() if path.is_dir()):
+            program_slug = program_dir.name
+            manifest = _parse_frontmatter(program_dir / "program-manifest.md")
+            graph = _read_json(program_dir / "feature-graph.json")
+            freeze = _read_json(program_dir / "program-truth-freeze.json")
+            lakes = _lake_slug_set(graph) | _lake_slug_set(freeze)
+            if not lakes:
+                continue
+            if slug not in lakes:
+                continue
+            frozen = (
+                str(freeze.get("status") or "").strip().lower() == "frozen"
+                or str(manifest.get("program_plan_frozen") or "").strip().lower() == "true"
+                or str(graph.get("program_plan_frozen") or "").strip().lower() == "true"
+            )
+            if not frozen:
+                continue
+            material_path = program_dir / "program-truth-freeze.json"
+            if not material_path.exists():
+                material_path = program_dir / "feature-graph.json"
+            try:
+                material_rel = str(material_path.relative_to(root))
+            except ValueError:
+                material_rel = str(material_path)
+            return {
+                "branch_resolution_mode": "program-level",
+                "expected_branch": expected_branch,
+                "dedicated_worktree_path": _normalized_path(worktree_path, project_root=root),
+                "source": "program_topology",
+                "version": resolved_version,
+                "program_slug": program_slug,
+                "material_path": material_rel,
+                "lake_slug": slug,
+            }
+    return None
 
 
 def find_program_level_git_workflow(project_root: Path, *, version: str) -> dict[str, Any] | None:
@@ -295,13 +462,25 @@ def resolve_workspace_branch_targets(
             version=version,
             admission_contract={**admission_contract, "version": version},
         )
+    if not ctx:
+        ctx = infer_program_level_from_program_topology(
+            root,
+            version=version,
+            feature=feature,
+            admission_contract={**admission_contract, "version": version},
+        )
     if not ctx and is_program_level_branch_contract(per_feature):
         ctx = per_feature
     if ctx and is_program_level_branch_contract(ctx):
-        branch = str(ctx.get("expected_branch") or "").strip()
+        branch = str(
+            ctx.get("expected_branch")
+            or ctx.get("aggregation_branch")
+            or ctx.get("program_aggregation_branch")
+            or ""
+        ).strip()
         if not branch:
             branch = resolve_feature_branch(admission_contract, feature=feature, version=version)
-        worktree_path = str(ctx.get("dedicated_worktree_path") or ctx.get("worktree_root") or "").strip()
+        worktree_path = str(ctx.get("dedicated_worktree_path") or ctx.get("worktree_root") or ctx.get("worktree_path") or "").strip()
         if not worktree_path:
             worktree_path = resolve_worktree_path(root, admission_contract, feature=feature)
         return {
@@ -310,6 +489,7 @@ def resolve_workspace_branch_targets(
             "worktree_path": worktree_path,
             "program_slug": str(ctx.get("program_slug") or ctx.get("feature") or "").strip(),
             "material_path": str(ctx.get("material_path") or (per_feature.get("material_paths") or [""])[0]).strip(),
+            "source": str(ctx.get("source") or "").strip(),
         }
     return {
         "branch_resolution_mode": "per-feature",

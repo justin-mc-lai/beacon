@@ -205,6 +205,7 @@ def validate_workspace_admission(
     cwd: Path | str | None = None,
     contract: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
+    requested_root = Path(project_root).expanduser().resolve()
     root = resolve_workspace_project_root(project_root)
     contract = contract if isinstance(contract, dict) else load_admission_contract(root, version=version)
     slug = feature_slug(feature)
@@ -215,10 +216,13 @@ def validate_workspace_admission(
         from beacon.utils.execution_branch_contract import resolve_workspace_branch_targets
 
         branch_targets = resolve_workspace_branch_targets(
-            root, version=version, feature=feature, admission_contract={**contract, "version": version}
+            root,
+            version=version,
+            feature=feature,
+            admission_contract={**contract, "version": version, "requested_project_root": str(requested_root)},
         )
         expected_branch = str(branch_targets.get("feature_branch") or "").strip()
-        check_root = Path(cwd).expanduser().resolve() if cwd is not None else root
+        check_root = Path(cwd).expanduser().resolve() if cwd is not None else requested_root
         current_branch = git_output(check_root, "branch", "--show-current")
         if expected_branch and current_branch and current_branch != expected_branch:
             return {
@@ -324,11 +328,15 @@ def run_workspace_admit(
 ) -> dict[str, Any]:
     from beacon.utils.execution_branch_contract import resolve_workspace_branch_targets
 
+    requested_root = Path(project_root).expanduser().resolve()
     root = resolve_workspace_project_root(project_root)
     contract = load_admission_contract(root, version=version)
     slug = feature_slug(feature)
     branch_targets = resolve_workspace_branch_targets(
-        root, version=version, feature=feature, admission_contract={**contract, "version": version}
+        root,
+        version=version,
+        feature=feature,
+        admission_contract={**contract, "version": version, "requested_project_root": str(requested_root)},
     )
     feature_branch = str(branch_targets.get("feature_branch") or "").strip()
     worktree_path = str(branch_targets.get("worktree_path") or "").strip()
