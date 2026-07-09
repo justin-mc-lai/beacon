@@ -382,9 +382,10 @@ def infer_program_level_from_program_topology(
             graph = _read_json(program_dir / "feature-graph.json")
             freeze = _read_json(program_dir / "program-truth-freeze.json")
             lakes = _lake_slug_set(graph) | _lake_slug_set(freeze)
-            if not lakes:
+            program_slug_matches = slug == feature_slug(program_slug)
+            if not lakes and not program_slug_matches:
                 continue
-            if slug not in lakes:
+            if slug not in lakes and not program_slug_matches:
                 continue
             frozen = (
                 str(freeze.get("status") or "").strip().lower() == "frozen"
@@ -408,7 +409,7 @@ def infer_program_level_from_program_topology(
                 "version": resolved_version,
                 "program_slug": program_slug,
                 "material_path": material_rel,
-                "lake_slug": slug,
+                "lake_slug": "" if program_slug_matches else slug,
             }
     return None
 

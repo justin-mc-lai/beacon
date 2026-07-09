@@ -26,6 +26,7 @@ from beacon.utils.project_metadata import metadata_machine_path, verify_project_
 from beacon.utils.process_lock import project_process_lock
 from beacon.utils.exhaustiveness import build_exhaustiveness_report, write_exhaustiveness_report
 from beacon.utils.exhaustiveness import feature_exhaustiveness_report_path
+from beacon.utils.program_graph import feature_graph_path, load_feature_graph
 from beacon.utils.prototype_utils import prototype_files
 from beacon.utils.prototype_support import (
     feature_requires_design_result_binding,
@@ -182,6 +183,138 @@ def _write_release_gate_projection(
         version=version,
     )
     return str(report_path.relative_to(project_root))
+
+
+def _program_qa_aggregation_candidate(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
+    slug = feature_slug(feature)
+    graph_path = feature_graph_path(project_root, version, slug)
+    graph, graph_errors = load_feature_graph(graph_path)
+    if graph_errors or not isinstance(graph, dict):
+        return {}
+    if str(graph.get("program_slug") or "").strip() != slug:
+        return {}
+    lakes = [
+        str((lake or {}).get("feature_slug") or (lake or {}).get("slug") or "").strip()
+        for lake in (graph.get("lakes") if isinstance(graph.get("lakes"), list) else [])
+        if isinstance(lake, dict) and str((lake or {}).get("feature_slug") or (lake or {}).get("slug") or "").strip()
+    ]
+    if not lakes:
+        return {}
+    return {
+        "schema_version": "1.0",
+        "program_slug": slug,
+        "version": version,
+        "graph_path": str(graph_path.relative_to(project_root)),
+        "lakes": lakes,
+    }
+
+
+def _program_qa_aggregate_payload(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+    team_mode: bool,
+    resolved_host_runtime: str,
+    subagent_prechecks: dict[str, Any],
+) -> dict[str, Any] | None:
+    candidate = _program_qa_aggregation_candidate(project_root, version=version, feature=feature)
+    if not candidate:
+        return None
+    lake_rows: list[dict[str, Any]] = []
+    missing_or_blocked: list[str] = []
+    refs = [str(candidate["graph_path"])]
+    latest_run_id = ""
+    for lake_slug in candidate["lakes"]:
+        status_path = feature_qa_status_path(project_root, feature=lake_slug)
+        status = {}
+        if status_path.exists():
+            try:
+                status = json.loads(status_path.read_text(encoding="utf-8"))
+            except Exception:  # noqa: BLE001
+                status = {}
+        scorecard_path = project_root / ".beacon" / "qa" / "features" / feature_slug(lake_slug) / "scorecard.json"
+        if status_path.exists():
+            refs.append(str(status_path.relative_to(project_root)))
+        if scorecard_path.exists():
+            refs.append(str(scorecard_path.relative_to(project_root)))
+        status_value = str(status.get("status") or "").strip().lower()
+        release_ready = bool(status.get("release_ready", False))
+        run_id = str(status.get("run_id") or status.get("implementation_run_id") or "").strip()
+        if run_id:
+            latest_run_id = run_id
+        row = {
+            "lake": lake_slug,
+            "status": status_value or "missing",
+            "release_ready": release_ready,
+            "run_id": run_id,
+            "status_ref": str(status_path.relative_to(project_root)),
+            "scorecard_ref": str(scorecard_path.relative_to(project_root)) if scorecard_path.exists() else "",
+            "reason_codes": list(status.get("reason_codes") or []) if isinstance(status.get("reason_codes"), list) else [],
+        }
+        lake_rows.append(row)
+        if status_value != "passed" or not release_ready:
+            missing_or_blocked.append(lake_slug)
+
+    passed = not missing_or_blocked
+    run_id = f"program-qa-{feature_slug(feature)}-{now_iso().replace(':', '').replace('-', '')}"
+    payload = {
+        "schema_version": "1.0",
+        "feature": feature,
+        "feature_slug": feature_slug(feature),
+        "program_slug": feature_slug(feature),
+        "version": version,
+        "generated_at": now_iso(),
+        "execution_mode": "program-level",
+        "status": "passed" if passed else "blocked",
+        "implementation_done": passed,
+        "evidence_done": passed,
+        "release_ready": passed,
+        "run_id": run_id,
+        "latest_lake_run_id": latest_run_id,
+        "reason_codes": [] if passed else ["program_lake_qa_not_passed"],
+        "program_qa_aggregation": {
+            "source": "program_topology",
+            "graph_path": candidate["graph_path"],
+            "lake_count": len(lake_rows),
+            "passed_lake_count": len([row for row in lake_rows if row["status"] == "passed" and row["release_ready"]]),
+            "blocked_lakes": missing_or_blocked,
+            "lakes": lake_rows,
+        },
+        "targeted_entries": [],
+        "team_mode": bool(team_mode),
+        "host_runtime": resolved_host_runtime,
+        "subagent_prechecks": subagent_prechecks,
+        "traceability_refs": refs,
+        "message": "program QA aggregated lake QA statuses from frozen program topology",
+    }
+    feature_status_file = write_feature_qa_status(project_root, feature=feature, payload=payload)
+    status_paths = write_qa_status(project_root, payload)
+    release_gate_ref = _write_release_gate_projection(
+        project_root,
+        version=version,
+        run_id=run_id,
+        qa_status=payload,
+        feature_scorecard={
+            "release_ready": passed,
+            "continue_decision": "ready_for_release" if passed else "stop_for_repair",
+            "stop_reasons": [] if passed else ["program_lake_qa_not_passed"],
+        },
+    )
+    refs.extend(
+        [
+            str(feature_status_file.relative_to(project_root)),
+            status_paths["canonical"],
+            status_paths["legacy"],
+            release_gate_ref,
+        ]
+    )
+    _update_evidence_manifest(project_root, refs, run_id=run_id, version=version)
+    payload["feature_status_path"] = str(feature_status_file.relative_to(project_root))
+    payload["qa_status_paths"] = status_paths
+    payload["release_gate_report_path"] = release_gate_ref
+    payload["traceability_refs"] = refs
+    return _with_qa_surface(payload, blocked=not passed)
 
 KNOWN_SCOPES = {
     "all",
@@ -1328,6 +1461,23 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             else:
                 typer.echo(f"Beacon QA blocked: {blocked_payload['reason_codes'][0]}", err=True)
             return 2, blocked_payload
+
+    program_qa_payload = _program_qa_aggregate_payload(
+        project_root,
+        version=version,
+        feature=feature,
+        team_mode=team_mode,
+        resolved_host_runtime=resolved_host_runtime,
+        subagent_prechecks=subagent_prechecks,
+    )
+    if program_qa_payload is not None:
+        if json_output:
+            typer.echo(json.dumps(program_qa_payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(f"Beacon program QA status: {program_qa_payload.get('status')}")
+            typer.echo(f"  Program: {feature}")
+            typer.echo(f"  Lakes: {program_qa_payload.get('program_qa_aggregation', {}).get('passed_lake_count', 0)}/{program_qa_payload.get('program_qa_aggregation', {}).get('lake_count', 0)}")
+        return (0 if str(program_qa_payload.get("status") or "").strip().lower() == "passed" else 2), program_qa_payload
 
     feature_ui_runner = _default_feature_qa_ui_runner(project_root)
     plan = build_feature_qa_plan(

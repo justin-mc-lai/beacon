@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import json
 import subprocess
 from pathlib import Path
 
@@ -373,6 +374,31 @@ def test_r6_program_topology_without_git_workflow_resolves_aggregation_branch(tm
     assert targets["source"] in {"project_governance", "program_topology"}
 
 
+def test_r6_program_topology_resolves_program_slug_to_aggregation_branch(tmp_path: Path) -> None:
+    root = tmp_path / "repo"
+    worktree = tmp_path / "sidepilot-v0.0.12"
+    _seed_program_topology_fixture(
+        root,
+        worktree=worktree,
+        include_git_workflow=False,
+        include_version_contract=False,
+    )
+    contract = load_admission_contract(root, version=VERSION_R6)
+
+    targets = resolve_workspace_branch_targets(
+        root,
+        version=VERSION_R6,
+        feature=PROGRAM_SLUG_R6,
+        admission_contract={**contract, "version": VERSION_R6, "requested_project_root": str(worktree)},
+    )
+
+    assert targets["branch_resolution_mode"] == "program-level"
+    assert targets["feature_branch"] == "beacon/v0.0.12"
+    assert targets["worktree_path"] == str(worktree.resolve())
+    assert targets["program_slug"] == PROGRAM_SLUG_R6
+    assert targets["source"] == "program_topology"
+
+
 def test_r6_program_topology_without_version_governance_block_resolves_aggregation_branch(tmp_path: Path) -> None:
     root = tmp_path / "repo"
     worktree = tmp_path / "sidepilot-v0.0.12"
@@ -470,6 +496,67 @@ def test_r6_qa_run_lake_accepts_aggregation_branch_after_admission(
     assert payload["reason_codes"] == ["implementation_not_recorded"]
     assert "workspace_admission" not in payload
     assert "branch_alignment_required" not in payload.get("reason_codes", [])
+
+
+def test_r6_qa_run_program_slug_aggregates_lake_statuses(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    root = tmp_path / "repo"
+    worktree = tmp_path / "sidepilot-v0.0.12"
+    _seed_program_topology_fixture(
+        root,
+        worktree=worktree,
+        include_git_workflow=False,
+        include_version_contract=False,
+    )
+    for lake in (PROGRAM_LAKE_R6,):
+        status_dir = worktree / ".beacon" / "qa" / "features" / lake
+        status_dir.mkdir(parents=True, exist_ok=True)
+        status_payload = {
+            "schema_version": "1.0",
+            "feature": lake,
+            "version": VERSION_R6,
+            "status": "passed",
+            "release_ready": True,
+            "run_id": f"run-{lake}",
+            "reason_codes": [],
+        }
+        (status_dir / "status.json").write_text(json.dumps(status_payload), encoding="utf-8")
+        (status_dir / "scorecard.json").write_text(
+            json.dumps({"release_ready": True, "continue_decision": "ready_for_release"}),
+            encoding="utf-8",
+        )
+
+    monkeypatch.setattr(qa_command, "build_requirement_package_gate", lambda *args, **kwargs: {"status": "pass"})
+    monkeypatch.setattr(qa_command, "build_requirement_completeness_gate", lambda *args, **kwargs: {"status": "pass"})
+    monkeypatch.setattr(qa_command, "load_current_qa_session", lambda *_args, **_kwargs: {})
+    monkeypatch.setattr(qa_command, "resolve_profile_for_feature", lambda *args, **kwargs: {})
+    monkeypatch.setattr(qa_command, "evaluate_project_profile_gate", lambda *args, **kwargs: {})
+    monkeypatch.setattr(qa_command, "detect_host_runtime", lambda value=None: value or "codex")
+
+    previous = Path.cwd()
+    os.chdir(worktree)
+    try:
+        exit_code, payload = qa_command._run_feature_aware_qa(
+            [
+                PROGRAM_SLUG_R6,
+                "--project",
+                str(worktree),
+                "--version",
+                VERSION_R6,
+                "--json",
+            ]
+        )
+    finally:
+        os.chdir(previous)
+
+    assert exit_code == 0
+    assert payload["status"] == "passed"
+    assert payload["execution_mode"] == "program-level"
+    assert payload["program_qa_aggregation"]["lake_count"] == 1
+    assert payload["program_qa_aggregation"]["passed_lake_count"] == 1
+    assert "implementation_not_recorded" not in payload.get("reason_codes", [])
 
 
 def test_ac020_soft_admission_branch_alignment_blocks(tmp_path: Path) -> None:
