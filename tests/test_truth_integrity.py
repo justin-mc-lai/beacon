@@ -102,6 +102,40 @@ def test_good_smoke_scope_passes_block_mode(good_smoke: tuple[Path, str]) -> Non
     assert not gate["blocked"]
 
 
+def test_legacy_split_truth_skips_package_integrity_gate(tmp_path: Path) -> None:
+    version = "v1.3.3"
+    slug = "legacy-split-feature"
+    base = tmp_path / "docs" / "beacon" / version
+    (tmp_path / "docs" / "beacon" / "VERSION").parent.mkdir(parents=True, exist_ok=True)
+    (tmp_path / "docs" / "beacon" / "VERSION").write_text(f"{version}\n", encoding="utf-8")
+    (base / "prd").mkdir(parents=True, exist_ok=True)
+    (base / "user-story").mkdir(parents=True, exist_ok=True)
+    (base / "qa" / "test-cases").mkdir(parents=True, exist_ok=True)
+    (base / "prd" / f"{slug}.md").write_text("# PRD\n\n- AC-001: legacy docs remain valid.\n", encoding="utf-8")
+    (base / "user-story" / f"{slug}.md").write_text(
+        "# User Story\n\n"
+        "| AC ID | Theme | Description |\n"
+        "|-------|-------|-------------|\n"
+        "| AC-001 | legacy | legacy docs remain valid. |\n",
+        encoding="utf-8",
+    )
+    (base / "qa" / "test-cases" / f"{slug}.md").write_text(
+        "# Test Cases\n\n"
+        "| AC ID | TC ID | Layer | Command | Assertion |\n"
+        "|-------|-------|-------|---------|-----------|\n"
+        "| AC-001 | TC-001 | unit | `pytest -q` | pass |\n",
+        encoding="utf-8",
+    )
+
+    gate = build_truth_integrity_gate(tmp_path, version=version, feature=slug, mode="block")
+
+    assert not gate["blocked"]
+    assert gate["feature_package_validation"]["status"] == "skipped"
+    reason_codes = {item.get("reason_code") for item in gate.get("findings", [])}
+    assert "feature_package_incomplete" not in reason_codes
+    assert "feature_package_validation_failed" not in reason_codes
+
+
 def test_bad_placeholder_ac_blocks(tmp_path: Path) -> None:
     slug = "bad-placeholder-ac"
     truth, tests, tasks, evidence = _minimal_good_bodies(slug)

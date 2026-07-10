@@ -154,11 +154,11 @@ def _next_revision_id(root_state: dict[str, Any]) -> str:
 
 
 def _baseline_hash(project_root: Path, version: str, feature: str) -> str:
-    from beacon.utils.truth_map import feature_package_authoritative, resolve_truth_read_refs
+    from beacon.utils.truth_map import feature_package_authoritative_feature, resolve_truth_read_refs
 
     parts: list[str] = []
     resolved_version = resolve_target_version(project_root, version)
-    if feature_package_authoritative(resolved_version):
+    if feature_package_authoritative_feature(project_root, version=resolved_version, feature=feature):
         refs = resolve_truth_read_refs(
             project_root,
             version=resolved_version,
@@ -391,7 +391,7 @@ def freeze_story_state(project_root: Path, version: str, feature: str) -> dict[s
 
 def sync_story_state_from_docs(project_root: Path, version: str, feature: str) -> dict[str, Any]:
     from beacon.utils.revision_state import load_revision_state, save_revision_state
-    from beacon.utils.truth_map import feature_package_authoritative, resolve_truth_read_refs
+    from beacon.utils.truth_map import feature_package_authoritative_feature, resolve_truth_read_refs
 
     resolved_version = resolve_target_version(project_root, version)
     path = machine_story_path(project_root, resolved_version, feature)
@@ -411,7 +411,7 @@ def sync_story_state_from_docs(project_root: Path, version: str, feature: str) -
         if isinstance(item, dict) and str(item.get("id") or "").strip()
     }
 
-    if feature_package_authoritative(resolved_version):
+    if feature_package_authoritative_feature(project_root, version=resolved_version, feature=feature):
         refs = resolve_truth_read_refs(
             project_root,
             version=resolved_version,

@@ -693,6 +693,42 @@ def diagnose(
     )
 
 
+@app.command("loop-audit")
+def loop_audit(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("auto", "--version", "-v", help="Beacon version"),
+    strict: bool = typer.Option(False, "--strict", help="Block when score is below threshold"),
+    threshold: int = typer.Option(80, "--threshold", help="Minimum score for strict pass"),
+    suggest: bool = typer.Option(True, "--suggest/--no-suggest", help="Include ordered repair suggestions"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Aggregate loop-readiness signals into one advisory score."""
+    from beacon.utils.loop_readiness import build_loop_readiness_audit
+    from beacon.utils.versioning import resolve_target_version
+
+    root = Path(project_root).expanduser().resolve() if project_root else Path.cwd()
+    resolved_version = resolve_target_version(root, version)
+    payload = build_loop_readiness_audit(
+        root,
+        version=resolved_version,
+        strict=strict,
+        threshold=threshold,
+        suggest=suggest,
+    )
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo("Beacon Doctor Loop Audit")
+        typer.echo(f"status: {payload.get('status')}")
+        typer.echo(f"score: {payload.get('score')} level={payload.get('level')}")
+        if payload.get("reason_code"):
+            typer.echo(f"reason_code: {payload.get('reason_code')}")
+        for signal in payload.get("signals", []):
+            if isinstance(signal, dict):
+                typer.echo(f"- {signal.get('id')}: {signal.get('status')} ({signal.get('reason_code', '')})")
+    raise typer.Exit(code=2 if payload.get("blocked") else 0)
+
+
 @app.command("setup")
 def setup(
     bin_dir: str = typer.Option("", "--bin-dir", help="Install directory for launchers"),

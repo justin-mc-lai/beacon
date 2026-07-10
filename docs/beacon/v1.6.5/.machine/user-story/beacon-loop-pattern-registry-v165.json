@@ -1,0 +1,230 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-loop-pattern-registry-v165",
+  "feature_slug": "beacon-loop-pattern-registry-v165",
+  "version": "v1.6.5",
+  "current_revision_id": "R1",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-07-09T09:59:45.895695+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-loop-pattern-registry-v165",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:f419dc3fd240fa68116deb0898589d355c1f7d312250b03eee3793d2bca4a3a2",
+      "superseded_by": null,
+      "created_at": "2026-07-09T09:29:23.419481+00:00",
+      "frozen_at": "2026-07-09T09:29:23.513779+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "beacon-loop-pattern-registry-v165",
+      "priority": "medium",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "registry-file",
+          "text": "v1.6.5 includes `docs/beacon/v1.6.5/loop-patterns/registry.yaml` with at least ralph, team, and beacon-loop patterns.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260709T095512Z-98c8",
+          "verified_by_run_id": "run-20260709T175941118659",
+          "accepted_at": "2026-07-09T09:59:45.876214+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.5/features/beacon-loop-pattern-registry-v165/truth.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "schema-required",
+          "text": "Validator requires id, cadence, risk, harness_skills, state_surface, phases, human_gates, token_cost, daily_cap, and safety fields.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260709T095512Z-98c8",
+          "verified_by_run_id": "run-20260709T175941118659",
+          "accepted_at": "2026-07-09T09:59:45.876214+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.5/features/beacon-loop-pattern-registry-v165/truth.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "duplicate-block",
+          "text": "Duplicate pattern ids fail validation with reason_code `loop_pattern_duplicate_id`.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260709T095512Z-98c8",
+          "verified_by_run_id": "run-20260709T175941118659",
+          "accepted_at": "2026-07-09T09:59:45.876214+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.5/features/beacon-loop-pattern-registry-v165/truth.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "risk-values",
+          "text": "Validator accepts only governed risk values `low`, `medium`, `high`, `critical`.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260709T095512Z-98c8",
+          "verified_by_run_id": "run-20260709T175941118659",
+          "accepted_at": "2026-07-09T09:59:45.876214+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.5/features/beacon-loop-pattern-registry-v165/truth.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "audit-consumption",
+          "text": "`doctor loop-audit` reports registry status as pass/fail/missing and includes registry findings.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260709T095512Z-98c8",
+          "verified_by_run_id": "run-20260709T175941118659",
+          "accepted_at": "2026-07-09T09:59:45.876214+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.5/features/beacon-loop-pattern-registry-v165/truth.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260709T095512Z-98c8",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-07-09T09:59:45.876214+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — v1.6.5 includes `docs/beacon/v1.6.5/loop-patterns/registry.yaml` with at least ralph, team, and beacon-loop patterns.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260709T095512Z-98c8",
+          "verified_by_run_id": "run-20260709T175941118659",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.5/features/beacon-loop-pattern-registry-v165/truth.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — Validator requires id, cadence, risk, harness_skills, state_surface, phases, human_gates, token_cost, daily_cap, and safety fields.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260709T095512Z-98c8",
+          "verified_by_run_id": "run-20260709T175941118659",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.5/features/beacon-loop-pattern-registry-v165/truth.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Duplicate pattern ids fail validation with reason_code `loop_pattern_duplicate_id`.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260709T095512Z-98c8",
+          "verified_by_run_id": "run-20260709T175941118659",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.5/features/beacon-loop-pattern-registry-v165/truth.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Validator accepts only governed risk values `low`, `medium`, `high`, `critical`.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260709T095512Z-98c8",
+          "verified_by_run_id": "run-20260709T175941118659",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.5/features/beacon-loop-pattern-registry-v165/truth.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — `doctor loop-audit` reports registry status as pass/fail/missing and includes registry findings.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260709T095512Z-98c8",
+          "verified_by_run_id": "run-20260709T175941118659",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.5/features/beacon-loop-pattern-registry-v165/truth.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-loop-pattern-registry-v165",
+        "version": "v1.6.5",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.5/research/beacon-loop-pattern-registry-v165.md",
+        "present": false,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      },
+      "feature": "beacon-loop-pattern-registry-v165",
+      "feature_slug": "beacon-loop-pattern-registry-v165",
+      "version": "v1.6.5",
+      "last_changed_files": [
+        "beacon/utils/loop_patterns.py",
+        "docs/beacon/v1.6.5/loop-patterns/registry.yaml",
+        "tests/test_v165_loop_pattern_registry.py"
+      ],
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-loop-pattern-registry-v165/ac-closure.json",
+        ".beacon/qa/features/beacon-loop-pattern-registry-v165/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "accepted_at": "2026-07-09T09:59:45.876214+00:00",
+      "accepted_by": "qa"
+    }
+  ]
+}

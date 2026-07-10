@@ -149,6 +149,20 @@ Beacon 允许在强 gate 场景中使用比默认 skill 哲学更强的步骤约
 
 - `qa`
 - `release`
+
+### 6.1 Protected Path Denylist（v1.6.5+ cross-version）
+
+Beacon 自动写入面必须把高风险路径视为 fail-closed 保护区；planner/research 等只读支持面可以报告风险，但不能把 advisory 当作允许自动修改。
+
+受保护路径类别包括：
+
+- environment: `.env`, `.env.*`
+- secrets: `secrets/**`, `credentials/**`, `*.pem`, `*.key`, `*_key*`
+- auth: `auth/**`, `oauth/**`, `sso/**`
+- payments: `payments/**`, `billing/**`, `stripe/**`
+- migrations: `migrations/**`, `schema_migrations/**`
+
+写入 guard 命中这些路径时必须返回 `reason_code=protected_path_denylist`，并给出显式 human route recommendation；不得静默允许自动编辑。
 - freeze / refreeze / canonical truth 提交
 - 安全、权限、合规检查
 - 多 sink 事务一致性

@@ -1,0 +1,198 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-09T09:53:56.104159+00:00",
+  "feature": "beacon-workspace-pool-lease-v165",
+  "feature_slug": "beacon-workspace-pool-lease-v165",
+  "version": "v1.6.5",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.5/features/beacon-workspace-pool-lease-v165/truth.md",
+    "tests": "docs/beacon/v1.6.5/features/beacon-workspace-pool-lease-v165/tests.md",
+    "tasks": "docs/beacon/v1.6.5/features/beacon-workspace-pool-lease-v165/tasks.md",
+    "evidence": "docs/beacon/v1.6.5/features/beacon-workspace-pool-lease-v165/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "50a0844975312cc52053d048256765e731bcd38997b872cf9deb89086e5010ff",
+    "tests": "0642546942b83de8ac3bc3ba835185dad0a19d63807b8a49570916b391755839",
+    "tasks": "4ffa6c608fc30508436d434e6ddb38ca80509c11d92afea5e4259b980ecaa838",
+    "evidence": "4ce4a9d81af6f330278d39f33e8e5368ba7758e23cd2908c5fef5e1e2574f30e"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-workspace-pool-lease-v165",
+    "version": "v1.6.5",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "R1 - Workspace pool and durable lease semantics",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.5/features/beacon-workspace-pool-lease-v165/truth.md",
+      "user_story": "docs/beacon/v1.6.5/features/beacon-workspace-pool-lease-v165/truth.md",
+      "test_case": "docs/beacon/v1.6.5/features/beacon-workspace-pool-lease-v165/tests.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "pooled-contract",
+      "description": "`worktree_mode=pooled` is accepted by metadata/admission resolution and resolves to `.beacon/worktrees/<version>/<feature>` unless an explicit worktree path is configured."
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "admit-reuse",
+      "description": "`beacon workspace admit` creates a pool entry on first use and reuses the same worktree path after a successful release."
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "lease-schema",
+      "description": "Pool entry records `state`, `feature_slug`, `branch`, `worktree_path`, `lease_holder`, `leased_at`, `released_at`, and `git_head`."
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "release-command",
+      "description": "`beacon workspace release --version <v> --feature <slug>` changes a leased entry to released/available without deleting the worktree."
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "in-use-block",
+      "description": "A second admit for an actively leased entry by a different holder blocks with reason_code `workspace_pool_lease_in_use`."
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "corrupt-state-safe",
+      "description": "Unreadable or structurally invalid pool state blocks reuse with reason_code `workspace_pool_state_corrupt` until repaired."
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "dedicated-compat",
+      "description": "Existing `dedicated-worktree` admission tests keep their current branch/worktree/artifact behavior."
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-WP-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v165_workspace_pool_lease.py::test_pooled_contract_resolution -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Metadata/admission contract normalizes `pooled` worktree mode and resolves the expected pool path.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-WP-002",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v165_workspace_pool_lease.py::test_admit_reuses_released_pool_entry -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "First admit creates the pool entry, release marks it available, second admit reuses the same worktree path.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-WP-003",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v165_workspace_pool_lease.py::test_pool_entry_schema -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Pool entry includes state, feature, branch, path, holder, lease timestamps, release timestamp, and git head fields.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-WP-004",
+      "layer": "cli",
+      "command": "`python3 -m pytest tests/test_v165_workspace_pool_lease.py::test_workspace_release_marks_available_without_delete -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Workspace release changes state to released/available and leaves the worktree directory present.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-WP-005",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v165_workspace_pool_lease.py::test_foreign_active_lease_blocks_admit -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "A different holder cannot acquire an active lease; payload contains `workspace_pool_lease_in_use`.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-WP-006",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v165_workspace_pool_lease.py::test_corrupt_pool_state_fails_closed -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Corrupt pool state blocks with `workspace_pool_state_corrupt` and does not overwrite state.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-007",
+      "tc_id": "TC-WP-007",
+      "layer": "regression",
+      "command": "`python3 -m pytest tests/test_v162_workspace_admit.py tests/test_v162_workspace_integration.py tests/test_v165_workspace_pool_lease.py::test_dedicated_mode_remains_compatible -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Existing dedicated admission behavior still passes and pooled code does not change dedicated artifacts.",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-WP-001",
+      "title": "Add pooled worktree mode resolution.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-WP-002",
+      "title": "Add pool entry read/write helpers with fail-closed corrupt-state handling.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-WP-003",
+      "title": "Extend workspace admit to create/reuse pooled leases.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-WP-004",
+      "title": "Add workspace release command.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-WP-005",
+      "title": "Add active lease blocking by holder.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-WP-006",
+      "title": "Preserve dedicated admission compatibility.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-WP-007",
+      "title": "Add `tests/test_v165_workspace_pool_lease.py`.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-WP-008",
+      "title": "Run truth integrity, requirement clarity, freeze, QA, and release checks.",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "truth.md",
+      "authority": "requirement_truth",
+      "artifact": "docs/beacon/v1.6.5/features/beacon-workspace-pool-lease-v165/truth.md"
+    },
+    {
+      "surface": "tests.md",
+      "authority": "test_truth",
+      "artifact": "docs/beacon/v1.6.5/features/beacon-workspace-pool-lease-v165/tests.md"
+    },
+    {
+      "surface": "tasks.md",
+      "authority": "requirement_truth",
+      "artifact": "docs/beacon/v1.6.5/features/beacon-workspace-pool-lease-v165/tasks.md"
+    }
+  ]
+}

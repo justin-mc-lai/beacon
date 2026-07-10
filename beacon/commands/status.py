@@ -790,5 +790,29 @@ def show_status(
     )
 
 
+@app.command("loop-budget")
+def loop_budget(
+    project_root: str = typer.Option("", "--project-root", help="Project root path"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version filter"),
+    date: str = typer.Option("", "--date", help="UTC date YYYY-MM-DD"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Show loop token budget totals, caps, and pause state."""
+    from beacon.utils.loop_budget import build_loop_budget_status
+
+    root = (Path(project_root) if project_root else Path.cwd()).expanduser().resolve()
+    resolved_version = resolve_target_version(root, version)
+    payload = build_loop_budget_status(root, version=resolved_version, date=date or None)
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo("Beacon Loop Budget")
+        typer.echo(f"status: {payload.get('status')}")
+        typer.echo(f"date: {payload.get('date')}")
+        typer.echo(f"reason_code: {payload.get('reason_code') or 'none'}")
+        typer.echo(f"project_total: {payload.get('totals', {}).get('project_total', 0)}")
+    raise typer.Exit(code=0)
+
+
 if __name__ == "__main__":
     app()

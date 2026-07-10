@@ -1,0 +1,68 @@
+schema_version: loop-pattern-registry-v1
+version: v1.6.5
+patterns:
+  -
+    id: ralph
+    cadence: iterative
+    risk: medium
+    harness_skills:
+      - generator
+      - evaluator
+    state_surface: .beacon/ralph
+    phases:
+      - plan
+      - execute
+      - verify
+    human_gates:
+      - truth_freeze
+      - qa_verdict
+    token_cost: 12000
+    daily_cap: 60000
+    safety:
+      protected_paths: true
+      strict_admission: true
+  -
+    id: team
+    cadence: coordinated
+    risk: high
+    harness_skills:
+      - generator
+      - evaluator
+      - governor
+    state_surface: .beacon/team
+    phases:
+      - plan
+      - delegate
+      - integrate
+      - verify
+    human_gates:
+      - branch_admission
+      - evidence_review
+    token_cost: 24000
+    daily_cap: 90000
+    safety:
+      protected_paths: true
+      strict_admission: true
+  -
+    id: beacon-loop
+    cadence: closed-loop
+    risk: medium
+    harness_skills:
+      - planner
+      - generator
+      - evaluator
+      - governor
+    state_surface: .beacon/runs
+    phases:
+      - truth
+      - implement
+      - qa
+      - release
+    human_gates:
+      - freeze
+      - release
+    token_cost: 18000
+    daily_cap: 80000
+    safety:
+      protected_paths: true
+      strict_admission: true

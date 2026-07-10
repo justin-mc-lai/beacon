@@ -2316,7 +2316,7 @@
       }
     },
     {
-      "event_id": "5e035f45-99d0-43eb-878a-89f9f09f278d",
+      "event_id": "d13fa988-7bd9-4fa9-a25f-163ea7cb8cba",
       "run_id": "release:v1.6.4",
       "stage": "release",
       "event": "release_decision_recorded",
@@ -2330,13 +2330,47 @@
         "docs/beacon/v1.6.4/.machine/change/v1.6.4.json",
         "docs/beacon/v1.6.4/change/v1.6.4.md"
       ],
-      "ts": "2026-07-06T07:01:55.324384+00:00",
+      "ts": "2026-07-09T03:12:25.102413+00:00",
       "details": {
         "action": "check",
         "version": "v1.6.4",
+        "status": "pass",
+        "failed_checks": []
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "d0c6a5b8-77e8-4233-8491-3bdd3c896ed1",
+      "run_id": "release:v1.6.5",
+      "stage": "release",
+      "event": "release_decision_recorded",
+      "source": "release.check",
+      "source_session_id": "release:v1.6.5",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.5/.machine/change/v1.6.5.json",
+        "docs/beacon/v1.6.5/change/v1.6.5.md"
+      ],
+      "ts": "2026-07-09T09:50:50.666829+00:00",
+      "details": {
+        "action": "check",
+        "version": "v1.6.5",
         "status": "blocked",
         "failed_checks": [
+          "legacy cutover preflight",
+          "auto-test version matches release version",
+          "gate report version matches release version",
           "coverage artifact ready",
+          "coverage summary version matches release version",
+          "acceptance projection transaction contract",
+          "version change markdown exists",
+          "version change payload exists",
+          "version change payload matches release version",
+          "version change document includes current feature",
           "release scorecard ready",
           "implement prompt boundary verdict pass"
         ]
@@ -2345,31 +2379,181 @@
       "attempt_seq": 1
     },
     {
-      "event_id": "2eb64cdb-e223-41e1-b002-23c3182f56e5",
-      "run_id": "run-20260709T154207235892",
+      "event_id": "a6da4646-6c92-48b0-ae4a-e4415f0fe006",
+      "run_id": "run-20260709T175840360399",
       "stage": "qa",
       "event": "memory_writeback",
       "source": "workflow.memory.writeback",
-      "source_session_id": "run-20260709T154207235892",
+      "source_session_id": "run-20260709T175840360399",
       "evidence_ref": [
         ".beacon/auto-test-status.json",
         ".beacon/qa/status.json",
         ".beacon/coverage-summary.json",
-        ".beacon/qa/features/beacon-global-workspace-git-admission-v162/ac-closure.json",
-        ".beacon/qa/features/beacon-global-workspace-git-admission-v162/scorecard.json",
+        ".beacon/qa/features/beacon-workspace-pool-lease-v165/ac-closure.json",
+        ".beacon/qa/features/beacon-workspace-pool-lease-v165/scorecard.json",
         ".beacon/release-gate-report.json"
       ],
-      "ts": "2026-07-09T07:42:17.442882+00:00",
+      "ts": "2026-07-09T09:59:00.917719+00:00",
       "details": {
-        "memory_id": "940d59d4-0321-426f-a496-6e42ef49de3f",
+        "memory_id": "a325b525-3baa-4426-8aef-81c88958369f",
         "memory_type": "decision",
-        "transaction_id": "tx-wf-run-20260709T154207235892-qa-memory_writeback-b7ee51501477",
-        "source_hash": "b7ee51501477c939b6e2c51227409ce239cfcb269158c2fb5357cfbf7df80f06",
-        "projection_seq": "wf-b7ee51501477c939"
+        "transaction_id": "tx-wf-run-20260709T175840360399-qa-memory_writeback-2e0e119a4ba9",
+        "source_hash": "2e0e119a4ba97c9f75e517c9530ab58c0165953bcb04dff8597fe500150175ee",
+        "projection_seq": "wf-2e0e119a4ba97c9f"
       },
       "attempt_id": "qa@attempt-1",
       "attempt_seq": 1
+    },
+    {
+      "event_id": "afae5961-5db3-42a2-9f4e-1fc7167b6769",
+      "run_id": "run-20260709T175930555231",
+      "stage": "qa",
+      "event": "memory_writeback",
+      "source": "workflow.memory.writeback",
+      "source_session_id": "run-20260709T175930555231",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-loop-readiness-audit-v165/ac-closure.json",
+        ".beacon/qa/features/beacon-loop-readiness-audit-v165/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-07-09T09:59:36.412515+00:00",
+      "details": {
+        "memory_id": "4fddca94-acdf-4e3b-932e-3df955224289",
+        "memory_type": "decision",
+        "transaction_id": "tx-wf-run-20260709T175930555231-qa-memory_writeback-5b46d9279dc5",
+        "source_hash": "5b46d9279dc58374e6fe8008a98bd41c4980145f55874e06cf905caf256c241a",
+        "projection_seq": "wf-5b46d9279dc58374"
+      },
+      "attempt_id": "qa@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "d22ee2a7-bb4d-443b-b42a-6205f1ec5288",
+      "run_id": "run-20260709T175941118659",
+      "stage": "qa",
+      "event": "memory_writeback",
+      "source": "workflow.memory.writeback",
+      "source_session_id": "run-20260709T175941118659",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-loop-pattern-registry-v165/ac-closure.json",
+        ".beacon/qa/features/beacon-loop-pattern-registry-v165/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-07-09T09:59:45.886140+00:00",
+      "details": {
+        "memory_id": "552d240c-efce-4eb2-a5aa-5f1eb3dc4f56",
+        "memory_type": "decision",
+        "transaction_id": "tx-wf-run-20260709T175941118659-qa-memory_writeback-050b7c708137",
+        "source_hash": "050b7c708137c22fb5da3f2c8889e8a4b72aefa3a41f277c75a3f6f1341041b6",
+        "projection_seq": "wf-050b7c708137c22f"
+      },
+      "attempt_id": "qa@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "79fb27ca-6318-410e-a77c-7ae6051abd30",
+      "run_id": "run-20260709T175950684991",
+      "stage": "qa",
+      "event": "memory_writeback",
+      "source": "workflow.memory.writeback",
+      "source_session_id": "run-20260709T175950684991",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-protected-path-denylist-v165/ac-closure.json",
+        ".beacon/qa/features/beacon-protected-path-denylist-v165/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-07-09T09:59:54.834410+00:00",
+      "details": {
+        "memory_id": "cc205e6e-33e7-4483-b5ef-c6ef5e5aa8aa",
+        "memory_type": "decision",
+        "transaction_id": "tx-wf-run-20260709T175950684991-qa-memory_writeback-65b1d621a1a4",
+        "source_hash": "65b1d621a1a4ede39506af9d11b92277b68340805405c10eaa21cc272ac5a8df",
+        "projection_seq": "wf-65b1d621a1a4ede3"
+      },
+      "attempt_id": "qa@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "c4acacfe-32e8-4a25-ab84-6f42ba409636",
+      "run_id": "run-20260709T175959971284",
+      "stage": "qa",
+      "event": "memory_writeback",
+      "source": "workflow.memory.writeback",
+      "source_session_id": "run-20260709T175959971284",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-loop-token-budget-v165/ac-closure.json",
+        ".beacon/qa/features/beacon-loop-token-budget-v165/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-07-09T10:00:05.249675+00:00",
+      "details": {
+        "memory_id": "f54967ff-895d-401c-a030-387ffe52fc76",
+        "memory_type": "decision",
+        "transaction_id": "tx-wf-run-20260709T175959971284-qa-memory_writeback-5006e7b0232e",
+        "source_hash": "5006e7b0232e6881c38fdb3538405236cca9e9e4e81f846ed89ea04753f1a83f",
+        "projection_seq": "wf-5006e7b0232e6881"
+      },
+      "attempt_id": "qa@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "f4bf3cfc-fa30-4a04-bff4-f5214ca58dad",
+      "run_id": "run-20260709T180010414129",
+      "stage": "qa",
+      "event": "memory_writeback",
+      "source": "workflow.memory.writeback",
+      "source_session_id": "run-20260709T180010414129",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-loop-failure-mode-catalog-v165/ac-closure.json",
+        ".beacon/qa/features/beacon-loop-failure-mode-catalog-v165/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-07-09T10:00:15.306886+00:00",
+      "details": {
+        "memory_id": "59442e97-5bf6-461c-af7d-d0d5ebffaecd",
+        "memory_type": "decision",
+        "transaction_id": "tx-wf-run-20260709T180010414129-qa-memory_writeback-d77ab8604223",
+        "source_hash": "d77ab8604223c58d0c7374ad47fd21735314da273189a4463e649b5d95928054",
+        "projection_seq": "wf-d77ab8604223c58d"
+      },
+      "attempt_id": "qa@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "1f8d3acb-86ee-40db-81b5-8998215ec5e0",
+      "run_id": "release:v1.6.5",
+      "stage": "release",
+      "event": "release_decision_recorded",
+      "source": "release.create",
+      "source_session_id": "release:v1.6.5",
+      "evidence_ref": [
+        "docs/beacon/v1.6.5/release/checklist-v1.6.5.md",
+        "docs/beacon/v1.6.5/change/v1.6.5.md",
+        "docs/beacon/v1.6.5/.machine/change/v1.6.5.json"
+      ],
+      "ts": "2026-07-09T10:02:19.037358+00:00",
+      "details": {
+        "action": "create",
+        "version": "v1.6.5"
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
     }
   ],
-  "updated_at": "2026-07-09T07:42:17.442887+00:00"
+  "updated_at": "2026-07-09T10:02:19.037368+00:00"
 }

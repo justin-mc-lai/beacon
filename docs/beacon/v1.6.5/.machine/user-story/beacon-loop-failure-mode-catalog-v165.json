@@ -1,0 +1,231 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-loop-failure-mode-catalog-v165",
+  "feature_slug": "beacon-loop-failure-mode-catalog-v165",
+  "version": "v1.6.5",
+  "current_revision_id": "R1",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-07-09T10:00:15.318223+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-loop-failure-mode-catalog-v165",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:1f09425c477896f6ac665b6c694ae9d25e019ef949ba775b970f077ec980ed65",
+      "superseded_by": null,
+      "created_at": "2026-07-09T09:29:32.957773+00:00",
+      "frozen_at": "2026-07-09T09:29:33.113941+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "beacon-loop-failure-mode-catalog-v165",
+      "priority": "medium",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "catalog-file",
+          "text": "v1.6.5 includes `execution/loop-failure-modes.md` with S1/S2/S3 sections.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260709T095513Z-6ee9",
+          "verified_by_run_id": "run-20260709T180010414129",
+          "accepted_at": "2026-07-09T10:00:15.295248+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.5/features/beacon-loop-failure-mode-catalog-v165/truth.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "required-fields",
+          "text": "Validator requires id, severity, symptom, cause, mitigation, route, and evidence expectation for each mode.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260709T095513Z-6ee9",
+          "verified_by_run_id": "run-20260709T180010414129",
+          "accepted_at": "2026-07-09T10:00:15.295248+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.5/features/beacon-loop-failure-mode-catalog-v165/truth.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "baseline-modes",
+          "text": "Catalog includes truth drift, git alignment blocked, stale evidence manifest, infinite fix loop, and protected path attempt.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260709T095513Z-6ee9",
+          "verified_by_run_id": "run-20260709T180010414129",
+          "accepted_at": "2026-07-09T10:00:15.295248+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.5/features/beacon-loop-failure-mode-catalog-v165/truth.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "invalid-severity",
+          "text": "Invalid severity fails validation with reason_code `loop_failure_mode_invalid_severity`.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260709T095513Z-6ee9",
+          "verified_by_run_id": "run-20260709T180010414129",
+          "accepted_at": "2026-07-09T10:00:15.295248+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.5/features/beacon-loop-failure-mode-catalog-v165/truth.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "audit-consumption",
+          "text": "`doctor loop-audit` reports failure catalog status and findings.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260709T095513Z-6ee9",
+          "verified_by_run_id": "run-20260709T180010414129",
+          "accepted_at": "2026-07-09T10:00:15.295248+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.5/features/beacon-loop-failure-mode-catalog-v165/truth.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260709T095513Z-6ee9",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-07-09T10:00:15.295248+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — v1.6.5 includes `execution/loop-failure-modes.md` with S1/S2/S3 sections.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260709T095513Z-6ee9",
+          "verified_by_run_id": "run-20260709T180010414129",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.5/features/beacon-loop-failure-mode-catalog-v165/truth.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — Validator requires id, severity, symptom, cause, mitigation, route, and evidence expectation for each mode.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260709T095513Z-6ee9",
+          "verified_by_run_id": "run-20260709T180010414129",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.5/features/beacon-loop-failure-mode-catalog-v165/truth.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Catalog includes truth drift, git alignment blocked, stale evidence manifest, infinite fix loop, and protected path attempt.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260709T095513Z-6ee9",
+          "verified_by_run_id": "run-20260709T180010414129",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.5/features/beacon-loop-failure-mode-catalog-v165/truth.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Invalid severity fails validation with reason_code `loop_failure_mode_invalid_severity`.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260709T095513Z-6ee9",
+          "verified_by_run_id": "run-20260709T180010414129",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.5/features/beacon-loop-failure-mode-catalog-v165/truth.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — `doctor loop-audit` reports failure catalog status and findings.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260709T095513Z-6ee9",
+          "verified_by_run_id": "run-20260709T180010414129",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.5/features/beacon-loop-failure-mode-catalog-v165/truth.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-loop-failure-mode-catalog-v165",
+        "version": "v1.6.5",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.5/research/beacon-loop-failure-mode-catalog-v165.md",
+        "present": false,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      },
+      "feature": "beacon-loop-failure-mode-catalog-v165",
+      "feature_slug": "beacon-loop-failure-mode-catalog-v165",
+      "version": "v1.6.5",
+      "last_changed_files": [
+        "beacon/utils/loop_failure_catalog.py",
+        "beacon/utils/loop_readiness.py",
+        "docs/beacon/v1.6.5/execution/loop-failure-modes.md",
+        "tests/test_v165_loop_failure_mode_catalog.py"
+      ],
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-loop-failure-mode-catalog-v165/ac-closure.json",
+        ".beacon/qa/features/beacon-loop-failure-mode-catalog-v165/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "accepted_at": "2026-07-09T10:00:15.295248+00:00",
+      "accepted_by": "qa"
+    }
+  ]
+}

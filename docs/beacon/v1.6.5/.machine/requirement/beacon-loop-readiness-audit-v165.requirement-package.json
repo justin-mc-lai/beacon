@@ -1,0 +1,180 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-09T09:53:57.072082+00:00",
+  "feature": "beacon-loop-readiness-audit-v165",
+  "feature_slug": "beacon-loop-readiness-audit-v165",
+  "version": "v1.6.5",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.5/features/beacon-loop-readiness-audit-v165/truth.md",
+    "tests": "docs/beacon/v1.6.5/features/beacon-loop-readiness-audit-v165/tests.md",
+    "tasks": "docs/beacon/v1.6.5/features/beacon-loop-readiness-audit-v165/tasks.md",
+    "evidence": "docs/beacon/v1.6.5/features/beacon-loop-readiness-audit-v165/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "6fc65262d605aca2d969c68fda903f258c960f289c88cf2ceeebba94d49c6fd9",
+    "tests": "14aca19e90993aabafd8f1d827c0c63d2f9890e997f9321eb5d8549a88f55f47",
+    "tasks": "ba1a8688185ef5c0ece4b42a6aa626a2831c4f61520437bd7c42e075a72d7cbd",
+    "evidence": "f66b8a2f5a273496470f0395d112867fed8e4cf41b304941d3535d155581fb6b"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-loop-readiness-audit-v165",
+    "version": "v1.6.5",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "R1 - Loop readiness audit score",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.5/features/beacon-loop-readiness-audit-v165/truth.md",
+      "user_story": "docs/beacon/v1.6.5/features/beacon-loop-readiness-audit-v165/truth.md",
+      "test_case": "docs/beacon/v1.6.5/features/beacon-loop-readiness-audit-v165/tests.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "cli-surface",
+      "description": "`beacon doctor loop-audit --project-root . --version <v> --json` returns schema version, score, level, signals, findings, and repair suggestions."
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "score-levels",
+      "description": "Scores map to L0/L1/L2/L3 with deterministic thresholds: L0 `<40`, L1 `40-59`, L2 `60-79`, L3 `>=80`."
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "signal-inventory",
+      "description": "Audit reports at least these signals: version governance, global boundaries, feature packages, workspace admission, QA status, release status, pattern registry, token budget, run log, failure catalog."
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "strict-exit",
+      "description": "Strict mode exits with code 2 when score is below the configured threshold and includes `loop_readiness_below_threshold`."
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "suggest",
+      "description": "`--suggest` or JSON default includes ordered repair commands or routes for failed signals."
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "no-gate-authority",
+      "description": "Payload labels readiness as advisory/report-only unless strict mode explicitly blocks."
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-LA-001",
+      "layer": "cli",
+      "command": "`python3 -m pytest tests/test_v165_loop_readiness_audit.py::test_loop_audit_json_shape -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Doctor loop-audit returns score, level, signals, findings, suggestions, and version fields.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-LA-002",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v165_loop_readiness_audit.py::test_score_level_thresholds -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Scores map to L0/L1/L2/L3 at the defined thresholds.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-LA-003",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v165_loop_readiness_audit.py::test_signal_inventory_contains_required_signals -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Required signal ids are present and each signal has status, weight, and reason code fields.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-LA-004",
+      "layer": "cli",
+      "command": "`python3 -m pytest tests/test_v165_loop_readiness_audit.py::test_strict_below_threshold_blocks -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Strict mode below threshold returns blocked status and reason_code `loop_readiness_below_threshold`.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-LA-005",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v165_loop_readiness_audit.py::test_suggestions_are_ordered_and_actionable -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Failed signals emit ordered repair suggestions with command or route fields.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-LA-006",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v165_loop_readiness_audit.py::test_non_strict_is_report_only -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Non-strict low score is labeled report-only and is not a release verdict.",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-LA-001",
+      "title": "Add readiness signal model and scoring thresholds.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-LA-002",
+      "title": "Add `beacon doctor loop-audit` command.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-LA-003",
+      "title": "Collect required signals with reason codes.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-LA-004",
+      "title": "Add strict threshold blocking.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-LA-005",
+      "title": "Add repair suggestions.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-LA-006",
+      "title": "Add tests in `tests/test_v165_loop_readiness_audit.py`.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-LA-007",
+      "title": "Run truth integrity, clarity, freeze, QA, and release checks.",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "truth.md",
+      "authority": "requirement_truth",
+      "artifact": "docs/beacon/v1.6.5/features/beacon-loop-readiness-audit-v165/truth.md"
+    },
+    {
+      "surface": "tests.md",
+      "authority": "test_truth",
+      "artifact": "docs/beacon/v1.6.5/features/beacon-loop-readiness-audit-v165/tests.md"
+    },
+    {
+      "surface": "tasks.md",
+      "authority": "requirement_truth",
+      "artifact": "docs/beacon/v1.6.5/features/beacon-loop-readiness-audit-v165/tasks.md"
+    }
+  ]
+}

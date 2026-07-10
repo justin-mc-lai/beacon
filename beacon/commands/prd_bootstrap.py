@@ -55,6 +55,7 @@ def run(
     apply: bool = typer.Option(False, "--apply", help="Apply writes (default is dry-run)"),
     dry_run: bool = typer.Option(False, "--dry-run", help="Force dry-run preview"),
     no_overwrite: bool = typer.Option(True, "--no-overwrite/--allow-overwrite", help="Block overwriting existing docs by default"),
+    legacy_split: bool = typer.Option(False, "--legacy-split", help="Generate legacy prd/user-story/test-case split docs explicitly"),
     strict_context_verify: bool = typer.Option(True, "--strict-context-verify/--skip-context-verify", help="Require doctor context verify before generating docs"),
     max_placeholders: int = typer.Option(0, "--max-placeholders", min=0, help="Allowed placeholder count threshold"),
     json_output: bool = typer.Option(False, "--json", help="Emit JSON payload"),
@@ -70,6 +71,7 @@ def run(
             apply=apply,
             dry_run=dry_run,
             no_overwrite=no_overwrite,
+            legacy_split=legacy_split,
             strict_context_verify=strict_context_verify,
             max_placeholders=max_placeholders,
         )
