@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-10T09:58:34.599503+00:00",
+  "generated_at": "2026-07-10T10:07:06.768189+00:00",
   "feature": "beacon-global-workspace-git-admission-v162",
   "feature_slug": "beacon-global-workspace-git-admission-v162",
   "version": "v1.6.4",
@@ -18,15 +18,15 @@
     "evidence": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/evidence.md"
   },
   "source_hashes": {
-    "truth": "ae3c8722030f0d4d5fe8dc9516803576ad04cb38ca81ba8b23b1f2a360a23892",
+    "truth": "96a75b55e4c7018dccaaa43a1b514356515262ea6e21e8f1039c5e56c49da134",
     "tests": "9381d4f10addfd3994bb9684cff549372fbde8d72d2298be23a7984ed77c2f85",
-    "tasks": "a2c9ad32600ca5a40b6dd5e8fe74d31b04bb3698203c5640d7b3d82b11587e77",
+    "tasks": "a26d0b8ab28f35acdd753e8e4964401befe20f35afab7cfad0a8506487051ef4",
     "evidence": "67b99efe86c24e4e7cadd80c727f9f8be76975b9e140019f6b540ca5d83f4c9a"
   },
   "truth_frontmatter": {
     "slug": "beacon-global-workspace-git-admission-v162",
     "version": "v1.6.4",
-    "status": "draft",
+    "status": "frozen",
     "revision_id": "R7",
     "language": "zh",
     "change_reason": "R7 - nested aggregation branch vs child feature ref coexistence; stale per-feature execution contracts must not force program-level; doctor path-repair confirmed residual contract gap",
@@ -189,27 +189,27 @@
     {
       "id": "TASK-004",
       "title": "Implement nested-ref coexistence in `resolve_workspace_branch_targets` / workspace admit.",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-005",
       "title": "Stop treating per-feature deterministic contracts as program-level by default.",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-006",
-      "title": "Keep aggregation worktree under version worktree root; emit `aggregation_branch_nested_ref_conflict`.",
-      "status": "unchecked"
+      "title": "Keep aggregation worktree under non-primary dedicated path; emit `aggregation_branch_nested_ref_conflict`.",
+      "status": "checked"
     },
     {
       "id": "TASK-007",
       "title": "Add TC-R7-001..004 regression coverage.",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-008",
       "title": "Freeze R7 and route to evaluator for QA/release.",
-      "status": "unchecked"
+      "status": "checked"
     }
   ],
   "checkbox_errors": [],

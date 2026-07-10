@@ -2,11 +2,11 @@
   "schema_version": "1.0",
   "feature": "beacon-global-workspace-git-admission-v162",
   "feature_slug": "beacon-global-workspace-git-admission-v162",
-  "run_id": "run-20260709T154207235892",
-  "ac_total": 5,
-  "ac_accepted": 5,
-  "scenario_total": 6,
-  "scenario_passed": 6,
+  "run_id": "run-20260710T100710386335",
+  "ac_total": 9,
+  "ac_accepted": 9,
+  "scenario_total": 10,
+  "scenario_passed": 10,
   "release_confidence_min": 1.0,
   "release_confidence_avg": 1.0,
   "review_required_count": 0,
@@ -16,8 +16,8 @@
   "project_profile_gate_status": "not_configured",
   "project_profile_id": "",
   "coverage_current": {
-    "required_scenarios": 6,
-    "executed_scenarios": 6,
+    "required_scenarios": 10,
+    "executed_scenarios": 10,
     "coverage_rate": 1.0,
     "required_scenario_families": [
       "boundary",
@@ -44,7 +44,7 @@
     "boundary_principles": [],
     "assumption_capture_required": true,
     "goal_driven_verification_required": true,
-    "verification_item_count": 6,
+    "verification_item_count": 10,
     "targeted_scope_only": true
   },
   "design_truth_verdict": {
@@ -418,10 +418,81 @@
     "release_pass_evidence": false
   },
   "reconciliation": {
-    "required": false,
-    "reason_code": "",
-    "artifact_path": "",
-    "artifact": {}
+    "required": true,
+    "reason_code": "implementation_first_reconciliation_required",
+    "artifact_path": "docs/beacon/v1.6.4/.machine/change/beacon-global-workspace-git-admission-v162-reconciliation.json",
+    "artifact": {
+      "schema_version": "1.0",
+      "artifact": "implementation_first_reconciliation",
+      "feature": "beacon-global-workspace-git-admission-v162",
+      "feature_slug": "beacon-global-workspace-git-admission-v162",
+      "version": "v1.6.4",
+      "status": "required",
+      "reason_code": "implementation_first_reconciliation_required",
+      "recovery_kind": "implementation_first_reconciliation",
+      "delivery_mode": "recovery_not_normal_delivery",
+      "drift_detected_at": "2026-07-10T10:07:42.398469+00:00",
+      "detected_revision_id": "R7",
+      "source_revision_id": "R6",
+      "implementation_artifacts": [
+        {
+          "revision_id": "R2",
+          "run_id": "impl-20260709-r6-branch-governance",
+          "recorded_at": "2026-07-09T07:41:49.964650+00:00",
+          "implemented_item_ids": [
+            "TEST-001",
+            "AC-005",
+            "AC-003",
+            "AC-002",
+            "TEST-002",
+            "TEST-003",
+            "TEST-005",
+            "TASK-001",
+            "AC-001",
+            "AC-004",
+            "TEST-004"
+          ],
+          "changed_files": [
+            "beacon/utils/execution_branch_contract.py",
+            "beacon/utils/project_governance.py",
+            "beacon/utils/workspace_admission.py",
+            "tests/test_v162_delivery_program_branch_r5.py",
+            "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
+            "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md",
+            "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tasks.md",
+            "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/evidence.md"
+          ]
+        }
+      ],
+      "missing_truth_surfaces": [
+        "prd",
+        "user-story",
+        "qa/test-cases"
+      ],
+      "recovery_reason": "implementation evidence exists on earlier revision lineage and must be reconciled through beacon-change without erasing provenance",
+      "truth_surfaces_backfilled": [
+        "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
+        "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
+        "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md"
+      ],
+      "re_freeze_status": "completed",
+      "reprojection_targets": [
+        "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
+        "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md",
+        "qa_proof",
+        "release_facing_proof"
+      ],
+      "provenance": {
+        "post_hoc_writeback_occurred": true,
+        "preserve_drift_history": true,
+        "current_revision_id": "R7",
+        "current_delivery_status": "implemented"
+      },
+      "change_route": {
+        "action": "beacon-change",
+        "command": "beacon change \"beacon-global-workspace-git-admission-v162\" --project-root /workspace/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162 --version v1.6.4 --reason \"implementation-first-reconciliation\""
+      }
+    }
   },
   "deep_absorption": {
     "schema_version": "1.0",
@@ -439,14 +510,16 @@
     "advisory_or_blocked_finding_count": 0,
     "policy": "absorbed_deep_findings_only"
   },
-  "continue_decision": "ready_for_release",
-  "stop_reasons": [],
+  "continue_decision": "stop_for_repair",
+  "stop_reasons": [
+    "implementation_first_reconciliation_required"
+  ],
   "test_case_backfill_required": false,
-  "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162 --version v1.6.4 --feature \"beacon-global-workspace-git-admission-v162\"",
+  "resume_command": "beacon help --project-root /workspace/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162 --version v1.6.4 --feature \"beacon-global-workspace-git-admission-v162\"",
   "repair_handoff": {
-    "action": "qa-repair",
-    "reason": "qa_round_incomplete",
-    "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162 --version v1.6.4 --feature \"beacon-global-workspace-git-admission-v162\""
+    "action": "beacon-change",
+    "reason": "implementation evidence exists on earlier revision lineage and must be reconciled through beacon-change without erasing provenance",
+    "command": "beacon change \"beacon-global-workspace-git-admission-v162\" --project-root /workspace/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162 --version v1.6.4 --reason \"implementation-first-reconciliation\""
   },
-  "release_ready": true
+  "release_ready": false
 }

@@ -2,14 +2,14 @@
 
 - version: `v1.6.4`
 - feature: `beacon-global-workspace-git-admission-v162`
-- revision_id: `R2`
+- revision_id: `R7`
 - verdict: `passed`
-- accepted_at: `2026-07-09T07:42:17.431529+00:00`
+- accepted_at: `2026-07-10T10:07:42.432682+00:00`
 - accepted_by: `qa`
 
 ## Summary
 - 可以进入 release 检查与收口。
-- source_command: `beacon qa run "beacon-global-workspace-git-admission-v162" --project-root /Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162 --version v1.6.4`
+- source_command: `beacon qa run "beacon-global-workspace-git-admission-v162" --project-root /workspace/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162 --version v1.6.4`
 
 ## Requirement Refs
 - `docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md`
