@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "run_id": "impl-v164-program-next-action-admission-20260710T0346Z",
+  "import_id": "impl-v164-program-next-action-admission-20260710T0346Z",
+  "feature": "beacon-program-next-action-admission-v164",
+  "feature_slug": "beacon-program-next-action-admission-v164",
+  "version": "v1.6.4",
+  "runner": "import-evidence",
+  "skill": "beacon-gen-implement",
+  "status": "completed",
+  "imported": true,
+  "source_refs": [
+    "git:4e42ef254624b14aa1fe26fb4af5f266abd09919",
+    ".beacon/evidence/implementation/beacon-program-next-action-admission-v164/focused-regression-junit.xml",
+    "docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md"
+  ],
+  "changed_files": [
+    "beacon/commands/implement/commands.py",
+    "beacon/utils/implementation_evidence.py",
+    "beacon/utils/program_admission.py",
+    "tests/test_v164_program_next_action_admission.py"
+  ],
+  "service_dirs": [
+    "beacon/commands/implement",
+    "beacon/utils",
+    "tests"
+  ],
+  "summary_ref": "git:4e42ef254624b14aa1fe26fb4af5f266abd09919",
+  "approved_by": "codex",
+  "prompt_boundary": {
+    "schema_version": "1.0",
+    "feature": "beacon-program-next-action-admission-v164",
+    "feature_slug": "beacon-program-next-action-admission-v164",
+    "version": "v1.6.4",
+    "required": true,
+    "prompt": "Import externally produced implementation evidence for the scoped Beacon feature. Read Beacon source of truth and bind the imported evidence to the frozen feature package truth. Implement only against the frozen feature package truth above. Evidence refs: git:4e42ef254624b14aa1fe26fb4af5f266abd09919, .beacon/evidence/implementation/beacon-program-next-action-admission-v164/focused-regression-junit.xml, docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md, git:4e42ef254624b14aa1fe26fb4af5f266abd09919. Changed files or service directories: beacon/commands/implement/commands.py, beacon/utils/implementation_evidence.py, beacon/utils/program_admission.py, tests/test_v164_program_next_action_admission.py, beacon/commands/implement, beacon/utils, tests.",
+    "classification": "in_scope_implementation",
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "next_action": "",
+    "recommended_command": "",
+    "matched_signals": [],
+    "frozen_refs": [
+      "docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/truth.md",
+      "docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
+      "docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tasks.md",
+      "docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/evidence.md"
+    ],
+    "surface": "import-evidence"
+  },
+  "created_at": "2026-07-10T03:46:16.864483+00:00",
+  "generated_at": "2026-07-10T03:46:16.864761+00:00"
+}

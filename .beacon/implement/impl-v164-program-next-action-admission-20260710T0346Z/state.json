@@ -1,0 +1,407 @@
+{
+  "schema_version": "1.0",
+  "run_id": "impl-v164-program-next-action-admission-20260710T0346Z",
+  "import_id": "impl-v164-program-next-action-admission-20260710T0346Z",
+  "feature": "beacon-program-next-action-admission-v164",
+  "feature_slug": "beacon-program-next-action-admission-v164",
+  "version": "v1.6.4",
+  "runner": "import-evidence",
+  "skill": "beacon-gen-implement",
+  "status": "completed",
+  "imported": true,
+  "source_refs": [
+    "git:4e42ef254624b14aa1fe26fb4af5f266abd09919",
+    ".beacon/evidence/implementation/beacon-program-next-action-admission-v164/focused-regression-junit.xml",
+    "docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md"
+  ],
+  "changed_files": [
+    "beacon/commands/implement/commands.py",
+    "beacon/utils/implementation_evidence.py",
+    "beacon/utils/program_admission.py",
+    "tests/test_v164_program_next_action_admission.py"
+  ],
+  "service_dirs": [
+    "beacon/commands/implement",
+    "beacon/utils",
+    "tests"
+  ],
+  "summary_ref": "git:4e42ef254624b14aa1fe26fb4af5f266abd09919",
+  "approved_by": "codex",
+  "prompt_boundary": {
+    "schema_version": "1.0",
+    "feature": "beacon-program-next-action-admission-v164",
+    "feature_slug": "beacon-program-next-action-admission-v164",
+    "version": "v1.6.4",
+    "required": true,
+    "prompt": "Import externally produced implementation evidence for the scoped Beacon feature. Read Beacon source of truth and bind the imported evidence to the frozen feature package truth. Implement only against the frozen feature package truth above. Evidence refs: git:4e42ef254624b14aa1fe26fb4af5f266abd09919, .beacon/evidence/implementation/beacon-program-next-action-admission-v164/focused-regression-junit.xml, docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md, git:4e42ef254624b14aa1fe26fb4af5f266abd09919. Changed files or service directories: beacon/commands/implement/commands.py, beacon/utils/implementation_evidence.py, beacon/utils/program_admission.py, tests/test_v164_program_next_action_admission.py, beacon/commands/implement, beacon/utils, tests.",
+    "classification": "in_scope_implementation",
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "next_action": "",
+    "recommended_command": "",
+    "matched_signals": [],
+    "frozen_refs": [
+      "docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/truth.md",
+      "docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
+      "docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tasks.md",
+      "docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/evidence.md"
+    ],
+    "surface": "import-evidence"
+  },
+  "created_at": "2026-07-10T03:46:16.864483+00:00",
+  "generated_at": "2026-07-10T03:46:16.864761+00:00",
+  "implementation_marker": ".beacon/state/implementation-beacon-program-next-action-admission-v164.json",
+  "writeback": {
+    "updated_items": 15,
+    "story": {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "beacon-program-next-action-admission-v164",
+      "priority": "medium",
+      "status": "implemented",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "program-next-action-admission",
+          "text": "`beacon-gen-implement` resolves the owning program/lake topology and blocks target lake `pi-host-ui-ux` when `program-run-state.next_action=beacon-gen-implement:content-hub-foundation`; reason_code `program_next_action_mismatch`; no implementation evidence is written.",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-v164-program-next-action-admission-20260710T0346Z",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-program-next-action-admission-v164/docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/truth.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "next-action-allowed-current-lake",
+          "text": "When the target feature matches `program-run-state.next_action`, admission continues and records the resolved program slug, lake slug, material path, and next_action source.",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-v164-program-next-action-admission-20260710T0346Z",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-program-next-action-admission-v164/docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/truth.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "dependency-closure-gate",
+          "text": "A downstream lake with `depends_on` entries is blocked when prerequisite lakes lack implementation closure or QA acceptance evidence; reason_code `program_dependency_unclosed`.",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-v164-program-next-action-admission-20260710T0346Z",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-program-next-action-admission-v164/docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/truth.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "per-feature-default-preserved",
+          "text": "Repos/features without owning program topology keep normal per-feature implement admission behavior and are not blocked by program next_action checks.",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-v164-program-next-action-admission-20260710T0346Z",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-program-next-action-admission-v164/docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/truth.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "static-shell-ui-evidence-rejected",
+          "text": "QA/implementation evidence rejects required full-parity UI surfaces that are still `coming_soon`, preview-only, static shell, or no-op recovery controls; reason_code `static_shell_implementation_evidence`.",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-v164-program-next-action-admission-20260710T0346Z",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-program-next-action-admission-v164/docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/truth.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "source-grep-only-not-acceptance",
+          "text": "Tests that only grep source strings, route names, labels, or exported constants cannot satisfy runtime/browser/user-behavior AC; reason_code `static_source_assertion_only`.",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-v164-program-next-action-admission-20260710T0346Z",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-program-next-action-admission-v164/docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/truth.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "blocked-generator-diagnostic-only",
+          "text": "When implement admission is blocked by AC-028 or AC-030, generated state is diagnostic-only and cannot mark tasks done, write implementation summary, or update acceptance/release evidence.",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-v164-program-next-action-admission-20260710T0346Z",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-program-next-action-admission-v164/docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/truth.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-v164-program-next-action-admission-20260710T0346Z",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — `beacon-gen-implement` resolves the owning program/lake topology and blocks target lake `pi-host-ui-ux` when `program-run-state.next_action=beacon-gen-implement:content-hub-foundation`; reason_code `program_next_action_mismatch`; no implementation evidence is written.",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-v164-program-next-action-admission-20260710T0346Z",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-program-next-action-admission-v164/docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/truth.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — When the target feature matches `program-run-state.next_action`, admission continues and records the resolved program slug, lake slug, material path, and next_action source.",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-v164-program-next-action-admission-20260710T0346Z",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-program-next-action-admission-v164/docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/truth.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — A downstream lake with `depends_on` entries is blocked when prerequisite lakes lack implementation closure or QA acceptance evidence; reason_code `program_dependency_unclosed`.",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-v164-program-next-action-admission-20260710T0346Z",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-program-next-action-admission-v164/docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/truth.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Repos/features without owning program topology keep normal per-feature implement admission behavior and are not blocked by program next_action checks.",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-v164-program-next-action-admission-20260710T0346Z",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-program-next-action-admission-v164/docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/truth.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — QA/implementation evidence rejects required full-parity UI surfaces that are still `coming_soon`, preview-only, static shell, or no-op recovery controls; reason_code `static_shell_implementation_evidence`.",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-v164-program-next-action-admission-20260710T0346Z",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-program-next-action-admission-v164/docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/truth.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Tests that only grep source strings, route names, labels, or exported constants cannot satisfy runtime/browser/user-behavior AC; reason_code `static_source_assertion_only`.",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-v164-program-next-action-admission-20260710T0346Z",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-program-next-action-admission-v164/docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/truth.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — When implement admission is blocked by AC-028 or AC-030, generated state is diagnostic-only and cannot mark tasks done, write implementation summary, or update acceptance/release evidence.",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-v164-program-next-action-admission-20260710T0346Z",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-program-next-action-admission-v164/docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/truth.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-program-next-action-admission-v164",
+        "version": "v1.6.4",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-program-next-action-admission-v164/docs/beacon/v1.6.4/research/beacon-program-next-action-admission-v164.md",
+        "present": false,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      },
+      "feature": "beacon-program-next-action-admission-v164",
+      "feature_slug": "beacon-program-next-action-admission-v164",
+      "version": "v1.6.4",
+      "last_changed_files": [
+        "beacon/commands/implement/commands.py",
+        "beacon/utils/implementation_evidence.py",
+        "beacon/utils/program_admission.py",
+        "tests/test_v164_program_next_action_admission.py",
+        "beacon/commands/implement",
+        "beacon/utils",
+        "tests"
+      ]
+    },
+    "revision": {
+      "schema_version": "1.0",
+      "feature": "beacon-program-next-action-admission-v164",
+      "feature_slug": "beacon-program-next-action-admission-v164",
+      "version": "v1.6.4",
+      "revision_id": "R1",
+      "source_revision_id": "",
+      "reason": "freeze",
+      "doc_status": "frozen",
+      "delivery_status": "implemented",
+      "lifecycle_status": "idle",
+      "baseline_hash": "sha256:31fe498e3c5164e399e03cd48e3491fe8e656c5ef2159b76934da3ac477c5630",
+      "superseded_by": "",
+      "created_at": "2026-07-10T03:14:49.925678+00:00",
+      "frozen_at": "2026-07-10T03:14:49.930532+00:00",
+      "accepted_at": "",
+      "last_implementation_run_id": "impl-v164-program-next-action-admission-20260710T0346Z",
+      "changed_files": [
+        "beacon/commands/implement/commands.py",
+        "beacon/utils/implementation_evidence.py",
+        "beacon/utils/program_admission.py",
+        "tests/test_v164_program_next_action_admission.py",
+        "beacon/commands/implement",
+        "beacon/utils",
+        "tests"
+      ]
+    },
+    "implementation_plan": {}
+  },
+  "next_route": {
+    "target_surface": "beacon-eval-qa",
+    "command": "beacon qa run \"beacon-program-next-action-admission-v164\" --project . --version v1.6.4"
+  },
+  "decision_surface": {
+    "stage": "implement",
+    "skill_ref": "skills/beacon/beacon-gen-implement/SKILL.md",
+    "inputs_contract": [
+      "`project-root`",
+      "`version`",
+      "`feature`",
+      "frozen `features/<slug>/truth.md` and `features/<slug>/tests.md`",
+      "conditionally required `prototype` when the feature has real UX/UI handoff",
+      "current gate / blocked reason / branch or execution governance context when present",
+      "`PRODUCT.md` — project-level product truth; must-read when the file exists at the project root",
+      "`DESIGN.md` — project-level design truth (colors, typography, spacing, tokens, Do's & Don'ts); must-read when the file exists at the project root",
+      "`docs/beacon/<version>/design/*` — version-wide design contracts (style, component-system, interaction-contract, state-matrix); must-read when they exist",
+      "`src/App.vue` or equivalent global CSS variable root — for projects with a design system, implement must reference existing CSS variables instead of hardcoding visual values"
+    ],
+    "decision_protocol": [
+      "Enter `implement` only after requirement truth is frozen enough for execution.",
+      "Block when frozen truth requires `change`, when cutover guardrails fail, or when a conditionally triggered prototype is still missing.",
+      "When `PRODUCT.md` or `DESIGN.md` exists at the project root, read both before starting any implementation that touches UI, visual design, or user-facing behavior. Treat them as binding design contracts, not optional reference material.",
+      "Keep `implement` as the only execution entry; `ask --execute` and support surfaces may route here but must not replace it.",
+      "Prefer explanation and routing logic in skill surface; keep final schema, contract, and gate writes in Python guardrails.",
+      "When dual-read or compatibility windows exist, fail closed on mismatch."
+    ],
+    "anti_inertia_notes": [
+      "`implement` is not permission to rewrite requirement truth.",
+      "`goal`, task ledgers, or partial execution progress do not define completion truth.",
+      "If the feature needs UX/UI handoff and prototype is triggered, do not skip straight into coding.",
+      "Team/runtime internals stay internal unless the user explicitly asks for them.",
+      "When `PRODUCT.md` or `DESIGN.md` exists at the project root, `implement` must read them before building any UI. Skipping design truth is a process drift that produces implementation-to-design mismatch.",
+      "`implement` cannot rewrite frozen truth or override gate truth by itself."
+    ],
+    "learning_notes": [
+      "Reuse implementation learning to avoid repeated blocked paths or flaky cutovers.",
+      "Learning may shape route explanation and caution, but cannot override gate truth.",
+      "Downgrade stale learning instead of silently trusting it."
+    ],
+    "backstop_cli": [
+      "`beacon implement ...`",
+      "`beacon change ...` when truth must reopen",
+      "`beacon qa ...` after implementation evidence is ready"
+    ],
+    "primary_reason": "Enter `implement` only after requirement truth is frozen enough for execution.",
+    "recommended_command": "`beacon implement ...`",
+    "reason_code": ""
+  },
+  "guardrail_contract": {
+    "stage": "implement",
+    "decision_owner": "skill_surface",
+    "enforcement_owner": "python_guardrail",
+    "blocked": false,
+    "reason_code": "",
+    "dual_read_required_before_cutover": true,
+    "fail_closed": true
+  },
+  "mode": "import-evidence",
+  "adapter_type": "external-evidence",
+  "request_path": "",
+  "result_path": ""
+}
