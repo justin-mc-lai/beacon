@@ -34,10 +34,10 @@
       "slug": "beacon-global-workspace-git-admission-v162",
       "version": "v1.6.4",
       "status": "frozen",
-      "revision_id": "R6",
+      "revision_id": "R7",
       "language": "zh",
-      "change_reason": "R6 - program/lake aggregation branch governance contract; SidePilot v0.0.12 QA admission friction friction:e3fe3b33ecf9",
-      "source_revision_id": "R5",
+      "change_reason": "R7 - nested aggregation branch vs child feature ref coexistence; stale per-feature execution contracts must not force program-level; doctor path-repair confirmed residual contract gap",
+      "source_revision_id": "R6",
       "canonical_refs": {
         "prd": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
         "user_story": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
@@ -60,10 +60,10 @@
       "evidence": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/evidence.md"
     },
     "source_hashes": {
-      "truth": "e1e0aafa8e310681b2ad23f6902b0fc2127ad1e9b8aca8d85eb13f14d391dc5e",
-      "tests": "5c0b13d82d1036066ddb1b798315863c485cb709462913e1514d2deb06d0133a",
-      "tasks": "c3fe7e1e20513912d5aa36617d01585c38667e6797e2f0d264dbd3714d930cca",
-      "evidence": "1ffa7dba6681d3a9dcf89a061ec749d40e00adfe3bc962bb622ccf26002d2cd2"
+      "truth": "96a75b55e4c7018dccaaa43a1b514356515262ea6e21e8f1039c5e56c49da134",
+      "tests": "9381d4f10addfd3994bb9684cff549372fbde8d72d2298be23a7984ed77c2f85",
+      "tasks": "a26d0b8ab28f35acdd753e8e4964401befe20f35afab7cfad0a8506487051ef4",
+      "evidence": "67b99efe86c24e4e7cadd80c727f9f8be76975b9e140019f6b540ca5d83f4c9a"
     },
     "surfaces": {
       "truth": {
@@ -78,7 +78,7 @@
         "filename": "truth.md",
         "path": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
         "exists": true,
-        "source_hash": "e1e0aafa8e310681b2ad23f6902b0fc2127ad1e9b8aca8d85eb13f14d391dc5e",
+        "source_hash": "96a75b55e4c7018dccaaa43a1b514356515262ea6e21e8f1039c5e56c49da134",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -94,7 +94,7 @@
         "filename": "tests.md",
         "path": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md",
         "exists": true,
-        "source_hash": "5c0b13d82d1036066ddb1b798315863c485cb709462913e1514d2deb06d0133a",
+        "source_hash": "9381d4f10addfd3994bb9684cff549372fbde8d72d2298be23a7984ed77c2f85",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -110,7 +110,7 @@
         "filename": "tasks.md",
         "path": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tasks.md",
         "exists": true,
-        "source_hash": "c3fe7e1e20513912d5aa36617d01585c38667e6797e2f0d264dbd3714d930cca",
+        "source_hash": "a26d0b8ab28f35acdd753e8e4964401befe20f35afab7cfad0a8506487051ef4",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -126,7 +126,7 @@
         "filename": "evidence.md",
         "path": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/evidence.md",
         "exists": true,
-        "source_hash": "1ffa7dba6681d3a9dcf89a061ec749d40e00adfe3bc962bb622ccf26002d2cd2",
+        "source_hash": "67b99efe86c24e4e7cadd80c727f9f8be76975b9e140019f6b540ca5d83f4c9a",
         "authority": "markdown_feature_package",
         "json_authority": false
       }
@@ -194,7 +194,7 @@
       "canonical_role": "version_governance_truth",
       "sqlite_projection_surface": "project_governance_sqlite_projection",
       "sqlite_projection_role": "generated_governance_state_not_truth",
-      "sqlite_ledger_path": "/Users/apple/.beacon/runtime-ledger/runtime-ledger.sqlite3",
+      "sqlite_ledger_path": "/home/ubuntu/.beacon/runtime-ledger/runtime-ledger.sqlite3",
       "deprecated_legacy_json": ".beacon/metadata/project-version-metadata.json",
       "write_direction": "governance_md_to_sqlite_only"
     },
@@ -214,7 +214,7 @@
         "truth_authority": true,
         "json_authority": false,
         "generated_governance_state": false,
-        "source_hash": "4e96d14130a8cb707a60e816dac5e52b9e2dabf25aff3b6a59d73e3147c45db0"
+        "source_hash": "0eb8b504423720c4aadd63ababa734f24c2af26a3412d41735ed17ec220b9cc8"
       },
       "global_boundaries": {
         "schema_version": "1.0",
@@ -316,7 +316,7 @@
         "truth_authority": true,
         "json_authority": false,
         "generated_governance_state": false,
-        "source_hash": "a04af13d21a48dc12dda1fbc026dad7c46e5b39064b9f6ec30f30351086128e8"
+        "source_hash": "c0ef04ee671c58f24a07bcaae12187a48f2c2e27f8bfd99fc5d736001d5d9452"
       }
     },
     "generated_state_surfaces": {
@@ -361,7 +361,7 @@
         "resolver_mode": "resolver_first",
         "version": "v1.6.4",
         "surface": "project_governance_sqlite_projection",
-        "path": "/Users/apple/.beacon/runtime-ledger/runtime-ledger.sqlite3",
+        "path": "/home/ubuntu/.beacon/runtime-ledger/runtime-ledger.sqlite3",
         "exists": true,
         "required": false,
         "role": "generated_governance_state_not_truth",
@@ -369,7 +369,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "4b7ef076c8056825e61238ad8634ae7ac5daa468a2bebb32bee48ec76bc50721"
+        "source_hash": "d1a6d55b25531fb433576d3fdab9a547c2d0a6cdf7cccbca1f41a9cca40c6c2e"
       },
       "evidence_manifest": {
         "schema_version": "1.0",
@@ -386,7 +386,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "f2f568439a0c02e14122246c2c685e4439b88562feb61761578922ea0cdbd416"
+        "source_hash": "34a9d904f1ee39813b47f41cea4857efaa8eb99e96aa037bb44a99d727cdd869"
       },
       "qa_status": {
         "schema_version": "1.0",
@@ -403,7 +403,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "7a635ffa09d4896490018f627f2e1a6abb7182aee73a6a65f89827083019b836"
+        "source_hash": "e7f64a012afcbc05c3cd5b7b653c326ccbe8f5e078ce27f145842154b25399c5"
       },
       "release_gate_report": {
         "schema_version": "1.0",
@@ -420,7 +420,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "7604840adf2e76e1690890dff39ccefb33c26d021c1b12db04f3a292be5164d1"
+        "source_hash": "1bf8080ee5f3a565eb581480ebcde3df3ccf3ee1eea46d228a67d301f0b8c0f9"
       }
     },
     "manifest_authority": false,
@@ -612,7 +612,7 @@
     "diagnostics": []
   },
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-09T06:56:06.019880+00:00",
+  "generated_at": "2026-07-10T10:07:06.761379+00:00",
   "truth_authority": false,
   "source_paths": {
     "truth": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
@@ -621,9 +621,9 @@
     "evidence": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/evidence.md"
   },
   "source_hashes": {
-    "truth": "e1e0aafa8e310681b2ad23f6902b0fc2127ad1e9b8aca8d85eb13f14d391dc5e",
-    "tests": "5c0b13d82d1036066ddb1b798315863c485cb709462913e1514d2deb06d0133a",
-    "tasks": "c3fe7e1e20513912d5aa36617d01585c38667e6797e2f0d264dbd3714d930cca",
-    "evidence": "1ffa7dba6681d3a9dcf89a061ec749d40e00adfe3bc962bb622ccf26002d2cd2"
+    "truth": "96a75b55e4c7018dccaaa43a1b514356515262ea6e21e8f1039c5e56c49da134",
+    "tests": "9381d4f10addfd3994bb9684cff549372fbde8d72d2298be23a7984ed77c2f85",
+    "tasks": "a26d0b8ab28f35acdd753e8e4964401befe20f35afab7cfad0a8506487051ef4",
+    "evidence": "67b99efe86c24e4e7cadd80c727f9f8be76975b9e140019f6b540ca5d83f4c9a"
   }
 }

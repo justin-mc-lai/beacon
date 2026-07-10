@@ -1,24 +1,32 @@
-# Change Record: Workspace Admission Program/Lake Branch Governance R6
+# Change Record: Workspace Admission Nested-Ref Coexistence R7
 
 **version**: `v1.6.4`  
 **feature**: `beacon-global-workspace-git-admission-v162`  
-**revision**: `R6`  
-**reason**: `friction:e3fe3b33ecf9` showed `beacon qa run <lake>` still using per-feature branch admission for SidePilot v0.0.12, blocking the valid aggregation branch `beacon/v0.0.12`.
+**revision**: `R7`  
+**status**: `requirement-change-draft`  
+**reason**: After doctor path repair, QA lake admits still fail because bare aggregation ref `beacon/v1.6.4` conflicts with child feature refs, and stale per-feature deterministic contracts force program-level resolution.
 
-## Accepted Change
+## Accepted Change Intent
 
-Program/lake topology is now a formal branch governance input. When a lake is part of a frozen program topology, Beacon resolves the workspace target to the program aggregation branch, defaulting to `beacon/<version>`, through the shared `resolve_workspace_branch_targets` contract.
+1. Nested-ref coexistence: do not select bare `beacon/<version>` when child refs exist; default to `beacon/<version>/_agg` or governance override.
+2. Per-feature deterministic contracts are not program-level authority by themselves.
+3. Aggregation worktree must not target the primary checkout root.
+4. Nested-ref failures emit `aggregation_branch_nested_ref_conflict`.
 
 ## Scope
 
-- program-level governance without `git-workflow-*.md`
-- program-level governance with `git-workflow-*.md`
-- `beacon qa run <lake>` accepts aggregation branch after admission
-- per-feature default remains unchanged
-- soft admission still blocks wrong branch with `branch_alignment_required`
+- `resolve_workspace_branch_targets` / workspace admit contract
+- R7 AC-028..AC-031 and UD-032..UD-035
+- Preserve R6 AC-023..AC-027
 
 ## Non-Goals
 
-- no QA-only bypass
+- no remote feature-branch cleanup requirement
+- no QA/release verdict from generator
 - no SidePilot-specific hard-code
-- no release or QA verdict from generator
+
+## Downstream
+
+- implement: `beacon-gen-implement`
+- qa: `beacon-eval-qa`
+- release: `beacon-eval-release`

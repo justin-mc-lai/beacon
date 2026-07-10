@@ -175,6 +175,19 @@ def is_program_level_branch_contract(contract: dict[str, Any] | None) -> bool:
     mode = str(contract.get("branch_resolution_mode") or "").strip().lower()
     if mode == "program-level":
         return True
+    if mode in {"per-feature", "feature-level"}:
+        return False
+    # R7 UD-033: per-feature deterministic contracts are not program-level by themselves.
+    loaded = {str(item).strip() for item in (contract.get("loaded_material_types") or []) if str(item).strip()}
+    material_paths = [str(item) for item in (contract.get("material_paths") or [])]
+    material_path = str(contract.get("material_path") or "").strip()
+    materials = material_paths + ([material_path] if material_path else [])
+    has_deterministic = "deterministic-implementation-contract" in loaded or any(
+        "deterministic-implementation-contract-" in item for item in materials
+    )
+    has_git_workflow = "git-workflow" in loaded or any("/git-workflow-" in item or item.startswith("git-workflow-") for item in materials)
+    if has_deterministic and not has_git_workflow and str(contract.get("source") or "").strip() in {"", "execution_markdown"}:
+        return False
     return bool(
         (contract.get("dedicated_worktree_path") or contract.get("worktree_root") or contract.get("worktree_path"))
         and (
@@ -325,14 +338,76 @@ def _current_branch(path: Path) -> str:
     return str(result.stdout or "").strip() if result.returncode == 0 else ""
 
 
-def _program_worktree_path(project_root: Path, *, version: str, preferred_root: Path | None = None) -> str:
-    expected_branch = f"beacon/{version}"
-    if preferred_root and preferred_root.exists() and _current_branch(preferred_root) == expected_branch:
-        return str(preferred_root.resolve())
+
+def _git_for_each_ref(project_root: Path, pattern: str) -> list[str]:
+    try:
+        result = subprocess.run(
+            ["git", "for-each-ref", "--format=%(refname:short)", pattern],
+            cwd=project_root,
+            capture_output=True,
+            text=True,
+            timeout=5,
+            check=False,
+        )
+    except Exception:  # noqa: BLE001
+        return []
+    if result.returncode != 0:
+        return []
+    return [line.strip() for line in str(result.stdout or "").splitlines() if line.strip()]
+
+
+def version_has_child_feature_refs(project_root: Path, *, version: str) -> bool:
+    """True when refs/heads/beacon/<version>/* already exist (nested-ref hazard for bare parent)."""
     root = project_root.expanduser().resolve()
-    if _current_branch(root) == expected_branch:
-        return str(root)
-    return str(root / ".beacon" / "worktrees" / version)
+    version_key = str(version or "").strip()
+    if not version_key:
+        return False
+    prefix = f"beacon/{version_key}/"
+    refs = _git_for_each_ref(root, f"refs/heads/{prefix}*")
+    return any(ref.startswith(prefix) and ref != f"beacon/{version_key}/_agg" for ref in refs)
+
+
+def coerce_aggregation_branch(project_root: Path, *, version: str, branch: str) -> str:
+    """R7 UD-032: avoid bare beacon/<version> when child feature refs already exist."""
+    root = project_root.expanduser().resolve()
+    resolved_version = str(version or "").strip()
+    selected = str(branch or "").strip() or f"beacon/{resolved_version}"
+    bare = f"beacon/{resolved_version}"
+    if selected == bare and version_has_child_feature_refs(root, version=resolved_version):
+        override = ""
+        # keep explicit non-bare overrides untouched; only rewrite bare default
+        return f"beacon/{resolved_version}/_agg"
+    return selected
+
+
+def coerce_aggregation_worktree_path(project_root: Path, *, version: str, worktree_path: str) -> str:
+    """R7 UD-034: aggregation worktree must not target the primary checkout root."""
+    root = project_root.expanduser().resolve()
+    resolved_version = str(version or "").strip()
+    fallback = str((root / ".beacon" / "worktrees" / resolved_version).resolve())
+    text = str(worktree_path or "").strip()
+    if not text:
+        return fallback
+    path = Path(text).expanduser()
+    if not path.is_absolute():
+        path = (root / path).resolve()
+    else:
+        path = path.resolve()
+    if path == root:
+        return fallback
+    return str(path)
+
+
+def _program_worktree_path(project_root: Path, *, version: str, preferred_root: Path | None = None) -> str:
+    root = project_root.expanduser().resolve()
+    fallback = str((root / ".beacon" / "worktrees" / version).resolve())
+    # R7 UD-034: never use the primary checkout as the aggregation worktree.
+    # Explicit dedicated/sibling aggregation worktrees remain valid.
+    if preferred_root and preferred_root.exists():
+        preferred = preferred_root.expanduser().resolve()
+        if preferred != root:
+            return str(preferred)
+    return fallback
 
 
 def infer_program_level_from_program_topology(
@@ -481,14 +556,20 @@ def resolve_workspace_branch_targets(
         ).strip()
         if not branch:
             branch = resolve_feature_branch(admission_contract, feature=feature, version=version)
+        branch = coerce_aggregation_branch(root, version=version, branch=branch)
         worktree_path = str(ctx.get("dedicated_worktree_path") or ctx.get("worktree_root") or ctx.get("worktree_path") or "").strip()
         if not worktree_path:
             worktree_path = resolve_worktree_path(root, admission_contract, feature=feature)
+        worktree_path = coerce_aggregation_worktree_path(root, version=version, worktree_path=worktree_path)
+        program_slug = str(ctx.get("program_slug") or "").strip()
+        # Do not invent program_slug from per-feature contract filenames.
+        if not program_slug and str(ctx.get("source") or "").strip() not in {"execution_markdown"}:
+            program_slug = str(ctx.get("feature") or "").strip()
         return {
             "branch_resolution_mode": "program-level",
             "feature_branch": branch,
             "worktree_path": worktree_path,
-            "program_slug": str(ctx.get("program_slug") or ctx.get("feature") or "").strip(),
+            "program_slug": program_slug,
             "material_path": str(ctx.get("material_path") or (per_feature.get("material_paths") or [""])[0]).strip(),
             "source": str(ctx.get("source") or "").strip(),
         }

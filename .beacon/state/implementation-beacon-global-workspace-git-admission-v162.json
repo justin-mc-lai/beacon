@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
-  "run_id": "impl-20260709-r6-branch-governance",
-  "import_id": "impl-20260709-r6-branch-governance",
+  "run_id": "impl-v164-git-admission-nested-ref-r7-20260710",
+  "import_id": "impl-v164-git-admission-nested-ref-r7-20260710",
   "feature": "beacon-global-workspace-git-admission-v162",
   "feature_slug": "beacon-global-workspace-git-admission-v162",
   "version": "v1.6.4",
@@ -10,30 +10,29 @@
   "status": "completed",
   "imported": true,
   "source_refs": [
-    "git:01b9671e9b299c30b46068823761ca3292dde53a",
-    "docs/beacon/v1.6.4/change/beacon-global-workspace-git-admission-v162.md",
-    "docs/beacon/v1.6.4/change/beacon-global-workspace-git-admission-v162.refreeze-summary.md"
+    "git:2267c83f767a8b8794c305c4e31c1b1924141b7a",
+    ".beacon/evidence/implementation/beacon-global-workspace-git-admission-v162/r7-focused-junit.xml",
+    "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md"
   ],
   "changed_files": [
     "beacon/utils/execution_branch_contract.py",
-    "beacon/utils/project_governance.py",
     "beacon/utils/workspace_admission.py",
-    "tests/test_v162_delivery_program_branch_r5.py",
-    "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
-    "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md",
-    "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tasks.md",
-    "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/evidence.md"
+    "tests/test_v164_git_admission_nested_ref_r7.py",
+    "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tasks.md"
   ],
-  "service_dirs": [],
-  "summary_ref": "docs/beacon/v1.6.4/release/v1.6.4.md",
-  "approved_by": "codex",
+  "service_dirs": [
+    "beacon/utils",
+    "tests"
+  ],
+  "summary_ref": "git:2267c83f767a8b8794c305c4e31c1b1924141b7a",
+  "approved_by": "cursor-agent",
   "prompt_boundary": {
     "schema_version": "1.0",
     "feature": "beacon-global-workspace-git-admission-v162",
     "feature_slug": "beacon-global-workspace-git-admission-v162",
     "version": "v1.6.4",
     "required": true,
-    "prompt": "Import externally produced implementation evidence for the scoped Beacon feature. Read Beacon source of truth and bind the imported evidence to the frozen feature package truth. Implement only against the frozen feature package truth above. Evidence refs: git:01b9671e9b299c30b46068823761ca3292dde53a, docs/beacon/v1.6.4/change/beacon-global-workspace-git-admission-v162.md, docs/beacon/v1.6.4/change/beacon-global-workspace-git-admission-v162.refreeze-summary.md, docs/beacon/v1.6.4/release/v1.6.4.md. Changed files or service directories: beacon/utils/execution_branch_contract.py, beacon/utils/project_governance.py, beacon/utils/workspace_admission.py, tests/test_v162_delivery_program_branch_r5.py, docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md, docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md, docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tasks.md, docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/evidence.md.",
+    "prompt": "Import externally produced implementation evidence for the scoped Beacon feature. Read Beacon source of truth and bind the imported evidence to the frozen feature package truth. Implement only against the frozen feature package truth above. Evidence refs: git:2267c83f767a8b8794c305c4e31c1b1924141b7a, .beacon/evidence/implementation/beacon-global-workspace-git-admission-v162/r7-focused-junit.xml, docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md, git:2267c83f767a8b8794c305c4e31c1b1924141b7a. Changed files or service directories: beacon/utils/execution_branch_contract.py, beacon/utils/workspace_admission.py, tests/test_v164_git_admission_nested_ref_r7.py, docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tasks.md, beacon/utils, tests.",
     "classification": "in_scope_implementation",
     "blocked": false,
     "status": "pass",
@@ -49,6 +48,6 @@
     ],
     "surface": "import-evidence"
   },
-  "created_at": "2026-07-09T07:41:49.959217+00:00",
-  "generated_at": "2026-07-09T07:41:49.959493+00:00"
+  "created_at": "2026-07-10T15:14:50.671646+00:00",
+  "generated_at": "2026-07-10T15:14:50.671655+00:00"
 }

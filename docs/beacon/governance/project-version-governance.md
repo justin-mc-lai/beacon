@@ -1,23 +1,23 @@
 ---
 schema_version: "1.0"
-project_root: "/Users/apple/Developer/Personal/products/beacon"
+project_root: "/workspace"
 topology_kind: "single_repo"
 default_execution_service: "beacon"
-transaction_id: "tx-project-governance-ddd3da112f25bb7c"
-committed_at: "2026-07-02T02:21:57.265932+00:00"
-source_hash: "ddd3da112f25bb7cbcad7b927a1dbb173f5708ea25924f28418aeb94faf97529"
-event_type: "add-version-v1.6.4"
+transaction_id: "tx-project-governance-9fd2370e740228be"
+committed_at: "2026-07-10T09:53:40.528104+00:00"
+source_hash: "9fd2370e740228be00ff1e9068c59abc8ed0857df9bdf71810fa23907adc95f2"
+event_type: "doctor-repair-project-root-path"
 parser_contract: "beacon-project-governance-v1"
 ---
 
 # Project Version Governance
 
-- project_root: `/Users/apple/Developer/Personal/products/beacon`
+- project_root: `/workspace`
 - topology_kind: `single_repo`
 - default_execution_service: `beacon`
 
 ## Service Bindings
-- `beacon` repo=`/Users/apple/Developer/Personal/products/beacon` role=`service` writable=`true` worktree_policy=`follow-repo-root`
+- `beacon` repo=`/workspace` role=`service` writable=`true` worktree_policy=`follow-repo-root`
 
 ## Version Contracts
 
@@ -92,15 +92,11 @@ parser_contract: "beacon-project-governance-v1"
 - validation_state: `active`
 - per_service_canonical_branch:
   - `beacon`: `beacon/v1.6.4`
-- truth_canonical: `main`
-- runtime_mirror: `beacon/v1.6.4`
 - branch_governance_template: `standard-feature`
 - previous_version_baseline_branch: `main`
 - next_version_feature_branch: `beacon/v1.6.4/<feature-slug>`
 - worktree_mode: `dedicated`
 - worktree_path: `.beacon/worktrees/v1.6.4`
-- require_workspace_admission: `true`
-- admission_invalidation: `dirty_only`
 
 ### v2.0.0
 - participating_services: `beacon`

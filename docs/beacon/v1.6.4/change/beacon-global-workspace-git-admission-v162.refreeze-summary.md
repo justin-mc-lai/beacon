@@ -1,12 +1,12 @@
 # Change Refreeze Summary: beacon-global-workspace-git-admission-v162
 
 - version: `v1.6.4`
-- change_reason: `R6 program/lake aggregation branch governance contract; friction:e3fe3b33ecf9`
+- change_reason: `R7 nested aggregation branch vs child feature ref coexistence; accepted after doctor confirmation`
 - refreeze_status: `complete`
 - blocked_reason: ``
 - next_route: `beacon-gen-implement`
-- revision_before: `R1`
-- revision_after: `R2`
+- revision_before: `R7`
+- revision_after: `R7`
 
 ## Surface Statuses
 - `change`: `present` (docs/beacon/v1.6.4/change/beacon-global-workspace-git-admission-v162.md)

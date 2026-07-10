@@ -15,8 +15,8 @@
 
 ## Worktree
 - use_git_worktree: `False`
-- worktree_root: `/Users/apple/Developer/Personal/products/beacon`
-- workspace_root: `/Users/apple/Developer/Personal/products/beacon`
+- worktree_root: `/workspace`
+- workspace_root: `/workspace`
 
 ## Environment Isolation
 - environment_mode: `local-dev`

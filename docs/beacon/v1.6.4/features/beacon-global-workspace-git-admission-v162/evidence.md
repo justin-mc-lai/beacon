@@ -2,30 +2,30 @@
 slug: beacon-global-workspace-git-admission-v162
 version: v1.6.4
 status: draft
-revision_id: R6
+revision_id: R7
 language: zh
 truth_ref: docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md
 parser_contract: beacon-feature-package-v1
 ---
 
-# Evidence Index: Workspace Admission Program/Lake Branch Governance R6
+# Evidence Index: Workspace Admission Nested-Ref Coexistence R7
 
 ## Authority Surface
 
 | Surface | Authority | Canonical Artifact | Status | Route |
 |---------|-----------|--------------------|--------|-------|
-| truth.md | requirement_truth | docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md | draft R6 | freeze |
-| tests.md | test_truth | docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md | draft R6 | qa |
-| tasks.md | requirement_truth | docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tasks.md | draft R6 | implement |
-| friction capture | support_advisory | .beacon/debug/friction-captures/eec4092c3010.json | accepted input | change |
-| friction analysis | support_advisory | .beacon/analysis/friction-intake-fit-20260709T060148Z.md | accepted input | change |
-| R5 research | support_advisory | docs/beacon/v1.6.4/research/beacon-delivery-repo-git-admission-friction.md | prior patch context | change |
+| truth.md | requirement_truth | docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md | draft R7 | freeze |
+| tests.md | test_truth | docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md | draft R7 | qa |
+| tasks.md | requirement_truth | docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tasks.md | draft R7 | implement |
+| doctor path repair | support_advisory | docs/beacon/governance/project-version-governance.md | repaired | doctor |
+| post-doctor admit failure | support_advisory | workspace admit JSON for beacon-qa-chrome-extension-e2e-v164 | accepted input | change |
+| planner review | support_advisory | .beacon/state/planner-review/beacon-global-workspace-git-admission-v162/pln-review-20260710t094854z.json | advisory | change |
 
-## Verification Evidence
+## Planned Verification Evidence
 
-| Command | Result | Notes |
-|---------|--------|-------|
-| `python3 -m pytest tests/test_v162_delivery_program_branch_r5.py -q` | 12 passed | Focused branch governance regression set executed during generator repair. Formal QA verdict remains evaluator-owned. |
+| Command | Expected Result | Notes |
+|---------|-----------------|-------|
+| `python3 -m pytest tests/test_v162_delivery_program_branch_r5.py tests/test_v164_git_admission_nested_ref_r7.py -q` | R6 + R7 contract tests pass | Focused regression for nested-ref coexistence and contract authority. |
 
 ## Boundary
 

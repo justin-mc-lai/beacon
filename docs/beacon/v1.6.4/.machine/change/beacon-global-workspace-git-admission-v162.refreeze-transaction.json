@@ -1,10 +1,10 @@
 {
   "schema_version": "1.0",
-  "transaction_id": "tx-change-refreeze-beacon-global-workspace-git-admission-v162-20260709t065537z",
+  "transaction_id": "tx-change-refreeze-beacon-global-workspace-git-admission-v162-20260710t095832z",
   "feature": "beacon-global-workspace-git-admission-v162",
   "feature_slug": "beacon-global-workspace-git-admission-v162",
   "version": "v1.6.4",
-  "change_reason": "R6 program/lake aggregation branch governance contract; friction:e3fe3b33ecf9",
+  "change_reason": "R7 nested aggregation branch vs child feature ref coexistence; accepted after doctor confirmation",
   "touched_surfaces": [
     "change",
     "truth",
@@ -72,21 +72,21 @@
     }
   },
   "truth_revision_before": {
-    "revision_id": "R1",
-    "doc_status": "frozen",
+    "revision_id": "R7",
+    "doc_status": "draft",
     "lifecycle_status": "idle",
-    "baseline_hash": "sha256:51cb748ef773b88be60703b90dcb3e341b38d9f1f3d44e5458c6c93a8836c4f4"
+    "baseline_hash": ""
   },
   "truth_revision_after": {
-    "revision_id": "R2",
+    "revision_id": "R7",
     "doc_status": "frozen",
     "lifecycle_status": "frozen",
-    "baseline_hash": "sha256:51cb748ef773b88be60703b90dcb3e341b38d9f1f3d44e5458c6c93a8836c4f4"
+    "baseline_hash": "sha256:b0dde37d7774a9042e062d0d66dfa5886409d41f876580d45dcb8583a77fa860"
   },
   "refreeze_status": "complete",
   "next_route": {
     "target_surface": "beacon-gen-implement",
-    "command": "beacon implement \"beacon-global-workspace-git-admission-v162\" --project /Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162 --version v1.6.4",
+    "command": "beacon implement \"beacon-global-workspace-git-admission-v162\" --project /workspace/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162 --version v1.6.4",
     "why": "refreeze transaction completed; implementation may plan against the refreshed frozen truth"
   },
   "blocked_reason": "",
@@ -95,26 +95,26 @@
     "qa_executed": false,
     "release_executed": false
   },
-  "created_at": "2026-07-09T06:55:37.740257+00:00",
+  "created_at": "2026-07-10T09:58:32.439534+00:00",
   "previous_revision": {
-    "revision_id": "R1",
+    "revision_id": "R6",
     "doc_status": "superseded",
     "lifecycle_status": "superseded",
-    "baseline_hash": "sha256:51cb748ef773b88be60703b90dcb3e341b38d9f1f3d44e5458c6c93a8836c4f4"
+    "baseline_hash": ""
   },
   "opened_revision": {
-    "revision_id": "R2",
+    "revision_id": "R7",
     "doc_status": "draft",
-    "lifecycle_status": "draft",
+    "lifecycle_status": "idle",
     "baseline_hash": ""
   },
   "story_reopen": {
     "current_revision_id": "R2",
-    "lifecycle_status": "draft"
+    "lifecycle_status": "accepted"
   },
   "requirement_package": {
     "schema_version": "1.0",
-    "project_root": "/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162",
+    "project_root": "/workspace/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162",
     "version": "v1.6.4",
     "feature": "beacon-global-workspace-git-admission-v162",
     "status": "synced",
@@ -154,10 +154,10 @@
         "evidence": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/evidence.md"
       },
       "source_hashes": {
-        "truth": "e1e0aafa8e310681b2ad23f6902b0fc2127ad1e9b8aca8d85eb13f14d391dc5e",
-        "tests": "5c0b13d82d1036066ddb1b798315863c485cb709462913e1514d2deb06d0133a",
-        "tasks": "c3fe7e1e20513912d5aa36617d01585c38667e6797e2f0d264dbd3714d930cca",
-        "evidence": "1ffa7dba6681d3a9dcf89a061ec749d40e00adfe3bc962bb622ccf26002d2cd2"
+        "truth": "ae3c8722030f0d4d5fe8dc9516803576ad04cb38ca81ba8b23b1f2a360a23892",
+        "tests": "9381d4f10addfd3994bb9684cff549372fbde8d72d2298be23a7984ed77c2f85",
+        "tasks": "a2c9ad32600ca5a40b6dd5e8fe74d31b04bb3698203c5640d7b3d82b11587e77",
+        "evidence": "67b99efe86c24e4e7cadd80c727f9f8be76975b9e140019f6b540ca5d83f4c9a"
       },
       "plan": {
         "schema_version": "1.0",
@@ -212,9 +212,13 @@
       "feature": "beacon-global-workspace-git-admission-v162",
       "version": "v1.6.4",
       "revision_id": "R2",
-      "ac_count": 5,
-      "test_count": 5,
+      "ac_count": 9,
+      "test_count": 9,
       "story_ids": [
+        "",
+        "",
+        "",
+        "",
         "",
         "",
         "",
@@ -253,7 +257,7 @@
         "review_gates": [],
         "qa_coverage_hints": [],
         "evidence_lines": {},
-        "generated_at": "2026-07-09T06:55:40.599516+00:00",
+        "generated_at": "2026-07-10T09:58:34.656441+00:00",
         "feature": "beacon-global-workspace-git-admission-v162",
         "feature_slug": "beacon-global-workspace-git-admission-v162",
         "prd_ref": "docs/beacon/v1.6.4/prd/beacon-global-workspace-git-admission-v162.md",
@@ -307,28 +311,44 @@
             "AC-024",
             "AC-025",
             "AC-026",
-            "AC-027"
+            "AC-027",
+            "AC-028",
+            "AC-029",
+            "AC-030",
+            "AC-031"
           ],
           "user_story_ac_ids": [
             "AC-023",
             "AC-024",
             "AC-025",
             "AC-026",
-            "AC-027"
+            "AC-027",
+            "AC-028",
+            "AC-029",
+            "AC-030",
+            "AC-031"
           ],
           "test_case_ac_ids": [
             "AC-023",
             "AC-024",
             "AC-025",
             "AC-026",
-            "AC-027"
+            "AC-027",
+            "AC-028",
+            "AC-029",
+            "AC-030",
+            "AC-031"
           ],
           "upstream_ac_ids": [
             "AC-023",
             "AC-024",
             "AC-025",
             "AC-026",
-            "AC-027"
+            "AC-027",
+            "AC-028",
+            "AC-029",
+            "AC-030",
+            "AC-031"
           ],
           "missing_test_case_ac_ids": []
         }
@@ -395,7 +415,7 @@
       "finding_count": 0,
       "run_id": "",
       "source": "change.refreeze-chain",
-      "written_at": "2026-07-09T06:55:40.627941+00:00",
+      "written_at": "2026-07-10T09:58:34.672559+00:00",
       "state_path": ".beacon/state/requirement-clarity-beacon-global-workspace-git-admission-v162.json"
     }
   },
@@ -405,7 +425,7 @@
     "feature_slug": "beacon-global-workspace-git-admission-v162",
     "version": "v1.6.4",
     "mode": "block",
-    "truth_status": "frozen",
+    "truth_status": "draft",
     "status": "pass",
     "blocked": false,
     "reason_code": "",
@@ -440,7 +460,7 @@
         "review_gates": [],
         "qa_coverage_hints": [],
         "evidence_lines": {},
-        "generated_at": "2026-07-09T06:55:40.634887+00:00",
+        "generated_at": "2026-07-10T09:58:34.677283+00:00",
         "feature": "beacon-global-workspace-git-admission-v162",
         "feature_slug": "beacon-global-workspace-git-admission-v162",
         "prd_ref": "docs/beacon/v1.6.4/prd/beacon-global-workspace-git-admission-v162.md",
@@ -494,28 +514,44 @@
             "AC-024",
             "AC-025",
             "AC-026",
-            "AC-027"
+            "AC-027",
+            "AC-028",
+            "AC-029",
+            "AC-030",
+            "AC-031"
           ],
           "user_story_ac_ids": [
             "AC-023",
             "AC-024",
             "AC-025",
             "AC-026",
-            "AC-027"
+            "AC-027",
+            "AC-028",
+            "AC-029",
+            "AC-030",
+            "AC-031"
           ],
           "test_case_ac_ids": [
             "AC-023",
             "AC-024",
             "AC-025",
             "AC-026",
-            "AC-027"
+            "AC-027",
+            "AC-028",
+            "AC-029",
+            "AC-030",
+            "AC-031"
           ],
           "upstream_ac_ids": [
             "AC-023",
             "AC-024",
             "AC-025",
             "AC-026",
-            "AC-027"
+            "AC-027",
+            "AC-028",
+            "AC-029",
+            "AC-030",
+            "AC-031"
           ],
           "missing_test_case_ac_ids": []
         }
@@ -588,16 +624,16 @@
       "status": "pass",
       "blocked": false,
       "reason_code": "",
-      "generated_at": "2026-07-09T06:55:40.680200+00:00",
+      "generated_at": "2026-07-10T09:58:34.706832+00:00",
       "package_dir": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162",
       "truth_frontmatter": {
         "slug": "beacon-global-workspace-git-admission-v162",
         "version": "v1.6.4",
-        "status": "frozen",
-        "revision_id": "R6",
+        "status": "draft",
+        "revision_id": "R7",
         "language": "zh",
-        "change_reason": "R6 - program/lake aggregation branch governance contract; SidePilot v0.0.12 QA admission friction friction:e3fe3b33ecf9",
-        "source_revision_id": "R5",
+        "change_reason": "R7 - nested aggregation branch vs child feature ref coexistence; stale per-feature execution contracts must not force program-level; doctor path-repair confirmed residual contract gap",
+        "source_revision_id": "R6",
         "canonical_refs": {
           "prd": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
           "user_story": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
@@ -607,9 +643,9 @@
         "truth_source_model": "feature_package_authoritative",
         "truth_map_contract": "beacon-truth-map-v1"
       },
-      "ac_count": 5,
-      "test_count": 6,
-      "checkbox_count": 7,
+      "ac_count": 9,
+      "test_count": 10,
+      "checkbox_count": 8,
       "evidence_row_count": 6,
       "gate_authority": "canonical_surfaces_preserved",
       "checkbox_gate_bypass": false,
@@ -629,10 +665,10 @@
         "evidence": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/evidence.md"
       },
       "source_hashes": {
-        "truth": "e1e0aafa8e310681b2ad23f6902b0fc2127ad1e9b8aca8d85eb13f14d391dc5e",
-        "tests": "5c0b13d82d1036066ddb1b798315863c485cb709462913e1514d2deb06d0133a",
-        "tasks": "c3fe7e1e20513912d5aa36617d01585c38667e6797e2f0d264dbd3714d930cca",
-        "evidence": "1ffa7dba6681d3a9dcf89a061ec749d40e00adfe3bc962bb622ccf26002d2cd2"
+        "truth": "ae3c8722030f0d4d5fe8dc9516803576ad04cb38ca81ba8b23b1f2a360a23892",
+        "tests": "9381d4f10addfd3994bb9684cff549372fbde8d72d2298be23a7984ed77c2f85",
+        "tasks": "a2c9ad32600ca5a40b6dd5e8fe74d31b04bb3698203c5640d7b3d82b11587e77",
+        "evidence": "67b99efe86c24e4e7cadd80c727f9f8be76975b9e140019f6b540ca5d83f4c9a"
       },
       "runtime_json_requires_markdown_twin": false,
       "report_path": "docs/beacon/v1.6.4/.machine/requirement/feature-package-validation.json"
@@ -648,8 +684,9 @@
     "recommended_action": ""
   },
   "truth_frontmatter_sync": {
-    "updated": false,
+    "updated": true,
     "status": "frozen",
+    "previous_status": "draft",
     "path": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
   },
   "revision_delta": {
@@ -657,76 +694,20 @@
     "feature": "beacon-global-workspace-git-admission-v162",
     "feature_slug": "beacon-global-workspace-git-admission-v162",
     "version": "v1.6.4",
-    "revision_id": "R2",
-    "source_revision_id": "R1",
+    "revision_id": "R7",
+    "source_revision_id": "R6",
     "status": "ready",
     "cleanup_required": false,
     "removed_requirement_count": 0,
     "added_requirement_count": 0,
-    "retained_requirement_count": 5,
+    "retained_requirement_count": 0,
     "removed_requirement_surfaces": [],
     "added_requirement_surfaces": [],
-    "retained_requirement_surfaces": [
-      {
-        "revision_id": "R2",
-        "id": "AC-004",
-        "story_id": "",
-        "kind": "ac",
-        "theme": "per-feature-default-preserved",
-        "text": "Repos without program-level contract/topology continue to resolve `beacon/<version>/<feature-slug>`.",
-        "details": [],
-        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
-        "signature": "ac::::per-feature-default-preserved::repos without program-level contract/topology continue to resolve `beacon/<version>/<feature-slug>`.::"
-      },
-      {
-        "revision_id": "R2",
-        "id": "AC-002",
-        "story_id": "",
-        "kind": "ac",
-        "theme": "program-topology-with-git-workflow",
-        "text": "Program-level governance still resolves through explicit `git-workflow-*.md` when present.",
-        "details": [],
-        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
-        "signature": "ac::::program-topology-with-git-workflow::program-level governance still resolves through explicit `git-workflow-*.md` when present.::"
-      },
-      {
-        "revision_id": "R2",
-        "id": "AC-001",
-        "story_id": "",
-        "kind": "ac",
-        "theme": "program-topology-without-git-workflow",
-        "text": "Program-level governance resolves a lake to the aggregation branch from program/lake topology when `git-workflow-*.md` is absent.",
-        "details": [],
-        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
-        "signature": "ac::::program-topology-without-git-workflow::program-level governance resolves a lake to the aggregation branch from program/lake topology when `git-workflow-*.md` is absent.::"
-      },
-      {
-        "revision_id": "R2",
-        "id": "AC-003",
-        "story_id": "",
-        "kind": "ac",
-        "theme": "qa-run-aggregation-admission",
-        "text": "`beacon qa run <lake>` accepts the aggregation branch after workspace admission and does not block with `branch_alignment_required`.",
-        "details": [],
-        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
-        "signature": "ac::::qa-run-aggregation-admission::`beacon qa run <lake>` accepts the aggregation branch after workspace admission and does not block with `branch_alignment_required`.::"
-      },
-      {
-        "revision_id": "R2",
-        "id": "AC-005",
-        "story_id": "",
-        "kind": "ac",
-        "theme": "soft-admission-wrong-branch-blocks",
-        "text": "Soft admission still blocks wrong current branch with `branch_alignment_required` using the shared resolved target.",
-        "details": [],
-        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
-        "signature": "ac::::soft-admission-wrong-branch-blocks::soft admission still blocks wrong current branch with `branch_alignment_required` using the shared resolved target.::"
-      }
-    ],
-    "current_baseline_hash": "sha256:51cb748ef773b88be60703b90dcb3e341b38d9f1f3d44e5458c6c93a8836c4f4",
-    "source_baseline_hash": "sha256:51cb748ef773b88be60703b90dcb3e341b38d9f1f3d44e5458c6c93a8836c4f4",
+    "retained_requirement_surfaces": [],
+    "current_baseline_hash": "sha256:b0dde37d7774a9042e062d0d66dfa5886409d41f876580d45dcb8583a77fa860",
+    "source_baseline_hash": "",
     "story_state_ref": "docs/beacon/v1.6.4/.machine/user-story/beacon-global-workspace-git-admission-v162.json",
-    "generated_at": "2026-07-09T06:55:40.765664+00:00",
+    "generated_at": "2026-07-10T09:58:34.752275+00:00",
     "json_ref": "docs/beacon/v1.6.4/.machine/execution/revision-delta-beacon-global-workspace-git-admission-v162.json",
     "markdown_ref": "docs/beacon/v1.6.4/execution/revision-delta-beacon-global-workspace-git-admission-v162.md"
   },
@@ -758,9 +739,9 @@
         "feature": "beacon-global-workspace-git-admission-v162",
         "feature_slug": "beacon-global-workspace-git-admission-v162",
         "summary": "Maintains release-facing version aggregate projection guards so QA accepted features are included in version change scope before release check.",
-        "status": "generated",
-        "accepted_at": "",
-        "revision_id": "R2",
+        "status": "completed",
+        "accepted_at": "2026-07-09T07:42:17.431529+00:00",
+        "revision_id": "R7",
         "projection_role": {
           "artifact_role": "version_aggregate_projection",
           "truth_source": false,
@@ -787,9 +768,10 @@
           "docs/beacon/v1.6.4/prd/beacon-global-workspace-git-admission-v162.md",
           "docs/beacon/v1.6.4/user-story/beacon-global-workspace-git-admission-v162.md",
           "docs/beacon/v1.6.4/qa/test-cases/beacon-global-workspace-git-admission-v162.md",
-          "docs/beacon/v1.6.4/.machine/execution/beacon-global-workspace-git-admission-v162.revision.json"
+          "docs/beacon/v1.6.4/.machine/execution/beacon-global-workspace-git-admission-v162.revision.json",
+          "docs/beacon/v1.6.4/.machine/execution/qa-acceptance-beacon-global-workspace-git-admission-v162.json"
         ],
-        "generated_at": "2026-07-09T06:55:40.774427+00:00"
+        "generated_at": "2026-07-10T09:58:34.757362+00:00"
       }
     },
     "version_aggregate_projection": {
@@ -798,9 +780,10 @@
       "version": "v1.6.4",
       "markdown_path": "docs/beacon/v1.6.4/change/v1.6.4.md",
       "json_path": "docs/beacon/v1.6.4/.machine/change/v1.6.4.json",
-      "feature_count": 6,
+      "feature_count": 7,
       "feature_slugs": [
         "beacon-global-workspace-git-admission-v162",
+        "beacon-program-next-action-admission-v164",
         "beacon-qa-business-state-machine-v164",
         "beacon-qa-chrome-extension-e2e-v164",
         "beacon-qa-coverage-confidence-chain-v164",
@@ -819,13 +802,14 @@
       "release_publish_action": false,
       "implementation_order": {
         "status": "analyzed",
-        "feature_count": 6,
+        "feature_count": 7,
         "ordered_feature_slugs": [
           "beacon-qa-chrome-extension-e2e-v164",
           "beacon-qa-coverage-confidence-chain-v164",
           "beacon-qa-business-state-machine-v164",
           "beacon-qa-defect-repair-loop-v164",
           "beacon-qa-methodology-contract-v164",
+          "beacon-program-next-action-admission-v164",
           "beacon-global-workspace-git-admission-v162"
         ],
         "waves": [
@@ -843,6 +827,15 @@
                 "writable_services": [
                   "."
                 ],
+                "parallelizable": true,
+                "reason_code": "parallel_no_conflict"
+              },
+              {
+                "feature": "beacon-program-next-action-admission-v164",
+                "feature_slug": "beacon-program-next-action-admission-v164",
+                "depends_on_features": [],
+                "direct_delivery_services": [],
+                "writable_services": [],
                 "parallelizable": true,
                 "reason_code": "parallel_no_conflict"
               },
