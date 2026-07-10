@@ -319,6 +319,36 @@ def _merge_main_into_feature_branch(lane_root: Path, base_branch: str = "main") 
     return {"status": "conflict", "base_branch": base, "stdout": stdout, "stderr": stderr}
 
 
+
+def _detect_nested_ref_conflict(worktree_attempt: dict[str, Any], *, feature_branch: str) -> bool:
+    """R7 UD-035: map git nested parent/child ref lock failures to an explicit reason code."""
+    texts: list[str] = []
+
+    def _collect(node: Any) -> None:
+        if isinstance(node, dict):
+            for key in ("stderr", "stdout", "error", "message"):
+                value = node.get(key)
+                if value:
+                    texts.append(str(value))
+            for attempt in node.get("attempts") or []:
+                _collect(attempt)
+            for nest_key in ("switch_attempt", "create_attempt"):
+                nested = node.get(nest_key)
+                if nested is not None:
+                    _collect(nested)
+        elif isinstance(node, list):
+            for item in node:
+                _collect(item)
+
+    _collect(worktree_attempt)
+    blob = "\n".join(texts).lower()
+    if "cannot lock ref" in blob and "exists" in blob:
+        return True
+    if "cannot create" in blob and "exists" in blob and "refs/heads/" in blob:
+        return True
+    return False
+
+
 def run_workspace_admit(
     project_root: Path,
     *,
@@ -378,9 +408,15 @@ def run_workspace_admit(
     payload["worktree_attempt"] = worktree_attempt
     if worktree_attempt.get("status") not in {"created", "switched"}:
         payload["status"] = "blocked"
-        payload["reason_codes"] = ["workspace_admission_worktree_failed"]
-        payload["reason_code"] = "workspace_admission_worktree_failed"
-        payload["summary"] = "failed to create or switch governed worktree lane"
+        nested = _detect_nested_ref_conflict(worktree_attempt, feature_branch=feature_branch)
+        reason = "aggregation_branch_nested_ref_conflict" if nested else "workspace_admission_worktree_failed"
+        payload["reason_codes"] = [reason]
+        payload["reason_code"] = reason
+        payload["summary"] = (
+            "aggregation branch blocked by nested child feature refs"
+            if nested
+            else "failed to create or switch governed worktree lane"
+        )
         return payload
     lane_root = Path(str(worktree_attempt.get("worktree_path") or worktree_path)).resolve()
     # R4 §4.2 / AC-017: merge main into the feature branch so implementation
