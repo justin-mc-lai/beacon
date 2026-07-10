@@ -1,0 +1,446 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-program-next-action-admission-v164",
+  "feature_slug": "beacon-program-next-action-admission-v164",
+  "run_id": "run-20260710T114740772252",
+  "ac_total": 7,
+  "ac_accepted": 7,
+  "scenario_total": 7,
+  "scenario_passed": 7,
+  "release_confidence_min": 1.0,
+  "release_confidence_avg": 1.0,
+  "review_required_count": 0,
+  "needs_replay_count": 0,
+  "false_complete_risk": 0.0,
+  "unresolved_closure_outcomes": [],
+  "project_profile_gate_status": "not_configured",
+  "project_profile_id": "",
+  "coverage_current": {
+    "required_scenarios": 7,
+    "executed_scenarios": 7,
+    "coverage_rate": 1.0,
+    "required_scenario_families": [
+      "boundary",
+      "compatibility",
+      "happy",
+      "negative",
+      "recovery"
+    ],
+    "covered_scenario_families": [
+      "primary"
+    ],
+    "missing_scenario_families": [],
+    "missing_test_case_ids": []
+  },
+  "coverage_gap": {
+    "missing_axes": [],
+    "missing_replay_scenarios": [],
+    "missing_browser_evidence_scenarios": [],
+    "missing_scenario_families": [],
+    "missing_test_case_ids": [],
+    "open_closure_outcomes": []
+  },
+  "boundary_evidence": {
+    "boundary_principles": [],
+    "assumption_capture_required": true,
+    "goal_driven_verification_required": true,
+    "verification_item_count": 7,
+    "targeted_scope_only": true
+  },
+  "design_truth_verdict": {
+    "schema_version": "1.0",
+    "status": "not_applicable",
+    "blocked": false,
+    "reason_codes": [],
+    "source_surface": "implement-to-qa-handoff",
+    "verification_surface": "qa",
+    "findings": []
+  },
+  "qa_outcome_taxonomy": {
+    "status": "not_applicable",
+    "failure_classes": [],
+    "primary_class": "",
+    "stable_taxonomy": [
+      "product_failed",
+      "test_failed",
+      "runner_admission_blocked",
+      "environment_blocked",
+      "auth_session_blocked",
+      "evidence_binding_missing",
+      "coverage_gap",
+      "truth_projection_gap"
+    ]
+  },
+  "qa_attribution": {
+    "schema_version": "1.0",
+    "status": "not_applicable",
+    "support_evidence_only": true,
+    "runtime_evidence_only": true,
+    "truth_authority": false,
+    "verdict_authority": false,
+    "release_pass_evidence": false,
+    "attribution_count": 0,
+    "accepted_count": 0,
+    "blocked_count": 0,
+    "release_blocking_count": 0,
+    "proposal_count": 0,
+    "family_counts": {
+      "implementation_gap": 0,
+      "truth_drift": 0,
+      "coverage_gap": 0,
+      "execution_lapse": 0,
+      "skill_defect": 0,
+      "runner_admission_blocker": 0,
+      "evidence_insufficient": 0
+    },
+    "route_counts": {},
+    "attributions": []
+  },
+  "qa_acceptance_capability": {
+    "schema_version": "1.0",
+    "status": "blocked",
+    "blocked": true,
+    "taxonomy": {
+      "schema_version": "1.0",
+      "status": "pass",
+      "blocked": false,
+      "full_layers": [
+        "unit",
+        "interface",
+        "contract",
+        "integration",
+        "smoke",
+        "functional",
+        "regression",
+        "exception",
+        "compatibility",
+        "browser_e2e"
+      ],
+      "non_browser_layers": [
+        "unit",
+        "interface",
+        "contract",
+        "integration",
+        "smoke",
+        "functional",
+        "regression",
+        "exception",
+        "compatibility"
+      ],
+      "browser_layer": "browser_e2e",
+      "qa9_layers": [
+        "unit",
+        "interface",
+        "contract",
+        "integration",
+        "smoke",
+        "functional",
+        "regression",
+        "exception",
+        "compatibility"
+      ],
+      "requested_layers": [
+        "contract",
+        "integration",
+        "regression",
+        "unit"
+      ],
+      "unknown_layers": []
+    },
+    "profile_completeness": {
+      "schema_version": "1.0",
+      "profile": "feature-matrix",
+      "browser_required": false,
+      "required_layers": [
+        "contract",
+        "integration",
+        "regression",
+        "unit"
+      ],
+      "executed_layers": [
+        "contract",
+        "integration",
+        "regression",
+        "unit"
+      ],
+      "skipped_layers": [],
+      "blocked_layers": [],
+      "not_applicable_layers": [],
+      "not_applicable_reasons": {},
+      "missing_layers": [],
+      "confidence_chain": {
+        "schema_version": "1.0",
+        "layers": [
+          {
+            "layer": "unit",
+            "status": "executed",
+            "confidence": 1.0,
+            "depends_on": [],
+            "gap_markers": [],
+            "downstream_gap_sources": []
+          },
+          {
+            "layer": "interface",
+            "status": "missing",
+            "confidence": 0.0,
+            "depends_on": [
+              "unit"
+            ],
+            "gap_markers": [
+              "downstream_gap"
+            ],
+            "downstream_gap_sources": [
+              "interface"
+            ]
+          },
+          {
+            "layer": "contract",
+            "status": "executed",
+            "confidence": 0.0,
+            "depends_on": [
+              "unit",
+              "interface"
+            ],
+            "gap_markers": [
+              "downstream_gap"
+            ],
+            "downstream_gap_sources": [
+              "interface"
+            ]
+          },
+          {
+            "layer": "integration",
+            "status": "executed",
+            "confidence": 0.0,
+            "depends_on": [
+              "unit",
+              "interface",
+              "contract"
+            ],
+            "gap_markers": [
+              "downstream_gap"
+            ],
+            "downstream_gap_sources": [
+              "interface"
+            ]
+          },
+          {
+            "layer": "smoke",
+            "status": "missing",
+            "confidence": 0.0,
+            "depends_on": [
+              "unit",
+              "interface",
+              "contract",
+              "integration"
+            ],
+            "gap_markers": [
+              "downstream_gap"
+            ],
+            "downstream_gap_sources": [
+              "interface",
+              "smoke"
+            ]
+          },
+          {
+            "layer": "functional",
+            "status": "missing",
+            "confidence": 0.0,
+            "depends_on": [
+              "unit",
+              "interface",
+              "contract",
+              "integration",
+              "smoke"
+            ],
+            "gap_markers": [
+              "downstream_gap"
+            ],
+            "downstream_gap_sources": [
+              "interface",
+              "smoke",
+              "functional"
+            ]
+          },
+          {
+            "layer": "regression",
+            "status": "executed",
+            "confidence": 0.0,
+            "depends_on": [
+              "unit",
+              "interface",
+              "contract",
+              "integration",
+              "smoke",
+              "functional"
+            ],
+            "gap_markers": [
+              "downstream_gap"
+            ],
+            "downstream_gap_sources": [
+              "interface",
+              "smoke",
+              "functional"
+            ]
+          },
+          {
+            "layer": "exception",
+            "status": "missing",
+            "confidence": 0.0,
+            "depends_on": [
+              "unit",
+              "interface",
+              "contract",
+              "integration",
+              "smoke",
+              "functional",
+              "regression"
+            ],
+            "gap_markers": [
+              "downstream_gap"
+            ],
+            "downstream_gap_sources": [
+              "interface",
+              "smoke",
+              "functional",
+              "exception"
+            ]
+          },
+          {
+            "layer": "compatibility",
+            "status": "missing",
+            "confidence": 0.0,
+            "depends_on": [
+              "unit",
+              "interface",
+              "contract",
+              "integration",
+              "smoke",
+              "functional",
+              "regression",
+              "exception"
+            ],
+            "gap_markers": [
+              "downstream_gap"
+            ],
+            "downstream_gap_sources": [
+              "interface",
+              "smoke",
+              "functional",
+              "exception",
+              "compatibility"
+            ]
+          },
+          {
+            "layer": "browser_e2e",
+            "status": "missing",
+            "confidence": 0.0,
+            "depends_on": [
+              "unit",
+              "interface",
+              "contract",
+              "integration",
+              "smoke",
+              "functional",
+              "regression",
+              "exception",
+              "compatibility"
+            ],
+            "gap_markers": [
+              "downstream_gap"
+            ],
+            "downstream_gap_sources": [
+              "interface",
+              "smoke",
+              "functional",
+              "exception",
+              "compatibility",
+              "browser_e2e"
+            ]
+          }
+        ],
+        "chain_direction": "unit_to_browser_e2e",
+        "terminal_layer": "browser_e2e",
+        "chain_broken": true,
+        "downstream_gap_layers": [
+          "browser_e2e",
+          "compatibility",
+          "exception",
+          "functional",
+          "interface",
+          "smoke"
+        ]
+      },
+      "state_machine_coverage": {},
+      "is_complete": false,
+      "partial": true,
+      "status": "partial"
+    },
+    "browser_evidence_contract": {
+      "status": "not_required",
+      "blocked": false
+    },
+    "browser_runner_registry": [
+      "playwright",
+      "playwright-extension",
+      "playwright-cli",
+      "playwright-cdp",
+      "browser-use",
+      "agent-browser",
+      "attached-browser",
+      "web-access",
+      "obscura-cdp"
+    ],
+    "non_acceptance_evidence_kinds": [
+      "listing",
+      "placeholder",
+      "documentation_only",
+      "dry_run"
+    ],
+    "failure_attribution_routes": {
+      "product_bug": "beacon-implement",
+      "implementation_gap": "beacon-implement",
+      "test_script_bug": "beacon-test-case",
+      "environment_blocker": "beacon-qa",
+      "auth_session_blocker": "beacon-qa",
+      "runner_admission_blocker": "blocked",
+      "coverage_gap": "beacon-test-case",
+      "truth_drift": "beacon-change",
+      "evidence_insufficient": "beacon-qa"
+    },
+    "truth_authority": false,
+    "release_pass_evidence": false
+  },
+  "reconciliation": {
+    "required": false,
+    "reason_code": "",
+    "artifact_path": "",
+    "artifact": {}
+  },
+  "deep_absorption": {
+    "schema_version": "1.0",
+    "status": "not_applicable",
+    "eligible_for_release_supplement": false,
+    "findings": [],
+    "absorbed_count": 0,
+    "deferred_count": 0,
+    "blocked_count": 0,
+    "not_applicable_count": 0
+  },
+  "release_supplement_input": {
+    "deep_findings_absorbed": false,
+    "absorbed_finding_count": 0,
+    "advisory_or_blocked_finding_count": 0,
+    "policy": "absorbed_deep_findings_only"
+  },
+  "continue_decision": "ready_for_release",
+  "stop_reasons": [],
+  "test_case_backfill_required": false,
+  "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-program-next-action-admission-v164 --version v1.6.4 --feature \"beacon-program-next-action-admission-v164\"",
+  "repair_handoff": {
+    "action": "qa-repair",
+    "reason": "qa_round_incomplete",
+    "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-program-next-action-admission-v164 --version v1.6.4 --feature \"beacon-program-next-action-admission-v164\""
+  },
+  "release_ready": true
+}
