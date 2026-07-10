@@ -4,7 +4,7 @@
 - feature: `beacon-global-workspace-git-admission-v162`
 - revision_id: `R7`
 - verdict: `passed`
-- accepted_at: `2026-07-10T10:07:42.432682+00:00`
+- accepted_at: `2026-07-10T15:16:09.296312+00:00`
 - accepted_by: `qa`
 
 ## Summary
