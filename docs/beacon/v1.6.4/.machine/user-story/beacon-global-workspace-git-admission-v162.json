@@ -5,7 +5,7 @@
   "version": "v1.6.4",
   "current_revision_id": "R2",
   "lifecycle_status": "frozen",
-  "updated_at": "2026-07-09T07:42:17.454053+00:00",
+  "updated_at": "2026-07-10T09:58:34.612223+00:00",
   "revisions": [
     {
       "revision_id": "R1",
@@ -28,10 +28,10 @@
       "reason": "R6 program/lake aggregation branch governance contract; friction:e3fe3b33ecf9",
       "doc_status": "frozen",
       "delivery_status": "idle",
-      "baseline_hash": "sha256:51cb748ef773b88be60703b90dcb3e341b38d9f1f3d44e5458c6c93a8836c4f4",
+      "baseline_hash": "sha256:b0dde37d7774a9042e062d0d66dfa5886409d41f876580d45dcb8583a77fa860",
       "superseded_by": null,
       "created_at": "2026-07-09T06:55:40.252065+00:00",
-      "frozen_at": "2026-07-09T06:56:05.757818+00:00",
+      "frozen_at": "2026-07-10T09:58:34.746343+00:00",
       "accepted_at": null,
       "accepted_by": null
     }
@@ -227,13 +227,13 @@
       "revision_id": "R2",
       "title": "beacon-global-workspace-git-admission-v162",
       "priority": "medium",
-      "status": "accepted",
+      "status": "frozen",
       "items": [
         {
           "id": "AC-001",
           "kind": "ac",
-          "theme": "program-topology-without-git-workflow",
-          "text": "Program-level governance resolves a lake to the aggregation branch from program/lake topology when `git-workflow-*.md` is absent.",
+          "theme": "prior aggregation authority UD-027..UD-031 / AC-023..AC-027",
+          "text": "prior aggregation authority UD-027..UD-031 / AC-023..AC-027",
           "required": true,
           "status": "implemented",
           "implemented_by_run_id": "impl-20260709-r6-branch-governance",
@@ -242,7 +242,7 @@
           "changed_in_revision": "R2",
           "story_id": "",
           "details": [],
-          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+          "source": "user-story:/workspace/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
         },
         {
           "id": "AC-002",
@@ -257,7 +257,7 @@
           "changed_in_revision": "R2",
           "story_id": "",
           "details": [],
-          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+          "source": "user-story:/workspace/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
         },
         {
           "id": "AC-003",
@@ -272,7 +272,7 @@
           "changed_in_revision": "R2",
           "story_id": "",
           "details": [],
-          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+          "source": "user-story:/workspace/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
         },
         {
           "id": "AC-004",
@@ -287,7 +287,7 @@
           "changed_in_revision": "R2",
           "story_id": "",
           "details": [],
-          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+          "source": "user-story:/workspace/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
         },
         {
           "id": "AC-005",
@@ -302,7 +302,67 @@
           "changed_in_revision": "R2",
           "story_id": "",
           "details": [],
-          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+          "source": "user-story:/workspace/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "nested-ref-aggregation-coexistence",
+          "text": "When child refs `beacon/<version>/*` exist, resolver selects a non-conflicting aggregation branch (`beacon/<version>/_agg` by default or governance override) instead of bare `beacon/<version>`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/workspace/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "per-feature-contract-not-program-level",
+          "text": "A per-feature deterministic implementation contract with `target_branch` + `worktree_root` but without explicit program-level authority resolves as `per-feature`, not `program-level`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/workspace/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "aggregation-worktree-not-primary-root",
+          "text": "Program-level aggregation worktree resolves under `.beacon/worktrees/<version>` (or governance worktree path), never the primary repo checkout path.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/workspace/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "nested-ref-reason-code",
+          "text": "Admission failure caused by nested parent/child refs emits `aggregation_branch_nested_ref_conflict`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/workspace/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
         },
         {
           "id": "TASK-001",
@@ -318,7 +378,7 @@
         {
           "id": "TEST-001",
           "kind": "test",
-          "text": "Verify AC-001 — Program-level governance resolves a lake to the aggregation branch from program/lake topology when `git-workflow-*.md` is absent.",
+          "text": "Verify AC-001 — prior aggregation authority UD-027..UD-031 / AC-023..AC-027",
           "required": true,
           "status": "passed",
           "implemented_by_run_id": "impl-20260709-r6-branch-governance",
@@ -329,7 +389,7 @@
             "AC-001"
           ],
           "story_id": "",
-          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+          "source": "user-story:/workspace/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
         },
         {
           "id": "TEST-002",
@@ -345,7 +405,7 @@
             "AC-002"
           ],
           "story_id": "",
-          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+          "source": "user-story:/workspace/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
         },
         {
           "id": "TEST-003",
@@ -361,7 +421,7 @@
             "AC-003"
           ],
           "story_id": "",
-          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+          "source": "user-story:/workspace/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
         },
         {
           "id": "TEST-004",
@@ -377,7 +437,7 @@
             "AC-004"
           ],
           "story_id": "",
-          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+          "source": "user-story:/workspace/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
         },
         {
           "id": "TEST-005",
@@ -393,14 +453,78 @@
             "AC-005"
           ],
           "story_id": "",
-          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+          "source": "user-story:/workspace/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — When child refs `beacon/<version>/*` exist, resolver selects a non-conflicting aggregation branch (`beacon/<version>/_agg` by default or governance override) instead of bare `beacon/<version>`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:/workspace/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — A per-feature deterministic implementation contract with `target_branch` + `worktree_root` but without explicit program-level authority resolves as `per-feature`, not `program-level`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:/workspace/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Program-level aggregation worktree resolves under `.beacon/worktrees/<version>` (or governance worktree path), never the primary repo checkout path.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:/workspace/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — Admission failure caused by nested parent/child refs emits `aggregation_branch_nested_ref_conflict`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:/workspace/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
         }
       ],
       "research_projection": {
         "schema_version": "1.0",
         "feature": "beacon-global-workspace-git-admission-v162",
         "version": "v1.6.4",
-        "source": "research:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/research/beacon-global-workspace-git-admission-v162.md",
+        "source": "research:/workspace/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/research/beacon-global-workspace-git-admission-v162.md",
         "present": false,
         "section_count": 0,
         "sections": {},

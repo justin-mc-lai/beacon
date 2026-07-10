@@ -1,7 +1,7 @@
 ---
 slug: beacon-global-workspace-git-admission-v162
 version: v1.6.4
-status: draft
+status: frozen
 revision_id: R7
 language: zh
 change_reason: R7 - nested aggregation branch vs child feature ref coexistence; stale per-feature execution contracts must not force program-level; doctor path-repair confirmed residual contract gap
