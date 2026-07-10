@@ -3,82 +3,124 @@
   "contract_kind": "beacon_test_contract_index",
   "version": "v1.6.4",
   "runtime_line": "v1.6.4",
-  "runtime_release_line": "v1.6.3",
+  "runtime_release_line": "v1.6.4",
   "docs_line": "v1.6.4",
-  "feature": "beacon-qa-methodology-contract-v164",
-  "feature_slug": "beacon-qa-methodology-contract-v164",
-  "feature_line_status": "planning_only",
+  "feature": "beacon-program-next-action-admission-v164",
+  "feature_slug": "beacon-program-next-action-admission-v164",
+  "feature_line_status": "current_runtime_release",
   "truth_refs": {
-    "truth": "docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/truth.md",
-    "tests": "docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tests.md",
-    "tasks": "docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tasks.md",
-    "evidence": "docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/evidence.md",
-    "ac_matrix": "docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tests.md",
-    "story_state": "docs/beacon/v1.6.4/.machine/user-story/beacon-qa-methodology-contract-v164.json"
+    "truth": "docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/truth.md",
+    "tests": "docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
+    "tasks": "docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tasks.md",
+    "evidence": "docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/evidence.md",
+    "ac_matrix": "docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
+    "story_state": "docs/beacon/v1.6.4/.machine/user-story/beacon-program-next-action-admission-v164.json"
   },
   "source_hashes": {
-    "truth": "sha256:f559b8df422a372845eb2e247cab272084269d1bdbd8d2c89e8e25b8743fa5f7",
-    "tests": "sha256:5c12c3bde7cb6c5ac7b15588f414128302db136decf550b6d25f4c0d667e44fa",
-    "tasks": "sha256:04ed103ba458441729c1e93ff9a191c9941b71adfc5e968dbf0f23e8b9d7c9e1",
-    "evidence": "sha256:2edbb151ada32f9adb48fdc7fecc943ba1e8ca473f3299e4a6580983ffc7dc5c",
-    "ac_matrix": "sha256:5c12c3bde7cb6c5ac7b15588f414128302db136decf550b6d25f4c0d667e44fa",
-    "story_state": "sha256:1cac7aae58af140e6b4b5cd541067d741dc30a883b09a008995f44730f5702ef"
+    "truth": "sha256:acec3ce40b03245f89318c87902da38ffa38804b618d1b33521cecbc2dd59f28",
+    "tests": "sha256:7aaf99e00faebf7869b119f34132842f0ae0ecfccf9355cef38a9fc55b4c0583",
+    "tasks": "sha256:8992227d758faa95f1df03c1c04dfe693acaa4878c862bc3b5287a47aef152af",
+    "evidence": "sha256:67646b5dd53f0d16ea6509d2efda25fe697348e03f7c34e8c5f8b8357ec36806",
+    "ac_matrix": "sha256:7aaf99e00faebf7869b119f34132842f0ae0ecfccf9355cef38a9fc55b4c0583",
+    "story_state": "sha256:54ebb72d2ddfdbb17227cc516cae37752c37a4e79d8a0aebc04e7343d69a4022"
   },
   "lanes": {
     "feature_release_facing": [
       {
-        "tc_id": "TC-MC-001",
-        "ac_id": "AC-001",
-        "ac_theme": "global-boundaries-first-principles",
+        "tc_id": "TC-PNA-001",
+        "ac_id": "AC-028",
+        "ac_theme": "",
         "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "python3 -m pytest tests/test_v164_qa_methodology_contract.py::test_first_principles_clause -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "`global-boundaries.md §5` 含「第一性原理」条款（动手前回到根本 + 最小可验证单元 + 为什么）；§5 既有 4 条条款未被修改（纯增量校验）",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-methodology-contract-v164/tc-mc-001/__RUN_ID__.json",
+        "layer": "integration",
+        "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_program_next_action_blocks_wrong_lake -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "SidePilot-style fixture with `next_action=beacon-gen-implement:content-hub-foundation` blocks `pi-host-ui-ux` with `program_next_action_mismatch`; no implementation evidence path is written.",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-001/__RUN_ID__.json",
         "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tests.md",
+        "source": "feature-package:docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
       },
       {
-        "tc_id": "TC-MC-002",
-        "ac_id": "AC-002",
-        "ac_theme": "global-boundaries-adversarial",
+        "tc_id": "TC-PNA-002",
+        "ac_id": "AC-029",
+        "ac_theme": "",
         "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "python3 -m pytest tests/test_v164_qa_methodology_contract.py::test_adversarial_clause -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "`global-boundaries.md §5` 含「对抗式审查」条款（最挑剔审查 + 3-5 翻车点 + 验证证据 + 不接受看起来没问题）；纯增量校验",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-methodology-contract-v164/tc-mc-002/__RUN_ID__.json",
+        "layer": "unit",
+        "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_program_next_action_allows_current_lake -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Target `content-hub-foundation` matches `next_action`; admission result includes program slug, lake slug, material path, and next_action source.",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-002/__RUN_ID__.json",
         "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tests.md",
+        "source": "feature-package:docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
       },
       {
-        "tc_id": "TC-MC-003",
-        "ac_id": "AC-003",
-        "ac_theme": "qa-skill-contract-mandatory",
+        "tc_id": "TC-PNA-003",
+        "ac_id": "AC-030",
+        "ac_theme": "",
         "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "python3 -m pytest tests/test_v164_qa_methodology_contract.py::test_qa_skill_contract_mandatory -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "`beacon-eval-qa` SKILL.md 含\"交付前对抗式审查\"强制契约；缺失翻车点/验证证据 → block（reason_code `adversarial_review_missing`）",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-methodology-contract-v164/tc-mc-003/__RUN_ID__.json",
+        "layer": "integration",
+        "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_program_dependency_closure_blocks_downstream_lake -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Downstream W7 lake with W0-W6 dependencies and missing prerequisite QA acceptance blocks with `program_dependency_unclosed`.",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-003/__RUN_ID__.json",
         "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tests.md",
+        "source": "feature-package:docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
       },
       {
-        "tc_id": "TC-MC-004",
-        "ac_id": "AC-004",
-        "ac_theme": "adversarial-lane-mandatory",
+        "tc_id": "TC-PNA-004",
+        "ac_id": "AC-031",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "regression",
+        "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_per_feature_implement_admission_unchanged_without_program_topology -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Feature without owning program topology keeps normal per-feature implement admission and does not require `program-run-state.json`.",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-004/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-PNA-005",
+        "ac_id": "AC-032",
+        "ac_theme": "",
         "lane": "feature_release_facing",
         "layer": "contract",
-        "command": "python3 -m pytest tests/test_v164_qa_methodology_contract.py::test_adversarial_lane_mandatory -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "`planner_review_runtime` adversarial lane 在 qa release 前强制触发（非仅信号触发）；输出含 3-5 翻车点 + 验证证据形状；缺失 → block",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-methodology-contract-v164/tc-mc-004/__RUN_ID__.json",
+        "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_static_shell_ui_evidence_is_non_acceptance -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Full-parity UI evidence containing required surfaces with `coming_soon`, preview-only, static shell, or no-op recovery controls is rejected with `static_shell_implementation_evidence`.",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-005/__RUN_ID__.json",
         "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tests.md",
+        "source": "feature-package:docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-PNA-006",
+        "ac_id": "AC-033",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_source_grep_only_tests_do_not_satisfy_behavior_ac -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Evidence built only from source string assertions such as `readFileSync(...).toContain(...)` cannot satisfy runtime/browser/user-behavior AC and returns `static_source_assertion_only`.",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-006/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-PNA-007",
+        "ac_id": "AC-034",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "integration",
+        "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_blocked_generator_writes_diagnostic_only -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Blocked implement admission writes diagnostic state only and does not mark tasks done, write implementation summary, or update QA/release evidence.",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-007/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
       }
@@ -90,7 +132,7 @@
     "browser_runtime_admission": []
   },
   "lane_counts": {
-    "feature_release_facing": 4,
+    "feature_release_facing": 7,
     "current_runtime_contract": 0,
     "generated_surface_sync": 0,
     "compatibility_contract": 0,
@@ -107,74 +149,125 @@
   ],
   "test_refs": [
     {
-      "tc_id": "TC-MC-001",
-      "ac_id": "AC-001",
-      "ac_theme": "global-boundaries-first-principles",
+      "tc_id": "TC-PNA-001",
+      "ac_id": "AC-028",
+      "ac_theme": "",
       "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "python3 -m pytest tests/test_v164_qa_methodology_contract.py::test_first_principles_clause -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "`global-boundaries.md §5` 含「第一性原理」条款（动手前回到根本 + 最小可验证单元 + 为什么）；§5 既有 4 条条款未被修改（纯增量校验）",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-methodology-contract-v164/tc-mc-001/__RUN_ID__.json",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_program_next_action_blocks_wrong_lake -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "SidePilot-style fixture with `next_action=beacon-gen-implement:content-hub-foundation` blocks `pi-host-ui-ux` with `program_next_action_mismatch`; no implementation evidence path is written.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-001/__RUN_ID__.json",
       "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tests.md",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
     },
     {
-      "tc_id": "TC-MC-002",
-      "ac_id": "AC-002",
-      "ac_theme": "global-boundaries-adversarial",
+      "tc_id": "TC-PNA-002",
+      "ac_id": "AC-029",
+      "ac_theme": "",
       "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "python3 -m pytest tests/test_v164_qa_methodology_contract.py::test_adversarial_clause -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "`global-boundaries.md §5` 含「对抗式审查」条款（最挑剔审查 + 3-5 翻车点 + 验证证据 + 不接受看起来没问题）；纯增量校验",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-methodology-contract-v164/tc-mc-002/__RUN_ID__.json",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_program_next_action_allows_current_lake -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Target `content-hub-foundation` matches `next_action`; admission result includes program slug, lake slug, material path, and next_action source.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-002/__RUN_ID__.json",
       "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tests.md",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
     },
     {
-      "tc_id": "TC-MC-003",
-      "ac_id": "AC-003",
-      "ac_theme": "qa-skill-contract-mandatory",
+      "tc_id": "TC-PNA-003",
+      "ac_id": "AC-030",
+      "ac_theme": "",
       "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "python3 -m pytest tests/test_v164_qa_methodology_contract.py::test_qa_skill_contract_mandatory -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "`beacon-eval-qa` SKILL.md 含\"交付前对抗式审查\"强制契约；缺失翻车点/验证证据 → block（reason_code `adversarial_review_missing`）",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-methodology-contract-v164/tc-mc-003/__RUN_ID__.json",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_program_dependency_closure_blocks_downstream_lake -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Downstream W7 lake with W0-W6 dependencies and missing prerequisite QA acceptance blocks with `program_dependency_unclosed`.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-003/__RUN_ID__.json",
       "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tests.md",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
     },
     {
-      "tc_id": "TC-MC-004",
-      "ac_id": "AC-004",
-      "ac_theme": "adversarial-lane-mandatory",
+      "tc_id": "TC-PNA-004",
+      "ac_id": "AC-031",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "regression",
+      "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_per_feature_implement_admission_unchanged_without_program_topology -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Feature without owning program topology keeps normal per-feature implement admission and does not require `program-run-state.json`.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-004/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-PNA-005",
+      "ac_id": "AC-032",
+      "ac_theme": "",
       "lane": "feature_release_facing",
       "layer": "contract",
-      "command": "python3 -m pytest tests/test_v164_qa_methodology_contract.py::test_adversarial_lane_mandatory -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "`planner_review_runtime` adversarial lane 在 qa release 前强制触发（非仅信号触发）；输出含 3-5 翻车点 + 验证证据形状；缺失 → block",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-qa-methodology-contract-v164/tc-mc-004/__RUN_ID__.json",
+      "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_static_shell_ui_evidence_is_non_acceptance -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Full-parity UI evidence containing required surfaces with `coming_soon`, preview-only, static shell, or no-op recovery controls is rejected with `static_shell_implementation_evidence`.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-005/__RUN_ID__.json",
       "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tests.md",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-PNA-006",
+      "ac_id": "AC-033",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_source_grep_only_tests_do_not_satisfy_behavior_ac -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Evidence built only from source string assertions such as `readFileSync(...).toContain(...)` cannot satisfy runtime/browser/user-behavior AC and returns `static_source_assertion_only`.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-006/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-PNA-007",
+      "ac_id": "AC-034",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_blocked_generator_writes_diagnostic_only -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Blocked implement admission writes diagnostic state only and does not mark tasks done, write implementation summary, or update QA/release evidence.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-007/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
     }
   ],
   "ac_to_test_refs": {
-    "AC-001": [
-      "TC-MC-001"
+    "AC-028": [
+      "TC-PNA-001"
     ],
-    "AC-002": [
-      "TC-MC-002"
+    "AC-029": [
+      "TC-PNA-002"
     ],
-    "AC-003": [
-      "TC-MC-003"
+    "AC-030": [
+      "TC-PNA-003"
     ],
-    "AC-004": [
-      "TC-MC-004"
+    "AC-031": [
+      "TC-PNA-004"
+    ],
+    "AC-032": [
+      "TC-PNA-005"
+    ],
+    "AC-033": [
+      "TC-PNA-006"
+    ],
+    "AC-034": [
+      "TC-PNA-007"
     ]
   },
   "qa_order_contract": {
@@ -202,14 +295,14 @@
     "status": "pass",
     "blocked": false,
     "reason_code": "",
-    "runtime_line": "v1.6.3",
-    "docs_default_line": "v1.6.3",
-    "current_runtime_release_line": "v1.6.3",
-    "feature_line_status": "planning_only"
+    "runtime_line": "v1.6.4",
+    "docs_default_line": "v1.6.4",
+    "current_runtime_release_line": "v1.6.4",
+    "feature_line_status": "current_runtime_release"
   },
   "status": "pass",
   "blocked": false,
   "reason_codes": [],
-  "generated_at": "2026-07-02T06:47:11.784457+00:00",
+  "generated_at": "2026-07-10T04:02:35.118030+00:00",
   "index_path": "docs/beacon/v1.6.4/.machine/testing/test-contract-index.json"
 }
