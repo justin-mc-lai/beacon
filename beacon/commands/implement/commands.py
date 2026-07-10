@@ -51,6 +51,7 @@ from beacon.utils.implementation_plan import (
     mark_implementation_plan_failed,
     mark_implementation_plan_started,
 )
+from beacon.utils.implementation_evidence import implementation_evidence_gate
 from beacon.utils.global_boundaries import global_boundary_principle_summaries
 from beacon.utils.implement_native import run_native_implementation
 from beacon.utils.implement_adapters import (
@@ -81,6 +82,7 @@ from beacon.utils.prototype_support import (
     prototype_adapter_only_supported,
 )
 from beacon.utils.prototype_utils import prototype_files
+from beacon.utils.program_admission import evaluate_program_next_action_admission
 from beacon.utils.requirement_deepening import load_requirement_completeness, requirement_paths
 from beacon.utils.release_scorecard import build_release_scorecard
 from beacon.utils.ralph_runtime import (
@@ -2548,6 +2550,40 @@ def run_implement_stage(  # noqa: PLR0913
             "closure_preflight": closure_preflight,
         }, blocked=True)
         return 2, payload
+    program_admission = evaluate_program_next_action_admission(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+    )
+    if bool(program_admission.get("blocked")):
+        run_id = str(run_id_override or "").strip() or generate_run_id(project_root)
+        feature_slug = _slug(feature)
+        impl_dir = _impl_root(project_root, run_id)
+        impl_dir.mkdir(parents=True, exist_ok=True)
+        reason_code = str(program_admission.get("reason_code") or "program_implement_admission_blocked")
+        payload = _with_implement_surface(
+            {
+                "schema_version": "1.0",
+                "run_id": run_id,
+                "feature": feature,
+                "feature_slug": feature_slug,
+                "version": resolved_version,
+                "status": "blocked",
+                "reason_code": reason_code,
+                "reason_codes": list(program_admission.get("reason_codes") or [reason_code]),
+                "program_next_action_admission": program_admission,
+                "requirement_package_gate": requirement_package_gate,
+                "closure_preflight": closure_preflight,
+                "recommended_command": str(program_admission.get("recommended_command") or ""),
+                "diagnostic_only": True,
+                "generated_at": now_iso(),
+            },
+            reason_code=reason_code,
+            recommended_command=str(program_admission.get("recommended_command") or ""),
+            blocked=True,
+        )
+        write_json(impl_dir / "state.json", payload)
+        return 2, payload
     resolved_mode = _normalize_mode(mode)
     if resolved_mode == "ralph" and not dry_run and not str(run_id_override or "").strip():
         return _run_ralph_controller(
@@ -3035,6 +3071,7 @@ def run_implement_stage(  # noqa: PLR0913
         "subagent_prechecks": subagent_prechecks,
         "branch_preflight_path": str(branch_preflight_path),
         "branch_preflight": branch_preflight,
+        "program_next_action_admission": program_admission,
         "task_prompt": task_prompt,
         "result_file": str(result_path),
         "implementation_plan": implementation_plan_file,
@@ -3069,6 +3106,7 @@ def run_implement_stage(  # noqa: PLR0913
         "result_path": str(result_path),
         "branch_preflight_path": str(branch_preflight_path),
         "plan_preflight_path": str(plan_preflight_path),
+        "program_next_action_admission": program_admission,
         "revision_delta": revision_delta,
         "git_workflow": git_workflow_contract,
         "generated_at": now_iso(),
@@ -3162,6 +3200,27 @@ def run_implement_stage(  # noqa: PLR0913
             payload = _with_implement_surface(payload, blocked=True)
             write_json(state_path, payload)
             return 2, payload
+        evidence_gate = implementation_evidence_gate(result_payload)
+        if bool(evidence_gate.get("blocked")):
+            mark_implementation_plan_failed(
+                project_root,
+                version=resolved_version,
+                feature=feature,
+                run_id=run_id,
+                reason_code=str(evidence_gate.get("reason_code") or "implementation_evidence_blocked"),
+            )
+            reason_code = str(evidence_gate.get("reason_code") or "implementation_evidence_blocked")
+            payload = {
+                **base_state,
+                "status": "blocked",
+                "reason_code": reason_code,
+                "implementation_evidence_gate": evidence_gate,
+                "result": result_payload,
+                "diagnostic_only": True,
+            }
+            payload = _with_implement_surface(payload, reason_code=reason_code, blocked=True)
+            write_json(state_path, payload)
+            return 2, payload
         summary_paths = _summary_paths(project_root, resolved_version, feature)
         archive_paths = _technical_archive_paths(project_root, resolved_version, feature)
         story_state = load_story_state(project_root, version=resolved_version, feature=feature, create_if_missing=True) or {}
@@ -3239,6 +3298,7 @@ def run_implement_stage(  # noqa: PLR0913
             "branch_preflight": branch_preflight,
             "plan_preflight_path": str(plan_preflight_path),
             "plan_preflight": implementation_plan_gate,
+            "program_next_action_admission": program_admission,
             "implementation_marker": str(marker.relative_to(project_root)),
             "technical_archive": {
                 "json": str(archive_paths["json"].relative_to(project_root)),
@@ -3654,6 +3714,27 @@ def run_implement_stage(  # noqa: PLR0913
             "result": result_payload,
         }
         payload = _with_implement_surface(payload, blocked=True)
+        write_json(state_path, payload)
+        return 2, payload
+    evidence_gate = implementation_evidence_gate(result_payload)
+    if bool(evidence_gate.get("blocked")):
+        mark_implementation_plan_failed(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            run_id=run_id,
+            reason_code=str(evidence_gate.get("reason_code") or "implementation_evidence_blocked"),
+        )
+        reason_code = str(evidence_gate.get("reason_code") or "implementation_evidence_blocked")
+        payload = {
+            **base_state,
+            "status": "blocked",
+            "reason_code": reason_code,
+            "implementation_evidence_gate": evidence_gate,
+            "result": result_payload,
+            "diagnostic_only": True,
+        }
+        payload = _with_implement_surface(payload, reason_code=reason_code, blocked=True)
         write_json(state_path, payload)
         return 2, payload
 
