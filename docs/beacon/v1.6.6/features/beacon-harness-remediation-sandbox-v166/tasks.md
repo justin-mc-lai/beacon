@@ -12,9 +12,9 @@ parser_contract: beacon-feature-package-v2
 
 ## Task List
 
-- [ ] TASK-001 truth → `beacon-gen-truth` — freeze truth.md + tests.md + tasks.md + evidence.md
-- [ ] TASK-002 implement → `beacon-gen-implement` — create `beacon/utils/remediation_sandbox.py` with create_sandbox, apply_overlay, eval_overlay, rollback_overlay, build_remediation_report
-- [ ] TASK-003 implement → `beacon-gen-implement` — integrate remediation signal into `beacon/commands/doctor.py` loop-audit
-- [ ] TASK-004 implement → `beacon-gen-implement` — create `tests/test_v166_remediation_sandbox.py` with 8 test cases
+- [x] TASK-001 truth → `beacon-gen-truth` — freeze truth.md + tests.md + tasks.md + evidence.md
+- [x] TASK-002 implement → `beacon-gen-implement` — create `beacon/utils/remediation_sandbox.py` with create_sandbox, apply_overlay, eval_overlay, rollback_overlay, build_remediation_report
+- [x] TASK-003 implement → `beacon-gen-implement` — integrate remediation signal into `build_loop_readiness_audit()` loop-audit
+- [x] TASK-004 implement → `beacon-gen-implement` — create `tests/test_v166_remediation_sandbox.py` with 8 test cases
 - [ ] TASK-005 qa → `beacon-eval-qa` — run TC-RM-* matrix, accept all AC-001..008
 - [ ] TASK-006 release → `beacon-eval-release` — update SUMMARY.md delivery status, release note
