@@ -15,20 +15,20 @@ Program: `programs/beacon-oss-borrow-hardening-v165/`
 
 ## Status
 
-- delivery: `planned`
-- runtime line: not yet frozen, implemented, QA-accepted, or released
+- delivery: `accepted` — implement + QA passed (2026-07-13)
+- runtime line: `implemented`, QA-accepted; release pending merge to main
 - protected path denylist: accepted as a cross-version `global-boundaries` principle
 
 ## Features
 
-| Phase | Feature slug | Status |
-|-------|--------------|--------|
-| 1 | `beacon-workspace-pool-lease-v165` | truth draft |
-| 2 | `beacon-loop-readiness-audit-v165` | truth draft |
-| 3 | `beacon-loop-pattern-registry-v165` | truth draft |
-| 4 | `beacon-protected-path-denylist-v165` | truth draft |
-| 5 | `beacon-loop-token-budget-v165` | truth draft |
-| 6 | `beacon-loop-failure-mode-catalog-v165` | truth draft |
+| Phase | Feature slug | Status | QA | Release |
+|-------|--------------|--------|-----|----------|
+| 1 | `beacon-workspace-pool-lease-v165` | frozen | passed | pending |
+| 2 | `beacon-loop-readiness-audit-v165` | frozen | passed | pending |
+| 3 | `beacon-loop-pattern-registry-v165` | frozen | passed | pending |
+| 4 | `beacon-protected-path-denylist-v165` | frozen | passed | pending |
+| 5 | `beacon-loop-token-budget-v165` | frozen | passed | pending |
+| 6 | `beacon-loop-failure-mode-catalog-v165` | frozen | passed | pending |
 
 ## Version Artifacts
 

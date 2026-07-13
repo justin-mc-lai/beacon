@@ -2,10 +2,10 @@
 
 ## Task Ledger
 
-- [ ] TASK-LA-001 Add readiness signal model and scoring thresholds.
-- [ ] TASK-LA-002 Add `beacon doctor loop-audit` command.
-- [ ] TASK-LA-003 Collect required signals with reason codes.
-- [ ] TASK-LA-004 Add strict threshold blocking.
-- [ ] TASK-LA-005 Add repair suggestions.
-- [ ] TASK-LA-006 Add tests in `tests/test_v165_loop_readiness_audit.py`.
-- [ ] TASK-LA-007 Run truth integrity, clarity, freeze, QA, and release checks.
+- [x] TASK-LA-001 Add readiness signal model and scoring thresholds.
+- [x] TASK-LA-002 Add `beacon doctor loop-audit` command.
+- [x] TASK-LA-003 Collect required signals with reason codes.
+- [x] TASK-LA-004 Add strict threshold blocking.
+- [x] TASK-LA-005 Add repair suggestions.
+- [x] TASK-LA-006 Add tests in `tests/test_v165_loop_readiness_audit.py`.
+- [x] TASK-LA-007 Run truth integrity, clarity, freeze, QA, and release checks. — truth frozen, QA passed, release pending merge.
