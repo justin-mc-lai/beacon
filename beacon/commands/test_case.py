@@ -42,7 +42,7 @@ from beacon.utils.semantic_runtime import (
     normalize_requested_mode,
 )
 from beacon.utils.story_scenarios import expand_story_scenarios, write_story_scenario_map
-from beacon.utils.truth_map import feature_package_authoritative, resolve_truth_read_refs
+from beacon.utils.truth_map import feature_package_authoritative_feature, resolve_truth_read_refs
 from beacon.utils.versioning import discover_versions, normalize_version, resolve_operational_docs_version, resolve_target_version
 
 app = typer.Typer(name="test-case", help="Generate test cases")
@@ -67,7 +67,7 @@ def _candidate_doc_paths(project_root: Path, version: str, category: str, slug: 
 
 
 def _requirement_doc_paths(project_root: Path, version: str, slug: str) -> dict[str, Path]:
-    if feature_package_authoritative(version):
+    if feature_package_authoritative_feature(project_root, version=version, feature=slug):
         refs = resolve_truth_read_refs(
             project_root,
             version=version,

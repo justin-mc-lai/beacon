@@ -14,6 +14,7 @@ from beacon.commands.test_case import create as create_test_case
 from beacon.utils.story_state import sync_story_state_from_docs
 from beacon.utils.truth_map import (
     feature_package_authoritative,
+    feature_package_authoritative_feature,
     rebuild_machine_json,
     resolve_truth_read_refs,
 )
@@ -134,11 +135,13 @@ def sync_project_requirement_materials(
     resolved_version = resolve_target_version(project_root, version)
     features = [feature] if str(feature or "").strip() and not all_features else _discover_features(project_root, resolved_version)
     results: list[dict[str, Any]] = []
-    # Package-authoritative (>=v1.5.2): rebuild machine json so source hashes
-    # stay in sync with frozen truth. Legacy path falls through to
-    # sync_feature_requirement_materials below.
-    use_rebuild = feature_package_authoritative(resolved_version) and not dry_run
+    # Package-authoritative features rebuild machine json so source hashes stay
+    # in sync with frozen truth. Legacy split features fall through below.
     for name in features:
+        use_rebuild = (
+            feature_package_authoritative(resolved_version)
+            or feature_package_authoritative_feature(project_root, version=resolved_version, feature=name)
+        ) and not dry_run
         if use_rebuild:
             rebuilt = rebuild_machine_json(project_root, version=resolved_version, feature=name)
             results.append({
@@ -178,7 +181,7 @@ def sync_change_loop_requirement_package(
 ) -> dict[str, Any]:
     """Refresh the active machine requirement package during reopen/freeze change loops."""
     resolved_version = resolve_target_version(project_root, version)
-    if feature_package_authoritative(resolved_version):
+    if feature_package_authoritative_feature(project_root, version=resolved_version, feature=feature):
         refs = resolve_truth_read_refs(
             project_root,
             version=resolved_version,

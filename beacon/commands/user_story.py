@@ -27,7 +27,7 @@ from beacon.utils.semantic_runtime import (
 )
 from beacon.utils.runtime import write_json
 from beacon.utils.story_state import feature_slug, load_story_state, machine_story_path, save_story_state, sync_story_state_from_docs
-from beacon.utils.truth_map import feature_package_authoritative, resolve_truth_read_refs
+from beacon.utils.truth_map import feature_package_authoritative_feature, resolve_truth_read_refs
 
 app = typer.Typer(name="user-story", help="Generate user stories")
 
@@ -175,7 +175,7 @@ def host_bridge(
 def _read_requirement_truth(project_root: Path, version: str, feature: str) -> tuple[str, str, str, str]:
     resolved_version = resolve_target_version(project_root, version)
     slug = feature_slug(feature)
-    if feature_package_authoritative(resolved_version):
+    if feature_package_authoritative_feature(project_root, version=resolved_version, feature=slug):
         refs = resolve_truth_read_refs(
             project_root,
             version=resolved_version,
@@ -444,7 +444,7 @@ def create(
             version=resolved_version,
             feature=slug,
             consumer="user-story",
-        )["requirement_refs"] if feature_package_authoritative(resolved_version) else {
+        )["requirement_refs"] if feature_package_authoritative_feature(project_root, version=resolved_version, feature=slug) else {
             "prd": f"docs/beacon/{resolved_version}/prd/{slug}.md",
             "user_story": f"docs/beacon/{resolved_version}/user-story/{slug}.md",
             "test_case": f"docs/beacon/{resolved_version}/qa/test-cases/{slug}.md",

@@ -1,0 +1,172 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-09T09:53:59.043267+00:00",
+  "feature": "beacon-protected-path-denylist-v165",
+  "feature_slug": "beacon-protected-path-denylist-v165",
+  "version": "v1.6.5",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.5/features/beacon-protected-path-denylist-v165/truth.md",
+    "tests": "docs/beacon/v1.6.5/features/beacon-protected-path-denylist-v165/tests.md",
+    "tasks": "docs/beacon/v1.6.5/features/beacon-protected-path-denylist-v165/tasks.md",
+    "evidence": "docs/beacon/v1.6.5/features/beacon-protected-path-denylist-v165/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "9d708f15efd391b1a9a89985bfad91c60ac486d6ea5116c5a44387d9963259d1",
+    "tests": "b85af0b5350caf1882febb622c14cd4e1645036327937e00f4533375f917f4ac",
+    "tasks": "2ae0771fc989cc00c49eedb428dd2e4e35eef0233483cdb376393d74dc6ed7b7",
+    "evidence": "3703fc630d7bdeb4b4a6954c02687a8f55b2f362506675e34f8e75cef026e3a4"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-protected-path-denylist-v165",
+    "version": "v1.6.5",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "R1 - Cross-version protected path denylist",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.5/features/beacon-protected-path-denylist-v165/truth.md",
+      "user_story": "docs/beacon/v1.6.5/features/beacon-protected-path-denylist-v165/truth.md",
+      "test_case": "docs/beacon/v1.6.5/features/beacon-protected-path-denylist-v165/tests.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "global-boundary",
+      "description": "`global-boundaries.md` contains the protected path denylist principle and states planner advisory vs write-surface fail-closed behavior."
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "matcher",
+      "description": "Runtime matcher detects exact path, glob, extension, and path-segment denylist patterns."
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "write-block",
+      "description": "Write guard returns blocked payload with reason_code `protected_path_denylist` for protected paths."
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "planner-advisory",
+      "description": "Planner surfaces can report protected path risk without blocking read-only analysis."
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "override-route",
+      "description": "Payload includes an explicit human route recommendation instead of silently allowing automatic edits."
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-PD-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v165_protected_path_denylist.py::test_global_boundaries_contains_protected_path_principle -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Global boundaries contains protected path principle and planner/write-surface distinction.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-PD-002",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v165_protected_path_denylist.py::test_protected_path_matcher_patterns -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Matcher detects exact, glob, extension, and path segment patterns.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-PD-003",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v165_protected_path_denylist.py::test_write_guard_blocks_protected_path -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Write guard blocks protected path with reason_code `protected_path_denylist`.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-PD-004",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v165_protected_path_denylist.py::test_planner_risk_is_advisory -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Planner advisory helper reports risk without write-block verdict.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-PD-005",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v165_protected_path_denylist.py::test_block_payload_contains_human_route -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Block payload includes route recommendation for explicit human handling.",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-PD-001",
+      "title": "Add protected path principle to `global-boundaries.md`.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-PD-002",
+      "title": "Add protected path matcher utility.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-PD-003",
+      "title": "Integrate matcher with write-surface guard.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-PD-004",
+      "title": "Add planner advisory helper.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-PD-005",
+      "title": "Add human route recommendation in block payload.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-PD-006",
+      "title": "Add `tests/test_v165_protected_path_denylist.py`.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-PD-007",
+      "title": "Run truth integrity, clarity, freeze, QA, and release checks.",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "truth.md",
+      "authority": "requirement_truth",
+      "artifact": "docs/beacon/v1.6.5/features/beacon-protected-path-denylist-v165/truth.md"
+    },
+    {
+      "surface": "tests.md",
+      "authority": "test_truth",
+      "artifact": "docs/beacon/v1.6.5/features/beacon-protected-path-denylist-v165/tests.md"
+    },
+    {
+      "surface": "tasks.md",
+      "authority": "requirement_truth",
+      "artifact": "docs/beacon/v1.6.5/features/beacon-protected-path-denylist-v165/tasks.md"
+    },
+    {
+      "surface": "global-boundaries.md",
+      "authority": "requirement_truth",
+      "artifact": "docs/beacon/global-boundaries.md"
+    }
+  ]
+}

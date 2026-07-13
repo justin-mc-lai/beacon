@@ -1,0 +1,167 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-09T09:54:01.016236+00:00",
+  "feature": "beacon-loop-failure-mode-catalog-v165",
+  "feature_slug": "beacon-loop-failure-mode-catalog-v165",
+  "version": "v1.6.5",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.5/features/beacon-loop-failure-mode-catalog-v165/truth.md",
+    "tests": "docs/beacon/v1.6.5/features/beacon-loop-failure-mode-catalog-v165/tests.md",
+    "tasks": "docs/beacon/v1.6.5/features/beacon-loop-failure-mode-catalog-v165/tasks.md",
+    "evidence": "docs/beacon/v1.6.5/features/beacon-loop-failure-mode-catalog-v165/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "37263c10ba15f16bf926dcc25c5b534192c11e56bad33de5f87500c5998068db",
+    "tests": "e5b187ddc588d7ec2b0ae1dad3fafa1e536e5033a829f799bb280d4c03578138",
+    "tasks": "04e01618ab0d07a857cfe36504283c2ea02c71577727ba84ac7c543e8fdc48d5",
+    "evidence": "97e2e43eb98e09a81dd8017914059731b52ce425f3d2f81e8d919999c888386a"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-loop-failure-mode-catalog-v165",
+    "version": "v1.6.5",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "R1 - Loop failure-mode catalog",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.5/features/beacon-loop-failure-mode-catalog-v165/truth.md",
+      "user_story": "docs/beacon/v1.6.5/features/beacon-loop-failure-mode-catalog-v165/truth.md",
+      "test_case": "docs/beacon/v1.6.5/features/beacon-loop-failure-mode-catalog-v165/tests.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "catalog-file",
+      "description": "v1.6.5 includes `execution/loop-failure-modes.md` with S1/S2/S3 sections."
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "required-fields",
+      "description": "Validator requires id, severity, symptom, cause, mitigation, route, and evidence expectation for each mode."
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "baseline-modes",
+      "description": "Catalog includes truth drift, git alignment blocked, stale evidence manifest, infinite fix loop, and protected path attempt."
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "invalid-severity",
+      "description": "Invalid severity fails validation with reason_code `loop_failure_mode_invalid_severity`."
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "audit-consumption",
+      "description": "`doctor loop-audit` reports failure catalog status and findings."
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-FC-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v165_loop_failure_mode_catalog.py::test_catalog_file_has_severity_sections -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Catalog file contains S1, S2, and S3 sections.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-FC-002",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v165_loop_failure_mode_catalog.py::test_catalog_required_fields -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Validator fails entries missing required fields.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-FC-003",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v165_loop_failure_mode_catalog.py::test_catalog_contains_baseline_modes -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Catalog includes truth drift, git alignment, stale evidence, infinite fix loop, and protected path attempt.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-FC-004",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v165_loop_failure_mode_catalog.py::test_invalid_severity_fails -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Invalid severity returns `loop_failure_mode_invalid_severity`.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-FC-005",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_v165_loop_failure_mode_catalog.py::test_loop_audit_consumes_failure_catalog_status -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Loop audit includes failure catalog signal and findings.",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-FC-001",
+      "title": "Add `execution/loop-failure-modes.md`.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-FC-002",
+      "title": "Add catalog parser and validator.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-FC-003",
+      "title": "Add required baseline modes.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-FC-004",
+      "title": "Validate severity and required fields.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-FC-005",
+      "title": "Integrate catalog signal with loop-audit.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-FC-006",
+      "title": "Add `tests/test_v165_loop_failure_mode_catalog.py`.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-FC-007",
+      "title": "Run truth integrity, clarity, freeze, QA, and release checks.",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "truth.md",
+      "authority": "requirement_truth",
+      "artifact": "docs/beacon/v1.6.5/features/beacon-loop-failure-mode-catalog-v165/truth.md"
+    },
+    {
+      "surface": "tests.md",
+      "authority": "test_truth",
+      "artifact": "docs/beacon/v1.6.5/features/beacon-loop-failure-mode-catalog-v165/tests.md"
+    },
+    {
+      "surface": "tasks.md",
+      "authority": "requirement_truth",
+      "artifact": "docs/beacon/v1.6.5/features/beacon-loop-failure-mode-catalog-v165/tasks.md"
+    }
+  ]
+}

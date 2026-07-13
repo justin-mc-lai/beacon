@@ -61,11 +61,11 @@ def _slugify(feature: str) -> str:
     return "".join(out).strip("-") or text
 
 
-def compute_feature_paths(project_root: Path, version: str, slug: str) -> dict[str, str]:
+def compute_feature_paths(project_root: Path, version: str, slug: str, *, prefer_package: bool = False) -> dict[str, str]:
     """Compute all fixed paths for a feature based on version and slug."""
     base = _version_root(project_root, version)
     rel_base = f"docs/beacon/{version}"
-    if feature_package_authoritative(version):
+    if feature_package_authoritative(version) or prefer_package:
         # Package-authoritative (>=v1.5.2): truth lives in features/<slug>/.
         return {
             "prd": f"{rel_base}/features/{slug}/truth.md",
@@ -253,7 +253,8 @@ def sync_manifest(project_root: Path, version: str) -> dict[str, Any]:
 
     # Add discovered features
     for slug in sorted(slugs):
-        truth_paths = compute_feature_paths(project_root, resolved, slug)
+        package_ready = (base / "features" / slug / "truth.md").exists()
+        truth_paths = compute_feature_paths(project_root, resolved, slug, prefer_package=package_ready)
         # Determine language from existing file if possible
         language = "en"
         prd_file = base / "prd" / f"{slug}.md"

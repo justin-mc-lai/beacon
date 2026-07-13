@@ -1,0 +1,570 @@
+{
+  "schema_version": "1.0",
+  "status": "blocked",
+  "reason_code": "branch_alignment_required",
+  "reason_codes": [
+    "branch_alignment_required"
+  ],
+  "feature": "beacon-global-workspace-git-admission-v162",
+  "feature_slug": "beacon-global-workspace-git-admission-v162",
+  "version": "v1.6.2",
+  "workspace_admission": {
+    "valid": false,
+    "status": "blocked",
+    "skipped": false,
+    "reason_code": "branch_alignment_required",
+    "reason_codes": [
+      "branch_alignment_required"
+    ],
+    "artifact_path": "",
+    "expected_branch": "beacon/v1.6.2/beacon-global-workspace-git-admission-v162",
+    "current_branch": "main",
+    "branch_resolution": {
+      "branch_resolution_mode": "per-feature",
+      "feature_branch": "beacon/v1.6.2/beacon-global-workspace-git-admission-v162",
+      "worktree_path": "/Users/apple/Developer/Personal/products/beacon/beacon-global-workspace-git-admission-v162",
+      "program_slug": "",
+      "material_path": "docs/beacon/v1.6.2/execution/git-workflow-beacon-global-workspace-git-admission-v162.md"
+    }
+  },
+  "recommended_command": "beacon workspace admit --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.2 --feature beacon-global-workspace-git-admission-v162 --json",
+  "requirement_package_gate": {
+    "schema_version": "1.0",
+    "status": "pass",
+    "enabled": true,
+    "version": "v1.6.2",
+    "feature": "beacon-global-workspace-git-admission-v162",
+    "reason_code": "",
+    "failing_checks": [],
+    "failure_categories": [],
+    "failure_details": [],
+    "remediation_mode": "none",
+    "recommended_action": "",
+    "recommended_reason": "",
+    "audit": {
+      "schema_version": "1.0",
+      "action": "verify-materials",
+      "project_root": "/Users/apple/Developer/Personal/products/beacon",
+      "version": "v1.6.2",
+      "strict": true,
+      "truth_map_governance": {
+        "schema_version": "1.0",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "truth_source_model": "feature_package_authoritative",
+        "resolver_mode": "resolver_first",
+        "version": "v1.6.2",
+        "status": "pass",
+        "blocked": false,
+        "authority_classification": {
+          "feature_truth": "markdown_feature_package",
+          "feature_truth_model": "feature_package_authoritative",
+          "version_governance_truth": "version_governance_truth",
+          "generated_governance_state": "generated_governance_state_not_truth",
+          "runtime_process_record": "runtime_process_record_not_requirement_truth"
+        },
+        "governance_projection_roles": {
+          "canonical_commit_surface": "docs/beacon/governance/project-version-governance.md",
+          "canonical_role": "version_governance_truth",
+          "sqlite_projection_surface": "project_governance_sqlite_projection",
+          "sqlite_projection_role": "generated_governance_state_not_truth",
+          "sqlite_ledger_path": "/Users/apple/.beacon/runtime-ledger/runtime-ledger.sqlite3",
+          "deprecated_legacy_json": ".beacon/metadata/project-version-metadata.json",
+          "write_direction": "governance_md_to_sqlite_only"
+        },
+        "truth_surfaces": {
+          "project_governance": {
+            "schema_version": "1.0",
+            "truth_map_contract": "beacon-truth-map-v1",
+            "truth_source_model": "feature_package_authoritative",
+            "resolver_mode": "resolver_first",
+            "version": "v1.6.2",
+            "surface": "project_governance",
+            "path": "docs/beacon/governance/project-version-governance.md",
+            "exists": true,
+            "required": true,
+            "role": "version_governance_truth",
+            "authority": "version_governance_truth",
+            "truth_authority": true,
+            "json_authority": false,
+            "generated_governance_state": false,
+            "source_hash": "4e96d14130a8cb707a60e816dac5e52b9e2dabf25aff3b6a59d73e3147c45db0"
+          },
+          "global_boundaries": {
+            "schema_version": "1.0",
+            "truth_map_contract": "beacon-truth-map-v1",
+            "truth_source_model": "feature_package_authoritative",
+            "resolver_mode": "resolver_first",
+            "version": "v1.6.2",
+            "surface": "global_boundaries",
+            "path": "docs/beacon/global-boundaries.md",
+            "exists": true,
+            "required": true,
+            "role": "global_governance_truth",
+            "authority": "global_governance_truth",
+            "truth_authority": true,
+            "json_authority": false,
+            "generated_governance_state": false,
+            "source_hash": "0de0d9230e5bd6522aec644f51af339bb88d6fca002fd6692e3ee92ef1a34661"
+          },
+          "summary": {
+            "schema_version": "1.0",
+            "truth_map_contract": "beacon-truth-map-v1",
+            "truth_source_model": "feature_package_authoritative",
+            "resolver_mode": "resolver_first",
+            "version": "v1.6.2",
+            "surface": "summary",
+            "path": "docs/beacon/v1.6.2/SUMMARY.md",
+            "exists": true,
+            "required": true,
+            "role": "version_governance_truth",
+            "authority": "version_governance_truth",
+            "truth_authority": true,
+            "json_authority": false,
+            "generated_governance_state": false,
+            "source_hash": "cae3cd55b313135a601153385928fa8140c64b7a6ce83dd92303f5d5815148af"
+          },
+          "execution_boundaries": {
+            "schema_version": "1.0",
+            "truth_map_contract": "beacon-truth-map-v1",
+            "truth_source_model": "feature_package_authoritative",
+            "resolver_mode": "resolver_first",
+            "version": "v1.6.2",
+            "surface": "execution_boundaries",
+            "path": "docs/beacon/v1.6.2/execution/boundaries.md",
+            "exists": true,
+            "required": true,
+            "role": "version_governance_truth",
+            "authority": "version_governance_truth",
+            "truth_authority": true,
+            "json_authority": false,
+            "generated_governance_state": false,
+            "source_hash": "b91cd0dffac436d8bb4f46a3e77c4cafb5a5443ddf510860992170a0f63d9f7a"
+          },
+          "project_skill_blueprint": {
+            "schema_version": "1.0",
+            "truth_map_contract": "beacon-truth-map-v1",
+            "truth_source_model": "feature_package_authoritative",
+            "resolver_mode": "resolver_first",
+            "version": "v1.6.2",
+            "surface": "project_skill_blueprint",
+            "path": "docs/beacon/v1.6.2/execution/project-skill-qa-evolution-blueprint.md",
+            "exists": true,
+            "required": true,
+            "role": "version_governance_truth",
+            "authority": "version_governance_truth",
+            "truth_authority": true,
+            "json_authority": false,
+            "generated_governance_state": false,
+            "source_hash": "c27d18fc3ff92e703674784ed6b938230b25d1538eed50a6508fd920d3173eff"
+          },
+          "source_architecture_index": {
+            "schema_version": "1.0",
+            "truth_map_contract": "beacon-truth-map-v1",
+            "truth_source_model": "feature_package_authoritative",
+            "resolver_mode": "resolver_first",
+            "version": "v1.6.2",
+            "surface": "source_architecture_index",
+            "path": "docs/beacon/v1.6.2/source-architecture/index.md",
+            "exists": true,
+            "required": true,
+            "role": "version_governance_truth",
+            "authority": "version_governance_truth",
+            "truth_authority": true,
+            "json_authority": false,
+            "generated_governance_state": false,
+            "source_hash": "f91ab58c4810b04375454b39e0d4287c2cf03f14b72dabc94034f1182c9c2a41"
+          },
+          "release_notes": {
+            "schema_version": "1.0",
+            "truth_map_contract": "beacon-truth-map-v1",
+            "truth_source_model": "feature_package_authoritative",
+            "resolver_mode": "resolver_first",
+            "version": "v1.6.2",
+            "surface": "release_notes",
+            "path": "docs/beacon/v1.6.2/release/v1.6.2.md",
+            "exists": true,
+            "required": true,
+            "role": "version_governance_truth",
+            "authority": "version_governance_truth",
+            "truth_authority": true,
+            "json_authority": false,
+            "generated_governance_state": false,
+            "source_hash": "8ba0e1a6af1eacfbc4cbe9232ae594a3a4c509d6fd049527a629fe4b91541541"
+          }
+        },
+        "generated_state_surfaces": {
+          "version_feature_manifest": {
+            "schema_version": "1.0",
+            "truth_map_contract": "beacon-truth-map-v1",
+            "truth_source_model": "feature_package_authoritative",
+            "resolver_mode": "resolver_first",
+            "version": "v1.6.2",
+            "surface": "version_feature_manifest",
+            "path": "docs/beacon/v1.6.2/.machine/manifest/version-features.json",
+            "exists": false,
+            "required": false,
+            "role": "generated_governance_state_not_truth",
+            "authority": "generated_governance_state_not_truth",
+            "truth_authority": false,
+            "json_authority": false,
+            "generated_governance_state": true,
+            "source_hash": ""
+          },
+          "project_version_metadata": {
+            "schema_version": "1.0",
+            "truth_map_contract": "beacon-truth-map-v1",
+            "truth_source_model": "feature_package_authoritative",
+            "resolver_mode": "resolver_first",
+            "version": "v1.6.2",
+            "surface": "project_version_metadata",
+            "path": ".beacon/metadata/project-version-metadata.json",
+            "exists": false,
+            "required": false,
+            "role": "generated_governance_state_not_truth",
+            "authority": "generated_governance_state_not_truth",
+            "truth_authority": false,
+            "json_authority": false,
+            "generated_governance_state": true,
+            "source_hash": ""
+          },
+          "project_governance_sqlite_projection": {
+            "schema_version": "1.0",
+            "truth_map_contract": "beacon-truth-map-v1",
+            "truth_source_model": "feature_package_authoritative",
+            "resolver_mode": "resolver_first",
+            "version": "v1.6.2",
+            "surface": "project_governance_sqlite_projection",
+            "path": "/Users/apple/.beacon/runtime-ledger/runtime-ledger.sqlite3",
+            "exists": true,
+            "required": false,
+            "role": "generated_governance_state_not_truth",
+            "authority": "generated_governance_state_not_truth",
+            "truth_authority": false,
+            "json_authority": false,
+            "generated_governance_state": true,
+            "source_hash": "87313f1afb17da455f58704692edcdd33879201272c9abc680de710ff95db021"
+          },
+          "evidence_manifest": {
+            "schema_version": "1.0",
+            "truth_map_contract": "beacon-truth-map-v1",
+            "truth_source_model": "feature_package_authoritative",
+            "resolver_mode": "resolver_first",
+            "version": "v1.6.2",
+            "surface": "evidence_manifest",
+            "path": ".beacon/evidence-manifest.json",
+            "exists": true,
+            "required": false,
+            "role": "generated_governance_state_not_truth",
+            "authority": "generated_governance_state_not_truth",
+            "truth_authority": false,
+            "json_authority": false,
+            "generated_governance_state": true,
+            "source_hash": "8fe163b6ab194555ad343604cfeac0f0b823e510e66b3ec39f195f0ec91738a3"
+          },
+          "qa_status": {
+            "schema_version": "1.0",
+            "truth_map_contract": "beacon-truth-map-v1",
+            "truth_source_model": "feature_package_authoritative",
+            "resolver_mode": "resolver_first",
+            "version": "v1.6.2",
+            "surface": "qa_status",
+            "path": ".beacon/qa/status.json",
+            "exists": true,
+            "required": false,
+            "role": "generated_governance_state_not_truth",
+            "authority": "generated_governance_state_not_truth",
+            "truth_authority": false,
+            "json_authority": false,
+            "generated_governance_state": true,
+            "source_hash": "9100c8f0b3b73c0b102c71f2d194f25c815d1335c1a7b99f4e63aab1e77eba50"
+          },
+          "release_gate_report": {
+            "schema_version": "1.0",
+            "truth_map_contract": "beacon-truth-map-v1",
+            "truth_source_model": "feature_package_authoritative",
+            "resolver_mode": "resolver_first",
+            "version": "v1.6.2",
+            "surface": "release_gate_report",
+            "path": ".beacon/release-gate-report.json",
+            "exists": true,
+            "required": false,
+            "role": "generated_governance_state_not_truth",
+            "authority": "generated_governance_state_not_truth",
+            "truth_authority": false,
+            "json_authority": false,
+            "generated_governance_state": true,
+            "source_hash": "7604840adf2e76e1690890dff39ccefb33c26d021c1b12db04f3a292be5164d1"
+          }
+        },
+        "manifest_authority": false,
+        "json_authority": false,
+        "diagnostics": []
+      },
+      "status": "pass",
+      "ok": true,
+      "checks": [
+        {
+          "name": "research_directory_present",
+          "status": "pass",
+          "details": {
+            "path": "docs/beacon/v1.6.2/research",
+            "exists": false,
+            "required": false
+          }
+        },
+        {
+          "name": "research_documents_present",
+          "status": "pass",
+          "details": {
+            "count": 0,
+            "documents": [],
+            "required": false
+          }
+        },
+        {
+          "name": "main_chain_feature_completeness",
+          "status": "pass",
+          "details": {
+            "feature_count": 1,
+            "features": [
+              "beacon-global-workspace-git-admission-v162"
+            ],
+            "missing_by_feature": {}
+          }
+        },
+        {
+          "name": "derived_requirement_projection_health",
+          "status": "pass",
+          "details": {
+            "feature_count": 1,
+            "missing_by_feature": {}
+          }
+        },
+        {
+          "name": "change_loop_requirement_package_sync",
+          "status": "pass",
+          "details": {
+            "feature_count": 1,
+            "drift_by_feature": {}
+          }
+        },
+        {
+          "name": "prd_machine_mirror_sync",
+          "status": "pass",
+          "details": {
+            "feature_count": 1,
+            "drift_by_feature": {}
+          }
+        },
+        {
+          "name": "prd_compat_mirror_sync",
+          "status": "pass",
+          "details": {
+            "feature_count": 1,
+            "warning_by_feature": {}
+          }
+        },
+        {
+          "name": "formal_summary_present",
+          "status": "pass",
+          "details": {
+            "path": "docs/beacon/v1.6.2/SUMMARY.md",
+            "exists": true,
+            "resolver_first": true,
+            "governance_surface": "summary"
+          }
+        },
+        {
+          "name": "formal_boundaries_present",
+          "status": "pass",
+          "details": {
+            "path": "docs/beacon/v1.6.2/execution/boundaries.md",
+            "exists": true,
+            "required": true
+          }
+        },
+        {
+          "name": "version_governance_resolver_first",
+          "status": "pass",
+          "details": {
+            "resolver_mode": "resolver_first",
+            "manifest_authority": false,
+            "json_authority": false,
+            "authority_classification": {
+              "feature_truth": "markdown_feature_package",
+              "feature_truth_model": "feature_package_authoritative",
+              "version_governance_truth": "version_governance_truth",
+              "generated_governance_state": "generated_governance_state_not_truth",
+              "runtime_process_record": "runtime_process_record_not_requirement_truth"
+            },
+            "diagnostics": []
+          }
+        },
+        {
+          "name": "formal_project_skill_blueprint_present",
+          "status": "pass",
+          "details": {
+            "path": "docs/beacon/v1.6.2/execution/project-skill-qa-evolution-blueprint.md",
+            "exists": true
+          }
+        },
+        {
+          "name": "formal_source_architecture_present",
+          "status": "pass",
+          "details": {
+            "path": "docs/beacon/v1.6.2/source-architecture/index.md",
+            "exists": true
+          }
+        },
+        {
+          "name": "formal_release_present",
+          "status": "pass",
+          "details": {
+            "count": 2,
+            "documents": [
+              "docs/beacon/v1.6.2/release/checklist-v1.6.2.md",
+              "docs/beacon/v1.6.2/release/v1.6.2.md"
+            ]
+          }
+        }
+      ]
+    },
+    "recommended_command": "",
+    "repair_commands": []
+  },
+  "closure_preflight": {
+    "enabled": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "recommended_command": "",
+    "feature": "beacon-global-workspace-git-admission-v162",
+    "feature_slug": "beacon-global-workspace-git-admission-v162",
+    "version": "v1.6.2",
+    "authority_state": "feature_package_authoritative",
+    "truth_authority": "markdown_feature_package",
+    "requirement_refs": {
+      "source_of_truth_root": "docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162",
+      "prd": "docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md",
+      "user_story": "docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md",
+      "test_case": "docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/tests.md",
+      "truth": "docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md",
+      "tests": "docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/tests.md",
+      "tasks": "docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/tasks.md",
+      "evidence": "docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/evidence.md"
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "feature": "beacon-global-workspace-git-admission-v162",
+      "feature_slug": "beacon-global-workspace-git-admission-v162",
+      "version": "v1.6.2",
+      "status": "pass",
+      "blocked": false,
+      "reason_code": "",
+      "generated_at": "2026-07-06T10:36:22.648088+00:00",
+      "package_dir": "docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162",
+      "truth_frontmatter": {
+        "slug": "beacon-global-workspace-git-admission-v162",
+        "version": "v1.6.2",
+        "status": "draft",
+        "revision_id": "R5",
+        "language": "zh",
+        "change_reason": "R5 — delivery-repo program-level branch profile；SidePilot friction friction:73c1790d551e + friction:025cd2a6322f",
+        "source_revision_id": "R4",
+        "canonical_refs": {
+          "prd": "docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md",
+          "user_story": "docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md",
+          "test_case": "docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/tests.md"
+        },
+        "parser_contract": "beacon-feature-package-v1",
+        "truth_source_model": "feature_package_authoritative",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "state_machine_required": "true",
+        "upstream_feature": "null",
+        "promotion_ref": "pln-review scheme A (2026-06-22)"
+      },
+      "ac_count": 15,
+      "test_count": 25,
+      "checkbox_count": 16,
+      "evidence_row_count": 6,
+      "gate_authority": "canonical_surfaces_preserved",
+      "checkbox_gate_bypass": false,
+      "evidence_gate_truth": false,
+      "diagnostics": [],
+      "truth_map_contract": "beacon-truth-map-v1",
+      "truth_source_model": "feature_package_authoritative",
+      "truth_package_contract": "beacon-feature-package-v2",
+      "machine_json_role": "generated_state_not_truth",
+      "generated_by": "beacon.truth_map.resolver",
+      "truth_authority": "markdown_feature_package",
+      "json_authority": false,
+      "source_paths": {
+        "truth": "docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md",
+        "tests": "docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/tests.md",
+        "tasks": "docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/tasks.md",
+        "evidence": "docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/evidence.md"
+      },
+      "source_hashes": {
+        "truth": "7fbec0ae8bf8dac51383694942b29c565d2fdfc41e373848b063c70de3b7ca7a",
+        "tests": "f4f3b316c64c7a009a2f60effccf869083b49ee560de5e2441f39332e660ca12",
+        "tasks": "0db78b7b08f30cbc5d19ba232e83c4b95774701bbc4fdb89d40ebd3d2bb77caa",
+        "evidence": "a0d1b6cde250e97a61d99d83787b3184019a8923da23dd9a542409e80e44ebef"
+      },
+      "runtime_json_requires_markdown_twin": false
+    }
+  },
+  "decision_surface": {
+    "stage": "implement",
+    "skill_ref": "skills/beacon/beacon-gen-implement/SKILL.md",
+    "inputs_contract": [
+      "`project-root`",
+      "`version`",
+      "`feature`",
+      "frozen `features/<slug>/truth.md` and `features/<slug>/tests.md`",
+      "conditionally required `prototype` when the feature has real UX/UI handoff",
+      "current gate / blocked reason / branch or execution governance context when present",
+      "`PRODUCT.md` — project-level product truth; must-read when the file exists at the project root",
+      "`DESIGN.md` — project-level design truth (colors, typography, spacing, tokens, Do's & Don'ts); must-read when the file exists at the project root",
+      "`docs/beacon/<version>/design/*` — version-wide design contracts (style, component-system, interaction-contract, state-matrix); must-read when they exist",
+      "`src/App.vue` or equivalent global CSS variable root — for projects with a design system, implement must reference existing CSS variables instead of hardcoding visual values"
+    ],
+    "decision_protocol": [
+      "Enter `implement` only after requirement truth is frozen enough for execution.",
+      "Block when frozen truth requires `change`, when cutover guardrails fail, or when a conditionally triggered prototype is still missing.",
+      "When `PRODUCT.md` or `DESIGN.md` exists at the project root, read both before starting any implementation that touches UI, visual design, or user-facing behavior. Treat them as binding design contracts, not optional reference material.",
+      "Keep `implement` as the only execution entry; `ask --execute` and support surfaces may route here but must not replace it.",
+      "Prefer explanation and routing logic in skill surface; keep final schema, contract, and gate writes in Python guardrails.",
+      "When dual-read or compatibility windows exist, fail closed on mismatch."
+    ],
+    "anti_inertia_notes": [
+      "`implement` is not permission to rewrite requirement truth.",
+      "`goal`, task ledgers, or partial execution progress do not define completion truth.",
+      "If the feature needs UX/UI handoff and prototype is triggered, do not skip straight into coding.",
+      "Team/runtime internals stay internal unless the user explicitly asks for them.",
+      "When `PRODUCT.md` or `DESIGN.md` exists at the project root, `implement` must read them before building any UI. Skipping design truth is a process drift that produces implementation-to-design mismatch.",
+      "`implement` cannot rewrite frozen truth or override gate truth by itself."
+    ],
+    "learning_notes": [
+      "Reuse implementation learning to avoid repeated blocked paths or flaky cutovers.",
+      "Learning may shape route explanation and caution, but cannot override gate truth.",
+      "Downgrade stale learning instead of silently trusting it."
+    ],
+    "backstop_cli": [
+      "`beacon implement ...`",
+      "`beacon change ...` when truth must reopen",
+      "`beacon qa ...` after implementation evidence is ready"
+    ],
+    "primary_reason": "`implement` is not permission to rewrite requirement truth.",
+    "recommended_command": "beacon workspace admit --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.2 --feature beacon-global-workspace-git-admission-v162 --json",
+    "reason_code": "branch_alignment_required"
+  },
+  "guardrail_contract": {
+    "stage": "implement",
+    "decision_owner": "skill_surface",
+    "enforcement_owner": "python_guardrail",
+    "blocked": true,
+    "reason_code": "branch_alignment_required",
+    "dual_read_required_before_cutover": true,
+    "fail_closed": true
+  }
+}

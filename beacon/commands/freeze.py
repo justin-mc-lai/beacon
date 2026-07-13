@@ -18,7 +18,7 @@ from beacon.utils.revision_delta import materialize_revision_delta
 from beacon.utils.revision_state import freeze_revision_state
 from beacon.utils.story_state import freeze_story_state, feature_slug
 from beacon.utils.truth_integrity import build_truth_integrity_gate
-from beacon.utils.truth_map import rebuild_machine_json
+from beacon.utils.truth_map import feature_package_authoritative, feature_package_ready, rebuild_machine_json
 from beacon.utils.versioning import resolve_target_version
 
 app = typer.Typer(name="freeze", help="Freeze current feature revision as implementation baseline", invoke_without_command=True, no_args_is_help=False)
@@ -89,12 +89,25 @@ def _freeze_impl(feature: str, project: Optional[str], version: str, json_output
         else:
             typer.echo("Beacon freeze blocked: machine requirement package sync failed")
         return 2
-    post_validation = validate_feature_package(
+    package_gate_enabled = feature_package_authoritative(resolved_version) or feature_package_ready(
         project_root,
         version=resolved_version,
         feature=feature,
-        write_report=True,
     )
+    post_validation = {
+        "status": "skipped",
+        "blocked": False,
+        "reason_code": "",
+        "skip_reason": "legacy_split_truth",
+        "diagnostics": [],
+    }
+    if package_gate_enabled:
+        post_validation = validate_feature_package(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            write_report=True,
+        )
     if str(post_validation.get("status") or "").lower() == "blocked":
         payload = {
             "schema_version": "1.0",
@@ -115,17 +128,25 @@ def _freeze_impl(feature: str, project: Optional[str], version: str, json_output
         return 2
     revision = freeze_revision_state(project_root, version=resolved_version, feature=feature)
     freeze_story_state(project_root, version=resolved_version, feature=feature)
-    truth_frontmatter_sync = sync_truth_frontmatter_status(
-        project_root,
-        version=resolved_version,
-        feature=feature,
-        status="frozen",
+    truth_frontmatter_sync = (
+        sync_truth_frontmatter_status(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            status="frozen",
+        )
+        if package_gate_enabled
+        else {"updated": False, "reason": "legacy_split_truth"}
     )
     revision_delta = materialize_revision_delta(project_root, version=resolved_version, feature=feature)
     # Rebuild machine json so .machine source hashes stay in sync with frozen
     # truth. Without this, any post-freeze truth edit leaves .machine stale and
     # truth-map verify reports machine_json_source_hash_stale.
-    machine_rebuild = rebuild_machine_json(project_root, version=resolved_version, feature=feature)
+    machine_rebuild = (
+        rebuild_machine_json(project_root, version=resolved_version, feature=feature)
+        if package_gate_enabled
+        else {"status": "skipped", "reason": "legacy_split_truth", "written": []}
+    )
     payload = {
         "schema_version": "1.0",
         "feature": feature,
