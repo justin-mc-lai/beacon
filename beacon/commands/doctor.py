@@ -1787,6 +1787,34 @@ def verify_version_truth_catalog_command(
     raise typer.Exit(code=exit_code)
 
 
+@app.command("sync-catalog")
+def sync_catalog_command(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Preview sync without writing"),
+    active_window: int = typer.Option(0, "--active-window", help="Override active delivery window (0 = use catalog default)"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Discover version dirs under docs/beacon/ and sync them into version-truth-catalog."""
+    from beacon.utils.version_truth_catalog import sync_catalog_versions
+
+    root = Path(project_root).expanduser().resolve() if project_root else Path.cwd()
+    result = sync_catalog_versions(root, dry_run=dry_run, active_window=active_window)
+    payload = {"schema_version": "1.0", "action": "doctor-sync-catalog", "result": result}
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo("Beacon Doctor Sync Catalog")
+        typer.echo(f"status: {result.get('status')}")
+        typer.echo(f"discovered: {result.get('discovered_count')}")
+        if result.get("added"):
+            typer.echo(f"added: {', '.join(result['added'])}")
+        if result.get("archived_by_window"):
+            typer.echo(f"archived by window: {', '.join(result['archived_by_window'])}")
+        typer.echo(f"skipped (already registered): {len(result.get('skipped_already_registered') or [])}")
+        typer.echo(f"active window: {result.get('active_window')}")
+    raise typer.Exit(code=0)
+
+
 @app.command("verify-agent-eval-admission")
 def verify_agent_eval_admission_command(
     project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),

@@ -163,6 +163,84 @@ def parse_catalog_markdown(text: str, *, project_root: Path) -> dict[str, Any]:
     return payload
 
 
+def sync_catalog_versions(
+    project_root: Path,
+    *,
+    dry_run: bool = False,
+    active_window: int = 0,
+) -> dict[str, Any]:
+    """Discover version dirs under docs/beacon/ and sync them into the catalog.
+
+    New versions are registered as active. When the active window is exceeded,
+    the oldest active versions are moved to archived-reference-only.
+    """
+    root = project_root.expanduser().resolve()
+    catalog = load_catalog_payload(root)
+    window = active_window or int(catalog.get("active_delivery_window") or DEFAULT_ACTIVE_WINDOW)
+    existing_versions = catalog.get("versions") if isinstance(catalog.get("versions"), dict) else {}
+    discovered = _glob_discovered_versions(root)
+    added: list[str] = []
+    skipped: list[str] = []
+    for version in discovered:
+        if version in existing_versions:
+            skipped.append(version)
+            continue
+        # Determine if this version's truth_root exists
+        active_root = root / "docs" / "beacon" / version
+        is_active_on_disk = active_root.is_dir()
+        archived_root = root / "docs" / "beacon" / "archive" / version
+        is_archived_on_disk = archived_root.is_dir() and not is_active_on_disk
+        state = "archived-reference-only" if is_archived_on_disk else "active"
+        truth_root = _default_truth_root(root, version, archived=is_archived_on_disk)
+        entry: dict[str, Any] = {
+            "version": version,
+            "validation_state": state,
+            "truth_root": truth_root,
+            "section": "archived" if state == "archived-reference-only" else "active",
+        }
+        if is_archived_on_disk:
+            entry["archived_at"] = now_iso()
+            entry["reason"] = "discovered-in-archive"
+        existing_versions[version] = entry
+        added.append(version)
+    # Enforce active window: sort active versions, archive oldest beyond window
+    archived_by_window: list[str] = []
+    active_entries = [
+        (v, e) for v, e in existing_versions.items()
+        if isinstance(e, dict) and str(e.get("validation_state") or "") == "active"
+    ]
+    active_sorted = sorted(active_entries, key=lambda pair: _semver_tuple(pair[0]))
+    if len(active_sorted) > window:
+        to_archive = active_sorted[: len(active_sorted) - window]
+        for version, entry in to_archive:
+            entry["validation_state"] = "archived-reference-only"
+            entry["truth_root"] = _default_truth_root(root, version, archived=True)
+            entry["archived_at"] = now_iso()
+            entry["reason"] = "release-line-window"
+            entry["section"] = "archived"
+            existing_versions[version] = entry
+            archived_by_window.append(version)
+    catalog["versions"] = existing_versions
+    summary = {
+        "schema_version": "1.0",
+        "dry_run": dry_run,
+        "discovered_count": len(discovered),
+        "added": added,
+        "added_count": len(added),
+        "skipped_already_registered": skipped,
+        "archived_by_window": archived_by_window,
+        "archived_by_window_count": len(archived_by_window),
+        "active_window": window,
+    }
+    if dry_run:
+        summary["status"] = "dry_run"
+        return summary
+    commit_result = commit_catalog_payload(root, catalog, event_type="catalog-sync")
+    summary["status"] = "committed"
+    summary["commit"] = commit_result
+    return summary
+
+
 def load_catalog_payload(project_root: Path) -> dict[str, Any]:
     path = catalog_md_path(project_root)
     if not path.is_file():
