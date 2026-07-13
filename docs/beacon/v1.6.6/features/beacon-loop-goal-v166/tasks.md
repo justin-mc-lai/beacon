@@ -17,5 +17,5 @@ parser_contract: beacon-feature-package-v2
 - [x] TASK-003 implement → `beacon-gen-implement` — create `.agents/skills/beacon-loop-goal/SKILL.md` with full decision tree + state machine + skill routing matrix
 - [-] TASK-004 implement → `beacon-gen-implement` — integrate `loop-goal` status view into `beacon/commands/status.py` (deferred)
 - [x] TASK-005 implement → `beacon-gen-implement` — create `tests/test_v166_loop_goal.py` with 10 test cases
-- [ ] TASK-006 qa → `beacon-eval-qa` — run TC-LG-* matrix, accept all AC-001..010
+- [x] TASK-006 qa → `beacon-eval-qa` — 10/10 tests pass, 10/10 AC verified, SKILL.md stable
 - [ ] TASK-007 release → `beacon-eval-release` — update SUMMARY.md delivery status, release note
