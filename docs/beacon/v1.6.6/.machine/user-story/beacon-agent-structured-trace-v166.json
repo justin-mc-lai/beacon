@@ -1,0 +1,294 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-agent-structured-trace-v166",
+  "feature_slug": "beacon-agent-structured-trace-v166",
+  "version": "v1.6.6",
+  "current_revision_id": "R1",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-07-10T09:00:05.424062+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-agent-structured-trace-v166",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:00031106107f581bb1272a7402aa527911f9a0aba15a7cb3cfd128e665796b3c",
+      "superseded_by": null,
+      "created_at": "2026-07-10T08:17:29.102609+00:00",
+      "frozen_at": "2026-07-10T08:17:29.193890+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "beacon-agent-structured-trace-v166",
+      "priority": "medium",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "schema",
+          "text": "Validator accepts `agent_trace.v1` with required fields; invalid `event_type` → `reason_code=agent_trace_invalid_event_type`",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260710T085936Z-a86f",
+          "verified_by_run_id": "run-20260710T165957926523",
+          "accepted_at": "2026-07-10T09:00:05.403583+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-agent-structured-trace-v166/truth.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "append-events",
+          "text": "Trace writer appends at least one of `decision`/`failure`/`retry`/`output` per governed run when harness executes an iteration",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260710T085936Z-a86f",
+          "verified_by_run_id": "run-20260710T165957926523",
+          "accepted_at": "2026-07-10T09:00:05.403583+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-agent-structured-trace-v166/truth.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "fail-closed",
+          "text": "Governed harness write without trace path or append failure → block with `reason_code=agent_trace_missing` (no silent pass)",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260710T085936Z-a86f",
+          "verified_by_run_id": "run-20260710T165957926523",
+          "accepted_at": "2026-07-10T09:00:05.403583+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-agent-structured-trace-v166/truth.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "lifecycle-index",
+          "text": "`workflow-lifecycle` index records `trace_path` + `trace_event_count` for the run",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260710T085936Z-a86f",
+          "verified_by_run_id": "run-20260710T165957926523",
+          "accepted_at": "2026-07-10T09:00:05.403583+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-agent-structured-trace-v166/truth.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "loop-audit-signal",
+          "text": "`beacon doctor loop-audit --json` reports `agent_trace_coverage` as `pass`/`fail`/`missing` with findings",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260710T085936Z-a86f",
+          "verified_by_run_id": "run-20260710T165957926523",
+          "accepted_at": "2026-07-10T09:00:05.403583+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-agent-structured-trace-v166/truth.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "golden-fixture",
+          "text": "Golden trace fixture resolves to stable normalized JSON (field order independent) for regression",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260710T085936Z-a86f",
+          "verified_by_run_id": "run-20260710T165957926523",
+          "accepted_at": "2026-07-10T09:00:05.403583+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-agent-structured-trace-v166/truth.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "loop-layer-field",
+          "text": "Validator accepts optional `loop_layer` with governed values `coding` / `developer` / `realworld`; invalid value → `reason_code=agent_trace_invalid_loop_layer`",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260710T085936Z-a86f",
+          "verified_by_run_id": "run-20260710T165957926523",
+          "accepted_at": "2026-07-10T09:00:05.403583+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-agent-structured-trace-v166/truth.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260710T085936Z-a86f",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-07-10T09:00:05.403583+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Validator accepts `agent_trace.v1` with required fields; invalid `event_type` → `reason_code=agent_trace_invalid_event_type`",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260710T085936Z-a86f",
+          "verified_by_run_id": "run-20260710T165957926523",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-agent-structured-trace-v166/truth.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — Trace writer appends at least one of `decision`/`failure`/`retry`/`output` per governed run when harness executes an iteration",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260710T085936Z-a86f",
+          "verified_by_run_id": "run-20260710T165957926523",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-agent-structured-trace-v166/truth.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Governed harness write without trace path or append failure → block with `reason_code=agent_trace_missing` (no silent pass)",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260710T085936Z-a86f",
+          "verified_by_run_id": "run-20260710T165957926523",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-agent-structured-trace-v166/truth.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — `workflow-lifecycle` index records `trace_path` + `trace_event_count` for the run",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260710T085936Z-a86f",
+          "verified_by_run_id": "run-20260710T165957926523",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-agent-structured-trace-v166/truth.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — `beacon doctor loop-audit --json` reports `agent_trace_coverage` as `pass`/`fail`/`missing` with findings",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260710T085936Z-a86f",
+          "verified_by_run_id": "run-20260710T165957926523",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-agent-structured-trace-v166/truth.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Golden trace fixture resolves to stable normalized JSON (field order independent) for regression",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260710T085936Z-a86f",
+          "verified_by_run_id": "run-20260710T165957926523",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-agent-structured-trace-v166/truth.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Validator accepts optional `loop_layer` with governed values `coding` / `developer` / `realworld`; invalid value → `reason_code=agent_trace_invalid_loop_layer`",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260710T085936Z-a86f",
+          "verified_by_run_id": "run-20260710T165957926523",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-agent-structured-trace-v166/truth.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-agent-structured-trace-v166",
+        "version": "v1.6.6",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/research/beacon-agent-structured-trace-v166.md",
+        "present": false,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      },
+      "feature": "beacon-agent-structured-trace-v166",
+      "feature_slug": "beacon-agent-structured-trace-v166",
+      "version": "v1.6.6",
+      "last_changed_files": [
+        "beacon/utils/agent_trace.py",
+        "beacon/utils/loop_audit.py",
+        "beacon/commands/doctor.py",
+        "tests/test_v166_agent_structured_trace.py",
+        "tests/fixtures/agent_trace/"
+      ],
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-agent-structured-trace-v166/ac-closure.json",
+        ".beacon/qa/features/beacon-agent-structured-trace-v166/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "accepted_at": "2026-07-10T09:00:05.403583+00:00",
+      "accepted_by": "qa"
+    }
+  ]
+}

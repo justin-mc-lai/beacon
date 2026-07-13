@@ -1,0 +1,203 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-10T08:48:04.620281+00:00",
+  "feature": "beacon-agent-structured-trace-v166",
+  "feature_slug": "beacon-agent-structured-trace-v166",
+  "version": "v1.6.6",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.6/features/beacon-agent-structured-trace-v166/truth.md",
+    "tests": "docs/beacon/v1.6.6/features/beacon-agent-structured-trace-v166/tests.md",
+    "tasks": "docs/beacon/v1.6.6/features/beacon-agent-structured-trace-v166/tasks.md",
+    "evidence": "docs/beacon/v1.6.6/features/beacon-agent-structured-trace-v166/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "dc874306be1e999498cd7705c8e2b0834251fc3d60f82c1b7e7cb6b7560b9460",
+    "tests": "4c272f0dff2e70fe925ac36d358f668e180710dfea40e3fb2f5828745c8e7246",
+    "tasks": "04dda35911287ee68d95a61a2bef2d316bc69d7bef15aab6a41460b5ae93a451",
+    "evidence": "71c385996e8cf75fd563226738dc9c50e170e90067b3beaed59d046cd0e13afb"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-agent-structured-trace-v166",
+    "version": "v1.6.6",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "R1 - Structured agent trace for loop observability (program Phase 1)",
+    "canonical_refs": {
+      "truth": "docs/beacon/v1.6.6/features/beacon-agent-structured-trace-v166/truth.md",
+      "tests": "docs/beacon/v1.6.6/features/beacon-agent-structured-trace-v166/tests.md",
+      "tasks": "docs/beacon/v1.6.6/features/beacon-agent-structured-trace-v166/tasks.md",
+      "evidence": "docs/beacon/v1.6.6/features/beacon-agent-structured-trace-v166/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "program_ref": "docs/beacon/v1.6.6/programs/beacon-loop-meta-remediation-v166/feature-graph.json"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "schema",
+      "description": "Validator accepts `agent_trace.v1` with required fields; invalid `event_type` → `reason_code=agent_trace_invalid_event_type`"
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "append-events",
+      "description": "Trace writer appends at least one of `decision`/`failure`/`retry`/`output` per governed run when harness executes an iteration"
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "fail-closed",
+      "description": "Governed harness write without trace path or append failure → block with `reason_code=agent_trace_missing` (no silent pass)"
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "lifecycle-index",
+      "description": "`workflow-lifecycle` index records `trace_path` + `trace_event_count` for the run"
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "loop-audit-signal",
+      "description": "`beacon doctor loop-audit --json` reports `agent_trace_coverage` as `pass`/`fail`/`missing` with findings"
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "golden-fixture",
+      "description": "Golden trace fixture resolves to stable normalized JSON (field order independent) for regression"
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "loop-layer-field",
+      "description": "Validator accepts optional `loop_layer` with governed values `coding` / `developer` / `realworld`; invalid value → `reason_code=agent_trace_invalid_loop_layer`"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-TR-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v166_agent_structured_trace.py::test_schema_accepts_valid_event -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Validator accepts valid `agent_trace.v1` line with all required fields",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-TR-002",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v166_agent_structured_trace.py::test_schema_rejects_invalid_event_type -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Invalid `event_type` fails with `reason_code=agent_trace_invalid_event_type`",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-TR-003",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_v166_agent_structured_trace.py::test_append_events_on_governed_run -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Simulated governed run appends at least one of decision/failure/retry/output to `.beacon/traces/<run_id>.jsonl`",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-TR-004",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v166_agent_structured_trace.py::test_fail_closed_when_trace_missing -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Harness preflight blocks with `reason_code=agent_trace_missing` when trace cannot be opened",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-TR-005",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_v166_agent_structured_trace.py::test_lifecycle_index_records_trace_pointer -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "`workflow-lifecycle` index contains `trace_path` and `trace_event_count` for the run",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-TR-006",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_v166_agent_structured_trace.py::test_loop_audit_agent_trace_coverage_signal -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "`doctor loop-audit` JSON includes `agent_trace_coverage` with status pass/fail/missing",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-007",
+      "tc_id": "TC-TR-008",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v166_agent_structured_trace.py::test_loop_layer_optional_field -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Valid `loop_layer` values accepted; invalid value fails with `reason_code=agent_trace_invalid_loop_layer`",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-TR-007",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v166_agent_structured_trace.py::test_golden_trace_normalization -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Golden fixture normalizes to stable JSON equal to reference payload",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "truth.define + acceptance — R1",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "truth.coverage — TC-TR-001..008",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "verify-closure pass",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "requirement-clarity pass",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "freeze — frozen",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "implement AC-001..007 — agent_trace.py, loop_audit.py, doctor loop-audit, tests",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "qa → `beacon-eval-qa`",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "truth.md",
+      "authority": "requirement_truth",
+      "artifact": "docs/beacon/v1.6.6/features/beacon-agent-structured-trace-v166/truth.md"
+    },
+    {
+      "surface": "tests.md",
+      "authority": "test_truth",
+      "artifact": "docs/beacon/v1.6.6/features/beacon-agent-structured-trace-v166/tests.md"
+    },
+    {
+      "surface": "tasks.md",
+      "authority": "requirement_truth",
+      "artifact": "docs/beacon/v1.6.6/features/beacon-agent-structured-trace-v166/tasks.md"
+    }
+  ]
+}
