@@ -5,9 +5,12 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
+from beacon.utils.agent_trace import agent_trace_coverage_signal
 from beacon.utils.loop_budget import build_loop_budget_status
 from beacon.utils.loop_failure_catalog import catalog_path, validate_failure_catalog
 from beacon.utils.loop_patterns import registry_path, validate_pattern_registry
+from beacon.utils.stagnation_detector import stagnation_detection_signal
+from beacon.utils.remediation_sandbox import remediation_signal
 
 REQUIRED_SIGNAL_IDS = [
     "version_governance",
@@ -20,6 +23,9 @@ REQUIRED_SIGNAL_IDS = [
     "token_budget",
     "run_log",
     "failure_catalog",
+    "agent_trace_coverage",
+    "stagnation_detection",
+    "remediation_sandbox",
 ]
 
 
@@ -151,6 +157,42 @@ def build_loop_readiness_audit(
             reason_code=str(catalog.get("reason_code") or ""),
             suggestion={"route": "beacon-gen-implement"},
             details={"findings": catalog.get("findings", []), "entry_count": catalog.get("entry_count", 0)},
+        )
+    )
+    # --- agent_trace_coverage (v1.6.6 Phase 1 AC-005) ---
+    trace_sig = agent_trace_coverage_signal(root)
+    signals.append(
+        _signal(
+            "agent_trace_coverage",
+            str(trace_sig.get("status") or "missing"),
+            reason_code=str(trace_sig.get("reason_code") or ""),
+            suggestion={"route": "beacon-gen-implement"},
+            details={"findings": trace_sig.get("findings", []), "valid_run_count": trace_sig.get("valid_run_count", 0)},
+            weight=8,
+        )
+    )
+    # --- stagnation_detection (v1.6.6 Phase 2 AC-007) ---
+    stag_sig = stagnation_detection_signal(root, version=version)
+    signals.append(
+        _signal(
+            "stagnation_detection",
+            str(stag_sig.get("status") or "missing"),
+            reason_code=str(stag_sig.get("reason_code") or ""),
+            suggestion={"route": "beacon-gen-implement"},
+            details={"findings": stag_sig.get("findings", [])},
+            weight=8,
+        )
+    )
+    # --- remediation_sandbox (v1.6.6 Phase 3) ---
+    rem_sig = remediation_signal(root)
+    signals.append(
+        _signal(
+            "remediation_sandbox",
+            str(rem_sig.get("status") or "missing"),
+            reason_code=str(rem_sig.get("reason_code") or ""),
+            suggestion={"route": "beacon-gen-implement"},
+            details={"findings": rem_sig.get("findings", [])},
+            weight=6,
         )
     )
     total_weight = sum(int(signal.get("weight", 0) or 0) for signal in signals)
