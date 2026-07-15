@@ -35,7 +35,7 @@
       "version": "v2.0.0",
       "status": "frozen",
       "language": "zh",
-      "revision": "r7-draft",
+      "revision": "r8-minimal-kernel-frozen",
       "canonical_refs": {
         "truth": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
         "tests": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tests.md",
@@ -62,10 +62,10 @@
       "evidence": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/evidence.md"
     },
     "source_hashes": {
-      "truth": "b36a0592a6b568e41cc54afaa3f490cbddb30867e25d08c299bd3d0bc9bdaa51",
-      "tests": "86722b84c029e0ee5610e17201b9e8759c1bb8885a60449122d00879673c370a",
-      "tasks": "00ee635bd331347928a01ef95e41103166d22f746b32bccc1070dec0d7c8424c",
-      "evidence": "2cdcdb756b0ef22653e51afe1dc12ad1806c169e11a53afd9f19937c8781d1bc"
+      "truth": "8b31050c3baa6c6b9aa04f57cbdff43de30afea3e05bf57ac39467e0832fdd23",
+      "tests": "e7def9fb3fbc1af7ad48107436e76d03e704e6a30421ce8297c1ba93dd030e16",
+      "tasks": "1dfc0fe0e08c56001b119fc6ce8e5ff2e5aa4b42c87e379bbae9c0de70edc7aa",
+      "evidence": "116ed11f152fd46aa628d857e5a2cf44363889d5beb68b3542027242c44172a3"
     },
     "surfaces": {
       "truth": {
@@ -80,7 +80,7 @@
         "filename": "truth.md",
         "path": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
         "exists": true,
-        "source_hash": "b36a0592a6b568e41cc54afaa3f490cbddb30867e25d08c299bd3d0bc9bdaa51",
+        "source_hash": "8b31050c3baa6c6b9aa04f57cbdff43de30afea3e05bf57ac39467e0832fdd23",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -96,7 +96,7 @@
         "filename": "tests.md",
         "path": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tests.md",
         "exists": true,
-        "source_hash": "86722b84c029e0ee5610e17201b9e8759c1bb8885a60449122d00879673c370a",
+        "source_hash": "e7def9fb3fbc1af7ad48107436e76d03e704e6a30421ce8297c1ba93dd030e16",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -112,7 +112,7 @@
         "filename": "tasks.md",
         "path": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tasks.md",
         "exists": true,
-        "source_hash": "00ee635bd331347928a01ef95e41103166d22f746b32bccc1070dec0d7c8424c",
+        "source_hash": "1dfc0fe0e08c56001b119fc6ce8e5ff2e5aa4b42c87e379bbae9c0de70edc7aa",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -128,7 +128,7 @@
         "filename": "evidence.md",
         "path": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/evidence.md",
         "exists": true,
-        "source_hash": "2cdcdb756b0ef22653e51afe1dc12ad1806c169e11a53afd9f19937c8781d1bc",
+        "source_hash": "116ed11f152fd46aa628d857e5a2cf44363889d5beb68b3542027242c44172a3",
         "authority": "markdown_feature_package",
         "json_authority": false
       }
@@ -182,8 +182,8 @@
     "truth_source_model": "feature_package_authoritative",
     "resolver_mode": "resolver_first",
     "version": "v2.0.0",
-    "status": "blocked",
-    "blocked": true,
+    "status": "pass",
+    "blocked": false,
     "authority_classification": {
       "feature_truth": "markdown_feature_package",
       "feature_truth_model": "feature_package_authoritative",
@@ -216,7 +216,7 @@
         "truth_authority": true,
         "json_authority": false,
         "generated_governance_state": false,
-        "source_hash": "4e96d14130a8cb707a60e816dac5e52b9e2dabf25aff3b6a59d73e3147c45db0"
+        "source_hash": "f46e8ad05ecf7b98e89241c125206773bbd2a3bec568cc9c8c9e7891e31403fd"
       },
       "global_boundaries": {
         "schema_version": "1.0",
@@ -233,7 +233,7 @@
         "truth_authority": true,
         "json_authority": false,
         "generated_governance_state": false,
-        "source_hash": "904a1fa52e1c0ee5830716fc42d0008304524c753392953947c58e21b66c19c9"
+        "source_hash": "74cb5ee49e3981d1876919eff4ba6ce62696801fe5c77edf5fe1440bf978cdb4"
       },
       "summary": {
         "schema_version": "1.0",
@@ -260,14 +260,14 @@
         "version": "v2.0.0",
         "surface": "execution_boundaries",
         "path": "docs/beacon/v2.0.0/execution/boundaries.md",
-        "exists": false,
+        "exists": true,
         "required": true,
         "role": "version_governance_truth",
         "authority": "version_governance_truth",
         "truth_authority": true,
         "json_authority": false,
         "generated_governance_state": false,
-        "source_hash": ""
+        "source_hash": "ac5440850e68a338f18ff2683d170ba0485dae6c020395df5ebf8b6e2d6250f1"
       },
       "project_skill_blueprint": {
         "schema_version": "1.0",
@@ -277,14 +277,14 @@
         "version": "v2.0.0",
         "surface": "project_skill_blueprint",
         "path": "docs/beacon/v2.0.0/execution/project-skill-qa-evolution-blueprint.md",
-        "exists": false,
+        "exists": true,
         "required": true,
         "role": "version_governance_truth",
         "authority": "version_governance_truth",
         "truth_authority": true,
         "json_authority": false,
         "generated_governance_state": false,
-        "source_hash": ""
+        "source_hash": "4ce21eb82de9398ab6c032c6a99ae57c20455fa1e6131caac1bc406a0cce1149"
       },
       "source_architecture_index": {
         "schema_version": "1.0",
@@ -294,14 +294,14 @@
         "version": "v2.0.0",
         "surface": "source_architecture_index",
         "path": "docs/beacon/v2.0.0/source-architecture/index.md",
-        "exists": false,
+        "exists": true,
         "required": true,
         "role": "version_governance_truth",
         "authority": "version_governance_truth",
         "truth_authority": true,
         "json_authority": false,
         "generated_governance_state": false,
-        "source_hash": ""
+        "source_hash": "dca7de206625d8989e476a6844bc58b1307206f202031063562789b863e90594"
       },
       "release_notes": {
         "schema_version": "1.0",
@@ -311,14 +311,14 @@
         "version": "v2.0.0",
         "surface": "release_notes",
         "path": "docs/beacon/v2.0.0/release/v2.0.0.md",
-        "exists": false,
+        "exists": true,
         "required": true,
         "role": "version_governance_truth",
         "authority": "version_governance_truth",
         "truth_authority": true,
         "json_authority": false,
         "generated_governance_state": false,
-        "source_hash": ""
+        "source_hash": "f7886cf1bf252cdc2dc2b6506060ca6d0cbf23b52037a9b7f4a1e48587559beb"
       }
     },
     "generated_state_surfaces": {
@@ -371,7 +371,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "b4f03babb0d38e62c7fa7b58a981d7a8a6e166fd692770d5a758bc3a9c398710"
+        "source_hash": "d92201a906f2daf79d0d80611fba997d06406229a6cbff45b77ba557b409d5bd"
       },
       "evidence_manifest": {
         "schema_version": "1.0",
@@ -388,7 +388,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "c75118d041bfc2d017deb473f8ee493369cd49ac77db79a9127dcd12f1d925cb"
+        "source_hash": "2871084142c4d543479dabc495f2ab35b9cb652cc17e2cc4610cbd1c9cce42dd"
       },
       "qa_status": {
         "schema_version": "1.0",
@@ -405,7 +405,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "74ca30542659d716c8ff5bef67ea603ec83e7fdee0da5830261570bf355dc41a"
+        "source_hash": "5e6da59398301af00e594a93afa921b11203d83b1c0636f13423a145980c332e"
       },
       "release_gate_report": {
         "schema_version": "1.0",
@@ -422,37 +422,12 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "d886c25e8d767c9406a12829a2c8afd07a6686281453b8775e9173e25f8f6545"
+        "source_hash": "9ad38440eb807ffdfbf39f9a6f5e3798804650d114c3daa4b6a7f0838d18e096"
       }
     },
     "manifest_authority": false,
     "json_authority": false,
-    "diagnostics": [
-      {
-        "severity": "error",
-        "code": "version_governance_truth_missing",
-        "surface": "execution_boundaries",
-        "path": "docs/beacon/v2.0.0/execution/boundaries.md"
-      },
-      {
-        "severity": "error",
-        "code": "version_governance_truth_missing",
-        "surface": "project_skill_blueprint",
-        "path": "docs/beacon/v2.0.0/execution/project-skill-qa-evolution-blueprint.md"
-      },
-      {
-        "severity": "error",
-        "code": "version_governance_truth_missing",
-        "surface": "source_architecture_index",
-        "path": "docs/beacon/v2.0.0/source-architecture/index.md"
-      },
-      {
-        "severity": "error",
-        "code": "version_governance_truth_missing",
-        "surface": "release_notes",
-        "path": "docs/beacon/v2.0.0/release/v2.0.0.md"
-      }
-    ]
+    "diagnostics": []
   },
   "entrypoint_inventory": {
     "schema_version": "1.0",
@@ -639,7 +614,7 @@
     "diagnostics": []
   },
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-02T03:27:14.128309+00:00",
+  "generated_at": "2026-07-15T07:50:53.198164+00:00",
   "truth_authority": false,
   "source_paths": {
     "truth": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
@@ -648,9 +623,9 @@
     "evidence": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/evidence.md"
   },
   "source_hashes": {
-    "truth": "b36a0592a6b568e41cc54afaa3f490cbddb30867e25d08c299bd3d0bc9bdaa51",
-    "tests": "86722b84c029e0ee5610e17201b9e8759c1bb8885a60449122d00879673c370a",
-    "tasks": "00ee635bd331347928a01ef95e41103166d22f746b32bccc1070dec0d7c8424c",
-    "evidence": "2cdcdb756b0ef22653e51afe1dc12ad1806c169e11a53afd9f19937c8781d1bc"
+    "truth": "8b31050c3baa6c6b9aa04f57cbdff43de30afea3e05bf57ac39467e0832fdd23",
+    "tests": "e7def9fb3fbc1af7ad48107436e76d03e704e6a30421ce8297c1ba93dd030e16",
+    "tasks": "1dfc0fe0e08c56001b119fc6ce8e5ff2e5aa4b42c87e379bbae9c0de70edc7aa",
+    "evidence": "116ed11f152fd46aa628d857e5a2cf44363889d5beb68b3542027242c44172a3"
   }
 }
