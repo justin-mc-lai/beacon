@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-15T11:43:03.006632+00:00",
+  "generated_at": "2026-07-15T12:12:19.116503+00:00",
   "feature": "beacon-v2-rust-kernel-redesign",
   "feature_slug": "beacon-v2-rust-kernel-redesign",
   "version": "v2.0.0",
@@ -18,17 +18,17 @@
     "evidence": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/evidence.md"
   },
   "source_hashes": {
-    "truth": "1d7105a036b050e992bc07836f5aa6cf8d2b7a674b686a9a714857fc0be2b5b6",
-    "tests": "fb1f22f24265e3eadb272e6da65596f453c2061a856028b28523a5f525710d20",
-    "tasks": "7b51af2c0ad4aa8b81c3b22b8c3b1ce0c8d36aa830a55576139e0ddc56ccb9fe",
-    "evidence": "8b20837e8afcb8ae1f7eda343ca9420b0b0666921f6e1a09e1a79d10a179c48f"
+    "truth": "788695244b3d4801c34efc5be609850a53235ed474a59c7bd281a19fad878a7e",
+    "tests": "920aa3a83f0a5b55843ade342d0f710cb8b8a6d254571c1f8e750febba1f2d22",
+    "tasks": "bda7cf92e87b482d865af9e34d6d755be18284198fd8a79dbd2cf080ed1d4b0a",
+    "evidence": "6c006603b4b4b44e6c0ca4859ffe48a48ec4da28c42c36b7512b44caf0201897"
   },
   "truth_frontmatter": {
     "slug": "beacon-v2-rust-kernel-redesign",
     "version": "v2.0.0",
     "status": "frozen",
     "language": "zh",
-    "revision": "r10-trace-spine-canonical-truth-frozen",
+    "revision": "r11-standard-execution-flow-frozen",
     "canonical_refs": {
       "truth": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
       "tests": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tests.md",
@@ -667,6 +667,41 @@
       "ac_id": "AC-137",
       "theme": "",
       "description": "- **AC-137**：refreeze transaction 必须拒绝 reason-only / machine-only 变化；revision id、人类 narrative 与 machine projection 发生漂移时 fail-closed。"
+    },
+    {
+      "ac_id": "AC-138",
+      "theme": "",
+      "description": "- **AC-138**：Beacon v2 必须提供 Standard Execution Flow 状态机，顺序固定为 support_advisory -> canonical_truth_authoring -> canonical_refreeze -> canonical_commit -> feature_worktree_reconcile -> governance_verify -> workspace_admission -> implement_resume；跳步必须 fail-closed。"
+    },
+    {
+      "ac_id": "AC-139",
+      "theme": "",
+      "description": "- **AC-139**：canonical refreeze 只有在 canonical branch 提交后才成为可消费 baseline；未提交 refreeze artifact 不得被 feature branch、loop、implement、qa-evidence 或 release 采信。"
+    },
+    {
+      "ac_id": "AC-140",
+      "theme": "",
+      "description": "- **AC-140**：feature worktree 中发现 stale feature-local refreeze/projection dirty 时，必须 scoped stash/archive 并记录引用；不得作为 requirement authority commit/merge。"
+    },
+    {
+      "ac_id": "AC-141",
+      "theme": "",
+      "description": "- **AC-141**：feature/dev branch 进入 implement 前必须包含 canonical `truth_baseline_commit`，且不得有违反 dirty policy 的工作区状态；否则 blocked。"
+    },
+    {
+      "ac_id": "AC-142",
+      "theme": "",
+      "description": "- **AC-142**：标准流 admission evidence bundle 必须包含 truth-map verify、verify-materials strict、git diff check、branch-governance verify、workspace admission 五类结果；缺任一项不得进入 implement。"
+    },
+    {
+      "ac_id": "AC-143",
+      "theme": "",
+      "description": "- **AC-143**：标准流必须可 idempotent resume；已对齐步骤重复执行时返回 `up_to_date` / `pass`，不得因重复执行产生新的 requirement revision。"
+    },
+    {
+      "ac_id": "AC-144",
+      "theme": "",
+      "description": "- **AC-144**：标准执行流通过六 public skill 的 progressive examples 暴露，不得新增第七个 public skill 或绕过 Harness Boundary。"
     },
     {
       "ac_id": "AC-099",
@@ -1657,6 +1692,26 @@
       "status": "unchecked"
     },
     {
+      "id": "TASK-P2-020",
+      "title": "Standard Execution Flow state machine：实现 support_advisory -> canonical_truth_authoring -> canonical_refreeze -> canonical_commit -> feature_worktree_reconcile -> governance_verify -> workspace_admission -> implement_resume 顺序校验（AC-138 / TC-138）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P2-021",
+      "title": "canonical baseline commit gate：refreeze complete 后必须提交 canonical branch 并生成 `truth_baseline_commit`，feature branch implement admission 验证该 commit 已合入（AC-139, AC-141 / TC-139, TC-141）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P2-022",
+      "title": "stale feature-local refreeze quarantine：feature worktree 合入 main 前检测 `.machine` revision/projection dirty，要求 scoped stash/archive artifact，不得采信本地 bump（AC-140 / TC-140）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P2-023",
+      "title": "standard flow admission bundle：汇总 truth-map verify、verify-materials strict、diff check、branch-governance verify、workspace admission 为可引用 bundle，并支持 idempotent resume（AC-142–143 / TC-142–143）。",
+      "status": "unchecked"
+    },
+    {
       "id": "TASK-P3-001",
       "title": "gate 写 `gate_results` + reason_codes 集成测试（TC-066）。",
       "status": "unchecked"
@@ -1758,6 +1813,11 @@
     },
     {
       "id": "TASK-P4-005",
+      "title": "standard-flow progressive examples：通过 loop/truth/implement/qa-evidence/release examples 暴露标准执行流，不新增第七个 public skill（AC-144 / TC-144）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P4-005",
       "title": "integration：TC-059–063, TC-088, TC-094, TC-109–110, TC-125。",
       "status": "unchecked"
     },
@@ -1844,6 +1904,13 @@
       "surface": "planner-review-r10",
       "authority": "support_advisory",
       "canonical_artifact": "conversation: v1.6.6 trace/stagnation/remediation closure gap; TraceSpine authority; canonical truth branch requirement",
+      "status": "accepted-for-truth",
+      "route": "truth.define"
+    },
+    {
+      "surface": "planner-review-r11",
+      "authority": "support_advisory",
+      "canonical_artifact": "conversation: standardize canonical main refreeze -> feature merge -> governance verify -> workspace admission -> implement resume as Beacon Standard Execution Flow",
       "status": "accepted-for-truth",
       "route": "truth.define"
     },

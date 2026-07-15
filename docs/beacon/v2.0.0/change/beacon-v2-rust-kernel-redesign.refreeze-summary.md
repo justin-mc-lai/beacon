@@ -1,12 +1,12 @@
 # Change Refreeze Summary: beacon-v2-rust-kernel-redesign
 
 - version: `v2.0.0`
-- change_reason: `refreeze v2 TraceSpine and canonical truth branch contract as R10 with human and machine revision authority aligned`
+- change_reason: `refreeze v2 Standard Execution Flow: canonical main truth author/refreeze/commit, feature stale-refreeze quarantine, merge-main verification, workspace admission, idempotent implement resume`
 - refreeze_status: `complete`
 - blocked_reason: ``
 - next_route: `beacon-gen-implement`
-- revision_before: `R9`
-- revision_after: `R10`
+- revision_before: `R10`
+- revision_after: `R11`
 
 ## Surface Statuses
 - `change`: `present` (docs/beacon/v2.0.0/change/beacon-v2-rust-kernel-redesign.md)

@@ -13,6 +13,7 @@
 | planner-review-r8 | support_advisory | conversation: v2 minimal Rust harness kernel, six first-class abilities, no v1 Python compat | accepted-for-truth | truth.define |
 | planner-review-r9 | support_advisory | conversation: v2 skill surface progressive disclosure, branch governance retained, harness contracts retained | accepted-for-truth | truth.define |
 | planner-review-r10 | support_advisory | conversation: v1.6.6 trace/stagnation/remediation closure gap; TraceSpine authority; canonical truth branch requirement | accepted-for-truth | truth.define |
+| planner-review-r11 | support_advisory | conversation: standardize canonical main refreeze -> feature merge -> governance verify -> workspace admission -> implement resume as Beacon Standard Execution Flow | accepted-for-truth | truth.define |
 | package-tests | test_truth | docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tests.md | authoritative | truth.coverage |
 | package-tasks | support_advisory | docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tasks.md | task-intent-indexed | generate |
 | package-evidence | support_advisory | docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/evidence.md | evidence-indexed | evaluate |
@@ -40,6 +41,7 @@
 - **R9 refreeze（2026-07-15）**：用户确认目标是简化 public skill 和加载路径，而不是删除治理能力；补 progressive disclosure package contract、route examples、`BranchContext.v1`、branch governance hard gate、Harness Boundary reason_codes（AC-125–130）。
 - **R10 change/refreeze intent（2026-07-15）**：用户确认 v1.6.6 的 trace/stagnation/remediation 不能停留在 advisory/report_only；v2 必须把 `TraceSpine.v1` 作为 run authority，并把 loop/implement/qa-evidence/release gate 绑定 trace completeness。
 - **R10 branch governance decision（2026-07-15）**：用户确认需求真相唯一来源应为 canonical truth branch（main，缺失时 master）；feature/dev branch 只能合入并消费 main/master 已冻结 truth，不能本地 bump requirement revision。
+- **R11 standard execution flow（2026-07-15）**：用户确认把已跑通的 main canonical refreeze、canonical commit、feature worktree stale refreeze quarantine、merge main、truth/materials/branch verification、workspace admission、implement resume 固化为 Beacon 标准执行流程。
 
 ## Implementation Candidate Evidence
 
@@ -47,7 +49,7 @@
 |-------|--------------|------|
 | P0 | packages/beacon-rs/beacon-core, beacon-store + unit tests | 历史候选已完成（2026-06-13）；R8 five-crate/no-python 重新验证仍需执行 |
 | P1 | beacon-cli spine/projects + TC-016–020 | not_started |
-| P2 | beacon-orchestrator + TraceSpine/TraceContext + canonical truth branch gate | not_started |
+| P2 | beacon-orchestrator + TraceSpine/TraceContext + canonical truth branch gate + standard execution flow admission bundle | not_started |
 | P3 | migration reports under ~/.beacon/migrations/ | not_started |
 | P4 | six-ability harness surface + progressive disclosure + legacy removal regression | not_started |
 | P6 | benchmark JSON + qa closure JSON | not_started |
@@ -67,4 +69,4 @@ Deliverables (historical candidate, superseded by R8 minimal-kernel closure wher
 
 ## QA / Release Verdict
 
-**无** — truth 已由当前 refreeze transaction 冻结；TraceSpine/canonical truth branch implementation/QA/release closure 尚未裁决。formal closure 仅由 `beacon-eval-qa` / `beacon-eval-release` 产出。
+**无** — truth 已由当前 refreeze transaction 冻结；TraceSpine/canonical truth branch/standard execution flow implementation/QA/release closure 尚未裁决。formal closure 仅由 `beacon-eval-qa` / `beacon-eval-release` 产出。

@@ -3,7 +3,7 @@ slug: beacon-v2-rust-kernel-redesign
 version: v2.0.0
 status: frozen
 language: zh
-revision: r10-trace-spine-canonical-truth-frozen
+revision: r11-standard-execution-flow-frozen
 canonical_refs:
   truth: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
   tests: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tests.md
@@ -219,6 +219,49 @@ parent_span_id?, event_hash, prev_event_hash
 - refreeze transaction 必须证明 canonical markdown truth/test/task/evidence 至少一个 requirement surface 发生内容变化；仅 `change_reason` 或 machine projection 变化必须 block：`reason_code=empty_refreeze_reason_only`。
 - implement/qa-evidence/release admission 必须验证当前 branch 包含 canonical truth branch 最新 frozen commit；否则 block：`reason_code=truth_baseline_not_merged`。
 - machine revision、人类 evidence 中的 revision narrative、truth frontmatter 必须同源生成或同源校验；发现 `R7/R8/R9` 类 drift 时 block：`reason_code=revision_authority_drift`。
+
+### Standard Execution Flow Contract（R11）
+
+Beacon v2 必须把“需求真相在 main/master 冻结，再合入 feature worktree 执行”的场景规范成一条标准执行流，而不是依赖操作者记忆或临时命令顺序。该 flow 是六能力与 internal governance 的编排 contract，不是第七个 public skill。
+
+标准状态顺序：
+
+```text
+support_advisory
+  -> canonical_truth_authoring
+  -> canonical_refreeze
+  -> canonical_commit
+  -> feature_worktree_reconcile
+  -> governance_verify
+  -> workspace_admission
+  -> implement_resume
+```
+
+执行规则：
+
+- `support_advisory`（例如 planner/review/doctor finding）只能提出 route，不得直接改 frozen truth；用户确认后才进入 canonical truth authoring。
+- `canonical_truth_authoring` 必须在 `truth_canonical_branch`（默认 main，缺失时 master）修改 `features/<slug>/{truth,tests,tasks,evidence}.md`；feature/dev worktree 不得写入 requirement revision。
+- `canonical_refreeze` 必须通过 `beacon change <feature> --refreeze-chain` 完成；如遇 `legacy_cutover_required`，只能按 CLI 给出的 `truth-cutover run ... --resume-intent refreeze` 路由恢复。
+- `canonical_commit` 是 refreeze 的生效边界；未提交的 refreeze artifact 不得被 feature branch 当成 baseline。提交必须只包含 canonical truth package、refreeze projection 与必要 evidence manifest，不能混入无关 runtime dirty files。
+- `feature_worktree_reconcile` 必须先检查 feature worktree 是否存在 stale feature-local refreeze。发现本地 revision/projection dirty 时，必须 scoped stash/archive 并记录 stash/artifact ref；不得把 feature-local bump merge 或 commit 为 authority。
+- `governance_verify` 必须确认 feature branch 已包含 canonical `truth_baseline_commit`，且 `truth-map verify`、`verify-materials --strict`、`branch-governance verify`、`git diff --check` 均通过。
+- `workspace_admission` 由 `implement check-branch` / `workspace admit` 产生，必须绑定 `truth_baseline_commit`、`BranchContext.v1`、feature worktree path 和 clean/dirty policy。
+- `implement_resume` 只能在 refreeze summary complete、canonical commit merged、workspace admission pass 后进入；若重复执行标准流，已对齐步骤必须报告 `up_to_date` / `pass`，不得再次 bump revision。
+
+标准失败 reason_codes：
+
+```text
+standard_flow_order_violation,
+canonical_refreeze_not_committed,
+stale_feature_local_refreeze,
+truth_baseline_commit_missing,
+truth_baseline_not_merged,
+workspace_admission_missing,
+unscoped_dirty_state,
+standard_flow_verification_incomplete
+```
+
+Public skill 呈现规则：`truth` 暴露 canonical author/refreeze 示例；`loop` 暴露 decision_packet 到 lifecycle 的一键 flow；`implement` 暴露 branch/admission 前置；`qa-evidence` / `release` 只消费 verification/admission 结果。doctor/branch/status/hooks 仍是 internal module，通过 progressive disclosure example 加载，不得成为 public top-level skill。
 
 ### Skill Surface Progressive Disclosure Contract（R9）
 
@@ -566,7 +609,7 @@ optional stop_signal, token_usage, agent_name
 - **AC-103**（P3）：`beacon doctor verify-truth-integrity` 在 v2 路由到 Rust gate；`--mode block` exit code 与 v1.6 一致，不使用 PyO3 compat。
 - **AC-104**（历史 P0 证据）：2026-06-13 的 `packages/beacon-rs/` scaffold 与 12 个 P0 unit tests 是 implementation candidate evidence；R8 minimal-kernel closure 需重新验证 AC-002/022/059/063 后才可算 P0/P4 完成。
 
-### Minimal Kernel AC Extensions（AC-109–137）
+### Minimal Kernel AC Extensions（AC-109–144）
 
 - **AC-109**：v2 public kernel surface 明确定义并只允许六个一等能力：loop / truth / design / implement / qa-evidence / release。
 - **AC-110**：v1 Python / Node / 33 skills compatibility 从 v2 core closure 移除；只保留为 migration/archive reference。
@@ -597,6 +640,13 @@ optional stop_signal, token_usage, agent_name
 - **AC-135**：`remediation-report.v1` 必须引用 stagnation report、overlay/eval/rollback evidence 与 human review decision；成功 remediation 仍需人工裁决，不得自动 release。
 - **AC-136**：truth/change/refreeze 只能在 `truth_canonical_branch`（默认 main，缺失时 master）写入与冻结；feature/dev worktree 不得 bump requirement revision。
 - **AC-137**：refreeze transaction 必须拒绝 reason-only / machine-only 变化；revision id、人类 narrative 与 machine projection 发生漂移时 fail-closed。
+- **AC-138**：Beacon v2 必须提供 Standard Execution Flow 状态机，顺序固定为 support_advisory -> canonical_truth_authoring -> canonical_refreeze -> canonical_commit -> feature_worktree_reconcile -> governance_verify -> workspace_admission -> implement_resume；跳步必须 fail-closed。
+- **AC-139**：canonical refreeze 只有在 canonical branch 提交后才成为可消费 baseline；未提交 refreeze artifact 不得被 feature branch、loop、implement、qa-evidence 或 release 采信。
+- **AC-140**：feature worktree 中发现 stale feature-local refreeze/projection dirty 时，必须 scoped stash/archive 并记录引用；不得作为 requirement authority commit/merge。
+- **AC-141**：feature/dev branch 进入 implement 前必须包含 canonical `truth_baseline_commit`，且不得有违反 dirty policy 的工作区状态；否则 blocked。
+- **AC-142**：标准流 admission evidence bundle 必须包含 truth-map verify、verify-materials strict、git diff check、branch-governance verify、workspace admission 五类结果；缺任一项不得进入 implement。
+- **AC-143**：标准流必须可 idempotent resume；已对齐步骤重复执行时返回 `up_to_date` / `pass`，不得因重复执行产生新的 requirement revision。
+- **AC-144**：标准执行流通过六 public skill 的 progressive examples 暴露，不得新增第七个 public skill 或绕过 Harness Boundary。
 
 ## Parity Matrix（Plan 场景复刻索引）
 
@@ -607,7 +657,7 @@ optional stop_signal, token_usage, agent_name
 | §3 Crate | AC-022–025 | workspace |
 | §4 FSM+性能 | AC-026–036, AC-051–058 | 双 FSM+benchmark |
 | §5 Orchestrator+Agent | AC-040–050, **AC-042–046/099/100 真集成** | 无空壳 AC；worktree+implement 不 defer |
-| §6 极简 Harness+CLI | AC-059–066, AC-109–137 | 六能力 surface + legacy removal + progressive disclosure + BranchContext + TraceSpine + canonical truth branch |
+| §6 极简 Harness+CLI | AC-059–066, AC-109–144 | 六能力 surface + legacy removal + progressive disclosure + BranchContext + TraceSpine + canonical truth branch + standard execution flow |
 | §7 Schema | AC-067–083 | 九表+DAO |
 | §8 阶段 | AC-084–090 | P0–P6 |
 | §9 风险 | AC-091–095 | 可执行缓解 |
@@ -645,7 +695,7 @@ optional stop_signal, token_usage, agent_name
 5. **无空壳-only AC**；agent/worktree/implement 类 AC 须 integration tier（AC-043–046, AC-099–100）。
 6. **v1.6 upstream**（AC-101–103）在对应 phase 有 behavior-level TC，不得仅用「后续移植」一句带过。
 
-**当前状态**：`frozen` / **R10**（revision `r10-trace-spine-canonical-truth-frozen`）— 2026-07-15 refreeze：在 R9 skill-surface progressive disclosure 基础上，补充 `TraceSpine.v1` / `TraceContext.v1` kernel authority、trace completeness hard gate、stagnation/remediation trace binding、canonical truth branch hard gate 与 empty/drift refreeze guard。
+**当前状态**：`frozen` / **R11**（revision `r11-standard-execution-flow-frozen`）— 2026-07-15 refreeze：在 R10 TraceSpine/canonical truth branch 基础上，补充 Standard Execution Flow 状态机、canonical commit 生效边界、feature-local stale refreeze quarantine、verification bundle、workspace admission 和 idempotent resume contract。
 
 ## User Stories
 
@@ -671,7 +721,7 @@ optional stop_signal, token_usage, agent_name
 
 ### US-006 极简 harness surface
 
-**AC**：AC-059–063, AC-109–137, AC-064–066
+**AC**：AC-059–063, AC-109–144, AC-064–066
 
 ## Revision History
 
@@ -688,3 +738,4 @@ optional stop_signal, token_usage, agent_name
 | r8 | R5 refreeze：v2 minimal Rust harness kernel；六个一等能力；v1 Python/PyO3/33 skills 移出 core closure；intent_snapshot/prompt_snapshot/decision_packet/design_primitives gate；v1.6.4–1.6.6 loop/QA/agent 排查能力以 Rust 语义重现 |
 | r9 | R6 refreeze：六 public skill 渐进式披露 contract；内部保留 branch governance / doctor / router / hooks / metadata / status / archive / debug；新增 BranchContext.v1 与 Harness Boundary hard gate（AC-125–130） |
 | r10 | R7 refreeze：TraceSpine.v1 / TraceContext.v1 成为 run authority；loop/implement/qa-evidence/release 绑定 trace completeness；stagnation/remediation 报告绑定 trace event range；truth/change/refreeze 只能在 canonical truth branch 执行；阻断 reason-only/machine-only refreeze 与 revision narrative drift（AC-131–137） |
+| r11 | R8 refreeze：将 canonical truth author/refreeze/commit -> feature worktree reconcile -> governance verify -> workspace admission -> implement resume 固化为 Standard Execution Flow；新增 baseline commit、stale feature-local refreeze quarantine、verification bundle 与 idempotent resume contract（AC-138–144） |

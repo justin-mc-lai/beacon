@@ -260,7 +260,7 @@ truth_ref: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
 | TC-107 | AC-107 | Developer Feedback checkpoint | `beacon-v2 run --feedback-checkpoint --every 3` — 每 3 iteration 暂停等人注入 notes，resume 后基于 notes 重新 iterate；notes 写入 lifecycle_events | P3 |
 | TC-108 | AC-108 | 三层 Loop 可观测 | `beacon-v2 spine show --json` — snapshot 含 `loop_layer` 字段（coding/developer/realworld） | P3 |
 
-## Minimal Kernel Extensions（AC-109–137）
+## Minimal Kernel Extensions（AC-109–144）
 
 | TC ID | AC ID | 场景 | Command + Assertion | Phase |
 |-------|-------|------|---------------------|-------|
@@ -293,6 +293,13 @@ truth_ref: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
 | TC-135 | AC-135 | remediation report chain | remediation report 必须引用 stagnation report、overlay/eval/rollback evidence 与 human_review_decision；无 human review 时 release blocked | P3 |
 | TC-136 | AC-136 | canonical truth branch | 在 feature/dev worktree 执行 `beacon change --refreeze-chain` blocked，`reason_code=truth_canonical_branch_mismatch`；main/master 上允许进入 refreeze | P2 |
 | TC-137 | AC-137 | empty/drift refreeze guard | reason-only 或 machine-only refreeze blocked；machine revision 与 human narrative 不一致 blocked，reason_code 分别为 `empty_refreeze_reason_only` / `revision_authority_drift` | P2 |
+| TC-138 | AC-138 | standard execution flow order | `beacon-v2 loop verify-flow --fixture canonical-main-to-feature --json` 校验状态顺序 support_advisory -> canonical_truth_authoring -> canonical_refreeze -> canonical_commit -> feature_worktree_reconcile -> governance_verify -> workspace_admission -> implement_resume；跳过 canonical_commit fixture blocked | P2 |
+| TC-139 | AC-139 | canonical commit boundary | main 上 refreeze complete 但无 commit 时 feature branch admission blocked，`reason_code=canonical_refreeze_not_committed`；提交后产出 `truth_baseline_commit` | P2 |
+| TC-140 | AC-140 | stale feature-local refreeze quarantine | feature worktree 存在本地 `.machine` revision/projection dirty 时，merge main 前必须 scoped stash/archive；直接 commit/merge fixture blocked，`reason_code=stale_feature_local_refreeze` | P2 |
+| TC-141 | AC-141 | truth baseline merged | feature branch 未包含 `truth_baseline_commit` 时 `implement check-branch` blocked；merge main 后返回 `up_to_date` / pass | P2 |
+| TC-142 | AC-142 | admission evidence bundle | 缺 truth-map verify / verify-materials strict / diff check / branch-governance verify / workspace admission 任一 artifact 时 implement admission blocked，`reason_code=standard_flow_verification_incomplete` | P2 |
+| TC-143 | AC-143 | idempotent resume | 标准流重复执行已完成步骤时不 bump requirement revision；refreeze summary revision 保持不变，merge main 返回 `Already up to date` | P2 |
+| TC-144 | AC-144 | public examples only | `beacon harness examples --version v2.0.0 --topic standard-flow --json` 只通过 loop/truth/implement/qa-evidence/release examples 暴露；不得新增 top-level `standard-flow` public skill | P4 |
 
 ## 负向路径
 
@@ -314,6 +321,11 @@ truth_ref: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
 | TC-N14 | feature worktree 本地 bump requirement revision | `truth_canonical_branch_mismatch` |
 | TC-N15 | refreeze 只有 change_reason 或 machine projection 变化 | `empty_refreeze_reason_only` |
 | TC-N16 | human evidence 写 R9 但 machine revision 写 R8 | `revision_authority_drift` |
+| TC-N17 | refreeze complete 但 canonical branch 未提交就合入 feature | `canonical_refreeze_not_committed` |
+| TC-N18 | feature-local stale refreeze dirty 未 quarantine 直接 merge main | `stale_feature_local_refreeze` |
+| TC-N19 | feature branch 缺 `truth_baseline_commit` 仍进入 implement | `truth_baseline_not_merged` |
+| TC-N20 | admission bundle 缺 branch-governance verify 或 workspace admission | `standard_flow_verification_incomplete` |
+| TC-N21 | 重复执行标准流导致新的 requirement revision bump | `standard_flow_order_violation` |
 
 ## E2E
 
@@ -325,4 +337,4 @@ truth_ref: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
 | TC-E04 | 六能力 harness surface（P4 gate） | `beacon harness list --version v2.0.0 --json \| jq -e 'map(.id)==["loop","truth","design","implement","qa-evidence","release"]'` |
 | TC-E05 | worktree goal → implement harness iteration → spine cwd 一致 | `cargo test -p beacon-orchestrator e2e_worktree_harness -- --test fixture_worktree_implement`（同 TC-099/100） |
 
-**当前**：truth 已由当前 refreeze transaction 冻结；具体 revision id 以 `.machine/execution/*revision.json` 与 refreeze summary 为准。历史 P0 candidate evidence 见 `evidence.md`，minimal-kernel AC-002/022/059/063/109–137 待实现后由 `beacon-eval-qa` 裁决。
+**当前**：truth 已由当前 refreeze transaction 冻结；具体 revision id 以 `.machine/execution/*revision.json` 与 refreeze summary 为准。历史 P0 candidate evidence 见 `evidence.md`，minimal-kernel AC-002/022/059/063/109–144 待实现后由 `beacon-eval-qa` 裁决。

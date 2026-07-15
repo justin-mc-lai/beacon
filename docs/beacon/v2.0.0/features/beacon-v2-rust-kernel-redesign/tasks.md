@@ -37,6 +37,10 @@
 - [ ] TASK-P2-017 trace completeness hard gate：implement、qa-evidence、release 均验证 trace missing / append failure / hash chain invalid / event-to-evidence 断链（AC-133 / TC-133）。
 - [ ] TASK-P2-018 canonical truth branch hard gate：truth/change/refreeze 只能在 main/master 写入；feature/dev worktree 只能消费 canonical frozen truth（AC-136 / TC-136）。
 - [ ] TASK-P2-019 empty/drift refreeze guard：reason-only、machine-only refreeze 和 revision narrative drift 均 fail-closed（AC-137 / TC-137）。
+- [ ] TASK-P2-020 Standard Execution Flow state machine：实现 support_advisory -> canonical_truth_authoring -> canonical_refreeze -> canonical_commit -> feature_worktree_reconcile -> governance_verify -> workspace_admission -> implement_resume 顺序校验（AC-138 / TC-138）。
+- [ ] TASK-P2-021 canonical baseline commit gate：refreeze complete 后必须提交 canonical branch 并生成 `truth_baseline_commit`，feature branch implement admission 验证该 commit 已合入（AC-139, AC-141 / TC-139, TC-141）。
+- [ ] TASK-P2-022 stale feature-local refreeze quarantine：feature worktree 合入 main 前检测 `.machine` revision/projection dirty，要求 scoped stash/archive artifact，不得采信本地 bump（AC-140 / TC-140）。
+- [ ] TASK-P2-023 standard flow admission bundle：汇总 truth-map verify、verify-materials strict、diff check、branch-governance verify、workspace admission 为可引用 bundle，并支持 idempotent resume（AC-142–143 / TC-142–143）。
 
 ## Phase P3 — gate + migration + claude/acp/worktree/implement 真集成（AC-045–046, AC-099–100, AC-077–079, AC-011, AC-087, **AC-101, AC-103**）
 
@@ -63,6 +67,7 @@
 - [ ] TASK-P4-002 `beacon harness list --version v2.0.0 --json` 精确暴露六能力 contract（TC-059/063/109）。
 - [ ] TASK-P4-003 CI matrix 覆盖 five-crate Rust workspace + legacy removal regression（TC-091/110）。
 - [ ] TASK-P4-004 public surface denylist：doctor/router/hooks/metadata/debug/archive 保留 internal module，但不得出现在 v2 host-visible 一等 skill list（AC-125 / TC-125）。
+- [ ] TASK-P4-005 standard-flow progressive examples：通过 loop/truth/implement/qa-evidence/release examples 暴露标准执行流，不新增第七个 public skill（AC-144 / TC-144）。
 - [ ] TASK-P4-005 integration：TC-059–063, TC-088, TC-094, TC-109–110, TC-125。
 
 ## Phase P5 — proto（v2.0.0 跳过，D-V2-001 accepted defer）
@@ -92,12 +97,13 @@
 - 新增 AC-131–137 对应任务：TraceSpine authority、TraceContext binding、trace completeness gate、stagnation/remediation trace binding、canonical truth branch、empty/drift refreeze guard。
 - 明确 v1.6.6 trace/stagnation/remediation 不能以 advisory signal 形式迁移到 v2；v2 必须把 TraceSpine 作为 loop/implement/qa-evidence/release 的共同 kernel authority。
 - 明确需求真相只能在 main/master canonical truth branch 编写、冻结、提交，再由 feature/dev branch 合入消费；feature worktree 不得本地 bump requirement revision。
+- 新增 AC-138–144 对应任务：Standard Execution Flow 状态机、canonical baseline commit gate、stale feature-local refreeze quarantine、verification/admission bundle、idempotent resume、progressive examples 暴露。
 
 ## r5 变更摘要（R2 reopen）
 
 - 增补 **AC-101–104**：v1.6 TIG、multi-agent planner review、doctor verify-truth-integrity、P0 完成证据。
 - 新增 **v1.6 Upstream Frozen Inputs** 表；tests/tasks 对齐 behavior-level TC。
-- 历史 truth 状态：R2 draft；R9 已 refreeze 为 skill-surface progressive-disclosure frozen；R10 补 TraceSpine 与 canonical truth branch hard gate。
+- 历史 truth 状态：R2 draft；R9 已 refreeze 为 skill-surface progressive-disclosure frozen；R10 补 TraceSpine 与 canonical truth branch hard gate；R11 补 Beacon Standard Execution Flow。
 
 ## r3 变更摘要
 
