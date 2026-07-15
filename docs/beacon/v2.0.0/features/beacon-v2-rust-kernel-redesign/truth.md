@@ -3,7 +3,7 @@ slug: beacon-v2-rust-kernel-redesign
 version: v2.0.0
 status: frozen
 language: zh
-revision: r11-standard-execution-flow-frozen
+revision: r14-program-orchestration-surface-frozen
 canonical_refs:
   truth: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
   tests: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tests.md
@@ -101,6 +101,21 @@ v2.0.0 按 [Loop Engineering](https://addyosmani.com/blog/loop-engineering/) 三
 
 - P6 benchmark 门禁（AC-051–058）、默认 BEACON_V2=1
 - post-v2.0.0：`beacon-proto`/gRPC（**D-V2-001 accepted defer**）
+
+### Program Orchestration Surface（R14）
+
+`v2-0-0-rust` 是 v2.0.0 Rust 重构的 canonical program 编排面，落地于：
+
+- `docs/beacon/v2.0.0/programs/v2-0-0-rust/program-manifest.md`
+- `docs/beacon/v2.0.0/programs/v2-0-0-rust/phase-graph.md`
+- `docs/beacon/v2.0.0/programs/v2-0-0-rust/admission-gates.md`
+- `docs/beacon/v2.0.0/programs/v2-0-0-rust/program-run-state.json`
+
+program intent 来自已接受的 planner support advisory 与 stash 中的 P0 intent capture；升级后以 main/master canonical truth branch 上的 program surface 为准，stash 不再作为 requirement authority。
+
+program phase graph 将海级实现拆成湖级 slices：P0 core/store、P1 spine/projects、P2 orchestrator/TraceSpine/standard flow、P3 gate/migration/agent parity、P4 six-ability harness surface、P6 benchmark/release closure。进入 implement 前，program admission 必须证明 program surface 存在、canonical refreeze 已提交、feature branch 已合入 truth baseline、workspace admission 产出 `BranchContext.v1`、`decision_packet.v1` 可用且 TraceSpine 前置条件完整。
+
+R13 曾暴露 reason-only / machine-only refreeze 漂移风险；R14 的要求是把 program 编排写入 canonical truth/package surface 后再 refreeze，避免 machine revision 与人类叙事再次断开。
 
 ### v1.6 Upstream Frozen Inputs（R2 增补，非空壳引用）
 
@@ -695,7 +710,7 @@ optional stop_signal, token_usage, agent_name
 5. **无空壳-only AC**；agent/worktree/implement 类 AC 须 integration tier（AC-043–046, AC-099–100）。
 6. **v1.6 upstream**（AC-101–103）在对应 phase 有 behavior-level TC，不得仅用「后续移植」一句带过。
 
-**当前状态**：`frozen` / **R11**（revision `r11-standard-execution-flow-frozen`）— 2026-07-15 refreeze：在 R10 TraceSpine/canonical truth branch 基础上，补充 Standard Execution Flow 状态机、canonical commit 生效边界、feature-local stale refreeze quarantine、verification bundle、workspace admission 和 idempotent resume contract。
+**当前状态**：`frozen` / **R14**（revision `r14-program-orchestration-surface-frozen`）— 2026-07-15 refreeze：在 R11 Standard Execution Flow 与 R12/R13 revision drift 暴露基础上，补充 `v2-0-0-rust` canonical program surface、海级 phase graph、湖级 slices、program admission gates，并要求实现前修复 machine/human revision projection 一致性。
 
 ## User Stories
 
@@ -739,3 +754,4 @@ optional stop_signal, token_usage, agent_name
 | r9 | R6 refreeze：六 public skill 渐进式披露 contract；内部保留 branch governance / doctor / router / hooks / metadata / status / archive / debug；新增 BranchContext.v1 与 Harness Boundary hard gate（AC-125–130） |
 | r10 | R7 refreeze：TraceSpine.v1 / TraceContext.v1 成为 run authority；loop/implement/qa-evidence/release 绑定 trace completeness；stagnation/remediation 报告绑定 trace event range；truth/change/refreeze 只能在 canonical truth branch 执行；阻断 reason-only/machine-only refreeze 与 revision narrative drift（AC-131–137） |
 | r11 | R8 refreeze：将 canonical truth author/refreeze/commit -> feature worktree reconcile -> governance verify -> workspace admission -> implement resume 固化为 Standard Execution Flow；新增 baseline commit、stale feature-local refreeze quarantine、verification bundle 与 idempotent resume contract（AC-138–144） |
+| r14 | R13 repair refreeze：materialize `v2-0-0-rust` program orchestration as canonical surface；补 phase graph、lake slices、admission gates、run-state；修复 reason-only / machine-only refreeze 造成的 revision authority drift 风险 |

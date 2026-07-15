@@ -1,16 +1,16 @@
 ---
 slug: beacon-v2-rust-kernel-redesign
 version: v2.0.0
-revision: r9-skill-surface-disclosure-coverage
+revision: r14-program-orchestration-surface-coverage
 parser_contract: beacon-feature-package-v1
 truth_ref: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
 ---
 
-# 测试覆盖：Beacon v2 Rust Kernel Redesign（r9）
+# 测试覆盖：Beacon v2 Rust Kernel Redesign（r14）
 
 ## 覆盖说明
 
-- 每个 AC（AC-001..AC-130）至少一行 TC。
+- 每个 AC（AC-001..AC-144）至少一行 TC。
 - **integration tier** 为 agent 类 AC（AC-043–046, AC-099–100）最低验收等级；禁止仅 contract/空壳验收。
 - **禁止非行为级验证列**：单独 `integration`、`目录存在`、`fixture`、`可选` 不算可执行 TC；必须写 **Command + Assertion**（或显式 `BLOCKED:<reason>`）。
 - Pass/Fail 由 `beacon-eval-qa` 裁决。
@@ -300,6 +300,8 @@ truth_ref: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
 | TC-142 | AC-142 | admission evidence bundle | 缺 truth-map verify / verify-materials strict / diff check / branch-governance verify / workspace admission 任一 artifact 时 implement admission blocked，`reason_code=standard_flow_verification_incomplete` | P2 |
 | TC-143 | AC-143 | idempotent resume | 标准流重复执行已完成步骤时不 bump requirement revision；refreeze summary revision 保持不变，merge main 返回 `Already up to date` | P2 |
 | TC-144 | AC-144 | public examples only | `beacon harness examples --version v2.0.0 --topic standard-flow --json` 只通过 loop/truth/implement/qa-evidence/release examples 暴露；不得新增 top-level `standard-flow` public skill | P4 |
+| TC-145 | program admission | v2 Rust program surface | `test -f docs/beacon/v2.0.0/programs/v2-0-0-rust/program-manifest.md && test -f docs/beacon/v2.0.0/programs/v2-0-0-rust/phase-graph.md && test -f docs/beacon/v2.0.0/programs/v2-0-0-rust/admission-gates.md && jq -e '.fsm_state=="canonical_truth_materialized" and .lake_or_ocean=="海"' docs/beacon/v2.0.0/programs/v2-0-0-rust/program-run-state.json` | P0 |
+| TC-146 | revision projection | human/machine revision alignment | refreeze summary revision, `.machine/execution/*revision.json`, truth frontmatter and evidence decision record must describe the same latest program-orchestration revision; mismatch blocked as `revision_authority_drift` | P2 |
 
 ## 负向路径
 
@@ -326,6 +328,8 @@ truth_ref: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
 | TC-N19 | feature branch 缺 `truth_baseline_commit` 仍进入 implement | `truth_baseline_not_merged` |
 | TC-N20 | admission bundle 缺 branch-governance verify 或 workspace admission | `standard_flow_verification_incomplete` |
 | TC-N21 | 重复执行标准流导致新的 requirement revision bump | `standard_flow_order_violation` |
+| TC-N22 | program intent 只留在 stash 或 support advisory，main 无 canonical program surface | `program_surface_missing` |
+| TC-N23 | refreeze bump 了 machine revision 但 truth/tests/tasks/evidence 未写入对应人类叙事 | `revision_authority_drift` |
 
 ## E2E
 

@@ -1,7 +1,8 @@
-# 任务：Beacon v2 Rust Kernel Redesign（r8）
+# 任务：Beacon v2 Rust Kernel Redesign（r14）
 
 ## Phase P0 — core + store 骨架（AC-022–031, AC-067–076, AC-084, AC-024）
 
+- [ ] TASK-P0-000-R14 materialize `v2-0-0-rust` program surface：manifest、phase graph、lake slices、admission gates、run-state；实现前必须由 TC-145 验证。
 - [ ] TASK-P0-001-R8 收敛 `packages/beacon-rs/` workspace 为 v2 core 五 crate（core/store/orchestrator/gate/cli），移除或 archive-only 标记 `beacon-python`。
 - [x] TASK-P0-002 Diagram Truth Layer 类型：WorkflowStage（含 Prototype）、StageStatus（含 Crashed/TimedOut/Interrupted）、Delivery 运行时 enum + plan 链 event_type 常量。
 - [x] TASK-P0-003 `IterationResult` 与 `AgentBackend` trait 类型定义（beacon-core）。
@@ -98,6 +99,13 @@
 - 明确 v1.6.6 trace/stagnation/remediation 不能以 advisory signal 形式迁移到 v2；v2 必须把 TraceSpine 作为 loop/implement/qa-evidence/release 的共同 kernel authority。
 - 明确需求真相只能在 main/master canonical truth branch 编写、冻结、提交，再由 feature/dev branch 合入消费；feature worktree 不得本地 bump requirement revision。
 - 新增 AC-138–144 对应任务：Standard Execution Flow 状态机、canonical baseline commit gate、stale feature-local refreeze quarantine、verification/admission bundle、idempotent resume、progressive examples 暴露。
+
+## r14 变更摘要（program orchestration surface）
+
+- 将 stash 中的 `v2-0-0-rust` P0 intent capture 升级为 main canonical program surface。
+- 新增 program manifest、phase graph、admission gates 与 run-state，明确海级 program 拆成 P0/P1/P2/P3/P4/P6 湖级 slices。
+- 新增 TC-145/TC-146：program surface 存在性与 revision projection 对齐；阻断 stash-only intent、reason-only refreeze 与 machine-only bump。
+- 实现前必须先完成 canonical commit、feature worktree reconcile、governance verify 与 workspace admission；program admission 不等于 QA/release verdict。
 
 ## r5 变更摘要（R2 reopen）
 

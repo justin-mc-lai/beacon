@@ -1,12 +1,12 @@
 # Change Refreeze Summary: beacon-v2-rust-kernel-redesign
 
 - version: `v2.0.0`
-- change_reason: `按当前 frozen R11 full_parity 范围完整实现；不降级 MVP；接受 planner-review drift route 后继续实现。`
+- change_reason: `change-request`
 - refreeze_status: `complete`
 - blocked_reason: ``
 - next_route: `beacon-gen-implement`
-- revision_before: `R11`
-- revision_after: `R12`
+- revision_before: `R13`
+- revision_after: `R14`
 
 ## Surface Statuses
 - `change`: `present` (docs/beacon/v2.0.0/change/beacon-v2-rust-kernel-redesign.md)
