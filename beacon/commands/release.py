@@ -1287,6 +1287,7 @@ def check(
             feature=authoritative_feature,
             hook_code="post_release",
             boundary_stage="release",
+            record_dry_run_evidence=False,
         )
         if all_passed
         else {
