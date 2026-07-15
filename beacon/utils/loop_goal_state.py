@@ -31,6 +31,18 @@ VALID_STAGES = frozenset({
 MAX_REPAIR_LOOPS = 3
 
 RELEASE_HUMAN_GATE_STAGES = frozenset({"release_gate"})
+BLOCKING_REVIEW_SEVERITIES = frozenset({"P0", "P1"})
+DRIFT_REVIEW_ROUTES = frozenset({
+    "beacon-gen-truth",
+    "beacon-gen-change",
+    "beacon-gen-refreeze",
+})
+IMPLEMENT_READY_REVIEW_ROUTES = frozenset({
+    "",
+    "continue_delivery",
+    "beacon-gen-implement",
+    "beacon-pln-friction",
+})
 
 
 def _now_iso() -> str:
@@ -74,6 +86,12 @@ def init(
         ],
         "outputs": {
             "truth_frozen": False,
+            "planner_review_id": None,
+            "planner_review_artifact_ref": "",
+            "planner_review_recommended_route": "",
+            "planner_review_user_decision_required": False,
+            "planner_review_highest_severity": "",
+            "planner_review_finding_count": 0,
             "tests_pass": False,
             "qa_verdict": None,
             "release_verdict": None,
@@ -256,6 +274,127 @@ def increment_repair_loop(project_root: Path, *, run_id: str) -> dict[str, Any]:
         json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8"
     )
     return {"status": "pass", "repair_loop_count": count, "max": MAX_REPAIR_LOOPS}
+
+
+def _review_artifact_ref(artifact: dict[str, Any]) -> str:
+    evidence_paths = artifact.get("evidence_paths")
+    if isinstance(evidence_paths, dict):
+        runtime_ref = str(evidence_paths.get("runtime") or "").strip()
+        if runtime_ref:
+            return runtime_ref
+    for lane in artifact.get("reviewer_lanes") or []:
+        if isinstance(lane, dict):
+            runtime_ref = str(lane.get("runtime_evidence_ref") or "").strip()
+            if runtime_ref:
+                return runtime_ref
+    return ""
+
+
+def _review_findings(artifact: dict[str, Any], synthesis: dict[str, Any]) -> list[dict[str, Any]]:
+    findings = artifact.get("findings")
+    if isinstance(findings, list):
+        return [item for item in findings if isinstance(item, dict)]
+    merged = synthesis.get("merged_findings")
+    if isinstance(merged, list):
+        return [item for item in merged if isinstance(item, dict)]
+    return []
+
+
+def _highest_review_severity(findings: list[dict[str, Any]], synthesis: dict[str, Any]) -> str:
+    declared = str(synthesis.get("highest_severity") or "").upper()
+    if declared:
+        return declared
+    order = {"P0": 0, "P1": 1, "P2": 2, "P3": 3}
+    highest = ""
+    for finding in findings:
+        severity = str(finding.get("severity") or "").upper()
+        if severity in order and (not highest or order[severity] < order[highest]):
+            highest = severity
+    return highest
+
+
+def record_review_decision(
+    project_root: Path,
+    *,
+    run_id: str,
+    review_artifact: dict[str, Any],
+) -> dict[str, Any]:
+    """Record a planner-review decision packet and route fail-closed.
+
+    The governor does not interpret review text heuristically. It consumes the
+    structured planner-review artifact and records the stable decision fields in
+    loop-goal state before selecting the next stage.
+    """
+    root = project_root.expanduser().resolve()
+    state = read_state(root, run_id=run_id)
+    if state.get("status") == "blocked":
+        return state
+
+    synthesis = review_artifact.get("synthesis")
+    if not isinstance(synthesis, dict):
+        synthesis = {}
+    findings = _review_findings(review_artifact, synthesis)
+    recommended_route = str(
+        synthesis.get("recommended_route")
+        or review_artifact.get("recommended_route")
+        or ""
+    ).strip()
+    user_decision_required = bool(
+        synthesis.get("user_decision_required")
+        or review_artifact.get("user_decision_required")
+    )
+    highest_severity = _highest_review_severity(findings, synthesis)
+    packet = {
+        "planner_review_id": review_artifact.get("review_id"),
+        "planner_review_artifact_ref": _review_artifact_ref(review_artifact),
+        "planner_review_recommended_route": recommended_route,
+        "planner_review_user_decision_required": user_decision_required,
+        "planner_review_highest_severity": highest_severity,
+        "planner_review_finding_count": int(
+            synthesis.get("finding_count")
+            if synthesis.get("finding_count") is not None
+            else len(findings)
+        ),
+    }
+
+    blocking_severity = highest_severity in BLOCKING_REVIEW_SEVERITIES
+    if recommended_route in DRIFT_REVIEW_ROUTES:
+        next_stage = "drift_routing"
+        reason_code = f"planner_review_route_{recommended_route.replace('-', '_')}"
+    elif user_decision_required:
+        next_stage = "error_recovery"
+        reason_code = "planner_review_user_decision_required"
+    elif blocking_severity:
+        next_stage = "error_recovery"
+        reason_code = "planner_review_blocking_finding"
+    elif recommended_route in IMPLEMENT_READY_REVIEW_ROUTES:
+        next_stage = "implement_routing"
+        reason_code = ""
+    else:
+        next_stage = "error_recovery"
+        reason_code = "planner_review_route_unhandled"
+
+    state["outputs"].update(packet)
+    state["current_stage"] = next_stage
+    state["stage_history"].append({
+        "stage": next_stage,
+        "status": "review_decision_packet",
+        "at": _now_iso(),
+        "recommended_route": recommended_route,
+        "reason_code": reason_code,
+    })
+    _state_path(root, run_id).write_text(
+        json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+
+    return {
+        "status": "blocked" if reason_code else "pass",
+        "reason_code": reason_code,
+        "current_stage": next_stage,
+        "run_id": run_id,
+        "recommended_route": recommended_route,
+        "outputs": packet,
+    }
 
 
 def route_to_error_recovery(

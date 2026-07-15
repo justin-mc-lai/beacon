@@ -2,7 +2,7 @@
 slug: beacon-loop-goal-v166
 version: v1.6.6
 status: frozen
-revision_id: R2
+revision_id: R3
 language: zh
 truth_ref: docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md
 parser_contract: beacon-feature-package-v2
@@ -25,16 +25,20 @@ parser_contract: beacon-feature-package-v2
 | AC-009 | TC-LG-009 | contract | `python3 -m pytest tests/test_v166_loop_goal.py::test_stop_when_halts_delivery -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | stop_when 条件满足 → 编排器停止，输出 `reason_code=stop_when_satisfied` |
 | AC-010 | TC-LG-010 | contract | `python3 -m pytest tests/test_v166_loop_goal.py::test_skill_routing_decision_tree -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | SKILL.md 包含完整决策树，每个阶段到 skill 的映射正确 |
 | AC-011 | TC-LG-011 | contract | `python3 -m pytest tests/test_doctor_agent_surface.py::test_verify_agent_surface_v160_should_pass_after_setup tests/test_v160_skill_harness_taxonomy.py::test_v160_skill_package_materialize_should_create_harness_only_package tests/test_v161_agent_eval.py::test_v161_taxonomy_includes_beacon_eval_agent tests/test_v161_agent_eval.py::test_agent_eval_catalog_materialize -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | `beacon-loop-goal` 被 v1.6 taxonomy / agent surface expected list / skill inventory / release governance 计为公开 governor skill，公开 skill 总数为 38 |
+| AC-012 | TC-LG-012 | contract | `python3 -m pytest tests/test_v166_loop_goal.py::test_review_routing_public_skill_contract -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | public SKILL.md 的 state machine、decision tree、routing matrix 均显式包含 `review_routing` / `beacon-pln-review` |
+| AC-013 | TC-LG-013 | contract | `python3 -m pytest tests/test_v166_loop_goal.py::test_review_decision_packet_records_outputs -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | planner-review artifact 被记录为 loop-goal outputs 中的 review decision packet |
+| AC-014 | TC-LG-014 | negative | `python3 -m pytest tests/test_v166_loop_goal.py::test_review_decision_packet_blocks_unsafe_implement_route -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | P1/user-decision/change route 的 review decision packet 不会自动进入 `implement_routing` |
 
 ## Verification Notes
 
 - Test module `tests/test_v166_loop_goal.py` is created in implement phase.
 - TC-LG-001/002/003/008/009 用 `tmp_path` project roots，mock state 文件。
 - TC-LG-004/005/006/007 模拟阶段产出状态，验证编排器决策逻辑。
-- TC-LG-010 读取 SKILL.md 内容，验证决策树完整性。
+- TC-LG-010/012 读取 SKILL.md 内容，验证决策树完整性和 `review_routing` 公开契约。
+- TC-LG-013/014 用 deterministic planner-review artifact fixture 验证 state outputs 和 fail-closed route。
 
 ## Must vs Should
 
 | Priority | AC |
 |----------|-----|
-| Must | AC-001..011 |
+| Must | AC-001..014 |

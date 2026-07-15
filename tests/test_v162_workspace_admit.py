@@ -99,6 +99,37 @@ def test_workspace_admit_issues_artifact_without_expires_at(tmp_path: Path) -> N
     assert artifact.get("git_head")
 
 
+def test_workspace_admit_prefers_feature_pattern_over_stale_deterministic_branch(tmp_path: Path) -> None:
+    _seed_repo(tmp_path, branch="pre-main")
+    _seed_governance(tmp_path)
+    lane = tmp_path / ".beacon" / "worktrees" / VERSION / FEATURE
+    execution = tmp_path / "docs" / "beacon" / VERSION / "execution"
+    execution.mkdir(parents=True, exist_ok=True)
+    (execution / f"deterministic-implementation-contract-{FEATURE}.md").write_text(
+        "\n".join(
+            [
+                "# Deterministic Implementation Contract",
+                "",
+                "## Git",
+                "- base_branch: `beacon/v1.6.2`",
+                "- target_branch: `beacon/v1.6.2`",
+                "",
+                "## Worktree",
+                f"- worktree_root: `{lane}`",
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    payload = run_workspace_admit(tmp_path, version=VERSION, feature=FEATURE)
+
+    assert payload["status"] == "pass"
+    assert payload["branch"] == f"beacon/{VERSION}/{FEATURE}"
+    assert payload["branch_resolution"]["source"] == "governance_feature_pattern"
+    assert payload["branch_resolution"]["ignored_execution_branch"] == f"beacon/{VERSION}"
+
+
 def test_admit_json_schema_no_expires_at(tmp_path: Path) -> None:
     test_workspace_admit_issues_artifact_without_expires_at(tmp_path)
 

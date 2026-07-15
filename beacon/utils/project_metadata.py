@@ -541,8 +541,35 @@ def _git_branch(repo_root: Path) -> str:
     return str(result.stdout or "").strip() if result.returncode == 0 else ""
 
 
-def verify_project_metadata(project_root: Path, *, version: str = "") -> dict[str, Any]:
+def _primary_git_root(project_root: Path) -> Path:
     root = project_root.expanduser().resolve()
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "--git-common-dir"],
+            cwd=root,
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+    except Exception:  # noqa: BLE001
+        return root
+    if result.returncode != 0:
+        return root
+    git_common = Path(str(result.stdout or "").strip())
+    if not git_common:
+        return root
+    if not git_common.is_absolute():
+        git_common = (root / git_common).resolve()
+    else:
+        git_common = git_common.resolve()
+    if git_common.name == ".git":
+        return git_common.parent.resolve()
+    return root
+
+
+def verify_project_metadata(project_root: Path, *, version: str = "") -> dict[str, Any]:
+    root = _primary_git_root(project_root)
     view = resolve_project_metadata_view(root, version=version)
     checks: list[dict[str, Any]] = []
     json_guard = governance_json_forbidden(root, strict=True)
@@ -593,14 +620,18 @@ def verify_project_metadata(project_root: Path, *, version: str = "") -> dict[st
             binding = view.get("service_bindings_by_key", {}).get(service_key, {})
             repo_root = Path(str(binding.get("repo_root") or "")).expanduser() if binding else None
             expected_branch = str(per_service.get(service_key) or "").strip()
+            truth_canonical = str(contract.get("truth_canonical") or "").strip()
             current_branch = _git_branch(repo_root) if repo_root and repo_root.exists() else ""
+            accepted_branches = [item for item in (expected_branch, truth_canonical) if item]
             checks.append(
                 {
-                    "status": "pass" if binding and expected_branch and current_branch == expected_branch else "fail",
+                    "status": "pass" if binding and expected_branch and current_branch in accepted_branches else "fail",
                     "name": f"branch_contract:{service_key}",
                     "details": {
                         "repo_root": str(repo_root or ""),
                         "expected_branch": expected_branch,
+                        "truth_canonical": truth_canonical,
+                        "accepted_branches": accepted_branches,
                         "current_branch": current_branch,
                     },
                 }

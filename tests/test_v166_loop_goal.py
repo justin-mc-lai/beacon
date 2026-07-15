@@ -18,6 +18,7 @@ from beacon.utils.loop_goal_state import (
     increment_repair_loop,
     init,
     read_state,
+    record_review_decision,
     route_to_error_recovery,
     transition,
 )
@@ -185,6 +186,7 @@ class TestSkillRouting:
         # Verify skill routing function maps all stages correctly
         assert get_skill_for_stage("governance_precheck") == "CLI:beacon-plan-start"
         assert get_skill_for_stage("truth_routing") == "beacon-gen-truth"
+        assert get_skill_for_stage("review_routing") == "beacon-pln-review"
         assert get_skill_for_stage("implement_routing") == "beacon-gen-implement"
         assert get_skill_for_stage("qa_routing") == "beacon-eval-qa"
         assert get_skill_for_stage("release_gate") == "beacon-eval-release"
@@ -200,16 +202,86 @@ class TestSkillRouting:
         assert "你正在运行 governor skill" in content
         assert "governance_precheck" in content
         assert "truth_routing" in content
+        assert "review_routing" in content
         assert "implement_routing" in content
         assert "qa_routing" in content
         assert "release_gate" in content
         assert "error_recovery" in content
         assert "beacon-gen-truth" in content
+        assert "beacon-pln-review" in content
         assert "beacon-gen-implement" in content
         assert "beacon-eval-qa" in content
         assert "beacon-eval-release" in content
         assert "beacon-gov-debug" in content
         assert "HUMAN GATE" in content or "human_gate" in content.lower()
+
+
+class TestReviewDecisionPacket:
+    """AC-012..014: planner-review decision packet gates implement routing."""
+
+    def test_review_routing_public_skill_contract(self):
+        skill_paths = [
+            Path(__file__).parent.parent / "skills" / "beacon" / "beacon-loop-goal" / "SKILL.md",
+            Path(__file__).parent.parent / ".agents" / "skills" / "beacon-loop-goal" / "SKILL.md",
+        ]
+        for skill_path in skill_paths:
+            content = skill_path.read_text(encoding="utf-8")
+            assert "review_routing" in content
+            assert "beacon-pln-review" in content
+            assert "Planner Review Decision Packet" in content
+            assert "record_review_decision" in content
+
+    def test_review_decision_packet_records_outputs(self, goal_project: Path):
+        state = init(goal_project, version="v1.6.6", feature="f1", utterance="u1")
+        run_id = state["run_id"]
+        artifact = {
+            "review_id": "pln-review-test",
+            "synthesis": {
+                "recommended_route": "continue_delivery",
+                "highest_severity": "P2",
+                "finding_count": 1,
+                "user_decision_required": False,
+            },
+            "findings": [{"severity": "P2"}],
+            "evidence_paths": {
+                "runtime": ".beacon/state/planner-review/f1/pln-review-test.json",
+            },
+        }
+        result = record_review_decision(goal_project, run_id=run_id, review_artifact=artifact)
+        assert result["status"] == "pass"
+        assert result["current_stage"] == "implement_routing"
+        updated = read_state(goal_project, run_id=run_id)
+        outputs = updated["outputs"]
+        assert outputs["planner_review_id"] == "pln-review-test"
+        assert outputs["planner_review_artifact_ref"].endswith("pln-review-test.json")
+        assert outputs["planner_review_recommended_route"] == "continue_delivery"
+        assert outputs["planner_review_user_decision_required"] is False
+        assert outputs["planner_review_highest_severity"] == "P2"
+        assert outputs["planner_review_finding_count"] == 1
+
+    def test_review_decision_packet_blocks_unsafe_implement_route(self, goal_project: Path):
+        state = init(goal_project, version="v1.6.6", feature="f1", utterance="u1")
+        run_id = state["run_id"]
+        artifact = {
+            "review_id": "pln-review-change",
+            "synthesis": {
+                "recommended_route": "beacon-gen-change",
+                "highest_severity": "P1",
+                "finding_count": 1,
+                "user_decision_required": True,
+            },
+            "findings": [{"severity": "P1"}],
+            "evidence_paths": {
+                "runtime": ".beacon/state/planner-review/f1/pln-review-change.json",
+            },
+        }
+        result = record_review_decision(goal_project, run_id=run_id, review_artifact=artifact)
+        assert result["status"] == "blocked"
+        assert result["current_stage"] == "drift_routing"
+        assert result["recommended_route"] == "beacon-gen-change"
+        assert result["reason_code"] == "planner_review_route_beacon_gen_change"
+        updated = read_state(goal_project, run_id=run_id)
+        assert updated["current_stage"] != "implement_routing"
 
 
 def test_state_init_creates_file(goal_project: Path):
@@ -250,3 +322,15 @@ def test_stop_when_halts_delivery(goal_project: Path):
 
 def test_skill_routing_decision_tree():
     TestSkillRouting().test_skill_routing_decision_tree()
+
+
+def test_review_routing_public_skill_contract():
+    TestReviewDecisionPacket().test_review_routing_public_skill_contract()
+
+
+def test_review_decision_packet_records_outputs(goal_project: Path):
+    TestReviewDecisionPacket().test_review_decision_packet_records_outputs(goal_project)
+
+
+def test_review_decision_packet_blocks_unsafe_implement_route(goal_project: Path):
+    TestReviewDecisionPacket().test_review_decision_packet_blocks_unsafe_implement_route(goal_project)

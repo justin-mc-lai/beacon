@@ -42,12 +42,16 @@ def _semver_tuple(version: str | None) -> tuple[int, int, int]:
         return (0, 0, 0)
 
 
-def prototype_adapter_only_supported(version: str | None) -> bool:
-    return _semver_tuple(version) >= (1, 4, 9)
+def prototype_adapter_only_supported(version: str | None, *, runtime_version: str | None = None) -> bool:
+    docs_tuple = _semver_tuple(version)
+    runtime_text = str(runtime_version or "").strip()
+    # v0.x docs lines are project/product versions, not Beacon capability lines.
+    capability_version = runtime_text if runtime_text and docs_tuple[0] == 0 else version
+    return _semver_tuple(capability_version) >= (1, 4, 9)
 
 
-def prototype_generation_deprecated(version: str | None) -> bool:
-    return prototype_adapter_only_supported(version)
+def prototype_generation_deprecated(version: str | None, *, runtime_version: str | None = None) -> bool:
+    return prototype_adapter_only_supported(version, runtime_version=runtime_version)
 
 
 def prototype_dir(project_root: Path, version: str, feature: str) -> Path:
@@ -314,8 +318,14 @@ def design_result_adapter_status(project_root: Path, version: str, feature: str)
     }
 
 
-def prototype_status(project_root: Path, version: str, feature: str) -> dict[str, Any]:
-    if prototype_adapter_only_supported(version):
+def prototype_status(
+    project_root: Path,
+    version: str,
+    feature: str,
+    *,
+    runtime_version: str | None = None,
+) -> dict[str, Any]:
+    if prototype_adapter_only_supported(version, runtime_version=runtime_version):
         payload = design_result_adapter_status(project_root, version, feature)
         payload["legacy_prototype"] = evaluate_prototype_status(project_root, version, feature)
         return payload
@@ -340,8 +350,14 @@ def feature_requires_prototype(project_root: Path, version: str, feature: str) -
     return False
 
 
-def feature_requires_design_result_binding(project_root: Path, version: str, feature: str) -> bool:
-    if not prototype_adapter_only_supported(version):
+def feature_requires_design_result_binding(
+    project_root: Path,
+    version: str,
+    feature: str,
+    *,
+    runtime_version: str | None = None,
+) -> bool:
+    if not prototype_adapter_only_supported(version, runtime_version=runtime_version):
         return False
     if feature_requires_prototype(project_root, version, feature):
         return True

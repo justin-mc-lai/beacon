@@ -8,10 +8,10 @@
 - reviewed_at: `2026-07-15T06:14:29.066783+00:00`
 
 ## Git
-- base_branch: `beacon/v1.6.6`
-- target_branch: `beacon/v1.6.6`
+- base_branch: `main`
+- target_branch: `beacon/v1.6.6/beacon-loop-goal-v166`
 - branch_prefix: `beacon/`
-- branch_strategy: `single-branch`
+- branch_strategy: `dedicated-feature-worktree`
 
 ## Worktree
 - use_git_worktree: `False`

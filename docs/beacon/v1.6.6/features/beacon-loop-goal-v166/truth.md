@@ -2,9 +2,9 @@
 slug: beacon-loop-goal-v166
 version: v1.6.6
 status: frozen
-revision_id: R2
+revision_id: R3
 language: zh
-change_reason: R2 - Freeze beacon-loop-goal as a public host-visible governor skill and update taxonomy, inventory, counts, and release governance
+change_reason: R3 - Promote review_routing into public skill decision tree and loop-goal state decision packet contract
 canonical_refs:
   truth: docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md
   tests: docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md
@@ -53,6 +53,7 @@ Beacon v1.6 公开 host-visible skill surface 冻结为 38 个 skill：planner(7
 2. v1.6.0 的 `beacon-loop goal`（Node.js）已有编排能力，但与 Python CLI 生态脱节，且 v1.6.5+ 新能力未集成。
 3. 跨 harness 上下文传递依赖 agent 内存，长会话中容易丢失阶段状态。
 4. 没有统一的 stop-when / error-recovery 机制贯穿全流程。
+5. R2 truth 和 `loop_goal_state.py` 已出现 `review_routing`，但 public SKILL.md 决策树和 state outputs 未把 `beacon-pln-review` 的 decision packet 正式纳入 loop-goal 生命周期决策，导致 review artifact 只能人工转译。
 
 ## Non-Goals
 
@@ -75,6 +76,7 @@ Beacon v1.6 公开 host-visible skill surface 冻结为 38 个 skill：planner(7
 | Error recovery | 任何阶段 blocked → 路由 `beacon-gov-debug`，修复后回到对应阶段 |
 | Stop-when 检查 | 每个阶段转换前检查 stop 条件 |
 | Governance precheck | 启动前验证版本在 governance 中注册（消费 v1.6.6 governance_precheck） |
+| Planner review decision packet | truth freeze 后、implement 前可进入 `review_routing`；读取 `beacon-pln-review` artifact 的 `review_id`、`recommended_route`、`user_decision_required`、highest severity、finding count、artifact ref，并写入 `.beacon/state/loop-goal/<run_id>.json` |
 
 ## Phased Backlog（显式不在本包 closure 的范围）
 
@@ -87,11 +89,11 @@ Beacon v1.6 公开 host-visible skill surface 冻结为 38 个 skill：planner(7
 
 ## Affected Surfaces
 
-- `.agents/skills/beacon-loop-goal/SKILL.md` (new): skill 定义 + 决策树 + 状态机
-- `skills/beacon/beacon-loop-goal/SKILL.md` (new): packaged public skill source
+- `.agents/skills/beacon-loop-goal/SKILL.md` (new/R3): skill 定义 + 决策树 + 状态机 + `review_routing` decision packet gate
+- `skills/beacon/beacon-loop-goal/SKILL.md` (new/R3): packaged public skill source + `review_routing` decision packet gate
 - `beacon/utils/agent_surface.py`: v1.6 taxonomy / agent surface expected list accepts `beacon-loop-goal` as a governor skill
 - `beacon/utils/agent_eval_kit.py`: release/eval inventory counts `beacon-loop-goal` as governor host-visible skill
-- `beacon/utils/loop_goal_state.py` (new): 状态文件读写、阶段转换、stop-when 检查
+- `beacon/utils/loop_goal_state.py` (new/R3): 状态文件读写、阶段转换、stop-when 检查、planner-review decision packet 写入
 - `beacon/commands/status.py`: 新增 `loop-goal` 状态视图
 - `tests/test_v166_loop_goal.py` (new)
 - `tests/test_doctor_agent_surface.py`, `tests/test_v160_skill_harness_taxonomy.py`, `tests/test_v161_agent_eval.py`: public skill packaging and release governance regression coverage
@@ -104,7 +106,12 @@ Beacon v1.6 公开 host-visible skill surface 冻结为 38 个 skill：planner(7
 idle → governance_precheck
   → pass: truth_routing | blocked: governance_repair → idle
 truth_routing → invoke beacon-gen-truth → truth_verify
-  → frozen: implement_routing | not_frozen: truth_routing (retry) | blocked: error_recovery
+  → frozen: review_routing | not_frozen: truth_routing (retry) | blocked: error_recovery
+review_routing → invoke beacon-pln-review → review_verify
+  → implement_ready: implement_routing
+  → truth_or_change_route: drift_routing
+  → user_decision_required: error_recovery
+  → blocked: error_recovery
 implement_routing → invoke beacon-gen-implement → implement_verify
   → tests_pass: qa_routing | tests_fail: implement_routing (retry) | blocked: error_recovery
 qa_routing → invoke beacon-eval-qa → qa_verify
@@ -146,6 +153,12 @@ error_recovery → invoke beacon-gov-debug → 修复后回到对应阶段
   ],
   "outputs": {
     "truth_frozen": true,
+    "planner_review_id": "<review_id|null>",
+    "planner_review_artifact_ref": ".beacon/state/planner-review/<feature>/<review_id>.json",
+    "planner_review_recommended_route": "beacon-gen-implement|beacon-gen-change|beacon-gen-refreeze|beacon-eval-qa|continue_delivery",
+    "planner_review_user_decision_required": false,
+    "planner_review_highest_severity": "P0|P1|P2|P3|",
+    "planner_review_finding_count": 0,
     "tests_pass": false,
     "qa_verdict": null,
     "release_verdict": null
@@ -178,17 +191,20 @@ error_recovery → invoke beacon-gov-debug → 修复后回到对应阶段
 | AC-009 | stop-when | 每个阶段转换前检查 `stop_when` 条件；满足时停止并输出 `reason_code=stop_when_satisfied` |
 | AC-010 | skill-routing | 编排器的 SKILL.md 包含完整决策树，agent 可按决策树顺序加载对应 skill |
 | AC-011 | public-skill-release-shape | `beacon-loop-goal` 作为公开 host-visible governor skill 被 v1.6 taxonomy、agent surface expected list、skill inventory/count 和 release governance 接受；公开 skill 总数为 38 |
+| AC-012 | review-routing-public-skill | public SKILL.md 的 State Machine、Decision Tree、Skill Routing Matrix 必须显式包含 `review_routing -> beacon-pln-review`，并声明 review 后才能自动进入 implement 的条件 |
+| AC-013 | review-decision-packet-state | `loop_goal_state` 必须提供 deterministic review decision packet 写入函数，把 planner-review artifact 的 review id、artifact ref、recommended route、user decision flag、highest severity、finding count 写入 state outputs |
+| AC-014 | review-gate-fail-closed | 当 review decision packet 存在 P0/P1、`user_decision_required=true`，或推荐 route 指向 `beacon-gen-truth` / `beacon-gen-change` / `beacon-gen-refreeze` 时，loop-goal 不得自动进入 `implement_routing`，必须停在对应 route 或 error recovery |
 
 ## State Model
 
 ```text
-idle -> governance_precheck -> truth_routing -> implement_routing -> qa_routing -> release_gate -> done
-                                                         |               |              |
-                                                         +-- repair loop (max 3) --+     |
-                                                         |                          |     |
-                                                    error_recovery <--- blocked ---+-----+
-                                                         |
-                                                    beacon-gov-debug -> 修复后回到对应阶段
+idle -> governance_precheck -> truth_routing -> review_routing -> implement_routing -> qa_routing -> release_gate -> done
+                                                                            |               |              |
+                                                                            +-- repair loop (max 3) --+     |
+                                                                            |                          |     |
+drift_routing <--- review route requires truth/change/refreeze          error_recovery <--- blocked ---+-----+
+                                                                            |
+                                                                       beacon-gov-debug -> 修复后回到对应阶段
 ```
 
 ## Deferral Ledger

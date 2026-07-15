@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from beacon.utils.git_alignment import git_output
+from beacon.utils.story_state import feature_slug
 
 
 BRANCH_GOVERNANCE_TOOL = "beacon-toolkit-branch-governance"
@@ -18,14 +19,17 @@ def _string(value: Any) -> str:
     return str(value or "").strip()
 
 
-def _normalized_path(value: Any) -> str:
+def _normalized_path(value: Any, *, base: Path | None = None) -> str:
     text = _string(value)
     if not text:
         return ""
+    path = Path(text).expanduser()
+    if not path.is_absolute() and base is not None:
+        path = base.expanduser().resolve() / path
     try:
-        return str(Path(text).expanduser().resolve(strict=False))
+        return str(path.resolve(strict=False))
     except Exception:  # noqa: BLE001
-        return str(Path(text).expanduser())
+        return str(path)
 
 
 def _string_list(values: Any) -> list[str]:
@@ -57,6 +61,30 @@ def _evidence_map(values: Any) -> dict[str, str]:
             if key:
                 evidence[key] = _string(raw_value)
     return evidence
+
+
+def _feature_branch_from_pattern(pattern: str, feature: str) -> str:
+    slug = feature_slug(feature)
+    if not pattern or not slug:
+        return ""
+    return pattern.replace("<feature-slug>", slug).replace("{feature-slug}", slug)
+
+
+def _worktree_path_for_feature(path: str, feature: str, *, base: Path | None = None) -> str:
+    resolved = _normalized_path(path, base=base)
+    slug = feature_slug(feature)
+    if not resolved or not slug:
+        return resolved
+    resolved_path = Path(resolved)
+    if resolved_path.name == slug:
+        return str(resolved_path)
+    return str((resolved_path / slug).resolve(strict=False))
+
+
+def _is_git_checkout(path: str) -> bool:
+    if not path:
+        return False
+    return bool(git_output(Path(path), "rev-parse", "--show-toplevel"))
 
 
 def _hotfix_rule_matches(branch: str, rule: str) -> bool:
@@ -92,24 +120,41 @@ def _branch_governance_contract_from_sources(
     )
     template_source = "task_override" if override else ("project_metadata" if governance or version_contract.get("branch_governance_template") else "default")
     selected_repo_root = _string(selected_binding.get("repo_root"))
+    selected_repo_path = Path(selected_repo_root).expanduser().resolve() if selected_repo_root else None
     worktree_path_policy = _string(selected_binding.get("worktree_path_policy")) or "follow-repo-root"
     repo_root = _normalized_path(
-        _string(override.get("repo_root")) or selected_repo_root or _string(git_workflow.get("worktree_root")) or _string(project_root)
+        _string(override.get("repo_root")) or selected_repo_root or _string(git_workflow.get("worktree_root")) or _string(project_root),
+        base=Path(project_root).expanduser().resolve() if project_root else None,
     )
     target_branch = _string(git_workflow.get("expected_branch")) or selected_branch
     from beacon.utils.execution_branch_contract import is_program_level_branch_contract
 
     if is_program_level_branch_contract(git_workflow):
         target_branch = _string(git_workflow.get("expected_branch")) or target_branch
-    current_branch = git_output(Path(repo_root), "branch", "--show-current") if repo_root else ""
+    if feature and not _string(git_workflow.get("expected_branch")):
+        feature_branch = _feature_branch_from_pattern(
+            _string(version_contract.get("next_version_feature_branch"))
+            or _string(governance.get("next_version_feature_branch")),
+            feature,
+        )
+        target_branch = feature_branch or target_branch
+    project_root_text = _string(project_root) if project_root else ""
+    default_current_worktree = (
+        project_root_text
+        if _is_git_checkout(project_root_text)
+        else selected_repo_root
+        if worktree_path_policy == "follow-repo-root" and selected_repo_root
+        else project_root_text
+    )
     current_worktree_path = _normalized_path(
         _string(override.get("current_worktree_path"))
         or _string(governance.get("current_worktree_path"))
         or _string(git_workflow.get("current_worktree_path"))
-        or (selected_repo_root if worktree_path_policy == "follow-repo-root" and selected_repo_root else "")
-        or (_string(project_root) if project_root else repo_root)
+        or default_current_worktree
+        or repo_root,
+        base=selected_repo_path,
     )
-    worktree_path = _normalized_path(
+    worktree_path_raw = (
         _string(override.get("worktree_path"))
         or _string(governance.get("worktree_path"))
         or _string(git_workflow.get("dedicated_worktree_path"))
@@ -117,6 +162,13 @@ def _branch_governance_contract_from_sources(
         or (selected_repo_root if worktree_path_policy == "follow-repo-root" and selected_repo_root else "")
         or current_worktree_path
     )
+    worktree_path = (
+        _worktree_path_for_feature(worktree_path_raw, feature, base=selected_repo_path)
+        if feature and worktree_path_raw == _string(governance.get("worktree_path"))
+        else _normalized_path(worktree_path_raw, base=selected_repo_path)
+    )
+    current_branch_root = Path(current_worktree_path or repo_root)
+    current_branch = git_output(current_branch_root, "branch", "--show-current") if current_branch_root else ""
     allow_worktree_when_feature_dirty = bool(
         override.get(
             "allow_worktree_when_feature_dirty",
@@ -161,6 +213,13 @@ def _branch_governance_contract_from_sources(
         or _string(governance.get("worktree_mode"))
         or ("dedicated-worktree" if bool(git_workflow.get("use_git_worktree")) or template_name == DUAL_VERSION_TEMPLATE else "branch-only")
     )
+    if worktree_mode == "dedicated":
+        worktree_mode = "dedicated-worktree" if feature else "dedicated"
+    previous_baseline = (
+        _string(override.get("previous_version_baseline_branch"))
+        or _string(governance.get("previous_version_baseline_branch"))
+        or _string(version_contract.get("previous_version_baseline_branch"))
+    )
     return {
         "schema_version": "1.0",
         "tool_name": BRANCH_GOVERNANCE_TOOL,
@@ -170,17 +229,13 @@ def _branch_governance_contract_from_sources(
         "template_source": template_source,
         "service_key": selected_service,
         "repo_root": repo_root,
-        "base_branch": _string(git_workflow.get("base_branch")) or selected_branch,
+        "base_branch": _string(git_workflow.get("base_branch")) or (previous_baseline if feature else selected_branch),
         "current_branch": current_branch,
         "target_branch": target_branch,
         "worktree_mode": worktree_mode,
         "worktree_path": worktree_path,
         "current_worktree_path": current_worktree_path,
-        "previous_version_baseline_branch": (
-            _string(override.get("previous_version_baseline_branch"))
-            or _string(governance.get("previous_version_baseline_branch"))
-            or _string(version_contract.get("previous_version_baseline_branch"))
-        ),
+        "previous_version_baseline_branch": previous_baseline,
         "next_version_feature_branch": (
             _string(override.get("next_version_feature_branch"))
             or _string(governance.get("next_version_feature_branch"))

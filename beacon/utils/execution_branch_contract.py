@@ -185,6 +185,38 @@ def is_program_level_branch_contract(contract: dict[str, Any] | None) -> bool:
     )
 
 
+def _has_feature_slug_placeholder(value: str) -> bool:
+    text = str(value or "").strip().lower()
+    return "<feature" in text or "{feature" in text
+
+
+def _should_prefer_governance_feature_branch(
+    ctx: dict[str, Any],
+    *,
+    admission_contract: dict[str, Any],
+    resolved_branch: str,
+) -> bool:
+    """Keep deterministic implementation drafts from overriding feature-lane governance.
+
+    v1.6.x introduced truth-on-main plus dedicated per-feature worktrees. Older
+    deterministic implementation contracts can still carry a naked runtime mirror
+    branch such as `beacon/v1.6.6`; when governance declares
+    `beacon/v1.6.6/<feature-slug>`, workspace admission must use the feature lane.
+    """
+
+    mode = str(ctx.get("branch_resolution_mode") or "").strip().lower()
+    if mode == "program-level":
+        return False
+    pattern = str(admission_contract.get("feature_branch_pattern") or "").strip()
+    if not _has_feature_slug_placeholder(pattern):
+        return False
+    canonical = str(admission_contract.get("canonical_branch") or "").strip()
+    if not canonical or resolved_branch != canonical:
+        return False
+    loaded_types = set(ctx.get("loaded_material_types") or [])
+    return "git-workflow" not in loaded_types
+
+
 def _program_level_from_parsed_markdown(
     project_root: Path,
     *,
@@ -484,6 +516,20 @@ def resolve_workspace_branch_targets(
         worktree_path = str(ctx.get("dedicated_worktree_path") or ctx.get("worktree_root") or ctx.get("worktree_path") or "").strip()
         if not worktree_path:
             worktree_path = resolve_worktree_path(root, admission_contract, feature=feature)
+        if _should_prefer_governance_feature_branch(
+            ctx,
+            admission_contract=admission_contract,
+            resolved_branch=branch,
+        ):
+            return {
+                "branch_resolution_mode": "per-feature",
+                "feature_branch": resolve_feature_branch(admission_contract, feature=feature, version=version),
+                "worktree_path": worktree_path,
+                "program_slug": "",
+                "material_path": str(ctx.get("material_path") or (per_feature.get("material_paths") or [""])[0]).strip(),
+                "source": "governance_feature_pattern",
+                "ignored_execution_branch": branch,
+            }
         return {
             "branch_resolution_mode": "program-level",
             "feature_branch": branch,

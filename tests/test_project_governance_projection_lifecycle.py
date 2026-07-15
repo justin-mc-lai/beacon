@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import inspect
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -55,6 +56,21 @@ def _seed_governance_md(root: Path, *, version: str = "v9.9.9") -> None:
         },
     }
     _commit_payload(root, payload, event_type="test-seed")
+
+
+def _git(cmd: list[str], cwd: Path) -> str:
+    result = subprocess.run(cmd, cwd=cwd, check=True, capture_output=True, text=True)
+    return str(result.stdout or "").strip()
+
+
+def _seed_git_repo(root: Path) -> None:
+    root.mkdir(parents=True, exist_ok=True)
+    _git(["git", "init", "-b", "main"], cwd=root)
+    _git(["git", "config", "user.email", "test@example.com"], cwd=root)
+    _git(["git", "config", "user.name", "Beacon Test"], cwd=root)
+    (root / "README.md").write_text("ok\n", encoding="utf-8")
+    _git(["git", "add", "README.md"], cwd=root)
+    _git(["git", "commit", "-m", "init"], cwd=root)
 
 
 def test_truth_map_single_governance_truth_surface() -> None:
@@ -113,6 +129,61 @@ def test_verify_fails_on_projection_drift(tmp_path: Path) -> None:
     verdict = verify_project_metadata(tmp_path, version="v9.9.9")
     projection_check = next(item for item in verdict["checks"] if item["name"] == "governance_projection_drift")
     assert projection_check["status"] == "fail"
+
+
+def test_metadata_verify_accepts_truth_canonical_main_from_feature_worktree(tmp_path: Path) -> None:
+    version = "v1.6.6"
+    feature = "demo-change"
+    root = tmp_path / "repo"
+    worktree = tmp_path / "demo-change-worktree"
+    _seed_git_repo(root)
+    payload = {
+        "schema_version": "1.0",
+        "project_root": str(root),
+        "global_project_metadata": {
+            "project_root": str(root),
+            "topology_kind": "single_repo",
+            "default_execution_service": "beacon",
+            "service_bindings": [
+                {
+                    "service_key": "beacon",
+                    "repo_root": str(root),
+                    "repo_root_relative": "",
+                    "role": "service",
+                    "writable": True,
+                    "worktree_path_policy": "follow-repo-root",
+                }
+            ],
+        },
+        "version_scoped_metadata": {
+            version: {
+                "version": version,
+                "participating_services": ["beacon"],
+                "per_service_canonical_branch": {"beacon": f"beacon/{version}"},
+                "truth_canonical": "main",
+                "runtime_mirror": f"beacon/{version}",
+                "branch_guard_mode": "strict",
+                "validation_state": "active",
+                "previous_version_baseline_branch": "main",
+                "next_version_feature_branch": f"beacon/{version}/<feature-slug>",
+                "worktree_mode": "dedicated",
+                "worktree_path": f".beacon/worktrees/{version}",
+                "require_workspace_admission": True,
+                "admission_invalidation": "dirty_only",
+            }
+        },
+    }
+    _commit_payload(root, payload, event_type="test-seed")
+    _git(["git", "branch", f"beacon/{version}/{feature}"], cwd=root)
+    _git(["git", "worktree", "add", str(worktree), f"beacon/{version}/{feature}"], cwd=root)
+
+    verdict = verify_project_metadata(worktree, version=version)
+    branch_check = next(item for item in verdict["checks"] if item["name"] == "branch_contract:beacon")
+
+    assert verdict["project_root"] == str(root.resolve())
+    assert branch_check["status"] == "pass"
+    assert branch_check["details"]["current_branch"] == "main"
+    assert branch_check["details"]["accepted_branches"] == [f"beacon/{version}", "main"]
 
 
 def test_sqlite_payload_not_commit_authority() -> None:
