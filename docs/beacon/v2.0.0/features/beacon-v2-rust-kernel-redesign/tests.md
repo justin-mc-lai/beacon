@@ -260,7 +260,7 @@ truth_ref: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
 | TC-107 | AC-107 | Developer Feedback checkpoint | `beacon-v2 run --feedback-checkpoint --every 3` — 每 3 iteration 暂停等人注入 notes，resume 后基于 notes 重新 iterate；notes 写入 lifecycle_events | P3 |
 | TC-108 | AC-108 | 三层 Loop 可观测 | `beacon-v2 spine show --json` — snapshot 含 `loop_layer` 字段（coding/developer/realworld） | P3 |
 
-## R8/R9 Minimal Kernel（AC-109–130）
+## Minimal Kernel Extensions（AC-109–137）
 
 | TC ID | AC ID | 场景 | Command + Assertion | Phase |
 |-------|-------|------|---------------------|-------|
@@ -286,6 +286,13 @@ truth_ref: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
 | TC-128 | AC-128 | BranchContext schema | `beacon workspace admit --project-root fixture --version v2.0.0 --feature demo --json` 输出 `BranchContext.v1` required fields，且 `target_project_root != caller_cwd` fixture 仍指向 admitted worktree | P2 |
 | TC-129 | AC-129 | branch governance hard gate | 缺 admission / cwd 错配 / protected path write 三 fixture 均 blocked，reason_code 指向具体 BranchContext 字段；不得降级为 warning | P2 |
 | TC-130 | AC-130 | harness boundary hard gate | planner 实现、implement 改 frozen truth、qa-evidence 改 implementation、loop 跳 release human gate 四 fixture 均 fail-closed + typed reason_code | P2 |
+| TC-131 | AC-131 | TraceSpine authority | `beacon-v2 loop start --fixture trace-spine-authority --json` 产出 append-only `TraceSpine.v1`；`lifecycle_events` / evidence manifest 标记为 projection，不可单独满足 release | P2 |
+| TC-132 | AC-132 | TraceContext binding | 缺 BranchContext / decision_packet / intent_snapshot / truth_hash 任一引用时 `loop start` blocked；完整绑定后 trace context 含 required fields | P2 |
+| TC-133 | AC-133 | trace completeness gate | implement / qa-evidence / release 三类 fixture 分别覆盖 trace missing、append failure、event hash chain invalid、event-to-evidence 断链，均 fail-closed | P2 |
+| TC-134 | AC-134 | stagnation report trace range | repeat_failure / repeat_labor / plateau report 必须含 trace_event_range + reason_code + catalog/pattern refs；无 trace run_id 输入 blocked | P2 |
+| TC-135 | AC-135 | remediation report chain | remediation report 必须引用 stagnation report、overlay/eval/rollback evidence 与 human_review_decision；无 human review 时 release blocked | P3 |
+| TC-136 | AC-136 | canonical truth branch | 在 feature/dev worktree 执行 `beacon change --refreeze-chain` blocked，`reason_code=truth_canonical_branch_mismatch`；main/master 上允许进入 refreeze | P2 |
+| TC-137 | AC-137 | empty/drift refreeze guard | reason-only 或 machine-only refreeze blocked；machine revision 与 human narrative 不一致 blocked，reason_code 分别为 `empty_refreeze_reason_only` / `revision_authority_drift` | P2 |
 
 ## 负向路径
 
@@ -303,6 +310,10 @@ truth_ref: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
 | TC-N10 | v2 public surface 暴露 doctor/router/hooks 为一等 skill | surface contract fail |
 | TC-N11 | loader 预加载全部历史 skill 正文 | `skill_load_plan.v1` contract fail |
 | TC-N12 | harness 从 caller cwd 推断目标 root | BranchContext mismatch blocked |
+| TC-N13 | `lifecycle_events` / evidence manifest 无 TraceSpine 仍尝试 release | release blocked |
+| TC-N14 | feature worktree 本地 bump requirement revision | `truth_canonical_branch_mismatch` |
+| TC-N15 | refreeze 只有 change_reason 或 machine projection 变化 | `empty_refreeze_reason_only` |
+| TC-N16 | human evidence 写 R9 但 machine revision 写 R8 | `revision_authority_drift` |
 
 ## E2E
 
@@ -314,4 +325,4 @@ truth_ref: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
 | TC-E04 | 六能力 harness surface（P4 gate） | `beacon harness list --version v2.0.0 --json \| jq -e 'map(.id)==["loop","truth","design","implement","qa-evidence","release"]'` |
 | TC-E05 | worktree goal → implement harness iteration → spine cwd 一致 | `cargo test -p beacon-orchestrator e2e_worktree_harness -- --test fixture_worktree_implement`（同 TC-099/100） |
 
-**当前**：truth **R9 frozen**；历史 P0 candidate evidence 见 `evidence.md`，R9 minimal-kernel AC-002/022/059/063/109–130 待实现后由 `beacon-eval-qa` 裁决。
+**当前**：truth 已由当前 refreeze transaction 冻结；具体 revision id 以 `.machine/execution/*revision.json` 与 refreeze summary 为准。历史 P0 candidate evidence 见 `evidence.md`，minimal-kernel AC-002/022/059/063/109–137 待实现后由 `beacon-eval-qa` 裁决。

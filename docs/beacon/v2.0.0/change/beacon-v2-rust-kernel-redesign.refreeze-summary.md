@@ -1,12 +1,12 @@
 # Change Refreeze Summary: beacon-v2-rust-kernel-redesign
 
 - version: `v2.0.0`
-- change_reason: `refreeze v2 skill surface: six public skills, progressive disclosure internals, preserved branch governance and harness contracts, remove Python/33-skill public compatibility`
+- change_reason: `refreeze v2 TraceSpine and canonical truth branch contract as R10 with human and machine revision authority aligned`
 - refreeze_status: `complete`
 - blocked_reason: ``
 - next_route: `beacon-gen-implement`
-- revision_before: `R6`
-- revision_after: `R7`
+- revision_before: `R9`
+- revision_after: `R10`
 
 ## Surface Statuses
 - `change`: `present` (docs/beacon/v2.0.0/change/beacon-v2-rust-kernel-redesign.md)

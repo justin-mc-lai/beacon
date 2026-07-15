@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-15T09:40:52.389595+00:00",
+  "generated_at": "2026-07-15T11:43:03.006632+00:00",
   "feature": "beacon-v2-rust-kernel-redesign",
   "feature_slug": "beacon-v2-rust-kernel-redesign",
   "version": "v2.0.0",
@@ -18,17 +18,17 @@
     "evidence": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/evidence.md"
   },
   "source_hashes": {
-    "truth": "f0c41312e288ee2a38d228164b888db5965927864df630814033c0796a0411b5",
-    "tests": "95b30c0ac4518e908423f103dd055ca16b2fd14a916918abb9cf7df197296703",
-    "tasks": "5e3a08a279a488442a050de7aca7c7ec55074d30661c1d2354e05a6822c3b557",
-    "evidence": "dcbeaca095992358d0974b3b9a51c3da3519c41e9c6781fb102e6aee3e567d70"
+    "truth": "1d7105a036b050e992bc07836f5aa6cf8d2b7a674b686a9a714857fc0be2b5b6",
+    "tests": "fb1f22f24265e3eadb272e6da65596f453c2061a856028b28523a5f525710d20",
+    "tasks": "7b51af2c0ad4aa8b81c3b22b8c3b1ce0c8d36aa830a55576139e0ddc56ccb9fe",
+    "evidence": "8b20837e8afcb8ae1f7eda343ca9420b0b0666921f6e1a09e1a79d10a179c48f"
   },
   "truth_frontmatter": {
     "slug": "beacon-v2-rust-kernel-redesign",
     "version": "v2.0.0",
     "status": "frozen",
     "language": "zh",
-    "revision": "r9-skill-surface-disclosure-frozen",
+    "revision": "r10-trace-spine-canonical-truth-frozen",
     "canonical_refs": {
       "truth": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
       "tests": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tests.md",
@@ -632,6 +632,41 @@
       "ac_id": "AC-130",
       "theme": "",
       "description": "- **AC-130**：Harness boundary 以 reason_code enforce：planner/truth 不实现，implement 不改 frozen truth/不自评 QA，qa-evidence 不改 truth/implementation，release 不绕过 human gate，loop 不替代任一裁决面。"
+    },
+    {
+      "ac_id": "AC-131",
+      "theme": "",
+      "description": "- **AC-131**：`TraceSpine.v1` 是 run 级 append-only authority；`lifecycle_events`、read model、evidence manifest、loop-readiness 均为 projection，不得作为唯一权威源。"
+    },
+    {
+      "ac_id": "AC-132",
+      "theme": "",
+      "description": "- **AC-132**：`loop start` 必须创建 `TraceContext.v1` 并绑定 BranchContext、decision_packet、intent_snapshot、truth_hash 与 design_primitives（当 required）；缺失或不一致 fail-closed。"
+    },
+    {
+      "ac_id": "AC-133",
+      "theme": "",
+      "description": "- **AC-133**：`implement` / `qa-evidence` / `release` 必须验证 trace completeness；trace missing、append failure、event hash chain invalid 或 event->evidence 断链均不得继续闭环。"
+    },
+    {
+      "ac_id": "AC-134",
+      "theme": "",
+      "description": "- **AC-134**：`stagnation-report.v1` 必须引用 trace event range、reason_code、failure catalog / pattern registry；无 trace 归属不得触发 remediation。"
+    },
+    {
+      "ac_id": "AC-135",
+      "theme": "",
+      "description": "- **AC-135**：`remediation-report.v1` 必须引用 stagnation report、overlay/eval/rollback evidence 与 human review decision；成功 remediation 仍需人工裁决，不得自动 release。"
+    },
+    {
+      "ac_id": "AC-136",
+      "theme": "",
+      "description": "- **AC-136**：truth/change/refreeze 只能在 `truth_canonical_branch`（默认 main，缺失时 master）写入与冻结；feature/dev worktree 不得 bump requirement revision。"
+    },
+    {
+      "ac_id": "AC-137",
+      "theme": "",
+      "description": "- **AC-137**：refreeze transaction 必须拒绝 reason-only / machine-only 变化；revision id、人类 narrative 与 machine projection 发生漂移时 fail-closed。"
     },
     {
       "ac_id": "AC-099",
@@ -1602,6 +1637,26 @@
       "status": "unchecked"
     },
     {
+      "id": "TASK-P2-016",
+      "title": "`TraceSpine.v1` + `TraceContext.v1` kernel authority：loop start 创建 append-only trace，绑定 BranchContext / decision_packet / intent_snapshot / truth_hash / design_primitives（AC-131–132 / TC-131–132）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P2-017",
+      "title": "trace completeness hard gate：implement、qa-evidence、release 均验证 trace missing / append failure / hash chain invalid / event-to-evidence 断链（AC-133 / TC-133）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P2-018",
+      "title": "canonical truth branch hard gate：truth/change/refreeze 只能在 main/master 写入；feature/dev worktree 只能消费 canonical frozen truth（AC-136 / TC-136）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P2-019",
+      "title": "empty/drift refreeze guard：reason-only、machine-only refreeze 和 revision narrative drift 均 fail-closed（AC-137 / TC-137）。",
+      "status": "unchecked"
+    },
+    {
       "id": "TASK-P3-001",
       "title": "gate 写 `gate_results` + reason_codes 集成测试（TC-066）。",
       "status": "unchecked"
@@ -1677,6 +1732,11 @@
       "status": "unchecked"
     },
     {
+      "id": "TASK-P3-016",
+      "title": "stagnation/remediation trace binding：`stagnation-report.v1` 引用 trace event range；`remediation-report.v1` 引用 stagnation report、overlay/eval/rollback evidence 与 human review decision（AC-134–135 / TC-134–135）。",
+      "status": "unchecked"
+    },
+    {
       "id": "TASK-P4-001",
       "title": "删除 v2 core 的 PyO3/python runtime fallback；legacy invocation 只给 migration/archive route（TC-002/003/062）。",
       "status": "unchecked"
@@ -1742,7 +1802,7 @@
       "surface": "feature-package-truth",
       "authority": "requirement_truth",
       "canonical_artifact": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
-      "status": "**R9 frozen**",
+      "status": "frozen by current refreeze transaction",
       "route": "truth.define"
     },
     {
@@ -1777,6 +1837,13 @@
       "surface": "planner-review-r9",
       "authority": "support_advisory",
       "canonical_artifact": "conversation: v2 skill surface progressive disclosure, branch governance retained, harness contracts retained",
+      "status": "accepted-for-truth",
+      "route": "truth.define"
+    },
+    {
+      "surface": "planner-review-r10",
+      "authority": "support_advisory",
+      "canonical_artifact": "conversation: v1.6.6 trace/stagnation/remediation closure gap; TraceSpine authority; canonical truth branch requirement",
       "status": "accepted-for-truth",
       "route": "truth.define"
     },

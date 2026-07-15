@@ -6,12 +6,13 @@
 |---------|-----------|--------------------|--------|-------|
 | source-plan | support_advisory | docs/plans/beacon-v2-redesign.md | indexed | truth.define |
 | planner-research | support_advisory | docs/beacon/v2.0.0/research/beacon-v2-rust-kernel-redesign.md | promoted | truth.define |
-| feature-package-truth | requirement_truth | docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md | **R9 frozen** | truth.define |
+| feature-package-truth | requirement_truth | docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md | frozen by current refreeze transaction | truth.define |
 | v16-pln-review-runtime | support_advisory | docs/beacon/v1.6.0/features/beacon-pln-review-runtime-multi-agent-v160/truth.md | **frozen** upstream | P2 |
 | v16-truth-integrity-gates | support_advisory | docs/beacon/v1.6.0/features/beacon-truth-integrity-gates-v160/truth.md | **frozen** upstream | P3 |
 | planner-review-r2 | support_advisory | conversation: beacon-pln-review option-A | accepted-for-truth | truth.define |
 | planner-review-r8 | support_advisory | conversation: v2 minimal Rust harness kernel, six first-class abilities, no v1 Python compat | accepted-for-truth | truth.define |
 | planner-review-r9 | support_advisory | conversation: v2 skill surface progressive disclosure, branch governance retained, harness contracts retained | accepted-for-truth | truth.define |
+| planner-review-r10 | support_advisory | conversation: v1.6.6 trace/stagnation/remediation closure gap; TraceSpine authority; canonical truth branch requirement | accepted-for-truth | truth.define |
 | package-tests | test_truth | docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tests.md | authoritative | truth.coverage |
 | package-tasks | support_advisory | docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tasks.md | task-intent-indexed | generate |
 | package-evidence | support_advisory | docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/evidence.md | evidence-indexed | evaluate |
@@ -37,6 +38,8 @@
 - **R2 reopen（2026-06-13）**：补 AC-101–104（TIG、multi-agent planner review、verify-truth-integrity 路由、P0 done）；upstream v1.6 frozen features 表；去除 tests 页「frozen 阻塞」陈旧表述。
 - **R8 refreeze（2026-07-15）**：用户确认 v2 极简 Rust harness kernel；保留 6 个一等能力；完全抛弃 v1 Python 历史兼容；补意图强识别、prompt snapshot、decision_packet、design_primitives gate、agent 排查、v1.6.4–1.6.6 loop/QA/evidence 能力语义迁移。
 - **R9 refreeze（2026-07-15）**：用户确认目标是简化 public skill 和加载路径，而不是删除治理能力；补 progressive disclosure package contract、route examples、`BranchContext.v1`、branch governance hard gate、Harness Boundary reason_codes（AC-125–130）。
+- **R10 change/refreeze intent（2026-07-15）**：用户确认 v1.6.6 的 trace/stagnation/remediation 不能停留在 advisory/report_only；v2 必须把 `TraceSpine.v1` 作为 run authority，并把 loop/implement/qa-evidence/release gate 绑定 trace completeness。
+- **R10 branch governance decision（2026-07-15）**：用户确认需求真相唯一来源应为 canonical truth branch（main，缺失时 master）；feature/dev branch 只能合入并消费 main/master 已冻结 truth，不能本地 bump requirement revision。
 
 ## Implementation Candidate Evidence
 
@@ -44,7 +47,7 @@
 |-------|--------------|------|
 | P0 | packages/beacon-rs/beacon-core, beacon-store + unit tests | 历史候选已完成（2026-06-13）；R8 five-crate/no-python 重新验证仍需执行 |
 | P1 | beacon-cli spine/projects + TC-016–020 | not_started |
-| P2 | beacon-orchestrator + run logs in artifact_refs | not_started |
+| P2 | beacon-orchestrator + TraceSpine/TraceContext + canonical truth branch gate | not_started |
 | P3 | migration reports under ~/.beacon/migrations/ | not_started |
 | P4 | six-ability harness surface + progressive disclosure + legacy removal regression | not_started |
 | P6 | benchmark JSON + qa closure JSON | not_started |
@@ -64,4 +67,4 @@ Deliverables (historical candidate, superseded by R8 minimal-kernel closure wher
 
 ## QA / Release Verdict
 
-**无** — truth **R9 frozen**；R9 implementation/QA/release closure 尚未裁决。formal closure 仅由 `beacon-eval-qa` / `beacon-eval-release` 产出。
+**无** — truth 已由当前 refreeze transaction 冻结；TraceSpine/canonical truth branch implementation/QA/release closure 尚未裁决。formal closure 仅由 `beacon-eval-qa` / `beacon-eval-release` 产出。

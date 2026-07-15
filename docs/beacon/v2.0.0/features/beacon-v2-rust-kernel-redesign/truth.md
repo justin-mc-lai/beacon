@@ -3,7 +3,7 @@ slug: beacon-v2-rust-kernel-redesign
 version: v2.0.0
 status: frozen
 language: zh
-revision: r9-skill-surface-disclosure-frozen
+revision: r10-trace-spine-canonical-truth-frozen
 canonical_refs:
   truth: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
   tests: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tests.md
@@ -167,12 +167,12 @@ v2 public kernel surface 只保留六个一等能力：
 
 | 能力 | 职责 | 关键阻断 |
 |------|------|----------|
-| `loop` | 跨 harness 编排 truth -> design? -> implement -> qa-evidence -> release；支持 auto-decide、checkpoint/resume、worktree lane 并行推进 | 不替代 truth/implement/QA/release；release 必须人工确认 |
+| `loop` | 跨 harness 编排 truth -> design? -> implement -> qa-evidence -> release；支持 auto-decide、checkpoint/resume、worktree lane 并行推进 | 不替代 truth/implement/QA/release；缺 decision_packet 或 TraceSpine 不得进入 implement；release 必须人工确认 |
 | `truth` | plan/pre-freeze intent 捕获、prompt snapshot、brainstorm/review synthesis、truth gap scan、freeze/refreeze | low-confidence intent、未拍板 deferral、状态机缺失时不得 freeze |
 | `design` | UI/视觉/交互交付的 design primitive contract；产出 tokens/components/layout/state/a11y/visual evidence baseline | `design_required=true` 且未绑定 `design_primitives.v1` 时不得 implement |
-| `implement` | 只消费 frozen truth + bound design + admitted worktree + decision_packet；运行 agent/backend loop | 不改 frozen truth，不自证 QA/release pass，不接受 static-only evidence |
-| `qa-evidence` | 行为证据导入、confidence chain、business FSM coverage、defect repair regression、trace/stagnation/remediation 报告 | 缺行为证据链、回归链或断链时 release block |
-| `release` | 最终 go/no-go gate，检查 truth/design/qa/evidence/human confirmation | 不允许 auto-decide 越过 human release gate |
+| `implement` | 只消费 frozen truth + bound design + admitted worktree + decision_packet + TraceSpine；运行 agent/backend loop | 不改 frozen truth，不自证 QA/release pass，不接受 static-only evidence；缺 trace append fail-closed |
+| `qa-evidence` | 行为证据导入、confidence chain、business FSM coverage、defect repair regression、trace/stagnation/remediation 报告 | 缺行为证据链、回归链、trace event 绑定或断链时 release block |
+| `release` | 最终 go/no-go gate，检查 truth/design/qa/evidence/TraceSpine/human confirmation | 不允许 auto-decide 越过 human release gate；trace incomplete 不得 release |
 
 `plan` 不作为第七个一等能力。用户在 plan 时给 Beacon 的灵感、思路、目标、约束、参考和业务判断，必须进入 `truth.pre_freeze_intent`，形成可审计的 `intent_snapshot.v1` 与 loop 可消费的 `decision_packet.v1`。
 
@@ -189,6 +189,36 @@ qa_evidence_expectation, release_confirmation_required=true
 ```
 
 缺失 `decision_packet.v1` 或其引用的 latest accepted prompt snapshot 时，`loop start` 必须 fail-closed。
+
+### TraceSpine Kernel Contract（R10）
+
+v1.6.6 的 `agent_trace.v1` / stagnation detector / remediation sandbox 只算局部能力，不能在 v2 继续降级为 advisory signal。v2 必须把 TraceSpine 作为 kernel authority：
+
+- `TraceSpine.v1` 是 run 级 append-only authority；`lifecycle_events`、read model、evidence manifest、loop-readiness 都是 projection，不得成为唯一真相源。
+- 每个 `loop start` 必须创建 `TraceContext.v1`，字段至少包含：
+
+```text
+trace_id, run_id, feature_slug, version, harness, phase,
+iteration, BranchContext_ref, decision_packet_ref,
+intent_snapshot_ref, truth_hash, design_primitives_ref?,
+parent_span_id?, event_hash, prev_event_hash
+```
+
+- `loop`、`implement`、`qa-evidence`、`release` 必须消费同一 `TraceSpine.v1`。缺失 trace spine、trace append failure、trace context 与 BranchContext/decision_packet 不一致时 fail-closed。
+- `stagnation-report.v1` 必须引用 trace event range 与 reason_code / failure catalog 交叉引用；不得只基于 loose JSONL 或无 run 归属的 report。
+- `remediation-report.v1` 必须引用 stagnation report、overlay artifact、eval evidence、rollback evidence 与 human review decision；成功 remediation 仍不得自动 release。
+- evidence manifest 每条行为证据必须能回溯到 trace event id；无法回溯的证据只能作为 support_advisory，不能满足 closure。
+- `loop-audit` 可以保留 advisory mode，但 loop/implement/qa-evidence/release admission 必须使用 strict trace completeness gate。
+
+### Truth Canonical Branch Contract（R10）
+
+需求真相只能在 canonical truth branch 上编写、冻结、提交，再由开发分支合入消费。默认 canonical truth branch 为 `main`，仓库无 `main` 时使用 `master`。
+
+- `truth` / `change` / `refreeze` 写入 package truth 时，当前分支必须等于 `truth_canonical_branch`；否则 fail-closed：`reason_code=truth_canonical_branch_mismatch`。
+- feature/dev worktree 不得单独 bump requirement `revision_id`，不得产生 reason-only refreeze；它只能合入 canonical branch 上已经 frozen 的 truth。
+- refreeze transaction 必须证明 canonical markdown truth/test/task/evidence 至少一个 requirement surface 发生内容变化；仅 `change_reason` 或 machine projection 变化必须 block：`reason_code=empty_refreeze_reason_only`。
+- implement/qa-evidence/release admission 必须验证当前 branch 包含 canonical truth branch 最新 frozen commit；否则 block：`reason_code=truth_baseline_not_merged`。
+- machine revision、人类 evidence 中的 revision narrative、truth frontmatter 必须同源生成或同源校验；发现 `R7/R8/R9` 类 drift 时 block：`reason_code=revision_authority_drift`。
 
 ### Skill Surface Progressive Disclosure Contract（R9）
 
@@ -536,7 +566,7 @@ optional stop_signal, token_usage, agent_name
 - **AC-103**（P3）：`beacon doctor verify-truth-integrity` 在 v2 路由到 Rust gate；`--mode block` exit code 与 v1.6 一致，不使用 PyO3 compat。
 - **AC-104**（历史 P0 证据）：2026-06-13 的 `packages/beacon-rs/` scaffold 与 12 个 P0 unit tests 是 implementation candidate evidence；R8 minimal-kernel closure 需重新验证 AC-002/022/059/063 后才可算 P0/P4 完成。
 
-### R8/R9 Minimal Kernel AC（AC-109–130）
+### Minimal Kernel AC Extensions（AC-109–137）
 
 - **AC-109**：v2 public kernel surface 明确定义并只允许六个一等能力：loop / truth / design / implement / qa-evidence / release。
 - **AC-110**：v1 Python / Node / 33 skills compatibility 从 v2 core closure 移除；只保留为 migration/archive reference。
@@ -560,6 +590,13 @@ optional stop_signal, token_usage, agent_name
 - **AC-128**：`BranchContext.v1` 是所有写入/agent/evidence/release harness 的共同输入，字段至少覆盖 caller cwd、target project root、admitted worktree、base/feature/canonical branch、dirty policy、protected paths 与 admission artifact。
 - **AC-129**：branch/workspace governance 是 hard gate；任何 generator/implement/qa-evidence/release 写路径缺失 admission 或 BranchContext mismatch 时必须 fail-closed，不能降级为 warning。
 - **AC-130**：Harness boundary 以 reason_code enforce：planner/truth 不实现，implement 不改 frozen truth/不自评 QA，qa-evidence 不改 truth/implementation，release 不绕过 human gate，loop 不替代任一裁决面。
+- **AC-131**：`TraceSpine.v1` 是 run 级 append-only authority；`lifecycle_events`、read model、evidence manifest、loop-readiness 均为 projection，不得作为唯一权威源。
+- **AC-132**：`loop start` 必须创建 `TraceContext.v1` 并绑定 BranchContext、decision_packet、intent_snapshot、truth_hash 与 design_primitives（当 required）；缺失或不一致 fail-closed。
+- **AC-133**：`implement` / `qa-evidence` / `release` 必须验证 trace completeness；trace missing、append failure、event hash chain invalid 或 event->evidence 断链均不得继续闭环。
+- **AC-134**：`stagnation-report.v1` 必须引用 trace event range、reason_code、failure catalog / pattern registry；无 trace 归属不得触发 remediation。
+- **AC-135**：`remediation-report.v1` 必须引用 stagnation report、overlay/eval/rollback evidence 与 human review decision；成功 remediation 仍需人工裁决，不得自动 release。
+- **AC-136**：truth/change/refreeze 只能在 `truth_canonical_branch`（默认 main，缺失时 master）写入与冻结；feature/dev worktree 不得 bump requirement revision。
+- **AC-137**：refreeze transaction 必须拒绝 reason-only / machine-only 变化；revision id、人类 narrative 与 machine projection 发生漂移时 fail-closed。
 
 ## Parity Matrix（Plan 场景复刻索引）
 
@@ -570,7 +607,7 @@ optional stop_signal, token_usage, agent_name
 | §3 Crate | AC-022–025 | workspace |
 | §4 FSM+性能 | AC-026–036, AC-051–058 | 双 FSM+benchmark |
 | §5 Orchestrator+Agent | AC-040–050, **AC-042–046/099/100 真集成** | 无空壳 AC；worktree+implement 不 defer |
-| §6 极简 Harness+CLI | AC-059–066, AC-109–130 | 六能力 surface + legacy removal + progressive disclosure + BranchContext |
+| §6 极简 Harness+CLI | AC-059–066, AC-109–137 | 六能力 surface + legacy removal + progressive disclosure + BranchContext + TraceSpine + canonical truth branch |
 | §7 Schema | AC-067–083 | 九表+DAO |
 | §8 阶段 | AC-084–090 | P0–P6 |
 | §9 风险 | AC-091–095 | 可执行缓解 |
@@ -608,7 +645,7 @@ optional stop_signal, token_usage, agent_name
 5. **无空壳-only AC**；agent/worktree/implement 类 AC 须 integration tier（AC-043–046, AC-099–100）。
 6. **v1.6 upstream**（AC-101–103）在对应 phase 有 behavior-level TC，不得仅用「后续移植」一句带过。
 
-**当前状态**：`frozen` / **R9**（revision `r9-skill-surface-disclosure-frozen`）— 2026-07-15 refreeze：在 R8 极简 Rust harness kernel 基础上，补充六 public skill 的 progressive disclosure package contract；明确 branch/workspace governance、doctor/router/hooks/metadata/status/archive/debug 作为 internal module 保留；将 `BranchContext.v1` 与 Harness Boundary 设为 kernel hard gate。
+**当前状态**：`frozen` / **R10**（revision `r10-trace-spine-canonical-truth-frozen`）— 2026-07-15 refreeze：在 R9 skill-surface progressive disclosure 基础上，补充 `TraceSpine.v1` / `TraceContext.v1` kernel authority、trace completeness hard gate、stagnation/remediation trace binding、canonical truth branch hard gate 与 empty/drift refreeze guard。
 
 ## User Stories
 
@@ -634,7 +671,7 @@ optional stop_signal, token_usage, agent_name
 
 ### US-006 极简 harness surface
 
-**AC**：AC-059–063, AC-109–130, AC-064–066
+**AC**：AC-059–063, AC-109–137, AC-064–066
 
 ## Revision History
 
@@ -650,3 +687,4 @@ optional stop_signal, token_usage, agent_name
 | r7 | R4 reopen：Loop Engineering 三层 Loop 模型（Coding/Developer/Real-world ↔ beacon 生命周期）+ host 运行模式（CLI 进程+checkpoint/resume/信号，无 daemon）+ AC-105/106/107/108 + v1.6 loop upstream（R10 AC-071 → AC-105/106）+ DEF-loop-006 Real-world Loop 延后 |
 | r8 | R5 refreeze：v2 minimal Rust harness kernel；六个一等能力；v1 Python/PyO3/33 skills 移出 core closure；intent_snapshot/prompt_snapshot/decision_packet/design_primitives gate；v1.6.4–1.6.6 loop/QA/agent 排查能力以 Rust 语义重现 |
 | r9 | R6 refreeze：六 public skill 渐进式披露 contract；内部保留 branch governance / doctor / router / hooks / metadata / status / archive / debug；新增 BranchContext.v1 与 Harness Boundary hard gate（AC-125–130） |
+| r10 | R7 refreeze：TraceSpine.v1 / TraceContext.v1 成为 run authority；loop/implement/qa-evidence/release 绑定 trace completeness；stagnation/remediation 报告绑定 trace event range；truth/change/refreeze 只能在 canonical truth branch 执行；阻断 reason-only/machine-only refreeze 与 revision narrative drift（AC-131–137） |

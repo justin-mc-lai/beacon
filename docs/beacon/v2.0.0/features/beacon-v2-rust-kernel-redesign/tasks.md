@@ -33,6 +33,10 @@
 - [ ] TASK-P2-013 route examples registry：覆盖 decision_packet、design_primitives、qa-release、branch-blocked 示例，标注 example 非 truth authority（AC-127 / TC-127）。
 - [ ] TASK-P2-014 `BranchContext.v1` schema + workspace admission 输出：caller cwd / target root / admitted worktree / branch / dirty policy / protected paths（AC-128 / TC-128）。
 - [ ] TASK-P2-015 harness boundary reason_codes：planner/truth/implement/qa-evidence/release/loop 越界 fixture fail-closed（AC-130 / TC-130）。
+- [ ] TASK-P2-016 `TraceSpine.v1` + `TraceContext.v1` kernel authority：loop start 创建 append-only trace，绑定 BranchContext / decision_packet / intent_snapshot / truth_hash / design_primitives（AC-131–132 / TC-131–132）。
+- [ ] TASK-P2-017 trace completeness hard gate：implement、qa-evidence、release 均验证 trace missing / append failure / hash chain invalid / event-to-evidence 断链（AC-133 / TC-133）。
+- [ ] TASK-P2-018 canonical truth branch hard gate：truth/change/refreeze 只能在 main/master 写入；feature/dev worktree 只能消费 canonical frozen truth（AC-136 / TC-136）。
+- [ ] TASK-P2-019 empty/drift refreeze guard：reason-only、machine-only refreeze 和 revision narrative drift 均 fail-closed（AC-137 / TC-137）。
 
 ## Phase P3 — gate + migration + claude/acp/worktree/implement 真集成（AC-045–046, AC-099–100, AC-077–079, AC-011, AC-087, **AC-101, AC-103**）
 
@@ -51,6 +55,7 @@
 - [ ] TASK-P3-013 qa-evidence confidence_chain + business FSM coverage + defect repair regression chain（AC-121–122）。
 - [ ] TASK-P3-014 non-behavior evidence rejection + release human gate invariant（AC-123–124）。
 - [ ] TASK-P3-015 branch governance hard gate integration：所有 write/agent/evidence/release harness 消费 `BranchContext.v1`，cwd/root/worktree mismatch 阻断（AC-129 / TC-129）。
+- [ ] TASK-P3-016 stagnation/remediation trace binding：`stagnation-report.v1` 引用 trace event range；`remediation-report.v1` 引用 stagnation report、overlay/eval/rollback evidence 与 human review decision（AC-134–135 / TC-134–135）。
 
 ## Phase P4 — 六能力 harness surface + legacy removal（AC-002–003, AC-059–063, AC-088, AC-091, AC-094, AC-109–110, AC-125）
 
@@ -82,11 +87,17 @@
 - 明确 branch/workspace governance、doctor、router、hooks、metadata、status、archive、debug 保留为 kernel internal module，不作为 v2 host-visible 一等 skill。
 - 实现任务必须证明减负发生在使用者入口和加载路径上，而不是删除证据交付、分支治理或 harness 规范。
 
+## TraceSpine 变更摘要（canonical truth branch）
+
+- 新增 AC-131–137 对应任务：TraceSpine authority、TraceContext binding、trace completeness gate、stagnation/remediation trace binding、canonical truth branch、empty/drift refreeze guard。
+- 明确 v1.6.6 trace/stagnation/remediation 不能以 advisory signal 形式迁移到 v2；v2 必须把 TraceSpine 作为 loop/implement/qa-evidence/release 的共同 kernel authority。
+- 明确需求真相只能在 main/master canonical truth branch 编写、冻结、提交，再由 feature/dev branch 合入消费；feature worktree 不得本地 bump requirement revision。
+
 ## r5 变更摘要（R2 reopen）
 
 - 增补 **AC-101–104**：v1.6 TIG、multi-agent planner review、doctor verify-truth-integrity、P0 完成证据。
 - 新增 **v1.6 Upstream Frozen Inputs** 表；tests/tasks 对齐 behavior-level TC。
-- 历史 truth 状态：R2 draft；R9 已 refreeze 为 skill-surface progressive-disclosure frozen。
+- 历史 truth 状态：R2 draft；R9 已 refreeze 为 skill-surface progressive-disclosure frozen；R10 补 TraceSpine 与 canonical truth branch hard gate。
 
 ## r3 变更摘要
 
