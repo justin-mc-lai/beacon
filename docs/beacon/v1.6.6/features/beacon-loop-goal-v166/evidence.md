@@ -2,7 +2,7 @@
 slug: beacon-loop-goal-v166
 version: v1.6.6
 status: frozen
-revision_id: R2
+revision_id: R3
 language: zh
 truth_ref: docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md
 parser_contract: beacon-feature-package-v2
@@ -25,6 +25,8 @@ parser_contract: beacon-feature-package-v2
 | beacon-gen-implement | support_advisory | fixtures/agent-eval/v161/live/beacon-loop-goal.prompt.txt | linked | implement |
 | beacon-gen-implement | support_advisory | docs/beacon/v1.6.6/execution/implementation-summary-beacon-loop-goal-v166-r2.md | linked | implement |
 | beacon-eval-qa | qa_verdict | .beacon/qa/features/beacon-loop-goal-v166/scorecard.json; .beacon/qa/status.json; .beacon/evidence/auto-test/run-20260715T135541350657/summary.json | passed | qa |
+| beacon-gen-change | requirement_truth | docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md; docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md | R3 review-routing refreeze target | refreeze |
+| beacon-gen-implement | support_advisory | skills/beacon/beacon-loop-goal/SKILL.md; .agents/skills/beacon-loop-goal/SKILL.md; beacon/utils/loop_goal_state.py; tests/test_v166_loop_goal.py; docs/beacon/v1.6.6/execution/implementation-summary-beacon-loop-goal-v166-r3.md | R3 implemented, formal QA still evaluator-owned | implement |
 
 ## Upstream Dependencies
 

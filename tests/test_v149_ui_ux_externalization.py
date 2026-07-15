@@ -15,6 +15,9 @@ runner = CliRunner()
 VERSION = "v1.4.9"
 FEATURE = "ui-ux-externalization-prototype-adapter-and-version-visualization-contract"
 SLUG = "ui-ux-externalization-prototype-adapter-and-version-visualization-contract"
+HISTORICAL_VERSION = "v0.0.12"
+HISTORICAL_FEATURE = "workspace-file-manager-v2"
+HISTORICAL_SLUG = "workspace-file-manager-v2"
 
 
 def _invoke(args: list[str]):
@@ -107,6 +110,47 @@ def _seed_requirement_docs(root: Path, *, design_binding_required: bool = False,
     )
 
 
+def _seed_historical_design_binding_docs(root: Path) -> None:
+    _write(root, "docs/beacon/global-boundaries.md", "# Boundaries\n")
+    _write(root, f"docs/beacon/{HISTORICAL_VERSION}/SUMMARY.md", "# Summary\n")
+    _write(root, f"docs/beacon/{HISTORICAL_VERSION}/execution/index.md", "# Execution\n")
+    _write(root, f"docs/beacon/{HISTORICAL_VERSION}/execution/architecture-blueprint.md", "# Architecture\n")
+    _write(
+        root,
+        f"docs/beacon/{HISTORICAL_VERSION}/prd/{HISTORICAL_SLUG}.md",
+        (
+            "# PRD\n\n"
+            "design_result_binding_required: true\n\n"
+            "## Functional Requirements\n\n"
+            "| FR ID | Related AC | Requirement |\n"
+            "| --- | --- | --- |\n"
+            "| FR-001 | AC-001 | Implement follows an accepted design result before coding the workspace file manager. |\n"
+        ),
+    )
+    _write(
+        root,
+        f"docs/beacon/{HISTORICAL_VERSION}/user-story/{HISTORICAL_SLUG}.md",
+        (
+            "# User Story\n\n"
+            "## Acceptance Criteria\n\n"
+            "| AC ID | Theme | Description |\n"
+            "| --- | --- | --- |\n"
+            "| AC-001 | design-binding | Accepted design result is bound before implementation. |\n"
+        ),
+    )
+    _write(
+        root,
+        f"docs/beacon/{HISTORICAL_VERSION}/qa/test-cases/{HISTORICAL_SLUG}.md",
+        (
+            "# Test Cases\n\n"
+            "## Coverage Matrix\n\n"
+            "| AC ID | TC ID | Layer | Command | Assertion | Evidence Path |\n"
+            "| --- | --- | --- | --- | --- | --- |\n"
+            "| AC-001 | TC-001 | gate | pytest -q | Historical docs line still uses runtime adapter gate. | .beacon/evidence/tc-001.json |\n"
+        ),
+    )
+
+
 def test_v149_prototype_create_should_route_to_ui_ux_dev_not_generate(tmp_path: Path) -> None:
     _seed_requirement_docs(tmp_path)
 
@@ -187,6 +231,92 @@ def test_v149_implement_should_block_when_required_adapter_binding_missing(tmp_p
     assert payload["reason_code"] == "design_result_adapter_binding_missing"
     assert payload["design_truth"]["source_surface"] == "prototype-adapter"
     assert "prototype adapt" in payload["recommended_command"]
+
+
+def test_v166_implement_design_gate_should_use_runtime_for_historical_docs_line(tmp_path: Path, monkeypatch) -> None:
+    implement_module = importlib.import_module("beacon.commands.implement.commands")
+
+    _seed_historical_design_binding_docs(tmp_path)
+    monkeypatch.setattr(implement_module, "resolve_runtime_version", lambda *_args, **_kwargs: "v1.6.6")
+
+    payload = implement_module._implementation_design_truth(
+        tmp_path,
+        version=HISTORICAL_VERSION,
+        feature=HISTORICAL_FEATURE,
+    )
+
+    assert payload["status"] == "missing"
+    assert payload["required"] is True
+    assert payload["reason_code"] == "design_result_adapter_binding_missing"
+    assert payload["mode"] == "design-result-adapter"
+    assert payload["docs_version"] == HISTORICAL_VERSION
+    assert payload["runtime_version"] == "v1.6.6"
+    assert f"--version {HISTORICAL_VERSION}" in payload["recommended_command"]
+
+
+def test_v166_qa_design_gate_should_use_runtime_for_historical_docs_line(tmp_path: Path, monkeypatch) -> None:
+    qa_module = importlib.import_module("beacon.commands.qa")
+
+    _seed_historical_design_binding_docs(tmp_path)
+    monkeypatch.setattr(qa_module, "resolve_runtime_version", lambda *_args, **_kwargs: "v1.6.6")
+
+    verdict = qa_module._qa_design_truth_verdict(
+        tmp_path,
+        version=HISTORICAL_VERSION,
+        feature=HISTORICAL_FEATURE,
+        handoff={
+            "design_truth": {
+                "status": "missing",
+                "source_surface": "prototype-adapter",
+                "mode": "design-result-adapter",
+                "required": True,
+                "refs": {},
+            }
+        },
+    )
+
+    assert verdict["status"] == "blocked"
+    assert verdict["blocked"] is True
+    assert "design_result_adapter_binding_missing" in verdict["reason_codes"]
+    assert verdict["docs_version"] == HISTORICAL_VERSION
+    assert verdict["runtime_version"] == "v1.6.6"
+
+
+def test_v166_prototype_adapt_should_allow_historical_docs_line_when_runtime_supports_adapter(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    prototype_module = importlib.import_module("beacon.commands.prototype")
+
+    _seed_historical_design_binding_docs(tmp_path)
+    monkeypatch.setattr(prototype_module, "resolve_runtime_version", lambda *_args, **_kwargs: "v1.6.6")
+
+    result = _invoke(
+        [
+            "prototype",
+            "adapt",
+            HISTORICAL_FEATURE,
+            "--project",
+            str(tmp_path),
+            "--version",
+            HISTORICAL_VERSION,
+            "--design-result-ref",
+            "docs/ui-ux-dev/workspace-file-manager-v2.md",
+            "--accepted-by",
+            "codex-test",
+            "--summary",
+            "accepted workspace file manager design",
+            "--json",
+        ]
+    )
+
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "ready"
+    assert payload["version"] == HISTORICAL_VERSION
+    assert payload["paths"]["binding_json"] == (
+        f"docs/beacon/{HISTORICAL_VERSION}/prototype-adapter/{HISTORICAL_SLUG}/design-result-binding.json"
+    )
 
 
 def test_v149_qa_should_skip_optional_adapter_binding_when_not_applicable(tmp_path: Path) -> None:

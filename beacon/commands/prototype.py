@@ -32,7 +32,7 @@ from beacon.utils.prototype_utils import (
     write_prototype_bundle,
 )
 from beacon.utils.requirement_deepening import build_requirement_completeness_gate
-from beacon.utils.versioning import resolve_operational_docs_version, resolve_target_version
+from beacon.utils.versioning import resolve_operational_docs_version, resolve_runtime_version, resolve_target_version
 
 app = typer.Typer(name="prototype", help="Adapt accepted UI/UX results into Beacon truth bindings; read legacy wireframe freezes")
 
@@ -347,11 +347,14 @@ def adapt(
     """Bind an accepted external UI/UX result to PRD, user-story, and test-case truth."""
     project_root = Path(project) if project else Path.cwd()
     resolved_version = _resolved_operational_version(project_root, version, "prototype adapt")
-    if not prototype_adapter_only_supported(resolved_version):
+    runtime_version = resolve_runtime_version(project_root, "auto")
+    if not prototype_adapter_only_supported(resolved_version, runtime_version=runtime_version):
         payload = {
             "schema_version": "1.0",
             "feature": feature,
             "version": resolved_version,
+            "docs_version": resolved_version,
+            "runtime_version": runtime_version,
             "status": "blocked",
             "reason_code": "prototype_adapter_not_supported_for_version",
             "message": "prototype adapt is the v1.4.9+ design-result adapter surface; use legacy prototype create for older versions.",
@@ -613,8 +616,11 @@ def status(
     """Show prototype status including stale detection and review readiness."""
     project_root = Path(project) if project else Path.cwd()
     resolved_version = _resolved_operational_version(project_root, version, "prototype status")
-    if prototype_adapter_only_supported(resolved_version):
+    runtime_version = resolve_runtime_version(project_root, "auto")
+    if prototype_adapter_only_supported(resolved_version, runtime_version=runtime_version):
         payload = design_result_adapter_status(project_root, resolved_version, feature)
+        payload["docs_version"] = resolved_version
+        payload["runtime_version"] = runtime_version
         if include_legacy:
             legacy = evaluate_prototype_status(project_root, resolved_version, feature)
             legacy_status = str(legacy.get("status") or "")
