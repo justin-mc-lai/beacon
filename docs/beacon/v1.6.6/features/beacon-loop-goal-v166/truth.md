@@ -2,9 +2,9 @@
 slug: beacon-loop-goal-v166
 version: v1.6.6
 status: frozen
-revision_id: R1
+revision_id: R2
 language: zh
-change_reason: R1 - Cross-harness loop goal orchestrator skill (governor sequencing all Beacon lifecycle)
+change_reason: R2 - Freeze beacon-loop-goal as a public host-visible governor skill and update taxonomy, inventory, counts, and release governance
 canonical_refs:
   truth: docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md
   tests: docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md
@@ -20,9 +20,9 @@ program_ref: docs/beacon/v1.6.6/programs/beacon-loop-meta-remediation-v166/featu
 
 ## Overview
 
-Beacon 现有 36 个 skill，分为 planner(7) / generator(11) / evaluator(5) / governor(13) 四个 harness。每个 skill 在单次调用内有 hard gate 互斥边界——planner 不能 implement，generator 不能自证完成，evaluator 不能改 truth。但用户缺少一个 **跨 harness 编排入口**，能用一个提示词驱动 truth → implement → QA → release 全流程自动运行。
+Beacon v1.6 公开 host-visible skill surface 冻结为 38 个 skill：planner(7) / generator(11) / evaluator(5) / governor(15)。每个 skill 在单次调用内有 hard gate 互斥边界——planner 不能 implement，generator 不能自证完成，evaluator 不能改 truth。但用户缺少一个 **跨 harness 编排入口**，能用一个提示词驱动 truth → implement → QA → release 全流程自动运行。
 
-本 feature 定义 `beacon-loop-goal` **governor 编排 skill**——它不执行任何 harness 职责，只做路由、状态追踪和阶段决策。它通过顺序加载现有 skill（不嵌套），在文件状态上判断阶段转换，支持 auto-decide 模式（release 门永远需要人工确认）。
+本 feature 定义 `beacon-loop-goal` **公开 host-visible governor 编排 skill**——它不执行任何 harness 职责，只做路由、状态追踪和阶段决策。它通过顺序加载其他 37 个公开 skill（不嵌套、不自我编排），在文件状态上判断阶段转换，支持 auto-decide 模式（release 门永远需要人工确认）。
 
 ## User Intent（一行）
 
@@ -45,17 +45,18 @@ Beacon 现有 36 个 skill，分为 planner(7) / generator(11) / evaluator(5) / 
 | UD-LG-003 | 状态传递 | **文件系统状态**（`.beacon/state/loop-goal/`），不依赖 agent 内存 |
 | UD-LG-004 | Auto-decide 白名单 | truth freeze / implement start / QA start 可 auto-decide；**release 永远人工确认** |
 | UD-LG-005 | Error 路由 | 任何阶段失败 → `beacon-gov-debug` → 修复后回到对应阶段 |
+| UD-LG-006 | 发布形态 | `beacon-loop-goal` 是公开 host-visible governor skill；v1.6 taxonomy、agent surface expected list、skill inventory/count、release governance 必须接受它 |
 
 ## Problem Statement
 
-1. 36 个 skill 各自有 hard gate 互斥边界，用户需要手动判断"下一步该调哪个 skill"。
+1. 37 个既有公开 skill 各自有 hard gate 互斥边界，用户需要手动判断"下一步该调哪个 skill"。
 2. v1.6.0 的 `beacon-loop goal`（Node.js）已有编排能力，但与 Python CLI 生态脱节，且 v1.6.5+ 新能力未集成。
 3. 跨 harness 上下文传递依赖 agent 内存，长会话中容易丢失阶段状态。
 4. 没有统一的 stop-when / error-recovery 机制贯穿全流程。
 
 ## Non-Goals
 
-- 替代现有 36 个 skill 的任何一个（编排器只做路由，不做执行）。
+- 替代现有 37 个被编排 skill 的任何一个（编排器只做路由，不做执行）。
 - 嵌套调用子 skill（违反 hard gate 互斥原则）。
 - 跨项目编排（v2 scope）。
 - Subagent 级多 agent 协作（v2 scope）。
@@ -87,9 +88,13 @@ Beacon 现有 36 个 skill，分为 planner(7) / generator(11) / evaluator(5) / 
 ## Affected Surfaces
 
 - `.agents/skills/beacon-loop-goal/SKILL.md` (new): skill 定义 + 决策树 + 状态机
+- `skills/beacon/beacon-loop-goal/SKILL.md` (new): packaged public skill source
+- `beacon/utils/agent_surface.py`: v1.6 taxonomy / agent surface expected list accepts `beacon-loop-goal` as a governor skill
+- `beacon/utils/agent_eval_kit.py`: release/eval inventory counts `beacon-loop-goal` as governor host-visible skill
 - `beacon/utils/loop_goal_state.py` (new): 状态文件读写、阶段转换、stop-when 检查
 - `beacon/commands/status.py`: 新增 `loop-goal` 状态视图
 - `tests/test_v166_loop_goal.py` (new)
+- `tests/test_doctor_agent_surface.py`, `tests/test_v160_skill_harness_taxonomy.py`, `tests/test_v161_agent_eval.py`: public skill packaging and release governance regression coverage
 
 ## Orchestration Model
 
@@ -168,10 +173,11 @@ error_recovery → invoke beacon-gov-debug → 修复后回到对应阶段
 | AC-004 | truth-gate | Truth 阶段完成后，编排器读 `truth.md` frontmatter；`status != frozen` 时停留在 `truth_routing`，不进入 implement |
 | AC-005 | implement-gate | Implement 阶段完成后，编排器检查 pytest exit code；失败时回到 `implement_routing`（repair loop），最多 3 次 |
 | AC-006 | qa-gate | QA 阶段完成后，编排器读 qa verdict；`fail` 时回到 `implement_routing`（repair loop），最多 3 次 |
-| AC-007 | release-human-gate | Release 阶段永远需要人工确认；即使 `auto_decide=true`，`current_stage=release_gate` 时编排器停止等待人工输入 |
+| AC-007 | release-human-gate | Release 阶段永远需要人工确认；即使 `auto_decide=true`，`current_stage=release_gate` 时编排器停在人工输入门 |
 | AC-008 | error-recovery | 任何阶段 `blocked` 时，`current_stage` 转为 `error_recovery`，输出推荐路由 `beacon-gov-debug` |
 | AC-009 | stop-when | 每个阶段转换前检查 `stop_when` 条件；满足时停止并输出 `reason_code=stop_when_satisfied` |
 | AC-010 | skill-routing | 编排器的 SKILL.md 包含完整决策树，agent 可按决策树顺序加载对应 skill |
+| AC-011 | public-skill-release-shape | `beacon-loop-goal` 作为公开 host-visible governor skill 被 v1.6 taxonomy、agent surface expected list、skill inventory/count 和 release governance 接受；公开 skill 总数为 38 |
 
 ## State Model
 
@@ -194,6 +200,7 @@ idle -> governance_precheck -> truth_routing -> implement_routing -> qa_routing 
 | UD-LG-003 | File-system state | accepted |
 | UD-LG-004 | Auto-decide whitelist | accepted |
 | UD-LG-005 | Error recovery via gov-debug | accepted |
+| UD-LG-006 | Public host-visible governor skill release shape | accepted |
 | D-LG-001 | Cross-project orchestration | accepted defer (v2) |
 | D-LG-002 | Subagent orchestration | accepted defer (v2) |
 | D-LG-003 | Probabilistic decisions | rejected |
@@ -201,6 +208,6 @@ idle -> governance_precheck -> truth_routing -> implement_routing -> qa_routing 
 
 ## Downstream Routes
 
-- `beacon-gen-implement`: SKILL.md + state utility + status view + tests.
+- `beacon-gen-implement`: public SKILL.md packaging + state utility + taxonomy/release governance + tests.
 - `beacon-eval-qa`: behavioral TC-LG-* matrix.
 - `beacon-eval-release`: human review gate before release verdict.

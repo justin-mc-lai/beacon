@@ -18,8 +18,11 @@ VALID_STAGES = frozenset({
     "idle",
     "governance_precheck",
     "truth_routing",
+    "review_routing",
     "implement_routing",
     "qa_routing",
+    "qa_deep_routing",
+    "drift_routing",
     "release_gate",
     "done",
     "error_recovery",
@@ -101,10 +104,16 @@ def transition(
     status: str = "enter",
     outputs: dict[str, Any] | None = None,
     stop_when: list[str] | None = None,
+    release_confirmed: bool = False,
 ) -> dict[str, Any]:
     """Transition to a new stage, appending to stage_history.
 
     Validates the target stage and checks stop-when conditions.
+
+    Mechanically enforces the release human gate: leaving ``release_gate`` for
+    ``done`` is refused unless ``release_confirmed=True`` (only
+    :func:`check_release_gate` sets this). This makes UD-LG-004/AC-007 a
+    structural invariant rather than a skill convention.
     """
     root = project_root.expanduser().resolve()
     if to_stage not in VALID_STAGES:
@@ -134,14 +143,21 @@ def transition(
     if stop_when:
         current_stop_when = list(set(current_stop_when + stop_when))
 
-    # Check release human gate
-    if to_stage in RELEASE_HUMAN_GATE_STAGES:
-        auto = state.get("auto_decide", False)
-        overrides = state.get("human_gate_overrides", [])
-        # Release gate ALWAYS requires human confirmation, even with auto_decide
-        # The transition TO release_gate is allowed, but the transition FROM
-        # release_gate to done requires human confirmation.
-        pass  # Transition to release_gate is allowed; check happens on leaving
+    # Mechanical release human gate: release_gate -> done is refused without
+    # explicit human confirmation, regardless of auto_decide.
+    if (
+        to_stage == "done"
+        and state.get("current_stage") in RELEASE_HUMAN_GATE_STAGES
+        and not release_confirmed
+    ):
+        return {
+            "status": "blocked",
+            "reason_code": "release_requires_human_confirmation",
+            "current_stage": state.get("current_stage"),
+            "findings": [
+                {"message": "release gate requires human confirmation before done"}
+            ],
+        }
 
     # Update state
     state["current_stage"] = to_stage
@@ -198,8 +214,14 @@ def check_release_gate(project_root: Path, *, run_id: str, human_confirmed: bool
             "findings": [{"message": "release gate requires human confirmation"}],
         }
 
-    # Human confirmed — allow transition to done
-    return transition(project_root, run_id=run_id, to_stage="done", status="release_confirmed")
+    # Human confirmed — allow transition to done (release_confirmed unlocks the gate)
+    return transition(
+        project_root,
+        run_id=run_id,
+        to_stage="done",
+        status="release_confirmed",
+        release_confirmed=True,
+    )
 
 
 def increment_repair_loop(project_root: Path, *, run_id: str) -> dict[str, Any]:
@@ -256,11 +278,72 @@ def get_skill_for_stage(stage: str) -> str:
     stage_to_skill = {
         "governance_precheck": "CLI:beacon-plan-start",
         "truth_routing": "beacon-gen-truth",
+        "review_routing": "beacon-pln-review",
         "implement_routing": "beacon-gen-implement",
         "qa_routing": "beacon-eval-qa",
+        "qa_deep_routing": "beacon-eval-qa-deep",
+        "drift_routing": "beacon-gen-change",
         "release_gate": "beacon-eval-release",
         "error_recovery": "beacon-gov-debug",
         "done": "",
         "idle": "",
     }
     return stage_to_skill.get(stage, "")
+
+
+def build_status(project_root: Path, *, run_id: str = "") -> dict[str, Any]:
+    """Build a status view of loop-goal runs.
+
+    With ``run_id`` returns that run's detail (current stage, next skill,
+    outputs, repair loop count). Without it lists all runs under
+    ``.beacon/state/loop-goal/`` with a compact summary of each.
+    """
+    root = project_root.expanduser().resolve()
+    if run_id:
+        state = read_state(root, run_id=run_id)
+        if state.get("status") == "blocked":
+            return {
+                "schema_version": "loop-goal-status.v1",
+                "status": "blocked",
+                "reason_code": state.get("reason_code", "state_not_found"),
+                "run_id": run_id,
+            }
+        current_stage = str(state.get("current_stage") or "idle")
+        return {
+            "schema_version": "loop-goal-status.v1",
+            "status": "pass",
+            "run_id": run_id,
+            "feature": state.get("feature"),
+            "version": state.get("version"),
+            "current_stage": current_stage,
+            "next_skill": get_skill_for_stage(current_stage),
+            "auto_decide": state.get("auto_decide"),
+            "repair_loop_count": state.get("repair_loop_count", 0),
+            "outputs": state.get("outputs", {}),
+            "stop_when": state.get("stop_when", []),
+            "stage_history": state.get("stage_history", []),
+        }
+
+    state_dir = _state_dir(root)
+    runs: list[dict[str, Any]] = []
+    if state_dir.is_dir():
+        for path in sorted(state_dir.glob("lg-*.json")):
+            try:
+                data = json.loads(path.read_text(encoding="utf-8"))
+            except (json.JSONDecodeError, OSError):
+                continue
+            current_stage = str(data.get("current_stage") or "idle")
+            runs.append({
+                "run_id": data.get("run_id", path.stem),
+                "feature": data.get("feature"),
+                "version": data.get("version"),
+                "current_stage": current_stage,
+                "next_skill": get_skill_for_stage(current_stage),
+                "repair_loop_count": data.get("repair_loop_count", 0),
+            })
+    return {
+        "schema_version": "loop-goal-status.v1",
+        "status": "pass",
+        "run_count": len(runs),
+        "runs": runs,
+    }

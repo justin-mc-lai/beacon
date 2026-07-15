@@ -1,0 +1,432 @@
+{
+  "schema_version": "1.0",
+  "contract_kind": "beacon_test_contract_index",
+  "version": "v1.6.6",
+  "runtime_line": "v1.6.6",
+  "runtime_release_line": "v1.6.4",
+  "docs_line": "v1.6.6",
+  "feature": "beacon-loop-goal-v166",
+  "feature_slug": "beacon-loop-goal-v166",
+  "feature_line_status": "planning_only",
+  "truth_refs": {
+    "truth": "docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
+    "tests": "docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+    "tasks": "docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tasks.md",
+    "evidence": "docs/beacon/v1.6.6/features/beacon-loop-goal-v166/evidence.md",
+    "ac_matrix": "docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+    "story_state": "docs/beacon/v1.6.6/.machine/user-story/beacon-loop-goal-v166.json"
+  },
+  "source_hashes": {
+    "truth": "sha256:ebeafa26931f7546c7af3c425cd9792468be43c923eebd1aa30db5d111569fe0",
+    "tests": "sha256:b136cc96a5b2634b3e60278ad52e9dd4a975697111964656d189683545f6175d",
+    "tasks": "sha256:d9034f52537648072b3a2a52e7a5bfbbc2a18f796c63d27f3ea2f15955d06951",
+    "evidence": "sha256:3eb15daff4854ba5678eaea9dca6b312422eeaba46699d7734ed08b7eae1463a",
+    "ac_matrix": "sha256:b136cc96a5b2634b3e60278ad52e9dd4a975697111964656d189683545f6175d",
+    "story_state": "sha256:1d2ddf78a40b5acb6d961d694230cb90b30d1d1f822c37adeab5b2fc8d26d31a"
+  },
+  "lanes": {
+    "feature_release_facing": [
+      {
+        "tc_id": "TC-LG-001",
+        "ac_id": "AC-001",
+        "ac_theme": "state-init",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v166_loop_goal.py::test_state_init_creates_file -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "`loop_goal_state.init()` 创建 `.beacon/state/loop-goal/<run_id>.json`，schema 为 `loop-goal-state.v1`，含 run_id/version/feature/utterance/current_stage",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-001/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-LG-002",
+        "ac_id": "AC-002",
+        "ac_theme": "stage-transition",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v166_loop_goal.py::test_stage_transition_appends_history -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "`transition()` 更新 `current_stage` 并追加 `stage_history`，含 `at` 时间戳",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-002/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-LG-003",
+        "ac_id": "AC-003",
+        "ac_theme": "precheck-gate",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v166_loop_goal.py::test_precheck_gate_blocks_unregistered -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Governance precheck blocked 时编排器停止，输出 `reason_code=governance_version_not_registered`",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-003/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-LG-004",
+        "ac_id": "AC-004",
+        "ac_theme": "truth-gate",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v166_loop_goal.py::test_truth_gate_waits_for_frozen -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Truth 阶段后 truth.md status != frozen → 编排器停留在 `truth_routing`，不进入 implement",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-004/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-LG-005",
+        "ac_id": "AC-005",
+        "ac_theme": "implement-gate",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v166_loop_goal.py::test_implement_gate_repair_loop -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Tests fail → 编排器回到 `implement_routing`；最多 3 次 repair loop",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-005/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-LG-006",
+        "ac_id": "AC-006",
+        "ac_theme": "qa-gate",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v166_loop_goal.py::test_qa_gate_repair_loop -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "QA fail → 编排器回到 `implement_routing`；最多 3 次",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-006/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-LG-007",
+        "ac_id": "AC-007",
+        "ac_theme": "release-human-gate",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v166_loop_goal.py::test_release_human_gate_blocks_auto -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "即使 `auto_decide=true`，`release_gate` 阶段编排器停在人工确认门，不能自动通过",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-007/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-LG-008",
+        "ac_id": "AC-008",
+        "ac_theme": "error-recovery",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v166_loop_goal.py::test_error_recovery_routes_debug -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "任何阶段 blocked → `current_stage=error_recovery`，输出推荐路由 `beacon-gov-debug`",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-008/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-LG-009",
+        "ac_id": "AC-009",
+        "ac_theme": "stop-when",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v166_loop_goal.py::test_stop_when_halts_delivery -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "stop_when 条件满足 → 编排器停止，输出 `reason_code=stop_when_satisfied`",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-009/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-LG-010",
+        "ac_id": "AC-010",
+        "ac_theme": "skill-routing",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v166_loop_goal.py::test_skill_routing_decision_tree -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "SKILL.md 包含完整决策树，每个阶段到 skill 的映射正确",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-010/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-LG-011",
+        "ac_id": "AC-011",
+        "ac_theme": "public-skill-release-shape",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_doctor_agent_surface.py::test_verify_agent_surface_v160_should_pass_after_setup tests/test_v160_skill_harness_taxonomy.py::test_v160_skill_package_materialize_should_create_harness_only_package tests/test_v161_agent_eval.py::test_v161_taxonomy_includes_beacon_eval_agent tests/test_v161_agent_eval.py::test_agent_eval_catalog_materialize -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "`beacon-loop-goal` 被 v1.6 taxonomy / agent surface expected list / skill inventory / release governance 计为公开 governor skill，公开 skill 总数为 38",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-011/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      }
+    ],
+    "current_runtime_contract": [],
+    "generated_surface_sync": [],
+    "compatibility_contract": [],
+    "legacy_snapshot": [],
+    "browser_runtime_admission": []
+  },
+  "lane_counts": {
+    "feature_release_facing": 11,
+    "current_runtime_contract": 0,
+    "generated_surface_sync": 0,
+    "compatibility_contract": 0,
+    "legacy_snapshot": 0,
+    "browser_runtime_admission": 0
+  },
+  "canonical_lanes": [
+    "feature_release_facing",
+    "current_runtime_contract",
+    "generated_surface_sync",
+    "compatibility_contract",
+    "legacy_snapshot",
+    "browser_runtime_admission"
+  ],
+  "test_refs": [
+    {
+      "tc_id": "TC-LG-001",
+      "ac_id": "AC-001",
+      "ac_theme": "state-init",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v166_loop_goal.py::test_state_init_creates_file -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`loop_goal_state.init()` 创建 `.beacon/state/loop-goal/<run_id>.json`，schema 为 `loop-goal-state.v1`，含 run_id/version/feature/utterance/current_stage",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-001/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-LG-002",
+      "ac_id": "AC-002",
+      "ac_theme": "stage-transition",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v166_loop_goal.py::test_stage_transition_appends_history -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`transition()` 更新 `current_stage` 并追加 `stage_history`，含 `at` 时间戳",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-002/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-LG-003",
+      "ac_id": "AC-003",
+      "ac_theme": "precheck-gate",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v166_loop_goal.py::test_precheck_gate_blocks_unregistered -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Governance precheck blocked 时编排器停止，输出 `reason_code=governance_version_not_registered`",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-003/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-LG-004",
+      "ac_id": "AC-004",
+      "ac_theme": "truth-gate",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v166_loop_goal.py::test_truth_gate_waits_for_frozen -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Truth 阶段后 truth.md status != frozen → 编排器停留在 `truth_routing`，不进入 implement",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-004/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-LG-005",
+      "ac_id": "AC-005",
+      "ac_theme": "implement-gate",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v166_loop_goal.py::test_implement_gate_repair_loop -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Tests fail → 编排器回到 `implement_routing`；最多 3 次 repair loop",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-005/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-LG-006",
+      "ac_id": "AC-006",
+      "ac_theme": "qa-gate",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v166_loop_goal.py::test_qa_gate_repair_loop -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "QA fail → 编排器回到 `implement_routing`；最多 3 次",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-006/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-LG-007",
+      "ac_id": "AC-007",
+      "ac_theme": "release-human-gate",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v166_loop_goal.py::test_release_human_gate_blocks_auto -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "即使 `auto_decide=true`，`release_gate` 阶段编排器停在人工确认门，不能自动通过",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-007/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-LG-008",
+      "ac_id": "AC-008",
+      "ac_theme": "error-recovery",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v166_loop_goal.py::test_error_recovery_routes_debug -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "任何阶段 blocked → `current_stage=error_recovery`，输出推荐路由 `beacon-gov-debug`",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-008/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-LG-009",
+      "ac_id": "AC-009",
+      "ac_theme": "stop-when",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v166_loop_goal.py::test_stop_when_halts_delivery -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "stop_when 条件满足 → 编排器停止，输出 `reason_code=stop_when_satisfied`",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-009/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-LG-010",
+      "ac_id": "AC-010",
+      "ac_theme": "skill-routing",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v166_loop_goal.py::test_skill_routing_decision_tree -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "SKILL.md 包含完整决策树，每个阶段到 skill 的映射正确",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-010/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-LG-011",
+      "ac_id": "AC-011",
+      "ac_theme": "public-skill-release-shape",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_doctor_agent_surface.py::test_verify_agent_surface_v160_should_pass_after_setup tests/test_v160_skill_harness_taxonomy.py::test_v160_skill_package_materialize_should_create_harness_only_package tests/test_v161_agent_eval.py::test_v161_taxonomy_includes_beacon_eval_agent tests/test_v161_agent_eval.py::test_agent_eval_catalog_materialize -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`beacon-loop-goal` 被 v1.6 taxonomy / agent surface expected list / skill inventory / release governance 计为公开 governor skill，公开 skill 总数为 38",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-011/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    }
+  ],
+  "ac_to_test_refs": {
+    "AC-001": [
+      "TC-LG-001"
+    ],
+    "AC-002": [
+      "TC-LG-002"
+    ],
+    "AC-003": [
+      "TC-LG-003"
+    ],
+    "AC-004": [
+      "TC-LG-004"
+    ],
+    "AC-005": [
+      "TC-LG-005"
+    ],
+    "AC-006": [
+      "TC-LG-006"
+    ],
+    "AC-007": [
+      "TC-LG-007"
+    ],
+    "AC-008": [
+      "TC-LG-008"
+    ],
+    "AC-009": [
+      "TC-LG-009"
+    ],
+    "AC-010": [
+      "TC-LG-010"
+    ],
+    "AC-011": [
+      "TC-LG-011"
+    ]
+  },
+  "qa_order_contract": {
+    "sequence": [
+      "user_story_ac_order",
+      "scenario_divergence",
+      "current_round_execution",
+      "evidence_pack",
+      "coverage_current_gap",
+      "continue_decision",
+      "severe_blocker_stop_for_repair",
+      "repair_handoff",
+      "beacon_help_resume",
+      "next_qa_round_test_case_backfill",
+      "release_guidance"
+    ],
+    "source": "skills/beacon/references/usage-rules.md"
+  },
+  "deep_delta_policy": {
+    "owner": "deep",
+    "adoption_route": "test-case_or_supplemental_qa",
+    "executes_qa": false
+  },
+  "planning_line_safety": {
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "runtime_line": "v1.6.4",
+    "docs_default_line": "v1.6.4",
+    "current_runtime_release_line": "v1.6.4",
+    "feature_line_status": "planning_only"
+  },
+  "status": "pass",
+  "blocked": false,
+  "reason_codes": [],
+  "generated_at": "2026-07-15T06:08:45.489230+00:00",
+  "index_path": "docs/beacon/v1.6.6/.machine/testing/test-contract-index.json"
+}

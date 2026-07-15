@@ -692,7 +692,10 @@ def hook_should_deny_write(
     target_path: Path | str,
     cwd: Path | str | None = None,
 ) -> tuple[bool, str]:
-    root = project_root.expanduser().resolve()
+    # Resolve any linked worktree checkout back to the primary repo root so the
+    # admission artifacts (always written under the primary .beacon) are found
+    # regardless of whether the gate was invoked from main or a worktree.
+    root = resolve_workspace_project_root(Path(project_root).expanduser().resolve())
     target = Path(target_path).expanduser()
     if not target.is_absolute():
         target = (Path(cwd or root) / target).resolve()
@@ -711,11 +714,16 @@ def hook_should_deny_write(
     if not required_versions:
         return False, ""
 
+    # Scan every admission-requiring version (not just the earliest). A write is
+    # allowed as soon as the target lands inside any validly-admitted worktree;
+    # a version whose lane does not contain the target must NOT short-circuit the
+    # scan. Only when no admitted lane matches do we deny.
+    invalid_reason = ""
     for version in required_versions:
         contract = load_admission_contract(root, version=version)
         admission_root = root / ".beacon/state/workspace-admission" / version
         if not admission_root.is_dir():
-            return True, "workspace_admission_missing"
+            continue
         for artifact_file in sorted(admission_root.glob("*.json")):
             artifact = read_admission_artifact(artifact_file)
             if not artifact:
@@ -725,7 +733,7 @@ def hook_should_deny_write(
                 root,
                 version=version,
                 feature=feature,
-                cwd=cwd or root,
+                cwd=None,
                 contract=contract,
             )
             worktree_path = str(validation.get("worktree_path") or artifact.get("worktree_path") or "")
@@ -737,6 +745,8 @@ def hook_should_deny_write(
                 continue
             if validation.get("valid"):
                 return False, ""
-            return True, str(validation.get("reason_code") or "workspace_admission_invalid")
-        return True, "workspace_admission_missing"
-    return False, ""
+            if not invalid_reason:
+                invalid_reason = str(validation.get("reason_code") or "workspace_admission_invalid")
+    if invalid_reason:
+        return True, invalid_reason
+    return True, "workspace_admission_missing"

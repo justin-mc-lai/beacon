@@ -195,6 +195,9 @@ class TestSkillRouting:
         skill_path = Path(__file__).parent.parent / ".agents" / "skills" / "beacon-loop-goal" / "SKILL.md"
         assert skill_path.is_file()
         content = skill_path.read_text(encoding="utf-8")
+        assert "name: beacon-loop-goal" in content
+        assert "Beacon v1.6.0 共享 Preamble" in content
+        assert "你正在运行 governor skill" in content
         assert "governance_precheck" in content
         assert "truth_routing" in content
         assert "implement_routing" in content
@@ -207,3 +210,43 @@ class TestSkillRouting:
         assert "beacon-eval-release" in content
         assert "beacon-gov-debug" in content
         assert "HUMAN GATE" in content or "human_gate" in content.lower()
+
+
+def test_state_init_creates_file(goal_project: Path):
+    TestStateInit().test_state_init_creates_file(goal_project)
+
+
+def test_stage_transition_appends_history(goal_project: Path):
+    TestStageTransition().test_stage_transition_appends_history(goal_project)
+
+
+def test_precheck_gate_blocks_unregistered(goal_project: Path):
+    TestPrecheckGate().test_precheck_gate_blocks_unregistered(goal_project)
+
+
+def test_truth_gate_waits_for_frozen(goal_project: Path):
+    TestTruthGate().test_truth_gate_waits_for_frozen(goal_project)
+
+
+def test_implement_gate_repair_loop(goal_project: Path):
+    TestImplementGate().test_implement_gate_repair_loop(goal_project)
+
+
+def test_qa_gate_repair_loop(goal_project: Path):
+    TestQAGate().test_qa_gate_repair_loop(goal_project)
+
+
+def test_release_human_gate_blocks_auto(goal_project: Path):
+    TestReleaseHumanGate().test_release_human_gate_blocks_auto(goal_project)
+
+
+def test_error_recovery_routes_debug(goal_project: Path):
+    TestErrorRecovery().test_error_recovery_routes_debug(goal_project)
+
+
+def test_stop_when_halts_delivery(goal_project: Path):
+    TestStopWhen().test_stop_when_halts_delivery(goal_project)
+
+
+def test_skill_routing_decision_tree():
+    TestSkillRouting().test_skill_routing_decision_tree()

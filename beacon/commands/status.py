@@ -814,5 +814,37 @@ def loop_budget(
     raise typer.Exit(code=0)
 
 
+@app.command("loop-goal")
+def loop_goal(
+    project_root: str = typer.Option("", "--project-root", help="Project root path"),
+    run_id: str = typer.Option("", "--run-id", help="Loop-goal run id; omit to list all runs"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Show loop-goal orchestrator run status (current stage, next skill, outputs)."""
+    from beacon.utils.loop_goal_state import build_status
+
+    root = (Path(project_root) if project_root else Path.cwd()).expanduser().resolve()
+    payload = build_status(root, run_id=run_id or "")
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo("Beacon Loop Goal")
+        typer.echo(f"status: {payload.get('status')}")
+        if payload.get("run_id"):
+            typer.echo(f"run_id: {payload.get('run_id')}")
+            typer.echo(f"feature: {payload.get('feature')}")
+            typer.echo(f"current_stage: {payload.get('current_stage')}")
+            typer.echo(f"next_skill: {payload.get('next_skill') or 'none'}")
+            typer.echo(f"repair_loop_count: {payload.get('repair_loop_count')}")
+        else:
+            typer.echo(f"run_count: {payload.get('run_count', 0)}")
+            for run in payload.get("runs", []):
+                typer.echo(
+                    f"  {run.get('run_id')} [{run.get('feature')}] "
+                    f"stage={run.get('current_stage')} next={run.get('next_skill') or 'none'}"
+                )
+    raise typer.Exit(code=0)
+
+
 if __name__ == "__main__":
     app()

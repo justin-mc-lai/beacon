@@ -416,6 +416,50 @@ def test_write_coverage_summary_should_recompute_from_live_qa9_evidence(tmp_path
     assert payload["details"]["executed_tc"] == 1
 
 
+def test_write_coverage_summary_should_count_feature_package_story_without_legacy_story_docs(tmp_path: Path, monkeypatch):
+    version = "v1.6.6"
+    feature = "package-feature"
+    monkeypatch.setenv("BEACON_VERSION", version)
+    package_dir = tmp_path / "docs" / "beacon" / version / "features" / feature
+    qa_feature_dir = tmp_path / ".beacon" / "qa" / "features" / feature
+    package_dir.mkdir(parents=True, exist_ok=True)
+    qa_feature_dir.mkdir(parents=True, exist_ok=True)
+    (tmp_path / ".beacon" / "qa").mkdir(parents=True, exist_ok=True)
+
+    (package_dir / "truth.md").write_text("---\nstatus: frozen\n---\n# Truth\n", encoding="utf-8")
+    (tmp_path / ".beacon" / "qa" / "status.json").write_text(
+        json.dumps({"version": version, "feature": feature, "status": "passed", "release_ready": True}),
+        encoding="utf-8",
+    )
+    (qa_feature_dir / "scorecard.json").write_text(
+        json.dumps(
+            {
+                "feature": feature,
+                "feature_slug": feature,
+                "release_ready": True,
+                "continue_decision": "ready_for_release",
+                "unresolved_closure_outcomes": [],
+                "ac_total": 2,
+                "ac_accepted": 2,
+                "coverage_current": {
+                    "required_scenarios": 2,
+                    "executed_scenarios": 2,
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    summary_path = write_coverage_summary(tmp_path, version=version, run_id="run-feature-package")
+    payload = json.loads(summary_path.read_text(encoding="utf-8"))
+
+    assert payload["coverage_rate"] == 1.0
+    assert payload["full_coverage"] is True
+    assert payload["details"]["planned_story"] == 1
+    assert payload["details"]["implemented_story"] == 1
+    assert payload["details"]["source"] == "feature_qa_scorecard"
+
+
 def test_gate_should_prefer_release_ready_feature_scorecard_aggregate_for_version_coverage(tmp_path: Path, monkeypatch):
     version = "v1.3.9"
     monkeypatch.setenv("BEACON_VERSION", version)

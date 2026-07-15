@@ -1,0 +1,223 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-14T07:08:25.776057+00:00",
+  "feature": "beacon-loop-stagnation-detector-v166",
+  "feature_slug": "beacon-loop-stagnation-detector-v166",
+  "version": "v1.6.6",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.6/features/beacon-loop-stagnation-detector-v166/truth.md",
+    "tests": "docs/beacon/v1.6.6/features/beacon-loop-stagnation-detector-v166/tests.md",
+    "tasks": "docs/beacon/v1.6.6/features/beacon-loop-stagnation-detector-v166/tasks.md",
+    "evidence": "docs/beacon/v1.6.6/features/beacon-loop-stagnation-detector-v166/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "21f408c38e9d1c692e5d3b85596fe96d33ec6a5d4c883806e8bd3c5729c8b3ba",
+    "tests": "53134f7e6ce835c6dc7e7c2b42ee6523ba8ac3236179595e73a19b33d6509399",
+    "tasks": "d9e9735ff0e4e90bac395ec64ba024e5b0913d7e971563b64d8b5fbff3c55973",
+    "evidence": "53eaf548d4a5c078de558807b51a736754700be7c247e69c6f432716b89eace1"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-loop-stagnation-detector-v166",
+    "version": "v1.6.6",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "R1 - Deterministic stagnation detection over agent trace (program Phase 2)",
+    "canonical_refs": {
+      "truth": "docs/beacon/v1.6.6/features/beacon-loop-stagnation-detector-v166/truth.md",
+      "tests": "docs/beacon/v1.6.6/features/beacon-loop-stagnation-detector-v166/tests.md",
+      "tasks": "docs/beacon/v1.6.6/features/beacon-loop-stagnation-detector-v166/tasks.md",
+      "evidence": "docs/beacon/v1.6.6/features/beacon-loop-stagnation-detector-v166/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "program_ref": "docs/beacon/v1.6.6/programs/beacon-loop-meta-remediation-v166/feature-graph.json"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "repeat-failure",
+      "description": "给定包含 3+ 相同 `reason_code` 的 failure trace，detector 返回 `stagnation_type=repeat_failure` finding"
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "repeat-labor",
+      "description": "给定包含 3+ 相同 `(feature_slug, summary_prefix)` 的 iteration trace，detector 返回 `stagnation_type=repeat_labor` finding"
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "plateau",
+      "description": "给定 3+ 连续 output 事件（iteration 递增、reason_code 空、summary 相似），detector 返回 `stagnation_type=plateau` finding"
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "clean-trace",
+      "description": "给定无停滞模式的 trace，detector 返回 `status=clean`，findings 为空"
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "upstream-correlation",
+      "description": "Finding 包含 `pattern_ref` 和 `failure_ref` 字段，交叉 pattern registry 和 failure catalog"
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "determinism",
+      "description": "同一 trace + 同一参数 → 同一 report（无随机、无时间依赖）"
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "doctor-signal",
+      "description": "`beacon doctor loop-audit --json` 包含 `stagnation_detection` signal"
+    },
+    {
+      "ac_id": "AC-008",
+      "theme": "report-schema",
+      "description": "Report 输出符合 `stagnation-report.v1` schema"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-ST-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v166_stagnation_detector.py::test_repeat_failure_detected -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "3+ identical reason_code failures in window → `stagnation_type=repeat_failure` finding",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-ST-002",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v166_stagnation_detector.py::test_repeat_labor_detected -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "3+ same (feature_slug, summary_prefix) iterations → `stagnation_type=repeat_labor` finding",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-ST-003",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v166_stagnation_detector.py::test_plateau_detected -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "3+ output events with incrementing iteration, empty reason_code, similar summary → `stagnation_type=plateau` finding",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-ST-004",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v166_stagnation_detector.py::test_clean_trace_no_findings -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Diverse trace → `status=clean`, findings empty",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-ST-005",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_v166_stagnation_detector.py::test_upstream_correlation_in_finding -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Finding includes `pattern_ref` and `failure_ref` from upstream",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-ST-006",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v166_stagnation_detector.py::test_determinism_same_input_same_output -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Two calls with same trace + params → identical report",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-007",
+      "tc_id": "TC-ST-007",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_v166_stagnation_detector.py::test_doctor_loop_audit_stagnation_signal -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "`doctor loop-audit --json` output contains `stagnation_detection` signal",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-008",
+      "tc_id": "TC-ST-008",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v166_stagnation_detector.py::test_report_schema_valid -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Report matches `stagnation-report.v1` schema",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "truth → `beacon-gen-truth` — freeze truth.md + tests.md + tasks.md + evidence.md",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "implement → `beacon-gen-implement` — create `beacon/utils/stagnation_detector.py` with detect_repeat_failure, detect_repeat_labor, detect_plateau, build_stagnation_report",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "implement → `beacon-gen-implement` — integrate stagnation signal into `build_loop_readiness_audit()` loop-audit",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "implement → `beacon-gen-implement` — create `tests/test_v166_stagnation_detector.py` with 9 test cases",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "qa → `beacon-eval-qa` — 9/9 tests pass, 8/8 AC verified",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "release → `beacon-eval-release` — update SUMMARY.md delivery status, release note",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-gen-truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.6/features/beacon-loop-stagnation-detector-v166/truth.md",
+      "status": "indexed",
+      "route": "truth"
+    },
+    {
+      "surface": "beacon-gen-truth",
+      "authority": "test_truth",
+      "canonical_artifact": "docs/beacon/v1.6.6/features/beacon-loop-stagnation-detector-v166/tests.md",
+      "status": "indexed",
+      "route": "truth"
+    },
+    {
+      "surface": "beacon-pln-review",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.6/programs/beacon-loop-meta-remediation-v166/planner-review.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "beacon-gen-implement",
+      "authority": "support_advisory",
+      "canonical_artifact": "beacon/utils/stagnation_detector.py",
+      "status": "pending",
+      "route": "implement"
+    },
+    {
+      "surface": "beacon-eval-qa",
+      "authority": "qa_verdict",
+      "canonical_artifact": ".beacon/qa/*.stagnation-detector*.json",
+      "status": "pending",
+      "route": "qa"
+    }
+  ]
+}

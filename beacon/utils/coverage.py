@@ -121,6 +121,11 @@ def _feature_scorecard_coverage_metrics(
     unresolved = [str(item).strip() for item in (scorecard.get("unresolved_closure_outcomes") or []) if str(item).strip()]
     if unresolved:
         return None
+    if planned_story <= 0 and feature_key:
+        feature_package_truth = project_root / "docs" / "beacon" / version / "features" / feature_key / "truth.md"
+        if feature_package_truth.exists():
+            planned_story = 1
+            implemented_story = 1
 
     coverage_current = scorecard.get("coverage_current") if isinstance(scorecard.get("coverage_current"), dict) else {}
     total_ac = int(scorecard.get("ac_total") or 0)

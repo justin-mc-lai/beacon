@@ -94,8 +94,8 @@ def test_live_orchestration_happy_path():
 
 
 def test_surface_only_does_not_inflate_behavior_evidence():
-    assert surface_only_inflates_behavior_evidence(surface_pass_count=37, host_pass_count=0, matrix_total=37) is True
-    assert surface_only_inflates_behavior_evidence(surface_pass_count=37, host_pass_count=37, matrix_total=37) is False
+    assert surface_only_inflates_behavior_evidence(surface_pass_count=38, host_pass_count=0, matrix_total=38) is True
+    assert surface_only_inflates_behavior_evidence(surface_pass_count=38, host_pass_count=38, matrix_total=38) is False
 
 
 @pytest.mark.parametrize(

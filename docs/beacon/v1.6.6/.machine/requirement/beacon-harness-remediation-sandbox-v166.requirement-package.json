@@ -1,0 +1,223 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-14T07:08:26.683773+00:00",
+  "feature": "beacon-harness-remediation-sandbox-v166",
+  "feature_slug": "beacon-harness-remediation-sandbox-v166",
+  "version": "v1.6.6",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.6/features/beacon-harness-remediation-sandbox-v166/truth.md",
+    "tests": "docs/beacon/v1.6.6/features/beacon-harness-remediation-sandbox-v166/tests.md",
+    "tasks": "docs/beacon/v1.6.6/features/beacon-harness-remediation-sandbox-v166/tasks.md",
+    "evidence": "docs/beacon/v1.6.6/features/beacon-harness-remediation-sandbox-v166/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "62c79b825cbd2437143f19edbdfc9d5da09de41315bfdf2a0e803950d9bcd36a",
+    "tests": "11b79ef2dac7be92d6736bcc71b483c83f9c58ebd33e4b1f9f1bed5a5b21be7a",
+    "tasks": "773ff8bd6b82c5752b17fca321ba3913ae2e2ffc8e13b0f0a328ae80d5cd49e7",
+    "evidence": "d0eda4e458e028e1eabd60fbbbacde7f219cb655fb536e330c8991772bfe002d"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-harness-remediation-sandbox-v166",
+    "version": "v1.6.6",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "R1 - Runtime overlay remediation sandbox with eval and auto-rollback (program Phase 3)",
+    "canonical_refs": {
+      "truth": "docs/beacon/v1.6.6/features/beacon-harness-remediation-sandbox-v166/truth.md",
+      "tests": "docs/beacon/v1.6.6/features/beacon-harness-remediation-sandbox-v166/tests.md",
+      "tasks": "docs/beacon/v1.6.6/features/beacon-harness-remediation-sandbox-v166/tasks.md",
+      "evidence": "docs/beacon/v1.6.6/features/beacon-harness-remediation-sandbox-v166/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "program_ref": "docs/beacon/v1.6.6/programs/beacon-loop-meta-remediation-v166/feature-graph.json"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "sandbox-create",
+      "description": "`create_sandbox` 在 governed worktree 内创建隔离目录，返回 sandbox_path"
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "overlay-apply",
+      "description": "`apply_overlay` 写入 runtime patch 到 sandbox 目录，不修改 canonical skill"
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "eval-pass",
+      "description": "给定有效 overlay，eval 返回 `status=remediated` 且所有 eval checks pass"
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "eval-fail-rollback",
+      "description": "给定无效 overlay，eval 返回 `status=rollback`，sandbox 恢复到 pre-overlay 状态"
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "no-truth-write",
+      "description": "Overlay 执行后 canonical truth 文件未被修改"
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "stagnation-consumed",
+      "description": "Sandbox 消费 Phase 2 stagnation report 作为输入 trigger"
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "report-schema",
+      "description": "Remediation report 符合 `remediation-report.v1` schema"
+    },
+    {
+      "ac_id": "AC-008",
+      "theme": "human-review",
+      "description": "Eval pass → `human_review_required=true`，不自动进入 release"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-RM-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v166_remediation_sandbox.py::test_create_sandbox_returns_path -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "`create_sandbox` creates isolated directory under governed worktree",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-RM-002",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v166_remediation_sandbox.py::test_apply_overlay_writes_patch -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "`apply_overlay` writes runtime patch to sandbox without touching canonical skill",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-RM-003",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v166_remediation_sandbox.py::test_eval_pass_returns_remediated -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Valid overlay eval returns `status=remediated` with all eval checks passing",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-RM-004",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v166_remediation_sandbox.py::test_eval_fail_triggers_rollback -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Failed eval triggers rollback and returns `status=rollback`",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-RM-005",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v166_remediation_sandbox.py::test_no_truth_write_during_overlay -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Overlay execution does not modify canonical truth files",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-RM-006",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_v166_remediation_sandbox.py::test_sandbox_consumes_stagnation_report -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Sandbox accepts Phase 2 stagnation report as trigger input",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-007",
+      "tc_id": "TC-RM-007",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v166_remediation_sandbox.py::test_remediation_report_schema -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Report matches `remediation-report.v1` schema",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-008",
+      "tc_id": "TC-RM-008",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v166_remediation_sandbox.py::test_human_review_required_on_pass -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Eval pass sets `human_review_required=true`",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "truth → `beacon-gen-truth` — freeze truth.md + tests.md + tasks.md + evidence.md",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "implement → `beacon-gen-implement` — create `beacon/utils/remediation_sandbox.py` with create_sandbox, apply_overlay, eval_overlay, rollback_overlay, build_remediation_report",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "implement → `beacon-gen-implement` — integrate remediation signal into `build_loop_readiness_audit()` loop-audit",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "implement → `beacon-gen-implement` — create `tests/test_v166_remediation_sandbox.py` with 8 test cases",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "qa → `beacon-eval-qa` — 8/8 tests pass, 8/8 AC verified",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "release → `beacon-eval-release` — update SUMMARY.md delivery status, release note",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-gen-truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.6/features/beacon-harness-remediation-sandbox-v166/truth.md",
+      "status": "indexed",
+      "route": "truth"
+    },
+    {
+      "surface": "beacon-gen-truth",
+      "authority": "test_truth",
+      "canonical_artifact": "docs/beacon/v1.6.6/features/beacon-harness-remediation-sandbox-v166/tests.md",
+      "status": "indexed",
+      "route": "truth"
+    },
+    {
+      "surface": "beacon-pln-review",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.6/programs/beacon-loop-meta-remediation-v166/planner-review.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "beacon-gen-implement",
+      "authority": "support_advisory",
+      "canonical_artifact": "beacon/utils/remediation_sandbox.py",
+      "status": "pending",
+      "route": "implement"
+    },
+    {
+      "surface": "beacon-eval-qa",
+      "authority": "qa_verdict",
+      "canonical_artifact": ".beacon/qa/*.remediation-sandbox*.json",
+      "status": "pending",
+      "route": "qa"
+    }
+  ]
+}

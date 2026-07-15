@@ -160,6 +160,8 @@ def _live_execution_mode_for_entry(
 
 
 def _harness_short_from_skill_id(skill_id: str) -> str:
+    if skill_id == "beacon-loop-goal":
+        return "gov"
     parts = skill_id.split("-")
     if len(parts) < 3 or parts[0] != "beacon":
         return ""
