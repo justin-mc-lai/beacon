@@ -2,7 +2,7 @@
 slug: beacon-loop-goal-v166
 version: v1.6.6
 status: frozen
-revision_id: R3
+revision_id: R4
 language: zh
 truth_ref: docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md
 parser_contract: beacon-feature-package-v2
@@ -27,6 +27,8 @@ parser_contract: beacon-feature-package-v2
 | beacon-eval-qa | qa_verdict | .beacon/qa/features/beacon-loop-goal-v166/scorecard.json; .beacon/qa/status.json; .beacon/evidence/auto-test/run-20260715T135541350657/summary.json | passed | qa |
 | beacon-gen-change | requirement_truth | docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md; docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md | R3 review-routing refreeze target | refreeze |
 | beacon-gen-implement | support_advisory | skills/beacon/beacon-loop-goal/SKILL.md; .agents/skills/beacon-loop-goal/SKILL.md; beacon/utils/loop_goal_state.py; tests/test_v166_loop_goal.py; docs/beacon/v1.6.6/execution/implementation-summary-beacon-loop-goal-v166-r3.md | R3 implemented, formal QA still evaluator-owned | implement |
+| beacon-pln-review | support_advisory | .beacon/state/planner-review/beacon-loop-goal-v166/pln-review-20260715t122003z.json | R4 accepted for change | change |
+| beacon-gen-change | requirement_truth | docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md; docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md; docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tasks.md; docs/beacon/v1.6.6/features/beacon-loop-goal-v166/evidence.md | R4 standard execution flow refreeze target | refreeze |
 
 ## Upstream Dependencies
 
@@ -52,3 +54,11 @@ parser_contract: beacon-feature-package-v2
 | Generator | 11 | beacon-gen-truth, beacon-gen-truth-init, beacon-gen-change, beacon-gen-refreeze, beacon-gen-implement, beacon-gen-prototype, beacon-gen-design, beacon-gen-design-explore, beacon-gen-design-init, beacon-gen-design-polish, beacon-gen-design-system |
 | Evaluator | 5 | beacon-eval-agent, beacon-eval-qa, beacon-eval-qa-deep, beacon-eval-real-project, beacon-eval-release |
 | Governor | 15 | beacon-gov-router, beacon-gov-status, beacon-gov-help, beacon-gov-doctor, beacon-gov-debug, beacon-gov-archive, beacon-gov-automation, beacon-gov-branch, beacon-gov-extract, beacon-gov-hooks, beacon-gov-learn, beacon-gov-library, beacon-gov-lighthouse, beacon-gov-metadata, beacon-loop-goal |
+
+## R4 Standard Execution Flow Evidence
+
+- Planner review runtime: `.beacon/state/planner-review/beacon-loop-goal-v166/pln-review-20260715t122003z.json`
+- Highest severity: `P1`
+- Recommended route: `beacon-gen-change`
+- User decision: accepted to write Standard Execution Flow into v1.6.6 canonical package surfaces, then refreeze.
+- Scope: loop-goal must fail closed before implement unless canonical refreeze is committed, feature worktree has reconciled/stashed stale local refreeze, canonical baseline commit is merged, verification bundle is complete, and workspace admission passes.

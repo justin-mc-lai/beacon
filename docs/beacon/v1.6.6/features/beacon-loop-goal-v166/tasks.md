@@ -2,7 +2,7 @@
 slug: beacon-loop-goal-v166
 version: v1.6.6
 status: frozen
-revision_id: R3
+revision_id: R4
 language: zh
 truth_ref: docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md
 parser_contract: beacon-feature-package-v2
@@ -25,3 +25,9 @@ parser_contract: beacon-feature-package-v2
 - [x] TASK-009 implement → `beacon-gen-implement` — add `review_routing` to public SKILL.md state machine, decision tree, and routing matrix
 - [x] TASK-010 implement → `beacon-gen-implement` — add loop-goal review decision packet output recording in `loop_goal_state.py`
 - [x] TASK-011 implement → `beacon-gen-implement` — add pytest coverage for AC-012..014
+- [x] TASK-012 change → `beacon-gen-change` — R4 refreeze Standard Execution Flow admission contract into package truth/tests/tasks/evidence (AC-015..021)
+- [ ] TASK-013 implement → `beacon-gen-implement` — add `standard_execution_precheck` to public and packaged `beacon-loop-goal` SKILL.md state machine, decision tree, and routing matrix
+- [ ] TASK-014 implement → `beacon-gen-implement` — extend `loop_goal_state.py` with standard execution flow outputs: baseline commit, quarantine ref, verification bundle ref, workspace admission ref
+- [ ] TASK-015 implement → `beacon-gen-implement` — implement deterministic precheck helpers for canonical refreeze committed, stale feature-local refreeze quarantine, truth baseline merged, verification bundle completeness, workspace admission pass, and idempotent resume
+- [ ] TASK-016 implement → `beacon-gen-implement` — add pytest coverage for TC-LG-015..021
+- [ ] TASK-017 qa → `beacon-eval-qa` — run behavioral QA for AC-015..021 after implementation; formal verdict remains evaluator-owned

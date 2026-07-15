@@ -2,9 +2,9 @@
 slug: beacon-loop-goal-v166
 version: v1.6.6
 status: frozen
-revision_id: R3
+revision_id: R4
 language: zh
-change_reason: R3 - Promote review_routing into public skill decision tree and loop-goal state decision packet contract
+change_reason: R4 - Add Standard Execution Flow admission contract before loop-goal may route to implement
 canonical_refs:
   truth: docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md
   tests: docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md
@@ -54,6 +54,7 @@ Beacon v1.6 公开 host-visible skill surface 冻结为 38 个 skill：planner(7
 3. 跨 harness 上下文传递依赖 agent 内存，长会话中容易丢失阶段状态。
 4. 没有统一的 stop-when / error-recovery 机制贯穿全流程。
 5. R2 truth 和 `loop_goal_state.py` 已出现 `review_routing`，但 public SKILL.md 决策树和 state outputs 未把 `beacon-pln-review` 的 decision packet 正式纳入 loop-goal 生命周期决策，导致 review artifact 只能人工转译。
+6. R3 已能消费 planner-review decision packet，但仍缺少 canonical truth branch commit、feature-local stale refreeze quarantine、merge-main verification bundle 和 workspace admission 这组标准执行流硬门；因此 review 通过后仍可能从未提交/未合入/本地漂移的 truth baseline 直接进入 implement。
 
 ## Non-Goals
 
@@ -77,6 +78,7 @@ Beacon v1.6 公开 host-visible skill surface 冻结为 38 个 skill：planner(7
 | Stop-when 检查 | 每个阶段转换前检查 stop 条件 |
 | Governance precheck | 启动前验证版本在 governance 中注册（消费 v1.6.6 governance_precheck） |
 | Planner review decision packet | truth freeze 后、implement 前可进入 `review_routing`；读取 `beacon-pln-review` artifact 的 `review_id`、`recommended_route`、`user_decision_required`、highest severity、finding count、artifact ref，并写入 `.beacon/state/loop-goal/<run_id>.json` |
+| Standard Execution Flow admission | review 允许进入 implement 前，必须验证 canonical truth/refreeze 已提交、feature worktree 已合入 baseline、stale feature-local refreeze 已 quarantine、verification bundle 完整、workspace admission pass |
 
 ## Phased Backlog（显式不在本包 closure 的范围）
 
@@ -91,9 +93,11 @@ Beacon v1.6 公开 host-visible skill surface 冻结为 38 个 skill：planner(7
 
 - `.agents/skills/beacon-loop-goal/SKILL.md` (new/R3): skill 定义 + 决策树 + 状态机 + `review_routing` decision packet gate
 - `skills/beacon/beacon-loop-goal/SKILL.md` (new/R3): packaged public skill source + `review_routing` decision packet gate
+- `.agents/skills/beacon-loop-goal/SKILL.md` (R4): `review_verify -> standard_execution_precheck -> implement_routing` 前置门、reason_code 与 state outputs
+- `skills/beacon/beacon-loop-goal/SKILL.md` (R4): packaged public skill source 同步 Standard Execution Flow admission contract
 - `beacon/utils/agent_surface.py`: v1.6 taxonomy / agent surface expected list accepts `beacon-loop-goal` as a governor skill
 - `beacon/utils/agent_eval_kit.py`: release/eval inventory counts `beacon-loop-goal` as governor host-visible skill
-- `beacon/utils/loop_goal_state.py` (new/R3): 状态文件读写、阶段转换、stop-when 检查、planner-review decision packet 写入
+- `beacon/utils/loop_goal_state.py` (new/R3, R4 extended): 状态文件读写、阶段转换、stop-when 检查、planner-review decision packet 写入、standard execution flow admission outputs
 - `beacon/commands/status.py`: 新增 `loop-goal` 状态视图
 - `tests/test_v166_loop_goal.py` (new)
 - `tests/test_doctor_agent_surface.py`, `tests/test_v160_skill_harness_taxonomy.py`, `tests/test_v161_agent_eval.py`: public skill packaging and release governance regression coverage
@@ -108,9 +112,12 @@ idle → governance_precheck
 truth_routing → invoke beacon-gen-truth → truth_verify
   → frozen: review_routing | not_frozen: truth_routing (retry) | blocked: error_recovery
 review_routing → invoke beacon-pln-review → review_verify
-  → implement_ready: implement_routing
+  → implement_ready: standard_execution_precheck
   → truth_or_change_route: drift_routing
   → user_decision_required: error_recovery
+  → blocked: error_recovery
+standard_execution_precheck → verify canonical baseline + branch governance + workspace admission
+  → pass: implement_routing
   → blocked: error_recovery
 implement_routing → invoke beacon-gen-implement → implement_verify
   → tests_pass: qa_routing | tests_fail: implement_routing (retry) | blocked: error_recovery
@@ -128,6 +135,7 @@ error_recovery → invoke beacon-gov-debug → 修复后回到对应阶段
 | S0: Precheck | CLI: `beacon plan start` governance precheck | `status=pass` or `blocked` |
 | S1: Truth | `beacon-gen-truth` (含 truth-init, brainstorm) | `truth.md status=frozen`? |
 | S1.5: Review | `beacon-pln-review`（条件触发） | findings severity? |
+| S1.6: Standard execution precheck | `beacon-gov-branch` + CLI preflight (`truth-map verify`, `verify-materials`, `git diff --check`, `implement check-branch`) | canonical baseline committed/merged? workspace admission pass? |
 | S2: Implement | `beacon-gen-implement` | tests pass? |
 | S3: QA | `beacon-eval-qa` | verdict=pass? |
 | S3.5: Deep QA | `beacon-eval-qa-deep`（条件触发） | findings 可修复? |
@@ -159,6 +167,13 @@ error_recovery → invoke beacon-gov-debug → 修复后回到对应阶段
     "planner_review_user_decision_required": false,
     "planner_review_highest_severity": "P0|P1|P2|P3|",
     "planner_review_finding_count": 0,
+    "standard_execution_flow_status": "not_checked|pass|blocked",
+    "truth_baseline_commit": "<git-sha|null>",
+    "canonical_refreeze_committed": false,
+    "feature_worktree_reconciled": false,
+    "stale_feature_refreeze_quarantine_ref": "<stash-or-artifact-ref|null>",
+    "verification_bundle_ref": ".beacon/state/loop-goal/<run_id>.verification-bundle.json",
+    "workspace_admission_ref": ".beacon/state/workspace-admission/<version>/<feature>.json",
     "tests_pass": false,
     "qa_verdict": null,
     "release_verdict": null
@@ -194,11 +209,18 @@ error_recovery → invoke beacon-gov-debug → 修复后回到对应阶段
 | AC-012 | review-routing-public-skill | public SKILL.md 的 State Machine、Decision Tree、Skill Routing Matrix 必须显式包含 `review_routing -> beacon-pln-review`，并声明 review 后才能自动进入 implement 的条件 |
 | AC-013 | review-decision-packet-state | `loop_goal_state` 必须提供 deterministic review decision packet 写入函数，把 planner-review artifact 的 review id、artifact ref、recommended route、user decision flag、highest severity、finding count 写入 state outputs |
 | AC-014 | review-gate-fail-closed | 当 review decision packet 存在 P0/P1、`user_decision_required=true`，或推荐 route 指向 `beacon-gen-truth` / `beacon-gen-change` / `beacon-gen-refreeze` 时，loop-goal 不得自动进入 `implement_routing`，必须停在对应 route 或 error recovery |
+| AC-015 | standard-flow-public-skill | public SKILL.md 的 State Machine、Decision Tree、Skill Routing Matrix 必须显式包含 `standard_execution_precheck`，位于 `review_verify` 和 `implement_routing` 之间 |
+| AC-016 | canonical-commit-boundary | canonical truth/refreeze 只有在 main/master 提交后才可成为 loop-goal baseline；未提交 refreeze artifact 不得进入 implement |
+| AC-017 | stale-feature-refreeze-quarantine | feature/dev worktree 中发现本地 `.machine` revision/projection dirty 或 feature-local refreeze 时，必须 scoped stash/archive 并记录 quarantine ref；不得采信为 requirement authority |
+| AC-018 | baseline-merged-gate | loop-goal 进入 implement 前必须验证 feature branch 包含 `truth_baseline_commit`；未合入时 fail-closed |
+| AC-019 | verification-bundle | standard execution precheck 必须产出 verification bundle，至少包含 truth-map verify、verify-materials strict、git diff check、branch-governance verify、workspace admission 五类结果 |
+| AC-020 | workspace-admission-gate | `implement check-branch` / workspace admission 必须 pass，并把 artifact ref 写入 loop-goal state outputs；缺失或 blocked 不得进入 implement |
+| AC-021 | idempotent-resume | standard execution flow 重复执行已完成步骤时必须返回 pass/up_to_date，不得再次 bump requirement revision 或产生 reason-only refreeze |
 
 ## State Model
 
 ```text
-idle -> governance_precheck -> truth_routing -> review_routing -> implement_routing -> qa_routing -> release_gate -> done
+idle -> governance_precheck -> truth_routing -> review_routing -> standard_execution_precheck -> implement_routing -> qa_routing -> release_gate -> done
                                                                             |               |              |
                                                                             +-- repair loop (max 3) --+     |
                                                                             |                          |     |
@@ -227,3 +249,8 @@ drift_routing <--- review route requires truth/change/refreeze          error_re
 - `beacon-gen-implement`: public SKILL.md packaging + state utility + taxonomy/release governance + tests.
 - `beacon-eval-qa`: behavioral TC-LG-* matrix.
 - `beacon-eval-release`: human review gate before release verdict.
+
+## Revision Notes
+
+- R3 froze planner-review decision packet routing.
+- R4 adds Standard Execution Flow admission before implement routing. This is a v1.6.6 loop-goal governance contract only; it does not create a new public skill, does not execute implementation, and does not provide QA/release verdict authority.
