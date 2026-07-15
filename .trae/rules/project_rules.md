@@ -1,6 +1,6 @@
 <!-- BEACON:AGENT_SURFACE:START -->
-<!-- BEACON:VERSION:v1.6.4 -->
-<!-- BEACON:DOCS_VERSION:v1.6.4 -->
+<!-- BEACON:VERSION:v1.6.6 -->
+<!-- BEACON:DOCS_VERSION:v1.6.6 -->
 # Beacon Trae Project Rules
 
 - Prefer project-local Beacon skills under `.trae/skills/`.
@@ -41,6 +41,7 @@
 - `beacon-gov-metadata`
 - `beacon-gov-router`
 - `beacon-gov-status`
+- `beacon-loop-goal`
 - `beacon-pln-brainstorm`
 - `beacon-pln-friction`
 - `beacon-pln-program`
@@ -49,6 +50,8 @@
 - `beacon-pln-review`
 - `beacon-pln-source`
 <!-- BEACON:AGENT_SURFACE:END -->
+
+
 
 
 
