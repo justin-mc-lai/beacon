@@ -41,9 +41,12 @@ idle -> governance_precheck
 truth_routing -> invoke beacon-gen-truth -> truth_verify
   -> frozen: review_routing | not_frozen: truth_routing (retry) | blocked: error_recovery
 review_routing -> invoke beacon-pln-review -> review_verify
-  -> implement_ready: implement_routing
+  -> implement_ready: standard_execution_precheck
   -> truth_or_change_route: drift_routing
   -> user_decision_required: error_recovery
+  -> blocked: error_recovery
+standard_execution_precheck -> verify canonical baseline + branch governance + workspace admission
+  -> pass: implement_routing
   -> blocked: error_recovery
 implement_routing -> invoke beacon-gen-implement -> implement_verify
   -> tests_pass: qa_routing | tests_fail: implement_routing (repair loop, max 3) | blocked: error_recovery
@@ -82,7 +85,17 @@ When this skill is invoked, follow this decision tree sequentially:
 2. When runtime evidence is needed, run `beacon planner-review run <feature> --project-root . --version <version> --prompt "<utterance>" --json`.
 3. Record the returned artifact with `loop_goal_state.record_review_decision()`.
 4. If the review packet has P0/P1 findings, `user_decision_required=true`, or recommends `beacon-gen-truth` / `beacon-gen-change` / `beacon-gen-refreeze`, stop and route instead of implementing.
-5. Only transition to `implement_routing` when the recorded decision packet is implement-ready.
+5. Only transition to `standard_execution_precheck` when the recorded decision packet is implement-ready.
+
+### Step 2.6: Standard Execution Precheck
+
+1. Verify canonical truth/refreeze has been committed on `main` or `master`.
+2. Verify the feature worktree contains `truth_baseline_commit`; if not, block with `reason_code=truth_baseline_not_merged`.
+3. If feature-local `.machine` revision/projection dirty state or stale refreeze is detected, require a scoped stash/archive quarantine ref before continuing.
+4. Require a verification bundle containing `truth-map verify`, `verify-materials --strict`, `git diff --check`, `branch-governance verify`, and workspace admission results.
+5. Require `implement check-branch` / workspace admission to pass and record `workspace_admission_ref`.
+6. Record the result with `loop_goal_state.record_standard_execution_precheck()`.
+7. If the result is blocked, route to `beacon-gov-debug`; only `pass` or `up_to_date` may continue to `implement_routing`.
 
 ### Step 3: Implement Stage
 
@@ -117,6 +130,7 @@ When this skill is invoked, follow this decision tree sequentially:
 | governance_precheck | CLI: `beacon plan start` | `status=pass` or `blocked` |
 | truth_routing | `beacon-gen-truth` | `truth.md status=frozen`? |
 | review_routing | `beacon-pln-review` | decision packet allows implement? |
+| standard_execution_precheck | CLI: `truth-map verify`; `verify-materials --strict`; `git diff --check`; `branch-governance verify`; `implement check-branch` | canonical baseline committed/merged? workspace admission pass? |
 | implement_routing | `beacon-gen-implement` | feature tests pass? |
 | qa_routing | `beacon-eval-qa` | verdict=pass? |
 | release_gate | `beacon-eval-release` | go/no-go after human confirmation |
@@ -135,6 +149,7 @@ When this skill is invoked, follow this decision tree sequentially:
 ## State File
 
 State is persisted at `.beacon/state/loop-goal/<run_id>.json` with schema `loop-goal-state.v1`.
+Standard execution outputs include `standard_execution_flow_status`, `truth_baseline_commit`, `canonical_refreeze_committed`, `feature_worktree_reconciled`, `stale_feature_refreeze_quarantine_ref`, `verification_bundle_ref`, and `workspace_admission_ref`.
 
 ## Boundary
 

@@ -19,6 +19,7 @@ from beacon.utils.loop_goal_state import (
     init,
     read_state,
     record_review_decision,
+    record_standard_execution_precheck,
     route_to_error_recovery,
     transition,
 )
@@ -27,6 +28,30 @@ from beacon.utils.loop_goal_state import (
 @pytest.fixture
 def goal_project(tmp_path: Path) -> Path:
     return tmp_path
+
+
+def _passing_verification_bundle() -> dict[str, dict[str, str]]:
+    return {
+        "truth_map_verify": {"status": "pass"},
+        "verify_materials_strict": {"status": "pass"},
+        "git_diff_check": {"status": "pass"},
+        "branch_governance_verify": {"status": "pass"},
+        "workspace_admission": {"status": "pass"},
+    }
+
+
+def _passing_standard_precheck() -> dict[str, object]:
+    return {
+        "truth_baseline_commit": "c57c1f6527dddd654616b57b3091b187b6fd4490",
+        "canonical_refreeze_committed": True,
+        "feature_worktree_reconciled": True,
+        "truth_baseline_merged": True,
+        "stale_feature_refreeze_detected": False,
+        "stale_feature_refreeze_quarantine_ref": "",
+        "verification_bundle": _passing_verification_bundle(),
+        "workspace_admission": {"status": "pass"},
+        "workspace_admission_ref": ".beacon/state/workspace-admission/v1.6.6/f1.json",
+    }
 
 
 class TestStateInit:
@@ -187,6 +212,7 @@ class TestSkillRouting:
         assert get_skill_for_stage("governance_precheck") == "CLI:beacon-plan-start"
         assert get_skill_for_stage("truth_routing") == "beacon-gen-truth"
         assert get_skill_for_stage("review_routing") == "beacon-pln-review"
+        assert get_skill_for_stage("standard_execution_precheck") == "CLI:standard-execution-precheck"
         assert get_skill_for_stage("implement_routing") == "beacon-gen-implement"
         assert get_skill_for_stage("qa_routing") == "beacon-eval-qa"
         assert get_skill_for_stage("release_gate") == "beacon-eval-release"
@@ -203,6 +229,7 @@ class TestSkillRouting:
         assert "governance_precheck" in content
         assert "truth_routing" in content
         assert "review_routing" in content
+        assert "standard_execution_precheck" in content
         assert "implement_routing" in content
         assert "qa_routing" in content
         assert "release_gate" in content
@@ -249,7 +276,7 @@ class TestReviewDecisionPacket:
         }
         result = record_review_decision(goal_project, run_id=run_id, review_artifact=artifact)
         assert result["status"] == "pass"
-        assert result["current_stage"] == "implement_routing"
+        assert result["current_stage"] == "standard_execution_precheck"
         updated = read_state(goal_project, run_id=run_id)
         outputs = updated["outputs"]
         assert outputs["planner_review_id"] == "pln-review-test"
@@ -282,6 +309,133 @@ class TestReviewDecisionPacket:
         assert result["reason_code"] == "planner_review_route_beacon_gen_change"
         updated = read_state(goal_project, run_id=run_id)
         assert updated["current_stage"] != "implement_routing"
+
+
+class TestStandardExecutionPrecheck:
+    """AC-015..021: Standard Execution Flow gates implement routing."""
+
+    def test_standard_execution_precheck_public_skill_contract(self):
+        skill_paths = [
+            Path(__file__).parent.parent / "skills" / "beacon" / "beacon-loop-goal" / "SKILL.md",
+            Path(__file__).parent.parent / ".agents" / "skills" / "beacon-loop-goal" / "SKILL.md",
+        ]
+        for skill_path in skill_paths:
+            content = skill_path.read_text(encoding="utf-8")
+            assert "implement_ready: standard_execution_precheck" in content
+            assert "standard_execution_precheck" in content
+            assert "pass: implement_routing" in content
+            assert "Standard Execution Precheck" in content
+            assert "record_standard_execution_precheck" in content
+            assert "truth-map verify" in content
+            assert "verify-materials --strict" in content
+            assert "git diff --check" in content
+            assert "branch-governance verify" in content
+            assert "implement check-branch" in content
+
+    def test_uncommitted_canonical_refreeze_blocks_implement(self, goal_project: Path):
+        state = init(goal_project, version="v1.6.6", feature="f1", utterance="u1")
+        precheck = _passing_standard_precheck()
+        precheck["canonical_refreeze_committed"] = False
+        result = record_standard_execution_precheck(
+            goal_project,
+            run_id=state["run_id"],
+            precheck=precheck,
+        )
+        assert result["status"] == "blocked"
+        assert result["reason_code"] == "canonical_refreeze_not_committed"
+        assert result["current_stage"] == "error_recovery"
+        assert read_state(goal_project, run_id=state["run_id"])["current_stage"] != "implement_routing"
+
+    def test_stale_feature_refreeze_requires_quarantine(self, goal_project: Path):
+        state = init(goal_project, version="v1.6.6", feature="f1", utterance="u1")
+        precheck = _passing_standard_precheck()
+        precheck["stale_feature_refreeze_detected"] = True
+        precheck["stale_feature_refreeze_quarantine_ref"] = ""
+        result = record_standard_execution_precheck(
+            goal_project,
+            run_id=state["run_id"],
+            precheck=precheck,
+        )
+        assert result["status"] == "blocked"
+        assert result["reason_code"] == "stale_feature_refreeze_not_quarantined"
+        updated = read_state(goal_project, run_id=state["run_id"])
+        assert updated["outputs"]["standard_execution_flow_status"] == "blocked"
+
+    def test_truth_baseline_commit_must_be_merged(self, goal_project: Path):
+        state = init(goal_project, version="v1.6.6", feature="f1", utterance="u1")
+        precheck = _passing_standard_precheck()
+        precheck["truth_baseline_merged"] = False
+        result = record_standard_execution_precheck(
+            goal_project,
+            run_id=state["run_id"],
+            precheck=precheck,
+        )
+        assert result["status"] == "blocked"
+        assert result["reason_code"] == "truth_baseline_not_merged"
+        updated = read_state(goal_project, run_id=state["run_id"])
+        assert updated["outputs"]["truth_baseline_commit"] == precheck["truth_baseline_commit"]
+
+    def test_standard_execution_verification_bundle_required(self, goal_project: Path):
+        state = init(goal_project, version="v1.6.6", feature="f1", utterance="u1")
+        precheck = _passing_standard_precheck()
+        precheck["verification_bundle"] = {
+            "truth_map_verify": {"status": "pass"},
+            "verify_materials_strict": {"status": "pass"},
+        }
+        result = record_standard_execution_precheck(
+            goal_project,
+            run_id=state["run_id"],
+            precheck=precheck,
+        )
+        assert result["status"] == "blocked"
+        assert result["reason_code"] == "verification_bundle_incomplete"
+        assert "git_diff_check" in result["outputs"]["verification_bundle_missing_checks"]
+        assert "branch_governance_verify" in result["outputs"]["verification_bundle_missing_checks"]
+        assert "workspace_admission" in result["outputs"]["verification_bundle_missing_checks"]
+
+    def test_workspace_admission_ref_recorded_before_implement(self, goal_project: Path):
+        state = init(goal_project, version="v1.6.6", feature="f1", utterance="u1")
+        precheck = _passing_standard_precheck()
+        missing_ref = dict(precheck)
+        missing_ref["workspace_admission_ref"] = ""
+        result = record_standard_execution_precheck(
+            goal_project,
+            run_id=state["run_id"],
+            precheck=missing_ref,
+        )
+        assert result["status"] == "blocked"
+        assert result["reason_code"] == "workspace_admission_missing"
+
+        state = init(goal_project, version="v1.6.6", feature="f1", utterance="u1")
+        result = record_standard_execution_precheck(
+            goal_project,
+            run_id=state["run_id"],
+            precheck=precheck,
+        )
+        assert result["status"] == "pass"
+        assert result["current_stage"] == "implement_routing"
+        updated = read_state(goal_project, run_id=state["run_id"])
+        outputs = updated["outputs"]
+        assert outputs["standard_execution_flow_status"] == "pass"
+        assert outputs["workspace_admission_ref"].endswith("/f1.json")
+        assert outputs["truth_baseline_commit"] == precheck["truth_baseline_commit"]
+        bundle_path = goal_project / outputs["verification_bundle_ref"]
+        assert bundle_path.is_file()
+
+    def test_standard_execution_precheck_is_idempotent(self, goal_project: Path):
+        state = init(goal_project, version="v1.6.6", feature="f1", utterance="u1")
+        run_id = state["run_id"]
+        precheck = _passing_standard_precheck()
+        result = record_standard_execution_precheck(goal_project, run_id=run_id, precheck=precheck)
+        assert result["status"] == "pass"
+        after_first = read_state(goal_project, run_id=run_id)
+        history_len = len(after_first["stage_history"])
+        result = record_standard_execution_precheck(goal_project, run_id=run_id, precheck=precheck)
+        assert result["status"] == "pass"
+        assert result["result"] == "up_to_date"
+        after_second = read_state(goal_project, run_id=run_id)
+        assert len(after_second["stage_history"]) == history_len
+        assert after_second["outputs"]["standard_execution_flow_status"] == "pass"
 
 
 def test_state_init_creates_file(goal_project: Path):
@@ -334,3 +488,31 @@ def test_review_decision_packet_records_outputs(goal_project: Path):
 
 def test_review_decision_packet_blocks_unsafe_implement_route(goal_project: Path):
     TestReviewDecisionPacket().test_review_decision_packet_blocks_unsafe_implement_route(goal_project)
+
+
+def test_standard_execution_precheck_public_skill_contract():
+    TestStandardExecutionPrecheck().test_standard_execution_precheck_public_skill_contract()
+
+
+def test_uncommitted_canonical_refreeze_blocks_implement(goal_project: Path):
+    TestStandardExecutionPrecheck().test_uncommitted_canonical_refreeze_blocks_implement(goal_project)
+
+
+def test_stale_feature_refreeze_requires_quarantine(goal_project: Path):
+    TestStandardExecutionPrecheck().test_stale_feature_refreeze_requires_quarantine(goal_project)
+
+
+def test_truth_baseline_commit_must_be_merged(goal_project: Path):
+    TestStandardExecutionPrecheck().test_truth_baseline_commit_must_be_merged(goal_project)
+
+
+def test_standard_execution_verification_bundle_required(goal_project: Path):
+    TestStandardExecutionPrecheck().test_standard_execution_verification_bundle_required(goal_project)
+
+
+def test_workspace_admission_ref_recorded_before_implement(goal_project: Path):
+    TestStandardExecutionPrecheck().test_workspace_admission_ref_recorded_before_implement(goal_project)
+
+
+def test_standard_execution_precheck_is_idempotent(goal_project: Path):
+    TestStandardExecutionPrecheck().test_standard_execution_precheck_is_idempotent(goal_project)
