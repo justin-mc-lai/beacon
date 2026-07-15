@@ -40,6 +40,18 @@
 | `beacon doctor verify-materials --strict` | pass | post upgrade-package |
 | `beacon qa run` | blocked | `evidence_binding_missing` — route formal verdict to `beacon-eval-qa` |
 
+## R5 release proof (v1.6.4 line, 2026-07-06)
+
+| check | result | notes |
+|-------|--------|-------|
+| `pytest tests/test_v162_delivery_program_branch_r5.py` | **7 passed** | AC-019–AC-022 unit coverage |
+| v1.6.4 auto-test unit bundle | **28 passed** | `run-20260706T171931359390` |
+| `beacon release check v1.6.4` | **pass** | `release_ready=true` after R5 on `main` |
+| SidePilot admit v0.0.9 / v0.0.10 | **pass** | program-level worktree resolve |
+| Friction queue | **resolved** | `73c1790d551e`, `025cd2a6322f`, `cd5f8a72940b` |
+
+Release-facing doc: `docs/beacon/v1.6.4/release/v1.6.4.md` (R5 patch section).
+
 ### Code delta (implement continuation)
 
 - `build_workspace_admission_branch_preflight()` — branch guard satisfied by valid admission artifact

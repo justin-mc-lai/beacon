@@ -107,6 +107,11 @@ def _assign_version_kv(contract: dict[str, Any], key: str, value: str) -> None:
     if key in {
         "previous_version_baseline_branch",
         "next_version_feature_branch",
+        "branch_resolution_mode",
+        "aggregation_branch",
+        "program_aggregation_branch",
+        "expected_branch",
+        "program_slug",
         "hotfix_branch_naming_rule",
         "worktree_mode",
         "worktree_path",
@@ -314,6 +319,16 @@ def render_governance_markdown(payload: dict[str, Any]) -> str:
             contract.get("previous_version_baseline_branch") or governance.get("previous_version_baseline_branch") or ""
         ).strip()
         next_feature = str(contract.get("next_version_feature_branch") or governance.get("next_version_feature_branch") or "").strip()
+        branch_resolution_mode = str(contract.get("branch_resolution_mode") or governance.get("branch_resolution_mode") or "").strip()
+        aggregation_branch = str(
+            contract.get("aggregation_branch")
+            or contract.get("program_aggregation_branch")
+            or governance.get("aggregation_branch")
+            or governance.get("program_aggregation_branch")
+            or ""
+        ).strip()
+        expected_branch = str(contract.get("expected_branch") or governance.get("expected_branch") or "").strip()
+        program_slug = str(contract.get("program_slug") or governance.get("program_slug") or "").strip()
         hotfix_rule = str(contract.get("hotfix_branch_naming_rule") or governance.get("hotfix_branch_naming_rule") or "").strip()
         if template:
             lines.append(f"- branch_governance_template: `{template}`")
@@ -321,6 +336,14 @@ def render_governance_markdown(payload: dict[str, Any]) -> str:
             lines.append(f"- previous_version_baseline_branch: `{previous_baseline}`")
         if next_feature:
             lines.append(f"- next_version_feature_branch: `{next_feature}`")
+        if branch_resolution_mode:
+            lines.append(f"- branch_resolution_mode: `{branch_resolution_mode}`")
+        if aggregation_branch:
+            lines.append(f"- aggregation_branch: `{aggregation_branch}`")
+        if expected_branch:
+            lines.append(f"- expected_branch: `{expected_branch}`")
+        if program_slug:
+            lines.append(f"- program_slug: `{program_slug}`")
         if hotfix_rule:
             lines.append(f"- hotfix_branch_naming_rule: `{hotfix_rule}`")
         if contract.get("allow_worktree_when_feature_dirty"):
@@ -523,6 +546,7 @@ def governance_json_forbidden(project_root: Path, *, strict: bool = True) -> dic
 
 def resolve_project_governance(project_root: Path, *, version: str = "", include_archived: bool = False) -> dict[str, Any]:
     from beacon.utils.branch_governance import resolve_branch_governance_view
+    from beacon.utils.execution_branch_contract import find_program_level_git_workflow, infer_program_level_from_governance
 
     root = project_root.expanduser().resolve()
     payload = load_governance_payload(root)
@@ -600,9 +624,15 @@ def resolve_project_governance(project_root: Path, *, version: str = "", include
             "paths": result["paths"],
             "transaction": payload.get("transaction", {}),
         }
+        git_workflow = (
+            find_program_level_git_workflow(root, version=version)
+            or infer_program_level_from_governance(root, version=version)
+            or {}
+        )
         result["branch_governance"] = resolve_branch_governance_view(
             project_root=root,
             version=version,
             metadata_view=metadata_view,
+            git_workflow=git_workflow,
         )
     return result

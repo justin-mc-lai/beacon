@@ -130,6 +130,17 @@ Beacon 的通用 skill / prompt 默认不得退化成“替强模型编排操作
 - `ceo-review`、`brainstorm`、`design-review`、`deep` 这类 guidance/support surface 必须优先贯彻这套哲学。
 - support surface 的主要职责是校准 framing、challenge scope、暴露关键工具、解释 route 与证据缺口，而不是把探索和判断过程硬编码成脚本。
 
+**第一性原理（v1.6.4+）**
+
+- 动手前回到根本问题：每个实现/验收决定必须能说明「为什么」，并拆到最小可验证单元。
+- truth / implement / qa 入口须校准根本问题与最小可验证单元，不得把第一性原理降格为文档装饰。
+
+**对抗式审查（v1.6.4+ QA release 前强制）**
+
+- 交付前切换为最挑剔审查者：主动列出 3–5 个翻车点，并为每个翻车点提供验证证据。
+- 不接受「看起来没问题」式放行；缺失翻车点清单或验证证据 → fail-closed block（reason_code `adversarial_review_missing`）。
+- qa skill 与 planner adversarial lane 在 qa release 前强制触发，非可选信号触发。
+
 ## 6. 强 Gate / Fail-Closed 例外边界
 
 Beacon 允许在强 gate 场景中使用比默认 skill 哲学更强的步骤约束，但必须有明确理由。
@@ -138,6 +149,20 @@ Beacon 允许在强 gate 场景中使用比默认 skill 哲学更强的步骤约
 
 - `qa`
 - `release`
+
+### 6.1 Protected Path Denylist（v1.6.5+ cross-version）
+
+Beacon 自动写入面必须把高风险路径视为 fail-closed 保护区；planner/research 等只读支持面可以报告风险，但不能把 advisory 当作允许自动修改。
+
+受保护路径类别包括：
+
+- environment: `.env`, `.env.*`
+- secrets: `secrets/**`, `credentials/**`, `*.pem`, `*.key`, `*_key*`
+- auth: `auth/**`, `oauth/**`, `sso/**`
+- payments: `payments/**`, `billing/**`, `stripe/**`
+- migrations: `migrations/**`, `schema_migrations/**`
+
+写入 guard 命中这些路径时必须返回 `reason_code=protected_path_denylist`，并给出显式 human route recommendation；不得静默允许自动编辑。
 - freeze / refreeze / canonical truth 提交
 - 安全、权限、合规检查
 - 多 sink 事务一致性

@@ -307,7 +307,571 @@
       ],
       "created_at": "2026-03-22T13:23:57.110982+00:00",
       "updated_at": "2026-03-22T13:23:57.110982+00:00"
+    },
+    {
+      "memory_id": "2dc59491-f39e-4c0b-ac47-ebffe1bbc5fe",
+      "type": "decision",
+      "status": "active",
+      "content": "[release.check] version=v1.6.4 status=blocked",
+      "content_hash": "sha256:cbe0fc1d049618621e93918bc8c4ecc3b44267426c1539a4d1944cca64b69619",
+      "source_session_id": "release:v1.6.4",
+      "source": "release.check",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.4/.machine/change/v1.6.4.json",
+        "docs/beacon/v1.6.4/change/v1.6.4.md"
+      ],
+      "reason_codes": [],
+      "confidence": 0.75,
+      "tags": [
+        "blocked",
+        "gate",
+        "release"
+      ],
+      "created_at": "2026-07-06T07:01:55.322443+00:00",
+      "updated_at": "2026-07-06T07:01:55.322443+00:00",
+      "decision": "[release.check] version=v1.6.4 status=blocked"
+    },
+    {
+      "memory_id": "940d59d4-0321-426f-a496-6e42ef49de3f",
+      "type": "decision",
+      "status": "active",
+      "content": "[qa] beacon-global-workspace-git-admission-v162 => accepted",
+      "content_hash": "sha256:7d40686c31c0a9460ed5f27aaac62ebc082293845237d954bba013b47cd8e9a8",
+      "source_session_id": "run-20260709T154207235892",
+      "source": "workflow.qa.writeback",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-global-workspace-git-admission-v162/ac-closure.json",
+        ".beacon/qa/features/beacon-global-workspace-git-admission-v162/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "reason_codes": [],
+      "confidence": 0.8,
+      "tags": [
+        "accepted",
+        "qa",
+        "workflow-lifecycle"
+      ],
+      "created_at": "2026-07-09T07:42:17.441371+00:00",
+      "updated_at": "2026-07-09T07:42:17.441371+00:00",
+      "decision": "[qa] beacon-global-workspace-git-admission-v162 => accepted",
+      "run_id": "run-20260709T154207235892",
+      "stage": "qa",
+      "feature": "beacon-global-workspace-git-admission-v162",
+      "version": "",
+      "transaction_id": "tx-wf-run-20260709T154207235892-qa-memory_writeback-b7ee51501477",
+      "source_hash": "b7ee51501477c939b6e2c51227409ce239cfcb269158c2fb5357cfbf7df80f06",
+      "projection_seq": "wf-b7ee51501477c939",
+      "attempt_seq": 1
+    },
+    {
+      "memory_id": "13d48cd3-5455-45aa-b4c3-3d3f06de7940",
+      "type": "decision",
+      "status": "active",
+      "content": "[release.check] version=v1.6.4 status=pass",
+      "content_hash": "sha256:1c87a8df20130d5d2c7837dc6a137a7147d9931ee7beab0efeb4e6d0e0b0591f",
+      "source_session_id": "release:v1.6.4",
+      "source": "release.check",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.4/.machine/change/v1.6.4.json",
+        "docs/beacon/v1.6.4/change/v1.6.4.md"
+      ],
+      "reason_codes": [],
+      "confidence": 0.75,
+      "tags": [
+        "gate",
+        "pass",
+        "release"
+      ],
+      "created_at": "2026-07-09T07:42:41.964790+00:00",
+      "updated_at": "2026-07-09T07:42:41.964790+00:00",
+      "decision": "[release.check] version=v1.6.4 status=pass"
+    },
+    {
+      "memory_id": "229e00d4-444d-4d2d-921f-a8072ba70966",
+      "type": "decision",
+      "status": "active",
+      "content": "[release.check] version=v1.6.4 status=pass",
+      "content_hash": "sha256:1c87a8df20130d5d2c7837dc6a137a7147d9931ee7beab0efeb4e6d0e0b0591f",
+      "source_session_id": "release:v1.6.4",
+      "source": "release.check",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.4/.machine/change/v1.6.4.json",
+        "docs/beacon/v1.6.4/change/v1.6.4.md"
+      ],
+      "reason_codes": [],
+      "confidence": 0.75,
+      "tags": [
+        "gate",
+        "pass",
+        "release"
+      ],
+      "created_at": "2026-07-09T07:44:19.909938+00:00",
+      "updated_at": "2026-07-09T07:44:19.909938+00:00",
+      "decision": "[release.check] version=v1.6.4 status=pass"
+    },
+    {
+      "memory_id": "57c73f28-0bc7-4e2e-8fc0-a1fc15f43a04",
+      "type": "decision",
+      "status": "active",
+      "content": "[qa] beacon-program-next-action-admission-v164 => accepted",
+      "content_hash": "sha256:cb9757e1d122755bc06cdf2713989289243450ede09df72ab8b88d059ccc6d93",
+      "source_session_id": "run-20260710T114740772252",
+      "source": "workflow.qa.writeback",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-program-next-action-admission-v164/ac-closure.json",
+        ".beacon/qa/features/beacon-program-next-action-admission-v164/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "reason_codes": [],
+      "confidence": 0.8,
+      "tags": [
+        "accepted",
+        "qa",
+        "workflow-lifecycle"
+      ],
+      "created_at": "2026-07-10T03:47:49.143511+00:00",
+      "updated_at": "2026-07-10T03:47:49.143511+00:00",
+      "decision": "[qa] beacon-program-next-action-admission-v164 => accepted",
+      "run_id": "run-20260710T114740772252",
+      "stage": "qa",
+      "feature": "beacon-program-next-action-admission-v164",
+      "version": "",
+      "transaction_id": "tx-wf-run-20260710T114740772252-qa-memory_writeback-2888584e6540",
+      "source_hash": "2888584e654032af90564032cb359f814dcf422e99a1010691a74cdfe9bdf4d2",
+      "projection_seq": "wf-2888584e654032af",
+      "attempt_seq": 1
+    },
+    {
+      "memory_id": "c8f5b1b1-ea6d-4a0b-b601-625e408f6f27",
+      "type": "decision",
+      "status": "active",
+      "content": "[release.check] version=v1.6.4 status=blocked",
+      "content_hash": "sha256:cbe0fc1d049618621e93918bc8c4ecc3b44267426c1539a4d1944cca64b69619",
+      "source_session_id": "release:v1.6.4",
+      "source": "release.check",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.4/.machine/change/v1.6.4.json",
+        "docs/beacon/v1.6.4/change/v1.6.4.md"
+      ],
+      "reason_codes": [],
+      "confidence": 0.75,
+      "tags": [
+        "blocked",
+        "gate",
+        "release"
+      ],
+      "created_at": "2026-07-10T04:01:48.535218+00:00",
+      "updated_at": "2026-07-10T04:01:48.535218+00:00",
+      "decision": "[release.check] version=v1.6.4 status=blocked"
+    },
+    {
+      "memory_id": "8acc71ba-7af8-4b9a-af66-a76192437281",
+      "type": "decision",
+      "status": "active",
+      "content": "[release.check] version=v1.6.4 status=pass",
+      "content_hash": "sha256:1c87a8df20130d5d2c7837dc6a137a7147d9931ee7beab0efeb4e6d0e0b0591f",
+      "source_session_id": "release:v1.6.4",
+      "source": "release.check",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.4/.machine/change/v1.6.4.json",
+        "docs/beacon/v1.6.4/change/v1.6.4.md"
+      ],
+      "reason_codes": [],
+      "confidence": 0.75,
+      "tags": [
+        "gate",
+        "pass",
+        "release"
+      ],
+      "created_at": "2026-07-10T04:02:56.929246+00:00",
+      "updated_at": "2026-07-10T04:02:56.929246+00:00",
+      "decision": "[release.check] version=v1.6.4 status=pass"
+    },
+    {
+      "memory_id": "5b9c43de-32bd-49db-aed0-aa4460d2869b",
+      "type": "decision",
+      "status": "active",
+      "content": "[release.check] version=v1.6.4 status=pass",
+      "content_hash": "sha256:1c87a8df20130d5d2c7837dc6a137a7147d9931ee7beab0efeb4e6d0e0b0591f",
+      "source_session_id": "release:v1.6.4",
+      "source": "release.check",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.4/.machine/change/v1.6.4.json",
+        "docs/beacon/v1.6.4/change/v1.6.4.md"
+      ],
+      "reason_codes": [],
+      "confidence": 0.75,
+      "tags": [
+        "gate",
+        "pass",
+        "release"
+      ],
+      "created_at": "2026-07-10T04:05:47.668115+00:00",
+      "updated_at": "2026-07-10T04:05:47.668115+00:00",
+      "decision": "[release.check] version=v1.6.4 status=pass"
+    },
+    {
+      "memory_id": "ad11d920-7095-458a-aa88-299fcc3b2542",
+      "type": "decision",
+      "status": "active",
+      "content": "[release.check] version=v1.6.6 status=blocked",
+      "content_hash": "sha256:c48c45002ed0feafd9aa38b8bd405b793dfd6be3eb33f19b151cbf9f2ea5b1a5",
+      "source_session_id": "release:v1.6.6",
+      "source": "release.check",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.6/.machine/change/v1.6.6.json",
+        "docs/beacon/v1.6.6/change/v1.6.6.md"
+      ],
+      "reason_codes": [],
+      "confidence": 0.75,
+      "tags": [
+        "blocked",
+        "gate",
+        "release"
+      ],
+      "created_at": "2026-07-14T07:00:47.048392+00:00",
+      "updated_at": "2026-07-14T07:00:47.048392+00:00",
+      "decision": "[release.check] version=v1.6.6 status=blocked"
+    },
+    {
+      "memory_id": "fc54000c-bd8f-41cf-82b7-c51608fda545",
+      "type": "decision",
+      "status": "active",
+      "content": "[release.check] version=v1.6.6 status=blocked",
+      "content_hash": "sha256:c48c45002ed0feafd9aa38b8bd405b793dfd6be3eb33f19b151cbf9f2ea5b1a5",
+      "source_session_id": "release:v1.6.6",
+      "source": "release.check",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.6/.machine/change/v1.6.6.json",
+        "docs/beacon/v1.6.6/change/v1.6.6.md"
+      ],
+      "reason_codes": [],
+      "confidence": 0.75,
+      "tags": [
+        "blocked",
+        "gate",
+        "release"
+      ],
+      "created_at": "2026-07-14T07:01:05.898655+00:00",
+      "updated_at": "2026-07-14T07:01:05.898655+00:00",
+      "decision": "[release.check] version=v1.6.6 status=blocked"
+    },
+    {
+      "memory_id": "8b649d68-6c8a-4e5f-a1f4-ea98f26176e3",
+      "type": "decision",
+      "status": "active",
+      "content": "[release.check] version=v1.6.6 status=blocked",
+      "content_hash": "sha256:c48c45002ed0feafd9aa38b8bd405b793dfd6be3eb33f19b151cbf9f2ea5b1a5",
+      "source_session_id": "release:v1.6.6",
+      "source": "release.check",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.6/.machine/change/v1.6.6.json",
+        "docs/beacon/v1.6.6/change/v1.6.6.md"
+      ],
+      "reason_codes": [],
+      "confidence": 0.75,
+      "tags": [
+        "blocked",
+        "gate",
+        "release"
+      ],
+      "created_at": "2026-07-14T07:01:24.926915+00:00",
+      "updated_at": "2026-07-14T07:01:24.926915+00:00",
+      "decision": "[release.check] version=v1.6.6 status=blocked"
+    },
+    {
+      "memory_id": "626d72c7-7571-4a0d-a0fe-c9347a8cc26d",
+      "type": "decision",
+      "status": "active",
+      "content": "[release.check] version=v1.6.6 status=blocked",
+      "content_hash": "sha256:c48c45002ed0feafd9aa38b8bd405b793dfd6be3eb33f19b151cbf9f2ea5b1a5",
+      "source_session_id": "release:v1.6.6",
+      "source": "release.check",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.6/.machine/change/v1.6.6.json",
+        "docs/beacon/v1.6.6/change/v1.6.6.md"
+      ],
+      "reason_codes": [],
+      "confidence": 0.75,
+      "tags": [
+        "blocked",
+        "gate",
+        "release"
+      ],
+      "created_at": "2026-07-14T07:01:39.935964+00:00",
+      "updated_at": "2026-07-14T07:01:39.935964+00:00",
+      "decision": "[release.check] version=v1.6.6 status=blocked"
+    },
+    {
+      "memory_id": "15308ff0-2c65-4a64-9a35-cf79faca702d",
+      "type": "decision",
+      "status": "active",
+      "content": "[release.check] version=v1.6.6 status=blocked",
+      "content_hash": "sha256:c48c45002ed0feafd9aa38b8bd405b793dfd6be3eb33f19b151cbf9f2ea5b1a5",
+      "source_session_id": "release:v1.6.6",
+      "source": "release.check",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.6/.machine/change/v1.6.6.json",
+        "docs/beacon/v1.6.6/change/v1.6.6.md"
+      ],
+      "reason_codes": [],
+      "confidence": 0.75,
+      "tags": [
+        "blocked",
+        "gate",
+        "release"
+      ],
+      "created_at": "2026-07-15T05:58:15.205606+00:00",
+      "updated_at": "2026-07-15T05:58:15.205606+00:00",
+      "decision": "[release.check] version=v1.6.6 status=blocked"
+    },
+    {
+      "memory_id": "4388dba9-2212-438b-88bf-523d64c32d86",
+      "type": "decision",
+      "status": "active",
+      "content": "[release.check] version=v1.6.6 status=blocked",
+      "content_hash": "sha256:c48c45002ed0feafd9aa38b8bd405b793dfd6be3eb33f19b151cbf9f2ea5b1a5",
+      "source_session_id": "release:v1.6.6",
+      "source": "release.check",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.6/.machine/change/v1.6.6.json",
+        "docs/beacon/v1.6.6/change/v1.6.6.md"
+      ],
+      "reason_codes": [],
+      "confidence": 0.75,
+      "tags": [
+        "blocked",
+        "gate",
+        "release"
+      ],
+      "created_at": "2026-07-15T06:01:57.256221+00:00",
+      "updated_at": "2026-07-15T06:01:57.256221+00:00",
+      "decision": "[release.check] version=v1.6.6 status=blocked"
+    },
+    {
+      "memory_id": "4316b6d4-c81a-41e3-be95-a96cf7f8cd43",
+      "type": "decision",
+      "status": "active",
+      "content": "[release.check] version=v1.6.6 status=blocked",
+      "content_hash": "sha256:c48c45002ed0feafd9aa38b8bd405b793dfd6be3eb33f19b151cbf9f2ea5b1a5",
+      "source_session_id": "release:v1.6.6",
+      "source": "release.check",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.6/.machine/change/v1.6.6.json",
+        "docs/beacon/v1.6.6/change/v1.6.6.md"
+      ],
+      "reason_codes": [],
+      "confidence": 0.75,
+      "tags": [
+        "blocked",
+        "gate",
+        "release"
+      ],
+      "created_at": "2026-07-15T06:03:19.902637+00:00",
+      "updated_at": "2026-07-15T06:03:19.902637+00:00",
+      "decision": "[release.check] version=v1.6.6 status=blocked"
+    },
+    {
+      "memory_id": "205746f2-dc1f-4ab9-8840-71ee9af0ee32",
+      "type": "decision",
+      "status": "active",
+      "content": "[qa] beacon-loop-goal-v166 => accepted",
+      "content_hash": "sha256:46a9c8fb9c44a85a83362893c6c54d4d1b8b92462ba8e9355967e962f20b3b5e",
+      "source_session_id": "run-20260715T140804911391",
+      "source": "workflow.qa.writeback",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-loop-goal-v166/ac-closure.json",
+        ".beacon/qa/features/beacon-loop-goal-v166/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "reason_codes": [],
+      "confidence": 0.8,
+      "tags": [
+        "accepted",
+        "qa",
+        "workflow-lifecycle"
+      ],
+      "created_at": "2026-07-15T06:08:25.403942+00:00",
+      "updated_at": "2026-07-15T06:08:25.403942+00:00",
+      "decision": "[qa] beacon-loop-goal-v166 => accepted",
+      "run_id": "run-20260715T140804911391",
+      "stage": "qa",
+      "feature": "beacon-loop-goal-v166",
+      "version": "",
+      "transaction_id": "tx-wf-run-20260715T140804911391-qa-memory_writeback-a117adc3f023",
+      "source_hash": "a117adc3f02338b1d0da90fc8b943c110f3faae21149743e235df02333e7dcfd",
+      "projection_seq": "wf-a117adc3f02338b1",
+      "attempt_seq": 1
+    },
+    {
+      "memory_id": "2ea1ea4e-9487-4017-b704-8711236a995a",
+      "type": "decision",
+      "status": "active",
+      "content": "[release.check] version=v1.6.6 status=pass",
+      "content_hash": "sha256:c42ef8c85ce72bd3a5a43e57e617b2f60c9e485b55bf28a74f080bd2560d9ca8",
+      "source_session_id": "release:v1.6.6",
+      "source": "release.check",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.6/.machine/change/v1.6.6.json",
+        "docs/beacon/v1.6.6/change/v1.6.6.md"
+      ],
+      "reason_codes": [],
+      "confidence": 0.75,
+      "tags": [
+        "gate",
+        "pass",
+        "release"
+      ],
+      "created_at": "2026-07-15T06:09:10.465328+00:00",
+      "updated_at": "2026-07-15T06:09:10.465328+00:00",
+      "decision": "[release.check] version=v1.6.6 status=pass"
+    },
+    {
+      "memory_id": "5900784c-f210-4609-a0f6-bfc2453f3c58",
+      "type": "decision",
+      "status": "active",
+      "content": "[release.check] version=v1.6.6 status=pass",
+      "content_hash": "sha256:c42ef8c85ce72bd3a5a43e57e617b2f60c9e485b55bf28a74f080bd2560d9ca8",
+      "source_session_id": "release:v1.6.6",
+      "source": "release.check",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.6/.machine/change/v1.6.6.json",
+        "docs/beacon/v1.6.6/change/v1.6.6.md"
+      ],
+      "reason_codes": [],
+      "confidence": 0.75,
+      "tags": [
+        "gate",
+        "pass",
+        "release"
+      ],
+      "created_at": "2026-07-15T06:11:15.309534+00:00",
+      "updated_at": "2026-07-15T06:11:15.309534+00:00",
+      "decision": "[release.check] version=v1.6.6 status=pass"
+    },
+    {
+      "memory_id": "c4514da1-2b67-49a1-a825-3dceca93c96f",
+      "type": "decision",
+      "status": "active",
+      "content": "[release.check] version=v1.6.6 status=pass",
+      "content_hash": "sha256:c42ef8c85ce72bd3a5a43e57e617b2f60c9e485b55bf28a74f080bd2560d9ca8",
+      "source_session_id": "release:v1.6.6",
+      "source": "release.check",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.6/.machine/change/v1.6.6.json",
+        "docs/beacon/v1.6.6/change/v1.6.6.md"
+      ],
+      "reason_codes": [],
+      "confidence": 0.75,
+      "tags": [
+        "gate",
+        "pass",
+        "release"
+      ],
+      "created_at": "2026-07-15T06:14:51.925867+00:00",
+      "updated_at": "2026-07-15T06:14:51.925867+00:00",
+      "decision": "[release.check] version=v1.6.6 status=pass"
+    },
+    {
+      "memory_id": "35f09aab-0757-42f9-9d2e-d8752457ce64",
+      "type": "decision",
+      "status": "active",
+      "content": "[release.check] version=v1.6.6 status=pass",
+      "content_hash": "sha256:c42ef8c85ce72bd3a5a43e57e617b2f60c9e485b55bf28a74f080bd2560d9ca8",
+      "source_session_id": "release:v1.6.6",
+      "source": "release.check",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.6/.machine/change/v1.6.6.json",
+        "docs/beacon/v1.6.6/change/v1.6.6.md"
+      ],
+      "reason_codes": [],
+      "confidence": 0.75,
+      "tags": [
+        "gate",
+        "pass",
+        "release"
+      ],
+      "created_at": "2026-07-15T06:18:13.346588+00:00",
+      "updated_at": "2026-07-15T06:18:13.346588+00:00",
+      "decision": "[release.check] version=v1.6.6 status=pass"
     }
   ],
-  "updated_at": "2026-03-22T13:23:57.111012+00:00"
+  "updated_at": "2026-07-15T06:18:13.346644+00:00"
 }

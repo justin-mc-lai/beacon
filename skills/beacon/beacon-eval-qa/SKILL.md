@@ -87,6 +87,8 @@ For v1.5.2 features, QA judgment must bind to resolver-selected `features/<slug>
 - Route back to `implement` for execution gaps, to `change` for truth drift, or to `test-case` when coverage truth is insufficient.
 - Treat `skill-contract`, `scenario-suite`, `trace-scorecard`, and `real-project-proof` as layered verdicts, not one proxy score.
 - Verify route explainability, learning use visibility, and guardrail behavior when the feature claims a thicker human-facing decision surface.
+- **交付前对抗式审查（v1.6.4+ 强制）**：qa release 前必须列出 3–5 个翻车点并为每个翻车点提供验证证据；缺失 → block（reason_code `adversarial_review_missing`），不接受「看起来没问题」。
+- **第一性原理校准**：进入 qa 前须回到根本问题，确认最小可验证单元与每个验收决定的「为什么」。
 
 ## Anti-Inertia Notes
 

@@ -2,10 +2,10 @@
 schema_version: "1.0"
 parser_contract: "beacon-version-truth-catalog-v1"
 active_delivery_window: "3"
-transaction_id: "tx-catalog-20260604t025110z"
-committed_at: "2026-06-04T02:51:10.801462+00:00"
-source_hash: "4daa23fc7e4c34469e0b6374b83093baf0da4589f5d2eabf2afe2e416f0b976e"
-event_type: "catalog-bootstrap"
+transaction_id: "tx-catalog-20260713t120000z"
+committed_at: "2026-07-13T12:00:00.000000+00:00"
+source_hash: "catalog-active-window-advance-v164-v166"
+event_type: "catalog-active-window-advance"
 ---
 
 # Version Truth Catalog
@@ -18,17 +18,17 @@ event_type: "catalog-bootstrap"
 
 ## Active Delivery Versions
 
-### v1.5.0
+### v1.6.4
 - validation_state: `active`
-- truth_root: `docs/beacon/v1.5.0`
+- truth_root: `docs/beacon/v1.6.4`
 
-### v1.5.1
+### v1.6.5
 - validation_state: `active`
-- truth_root: `docs/beacon/v1.5.1`
+- truth_root: `docs/beacon/v1.6.5`
 
-### v1.5.2
+### v1.6.6
 - validation_state: `active`
-- truth_root: `docs/beacon/v1.5.2`
+- truth_root: `docs/beacon/v1.6.6`
 
 ## Archived Versions
 
@@ -306,4 +306,46 @@ event_type: "catalog-bootstrap"
 - validation_state: `archived-reference-only`
 - truth_root: `docs/beacon/archive/v1.4.12`
 - archived_at: `2026-06-04T02:51:10.799769+00:00`
+- reason: `release-line-window`
+
+### v1.5.0
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.5.0`
+- archived_at: `2026-07-13T12:00:00.000000+00:00`
+- reason: `release-line-window`
+
+### v1.5.1
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.5.1`
+- archived_at: `2026-07-13T12:00:00.000000+00:00`
+- reason: `release-line-window`
+
+### v1.5.2
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.5.2`
+- archived_at: `2026-07-13T12:00:00.000000+00:00`
+- reason: `release-line-window`
+
+### v1.6.0
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.6.0`
+- archived_at: `2026-07-13T12:00:00.000000+00:00`
+- reason: `release-line-window`
+
+### v1.6.1
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.6.1`
+- archived_at: `2026-07-13T12:00:00.000000+00:00`
+- reason: `release-line-window`
+
+### v1.6.2
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.6.2`
+- archived_at: `2026-07-13T12:00:00.000000+00:00`
+- reason: `release-line-window`
+
+### v1.6.3
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.6.3`
+- archived_at: `2026-07-13T12:00:00.000000+00:00`
 - reason: `release-line-window`

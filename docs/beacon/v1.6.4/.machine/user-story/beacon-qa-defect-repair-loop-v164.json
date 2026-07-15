@@ -1,0 +1,212 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-qa-defect-repair-loop-v164",
+  "feature_slug": "beacon-qa-defect-repair-loop-v164",
+  "version": "v1.6.4",
+  "current_revision_id": "R1",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-07-02T03:07:05.674939+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-qa-defect-repair-loop-v164",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:b540b1c09bb135dea129919a5b93b95664b1c14d20c31484a39957ae112646d1",
+      "superseded_by": null,
+      "created_at": "2026-07-02T03:07:05.670520+00:00",
+      "frozen_at": "2026-07-02T03:07:05.755671+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "beacon-qa-defect-repair-loop-v164",
+      "priority": "medium",
+      "status": "frozen",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "defect-classification",
+          "text": "QA finding 复用既有 `ROUTE_RECOMMENDATIONS` 分类（implementation_gap / truth_drift / coverage_gap / execution_lapse / skill_defect / runner_admission_blocker / evidence_insufficient）；分类失败 → block（**Must**，UD-001）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-defect-repair-loop-v164/truth.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "repair-route-field",
+          "text": "`qa_acceptance` 输出含 `repair_route`（目标 harness）+ `defect_classification`（family + reason_code）；projection 同步（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-defect-repair-loop-v164/truth.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "route-rules",
+          "text": "路由规则生效：implementation_gap→beacon-implement, truth_drift→beacon-change, coverage_gap→beacon-test-case, execution_lapse→beacon-qa；RELEASE_BLOCKING_FAMILIES 强制 block release（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-defect-repair-loop-v164/truth.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "regression-trigger",
+          "text": "defect 修复后强制回归 QA 触发（`regression_required=True`）；回归未跑 → release block（reason_code `regression_skipped`）（**Must**，UD-002）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-defect-repair-loop-v164/truth.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "closure-evidence-chain",
+          "text": "闭环 evidence 链：defect 发现 → 修复 → 回归三段串联；缺段 → block（reason_code `repair_chain_broken`）；evidence 不被记为 full pass（**Must**，UD-003）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-defect-repair-loop-v164/truth.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — QA finding 复用既有 `ROUTE_RECOMMENDATIONS` 分类（implementation_gap / truth_drift / coverage_gap / execution_lapse / skill_defect / runner_admission_blocker / evidence_insufficient）；分类失败 → block（**Must**，UD-001）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-defect-repair-loop-v164/truth.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — `qa_acceptance` 输出含 `repair_route`（目标 harness）+ `defect_classification`（family + reason_code）；projection 同步（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-defect-repair-loop-v164/truth.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — 路由规则生效：implementation_gap→beacon-implement, truth_drift→beacon-change, coverage_gap→beacon-test-case, execution_lapse→beacon-qa；RELEASE_BLOCKING_FAMILIES 强制 block release（**Must**）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-defect-repair-loop-v164/truth.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — defect 修复后强制回归 QA 触发（`regression_required=True`）；回归未跑 → release block（reason_code `regression_skipped`）（**Must**，UD-002）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-defect-repair-loop-v164/truth.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — 闭环 evidence 链：defect 发现 → 修复 → 回归三段串联；缺段 → block（reason_code `repair_chain_broken`）；evidence 不被记为 full pass（**Must**，UD-003）",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-defect-repair-loop-v164/truth.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-qa-defect-repair-loop-v164",
+        "version": "v1.6.4",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/research/beacon-qa-defect-repair-loop-v164.md",
+        "present": false,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      }
+    }
+  ]
+}

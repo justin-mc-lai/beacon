@@ -1,0 +1,203 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-09T06:56:06.031524+00:00",
+  "feature": "beacon-global-workspace-git-admission-v162",
+  "feature_slug": "beacon-global-workspace-git-admission-v162",
+  "version": "v1.6.4",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
+    "tests": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md",
+    "tasks": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tasks.md",
+    "evidence": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "e1e0aafa8e310681b2ad23f6902b0fc2127ad1e9b8aca8d85eb13f14d391dc5e",
+    "tests": "5c0b13d82d1036066ddb1b798315863c485cb709462913e1514d2deb06d0133a",
+    "tasks": "c3fe7e1e20513912d5aa36617d01585c38667e6797e2f0d264dbd3714d930cca",
+    "evidence": "1ffa7dba6681d3a9dcf89a061ec749d40e00adfe3bc962bb622ccf26002d2cd2"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-global-workspace-git-admission-v162",
+    "version": "v1.6.4",
+    "status": "frozen",
+    "revision_id": "R6",
+    "language": "zh",
+    "change_reason": "R6 - program/lake aggregation branch governance contract; SidePilot v0.0.12 QA admission friction friction:e3fe3b33ecf9",
+    "source_revision_id": "R5",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
+      "user_story": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
+      "test_case": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md"
+    },
+    "parser_contract": "beacon-feature-package-v1",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-023",
+      "theme": "program-topology-without-git-workflow",
+      "description": "Program-level governance resolves a lake to the aggregation branch from program/lake topology when `git-workflow-*.md` is absent."
+    },
+    {
+      "ac_id": "AC-024",
+      "theme": "program-topology-with-git-workflow",
+      "description": "Program-level governance still resolves through explicit `git-workflow-*.md` when present."
+    },
+    {
+      "ac_id": "AC-025",
+      "theme": "qa-run-aggregation-admission",
+      "description": "`beacon qa run <lake>` accepts the aggregation branch after workspace admission and does not block with `branch_alignment_required`."
+    },
+    {
+      "ac_id": "AC-026",
+      "theme": "per-feature-default-preserved",
+      "description": "Repos without program-level contract/topology continue to resolve `beacon/<version>/<feature-slug>`."
+    },
+    {
+      "ac_id": "AC-027",
+      "theme": "soft-admission-wrong-branch-blocks",
+      "description": "Soft admission still blocks wrong current branch with `branch_alignment_required` using the shared resolved target."
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-023",
+      "tc_id": "TC-R6-001",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v162_delivery_program_branch_r5.py::test_r6_program_topology_without_git_workflow_resolves_aggregation_branch -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Frozen program topology without `git-workflow-*.md` resolves lake `content-hub-foundation` to `branch_resolution_mode=program-level`, `feature_branch=beacon/v0.0.12`, and the program aggregation worktree.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-023",
+      "tc_id": "TC-R6-002",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_v162_delivery_program_branch_r5.py::test_r6_program_topology_without_version_governance_block_resolves_aggregation_branch -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "When the version governance block is absent and no `git-workflow-*.md` exists, frozen program topology still resolves the lake to `beacon/v0.0.12` and validates on the aggregation worktree.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-024",
+      "tc_id": "TC-R6-003",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v162_delivery_program_branch_r5.py::test_r6_program_topology_with_git_workflow_resolves_aggregation_branch -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Explicit `git-workflow-*.md` program-level contract continues to resolve the same aggregation branch/worktree.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-025",
+      "tc_id": "TC-R6-004",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_v162_delivery_program_branch_r5.py::test_r6_qa_run_lake_accepts_aggregation_branch_after_admission -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "`beacon qa run <lake>` passes workspace admission on `beacon/v0.0.12`; the controlled downstream block is `implementation_not_recorded`, not `branch_alignment_required`.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-026",
+      "tc_id": "TC-R6-005",
+      "layer": "regression",
+      "command": "`python3 -m pytest tests/test_v162_delivery_program_branch_r5.py::test_ac022_per_feature_default_unchanged -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "No program-level contract/topology keeps per-feature default `beacon/v9.9.9/demo-feature`.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-027",
+      "tc_id": "TC-R6-006",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_v162_delivery_program_branch_r5.py::test_r6_soft_admission_still_blocks_wrong_aggregation_branch -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "`require_workspace_admission=false` on wrong current branch blocks with `branch_alignment_required` against aggregation target `beacon/v0.0.12`.",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Capture friction and planner review route for `friction:e3fe3b33ecf9`.",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Update resolver to treat frozen program/lake topology as branch governance input.",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Preserve per-feature default branch resolution when no program topology exists.",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Add QA entry regression proving `beacon qa run <lake>` accepts aggregation branch after admission.",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Add soft-admission wrong-branch regression for `branch_alignment_required`.",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Freeze R6 requirement package.",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "Route to evaluator for QA/release verdict after implementation verification.",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "truth.md",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
+      "status": "draft R6",
+      "route": "freeze"
+    },
+    {
+      "surface": "tests.md",
+      "authority": "test_truth",
+      "canonical_artifact": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md",
+      "status": "draft R6",
+      "route": "qa"
+    },
+    {
+      "surface": "tasks.md",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tasks.md",
+      "status": "draft R6",
+      "route": "implement"
+    },
+    {
+      "surface": "friction capture",
+      "authority": "support_advisory",
+      "canonical_artifact": ".beacon/debug/friction-captures/eec4092c3010.json",
+      "status": "accepted input",
+      "route": "change"
+    },
+    {
+      "surface": "friction analysis",
+      "authority": "support_advisory",
+      "canonical_artifact": ".beacon/analysis/friction-intake-fit-20260709T060148Z.md",
+      "status": "accepted input",
+      "route": "change"
+    },
+    {
+      "surface": "R5 research",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.4/research/beacon-delivery-repo-git-admission-friction.md",
+      "status": "prior patch context",
+      "route": "change"
+    }
+  ]
+}

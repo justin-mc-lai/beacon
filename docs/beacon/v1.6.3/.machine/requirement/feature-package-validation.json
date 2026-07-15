@@ -1,33 +1,36 @@
 {
   "schema_version": "1.0",
-  "feature": "beacon-governance-truth-canonical-schema",
-  "feature_slug": "beacon-governance-truth-canonical-schema",
+  "feature": "beacon-workflow-memory-completion-gate-v163",
+  "feature_slug": "beacon-workflow-memory-completion-gate-v163",
   "version": "v1.6.3",
   "status": "pass",
   "blocked": false,
   "reason_code": "",
-  "generated_at": "2026-07-01T01:57:04.919839+00:00",
-  "package_dir": "docs/beacon/v1.6.3/features/beacon-governance-truth-canonical-schema",
+  "generated_at": "2026-07-01T08:03:49.867349+00:00",
+  "package_dir": "docs/beacon/v1.6.3/features/beacon-workflow-memory-completion-gate-v163",
   "truth_frontmatter": {
-    "slug": "beacon-governance-truth-canonical-schema",
+    "slug": "beacon-workflow-memory-completion-gate-v163",
     "version": "v1.6.3",
     "status": "frozen",
     "revision_id": "R1",
     "language": "zh",
-    "change_reason": "R1 — governance contract schema 字段化 truth_canonical/runtime_mirror，消除 per_service_canonical_branch 与 global-boundaries §4.2 truth-on-main 的主动矛盾，解除 git-alignment blocked",
+    "change_reason": "R1 — 修复 workflow memory completion truth 缺失时软放行（P0-2 免疫系统修复）",
     "source_revision_id": "null",
     "canonical_refs": {
-      "prd": "docs/beacon/v1.6.3/features/beacon-governance-truth-canonical-schema/truth.md",
-      "user_story": "docs/beacon/v1.6.3/features/beacon-governance-truth-canonical-schema/truth.md",
-      "test_case": "docs/beacon/v1.6.3/features/beacon-governance-truth-canonical-schema/tests.md"
+      "prd": "docs/beacon/v1.6.3/features/beacon-workflow-memory-completion-gate-v163/truth.md",
+      "user_story": "docs/beacon/v1.6.3/features/beacon-workflow-memory-completion-gate-v163/truth.md",
+      "test_case": "docs/beacon/v1.6.3/features/beacon-workflow-memory-completion-gate-v163/tests.md"
     },
     "parser_contract": "beacon-feature-package-v1",
     "truth_source_model": "feature_package_authoritative",
-    "truth_map_contract": "beacon-truth-map-v1"
+    "truth_map_contract": "beacon-truth-map-v1",
+    "state_machine_required": "false",
+    "upstream_feature": "null",
+    "promotion_ref": "null"
   },
-  "ac_count": 6,
-  "test_count": 6,
-  "checkbox_count": 7,
+  "ac_count": 7,
+  "test_count": 7,
+  "checkbox_count": 9,
   "evidence_row_count": 3,
   "gate_authority": "canonical_surfaces_preserved",
   "checkbox_gate_bypass": false,
@@ -41,16 +44,16 @@
   "truth_authority": "markdown_feature_package",
   "json_authority": false,
   "source_paths": {
-    "truth": "docs/beacon/v1.6.3/features/beacon-governance-truth-canonical-schema/truth.md",
-    "tests": "docs/beacon/v1.6.3/features/beacon-governance-truth-canonical-schema/tests.md",
-    "tasks": "docs/beacon/v1.6.3/features/beacon-governance-truth-canonical-schema/tasks.md",
-    "evidence": "docs/beacon/v1.6.3/features/beacon-governance-truth-canonical-schema/evidence.md"
+    "truth": "docs/beacon/v1.6.3/features/beacon-workflow-memory-completion-gate-v163/truth.md",
+    "tests": "docs/beacon/v1.6.3/features/beacon-workflow-memory-completion-gate-v163/tests.md",
+    "tasks": "docs/beacon/v1.6.3/features/beacon-workflow-memory-completion-gate-v163/tasks.md",
+    "evidence": "docs/beacon/v1.6.3/features/beacon-workflow-memory-completion-gate-v163/evidence.md"
   },
   "source_hashes": {
-    "truth": "7c70bfdd99d071c09b085ee1f46918c1b958602b09dfb76cc6c0f2c2c094a7c0",
-    "tests": "93b5662dff22877b69ba32d54ed57ec6c70773002d817ccb1b93ad78f290f873",
-    "tasks": "4b9fc0f643e2e9b29cb6801cfe70c53c0ed9e525854335a8f1c8959f76135ffe",
-    "evidence": "9df29b4df7ed1d20b498e9575a85ed3b17ce925eece5498c25d187914b795084"
+    "truth": "5bb1ffe663de0dc0332e88dde4382f56ebbd8c5ef7c4df1d6297f27baf8da407",
+    "tests": "6b693ed309f2354cfa342adc6fe8eae58f6781c22807ad07104c03e18b2a5114",
+    "tasks": "a3e081c1f52bcfdd21d0313844ac88e04db9212519b096ea3567dd3523e2beca",
+    "evidence": "465353f6983d20eeb0e60b69d0cf455d1053617d9670c7088a120f3d0832bfe6"
   },
   "runtime_json_requires_markdown_twin": false
 }

@@ -1,0 +1,164 @@
+{
+  "schema_version": "1.0",
+  "status": "blocked",
+  "summary": "implement branch preflight blocked: expected beacon/v1.6.2, dirty worktree blocks switch in .",
+  "blocked": true,
+  "version": "v1.6.2",
+  "expected_branch": "beacon/v1.6.2",
+  "current_branch": "main",
+  "current_tag": "",
+  "branch_exists": false,
+  "dirty_worktree": true,
+  "require_clean_worktree_for_switch": true,
+  "recommended_command": "git -C . stash push -u && git -C . switch beacon/v1.6.2",
+  "recommended_commands": [
+    "git -C . stash push -u && git -C . switch beacon/v1.6.2"
+  ],
+  "direct_delivery_services": [
+    "."
+  ],
+  "service_scope": {
+    "status": "pass",
+    "direct_delivery_services": [
+      "."
+    ],
+    "verified_roots": [
+      "."
+    ],
+    "unresolved_services": []
+  },
+  "reason_codes": [
+    "git_branch_target_mismatch",
+    "git_branch_prefix_mismatch",
+    "git_version_ref_not_satisfied",
+    "git_exact_branch_required",
+    "implement_branch_switch_dirty_worktree"
+  ],
+  "git_alignment": {
+    "mode": "workspace",
+    "repo_detected": true,
+    "target_branch": "beacon/v1.6.2",
+    "worktree_path": "/Users/apple/Developer/Personal/products/beacon",
+    "workspace_repos": [
+      {
+        "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+        "relative_root": ".",
+        "dirty_worktree": true,
+        "repo_url": "https://github.com/justin-mc-lai/beacon.git",
+        "base_branch": "beacon/v1.6.2",
+        "target_branch": "beacon/v1.6.2",
+        "current_branch": "main",
+        "current_commit": "1bce6bf46c286e1b348e89e4e1cfeecc975101b6",
+        "current_tag": "",
+        "worktree_path": "/Users/apple/Developer/Personal/products/beacon",
+        "version_ref": "v1.6.2",
+        "allowed_refs": [
+          "branch"
+        ],
+        "enforce_branch_prefix": "beacon/",
+        "branch_matches_target": false,
+        "branch_has_required_prefix": false,
+        "tag_matches_version": false,
+        "version_ref_satisfied": false,
+        "truth_canonical": "",
+        "on_truth_canonical": false,
+        "reason_codes": [
+          "git_branch_target_mismatch",
+          "git_branch_prefix_mismatch",
+          "git_version_ref_not_satisfied",
+          "git_exact_branch_required",
+          "implement_branch_switch_dirty_worktree"
+        ],
+        "blocked": true,
+        "detached_head": false,
+        "repo_detected": true
+      }
+    ],
+    "blocked": true,
+    "reason_codes": [
+      "git_branch_target_mismatch",
+      "git_branch_prefix_mismatch",
+      "git_version_ref_not_satisfied",
+      "git_exact_branch_required",
+      "implement_branch_switch_dirty_worktree"
+    ]
+  },
+  "run_id": "run-20260706T103640Z-dd86",
+  "feature": "beacon-global-workspace-git-admission-v162",
+  "feature_slug": "beacon-global-workspace-git-admission-v162",
+  "generated_at": "2026-07-06T10:36:41.188586+00:00",
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-global-workspace-git-admission-v162",
+    "feature_slug": "beacon-global-workspace-git-admission-v162",
+    "version": "v1.6.2",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.6.2",
+    "branch_prefix": "beacon/",
+    "base_branch": "beacon/v1.6.2",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": "/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.6.2.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-06-23T06:45:56.248921+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.6.2-beacon-global-workspace-git-admission-v162-R3",
+    "transaction_id": "tx-b00bfa419de222dbf",
+    "source_hash": "sha256:5fa1f7e145bfc52c743c163e7f96522d80e036d599c5f83c74457ea9c4879ca9",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.6.2/.machine/execution/implementation-delivery-baseline-beacon-global-workspace-git-admission-v162.json",
+    "projection_source": "implementation_delivery_baseline_envelope",
+    "execution_branch_contract": {
+      "source": "execution_markdown",
+      "version": "v1.6.2",
+      "feature": "beacon-global-workspace-git-admission-v162",
+      "material_paths": [
+        "docs/beacon/v1.6.2/execution/git-workflow-beacon-global-workspace-git-admission-v162.md",
+        "docs/beacon/v1.6.2/execution/deterministic-implementation-contract-beacon-global-workspace-git-admission-v162.md"
+      ],
+      "loaded_material_types": [
+        "git-workflow",
+        "deterministic-implementation-contract"
+      ],
+      "service_branch_map": {},
+      "service_worktree_map": {},
+      "expected_branch": "beacon/v1.6.2",
+      "branch_prefix": "beacon/",
+      "base_branch": "beacon/v1.6.2",
+      "worktree_root": "/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.2/beacon-global-workspace-git-admission-v162",
+      "require_clean_worktree_for_switch": true,
+      "use_git_worktree": false,
+      "direct_delivery_services": [
+        "."
+      ],
+      "service_directories": [
+        "."
+      ],
+      "git_roots": [
+        "."
+      ],
+      "branch_authority": "markdown_project_governance",
+      "execution_branch_override_blocked": true
+    }
+  },
+  "branch_preflight_path": ".beacon/implement/run-20260706T103640Z-dd86/branch-preflight.json"
+}

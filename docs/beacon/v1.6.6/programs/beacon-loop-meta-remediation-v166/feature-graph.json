@@ -1,0 +1,69 @@
+{
+  "schema_version": "beacon-feature-graph-v1",
+  "program_slug": "beacon-loop-meta-remediation-v166",
+  "version": "v1.6.6",
+  "plan_mode": "interactive",
+  "scope_mode": "full_parity",
+  "lake_or_ocean": "海",
+  "program_phase": "P3",
+  "p4_ack": true,
+  "user_decisions": {
+    "UD-TRACE-001": "v1.6.6_jsonl_first_spine_pointer_v2_projection_rebuild",
+    "UD-REMED-001": "runtime_overlay_only_no_auto_canonical_skill",
+    "UD-REMED-002": "tests_md_subset_plus_stop_when_maker_ne_checker",
+    "UD-PROGRAM-001": "v1.6.6_new_program_after_v1.6.5_release"
+  },
+  "upstream": {
+    "version": "v1.6.5",
+    "program_slug": "beacon-oss-borrow-hardening-v165",
+    "required_features": [
+      "beacon-workspace-pool-lease-v165",
+      "beacon-loop-pattern-registry-v165",
+      "beacon-loop-failure-mode-catalog-v165",
+      "beacon-loop-token-budget-v165",
+      "beacon-loop-readiness-audit-v165"
+    ]
+  },
+  "lakes": [
+    {
+      "phase": 1,
+      "slug": "beacon-agent-structured-trace-v166",
+      "lake_or_ocean": "湖",
+      "depends_on": [],
+      "consumes_upstream": ["beacon-loop-readiness-audit-v165"],
+      "parity_subset": "agent_trace_schema_jsonl_spine_artifacts",
+      "harness_route": "beacon-gen-truth",
+      "summary": "Structured agent trace to JSONL + lifecycle index; loop-audit signal."
+    },
+    {
+      "phase": 2,
+      "slug": "beacon-loop-stagnation-detector-v166",
+      "lake_or_ocean": "湖",
+      "depends_on": ["beacon-agent-structured-trace-v166"],
+      "consumes_upstream": [
+        "beacon-loop-pattern-registry-v165",
+        "beacon-loop-failure-mode-catalog-v165",
+        "beacon-loop-token-budget-v165"
+      ],
+      "parity_subset": "deterministic_stagnation_detection_meta_governor",
+      "harness_route": "beacon-gen-truth",
+      "summary": "Governor reads trace; detects repeat failure, repeat labor, plateau."
+    },
+    {
+      "phase": 3,
+      "slug": "beacon-harness-remediation-sandbox-v166",
+      "lake_or_ocean": "湖",
+      "depends_on": ["beacon-loop-stagnation-detector-v166"],
+      "consumes_upstream": ["beacon-workspace-pool-lease-v165"],
+      "parity_subset": "runtime_overlay_sandbox_eval_auto_rollback",
+      "harness_route": "beacon-gen-truth",
+      "summary": "Runtime overlay in governed worktree; eval + rollback; no canonical skill auto-write."
+    }
+  ],
+  "topology_order": [
+    "beacon-agent-structured-trace-v166",
+    "beacon-loop-stagnation-detector-v166",
+    "beacon-harness-remediation-sandbox-v166"
+  ],
+  "deferral_ids": ["D-002", "D-003", "D-004", "D-005"]
+}

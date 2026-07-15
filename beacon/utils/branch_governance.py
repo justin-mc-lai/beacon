@@ -97,6 +97,10 @@ def _branch_governance_contract_from_sources(
         _string(override.get("repo_root")) or selected_repo_root or _string(git_workflow.get("worktree_root")) or _string(project_root)
     )
     target_branch = _string(git_workflow.get("expected_branch")) or selected_branch
+    from beacon.utils.execution_branch_contract import is_program_level_branch_contract
+
+    if is_program_level_branch_contract(git_workflow):
+        target_branch = _string(git_workflow.get("expected_branch")) or target_branch
     current_branch = git_output(Path(repo_root), "branch", "--show-current") if repo_root else ""
     current_worktree_path = _normalized_path(
         _string(override.get("current_worktree_path"))
@@ -108,6 +112,7 @@ def _branch_governance_contract_from_sources(
     worktree_path = _normalized_path(
         _string(override.get("worktree_path"))
         or _string(governance.get("worktree_path"))
+        or _string(git_workflow.get("dedicated_worktree_path"))
         or _string(git_workflow.get("worktree_path"))
         or (selected_repo_root if worktree_path_policy == "follow-repo-root" and selected_repo_root else "")
         or current_worktree_path
@@ -194,7 +199,7 @@ def _branch_governance_contract_from_sources(
     }
 
 
-def evaluate_branch_governance(contract: dict[str, Any]) -> dict[str, Any]:
+def evaluate_branch_governance(contract: dict[str, Any], *, strict: bool = False) -> dict[str, Any]:
     payload = dict(contract)
     template_name = _string(payload.get("template_name")) or STANDARD_TEMPLATE
     if template_name == DUAL_VERSION_TEMPLATE:
@@ -213,6 +218,7 @@ def evaluate_branch_governance(contract: dict[str, Any]) -> dict[str, Any]:
             "pipeline_run_id",
         ]
     target_branch = _string(payload.get("target_branch"))
+    current_branch = _string(payload.get("current_branch"))
     current_worktree_path = _normalized_path(payload.get("current_worktree_path"))
     worktree_path = _normalized_path(payload.get("worktree_path"))
     previous_baseline = _string(payload.get("previous_version_baseline_branch"))
@@ -254,6 +260,13 @@ def evaluate_branch_governance(contract: dict[str, Any]) -> dict[str, Any]:
         reason_codes.append("branch_governance_evidence_missing")
         blocked_reason = blocked_reason or ("required evidence is missing: " + ", ".join(missing_evidence))
         recommended_action = recommended_action or "record the missing workflow evidence before implementation"
+
+    if target_branch and current_branch and current_branch != target_branch:
+        reason_codes.append("branch_governance_branch_mismatch")
+        if strict:
+            blocked = True
+            blocked_reason = blocked_reason or f"current branch `{current_branch}` does not match target `{target_branch}`"
+            recommended_action = recommended_action or f"switch to `{target_branch}` or enter governed worktree before implementation"
 
     evidence_status = "pass" if not missing_evidence else "blocked"
     payload.update(
@@ -358,6 +371,7 @@ def resolve_branch_governance_view(
     feature: str = "",
     metadata_view: dict[str, Any] | None = None,
     git_workflow: dict[str, Any] | None = None,
+    strict: bool = False,
 ) -> dict[str, Any]:
     contract = _branch_governance_contract_from_sources(
         metadata_view=metadata_view,
@@ -366,7 +380,7 @@ def resolve_branch_governance_view(
         version=version,
         project_root=project_root,
     )
-    evaluated = evaluate_branch_governance(contract)
+    evaluated = evaluate_branch_governance(contract, strict=strict)
     return {
         **evaluated,
         "human_markdown": render_branch_governance_markdown(contract),

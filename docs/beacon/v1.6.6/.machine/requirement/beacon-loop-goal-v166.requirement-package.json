@@ -1,0 +1,319 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-15T06:07:36.894762+00:00",
+  "feature": "beacon-loop-goal-v166",
+  "feature_slug": "beacon-loop-goal-v166",
+  "version": "v1.6.6",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
+    "tests": "docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+    "tasks": "docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tasks.md",
+    "evidence": "docs/beacon/v1.6.6/features/beacon-loop-goal-v166/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "ebeafa26931f7546c7af3c425cd9792468be43c923eebd1aa30db5d111569fe0",
+    "tests": "b136cc96a5b2634b3e60278ad52e9dd4a975697111964656d189683545f6175d",
+    "tasks": "d9034f52537648072b3a2a52e7a5bfbbc2a18f796c63d27f3ea2f15955d06951",
+    "evidence": "3eb15daff4854ba5678eaea9dca6b312422eeaba46699d7734ed08b7eae1463a"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-loop-goal-v166",
+    "version": "v1.6.6",
+    "status": "frozen",
+    "revision_id": "R2",
+    "language": "zh",
+    "change_reason": "R2 - Freeze beacon-loop-goal as a public host-visible governor skill and update taxonomy, inventory, counts, and release governance",
+    "canonical_refs": {
+      "truth": "docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
+      "tests": "docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+      "tasks": "docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tasks.md",
+      "evidence": "docs/beacon/v1.6.6/features/beacon-loop-goal-v166/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "program_ref": "docs/beacon/v1.6.6/programs/beacon-loop-meta-remediation-v166/feature-graph.json"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "state-init",
+      "description": "`loop_goal_state.init()` 创建状态文件，schema 为 `loop-goal-state.v1`，包含 run_id/version/feature/utterance/current_stage"
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "stage-transition",
+      "description": "`loop_goal_state.transition()` 更新 `current_stage` 并追加 `stage_history`，每次转换写入 `at` 时间戳"
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "precheck-gate",
+      "description": "编排器启动前调用 governance precheck；`blocked` 时停止并输出 `reason_code=governance_version_not_registered`"
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "truth-gate",
+      "description": "Truth 阶段完成后，编排器读 `truth.md` frontmatter；`status != frozen` 时停留在 `truth_routing`，不进入 implement"
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "implement-gate",
+      "description": "Implement 阶段完成后，编排器检查 pytest exit code；失败时回到 `implement_routing`（repair loop），最多 3 次"
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "qa-gate",
+      "description": "QA 阶段完成后，编排器读 qa verdict；`fail` 时回到 `implement_routing`（repair loop），最多 3 次"
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "release-human-gate",
+      "description": "Release 阶段永远需要人工确认；即使 `auto_decide=true`，`current_stage=release_gate` 时编排器停在人工输入门"
+    },
+    {
+      "ac_id": "AC-008",
+      "theme": "error-recovery",
+      "description": "任何阶段 `blocked` 时，`current_stage` 转为 `error_recovery`，输出推荐路由 `beacon-gov-debug`"
+    },
+    {
+      "ac_id": "AC-009",
+      "theme": "stop-when",
+      "description": "每个阶段转换前检查 `stop_when` 条件；满足时停止并输出 `reason_code=stop_when_satisfied`"
+    },
+    {
+      "ac_id": "AC-010",
+      "theme": "skill-routing",
+      "description": "编排器的 SKILL.md 包含完整决策树，agent 可按决策树顺序加载对应 skill"
+    },
+    {
+      "ac_id": "AC-011",
+      "theme": "public-skill-release-shape",
+      "description": "`beacon-loop-goal` 作为公开 host-visible governor skill 被 v1.6 taxonomy、agent surface expected list、skill inventory/count 和 release governance 接受；公开 skill 总数为 38"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-LG-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v166_loop_goal.py::test_state_init_creates_file -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "`loop_goal_state.init()` 创建 `.beacon/state/loop-goal/<run_id>.json`，schema 为 `loop-goal-state.v1`，含 run_id/version/feature/utterance/current_stage",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-LG-002",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v166_loop_goal.py::test_stage_transition_appends_history -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "`transition()` 更新 `current_stage` 并追加 `stage_history`，含 `at` 时间戳",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-LG-003",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v166_loop_goal.py::test_precheck_gate_blocks_unregistered -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Governance precheck blocked 时编排器停止，输出 `reason_code=governance_version_not_registered`",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-LG-004",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v166_loop_goal.py::test_truth_gate_waits_for_frozen -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Truth 阶段后 truth.md status != frozen → 编排器停留在 `truth_routing`，不进入 implement",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-LG-005",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v166_loop_goal.py::test_implement_gate_repair_loop -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Tests fail → 编排器回到 `implement_routing`；最多 3 次 repair loop",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-LG-006",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v166_loop_goal.py::test_qa_gate_repair_loop -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "QA fail → 编排器回到 `implement_routing`；最多 3 次",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-007",
+      "tc_id": "TC-LG-007",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v166_loop_goal.py::test_release_human_gate_blocks_auto -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "即使 `auto_decide=true`，`release_gate` 阶段编排器停在人工确认门，不能自动通过",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-008",
+      "tc_id": "TC-LG-008",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v166_loop_goal.py::test_error_recovery_routes_debug -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "任何阶段 blocked → `current_stage=error_recovery`，输出推荐路由 `beacon-gov-debug`",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-009",
+      "tc_id": "TC-LG-009",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v166_loop_goal.py::test_stop_when_halts_delivery -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "stop_when 条件满足 → 编排器停止，输出 `reason_code=stop_when_satisfied`",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-010",
+      "tc_id": "TC-LG-010",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v166_loop_goal.py::test_skill_routing_decision_tree -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "SKILL.md 包含完整决策树，每个阶段到 skill 的映射正确",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-011",
+      "tc_id": "TC-LG-011",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_doctor_agent_surface.py::test_verify_agent_surface_v160_should_pass_after_setup tests/test_v160_skill_harness_taxonomy.py::test_v160_skill_package_materialize_should_create_harness_only_package tests/test_v161_agent_eval.py::test_v161_taxonomy_includes_beacon_eval_agent tests/test_v161_agent_eval.py::test_agent_eval_catalog_materialize -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "`beacon-loop-goal` 被 v1.6 taxonomy / agent surface expected list / skill inventory / release governance 计为公开 governor skill，公开 skill 总数为 38",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "truth → `beacon-gen-truth` — freeze truth.md + tests.md + tasks.md + evidence.md",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "implement → `beacon-gen-implement` — create `beacon/utils/loop_goal_state.py` with init, transition, read_state, check_stop_when",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "implement → `beacon-gen-implement` — create `.agents/skills/beacon-loop-goal/SKILL.md` with full decision tree + state machine + skill routing matrix",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-18",
+      "title": "TASK-003A change → `beacon-gen-change` — freeze `beacon-loop-goal` as public host-visible governor skill; update taxonomy, agent surface expected list, inventory/counts, and release governance coverage",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-19",
+      "title": "TASK-003B implement → `beacon-gen-implement` — implement R2 public skill release shape in packaged skill source, agent surface taxonomy, agent eval inventory, fixtures, and regression tests",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "implement → `beacon-gen-implement` — integrate `loop-goal` status view into `beacon/commands/status.py` (deferred)",
+      "status": "blocked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "implement → `beacon-gen-implement` — create `tests/test_v166_loop_goal.py` with 10 test cases",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "qa → `beacon-eval-qa` — R2 QA passed for AC-001..011 with run `run-20260715T135541350657`",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "release → `beacon-eval-release` — release evaluator owns final verdict after acceptance/read-model projection is complete",
+      "status": "blocked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-gen-truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
+      "status": "indexed",
+      "route": "truth"
+    },
+    {
+      "surface": "beacon-gen-truth",
+      "authority": "test_truth",
+      "canonical_artifact": "docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+      "status": "indexed",
+      "route": "truth"
+    },
+    {
+      "surface": "beacon-pln-review",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.6/programs/beacon-loop-meta-remediation-v166/planner-review.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "beacon-gen-implement",
+      "authority": "support_advisory",
+      "canonical_artifact": "beacon/utils/loop_goal_state.py",
+      "status": "linked",
+      "route": "implement"
+    },
+    {
+      "surface": "beacon-gen-implement",
+      "authority": "support_advisory",
+      "canonical_artifact": ".agents/skills/beacon-loop-goal/SKILL.md",
+      "status": "linked",
+      "route": "implement"
+    },
+    {
+      "surface": "beacon-gen-implement",
+      "authority": "support_advisory",
+      "canonical_artifact": "skills/beacon/beacon-loop-goal/SKILL.md",
+      "status": "linked",
+      "route": "implement"
+    },
+    {
+      "surface": "beacon-gen-implement",
+      "authority": "support_advisory",
+      "canonical_artifact": "beacon/utils/agent_surface.py",
+      "status": "linked",
+      "route": "implement"
+    },
+    {
+      "surface": "beacon-gen-implement",
+      "authority": "support_advisory",
+      "canonical_artifact": "beacon/utils/agent_eval_kit.py",
+      "status": "linked",
+      "route": "implement"
+    },
+    {
+      "surface": "beacon-gen-implement",
+      "authority": "support_advisory",
+      "canonical_artifact": "fixtures/agent-eval/v161/live/beacon-loop-goal.prompt.txt",
+      "status": "linked",
+      "route": "implement"
+    },
+    {
+      "surface": "beacon-gen-implement",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.6/execution/implementation-summary-beacon-loop-goal-v166-r2.md",
+      "status": "linked",
+      "route": "implement"
+    },
+    {
+      "surface": "beacon-eval-qa",
+      "authority": "qa_verdict",
+      "canonical_artifact": ".beacon/qa/features/beacon-loop-goal-v166/scorecard.json; .beacon/qa/status.json; .beacon/evidence/auto-test/run-20260715T135541350657/summary.json",
+      "status": "passed",
+      "route": "qa"
+    }
+  ]
+}

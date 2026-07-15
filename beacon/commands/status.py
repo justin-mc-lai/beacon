@@ -790,5 +790,61 @@ def show_status(
     )
 
 
+@app.command("loop-budget")
+def loop_budget(
+    project_root: str = typer.Option("", "--project-root", help="Project root path"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version filter"),
+    date: str = typer.Option("", "--date", help="UTC date YYYY-MM-DD"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Show loop token budget totals, caps, and pause state."""
+    from beacon.utils.loop_budget import build_loop_budget_status
+
+    root = (Path(project_root) if project_root else Path.cwd()).expanduser().resolve()
+    resolved_version = resolve_target_version(root, version)
+    payload = build_loop_budget_status(root, version=resolved_version, date=date or None)
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo("Beacon Loop Budget")
+        typer.echo(f"status: {payload.get('status')}")
+        typer.echo(f"date: {payload.get('date')}")
+        typer.echo(f"reason_code: {payload.get('reason_code') or 'none'}")
+        typer.echo(f"project_total: {payload.get('totals', {}).get('project_total', 0)}")
+    raise typer.Exit(code=0)
+
+
+@app.command("loop-goal")
+def loop_goal(
+    project_root: str = typer.Option("", "--project-root", help="Project root path"),
+    run_id: str = typer.Option("", "--run-id", help="Loop-goal run id; omit to list all runs"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Show loop-goal orchestrator run status (current stage, next skill, outputs)."""
+    from beacon.utils.loop_goal_state import build_status
+
+    root = (Path(project_root) if project_root else Path.cwd()).expanduser().resolve()
+    payload = build_status(root, run_id=run_id or "")
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo("Beacon Loop Goal")
+        typer.echo(f"status: {payload.get('status')}")
+        if payload.get("run_id"):
+            typer.echo(f"run_id: {payload.get('run_id')}")
+            typer.echo(f"feature: {payload.get('feature')}")
+            typer.echo(f"current_stage: {payload.get('current_stage')}")
+            typer.echo(f"next_skill: {payload.get('next_skill') or 'none'}")
+            typer.echo(f"repair_loop_count: {payload.get('repair_loop_count')}")
+        else:
+            typer.echo(f"run_count: {payload.get('run_count', 0)}")
+            for run in payload.get("runs", []):
+                typer.echo(
+                    f"  {run.get('run_id')} [{run.get('feature')}] "
+                    f"stage={run.get('current_stage')} next={run.get('next_skill') or 'none'}"
+                )
+    raise typer.Exit(code=0)
+
+
 if __name__ == "__main__":
     app()

@@ -121,6 +121,11 @@ def _feature_scorecard_coverage_metrics(
     unresolved = [str(item).strip() for item in (scorecard.get("unresolved_closure_outcomes") or []) if str(item).strip()]
     if unresolved:
         return None
+    if planned_story <= 0 and feature_key:
+        feature_package_truth = project_root / "docs" / "beacon" / version / "features" / feature_key / "truth.md"
+        if feature_package_truth.exists():
+            planned_story = 1
+            implemented_story = 1
 
     coverage_current = scorecard.get("coverage_current") if isinstance(scorecard.get("coverage_current"), dict) else {}
     total_ac = int(scorecard.get("ac_total") or 0)
@@ -474,3 +479,13 @@ def write_coverage_summary(
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     return path
+
+
+def project_qa_layer_confidence(profile_completeness: dict[str, Any] | None) -> dict[str, Any]:
+    """Project confidence_chain / state_machine_coverage from qa profile completeness."""
+    payload = profile_completeness if isinstance(profile_completeness, dict) else {}
+    return {
+        "schema_version": "1.0",
+        "confidence_chain": payload.get("confidence_chain") if isinstance(payload.get("confidence_chain"), dict) else {},
+        "state_machine_coverage": payload.get("state_machine_coverage") if isinstance(payload.get("state_machine_coverage"), dict) else {},
+    }

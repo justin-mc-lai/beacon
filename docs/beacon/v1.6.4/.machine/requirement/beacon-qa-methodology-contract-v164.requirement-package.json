@@ -1,0 +1,150 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-02T07:07:10.108328+00:00",
+  "feature": "beacon-qa-methodology-contract-v164",
+  "feature_slug": "beacon-qa-methodology-contract-v164",
+  "version": "v1.6.4",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/truth.md",
+    "tests": "docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tests.md",
+    "tasks": "docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tasks.md",
+    "evidence": "docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "f559b8df422a372845eb2e247cab272084269d1bdbd8d2c89e8e25b8743fa5f7",
+    "tests": "5c12c3bde7cb6c5ac7b15588f414128302db136decf550b6d25f4c0d667e44fa",
+    "tasks": "04ed103ba458441729c1e93ff9a191c9941b71adfc5e968dbf0f23e8b9d7c9e1",
+    "evidence": "2edbb151ada32f9adb48fdc7fecc943ba1e8ca473f3299e4a6580983ffc7dc5c"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-qa-methodology-contract-v164",
+    "version": "v1.6.4",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "R1 — 第一性原理 + 对抗式审查方法论写入 skill 行为契约（global-boundaries §5 增量 + qa skill 强制 + planner-review adversarial lane）",
+    "source_revision_id": "null",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/truth.md",
+      "user_story": "docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/truth.md",
+      "test_case": "docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tests.md"
+    },
+    "parser_contract": "beacon-feature-package-v1",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "global-boundaries-first-principles",
+      "description": "`global-boundaries.md §5` 新增「第一性原理」条款（动手前回到根本问题 + 拆最小可验证单元 + 每个决定说得出为什么）；纯增量不改既有条款（**Must**，UD-001/003）"
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "global-boundaries-adversarial",
+      "description": "`global-boundaries.md §5` 新增「对抗式审查」条款（交付前最挑剔审查 + 列 3-5 翻车点 + 验证证据 + 不接受看起来没问题）；纯增量（**Must**，UD-002）"
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "qa-skill-contract-mandatory",
+      "description": "`beacon-eval-qa` SKILL.md 增\"交付前对抗式审查\"强制契约；缺失翻车点/验证证据 → block（非可选）（**Must**，UD-002）"
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "adversarial-lane-mandatory",
+      "description": "`planner_review_runtime` adversarial lane 在 qa release 前强制触发（非仅信号触发）；输出含 3-5 翻车点 + 验证证据形状；缺失 → block（**Must**）"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-MC-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v164_qa_methodology_contract.py::test_first_principles_clause -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "`global-boundaries.md §5` 含「第一性原理」条款（动手前回到根本 + 最小可验证单元 + 为什么）；§5 既有 4 条条款未被修改（纯增量校验）",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-MC-002",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v164_qa_methodology_contract.py::test_adversarial_clause -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "`global-boundaries.md §5` 含「对抗式审查」条款（最挑剔审查 + 3-5 翻车点 + 验证证据 + 不接受看起来没问题）；纯增量校验",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-MC-003",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v164_qa_methodology_contract.py::test_qa_skill_contract_mandatory -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "`beacon-eval-qa` SKILL.md 含\"交付前对抗式审查\"强制契约；缺失翻车点/验证证据 → block（reason_code `adversarial_review_missing`）",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-MC-004",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v164_qa_methodology_contract.py::test_adversarial_lane_mandatory -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "`planner_review_runtime` adversarial lane 在 qa release 前强制触发（非仅信号触发）；输出含 3-5 翻车点 + 验证证据形状；缺失 → block",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "truth.define + acceptance — R1 draft",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "truth.coverage — TC-MC-001..004（Round 4）",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "verify-closure pass（Round 5）",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "requirement-clarity materialize（Round 6）",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "freeze（Round 7, user-gated）",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "implement AC-001..004（downstream beacon-gen-implement）",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "truth.md",
+      "authority": "requirement_truth",
+      "artifact": "docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/truth.md"
+    },
+    {
+      "surface": "tests.md",
+      "authority": "test_truth",
+      "artifact": "docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tests.md"
+    },
+    {
+      "surface": "tasks.md",
+      "authority": "requirement_truth",
+      "artifact": "docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/tasks.md"
+    }
+  ]
+}

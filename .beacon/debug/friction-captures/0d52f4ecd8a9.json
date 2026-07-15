@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0",
+  "captured_at": "2026-07-06T03:28:09.837853+00:00",
+  "summary": "SidePilot delivery repo branch drift: v0.0.9 implement ran in cloud-platform worktree on beacon/v0.0.9 but workspace admit skipped (require_workspace_admission=false). v0.0.10 r...",
+  "raw_note": "SidePilot delivery repo branch drift: v0.0.9 implement ran in cloud-platform worktree on beacon/v0.0.9 but workspace admit skipped (require_workspace_admission=false). v0.0.10 refreeze/QA scaffold written on main; v0.0.9 tasks.md docs committed on main ahead of feature branch. Actual worktrees: main@repo-root, v0.0.8@sibling, v0.0.9@cloud-platform subdir, v0.0.10@sibling — but admit resolves per-feature paths beacon/vX/feature-slug@product-identity sibling dirs that do not exist. branch-governance verify on main for v0.0.9 returns pass. Root cause hypothesis: delivery version contract disables GIT_ADMISSION enforcement; per-feature branch naming mismatch vs program-level beacon/v0.0.9 branch; agent cwd=cloud-platform without admit step; no preflight fail-closed on wrong branch.",
+  "item_class": "improvement",
+  "severity": "P2",
+  "domain": "implement",
+  "project_root": "/Users/apple/Developer/Personal/products/beacon",
+  "evidence_abs_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/debug/friction-captures/0d52f4ecd8a9.json"
+}

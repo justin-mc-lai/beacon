@@ -10,6 +10,7 @@ from beacon.utils.agent_surface import verify_v160_no_fake_delivery
 from beacon.utils.feature_package import package_paths, validate_feature_package, _parse_frontmatter, _read_text
 from beacon.utils.requirement_clarity import build_requirement_clarity_gate_payload
 from beacon.utils.story_state import feature_slug
+from beacon.utils.truth_map import feature_package_authoritative, feature_package_ready
 from beacon.utils.versioning import resolve_target_version
 
 TIG_SCHEMA_VERSION = "1.0"
@@ -414,40 +415,60 @@ def build_truth_integrity_gate(
         list(clarity_gate.get("findings", [])) if isinstance(clarity_gate.get("findings"), list) else []
     )
 
-    paths = package_paths(project_root, version=resolved_version, feature=feature)
-    for key in ("truth", "tests", "tasks", "evidence"):
-        if not paths[key].exists():
-            findings.append(
-                _finding(
-                    kind="missing_package_file",
-                    file=paths[key],
-                    line=1,
-                    text=f"missing_{key}",
-                    reason_code="feature_package_incomplete",
-                )
-            )
+    package_gate_enabled = feature_package_authoritative(resolved_version) or feature_package_ready(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+    )
 
-    findings.extend(scan_integrity_extension_lines(project_root, version=resolved_version, feature=feature))
-    findings.extend(scan_fake_delivery_lines(project_root, version=resolved_version, feature=feature))
+    validation: dict[str, Any] = {
+        "status": "skipped",
+        "blocked": False,
+        "reason_code": "",
+        "skip_reason": "legacy_split_truth",
+        "diagnostics": [],
+    }
+    if package_gate_enabled:
+        paths = package_paths(project_root, version=resolved_version, feature=feature)
+        for key in ("truth", "tests", "tasks", "evidence"):
+            if not paths[key].exists():
+                findings.append(
+                    _finding(
+                        kind="missing_package_file",
+                        file=paths[key],
+                        line=1,
+                        text=f"missing_{key}",
+                        reason_code="feature_package_incomplete",
+                    )
+                )
+
+        findings.extend(scan_integrity_extension_lines(project_root, version=resolved_version, feature=feature))
+        findings.extend(scan_fake_delivery_lines(project_root, version=resolved_version, feature=feature))
 
     # TIG-DC: Determinism Check (placeholder + hollow template)
-    dc_findings = scan_determinism_lines(project_root, version=resolved_version, feature=feature)
+    dc_findings = (
+        scan_determinism_lines(project_root, version=resolved_version, feature=feature)
+        if package_gate_enabled
+        else []
+    )
     findings.extend(dc_findings)
     dc_placeholder_count = sum(1 for f in dc_findings if f.get("reason_code") == "TRUTH_DETERMINISM_PLACEHOLDER")
     dc_hollow_count = sum(1 for f in dc_findings if f.get("reason_code") == "TRUTH_DETERMINISM_HOLLOW_TEMPLATE")
 
-    closure_payload = build_closure_payload_from_package(
-        project_root, version=resolved_version, feature=feature
+    closure_payload = (
+        build_closure_payload_from_package(project_root, version=resolved_version, feature=feature)
+        if package_gate_enabled
+        else {}
     )
     fake_delivery = verify_v160_no_fake_delivery(closure_payload)
-
-    validation = validate_feature_package(
-        project_root,
-        version=resolved_version,
-        feature=feature,
-        write_report=mode == "block",
-    )
-    findings.extend(_validation_findings(project_root, validation))
+    if package_gate_enabled:
+        validation = validate_feature_package(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            write_report=mode == "block",
+        )
+        findings.extend(_validation_findings(project_root, validation))
 
     truth_status = _truth_frontmatter_status(project_root, resolved_version, feature)
     integrity_findings = [f for f in findings if f.get("kind") != "inline_marker" or True]

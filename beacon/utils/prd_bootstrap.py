@@ -11,9 +11,9 @@ from typing import Any
 
 from beacon.utils.change_surface import build_change_command
 from beacon.utils.context_files import verify_context_files
-from beacon.utils.feature_package import materialize_feature_package
+from beacon.utils.feature_package import materialize_feature_package, package_paths, render_tests_package, render_truth_package
 from beacon.utils.runtime import now_iso, utc_compact_ts, write_json
-from beacon.utils.truth_map import feature_package_authoritative, resolve_truth_read_refs
+from beacon.utils.truth_map import feature_package_authoritative_feature, resolve_truth_read_refs
 from beacon.utils.versioning import resolve_runtime_version, resolve_target_version
 from beacon.utils.truth_template import render_prd_template as _render_prd_template_v2
 
@@ -352,8 +352,8 @@ def _minimal_test_case_from_truth(
     )
 
 
-def _existing_package(project_root: Path, version: str, slug: str) -> dict[str, Any]:
-    targets = _paths(project_root, version, slug)
+def _existing_package(project_root: Path, version: str, slug: str, *, legacy_split: bool = False) -> dict[str, Any]:
+    targets = _paths(project_root, version, slug, legacy_split=legacy_split)
     docs = {name: _read_text(path) for name, path in targets.items()}
     exists = {name: bool(text.strip()) for name, text in docs.items()}
     metadata = {name: _extract_doc_metadata(text) for name, text in docs.items()}
@@ -396,9 +396,11 @@ def _build_orchestrated_documents(
     feature: str,
     description: str,
     version: str,
+    legacy_split: bool = False,
 ) -> dict[str, Any]:
     slug = _slug(feature)
-    package = _existing_package(project_root, version, slug)
+    package = _existing_package(project_root, version, slug, legacy_split=legacy_split)
+    package_authoritative = feature_package_authoritative_feature(project_root, version=version, feature=slug) and not legacy_split
     package_state = _detect_package_state(package)
     docs = dict(package["docs"])
     metadata = dict(package["metadata"])
@@ -409,6 +411,53 @@ def _build_orchestrated_documents(
     drift_digest: list[dict[str, Any]] = []
     supplement_tasks: list[dict[str, Any]] = []
     gaps: list[dict[str, Any]] = []
+
+    if package_authoritative:
+        paths = package_paths(project_root, version=version, feature=slug)
+        package_exists = {
+            "truth": paths["truth"].exists(),
+            "tests": paths["tests"].exists(),
+        }
+        if not package_exists["truth"]:
+            docs["prd"] = render_truth_package(project_root, version=version, feature=feature)
+            docs["user_story"] = docs["prd"]
+            metadata["prd"] = _extract_doc_metadata(docs["prd"])
+            metadata["user_story"] = metadata["prd"]
+            generated_layers.extend(["truth"])
+        if not package_exists["tests"]:
+            docs["test_case"] = render_tests_package(project_root, version=version, feature=feature)
+            metadata["test_case"] = _extract_doc_metadata(docs["test_case"])
+            generated_layers.extend(["tests"])
+        if not generated_layers:
+            package_state = "package_ready"
+            closure_verdict = "freeze_ready"
+            readiness_verdict = "implementation_pending"
+        else:
+            package_state = "package_partial"
+            closure_verdict = "draft_generated"
+            readiness_verdict = "supplement_required"
+            gaps.append(_gap_entry(gap_id="GAP-001", theme="package-review", question="Package truth generated from available requirement material; review before freeze.", blocks=["freeze_ready"]))
+        consistency = {"ok": True, "story_ac_ids": [], "test_case_ac_ids": [], "missing_in_test_case": []}
+        quality = _quality_report(docs, max_placeholders=0)
+        closure_analysis = _closure_analysis(docs, metadata)
+        return {
+            "slug": slug,
+            "targets": package["targets"],
+            "docs": docs,
+            "package_state": package_state,
+            "missing_layers": [name for name in ("prd", "user_story", "test_case") if not package["exists"].get(name)],
+            "generated_layers": generated_layers,
+            "derived_layers": derived_layers,
+            "reverse_derived_layers": reverse_derived_layers,
+            "drift_digest": drift_digest,
+            "quality": quality,
+            "consistency": consistency,
+            "closure_analysis": closure_analysis,
+            "closure_verdict": closure_verdict,
+            "readiness_verdict": readiness_verdict,
+            "supplement_tasks": supplement_tasks,
+            "gap_digest": gaps,
+        }
 
     if package_state == "empty":
         docs = _build_documents(feature, description, version)
@@ -902,7 +951,7 @@ def _consistency_report(*, user_story: str, test_case: str) -> dict[str, Any]:
     }
 
 
-def _paths(project_root: Path, version: str, slug: str) -> dict[str, Path]:
+def _legacy_paths(project_root: Path, version: str, slug: str) -> dict[str, Path]:
     base = project_root / "docs" / "beacon" / version
     return {
         "prd": base / "prd" / f"{slug}.md",
@@ -911,15 +960,46 @@ def _paths(project_root: Path, version: str, slug: str) -> dict[str, Path]:
     }
 
 
+def _paths(project_root: Path, version: str, slug: str, *, legacy_split: bool = False) -> dict[str, Path]:
+    if legacy_split:
+        return _legacy_paths(project_root, version, slug)
+    if feature_package_authoritative_feature(project_root, version=version, feature=slug):
+        paths = package_paths(project_root, version=version, feature=slug)
+        return {
+            "prd": paths["truth"],
+            "user_story": paths["truth"],
+            "test_case": paths["tests"],
+        }
+    return _legacy_paths(project_root, version, slug)
+
+
 def _prepare_overwrite_plan(targets: dict[str, Path], *, no_overwrite: bool) -> tuple[list[Path], list[Path]]:
-    existing = [path for path in targets.values() if path.exists()]
-    missing = [path for path in targets.values() if not path.exists()]
+    unique_paths = list(dict.fromkeys(targets.values()))
+    existing = [path for path in unique_paths if path.exists()]
+    missing = [path for path in unique_paths if not path.exists()]
     if no_overwrite and existing:
         raise RuntimeError(
             "target docs already exist; default --no-overwrite blocks apply. "
             "Use --allow-overwrite after review."
         )
     return existing, missing
+
+
+def _write_targets(
+    targets: dict[str, Path],
+    *,
+    generated_layers: list[str],
+    package_authoritative: bool,
+) -> dict[str, Path]:
+    if not package_authoritative:
+        return targets
+    generated = set(generated_layers)
+    selected: dict[str, Path] = {}
+    if "truth" in generated:
+        selected["prd"] = targets["prd"]
+    if "tests" in generated:
+        selected["test_case"] = targets["test_case"]
+    return selected
 
 
 def _write_state(project_root: Path, run_id: str, payload: dict[str, Any]) -> Path:
@@ -939,6 +1019,7 @@ def run_prd_bootstrap(
     no_overwrite: bool = True,
     strict_context_verify: bool = True,
     max_placeholders: int = 0,
+    legacy_split: bool = False,
 ) -> dict[str, Any]:
     if not str(feature or "").strip():
         raise ValueError("feature must not be empty")
@@ -954,10 +1035,21 @@ def run_prd_bootstrap(
         feature=feature,
         description=description,
         version=resolved_version,
+        legacy_split=legacy_split,
     )
     slug = orchestration["slug"]
     targets = orchestration["targets"]
     docs = orchestration["docs"]
+    package_authoritative = feature_package_authoritative_feature(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+    ) and not legacy_split
+    write_targets = _write_targets(
+        targets,
+        generated_layers=list(orchestration["generated_layers"]),
+        package_authoritative=package_authoritative,
+    )
     quality = _quality_report(docs, max_placeholders=max_placeholders)
     consistency = orchestration["consistency"]
     should_apply = bool(apply) and not bool(dry_run)
@@ -980,6 +1072,7 @@ def run_prd_bootstrap(
         "mode": "apply" if should_apply else "dry-run",
         "dry_run": not should_apply,
         "no_overwrite": bool(no_overwrite),
+        "legacy_split": bool(legacy_split),
         "strict_context_verify": bool(strict_context_verify),
         "targets": {name: str(path.relative_to(project_root)) for name, path in targets.items()},
         "package_state": orchestration["package_state"],
@@ -1063,13 +1156,25 @@ def run_prd_bootstrap(
     replaced_paths: list[tuple[Path, Path]] = []
     try:
         with lock:
-            existing, _missing = _prepare_overwrite_plan(targets, no_overwrite=no_overwrite)
+            existing, _missing = _prepare_overwrite_plan(write_targets, no_overwrite=no_overwrite)
             if existing and no_overwrite:
                 raise RuntimeError(
                     "target docs already exist; default --no-overwrite blocks apply. Use --allow-overwrite after review."
                 )
 
-            for name, path in targets.items():
+            written_paths: set[Path] = set()
+            for name, path in write_targets.items():
+                if path in written_paths:
+                    payload["write_actions"].append(
+                        {
+                            "target": name,
+                            "path": str(path.relative_to(project_root)),
+                            "action": "aliased",
+                            "backup_path": "",
+                        }
+                    )
+                    continue
+                written_paths.add(path)
                 if path.exists():
                     backup_path = backups_root / f"{name}.bak"
                     backup_path.parent.mkdir(parents=True, exist_ok=True)
@@ -1089,12 +1194,12 @@ def run_prd_bootstrap(
                     }
                 )
 
-            if feature_package_authoritative(resolved_version):
+            if feature_package_authoritative_feature(project_root, version=resolved_version, feature=feature):
                 package_payload = materialize_feature_package(
                     project_root,
                     version=resolved_version,
                     feature=feature,
-                    force=True,
+                    force=False,
                 )
                 payload["feature_package"] = package_payload
                 payload["truth_read_refs"] = resolve_truth_read_refs(

@@ -291,11 +291,28 @@ def render_truth_package(project_root: Path, *, version: str, feature: str) -> s
         "",
         f"# Feature: {feature}",
         "",
+        "## 大白话说明",
+        "",
+        f"- 这件事要解决的是：让用户能稳定完成 `{feature}` 对应的核心工作。",
+        "- 用户不用理解内部模块、矩阵或状态字段，也应该能看懂它为什么存在、怎么用、做到什么算完成。",
+        "- 技术绑定单独放在后面的章节；本节只说明人能直接理解的目标和流程。",
+        "",
+        "## 用户流程",
+        "",
+        "1. 用户进入相关功能入口。",
+        "2. 系统按已冻结的需求边界提供主要操作。",
+        "3. 用户完成操作后，可以看到明确结果、失败原因或下一步处理方式。",
+        "",
+        "## 技术绑定",
+        "",
+        "- 技术细节、AC、测试和证据仍以后续章节为准。",
+        "- 本节不得替代 acceptance criteria，也不得降低 gate 要求。",
+        "",
         "## Overview",
         "",
-        "This feature package is a v1.5.0 parallel read model. Canonical requirement truth remains in PRD, user-story, test-case, execution, and `.machine` surfaces.",
+        "This feature package is the package requirement truth surface. Legacy PRD, user-story, and test-case files are compatibility/read-model projections only when explicitly generated.",
         "",
-        "## Canonical References",
+        "## Projection References",
         "",
         f"- PRD: `docs/beacon/{version}/prd/{slug}.md`",
         f"- User Story: `docs/beacon/{version}/user-story/{slug}.md`",
@@ -322,17 +339,24 @@ def render_tests_package(project_root: Path, *, version: str, feature: str) -> s
         "",
         "## Coverage Matrix",
         "",
-        "| AC ID | TC ID | Layer | Assertion |",
-        "|-------|-------|-------|-----------|",
+        "| AC ID | TC ID | Layer | Command | Assertion | Evidence Path |",
+        "|-------|-------|-------|---------|-----------|---------------|",
     ]
-    for row in rows:
-        lines.append(f"| {row['ac_id']} | {row.get('tc_id', '')} | {row.get('layer', '')} | {row.get('assertion', '')} |")
+    if rows:
+        for row in rows:
+            command = row.get("command") or "python3 -m pytest -q"
+            evidence_path = row.get("evidence_path") or f".beacon/evidence/test-results/{slug}/{row.get('tc_id', 'TC-001')}.json"
+            lines.append(
+                f"| {row['ac_id']} | {row.get('tc_id', '')} | {row.get('layer', '')} | `{command}` | {row.get('assertion', '') or 'pass'} | {evidence_path} |"
+            )
+    else:
+        lines.append(f"| AC-001 | TC-001 | unit | `python3 -m pytest -q` | {feature} package truth validates | .beacon/evidence/test-results/{slug}/TC-001.json |")
     lines.extend(
         [
             "",
             "## Validation Note",
             "",
-            "This file is a parallel test read model. Canonical test truth remains in `qa/test-cases/` and `.machine/qa/` in v1.5.0.",
+            "This file is the package test truth surface. Legacy `qa/test-cases/` files are compatibility/read-model projections only when explicitly generated.",
             "",
         ]
     )

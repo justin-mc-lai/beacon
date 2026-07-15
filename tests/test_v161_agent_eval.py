@@ -27,7 +27,8 @@ def _invoke(args: list[str], *, cwd: Path) -> dict:
 def test_v161_taxonomy_includes_beacon_eval_agent() -> None:
     skill_ids = {item.id for item in v160_skill_package_projection()}
     assert "beacon-eval-agent" in skill_ids
-    assert len(skill_ids) == 37
+    assert "beacon-loop-goal" in skill_ids
+    assert len(skill_ids) == 38
 
 
 def test_agent_eval_help_lists_subcommands(tmp_path: Path):
@@ -55,10 +56,10 @@ def test_agent_eval_catalog_materialize(tmp_path: Path):
     assert catalog.exists()
     assert matrix.exists()
     matrix_payload = json.loads(matrix.read_text(encoding="utf-8"))
-    assert matrix_payload.get("entry_count") == 37
+    assert matrix_payload.get("entry_count") == 38
     fixtures = payload.get("fixtures") or {}
-    assert fixtures.get("entry_count") == 37
-    assert len(list((root / "fixtures/agent-eval/v161/live").glob("*.prompt.txt"))) >= 37
+    assert fixtures.get("entry_count") == 38
+    assert len(list((root / "fixtures/agent-eval/v161/live").glob("*.prompt.txt"))) >= 38
 
 
 def test_agent_eval_live_local_admitted_host_behavior(tmp_path: Path):
@@ -80,15 +81,15 @@ def test_agent_eval_live_local_admitted_host_behavior(tmp_path: Path):
         cwd=root,
     )
     assert payload.get("status") == "pass"
-    assert payload.get("live_skill_pass") == 37
-    assert payload.get("live_skill_total") == 37
+    assert payload.get("live_skill_pass") == 38
+    assert payload.get("live_skill_total") == 38
     assert payload.get("live_execution_tier") == "local_admitted"
     host_traces = [
         item
         for item in payload.get("per_skill") or []
         if item.get("live_execution_mode") == "host_behavior" and item.get("status") == "pass"
     ]
-    assert len(host_traces) == 37
+    assert len(host_traces) == 38
     assert all(item.get("transcript_ref") for item in host_traces)
 
 
@@ -111,7 +112,7 @@ def test_agent_eval_live_ci_default_tier(tmp_path: Path):
         cwd=root,
     )
     assert payload.get("status") == "pass"
-    assert payload.get("live_surface_pass") == 36
+    assert payload.get("live_surface_pass") == 37
     assert payload.get("live_smoke_pass") == 1
     assert payload.get("live_execution_tier") == "ci_default"
 
@@ -156,4 +157,4 @@ def test_agent_eval_live_blocked_per_skill(tmp_path: Path):
     payload = json.loads(proc.stdout) if proc.stdout.strip() else {}
     assert payload.get("status") == "blocked"
     assert payload.get("reason_code") == "agent_eval_live_runner_not_admitted"
-    assert len(payload.get("per_skill") or []) >= 37
+    assert len(payload.get("per_skill") or []) >= 38

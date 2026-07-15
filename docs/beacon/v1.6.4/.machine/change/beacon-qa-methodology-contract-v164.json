@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "version": "v1.6.4",
+  "feature": "beacon-qa-methodology-contract-v164",
+  "feature_slug": "beacon-qa-methodology-contract-v164",
+  "summary": "Maintains release-facing version aggregate projection guards so QA accepted features are included in version change scope before release check.",
+  "status": "generated",
+  "accepted_at": "",
+  "revision_id": "R1",
+  "projection_role": {
+    "artifact_role": "version_aggregate_projection",
+    "truth_source": false,
+    "gate_source": false,
+    "lifecycle_stage": false,
+    "release_publish_action": false
+  },
+  "truth_authority": false,
+  "lifecycle_stage": false,
+  "added": [
+    "Feature-level release projection input for QA accepted current feature",
+    "Version aggregate projection inclusion guard and repair metadata",
+    "Repair-only projection rebuild path for release preflight artifacts"
+  ],
+  "removed": [
+    "Manual-only version aggregate projection repair before release check"
+  ],
+  "fixed": [
+    "Release check can route missing current feature projection to an actionable repair path",
+    "Version aggregate projection remains a read model instead of requirement truth"
+  ],
+  "traceability_refs": [
+    "docs/beacon/v1.6.4/change/beacon-qa-methodology-contract-v164.md",
+    "docs/beacon/v1.6.4/prd/beacon-qa-methodology-contract-v164.md",
+    "docs/beacon/v1.6.4/user-story/beacon-qa-methodology-contract-v164.md",
+    "docs/beacon/v1.6.4/qa/test-cases/beacon-qa-methodology-contract-v164.md",
+    "docs/beacon/v1.6.4/.machine/execution/beacon-qa-methodology-contract-v164.revision.json"
+  ],
+  "generated_at": "2026-07-02T06:26:13.516199+00:00"
+}

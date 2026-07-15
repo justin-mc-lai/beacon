@@ -1,0 +1,658 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-loop-goal-v166",
+  "feature_slug": "beacon-loop-goal-v166",
+  "version": "v1.6.6",
+  "generated_at": "2026-07-15T05:46:40.300147+00:00",
+  "expansion_profile": "pua-web",
+  "scenario_depth": "standard",
+  "families_required": [
+    "happy",
+    "negative",
+    "boundary",
+    "recovery",
+    "compatibility"
+  ],
+  "stories": [
+    {
+      "ac_id": "AC-001",
+      "theme": "general",
+      "text": "Acceptance criteria TBD",
+      "scenario_ids": [
+        "SC-001"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-001",
+          "source_tc_id": "TC-LG-001",
+          "tc_id": "TC-LG-001-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "",
+      "text": "`transition()` 更新 `current_stage` 并追加 `stage_history`，含 `at` 时间戳",
+      "scenario_ids": [
+        "SC-AUTO-TC-LG-002"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-LG-002",
+          "source_tc_id": "TC-LG-002",
+          "tc_id": "TC-LG-002-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "",
+      "text": "Governance precheck blocked 时编排器停止，输出 `reason_code=governance_version_not_registered`",
+      "scenario_ids": [
+        "SC-AUTO-TC-LG-003"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-LG-003",
+          "source_tc_id": "TC-LG-003",
+          "tc_id": "TC-LG-003-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "",
+      "text": "Truth 阶段后 truth.md status != frozen → 编排器停留在 `truth_routing`，不进入 implement",
+      "scenario_ids": [
+        "SC-AUTO-TC-LG-004"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-LG-004",
+          "source_tc_id": "TC-LG-004",
+          "tc_id": "TC-LG-004-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "",
+      "text": "Tests fail → 编排器回到 `implement_routing`；最多 3 次 repair loop",
+      "scenario_ids": [
+        "SC-AUTO-TC-LG-005"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-LG-005",
+          "source_tc_id": "TC-LG-005",
+          "tc_id": "TC-LG-005-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "",
+      "text": "QA fail → 编排器回到 `implement_routing`；最多 3 次",
+      "scenario_ids": [
+        "SC-AUTO-TC-LG-006"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-LG-006",
+          "source_tc_id": "TC-LG-006",
+          "tc_id": "TC-LG-006-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "",
+      "text": "即使 `auto_decide=true`，`release_gate` 阶段编排器停止等待人工确认",
+      "scenario_ids": [
+        "SC-AUTO-TC-LG-007"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-LG-007",
+          "source_tc_id": "TC-LG-007",
+          "tc_id": "TC-LG-007-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-008",
+      "theme": "",
+      "text": "任何阶段 blocked → `current_stage=error_recovery`，输出推荐路由 `beacon-gov-debug`",
+      "scenario_ids": [
+        "SC-AUTO-TC-LG-008"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-LG-008",
+          "source_tc_id": "TC-LG-008",
+          "tc_id": "TC-LG-008-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-009",
+      "theme": "",
+      "text": "stop_when 条件满足 → 编排器停止，输出 `reason_code=stop_when_satisfied`",
+      "scenario_ids": [
+        "SC-AUTO-TC-LG-009"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-LG-009",
+          "source_tc_id": "TC-LG-009",
+          "tc_id": "TC-LG-009-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-010",
+      "theme": "",
+      "text": "SKILL.md 包含完整决策树，每个阶段到 skill 的映射正确",
+      "scenario_ids": [
+        "SC-AUTO-TC-LG-010"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-LG-010",
+          "source_tc_id": "TC-LG-010",
+          "tc_id": "TC-LG-010-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-011",
+      "theme": "",
+      "text": "`beacon-loop-goal` 被 v1.6 taxonomy / agent surface expected list / skill inventory / release governance 计为公开 governor skill，公开 skill 总数为 38",
+      "scenario_ids": [
+        "SC-AUTO-TC-LG-011"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-LG-011",
+          "source_tc_id": "TC-LG-011",
+          "tc_id": "TC-LG-011-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "source_tc_id": "TC-LG-001",
+      "tc_id": "TC-LG-001-PRIMARY",
+      "ac_id": "AC-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-001 primary path :: `loop_goal_state.init()` 创建 `.beacon/state/loop-goal/<run_id>.json`，schema 为 `loop-goal-state.v1",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v166_loop_goal.py::test_state_init_creates_file -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-001/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-LG-002",
+      "source_tc_id": "TC-LG-002",
+      "tc_id": "TC-LG-002-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "`transition()` 更新 `current_stage` 并追加 `stage_history`，含 `at` 时间戳",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v166_loop_goal.py::test_stage_transition_appends_history -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`transition()` 更新 `current_stage` 并追加 `stage_history`，含 `at` 时间戳",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-002/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-LG-003",
+      "source_tc_id": "TC-LG-003",
+      "tc_id": "TC-LG-003-PRIMARY",
+      "ac_id": "AC-003",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "Governance precheck blocked 时编排器停止，输出 `reason_code=governance_version_not_registered`",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v166_loop_goal.py::test_precheck_gate_blocks_unregistered -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Governance precheck blocked 时编排器停止，输出 `reason_code=governance_version_not_registered`",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-003/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-LG-004",
+      "source_tc_id": "TC-LG-004",
+      "tc_id": "TC-LG-004-PRIMARY",
+      "ac_id": "AC-004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "Truth 阶段后 truth.md status != frozen → 编排器停留在 `truth_routing`，不进入 implement",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v166_loop_goal.py::test_truth_gate_waits_for_frozen -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Truth 阶段后 truth.md status != frozen → 编排器停留在 `truth_routing`，不进入 implement",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-004/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-LG-005",
+      "source_tc_id": "TC-LG-005",
+      "tc_id": "TC-LG-005-PRIMARY",
+      "ac_id": "AC-005",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "Tests fail → 编排器回到 `implement_routing`；最多 3 次 repair loop",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v166_loop_goal.py::test_implement_gate_repair_loop -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Tests fail → 编排器回到 `implement_routing`；最多 3 次 repair loop",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-005/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-LG-006",
+      "source_tc_id": "TC-LG-006",
+      "tc_id": "TC-LG-006-PRIMARY",
+      "ac_id": "AC-006",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "QA fail → 编排器回到 `implement_routing`；最多 3 次",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v166_loop_goal.py::test_qa_gate_repair_loop -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "QA fail → 编排器回到 `implement_routing`；最多 3 次",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-006/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-LG-007",
+      "source_tc_id": "TC-LG-007",
+      "tc_id": "TC-LG-007-PRIMARY",
+      "ac_id": "AC-007",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "即使 `auto_decide=true`，`release_gate` 阶段编排器停止等待人工确认",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v166_loop_goal.py::test_release_human_gate_blocks_auto -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "即使 `auto_decide=true`，`release_gate` 阶段编排器停止等待人工确认",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-007/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-LG-008",
+      "source_tc_id": "TC-LG-008",
+      "tc_id": "TC-LG-008-PRIMARY",
+      "ac_id": "AC-008",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "任何阶段 blocked → `current_stage=error_recovery`，输出推荐路由 `beacon-gov-debug`",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v166_loop_goal.py::test_error_recovery_routes_debug -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "任何阶段 blocked → `current_stage=error_recovery`，输出推荐路由 `beacon-gov-debug`",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-008/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-LG-009",
+      "source_tc_id": "TC-LG-009",
+      "tc_id": "TC-LG-009-PRIMARY",
+      "ac_id": "AC-009",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "stop_when 条件满足 → 编排器停止，输出 `reason_code=stop_when_satisfied`",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v166_loop_goal.py::test_stop_when_halts_delivery -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "stop_when 条件满足 → 编排器停止，输出 `reason_code=stop_when_satisfied`",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-009/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-LG-010",
+      "source_tc_id": "TC-LG-010",
+      "tc_id": "TC-LG-010-PRIMARY",
+      "ac_id": "AC-010",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "SKILL.md 包含完整决策树，每个阶段到 skill 的映射正确",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v166_loop_goal.py::test_skill_routing_decision_tree -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "SKILL.md 包含完整决策树，每个阶段到 skill 的映射正确",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-010/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-LG-011",
+      "source_tc_id": "TC-LG-011",
+      "tc_id": "TC-LG-011-PRIMARY",
+      "ac_id": "AC-011",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "`beacon-loop-goal` 被 v1.6 taxonomy / agent surface expected list / skill inventory / release governance 计为公开 governor skill，公开 skill 总数为 38",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_doctor_agent_surface.py::test_verify_agent_surface_v160_should_pass_after_setup tests/test_v160_skill_harness_taxonomy.py::test_v160_skill_package_materialize_should_create_harness_only_package tests/test_v161_agent_eval.py::test_v161_taxonomy_includes_beacon_eval_agent tests/test_v161_agent_eval.py::test_agent_eval_catalog_materialize -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`beacon-loop-goal` 被 v1.6 taxonomy / agent surface expected list / skill inventory / release governance 计为公开 governor skill，公开 skill 总数为 38",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-011/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,238 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-10T03:14:50.172175+00:00",
+  "feature": "beacon-program-next-action-admission-v164",
+  "feature_slug": "beacon-program-next-action-admission-v164",
+  "version": "v1.6.4",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/truth.md",
+    "tests": "docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
+    "tasks": "docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tasks.md",
+    "evidence": "docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "acec3ce40b03245f89318c87902da38ffa38804b618d1b33521cecbc2dd59f28",
+    "tests": "7aaf99e00faebf7869b119f34132842f0ae0ecfccf9355cef38a9fc55b4c0583",
+    "tasks": "8992227d758faa95f1df03c1c04dfe693acaa4878c862bc3b5287a47aef152af",
+    "evidence": "67646b5dd53f0d16ea6509d2efda25fe697348e03f7c34e8c5f8b8357ec36806"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-program-next-action-admission-v164",
+    "version": "v1.6.4",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "R1 - program next_action admission and non-behavior implementation evidence; SidePilot v0.0.12 W7 false-closure friction friction:9ac4930999fc / friction:a1ec6dcfc7b1",
+    "source_revision_id": "null",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/truth.md",
+      "user_story": "docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/truth.md",
+      "test_case": "docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md"
+    },
+    "parser_contract": "beacon-feature-package-v1",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-028",
+      "theme": "program-next-action-admission",
+      "description": "`beacon-gen-implement` resolves the owning program/lake topology and blocks target lake `pi-host-ui-ux` when `program-run-state.next_action=beacon-gen-implement:content-hub-foundation`; reason_code `program_next_action_mismatch`; no implementation evidence is written."
+    },
+    {
+      "ac_id": "AC-029",
+      "theme": "next-action-allowed-current-lake",
+      "description": "When the target feature matches `program-run-state.next_action`, admission continues and records the resolved program slug, lake slug, material path, and next_action source."
+    },
+    {
+      "ac_id": "AC-030",
+      "theme": "dependency-closure-gate",
+      "description": "A downstream lake with `depends_on` entries is blocked when prerequisite lakes lack implementation closure or QA acceptance evidence; reason_code `program_dependency_unclosed`."
+    },
+    {
+      "ac_id": "AC-031",
+      "theme": "per-feature-default-preserved",
+      "description": "Repos/features without owning program topology keep normal per-feature implement admission behavior and are not blocked by program next_action checks."
+    },
+    {
+      "ac_id": "AC-032",
+      "theme": "static-shell-ui-evidence-rejected",
+      "description": "QA/implementation evidence rejects required full-parity UI surfaces that are still `coming_soon`, preview-only, static shell, or no-op recovery controls; reason_code `static_shell_implementation_evidence`."
+    },
+    {
+      "ac_id": "AC-033",
+      "theme": "source-grep-only-not-acceptance",
+      "description": "Tests that only grep source strings, route names, labels, or exported constants cannot satisfy runtime/browser/user-behavior AC; reason_code `static_source_assertion_only`."
+    },
+    {
+      "ac_id": "AC-034",
+      "theme": "blocked-generator-diagnostic-only",
+      "description": "When implement admission is blocked by AC-028 or AC-030, generated state is diagnostic-only and cannot mark tasks done, write implementation summary, or update acceptance/release evidence."
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-028",
+      "tc_id": "TC-PNA-001",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_v164_program_next_action_admission.py::test_program_next_action_blocks_wrong_lake -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "SidePilot-style fixture with `next_action=beacon-gen-implement:content-hub-foundation` blocks `pi-host-ui-ux` with `program_next_action_mismatch`; no implementation evidence path is written.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-029",
+      "tc_id": "TC-PNA-002",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v164_program_next_action_admission.py::test_program_next_action_allows_current_lake -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Target `content-hub-foundation` matches `next_action`; admission result includes program slug, lake slug, material path, and next_action source.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-030",
+      "tc_id": "TC-PNA-003",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_v164_program_next_action_admission.py::test_program_dependency_closure_blocks_downstream_lake -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Downstream W7 lake with W0-W6 dependencies and missing prerequisite QA acceptance blocks with `program_dependency_unclosed`.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-031",
+      "tc_id": "TC-PNA-004",
+      "layer": "regression",
+      "command": "`python3 -m pytest tests/test_v164_program_next_action_admission.py::test_per_feature_implement_admission_unchanged_without_program_topology -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Feature without owning program topology keeps normal per-feature implement admission and does not require `program-run-state.json`.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-032",
+      "tc_id": "TC-PNA-005",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v164_program_next_action_admission.py::test_static_shell_ui_evidence_is_non_acceptance -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Full-parity UI evidence containing required surfaces with `coming_soon`, preview-only, static shell, or no-op recovery controls is rejected with `static_shell_implementation_evidence`.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-033",
+      "tc_id": "TC-PNA-006",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v164_program_next_action_admission.py::test_source_grep_only_tests_do_not_satisfy_behavior_ac -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Evidence built only from source string assertions such as `readFileSync(...).toContain(...)` cannot satisfy runtime/browser/user-behavior AC and returns `static_source_assertion_only`.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-034",
+      "tc_id": "TC-PNA-007",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_v164_program_next_action_admission.py::test_blocked_generator_writes_diagnostic_only -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Blocked implement admission writes diagnostic state only and does not mark tasks done, write implementation summary, or update QA/release evidence.",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Capture SidePilot friction evidence for `friction:9ac4930999fc` and `friction:a1ec6dcfc7b1`.",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Freeze requirement contract for program `next_action` implement admission.",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Freeze requirement contract for dependency closure before downstream lake implementation.",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Freeze anti-non-behavior evidence contract for UI/runtime behavior AC.",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Implement program next-action admission in `beacon-gen-implement`.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Implement dependency closure gate for program downstream lakes.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "Implement non-behavior/static-source evidence rejection.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-008",
+      "title": "Add TC-PNA-001..007 regression coverage.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-009",
+      "title": "Route to evaluator for QA/release verdict after implementation verification.",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "truth.md",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/truth.md",
+      "status": "draft R1",
+      "route": "freeze"
+    },
+    {
+      "surface": "tests.md",
+      "authority": "test_truth",
+      "canonical_artifact": "docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
+      "status": "draft R1",
+      "route": "qa"
+    },
+    {
+      "surface": "tasks.md",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tasks.md",
+      "status": "draft R1",
+      "route": "implement"
+    },
+    {
+      "surface": "SidePilot UI friction",
+      "authority": "support_advisory",
+      "canonical_artifact": "/Users/apple/Developer/Personal/products/selfmedia-sync-ai/.beacon/debug/friction-captures/8af3a58f4005.json",
+      "status": "accepted input",
+      "route": "change"
+    },
+    {
+      "surface": "SidePilot implement-order friction",
+      "authority": "support_advisory",
+      "canonical_artifact": "/Users/apple/Developer/Personal/products/selfmedia-sync-ai/.beacon/debug/friction-captures/292369e23884.json",
+      "status": "accepted input",
+      "route": "change"
+    },
+    {
+      "surface": "SidePilot UI analysis",
+      "authority": "support_advisory",
+      "canonical_artifact": "/Users/apple/Developer/Personal/products/selfmedia-sync-ai/.beacon/analysis/friction-intake-fit-20260710T024312Z.md",
+      "status": "accepted input",
+      "route": "change"
+    },
+    {
+      "surface": "SidePilot implement-order analysis",
+      "authority": "support_advisory",
+      "canonical_artifact": "/Users/apple/Developer/Personal/products/selfmedia-sync-ai/.beacon/analysis/friction-intake-fit-20260710T024311Z.md",
+      "status": "accepted input",
+      "route": "change"
+    }
+  ]
+}

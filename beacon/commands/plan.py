@@ -41,14 +41,22 @@ def start_cmd(
     )
     if json_output:
         typer.echo(emit_plan_start_json(payload))
+        gov_check = payload.get("governance_precheck") or {}
+        if gov_check.get("blocked"):
+            raise typer.Exit(code=2)
         return
-    typer.echo(
-        json.dumps(
-            {
-                "program_slug": payload.get("program_slug"),
-                "plan_mode": payload.get("plan_mode"),
-                "delegate_skill": payload.get("delegate_skill"),
-            },
-            ensure_ascii=False,
+    gov_check = payload.get("governance_precheck") or {}
+    output: dict[str, object] = {
+        "program_slug": payload.get("program_slug"),
+        "plan_mode": payload.get("plan_mode"),
+        "delegate_skill": payload.get("delegate_skill"),
+    }
+    if gov_check:
+        output["governance_precheck"] = gov_check.get("status")
+    typer.echo(json.dumps(output, ensure_ascii=False))
+    if gov_check.get("blocked"):
+        typer.echo(
+            f"\u2717 governance precheck blocked: {gov_check.get('reason_code')} — {gov_check.get('recommendation')}",
+            err=True,
         )
-    )
+        raise typer.Exit(code=2)

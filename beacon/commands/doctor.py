@@ -654,12 +654,17 @@ def branch_governance_show(
 def branch_governance_verify(
     project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
     version: str = typer.Option("", "--version", "-v", help="Version contract key"),
+    strict: bool = typer.Option(False, "--strict", help="Treat branch/worktree mismatches as blocked"),
     json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
 ):
     """Verify the resolved branch-governance contract."""
     root = Path(project_root).expanduser().resolve() if project_root else Path.cwd()
     view = resolve_project_metadata_view(root, version=version)
     result = view.get("branch_governance") if isinstance(view.get("branch_governance"), dict) else {}
+    if strict and isinstance(result, dict):
+        from beacon.utils.branch_governance import evaluate_branch_governance
+
+        result = evaluate_branch_governance(result, strict=True)
     payload = {"schema_version": "1.0", "action": "doctor-branch-governance-verify", "result": result}
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
@@ -686,6 +691,42 @@ def diagnose(
             strict=strict,
         )
     )
+
+
+@app.command("loop-audit")
+def loop_audit(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("auto", "--version", "-v", help="Beacon version"),
+    strict: bool = typer.Option(False, "--strict", help="Block when score is below threshold"),
+    threshold: int = typer.Option(80, "--threshold", help="Minimum score for strict pass"),
+    suggest: bool = typer.Option(True, "--suggest/--no-suggest", help="Include ordered repair suggestions"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Aggregate loop-readiness signals into one advisory score."""
+    from beacon.utils.loop_readiness import build_loop_readiness_audit
+    from beacon.utils.versioning import resolve_target_version
+
+    root = Path(project_root).expanduser().resolve() if project_root else Path.cwd()
+    resolved_version = resolve_target_version(root, version)
+    payload = build_loop_readiness_audit(
+        root,
+        version=resolved_version,
+        strict=strict,
+        threshold=threshold,
+        suggest=suggest,
+    )
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo("Beacon Doctor Loop Audit")
+        typer.echo(f"status: {payload.get('status')}")
+        typer.echo(f"score: {payload.get('score')} level={payload.get('level')}")
+        if payload.get("reason_code"):
+            typer.echo(f"reason_code: {payload.get('reason_code')}")
+        for signal in payload.get("signals", []):
+            if isinstance(signal, dict):
+                typer.echo(f"- {signal.get('id')}: {signal.get('status')} ({signal.get('reason_code', '')})")
+    raise typer.Exit(code=2 if payload.get("blocked") else 0)
 
 
 @app.command("setup")
@@ -1744,6 +1785,34 @@ def verify_version_truth_catalog_command(
     elif strict and result.get("status") == "skipped":
         exit_code = 2
     raise typer.Exit(code=exit_code)
+
+
+@app.command("sync-catalog")
+def sync_catalog_command(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Preview sync without writing"),
+    active_window: int = typer.Option(0, "--active-window", help="Override active delivery window (0 = use catalog default)"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Discover version dirs under docs/beacon/ and sync them into version-truth-catalog."""
+    from beacon.utils.version_truth_catalog import sync_catalog_versions
+
+    root = Path(project_root).expanduser().resolve() if project_root else Path.cwd()
+    result = sync_catalog_versions(root, dry_run=dry_run, active_window=active_window)
+    payload = {"schema_version": "1.0", "action": "doctor-sync-catalog", "result": result}
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo("Beacon Doctor Sync Catalog")
+        typer.echo(f"status: {result.get('status')}")
+        typer.echo(f"discovered: {result.get('discovered_count')}")
+        if result.get("added"):
+            typer.echo(f"added: {', '.join(result['added'])}")
+        if result.get("archived_by_window"):
+            typer.echo(f"archived by window: {', '.join(result['archived_by_window'])}")
+        typer.echo(f"skipped (already registered): {len(result.get('skipped_already_registered') or [])}")
+        typer.echo(f"active window: {result.get('active_window')}")
+    raise typer.Exit(code=0)
 
 
 @app.command("verify-agent-eval-admission")

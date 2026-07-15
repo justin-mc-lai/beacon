@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0",
+  "captured_at": "2026-07-06T03:28:59.351470+00:00",
+  "summary": "GIT_ADMISSION contract split-brain (v1.6.4 vs SidePilot delivery): Beacon v1.6.4 features require_workspace_admission=true with dedicated-worktree per beacon/v1.6.4/<feature>; S...",
+  "raw_note": "GIT_ADMISSION contract split-brain (v1.6.4 vs SidePilot delivery): Beacon v1.6.4 features require_workspace_admission=true with dedicated-worktree per beacon/v1.6.4/<feature>; SidePilot v0.0.7+ delivery contracts set require_workspace_admission=false (admit skipped, branch-governance pass on main). CLI admit still resolves per-feature branch beacon/v0.0.9/<slug> and worktree_path sibling dirs that were never created; actual delivery uses program-level beacon/v0.0.9@cloud-platform subdir. Skills mandate GIT_ADMISSION Step 0 but gate is no-op on delivery repos — agent writes wherever Cursor workspace root points (main or cloud-platform).",
+  "item_class": "improvement",
+  "severity": "P3",
+  "domain": "workflow",
+  "project_root": "/Users/apple/Developer/Personal/products/beacon",
+  "evidence_abs_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/debug/friction-captures/a5ecdf3fe2c7.json"
+}

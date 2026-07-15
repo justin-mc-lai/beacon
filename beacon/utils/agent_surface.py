@@ -68,6 +68,9 @@ _V160_PUBLIC_PLANNER_SKILLS = (
 _V160_PUBLIC_EVALUATOR_SKILLS = (
     "beacon-eval-agent",
 )
+_V160_PUBLIC_GOVERNOR_SKILLS = (
+    "beacon-loop-goal",
+)
 
 
 @dataclass(frozen=True)
@@ -362,6 +365,8 @@ def default_v160_skill_package_root(project_root: Path | str, version: str = _V1
 
 
 def _harness_from_skill_id(skill_id: str) -> str:
+    if skill_id in _V160_PUBLIC_GOVERNOR_SKILLS:
+        return "governor"
     parts = skill_id.split("-")
     if len(parts) < 3 or parts[0] != "beacon":
         return ""
@@ -686,6 +691,7 @@ def _v160_skill_projections() -> list[SkillProjection]:
         )
     projections = _append_v160_native_packaged_projections(projections, source_root, _V160_PUBLIC_PLANNER_SKILLS)
     projections = _append_v160_native_packaged_projections(projections, source_root, _V160_PUBLIC_EVALUATOR_SKILLS)
+    projections = _append_v160_native_packaged_projections(projections, source_root, _V160_PUBLIC_GOVERNOR_SKILLS)
     return sorted(projections, key=lambda item: item.id)
 
 

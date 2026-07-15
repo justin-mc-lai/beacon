@@ -5,7 +5,9 @@ from __future__ import annotations
 import re
 from typing import Any
 
+from beacon.utils.playwright_extension import validate_extension_browser_evidence
 from beacon.utils.qa_attribution import route_for_failure_family
+from beacon.utils.qa_confidence_chain import build_confidence_chain
 from beacon.utils.qa9 import QA9_TYPES, normalize_qa_type
 
 
@@ -39,10 +41,14 @@ BROWSER_EVIDENCE_AXES: tuple[str, ...] = (
     "compatibility",
     "session",
     "state_data",
+    "extension_page",
+    "service_worker",
+    "popup",
 )
 
 BROWSER_RUNNER_REGISTRY: tuple[str, ...] = (
     "playwright",
+    "playwright-extension",
     "playwright-cli",
     "playwright-cdp",
     "browser-use",
@@ -126,6 +132,7 @@ def build_qa_profile_completeness(
     blocked_layers: list[str] | None = None,
     not_applicable_layers: dict[str, str] | None = None,
     browser_required: bool = False,
+    state_machine_coverage: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     required = [
         item
@@ -143,7 +150,16 @@ def build_qa_profile_completeness(
     satisfied = set(executed) | {layer for layer, reason in na_reasons.items() if reason}
     missing = sorted(layer for layer in required if layer not in satisfied and layer not in blocked)
     not_applicable = sorted(layer for layer in required if layer in na_reasons and na_reasons[layer])
-    partial = bool(missing or blocked or skipped)
+    sm_coverage = state_machine_coverage if isinstance(state_machine_coverage, dict) else {}
+    sm_gaps = [str(item) for item in (sm_coverage.get("boundary_gaps") or []) if str(item).strip()]
+    confidence_chain = build_confidence_chain(
+        executed_layers=executed,
+        skipped_layers=skipped,
+        blocked_layers=blocked,
+        missing_layers=missing,
+        state_machine_gaps=sm_gaps,
+    )
+    partial = bool(missing or blocked or skipped or confidence_chain.get("chain_broken"))
     return {
         "schema_version": "1.0",
         "profile": str(profile or "complete").strip().lower() or "complete",
@@ -155,6 +171,8 @@ def build_qa_profile_completeness(
         "not_applicable_layers": not_applicable,
         "not_applicable_reasons": na_reasons,
         "missing_layers": missing,
+        "confidence_chain": confidence_chain,
+        "state_machine_coverage": sm_coverage,
         "is_complete": not partial,
         "partial": partial,
         "status": "complete" if not partial else "partial",
@@ -209,6 +227,11 @@ def build_browser_evidence_contract(evidence: dict[str, Any] | None) -> dict[str
         missing_fields.append("evidence_refs")
     if runner and runner not in BROWSER_RUNNER_REGISTRY:
         missing_fields.append("registered_runner")
+    extension_contract = validate_extension_browser_evidence(payload) if runner == "playwright-extension" else {}
+    if extension_contract.get("blocked"):
+        missing_fields.append(str(extension_contract.get("reason_code") or "extension_evidence_blocked"))
+        if extension_contract.get("missing_axes"):
+            missing_axes = sorted(set(missing_axes) | set(extension_contract.get("missing_axes") or []))
     valid = not missing_fields and not missing_axes and evidence_kind_accepts(kind)
     return {
         "schema_version": "1.0",
@@ -225,6 +248,7 @@ def build_browser_evidence_contract(evidence: dict[str, Any] | None) -> dict[str
         "present_axes": present_axes,
         "missing_axes": missing_axes,
         "missing_fields": sorted(set(missing_fields)),
+        "extension_contract": extension_contract if extension_contract else {},
     }
 
 
@@ -236,6 +260,8 @@ def normalize_browser_runner(value: str) -> str:
         return "playwright-cdp"
     if raw in {"obscura", "obscura-cdp"}:
         return "obscura-cdp"
+    if raw in {"playwright-extension", "playwright-extension-runner"}:
+        return "playwright-extension"
     return raw
 
 

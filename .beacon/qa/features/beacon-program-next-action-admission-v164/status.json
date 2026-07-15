@@ -1,0 +1,2167 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-program-next-action-admission-v164",
+  "feature_slug": "beacon-program-next-action-admission-v164",
+  "version": "v1.6.4",
+  "generated_at": "2026-07-10T03:47:40.417323+00:00",
+  "execution_mode": "feature-aware",
+  "status": "passed",
+  "implementation_done": true,
+  "evidence_done": true,
+  "current_spec_fingerprint_hash": "977bdd9fde751549dfce4dc842b29a7ffa500b068d18c7d8c259dea57f60ed66",
+  "current_baseline_hash": "sha256:31fe498e3c5164e399e03cd48e3491fe8e656c5ef2159b76934da3ac477c5630",
+  "implementation_run_id": "impl-v164-program-next-action-admission-20260710T0346Z",
+  "source_matrix_path": "docs/beacon/v1.6.4/.machine/qa/beacon-program-next-action-admission-v164.ac-test-matrix.json",
+  "source_matrix_hash": "1785da2022877533e5c9cef28574be83b12b9424d5d1cf096a54c116e1225e1a",
+  "derived_matrix_path": ".beacon/qa/features/beacon-program-next-action-admission-v164/matrix.qa9.json",
+  "story_scenario_map_path": ".beacon/qa/features/beacon-program-next-action-admission-v164/story-scenario-map.json",
+  "docs_story_scenario_map_path": "docs/beacon/v1.6.4/.machine/qa/beacon-program-next-action-admission-v164.story-scenario-map.json",
+  "technical_archive_path": "docs/beacon/v1.6.4/.machine/execution/technical-implementation-beacon-program-next-action-admission-v164.json",
+  "feature_status_path": ".beacon/qa/features/beacon-program-next-action-admission-v164/status.json",
+  "feature_evidence_contract_path": "",
+  "story_sequence": [
+    {
+      "ac_id": "AC-001",
+      "theme": "program-next-action-admission",
+      "text": "`beacon-gen-implement` resolves the owning program/lake topology and blocks target lake `pi-host-ui-ux` when `program-run-state.next_action=beacon-gen-implement:content-hub-foundation`; reason_code `program_next_action_mismatch`; no implementation evidence is written.",
+      "tc_ids": [],
+      "qa_types": []
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "next-action-allowed-current-lake",
+      "text": "When the target feature matches `program-run-state.next_action`, admission continues and records the resolved program slug, lake slug, material path, and next_action source.",
+      "tc_ids": [],
+      "qa_types": []
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "dependency-closure-gate",
+      "text": "A downstream lake with `depends_on` entries is blocked when prerequisite lakes lack implementation closure or QA acceptance evidence; reason_code `program_dependency_unclosed`.",
+      "tc_ids": [],
+      "qa_types": []
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "per-feature-default-preserved",
+      "text": "Repos/features without owning program topology keep normal per-feature implement admission behavior and are not blocked by program next_action checks.",
+      "tc_ids": [],
+      "qa_types": []
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "static-shell-ui-evidence-rejected",
+      "text": "QA/implementation evidence rejects required full-parity UI surfaces that are still `coming_soon`, preview-only, static shell, or no-op recovery controls; reason_code `static_shell_implementation_evidence`.",
+      "tc_ids": [],
+      "qa_types": []
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "source-grep-only-not-acceptance",
+      "text": "Tests that only grep source strings, route names, labels, or exported constants cannot satisfy runtime/browser/user-behavior AC; reason_code `static_source_assertion_only`.",
+      "tc_ids": [],
+      "qa_types": []
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "blocked-generator-diagnostic-only",
+      "text": "When implement admission is blocked by AC-028 or AC-030, generated state is diagnostic-only and cannot mark tasks done, write implementation summary, or update acceptance/release evidence.",
+      "tc_ids": [],
+      "qa_types": []
+    }
+  ],
+  "story_scenarios": {
+    "schema_version": "1.0",
+    "feature": "beacon-program-next-action-admission-v164",
+    "feature_slug": "beacon-program-next-action-admission-v164",
+    "version": "v1.6.4",
+    "generated_at": "2026-07-10T03:38:18.908129+00:00",
+    "expansion_profile": "pua-web",
+    "scenario_depth": "standard",
+    "families_required": [
+      "happy",
+      "negative",
+      "boundary",
+      "recovery",
+      "compatibility"
+    ],
+    "stories": [
+      {
+        "ac_id": "AC-001",
+        "theme": "program-next-action-admission",
+        "text": "`beacon-gen-implement` resolves the owning program/lake topology and blocks target lake `pi-host-ui-ux` when `program-run-state.next_action=beacon-gen-implement:content-hub-foundation`; reason_code `program_next_action_mismatch`; no implementation evidence is written.",
+        "scenario_ids": [],
+        "scenario_families": [],
+        "required_families": [],
+        "scenarios": []
+      },
+      {
+        "ac_id": "AC-002",
+        "theme": "next-action-allowed-current-lake",
+        "text": "When the target feature matches `program-run-state.next_action`, admission continues and records the resolved program slug, lake slug, material path, and next_action source.",
+        "scenario_ids": [],
+        "scenario_families": [],
+        "required_families": [],
+        "scenarios": []
+      },
+      {
+        "ac_id": "AC-003",
+        "theme": "dependency-closure-gate",
+        "text": "A downstream lake with `depends_on` entries is blocked when prerequisite lakes lack implementation closure or QA acceptance evidence; reason_code `program_dependency_unclosed`.",
+        "scenario_ids": [],
+        "scenario_families": [],
+        "required_families": [],
+        "scenarios": []
+      },
+      {
+        "ac_id": "AC-004",
+        "theme": "per-feature-default-preserved",
+        "text": "Repos/features without owning program topology keep normal per-feature implement admission behavior and are not blocked by program next_action checks.",
+        "scenario_ids": [],
+        "scenario_families": [],
+        "required_families": [],
+        "scenarios": []
+      },
+      {
+        "ac_id": "AC-005",
+        "theme": "static-shell-ui-evidence-rejected",
+        "text": "QA/implementation evidence rejects required full-parity UI surfaces that are still `coming_soon`, preview-only, static shell, or no-op recovery controls; reason_code `static_shell_implementation_evidence`.",
+        "scenario_ids": [],
+        "scenario_families": [],
+        "required_families": [],
+        "scenarios": []
+      },
+      {
+        "ac_id": "AC-006",
+        "theme": "source-grep-only-not-acceptance",
+        "text": "Tests that only grep source strings, route names, labels, or exported constants cannot satisfy runtime/browser/user-behavior AC; reason_code `static_source_assertion_only`.",
+        "scenario_ids": [],
+        "scenario_families": [],
+        "required_families": [],
+        "scenarios": []
+      },
+      {
+        "ac_id": "AC-007",
+        "theme": "blocked-generator-diagnostic-only",
+        "text": "When implement admission is blocked by AC-028 or AC-030, generated state is diagnostic-only and cannot mark tasks done, write implementation summary, or update acceptance/release evidence.",
+        "scenario_ids": [],
+        "scenario_families": [],
+        "required_families": [],
+        "scenarios": []
+      },
+      {
+        "ac_id": "AC-028",
+        "theme": "",
+        "text": "SidePilot-style fixture with `next_action=beacon-gen-implement:content-hub-foundation` blocks `pi-host-ui-ux` with `program_next_action_mismatch`; no implementation evidence path is written.",
+        "scenario_ids": [
+          "SC-AUTO-TC-PNA-001"
+        ],
+        "scenario_families": [
+          "primary"
+        ],
+        "required_families": [],
+        "scenarios": [
+          {
+            "scenario_id": "SC-AUTO-TC-PNA-001",
+            "source_tc_id": "TC-PNA-001",
+            "tc_id": "TC-PNA-001-PRIMARY",
+            "scenario_family": "primary",
+            "qa_type": "integration",
+            "browser_required": false,
+            "replay_required": false
+          }
+        ]
+      },
+      {
+        "ac_id": "AC-029",
+        "theme": "",
+        "text": "Target `content-hub-foundation` matches `next_action`; admission result includes program slug, lake slug, material path, and next_action source.",
+        "scenario_ids": [
+          "SC-AUTO-TC-PNA-002"
+        ],
+        "scenario_families": [
+          "primary"
+        ],
+        "required_families": [],
+        "scenarios": [
+          {
+            "scenario_id": "SC-AUTO-TC-PNA-002",
+            "source_tc_id": "TC-PNA-002",
+            "tc_id": "TC-PNA-002-PRIMARY",
+            "scenario_family": "primary",
+            "qa_type": "unit",
+            "browser_required": false,
+            "replay_required": false
+          }
+        ]
+      },
+      {
+        "ac_id": "AC-030",
+        "theme": "",
+        "text": "Downstream W7 lake with W0-W6 dependencies and missing prerequisite QA acceptance blocks with `program_dependency_unclosed`.",
+        "scenario_ids": [
+          "SC-AUTO-TC-PNA-003"
+        ],
+        "scenario_families": [
+          "primary"
+        ],
+        "required_families": [],
+        "scenarios": [
+          {
+            "scenario_id": "SC-AUTO-TC-PNA-003",
+            "source_tc_id": "TC-PNA-003",
+            "tc_id": "TC-PNA-003-PRIMARY",
+            "scenario_family": "primary",
+            "qa_type": "integration",
+            "browser_required": false,
+            "replay_required": false
+          }
+        ]
+      },
+      {
+        "ac_id": "AC-031",
+        "theme": "",
+        "text": "Feature without owning program topology keeps normal per-feature implement admission and does not require `program-run-state.json`.",
+        "scenario_ids": [
+          "SC-AUTO-TC-PNA-004"
+        ],
+        "scenario_families": [
+          "primary"
+        ],
+        "required_families": [],
+        "scenarios": [
+          {
+            "scenario_id": "SC-AUTO-TC-PNA-004",
+            "source_tc_id": "TC-PNA-004",
+            "tc_id": "TC-PNA-004-PRIMARY",
+            "scenario_family": "primary",
+            "qa_type": "regression",
+            "browser_required": false,
+            "replay_required": false
+          }
+        ]
+      },
+      {
+        "ac_id": "AC-032",
+        "theme": "",
+        "text": "Full-parity UI evidence containing required surfaces with `coming_soon`, preview-only, static shell, or no-op recovery controls is rejected with `static_shell_implementation_evidence`.",
+        "scenario_ids": [
+          "SC-AUTO-TC-PNA-005"
+        ],
+        "scenario_families": [
+          "primary"
+        ],
+        "required_families": [],
+        "scenarios": [
+          {
+            "scenario_id": "SC-AUTO-TC-PNA-005",
+            "source_tc_id": "TC-PNA-005",
+            "tc_id": "TC-PNA-005-PRIMARY",
+            "scenario_family": "primary",
+            "qa_type": "contract",
+            "browser_required": false,
+            "replay_required": false
+          }
+        ]
+      },
+      {
+        "ac_id": "AC-033",
+        "theme": "",
+        "text": "Evidence built only from source string assertions such as `readFileSync(...).toContain(...)` cannot satisfy runtime/browser/user-behavior AC and returns `static_source_assertion_only`.",
+        "scenario_ids": [
+          "SC-AUTO-TC-PNA-006"
+        ],
+        "scenario_families": [
+          "primary"
+        ],
+        "required_families": [],
+        "scenarios": [
+          {
+            "scenario_id": "SC-AUTO-TC-PNA-006",
+            "source_tc_id": "TC-PNA-006",
+            "tc_id": "TC-PNA-006-PRIMARY",
+            "scenario_family": "primary",
+            "qa_type": "contract",
+            "browser_required": false,
+            "replay_required": false
+          }
+        ]
+      },
+      {
+        "ac_id": "AC-034",
+        "theme": "",
+        "text": "Blocked implement admission writes diagnostic state only and does not mark tasks done, write implementation summary, or update QA/release evidence.",
+        "scenario_ids": [
+          "SC-AUTO-TC-PNA-007"
+        ],
+        "scenario_families": [
+          "primary"
+        ],
+        "required_families": [],
+        "scenarios": [
+          {
+            "scenario_id": "SC-AUTO-TC-PNA-007",
+            "source_tc_id": "TC-PNA-007",
+            "tc_id": "TC-PNA-007-PRIMARY",
+            "scenario_family": "primary",
+            "qa_type": "integration",
+            "browser_required": false,
+            "replay_required": false
+          }
+        ]
+      }
+    ],
+    "scenarios": [
+      {
+        "scenario_id": "SC-AUTO-TC-PNA-001",
+        "source_tc_id": "TC-PNA-001",
+        "tc_id": "TC-PNA-001-PRIMARY",
+        "ac_id": "AC-028",
+        "qa_type": "integration",
+        "layer": "integration",
+        "scenario_family": "primary",
+        "title": "SidePilot-style fixture with `next_action=beacon-gen-implement:content-hub-foundation` blocks `pi-host-ui-ux` with `program_next_action_mismatch`; no implementation evidence path is written.",
+        "browser_required": false,
+        "replay_required": false,
+        "exploratory_runner": "native",
+        "deterministic_runner": "native",
+        "explore_command": "",
+        "replay_command": "",
+        "coverage_axes": [
+          "primary",
+          "integration",
+          "non-browser"
+        ],
+        "depends_on": [],
+        "stop_on_fail": false,
+        "automation": "auto",
+        "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_program_next_action_blocks_wrong_lake -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "SidePilot-style fixture with `next_action=beacon-gen-implement:content-hub-foundation` blocks `pi-host-ui-ux` with `program_next_action_mismatch`; no implementation evidence path is written.",
+        "priority": "P1",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-001/__RUN_ID__.json",
+        "required_files": [
+          "command.txt",
+          "stdout.log",
+          "stderr.log",
+          "result.json",
+          "junit.xml"
+        ]
+      },
+      {
+        "scenario_id": "SC-AUTO-TC-PNA-002",
+        "source_tc_id": "TC-PNA-002",
+        "tc_id": "TC-PNA-002-PRIMARY",
+        "ac_id": "AC-029",
+        "qa_type": "unit",
+        "layer": "unit",
+        "scenario_family": "primary",
+        "title": "Target `content-hub-foundation` matches `next_action`; admission result includes program slug, lake slug, material path, and next_action source.",
+        "browser_required": false,
+        "replay_required": false,
+        "exploratory_runner": "native",
+        "deterministic_runner": "native",
+        "explore_command": "",
+        "replay_command": "",
+        "coverage_axes": [
+          "primary",
+          "unit",
+          "non-browser"
+        ],
+        "depends_on": [],
+        "stop_on_fail": false,
+        "automation": "auto",
+        "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_program_next_action_allows_current_lake -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Target `content-hub-foundation` matches `next_action`; admission result includes program slug, lake slug, material path, and next_action source.",
+        "priority": "P1",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-002/__RUN_ID__.json",
+        "required_files": [
+          "command.txt",
+          "stdout.log",
+          "stderr.log",
+          "result.json",
+          "junit.xml"
+        ]
+      },
+      {
+        "scenario_id": "SC-AUTO-TC-PNA-003",
+        "source_tc_id": "TC-PNA-003",
+        "tc_id": "TC-PNA-003-PRIMARY",
+        "ac_id": "AC-030",
+        "qa_type": "integration",
+        "layer": "integration",
+        "scenario_family": "primary",
+        "title": "Downstream W7 lake with W0-W6 dependencies and missing prerequisite QA acceptance blocks with `program_dependency_unclosed`.",
+        "browser_required": false,
+        "replay_required": false,
+        "exploratory_runner": "native",
+        "deterministic_runner": "native",
+        "explore_command": "",
+        "replay_command": "",
+        "coverage_axes": [
+          "primary",
+          "integration",
+          "non-browser"
+        ],
+        "depends_on": [],
+        "stop_on_fail": false,
+        "automation": "auto",
+        "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_program_dependency_closure_blocks_downstream_lake -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Downstream W7 lake with W0-W6 dependencies and missing prerequisite QA acceptance blocks with `program_dependency_unclosed`.",
+        "priority": "P1",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-003/__RUN_ID__.json",
+        "required_files": [
+          "command.txt",
+          "stdout.log",
+          "stderr.log",
+          "result.json",
+          "junit.xml"
+        ]
+      },
+      {
+        "scenario_id": "SC-AUTO-TC-PNA-004",
+        "source_tc_id": "TC-PNA-004",
+        "tc_id": "TC-PNA-004-PRIMARY",
+        "ac_id": "AC-031",
+        "qa_type": "regression",
+        "layer": "regression",
+        "scenario_family": "primary",
+        "title": "Feature without owning program topology keeps normal per-feature implement admission and does not require `program-run-state.json`.",
+        "browser_required": false,
+        "replay_required": false,
+        "exploratory_runner": "native",
+        "deterministic_runner": "native",
+        "explore_command": "",
+        "replay_command": "",
+        "coverage_axes": [
+          "primary",
+          "regression",
+          "non-browser"
+        ],
+        "depends_on": [],
+        "stop_on_fail": false,
+        "automation": "auto",
+        "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_per_feature_implement_admission_unchanged_without_program_topology -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Feature without owning program topology keeps normal per-feature implement admission and does not require `program-run-state.json`.",
+        "priority": "P1",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-004/__RUN_ID__.json",
+        "required_files": [
+          "command.txt",
+          "stdout.log",
+          "stderr.log",
+          "result.json",
+          "junit.xml"
+        ]
+      },
+      {
+        "scenario_id": "SC-AUTO-TC-PNA-005",
+        "source_tc_id": "TC-PNA-005",
+        "tc_id": "TC-PNA-005-PRIMARY",
+        "ac_id": "AC-032",
+        "qa_type": "contract",
+        "layer": "contract",
+        "scenario_family": "primary",
+        "title": "Full-parity UI evidence containing required surfaces with `coming_soon`, preview-only, static shell, or no-op recovery controls is rejected with `static_shell_implementation_evidence`.",
+        "browser_required": false,
+        "replay_required": false,
+        "exploratory_runner": "native",
+        "deterministic_runner": "native",
+        "explore_command": "",
+        "replay_command": "",
+        "coverage_axes": [
+          "primary",
+          "contract",
+          "non-browser"
+        ],
+        "depends_on": [],
+        "stop_on_fail": false,
+        "automation": "auto",
+        "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_static_shell_ui_evidence_is_non_acceptance -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Full-parity UI evidence containing required surfaces with `coming_soon`, preview-only, static shell, or no-op recovery controls is rejected with `static_shell_implementation_evidence`.",
+        "priority": "P1",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-005/__RUN_ID__.json",
+        "required_files": [
+          "command.txt",
+          "stdout.log",
+          "stderr.log",
+          "result.json",
+          "junit.xml"
+        ]
+      },
+      {
+        "scenario_id": "SC-AUTO-TC-PNA-006",
+        "source_tc_id": "TC-PNA-006",
+        "tc_id": "TC-PNA-006-PRIMARY",
+        "ac_id": "AC-033",
+        "qa_type": "contract",
+        "layer": "contract",
+        "scenario_family": "primary",
+        "title": "Evidence built only from source string assertions such as `readFileSync(...).toContain(...)` cannot satisfy runtime/browser/user-behavior AC and returns `static_source_assertion_only`.",
+        "browser_required": false,
+        "replay_required": false,
+        "exploratory_runner": "native",
+        "deterministic_runner": "native",
+        "explore_command": "",
+        "replay_command": "",
+        "coverage_axes": [
+          "primary",
+          "contract",
+          "non-browser"
+        ],
+        "depends_on": [],
+        "stop_on_fail": false,
+        "automation": "auto",
+        "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_source_grep_only_tests_do_not_satisfy_behavior_ac -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Evidence built only from source string assertions such as `readFileSync(...).toContain(...)` cannot satisfy runtime/browser/user-behavior AC and returns `static_source_assertion_only`.",
+        "priority": "P1",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-006/__RUN_ID__.json",
+        "required_files": [
+          "command.txt",
+          "stdout.log",
+          "stderr.log",
+          "result.json",
+          "junit.xml"
+        ]
+      },
+      {
+        "scenario_id": "SC-AUTO-TC-PNA-007",
+        "source_tc_id": "TC-PNA-007",
+        "tc_id": "TC-PNA-007-PRIMARY",
+        "ac_id": "AC-034",
+        "qa_type": "integration",
+        "layer": "integration",
+        "scenario_family": "primary",
+        "title": "Blocked implement admission writes diagnostic state only and does not mark tasks done, write implementation summary, or update QA/release evidence.",
+        "browser_required": false,
+        "replay_required": false,
+        "exploratory_runner": "native",
+        "deterministic_runner": "native",
+        "explore_command": "",
+        "replay_command": "",
+        "coverage_axes": [
+          "primary",
+          "integration",
+          "non-browser"
+        ],
+        "depends_on": [],
+        "stop_on_fail": false,
+        "automation": "auto",
+        "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_blocked_generator_writes_diagnostic_only -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Blocked implement admission writes diagnostic state only and does not mark tasks done, write implementation summary, or update QA/release evidence.",
+        "priority": "P1",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-007/__RUN_ID__.json",
+        "required_files": [
+          "command.txt",
+          "stdout.log",
+          "stderr.log",
+          "result.json",
+          "junit.xml"
+        ]
+      }
+    ]
+  },
+  "required_scenario_families": [
+    "happy",
+    "negative",
+    "boundary",
+    "recovery",
+    "compatibility"
+  ],
+  "reason_codes": [],
+  "implementation_evidence_gate": {
+    "status": "pass",
+    "blocked": false,
+    "reason_codes": [],
+    "missing_fields": [],
+    "imported": true,
+    "summary_ref": "git:4e42ef254624b14aa1fe26fb4af5f266abd09919",
+    "source_refs": [
+      "git:4e42ef254624b14aa1fe26fb4af5f266abd09919",
+      ".beacon/evidence/implementation/beacon-program-next-action-admission-v164/focused-regression-junit.xml",
+      "docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md"
+    ]
+  },
+  "matrix_projection_gate": {
+    "status": "pass",
+    "blocked": false,
+    "reason_codes": [],
+    "contract": {
+      "truth_mode": "markdown",
+      "source": "docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
+      "package_authoritative": true,
+      "enrichment_disabled": true
+    }
+  },
+  "qa_outcome_taxonomy": {
+    "category": "pending_or_ready",
+    "reason_codes": [
+      "no_prior_feature_qa"
+    ],
+    "stable_taxonomy": [
+      "product_failed",
+      "test_failed",
+      "runner_admission_blocked",
+      "environment_blocked",
+      "auth_session_blocked",
+      "evidence_binding_missing",
+      "coverage_gap",
+      "truth_projection_gap"
+    ]
+  },
+  "blocking_artifact_updates": [],
+  "all_entries": [
+    {
+      "ac_id": "AC-028",
+      "tc_id": "TC-PNA-001",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_program_next_action_blocks_wrong_lake -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "SidePilot-style fixture with `next_action=beacon-gen-implement:content-hub-foundation` blocks `pi-host-ui-ux` with `program_next_action_mismatch`; no implementation evidence path is written.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-001/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
+      "qa_type": "integration",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-029",
+      "tc_id": "TC-PNA-002",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_program_next_action_allows_current_lake -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Target `content-hub-foundation` matches `next_action`; admission result includes program slug, lake slug, material path, and next_action source.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-002/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-030",
+      "tc_id": "TC-PNA-003",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_program_dependency_closure_blocks_downstream_lake -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Downstream W7 lake with W0-W6 dependencies and missing prerequisite QA acceptance blocks with `program_dependency_unclosed`.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-003/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
+      "qa_type": "integration",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-031",
+      "tc_id": "TC-PNA-004",
+      "layer": "regression",
+      "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_per_feature_implement_admission_unchanged_without_program_topology -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Feature without owning program topology keeps normal per-feature implement admission and does not require `program-run-state.json`.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-004/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
+      "qa_type": "regression",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-032",
+      "tc_id": "TC-PNA-005",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_static_shell_ui_evidence_is_non_acceptance -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Full-parity UI evidence containing required surfaces with `coming_soon`, preview-only, static shell, or no-op recovery controls is rejected with `static_shell_implementation_evidence`.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-005/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
+      "qa_type": "contract",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-033",
+      "tc_id": "TC-PNA-006",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_source_grep_only_tests_do_not_satisfy_behavior_ac -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Evidence built only from source string assertions such as `readFileSync(...).toContain(...)` cannot satisfy runtime/browser/user-behavior AC and returns `static_source_assertion_only`.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-006/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
+      "qa_type": "contract",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-034",
+      "tc_id": "TC-PNA-007",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_blocked_generator_writes_diagnostic_only -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Blocked implement admission writes diagnostic state only and does not mark tasks done, write implementation summary, or update QA/release evidence.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-007/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
+      "qa_type": "integration",
+      "automation": "auto"
+    }
+  ],
+  "targeted_entries": [
+    {
+      "ac_id": "AC-028",
+      "tc_id": "TC-PNA-001",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_program_next_action_blocks_wrong_lake -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "SidePilot-style fixture with `next_action=beacon-gen-implement:content-hub-foundation` blocks `pi-host-ui-ux` with `program_next_action_mismatch`; no implementation evidence path is written.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-001/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
+      "qa_type": "integration",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-029",
+      "tc_id": "TC-PNA-002",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_program_next_action_allows_current_lake -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Target `content-hub-foundation` matches `next_action`; admission result includes program slug, lake slug, material path, and next_action source.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-002/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-030",
+      "tc_id": "TC-PNA-003",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_program_dependency_closure_blocks_downstream_lake -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Downstream W7 lake with W0-W6 dependencies and missing prerequisite QA acceptance blocks with `program_dependency_unclosed`.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-003/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
+      "qa_type": "integration",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-031",
+      "tc_id": "TC-PNA-004",
+      "layer": "regression",
+      "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_per_feature_implement_admission_unchanged_without_program_topology -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Feature without owning program topology keeps normal per-feature implement admission and does not require `program-run-state.json`.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-004/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
+      "qa_type": "regression",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-032",
+      "tc_id": "TC-PNA-005",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_static_shell_ui_evidence_is_non_acceptance -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Full-parity UI evidence containing required surfaces with `coming_soon`, preview-only, static shell, or no-op recovery controls is rejected with `static_shell_implementation_evidence`.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-005/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
+      "qa_type": "contract",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-033",
+      "tc_id": "TC-PNA-006",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_source_grep_only_tests_do_not_satisfy_behavior_ac -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Evidence built only from source string assertions such as `readFileSync(...).toContain(...)` cannot satisfy runtime/browser/user-behavior AC and returns `static_source_assertion_only`.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-006/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
+      "qa_type": "contract",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-034",
+      "tc_id": "TC-PNA-007",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_blocked_generator_writes_diagnostic_only -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Blocked implement admission writes diagnostic state only and does not mark tasks done, write implementation summary, or update QA/release evidence.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-007/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
+      "qa_type": "integration",
+      "automation": "auto"
+    }
+  ],
+  "targeted_layers": [
+    "contract",
+    "integration",
+    "regression",
+    "unit"
+  ],
+  "targeted_ac_ids": [
+    "AC-028",
+    "AC-029",
+    "AC-030",
+    "AC-031",
+    "AC-032",
+    "AC-033",
+    "AC-034"
+  ],
+  "targeted_tc_ids": [
+    "TC-PNA-001",
+    "TC-PNA-002",
+    "TC-PNA-003",
+    "TC-PNA-004",
+    "TC-PNA-005",
+    "TC-PNA-006",
+    "TC-PNA-007"
+  ],
+  "targeted_source_tc_ids": [
+    "TC-PNA-001",
+    "TC-PNA-002",
+    "TC-PNA-003",
+    "TC-PNA-004",
+    "TC-PNA-005",
+    "TC-PNA-006",
+    "TC-PNA-007"
+  ],
+  "targeted_scenario_ids": [],
+  "targeted_scenario_families": [],
+  "previous_run_id": "",
+  "run_id": "run-20260710T114740772252",
+  "release_ready": true,
+  "spec_fingerprint_hash": "977bdd9fde751549dfce4dc842b29a7ffa500b068d18c7d8c259dea57f60ed66",
+  "feature_matrix_path": ".beacon/qa/features/beacon-program-next-action-admission-v164/matrix.qa9.json",
+  "canonical_matrix_path": "",
+  "per_item_results": [
+    {
+      "ac_id": "AC-028",
+      "tc_id": "TC-PNA-001",
+      "source_tc_id": "TC-PNA-001",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-001",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "integration",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-001/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-029",
+      "tc_id": "TC-PNA-002",
+      "source_tc_id": "TC-PNA-002",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-002",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "unit",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-002/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-030",
+      "tc_id": "TC-PNA-003",
+      "source_tc_id": "TC-PNA-003",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-003",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "integration",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-003/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-031",
+      "tc_id": "TC-PNA-004",
+      "source_tc_id": "TC-PNA-004",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-004",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "regression",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-004/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-032",
+      "tc_id": "TC-PNA-005",
+      "source_tc_id": "TC-PNA-005",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-005",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-005/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-033",
+      "tc_id": "TC-PNA-006",
+      "source_tc_id": "TC-PNA-006",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-006",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-006/command.txt",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-006/stdout.log",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-006/stderr.log",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-006/junit.xml",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-006/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-034",
+      "tc_id": "TC-PNA-007",
+      "source_tc_id": "TC-PNA-007",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-007",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "integration",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-007/result.json"
+      ]
+    }
+  ],
+  "verified_item_ids": [
+    "AC-028",
+    "AC-029",
+    "AC-030",
+    "AC-031",
+    "AC-032",
+    "AC-033",
+    "AC-034",
+    "TEST-001",
+    "TEST-002",
+    "TEST-003",
+    "TEST-004",
+    "TEST-005",
+    "TEST-006",
+    "TEST-007"
+  ],
+  "failed_item_ids": [],
+  "exhaustiveness": {
+    "schema_version": "1.0",
+    "feature": "beacon-program-next-action-admission-v164",
+    "feature_slug": "beacon-program-next-action-admission-v164",
+    "run_id": "run-20260710T114740772252",
+    "generated_at": "2026-07-10T03:47:49.028617+00:00",
+    "execution_mode": "feature-aware",
+    "scenario_count": 7,
+    "browser_scenario_count": 0,
+    "required_families": [],
+    "passed_families": [],
+    "missing_axes": [],
+    "missing_replay_scenarios": [],
+    "missing_browser_evidence_scenarios": [],
+    "scenario_pass_rate": 1.0,
+    "family_coverage_rate": 1.0,
+    "replay_coverage_rate": 1.0,
+    "browser_evidence_rate": 1.0,
+    "score": 1.0,
+    "threshold": 0.6,
+    "status": "passed",
+    "required_next_action": "continue_current_plan",
+    "failure_streak": 0,
+    "escalation_level": "E0"
+  },
+  "project_profile": {},
+  "project_profile_gate": {
+    "status": "not_configured",
+    "profile_id": "",
+    "issues": [],
+    "required_evidence": [],
+    "required_cases": [],
+    "contract_drifts": []
+  },
+  "requirement_completeness_gate": {
+    "schema_version": "1.0",
+    "enabled": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "requirement_completeness_projection_missing",
+    "target_stage": "qa",
+    "feature": "beacon-program-next-action-admission-v164",
+    "version": "v1.6.4",
+    "stage_ready": true,
+    "paths": {
+      "envelope": "docs/beacon/v1.6.4/.machine/requirement/beacon-program-next-action-admission-v164.envelope.json",
+      "candidate_ledger": "docs/beacon/v1.6.4/.machine/requirement/beacon-program-next-action-admission-v164.candidate-ledger.json",
+      "decision_log": "docs/beacon/v1.6.4/.machine/requirement/beacon-program-next-action-admission-v164.supplement-decision-log.json",
+      "freeze_contract": "docs/beacon/v1.6.4/.machine/requirement/beacon-program-next-action-admission-v164.freeze-contract.json",
+      "completeness": "docs/beacon/v1.6.4/.machine/requirement/beacon-program-next-action-admission-v164.completeness.json",
+      "supplement_task": "docs/beacon/v1.6.4/.machine/requirement/beacon-program-next-action-admission-v164.supplement-task.json",
+      "re_freeze_transaction": "docs/beacon/v1.6.4/.machine/requirement/beacon-program-next-action-admission-v164.re-freeze-transaction.json"
+    },
+    "projection_status": "package_authoritative",
+    "recommended_command": "",
+    "next_action": "qa",
+    "stage_gates": {
+      "artifact_read_model": {
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "requirement_completeness_projection_missing",
+        "summary": "machine completeness projection is missing, but v1.5.2 package truth and coverage are valid authority",
+        "details": {
+          "paths": {
+            "envelope": "docs/beacon/v1.6.4/.machine/requirement/beacon-program-next-action-admission-v164.envelope.json",
+            "candidate_ledger": "docs/beacon/v1.6.4/.machine/requirement/beacon-program-next-action-admission-v164.candidate-ledger.json",
+            "decision_log": "docs/beacon/v1.6.4/.machine/requirement/beacon-program-next-action-admission-v164.supplement-decision-log.json",
+            "freeze_contract": "docs/beacon/v1.6.4/.machine/requirement/beacon-program-next-action-admission-v164.freeze-contract.json",
+            "completeness": "docs/beacon/v1.6.4/.machine/requirement/beacon-program-next-action-admission-v164.completeness.json",
+            "supplement_task": "docs/beacon/v1.6.4/.machine/requirement/beacon-program-next-action-admission-v164.supplement-task.json",
+            "re_freeze_transaction": "docs/beacon/v1.6.4/.machine/requirement/beacon-program-next-action-admission-v164.re-freeze-transaction.json"
+          },
+          "projection_status": "package_authoritative"
+        }
+      },
+      "decision_traceability": {
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "summary": "human requirement truth is carried by the authoritative feature package",
+        "details": {}
+      },
+      "coverage_closure": {
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "summary": "acceptance coverage is parseable from package tests",
+        "details": {
+          "ac_count": 7,
+          "test_count": 7
+        }
+      },
+      "downgrade_control": {
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "summary": "legacy completeness projection absence does not downgrade package authority",
+        "details": {}
+      },
+      "stage_admission": {
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "summary": "qa admission uses authoritative package truth",
+        "details": {
+          "target_stage": "qa",
+          "stage_ready": true,
+          "stage_key": "package_authoritative_truth"
+        }
+      }
+    },
+    "human_loop_handoff": {
+      "action": "qa",
+      "reason": "package_authoritative_truth_pass",
+      "recommended_command": "",
+      "focus_areas": []
+    },
+    "package_authoritative_truth": {
+      "status": "pass",
+      "validation": {
+        "schema_version": "1.0",
+        "feature": "beacon-program-next-action-admission-v164",
+        "feature_slug": "beacon-program-next-action-admission-v164",
+        "version": "v1.6.4",
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "generated_at": "2026-07-10T03:47:39.238523+00:00",
+        "package_dir": "docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164",
+        "truth_frontmatter": {
+          "slug": "beacon-program-next-action-admission-v164",
+          "version": "v1.6.4",
+          "status": "frozen",
+          "revision_id": "R1",
+          "language": "zh",
+          "change_reason": "R1 - program next_action admission and non-behavior implementation evidence; SidePilot v0.0.12 W7 false-closure friction friction:9ac4930999fc / friction:a1ec6dcfc7b1",
+          "source_revision_id": "null",
+          "canonical_refs": {
+            "prd": "docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/truth.md",
+            "user_story": "docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/truth.md",
+            "test_case": "docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md"
+          },
+          "parser_contract": "beacon-feature-package-v1",
+          "truth_source_model": "feature_package_authoritative",
+          "truth_map_contract": "beacon-truth-map-v1"
+        },
+        "ac_count": 7,
+        "test_count": 7,
+        "checkbox_count": 9,
+        "evidence_row_count": 7,
+        "gate_authority": "canonical_surfaces_preserved",
+        "checkbox_gate_bypass": false,
+        "evidence_gate_truth": false,
+        "diagnostics": [],
+        "truth_map_contract": "beacon-truth-map-v1",
+        "truth_source_model": "feature_package_authoritative",
+        "truth_package_contract": "beacon-feature-package-v2",
+        "machine_json_role": "generated_state_not_truth",
+        "generated_by": "beacon.truth_map.resolver",
+        "truth_authority": "markdown_feature_package",
+        "json_authority": false,
+        "source_paths": {
+          "truth": "docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/truth.md",
+          "tests": "docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
+          "tasks": "docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tasks.md",
+          "evidence": "docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/evidence.md"
+        },
+        "source_hashes": {
+          "truth": "acec3ce40b03245f89318c87902da38ffa38804b618d1b33521cecbc2dd59f28",
+          "tests": "7aaf99e00faebf7869b119f34132842f0ae0ecfccf9355cef38a9fc55b4c0583",
+          "tasks": "8992227d758faa95f1df03c1c04dfe693acaa4878c862bc3b5287a47aef152af",
+          "evidence": "67646b5dd53f0d16ea6509d2efda25fe697348e03f7c34e8c5f8b8357ec36806"
+        },
+        "runtime_json_requires_markdown_twin": false
+      }
+    },
+    "completeness": {},
+    "freeze_contract": {}
+  },
+  "current_session_id": "",
+  "scenario_results_v2": [
+    {
+      "scenario_id": "TC-PNA-001",
+      "tc_id": "TC-PNA-001",
+      "source_tc_id": "TC-PNA-001",
+      "ac_id": "AC-028",
+      "feature_slug": "beacon-program-next-action-admission-v164",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-001/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-PNA-002",
+      "tc_id": "TC-PNA-002",
+      "source_tc_id": "TC-PNA-002",
+      "ac_id": "AC-029",
+      "feature_slug": "beacon-program-next-action-admission-v164",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-002/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-PNA-003",
+      "tc_id": "TC-PNA-003",
+      "source_tc_id": "TC-PNA-003",
+      "ac_id": "AC-030",
+      "feature_slug": "beacon-program-next-action-admission-v164",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-003/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-PNA-004",
+      "tc_id": "TC-PNA-004",
+      "source_tc_id": "TC-PNA-004",
+      "ac_id": "AC-031",
+      "feature_slug": "beacon-program-next-action-admission-v164",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-004/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-PNA-005",
+      "tc_id": "TC-PNA-005",
+      "source_tc_id": "TC-PNA-005",
+      "ac_id": "AC-032",
+      "feature_slug": "beacon-program-next-action-admission-v164",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-005/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-PNA-006",
+      "tc_id": "TC-PNA-006",
+      "source_tc_id": "TC-PNA-006",
+      "ac_id": "AC-033",
+      "feature_slug": "beacon-program-next-action-admission-v164",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-006/command.txt",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-006/stdout.log",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-006/stderr.log",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-006/junit.xml",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-006/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-PNA-007",
+      "tc_id": "TC-PNA-007",
+      "source_tc_id": "TC-PNA-007",
+      "ac_id": "AC-034",
+      "feature_slug": "beacon-program-next-action-admission-v164",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260710T114740772252/qa9-tc/TC-PNA-007/result.json"
+      ]
+    }
+  ],
+  "ac_closure": {
+    "schema_version": "1.0",
+    "feature": "beacon-program-next-action-admission-v164",
+    "feature_slug": "beacon-program-next-action-admission-v164",
+    "run_id": "run-20260710T114740772252",
+    "generated_at": "2026-07-10T03:47:49.029193+00:00",
+    "reports": [
+      {
+        "ac_id": "AC-028",
+        "feature_slug": "beacon-program-next-action-admission-v164",
+        "required_scenario_families": [],
+        "passed_scenario_families": [
+          "primary"
+        ],
+        "required_replay_scenarios": [],
+        "missing_replay_scenarios": [],
+        "scenario_ids": [
+          "TC-PNA-001"
+        ],
+        "closure_status": "accepted",
+        "confidence_min": 1.0,
+        "confidence_avg": 1.0,
+        "open_outcomes": [],
+        "blocking_reasons": []
+      },
+      {
+        "ac_id": "AC-029",
+        "feature_slug": "beacon-program-next-action-admission-v164",
+        "required_scenario_families": [],
+        "passed_scenario_families": [
+          "primary"
+        ],
+        "required_replay_scenarios": [],
+        "missing_replay_scenarios": [],
+        "scenario_ids": [
+          "TC-PNA-002"
+        ],
+        "closure_status": "accepted",
+        "confidence_min": 1.0,
+        "confidence_avg": 1.0,
+        "open_outcomes": [],
+        "blocking_reasons": []
+      },
+      {
+        "ac_id": "AC-030",
+        "feature_slug": "beacon-program-next-action-admission-v164",
+        "required_scenario_families": [],
+        "passed_scenario_families": [
+          "primary"
+        ],
+        "required_replay_scenarios": [],
+        "missing_replay_scenarios": [],
+        "scenario_ids": [
+          "TC-PNA-003"
+        ],
+        "closure_status": "accepted",
+        "confidence_min": 1.0,
+        "confidence_avg": 1.0,
+        "open_outcomes": [],
+        "blocking_reasons": []
+      },
+      {
+        "ac_id": "AC-031",
+        "feature_slug": "beacon-program-next-action-admission-v164",
+        "required_scenario_families": [],
+        "passed_scenario_families": [
+          "primary"
+        ],
+        "required_replay_scenarios": [],
+        "missing_replay_scenarios": [],
+        "scenario_ids": [
+          "TC-PNA-004"
+        ],
+        "closure_status": "accepted",
+        "confidence_min": 1.0,
+        "confidence_avg": 1.0,
+        "open_outcomes": [],
+        "blocking_reasons": []
+      },
+      {
+        "ac_id": "AC-032",
+        "feature_slug": "beacon-program-next-action-admission-v164",
+        "required_scenario_families": [],
+        "passed_scenario_families": [
+          "primary"
+        ],
+        "required_replay_scenarios": [],
+        "missing_replay_scenarios": [],
+        "scenario_ids": [
+          "TC-PNA-005"
+        ],
+        "closure_status": "accepted",
+        "confidence_min": 1.0,
+        "confidence_avg": 1.0,
+        "open_outcomes": [],
+        "blocking_reasons": []
+      },
+      {
+        "ac_id": "AC-033",
+        "feature_slug": "beacon-program-next-action-admission-v164",
+        "required_scenario_families": [],
+        "passed_scenario_families": [
+          "primary"
+        ],
+        "required_replay_scenarios": [],
+        "missing_replay_scenarios": [],
+        "scenario_ids": [
+          "TC-PNA-006"
+        ],
+        "closure_status": "accepted",
+        "confidence_min": 1.0,
+        "confidence_avg": 1.0,
+        "open_outcomes": [],
+        "blocking_reasons": []
+      },
+      {
+        "ac_id": "AC-034",
+        "feature_slug": "beacon-program-next-action-admission-v164",
+        "required_scenario_families": [],
+        "passed_scenario_families": [
+          "primary"
+        ],
+        "required_replay_scenarios": [],
+        "missing_replay_scenarios": [],
+        "scenario_ids": [
+          "TC-PNA-007"
+        ],
+        "closure_status": "accepted",
+        "confidence_min": 1.0,
+        "confidence_avg": 1.0,
+        "open_outcomes": [],
+        "blocking_reasons": []
+      }
+    ]
+  },
+  "feature_scorecard": {
+    "schema_version": "1.0",
+    "feature": "beacon-program-next-action-admission-v164",
+    "feature_slug": "beacon-program-next-action-admission-v164",
+    "run_id": "run-20260710T114740772252",
+    "ac_total": 7,
+    "ac_accepted": 7,
+    "scenario_total": 7,
+    "scenario_passed": 7,
+    "release_confidence_min": 1.0,
+    "release_confidence_avg": 1.0,
+    "review_required_count": 0,
+    "needs_replay_count": 0,
+    "false_complete_risk": 0.0,
+    "unresolved_closure_outcomes": [],
+    "project_profile_gate_status": "not_configured",
+    "project_profile_id": "",
+    "coverage_current": {
+      "required_scenarios": 7,
+      "executed_scenarios": 7,
+      "coverage_rate": 1.0,
+      "required_scenario_families": [
+        "boundary",
+        "compatibility",
+        "happy",
+        "negative",
+        "recovery"
+      ],
+      "covered_scenario_families": [
+        "primary"
+      ],
+      "missing_scenario_families": [],
+      "missing_test_case_ids": []
+    },
+    "coverage_gap": {
+      "missing_axes": [],
+      "missing_replay_scenarios": [],
+      "missing_browser_evidence_scenarios": [],
+      "missing_scenario_families": [],
+      "missing_test_case_ids": [],
+      "open_closure_outcomes": []
+    },
+    "boundary_evidence": {
+      "boundary_principles": [],
+      "assumption_capture_required": true,
+      "goal_driven_verification_required": true,
+      "verification_item_count": 7,
+      "targeted_scope_only": true
+    },
+    "design_truth_verdict": {
+      "schema_version": "1.0",
+      "status": "not_applicable",
+      "blocked": false,
+      "reason_codes": [],
+      "source_surface": "implement-to-qa-handoff",
+      "verification_surface": "qa",
+      "findings": []
+    },
+    "qa_outcome_taxonomy": {
+      "status": "not_applicable",
+      "failure_classes": [],
+      "primary_class": "",
+      "stable_taxonomy": [
+        "product_failed",
+        "test_failed",
+        "runner_admission_blocked",
+        "environment_blocked",
+        "auth_session_blocked",
+        "evidence_binding_missing",
+        "coverage_gap",
+        "truth_projection_gap"
+      ]
+    },
+    "qa_attribution": {
+      "schema_version": "1.0",
+      "status": "not_applicable",
+      "support_evidence_only": true,
+      "runtime_evidence_only": true,
+      "truth_authority": false,
+      "verdict_authority": false,
+      "release_pass_evidence": false,
+      "attribution_count": 0,
+      "accepted_count": 0,
+      "blocked_count": 0,
+      "release_blocking_count": 0,
+      "proposal_count": 0,
+      "family_counts": {
+        "implementation_gap": 0,
+        "truth_drift": 0,
+        "coverage_gap": 0,
+        "execution_lapse": 0,
+        "skill_defect": 0,
+        "runner_admission_blocker": 0,
+        "evidence_insufficient": 0
+      },
+      "route_counts": {},
+      "attributions": []
+    },
+    "qa_acceptance_capability": {
+      "schema_version": "1.0",
+      "status": "blocked",
+      "blocked": true,
+      "taxonomy": {
+        "schema_version": "1.0",
+        "status": "pass",
+        "blocked": false,
+        "full_layers": [
+          "unit",
+          "interface",
+          "contract",
+          "integration",
+          "smoke",
+          "functional",
+          "regression",
+          "exception",
+          "compatibility",
+          "browser_e2e"
+        ],
+        "non_browser_layers": [
+          "unit",
+          "interface",
+          "contract",
+          "integration",
+          "smoke",
+          "functional",
+          "regression",
+          "exception",
+          "compatibility"
+        ],
+        "browser_layer": "browser_e2e",
+        "qa9_layers": [
+          "unit",
+          "interface",
+          "contract",
+          "integration",
+          "smoke",
+          "functional",
+          "regression",
+          "exception",
+          "compatibility"
+        ],
+        "requested_layers": [
+          "contract",
+          "integration",
+          "regression",
+          "unit"
+        ],
+        "unknown_layers": []
+      },
+      "profile_completeness": {
+        "schema_version": "1.0",
+        "profile": "feature-matrix",
+        "browser_required": false,
+        "required_layers": [
+          "contract",
+          "integration",
+          "regression",
+          "unit"
+        ],
+        "executed_layers": [
+          "contract",
+          "integration",
+          "regression",
+          "unit"
+        ],
+        "skipped_layers": [],
+        "blocked_layers": [],
+        "not_applicable_layers": [],
+        "not_applicable_reasons": {},
+        "missing_layers": [],
+        "confidence_chain": {
+          "schema_version": "1.0",
+          "layers": [
+            {
+              "layer": "unit",
+              "status": "executed",
+              "confidence": 1.0,
+              "depends_on": [],
+              "gap_markers": [],
+              "downstream_gap_sources": []
+            },
+            {
+              "layer": "interface",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "interface"
+              ]
+            },
+            {
+              "layer": "contract",
+              "status": "executed",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "interface"
+              ]
+            },
+            {
+              "layer": "integration",
+              "status": "executed",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface",
+                "contract"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "interface"
+              ]
+            },
+            {
+              "layer": "smoke",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface",
+                "contract",
+                "integration"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "interface",
+                "smoke"
+              ]
+            },
+            {
+              "layer": "functional",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface",
+                "contract",
+                "integration",
+                "smoke"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "interface",
+                "smoke",
+                "functional"
+              ]
+            },
+            {
+              "layer": "regression",
+              "status": "executed",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface",
+                "contract",
+                "integration",
+                "smoke",
+                "functional"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "interface",
+                "smoke",
+                "functional"
+              ]
+            },
+            {
+              "layer": "exception",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface",
+                "contract",
+                "integration",
+                "smoke",
+                "functional",
+                "regression"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "interface",
+                "smoke",
+                "functional",
+                "exception"
+              ]
+            },
+            {
+              "layer": "compatibility",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface",
+                "contract",
+                "integration",
+                "smoke",
+                "functional",
+                "regression",
+                "exception"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "interface",
+                "smoke",
+                "functional",
+                "exception",
+                "compatibility"
+              ]
+            },
+            {
+              "layer": "browser_e2e",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface",
+                "contract",
+                "integration",
+                "smoke",
+                "functional",
+                "regression",
+                "exception",
+                "compatibility"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "interface",
+                "smoke",
+                "functional",
+                "exception",
+                "compatibility",
+                "browser_e2e"
+              ]
+            }
+          ],
+          "chain_direction": "unit_to_browser_e2e",
+          "terminal_layer": "browser_e2e",
+          "chain_broken": true,
+          "downstream_gap_layers": [
+            "browser_e2e",
+            "compatibility",
+            "exception",
+            "functional",
+            "interface",
+            "smoke"
+          ]
+        },
+        "state_machine_coverage": {},
+        "is_complete": false,
+        "partial": true,
+        "status": "partial"
+      },
+      "browser_evidence_contract": {
+        "status": "not_required",
+        "blocked": false
+      },
+      "browser_runner_registry": [
+        "playwright",
+        "playwright-extension",
+        "playwright-cli",
+        "playwright-cdp",
+        "browser-use",
+        "agent-browser",
+        "attached-browser",
+        "web-access",
+        "obscura-cdp"
+      ],
+      "non_acceptance_evidence_kinds": [
+        "listing",
+        "placeholder",
+        "documentation_only",
+        "dry_run"
+      ],
+      "failure_attribution_routes": {
+        "product_bug": "beacon-implement",
+        "implementation_gap": "beacon-implement",
+        "test_script_bug": "beacon-test-case",
+        "environment_blocker": "beacon-qa",
+        "auth_session_blocker": "beacon-qa",
+        "runner_admission_blocker": "blocked",
+        "coverage_gap": "beacon-test-case",
+        "truth_drift": "beacon-change",
+        "evidence_insufficient": "beacon-qa"
+      },
+      "truth_authority": false,
+      "release_pass_evidence": false
+    },
+    "reconciliation": {
+      "required": false,
+      "reason_code": "",
+      "artifact_path": "",
+      "artifact": {}
+    },
+    "deep_absorption": {
+      "schema_version": "1.0",
+      "status": "not_applicable",
+      "eligible_for_release_supplement": false,
+      "findings": [],
+      "absorbed_count": 0,
+      "deferred_count": 0,
+      "blocked_count": 0,
+      "not_applicable_count": 0
+    },
+    "release_supplement_input": {
+      "deep_findings_absorbed": false,
+      "absorbed_finding_count": 0,
+      "advisory_or_blocked_finding_count": 0,
+      "policy": "absorbed_deep_findings_only"
+    },
+    "continue_decision": "ready_for_release",
+    "stop_reasons": [],
+    "test_case_backfill_required": false,
+    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-program-next-action-admission-v164 --version v1.6.4 --feature \"beacon-program-next-action-admission-v164\"",
+    "repair_handoff": {
+      "action": "qa-repair",
+      "reason": "qa_round_incomplete",
+      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-program-next-action-admission-v164 --version v1.6.4 --feature \"beacon-program-next-action-admission-v164\""
+    },
+    "release_ready": true
+  },
+  "design_truth_verdict": {
+    "schema_version": "1.0",
+    "status": "not_applicable",
+    "blocked": false,
+    "reason_codes": [],
+    "source_surface": "implement-to-qa-handoff",
+    "verification_surface": "qa",
+    "findings": []
+  },
+  "ac_closure_path": ".beacon/qa/features/beacon-program-next-action-admission-v164/ac-closure.json",
+  "feature_scorecard_path": ".beacon/qa/features/beacon-program-next-action-admission-v164/scorecard.json",
+  "team_mode": false,
+  "host_runtime": "codex",
+  "subagent_prechecks": {
+    "required": false,
+    "host_runtime": "codex",
+    "runtime_readiness": {},
+    "delegation_readiness": {}
+  },
+  "team_contract": {
+    "preferred_surface": "qa-team",
+    "plan_command": "beacon qa team-plan \"beacon-program-next-action-admission-v164\" --project /Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-program-next-action-admission-v164 --version v1.6.4",
+    "run_command": "beacon qa team-run \"beacon-program-next-action-admission-v164\" --project /Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-program-next-action-admission-v164 --version v1.6.4",
+    "roles": [
+      "verifier",
+      "repair-handoff-writer"
+    ],
+    "context_isolation": {
+      "role_plane": "qa",
+      "isolated_from": [
+        "implement-team"
+      ],
+      "shared_inputs": [
+        "docs/beacon/<version>/qa/test-cases",
+        "implementation_summary",
+        "technical_archive",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "feature_scorecard",
+        "repair_handoff",
+        "qa_status"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context"
+    },
+    "config_source": "beacon/team_roles/qa-team.json"
+  },
+  "implement_to_qa_handoff": {},
+  "acceptance_writeback": {
+    "status": "completed",
+    "machine_path": "docs/beacon/v1.6.4/.machine/execution/qa-acceptance-beacon-program-next-action-admission-v164.json",
+    "markdown_path": "docs/beacon/v1.6.4/execution/qa-acceptance-brief-beacon-program-next-action-admission-v164.md",
+    "runtime_path": ".beacon/transactions/qa-acceptance-beacon-program-next-action-admission-v164.json",
+    "transaction_id": "tx-qa-acceptance-beacon-program-next-action-admission-v164-7fbfef73d41f",
+    "source_hash": "sha256:7fbfef73d41f4c0150201dab0dc262c062fa678398709340ba64dc390ad32e15",
+    "projection_seq": 1,
+    "transaction_status": "applied"
+  },
+  "delivery_contract": {
+    "schema_version": "1.0",
+    "feature": "beacon-program-next-action-admission-v164",
+    "version": "v1.6.4",
+    "requested_mode": "feature-aware",
+    "effective_mode": "feature-aware",
+    "generator_mode": "feature-aware",
+    "execution_mode": "feature-aware",
+    "runner_mode": "qa",
+    "host_runtime": "codex",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "host_runtime": "codex",
+      "subagent_required": false,
+      "subagent_runtime_status": "",
+      "subagent_delegation_status": "",
+      "host_semantic_ready": false,
+      "provider_available": false
+    },
+    "subagent_prechecks": {
+      "required": false,
+      "host_runtime": "codex",
+      "runtime_readiness": {},
+      "delegation_readiness": {}
+    },
+    "requirement_binding": {
+      "source_of_truth_root": "docs/beacon/v1.6.4",
+      "feature_matrix_path": ".beacon/qa/features/beacon-program-next-action-admission-v164/matrix.qa9.json",
+      "canonical_matrix_path": ""
+    },
+    "traceability_refs": [
+      ".beacon/qa/features/beacon-program-next-action-admission-v164/matrix.qa9.json",
+      ".beacon/qa/features/beacon-program-next-action-admission-v164/ac-closure.json",
+      ".beacon/qa/features/beacon-program-next-action-admission-v164/scorecard.json"
+    ],
+    "runner": "",
+    "adapter_type": "",
+    "execution_surface": "qa",
+    "team_mode": false,
+    "qa_status": "passed",
+    "gate_status": "",
+    "release_ready": true,
+    "risk_flags": []
+  },
+  "host_native_delivery": {
+    "schema_version": "1.0",
+    "feature": "beacon-program-next-action-admission-v164",
+    "version": "v1.6.4",
+    "requested_mode": "feature-aware",
+    "effective_mode": "feature-aware",
+    "generator_mode": "feature-aware",
+    "execution_mode": "feature-aware",
+    "runner_mode": "qa",
+    "host_runtime": "codex",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "host_runtime": "codex",
+      "subagent_required": false,
+      "subagent_runtime_status": "",
+      "subagent_delegation_status": "",
+      "host_semantic_ready": false,
+      "provider_available": false
+    },
+    "subagent_prechecks": {
+      "required": false,
+      "host_runtime": "codex",
+      "runtime_readiness": {},
+      "delegation_readiness": {}
+    },
+    "requirement_binding": {
+      "source_of_truth_root": "docs/beacon/v1.6.4",
+      "feature_matrix_path": ".beacon/qa/features/beacon-program-next-action-admission-v164/matrix.qa9.json",
+      "canonical_matrix_path": ""
+    },
+    "traceability_refs": [
+      ".beacon/qa/features/beacon-program-next-action-admission-v164/matrix.qa9.json",
+      ".beacon/qa/features/beacon-program-next-action-admission-v164/ac-closure.json",
+      ".beacon/qa/features/beacon-program-next-action-admission-v164/scorecard.json"
+    ],
+    "runner": "",
+    "adapter_type": "",
+    "execution_surface": "qa",
+    "team_mode": false,
+    "qa_status": "passed",
+    "gate_status": "",
+    "release_ready": true,
+    "risk_flags": []
+  }
+}

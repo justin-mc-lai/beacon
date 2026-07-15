@@ -3,7 +3,7 @@ slug: beacon-v2-rust-kernel-redesign
 version: v2.0.0
 status: frozen
 language: zh
-revision: r6-draft
+revision: r7-draft
 canonical_refs:
   truth: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
   tests: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tests.md
@@ -50,6 +50,25 @@ v2 不新增主生命周期阶段；human-facing 仍为：
 ```text
 plan -> truth -> generate -> evaluate -> release
 ```
+
+### Loop Engineering 三层 Loop（R7 增补）
+
+v2.0.0 按 [Loop Engineering](https://addyosmani.com/blog/loop-engineering/) 三层 Loop 理论完善 harness loop 能力。beacon 生命周期天然映射三层 Loop（**注意：「Loop 三层」≠「存储三层」§AC-007，后者是 L1 MD / L2 SQLite / L3 Blob**）：
+
+| Loop Engineering 层 | beacon 生命周期映射 | 含义 | v2.0.0 实现 |
+|---|---|---|---|
+| **Coding Loop**（内） | `generate -> evaluate` | Agent 写代码→跑 Eval→发现问题→修→再测，自动闭环 | orchestrator iterate loop + stop_when + AgentBackend（AC-040..050） |
+| **Developer Feedback Loop**（中） | `truth -> generate`（change/refreeze） | 人看实现→修正 Spec→重新实现；人注入 AI 不知道的上下文 | change/refreeze 流程 + Developer Feedback checkpoint（AC-106） |
+| **Real-world Feedback Loop**（外） | `plan -> truth`（research/brainstorm） | 真实世界反馈→改产品方向→更新 Spec | **延后**（DEF-loop-006，需真实反馈源集成） |
+
+**Eval 复用**：Loop Engineering 的「Eval」= beacon 的 `qa gate` + `tests.md` TC（Command+Assertion），**不另建 Eval 机制**。
+
+**Host 运行模式**：loop 采用 **CLI 进程 + checkpoint/resume/信号**（对齐 v1.6 `beacon-run`），**无 daemon**。host 稳定靠 checkpoint/resume/信号处理（SIGINT graceful stop），不靠常驻服务。`beacon-v2 run --agent <X>` 启动 CLI 进程跑 loop，跑完退出或被信号中断后可 resume。
+
+**Loop 语义源**（v1.6 已实现，v2 Rust 重现）：
+- `docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md` R10（worktree+freeze 不断链 / state spine / stop-when 可执行检查）
+- `docs/beacon/v1.6.0/execution/beacon-loop-state-spine.md`（spine 字段语义）
+- v1.6 AC-071（stop-when maker≠checker）→ v2 AC-105
 
 ## User Intent Snapshot
 
@@ -107,6 +126,7 @@ v2 Rust 内核必须**语义重现**以下 v1.6.3 免疫修复（Rust 实现对�
 - `docs/beacon/v1.6.0/features/beacon-pln-review-runtime-multi-agent-v160/truth.md`
 - `docs/beacon/v1.6.0/features/beacon-truth-integrity-gates-v160/truth.md`
 - `docs/beacon/v1.6.0/execution/beacon-loop-state-spine.md`
+- `docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md`（R10 Loop Engineering 对齐 + AC-071 stop-when maker≠checker → v2 AC-105/106）
 - `docs/beacon/v1.6.3/features/beacon-{gate-truth-model-alignment,freeze-integrity-drift-repair,version-resolve-fail-closed,workflow-memory-completion-gate,ecosystem-discovery-sync-drift,truth-format-package-auth-skip,spec-fingerprint-package-auth-paths,post-release-hook-agent-coverage,runtime-release-alignment}-v163/truth.md`
 
 ## Scope Mode
@@ -323,6 +343,13 @@ optional stop_signal, token_usage, agent_name
 - **AC-049**：orchestrator **禁止**输出 QA pass / release ready / feature complete verdict。
 - **AC-050**：Phase Controller 四阶段写入 `runs.metadata_json`；phase 转换写 `lifecycle_events`。
 
+### Loop Engineering 对齐 AC（R7 增补）
+
+- **AC-105**（P3）：`beacon-v2 run --agent <codex|claude|acp:*>` CLI 直接选 agent 跑长任务编码落地；agent 选择映射到对应 AgentBackend；loop 在 CLI 进程内跑，checkpoint/resume/信号（SIGINT graceful stop）保证 host 稳定，**无 daemon**。
+- **AC-106**（P3）：`stop_when` 对齐 v1.6 AC-071 **maker≠checker**——loop **禁止**仅因 agent 自报 `stop_signal` 而终止；每轮 agent 后必须执行外部可验证检查（harness gate exit 0 / `--stop-check-cmd` exit 0 / terminal evaluator）；agent 自报 alone → `reason_code=stop_when_unverified`，continue 下一 iteration。
+- **AC-107**（P3）：Developer Feedback Loop 人注入 checkpoint——`beacon-v2 run --feedback-checkpoint` 在每 N iteration 后暂停 loop，等待人注入上下文修正（写入 `lifecycle_events` notes_injected），resume 后基于修正重新 iterate；人注入是 harness 接口，不绕过 truth（truth 变更仍走 change/refreeze）。
+- **AC-108**（P3）：Loop Engineering 三层 Loop 可观测——spine snapshot 含 `loop_layer` 字段（coding/developer/realworld），标注当前 run 在哪层 Loop；Coding Loop 内的 iteration + Developer Feedback 的 checkpoint + Real-world 的 research 都可追溯。
+
 ## 性能目标（Plan §4 + §2.5）
 
 | AC | 指标 | 目标 | 验收 |
@@ -440,6 +467,7 @@ optional stop_signal, token_usage, agent_name
 | D-V2-003 | per-project `beacon.db` | 与全局 Spine 冲突 | rejected | — |
 | D-V2-004 | worktree 全模式 parity | 用户拒绝延期 | **rejected**（in-scope **AC-099** P3） | — |
 | D-V2-005 | ImplementHarnessBackend 真集成 | 用户拒绝延期 | **rejected**（in-scope **AC-100** P3） | — |
+| DEF-loop-006 | Real-world Feedback Loop 闭环 | 需真实反馈源集成（用户反馈/数据/竞品） | **accepted defer** | post-v2.0.0 |
 
 **已移除**：r1 AC-040 空壳 contract test 路径 — 由 AC-045/046 真集成取代；**不 defer** claude/acp/worktree/implement-harness。
 
@@ -460,7 +488,7 @@ optional stop_signal, token_usage, agent_name
 5. **无空壳-only AC**；agent/worktree/implement 类 AC 须 integration tier（AC-043–046, AC-099–100）。
 6. **v1.6 upstream**（AC-101–103）在对应 phase 有 behavior-level TC，不得仅用「后续移植」一句带过。
 
-**当前状态**：`draft` / **R3**（revision `r6-draft`）— 2026-06-28 reopen：补 v1.6.3 9 个免疫修复 upstream 迁移义务（语义重现）+ Truth 规范基准（v1.5.2 package-authoritative，不生成 prd/user-story 顶层文档）+ canonical_refs 字段名对齐；待 refreeze。
+**当前状态**：`draft` / **R4**（revision `r7-draft`）— 2026-07-02 reopen：补 Loop Engineering 三层 Loop 模型（Coding/Developer/Real-world ↔ beacon 生命周期）+ host 运行模式（CLI 进程+checkpoint/resume/信号，无 daemon）+ AC-105/106/107/108（CLI 选 agent + stop_when maker≠checker + Developer Feedback checkpoint + 三层 Loop 可观测）+ v1.6 loop upstream 语义源；待 refreeze。
 
 ## User Stories
 
@@ -499,3 +527,4 @@ optional stop_signal, token_usage, agent_name
 | r4 | tests Alignment Surface 行为级 TC；research version projection binding；**frozen R1** |
 | r5 | R2 reopen：v1.6 TIG（AC-101）+ multi-agent planner review（AC-102–103）+ P0 done（AC-104）；upstream frozen inputs 表 |
 | r6 | R3 reopen：补 v1.6.3 9 个免疫修复进 upstream 表（语义重现义务）；Truth 规范基准段（v1.5.2 package-authoritative，不生成 prd/user-story 顶层文档）；canonical_refs 字段名对齐 truth/tests/tasks/evidence |
+| r7 | R4 reopen：Loop Engineering 三层 Loop 模型（Coding/Developer/Real-world ↔ beacon 生命周期）+ host 运行模式（CLI 进程+checkpoint/resume/信号，无 daemon）+ AC-105/106/107/108 + v1.6 loop upstream（R10 AC-071 → AC-105/106）+ DEF-loop-006 Real-world Loop 延后 |

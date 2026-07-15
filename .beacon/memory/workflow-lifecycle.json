@@ -2314,7 +2314,151 @@
         "baseline_id": "bl-run-20260322T132356Z-d5a5-001",
         "changed_layers": []
       }
+    },
+    {
+      "event_id": "5e035f45-99d0-43eb-878a-89f9f09f278d",
+      "run_id": "release:v1.6.4",
+      "stage": "release",
+      "event": "release_decision_recorded",
+      "source": "release.check",
+      "source_session_id": "release:v1.6.4",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.4/.machine/change/v1.6.4.json",
+        "docs/beacon/v1.6.4/change/v1.6.4.md"
+      ],
+      "ts": "2026-07-06T07:01:55.324384+00:00",
+      "details": {
+        "action": "check",
+        "version": "v1.6.4",
+        "status": "blocked",
+        "failed_checks": [
+          "coverage artifact ready",
+          "release scorecard ready",
+          "implement prompt boundary verdict pass"
+        ]
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "2eb64cdb-e223-41e1-b002-23c3182f56e5",
+      "run_id": "run-20260709T154207235892",
+      "stage": "qa",
+      "event": "memory_writeback",
+      "source": "workflow.memory.writeback",
+      "source_session_id": "run-20260709T154207235892",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-global-workspace-git-admission-v162/ac-closure.json",
+        ".beacon/qa/features/beacon-global-workspace-git-admission-v162/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-07-09T07:42:17.442882+00:00",
+      "details": {
+        "memory_id": "940d59d4-0321-426f-a496-6e42ef49de3f",
+        "memory_type": "decision",
+        "transaction_id": "tx-wf-run-20260709T154207235892-qa-memory_writeback-b7ee51501477",
+        "source_hash": "b7ee51501477c939b6e2c51227409ce239cfcb269158c2fb5357cfbf7df80f06",
+        "projection_seq": "wf-b7ee51501477c939"
+      },
+      "attempt_id": "qa@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "18ce68bf-2d8a-49fa-b4ae-bc284de78a67",
+      "run_id": "run-20260710T114740772252",
+      "stage": "qa",
+      "event": "memory_writeback",
+      "source": "workflow.memory.writeback",
+      "source_session_id": "run-20260710T114740772252",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-program-next-action-admission-v164/ac-closure.json",
+        ".beacon/qa/features/beacon-program-next-action-admission-v164/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-07-10T03:47:49.145432+00:00",
+      "details": {
+        "memory_id": "57c73f28-0bc7-4e2e-8fc0-a1fc15f43a04",
+        "memory_type": "decision",
+        "transaction_id": "tx-wf-run-20260710T114740772252-qa-memory_writeback-2888584e6540",
+        "source_hash": "2888584e654032af90564032cb359f814dcf422e99a1010691a74cdfe9bdf4d2",
+        "projection_seq": "wf-2888584e654032af"
+      },
+      "attempt_id": "qa@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "dbdab539-0d08-4b40-a334-d35eddf9a7cf",
+      "run_id": "release:v1.6.6",
+      "stage": "release",
+      "event": "release_decision_recorded",
+      "source": "release.check",
+      "source_session_id": "release:v1.6.6",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.6/.machine/change/v1.6.6.json",
+        "docs/beacon/v1.6.6/change/v1.6.6.md"
+      ],
+      "ts": "2026-07-14T07:00:47.050448+00:00",
+      "details": {
+        "action": "check",
+        "version": "v1.6.6",
+        "status": "blocked",
+        "failed_checks": [
+          "legacy cutover preflight",
+          "auto-test version matches release version",
+          "gate report version matches release version",
+          "coverage artifact ready",
+          "coverage summary version matches release version",
+          "version change markdown exists",
+          "version change payload exists",
+          "version change payload matches release version",
+          "version change document includes current feature",
+          "release scorecard ready",
+          "implement prompt boundary verdict pass"
+        ]
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "799b7663-a8f7-48e8-b9d6-7c4ef4976c1c",
+      "run_id": "run-20260715T140804911391",
+      "stage": "qa",
+      "event": "memory_writeback",
+      "source": "workflow.memory.writeback",
+      "source_session_id": "run-20260715T140804911391",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-loop-goal-v166/ac-closure.json",
+        ".beacon/qa/features/beacon-loop-goal-v166/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-07-15T06:08:25.405688+00:00",
+      "details": {
+        "memory_id": "205746f2-dc1f-4ab9-8840-71ee9af0ee32",
+        "memory_type": "decision",
+        "transaction_id": "tx-wf-run-20260715T140804911391-qa-memory_writeback-a117adc3f023",
+        "source_hash": "a117adc3f02338b1d0da90fc8b943c110f3faae21149743e235df02333e7dcfd",
+        "projection_seq": "wf-a117adc3f02338b1"
+      },
+      "attempt_id": "qa@attempt-1",
+      "attempt_seq": 1
     }
   ],
-  "updated_at": "2026-03-22T13:23:57.108816+00:00"
+  "updated_at": "2026-07-15T06:08:25.405736+00:00"
 }

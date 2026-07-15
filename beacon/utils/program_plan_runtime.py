@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from beacon.utils.program_plan_state import PROGRAM_PLAN_STATES, transition
+from beacon.utils.project_governance import load_governance_payload
 from beacon.utils.runtime import now_iso
 
 
@@ -92,6 +93,42 @@ def read_program_run_state(project_root: Path, version: str, program_slug: str) 
         return None
 
 
+def governance_precheck(project_root: Path, version: str) -> dict[str, Any]:
+    """Verify version is registered in governance with truth_canonical.
+
+    Returns a payload dict; status is one of:
+      - pass: governance entry exists with truth_canonical
+      - blocked: governance entry missing or truth_canonical absent
+    """
+    gov = load_governance_payload(project_root)
+    versions = gov.get("version_scoped_metadata") or {}
+    contract = versions.get(version) if isinstance(versions, dict) else None
+    if not isinstance(contract, dict):
+        return {
+            "status": "blocked",
+            "blocked": True,
+            "reason_code": "governance_version_not_registered",
+            "version": version,
+            "recommendation": f"Add {version} to project-version-governance.md with truth_canonical: main",
+        }
+    truth_canonical = str(contract.get("truth_canonical") or "").strip()
+    if not truth_canonical:
+        return {
+            "status": "blocked",
+            "blocked": True,
+            "reason_code": "governance_truth_canonical_missing",
+            "version": version,
+            "recommendation": f"Add truth_canonical: main to {version} governance entry",
+        }
+    return {
+        "status": "pass",
+        "blocked": False,
+        "reason_code": "",
+        "version": version,
+        "truth_canonical": truth_canonical,
+    }
+
+
 def build_plan_start_payload(
     project_root: Path,
     *,
@@ -101,6 +138,11 @@ def build_plan_start_payload(
     mode_flag: str = "",
     source: str = "",
 ) -> dict[str, Any]:
+    # Governance precheck: fail-closed when version is not registered
+    gov_check = governance_precheck(project_root, version)
+    if gov_check.get("blocked"):
+        # Surface the blocker but still produce the payload for diagnostic output
+        pass  # blocked is surfaced in payload; CLI decides whether to exit
     slug = slugify_program(utterance, program_slug)
     classification = classify_plan_mode(utterance, mode_flag=mode_flag, source=source)
     plan_mode = classification["plan_mode"]
@@ -167,6 +209,7 @@ def build_plan_start_payload(
         "fsm_states": list(PROGRAM_PLAN_STATES),
         "transition": transition_result.__dict__ if transition_result else None,
         "artifact_root": str(artifact_root.relative_to(project_root)),
+        "governance_precheck": gov_check,
         "generated_at": now_iso(),
     }
 

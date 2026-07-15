@@ -1,0 +1,201 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-qa-methodology-contract-v164",
+  "feature_slug": "beacon-qa-methodology-contract-v164",
+  "version": "v1.6.4",
+  "current_revision_id": "R1",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-07-02T06:46:07.327202+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-qa-methodology-contract-v164",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:3e0c3e7be842c12b0b4d520bb9312892817655c3377809acd8d857bfc8ad881c",
+      "superseded_by": null,
+      "created_at": "2026-07-02T03:13:04.873074+00:00",
+      "frozen_at": "2026-07-02T03:13:05.843239+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "beacon-qa-methodology-contract-v164",
+      "priority": "medium",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "global-boundaries-first-principles",
+          "text": "`global-boundaries.md §5` 新增「第一性原理」条款（动手前回到根本问题 + 拆最小可验证单元 + 每个决定说得出为什么）；纯增量不改既有条款（**Must**，UD-001/003）",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260702T064547Z-fc76",
+          "verified_by_run_id": "run-20260702T144601523686",
+          "accepted_at": "2026-07-02T06:46:07.295571+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/truth.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "global-boundaries-adversarial",
+          "text": "`global-boundaries.md §5` 新增「对抗式审查」条款（交付前最挑剔审查 + 列 3-5 翻车点 + 验证证据 + 不接受看起来没问题）；纯增量（**Must**，UD-002）",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260702T064547Z-fc76",
+          "verified_by_run_id": "run-20260702T144601523686",
+          "accepted_at": "2026-07-02T06:46:07.295571+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/truth.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "qa-skill-contract-mandatory",
+          "text": "`beacon-eval-qa` SKILL.md 增\"交付前对抗式审查\"强制契约；缺失翻车点/验证证据 → block（非可选）（**Must**，UD-002）",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260702T064547Z-fc76",
+          "verified_by_run_id": "run-20260702T144601523686",
+          "accepted_at": "2026-07-02T06:46:07.295571+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/truth.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "adversarial-lane-mandatory",
+          "text": "`planner_review_runtime` adversarial lane 在 qa release 前强制触发（非仅信号触发）；输出含 3-5 翻车点 + 验证证据形状；缺失 → block（**Must**）",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260702T064547Z-fc76",
+          "verified_by_run_id": "run-20260702T144601523686",
+          "accepted_at": "2026-07-02T06:46:07.295571+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/truth.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260702T064547Z-fc76",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-07-02T06:46:07.295571+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — `global-boundaries.md §5` 新增「第一性原理」条款（动手前回到根本问题 + 拆最小可验证单元 + 每个决定说得出为什么）；纯增量不改既有条款（**Must**，UD-001/003）",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260702T064547Z-fc76",
+          "verified_by_run_id": "run-20260702T144601523686",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/truth.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — `global-boundaries.md §5` 新增「对抗式审查」条款（交付前最挑剔审查 + 列 3-5 翻车点 + 验证证据 + 不接受看起来没问题）；纯增量（**Must**，UD-002）",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260702T064547Z-fc76",
+          "verified_by_run_id": "run-20260702T144601523686",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/truth.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — `beacon-eval-qa` SKILL.md 增\"交付前对抗式审查\"强制契约；缺失翻车点/验证证据 → block（非可选）（**Must**，UD-002）",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260702T064547Z-fc76",
+          "verified_by_run_id": "run-20260702T144601523686",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/truth.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — `planner_review_runtime` adversarial lane 在 qa release 前强制触发（非仅信号触发）；输出含 3-5 翻车点 + 验证证据形状；缺失 → block（**Must**）",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260702T064547Z-fc76",
+          "verified_by_run_id": "run-20260702T144601523686",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/features/beacon-qa-methodology-contract-v164/truth.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-qa-methodology-contract-v164",
+        "version": "v1.6.4",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.4/research/beacon-qa-methodology-contract-v164.md",
+        "present": false,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      },
+      "feature": "beacon-qa-methodology-contract-v164",
+      "feature_slug": "beacon-qa-methodology-contract-v164",
+      "version": "v1.6.4",
+      "last_changed_files": [
+        "beacon/utils/",
+        "beacon/adapters/",
+        "tests/",
+        "docs/beacon/global-boundaries.md",
+        "skills/beacon/beacon-eval-qa/SKILL.md"
+      ],
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-qa-methodology-contract-v164/ac-closure.json",
+        ".beacon/qa/features/beacon-qa-methodology-contract-v164/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "accepted_at": "2026-07-02T06:46:07.295571+00:00",
+      "accepted_by": "qa"
+    }
+  ]
+}

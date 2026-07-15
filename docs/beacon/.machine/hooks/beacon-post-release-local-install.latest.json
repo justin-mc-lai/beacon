@@ -1,10 +1,10 @@
 {
   "schema_version": "1.0",
   "action": "run",
-  "run_id": "run-20260628T104421Z-9d88",
+  "run_id": "run-20260715T063505Z-2375",
   "hook_id": "beacon-post-release-local-install",
-  "version": "v1.6.3",
-  "feature": "beacon-runtime-release-alignment-v163",
+  "version": "v1.6.6",
+  "feature": "beacon-loop-goal-v166",
   "dry_run": false,
   "confirmed": true,
   "status": "passed",
@@ -14,15 +14,15 @@
     "schema_version": "1.0",
     "action": "plan",
     "hook_id": "beacon-post-release-local-install",
-    "version": "v1.6.3",
-    "feature": "beacon-runtime-release-alignment-v163",
+    "version": "v1.6.6",
+    "feature": "beacon-loop-goal-v166",
     "status": "planned",
     "blocked": false,
     "admission": {
       "schema_version": "1.0",
       "hook_id": "beacon-post-release-local-install",
       "hook_code": "post_release",
-      "feature": "beacon-runtime-release-alignment-v163",
+      "feature": "beacon-loop-goal-v166",
       "path": "docs/beacon/hooks/beacon-post-release-local-install.md",
       "status": "pass",
       "blocked": false,
@@ -61,22 +61,22 @@
   "side_effect_executed": true,
   "runtime_evidence_only": true,
   "truth_authority": false,
-  "written_at": "2026-06-28T10:44:21.218108+00:00",
+  "written_at": "2026-07-15T06:35:05.230332+00:00",
   "post_release_followup": {
     "schema_version": "1.0",
     "hook_id": "beacon-post-release-local-install",
-    "version": "v1.6.3",
-    "feature": "beacon-runtime-release-alignment-v163",
+    "version": "v1.6.6",
+    "feature": "beacon-loop-goal-v166",
     "status": "pass",
     "blocked": false,
     "reason_codes": [],
-    "expected_runtime_version": "v1.6.3",
-    "runtime_version": "v1.6.3",
-    "docs_version": "v1.6.3",
+    "expected_runtime_version": "v1.6.6",
+    "runtime_version": "v1.6.6",
+    "docs_version": "v1.6.6",
     "drift": false,
     "runtime_alignment": {
-      "runtime_version": "v1.6.3",
-      "docs_version": "v1.6.3",
+      "runtime_version": "v1.6.6",
+      "docs_version": "v1.6.6",
       "aligned": true,
       "recommended_command": ""
     },
@@ -282,6 +282,12 @@
           "action": "unchanged"
         },
         {
+          "id": "beacon-loop-goal",
+          "path": "/Users/apple/.claude/skills/beacon-loop-goal",
+          "target": "/Users/apple/Developer/Personal/products/beacon/skills/beacon/beacon-loop-goal",
+          "action": "unchanged"
+        },
+        {
           "id": "beacon-pln-brainstorm",
           "path": "/Users/apple/.claude/skills/beacon-pln-brainstorm",
           "target": "/Users/apple/Developer/Personal/products/beacon/skills/beacon/beacon-pln-brainstorm",
@@ -325,7 +331,7 @@
         }
       ],
       "skipped": [],
-      "installed_count": 38,
+      "installed_count": 39,
       "skipped_count": 0,
       "dry_run": false
     },
@@ -333,7 +339,7 @@
       "status": "pass",
       "ok": true,
       "skills_root": "/Users/apple/.claude/skills",
-      "expected_count": 38,
+      "expected_count": 39,
       "missing": [],
       "wrong_target": []
     },
@@ -358,7 +364,7 @@
               "id": "beacon-eval-qa",
               "path": "/Users/apple/Developer/Personal/products/beacon/.trae/skills/beacon-eval-qa",
               "action": "unchanged",
-              "source_hash": "13de10557f53eb204d6300e9d5ee5324cedb5d67d9b1380a8c228dfc4071bc62",
+              "source_hash": "816f1b1bbf912d4f7d9e3bb4d1b32e910e99454cd6dab1f297a514472844a803",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
@@ -379,14 +385,14 @@
               "id": "beacon-eval-release",
               "path": "/Users/apple/Developer/Personal/products/beacon/.trae/skills/beacon-eval-release",
               "action": "unchanged",
-              "source_hash": "7adfcd3d25b4dbe47fea463ec67bb864aabefd221f43cd546bd757bf0d30fb9f",
+              "source_hash": "9b67eb131efe0d0ba7fc5647d501b4fde50747036dd4e958febd337e96c0e786",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
               "id": "beacon-gen-change",
               "path": "/Users/apple/Developer/Personal/products/beacon/.trae/skills/beacon-gen-change",
               "action": "unchanged",
-              "source_hash": "4805f64d1856eb54110b30059af61cbafc18f4a3a770a9ddea32e38c068b7499",
+              "source_hash": "5c8413de43424c21ac4afe89ed7a9f517024859002e1fdcdc45cd239e938b8d9",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
@@ -428,7 +434,7 @@
               "id": "beacon-gen-implement",
               "path": "/Users/apple/Developer/Personal/products/beacon/.trae/skills/beacon-gen-implement",
               "action": "unchanged",
-              "source_hash": "c3808a933518efdafe7b4ff5bb88151e7929178609970d0d7424ace68fc7d18b",
+              "source_hash": "cde834e3289aff925c54359cd694cc834a1c7f8842d4a1ad78b0b37311a27579",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
@@ -449,7 +455,7 @@
               "id": "beacon-gen-truth",
               "path": "/Users/apple/Developer/Personal/products/beacon/.trae/skills/beacon-gen-truth",
               "action": "unchanged",
-              "source_hash": "66c2d00c2f84a2f84af6588409d0364e607b7364d0f0b64e2a51e3cfa0a1fa9a",
+              "source_hash": "57d66c3fab923723aa41734e5896a6759a8030b3bcee6b9ffeb36125bd2c01f4",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
@@ -477,21 +483,21 @@
               "id": "beacon-gov-branch",
               "path": "/Users/apple/Developer/Personal/products/beacon/.trae/skills/beacon-gov-branch",
               "action": "unchanged",
-              "source_hash": "cdd3e43a3272182ac72005108f53cab635ab5bde7ae659a0177db29a7b8d82fe",
+              "source_hash": "dfb26057209a019ab0370c0c17df875cbd465920ad344dc93cf458805e12565e",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
               "id": "beacon-gov-debug",
               "path": "/Users/apple/Developer/Personal/products/beacon/.trae/skills/beacon-gov-debug",
               "action": "unchanged",
-              "source_hash": "a832efbd25bde2ae2c3328d81ad42b0bf15f6cc096cefa9182743dacee87de88",
+              "source_hash": "112e4b4d9faf432e68c43a71b1798e45ad6fddb8c775376f52bfa235fb663f76",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
               "id": "beacon-gov-doctor",
               "path": "/Users/apple/Developer/Personal/products/beacon/.trae/skills/beacon-gov-doctor",
               "action": "unchanged",
-              "source_hash": "aa3fbe64025c8faeeed9e5a4cef6235f93e5bd1d5713692aea99a2dfeb4a8bce",
+              "source_hash": "470fe8c3df533ae340f6fa2ddc04bd801d1ebb96fff87ac7274488438f4c23b1",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
@@ -547,7 +553,7 @@
               "id": "beacon-gov-router",
               "path": "/Users/apple/Developer/Personal/products/beacon/.trae/skills/beacon-gov-router",
               "action": "unchanged",
-              "source_hash": "2654941e66e04f86dee07a298575e229a8bdc851757309a22fbce18adf84fe94",
+              "source_hash": "287f2b6616dbd9bed7be1560ea0ed087fbd8c92ffb76b9b3dc8ce9b23a97b760",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
@@ -558,17 +564,24 @@
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
+              "id": "beacon-loop-goal",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.trae/skills/beacon-loop-goal",
+              "action": "unchanged",
+              "source_hash": "1838ec48ed35c018b025793c0505332d83be411fb7d8a33f019d217d99eba2fc",
+              "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
+            },
+            {
               "id": "beacon-pln-brainstorm",
               "path": "/Users/apple/Developer/Personal/products/beacon/.trae/skills/beacon-pln-brainstorm",
               "action": "unchanged",
-              "source_hash": "71c7305530b01137ba919598c0b1b2a8d70ac3568edb1c6420f7e0cfa6f1b858",
+              "source_hash": "3f177ad74a89a7c850e1f51e449578f4499142727fb26aea518672c7817c60d0",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
               "id": "beacon-pln-friction",
               "path": "/Users/apple/Developer/Personal/products/beacon/.trae/skills/beacon-pln-friction",
               "action": "unchanged",
-              "source_hash": "bbd1dcb01edfa48c74cc0e52387a916b9c5541f62e4d2bbaffb03d6ce60754b6",
+              "source_hash": "5d30ddd979277417b20f661ae3099c8a74de6195307be3ded16c0c5d084e1a13",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
@@ -596,14 +609,14 @@
               "id": "beacon-pln-review",
               "path": "/Users/apple/Developer/Personal/products/beacon/.trae/skills/beacon-pln-review",
               "action": "unchanged",
-              "source_hash": "d7f45de9f8616a69197786a29d322c23f6c8ecc0d9c5692d150f6be87bc2524d",
+              "source_hash": "23faf0396d0d3f00ef9e36732e818d4dce6a52024b7461da29f64dbc3b8c179f",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
               "id": "beacon-pln-source",
               "path": "/Users/apple/Developer/Personal/products/beacon/.trae/skills/beacon-pln-source",
               "action": "unchanged",
-              "source_hash": "9d5c2a2168e2916275faa6a82a8fe27f813492ea6aec114c25bb9704c9afa17f",
+              "source_hash": "fe7ef0d007db3fd71d29ef1120b931f6612f7fb443052f25f304233fb6dd960f",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             }
           ],
@@ -626,8 +639,8 @@
           "project_root": "/Users/apple/Developer/Personal/products/beacon",
           "agent": "trae",
           "surface_root": "/Users/apple/Developer/Personal/products/beacon/.trae/skills",
-          "runtime_version": "v1.6.3",
-          "docs_version": "v1.6.3",
+          "runtime_version": "v1.6.6",
+          "docs_version": "v1.6.6",
           "taxonomy_version": "v1.6.0",
           "strict": true,
           "status": "pass",
@@ -683,6 +696,7 @@
                   "beacon-gov-metadata",
                   "beacon-gov-router",
                   "beacon-gov-status",
+                  "beacon-loop-goal",
                   "beacon-pln-brainstorm",
                   "beacon-pln-friction",
                   "beacon-pln-program",
@@ -776,7 +790,7 @@
               "id": "beacon-eval-qa",
               "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-eval-qa",
               "action": "unchanged",
-              "source_hash": "13de10557f53eb204d6300e9d5ee5324cedb5d67d9b1380a8c228dfc4071bc62",
+              "source_hash": "816f1b1bbf912d4f7d9e3bb4d1b32e910e99454cd6dab1f297a514472844a803",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
@@ -797,14 +811,14 @@
               "id": "beacon-eval-release",
               "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-eval-release",
               "action": "unchanged",
-              "source_hash": "7adfcd3d25b4dbe47fea463ec67bb864aabefd221f43cd546bd757bf0d30fb9f",
+              "source_hash": "9b67eb131efe0d0ba7fc5647d501b4fde50747036dd4e958febd337e96c0e786",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
               "id": "beacon-gen-change",
               "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-gen-change",
               "action": "unchanged",
-              "source_hash": "4805f64d1856eb54110b30059af61cbafc18f4a3a770a9ddea32e38c068b7499",
+              "source_hash": "5c8413de43424c21ac4afe89ed7a9f517024859002e1fdcdc45cd239e938b8d9",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
@@ -846,7 +860,7 @@
               "id": "beacon-gen-implement",
               "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-gen-implement",
               "action": "unchanged",
-              "source_hash": "c3808a933518efdafe7b4ff5bb88151e7929178609970d0d7424ace68fc7d18b",
+              "source_hash": "cde834e3289aff925c54359cd694cc834a1c7f8842d4a1ad78b0b37311a27579",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
@@ -867,7 +881,7 @@
               "id": "beacon-gen-truth",
               "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-gen-truth",
               "action": "unchanged",
-              "source_hash": "66c2d00c2f84a2f84af6588409d0364e607b7364d0f0b64e2a51e3cfa0a1fa9a",
+              "source_hash": "57d66c3fab923723aa41734e5896a6759a8030b3bcee6b9ffeb36125bd2c01f4",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
@@ -895,21 +909,21 @@
               "id": "beacon-gov-branch",
               "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-gov-branch",
               "action": "unchanged",
-              "source_hash": "cdd3e43a3272182ac72005108f53cab635ab5bde7ae659a0177db29a7b8d82fe",
+              "source_hash": "dfb26057209a019ab0370c0c17df875cbd465920ad344dc93cf458805e12565e",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
               "id": "beacon-gov-debug",
               "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-gov-debug",
               "action": "unchanged",
-              "source_hash": "a832efbd25bde2ae2c3328d81ad42b0bf15f6cc096cefa9182743dacee87de88",
+              "source_hash": "112e4b4d9faf432e68c43a71b1798e45ad6fddb8c775376f52bfa235fb663f76",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
               "id": "beacon-gov-doctor",
               "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-gov-doctor",
               "action": "unchanged",
-              "source_hash": "aa3fbe64025c8faeeed9e5a4cef6235f93e5bd1d5713692aea99a2dfeb4a8bce",
+              "source_hash": "470fe8c3df533ae340f6fa2ddc04bd801d1ebb96fff87ac7274488438f4c23b1",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
@@ -965,7 +979,7 @@
               "id": "beacon-gov-router",
               "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-gov-router",
               "action": "unchanged",
-              "source_hash": "2654941e66e04f86dee07a298575e229a8bdc851757309a22fbce18adf84fe94",
+              "source_hash": "287f2b6616dbd9bed7be1560ea0ed087fbd8c92ffb76b9b3dc8ce9b23a97b760",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
@@ -976,17 +990,24 @@
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
+              "id": "beacon-loop-goal",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-loop-goal",
+              "action": "unchanged",
+              "source_hash": "1838ec48ed35c018b025793c0505332d83be411fb7d8a33f019d217d99eba2fc",
+              "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
+            },
+            {
               "id": "beacon-pln-brainstorm",
               "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-pln-brainstorm",
               "action": "unchanged",
-              "source_hash": "71c7305530b01137ba919598c0b1b2a8d70ac3568edb1c6420f7e0cfa6f1b858",
+              "source_hash": "3f177ad74a89a7c850e1f51e449578f4499142727fb26aea518672c7817c60d0",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
               "id": "beacon-pln-friction",
               "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-pln-friction",
               "action": "unchanged",
-              "source_hash": "bbd1dcb01edfa48c74cc0e52387a916b9c5541f62e4d2bbaffb03d6ce60754b6",
+              "source_hash": "5d30ddd979277417b20f661ae3099c8a74de6195307be3ded16c0c5d084e1a13",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
@@ -1014,14 +1035,14 @@
               "id": "beacon-pln-review",
               "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-pln-review",
               "action": "unchanged",
-              "source_hash": "d7f45de9f8616a69197786a29d322c23f6c8ecc0d9c5692d150f6be87bc2524d",
+              "source_hash": "23faf0396d0d3f00ef9e36732e818d4dce6a52024b7461da29f64dbc3b8c179f",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
               "id": "beacon-pln-source",
               "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-pln-source",
               "action": "unchanged",
-              "source_hash": "9d5c2a2168e2916275faa6a82a8fe27f813492ea6aec114c25bb9704c9afa17f",
+              "source_hash": "fe7ef0d007db3fd71d29ef1120b931f6612f7fb443052f25f304233fb6dd960f",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             }
           ],
@@ -1039,8 +1060,8 @@
           "project_root": "/Users/apple/Developer/Personal/products/beacon",
           "agent": "claude",
           "surface_root": "/Users/apple/Developer/Personal/products/beacon/.claude/skills",
-          "runtime_version": "v1.6.3",
-          "docs_version": "v1.6.3",
+          "runtime_version": "v1.6.6",
+          "docs_version": "v1.6.6",
           "taxonomy_version": "v1.6.0",
           "strict": true,
           "status": "pass",
@@ -1096,6 +1117,7 @@
                   "beacon-gov-metadata",
                   "beacon-gov-router",
                   "beacon-gov-status",
+                  "beacon-loop-goal",
                   "beacon-pln-brainstorm",
                   "beacon-pln-friction",
                   "beacon-pln-program",
@@ -1181,7 +1203,7 @@
               "id": "beacon-eval-qa",
               "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-eval-qa",
               "action": "unchanged",
-              "source_hash": "13de10557f53eb204d6300e9d5ee5324cedb5d67d9b1380a8c228dfc4071bc62",
+              "source_hash": "816f1b1bbf912d4f7d9e3bb4d1b32e910e99454cd6dab1f297a514472844a803",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
@@ -1202,14 +1224,14 @@
               "id": "beacon-eval-release",
               "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-eval-release",
               "action": "unchanged",
-              "source_hash": "7adfcd3d25b4dbe47fea463ec67bb864aabefd221f43cd546bd757bf0d30fb9f",
+              "source_hash": "9b67eb131efe0d0ba7fc5647d501b4fde50747036dd4e958febd337e96c0e786",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
               "id": "beacon-gen-change",
               "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-gen-change",
               "action": "unchanged",
-              "source_hash": "4805f64d1856eb54110b30059af61cbafc18f4a3a770a9ddea32e38c068b7499",
+              "source_hash": "5c8413de43424c21ac4afe89ed7a9f517024859002e1fdcdc45cd239e938b8d9",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
@@ -1251,7 +1273,7 @@
               "id": "beacon-gen-implement",
               "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-gen-implement",
               "action": "unchanged",
-              "source_hash": "c3808a933518efdafe7b4ff5bb88151e7929178609970d0d7424ace68fc7d18b",
+              "source_hash": "cde834e3289aff925c54359cd694cc834a1c7f8842d4a1ad78b0b37311a27579",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
@@ -1272,7 +1294,7 @@
               "id": "beacon-gen-truth",
               "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-gen-truth",
               "action": "unchanged",
-              "source_hash": "66c2d00c2f84a2f84af6588409d0364e607b7364d0f0b64e2a51e3cfa0a1fa9a",
+              "source_hash": "57d66c3fab923723aa41734e5896a6759a8030b3bcee6b9ffeb36125bd2c01f4",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
@@ -1300,21 +1322,21 @@
               "id": "beacon-gov-branch",
               "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-gov-branch",
               "action": "unchanged",
-              "source_hash": "cdd3e43a3272182ac72005108f53cab635ab5bde7ae659a0177db29a7b8d82fe",
+              "source_hash": "dfb26057209a019ab0370c0c17df875cbd465920ad344dc93cf458805e12565e",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
               "id": "beacon-gov-debug",
               "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-gov-debug",
               "action": "unchanged",
-              "source_hash": "a832efbd25bde2ae2c3328d81ad42b0bf15f6cc096cefa9182743dacee87de88",
+              "source_hash": "112e4b4d9faf432e68c43a71b1798e45ad6fddb8c775376f52bfa235fb663f76",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
               "id": "beacon-gov-doctor",
               "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-gov-doctor",
               "action": "unchanged",
-              "source_hash": "aa3fbe64025c8faeeed9e5a4cef6235f93e5bd1d5713692aea99a2dfeb4a8bce",
+              "source_hash": "470fe8c3df533ae340f6fa2ddc04bd801d1ebb96fff87ac7274488438f4c23b1",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
@@ -1370,7 +1392,7 @@
               "id": "beacon-gov-router",
               "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-gov-router",
               "action": "unchanged",
-              "source_hash": "2654941e66e04f86dee07a298575e229a8bdc851757309a22fbce18adf84fe94",
+              "source_hash": "287f2b6616dbd9bed7be1560ea0ed087fbd8c92ffb76b9b3dc8ce9b23a97b760",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
@@ -1381,17 +1403,24 @@
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
+              "id": "beacon-loop-goal",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-loop-goal",
+              "action": "unchanged",
+              "source_hash": "1838ec48ed35c018b025793c0505332d83be411fb7d8a33f019d217d99eba2fc",
+              "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
+            },
+            {
               "id": "beacon-pln-brainstorm",
               "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-pln-brainstorm",
               "action": "unchanged",
-              "source_hash": "71c7305530b01137ba919598c0b1b2a8d70ac3568edb1c6420f7e0cfa6f1b858",
+              "source_hash": "3f177ad74a89a7c850e1f51e449578f4499142727fb26aea518672c7817c60d0",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
               "id": "beacon-pln-friction",
               "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-pln-friction",
               "action": "unchanged",
-              "source_hash": "bbd1dcb01edfa48c74cc0e52387a916b9c5541f62e4d2bbaffb03d6ce60754b6",
+              "source_hash": "5d30ddd979277417b20f661ae3099c8a74de6195307be3ded16c0c5d084e1a13",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
@@ -1419,14 +1448,14 @@
               "id": "beacon-pln-review",
               "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-pln-review",
               "action": "unchanged",
-              "source_hash": "d7f45de9f8616a69197786a29d322c23f6c8ecc0d9c5692d150f6be87bc2524d",
+              "source_hash": "23faf0396d0d3f00ef9e36732e818d4dce6a52024b7461da29f64dbc3b8c179f",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
               "id": "beacon-pln-source",
               "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-pln-source",
               "action": "unchanged",
-              "source_hash": "9d5c2a2168e2916275faa6a82a8fe27f813492ea6aec114c25bb9704c9afa17f",
+              "source_hash": "fe7ef0d007db3fd71d29ef1120b931f6612f7fb443052f25f304233fb6dd960f",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             }
           ],
@@ -1444,8 +1473,8 @@
           "project_root": "/Users/apple/Developer/Personal/products/beacon",
           "agent": "codex",
           "surface_root": "/Users/apple/Developer/Personal/products/beacon/.agents/skills",
-          "runtime_version": "v1.6.3",
-          "docs_version": "v1.6.3",
+          "runtime_version": "v1.6.6",
+          "docs_version": "v1.6.6",
           "taxonomy_version": "v1.6.0",
           "strict": true,
           "status": "pass",
@@ -1501,6 +1530,7 @@
                   "beacon-gov-metadata",
                   "beacon-gov-router",
                   "beacon-gov-status",
+                  "beacon-loop-goal",
                   "beacon-pln-brainstorm",
                   "beacon-pln-friction",
                   "beacon-pln-program",
@@ -1586,7 +1616,7 @@
               "id": "beacon-eval-qa",
               "path": "/Users/apple/Developer/Personal/products/beacon/.cursor/skills/beacon-eval-qa",
               "action": "unchanged",
-              "source_hash": "13de10557f53eb204d6300e9d5ee5324cedb5d67d9b1380a8c228dfc4071bc62",
+              "source_hash": "816f1b1bbf912d4f7d9e3bb4d1b32e910e99454cd6dab1f297a514472844a803",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
@@ -1607,14 +1637,14 @@
               "id": "beacon-eval-release",
               "path": "/Users/apple/Developer/Personal/products/beacon/.cursor/skills/beacon-eval-release",
               "action": "unchanged",
-              "source_hash": "7adfcd3d25b4dbe47fea463ec67bb864aabefd221f43cd546bd757bf0d30fb9f",
+              "source_hash": "9b67eb131efe0d0ba7fc5647d501b4fde50747036dd4e958febd337e96c0e786",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
               "id": "beacon-gen-change",
               "path": "/Users/apple/Developer/Personal/products/beacon/.cursor/skills/beacon-gen-change",
               "action": "unchanged",
-              "source_hash": "4805f64d1856eb54110b30059af61cbafc18f4a3a770a9ddea32e38c068b7499",
+              "source_hash": "5c8413de43424c21ac4afe89ed7a9f517024859002e1fdcdc45cd239e938b8d9",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
@@ -1656,7 +1686,7 @@
               "id": "beacon-gen-implement",
               "path": "/Users/apple/Developer/Personal/products/beacon/.cursor/skills/beacon-gen-implement",
               "action": "unchanged",
-              "source_hash": "c3808a933518efdafe7b4ff5bb88151e7929178609970d0d7424ace68fc7d18b",
+              "source_hash": "cde834e3289aff925c54359cd694cc834a1c7f8842d4a1ad78b0b37311a27579",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
@@ -1677,7 +1707,7 @@
               "id": "beacon-gen-truth",
               "path": "/Users/apple/Developer/Personal/products/beacon/.cursor/skills/beacon-gen-truth",
               "action": "unchanged",
-              "source_hash": "66c2d00c2f84a2f84af6588409d0364e607b7364d0f0b64e2a51e3cfa0a1fa9a",
+              "source_hash": "57d66c3fab923723aa41734e5896a6759a8030b3bcee6b9ffeb36125bd2c01f4",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
@@ -1705,21 +1735,21 @@
               "id": "beacon-gov-branch",
               "path": "/Users/apple/Developer/Personal/products/beacon/.cursor/skills/beacon-gov-branch",
               "action": "unchanged",
-              "source_hash": "cdd3e43a3272182ac72005108f53cab635ab5bde7ae659a0177db29a7b8d82fe",
+              "source_hash": "dfb26057209a019ab0370c0c17df875cbd465920ad344dc93cf458805e12565e",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
               "id": "beacon-gov-debug",
               "path": "/Users/apple/Developer/Personal/products/beacon/.cursor/skills/beacon-gov-debug",
               "action": "unchanged",
-              "source_hash": "a832efbd25bde2ae2c3328d81ad42b0bf15f6cc096cefa9182743dacee87de88",
+              "source_hash": "112e4b4d9faf432e68c43a71b1798e45ad6fddb8c775376f52bfa235fb663f76",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
               "id": "beacon-gov-doctor",
               "path": "/Users/apple/Developer/Personal/products/beacon/.cursor/skills/beacon-gov-doctor",
               "action": "unchanged",
-              "source_hash": "aa3fbe64025c8faeeed9e5a4cef6235f93e5bd1d5713692aea99a2dfeb4a8bce",
+              "source_hash": "470fe8c3df533ae340f6fa2ddc04bd801d1ebb96fff87ac7274488438f4c23b1",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
@@ -1775,7 +1805,7 @@
               "id": "beacon-gov-router",
               "path": "/Users/apple/Developer/Personal/products/beacon/.cursor/skills/beacon-gov-router",
               "action": "unchanged",
-              "source_hash": "2654941e66e04f86dee07a298575e229a8bdc851757309a22fbce18adf84fe94",
+              "source_hash": "287f2b6616dbd9bed7be1560ea0ed087fbd8c92ffb76b9b3dc8ce9b23a97b760",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
@@ -1786,17 +1816,24 @@
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
+              "id": "beacon-loop-goal",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.cursor/skills/beacon-loop-goal",
+              "action": "unchanged",
+              "source_hash": "1838ec48ed35c018b025793c0505332d83be411fb7d8a33f019d217d99eba2fc",
+              "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
+            },
+            {
               "id": "beacon-pln-brainstorm",
               "path": "/Users/apple/Developer/Personal/products/beacon/.cursor/skills/beacon-pln-brainstorm",
               "action": "unchanged",
-              "source_hash": "71c7305530b01137ba919598c0b1b2a8d70ac3568edb1c6420f7e0cfa6f1b858",
+              "source_hash": "3f177ad74a89a7c850e1f51e449578f4499142727fb26aea518672c7817c60d0",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
               "id": "beacon-pln-friction",
               "path": "/Users/apple/Developer/Personal/products/beacon/.cursor/skills/beacon-pln-friction",
               "action": "unchanged",
-              "source_hash": "bbd1dcb01edfa48c74cc0e52387a916b9c5541f62e4d2bbaffb03d6ce60754b6",
+              "source_hash": "5d30ddd979277417b20f661ae3099c8a74de6195307be3ded16c0c5d084e1a13",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
@@ -1824,14 +1861,14 @@
               "id": "beacon-pln-review",
               "path": "/Users/apple/Developer/Personal/products/beacon/.cursor/skills/beacon-pln-review",
               "action": "unchanged",
-              "source_hash": "d7f45de9f8616a69197786a29d322c23f6c8ecc0d9c5692d150f6be87bc2524d",
+              "source_hash": "23faf0396d0d3f00ef9e36732e818d4dce6a52024b7461da29f64dbc3b8c179f",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
               "id": "beacon-pln-source",
               "path": "/Users/apple/Developer/Personal/products/beacon/.cursor/skills/beacon-pln-source",
               "action": "unchanged",
-              "source_hash": "9d5c2a2168e2916275faa6a82a8fe27f813492ea6aec114c25bb9704c9afa17f",
+              "source_hash": "fe7ef0d007db3fd71d29ef1120b931f6612f7fb443052f25f304233fb6dd960f",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             }
           ],
@@ -1854,8 +1891,8 @@
           "project_root": "/Users/apple/Developer/Personal/products/beacon",
           "agent": "cursor",
           "surface_root": "/Users/apple/Developer/Personal/products/beacon/.cursor/skills",
-          "runtime_version": "v1.6.3",
-          "docs_version": "v1.6.3",
+          "runtime_version": "v1.6.6",
+          "docs_version": "v1.6.6",
           "taxonomy_version": "v1.6.0",
           "strict": true,
           "status": "pass",
@@ -1911,6 +1948,7 @@
                   "beacon-gov-metadata",
                   "beacon-gov-router",
                   "beacon-gov-status",
+                  "beacon-loop-goal",
                   "beacon-pln-brainstorm",
                   "beacon-pln-friction",
                   "beacon-pln-program",
@@ -2013,7 +2051,7 @@
               "id": "beacon-eval-qa",
               "path": "/Users/apple/Developer/Personal/products/beacon/.windsurf/skills/beacon-eval-qa",
               "action": "unchanged",
-              "source_hash": "13de10557f53eb204d6300e9d5ee5324cedb5d67d9b1380a8c228dfc4071bc62",
+              "source_hash": "816f1b1bbf912d4f7d9e3bb4d1b32e910e99454cd6dab1f297a514472844a803",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
@@ -2034,14 +2072,14 @@
               "id": "beacon-eval-release",
               "path": "/Users/apple/Developer/Personal/products/beacon/.windsurf/skills/beacon-eval-release",
               "action": "unchanged",
-              "source_hash": "7adfcd3d25b4dbe47fea463ec67bb864aabefd221f43cd546bd757bf0d30fb9f",
+              "source_hash": "9b67eb131efe0d0ba7fc5647d501b4fde50747036dd4e958febd337e96c0e786",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
               "id": "beacon-gen-change",
               "path": "/Users/apple/Developer/Personal/products/beacon/.windsurf/skills/beacon-gen-change",
               "action": "unchanged",
-              "source_hash": "4805f64d1856eb54110b30059af61cbafc18f4a3a770a9ddea32e38c068b7499",
+              "source_hash": "5c8413de43424c21ac4afe89ed7a9f517024859002e1fdcdc45cd239e938b8d9",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
@@ -2083,7 +2121,7 @@
               "id": "beacon-gen-implement",
               "path": "/Users/apple/Developer/Personal/products/beacon/.windsurf/skills/beacon-gen-implement",
               "action": "unchanged",
-              "source_hash": "c3808a933518efdafe7b4ff5bb88151e7929178609970d0d7424ace68fc7d18b",
+              "source_hash": "cde834e3289aff925c54359cd694cc834a1c7f8842d4a1ad78b0b37311a27579",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
@@ -2104,7 +2142,7 @@
               "id": "beacon-gen-truth",
               "path": "/Users/apple/Developer/Personal/products/beacon/.windsurf/skills/beacon-gen-truth",
               "action": "unchanged",
-              "source_hash": "66c2d00c2f84a2f84af6588409d0364e607b7364d0f0b64e2a51e3cfa0a1fa9a",
+              "source_hash": "57d66c3fab923723aa41734e5896a6759a8030b3bcee6b9ffeb36125bd2c01f4",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
@@ -2132,21 +2170,21 @@
               "id": "beacon-gov-branch",
               "path": "/Users/apple/Developer/Personal/products/beacon/.windsurf/skills/beacon-gov-branch",
               "action": "unchanged",
-              "source_hash": "cdd3e43a3272182ac72005108f53cab635ab5bde7ae659a0177db29a7b8d82fe",
+              "source_hash": "dfb26057209a019ab0370c0c17df875cbd465920ad344dc93cf458805e12565e",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
               "id": "beacon-gov-debug",
               "path": "/Users/apple/Developer/Personal/products/beacon/.windsurf/skills/beacon-gov-debug",
               "action": "unchanged",
-              "source_hash": "a832efbd25bde2ae2c3328d81ad42b0bf15f6cc096cefa9182743dacee87de88",
+              "source_hash": "112e4b4d9faf432e68c43a71b1798e45ad6fddb8c775376f52bfa235fb663f76",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
               "id": "beacon-gov-doctor",
               "path": "/Users/apple/Developer/Personal/products/beacon/.windsurf/skills/beacon-gov-doctor",
               "action": "unchanged",
-              "source_hash": "aa3fbe64025c8faeeed9e5a4cef6235f93e5bd1d5713692aea99a2dfeb4a8bce",
+              "source_hash": "470fe8c3df533ae340f6fa2ddc04bd801d1ebb96fff87ac7274488438f4c23b1",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
@@ -2202,7 +2240,7 @@
               "id": "beacon-gov-router",
               "path": "/Users/apple/Developer/Personal/products/beacon/.windsurf/skills/beacon-gov-router",
               "action": "unchanged",
-              "source_hash": "2654941e66e04f86dee07a298575e229a8bdc851757309a22fbce18adf84fe94",
+              "source_hash": "287f2b6616dbd9bed7be1560ea0ed087fbd8c92ffb76b9b3dc8ce9b23a97b760",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
@@ -2213,17 +2251,24 @@
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
+              "id": "beacon-loop-goal",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.windsurf/skills/beacon-loop-goal",
+              "action": "unchanged",
+              "source_hash": "1838ec48ed35c018b025793c0505332d83be411fb7d8a33f019d217d99eba2fc",
+              "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
+            },
+            {
               "id": "beacon-pln-brainstorm",
               "path": "/Users/apple/Developer/Personal/products/beacon/.windsurf/skills/beacon-pln-brainstorm",
               "action": "unchanged",
-              "source_hash": "71c7305530b01137ba919598c0b1b2a8d70ac3568edb1c6420f7e0cfa6f1b858",
+              "source_hash": "3f177ad74a89a7c850e1f51e449578f4499142727fb26aea518672c7817c60d0",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
               "id": "beacon-pln-friction",
               "path": "/Users/apple/Developer/Personal/products/beacon/.windsurf/skills/beacon-pln-friction",
               "action": "unchanged",
-              "source_hash": "bbd1dcb01edfa48c74cc0e52387a916b9c5541f62e4d2bbaffb03d6ce60754b6",
+              "source_hash": "5d30ddd979277417b20f661ae3099c8a74de6195307be3ded16c0c5d084e1a13",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
@@ -2251,14 +2296,14 @@
               "id": "beacon-pln-review",
               "path": "/Users/apple/Developer/Personal/products/beacon/.windsurf/skills/beacon-pln-review",
               "action": "unchanged",
-              "source_hash": "d7f45de9f8616a69197786a29d322c23f6c8ecc0d9c5692d150f6be87bc2524d",
+              "source_hash": "23faf0396d0d3f00ef9e36732e818d4dce6a52024b7461da29f64dbc3b8c179f",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             },
             {
               "id": "beacon-pln-source",
               "path": "/Users/apple/Developer/Personal/products/beacon/.windsurf/skills/beacon-pln-source",
               "action": "unchanged",
-              "source_hash": "9d5c2a2168e2916275faa6a82a8fe27f813492ea6aec114c25bb9704c9afa17f",
+              "source_hash": "fe7ef0d007db3fd71d29ef1120b931f6612f7fb443052f25f304233fb6dd960f",
               "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content"
             }
           ],
@@ -2281,8 +2326,8 @@
           "project_root": "/Users/apple/Developer/Personal/products/beacon",
           "agent": "windsurf",
           "surface_root": "/Users/apple/Developer/Personal/products/beacon/.windsurf/skills",
-          "runtime_version": "v1.6.3",
-          "docs_version": "v1.6.3",
+          "runtime_version": "v1.6.6",
+          "docs_version": "v1.6.6",
           "taxonomy_version": "v1.6.0",
           "strict": true,
           "status": "pass",
@@ -2338,6 +2383,7 @@
                   "beacon-gov-metadata",
                   "beacon-gov-router",
                   "beacon-gov-status",
+                  "beacon-loop-goal",
                   "beacon-pln-brainstorm",
                   "beacon-pln-friction",
                   "beacon-pln-program",
@@ -2435,7 +2481,7 @@
         ],
         "path": "/Users/apple/Library/Python/3.9/bin/beacon",
         "status": "pass",
-        "stdout": "Beacon CLI v1.6.3",
+        "stdout": "Beacon CLI v1.6.6",
         "stderr": "",
         "returncode": 0,
         "reason_code": ""
@@ -2447,7 +2493,7 @@
         ],
         "path": "/Users/apple/.local/bin/beacon-cli",
         "status": "pass",
-        "stdout": "Beacon CLI v1.6.3",
+        "stdout": "Beacon CLI v1.6.6",
         "stderr": "",
         "returncode": 0,
         "reason_code": ""
@@ -2455,20 +2501,20 @@
     },
     "agent_eval_release_hook": null,
     "commands_confirmed": [
-      "python3 -m beacon.main doctor cleanup-legacy-beacon-skills --project-root . --version v1.6.3 --scope all --force --json",
-      "python3 -c \"from beacon.utils.agent_surface import install_global_claude_beacon_skills, verify_global_claude_beacon_skills; install_global_claude_beacon_skills(beacon_root='/Users/apple/Developer/Personal/products/beacon'); verify_global_claude_beacon_skills()\"",
-      "python3 -m beacon.main doctor setup-agent-surface --project-root . --version v1.6.3 --agent codex --force --json",
-      "python3 -m beacon.main doctor verify-agent-surface --project-root . --version v1.6.3 --agent codex --strict --json",
-      "python3 -m beacon.main doctor setup-agent-surface --project-root . --version v1.6.3 --agent claude --force --json",
-      "python3 -m beacon.main doctor verify-agent-surface --project-root . --version v1.6.3 --agent claude --strict --json",
+      "python3 -m beacon.main doctor cleanup-legacy-beacon-skills --project-root . --version v1.6.6 --scope all --force --json",
+      "python3 -c \"from beacon.utils.agent_surface import install_global_claude_beacon_skills, verify_global_claude_beacon_skills; install_global_claude_beacon_skills(beacon_root='.'); verify_global_claude_beacon_skills()\"",
+      "python3 -m beacon.main doctor setup-agent-surface --project-root . --version v1.6.6 --agent codex --force --json",
+      "python3 -m beacon.main doctor verify-agent-surface --project-root . --version v1.6.6 --agent codex --strict --json",
+      "python3 -m beacon.main doctor setup-agent-surface --project-root . --version v1.6.6 --agent claude --force --json",
+      "python3 -m beacon.main doctor verify-agent-surface --project-root . --version v1.6.6 --agent claude --strict --json",
       "python3 -m beacon.main doctor setup --force --json",
       "beacon --version",
       "beacon-cli --version",
-      "beacon eval run --runner live --live-tier release_hook --split regression-core --version v1.6.3 --json"
+      "beacon eval run --runner live --live-tier release_hook --split regression-core --version v1.6.6 --json"
     ]
   },
   "evidence_paths": {
-    "runtime": ".beacon/state/hooks/beacon-post-release-local-install/run-20260628T104421Z-9d88.json",
+    "runtime": ".beacon/state/hooks/beacon-post-release-local-install/run-20260715T063505Z-2375.json",
     "latest_read_model": "docs/beacon/.machine/hooks/beacon-post-release-local-install.latest.json"
   }
 }

@@ -255,6 +255,10 @@ truth_ref: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
 | TC-102 | AC-102 | planner_review artifact | `cargo test -p beacon-orchestrator planner_review_multi_agent` — reviewer_lanes/findings/synthesis/execution_mode/fallback_reason + artifact_refs | P2 |
 | TC-103 | AC-103 | verify-truth-integrity v2 | `beacon doctor verify-truth-integrity <feature> --version v2.0.0 --mode block` — block 语义同 v1.6 | P3 |
 | TC-104 | AC-104 | P0 workspace done | `cd packages/beacon-rs && cargo test --workspace` — 12 passed；六 crate `Cargo.toml` 存在 | P0 |
+| TC-105 | AC-105 | CLI 选 agent 跑长任务 | `beacon-v2 run --agent codex --feature <slug> --version v2.0.0` — CLI 进程跑 loop，checkpoint/resume/SIGINT graceful；无 daemon | P3 |
+| TC-106 | AC-106 | stop_when maker≠checker | `cargo test -p beacon-orchestrator stop_when_unverified` — agent 自报 stop_signal 但外部检查未过 → `stop_when_unverified` continue；外部检查过 → stop | P3 |
+| TC-107 | AC-107 | Developer Feedback checkpoint | `beacon-v2 run --feedback-checkpoint --every 3` — 每 3 iteration 暂停等人注入 notes，resume 后基于 notes 重新 iterate；notes 写入 lifecycle_events | P3 |
+| TC-108 | AC-108 | 三层 Loop 可观测 | `beacon-v2 spine show --json` — snapshot 含 `loop_layer` 字段（coding/developer/realworld） | P3 |
 
 ## 负向路径
 

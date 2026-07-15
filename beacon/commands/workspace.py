@@ -8,7 +8,7 @@ from typing import Optional
 
 import typer
 
-from beacon.utils.workspace_admission import run_workspace_admit, validate_workspace_admission
+from beacon.utils.workspace_admission import release_workspace_lease, run_workspace_admit, validate_workspace_admission
 
 app = typer.Typer(
     name="workspace",
@@ -63,3 +63,23 @@ def validate(
         if payload.get("reason_codes"):
             typer.echo(f"reason_codes: {', '.join(payload.get('reason_codes') or [])}")
     raise typer.Exit(code=2 if not payload.get("valid") else 0)
+
+
+@app.command("release")
+def release(
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p", help="Project root"),
+    version: str = typer.Option(..., "--version", "-v", help="Beacon version"),
+    feature: str = typer.Option(..., "--feature", help="Feature slug"),
+    holder: str = typer.Option("", "--holder", help="Lease holder override"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Return a pooled workspace lease to available state without deleting the worktree."""
+    project_root = Path(project).expanduser().resolve() if project else Path.cwd().resolve()
+    payload = release_workspace_lease(project_root, version=version, feature=feature, holder=holder)
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"Beacon workspace release: {payload.get('status')}")
+        if payload.get("reason_code"):
+            typer.echo(f"reason_code: {payload.get('reason_code')}")
+    raise typer.Exit(code=2 if payload.get("status") == "blocked" else 0)

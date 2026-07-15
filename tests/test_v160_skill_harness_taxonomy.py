@@ -168,13 +168,20 @@ def test_v160_skill_package_materialize_should_create_harness_only_package(tmp_p
         "beacon-pln-source",
         "beacon-pln-review",
         "beacon-pln-friction",
+        "beacon-pln-program",
+        "beacon-pln-program-auto",
+        "beacon-pln-program-interactive",
     }
     assert "beacon-pln-source" in skill_dirs
     assert "beacon-pln-review" in skill_dirs
     assert "beacon-gen-implement" in skill_dirs
     assert "beacon-eval-qa" in skill_dirs
     assert "beacon-gov-router" in skill_dirs
-    assert all(name.startswith(("beacon-pln-", "beacon-gen-", "beacon-eval-", "beacon-gov-")) for name in skill_dirs)
+    assert "beacon-loop-goal" in skill_dirs
+    assert all(
+        name == "beacon-loop-goal" or name.startswith(("beacon-pln-", "beacon-gen-", "beacon-eval-", "beacon-gov-"))
+        for name in skill_dirs
+    )
     for old_name in (
         "beacon-brainstorm",
         "beacon-prd",
@@ -220,6 +227,12 @@ def test_v160_skill_package_materialize_should_create_harness_only_package(tmp_p
     assert "`beacon-gen-implement`" in router
     assert "`beacon-eval-release`" in router
     assert "`beacon-implement`" not in "\n".join(line for line in router.splitlines() if "来源迁移" not in line and "migrated from" not in line)
+
+    loop_goal = (package_root / "beacon-loop-goal" / "SKILL.md").read_text(encoding="utf-8")
+    assert "name: beacon-loop-goal" in loop_goal
+    assert "Beacon v1.6.0 共享 Preamble" in loop_goal
+    assert "你正在运行 governor skill" in loop_goal
+    assert "`beacon-eval-release`" in loop_goal
 
     qa = (package_root / "beacon-eval-qa" / "SKILL.md").read_text(encoding="utf-8")
     assert "`beacon-eval-qa-deep`" in qa

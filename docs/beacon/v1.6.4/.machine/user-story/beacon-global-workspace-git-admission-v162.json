@@ -1,0 +1,434 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-global-workspace-git-admission-v162",
+  "feature_slug": "beacon-global-workspace-git-admission-v162",
+  "version": "v1.6.4",
+  "current_revision_id": "R2",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-07-09T07:42:17.454053+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-global-workspace-git-admission-v162",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": "sha256:51cb748ef773b88be60703b90dcb3e341b38d9f1f3d44e5458c6c93a8836c4f4",
+      "superseded_by": "R2",
+      "created_at": "2026-07-09T06:43:02.087965+00:00",
+      "frozen_at": "2026-07-09T06:52:53.160158+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R2",
+      "feature_slug": "beacon-global-workspace-git-admission-v162",
+      "source_revision_id": "R1",
+      "reason": "R6 program/lake aggregation branch governance contract; friction:e3fe3b33ecf9",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:51cb748ef773b88be60703b90dcb3e341b38d9f1f3d44e5458c6c93a8836c4f4",
+      "superseded_by": null,
+      "created_at": "2026-07-09T06:55:40.252065+00:00",
+      "frozen_at": "2026-07-09T06:56:05.757818+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "beacon-global-workspace-git-admission-v162",
+      "priority": "medium",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "program-topology-without-git-workflow",
+          "text": "Program-level governance resolves a lake to the aggregation branch from program/lake topology when `git-workflow-*.md` is absent.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "program-topology-with-git-workflow",
+          "text": "Program-level governance still resolves through explicit `git-workflow-*.md` when present.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "qa-run-aggregation-admission",
+          "text": "`beacon qa run <lake>` accepts the aggregation branch after workspace admission and does not block with `branch_alignment_required`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "per-feature-default-preserved",
+          "text": "Repos without program-level contract/topology continue to resolve `beacon/<version>/<feature-slug>`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "soft-admission-wrong-branch-blocks",
+          "text": "Soft admission still blocks wrong current branch with `branch_alignment_required` using the shared resolved target.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Program-level governance resolves a lake to the aggregation branch from program/lake topology when `git-workflow-*.md` is absent.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — Program-level governance still resolves through explicit `git-workflow-*.md` when present.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — `beacon qa run <lake>` accepts the aggregation branch after workspace admission and does not block with `branch_alignment_required`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Repos without program-level contract/topology continue to resolve `beacon/<version>/<feature-slug>`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Soft admission still blocks wrong current branch with `branch_alignment_required` using the shared resolved target.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-global-workspace-git-admission-v162",
+        "version": "v1.6.4",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/research/beacon-global-workspace-git-admission-v162.md",
+        "present": false,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      }
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R2",
+      "title": "beacon-global-workspace-git-admission-v162",
+      "priority": "medium",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "program-topology-without-git-workflow",
+          "text": "Program-level governance resolves a lake to the aggregation branch from program/lake topology when `git-workflow-*.md` is absent.",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-20260709-r6-branch-governance",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "program-topology-with-git-workflow",
+          "text": "Program-level governance still resolves through explicit `git-workflow-*.md` when present.",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-20260709-r6-branch-governance",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "qa-run-aggregation-admission",
+          "text": "`beacon qa run <lake>` accepts the aggregation branch after workspace admission and does not block with `branch_alignment_required`.",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-20260709-r6-branch-governance",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "per-feature-default-preserved",
+          "text": "Repos without program-level contract/topology continue to resolve `beacon/<version>/<feature-slug>`.",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-20260709-r6-branch-governance",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "soft-admission-wrong-branch-blocks",
+          "text": "Soft admission still blocks wrong current branch with `branch_alignment_required` using the shared resolved target.",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-20260709-r6-branch-governance",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-20260709-r6-branch-governance",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-07-09T07:42:17.431529+00:00",
+          "changed_in_revision": "R2"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Program-level governance resolves a lake to the aggregation branch from program/lake topology when `git-workflow-*.md` is absent.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-20260709-r6-branch-governance",
+          "verified_by_run_id": "run-20260709T154207235892",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — Program-level governance still resolves through explicit `git-workflow-*.md` when present.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-20260709-r6-branch-governance",
+          "verified_by_run_id": "run-20260709T154207235892",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — `beacon qa run <lake>` accepts the aggregation branch after workspace admission and does not block with `branch_alignment_required`.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-20260709-r6-branch-governance",
+          "verified_by_run_id": "run-20260709T154207235892",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Repos without program-level contract/topology continue to resolve `beacon/<version>/<feature-slug>`.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-20260709-r6-branch-governance",
+          "verified_by_run_id": "run-20260709T154207235892",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Soft admission still blocks wrong current branch with `branch_alignment_required` using the shared resolved target.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-20260709-r6-branch-governance",
+          "verified_by_run_id": "run-20260709T154207235892",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-global-workspace-git-admission-v162",
+        "version": "v1.6.4",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.4/beacon-global-workspace-git-admission-v162/docs/beacon/v1.6.4/research/beacon-global-workspace-git-admission-v162.md",
+        "present": false,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      },
+      "feature": "beacon-global-workspace-git-admission-v162",
+      "feature_slug": "beacon-global-workspace-git-admission-v162",
+      "version": "v1.6.4",
+      "last_changed_files": [
+        "beacon/utils/execution_branch_contract.py",
+        "beacon/utils/project_governance.py",
+        "beacon/utils/workspace_admission.py",
+        "tests/test_v162_delivery_program_branch_r5.py",
+        "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/truth.md",
+        "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md",
+        "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tasks.md",
+        "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/evidence.md"
+      ],
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-global-workspace-git-admission-v162/ac-closure.json",
+        ".beacon/qa/features/beacon-global-workspace-git-admission-v162/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "accepted_at": "2026-07-09T07:42:17.431529+00:00",
+      "accepted_by": "qa"
+    }
+  ]
+}

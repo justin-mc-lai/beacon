@@ -37,7 +37,7 @@ def test_setup_agent_surface_for_trae_should_materialize_host_visible_skills(tmp
     installed = payload["result"]["installed"]
     assert len(installed) == len(source_skills)
 
-    for skill_name in ("beacon-pln-brainstorm", "beacon-gen-implement", "beacon-eval-qa", "beacon-gov-doctor"):
+    for skill_name in ("beacon-pln-brainstorm", "beacon-gen-implement", "beacon-eval-qa", "beacon-gov-doctor", "beacon-loop-goal"):
         assert (tmp_path / ".trae" / "skills" / skill_name / "SKILL.md").exists()
 
     rules_text = (tmp_path / ".trae" / "rules" / "project_rules.md").read_text(encoding="utf-8")
@@ -79,6 +79,7 @@ def test_setup_agent_surface_for_all_supported_hosts_should_materialize_host_vis
         assert (skills_root / "beacon-pln-brainstorm" / "SKILL.md").exists()
         assert (skills_root / "beacon-gen-implement" / "SKILL.md").exists()
         assert (skills_root / "beacon-eval-qa" / "SKILL.md").exists()
+        assert (skills_root / "beacon-loop-goal" / "SKILL.md").exists()
 
         if rules_path is not None:
             rules_text = rules_path.read_text(encoding="utf-8")
@@ -165,6 +166,7 @@ def test_setup_agent_surface_v160_should_materialize_harness_taxonomy(tmp_path: 
     assert "beacon-gen-implement" in installed_names
     assert "beacon-eval-qa" in installed_names
     assert "beacon-gov-doctor" in installed_names
+    assert "beacon-loop-goal" in installed_names
     for old_name in ("beacon-brainstorm", "beacon-prd", "beacon-user-story", "beacon-test-case", "beacon-implement", "beacon-qa", "beacon-release", "using-beacon"):
         assert old_name not in installed_names
         assert not (tmp_path / ".agents" / "skills" / old_name).exists()

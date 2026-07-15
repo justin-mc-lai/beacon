@@ -1,0 +1,163 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-02T07:07:09.420199+00:00",
+  "feature": "beacon-qa-defect-repair-loop-v164",
+  "feature_slug": "beacon-qa-defect-repair-loop-v164",
+  "version": "v1.6.4",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.4/features/beacon-qa-defect-repair-loop-v164/truth.md",
+    "tests": "docs/beacon/v1.6.4/features/beacon-qa-defect-repair-loop-v164/tests.md",
+    "tasks": "docs/beacon/v1.6.4/features/beacon-qa-defect-repair-loop-v164/tasks.md",
+    "evidence": "docs/beacon/v1.6.4/features/beacon-qa-defect-repair-loop-v164/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "8610eac5cb832968ca7e2327cba5ccfca19a3a9ec271c108eee33492b83de242",
+    "tests": "aed32db25b0d362f3cb8335782f5b9dfcbc8819cf258a76787fb6e2c82730937",
+    "tasks": "da39e656131928d9234abac668554d189ab39ec860b1df1ac682995a8cea2ffa",
+    "evidence": "b2840759cd2b93f5f2d11d9f14d2f4c781c8f298c9a28aff99c4f3c6b5c8a1ed"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-qa-defect-repair-loop-v164",
+    "version": "v1.6.4",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "R1 — QA defect 修复回归闭环（复用 ROUTE_RECOMMENDATIONS + repair_route 字段 + 回归 QA 触发 + 闭环 evidence）",
+    "source_revision_id": "null",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.4/features/beacon-qa-defect-repair-loop-v164/truth.md",
+      "user_story": "docs/beacon/v1.6.4/features/beacon-qa-defect-repair-loop-v164/truth.md",
+      "test_case": "docs/beacon/v1.6.4/features/beacon-qa-defect-repair-loop-v164/tests.md"
+    },
+    "parser_contract": "beacon-feature-package-v1",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "defect-classification",
+      "description": "QA finding 复用既有 `ROUTE_RECOMMENDATIONS` 分类（implementation_gap / truth_drift / coverage_gap / execution_lapse / skill_defect / runner_admission_blocker / evidence_insufficient）；分类失败 → block（**Must**，UD-001）"
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "repair-route-field",
+      "description": "`qa_acceptance` 输出含 `repair_route`（目标 harness）+ `defect_classification`（family + reason_code）；projection 同步（**Must**）"
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "route-rules",
+      "description": "路由规则生效：implementation_gap→beacon-implement, truth_drift→beacon-change, coverage_gap→beacon-test-case, execution_lapse→beacon-qa；RELEASE_BLOCKING_FAMILIES 强制 block release（**Must**）"
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "regression-trigger",
+      "description": "defect 修复后强制回归 QA 触发（`regression_required=True`）；回归未跑 → release block（reason_code `regression_skipped`）（**Must**，UD-002）"
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "closure-evidence-chain",
+      "description": "闭环 evidence 链：defect 发现 → 修复 → 回归三段串联；缺段 → block（reason_code `repair_chain_broken`）；evidence 不被记为 full pass（**Must**，UD-003）"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-DR-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v164_qa_defect_repair_loop.py::test_defect_classification -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "QA finding 复用 `ROUTE_RECOMMENDATIONS` 分类为 7 family 之一；分类失败（unknown family）→ block",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-DR-002",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v164_qa_defect_repair_loop.py::test_repair_route_field -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "`qa_acceptance` 输出含 `repair_route`（目标 harness）+ `defect_classification`（family + reason_code）；projection 同步",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-DR-003",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v164_qa_defect_repair_loop.py::test_route_rules_release_blocking -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "路由规则：implementation_gap→beacon-implement, truth_drift→beacon-change, coverage_gap→beacon-test-case, execution_lapse→beacon-qa；RELEASE_BLOCKING_FAMILIES（implementation_gap/truth_drift/coverage_gap）强制 block release",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-DR-004",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v164_qa_defect_repair_loop.py::test_regression_trigger -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "defect 修复后 `regression_required=True`；回归未跑 → release block（reason_code 含 `regression_skipped`）",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-DR-005",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v164_qa_defect_repair_loop.py::test_closure_evidence_chain -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "闭环 evidence 链：defect 发现 → 修复 → 回归三段串联；缺段 → block（reason_code `repair_chain_broken`）；evidence 不被记为 full pass",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "truth.define + acceptance — R1 draft",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "truth.coverage — TC-DR-001..005（Round 4）",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "verify-closure pass（Round 5）",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "requirement-clarity materialize（Round 6）",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "freeze（Round 7, user-gated）",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "implement AC-001..005（downstream beacon-gen-implement）",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "truth.md",
+      "authority": "requirement_truth",
+      "artifact": "docs/beacon/v1.6.4/features/beacon-qa-defect-repair-loop-v164/truth.md"
+    },
+    {
+      "surface": "tests.md",
+      "authority": "test_truth",
+      "artifact": "docs/beacon/v1.6.4/features/beacon-qa-defect-repair-loop-v164/tests.md"
+    },
+    {
+      "surface": "tasks.md",
+      "authority": "requirement_truth",
+      "artifact": "docs/beacon/v1.6.4/features/beacon-qa-defect-repair-loop-v164/tasks.md"
+    }
+  ]
+}

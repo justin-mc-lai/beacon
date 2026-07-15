@@ -212,6 +212,11 @@ def feature_package_ready(project_root: Path, *, version: str, feature: str) -> 
     return all(paths[surface].is_file() for surface in FEATURE_SURFACES)
 
 
+def feature_package_present(project_root: Path, *, version: str, feature: str) -> bool:
+    paths = package_paths(project_root, version=version, feature=feature_slug(feature))
+    return paths["truth"].is_file()
+
+
 def truth_map_supported_for_feature(project_root: Path, *, version: str, feature: str) -> bool:
     return truth_map_supported(version) or feature_package_ready(project_root, version=version, feature=feature)
 
@@ -225,8 +230,8 @@ def feature_package_authoritative(version: str | None) -> bool:
 
 
 def feature_package_authoritative_feature(project_root: Path, *, version: str, feature: str) -> bool:
-    """Return True if version >= v1.5.2 OR the feature package physically exists on disk."""
-    return feature_package_authoritative(version) or feature_package_ready(project_root, version=version, feature=feature)
+    """Return True if version >= v1.5.2 OR feature truth exists on disk."""
+    return feature_package_authoritative(version) or feature_package_present(project_root, version=version, feature=feature)
 
 
 def _rel(root: Path, path: Path) -> str:

@@ -1,0 +1,105 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-program-next-action-admission-v164",
+  "feature_slug": "beacon-program-next-action-admission-v164",
+  "version": "v1.6.4",
+  "generated_at": "2026-07-10T03:47:40.429841+00:00",
+  "execution_mode": "feature-aware",
+  "source_matrix_path": "docs/beacon/v1.6.4/.machine/qa/beacon-program-next-action-admission-v164.ac-test-matrix.json",
+  "story_scenario_map_path": ".beacon/qa/features/beacon-program-next-action-admission-v164/story-scenario-map.json",
+  "reason_codes": [
+    "no_prior_feature_qa"
+  ],
+  "qa_types": [
+    "contract",
+    "integration",
+    "regression",
+    "unit"
+  ],
+  "entries": [
+    {
+      "ac_id": "AC-028",
+      "tc_id": "TC-PNA-001",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_program_next_action_blocks_wrong_lake -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "SidePilot-style fixture with `next_action=beacon-gen-implement:content-hub-foundation` blocks `pi-host-ui-ux` with `program_next_action_mismatch`; no implementation evidence path is written.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-001/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
+      "qa_type": "integration",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-029",
+      "tc_id": "TC-PNA-002",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_program_next_action_allows_current_lake -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Target `content-hub-foundation` matches `next_action`; admission result includes program slug, lake slug, material path, and next_action source.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-002/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-030",
+      "tc_id": "TC-PNA-003",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_program_dependency_closure_blocks_downstream_lake -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Downstream W7 lake with W0-W6 dependencies and missing prerequisite QA acceptance blocks with `program_dependency_unclosed`.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-003/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
+      "qa_type": "integration",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-031",
+      "tc_id": "TC-PNA-004",
+      "layer": "regression",
+      "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_per_feature_implement_admission_unchanged_without_program_topology -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Feature without owning program topology keeps normal per-feature implement admission and does not require `program-run-state.json`.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-004/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
+      "qa_type": "regression",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-032",
+      "tc_id": "TC-PNA-005",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_static_shell_ui_evidence_is_non_acceptance -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Full-parity UI evidence containing required surfaces with `coming_soon`, preview-only, static shell, or no-op recovery controls is rejected with `static_shell_implementation_evidence`.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-005/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
+      "qa_type": "contract",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-033",
+      "tc_id": "TC-PNA-006",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_source_grep_only_tests_do_not_satisfy_behavior_ac -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Evidence built only from source string assertions such as `readFileSync(...).toContain(...)` cannot satisfy runtime/browser/user-behavior AC and returns `static_source_assertion_only`.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-006/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
+      "qa_type": "contract",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-034",
+      "tc_id": "TC-PNA-007",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v164_program_next_action_admission.py::test_blocked_generator_writes_diagnostic_only -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Blocked implement admission writes diagnostic state only and does not mark tasks done, write implementation summary, or update QA/release evidence.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-program-next-action-admission-v164/tc-pna-007/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-program-next-action-admission-v164/tests.md",
+      "qa_type": "integration",
+      "automation": "auto"
+    }
+  ]
+}

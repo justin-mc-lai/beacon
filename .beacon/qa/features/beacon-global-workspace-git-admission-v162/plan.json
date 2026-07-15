@@ -1,0 +1,690 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-global-workspace-git-admission-v162",
+  "feature_slug": "beacon-global-workspace-git-admission-v162",
+  "version": "v1.6.4",
+  "generated_at": "2026-07-09T07:42:06.898123+00:00",
+  "execution_mode": "feature-aware",
+  "status": "rerun_required",
+  "implementation_done": true,
+  "evidence_done": false,
+  "current_spec_fingerprint_hash": "sha256:51cb748ef773b88be60703b90dcb3e341b38d9f1f3d44e5458c6c93a8836c4f4",
+  "current_baseline_hash": "sha256:51cb748ef773b88be60703b90dcb3e341b38d9f1f3d44e5458c6c93a8836c4f4",
+  "implementation_run_id": "impl-20260709-r6-branch-governance",
+  "source_matrix_path": "docs/beacon/v1.6.4/.machine/qa/beacon-global-workspace-git-admission-v162.ac-test-matrix.json",
+  "source_matrix_hash": "5263455463b5d3a2c02b2f9e306bbc5b514049441c38f8bf8c1aef12a6fc0fd4",
+  "derived_matrix_path": ".beacon/qa/features/beacon-global-workspace-git-admission-v162/matrix.qa9.json",
+  "story_scenario_map_path": ".beacon/qa/features/beacon-global-workspace-git-admission-v162/story-scenario-map.json",
+  "docs_story_scenario_map_path": "docs/beacon/v1.6.4/.machine/qa/beacon-global-workspace-git-admission-v162.story-scenario-map.json",
+  "technical_archive_path": "docs/beacon/v1.6.4/.machine/execution/technical-implementation-beacon-global-workspace-git-admission-v162.json",
+  "feature_status_path": ".beacon/qa/features/beacon-global-workspace-git-admission-v162/status.json",
+  "feature_evidence_contract_path": "",
+  "story_sequence": [
+    {
+      "ac_id": "AC-001",
+      "theme": "program-topology-without-git-workflow",
+      "text": "Program-level governance resolves a lake to the aggregation branch from program/lake topology when `git-workflow-*.md` is absent.",
+      "tc_ids": [],
+      "qa_types": []
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "program-topology-with-git-workflow",
+      "text": "Program-level governance still resolves through explicit `git-workflow-*.md` when present.",
+      "tc_ids": [],
+      "qa_types": []
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "qa-run-aggregation-admission",
+      "text": "`beacon qa run <lake>` accepts the aggregation branch after workspace admission and does not block with `branch_alignment_required`.",
+      "tc_ids": [],
+      "qa_types": []
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "per-feature-default-preserved",
+      "text": "Repos without program-level contract/topology continue to resolve `beacon/<version>/<feature-slug>`.",
+      "tc_ids": [],
+      "qa_types": []
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "soft-admission-wrong-branch-blocks",
+      "text": "Soft admission still blocks wrong current branch with `branch_alignment_required` using the shared resolved target.",
+      "tc_ids": [],
+      "qa_types": []
+    }
+  ],
+  "story_scenarios": {
+    "schema_version": "1.0",
+    "feature": "beacon-global-workspace-git-admission-v162",
+    "feature_slug": "beacon-global-workspace-git-admission-v162",
+    "version": "v1.6.4",
+    "generated_at": "2026-07-09T07:40:49.258090+00:00",
+    "expansion_profile": "pua-web",
+    "scenario_depth": "standard",
+    "families_required": [
+      "happy",
+      "negative",
+      "boundary",
+      "recovery",
+      "compatibility"
+    ],
+    "stories": [
+      {
+        "ac_id": "AC-001",
+        "theme": "program-topology-without-git-workflow",
+        "text": "Program-level governance resolves a lake to the aggregation branch from program/lake topology when `git-workflow-*.md` is absent.",
+        "scenario_ids": [],
+        "scenario_families": [],
+        "required_families": [],
+        "scenarios": []
+      },
+      {
+        "ac_id": "AC-002",
+        "theme": "program-topology-with-git-workflow",
+        "text": "Program-level governance still resolves through explicit `git-workflow-*.md` when present.",
+        "scenario_ids": [],
+        "scenario_families": [],
+        "required_families": [],
+        "scenarios": []
+      },
+      {
+        "ac_id": "AC-003",
+        "theme": "qa-run-aggregation-admission",
+        "text": "`beacon qa run <lake>` accepts the aggregation branch after workspace admission and does not block with `branch_alignment_required`.",
+        "scenario_ids": [],
+        "scenario_families": [],
+        "required_families": [],
+        "scenarios": []
+      },
+      {
+        "ac_id": "AC-004",
+        "theme": "per-feature-default-preserved",
+        "text": "Repos without program-level contract/topology continue to resolve `beacon/<version>/<feature-slug>`.",
+        "scenario_ids": [],
+        "scenario_families": [],
+        "required_families": [],
+        "scenarios": []
+      },
+      {
+        "ac_id": "AC-005",
+        "theme": "soft-admission-wrong-branch-blocks",
+        "text": "Soft admission still blocks wrong current branch with `branch_alignment_required` using the shared resolved target.",
+        "scenario_ids": [],
+        "scenario_families": [],
+        "required_families": [],
+        "scenarios": []
+      },
+      {
+        "ac_id": "AC-023",
+        "theme": "",
+        "text": "Frozen program topology without `git-workflow-*.md` resolves lake `content-hub-foundation` to `branch_resolution_mode=program-level`, `feature_branch=beacon/v0.0.12`, and the program aggregation worktree.",
+        "scenario_ids": [
+          "SC-AUTO-TC-R6-001",
+          "SC-AUTO-TC-R6-002"
+        ],
+        "scenario_families": [
+          "primary",
+          "primary"
+        ],
+        "required_families": [],
+        "scenarios": [
+          {
+            "scenario_id": "SC-AUTO-TC-R6-001",
+            "source_tc_id": "TC-R6-001",
+            "tc_id": "TC-R6-001-PRIMARY",
+            "scenario_family": "primary",
+            "qa_type": "unit",
+            "browser_required": false,
+            "replay_required": false
+          },
+          {
+            "scenario_id": "SC-AUTO-TC-R6-002",
+            "source_tc_id": "TC-R6-002",
+            "tc_id": "TC-R6-002-PRIMARY",
+            "scenario_family": "primary",
+            "qa_type": "integration",
+            "browser_required": false,
+            "replay_required": false
+          }
+        ]
+      },
+      {
+        "ac_id": "AC-024",
+        "theme": "",
+        "text": "Explicit `git-workflow-*.md` program-level contract continues to resolve the same aggregation branch/worktree.",
+        "scenario_ids": [
+          "SC-AUTO-TC-R6-003"
+        ],
+        "scenario_families": [
+          "primary"
+        ],
+        "required_families": [],
+        "scenarios": [
+          {
+            "scenario_id": "SC-AUTO-TC-R6-003",
+            "source_tc_id": "TC-R6-003",
+            "tc_id": "TC-R6-003-PRIMARY",
+            "scenario_family": "primary",
+            "qa_type": "unit",
+            "browser_required": false,
+            "replay_required": false
+          }
+        ]
+      },
+      {
+        "ac_id": "AC-025",
+        "theme": "",
+        "text": "`beacon qa run <lake>` passes workspace admission on `beacon/v0.0.12`; the controlled downstream block is `implementation_not_recorded`, not `branch_alignment_required`.",
+        "scenario_ids": [
+          "SC-AUTO-TC-R6-004"
+        ],
+        "scenario_families": [
+          "primary"
+        ],
+        "required_families": [],
+        "scenarios": [
+          {
+            "scenario_id": "SC-AUTO-TC-R6-004",
+            "source_tc_id": "TC-R6-004",
+            "tc_id": "TC-R6-004-PRIMARY",
+            "scenario_family": "primary",
+            "qa_type": "integration",
+            "browser_required": false,
+            "replay_required": false
+          }
+        ]
+      },
+      {
+        "ac_id": "AC-026",
+        "theme": "",
+        "text": "No program-level contract/topology keeps per-feature default `beacon/v9.9.9/demo-feature`.",
+        "scenario_ids": [
+          "SC-AUTO-TC-R6-005"
+        ],
+        "scenario_families": [
+          "primary"
+        ],
+        "required_families": [],
+        "scenarios": [
+          {
+            "scenario_id": "SC-AUTO-TC-R6-005",
+            "source_tc_id": "TC-R6-005",
+            "tc_id": "TC-R6-005-PRIMARY",
+            "scenario_family": "primary",
+            "qa_type": "regression",
+            "browser_required": false,
+            "replay_required": false
+          }
+        ]
+      },
+      {
+        "ac_id": "AC-027",
+        "theme": "",
+        "text": "`require_workspace_admission=false` on wrong current branch blocks with `branch_alignment_required` against aggregation target `beacon/v0.0.12`.",
+        "scenario_ids": [
+          "SC-AUTO-TC-R6-006"
+        ],
+        "scenario_families": [
+          "primary"
+        ],
+        "required_families": [],
+        "scenarios": [
+          {
+            "scenario_id": "SC-AUTO-TC-R6-006",
+            "source_tc_id": "TC-R6-006",
+            "tc_id": "TC-R6-006-PRIMARY",
+            "scenario_family": "primary",
+            "qa_type": "integration",
+            "browser_required": false,
+            "replay_required": false
+          }
+        ]
+      }
+    ],
+    "scenarios": [
+      {
+        "scenario_id": "SC-AUTO-TC-R6-001",
+        "source_tc_id": "TC-R6-001",
+        "tc_id": "TC-R6-001-PRIMARY",
+        "ac_id": "AC-023",
+        "qa_type": "unit",
+        "layer": "unit",
+        "scenario_family": "primary",
+        "title": "Frozen program topology without `git-workflow-*.md` resolves lake `content-hub-foundation` to `branch_resolution_mode=program-level`, `feature_branch=beacon/v0.0.12`, and the program aggregation worktree.",
+        "browser_required": false,
+        "replay_required": false,
+        "exploratory_runner": "native",
+        "deterministic_runner": "native",
+        "explore_command": "",
+        "replay_command": "",
+        "coverage_axes": [
+          "primary",
+          "unit",
+          "non-browser"
+        ],
+        "depends_on": [],
+        "stop_on_fail": false,
+        "automation": "auto",
+        "command": "python3 -m pytest tests/test_v162_delivery_program_branch_r5.py::test_r6_program_topology_without_git_workflow_resolves_aggregation_branch -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Frozen program topology without `git-workflow-*.md` resolves lake `content-hub-foundation` to `branch_resolution_mode=program-level`, `feature_branch=beacon/v0.0.12`, and the program aggregation worktree.",
+        "priority": "P1",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-r6-001/__RUN_ID__.json",
+        "required_files": [
+          "command.txt",
+          "stdout.log",
+          "stderr.log",
+          "result.json",
+          "junit.xml"
+        ]
+      },
+      {
+        "scenario_id": "SC-AUTO-TC-R6-002",
+        "source_tc_id": "TC-R6-002",
+        "tc_id": "TC-R6-002-PRIMARY",
+        "ac_id": "AC-023",
+        "qa_type": "integration",
+        "layer": "integration",
+        "scenario_family": "primary",
+        "title": "When the version governance block is absent and no `git-workflow-*.md` exists, frozen program topology still resolves the lake to `beacon/v0.0.12` and validates on the aggregation worktree.",
+        "browser_required": false,
+        "replay_required": false,
+        "exploratory_runner": "native",
+        "deterministic_runner": "native",
+        "explore_command": "",
+        "replay_command": "",
+        "coverage_axes": [
+          "primary",
+          "integration",
+          "non-browser"
+        ],
+        "depends_on": [],
+        "stop_on_fail": false,
+        "automation": "auto",
+        "command": "python3 -m pytest tests/test_v162_delivery_program_branch_r5.py::test_r6_program_topology_without_version_governance_block_resolves_aggregation_branch -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "When the version governance block is absent and no `git-workflow-*.md` exists, frozen program topology still resolves the lake to `beacon/v0.0.12` and validates on the aggregation worktree.",
+        "priority": "P1",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-r6-002/__RUN_ID__.json",
+        "required_files": [
+          "command.txt",
+          "stdout.log",
+          "stderr.log",
+          "result.json",
+          "junit.xml"
+        ]
+      },
+      {
+        "scenario_id": "SC-AUTO-TC-R6-003",
+        "source_tc_id": "TC-R6-003",
+        "tc_id": "TC-R6-003-PRIMARY",
+        "ac_id": "AC-024",
+        "qa_type": "unit",
+        "layer": "unit",
+        "scenario_family": "primary",
+        "title": "Explicit `git-workflow-*.md` program-level contract continues to resolve the same aggregation branch/worktree.",
+        "browser_required": false,
+        "replay_required": false,
+        "exploratory_runner": "native",
+        "deterministic_runner": "native",
+        "explore_command": "",
+        "replay_command": "",
+        "coverage_axes": [
+          "primary",
+          "unit",
+          "non-browser"
+        ],
+        "depends_on": [],
+        "stop_on_fail": false,
+        "automation": "auto",
+        "command": "python3 -m pytest tests/test_v162_delivery_program_branch_r5.py::test_r6_program_topology_with_git_workflow_resolves_aggregation_branch -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Explicit `git-workflow-*.md` program-level contract continues to resolve the same aggregation branch/worktree.",
+        "priority": "P1",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-r6-003/__RUN_ID__.json",
+        "required_files": [
+          "command.txt",
+          "stdout.log",
+          "stderr.log",
+          "result.json",
+          "junit.xml"
+        ]
+      },
+      {
+        "scenario_id": "SC-AUTO-TC-R6-004",
+        "source_tc_id": "TC-R6-004",
+        "tc_id": "TC-R6-004-PRIMARY",
+        "ac_id": "AC-025",
+        "qa_type": "integration",
+        "layer": "integration",
+        "scenario_family": "primary",
+        "title": "`beacon qa run <lake>` passes workspace admission on `beacon/v0.0.12`; the controlled downstream block is `implementation_not_recorded`, not `branch_alignment_required`.",
+        "browser_required": false,
+        "replay_required": false,
+        "exploratory_runner": "native",
+        "deterministic_runner": "native",
+        "explore_command": "",
+        "replay_command": "",
+        "coverage_axes": [
+          "primary",
+          "integration",
+          "non-browser"
+        ],
+        "depends_on": [],
+        "stop_on_fail": false,
+        "automation": "auto",
+        "command": "python3 -m pytest tests/test_v162_delivery_program_branch_r5.py::test_r6_qa_run_lake_accepts_aggregation_branch_after_admission -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "`beacon qa run <lake>` passes workspace admission on `beacon/v0.0.12`; the controlled downstream block is `implementation_not_recorded`, not `branch_alignment_required`.",
+        "priority": "P1",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-r6-004/__RUN_ID__.json",
+        "required_files": [
+          "command.txt",
+          "stdout.log",
+          "stderr.log",
+          "result.json",
+          "junit.xml"
+        ]
+      },
+      {
+        "scenario_id": "SC-AUTO-TC-R6-005",
+        "source_tc_id": "TC-R6-005",
+        "tc_id": "TC-R6-005-PRIMARY",
+        "ac_id": "AC-026",
+        "qa_type": "regression",
+        "layer": "regression",
+        "scenario_family": "primary",
+        "title": "No program-level contract/topology keeps per-feature default `beacon/v9.9.9/demo-feature`.",
+        "browser_required": false,
+        "replay_required": false,
+        "exploratory_runner": "native",
+        "deterministic_runner": "native",
+        "explore_command": "",
+        "replay_command": "",
+        "coverage_axes": [
+          "primary",
+          "regression",
+          "non-browser"
+        ],
+        "depends_on": [],
+        "stop_on_fail": false,
+        "automation": "auto",
+        "command": "python3 -m pytest tests/test_v162_delivery_program_branch_r5.py::test_ac022_per_feature_default_unchanged -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "No program-level contract/topology keeps per-feature default `beacon/v9.9.9/demo-feature`.",
+        "priority": "P1",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-r6-005/__RUN_ID__.json",
+        "required_files": [
+          "command.txt",
+          "stdout.log",
+          "stderr.log",
+          "result.json",
+          "junit.xml"
+        ]
+      },
+      {
+        "scenario_id": "SC-AUTO-TC-R6-006",
+        "source_tc_id": "TC-R6-006",
+        "tc_id": "TC-R6-006-PRIMARY",
+        "ac_id": "AC-027",
+        "qa_type": "integration",
+        "layer": "integration",
+        "scenario_family": "primary",
+        "title": "`require_workspace_admission=false` on wrong current branch blocks with `branch_alignment_required` against aggregation target `beacon/v0.0.12`.",
+        "browser_required": false,
+        "replay_required": false,
+        "exploratory_runner": "native",
+        "deterministic_runner": "native",
+        "explore_command": "",
+        "replay_command": "",
+        "coverage_axes": [
+          "primary",
+          "integration",
+          "non-browser"
+        ],
+        "depends_on": [],
+        "stop_on_fail": false,
+        "automation": "auto",
+        "command": "python3 -m pytest tests/test_v162_delivery_program_branch_r5.py::test_r6_soft_admission_still_blocks_wrong_aggregation_branch -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "`require_workspace_admission=false` on wrong current branch blocks with `branch_alignment_required` against aggregation target `beacon/v0.0.12`.",
+        "priority": "P1",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-r6-006/__RUN_ID__.json",
+        "required_files": [
+          "command.txt",
+          "stdout.log",
+          "stderr.log",
+          "result.json",
+          "junit.xml"
+        ]
+      }
+    ]
+  },
+  "required_scenario_families": [
+    "happy",
+    "negative",
+    "boundary",
+    "recovery",
+    "compatibility"
+  ],
+  "reason_codes": [
+    "no_prior_feature_qa"
+  ],
+  "implementation_evidence_gate": {
+    "status": "pass",
+    "blocked": false,
+    "reason_codes": [],
+    "missing_fields": [],
+    "imported": true,
+    "summary_ref": "docs/beacon/v1.6.4/release/v1.6.4.md",
+    "source_refs": [
+      "git:01b9671e9b299c30b46068823761ca3292dde53a",
+      "docs/beacon/v1.6.4/change/beacon-global-workspace-git-admission-v162.md",
+      "docs/beacon/v1.6.4/change/beacon-global-workspace-git-admission-v162.refreeze-summary.md"
+    ]
+  },
+  "matrix_projection_gate": {
+    "status": "pass",
+    "blocked": false,
+    "reason_codes": [],
+    "contract": {
+      "truth_mode": "markdown",
+      "source": "docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md",
+      "package_authoritative": true,
+      "enrichment_disabled": true
+    }
+  },
+  "qa_outcome_taxonomy": {
+    "category": "pending_or_ready",
+    "reason_codes": [
+      "no_prior_feature_qa"
+    ],
+    "stable_taxonomy": [
+      "product_failed",
+      "test_failed",
+      "runner_admission_blocked",
+      "environment_blocked",
+      "auth_session_blocked",
+      "evidence_binding_missing",
+      "coverage_gap",
+      "truth_projection_gap"
+    ]
+  },
+  "blocking_artifact_updates": [],
+  "all_entries": [
+    {
+      "ac_id": "AC-023",
+      "tc_id": "TC-R6-001",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v162_delivery_program_branch_r5.py::test_r6_program_topology_without_git_workflow_resolves_aggregation_branch -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Frozen program topology without `git-workflow-*.md` resolves lake `content-hub-foundation` to `branch_resolution_mode=program-level`, `feature_branch=beacon/v0.0.12`, and the program aggregation worktree.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-r6-001/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-023",
+      "tc_id": "TC-R6-002",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v162_delivery_program_branch_r5.py::test_r6_program_topology_without_version_governance_block_resolves_aggregation_branch -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "When the version governance block is absent and no `git-workflow-*.md` exists, frozen program topology still resolves the lake to `beacon/v0.0.12` and validates on the aggregation worktree.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-r6-002/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md",
+      "qa_type": "integration",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-024",
+      "tc_id": "TC-R6-003",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v162_delivery_program_branch_r5.py::test_r6_program_topology_with_git_workflow_resolves_aggregation_branch -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Explicit `git-workflow-*.md` program-level contract continues to resolve the same aggregation branch/worktree.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-r6-003/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-025",
+      "tc_id": "TC-R6-004",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v162_delivery_program_branch_r5.py::test_r6_qa_run_lake_accepts_aggregation_branch_after_admission -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`beacon qa run <lake>` passes workspace admission on `beacon/v0.0.12`; the controlled downstream block is `implementation_not_recorded`, not `branch_alignment_required`.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-r6-004/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md",
+      "qa_type": "integration",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-026",
+      "tc_id": "TC-R6-005",
+      "layer": "regression",
+      "command": "python3 -m pytest tests/test_v162_delivery_program_branch_r5.py::test_ac022_per_feature_default_unchanged -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "No program-level contract/topology keeps per-feature default `beacon/v9.9.9/demo-feature`.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-r6-005/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md",
+      "qa_type": "regression",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-027",
+      "tc_id": "TC-R6-006",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v162_delivery_program_branch_r5.py::test_r6_soft_admission_still_blocks_wrong_aggregation_branch -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`require_workspace_admission=false` on wrong current branch blocks with `branch_alignment_required` against aggregation target `beacon/v0.0.12`.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-r6-006/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md",
+      "qa_type": "integration",
+      "automation": "auto"
+    }
+  ],
+  "targeted_entries": [
+    {
+      "ac_id": "AC-023",
+      "tc_id": "TC-R6-001",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v162_delivery_program_branch_r5.py::test_r6_program_topology_without_git_workflow_resolves_aggregation_branch -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Frozen program topology without `git-workflow-*.md` resolves lake `content-hub-foundation` to `branch_resolution_mode=program-level`, `feature_branch=beacon/v0.0.12`, and the program aggregation worktree.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-r6-001/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-023",
+      "tc_id": "TC-R6-002",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v162_delivery_program_branch_r5.py::test_r6_program_topology_without_version_governance_block_resolves_aggregation_branch -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "When the version governance block is absent and no `git-workflow-*.md` exists, frozen program topology still resolves the lake to `beacon/v0.0.12` and validates on the aggregation worktree.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-r6-002/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md",
+      "qa_type": "integration",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-024",
+      "tc_id": "TC-R6-003",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v162_delivery_program_branch_r5.py::test_r6_program_topology_with_git_workflow_resolves_aggregation_branch -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Explicit `git-workflow-*.md` program-level contract continues to resolve the same aggregation branch/worktree.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-r6-003/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-025",
+      "tc_id": "TC-R6-004",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v162_delivery_program_branch_r5.py::test_r6_qa_run_lake_accepts_aggregation_branch_after_admission -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`beacon qa run <lake>` passes workspace admission on `beacon/v0.0.12`; the controlled downstream block is `implementation_not_recorded`, not `branch_alignment_required`.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-r6-004/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md",
+      "qa_type": "integration",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-026",
+      "tc_id": "TC-R6-005",
+      "layer": "regression",
+      "command": "python3 -m pytest tests/test_v162_delivery_program_branch_r5.py::test_ac022_per_feature_default_unchanged -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "No program-level contract/topology keeps per-feature default `beacon/v9.9.9/demo-feature`.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-r6-005/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md",
+      "qa_type": "regression",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-027",
+      "tc_id": "TC-R6-006",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v162_delivery_program_branch_r5.py::test_r6_soft_admission_still_blocks_wrong_aggregation_branch -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`require_workspace_admission=false` on wrong current branch blocks with `branch_alignment_required` against aggregation target `beacon/v0.0.12`.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-global-workspace-git-admission-v162/tc-r6-006/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.4/features/beacon-global-workspace-git-admission-v162/tests.md",
+      "qa_type": "integration",
+      "automation": "auto"
+    }
+  ],
+  "targeted_layers": [
+    "integration",
+    "regression",
+    "unit"
+  ],
+  "targeted_ac_ids": [
+    "AC-023",
+    "AC-024",
+    "AC-025",
+    "AC-026",
+    "AC-027"
+  ],
+  "targeted_tc_ids": [
+    "TC-R6-001",
+    "TC-R6-002",
+    "TC-R6-003",
+    "TC-R6-004",
+    "TC-R6-005",
+    "TC-R6-006"
+  ],
+  "targeted_source_tc_ids": [
+    "TC-R6-001",
+    "TC-R6-002",
+    "TC-R6-003",
+    "TC-R6-004",
+    "TC-R6-005",
+    "TC-R6-006"
+  ],
+  "targeted_scenario_ids": [],
+  "targeted_scenario_families": [],
+  "previous_run_id": ""
+}

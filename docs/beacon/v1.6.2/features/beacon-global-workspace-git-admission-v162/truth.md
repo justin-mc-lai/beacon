@@ -1,11 +1,11 @@
 ---
 slug: beacon-global-workspace-git-admission-v162
 version: v1.6.2
-status: frozen
-revision_id: R4
+status: draft
+revision_id: R5
 language: zh
-change_reason: R4 — truth 分支策略：beacon-gen-truth 降 Tier C（truth 在 main 写），implement 前 merge main（对齐 global-boundaries §4.2）
-source_revision_id: R3
+change_reason: R5 — delivery-repo program-level branch profile；SidePilot friction friction:73c1790d551e + friction:025cd2a6322f
+source_revision_id: R4
 canonical_refs:
   prd: docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md
   user_story: docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md
@@ -341,6 +341,51 @@ v1.6.2 admission 原把 `beacon-gen-truth` 列 Tier A（强制 worktree admissio
 - monorepo truth 分支策略（beacon single_repo）
 - 回溯对齐 v1.6.3 双分支 truth（规范定后单独处理）
 
+## Delivery-Repo Program Branch Profile (R5)
+
+### 背景（SidePilot 事件 — 2026-07-06）
+
+Friction 已 accept 并路由至本 change（`friction:73c1790d551e`, `friction:025cd2a6322f`）：
+
+| 现象 | 证据 |
+|------|------|
+| v0.0.10 refreeze/QA 脚手架写在 `main` | stash 156 files；后迁至 `beacon/v0.0.10` |
+| v0.0.9 `tasks.md` 落在 `main` | commits `cba3eff`, `ed0256b` on main |
+| implement 在 `cloud-platform` @ `beacon/v0.0.9` 正确 | QA 8/8 pass |
+| `workspace admit` skipped | `require_workspace_admission=false`（v0.0.7+ delivery contract） |
+| CLI 解析 per-feature 路径 | `beacon/v0.0.9/cloud-llm-gateway` → 不存在的 sibling worktree |
+| doctor pass on wrong branch | `current_branch=main` + verify v0.0.9 → pass |
+
+根因：**v1.6.2 truth 假设 per-feature branch + dedicated worktree**；delivery repo 使用 **program-level `beacon/vX` + 自定义 worktree 路径**（如 `cloud-platform/`），且 version contract **关闭 admission enforcement**，导致 GIT_ADMISSION Step 0 成为 no-op。
+
+Research：`docs/beacon/v1.6.4/research/beacon-delivery-repo-git-admission-friction.md`
+
+### R5 User Decisions
+
+| ID | Decision | Value |
+|----|----------|-------|
+| UD-021 | branch_resolution_mode | **`per-feature`**（默认，Beacon 源码仓）\| **`program-level`**（delivery repo，单 program 单 implement 分支） |
+| UD-022 | program-level target_branch | `beacon/<version>`（来自 `execution/git-workflow-*.md` 或 program manifest），**非** `beacon/<version>/<feature-slug>` |
+| UD-023 | program-level worktree_path | 显式声明于 git-workflow contract（例：`cloud-platform/`、`selfmedia-sync-ai-v0.0.8` sibling）；admit **Must** 返回该路径为 `cwd` |
+| UD-024 | soft admission ≠ no branch check | `require_workspace_admission=false` 时 Tier A skill **仍 Must** 校验 `current_branch == resolved_target_branch` 再写 repo；skipped admit **禁止** 被解读为任意 cwd 可写 |
+| UD-025 | doctor branch alignment | `doctor branch-governance verify` **Must** 在 `current_branch != target_branch` 时输出 `reason_codes`（默认 warn；`--strict` 可 block） |
+| UD-026 | docs write scope | Tier A/B 写 `docs/beacon/<version>/` 时 **Must** 与 resolved program/feature branch 一致；跨版本 docs 写 main 需 Tier C 或显式 change on main |
+
+### R5 Acceptance Criteria
+
+| AC ID | Theme | Description |
+|-------|-------|-------------|
+| AC-019 | program-level-resolve | 给定 git-workflow `branch_resolution_mode=program-level`，`workspace admit` 返回 `branch=beacon/v0.0.9`、`worktree_path=cloud-platform`（**Must**，SidePilot fixture） |
+| AC-020 | soft-admission-branch-check | `require_workspace_admission=false` 时 Tier A preamble **仍含** branch alignment check；错 branch 写文件 → blocked（**Must**） |
+| AC-021 | doctor-mismatch-surface | doctor 在 main 上 verify v0.0.9 program target → `reason_codes` 含 branch mismatch（**Must**） |
+| AC-022 | per-feature-default-unchanged | 无 program-level contract 时行为与 R4 一致（**Must**，回归） |
+
+### R5 Non-Goals
+
+- 强制所有 delivery repo 启用 `require_workspace_admission=true`（breaking；单独 UD 决策）
+- SidePilot 历史 commit 自动 rewrite
+- v0.0.10 program implement（仅治理 contract）
+
 
 ## Downstream Routes（post-freeze）
 
@@ -352,4 +397,4 @@ v1.6.2 admission 原把 `beacon-gen-truth` 列 Tier A（强制 worktree admissio
 
 ---
 
-**Status:** `frozen` R2 — 方案 A；implement 权威 truth。`beacon freeze` 完成（refreeze-chain 因当前 branch `pre-main` ≠ `beacon/v1.6.2` 走 direct freeze）。
+**Status:** `implemented` R5 — delivery-repo program branch profile (AC-019–AC-022).

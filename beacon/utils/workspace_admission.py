@@ -3,12 +3,14 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 import subprocess
 from pathlib import Path
 from typing import Any
 
 from beacon.utils.git_alignment import ensure_expected_worktree_lane, git_output
+from beacon.utils.protected_paths import build_protected_path_block
 from beacon.utils.runtime import now_iso
 from beacon.utils.story_state import feature_slug
 
@@ -21,6 +23,7 @@ Before ANY repo write or implement/qa/release route:
 2. If status != pass → STOP; show reason_codes; do NOT edit files
 3. Set cwd to worktree_path from payload
 4. Do NOT git checkout elsewhere to "fix" branch
+5. When admission is soft-skipped (`require_workspace_admission=false`), still verify `current_branch == resolved target_branch` before repo writes (R5 UD-024)
 """
 
 TIER_A_SKILLS = frozenset(
@@ -133,7 +136,13 @@ def load_admission_contract(project_root: Path, *, version: str) -> dict[str, An
     worktree_mode_raw = str(
         version_contract.get("worktree_mode") or branch_governance.get("worktree_mode") or ""
     ).strip()
-    worktree_mode = "dedicated-worktree" if worktree_mode_raw.lower() in {"dedicated", "dedicated-worktree"} else worktree_mode_raw
+    worktree_mode = (
+        "dedicated-worktree"
+        if worktree_mode_raw.lower() in {"dedicated", "dedicated-worktree"}
+        else "pooled"
+        if worktree_mode_raw.lower() in {"pool", "pooled", "pooled-worktree"}
+        else worktree_mode_raw
+    )
     worktree_base = str(
         version_contract.get("worktree_path") or branch_governance.get("worktree_path") or ""
     ).strip()
@@ -141,7 +150,7 @@ def load_admission_contract(project_root: Path, *, version: str) -> dict[str, An
     if require_raw is None:
         require_raw = branch_governance.get("require_workspace_admission")
     if require_raw is None:
-        require = _semver_tuple(version) >= (1, 6, 2) and worktree_mode == "dedicated-worktree"
+        require = _semver_tuple(version) >= (1, 6, 2) and worktree_mode in {"dedicated-worktree", "pooled"}
     else:
         require = bool(require_raw) if not isinstance(require_raw, str) else require_raw.lower() in {"1", "true", "yes", "on"}
     invalidation = str(
@@ -181,6 +190,82 @@ def resolve_worktree_path(project_root: Path, contract: dict[str, Any], *, featu
     return _normalized_path(base_path / slug, project_root=project_root)
 
 
+def pool_state_path(project_root: Path, *, version: str) -> Path:
+    return project_root.expanduser().resolve() / ".beacon/state/workspace-pool" / version / "pool.json"
+
+
+def _lease_holder() -> str:
+    return os.environ.get("BEACON_WORKSPACE_LEASE_HOLDER") or os.environ.get("USER") or "beacon"
+
+
+def _load_pool_state(path: Path) -> tuple[dict[str, Any] | None, dict[str, Any] | None]:
+    if not path.is_file():
+        return {"schema_version": "workspace-pool-v1", "entries": {}}, None
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError) as exc:
+        return None, {"reason_code": "workspace_pool_state_corrupt", "message": str(exc)}
+    if not isinstance(payload, dict) or not isinstance(payload.get("entries"), dict):
+        return None, {"reason_code": "workspace_pool_state_corrupt", "message": "pool state must contain entries mapping"}
+    return payload, None
+
+
+def _write_pool_state(path: Path, payload: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def _pool_entry_from_payload(payload: dict[str, Any], *, state: str, holder: str, released_at: str = "") -> dict[str, Any]:
+    return {
+        "state": state,
+        "feature_slug": str(payload.get("feature_slug") or ""),
+        "branch": str(payload.get("branch") or ""),
+        "worktree_path": str(payload.get("worktree_path") or ""),
+        "lease_holder": holder,
+        "leased_at": now_iso() if state == "leased" else str(payload.get("leased_at") or ""),
+        "released_at": released_at,
+        "git_head": str(payload.get("git_head") or ""),
+    }
+
+
+def release_workspace_lease(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+    holder: str = "",
+) -> dict[str, Any]:
+    root = resolve_workspace_project_root(project_root)
+    contract = load_admission_contract(root, version=version)
+    slug = feature_slug(feature)
+    if contract.get("worktree_mode") != "pooled":
+        return {
+            "schema_version": "1.0",
+            "status": "skipped",
+            "version": version,
+            "feature_slug": slug,
+            "reason_code": "workspace_pool_not_enabled",
+        }
+    path = pool_state_path(root, version=version)
+    state, error = _load_pool_state(path)
+    if error:
+        return {"schema_version": "1.0", "status": "blocked", "blocked": True, **error, "version": version, "feature_slug": slug}
+    assert state is not None
+    entries = state.setdefault("entries", {})
+    entry = entries.get(slug)
+    if not isinstance(entry, dict):
+        return {"schema_version": "1.0", "status": "blocked", "blocked": True, "reason_code": "workspace_pool_entry_missing", "version": version, "feature_slug": slug}
+    effective_holder = holder or _lease_holder()
+    if entry.get("state") == "leased" and entry.get("lease_holder") not in {"", effective_holder}:
+        return {"schema_version": "1.0", "status": "blocked", "blocked": True, "reason_code": "workspace_pool_lease_in_use", "version": version, "feature_slug": slug}
+    entry["state"] = "released"
+    entry["lease_holder"] = effective_holder
+    entry["released_at"] = now_iso()
+    entries[slug] = entry
+    _write_pool_state(path, state)
+    return {"schema_version": "1.0", "status": "pass", "blocked": False, "version": version, "feature_slug": slug, "pool_entry": entry, "pool_state_path": str(path)}
+
+
 def write_admission_artifact(path: Path, payload: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -204,6 +289,7 @@ def validate_workspace_admission(
     cwd: Path | str | None = None,
     contract: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
+    requested_root = Path(project_root).expanduser().resolve()
     root = resolve_workspace_project_root(project_root)
     contract = contract if isinstance(contract, dict) else load_admission_contract(root, version=version)
     slug = feature_slug(feature)
@@ -211,12 +297,36 @@ def validate_workspace_admission(
     artifact = read_admission_artifact(artifact_file)
     reason_codes: list[str] = []
     if not contract.get("require_workspace_admission"):
+        from beacon.utils.execution_branch_contract import resolve_workspace_branch_targets
+
+        branch_targets = resolve_workspace_branch_targets(
+            root,
+            version=version,
+            feature=feature,
+            admission_contract={**contract, "version": version, "requested_project_root": str(requested_root)},
+        )
+        expected_branch = str(branch_targets.get("feature_branch") or "").strip()
+        check_root = Path(cwd).expanduser().resolve() if cwd is not None else requested_root
+        current_branch = git_output(check_root, "branch", "--show-current")
+        if expected_branch and current_branch and current_branch != expected_branch:
+            return {
+                "valid": False,
+                "status": "blocked",
+                "skipped": False,
+                "reason_code": "branch_alignment_required",
+                "reason_codes": ["branch_alignment_required"],
+                "artifact_path": str(artifact_file.relative_to(root)) if artifact_file.is_file() else "",
+                "expected_branch": expected_branch,
+                "current_branch": current_branch,
+                "branch_resolution": branch_targets,
+            }
         return {
             "valid": True,
             "status": "pass",
             "skipped": True,
             "reason_codes": [],
             "artifact_path": str(artifact_file.relative_to(root)) if artifact_file.is_file() else "",
+            "branch_resolution": branch_targets,
         }
     if not artifact:
         reason_codes.append("workspace_admission_missing")
@@ -300,11 +410,20 @@ def run_workspace_admit(
     feature: str,
     dry_run: bool = False,
 ) -> dict[str, Any]:
+    from beacon.utils.execution_branch_contract import resolve_workspace_branch_targets
+
+    requested_root = Path(project_root).expanduser().resolve()
     root = resolve_workspace_project_root(project_root)
     contract = load_admission_contract(root, version=version)
     slug = feature_slug(feature)
-    feature_branch = resolve_feature_branch(contract, feature=feature, version=version)
-    worktree_path = resolve_worktree_path(root, contract, feature=feature)
+    branch_targets = resolve_workspace_branch_targets(
+        root,
+        version=version,
+        feature=feature,
+        admission_contract={**contract, "version": version, "requested_project_root": str(requested_root)},
+    )
+    feature_branch = str(branch_targets.get("feature_branch") or "").strip()
+    worktree_path = str(branch_targets.get("worktree_path") or "").strip()
     base_branch = str(contract.get("previous_version_baseline_branch") or contract.get("canonical_branch") or "main").strip()
     artifact_file = artifact_path(root, version=version, feature=feature)
     payload: dict[str, Any] = {
@@ -324,6 +443,7 @@ def run_workspace_admit(
             "admission_invalidation": contract.get("admission_invalidation"),
             "worktree_mode": contract.get("worktree_mode"),
         },
+        "branch_resolution": branch_targets,
     }
     if not contract.get("require_workspace_admission"):
         payload["skipped"] = True
@@ -333,6 +453,29 @@ def run_workspace_admit(
         payload["dry_run"] = True
         payload["summary"] = "dry-run: would ensure worktree lane and write admission artifact"
         return payload
+    if contract.get("worktree_mode") == "pooled":
+        pool_path = pool_state_path(root, version=version)
+        pool_state, pool_error = _load_pool_state(pool_path)
+        if pool_error:
+            payload["status"] = "blocked"
+            payload["blocked"] = True
+            payload["reason_codes"] = ["workspace_pool_state_corrupt"]
+            payload["reason_code"] = "workspace_pool_state_corrupt"
+            payload["summary"] = "workspace pool state is corrupt"
+            payload["pool_state_path"] = str(pool_path)
+            return payload
+        assert pool_state is not None
+        entry = pool_state.setdefault("entries", {}).get(slug)
+        holder = _lease_holder()
+        if isinstance(entry, dict) and entry.get("state") == "leased" and entry.get("lease_holder") not in {"", holder}:
+            payload["status"] = "blocked"
+            payload["blocked"] = True
+            payload["reason_codes"] = ["workspace_pool_lease_in_use"]
+            payload["reason_code"] = "workspace_pool_lease_in_use"
+            payload["summary"] = "workspace pool lease is already held"
+            payload["pool_entry"] = entry
+            payload["pool_state_path"] = str(pool_path)
+            return payload
     worktree_attempt = ensure_expected_worktree_lane(
         root,
         feature_branch,
@@ -372,6 +515,32 @@ def run_workspace_admit(
         "status": "pass",
     }
     write_admission_artifact(artifact_file, artifact_payload)
+    if contract.get("worktree_mode") == "pooled":
+        pool_path = pool_state_path(root, version=version)
+        pool_state, pool_error = _load_pool_state(pool_path)
+        if pool_error:
+            payload["status"] = "blocked"
+            payload["blocked"] = True
+            payload["reason_codes"] = ["workspace_pool_state_corrupt"]
+            payload["reason_code"] = "workspace_pool_state_corrupt"
+            payload["summary"] = "workspace pool state is corrupt"
+            return payload
+        assert pool_state is not None
+        holder = _lease_holder()
+        entry = {
+            "state": "leased",
+            "feature_slug": slug,
+            "branch": current_branch,
+            "worktree_path": str(lane_root),
+            "lease_holder": holder,
+            "leased_at": now_iso(),
+            "released_at": "",
+            "git_head": git_head,
+        }
+        pool_state.setdefault("entries", {})[slug] = entry
+        _write_pool_state(pool_path, pool_state)
+        payload["pool_entry"] = entry
+        payload["pool_state_path"] = str(pool_path)
     payload.update(
         {
             "branch": current_branch,
@@ -455,8 +624,6 @@ def gate_workspace_admission_or_block(
     cwd: Path | str | None = None,
 ) -> dict[str, Any] | None:
     contract = load_admission_contract(project_root, version=version)
-    if not contract.get("require_workspace_admission"):
-        return None
     validation = validate_workspace_admission(
         project_root,
         version=version,
@@ -525,7 +692,10 @@ def hook_should_deny_write(
     target_path: Path | str,
     cwd: Path | str | None = None,
 ) -> tuple[bool, str]:
-    root = project_root.expanduser().resolve()
+    # Resolve any linked worktree checkout back to the primary repo root so the
+    # admission artifacts (always written under the primary .beacon) are found
+    # regardless of whether the gate was invoked from main or a worktree.
+    root = resolve_workspace_project_root(Path(project_root).expanduser().resolve())
     target = Path(target_path).expanduser()
     if not target.is_absolute():
         target = (Path(cwd or root) / target).resolve()
@@ -534,6 +704,9 @@ def hook_should_deny_write(
     except ValueError:
         return False, ""
     rel_text = rel.as_posix()
+    protected = build_protected_path_block(rel_text, project_root=root)
+    if protected.get("blocked"):
+        return True, "protected_path_denylist"
     if rel_text.startswith(".beacon/state/workspace-admission/"):
         return False, ""
 
@@ -541,11 +714,16 @@ def hook_should_deny_write(
     if not required_versions:
         return False, ""
 
+    # Scan every admission-requiring version (not just the earliest). A write is
+    # allowed as soon as the target lands inside any validly-admitted worktree;
+    # a version whose lane does not contain the target must NOT short-circuit the
+    # scan. Only when no admitted lane matches do we deny.
+    invalid_reason = ""
     for version in required_versions:
         contract = load_admission_contract(root, version=version)
         admission_root = root / ".beacon/state/workspace-admission" / version
         if not admission_root.is_dir():
-            return True, "workspace_admission_missing"
+            continue
         for artifact_file in sorted(admission_root.glob("*.json")):
             artifact = read_admission_artifact(artifact_file)
             if not artifact:
@@ -555,7 +733,7 @@ def hook_should_deny_write(
                 root,
                 version=version,
                 feature=feature,
-                cwd=cwd or root,
+                cwd=None,
                 contract=contract,
             )
             worktree_path = str(validation.get("worktree_path") or artifact.get("worktree_path") or "")
@@ -567,6 +745,8 @@ def hook_should_deny_write(
                 continue
             if validation.get("valid"):
                 return False, ""
-            return True, str(validation.get("reason_code") or "workspace_admission_invalid")
-        return True, "workspace_admission_missing"
-    return False, ""
+            if not invalid_reason:
+                invalid_reason = str(validation.get("reason_code") or "workspace_admission_invalid")
+    if invalid_reason:
+        return True, invalid_reason
+    return True, "workspace_admission_missing"

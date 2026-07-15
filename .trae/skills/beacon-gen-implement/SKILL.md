@@ -194,6 +194,7 @@ Before ANY repo write or implement/qa/release route:
 2. If status != pass → STOP; show reason_codes; do NOT edit files
 3. Set cwd to worktree_path from payload
 4. Do NOT git checkout elsewhere to "fix" branch
+5. When admission is soft-skipped (`require_workspace_admission=false`), still verify `current_branch == resolved target_branch` before repo writes (R5 UD-024)
 
 ## v1.6.0 Harness Migration
 

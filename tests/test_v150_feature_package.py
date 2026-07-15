@@ -105,6 +105,9 @@ def test_materialize_feature_package_should_create_parallel_package_without_mach
     assert payload["validation"]["status"] == "pass"
     assert payload["validation"]["truth_frontmatter"]["parser_contract"] == "beacon-feature-package-v1"
     assert payload["validation"]["gate_authority"] == "canonical_surfaces_preserved"
+    truth = (package_dir / "truth.md").read_text(encoding="utf-8")
+    assert "## 大白话说明" in truth
+    assert "compatibility/read-model projections only when explicitly generated" in truth
 
 
 def test_validate_feature_package_should_reject_gate_truth_and_malformed_checkbox(tmp_path: Path) -> None:
