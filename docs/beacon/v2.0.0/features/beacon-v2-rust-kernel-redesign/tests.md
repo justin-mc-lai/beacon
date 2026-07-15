@@ -1,16 +1,16 @@
 ---
 slug: beacon-v2-rust-kernel-redesign
 version: v2.0.0
-revision: r8-minimal-kernel-coverage
+revision: r9-skill-surface-disclosure-coverage
 parser_contract: beacon-feature-package-v1
 truth_ref: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
 ---
 
-# 测试覆盖：Beacon v2 Rust Kernel Redesign（r8）
+# 测试覆盖：Beacon v2 Rust Kernel Redesign（r9）
 
 ## 覆盖说明
 
-- 每个 AC（AC-001..AC-124）至少一行 TC。
+- 每个 AC（AC-001..AC-130）至少一行 TC。
 - **integration tier** 为 agent 类 AC（AC-043–046, AC-099–100）最低验收等级；禁止仅 contract/空壳验收。
 - **禁止非行为级验证列**：单独 `integration`、`目录存在`、`fixture`、`可选` 不算可执行 TC；必须写 **Command + Assertion**（或显式 `BLOCKED:<reason>`）。
 - Pass/Fail 由 `beacon-eval-qa` 裁决。
@@ -260,7 +260,7 @@ truth_ref: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
 | TC-107 | AC-107 | Developer Feedback checkpoint | `beacon-v2 run --feedback-checkpoint --every 3` — 每 3 iteration 暂停等人注入 notes，resume 后基于 notes 重新 iterate；notes 写入 lifecycle_events | P3 |
 | TC-108 | AC-108 | 三层 Loop 可观测 | `beacon-v2 spine show --json` — snapshot 含 `loop_layer` 字段（coding/developer/realworld） | P3 |
 
-## R8 Minimal Kernel（AC-109–124）
+## R8/R9 Minimal Kernel（AC-109–130）
 
 | TC ID | AC ID | 场景 | Command + Assertion | Phase |
 |-------|-------|------|---------------------|-------|
@@ -280,6 +280,12 @@ truth_ref: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
 | TC-122 | AC-122 | defect repair regression | defect->fix->regression 链完整才解 release block；缺回归 → `regression_skipped` | P3 |
 | TC-123 | AC-123 | 非行为证据拒绝 | static shell/source-grep/coming_soon/no-op/zero-assertion fixture 均 rejected | P3 |
 | TC-124 | AC-124 | release human gate | auto_decide=true 且无 human confirmation → release gate blocked | P3 |
+| TC-125 | AC-125 | public skill surface 收敛 | `beacon harness list --version v2.0.0 --json` 只返回六 public skill；doctor/router/hooks/metadata/debug/archive 不出现在 host-visible top-level list | P4 |
+| TC-126 | AC-126 | progressive disclosure loader | `beacon harness resolve truth --topic branch --json` 产出 `skill_load_plan.v1`，只包含 public `truth/SKILL.md` + branch reference；不加载全部 historical skill | P2 |
+| TC-127 | AC-127 | route examples contract | `beacon harness examples --version v2.0.0 --json` 每个 public skill 至少 1 个 example；包含 decision_packet、design_primitives、qa-release、branch-blocked 四类 route | P2 |
+| TC-128 | AC-128 | BranchContext schema | `beacon workspace admit --project-root fixture --version v2.0.0 --feature demo --json` 输出 `BranchContext.v1` required fields，且 `target_project_root != caller_cwd` fixture 仍指向 admitted worktree | P2 |
+| TC-129 | AC-129 | branch governance hard gate | 缺 admission / cwd 错配 / protected path write 三 fixture 均 blocked，reason_code 指向具体 BranchContext 字段；不得降级为 warning | P2 |
+| TC-130 | AC-130 | harness boundary hard gate | planner 实现、implement 改 frozen truth、qa-evidence 改 implementation、loop 跳 release human gate 四 fixture 均 fail-closed + typed reason_code | P2 |
 
 ## 负向路径
 
@@ -294,6 +300,9 @@ truth_ref: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
 | TC-N07 | design_required 但无 design_primitives | implement admission fail-closed |
 | TC-N08 | decision_packet 引用 rejected prompt snapshot | loop start fail-closed |
 | TC-N09 | auto_decide 试图越过 release human gate | release blocked |
+| TC-N10 | v2 public surface 暴露 doctor/router/hooks 为一等 skill | surface contract fail |
+| TC-N11 | loader 预加载全部历史 skill 正文 | `skill_load_plan.v1` contract fail |
+| TC-N12 | harness 从 caller cwd 推断目标 root | BranchContext mismatch blocked |
 
 ## E2E
 
@@ -305,4 +314,4 @@ truth_ref: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
 | TC-E04 | 六能力 harness surface（P4 gate） | `beacon harness list --version v2.0.0 --json \| jq -e 'map(.id)==["loop","truth","design","implement","qa-evidence","release"]'` |
 | TC-E05 | worktree goal → implement harness iteration → spine cwd 一致 | `cargo test -p beacon-orchestrator e2e_worktree_harness -- --test fixture_worktree_implement`（同 TC-099/100） |
 
-**当前**：truth **R8 frozen**；历史 P0 candidate evidence 见 `evidence.md`，R8 minimal-kernel AC-002/022/059/063/109–124 待实现后由 `beacon-eval-qa` 裁决。
+**当前**：truth **R9 frozen**；历史 P0 candidate evidence 见 `evidence.md`，R9 minimal-kernel AC-002/022/059/063/109–130 待实现后由 `beacon-eval-qa` 裁决。

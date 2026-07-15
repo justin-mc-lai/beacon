@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-15T07:50:53.211260+00:00",
+  "generated_at": "2026-07-15T09:40:52.389595+00:00",
   "feature": "beacon-v2-rust-kernel-redesign",
   "feature_slug": "beacon-v2-rust-kernel-redesign",
   "version": "v2.0.0",
@@ -18,17 +18,17 @@
     "evidence": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/evidence.md"
   },
   "source_hashes": {
-    "truth": "8b31050c3baa6c6b9aa04f57cbdff43de30afea3e05bf57ac39467e0832fdd23",
-    "tests": "e7def9fb3fbc1af7ad48107436e76d03e704e6a30421ce8297c1ba93dd030e16",
-    "tasks": "1dfc0fe0e08c56001b119fc6ce8e5ff2e5aa4b42c87e379bbae9c0de70edc7aa",
-    "evidence": "116ed11f152fd46aa628d857e5a2cf44363889d5beb68b3542027242c44172a3"
+    "truth": "f0c41312e288ee2a38d228164b888db5965927864df630814033c0796a0411b5",
+    "tests": "95b30c0ac4518e908423f103dd055ca16b2fd14a916918abb9cf7df197296703",
+    "tasks": "5e3a08a279a488442a050de7aca7c7ec55074d30661c1d2354e05a6822c3b557",
+    "evidence": "dcbeaca095992358d0974b3b9a51c3da3519c41e9c6781fb102e6aee3e567d70"
   },
   "truth_frontmatter": {
     "slug": "beacon-v2-rust-kernel-redesign",
     "version": "v2.0.0",
     "status": "frozen",
     "language": "zh",
-    "revision": "r8-minimal-kernel-frozen",
+    "revision": "r9-skill-surface-disclosure-frozen",
     "canonical_refs": {
       "truth": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
       "tests": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tests.md",
@@ -602,6 +602,36 @@
       "ac_id": "AC-124",
       "theme": "",
       "description": "- **AC-124**：release human gate 是不变量；`auto_decide=true` 不得触发 release gate 通过。"
+    },
+    {
+      "ac_id": "AC-125",
+      "theme": "",
+      "description": "- **AC-125**：v2 public skill surface 只暴露六个入口；governor/doctor/router/hooks/metadata/debug/archive 只能作为 internal module 或 reference topic 出现，不得重新成为 host-visible 一等 skill。"
+    },
+    {
+      "ac_id": "AC-126",
+      "theme": "",
+      "description": "- **AC-126**：skill loader 必须采用 progressive disclosure；默认只加载 public `SKILL.md`，按 intent/topic 选择性加载 `references/` 与 `examples/`，并产出 `skill_load_plan.v1`。"
+    },
+    {
+      "ac_id": "AC-127",
+      "theme": "",
+      "description": "- **AC-127**：六个 public skill 都必须提供 route examples；示例覆盖 `truth review -> decision_packet -> loop`、`design_primitives -> implement`、`qa-evidence -> release`、`branch blocked -> repair_route`，且示例不是 requirement authority。"
+    },
+    {
+      "ac_id": "AC-128",
+      "theme": "",
+      "description": "- **AC-128**：`BranchContext.v1` 是所有写入/agent/evidence/release harness 的共同输入，字段至少覆盖 caller cwd、target project root、admitted worktree、base/feature/canonical branch、dirty policy、protected paths 与 admission artifact。"
+    },
+    {
+      "ac_id": "AC-129",
+      "theme": "",
+      "description": "- **AC-129**：branch/workspace governance 是 hard gate；任何 generator/implement/qa-evidence/release 写路径缺失 admission 或 BranchContext mismatch 时必须 fail-closed，不能降级为 warning。"
+    },
+    {
+      "ac_id": "AC-130",
+      "theme": "",
+      "description": "- **AC-130**：Harness boundary 以 reason_code enforce：planner/truth 不实现，implement 不改 frozen truth/不自评 QA，qa-evidence 不改 truth/implementation，release 不绕过 human gate，loop 不替代任一裁决面。"
     },
     {
       "ac_id": "AC-099",
@@ -1552,6 +1582,26 @@
       "status": "unchecked"
     },
     {
+      "id": "TASK-P2-012",
+      "title": "progressive disclosure loader：产出 `skill_load_plan.v1`，按 topic 加载 public SKILL + selected references/examples，禁止加载全部历史 skill（AC-126 / TC-126）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P2-013",
+      "title": "route examples registry：覆盖 decision_packet、design_primitives、qa-release、branch-blocked 示例，标注 example 非 truth authority（AC-127 / TC-127）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P2-014",
+      "title": "`BranchContext.v1` schema + workspace admission 输出：caller cwd / target root / admitted worktree / branch / dirty policy / protected paths（AC-128 / TC-128）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P2-015",
+      "title": "harness boundary reason_codes：planner/truth/implement/qa-evidence/release/loop 越界 fixture fail-closed（AC-130 / TC-130）。",
+      "status": "unchecked"
+    },
+    {
       "id": "TASK-P3-001",
       "title": "gate 写 `gate_results` + reason_codes 集成测试（TC-066）。",
       "status": "unchecked"
@@ -1622,6 +1672,11 @@
       "status": "unchecked"
     },
     {
+      "id": "TASK-P3-015",
+      "title": "branch governance hard gate integration：所有 write/agent/evidence/release harness 消费 `BranchContext.v1`，cwd/root/worktree mismatch 阻断（AC-129 / TC-129）。",
+      "status": "unchecked"
+    },
+    {
       "id": "TASK-P4-001",
       "title": "删除 v2 core 的 PyO3/python runtime fallback；legacy invocation 只给 migration/archive route（TC-002/003/062）。",
       "status": "unchecked"
@@ -1638,7 +1693,12 @@
     },
     {
       "id": "TASK-P4-004",
-      "title": "integration：TC-059–063, TC-088, TC-094, TC-109–110。",
+      "title": "public surface denylist：doctor/router/hooks/metadata/debug/archive 保留 internal module，但不得出现在 v2 host-visible 一等 skill list（AC-125 / TC-125）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P4-005",
+      "title": "integration：TC-059–063, TC-088, TC-094, TC-109–110, TC-125。",
       "status": "unchecked"
     },
     {
@@ -1682,7 +1742,7 @@
       "surface": "feature-package-truth",
       "authority": "requirement_truth",
       "canonical_artifact": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
-      "status": "**R8 frozen**",
+      "status": "**R9 frozen**",
       "route": "truth.define"
     },
     {
@@ -1710,6 +1770,13 @@
       "surface": "planner-review-r8",
       "authority": "support_advisory",
       "canonical_artifact": "conversation: v2 minimal Rust harness kernel, six first-class abilities, no v1 Python compat",
+      "status": "accepted-for-truth",
+      "route": "truth.define"
+    },
+    {
+      "surface": "planner-review-r9",
+      "authority": "support_advisory",
+      "canonical_artifact": "conversation: v2 skill surface progressive disclosure, branch governance retained, harness contracts retained",
       "status": "accepted-for-truth",
       "route": "truth.define"
     },

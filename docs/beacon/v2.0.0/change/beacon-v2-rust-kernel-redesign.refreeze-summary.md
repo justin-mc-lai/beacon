@@ -1,12 +1,12 @@
 # Change Refreeze Summary: beacon-v2-rust-kernel-redesign
 
 - version: `v2.0.0`
-- change_reason: `minimal Rust kernel contract, remove v1 Python compat, add loop decision packet and design primitive gate`
+- change_reason: `refreeze v2 skill surface: six public skills, progressive disclosure internals, preserved branch governance and harness contracts, remove Python/33-skill public compatibility`
 - refreeze_status: `complete`
 - blocked_reason: ``
 - next_route: `beacon-gen-implement`
-- revision_before: `R4`
-- revision_after: `R5`
+- revision_before: `R6`
+- revision_after: `R7`
 
 ## Surface Statuses
 - `change`: `present` (docs/beacon/v2.0.0/change/beacon-v2-rust-kernel-redesign.md)

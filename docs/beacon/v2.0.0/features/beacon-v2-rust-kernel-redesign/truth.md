@@ -3,7 +3,7 @@ slug: beacon-v2-rust-kernel-redesign
 version: v2.0.0
 status: frozen
 language: zh
-revision: r8-minimal-kernel-frozen
+revision: r9-skill-surface-disclosure-frozen
 canonical_refs:
   truth: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
   tests: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tests.md
@@ -189,6 +189,48 @@ qa_evidence_expectation, release_confirmation_required=true
 ```
 
 缺失 `decision_packet.v1` 或其引用的 latest accepted prompt snapshot 时，`loop start` 必须 fail-closed。
+
+### Skill Surface Progressive Disclosure Contract（R9）
+
+v2 的减负目标是**减少使用者要理解和选择的入口**，不是删除治理能力。六个 public skill 是稳定人类入口；branch governance、doctor、router、hooks、metadata、status、archive、debug、generator/evaluator 细分能力都降级为 kernel internal module，通过渐进式披露按需加载。
+
+| 层 | 暴露对象 | 规则 |
+|----|----------|------|
+| Public skill | `loop` / `truth` / `design` / `implement` / `qa-evidence` / `release` | 用户只需要显式选择这六个入口之一，或由 router 基于意图选择 |
+| Progressive references | `references/<topic>.md` / `examples/<route>.md` / `schemas/*.json` | 仅在触发对应 topic 时加载；每次加载写 `skill_load_plan.v1` |
+| Internal module | branch/workspace governance、doctor、hooks、metadata、router、status、archive、debug、TIG、evidence manifest | 保留为 kernel service；不可作为第七个 lifecycle stage 或公共 skill 面 |
+
+每个 public skill package 必须包含：
+
+```text
+SKILL.md                 # 入口 contract、触发条件、边界、progressive reference index
+references/<topic>.md    # 按需加载的细分规则
+examples/<route>.md      # 可复制的 route 示例与 expected artifact refs
+schemas/*.json           # machine contract，至少覆盖 input/output/error reason_codes
+```
+
+`SKILL.md` 只能承载入口级 contract 和 reference index，不得内联历史 33 skills 的全部正文。loader 默认只加载 public `SKILL.md`；只有当 intent/topic 命中时才加载对应 reference/example。禁止一次性加载所有历史 skill 或把 internal modules 重新暴露成 host-visible skill 列表。
+
+### BranchContext + Harness Boundary Contract（R9）
+
+分支治理是 v2 kernel hard gate，不随 skill surface 精简而移除。所有会写项目文件、运行 agent、导入 evidence、给 release 建议的 harness 都必须消费同一个 `BranchContext.v1`：
+
+```text
+caller_cwd, target_project_root, admitted_worktree_path,
+base_branch, feature_branch, truth_canonical_branch,
+worktree_mode, merge_base_head, git_head,
+dirty_policy, protected_paths, admission_artifact_ref
+```
+
+`BranchContext.v1` 由 workspace admission 产生，是 truth/design/implement/qa-evidence/release 的共同前置输入。任何 harness 不得用 `Path.cwd()` 或 host shell 当前分支推断目标项目；`target_project_root` 与 `admitted_worktree_path` 冲突时 fail-closed，reason_code 必须指向具体字段。
+
+Harness boundary 同样保留为 kernel contract：
+
+- `truth` 可以冻结/refreeze requirement truth，但不能声称 implementation/QA/release 完成。
+- `implement` 只能消费 frozen truth、bound design、decision packet 和 BranchContext；不能修改 frozen truth，也不能自证 QA/release pass。
+- `qa-evidence` 只能裁决 evidence 与 TC/AC 绑定；不能修 truth 或实现。
+- `release` 只能在 QA evidence、human confirmation、hook evidence contract 均满足时给 release go/no-go。
+- `loop` 只能编排这些 harness；不能绕过 release human gate 或 branch admission。
 
 ## Diagram Truth Layer
 
@@ -494,7 +536,7 @@ optional stop_signal, token_usage, agent_name
 - **AC-103**（P3）：`beacon doctor verify-truth-integrity` 在 v2 路由到 Rust gate；`--mode block` exit code 与 v1.6 一致，不使用 PyO3 compat。
 - **AC-104**（历史 P0 证据）：2026-06-13 的 `packages/beacon-rs/` scaffold 与 12 个 P0 unit tests 是 implementation candidate evidence；R8 minimal-kernel closure 需重新验证 AC-002/022/059/063 后才可算 P0/P4 完成。
 
-### R8 Minimal Kernel AC（AC-109–124）
+### R8/R9 Minimal Kernel AC（AC-109–130）
 
 - **AC-109**：v2 public kernel surface 明确定义并只允许六个一等能力：loop / truth / design / implement / qa-evidence / release。
 - **AC-110**：v1 Python / Node / 33 skills compatibility 从 v2 core closure 移除；只保留为 migration/archive reference。
@@ -512,6 +554,12 @@ optional stop_signal, token_usage, agent_name
 - **AC-122**：QA defect 必须形成 defect -> fix -> regression evidence chain；缺段 `repair_chain_broken` 或 `regression_skipped` 时 release block。
 - **AC-123**：closure evidence 必须包含可执行行为验证、至少一个有效断言、AC/TC 绑定 artifact 与运行佐证；纯静态 shell、源文本匹配或无行为恢复控件不得满足 closure。
 - **AC-124**：release human gate 是不变量；`auto_decide=true` 不得触发 release gate 通过。
+- **AC-125**：v2 public skill surface 只暴露六个入口；governor/doctor/router/hooks/metadata/debug/archive 只能作为 internal module 或 reference topic 出现，不得重新成为 host-visible 一等 skill。
+- **AC-126**：skill loader 必须采用 progressive disclosure；默认只加载 public `SKILL.md`，按 intent/topic 选择性加载 `references/` 与 `examples/`，并产出 `skill_load_plan.v1`。
+- **AC-127**：六个 public skill 都必须提供 route examples；示例覆盖 `truth review -> decision_packet -> loop`、`design_primitives -> implement`、`qa-evidence -> release`、`branch blocked -> repair_route`，且示例不是 requirement authority。
+- **AC-128**：`BranchContext.v1` 是所有写入/agent/evidence/release harness 的共同输入，字段至少覆盖 caller cwd、target project root、admitted worktree、base/feature/canonical branch、dirty policy、protected paths 与 admission artifact。
+- **AC-129**：branch/workspace governance 是 hard gate；任何 generator/implement/qa-evidence/release 写路径缺失 admission 或 BranchContext mismatch 时必须 fail-closed，不能降级为 warning。
+- **AC-130**：Harness boundary 以 reason_code enforce：planner/truth 不实现，implement 不改 frozen truth/不自评 QA，qa-evidence 不改 truth/implementation，release 不绕过 human gate，loop 不替代任一裁决面。
 
 ## Parity Matrix（Plan 场景复刻索引）
 
@@ -522,7 +570,7 @@ optional stop_signal, token_usage, agent_name
 | §3 Crate | AC-022–025 | workspace |
 | §4 FSM+性能 | AC-026–036, AC-051–058 | 双 FSM+benchmark |
 | §5 Orchestrator+Agent | AC-040–050, **AC-042–046/099/100 真集成** | 无空壳 AC；worktree+implement 不 defer |
-| §6 极简 Harness+CLI | AC-059–066, AC-109–124 | 六能力 surface + legacy removal |
+| §6 极简 Harness+CLI | AC-059–066, AC-109–130 | 六能力 surface + legacy removal + progressive disclosure + BranchContext |
 | §7 Schema | AC-067–083 | 九表+DAO |
 | §8 阶段 | AC-084–090 | P0–P6 |
 | §9 风险 | AC-091–095 | 可执行缓解 |
@@ -560,7 +608,7 @@ optional stop_signal, token_usage, agent_name
 5. **无空壳-only AC**；agent/worktree/implement 类 AC 须 integration tier（AC-043–046, AC-099–100）。
 6. **v1.6 upstream**（AC-101–103）在对应 phase 有 behavior-level TC，不得仅用「后续移植」一句带过。
 
-**当前状态**：`frozen` / **R8**（revision `r8-minimal-kernel-frozen`）— 2026-07-15 refreeze：确认 v2 为 Rust 极简 harness kernel；六个一等能力入约；移除 v1 Python/PyO3/33 skills core closure；补 truth pre-freeze 强意图识别、prompt snapshot、decision_packet、design_primitives gate、agent trace/stagnation/remediation/QA evidence chain。
+**当前状态**：`frozen` / **R9**（revision `r9-skill-surface-disclosure-frozen`）— 2026-07-15 refreeze：在 R8 极简 Rust harness kernel 基础上，补充六 public skill 的 progressive disclosure package contract；明确 branch/workspace governance、doctor/router/hooks/metadata/status/archive/debug 作为 internal module 保留；将 `BranchContext.v1` 与 Harness Boundary 设为 kernel hard gate。
 
 ## User Stories
 
@@ -586,7 +634,7 @@ optional stop_signal, token_usage, agent_name
 
 ### US-006 极简 harness surface
 
-**AC**：AC-059–063, AC-109–124, AC-064–066
+**AC**：AC-059–063, AC-109–130, AC-064–066
 
 ## Revision History
 
@@ -601,3 +649,4 @@ optional stop_signal, token_usage, agent_name
 | r6 | R3 reopen：补 v1.6.3 9 个免疫修复进 upstream 表（语义重现义务）；Truth 规范基准段（v1.5.2 package-authoritative，不生成 prd/user-story 顶层文档）；canonical_refs 字段名对齐 truth/tests/tasks/evidence |
 | r7 | R4 reopen：Loop Engineering 三层 Loop 模型（Coding/Developer/Real-world ↔ beacon 生命周期）+ host 运行模式（CLI 进程+checkpoint/resume/信号，无 daemon）+ AC-105/106/107/108 + v1.6 loop upstream（R10 AC-071 → AC-105/106）+ DEF-loop-006 Real-world Loop 延后 |
 | r8 | R5 refreeze：v2 minimal Rust harness kernel；六个一等能力；v1 Python/PyO3/33 skills 移出 core closure；intent_snapshot/prompt_snapshot/decision_packet/design_primitives gate；v1.6.4–1.6.6 loop/QA/agent 排查能力以 Rust 语义重现 |
+| r9 | R6 refreeze：六 public skill 渐进式披露 contract；内部保留 branch governance / doctor / router / hooks / metadata / status / archive / debug；新增 BranchContext.v1 与 Harness Boundary hard gate（AC-125–130） |

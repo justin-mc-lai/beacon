@@ -29,6 +29,10 @@
 - [ ] TASK-P2-009 `decision_packet.v1` loop admission（AC-114）。
 - [ ] TASK-P2-010 loop guardrails：pattern registry、failure catalog、token budget、readiness audit、protected path denylist（AC-120）。
 - [ ] TASK-P2-011 `agent_trace.v1` writer + stagnation detector（AC-117–118）。
+- [ ] TASK-P2-012 progressive disclosure loader：产出 `skill_load_plan.v1`，按 topic 加载 public SKILL + selected references/examples，禁止加载全部历史 skill（AC-126 / TC-126）。
+- [ ] TASK-P2-013 route examples registry：覆盖 decision_packet、design_primitives、qa-release、branch-blocked 示例，标注 example 非 truth authority（AC-127 / TC-127）。
+- [ ] TASK-P2-014 `BranchContext.v1` schema + workspace admission 输出：caller cwd / target root / admitted worktree / branch / dirty policy / protected paths（AC-128 / TC-128）。
+- [ ] TASK-P2-015 harness boundary reason_codes：planner/truth/implement/qa-evidence/release/loop 越界 fixture fail-closed（AC-130 / TC-130）。
 
 ## Phase P3 — gate + migration + claude/acp/worktree/implement 真集成（AC-045–046, AC-099–100, AC-077–079, AC-011, AC-087, **AC-101, AC-103**）
 
@@ -46,13 +50,15 @@
 - [ ] TASK-P3-012 remediation sandbox overlay/eval/rollback + human review report（AC-119）。
 - [ ] TASK-P3-013 qa-evidence confidence_chain + business FSM coverage + defect repair regression chain（AC-121–122）。
 - [ ] TASK-P3-014 non-behavior evidence rejection + release human gate invariant（AC-123–124）。
+- [ ] TASK-P3-015 branch governance hard gate integration：所有 write/agent/evidence/release harness 消费 `BranchContext.v1`，cwd/root/worktree mismatch 阻断（AC-129 / TC-129）。
 
-## Phase P4 — 六能力 harness surface + legacy removal（AC-002–003, AC-059–063, AC-088, AC-091, AC-094, AC-109–110）
+## Phase P4 — 六能力 harness surface + legacy removal（AC-002–003, AC-059–063, AC-088, AC-091, AC-094, AC-109–110, AC-125）
 
 - [ ] TASK-P4-001 删除 v2 core 的 PyO3/python runtime fallback；legacy invocation 只给 migration/archive route（TC-002/003/062）。
 - [ ] TASK-P4-002 `beacon harness list --version v2.0.0 --json` 精确暴露六能力 contract（TC-059/063/109）。
 - [ ] TASK-P4-003 CI matrix 覆盖 five-crate Rust workspace + legacy removal regression（TC-091/110）。
-- [ ] TASK-P4-004 integration：TC-059–063, TC-088, TC-094, TC-109–110。
+- [ ] TASK-P4-004 public surface denylist：doctor/router/hooks/metadata/debug/archive 保留 internal module，但不得出现在 v2 host-visible 一等 skill list（AC-125 / TC-125）。
+- [ ] TASK-P4-005 integration：TC-059–063, TC-088, TC-094, TC-109–110, TC-125。
 
 ## Phase P5 — proto（v2.0.0 跳过，D-V2-001 accepted defer）
 
@@ -70,11 +76,17 @@
 - 新增 AC-109–124 对应任务：intent snapshot、prompt ledger、decision packet、design primitives gate、agent trace、stagnation detector、remediation sandbox、loop guardrails、QA evidence chain、release human gate。
 - 历史 P0 scaffold 证据保留为 implementation candidate，不再单独满足 R8 minimal-kernel closure。
 
+## r9 变更摘要（skill surface progressive disclosure）
+
+- 新增 AC-125–130 对应任务：六 public skill surface、progressive disclosure loader、route examples registry、BranchContext.v1、branch governance hard gate、harness boundary reason_codes。
+- 明确 branch/workspace governance、doctor、router、hooks、metadata、status、archive、debug 保留为 kernel internal module，不作为 v2 host-visible 一等 skill。
+- 实现任务必须证明减负发生在使用者入口和加载路径上，而不是删除证据交付、分支治理或 harness 规范。
+
 ## r5 变更摘要（R2 reopen）
 
 - 增补 **AC-101–104**：v1.6 TIG、multi-agent planner review、doctor verify-truth-integrity、P0 完成证据。
 - 新增 **v1.6 Upstream Frozen Inputs** 表；tests/tasks 对齐 behavior-level TC。
-- 历史 truth 状态：R2 draft；R8 已 refreeze 为 minimal-kernel frozen。
+- 历史 truth 状态：R2 draft；R9 已 refreeze 为 skill-surface progressive-disclosure frozen。
 
 ## r3 变更摘要
 
