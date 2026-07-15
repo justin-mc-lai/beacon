@@ -65,7 +65,7 @@ from beacon.utils.qa_runtime import (
 )
 from beacon.utils.qa_evo_deep import run_qa_evo_deep
 from beacon.utils.story_state import feature_slug
-from beacon.utils.versioning import resolve_target_version
+from beacon.utils.versioning import resolve_runtime_version, resolve_target_version
 from beacon.utils.workspace_admission import gate_workspace_admission_or_block
 from beacon.utils.skill_decision_surface import attach_skill_decision_surface
 from beacon.utils.subagent_readiness import (
@@ -534,11 +534,19 @@ def _qa_design_truth_verdict(
     feature: str,
     handoff: dict[str, Any],
 ) -> dict[str, Any]:
-    if _semver_tuple(version) < (1, 4, 4):
-        return {"schema_version": "1.0", "status": "not_applicable", "blocked": False, "reason_codes": []}
+    runtime_version = resolve_runtime_version(project_root, "auto")
+    if _semver_tuple(version) < (1, 4, 4) and _semver_tuple(runtime_version) < (1, 4, 4):
+        return {
+            "schema_version": "1.0",
+            "status": "not_applicable",
+            "blocked": False,
+            "reason_codes": [],
+            "docs_version": version,
+            "runtime_version": runtime_version,
+        }
     handoff_design_truth = handoff.get("design_truth") if isinstance(handoff.get("design_truth"), dict) else {}
     handoff_design_truth_status = str(handoff_design_truth.get("status") or "").strip().lower()
-    if prototype_adapter_only_supported(version) and (
+    if prototype_adapter_only_supported(version, runtime_version=runtime_version) and (
         str(handoff_design_truth.get("source_surface") or "").strip() == "prototype-adapter"
         or str(handoff_design_truth.get("mode") or "").strip() == "design-result-adapter"
     ):
@@ -546,6 +554,7 @@ def _qa_design_truth_verdict(
             project_root,
             version,
             feature,
+            runtime_version=runtime_version,
         )
         refs = handoff_design_truth.get("refs") if isinstance(handoff_design_truth.get("refs"), dict) else {}
         if handoff_design_truth_status == "not_applicable" and not adapter_required:
@@ -556,6 +565,8 @@ def _qa_design_truth_verdict(
                 "reason_codes": [],
                 "source_surface": "implement-to-qa-handoff",
                 "verification_surface": "qa",
+                "docs_version": version,
+                "runtime_version": runtime_version,
                 "refs": refs,
                 "findings": [],
             }
@@ -585,6 +596,8 @@ def _qa_design_truth_verdict(
             "reason_codes": reason_codes,
             "source_surface": "implement-to-qa-handoff",
             "verification_surface": "qa",
+            "docs_version": version,
+            "runtime_version": runtime_version,
             "refs": refs,
             "findings": findings,
         }
@@ -605,6 +618,8 @@ def _qa_design_truth_verdict(
             "reason_codes": [],
             "source_surface": "implement-to-qa-handoff",
             "verification_surface": "qa",
+            "docs_version": version,
+            "runtime_version": runtime_version,
             "findings": [],
         }
     reason_codes: list[str] = []
@@ -677,6 +692,8 @@ def _qa_design_truth_verdict(
         "reason_codes": reason_codes,
         "source_surface": "implement-to-qa-handoff",
         "verification_surface": "qa",
+        "docs_version": version,
+        "runtime_version": runtime_version,
         "refs": {
             "style_preset": str(style_path.relative_to(project_root)),
             "design_lint_rules": str(lint_path.relative_to(project_root)),
@@ -1227,7 +1244,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             project_root,
             version=resolved_version,
             feature=feature,
-            cwd=Path.cwd(),
+            cwd=project_root,
         )
         if workspace_admission_block:
             blocked_payload = _with_qa_surface({

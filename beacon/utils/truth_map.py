@@ -881,7 +881,7 @@ def evaluate_implement_version_governance_preflight(
                 root,
                 version=version,
                 feature=feature,
-                cwd=Path.cwd(),
+                cwd=root,
                 contract=admission_contract,
             )
             admission_satisfied = bool(admission_validation.get("valid"))

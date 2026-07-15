@@ -8,7 +8,7 @@ from typing import Any, Optional
 
 import typer
 
-from beacon.utils.branch_governance import render_branch_governance_markdown
+from beacon.utils.branch_governance import render_branch_governance_markdown, resolve_branch_governance_view
 from beacon.utils.doctor_orchestrator import (
     run_agent_surface_setup,
     run_agent_surface_verify,
@@ -639,9 +639,13 @@ def branch_governance_show(
     """Show the resolved branch-governance human surface."""
     root = Path(project_root).expanduser().resolve() if project_root else Path.cwd()
     view = resolve_project_metadata_view(root, version=version)
-    result = view.get("branch_governance") if isinstance(view.get("branch_governance"), dict) else {}
-    if feature and result:
-        result = {**result, "feature": feature}
+    result = (
+        resolve_branch_governance_view(project_root=root, version=version, feature=feature, metadata_view=view)
+        if feature
+        else view.get("branch_governance")
+        if isinstance(view.get("branch_governance"), dict)
+        else {}
+    )
     payload = {"schema_version": "1.0", "action": "doctor-branch-governance-show", "result": result}
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
@@ -654,13 +658,20 @@ def branch_governance_show(
 def branch_governance_verify(
     project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
     version: str = typer.Option("", "--version", "-v", help="Version contract key"),
+    feature: str = typer.Option("", "--feature", help="Optional feature name"),
     strict: bool = typer.Option(False, "--strict", help="Treat branch/worktree mismatches as blocked"),
     json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
 ):
     """Verify the resolved branch-governance contract."""
     root = Path(project_root).expanduser().resolve() if project_root else Path.cwd()
     view = resolve_project_metadata_view(root, version=version)
-    result = view.get("branch_governance") if isinstance(view.get("branch_governance"), dict) else {}
+    result = (
+        resolve_branch_governance_view(project_root=root, version=version, feature=feature, metadata_view=view)
+        if feature
+        else view.get("branch_governance")
+        if isinstance(view.get("branch_governance"), dict)
+        else {}
+    )
     if strict and isinstance(result, dict):
         from beacon.utils.branch_governance import evaluate_branch_governance
 

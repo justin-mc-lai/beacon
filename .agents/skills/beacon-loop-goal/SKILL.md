@@ -39,7 +39,12 @@ HARD GATE:
 idle -> governance_precheck
   -> pass: truth_routing | blocked: governance_repair -> idle
 truth_routing -> invoke beacon-gen-truth -> truth_verify
-  -> frozen: implement_routing | not_frozen: truth_routing (retry) | blocked: error_recovery
+  -> frozen: review_routing | not_frozen: truth_routing (retry) | blocked: error_recovery
+review_routing -> invoke beacon-pln-review -> review_verify
+  -> implement_ready: implement_routing
+  -> truth_or_change_route: drift_routing
+  -> user_decision_required: error_recovery
+  -> blocked: error_recovery
 implement_routing -> invoke beacon-gen-implement -> implement_verify
   -> tests_pass: qa_routing | tests_fail: implement_routing (repair loop, max 3) | blocked: error_recovery
 qa_routing -> invoke beacon-eval-qa -> qa_verify
@@ -68,8 +73,16 @@ When this skill is invoked, follow this decision tree sequentially:
 
 1. Route to `beacon-gen-truth`.
 2. After it returns, read `docs/beacon/<version>/features/<feature>/truth.md` frontmatter.
-3. If `status: frozen`, transition to `implement_routing`.
+3. If `status: frozen`, transition to `review_routing`.
 4. If not frozen, stay in `truth_routing`, output the next route, and stop.
+
+### Step 2.5: Planner Review Decision Packet
+
+1. Route to `beacon-pln-review` when lifecycle, state, loop, source parity, deferral, design, or cross-harness risk is present.
+2. When runtime evidence is needed, run `beacon planner-review run <feature> --project-root . --version <version> --prompt "<utterance>" --json`.
+3. Record the returned artifact with `loop_goal_state.record_review_decision()`.
+4. If the review packet has P0/P1 findings, `user_decision_required=true`, or recommends `beacon-gen-truth` / `beacon-gen-change` / `beacon-gen-refreeze`, stop and route instead of implementing.
+5. Only transition to `implement_routing` when the recorded decision packet is implement-ready.
 
 ### Step 3: Implement Stage
 
@@ -103,6 +116,7 @@ When this skill is invoked, follow this decision tree sequentially:
 |-------|--------------|-------------------|
 | governance_precheck | CLI: `beacon plan start` | `status=pass` or `blocked` |
 | truth_routing | `beacon-gen-truth` | `truth.md status=frozen`? |
+| review_routing | `beacon-pln-review` | decision packet allows implement? |
 | implement_routing | `beacon-gen-implement` | feature tests pass? |
 | qa_routing | `beacon-eval-qa` | verdict=pass? |
 | release_gate | `beacon-eval-release` | go/no-go after human confirmation |

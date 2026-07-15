@@ -117,7 +117,7 @@ from beacon.utils.truth_map import (
     truth_map_supported,
 )
 from beacon.utils.v115_delivery import refresh_evidence_manifest
-from beacon.utils.versioning import normalize_version, release_line_key, resolve_target_version
+from beacon.utils.versioning import normalize_version, release_line_key, resolve_runtime_version, resolve_target_version
 from beacon.utils.workflow_memory import (
     append_lifecycle_event,
     load_lifecycle_events,
@@ -1573,9 +1573,15 @@ def _read_json_dict(path: Path) -> dict[str, Any]:
 
 
 def _implementation_design_truth(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
-    if prototype_adapter_only_supported(version):
+    runtime_version = resolve_runtime_version(project_root, "auto")
+    if prototype_adapter_only_supported(version, runtime_version=runtime_version):
         adapter_status = design_result_adapter_status(project_root, version, feature)
-        required = feature_requires_design_result_binding(project_root, version, feature)
+        required = feature_requires_design_result_binding(
+            project_root,
+            version,
+            feature,
+            runtime_version=runtime_version,
+        )
         status_text = str(adapter_status.get("status") or "").strip().lower()
         paths = adapter_status.get("paths") if isinstance(adapter_status.get("paths"), dict) else {}
         if required or status_text == "ready":
@@ -1591,6 +1597,8 @@ def _implementation_design_truth(project_root: Path, *, version: str, feature: s
                 "feature": feature,
                 "feature_slug": _slug(feature),
                 "version": version,
+                "docs_version": version,
+                "runtime_version": runtime_version,
                 "source_surface": "prototype-adapter",
                 "consumption_surface": "implement",
                 "mode": "design-result-adapter",
@@ -1619,6 +1627,8 @@ def _implementation_design_truth(project_root: Path, *, version: str, feature: s
             "feature": feature,
             "feature_slug": _slug(feature),
             "version": version,
+            "docs_version": version,
+            "runtime_version": runtime_version,
             "source_surface": "prototype-adapter",
             "consumption_surface": "implement",
             "mode": "design-result-adapter",
@@ -2539,7 +2549,7 @@ def run_implement_stage(  # noqa: PLR0913
         project_root,
         version=resolved_version,
         feature=feature,
-        cwd=Path.cwd(),
+        cwd=project_root,
     )
     if workspace_admission_block:
         payload = _with_implement_surface({

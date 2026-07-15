@@ -34,9 +34,9 @@
       "slug": "beacon-loop-goal-v166",
       "version": "v1.6.6",
       "status": "frozen",
-      "revision_id": "R2",
+      "revision_id": "R3",
       "language": "zh",
-      "change_reason": "R2 - Freeze beacon-loop-goal as a public host-visible governor skill and update taxonomy, inventory, counts, and release governance",
+      "change_reason": "R3 - Promote review_routing into public skill decision tree and loop-goal state decision packet contract",
       "canonical_refs": {
         "truth": "docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
         "tests": "docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
@@ -62,10 +62,10 @@
       "evidence": "docs/beacon/v1.6.6/features/beacon-loop-goal-v166/evidence.md"
     },
     "source_hashes": {
-      "truth": "ebeafa26931f7546c7af3c425cd9792468be43c923eebd1aa30db5d111569fe0",
-      "tests": "b136cc96a5b2634b3e60278ad52e9dd4a975697111964656d189683545f6175d",
-      "tasks": "d9034f52537648072b3a2a52e7a5bfbbc2a18f796c63d27f3ea2f15955d06951",
-      "evidence": "3eb15daff4854ba5678eaea9dca6b312422eeaba46699d7734ed08b7eae1463a"
+      "truth": "95ef96698c102fe3e2c738621a8b2c57d4508b6ef1a11f80ab382bfbc2f52b9a",
+      "tests": "9e347c9922f0100ca64e3f3bec17e355660b643691973c20f05f760360f8e4fd",
+      "tasks": "c62cb31e108a52a0b6a80dd1606e9852976dd8a15c72301fdf726ae5c6ebeb12",
+      "evidence": "b3c73792ed7a06b4fd82b9f3bf51e2a5d368e94a09e476760a25b7c57639dc74"
     },
     "surfaces": {
       "truth": {
@@ -80,7 +80,7 @@
         "filename": "truth.md",
         "path": "docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
         "exists": true,
-        "source_hash": "ebeafa26931f7546c7af3c425cd9792468be43c923eebd1aa30db5d111569fe0",
+        "source_hash": "95ef96698c102fe3e2c738621a8b2c57d4508b6ef1a11f80ab382bfbc2f52b9a",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -96,7 +96,7 @@
         "filename": "tests.md",
         "path": "docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
         "exists": true,
-        "source_hash": "b136cc96a5b2634b3e60278ad52e9dd4a975697111964656d189683545f6175d",
+        "source_hash": "9e347c9922f0100ca64e3f3bec17e355660b643691973c20f05f760360f8e4fd",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -112,7 +112,7 @@
         "filename": "tasks.md",
         "path": "docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tasks.md",
         "exists": true,
-        "source_hash": "d9034f52537648072b3a2a52e7a5bfbbc2a18f796c63d27f3ea2f15955d06951",
+        "source_hash": "c62cb31e108a52a0b6a80dd1606e9852976dd8a15c72301fdf726ae5c6ebeb12",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -128,7 +128,7 @@
         "filename": "evidence.md",
         "path": "docs/beacon/v1.6.6/features/beacon-loop-goal-v166/evidence.md",
         "exists": true,
-        "source_hash": "3eb15daff4854ba5678eaea9dca6b312422eeaba46699d7734ed08b7eae1463a",
+        "source_hash": "b3c73792ed7a06b4fd82b9f3bf51e2a5d368e94a09e476760a25b7c57639dc74",
         "authority": "markdown_feature_package",
         "json_authority": false
       }
@@ -371,7 +371,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "324fb38dcc68c7526250f022665c2d9132b80fd7b00a6ae4e6fb850a38ae19dc"
+        "source_hash": "d92201a906f2daf79d0d80611fba997d06406229a6cbff45b77ba557b409d5bd"
       },
       "evidence_manifest": {
         "schema_version": "1.0",
@@ -388,7 +388,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "a942de1e70049bb097524fdcc28360a9eb39c4ee57977c48babd70542e0297c4"
+        "source_hash": "c01afa3b1e4acd8d1342d1c58e96486388c58a2a060df43e28f43df783ccce6e"
       },
       "qa_status": {
         "schema_version": "1.0",
@@ -405,7 +405,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "5b396ceb9816ca696d3731913043e987561d70946b8f1b42ba814b6829271c89"
+        "source_hash": "5e6da59398301af00e594a93afa921b11203d83b1c0636f13423a145980c332e"
       },
       "release_gate_report": {
         "schema_version": "1.0",
@@ -422,7 +422,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "e175423e0cb039fe7e279ad51982180b07c02cc37abb9fbd38f149cc109a0a75"
+        "source_hash": "9ad38440eb807ffdfbf39f9a6f5e3798804650d114c3daa4b6a7f0838d18e096"
       }
     },
     "manifest_authority": false,
@@ -614,7 +614,7 @@
     "diagnostics": []
   },
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-15T06:07:36.881385+00:00",
+  "generated_at": "2026-07-15T08:05:12.487645+00:00",
   "truth_authority": false,
   "source_paths": {
     "truth": "docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
@@ -623,9 +623,9 @@
     "evidence": "docs/beacon/v1.6.6/features/beacon-loop-goal-v166/evidence.md"
   },
   "source_hashes": {
-    "truth": "ebeafa26931f7546c7af3c425cd9792468be43c923eebd1aa30db5d111569fe0",
-    "tests": "b136cc96a5b2634b3e60278ad52e9dd4a975697111964656d189683545f6175d",
-    "tasks": "d9034f52537648072b3a2a52e7a5bfbbc2a18f796c63d27f3ea2f15955d06951",
-    "evidence": "3eb15daff4854ba5678eaea9dca6b312422eeaba46699d7734ed08b7eae1463a"
+    "truth": "95ef96698c102fe3e2c738621a8b2c57d4508b6ef1a11f80ab382bfbc2f52b9a",
+    "tests": "9e347c9922f0100ca64e3f3bec17e355660b643691973c20f05f760360f8e4fd",
+    "tasks": "c62cb31e108a52a0b6a80dd1606e9852976dd8a15c72301fdf726ae5c6ebeb12",
+    "evidence": "b3c73792ed7a06b4fd82b9f3bf51e2a5d368e94a09e476760a25b7c57639dc74"
   }
 }
