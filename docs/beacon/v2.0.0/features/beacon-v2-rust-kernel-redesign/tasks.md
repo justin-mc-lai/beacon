@@ -1,8 +1,8 @@
-# 任务：Beacon v2 Rust Kernel Redesign（r3）
+# 任务：Beacon v2 Rust Kernel Redesign（r8）
 
 ## Phase P0 — core + store 骨架（AC-022–031, AC-067–076, AC-084, AC-024）
 
-- [x] TASK-P0-001 创建 `packages/beacon-rs/` workspace 与六 crate。
+- [ ] TASK-P0-001-R8 收敛 `packages/beacon-rs/` workspace 为 v2 core 五 crate（core/store/orchestrator/gate/cli），移除或 archive-only 标记 `beacon-python`。
 - [x] TASK-P0-002 Diagram Truth Layer 类型：WorkflowStage（含 Prototype）、StageStatus（含 Crashed/TimedOut/Interrupted）、Delivery 运行时 enum + plan 链 event_type 常量。
 - [x] TASK-P0-003 `IterationResult` 与 `AgentBackend` trait 类型定义（beacon-core）。
 - [x] TASK-P0-004 schema v1 九表 + WAL + 六 DAO skeleton。
@@ -25,6 +25,10 @@
 - [ ] TASK-P2-005 phase controller metadata + lifecycle_events。
 - [ ] TASK-P2-006 integration：TC-040–041, TC-043–044, TC-047–050, TC-086。
 - [ ] TASK-P2-007 **planner_review multi-agent runtime**（AC-102 / TC-102）：Rust orchestrator 调用 v1.6 同构 artifact（lanes/synthesis/fallback）；artifact_refs 持久化。
+- [ ] TASK-P2-008 `intent_snapshot.v1` + prompt snapshot ledger + low-confidence freeze block（AC-111–113）。
+- [ ] TASK-P2-009 `decision_packet.v1` loop admission（AC-114）。
+- [ ] TASK-P2-010 loop guardrails：pattern registry、failure catalog、token budget、readiness audit、protected path denylist（AC-120）。
+- [ ] TASK-P2-011 `agent_trace.v1` writer + stagnation detector（AC-117–118）。
 
 ## Phase P3 — gate + migration + claude/acp/worktree/implement 真集成（AC-045–046, AC-099–100, AC-077–079, AC-011, AC-087, **AC-101, AC-103**）
 
@@ -38,13 +42,17 @@
 - [ ] TASK-P3-008 integration：TC-045–046, TC-099–100, TC-077–079, TC-087, TC-011。
 - [ ] TASK-P3-009 **TIG port**（AC-101 / TC-101）：freeze/refreeze hard block；frozen 历史 audit_only。
 - [ ] TASK-P3-010 **verify-truth-integrity v2 路由**（AC-103 / TC-103）。
+- [ ] TASK-P3-011 `design_primitives.v1` binding + design_required implement gate（AC-115–116）。
+- [ ] TASK-P3-012 remediation sandbox overlay/eval/rollback + human review report（AC-119）。
+- [ ] TASK-P3-013 qa-evidence confidence_chain + business FSM coverage + defect repair regression chain（AC-121–122）。
+- [ ] TASK-P3-014 non-behavior evidence rejection + release human gate invariant（AC-123–124）。
 
-## Phase P4 — Python shim + 33 skills 全量（AC-059–063, AC-088, AC-091, AC-094）
+## Phase P4 — 六能力 harness surface + legacy removal（AC-002–003, AC-059–063, AC-088, AC-091, AC-094, AC-109–110）
 
-- [ ] TASK-P4-001 PyO3 + CI matrix（TC-091 可执行）。
-- [ ] TASK-P4-002 BEACON_V2 路由 + compat verbose。
-- [ ] TASK-P4-003 **33 skills 全量** smoke（TC-063，非抽样 10）。
-- [ ] TASK-P4-004 integration：TC-059–063, TC-088, TC-094。
+- [ ] TASK-P4-001 删除 v2 core 的 PyO3/python runtime fallback；legacy invocation 只给 migration/archive route（TC-002/003/062）。
+- [ ] TASK-P4-002 `beacon harness list --version v2.0.0 --json` 精确暴露六能力 contract（TC-059/063/109）。
+- [ ] TASK-P4-003 CI matrix 覆盖 five-crate Rust workspace + legacy removal regression（TC-091/110）。
+- [ ] TASK-P4-004 integration：TC-059–063, TC-088, TC-094, TC-109–110。
 
 ## Phase P5 — proto（v2.0.0 跳过，D-V2-001 accepted defer）
 
@@ -53,14 +61,20 @@
 ## Phase P6 — 切换 + benchmark（AC-051–058, AC-090, AC-095–097）
 
 - [ ] TASK-P6-001 criterion bench 套件 + baseline（TC-051–058, TC-095）。
-- [ ] TASK-P6-002 默认 BEACON_V2=1；v1 JSON 只读。
+- [ ] TASK-P6-002 默认 Rust v2 路径；v1 JSON 只读迁移，不作为 runtime fallback。
 - [ ] TASK-P6-003 E2E TC-E01–E04；evaluator 全矩阵。
+
+## r8 变更摘要（minimal kernel refreeze）
+
+- v2 core closure 移除 v1 Python/PyO3/33 skills 兼容目标，改为 six first-class harness abilities。
+- 新增 AC-109–124 对应任务：intent snapshot、prompt ledger、decision packet、design primitives gate、agent trace、stagnation detector、remediation sandbox、loop guardrails、QA evidence chain、release human gate。
+- 历史 P0 scaffold 证据保留为 implementation candidate，不再单独满足 R8 minimal-kernel closure。
 
 ## r5 变更摘要（R2 reopen）
 
 - 增补 **AC-101–104**：v1.6 TIG、multi-agent planner review、doctor verify-truth-integrity、P0 完成证据。
 - 新增 **v1.6 Upstream Frozen Inputs** 表；tests/tasks 对齐 behavior-level TC。
-- truth 状态：**draft** / R2；待 refreeze 闭环。
+- 历史 truth 状态：R2 draft；R8 已 refreeze 为 minimal-kernel frozen。
 
 ## r3 变更摘要
 

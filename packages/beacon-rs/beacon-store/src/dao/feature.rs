@@ -74,4 +74,29 @@ impl FeatureDao {
         )?;
         Ok(())
     }
+
+    /// Find a feature package by slug + version across all projects.
+    pub fn find_by_slug_version(
+        conn: &Connection,
+        slug: &str,
+        version: &str,
+    ) -> rusqlite::Result<Option<FeatureRow>> {
+        conn.query_row(
+            "SELECT id, project_id, slug, version, status
+             FROM feature_packages
+             WHERE slug = ?1 AND version = ?2
+             ORDER BY id DESC LIMIT 1",
+            params![slug, version],
+            |row| {
+                Ok(FeatureRow {
+                    id: row.get(0)?,
+                    project_id: row.get(1)?,
+                    slug: row.get(2)?,
+                    version: row.get(3)?,
+                    status: row.get(4)?,
+                })
+            },
+        )
+        .optional()
+    }
 }

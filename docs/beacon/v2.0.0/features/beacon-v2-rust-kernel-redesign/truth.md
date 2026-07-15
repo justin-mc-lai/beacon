@@ -3,7 +3,7 @@ slug: beacon-v2-rust-kernel-redesign
 version: v2.0.0
 status: frozen
 language: zh
-revision: r7-draft
+revision: r8-minimal-kernel-frozen
 canonical_refs:
   truth: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
   tests: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tests.md
@@ -27,11 +27,11 @@ beacon-core      -> Rust 类型层：双 FSM、证据链、Gate 结果类型
 beacon-store     -> Rust 持久层：~/.beacon/beacon.db 全局 SQLite + blob 指针
 beacon-orchestrator -> Rust 编排层：统一 goal/run/team 长任务（吸收 beacon-loop + beacon-run）
 beacon-gate      -> Rust 门禁层：truth_freeze / qa / release / implement
-beacon-cli       -> Rust 主 CLI：spine / projects / workflow / implement / qa / release
-beacon-python    -> PyO3 兼容层：33 skills + 现有 Python 业务逻辑渐进迁移
+beacon-cli       -> Rust 主 CLI：loop / truth / design / implement / qa-evidence / release
+beacon-harness   -> Rust 极简 harness contract：六个一等能力，不保留 v1 Python 兼容面
 ```
 
-**User Intent（冻结锚点，一行）**：v2.0.0 交付 **Rust 内核 + 全局 `beacon.db` + Operator Spine + orchestrator 行为对齐 v1.6 closed-loop（goal/worktree/harness/import/qa 链）**；plan 其余能力按 **P0–P6 分 phase 煮干**，**海级 scope 禁止在单包 draft 里用空壳 AC 假装 closure**。
+**User Intent（冻结锚点，一行）**：v2.0.0 交付 **Rust 极简 harness kernel + 六个一等能力（loop / truth / design / implement / qa-evidence / release）+ 全局 `beacon.db` + Operator Spine + 跨 harness loop 闭环**；v1 Python / Node / 33 skills 历史兼容 **不进入 v2 core closure**，仅作为只读迁移语义源或 archive reference。
 
 **需求真相** 仍只存在于 Markdown feature package（`docs/beacon/v2.0.0/` + `features/<slug>/truth.md`）。  
 **运行态权威** 迁入机器级全局 SQLite `~/.beacon/beacon.db`；大文件留在项目 `<project>/.beacon/` blob 层，DB 只存绝对路径 + hash 指针。
@@ -45,11 +45,13 @@ v2.0.0 以 **v1.5.2 package-authoritative cutover** 为 truth 规范全新基准
 - **Rust FSM stage 枚举**：`beacon-core::WorkflowStage`（Think/UserStory/Prd/TestCase/Prototype/Freeze/Implement/Qa/Release/Archive）是**类型层状态机变体名**，保留作 v1.6 兼容（转换表显式标注），**不**等同于文档结构。文档结构无 prd/user-story 顶层文件，与 Rust enum 变体名是两个层面。
 - **状态机真相**：`state_machine_required: true`；Rust 内核的 FSM（WorkflowStage / StageStatus / RunStatus / LifecycleEventType）是运行态权威的机器级投影，Markdown truth 是需求权威，二者通过 `beacon.db` 桥接（DB 存运行态，不存需求真相）。
 
-v2 不新增主生命周期阶段；human-facing 仍为：
+v2 不复用 v1 的 33 host-visible skill 面。human-facing 能力面收敛为：
 
 ```text
-plan -> truth -> generate -> evaluate -> release
+loop | truth | design | implement | qa-evidence | release
 ```
+
+其中 `loop` 是跨 harness 编排入口，不是替代其他能力的超级阶段；`truth` 吸收 plan/pre-freeze intent 工作；`design` 仅在存在 UI/视觉/交互交付时成为 implement 前置 gate；`qa-evidence` 承接 evaluator 语义但不允许修改 truth 或 implementation。
 
 ### Loop Engineering 三层 Loop（R7 增补）
 
@@ -74,10 +76,10 @@ v2.0.0 按 [Loop Engineering](https://addyosmani.com/blog/loop-engineering/) 三
 
 | 字段 | 值 |
 |------|-----|
-| 用户原话（稳定 paraphrase） | Rust 重构对齐 v1 行为；MD 需求真相 + SQLite 运行态 + 单一 Spine；吸收 beacon-loop/beacon-run |
+| 用户原话（稳定 paraphrase） | v2 使用 Rust 重写极简 Beacon harness；抛弃 v1 Python 历史兼容；保留六个一等能力；plan 阶段强识别意图、保存提示词快照、反复对齐，产出 loop 可一键跑闭环的决策包；实现前必须有视觉/设计原语绑定 |
 | `lake_or_ocean` | **海**（见 research）— 单包 truth **不**等于全量实现 closure；按 phase 煮干 |
-| 强度词 | 重构、对齐、full_parity（plan 对照，非一次性交付） |
-| 非协商边界 | 需求不进 DB 当权威；orchestrator 不裁决 QA/release；无空壳验收 |
+| 强度词 | 极简 harness、彻底抛弃历史包袱、强感知识别、一键决策跑闭环、视觉设计实现前前置 |
+| 非协商边界 | 需求不进 DB 当权威；orchestrator 不裁决 QA/release；无空壳验收；v1 Python/PyO3/33 skills 不作为 v2 core 验收；design_required 时未绑定设计原语不得 implement |
 
 ### Alignment Surface（v2.0.0 冻结时必须煮干）
 
@@ -90,7 +92,10 @@ v2.0.0 按 [Loop Engineering](https://addyosmani.com/blog/loop-engineering/) 三
 - agent 真集成：codex 多轮、subprocess、claude、acp、implement harness（AC-043–046, AC-100）
 - git/worktree 全模式（AC-099）
 - gate 写库 + reason_codes；v1→v2 migration + projection rebuild
-- PyO3 shim + 33 skills 路由（P4 验收，truth 中 phased，**非空壳**）
+- 六个一等能力 kernel surface：loop / truth / design / implement / qa-evidence / release（AC-109）
+- truth pre-freeze：强意图识别、prompt snapshot ledger、brainstorm/review synthesis、decision_packet.v1（AC-111..114）
+- design before implement：design_primitives.v1 绑定、视觉/交互状态矩阵、实现准入阻断（AC-115..116）
+- v1.6.4–v1.6.6 新能力以 Rust 语义重现：agent trace、stagnation detector、remediation sandbox、loop governance、QA confidence/repair chain（AC-117..123）
 
 ### Phased Backlog（plan 对照，按 P 煮干，非单包空壳 closure）
 
@@ -129,6 +134,25 @@ v2 Rust 内核必须**语义重现**以下 v1.6.3 免疫修复（Rust 实现对�
 - `docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md`（R10 Loop Engineering 对齐 + AC-071 stop-when maker≠checker → v2 AC-105/106）
 - `docs/beacon/v1.6.3/features/beacon-{gate-truth-model-alignment,freeze-integrity-drift-repair,version-resolve-fail-closed,workflow-memory-completion-gate,ecosystem-discovery-sync-drift,truth-format-package-auth-skip,spec-fingerprint-package-auth-paths,post-release-hook-agent-coverage,runtime-release-alignment}-v163/truth.md`
 
+#### v1.6.4–v1.6.6 闭环能力迁移（R8 增补，保留语义、不保留 Python 形态）
+
+| upstream feature | v2 Rust kernel 义务 | Phase |
+|------------------|---------------------|-------|
+| `beacon-program-next-action-admission-v164` | implement admission 读取 program/lake next_action 与 dependency closure；blocked 时 diagnostic-only，不写 delivery evidence | P2–P3 |
+| `beacon-qa-coverage-confidence-chain-v164` | qa-evidence 产出 confidence_chain；单层 pass 不得冒充端到端 pass | P3 |
+| `beacon-qa-business-state-machine-v164` | 从 truth State Model 提取业务 FSM，生成边界/非法转换覆盖，触达不可达态 fail-closed | P3 |
+| `beacon-qa-defect-repair-loop-v164` | defect -> repair_route -> regression QA -> closure evidence chain；缺段 release block | P3 |
+| `beacon-loop-pattern-registry-v165` | loop pattern registry 成为 Rust loop guardrail read model | P2 |
+| `beacon-loop-failure-mode-catalog-v165` | failure catalog 与 reason_code / stagnation finding 交叉引用 | P2 |
+| `beacon-loop-token-budget-v165` | automated loop 前检查 daily cap、kill switch、token ledger | P2 |
+| `beacon-loop-readiness-audit-v165` | `loop readiness` 作为 advisory/strict preflight，不伪装 release verdict | P2 |
+| `beacon-workspace-pool-lease-v165` | worktree lane lease / release / corrupt-state fail-closed | P3 |
+| `beacon-protected-path-denylist-v165` | automatic write surfaces 统一保护路径阻断 | P2 |
+| `beacon-loop-goal-v166` | loop 一键编排 truth -> design? -> implement -> qa-evidence -> release；release 永远人工确认 | P3 |
+| `beacon-agent-structured-trace-v166` | governed agent iteration 写 `agent_trace.v1` | P2 |
+| `beacon-loop-stagnation-detector-v166` | 基于 trace 确定性识别 repeat_failure / repeat_labor / plateau | P2 |
+| `beacon-harness-remediation-sandbox-v166` | 在 governed worktree sandbox 中 overlay/eval/rollback；成功也必须 human review | P3 |
+
 ## Scope Mode
 
 `scope_mode` = **`full_parity`**（对照 `docs/plans/beacon-v2-redesign.md` 全量场景）。
@@ -136,6 +160,35 @@ v2 Rust 内核必须**语义重现**以下 v1.6.3 免疫修复（Rust 实现对�
 任何从 full parity 到 MVP 的降级必须进入 `Deferral Ledger` 并获用户显式接受。默认 **in-scope** 项不得静默裁剪。
 
 **禁止** 以空壳 AC、stub-only、纯文档闭环、contract-test-without-integration 作为唯一验收路径（r2 收紧，响应 planner review）。
+
+## v2 Minimal Harness Kernel Contract（R8）
+
+v2 public kernel surface 只保留六个一等能力：
+
+| 能力 | 职责 | 关键阻断 |
+|------|------|----------|
+| `loop` | 跨 harness 编排 truth -> design? -> implement -> qa-evidence -> release；支持 auto-decide、checkpoint/resume、worktree lane 并行推进 | 不替代 truth/implement/QA/release；release 必须人工确认 |
+| `truth` | plan/pre-freeze intent 捕获、prompt snapshot、brainstorm/review synthesis、truth gap scan、freeze/refreeze | low-confidence intent、未拍板 deferral、状态机缺失时不得 freeze |
+| `design` | UI/视觉/交互交付的 design primitive contract；产出 tokens/components/layout/state/a11y/visual evidence baseline | `design_required=true` 且未绑定 `design_primitives.v1` 时不得 implement |
+| `implement` | 只消费 frozen truth + bound design + admitted worktree + decision_packet；运行 agent/backend loop | 不改 frozen truth，不自证 QA/release pass，不接受 static-only evidence |
+| `qa-evidence` | 行为证据导入、confidence chain、business FSM coverage、defect repair regression、trace/stagnation/remediation 报告 | 缺行为证据链、回归链或断链时 release block |
+| `release` | 最终 go/no-go gate，检查 truth/design/qa/evidence/human confirmation | 不允许 auto-decide 越过 human release gate |
+
+`plan` 不作为第七个一等能力。用户在 plan 时给 Beacon 的灵感、思路、目标、约束、参考和业务判断，必须进入 `truth.pre_freeze_intent`，形成可审计的 `intent_snapshot.v1` 与 loop 可消费的 `decision_packet.v1`。
+
+### Decision Packet Contract
+
+`decision_packet.v1` 是 loop admission 的输入，最少包含：
+
+```text
+run_goal, feature_slug, version, raw_prompt_hash,
+intent_snapshot_ref, accepted_scope, non_negotiables,
+truth_refs, design_required, design_primitives_ref?,
+worktree_policy, auto_decide_policy, human_gates,
+qa_evidence_expectation, release_confirmation_required=true
+```
+
+缺失 `decision_packet.v1` 或其引用的 latest accepted prompt snapshot 时，`loop start` 必须 fail-closed。
 
 ## Diagram Truth Layer
 
@@ -165,8 +218,9 @@ Crashed, TimedOut, Interrupted, Repairing
 ### Delivery FSM — Plan 主链（逻辑层，写入 lifecycle_events）
 
 ```text
-IntentCapture → IntentReview → [UserDecisionPending] → TruthGapScan
-→ [TruthFill → TruthFreezeGate] → ImplementLoop
+IntentCapture → PromptSnapshot → IntentReview → BrainstormReviewSynthesis
+→ [UserDecisionPending] → TruthGapScan → [TruthFill → TruthFreezeGate]
+→ [DesignRequired? → DesignPrimitiveBind] → ImplementAdmission → ImplementLoop
 → EvidenceImport → QaPending → [RepairFromQa ↺] → ReleasePending
 → [RepairFromRelease ↺] → TerminalClosed | TerminalAborted
 ```
@@ -180,10 +234,10 @@ Succeeded, Failed, Repairing, Importing, AwaitingQa, Closed
 
 **映射义务**：每个 `runs.status` 必须可追溯到 plan 主链节点或 v1.6 implement_loop 子状态；非法转换 fail-closed（typed error + reason_code）。
 
-### Phase Controller（harness 四阶段，plan §3.3）
+### Phase Controller（v2 六能力面）
 
 ```text
-truth (Agent) → generate (Agent) → qa (Harness) → release (Harness)
+loop (Governor) → truth (Kernel) → design? (Kernel) → implement (Agent) → qa-evidence (Harness) → release (Harness)
 ```
 
 写入 `runs.metadata_json.phase`；与 WorkflowStage **不同轴**，不得混写为同一 enum。
@@ -207,11 +261,11 @@ v1 架构级缺陷必须在 v2 被 **结构性消除**，不得仅靠文档或 w
 
 ## 架构决策（Plan §2）
 
-### AC-001 Rust 核心 + Python 兼容
+### AC-001 Rust 核心 + 极简 harness
 
 - **AC-001**：v2 默认执行面为 Rust workspace（`packages/beacon-rs/` 或等价根）。
-- **AC-002**：`beacon-python` 通过 PyO3 暴露 v1 兼容 API；33 个 host skills 在 P4 前不得破坏路由契约。
-- **AC-003**：Python 层在 P4 前可继续承载未迁移子命令；新能力优先落 Rust CLI。
+- **AC-002**：v2 core closure **不包含** `beacon-python` / PyO3 / v1 Python runtime fallback；若仓库仍存在历史 scaffold，必须在 P4 前移除或标记为 archive-only，不能作为验收依赖。
+- **AC-003**：v1 Python / Node / 33 skills 只可作为 migration/archive reference；v2 新能力不得 fallback 到 Python 路由。
 
 ### AC-004 需求真相边界
 
@@ -273,11 +327,10 @@ packages/beacon-rs/
   beacon-orchestrator/
   beacon-gate/
   beacon-cli/
-  beacon-python/
   beacon-proto/          # v2.0.0 不做（D-V2-001 accepted defer）
 ```
 
-- **AC-022**：workspace 必须包含六 crate（core/store/orchestrator/gate/cli/python）。
+- **AC-022**：workspace core closure 必须收敛为五个 Rust crate（core/store/orchestrator/gate/cli）；`beacon-python` 不属于 v2.0.0 core closure。
 - **AC-023**：crate 依赖方向：`cli -> {gate, orchestrator, store, core}`；`store -> core`；`orchestrator -> {store, core}`；禁止循环依赖。
 - **AC-024**：v2.0.0 **不交付** `beacon-proto`/gRPC（**D-V2-001 accepted defer**）；CLI 与 orchestrator 不得硬依赖 gRPC；未来版本可单独 reopen。
 - **AC-025**：单文件模块超过 500 行须拆分或 ADR 说明例外（对齐 D-02）。
@@ -365,13 +418,13 @@ optional stop_signal, token_usage, agent_name
 
 **AC-051..AC-058** 均须 **criterion/bench 或 CI benchmark job** 归档；**不得** 仅 smoke test 或文档声明替代。
 
-## Python 兼容（Plan §6）
+## 极简 Harness Surface（取代 Plan §6 Python 兼容）
 
-- **AC-059**：`beacon-python` 暴露 `beacon_doctor`、`beacon_status` 等 v1 高频 shim。
-- **AC-060**：`BEACON_V2=1` 启用 Rust 路径；P6 前 opt-in。
+- **AC-059**：v2 host-visible harness surface 只暴露 `loop`、`truth`、`design`、`implement`、`qa-evidence`、`release` 六个一等能力。
+- **AC-060**：v2 默认走 Rust 路径；`BEACON_V2=1` 不再是 opt-in 兼容开关。
 - **AC-061**：`BEACON_STORE_PATH` 测试隔离；生产默认 `~/.beacon/beacon.db`。
-- **AC-062**：Python fallback 时 `--verbose` 打印 `compat_route=python`。
-- **AC-063**：**33** 个 host skills 的 `beacon skill list` 与 **全量** `--help`/路由 smoke 回归（非抽样）；失败路由 `beacon-gov-doctor`。
+- **AC-062**：任何 v1 Python/legacy skill invocation 在 v2 core 中必须返回 migration/archive route 或 `reason_code=legacy_python_removed`，不得静默 fallback。
+- **AC-063**：`beacon harness list --version v2.0.0 --json`（或等价 CLI）只返回六个一等能力及其 contract metadata；不得要求 33 skills smoke 作为 v2 closure。
 
 ## CLI 面
 
@@ -413,8 +466,8 @@ optional stop_signal, token_usage, agent_name
 | P0 | core + store + schema + migration **skeleton**（非 production migration） | v1 全功能 |
 | P1 | Spine read + projects | v1 JSON 仍可写 |
 | P2 | orchestrator MVP + **AC-043/044** codex/subprocess 真集成 | beacon-loop 并行 |
-| P3 | gate 写库 + **AC-045/046** claude/acp 真集成 + migration 完成 | Python gate 对比 |
-| P4 | Python shim + **AC-063** 全 skill 回归 | opt-in `BEACON_V2=1` |
+| P3 | gate 写库 + **AC-045/046** claude/acp 真集成 + migration 完成 | legacy projection/import 只读对照 |
+| P4 | 六能力 harness surface + legacy removal | v1 Python/33 skills 仅 archive reference |
 | P5 | ~~proto~~ **v2.0.0 跳过**（D-V2-001） | v1 无 gRPC 亦可 |
 | P6 | 默认 v2 + benchmark 门禁 | 切换 |
 
@@ -425,7 +478,7 @@ optional stop_signal, token_usage, agent_name
 - **AC-091**：CI **必须**执行 `cargo build/test` for `beacon-rs` matrix（macOS + Linux 至少）；非仅 README 声明。
 - **AC-092**：migration 前自动备份 runtime-ledger 与既有 DB。
 - **AC-093**：双写期 **单一写者**；双向同时写须测试失败。
-- **AC-094**：skill 回归失败 → `beacon-gov-doctor`，禁止静默 Python 回退。
+- **AC-094**：harness surface / legacy removal 回归失败 → `beacon-gov-doctor`，禁止静默 legacy fallback。
 - **AC-095**：benchmark 相对 baseline 回退 >10% 阻断 P6 switch-over。
 
 ## 验收总则（Plan §10）
@@ -438,8 +491,27 @@ optional stop_signal, token_usage, agent_name
 
 - **AC-101**（P3）：`beacon-gate` 在 freeze/refreeze 前执行 **Truth Integrity Gate**，语义对齐 v1.6 `build_truth_integrity_gate`：空缺 AC、软 TC、未拍板 deferral、假交付、package validation 失败 → hard block + `repair_route`；已 frozen 历史包默认 `audit_only` 不阻断。
 - **AC-102**（P2）：`beacon-orchestrator` 的 `planner_review()` 必须产出 v1.6 multi-agent runtime 同构字段（`reviewer_lanes`、`findings`、`synthesis`、`execution_mode`、`fallback_reason`、`runtime_evidence_only=true`）；artifact 写入 `artifact_refs`；无 subagent 时 **禁止** 声称 parallel execution。
-- **AC-103**（P3）：`beacon doctor verify-truth-integrity` 在 v2 路由到 gate 或 PyO3 compat；`--mode block` exit code 与 v1.6 一致。
-- **AC-104**（P0 证据）：`packages/beacon-rs/` workspace 六 crate + P0 unit tests **已完成**（2026-06-13，`cargo test --workspace` 12 passed）；见 `evidence.md` Implementation Candidate Evidence。
+- **AC-103**（P3）：`beacon doctor verify-truth-integrity` 在 v2 路由到 Rust gate；`--mode block` exit code 与 v1.6 一致，不使用 PyO3 compat。
+- **AC-104**（历史 P0 证据）：2026-06-13 的 `packages/beacon-rs/` scaffold 与 12 个 P0 unit tests 是 implementation candidate evidence；R8 minimal-kernel closure 需重新验证 AC-002/022/059/063 后才可算 P0/P4 完成。
+
+### R8 Minimal Kernel AC（AC-109–124）
+
+- **AC-109**：v2 public kernel surface 明确定义并只允许六个一等能力：loop / truth / design / implement / qa-evidence / release。
+- **AC-110**：v1 Python / Node / 33 skills compatibility 从 v2 core closure 移除；只保留为 migration/archive reference。
+- **AC-111**：truth pre-freeze 必须生成 `intent_snapshot.v1`，含 raw_prompt、normalized_intent、strength_signals、non_negotiables、open_questions、scope_mode、confidence。
+- **AC-112**：每轮 plan/truth/review/brainstorm 必须保存 prompt snapshot hash，并标记 accepted/latest；loop 只能消费 latest accepted snapshot。
+- **AC-113**：intent confidence 低、强意图冲突、scope 未确认或 deferral 未拍板时，truth freeze fail-closed。
+- **AC-114**：loop 启动必须读取 `decision_packet.v1`；缺失、过期或引用未接受 prompt snapshot 时不得进入 implement。
+- **AC-115**：UI/视觉/交互 feature 必须先产出并绑定 `design_primitives.v1`；内容覆盖 tokens、components、layout、state matrix、responsive、a11y、visual evidence baseline。
+- **AC-116**：implement admission 必须同时验证 truth_frozen、decision_packet_current、design_bound（当 required）、worktree_admitted、program_next_action_aligned、dependencies_closed。
+- **AC-117**：所有 governed agent iteration 写 `agent_trace.v1`，事件类型覆盖 decision / failure / retry / output / tool_call / gate_verdict。
+- **AC-118**：stagnation detector 基于 agent trace 确定性识别 repeat_failure / repeat_labor / plateau，输出 `stagnation-report.v1`。
+- **AC-119**：remediation sandbox 在 governed worktree 内执行 overlay/eval/rollback；不得写 canonical truth，eval pass 后仍需 human review。
+- **AC-120**：loop guardrails 包含 pattern registry、failure catalog、token budget、readiness audit、workspace lease、protected path denylist。
+- **AC-121**：qa-evidence 必须产出 confidence_chain 与 truth-derived business FSM coverage；状态机 gap 削弱或阻断对应 evidence claim。
+- **AC-122**：QA defect 必须形成 defect -> fix -> regression evidence chain；缺段 `repair_chain_broken` 或 `regression_skipped` 时 release block。
+- **AC-123**：closure evidence 必须包含可执行行为验证、至少一个有效断言、AC/TC 绑定 artifact 与运行佐证；纯静态 shell、源文本匹配或无行为恢复控件不得满足 closure。
+- **AC-124**：release human gate 是不变量；`auto_decide=true` 不得触发 release gate 通过。
 
 ## Parity Matrix（Plan 场景复刻索引）
 
@@ -450,7 +522,7 @@ optional stop_signal, token_usage, agent_name
 | §3 Crate | AC-022–025 | workspace |
 | §4 FSM+性能 | AC-026–036, AC-051–058 | 双 FSM+benchmark |
 | §5 Orchestrator+Agent | AC-040–050, **AC-042–046/099/100 真集成** | 无空壳 AC；worktree+implement 不 defer |
-| §6 Python+CLI | AC-059–066 | 33 skills 全量 |
+| §6 极简 Harness+CLI | AC-059–066, AC-109–124 | 六能力 surface + legacy removal |
 | §7 Schema | AC-067–083 | 九表+DAO |
 | §8 阶段 | AC-084–090 | P0–P6 |
 | §9 风险 | AC-091–095 | 可执行缓解 |
@@ -475,7 +547,7 @@ optional stop_signal, token_usage, agent_name
 
 - 不把 Markdown truth 迁入 DB。
 - 不把 QA JSON 升格为 truth authority。
-- 不在 P6 前默认切断 v1 Python。
+- 不保留 v1 Python/PyO3/33 skills 作为 v2 runtime、fallback 或 closure 依赖。
 - 不用 orchestrator 替代 evaluator 裁决。
 - 不用空壳/stub/纯文档闭环 作为唯一 AC 验收。
 
@@ -488,7 +560,7 @@ optional stop_signal, token_usage, agent_name
 5. **无空壳-only AC**；agent/worktree/implement 类 AC 须 integration tier（AC-043–046, AC-099–100）。
 6. **v1.6 upstream**（AC-101–103）在对应 phase 有 behavior-level TC，不得仅用「后续移植」一句带过。
 
-**当前状态**：`draft` / **R4**（revision `r7-draft`）— 2026-07-02 reopen：补 Loop Engineering 三层 Loop 模型（Coding/Developer/Real-world ↔ beacon 生命周期）+ host 运行模式（CLI 进程+checkpoint/resume/信号，无 daemon）+ AC-105/106/107/108（CLI 选 agent + stop_when maker≠checker + Developer Feedback checkpoint + 三层 Loop 可观测）+ v1.6 loop upstream 语义源；待 refreeze。
+**当前状态**：`frozen` / **R8**（revision `r8-minimal-kernel-frozen`）— 2026-07-15 refreeze：确认 v2 为 Rust 极简 harness kernel；六个一等能力入约；移除 v1 Python/PyO3/33 skills core closure；补 truth pre-freeze 强意图识别、prompt snapshot、decision_packet、design_primitives gate、agent trace/stagnation/remediation/QA evidence chain。
 
 ## User Stories
 
@@ -512,9 +584,9 @@ optional stop_signal, token_usage, agent_name
 
 **AC**：AC-077–079, AC-092, **AC-011**
 
-### US-006 Python/Skill 契约延续
+### US-006 极简 harness surface
 
-**AC**：AC-059–063, AC-064–066
+**AC**：AC-059–063, AC-109–124, AC-064–066
 
 ## Revision History
 
@@ -528,3 +600,4 @@ optional stop_signal, token_usage, agent_name
 | r5 | R2 reopen：v1.6 TIG（AC-101）+ multi-agent planner review（AC-102–103）+ P0 done（AC-104）；upstream frozen inputs 表 |
 | r6 | R3 reopen：补 v1.6.3 9 个免疫修复进 upstream 表（语义重现义务）；Truth 规范基准段（v1.5.2 package-authoritative，不生成 prd/user-story 顶层文档）；canonical_refs 字段名对齐 truth/tests/tasks/evidence |
 | r7 | R4 reopen：Loop Engineering 三层 Loop 模型（Coding/Developer/Real-world ↔ beacon 生命周期）+ host 运行模式（CLI 进程+checkpoint/resume/信号，无 daemon）+ AC-105/106/107/108 + v1.6 loop upstream（R10 AC-071 → AC-105/106）+ DEF-loop-006 Real-world Loop 延后 |
+| r8 | R5 refreeze：v2 minimal Rust harness kernel；六个一等能力；v1 Python/PyO3/33 skills 移出 core closure；intent_snapshot/prompt_snapshot/decision_packet/design_primitives gate；v1.6.4–1.6.6 loop/QA/agent 排查能力以 Rust 语义重现 |

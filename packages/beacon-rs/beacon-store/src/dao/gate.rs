@@ -35,7 +35,7 @@ impl GateDao {
             "SELECT id, feature_package_id, gate_name, verdict
              FROM gate_results
              WHERE feature_package_id = ?1 AND gate_name = ?2
-             ORDER BY evaluated_at DESC LIMIT 1",
+             ORDER BY id DESC LIMIT 1",
         )?;
         let mut rows = stmt.query(params![feature_package_id, gate_name])?;
         if let Some(row) = rows.next()? {

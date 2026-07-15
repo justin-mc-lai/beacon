@@ -1,16 +1,16 @@
 ---
 slug: beacon-v2-rust-kernel-redesign
 version: v2.0.0
-revision: r5-alignment-tc-hardening
+revision: r8-minimal-kernel-coverage
 parser_contract: beacon-feature-package-v1
 truth_ref: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
 ---
 
-# 测试覆盖：Beacon v2 Rust Kernel Redesign（r5）
+# 测试覆盖：Beacon v2 Rust Kernel Redesign（r8）
 
 ## 覆盖说明
 
-- 每个 AC（AC-001..AC-104）至少一行 TC。
+- 每个 AC（AC-001..AC-124）至少一行 TC。
 - **integration tier** 为 agent 类 AC（AC-043–046, AC-099–100）最低验收等级；禁止仅 contract/空壳验收。
 - **禁止非行为级验证列**：单独 `integration`、`目录存在`、`fixture`、`可选` 不算可执行 TC；必须写 **Command + Assertion**（或显式 `BLOCKED:<reason>`）。
 - Pass/Fail 由 `beacon-eval-qa` 裁决。
@@ -20,8 +20,8 @@ truth_ref: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
 | AC ID | TC ID | Layer | Command | Assertion |
 |-------|-------|-------|---------|-----------|
 | AC-001 | TC-001 | unit | `test -d packages/beacon-rs/beacon-core` | Rust workspace |
-| AC-002 | TC-002 | unit | `cargo build -p beacon-python` | PyO3 可编译 |
-| AC-003 | TC-003 | unit | verbose 仅 fallback 显示 compat_route=python | 新能力优先 Rust |
+| AC-002 | TC-002 | unit | `cd packages/beacon-rs && cargo metadata --no-deps --format-version 1 \| jq -e '.packages\|map(.name)\|index("beacon-python")\|not'` | v2 core 无 PyO3/python crate |
+| AC-003 | TC-003 | unit | legacy Python/Node invocation fixture → exit != 0 + `reason_code=legacy_python_removed` | 无 Python fallback |
 | AC-004 | TC-004 | contract | `beacon truth-map resolve … --version v2.0.0 --json` | truth package authority |
 | AC-005 | TC-005 | unit | schema 无 truth_body 列 | DB 无需求正文 |
 | AC-006 | TC-006 | contract | `cargo test -p beacon-store storage_authority_non_supremacy` — spine gate 读 DB；仅改 `.beacon/gate-report.json` 不改变 `beacon spine gate --json`；schema 无 truth_body | QA JSON 非权威 |
@@ -40,7 +40,7 @@ truth_ref: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
 | AC-019 | TC-019 | contract | `beacon spine artifacts <run-id>` | spine artifacts |
 | AC-020 | TC-020 | contract | `beacon spine gate …` | spine gate |
 | AC-021 | TC-021 | contract | `beacon projects register --path . --json`; `beacon projects list --json \ | projects |
-| AC-022 | TC-022 | unit | `for c in core store orchestrator gate cli python; test -f packages/beacon-rs/beacon-$c/Cargo.toml; done`; `cargo metadata --no-deps \ | 六 crate |
+| AC-022 | TC-022 | unit | `for c in core store orchestrator gate cli; do test -f packages/beacon-rs/beacon-$c/Cargo.toml; done`; `test ! -f packages/beacon-rs/beacon-python/Cargo.toml` | 五个 core crate |
 | AC-023 | TC-023 | unit | `cargo tree -p beacon-cli` | 依赖无环 |
 | AC-024 | TC-024 | unit | `cargo build -p beacon-cli` 无 gRPC feature；truth 记录 D-V2-001 accepted | 无 proto 硬依赖 |
 | AC-025 | TC-025 | unit | wc -l 或 ADR | 500 行 |
@@ -76,11 +76,11 @@ truth_ref: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
 | AC-056 | TC-056 | contract | `cargo test -p beacon-store migration_duration -- --test fixture_typical_project` — wall time <60s；超时 test fail | migration 时长 |
 | AC-057 | TC-057 | unit | bench < 100ms | iteration 调度 |
 | AC-058 | TC-058 | unit | 超 500MB 日志 | DB 体积 WARN |
-| AC-059 | TC-059 | unit | doctor verify-context | python shim |
-| AC-060 | TC-060 | unit | Rust 路径 | BEACON_V2=1 |
+| AC-059 | TC-059 | contract | `beacon harness list --version v2.0.0 --json` | 仅六个一等能力 |
+| AC-060 | TC-060 | unit | `beacon --version --json` 或等价 runtime payload | 默认 Rust v2 路径 |
 | AC-061 | TC-061 | unit | 隔离库 | BEACON_STORE_PATH |
-| AC-062 | TC-062 | unit | compat_route=python | compat verbose |
-| AC-063 | TC-063 | contract | `beacon skill list` 全量 + 每 skill 路由 smoke | **33 skills 全量** |
+| AC-062 | TC-062 | unit | legacy skill invocation fixture | `legacy_python_removed` / migration route，无 `compat_route=python` |
+| AC-063 | TC-063 | contract | `beacon harness list --version v2.0.0 --json \| jq -e 'map(.id)==["loop","truth","design","implement","qa-evidence","release"]'` | 六能力 surface contract |
 | AC-064 | TC-064 | unit | 全子命令 | CLI help snapshot |
 | AC-065 | TC-065 | unit | spine/projects/run validate | --json schema |
 | AC-066 | TC-066 | unit | 集成：5 codes gate 失败往返 + reason-codes.md | reason_codes |
@@ -105,7 +105,7 @@ truth_ref: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
 | AC-085 | TC-085 | unit | spine+projects | P1 出口 |
 | AC-086 | TC-086 | unit | orchestrator+**TC-043/044** | P2 出口 |
 | AC-087 | TC-087 | unit | gate+migration+**TC-045/046/099/100** | P3 出口 |
-| AC-088 | TC-088 | unit | shim+**TC-063 全 skill** | P4 出口 |
+| AC-088 | TC-088 | unit | minimal harness surface + TC-063 + legacy removal | P4 出口 |
 | AC-089 | TC-089 | unit | **D-V2-001 accepted**：deferral ledger 有 accepted 记录；**无** P5 proto job；不阻塞 P6 | P5 跳过 |
 | AC-090 | TC-090 | unit | 默认 v2+bench | P6 出口 |
 | AC-091 | TC-091 | unit | GHA/job 跑 cargo test beacon-rs | CI matrix |
@@ -135,7 +135,7 @@ truth_ref: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
 | orchestrator 链 | TC-040–041, TC-047–048, TC-033 | goal/resume/stop/status；preflight blocked exit≠0；stop_when fixture |
 | agent 真集成 | TC-043–046, TC-099–100 | 见 Agent 集成节；禁 single-shot / subprocess-only 冒充 |
 | gate + migration | TC-011–013, TC-056, TC-066, TC-077–079, TC-093 | rebuild 一致；migration 计时；单写者；双写 fail |
-| PyO3 + skills | TC-059, TC-063 | doctor verify + 33 skill 路由 smoke（P4） |
+| 六能力 harness surface | TC-059, TC-063, TC-109–124 | harness list 精确六能力；legacy fallback 被拒；decision/design/evidence gates 可验 |
 
 ## Agent 集成（选项 A — 重点）
 
@@ -154,8 +154,8 @@ truth_ref: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
 | TC ID | AC | 场景 | 命令 / 验证 | Phase |
 |-------|-----|------|-------------|-------|
 | TC-001 | AC-001 | Rust workspace | `test -d packages/beacon-rs/beacon-core` | P0 |
-| TC-002 | AC-002 | PyO3 可编译 | `cargo build -p beacon-python` | P4 |
-| TC-003 | AC-003 | 新能力优先 Rust | verbose 仅 fallback 显示 compat_route=python | P4 |
+| TC-002 | AC-002 | 无 PyO3/python core crate | `cd packages/beacon-rs && cargo metadata --no-deps --format-version 1 \| jq -e '.packages\|map(.name)\|index("beacon-python")\|not'` | P4 |
+| TC-003 | AC-003 | 无 Python fallback | legacy Python/Node invocation fixture → exit != 0 + `reason_code=legacy_python_removed` | P4 |
 | TC-004 | AC-004 | truth package authority | `beacon truth-map resolve … --version v2.0.0 --json` | P0 |
 | TC-005 | AC-005 | DB 无需求正文 | schema 无 truth_body 列 | P0 |
 | TC-006 | AC-006 | QA JSON 非权威 | `cargo test -p beacon-store storage_authority_non_supremacy` — spine gate 读 DB；仅改 `.beacon/gate-report.json` 不改变 `beacon spine gate --json`；schema 无 truth_body | P1 |
@@ -174,7 +174,7 @@ truth_ref: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
 | TC-019 | AC-019 | spine artifacts | `beacon spine artifacts <run-id>` | P2 |
 | TC-020 | AC-020 | spine gate | `beacon spine gate …` | P3 |
 | TC-021 | AC-021 | projects | `beacon projects register --path . --json`; `beacon projects list --json \| jq -e 'length>=1'`; `beacon projects show --project . --json` — 含 `project_key`, `versions[]`, `is_current` | P1 |
-| TC-022 | AC-022 | 六 crate | `for c in core store orchestrator gate cli python; test -f packages/beacon-rs/beacon-$c/Cargo.toml; done`; `cargo metadata --no-deps \| jq -e '.packages\|map(.name)\|index("beacon-proto")\|not'`（D-V2-001） | P0 |
+| TC-022 | AC-022 | 五个 core crate | `for c in core store orchestrator gate cli; do test -f packages/beacon-rs/beacon-$c/Cargo.toml; done`; `test ! -f packages/beacon-rs/beacon-python/Cargo.toml`; `cargo metadata --no-deps \| jq -e '.packages\|map(.name)\|index("beacon-proto")\|not'`（D-V2-001） | P0 |
 | TC-023 | AC-023 | 依赖无环 | `cargo tree -p beacon-cli` | P0 |
 | TC-024 | AC-024 | 无 proto 硬依赖 | `cargo build -p beacon-cli` 无 gRPC feature；truth 记录 D-V2-001 accepted | P0 |
 | TC-025 | AC-025 | 500 行 | wc -l 或 ADR | P6 |
@@ -206,11 +206,11 @@ truth_ref: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
 | TC-056 | AC-056 | migration 时长 | `cargo test -p beacon-store migration_duration -- --test fixture_typical_project` — wall time <60s；超时 test fail | P3 |
 | TC-057 | AC-057 | iteration 调度 | bench < 100ms | P6 |
 | TC-058 | AC-058 | DB 体积 WARN | 超 500MB 日志 | P6 |
-| TC-059 | AC-059 | python shim | doctor verify-context | P4 |
-| TC-060 | AC-060 | BEACON_V2=1 | Rust 路径 | P4 |
+| TC-059 | AC-059 | 六能力 surface | `beacon harness list --version v2.0.0 --json` 精确返回 loop/truth/design/implement/qa-evidence/release | P4 |
+| TC-060 | AC-060 | 默认 Rust v2 | runtime payload 不要求 `BEACON_V2=1` opt-in | P4 |
 | TC-061 | AC-061 | BEACON_STORE_PATH | 隔离库 | P0 |
-| TC-062 | AC-062 | compat verbose | compat_route=python | P4 |
-| TC-063 | AC-063 | **33 skills 全量** | `beacon skill list` 全量 + 每 skill 路由 smoke | P4 |
+| TC-062 | AC-062 | legacy fallback removed | legacy invocation fixture 返回 migration/archive route，stdout/stderr 不含 `compat_route=python` | P4 |
+| TC-063 | AC-063 | 六能力 contract | `beacon harness list --version v2.0.0 --json \| jq -e 'map(.id)==["loop","truth","design","implement","qa-evidence","release"]'` | P4 |
 | TC-064 | AC-064 | CLI help snapshot | 全子命令 | P1 |
 | TC-065 | AC-065 | --json schema | spine/projects/run validate | P1 |
 | TC-066 | AC-066 | reason_codes | 集成：5 codes gate 失败往返 + reason-codes.md | P3 |
@@ -235,7 +235,7 @@ truth_ref: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
 | TC-085 | AC-085 | P1 出口 | spine+projects | P1 |
 | TC-086 | AC-086 | P2 出口 | orchestrator+**TC-043/044** | P2 |
 | TC-087 | AC-087 | P3 出口 | gate+migration+**TC-045/046/099/100** | P3 |
-| TC-088 | AC-088 | P4 出口 | shim+**TC-063 全 skill** | P4 |
+| TC-088 | AC-088 | P4 出口 | minimal harness surface + TC-063 + TC-062 legacy removal | P4 |
 | TC-089 | AC-089 | P5 跳过 | **D-V2-001 accepted**：deferral ledger 有 accepted 记录；**无** P5 proto job；不阻塞 P6 | — |
 | TC-090 | AC-090 | P6 出口 | 默认 v2+bench | P6 |
 | TC-091 | AC-091 | CI matrix | GHA/job 跑 cargo test beacon-rs | P4 |
@@ -260,6 +260,27 @@ truth_ref: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
 | TC-107 | AC-107 | Developer Feedback checkpoint | `beacon-v2 run --feedback-checkpoint --every 3` — 每 3 iteration 暂停等人注入 notes，resume 后基于 notes 重新 iterate；notes 写入 lifecycle_events | P3 |
 | TC-108 | AC-108 | 三层 Loop 可观测 | `beacon-v2 spine show --json` — snapshot 含 `loop_layer` 字段（coding/developer/realworld） | P3 |
 
+## R8 Minimal Kernel（AC-109–124）
+
+| TC ID | AC ID | 场景 | Command + Assertion | Phase |
+|-------|-------|------|---------------------|-------|
+| TC-109 | AC-109 | 六个一等能力 | `beacon harness list --version v2.0.0 --json` 精确返回 `loop/truth/design/implement/qa-evidence/release`，无第七能力 | P4 |
+| TC-110 | AC-110 | 历史兼容移除 | `cargo metadata` 无 `beacon-python`；legacy skill fixture 返回 migration/archive route，不进入 Python runtime | P4 |
+| TC-111 | AC-111 | 强意图识别 | `beacon truth intent-snapshot --prompt fixture --json` 产出 `intent_snapshot.v1` required fields + confidence | P1 |
+| TC-112 | AC-112 | prompt snapshot ledger | 连续两轮 prompt 写入 hash；latest accepted 指针更新；旧 rejected snapshot 不可被 loop 消费 | P1 |
+| TC-113 | AC-113 | low-confidence freeze block | 低置信/冲突 scope fixture 执行 freeze → exit != 0 + `reason_code=intent_confidence_low` 或 `scope_unconfirmed` | P1 |
+| TC-114 | AC-114 | decision packet admission | `beacon loop start --decision-packet missing.json` → blocked；有效 `decision_packet.v1` → 进入 resolving | P2 |
+| TC-115 | AC-115 | design primitive gate | UI feature 无 `design_primitives.v1` → implement admission blocked；绑定后 pass | P2 |
+| TC-116 | AC-116 | implement admission compound | truth/design/worktree/program/dependency 任一缺失 → typed reason_code；全满足才允许 write | P2 |
+| TC-117 | AC-117 | agent trace | governed iteration 后 `agent_trace.v1` 含 decision/output 或 failure/retry/tool_call/gate_verdict；缺 trace fail-closed | P2 |
+| TC-118 | AC-118 | stagnation detector | repeat_failure/repeat_labor/plateau 三 fixture 产出稳定 `stagnation-report.v1`；clean fixture 无 finding | P2 |
+| TC-119 | AC-119 | remediation sandbox | overlay eval pass 输出 human_review_required；eval fail rollback clean；canonical truth 未改 | P3 |
+| TC-120 | AC-120 | loop guardrails | pattern/failure/token/readiness/lease/denylist 任一阻断 fixture → loop preflight blocked + reason_code | P2 |
+| TC-121 | AC-121 | confidence + FSM coverage | qa-evidence profile 含 confidence_chain 与 state_machine_coverage；FSM gap 不可记 full pass | P3 |
+| TC-122 | AC-122 | defect repair regression | defect->fix->regression 链完整才解 release block；缺回归 → `regression_skipped` | P3 |
+| TC-123 | AC-123 | 非行为证据拒绝 | static shell/source-grep/coming_soon/no-op/zero-assertion fixture 均 rejected | P3 |
+| TC-124 | AC-124 | release human gate | auto_decide=true 且无 human confirmation → release gate blocked | P3 |
+
 ## 负向路径
 
 | TC ID | 场景 | 期望 |
@@ -270,6 +291,9 @@ truth_ref: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
 | TC-N04 | 仅 smoke 无 bench 声称 AC-051–058 | P6 阻断 |
 | TC-N05 | subprocess 替身冒充 ImplementHarness（AC-100） | 拒绝 |
 | TC-N06 | current-branch + isolated-worktree 非法组合（AC-099） | fail-closed + reason_code |
+| TC-N07 | design_required 但无 design_primitives | implement admission fail-closed |
+| TC-N08 | decision_packet 引用 rejected prompt snapshot | loop start fail-closed |
+| TC-N09 | auto_decide 试图越过 release human gate | release blocked |
 
 ## E2E
 
@@ -278,7 +302,7 @@ truth_ref: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
 | TC-E01 | freeze → run goal(codex) → import → qa → release → Closed | `cargo test -p beacon-orchestrator e2e_closed_loop -- --test fixture_delivery_chain`（CI opt-in `BEACON_V2_E2E=1`） |
 | TC-E02 | claude+acp 各 1 iteration 同一 feature 不同 run | `cargo test -p beacon-orchestrator e2e_multi_backend -- --backends claude,acp`（cred 缺失 → `BLOCKED:missing_cred`） |
 | TC-E03 | projection rebuild 后 spine 一致 | `beacon doctor projection rebuild --project . --json`; `beacon spine show --json` lifecycle/gate 字段与 rebuild 前 snapshot diff 为空（artifact stale 允许） |
-| TC-E04 | 33 skills 全量 smoke（P4 gate） | `beacon skill list --json \| jq -e 'length==33'`; 每 skill id 路由 smoke（同 TC-063） |
+| TC-E04 | 六能力 harness surface（P4 gate） | `beacon harness list --version v2.0.0 --json \| jq -e 'map(.id)==["loop","truth","design","implement","qa-evidence","release"]'` |
 | TC-E05 | worktree goal → implement harness iteration → spine cwd 一致 | `cargo test -p beacon-orchestrator e2e_worktree_harness -- --test fixture_worktree_implement`（同 TC-099/100） |
 
-**当前**：truth **R2 draft**（r5）；**P0 done**（TC-104）；P1–P6 其余 TC 待实现后由 `beacon-eval-qa` 裁决。
+**当前**：truth **R8 frozen**；历史 P0 candidate evidence 见 `evidence.md`，R8 minimal-kernel AC-002/022/059/063/109–124 待实现后由 `beacon-eval-qa` 裁决。
