@@ -178,6 +178,20 @@ def test_hook_advisory_has_no_truth_authority(tmp_path: Path) -> None:
 def test_release_check_surfaces_post_release_advisory(tmp_path: Path, monkeypatch) -> None:
     _write_post_release_hook(tmp_path)
     _write_release_artifacts(tmp_path)
+    latest_path = tmp_path / "docs" / "beacon" / ".machine" / "hooks" / "beacon-post-release-local-install.latest.json"
+    latest_path.parent.mkdir(parents=True, exist_ok=True)
+    confirmed_latest = {
+        "schema_version": "1.0",
+        "hook_id": "beacon-post-release-local-install",
+        "version": VERSION,
+        "feature": FEATURE,
+        "status": "passed",
+        "dry_run": False,
+        "confirmed": True,
+        "side_effect_executed": True,
+        "run_id": "run-confirmed",
+    }
+    latest_path.write_text(json.dumps(confirmed_latest), encoding="utf-8")
     monkeypatch.setattr("beacon.commands.release.build_requirement_package_gate", lambda *_args, **_kwargs: {"status": "pass"})
     monkeypatch.setattr("beacon.commands.release.build_release_scorecard", lambda *_args, **_kwargs: _scorecard())
     monkeypatch.setattr("beacon.commands.release.project_release_feature_enabled", lambda *_args, **_kwargs: False)
@@ -196,8 +210,10 @@ def test_release_check_surfaces_post_release_advisory(tmp_path: Path, monkeypatc
     assert advisory["status"] == "ready"
     assert advisory["support_evidence_only"] is True
     assert advisory["hooks"][0]["side_effect_executed"] is False
+    assert advisory["hooks"][0]["dry_run"]["attempted"] is False
     assert "beacon hooks run beacon-post-release-local-install" in advisory["recommended_command"]
     assert "--confirm" in advisory["recommended_command"]
+    assert json.loads(latest_path.read_text(encoding="utf-8")) == confirmed_latest
 
 
 def test_help_status_can_project_hook_advisory(tmp_path: Path, monkeypatch) -> None:

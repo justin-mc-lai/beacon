@@ -19,6 +19,7 @@ VALID_STAGES = frozenset({
     "governance_precheck",
     "truth_routing",
     "review_routing",
+    "standard_execution_precheck",
     "implement_routing",
     "qa_routing",
     "qa_deep_routing",
@@ -43,6 +44,14 @@ IMPLEMENT_READY_REVIEW_ROUTES = frozenset({
     "beacon-gen-implement",
     "beacon-pln-friction",
 })
+REQUIRED_STANDARD_EXECUTION_CHECKS = (
+    "truth_map_verify",
+    "verify_materials_strict",
+    "git_diff_check",
+    "branch_governance_verify",
+    "workspace_admission",
+)
+PASSING_CHECK_STATUSES = frozenset({"pass", "passed", "ok", "up_to_date"})
 
 
 def _now_iso() -> str:
@@ -92,6 +101,13 @@ def init(
             "planner_review_user_decision_required": False,
             "planner_review_highest_severity": "",
             "planner_review_finding_count": 0,
+            "standard_execution_flow_status": "not_checked",
+            "truth_baseline_commit": None,
+            "canonical_refreeze_committed": False,
+            "feature_worktree_reconciled": False,
+            "stale_feature_refreeze_quarantine_ref": "",
+            "verification_bundle_ref": "",
+            "workspace_admission_ref": "",
             "tests_pass": False,
             "qa_verdict": None,
             "release_verdict": None,
@@ -368,7 +384,7 @@ def record_review_decision(
         next_stage = "error_recovery"
         reason_code = "planner_review_blocking_finding"
     elif recommended_route in IMPLEMENT_READY_REVIEW_ROUTES:
-        next_stage = "implement_routing"
+        next_stage = "standard_execution_precheck"
         reason_code = ""
     else:
         next_stage = "error_recovery"
@@ -397,6 +413,229 @@ def record_review_decision(
     }
 
 
+def _check_passed(value: Any) -> bool:
+    if value is True:
+        return True
+    if isinstance(value, str):
+        return value.strip().lower() in PASSING_CHECK_STATUSES
+    if isinstance(value, dict):
+        status = value.get("status")
+        if isinstance(status, str):
+            return status.strip().lower() in PASSING_CHECK_STATUSES
+        if status is True:
+            return True
+    return False
+
+
+def _normalise_verification_bundle(bundle: dict[str, Any] | None) -> dict[str, Any]:
+    if not isinstance(bundle, dict):
+        return {}
+    return {key: bundle.get(key) for key in REQUIRED_STANDARD_EXECUTION_CHECKS if key in bundle}
+
+
+def _default_verification_bundle_ref(run_id: str) -> str:
+    return f".beacon/state/loop-goal/{run_id}.verification-bundle.json"
+
+
+def _write_verification_bundle(
+    project_root: Path,
+    *,
+    run_id: str,
+    bundle: dict[str, Any],
+    verification_bundle_ref: str,
+) -> str:
+    ref = verification_bundle_ref.strip() or _default_verification_bundle_ref(run_id)
+    path = Path(ref)
+    if not path.is_absolute():
+        path = project_root.expanduser().resolve() / path
+    path.parent.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "schema_version": "loop-goal-standard-execution-bundle.v1",
+        "run_id": run_id,
+        "checks": bundle,
+        "required_checks": list(REQUIRED_STANDARD_EXECUTION_CHECKS),
+        "updated_at": _now_iso(),
+    }
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    return ref
+
+
+def _standard_execution_block(
+    project_root: Path,
+    *,
+    run_id: str,
+    state: dict[str, Any],
+    outputs: dict[str, Any],
+    reason_code: str,
+) -> dict[str, Any]:
+    state["outputs"].update(outputs)
+    state["outputs"]["standard_execution_flow_status"] = "blocked"
+    state["current_stage"] = "error_recovery"
+    state["stage_history"].append({
+        "stage": "error_recovery",
+        "status": f"blocked:{reason_code}",
+        "at": _now_iso(),
+        "reason_code": reason_code,
+    })
+    _state_path(project_root, run_id).write_text(
+        json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    return {
+        "status": "blocked",
+        "reason_code": reason_code,
+        "current_stage": "error_recovery",
+        "recommended_route": "beacon-gov-debug",
+        "run_id": run_id,
+        "outputs": state["outputs"],
+    }
+
+
+def record_standard_execution_precheck(
+    project_root: Path,
+    *,
+    run_id: str,
+    precheck: dict[str, Any],
+) -> dict[str, Any]:
+    """Record Standard Execution Flow admission and route fail-closed.
+
+    This helper consumes deterministic preflight results produced by branch
+    governance, material verification, diff checks, and workspace admission.
+    It does not run git by itself; loop-goal remains a governor and records the
+    authoritative results before allowing implementation.
+    """
+    root = project_root.expanduser().resolve()
+    state = read_state(root, run_id=run_id)
+    if state.get("status") == "blocked":
+        return state
+
+    outputs = {
+        "truth_baseline_commit": precheck.get("truth_baseline_commit"),
+        "canonical_refreeze_committed": bool(precheck.get("canonical_refreeze_committed")),
+        "feature_worktree_reconciled": bool(precheck.get("feature_worktree_reconciled")),
+        "stale_feature_refreeze_quarantine_ref": str(
+            precheck.get("stale_feature_refreeze_quarantine_ref") or ""
+        ),
+        "verification_bundle_ref": str(
+            precheck.get("verification_bundle_ref") or _default_verification_bundle_ref(run_id)
+        ),
+        "workspace_admission_ref": str(precheck.get("workspace_admission_ref") or ""),
+    }
+
+    previous_outputs = state.get("outputs", {})
+    if (
+        previous_outputs.get("standard_execution_flow_status") == "pass"
+        and previous_outputs.get("truth_baseline_commit") == outputs["truth_baseline_commit"]
+        and previous_outputs.get("verification_bundle_ref") == outputs["verification_bundle_ref"]
+        and previous_outputs.get("workspace_admission_ref") == outputs["workspace_admission_ref"]
+    ):
+        return {
+            "status": "pass",
+            "result": "up_to_date",
+            "current_stage": state.get("current_stage"),
+            "run_id": run_id,
+            "outputs": previous_outputs,
+        }
+
+    verification_bundle = _normalise_verification_bundle(
+        precheck.get("verification_bundle") if isinstance(precheck, dict) else None
+    )
+    workspace_admission = precheck.get("workspace_admission")
+    if "workspace_admission" in verification_bundle and not workspace_admission:
+        workspace_admission = verification_bundle.get("workspace_admission")
+
+    if not outputs["canonical_refreeze_committed"]:
+        return _standard_execution_block(
+            root,
+            run_id=run_id,
+            state=state,
+            outputs=outputs,
+            reason_code="canonical_refreeze_not_committed",
+        )
+
+    if bool(precheck.get("stale_feature_refreeze_detected")) and not outputs[
+        "stale_feature_refreeze_quarantine_ref"
+    ]:
+        return _standard_execution_block(
+            root,
+            run_id=run_id,
+            state=state,
+            outputs=outputs,
+            reason_code="stale_feature_refreeze_not_quarantined",
+        )
+
+    if not outputs["truth_baseline_commit"] or not bool(precheck.get("truth_baseline_merged")):
+        return _standard_execution_block(
+            root,
+            run_id=run_id,
+            state=state,
+            outputs=outputs,
+            reason_code="truth_baseline_not_merged",
+        )
+
+    missing_checks = [
+        key for key in REQUIRED_STANDARD_EXECUTION_CHECKS
+        if key not in verification_bundle or not _check_passed(verification_bundle.get(key))
+    ]
+    if missing_checks:
+        outputs["verification_bundle_missing_checks"] = missing_checks
+        return _standard_execution_block(
+            root,
+            run_id=run_id,
+            state=state,
+            outputs=outputs,
+            reason_code="verification_bundle_incomplete",
+        )
+
+    if not outputs["workspace_admission_ref"]:
+        return _standard_execution_block(
+            root,
+            run_id=run_id,
+            state=state,
+            outputs=outputs,
+            reason_code="workspace_admission_missing",
+        )
+
+    if not _check_passed(workspace_admission):
+        reason_code = "workspace_admission_blocked"
+        if isinstance(workspace_admission, dict):
+            reason_code = str(workspace_admission.get("reason_code") or reason_code)
+        return _standard_execution_block(
+            root,
+            run_id=run_id,
+            state=state,
+            outputs=outputs,
+            reason_code=reason_code,
+        )
+
+    bundle_ref = _write_verification_bundle(
+        root,
+        run_id=run_id,
+        bundle=verification_bundle,
+        verification_bundle_ref=outputs["verification_bundle_ref"],
+    )
+    outputs["verification_bundle_ref"] = bundle_ref
+    outputs["standard_execution_flow_status"] = "pass"
+    outputs.pop("verification_bundle_missing_checks", None)
+
+    state["outputs"].update(outputs)
+    state["current_stage"] = "implement_routing"
+    state["stage_history"].append({
+        "stage": "implement_routing",
+        "status": "standard_execution_precheck_pass",
+        "at": _now_iso(),
+        "truth_baseline_commit": outputs["truth_baseline_commit"],
+    })
+    _state_path(root, run_id).write_text(
+        json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    return {
+        "status": "pass",
+        "current_stage": "implement_routing",
+        "run_id": run_id,
+        "outputs": outputs,
+    }
+
+
 def route_to_error_recovery(
     project_root: Path,
     *,
@@ -418,6 +657,7 @@ def get_skill_for_stage(stage: str) -> str:
         "governance_precheck": "CLI:beacon-plan-start",
         "truth_routing": "beacon-gen-truth",
         "review_routing": "beacon-pln-review",
+        "standard_execution_precheck": "CLI:standard-execution-precheck",
         "implement_routing": "beacon-gen-implement",
         "qa_routing": "beacon-eval-qa",
         "qa_deep_routing": "beacon-eval-qa-deep",
