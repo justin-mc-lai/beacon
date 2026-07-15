@@ -3,119 +3,18 @@
   "feature": "beacon-v2-rust-kernel-redesign",
   "feature_slug": "beacon-v2-rust-kernel-redesign",
   "version": "v2.0.0",
-  "revision_id": "R11",
-  "source_revision_id": "R10",
+  "revision_id": "R12",
+  "source_revision_id": "R11",
   "status": "ready",
-  "cleanup_required": true,
-  "removed_requirement_count": 1,
-  "added_requirement_count": 8,
-  "retained_requirement_count": 130,
-  "removed_requirement_surfaces": [
-    {
-      "revision_id": "R10",
-      "id": "AC-020",
-      "story_id": "",
-      "kind": "ac",
-      "theme": "AC-059–066, AC-109–137",
-      "text": "六能力 surface + legacy removal + progressive disclosure + BranchContext + TraceSpine + canonical truth branch",
-      "details": [],
-      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
-      "signature": "ac::::ac-059–066, ac-109–137::六能力 surface + legacy removal + progressive disclosure + branchcontext + tracespine + canonical truth branch::"
-    }
-  ],
-  "added_requirement_surfaces": [
-    {
-      "revision_id": "R11",
-      "id": "AC-020",
-      "story_id": "",
-      "kind": "ac",
-      "theme": "AC-059–066, AC-109–144",
-      "text": "六能力 surface + legacy removal + progressive disclosure + BranchContext + TraceSpine + canonical truth branch + standard execution flow",
-      "details": [],
-      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
-      "signature": "ac::::ac-059–066, ac-109–144::六能力 surface + legacy removal + progressive disclosure + branchcontext + tracespine + canonical truth branch + standard execution flow::"
-    },
-    {
-      "revision_id": "R11",
-      "id": "AC-133",
-      "story_id": "",
-      "kind": "ac",
-      "theme": "general",
-      "text": "**：canonical refreeze 只有在 canonical branch 提交后才成为可消费 baseline；未提交 refreeze artifact 不得被 feature branch、loop、implement、qa-evidence 或 release 采信。",
-      "details": [],
-      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
-      "signature": "ac::::general::**：canonical refreeze 只有在 canonical branch 提交后才成为可消费 baseline；未提交 refreeze artifact 不得被 feature branch、loop、implement、qa-evidence 或 release 采信。::"
-    },
-    {
-      "revision_id": "R11",
-      "id": "AC-134",
-      "story_id": "",
-      "kind": "ac",
-      "theme": "general",
-      "text": "**：feature worktree 中发现 stale feature-local refreeze/projection dirty 时，必须 scoped stash/archive 并记录引用；不得作为 requirement authority commit/merge。",
-      "details": [],
-      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
-      "signature": "ac::::general::**：feature worktree 中发现 stale feature-local refreeze/projection dirty 时，必须 scoped stash/archive 并记录引用；不得作为 requirement authority commit/merge。::"
-    },
-    {
-      "revision_id": "R11",
-      "id": "AC-135",
-      "story_id": "",
-      "kind": "ac",
-      "theme": "general",
-      "text": "**：feature/dev branch 进入 implement 前必须包含 canonical `truth_baseline_commit`，且不得有违反 dirty policy 的工作区状态；否则 blocked。",
-      "details": [],
-      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
-      "signature": "ac::::general::**：feature/dev branch 进入 implement 前必须包含 canonical `truth_baseline_commit`，且不得有违反 dirty policy 的工作区状态；否则 blocked。::"
-    },
-    {
-      "revision_id": "R11",
-      "id": "AC-138",
-      "story_id": "",
-      "kind": "ac",
-      "theme": "general",
-      "text": "**：标准执行流通过六 public skill 的 progressive examples 暴露，不得新增第七个 public skill 或绕过 Harness Boundary。",
-      "details": [],
-      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
-      "signature": "ac::::general::**：标准执行流通过六 public skill 的 progressive examples 暴露，不得新增第七个 public skill 或绕过 harness boundary。::"
-    },
-    {
-      "revision_id": "R11",
-      "id": "AC-136",
-      "story_id": "",
-      "kind": "ac",
-      "theme": "general",
-      "text": "**：标准流 admission evidence bundle 必须包含 truth-map verify、verify-materials strict、git diff check、branch-governance verify、workspace admission 五类结果；缺任一项不得进入 implement。",
-      "details": [],
-      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
-      "signature": "ac::::general::**：标准流 admission evidence bundle 必须包含 truth-map verify、verify-materials strict、git diff check、branch-governance verify、workspace admission 五类结果；缺任一项不得进入 implement。::"
-    },
-    {
-      "revision_id": "R11",
-      "id": "AC-137",
-      "story_id": "",
-      "kind": "ac",
-      "theme": "general",
-      "text": "**：标准流必须可 idempotent resume；已对齐步骤重复执行时返回 `up_to_date` / `pass`，不得因重复执行产生新的 requirement revision。",
-      "details": [],
-      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
-      "signature": "ac::::general::**：标准流必须可 idempotent resume；已对齐步骤重复执行时返回 `up_to_date` / `pass`，不得因重复执行产生新的 requirement revision。::"
-    },
-    {
-      "revision_id": "R11",
-      "id": "AC-031",
-      "story_id": "",
-      "kind": "ac",
-      "theme": "R8 refreeze：将 canonical truth author/refreeze/commit -> feature worktree reconcile -> governance verify -> workspace admission -> implement resume 固化为 Standard Execution Flow；新增 baseline commit、stale feature-local refreeze quarantine、verification bundle 与 idempotent resume contract（AC-138–144）",
-      "text": "R8 refreeze：将 canonical truth author/refreeze/commit -> feature worktree reconcile -> governance verify -> workspace admission -> implement resume 固化为 Standard Execution Flow；新增 baseline commit、stale feature-local refreeze quarantine、verification bundle 与 idempotent resume contract（AC-138–144）",
-      "details": [],
-      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
-      "signature": "ac::::r8 refreeze：将 canonical truth author/refreeze/commit -> feature worktree reconcile -> governance verify -> workspace admission -> implement resume 固化为 standard execution flow；新增 baseline commit、stale feature-local refreeze quarantine、verification bundle 与 idempotent resume contract（ac-138–144）::r8 refreeze：将 canonical truth author/refreeze/commit -> feature worktree reconcile -> governance verify -> workspace admission -> implement resume 固化为 standard execution flow；新增 baseline commit、stale feature-local refreeze quarantine、verification bundle 与 idempotent resume contract（ac-138–144）::"
-    }
-  ],
+  "cleanup_required": false,
+  "removed_requirement_count": 0,
+  "added_requirement_count": 0,
+  "retained_requirement_count": 138,
+  "removed_requirement_surfaces": [],
+  "added_requirement_surfaces": [],
   "retained_requirement_surfaces": [
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-007",
       "story_id": "",
       "kind": "ac",
@@ -126,7 +25,7 @@
       "signature": "ac::::`beacon spine show`::p95 < 50ms::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-008",
       "story_id": "",
       "kind": "ac",
@@ -137,7 +36,7 @@
       "signature": "ac::::`beacon truth-map resolve`::p95 < 200ms::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-013",
       "story_id": "",
       "kind": "ac",
@@ -148,7 +47,7 @@
       "signature": "ac::::`beacon.db` 体积::软上限 500mb::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-001",
       "story_id": "",
       "kind": "ac",
@@ -159,7 +58,7 @@
       "signature": "ac::::`generate -> evaluate`::agent 写代码→跑 eval→发现问题→修→再测，自动闭环::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-002",
       "story_id": "",
       "kind": "ac",
@@ -170,7 +69,7 @@
       "signature": "ac::::`truth -> generate`（change/refreeze）::人看实现→修正 spec→重新实现；人注入 ai 不知道的上下文::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-016",
       "story_id": "",
       "kind": "ac",
@@ -181,7 +80,7 @@
       "signature": "ac::::ac-001–010, d-01..10::结构性消除::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-017",
       "story_id": "",
       "kind": "ac",
@@ -192,7 +91,7 @@
       "signature": "ac::::ac-004–021::三层+spine+projection rebuild::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-018",
       "story_id": "",
       "kind": "ac",
@@ -203,7 +102,7 @@
       "signature": "ac::::ac-022–025::workspace::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-019",
       "story_id": "",
       "kind": "ac",
@@ -214,7 +113,18 @@
       "signature": "ac::::ac-026–036, ac-051–058::双 fsm+benchmark::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
+      "id": "AC-020",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "AC-059–066, AC-109–144",
+      "text": "六能力 surface + legacy removal + progressive disclosure + BranchContext + TraceSpine + canonical truth branch + standard execution flow",
+      "details": [],
+      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
+      "signature": "ac::::ac-059–066, ac-109–144::六能力 surface + legacy removal + progressive disclosure + branchcontext + tracespine + canonical truth branch + standard execution flow::"
+    },
+    {
+      "revision_id": "R12",
       "id": "AC-021",
       "story_id": "",
       "kind": "ac",
@@ -225,7 +135,7 @@
       "signature": "ac::::ac-067–083::九表+dao::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-022",
       "story_id": "",
       "kind": "ac",
@@ -236,7 +146,7 @@
       "signature": "ac::::ac-084–090::p0–p6::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-023",
       "story_id": "",
       "kind": "ac",
@@ -247,7 +157,7 @@
       "signature": "ac::::ac-091–095::可执行缓解::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-024",
       "story_id": "",
       "kind": "ac",
@@ -258,7 +168,7 @@
       "signature": "ac::::ac-096–098::evaluator 裁决::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-025",
       "story_id": "",
       "kind": "ac",
@@ -269,7 +179,7 @@
       "signature": "ac::::ac-101–103::tig + planner multi-agent + doctor 路由::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-026",
       "story_id": "",
       "kind": "ac",
@@ -280,7 +190,7 @@
       "signature": "ac::::ac-104::beacon-rs scaffold 已完成::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-005",
       "story_id": "",
       "kind": "ac",
@@ -291,7 +201,7 @@
       "signature": "ac::::claude::acp:*>` cli 直接选 agent 跑长任务编码落地；agent 选择映射到对应 agentbackend；loop 在 cli 进程内跑，checkpoint/resume/信号（sigint graceful stop）保证 host 稳定，**无 daemon**。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-004",
       "story_id": "",
       "kind": "ac",
@@ -302,7 +212,7 @@
       "signature": "ac::::clean preflight；branch 模式 p2；**worktree 全模式 p3（ac-099）**::clean preflight；branch 模式 p2；**worktree 全模式 p3（ac-099）**::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-006",
       "story_id": "",
       "kind": "ac",
@@ -313,7 +223,7 @@
       "signature": "ac::::cli 冷启动::p95 < 100ms 本地::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-011",
       "story_id": "",
       "kind": "ac",
@@ -324,7 +234,7 @@
       "signature": "ac::::db migration v1→v2::< 60s 典型 fixture::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-015",
       "story_id": "",
       "kind": "ac",
@@ -335,7 +245,7 @@
       "signature": "ac::::gate 写库 + **ac-045/046** claude/acp 真集成 + migration 完成::legacy projection/import 只读对照::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-009",
       "story_id": "",
       "kind": "ac",
@@ -346,7 +256,7 @@
       "signature": "ac::::gate 计算::p95 < 50ms::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-073",
       "story_id": "",
       "kind": "ac",
@@ -357,7 +267,7 @@
       "signature": "ac::::general::**（p2）：`subprocessbackend` 完成 1 次真 integration iteration（可控测试 harness 命令），输出符合 ac-042 schema。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-074",
       "story_id": "",
       "kind": "ac",
@@ -368,7 +278,7 @@
       "signature": "ac::::general::**（p3）：`acpbackend`（cli `acp:<target>`）完成 1 次真 integration iteration；输出 schema 与 ac-042 一致。**cursor 宿主不单独列为 backend**，走 acp 或 subprocess。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-109",
       "story_id": "",
       "kind": "ac",
@@ -379,7 +289,7 @@
       "signature": "ac::::general::**（p3）：`beacon doctor verify-truth-integrity` 在 v2 路由到 rust gate；`--mode block` exit code 与 v1.6 一致，不使用 pyo3 compat。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-079",
       "story_id": "",
       "kind": "ac",
@@ -390,7 +300,7 @@
       "signature": "ac::::general::**（p3）：developer feedback loop 人注入 checkpoint——`beacon-v2 run --feedback-checkpoint` 在每 n iteration 后暂停 loop，等待人注入上下文修正（写入 `lifecycle_events` notes_injected），resume 后基于修正重新 iterate；人注入是 harness 接口，不绕过 truth（truth 变更仍走 change/refreeze）。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-080",
       "story_id": "",
       "kind": "ac",
@@ -401,7 +311,7 @@
       "signature": "ac::::general::**（p3）：loop engineering 三层 loop 可观测——spine snapshot 含 `loop_layer` 字段（coding/developer/realworld），标注当前 run 在哪层 loop；coding loop 内的 iteration + developer feedback 的 checkpoint + real-world 的 research 都可追溯。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-034",
       "story_id": "",
       "kind": "ac",
@@ -412,7 +322,7 @@
       "signature": "ac::::general::**）::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-043",
       "story_id": "",
       "kind": "ac",
@@ -423,7 +333,7 @@
       "signature": "ac::::general::**：**禁止** `<project>/.beacon/beacon.db` 作为运行态权威（v2 明确否决 per-project db）。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-044",
       "story_id": "",
       "kind": "ac",
@@ -434,7 +344,7 @@
       "signature": "ac::::general::**：**禁止** `<project>/.beacon/loop/ledger/loop-runs.db` 作为 v2 权威；v1.6 ledger 须在 migration 中导入全局库后只读归档。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-042",
       "story_id": "",
       "kind": "ac",
@@ -445,7 +355,7 @@
       "signature": "ac::::general::**：`.beacon/qa/*.json`、`.beacon/gate-report.json` 等 v1 投影在 v2 为 **非权威**；spine 读 db 优先，文件仅 fallback/export。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-102",
       "story_id": "",
       "kind": "ac",
@@ -456,7 +366,7 @@
       "signature": "ac::::general::**：`artifact_refs.abs_path` 必须绝对路径。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-093",
       "story_id": "",
       "kind": "ac",
@@ -467,7 +377,7 @@
       "signature": "ac::::general::**：`artifact_refs`（id, run_id, kind, abs_path, content_hash, size_bytes, created_at）::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-067",
       "story_id": "",
       "kind": "ac",
@@ -478,7 +388,7 @@
       "signature": "ac::::general::**：`awaitingqa` 仅在 `import-evidence` 成功后可进入。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-046",
       "story_id": "",
       "kind": "ac",
@@ -489,7 +399,7 @@
       "signature": "ac::::general::**：`beacon doctor projection rebuild` 须能从已注册 `project_root` 的 md + blob + 遗留 v1 json **重建**全局库索引（plan §2.5 原则 4）；rebuild 后 `spine show` 与 rebuild 前 snapshot 在 lifecycle/gate 字段上一致（artifact 指针允许 stale 标记）。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-084",
       "story_id": "",
       "kind": "ac",
@@ -500,7 +410,7 @@
       "signature": "ac::::general::**：`beacon harness list --version v2.0.0 --json`（或等价 cli）只返回六个一等能力及其 contract metadata；不得要求 33 skills smoke 作为 v2 closure。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-095",
       "story_id": "",
       "kind": "ac",
@@ -511,7 +421,7 @@
       "signature": "ac::::general::**：`beacon-store` 提供 projectdao, featuredao, rundao, gatedao, artifactdao, spinedao。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-082",
       "story_id": "",
       "kind": "ac",
@@ -522,7 +432,7 @@
       "signature": "ac::::general::**：`beacon_store_path` 测试隔离；生产默认 `~/.beacon/beacon.db`。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-060",
       "story_id": "",
       "kind": "ac",
@@ -533,7 +443,7 @@
       "signature": "ac::::general::**：`blocked` 必须携带 `reason_codes: vec<string>` 与可选 `blocking_gate`。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-124",
       "story_id": "",
       "kind": "ac",
@@ -544,7 +454,7 @@
       "signature": "ac::::general::**：`branchcontext.v1` 是所有写入/agent/evidence/release harness 的共同输入，字段至少覆盖 caller cwd、target project root、admitted worktree、base/feature/canonical branch、dirty policy、protected paths 与 admission artifact。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-094",
       "story_id": "",
       "kind": "ac",
@@ -555,7 +465,7 @@
       "signature": "ac::::general::**：`checkpoints`（id, run_id, iteration, state_json, created_at）::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-068",
       "story_id": "",
       "kind": "ac",
@@ -566,7 +476,7 @@
       "signature": "ac::::general::**：`closed` 仅 release gate pass 或用户显式 archive；orchestrator **不得**自设 closed。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-062",
       "story_id": "",
       "kind": "ac",
@@ -577,7 +487,7 @@
       "signature": "ac::::general::**：`crashed` / `timedout` / `interrupted` 须写入 `lifecycle_events` 且可触发 recovery 路径。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-069",
       "story_id": "",
       "kind": "ac",
@@ -588,7 +498,7 @@
       "signature": "ac::::general::**：`evidencechain` 含 `manifest_hash`、`signature_chain`、`artifact_refs` 有序列表。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-090",
       "story_id": "",
       "kind": "ac",
@@ -599,7 +509,7 @@
       "signature": "ac::::general::**：`feature_lifecycle`（feature_id, stage, status, reason_codes_json, updated_at）::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-089",
       "story_id": "",
       "kind": "ac",
@@ -610,7 +520,7 @@
       "signature": "ac::::general::**：`feature_packages`（id, project_version_id, slug, truth_path, tests_path, status）::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-092",
       "story_id": "",
       "kind": "ac",
@@ -621,7 +531,7 @@
       "signature": "ac::::general::**：`gate_results`（id, feature_id, gate_type, verdict, reason_codes_json, evaluated_at）::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-128",
       "story_id": "",
       "kind": "ac",
@@ -632,7 +542,7 @@
       "signature": "ac::::general::**：`implement` / `qa-evidence` / `release` 必须验证 trace completeness；trace missing、append failure、event hash chain invalid 或 event->evidence 断链均不得继续闭环。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-091",
       "story_id": "",
       "kind": "ac",
@@ -643,7 +553,7 @@
       "signature": "ac::::general::**：`lifecycle_events`（id, feature_id, run_id, event_type, payload_json, created_at）::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-101",
       "story_id": "",
       "kind": "ac",
@@ -654,7 +564,7 @@
       "signature": "ac::::general::**：`list` 支持 lifecycle/run status 过滤。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-127",
       "story_id": "",
       "kind": "ac",
@@ -665,7 +575,7 @@
       "signature": "ac::::general::**：`loop start` 必须创建 `tracecontext.v1` 并绑定 branchcontext、decision_packet、intent_snapshot、truth_hash 与 design_primitives（当 required）；缺失或不一致 fail-closed。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-065",
       "story_id": "",
       "kind": "ac",
@@ -676,7 +586,7 @@
       "signature": "ac::::general::**：`paused` / `stopping` / `stopped` 与 v1 beacon-loop graceful+force stop 对齐。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-088",
       "story_id": "",
       "kind": "ac",
@@ -687,7 +597,7 @@
       "signature": "ac::::general::**：`project_versions`（id, project_id, version, docs_root, is_current）::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-130",
       "story_id": "",
       "kind": "ac",
@@ -698,7 +608,7 @@
       "signature": "ac::::general::**：`remediation-report.v1` 必须引用 stagnation report、overlay/eval/rollback evidence 与 human review decision；成功 remediation 仍需人工裁决，不得自动 release。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-066",
       "story_id": "",
       "kind": "ac",
@@ -709,7 +619,7 @@
       "signature": "ac::::general::**：`repairing` 须持久化 repair payload 到 `artifact_refs`。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-061",
       "story_id": "",
       "kind": "ac",
@@ -720,7 +630,7 @@
       "signature": "ac::::general::**：`skipped` 仅允许带 `user_accepted_deferral_id` 或 deferral ledger 引用。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-100",
       "story_id": "",
       "kind": "ac",
@@ -731,7 +641,7 @@
       "signature": "ac::::general::**：`spinedao::snapshot` 联查 lifecycle + run + gate + artifacts。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-129",
       "story_id": "",
       "kind": "ac",
@@ -742,7 +652,7 @@
       "signature": "ac::::general::**：`stagnation-report.v1` 必须引用 trace event range、reason_code、failure catalog / pattern registry；无 trace 归属不得触发 remediation。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-076",
       "story_id": "",
       "kind": "ac",
@@ -753,7 +663,7 @@
       "signature": "ac::::general::**：`stop_when` 移植 v1 `stop-when-gate`（含 gate pass 早停）。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-041",
       "story_id": "",
       "kind": "ac",
@@ -764,7 +674,7 @@
       "signature": "ac::::general::**：`~/.beacon/beacon.db` 不得存储可编辑的需求正文；只可存 metadata、fsm、gate、artifact 指针。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-106",
       "story_id": "",
       "kind": "ac",
@@ -775,7 +685,7 @@
       "signature": "ac::::general::**：benchmark 相对 baseline 回退 >10% 阻断 p6 switch-over。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-045",
       "story_id": "",
       "kind": "ac",
@@ -786,7 +696,7 @@
       "signature": "ac::::general::**：blob 文件变更时 `artifact_refs` 必须更新 `content_hash`；hash 不匹配时 spine 标记 `stale`。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-125",
       "story_id": "",
       "kind": "ac",
@@ -797,7 +707,18 @@
       "signature": "ac::::general::**：branch/workspace governance 是 hard gate；任何 generator/implement/qa-evidence/release 写路径缺失 admission 或 branchcontext mismatch 时必须 fail-closed，不能降级为 warning。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
+      "id": "AC-133",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "general",
+      "text": "**：canonical refreeze 只有在 canonical branch 提交后才成为可消费 baseline；未提交 refreeze artifact 不得被 feature branch、loop、implement、qa-evidence 或 release 采信。",
+      "details": [],
+      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
+      "signature": "ac::::general::**：canonical refreeze 只有在 canonical branch 提交后才成为可消费 baseline；未提交 refreeze artifact 不得被 feature branch、loop、implement、qa-evidence 或 release 采信。::"
+    },
+    {
+      "revision_id": "R12",
       "id": "AC-075",
       "story_id": "",
       "kind": "ac",
@@ -808,7 +729,7 @@
       "signature": "ac::::general::**：checkpoint resume 后 iteration 递增；notes 注入写入 `lifecycle_events`（可审计）。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-120",
       "story_id": "",
       "kind": "ac",
@@ -819,7 +740,7 @@
       "signature": "ac::::general::**：closure evidence 必须包含可执行行为验证、至少一个有效断言、ac/tc 绑定 artifact 与运行佐证；纯静态 shell、源文本匹配或无行为恢复控件不得满足 closure。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-056",
       "story_id": "",
       "kind": "ac",
@@ -830,7 +751,7 @@
       "signature": "ac::::general::**：crate 依赖方向：`cli -> {gate, orchestrator, store, core}`；`store -> core`；`orchestrator -> {store, core}`；禁止循环依赖。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-063",
       "story_id": "",
       "kind": "ac",
@@ -841,7 +762,29 @@
       "signature": "ac::::general::**：delivery 运行时 12 状态在 `beacon-core` 定义并与 `runs.status` check 一致。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
+      "id": "AC-134",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "general",
+      "text": "**：feature worktree 中发现 stale feature-local refreeze/projection dirty 时，必须 scoped stash/archive 并记录引用；不得作为 requirement authority commit/merge。",
+      "details": [],
+      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
+      "signature": "ac::::general::**：feature worktree 中发现 stale feature-local refreeze/projection dirty 时，必须 scoped stash/archive 并记录引用；不得作为 requirement authority commit/merge。::"
+    },
+    {
+      "revision_id": "R12",
+      "id": "AC-135",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "general",
+      "text": "**：feature/dev branch 进入 implement 前必须包含 canonical `truth_baseline_commit`，且不得有违反 dirty policy 的工作区状态；否则 blocked。",
+      "details": [],
+      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
+      "signature": "ac::::general::**：feature/dev branch 进入 implement 前必须包含 canonical `truth_baseline_commit`，且不得有违反 dirty policy 的工作区状态；否则 blocked。::"
+    },
+    {
+      "revision_id": "R12",
       "id": "AC-108",
       "story_id": "",
       "kind": "ac",
@@ -852,7 +795,7 @@
       "signature": "ac::::general::**：frozen package 权威高于 plan；plan 变更须 promote。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-126",
       "story_id": "",
       "kind": "ac",
@@ -863,7 +806,7 @@
       "signature": "ac::::general::**：harness boundary 以 reason_code enforce：planner/truth 不实现，implement 不改 frozen truth/不自评 qa，qa-evidence 不改 truth/implementation，release 不绕过 human gate，loop 不替代任一裁决面。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-105",
       "story_id": "",
       "kind": "ac",
@@ -874,7 +817,7 @@
       "signature": "ac::::general::**：harness surface / legacy removal 回归失败 → `beacon-gov-doctor`，禁止静默 legacy fallback。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-114",
       "story_id": "",
       "kind": "ac",
@@ -885,7 +828,7 @@
       "signature": "ac::::general::**：implement admission 必须同时验证 truth_frozen、decision_packet_current、design_bound（当 required）、worktree_admitted、program_next_action_aligned、dependencies_closed。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-070",
       "story_id": "",
       "kind": "ac",
@@ -896,7 +839,7 @@
       "signature": "ac::::general::**：import 断链 fail-closed → `evidence_chain_broken`。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-112",
       "story_id": "",
       "kind": "ac",
@@ -907,7 +850,7 @@
       "signature": "ac::::general::**：intent confidence 低、强意图冲突、scope 未确认或 deferral 未拍板时，truth freeze fail-closed。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-117",
       "story_id": "",
       "kind": "ac",
@@ -918,7 +861,7 @@
       "signature": "ac::::general::**：loop guardrails 包含 pattern registry、failure catalog、token budget、readiness audit、workspace lease、protected path denylist。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-113",
       "story_id": "",
       "kind": "ac",
@@ -929,7 +872,7 @@
       "signature": "ac::::general::**：loop 启动必须读取 `decision_packet.v1`；缺失、过期或引用未接受 prompt snapshot 时不得进入 implement。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-097",
       "story_id": "",
       "kind": "ac",
@@ -940,7 +883,7 @@
       "signature": "ac::::general::**：migration `v1_loop_ledger`：扫描各项目 `loop-runs.db` 一次性导入。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-098",
       "story_id": "",
       "kind": "ac",
@@ -951,7 +894,7 @@
       "signature": "ac::::general::**：migration `v1_qa_projection`：可选历史只读导入。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-096",
       "story_id": "",
       "kind": "ac",
@@ -962,7 +905,7 @@
       "signature": "ac::::general::**：migration `v1_runtime_ledger`：自 `~/.beacon/runtime-ledger/runtime-ledger.sqlite3` 导入。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-103",
       "story_id": "",
       "kind": "ac",
@@ -973,7 +916,7 @@
       "signature": "ac::::general::**：migration 前自动备份 runtime-ledger 与既有 db。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-077",
       "story_id": "",
       "kind": "ac",
@@ -984,7 +927,7 @@
       "signature": "ac::::general::**：orchestrator **禁止**输出 qa pass / release ready / feature complete verdict。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-078",
       "story_id": "",
       "kind": "ac",
@@ -995,7 +938,7 @@
       "signature": "ac::::general::**：phase controller 四阶段写入 `runs.metadata_json`；phase 转换写 `lifecycle_events`。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-064",
       "story_id": "",
       "kind": "ac",
@@ -1006,7 +949,7 @@
       "signature": "ac::::general::**：plan 主链节点转换须写入 `lifecycle_events`（可审计，非仅内存）。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-119",
       "story_id": "",
       "kind": "ac",
@@ -1017,7 +960,7 @@
       "signature": "ac::::general::**：qa defect 必须形成 defect -> fix -> regression evidence chain；缺段 `repair_chain_broken` 或 `regression_skipped` 时 release block。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-118",
       "story_id": "",
       "kind": "ac",
@@ -1028,7 +971,7 @@
       "signature": "ac::::general::**：qa-evidence 必须产出 confidence_chain 与 truth-derived business fsm coverage；状态机 gap 削弱或阻断对应 evidence claim。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-132",
       "story_id": "",
       "kind": "ac",
@@ -1039,7 +982,7 @@
       "signature": "ac::::general::**：refreeze transaction 必须拒绝 reason-only / machine-only 变化；revision id、人类 narrative 与 machine projection 发生漂移时 fail-closed。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-121",
       "story_id": "",
       "kind": "ac",
@@ -1050,7 +993,7 @@
       "signature": "ac::::general::**：release human gate 是不变量；`auto_decide=true` 不得触发 release gate 通过。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-116",
       "story_id": "",
       "kind": "ac",
@@ -1061,7 +1004,7 @@
       "signature": "ac::::general::**：remediation sandbox 在 governed worktree 内执行 overlay/eval/rollback；不得写 canonical truth，eval pass 后仍需 human review。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-099",
       "story_id": "",
       "kind": "ac",
@@ -1072,7 +1015,7 @@
       "signature": "ac::::general::**：schema `user_version` 管理；降级禁止。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-122",
       "story_id": "",
       "kind": "ac",
@@ -1083,7 +1026,7 @@
       "signature": "ac::::general::**：skill loader 必须采用 progressive disclosure；默认只加载 public `skill.md`，按 intent/topic 选择性加载 `references/` 与 `examples/`，并产出 `skill_load_plan.v1`。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-050",
       "story_id": "",
       "kind": "ac",
@@ -1094,7 +1037,7 @@
       "signature": "ac::::general::**：spine 查询 **db-first**；blob 仅当 `artifact_refs` 存在且 hash 有效时拼接。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-086",
       "story_id": "",
       "kind": "ac",
@@ -1105,7 +1048,7 @@
       "signature": "ac::::general::**：spine/projects/run 支持 `--json` 且 schema 可校验。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-085",
       "story_id": "",
       "kind": "ac",
@@ -1116,7 +1059,7 @@
       "signature": "ac::::general::**：spine/projects/workflow/truth-map/implement/qa/release/run 子命令可解析且 `--help` snapshot 稳定。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-115",
       "story_id": "",
       "kind": "ac",
@@ -1127,7 +1070,7 @@
       "signature": "ac::::general::**：stagnation detector 基于 agent trace 确定性识别 repeat_failure / repeat_labor / plateau，输出 `stagnation-report.v1`。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-131",
       "story_id": "",
       "kind": "ac",
@@ -1138,7 +1081,7 @@
       "signature": "ac::::general::**：truth/change/refreeze 只能在 `truth_canonical_branch`（默认 main，缺失时 master）写入与冻结；feature/dev worktree 不得 bump requirement revision。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-071",
       "story_id": "",
       "kind": "ac",
@@ -1149,7 +1092,7 @@
       "signature": "ac::::general::**：v1 `.beacon/evidence-signature-chain.json` 可迁移为 v2 记录。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-051",
       "story_id": "",
       "kind": "ac",
@@ -1160,7 +1103,7 @@
       "signature": "ac::::general::**：v1 json 运行态只允许 **export/import 迁移**，不得与 db 双写竞争权威。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-110",
       "story_id": "",
       "kind": "ac",
@@ -1171,7 +1114,7 @@
       "signature": "ac::::general::**：v1 python / node / 33 skills compatibility 从 v2 core closure 移除；只保留为 migration/archive reference。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-040",
       "story_id": "",
       "kind": "ac",
@@ -1182,7 +1125,7 @@
       "signature": "ac::::general::**：v1 python / node / 33 skills 只可作为 migration/archive reference；v2 新能力不得 fallback 到 python 路由。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-087",
       "story_id": "",
       "kind": "ac",
@@ -1193,7 +1136,7 @@
       "signature": "ac::::general::**：v1 reason_codes 对齐：`gate_results.reason_codes_json` 失败样例须含 documented code；`docs/beacon/v2.0.0/execution/reason-codes.md` 与 **集成测试** 中至少 5 个 code 往返一致。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-039",
       "story_id": "",
       "kind": "ac",
@@ -1204,7 +1147,7 @@
       "signature": "ac::::general::**：v2 core closure **不包含** `beacon-python` / pyo3 / v1 python runtime fallback；若仓库仍存在历史 scaffold，必须在 p4 前移除或标记为 archive-only，不能作为验收依赖。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-081",
       "story_id": "",
       "kind": "ac",
@@ -1215,7 +1158,7 @@
       "signature": "ac::::general::**：v2 默认走 rust 路径；`beacon_v2=1` 不再是 opt-in 兼容开关。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-057",
       "story_id": "",
       "kind": "ac",
@@ -1226,7 +1169,7 @@
       "signature": "ac::::general::**：v2.0.0 **不交付** `beacon-proto`/grpc（**d-v2-001 accepted defer**）；cli 与 orchestrator 不得硬依赖 grpc；未来版本可单独 reopen。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-083",
       "story_id": "",
       "kind": "ac",
@@ -1237,7 +1180,7 @@
       "signature": "ac::::general::**：任何 v1 python/legacy skill invocation 在 v2 core 中必须返回 migration/archive route 或 `reason_code=legacy_python_removed`，不得静默 fallback。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-107",
       "story_id": "",
       "kind": "ac",
@@ -1248,7 +1191,7 @@
       "signature": "ac::::general::**：全量 ac closure 由 evaluator 裁决；generator/implementer 不得自证 release ready。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-123",
       "story_id": "",
       "kind": "ac",
@@ -1259,7 +1202,7 @@
       "signature": "ac::::general::**：六个 public skill 都必须提供 route examples；示例覆盖 `truth review -> decision_packet -> loop`、`design_primitives -> implement`、`qa-evidence -> release`、`branch blocked -> repair_route`，且示例不是 requirement authority。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-058",
       "story_id": "",
       "kind": "ac",
@@ -1270,7 +1213,7 @@
       "signature": "ac::::general::**：单文件模块超过 500 行须拆分或 adr 说明例外（对齐 d-02）。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-104",
       "story_id": "",
       "kind": "ac",
@@ -1281,7 +1224,7 @@
       "signature": "ac::::general::**：双写期 **单一写者**；双向同时写须测试失败。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-072",
       "story_id": "",
       "kind": "ac",
@@ -1292,7 +1235,7 @@
       "signature": "ac::::general::**：启动前 `truth-map resolve`；blocked → exit != 0 + 推荐 `beacon-gen-change`。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-054",
       "story_id": "",
       "kind": "ac",
@@ -1303,7 +1246,7 @@
       "signature": "ac::::general::**：必须实现 `beacon spine artifacts <run-id> [--json]`。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-055",
       "story_id": "",
       "kind": "ac",
@@ -1314,7 +1257,7 @@
       "signature": "ac::::general::**：必须实现 `beacon spine gate <feature> [--version vx] [--json]`。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-053",
       "story_id": "",
       "kind": "ac",
@@ -1325,7 +1268,40 @@
       "signature": "ac::::general::**：必须实现 `beacon spine list [--project path] [--status status] [--json]`。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
+      "id": "AC-138",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "general",
+      "text": "**：标准执行流通过六 public skill 的 progressive examples 暴露，不得新增第七个 public skill 或绕过 Harness Boundary。",
+      "details": [],
+      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
+      "signature": "ac::::general::**：标准执行流通过六 public skill 的 progressive examples 暴露，不得新增第七个 public skill 或绕过 harness boundary。::"
+    },
+    {
+      "revision_id": "R12",
+      "id": "AC-136",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "general",
+      "text": "**：标准流 admission evidence bundle 必须包含 truth-map verify、verify-materials strict、git diff check、branch-governance verify、workspace admission 五类结果；缺任一项不得进入 implement。",
+      "details": [],
+      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
+      "signature": "ac::::general::**：标准流 admission evidence bundle 必须包含 truth-map verify、verify-materials strict、git diff check、branch-governance verify、workspace admission 五类结果；缺任一项不得进入 implement。::"
+    },
+    {
+      "revision_id": "R12",
+      "id": "AC-137",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "general",
+      "text": "**：标准流必须可 idempotent resume；已对齐步骤重复执行时返回 `up_to_date` / `pass`，不得因重复执行产生新的 requirement revision。",
+      "details": [],
+      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
+      "signature": "ac::::general::**：标准流必须可 idempotent resume；已对齐步骤重复执行时返回 `up_to_date` / `pass`，不得因重复执行产生新的 requirement revision。::"
+    },
+    {
+      "revision_id": "R12",
       "id": "AC-048",
       "story_id": "",
       "kind": "ac",
@@ -1336,7 +1312,7 @@
       "signature": "ac::::general::**：每次 gate 评估写入 `gate_results`（pass/fail/blocked + reason_codes json）。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-049",
       "story_id": "",
       "kind": "ac",
@@ -1347,7 +1323,7 @@
       "signature": "ac::::general::**：每次 run 启动写入 `runs`；checkpoint 写入 `checkpoints`。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-111",
       "story_id": "",
       "kind": "ac",
@@ -1358,7 +1334,7 @@
       "signature": "ac::::general::**：每轮 plan/truth/review/brainstorm 必须保存 prompt snapshot hash，并标记 accepted/latest；loop 只能消费 latest accepted snapshot。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-059",
       "story_id": "",
       "kind": "ac",
@@ -1369,7 +1345,7 @@
       "signature": "ac::::general::**：阶段转换表显式编码；非法转换返回 typed error + reason_code。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-036",
       "story_id": "",
       "kind": "ac",
@@ -1380,7 +1356,7 @@
       "signature": "ac::::general::..114）::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-037",
       "story_id": "",
       "kind": "ac",
@@ -1391,7 +1367,7 @@
       "signature": "ac::::general::..116）::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-038",
       "story_id": "",
       "kind": "ac",
@@ -1402,7 +1378,7 @@
       "signature": "ac::::general::..123）::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-052",
       "story_id": "",
       "kind": "ac",
@@ -1413,7 +1389,7 @@
       "signature": "ac::::general::operator spine api（plan §2.5）::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-047",
       "story_id": "",
       "kind": "ac",
@@ -1424,7 +1400,7 @@
       "signature": "ac::::general::存储原则（plan §2.5）::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-033",
       "story_id": "",
       "kind": "ac",
@@ -1435,7 +1411,7 @@
       "signature": "ac::::general::（stop-when maker≠checker）→ v2 ac-105::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-035",
       "story_id": "",
       "kind": "ac",
@@ -1446,7 +1422,7 @@
       "signature": "ac::::general::）::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-032",
       "story_id": "",
       "kind": "ac",
@@ -1457,7 +1433,7 @@
       "signature": "ac::::general::，后者是 l1 md / l2 sqlite / l3 blob**）：::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-027",
       "story_id": "",
       "kind": "ac",
@@ -1468,7 +1444,7 @@
       "signature": "ac::::implementharnessbackend 真集成::用户拒绝延期::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-012",
       "story_id": "",
       "kind": "ac",
@@ -1479,7 +1455,7 @@
       "signature": "ac::::orchestrator iteration 调度::< 100ms 不含 agent::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-014",
       "story_id": "",
       "kind": "ac",
@@ -1490,7 +1466,7 @@
       "signature": "ac::::orchestrator mvp + **ac-043/044** codex/subprocess 真集成::beacon-loop 并行::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-028",
       "story_id": "",
       "kind": "ac",
@@ -1501,7 +1477,7 @@
       "signature": "ac::::planner review 选项 a：ac-042–046 真集成；diagram truth layer；ac 重编号至 098；禁止空壳 ac::planner review 选项 a：ac-042–046 真集成；diagram truth layer；ac 重编号至 098；禁止空壳 ac::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-029",
       "story_id": "",
       "kind": "ac",
@@ -1512,7 +1488,7 @@
       "signature": "ac::::r6 refreeze：六 public skill 渐进式披露 contract；内部保留 branch governance / doctor / router / hooks / metadata / status / archive / debug；新增 branchcontext.v1 与 harness boundary hard gate（ac-125–130）::r6 refreeze：六 public skill 渐进式披露 contract；内部保留 branch governance / doctor / router / hooks / metadata / status / archive / debug；新增 branchcontext.v1 与 harness boundary hard gate（ac-125–130）::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-030",
       "story_id": "",
       "kind": "ac",
@@ -1523,7 +1499,18 @@
       "signature": "ac::::r7 refreeze：tracespine.v1 / tracecontext.v1 成为 run authority；loop/implement/qa-evidence/release 绑定 trace completeness；stagnation/remediation 报告绑定 trace event range；truth/change/refreeze 只能在 canonical truth branch 执行；阻断 reason-only/machine-only refreeze 与 revision narrative drift（ac-131–137）::r7 refreeze：tracespine.v1 / tracecontext.v1 成为 run authority；loop/implement/qa-evidence/release 绑定 trace completeness；stagnation/remediation 报告绑定 trace event range；truth/change/refreeze 只能在 canonical truth branch 执行；阻断 reason-only/machine-only refreeze 与 revision narrative drift（ac-131–137）::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
+      "id": "AC-031",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "R8 refreeze：将 canonical truth author/refreeze/commit -> feature worktree reconcile -> governance verify -> workspace admission -> implement resume 固化为 Standard Execution Flow；新增 baseline commit、stale feature-local refreeze quarantine、verification bundle 与 idempotent resume contract（AC-138–144）",
+      "text": "R8 refreeze：将 canonical truth author/refreeze/commit -> feature worktree reconcile -> governance verify -> workspace admission -> implement resume 固化为 Standard Execution Flow；新增 baseline commit、stale feature-local refreeze quarantine、verification bundle 与 idempotent resume contract（AC-138–144）",
+      "details": [],
+      "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
+      "signature": "ac::::r8 refreeze：将 canonical truth author/refreeze/commit -> feature worktree reconcile -> governance verify -> workspace admission -> implement resume 固化为 standard execution flow；新增 baseline commit、stale feature-local refreeze quarantine、verification bundle 与 idempotent resume contract（ac-138–144）::r8 refreeze：将 canonical truth author/refreeze/commit -> feature worktree reconcile -> governance verify -> workspace admission -> implement resume 固化为 standard execution flow；新增 baseline commit、stale feature-local refreeze quarantine、verification bundle 与 idempotent resume contract（ac-138–144）::"
+    },
+    {
+      "revision_id": "R12",
       "id": "AC-003",
       "story_id": "",
       "kind": "ac",
@@ -1534,7 +1521,7 @@
       "signature": "ac::::register::show [--json]`（机器级多项目）。::"
     },
     {
-      "revision_id": "R11",
+      "revision_id": "R12",
       "id": "AC-010",
       "story_id": "",
       "kind": "ac",
@@ -1546,9 +1533,9 @@
     }
   ],
   "current_baseline_hash": "sha256:3bab106a7fac7e05d070f53fdf047249d575baa96e6fed803fb076a5c4fa7a6b",
-  "source_baseline_hash": "sha256:8e651b7f6fad64649653f419cbc87992a88ec309a7a7a0bb904f6338946dd8f9",
+  "source_baseline_hash": "sha256:3bab106a7fac7e05d070f53fdf047249d575baa96e6fed803fb076a5c4fa7a6b",
   "story_state_ref": "docs/beacon/v2.0.0/.machine/user-story/beacon-v2-rust-kernel-redesign.json",
-  "generated_at": "2026-07-15T12:12:19.740324+00:00",
+  "generated_at": "2026-07-15T12:42:17.483822+00:00",
   "json_ref": "docs/beacon/v2.0.0/.machine/execution/revision-delta-beacon-v2-rust-kernel-redesign.json",
   "markdown_ref": "docs/beacon/v2.0.0/execution/revision-delta-beacon-v2-rust-kernel-redesign.md"
 }
