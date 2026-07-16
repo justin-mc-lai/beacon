@@ -8,6 +8,7 @@ from typing import Any
 
 from beacon.utils.artifact_paths import human_execution_file, machine_execution_file
 from beacon.utils.diagram_truth import diagram_truth_findings, load_feature_diagram_truth
+from beacon.utils.domain_fsm import build_domain_fsm_gate_payload
 from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.story_state import feature_slug
 from beacon.utils.truth_map import feature_package_authoritative_feature, resolve_truth_read_refs
@@ -610,6 +611,30 @@ def build_requirement_clarity_gate_payload(project_root: Path, *, version: str =
     diagram_truth = load_feature_diagram_truth(project_root, version=resolved_version, feature=feature)
     payload["diagram_truth"] = diagram_truth
     findings.extend(diagram_truth_findings(project_root, version=resolved_version, feature=feature))
+    domain_fsm_gate = build_domain_fsm_gate_payload(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        diagram_truth=diagram_truth,
+    )
+    payload["domain_fsm_gate"] = domain_fsm_gate
+    if bool(domain_fsm_gate.get("required")):
+        for item in domain_fsm_gate.get("findings", []) if isinstance(domain_fsm_gate.get("findings"), list) else []:
+            if not isinstance(item, dict):
+                continue
+            findings.append(
+                {
+                    "file": str(item.get("file") or prd_path),
+                    "line": int(item.get("line") or 1),
+                    "kind": str(item.get("kind") or "domain_fsm_violation"),
+                    "text": str(item.get("text") or ""),
+                    "reason_code": str(item.get("reason_code") or ""),
+                    "ac_id": str(item.get("ac_id") or ""),
+                    "aggregate": str(item.get("aggregate") or ""),
+                    "section": str(item.get("section") or ""),
+                    "repair_route": "beacon-gen-truth",
+                }
+            )
     human_closure_contract = _build_human_closure_contract(
         project_root,
         version=resolved_version,
@@ -755,8 +780,16 @@ def build_requirement_clarity_gate_payload(project_root: Path, *, version: str =
     if findings:
         payload["blocked"] = True
         payload["status"] = "blocked"
-        payload["reason_code"] = "requirement_clarity_open"
-        payload["recommended_action"] = "resolve_prd_and_user_story_open_questions_before_freeze"
+        domain_gate = payload.get("domain_fsm_gate") if isinstance(payload.get("domain_fsm_gate"), dict) else {}
+        domain_reason = str(domain_gate.get("reason_code") or "") if bool(domain_gate.get("blocked")) else ""
+        payload["reason_code"] = domain_reason or "requirement_clarity_open"
+        if domain_reason:
+            payload["recommended_action"] = str(
+                domain_gate.get("recommended_action")
+                or "author_domain_model_domain_fsm_entity_precedence_and_illegal_slots_before_freeze"
+            )
+        else:
+            payload["recommended_action"] = "resolve_prd_and_user_story_open_questions_before_freeze"
     return payload
 
 

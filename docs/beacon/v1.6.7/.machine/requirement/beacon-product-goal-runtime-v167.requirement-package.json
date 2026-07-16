@@ -1,0 +1,221 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-16T15:35:39.265502+00:00",
+  "feature": "beacon-product-goal-runtime-v167",
+  "feature_slug": "beacon-product-goal-runtime-v167",
+  "version": "v1.6.7",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.7/features/beacon-product-goal-runtime-v167/truth.md",
+    "tests": "docs/beacon/v1.6.7/features/beacon-product-goal-runtime-v167/tests.md",
+    "tasks": "docs/beacon/v1.6.7/features/beacon-product-goal-runtime-v167/tasks.md",
+    "evidence": "docs/beacon/v1.6.7/features/beacon-product-goal-runtime-v167/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "aa5ef11dfbdb1631c0e0eb6d34b5f482ff25f633a2656f9625871da6df02e226",
+    "tests": "171ea0ef862dc60b3e170631fe43339ca03543b8052aa9b898c83e3e15f97741",
+    "tasks": "b1a7507180a83488aa615c53385e5dfd0dc75b7acd8711434f31161324dbb01f",
+    "evidence": "892ff81378709f632028ac97ce51ef3b4f02d506b7f788904694eac6d1b9a933"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-product-goal-runtime-v167",
+    "version": "v1.6.7",
+    "status": "frozen",
+    "revision_id": "R3",
+    "language": "zh",
+    "change_reason": "R3 - single public entry beacon-goal (or beacon run); loop-goal is support discovery only; 30s UX",
+    "canonical_refs": {
+      "truth": "docs/beacon/v1.6.7/features/beacon-product-goal-runtime-v167/truth.md",
+      "tests": "docs/beacon/v1.6.7/features/beacon-product-goal-runtime-v167/tests.md",
+      "tasks": "docs/beacon/v1.6.7/features/beacon-product-goal-runtime-v167/tasks.md",
+      "evidence": "docs/beacon/v1.6.7/features/beacon-product-goal-runtime-v167/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "program_ref": "docs/beacon/v1.6.7/programs/beacon-product-goal-domain-delivery-v167/feature-graph.json"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-PGR-001",
+      "theme": "single-entry",
+      "description": "用户主路径只需 `beacon-goal` / `beacon goal run`（**Must**）"
+    },
+    {
+      "ac_id": "AC-PGR-002",
+      "theme": "no-dual-call",
+      "description": "主文档与 host router **不得**要求「先 loop 后 goal」（**Must**）"
+    },
+    {
+      "ac_id": "AC-PGR-003",
+      "theme": "facade",
+      "description": "`beacon-goal` 门面内完成：拆解→truth→implement→qa→（release 门）（**Must**）"
+    },
+    {
+      "ac_id": "AC-PGR-004",
+      "theme": "loop-support",
+      "description": "`beacon-loop-goal` 元数据/描述标 support；inventory 可保留但路由为 support（**Must**）"
+    },
+    {
+      "ac_id": "AC-PGR-005",
+      "theme": "alias",
+      "description": "`beacon run` 可映射到 `beacon goal run`（**Should**）"
+    },
+    {
+      "ac_id": "AC-PGR-006",
+      "theme": "progressive",
+      "description": "阶段 skill 渐进加载（**Must**）"
+    },
+    {
+      "ac_id": "AC-PGR-007",
+      "theme": "parallel",
+      "description": "parallel_plan + 主星卫星 pool（**Must**，承 R2）"
+    },
+    {
+      "ac_id": "AC-PGR-008",
+      "theme": "done-audit",
+      "description": "complete 需 verifier（**Must**）"
+    },
+    {
+      "ac_id": "AC-PGR-009",
+      "theme": "example-30s",
+      "description": "`skills/beacon/examples/goal-one-shot-30s.md` 存在且只教单入口（**Must**）"
+    },
+    {
+      "ac_id": "AC-PGR-010",
+      "theme": "host-router",
+      "description": "`skills/beacon/SKILL.md` 标明 goal 为一句话交付入口（**Must**）"
+    },
+    {
+      "ac_id": "AC-PGR-011",
+      "theme": "v2-parity",
+      "description": "v2 orchestrator 合同同步单入口（**Must**）"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-PGR-001",
+      "tc_id": "TC-PGR-R3-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_single_public_entry -q`",
+      "assertion": "单入口合同",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PGR-002",
+      "tc_id": "TC-PGR-R3-002",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_docs_no_dual_call_path -q`",
+      "assertion": "主文档无双调用",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PGR-004",
+      "tc_id": "TC-PGR-R3-003",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_loop_goal_marked_support -q`",
+      "assertion": "loop 标 support",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PGR-009",
+      "tc_id": "TC-PGR-R3-004",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_30s_example_exists -q`",
+      "assertion": "30s 示例存在",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PGR-010",
+      "tc_id": "TC-PGR-R3-005",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_host_router_mentions_goal_entry -q`",
+      "assertion": "host router 指向 goal",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PGR-007",
+      "tc_id": "TC-PGR-R3-006",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_main_star_satellite_pool -q`",
+      "assertion": "主星卫星",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PGR-008",
+      "tc_id": "TC-PGR-R3-007",
+      "layer": "negative",
+      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_complete_requires_verifier -q`",
+      "assertion": "无 verifier 不可 complete",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Materialize feature package",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Author domain/product acceptance criteria",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Wire freeze/QA/CLI hard gates",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Add golden/negative fixtures where applicable",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Implement + unit/contract tests",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Run beacon-eval-qa and bind evidence",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "Implement beacon goal CLI + state under .beacon/state/product-goal/",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-gen-truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.7/features/beacon-product-goal-runtime-v167/truth.md",
+      "status": "frozen",
+      "route": "truth"
+    },
+    {
+      "surface": "analysis",
+      "authority": "support_advisory",
+      "canonical_artifact": "session analysis product-goal-domain-delivery",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "program",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.7/programs/beacon-product-goal-domain-delivery-v167/feature-graph.json",
+      "status": "indexed",
+      "route": "program"
+    }
+  ]
+}

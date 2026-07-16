@@ -14,6 +14,8 @@ from beacon.utils.artifact_update_obligations import blocking_obligations, load_
 from beacon.utils.python_exec import normalize_qa_shell_command
 from beacon.utils.qa9 import QA9_TYPES, default_command_for_qa_type, normalize_qa_type
 from beacon.utils.qa_acceptance import BROWSER_QA_LAYER, build_qa_acceptance_capability_summary
+from beacon.utils.domain_fsm_qa import apply_domain_fsm_to_scorecard, build_domain_fsm_qa_gate_payload
+from beacon.utils.ui_design_ship import apply_ui_design_to_scorecard, build_ui_design_ship_gate
 from beacon.utils.qa_precision import (
     DEFAULT_AUTO_ACCEPT_THRESHOLD,
     DEFAULT_REVIEW_THRESHOLD,
@@ -2274,6 +2276,32 @@ def build_feature_qa_precision_artifacts(
         "repair_handoff": repair_handoff,
         "release_ready": release_ready and not bool(reconciliation_gate.get("required")),
     }
+    # v1.6.7 domain-fsm QA hard gate: legal walk + illegal cases + coverage fail-closed
+    try:
+        domain_qa_gate = build_domain_fsm_qa_gate_payload(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+        )
+        feature_scorecard_payload = apply_domain_fsm_to_scorecard(feature_scorecard_payload, domain_qa_gate)
+    except Exception:  # noqa: BLE001
+        feature_scorecard_payload.setdefault(
+            "domain_fsm_coverage",
+            {"status": "error", "required": False},
+        )
+    try:
+        ui_ship_gate = build_ui_design_ship_gate(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+        )
+        feature_scorecard_payload = apply_ui_design_to_scorecard(feature_scorecard_payload, ui_ship_gate)
+    except Exception:  # noqa: BLE001
+        feature_scorecard_payload.setdefault(
+            "design_alignment",
+            {"status": "error", "required": False},
+        )
+
     feature_scorecard_path = write_feature_qa_scorecard(project_root, feature=feature, payload=feature_scorecard_payload)
     return scenario_results, ac_closure_payload, feature_scorecard_payload, ac_closure_path, feature_scorecard_path
 

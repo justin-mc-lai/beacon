@@ -1,0 +1,190 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-16T15:59:34.921477+00:00",
+  "feature": "beacon-domain-fsm-authority-v167",
+  "feature_slug": "beacon-domain-fsm-authority-v167",
+  "version": "v1.6.7",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.7/features/beacon-domain-fsm-authority-v167/truth.md",
+    "tests": "docs/beacon/v1.6.7/features/beacon-domain-fsm-authority-v167/tests.md",
+    "tasks": "docs/beacon/v1.6.7/features/beacon-domain-fsm-authority-v167/tasks.md",
+    "evidence": "docs/beacon/v1.6.7/features/beacon-domain-fsm-authority-v167/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "b26d627cf7c53b4a8463b0adafffb27f29e521f79535bc62fd510c09544f1101",
+    "tests": "2dafde65e7f668e625ad91e78bf5b7ae78e643370c1a94ba9096ace48d64e0c4",
+    "tasks": "2dcd74cdedbc2daeb59eb900d9fcd5656014acb8890f9dbdfac86977eacda677",
+    "evidence": "8c775c8c1210bed43983e0892039d9b4386fe182e1e5629d5aebde2725ad47f0"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-domain-fsm-authority-v167",
+    "version": "v1.6.7",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "P0 domain FSM authority; cure empty-castle freeze",
+    "canonical_refs": {
+      "truth": "docs/beacon/v1.6.7/features/beacon-domain-fsm-authority-v167/truth.md",
+      "tests": "docs/beacon/v1.6.7/features/beacon-domain-fsm-authority-v167/tests.md",
+      "tasks": "docs/beacon/v1.6.7/features/beacon-domain-fsm-authority-v167/tasks.md",
+      "evidence": "docs/beacon/v1.6.7/features/beacon-domain-fsm-authority-v167/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "program_ref": "docs/beacon/v1.6.7/programs/beacon-product-goal-domain-delivery-v167/feature-graph.json"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-DFSM-001",
+      "theme": "schema",
+      "description": "定义 domain-fsm.v1 与 entity-precedence.v1 字段合同（状态、转移、guard、非法转移、实体前置）（**Must**）"
+    },
+    {
+      "ac_id": "AC-DFSM-002",
+      "theme": "truth-section",
+      "description": "feature package truth 必须能承载 Domain Model / Domain FSM；resolver 可读（**Must**）"
+    },
+    {
+      "ac_id": "AC-DFSM-003",
+      "theme": "freeze-hard-gate",
+      "description": "freeze 在 complexity 或显式 domain 标记时，缺 FSM/前置/非法转移覆盖 → reason_code 阻断（**Must**）"
+    },
+    {
+      "ac_id": "AC-DFSM-004",
+      "theme": "clarity-hard",
+      "description": "requirement_clarity 对 domain 特征 fail-closed，不得仅 missing_sections 告警后放行（**Must**）"
+    },
+    {
+      "ac_id": "AC-DFSM-005",
+      "theme": "story-order",
+      "description": "user-story/AC 必须引用至少一条合法 FSM 路径；无前置的 AC 被诊断为 orphan（**Must**）"
+    },
+    {
+      "ac_id": "AC-DFSM-006",
+      "theme": "illegal-required",
+      "description": "每个聚合根至少 1 条非法转移 TC 槽位（**Must**）"
+    },
+    {
+      "ac_id": "AC-DFSM-007",
+      "theme": "checklist-noncanonical",
+      "description": "references/*-checklist 保持 support-only，不得替代本权威（**Must**）"
+    },
+    {
+      "ac_id": "AC-DFSM-008",
+      "theme": "machine-projection",
+      "description": "可选 .machine/domain-fsm.json 由 truth 投影，单向，drift fail-closed（**Should**）"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-DFSM-001",
+      "tc_id": "TC-DFSM-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_domain_fsm.py::test_schema_contract -q`",
+      "assertion": "schema 字段齐全",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-DFSM-003",
+      "tc_id": "TC-DFSM-002",
+      "layer": "negative",
+      "command": "`python3 -m pytest tests/test_v167_domain_fsm.py::test_freeze_blocks_missing_fsm -q`",
+      "assertion": "缺 FSM freeze blocked",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-DFSM-004",
+      "tc_id": "TC-DFSM-003",
+      "layer": "negative",
+      "command": "`python3 -m pytest tests/test_v167_domain_fsm.py::test_clarity_fail_closed -q`",
+      "assertion": "clarity fail-closed",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-DFSM-005",
+      "tc_id": "TC-DFSM-004",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_domain_fsm.py::test_orphan_ac_detected -q`",
+      "assertion": "孤儿 AC 被检出",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-DFSM-006",
+      "tc_id": "TC-DFSM-005",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_domain_fsm.py::test_illegal_transition_slot_required -q`",
+      "assertion": "非法转移槽位必填",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Materialize feature package",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Author domain/product acceptance criteria",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Wire freeze/QA/CLI hard gates",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Add golden/negative fixtures where applicable",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Implement + unit/contract tests",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Run beacon-eval-qa and bind evidence",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "Wire freeze.py / requirement_clarity.py hard gates",
+      "status": "checked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-gen-truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.7/features/beacon-domain-fsm-authority-v167/truth.md",
+      "status": "frozen",
+      "route": "truth"
+    },
+    {
+      "surface": "analysis",
+      "authority": "support_advisory",
+      "canonical_artifact": "session analysis product-goal-domain-delivery",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "program",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.7/programs/beacon-product-goal-domain-delivery-v167/feature-graph.json",
+      "status": "indexed",
+      "route": "program"
+    }
+  ]
+}

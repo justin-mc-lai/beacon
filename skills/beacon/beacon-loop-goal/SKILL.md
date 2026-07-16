@@ -1,19 +1,38 @@
 ---
 name: beacon-loop-goal
-description: Beacon v1.6.7 governor skill for public cross-harness lifecycle orchestration. Use when the user wants one prompt to route truth -> implement -> QA -> release while preserving every harness hard gate, intent-aware resume, topology_gate consumption, and requiring human confirmation before release.
+metadata_entry: support_discovery
+description: "【support/internal】发现与排队写入 goal-queue。日常一句话交付请用 $beacon-goal，不要把本 skill 当主编排入口。"
 ---
 
 # Beacon Loop Goal
 
+> ⚠️ **Support 发现器，不是日常交付入口。**  
+> 一句话做到验收 → 请用 **`$beacon-goal`**（见 `examples/goal-one-shot-30s.md`）。
+
+
 ## Overview
 
-Cross-harness orchestrator skill that sequences all Beacon lifecycle skills (truth -> implement -> QA -> release) using a deterministic state machine. Governor harness type - only routes, never executes.
+**Support/internal discovery surface.** Enqueues intents into `goal-queue` for `$beacon-goal` to consume.
+May assist advanced/heartbeat routing, but is **not** the user-facing one-shot delivery entry.
+Governor harness type — only routes/discovers, never executes truth/implement/QA/release verdicts.
+
+
+## Product Goal Split (v1.6.7+ R3)
+
+- **唯一公共入口：`beacon-goal`**
+- **本 skill：support discovery only**
+
+- **This skill (`beacon-loop-goal`)**: discovery / triage / enqueue only.
+- **Finish run-until-done**: use **`beacon-goal`** (Product Goal Runtime).
+- Do not mark product delivery complete from this skill.
 
 ## When to Use
 
-- User wants one prompt to drive the full Beacon lifecycle (truth -> implement -> QA -> release)
-- User wants automatic stage transitions with stop-when checks
-- User wants error recovery routing to beacon-gov-debug
+- Advanced/heartbeat discovery needs to **enqueue** work for `$beacon-goal`
+- Debugging support routing / queue inspection
+- Explicit support-path recovery (not the default daily entry)
+
+**Daily delivery:** always prefer `$beacon-goal` / `beacon goal run`.
 
 ## Harness
 

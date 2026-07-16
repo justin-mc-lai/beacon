@@ -22,6 +22,23 @@ v1.6.0 introduced a breaking skill-surface migration (still the taxonomy baselin
 
 Old host-visible aliases such as `using-beacon`, `beacon-prd`, `beacon-user-story`, `beacon-test-case`, `beacon-implement`, `beacon-qa`, `beacon-release`, and `beacon-brainstorm` are intentionally not present in this package. If CLI compatibility is needed, it belongs in CLI routing or migration tooling, not duplicate host-visible skill directories.
 
+
+## 一句话交付入口（v1.6.7+）
+
+**日常项目只调这一个：**
+
+```text
+$beacon-goal
+```
+
+或 CLI：`beacon goal run "<目标>" --project . --version <v>`
+
+- 自动拆需求 → 编排实现 → 验收（release 可人工确认）
+- **不要**先 `$beacon-loop-goal` 再 `$beacon-goal`
+- `$beacon-loop-goal` = support 发现/排队，高级/心跳用
+
+30 秒用法：`skills/beacon/examples/goal-one-shot-30s.md`
+
 ## Meta-Protocol
 
 Always start with one routing question:

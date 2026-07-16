@@ -9,6 +9,7 @@ from beacon.utils.control_plane import record_stage_failure, record_stage_succes
 from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.story_state import feature_slug
 from beacon.utils.versioning import normalize_version
+from beacon.utils.ralph_boundary import sanitize_ralph_state
 
 
 def ralph_state_path(project_root: Path, *, feature: str) -> Path:
@@ -22,7 +23,8 @@ def load_ralph_state(project_root: Path, *, feature: str) -> dict[str, Any]:
 
 def save_ralph_state(project_root: Path, *, feature: str, payload: dict[str, Any]) -> Path:
     path = ralph_state_path(project_root, feature=feature)
-    write_json(path, payload)
+    cleaned = sanitize_ralph_state(payload if isinstance(payload, dict) else {})
+    write_json(path, cleaned)
     return path
 
 
