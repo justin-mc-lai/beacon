@@ -6,7 +6,7 @@
 |---------|-----------|--------------------|--------|-------|
 | source-plan | support_advisory | docs/plans/beacon-v2-redesign.md | indexed | truth.define |
 | planner-research | support_advisory | docs/beacon/archive/v2.0.0/research/beacon-v2-rust-kernel-redesign.md | promoted | truth.define |
-| feature-package-truth | requirement_truth | docs/beacon/archive/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md | frozen by current refreeze transaction | truth.define |
+| feature-package-truth | requirement_truth | docs/beacon/archive/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md | **frozen R18** scenario completeness | truth.change |
 | v16-pln-review-runtime | support_advisory | docs/beacon/v1.6.0/features/beacon-pln-review-runtime-multi-agent-v160/truth.md | **frozen** upstream | P2 |
 | v16-truth-integrity-gates | support_advisory | docs/beacon/v1.6.0/features/beacon-truth-integrity-gates-v160/truth.md | **frozen** upstream | P3 |
 | planner-review-r2 | support_advisory | conversation: beacon-pln-review option-A | accepted-for-truth | truth.define |
@@ -49,6 +49,7 @@
 - **R11 standard execution flow（2026-07-15）**：用户确认把已跑通的 main canonical refreeze、canonical commit、feature worktree stale refreeze quarantine、merge main、truth/materials/branch verification、workspace admission、implement resume 固化为 Beacon 标准执行流程。
 - **R14 program orchestration surface（2026-07-15）**：用户确认继续 v2 Rust program 编排；将 stash 中 `v2-0-0-rust` P0 intent capture 升级为 main canonical program surface，补 phase graph、lake slices、admission gates、run-state，并要求修复 R12/R13 machine/human projection 漂移后再进入 implement。
 - **R15 dual-track + unified skill score（2026-07-16）**：用户确认 **选项 B 长期双轨**；**统一 skill 评分进入 v2.0.0 合同且可用于 v1**；**只评分、人改**。废止「P6 切默认即退休 v1」叙事；保留 v2 路径内禁止 cross-track fallback。Planner runtime：`pln-review-20260716t024005z`。
+- **R18 scenario completeness（2026-07-16）**：用户确认按 `beacon-gen-change` 将 comprehensive-thinking 产出的 S-01..S-19 **高优子集**写入 AC-157–173 / TC-157–173 / TC-N27–N40；覆盖双轨写域、archive 面、scaffold/schema、弱 TC 禁独过、GitScopeGraph 拓扑、skill-score 操作化。已 refreeze 为 frozen R18。
 
 ## Implementation Candidate Evidence
 

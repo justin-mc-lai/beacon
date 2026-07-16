@@ -5,42 +5,42 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-16T03:05:58.067227+00:00",
+  "generated_at": "2026-07-16T13:19:19.240997+00:00",
   "feature": "beacon-v2-rust-kernel-redesign",
   "feature_slug": "beacon-v2-rust-kernel-redesign",
   "version": "v2.0.0",
   "truth_authority": false,
   "json_authority": false,
   "source_paths": {
-    "truth": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
-    "tests": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tests.md",
-    "tasks": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tasks.md",
-    "evidence": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/evidence.md"
+    "truth": "docs/beacon/archive/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
+    "tests": "docs/beacon/archive/v2.0.0/features/beacon-v2-rust-kernel-redesign/tests.md",
+    "tasks": "docs/beacon/archive/v2.0.0/features/beacon-v2-rust-kernel-redesign/tasks.md",
+    "evidence": "docs/beacon/archive/v2.0.0/features/beacon-v2-rust-kernel-redesign/evidence.md"
   },
   "source_hashes": {
-    "truth": "676c7a317e3f157efefa50c7fdc9a28d7ab965f1b39a65120981ae2cb4557a59",
-    "tests": "e1acae4dc3c6041f9f3597f1f6a1a1e6e278ab7cfe7f72ee1000841335839a56",
-    "tasks": "b08224c061b54ff47b42b91eeb4e66305b41336a19e4a296f5b900206ea37cbd",
-    "evidence": "7cf5ced18d6424c88ea12e35f802c4208a8cb1f2ed43987e9d23cd8c13c803b9"
+    "truth": "be3750da0f16dde8e6f167326aaee459340c8811be68e999dc3d689ddda61a78",
+    "tests": "f5d266fd0693261c53d4e0bada05e916fadd484b530b60d3a94e7dede32e6d1d",
+    "tasks": "3334cf27e0ecb9d32d342d537a772e636616f395391b4f6f69229a9452f56778",
+    "evidence": "0436cc1aeb63e09c2eb89191ebaaf5f8f3d85c8135cb6c411539d07cf022c811"
   },
   "truth_frontmatter": {
     "slug": "beacon-v2-rust-kernel-redesign",
     "version": "v2.0.0",
     "status": "frozen",
     "language": "zh",
-    "revision": "r15-dual-track-unified-skill-score",
+    "revision": "r19-scenario-completeness-s01-s19",
     "canonical_refs": {
-      "truth": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
-      "tests": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tests.md",
-      "tasks": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tasks.md",
-      "evidence": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/evidence.md"
+      "truth": "docs/beacon/archive/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
+      "tests": "docs/beacon/archive/v2.0.0/features/beacon-v2-rust-kernel-redesign/tests.md",
+      "tasks": "docs/beacon/archive/v2.0.0/features/beacon-v2-rust-kernel-redesign/tasks.md",
+      "evidence": "docs/beacon/archive/v2.0.0/features/beacon-v2-rust-kernel-redesign/evidence.md"
     },
     "parser_contract": "beacon-feature-package-v1",
     "truth_source_model": "feature_package_authoritative",
     "truth_map_contract": "beacon-truth-map-v1",
     "source_plan": "docs/plans/beacon-v2-redesign.md",
     "planner_review": "beacon-pln-review option-A true-integration",
-    "change_reason": "UD-B long-term dual-track product; unified skill score in v2.0.0 contract usable for v1; score-only human-edit (no auto SKILL.md mutation)"
+    "change_reason": "R18 scenario completeness: dual-track ops, archive delivery, schema/scaffold closure, weak-TC ban, GitScopeGraph→BranchContext topology, skill-score ops, evidence authority (S-01..S-19 high-priority)"
   },
   "frontmatter_errors": [],
   "acceptance_criteria": [
@@ -53,6 +53,11 @@
       "ac_id": "AC-101",
       "theme": "",
       "description": "- **Truth Integrity Gate**（对齐 v1.6 `beacon-truth-integrity-gates-v160`：freeze/refreeze hard block，**AC-101**）"
+    },
+    {
+      "ac_id": "AC-173",
+      "theme": "",
+      "description": "| `beacon-loop-goal-v166`（R7 + topology consume） | loop precheck 缺 `topology_gate_ref` 不得 pass（对齐 AC-GSG-008 语义，**AC-173**） | P2–P3 |"
     },
     {
       "ac_id": "AC-001",
@@ -372,7 +377,7 @@
     {
       "ac_id": "AC-066",
       "theme": "",
-      "description": "- **AC-066**：v1 reason_codes 对齐：`gate_results.reason_codes_json` 失败样例须含 documented code；`docs/beacon/v2.0.0/execution/reason-codes.md` 与 **集成测试** 中至少 5 个 code 往返一致。"
+      "description": "- **AC-066**：v1 reason_codes 对齐：`gate_results.reason_codes_json` 失败样例须含 documented code；`docs/beacon/archive/v2.0.0/execution/reason-codes.md` 与 **集成测试** 中至少 5 个 code 往返一致。"
     },
     {
       "ac_id": "AC-067",
@@ -753,6 +758,91 @@
       "ac_id": "AC-156",
       "theme": "",
       "description": "- **AC-156**：v1 `beacon eval` 既有 scorecard 维度可映射进统一 schema，但发布门必须以统一 schema 的稳定字段为准；字段漂移须走 change，不得静默改权重冒充同比。"
+    },
+    {
+      "ac_id": "AC-157",
+      "theme": "",
+      "description": "- **AC-157**（P0 / S-01）：双轨安装与 PATH 选择场景 — 本机可同时安装 `track_v1` CLI 与 `track_v2`（`beacon-v2` 或 `beacon --runtime v2` 等价显式入口）。未显式选轨时，不得把 v1 请求静默升级为 v2 行为，也不得把 v2 请求静默降级到 v1 Python。CI 至少覆盖「仅 v1」「仅 v2」「双装 + 显式选轨」三矩阵。`reason_code` 至少：`runtime_track_unspecified`、`cross_track_fallback_forbidden`。"
+    },
+    {
+      "ac_id": "AC-158",
+      "theme": "",
+      "description": "- **AC-158**（P0 / S-02）：全局 `~/.beacon/beacon.db` **按轨写域** — 必须定义 writer lease 或 schema namespace，使得：`track_v2` 写路径与 `track_v1` runtime-ledger / 遗留投影不得成为第二写者竞争权威。允许跨轨 **只读对照**；禁止跨轨双写同一权威字段。缺写域策略或检测到跨轨双写 → fail-closed：`reason_code=dual_track_writer_conflict`（延续 AC-093/150）。"
+    },
+    {
+      "ac_id": "AC-159",
+      "theme": "",
+      "description": "- **AC-159**（P0 / S-03）：**archive 面交付场景** — 当 `version-truth-catalog` 将 `v2.0.0` 置于 `docs/beacon/archive/v2.0.0` 时，truth/change/refreeze 与 implement admission 必须仍能显式 `--version v2.0.0` 定位 package；默认 bulk resolver 可不扫 archive，但 **显式 version 不得 inspect-only 到无法 implement**。若策略为「archive 仅只读」，则 implement 前必须先 unarchive/re-activate 到 active plane 并写入 catalog 证据；禁止 silent 写 archive 当 active 却不更新 catalog。`reason_code`：`version_plane_archive_readonly` 或 `version_catalog_plane_mismatch`。"
+    },
+    {
+      "ac_id": "AC-160",
+      "theme": "",
+      "description": "- **AC-160**（P0 / S-04）：P0 scaffold **必须对齐** AC-002/022 — `packages/beacon-rs` workspace core closure 仅五 crate（core/store/orchestrator/gate/cli）；`beacon-python` / PyO3 不得作为 workspace member 参与 `cargo test --workspace` closure。若历史目录残留，必须 `archive-only` 且不出现在 workspace members；否则 P0 phase exit fail：`reason_code=core_closure_python_present`。"
+    },
+    {
+      "ac_id": "AC-161",
+      "theme": "",
+      "description": "- **AC-161**（P0 / S-05）：存储 schema 决策必须 **显式闭环** — truth 九表合同（AC-067..075）与实现表集合不一致时，不得 silent drift。允许两条合法路径之一（须写入 change/ADR 引用）：(a) 实现补齐九表字段合同；(b) refreeze 下调 schema 合同并同步 TC。未决策却声称 P0 store complete → block：`reason_code=schema_contract_drift`。"
+    },
+    {
+      "ac_id": "AC-162",
+      "theme": "",
+      "description": "- **AC-162**（P1 / S-06）：Markdown-as-truth **golden parity** — 建立 fixture 集（至少含 frontmatter、AC 表、中文标点、checkbox、canonical_refs），Rust truth-map/parser 输出必须与权威 reference JSON（可由 v1 Python 生成一次后冻结为 golden）在规范字段上一致。字段 diff 非空 → `reason_code=truth_parse_parity_mismatch`。禁止仅用「能 parse 不炸」代替 parity。"
+    },
+    {
+      "ac_id": "AC-163",
+      "theme": "",
+      "description": "- **AC-163**（P0–P6 / S-07）：**phase 湖级出口 ≠ 产品 release** — program phase exit（P0..P4/P6）只能证明该 slice AC/TC 子集；不得把 phase pass 写成 `feature-ready` / `release_ready` / `v2 default`。phase scorecard 必须声明 `authority=phase_exit_only`。负例：P0 pass 自动切换默认 CLI 到 v2 或禁用 v1 → `dual_track_policy_violation`。"
+    },
+    {
+      "ac_id": "AC-164",
+      "theme": "",
+      "description": "- **AC-164**（全 phase / S-08）：**弱 TC 禁独过** — 任一 AC 的唯一验收若仅为「目录存在 / 文件存在 / `--help` 可跑 / 无 assertion 的 fixture / 文档声明」，evaluator 必须判 `weak_tc_insufficient` 并阻断该 AC closure。integration tier AC（agent/worktree/implement）最低要求行为级 Command+Assertion（延续 tests.md 总则）。"
+    },
+    {
+      "ac_id": "AC-165",
+      "theme": "",
+      "description": "- **AC-165**（P3 / S-09）：reason_codes **分层兼容** — 定义 `reason_codes_core.v1`（≥20 个跨 gate 稳定码，含本 R18 新增码）与 `reason_codes_extended` 投影；AC-066 的「至少 5 个往返」升级为 **core set 全量往返**（fixture + integration）。扩展码允许版本门控，但 core 码删除/改义必须走 change。"
+    },
+    {
+      "ac_id": "AC-166",
+      "theme": "",
+      "description": "- **AC-166**（P3 / S-10）：**跨轨证据污染阻断** — v1 `.beacon/qa/*.json`、v1 scorecard、v1 skill-score、仅 v1 runtime-ledger 记录 **不得** 单独满足 v2 `qa-evidence` / `release` formal closure；反之 v2 gate_results 也不得冒充 v1 release。混用 → `reason_code=cross_track_evidence_contamination`。"
+    },
+    {
+      "ac_id": "AC-167",
+      "theme": "",
+      "description": "- **AC-167**（P3 / S-11）：QA→release 前 **对抗式审查强制点** — 对齐 `global-boundaries`：release 路径必须存在 `adversarial_review.v1`（≥3 翻车点 + 每点验证证据引用）。缺失 → `reason_code=adversarial_review_missing` fail-closed。不得用 skill-score 或 phase exit 替代。"
+    },
+    {
+      "ac_id": "AC-168",
+      "theme": "",
+      "description": "- **AC-168**（P4 / S-13）：`dual_track_shared_contract` **白名单** — 允许同 PR 同时修改的共享真源必须显式枚举，至少包括：`docs/beacon/global-boundaries.md`、`docs/beacon/governance/version-truth-catalog.md`、`docs/beacon/governance/project-version-governance.md`、跨轨 reason_codes 文档、统一 skill-score schema。白名单外同时改 `beacon/`（v1）与 `packages/beacon-rs/`（v2）发布真源且无 admission → `dual_track_mixed_source`（强化 AC-148）。"
+    },
+    {
+      "ac_id": "AC-169",
+      "theme": "",
+      "description": "- **AC-169**（P4 / S-14）：统一 skill-score **固定语料与对照** — 必须提供 versioned `skill-score-corpus.v1`（固定 test-prompts + 期望边界/负例）与 baseline 对照协议（with_skill vs no_skill 或等价）。对 v1 包与 v2 六 public skill 使用同一 corpus 字段。缺 corpus 或不可复现 → score CLI fail-closed：`reason_code=skill_score_corpus_missing`（强化 AC-151–152）。"
+    },
+    {
+      "ac_id": "AC-170",
+      "theme": "",
+      "description": "- **AC-170**（P4 / S-15）：**建议→人改→复评** 闭环 — 评分可输出 suggested_diff（advisory）；在人未修改 skill 包前，复评不得因「建议已存在」而自动涨分。人改后二次评分会话必须可分离 grader（AC-155）。自动应用 suggested_diff → `skill_auto_edit_forbidden`。"
+    },
+    {
+      "ac_id": "AC-171",
+      "theme": "",
+      "description": "- **AC-171**（P2 / S-17）：`GitScopeGraph.v1` → `BranchContext.v1` **parity** — v1.6.7 fixture 的 GitScopeGraph 必须能被 v2 加载并投影到 BranchContext 扩展字段（至少：`topology_kind`、`scopes[]`、`topology_gate_status`、`topology_gate_ref`）。字段缺失或不可加载 → `reason_code=gitscope_branch_context_parity_failed`。"
+    },
+    {
+      "ac_id": "AC-172",
+      "theme": "",
+      "description": "- **AC-172**（P2–P3 / S-18）：三拓扑 admission — `single_repo` | `monorepo` | `multi_git_workspace` 均须有行为级 fixture：writable scope dirty 违反 → `topology_gate` blocked；`multi_git_workspace` 任 satellite blocked → 汇总 blocked。不得仅实现 single_repo 却声称 BranchContext 完备。"
+    },
+    {
+      "ac_id": "AC-173",
+      "theme": "",
+      "description": "- **AC-173**（P2–P3 / S-19）：loop / standard flow **强制 topology_gate_ref** — `loop start`、implement admission、AC-142 verification bundle 在 v2 必须包含 `topology_gate` 检查项（对齐 v1.6.7 AC-GSG-007/008）。缺 ref 或 status≠pass 时不得进入 implement：`reason_code=topology_gate_missing` 或 `topology_gate_blocked`。"
     },
     {
       "ac_id": "AC-099",
@@ -1926,6 +2016,91 @@
       "id": "TASK-P6-003",
       "title": "E2E TC-E01–E04；evaluator 全矩阵。",
       "status": "unchecked"
+    },
+    {
+      "id": "TASK-R18-001",
+      "title": "双轨安装/PATH 与显式 runtime 矩阵（AC-157 / TC-157, TC-N27）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-R18-002",
+      "title": "全局 DB 按轨写域 / writer lease 与双写检测（AC-158 / TC-158, TC-N28）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-R18-003",
+      "title": "archive plane 显式 version 交付策略 + catalog 一致性（AC-159 / TC-159, TC-N29）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-R18-004",
+      "title": "移除或 archive-only `beacon-python`；workspace 五 crate 闭环（AC-160 / TC-160, TC-N30）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-R18-005",
+      "title": "schema 九表 vs 实现决策闭环 + ADR/refreeze（AC-161 / TC-161, TC-N31）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-R18-006",
+      "title": "truth MD golden parity fixtures（中文/表/frontmatter）（AC-162 / TC-162, TC-N32）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-R18-007",
+      "title": "phase_exit_only 权威字段 + 禁止 phase 冒充 release（AC-163 / TC-163, TC-N33）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-R18-008",
+      "title": "evaluator 弱 TC 检测 `weak_tc_insufficient`（AC-164 / TC-164, TC-N34）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-R18-009",
+      "title": "reason_codes_core.v1 ≥20 全量往返（AC-165 / TC-165）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-R18-010",
+      "title": "跨轨证据污染阻断（AC-166 / TC-166, TC-N35）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-R18-011",
+      "title": "adversarial_review.v1 release 强制点（AC-167 / TC-167, TC-N36）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-R18-012",
+      "title": "dual_track_shared_contract 白名单与 CI path filter（AC-168 / TC-168）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-R18-013",
+      "title": "skill-score-corpus.v1 + baseline 对照（AC-169 / TC-169, TC-N37）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-R18-014",
+      "title": "建议→人改→复评；禁止 auto apply（AC-170 / TC-170, TC-N38）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-R18-015",
+      "title": "GitScopeGraph→BranchContext parity loader（AC-171 / TC-171, TC-N39）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-R18-016",
+      "title": "single_repo/monorepo/multi_git topology admission fixtures（AC-172 / TC-172）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-R18-017",
+      "title": "loop/implement/standard-flow 强制 topology_gate_ref（AC-173 / TC-173, TC-N40）。",
+      "status": "unchecked"
     }
   ],
   "checkbox_errors": [],
@@ -1940,16 +2115,16 @@
     {
       "surface": "planner-research",
       "authority": "support_advisory",
-      "canonical_artifact": "docs/beacon/v2.0.0/research/beacon-v2-rust-kernel-redesign.md",
+      "canonical_artifact": "docs/beacon/archive/v2.0.0/research/beacon-v2-rust-kernel-redesign.md",
       "status": "promoted",
       "route": "truth.define"
     },
     {
       "surface": "feature-package-truth",
       "authority": "requirement_truth",
-      "canonical_artifact": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
-      "status": "frozen by current refreeze transaction",
-      "route": "truth.define"
+      "canonical_artifact": "docs/beacon/archive/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
+      "status": "**frozen R18** scenario completeness",
+      "route": "truth.change"
     },
     {
       "surface": "v16-pln-review-runtime",
@@ -2010,49 +2185,49 @@
     {
       "surface": "package-tests",
       "authority": "test_truth",
-      "canonical_artifact": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tests.md",
+      "canonical_artifact": "docs/beacon/archive/v2.0.0/features/beacon-v2-rust-kernel-redesign/tests.md",
       "status": "authoritative",
       "route": "truth.coverage"
     },
     {
       "surface": "package-tasks",
       "authority": "support_advisory",
-      "canonical_artifact": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tasks.md",
+      "canonical_artifact": "docs/beacon/archive/v2.0.0/features/beacon-v2-rust-kernel-redesign/tasks.md",
       "status": "task-intent-indexed",
       "route": "generate"
     },
     {
       "surface": "package-evidence",
       "authority": "support_advisory",
-      "canonical_artifact": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/evidence.md",
+      "canonical_artifact": "docs/beacon/archive/v2.0.0/features/beacon-v2-rust-kernel-redesign/evidence.md",
       "status": "evidence-indexed",
       "route": "evaluate"
     },
     {
       "surface": "program-manifest",
       "authority": "requirement_truth",
-      "canonical_artifact": "docs/beacon/v2.0.0/programs/v2-0-0-rust/program-manifest.md",
+      "canonical_artifact": "docs/beacon/archive/v2.0.0/programs/v2-0-0-rust/program-manifest.md",
       "status": "canonical-program-surface",
       "route": "truth.define"
     },
     {
       "surface": "program-phase-graph",
       "authority": "requirement_truth",
-      "canonical_artifact": "docs/beacon/v2.0.0/programs/v2-0-0-rust/phase-graph.md",
+      "canonical_artifact": "docs/beacon/archive/v2.0.0/programs/v2-0-0-rust/phase-graph.md",
       "status": "canonical-program-surface",
       "route": "truth.define"
     },
     {
       "surface": "program-admission-gates",
       "authority": "requirement_truth",
-      "canonical_artifact": "docs/beacon/v2.0.0/programs/v2-0-0-rust/admission-gates.md",
+      "canonical_artifact": "docs/beacon/archive/v2.0.0/programs/v2-0-0-rust/admission-gates.md",
       "status": "canonical-program-surface",
       "route": "truth.define"
     },
     {
       "surface": "program-run-state",
       "authority": "requirement_truth",
-      "canonical_artifact": "docs/beacon/v2.0.0/programs/v2-0-0-rust/program-run-state.json",
+      "canonical_artifact": "docs/beacon/archive/v2.0.0/programs/v2-0-0-rust/program-run-state.json",
       "status": "canonical-program-state",
       "route": "truth.define"
     },

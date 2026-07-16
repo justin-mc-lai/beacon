@@ -136,3 +136,24 @@
 ## 边界
 
 truth freeze → implement → evaluator 后才可 closure。
+
+
+## Phase Cross-cutting — R18 Scenario Completeness（AC-157–173）
+
+- [ ] TASK-R18-001 双轨安装/PATH 与显式 runtime 矩阵（AC-157 / TC-157, TC-N27）。
+- [ ] TASK-R18-002 全局 DB 按轨写域 / writer lease 与双写检测（AC-158 / TC-158, TC-N28）。
+- [ ] TASK-R18-003 archive plane 显式 version 交付策略 + catalog 一致性（AC-159 / TC-159, TC-N29）。
+- [ ] TASK-R18-004 移除或 archive-only `beacon-python`；workspace 五 crate 闭环（AC-160 / TC-160, TC-N30）。
+- [ ] TASK-R18-005 schema 九表 vs 实现决策闭环 + ADR/refreeze（AC-161 / TC-161, TC-N31）。
+- [ ] TASK-R18-006 truth MD golden parity fixtures（中文/表/frontmatter）（AC-162 / TC-162, TC-N32）。
+- [ ] TASK-R18-007 phase_exit_only 权威字段 + 禁止 phase 冒充 release（AC-163 / TC-163, TC-N33）。
+- [ ] TASK-R18-008 evaluator 弱 TC 检测 `weak_tc_insufficient`（AC-164 / TC-164, TC-N34）。
+- [ ] TASK-R18-009 reason_codes_core.v1 ≥20 全量往返（AC-165 / TC-165）。
+- [ ] TASK-R18-010 跨轨证据污染阻断（AC-166 / TC-166, TC-N35）。
+- [ ] TASK-R18-011 adversarial_review.v1 release 强制点（AC-167 / TC-167, TC-N36）。
+- [ ] TASK-R18-012 dual_track_shared_contract 白名单与 CI path filter（AC-168 / TC-168）。
+- [ ] TASK-R18-013 skill-score-corpus.v1 + baseline 对照（AC-169 / TC-169, TC-N37）。
+- [ ] TASK-R18-014 建议→人改→复评；禁止 auto apply（AC-170 / TC-170, TC-N38）。
+- [ ] TASK-R18-015 GitScopeGraph→BranchContext parity loader（AC-171 / TC-171, TC-N39）。
+- [ ] TASK-R18-016 single_repo/monorepo/multi_git topology admission fixtures（AC-172 / TC-172）。
+- [ ] TASK-R18-017 loop/implement/standard-flow 强制 topology_gate_ref（AC-173 / TC-173, TC-N40）。

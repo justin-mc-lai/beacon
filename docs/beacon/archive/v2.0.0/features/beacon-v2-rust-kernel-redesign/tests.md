@@ -1,7 +1,7 @@
 ---
 slug: beacon-v2-rust-kernel-redesign
 version: v2.0.0
-revision: r14-program-orchestration-surface-coverage
+revision: r19-scenario-completeness-s01-s19
 parser_contract: beacon-feature-package-v1
 truth_ref: docs/beacon/archive/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
 ---
@@ -10,7 +10,7 @@ truth_ref: docs/beacon/archive/v2.0.0/features/beacon-v2-rust-kernel-redesign/tr
 
 ## 覆盖说明
 
-- 每个 AC（AC-001..AC-156）至少一行 TC。
+- 每个 AC（AC-001..AC-173）至少一行 TC。
 - **integration tier** 为 agent 类 AC（AC-043–046, AC-099–100）最低验收等级；禁止仅 contract/空壳验收。
 - **禁止非行为级验证列**：单独 `integration`、`目录存在`、`fixture`、`可选` 不算可执行 TC；必须写 **Command + Assertion**（或显式 `BLOCKED:<reason>`）。
 - Pass/Fail 由 `beacon-eval-qa` 裁决。
@@ -315,6 +315,24 @@ truth_ref: docs/beacon/archive/v2.0.0/features/beacon-v2-rust-kernel-redesign/tr
 | TC-060b | AC-060 | explicit track select | 无显式 runtime/v2 flag 时不得声称「默认已切 v2 且 v1 退役」 | P4 |
 | TC-062b | AC-062 | cross-track fallback forbidden | v2 path 请求 python backend → `cross_track_fallback_forbidden`；v1 path 正常调用 v1 skill 仍 pass | P4 |
 
+| TC-157 | AC-157 | dual-track install/PATH matrix | fixture: install v1+v2 bins；`beacon <v1-only-cmd>` 不走 v2；`beacon-v2 spine show` 或 `beacon --runtime v2 spine show` 不 fallback python；无显式轨时不得静默跨轨 | P0 |
+| TC-158 | AC-158 | dual-track writer lease | 同库同字段 v1+v2 并发写 fixture → `dual_track_writer_conflict`；跨轨只读 spine/import 对照 pass | P0 |
+| TC-159 | AC-159 | archive plane explicit version | `--version v2.0.0` resolve 到 `docs/beacon/archive/v2.0.0/features/...`；若 catalog archive-readonly 则 implement admit 给 `version_plane_archive_readonly` + unarchive route，不得 silent write | P0 |
+| TC-160 | AC-160 | core closure no python member | `cd packages/beacon-rs && cargo metadata --format-version 1 \| jq -e '[.packages[].name] \| index("beacon-python") \| not'` 且 workspace members 仅五 core crate | P0 |
+| TC-161 | AC-161 | schema contract closed | `cargo test -p beacon-store schema_contract_matches_truth` — 表/必填列与 AC-067..075 或已 refreeze 的 schema ADR 一致；否则 `schema_contract_drift` | P0 |
+| TC-162 | AC-162 | MD parse golden parity | `cargo test -p beacon-cli truth_parse_golden_parity -- --fixture tests/fixtures/truth_parse/*` — Rust 输出 vs golden JSON 规范字段 diff 为空；含中文表/frontmatter | P1 |
+| TC-163 | AC-163 | phase exit not release | phase scorecard JSON `authority=="phase_exit_only"` 且无 `release_ready=true`；P0 pass 禁用 v1 CLI fixture → `dual_track_policy_violation` | P0 |
+| TC-164 | AC-164 | weak TC rejected | evaluator fixture：仅 `test -d packages/beacon-rs/beacon-core` 作为 AC-001 唯一证据 → `weak_tc_insufficient` block | 全 phase |
+| TC-165 | AC-165 | reason_codes core roundtrip | core set（≥20，含 R18 新码）每个 code 有 fail fixture + JSON 往返；删除 core code 无 change → contract fail | P3 |
+| TC-166 | AC-166 | cross-track evidence contamination | 仅提交 v1 `.beacon/qa/*.json` 申请 v2 release → `cross_track_evidence_contamination`；v2 gate_results 冒充 v1 release 同阻 | P3 |
+| TC-167 | AC-167 | adversarial review required | release fixture 缺 `adversarial_review.v1` 或翻车点 <3 → `adversarial_review_missing` | P3 |
+| TC-168 | AC-168 | shared_contract whitelist | PR 同改 `beacon/`+`packages/beacon-rs/` 非白名单路径无 admission → `dual_track_mixed_source`；只改 `global-boundaries.md`+catalog 有 shared admission → pass | P4 |
+| TC-169 | AC-169 | skill-score corpus | `beacon skill-score --corpus skill-score-corpus.v1 --skill fixtures/v1/demo --json` 与 v2 `loop` skill 均产出 structure+effectiveness；缺 corpus → `skill_score_corpus_missing` | P4 |
+| TC-170 | AC-170 | suggest-human-edit-rescore | score 产出 suggested_diff 后不改文件复评分数不升；自动 apply diff → `skill_auto_edit_forbidden`；人改后独立 grader 会话可复评 | P4 |
+| TC-171 | AC-171 | GitScopeGraph→BranchContext | `cargo test -p beacon-cli gitscope_branch_context_parity -- --fixture docs/beacon/v1.6.7/.../fixtures` 或仓库内等价 fixture：topology 字段可加载 | P2 |
+| TC-172 | AC-172 | three topology admissions | single_repo/monorepo/multi_git 三 fixture：dirty writable scope → topology_gate blocked；multi_git satellite blocked → aggregate blocked | P2 |
+| TC-173 | AC-173 | topology_gate_ref required | loop start / implement admit 无 topology_gate_ref → `topology_gate_missing`；status=blocked → `topology_gate_blocked`；bundle 含 topology_gate 项 | P2 |
+
 ## 负向路径
 
 | TC ID | 场景 | 期望 |
@@ -345,6 +363,20 @@ truth_ref: docs/beacon/archive/v2.0.0/features/beacon-v2-rust-kernel-redesign/tr
 | TC-N24 | 评分 CLI 自动改写 SKILL.md | `skill_auto_edit_forbidden` |
 | TC-N25 | 用 skill scorecard 声称 release pass | authority boundary fail |
 | TC-N26 | P6 成熟度通过后自动禁用 v1 CLI | `dual_track_policy_violation` |
+| TC-N27 | 无显式 runtime 却执行 v2-only 行为 | `runtime_track_unspecified` 或等价 fail-closed |
+| TC-N28 | v1 与 v2 并发写同一权威 DB 字段 | `dual_track_writer_conflict` |
+| TC-N29 | archive-readonly version 上 silent implement 写 truth | `version_plane_archive_readonly` / `version_catalog_plane_mismatch` |
+| TC-N30 | workspace 仍含 beacon-python member 声称 P0 complete | `core_closure_python_present` |
+| TC-N31 | 实现表集合与 truth schema 不一致无 ADR | `schema_contract_drift` |
+| TC-N32 | MD parser 与 golden 字段 diff 非空仍 pass | `truth_parse_parity_mismatch` |
+| TC-N33 | phase pass 宣称 release_ready 或禁用 v1 | `dual_track_policy_violation` |
+| TC-N34 | 仅目录存在级 TC 作为 AC closure | `weak_tc_insufficient` |
+| TC-N35 | v1 QA JSON 单独用于 v2 release | `cross_track_evidence_contamination` |
+| TC-N36 | release 无 adversarial_review.v1 | `adversarial_review_missing` |
+| TC-N37 | 缺 skill-score-corpus.v1 仍打分 | `skill_score_corpus_missing` |
+| TC-N38 | 评分 CLI 自动 apply suggested_diff | `skill_auto_edit_forbidden` |
+| TC-N39 | GitScopeGraph 无法投影 BranchContext | `gitscope_branch_context_parity_failed` |
+| TC-N40 | loop/implement 缺 topology_gate_ref | `topology_gate_missing` |
 
 ## E2E
 
@@ -356,4 +388,4 @@ truth_ref: docs/beacon/archive/v2.0.0/features/beacon-v2-rust-kernel-redesign/tr
 | TC-E04 | 六能力 harness surface（P4 gate） | `beacon harness list --version v2.0.0 --json \| jq -e 'map(.id)==["loop","truth","design","implement","qa-evidence","release"]'` |
 | TC-E05 | worktree goal → implement harness iteration → spine cwd 一致 | `cargo test -p beacon-orchestrator e2e_worktree_harness -- --test fixture_worktree_implement`（同 TC-099/100） |
 
-**当前**：truth 已由当前 refreeze transaction 冻结；具体 revision id 以 `.machine/execution/*revision.json` 与 refreeze summary 为准。历史 P0 candidate evidence 见 `evidence.md`，minimal-kernel AC-002/022/059/063/109–144 待实现后由 `beacon-eval-qa` 裁决。
+**当前**：R19 frozen（scenario completeness AC-157–173）；implementation/QA 由 evaluator 裁决。

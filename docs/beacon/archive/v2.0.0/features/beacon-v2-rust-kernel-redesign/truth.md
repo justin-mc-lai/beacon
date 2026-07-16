@@ -3,7 +3,7 @@ slug: beacon-v2-rust-kernel-redesign
 version: v2.0.0
 status: frozen
 language: zh
-revision: r15-dual-track-unified-skill-score
+revision: r19-scenario-completeness-s01-s19
 canonical_refs:
   truth: docs/beacon/archive/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
   tests: docs/beacon/archive/v2.0.0/features/beacon-v2-rust-kernel-redesign/tests.md
@@ -14,7 +14,7 @@ truth_source_model: feature_package_authoritative
 truth_map_contract: beacon-truth-map-v1
 source_plan: docs/plans/beacon-v2-redesign.md
 planner_review: beacon-pln-review option-A true-integration
-change_reason: "UD-B long-term dual-track product; unified skill score in v2.0.0 contract usable for v1; score-only human-edit (no auto SKILL.md mutation)"
+change_reason: "R18 scenario completeness: dual-track ops, archive delivery, schema/scaffold closure, weak-TC ban, GitScopeGraph→BranchContext topology, skill-score ops, evidence authority (S-01..S-19 high-priority)"
 ---
 
 # 需求真相：Beacon v2 Rust Kernel Redesign
@@ -168,6 +168,20 @@ v2 Rust 内核必须**语义重现**以下 v1.6.3 免疫修复（Rust 实现对�
 | `beacon-agent-structured-trace-v166` | governed agent iteration 写 `agent_trace.v1` | P2 |
 | `beacon-loop-stagnation-detector-v166` | 基于 trace 确定性识别 repeat_failure / repeat_labor / plateau | P2 |
 | `beacon-harness-remediation-sandbox-v166` | 在 governed worktree sandbox 中 overlay/eval/rollback；成功也必须 human review | P3 |
+
+
+#### v1.6.7 统一拓扑回灌（R18 增补，Must）
+
+| upstream feature | v2 Rust kernel 义务 | Phase |
+|------------------|---------------------|-------|
+| `beacon-git-scope-graph-v167` | `GitScopeGraph.v1` 必须可投影/加载进 `BranchContext.v1`；standard flow / loop admission 消费 `topology_gate`；single_repo / monorepo / multi_git_workspace 三拓扑 fail-closed（**AC-171..AC-173**） | P2–P3 |
+| `beacon-loop-goal-v166`（R7 + topology consume） | loop precheck 缺 `topology_gate_ref` 不得 pass（对齐 AC-GSG-008 语义，**AC-173**） | P2–P3 |
+
+语义源（只读）：
+
+- `docs/beacon/v1.6.7/features/beacon-git-scope-graph-v167/truth.md`
+- `docs/beacon/v1.6.7/features/beacon-loop-goal-v166/truth.md`（topology 消费语义）
+
 
 ## Scope Mode
 
@@ -679,6 +693,41 @@ optional stop_signal, token_usage, agent_name
 - **AC-155**：评分执行者与被评 skill 的「修改建议作者」在流程上必须可分离（独立评分会话或独立 grader）；禁止同一无审计步骤既改 skill 又自评涨分。
 - **AC-156**：v1 `beacon eval` 既有 scorecard 维度可映射进统一 schema，但发布门必须以统一 schema 的稳定字段为准；字段漂移须走 change，不得静默改权重冒充同比。
 
+### Scenario Completeness Supplement（R18 / S-01..S-19 high-priority）
+
+> 来源：planner comprehensive-thinking + `beacon-pln-review` 场景缺口；用户确认进入 `beacon-gen-change`，先补高优子集合同，再允许 P0 implement_resume。  
+> 原则：**交付真相第一** — 场景必须有行为级 TC 与 reason_code；目录存在 / 文档声明 / 空壳 fixture 不得作为唯一 closure。
+
+#### A. 双轨日常与存储权威（S-01..S-06）
+
+- **AC-157**（P0 / S-01）：双轨安装与 PATH 选择场景 — 本机可同时安装 `track_v1` CLI 与 `track_v2`（`beacon-v2` 或 `beacon --runtime v2` 等价显式入口）。未显式选轨时，不得把 v1 请求静默升级为 v2 行为，也不得把 v2 请求静默降级到 v1 Python。CI 至少覆盖「仅 v1」「仅 v2」「双装 + 显式选轨」三矩阵。`reason_code` 至少：`runtime_track_unspecified`、`cross_track_fallback_forbidden`。
+- **AC-158**（P0 / S-02）：全局 `~/.beacon/beacon.db` **按轨写域** — 必须定义 writer lease 或 schema namespace，使得：`track_v2` 写路径与 `track_v1` runtime-ledger / 遗留投影不得成为第二写者竞争权威。允许跨轨 **只读对照**；禁止跨轨双写同一权威字段。缺写域策略或检测到跨轨双写 → fail-closed：`reason_code=dual_track_writer_conflict`（延续 AC-093/150）。
+- **AC-159**（P0 / S-03）：**archive 面交付场景** — 当 `version-truth-catalog` 将 `v2.0.0` 置于 `docs/beacon/archive/v2.0.0` 时，truth/change/refreeze 与 implement admission 必须仍能显式 `--version v2.0.0` 定位 package；默认 bulk resolver 可不扫 archive，但 **显式 version 不得 inspect-only 到无法 implement**。若策略为「archive 仅只读」，则 implement 前必须先 unarchive/re-activate 到 active plane 并写入 catalog 证据；禁止 silent 写 archive 当 active 却不更新 catalog。`reason_code`：`version_plane_archive_readonly` 或 `version_catalog_plane_mismatch`。
+- **AC-160**（P0 / S-04）：P0 scaffold **必须对齐** AC-002/022 — `packages/beacon-rs` workspace core closure 仅五 crate（core/store/orchestrator/gate/cli）；`beacon-python` / PyO3 不得作为 workspace member 参与 `cargo test --workspace` closure。若历史目录残留，必须 `archive-only` 且不出现在 workspace members；否则 P0 phase exit fail：`reason_code=core_closure_python_present`。
+- **AC-161**（P0 / S-05）：存储 schema 决策必须 **显式闭环** — truth 九表合同（AC-067..075）与实现表集合不一致时，不得 silent drift。允许两条合法路径之一（须写入 change/ADR 引用）：(a) 实现补齐九表字段合同；(b) refreeze 下调 schema 合同并同步 TC。未决策却声称 P0 store complete → block：`reason_code=schema_contract_drift`。
+- **AC-162**（P1 / S-06）：Markdown-as-truth **golden parity** — 建立 fixture 集（至少含 frontmatter、AC 表、中文标点、checkbox、canonical_refs），Rust truth-map/parser 输出必须与权威 reference JSON（可由 v1 Python 生成一次后冻结为 golden）在规范字段上一致。字段 diff 非空 → `reason_code=truth_parse_parity_mismatch`。禁止仅用「能 parse 不炸」代替 parity。
+
+#### B. 交付真相链与假交付阻断（S-07..S-11）
+
+- **AC-163**（P0–P6 / S-07）：**phase 湖级出口 ≠ 产品 release** — program phase exit（P0..P4/P6）只能证明该 slice AC/TC 子集；不得把 phase pass 写成 `feature-ready` / `release_ready` / `v2 default`。phase scorecard 必须声明 `authority=phase_exit_only`。负例：P0 pass 自动切换默认 CLI 到 v2 或禁用 v1 → `dual_track_policy_violation`。
+- **AC-164**（全 phase / S-08）：**弱 TC 禁独过** — 任一 AC 的唯一验收若仅为「目录存在 / 文件存在 / `--help` 可跑 / 无 assertion 的 fixture / 文档声明」，evaluator 必须判 `weak_tc_insufficient` 并阻断该 AC closure。integration tier AC（agent/worktree/implement）最低要求行为级 Command+Assertion（延续 tests.md 总则）。
+- **AC-165**（P3 / S-09）：reason_codes **分层兼容** — 定义 `reason_codes_core.v1`（≥20 个跨 gate 稳定码，含本 R18 新增码）与 `reason_codes_extended` 投影；AC-066 的「至少 5 个往返」升级为 **core set 全量往返**（fixture + integration）。扩展码允许版本门控，但 core 码删除/改义必须走 change。
+- **AC-166**（P3 / S-10）：**跨轨证据污染阻断** — v1 `.beacon/qa/*.json`、v1 scorecard、v1 skill-score、仅 v1 runtime-ledger 记录 **不得** 单独满足 v2 `qa-evidence` / `release` formal closure；反之 v2 gate_results 也不得冒充 v1 release。混用 → `reason_code=cross_track_evidence_contamination`。
+- **AC-167**（P3 / S-11）：QA→release 前 **对抗式审查强制点** — 对齐 `global-boundaries`：release 路径必须存在 `adversarial_review.v1`（≥3 翻车点 + 每点验证证据引用）。缺失 → `reason_code=adversarial_review_missing` fail-closed。不得用 skill-score 或 phase exit 替代。
+
+#### C. 双轨共享合同与 skill-score 操作化（S-13..S-15）
+
+- **AC-168**（P4 / S-13）：`dual_track_shared_contract` **白名单** — 允许同 PR 同时修改的共享真源必须显式枚举，至少包括：`docs/beacon/global-boundaries.md`、`docs/beacon/governance/version-truth-catalog.md`、`docs/beacon/governance/project-version-governance.md`、跨轨 reason_codes 文档、统一 skill-score schema。白名单外同时改 `beacon/`（v1）与 `packages/beacon-rs/`（v2）发布真源且无 admission → `dual_track_mixed_source`（强化 AC-148）。
+- **AC-169**（P4 / S-14）：统一 skill-score **固定语料与对照** — 必须提供 versioned `skill-score-corpus.v1`（固定 test-prompts + 期望边界/负例）与 baseline 对照协议（with_skill vs no_skill 或等价）。对 v1 包与 v2 六 public skill 使用同一 corpus 字段。缺 corpus 或不可复现 → score CLI fail-closed：`reason_code=skill_score_corpus_missing`（强化 AC-151–152）。
+- **AC-170**（P4 / S-15）：**建议→人改→复评** 闭环 — 评分可输出 suggested_diff（advisory）；在人未修改 skill 包前，复评不得因「建议已存在」而自动涨分。人改后二次评分会话必须可分离 grader（AC-155）。自动应用 suggested_diff → `skill_auto_edit_forbidden`。
+
+#### D. GitScopeGraph / 拓扑 admission（S-17..S-19）
+
+- **AC-171**（P2 / S-17）：`GitScopeGraph.v1` → `BranchContext.v1` **parity** — v1.6.7 fixture 的 GitScopeGraph 必须能被 v2 加载并投影到 BranchContext 扩展字段（至少：`topology_kind`、`scopes[]`、`topology_gate_status`、`topology_gate_ref`）。字段缺失或不可加载 → `reason_code=gitscope_branch_context_parity_failed`。
+- **AC-172**（P2–P3 / S-18）：三拓扑 admission — `single_repo` | `monorepo` | `multi_git_workspace` 均须有行为级 fixture：writable scope dirty 违反 → `topology_gate` blocked；`multi_git_workspace` 任 satellite blocked → 汇总 blocked。不得仅实现 single_repo 却声称 BranchContext 完备。
+- **AC-173**（P2–P3 / S-19）：loop / standard flow **强制 topology_gate_ref** — `loop start`、implement admission、AC-142 verification bundle 在 v2 必须包含 `topology_gate` 检查项（对齐 v1.6.7 AC-GSG-007/008）。缺 ref 或 status≠pass 时不得进入 implement：`reason_code=topology_gate_missing` 或 `topology_gate_blocked`。
+
+
 ## Parity Matrix（Plan 场景复刻索引）
 
 | Plan 章节 | AC 范围 | 场景 |
@@ -695,6 +744,7 @@ optional stop_signal, token_usage, agent_name
 | §10 验收 | AC-096–098 | evaluator 裁决 |
 | §v1.6 治理 | AC-101–103 | TIG + planner multi-agent + doctor 路由 |
 | §P0 证据 | AC-104 | beacon-rs scaffold 已完成 |
+| §R18 场景完备 | AC-157–173 | 双轨写域/archive/scaffold/schema/parity/弱TC/拓扑/skill-score 操作 |
 
 ## Deferral Ledger
 
@@ -726,13 +776,15 @@ optional stop_signal, token_usage, agent_name
 ## Freeze Readiness
 
 1. ~~用户确认 Deferral Ledger~~ **已完成**：D-V2-001 accepted；D-V2-004/005 rejected（AC-099/100 in-scope）；**UD-dual-B / UD-skill-score / UD-score-human-edit accepted（2026-07-16）**。
-2. `tests.md` 每个 AC 至少一行 **行为级** TC（非仅 `--help`/文件存在）——R15 新增 AC-147–156 须补 TC。
-3. `tasks.md` P0–P6 与 AC 映射完成——R15 须补双轨隔离与统一评分任务。
+2. `tests.md` 每个 AC 至少一行 **行为级** TC（非仅 `--help`/文件存在）——R15 AC-147–156 与 **R18 AC-157–173** 均须行为级 Command+Assertion。
+3. `tasks.md` P0–P6 与 AC 映射完成——R15 双轨/评分任务 + **R18 场景完备任务**。
 4. `requirement_clarity` open question 清零或 defer。
-5. **无空壳-only AC**；agent/worktree/implement 类 AC 须 integration tier（AC-043–046, AC-099–100）。
-6. **v1.6 upstream**（AC-101–103）在对应 phase 有 behavior-level TC，不得仅用「后续移植」一句带过。
+5. **无空壳-only AC**；agent/worktree/implement 类 AC 须 integration tier（AC-043–046, AC-099–100）；**弱 TC 独过由 AC-164 阻断**。
+6. **v1.6 upstream**（AC-101–103）+ **v1.6.7 GitScopeGraph（AC-171–173）** 在对应 phase 有 behavior-level TC，不得仅用「后续移植」一句带过。
+7. P0 implement_resume 前：AC-157–161（双轨写域/archive/scaffold/schema）合同已冻结且 TC 就绪。
 
-**当前状态**：`frozen` / **R15**（revision `r15-dual-track-unified-skill-score`）— 2026-07-16 refreeze：长期双轨（B）+ 统一 skill 评分入 v2.0.0 且可用于 v1 + 只评分人改。
+**当前状态**：`frozen` / **R19**（revision `r19-scenario-completeness-s01-s19`）— 2026-07-16：R18 场景合同 + R19 narrative/machine 对齐冻结；P0 implement 仍需 program admission + AC-157–161 证据。
+
 
 ## User Stories
 
@@ -764,6 +816,10 @@ optional stop_signal, token_usage, agent_name
 
 **AC**：AC-003, AC-060, AC-062, AC-110, AC-147–156
 
+### US-008 场景完备（双轨/拓扑/假交付阻断）
+
+**AC**：AC-157–173
+
 ## Revision History
 
 | Rev | 变更 |
@@ -782,3 +838,5 @@ optional stop_signal, token_usage, agent_name
 | r11 | R8 refreeze：将 canonical truth author/refreeze/commit -> feature worktree reconcile -> governance verify -> workspace admission -> implement resume 固化为 Standard Execution Flow；新增 baseline commit、stale feature-local refreeze quarantine、verification bundle 与 idempotent resume contract（AC-138–144） |
 | r14 | R13 repair refreeze：materialize `v2-0-0-rust` program orchestration as canonical surface；补 phase graph、lake slices、admission gates、run-state；修复 reason-only / machine-only refreeze 造成的 revision authority drift 风险 |
 | r15 | R14 change（reopened）：UD-B 长期双轨；统一 skill 评分入 v2.0.0 且可用于 v1；只评分人改；重写 AC-003/060/062/110 与共存表；新增 AC-147–156 |
+| r18 | R18 change：S-01..S-19 高优场景完备（双轨安装/写域/archive/scaffold/schema/MD parity/phase出口/弱TC/reason分层/跨轨证据/adversarial/shared whitelist/skill-score语料/建议-人改-复评/GitScopeGraph拓扑）；AC-157–173 |
+| r19 | R19 refreeze：freeze readiness/evidence/tests footer 与 machine revision 对齐；场景合同仍为 AC-157–173 |
