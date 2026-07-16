@@ -5,11 +5,11 @@
 
 - version: `v1.6.6`
 - feature_count: `1`
-- transaction_id: `tx-3c3f7affc1890e627`
-- source_hash: `sha256:a799d3b7acd9384663b2dd3347cc37d3df75e397e9a34249828e41d74fe9749e`
+- transaction_id: `tx-f307909fe32c869e7`
+- source_hash: `sha256:adb36b4fc6b1e87fb3f80820d8556376cbae51e6f688032c6c14e4b8f71711c7`
 
 ### Registered Feature Baselines
-- `beacon-loop-goal-v166` | revision=`R1` | branch=`beacon/v1.6.6` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.6/.machine/execution/implementation-delivery-baseline-beacon-loop-goal-v166.json`
+- `beacon-loop-goal-v166` | revision=`R5` | branch=`beacon/v1.6.6/beacon-loop-goal-v166` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.6/.machine/execution/implementation-delivery-baseline-beacon-loop-goal-v166.json`
 <!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:END -->
 
 <!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:beacon-loop-goal-v166:START -->
@@ -51,17 +51,17 @@
 <!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:beacon-loop-goal-v166:START -->
 ## Implementation Delivery Baseline
 
-- baseline_id: `impl-delivery-baseline-v1.6.6-beacon-loop-goal-v166-R1`
-- transaction_id: `tx-e87a44353481ddbb9`
-- source_hash: `sha256:6c9a515fa6bc68df6838dfc789be5f29dc640d31d91dd193d04c78647b7f2560`
+- baseline_id: `impl-delivery-baseline-v1.6.6-beacon-loop-goal-v166-R5`
+- transaction_id: `tx-caa991c5a52e44c96`
+- source_hash: `sha256:e8e33e9fdb995fd7f06f6bed8e96a29d6b2cc84a75b82218afa45480ad93fbd8`
 - projection_seq: `1`
 - version: `v1.6.6`
 - feature: `beacon-loop-goal-v166`
 - lifecycle_role: `pre-implement delivery blueprint projection`
 - projection_refresh_trigger: `implement plan against the active frozen revision`
 - branch_strategy: `single-branch`
-- base_branch: `beacon/v1.6.6`
-- default_target_branch: `beacon/v1.6.6`
+- base_branch: `main`
+- default_target_branch: `beacon/v1.6.6/beacon-loop-goal-v166`
 - branch_prefix: `beacon/`
 - use_git_worktree: `False`
 - worktree_root: `/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.6/beacon-loop-goal-v166`

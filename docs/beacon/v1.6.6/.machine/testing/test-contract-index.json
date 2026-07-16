@@ -17,12 +17,12 @@
     "story_state": "docs/beacon/v1.6.6/.machine/user-story/beacon-loop-goal-v166.json"
   },
   "source_hashes": {
-    "truth": "sha256:210cc0660dca50a1a489970f8da6f883106a8da4adf7f21ffeb5d7f472fb55c0",
-    "tests": "sha256:47fddf5e62ff08dc84d87c0a6820250c25164c419591a75d4c9e8ff9671ed178",
-    "tasks": "sha256:674f76ef5f400517219253ae5b3ae62931f86b90888475b8f79038a55df5f416",
-    "evidence": "sha256:92b5aa289d49996a7cb7ce5e1bc6e16dd1cb589614e3b7ba2c2cb6ca624b13d6",
-    "ac_matrix": "sha256:47fddf5e62ff08dc84d87c0a6820250c25164c419591a75d4c9e8ff9671ed178",
-    "story_state": "sha256:c6b124479341a67103f72590def66caf7b82033a513a7d2330e60a773994f0ef"
+    "truth": "sha256:736eb59db23088be951506a78ddb0736ebe6202de84ef3ba7d0eb2606b4cb905",
+    "tests": "sha256:c71c58b3a4f1888aeda25ad3b1fb3932150a4940158879b4ab09caea5aae9939",
+    "tasks": "sha256:ca2baaa0a836e667caa34eea6265b3174dc30cb147261220725e9c4317444cf9",
+    "evidence": "sha256:381c4cfda16136112d293c7805a8068456ded13d8b03fe42fa31fbc2a6d68ba7",
+    "ac_matrix": "sha256:c71c58b3a4f1888aeda25ad3b1fb3932150a4940158879b4ab09caea5aae9939",
+    "story_state": "sha256:b1eef119bade96b9261eed154307744532b7e24f5670b99972f9ca4107841ae5"
   },
   "lanes": {
     "feature_release_facing": [
@@ -319,6 +319,76 @@
         "source": "feature-package:docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-LG-022",
+        "ac_id": "AC-022",
+        "ac_theme": "truth-canonical-cli-gate",
+        "lane": "feature_release_facing",
+        "layer": "negative",
+        "command": "python3 -m pytest tests/test_v166_truth_canonical_branch.py::test_change_refreeze_chain_blocks_on_feature_branch tests/test_v166_truth_canonical_branch.py::test_freeze_command_blocks_on_feature_branch -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "feature 分支上 freeze/refreeze-chain blocked，`reason_code=truth_canonical_branch_mismatch`",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-022/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-LG-023",
+        "ac_id": "AC-023",
+        "ac_theme": "truth-file-write-gate",
+        "lane": "feature_release_facing",
+        "layer": "negative",
+        "command": "python3 -m pytest tests/test_v166_truth_canonical_branch.py -k truth_file_write -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "非 truth_canonical 写 feature package Markdown → blocked；在 main 写不要求 feature worktree cwd",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-023/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-LG-024",
+        "ac_id": "AC-024",
+        "ac_theme": "git-admission-dual-track",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v166_truth_canonical_branch.py::test_truth_authoring_skills_get_canonical_branch_preamble tests/test_v166_truth_canonical_branch.py::test_delivery_skills_keep_worktree_admission_preamble -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "truth 编写 skill 含 truth_canonical preamble；delivery skill 含 workspace admit",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-024/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-LG-025",
+        "ac_id": "AC-025",
+        "ac_theme": "cli-owned-precheck-bundle",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v166_loop_goal.py -k cli_owned_precheck -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "CLI 产出 verification bundle artifact；无 artifact ref 的 agent 自报 pass 被拒绝",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-025/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-LG-026",
+        "ac_id": "AC-026",
+        "ac_theme": "truth-routing-branch-check",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v166_truth_canonical_branch.py::test_loop_goal_skill_declares_truth_canonical_gate -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "public SKILL.md Step 2 含 truth_canonical 校验与 `truth_canonical_branch_mismatch`",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-026/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
       }
     ],
     "current_runtime_contract": [],
@@ -328,7 +398,7 @@
     "browser_runtime_admission": []
   },
   "lane_counts": {
-    "feature_release_facing": 21,
+    "feature_release_facing": 26,
     "current_runtime_contract": 0,
     "generated_surface_sync": 0,
     "compatibility_contract": 0,
@@ -637,6 +707,76 @@
       "source": "feature-package:docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-LG-022",
+      "ac_id": "AC-022",
+      "ac_theme": "truth-canonical-cli-gate",
+      "lane": "feature_release_facing",
+      "layer": "negative",
+      "command": "python3 -m pytest tests/test_v166_truth_canonical_branch.py::test_change_refreeze_chain_blocks_on_feature_branch tests/test_v166_truth_canonical_branch.py::test_freeze_command_blocks_on_feature_branch -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "feature 分支上 freeze/refreeze-chain blocked，`reason_code=truth_canonical_branch_mismatch`",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-022/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-LG-023",
+      "ac_id": "AC-023",
+      "ac_theme": "truth-file-write-gate",
+      "lane": "feature_release_facing",
+      "layer": "negative",
+      "command": "python3 -m pytest tests/test_v166_truth_canonical_branch.py -k truth_file_write -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "非 truth_canonical 写 feature package Markdown → blocked；在 main 写不要求 feature worktree cwd",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-023/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-LG-024",
+      "ac_id": "AC-024",
+      "ac_theme": "git-admission-dual-track",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v166_truth_canonical_branch.py::test_truth_authoring_skills_get_canonical_branch_preamble tests/test_v166_truth_canonical_branch.py::test_delivery_skills_keep_worktree_admission_preamble -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "truth 编写 skill 含 truth_canonical preamble；delivery skill 含 workspace admit",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-024/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-LG-025",
+      "ac_id": "AC-025",
+      "ac_theme": "cli-owned-precheck-bundle",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v166_loop_goal.py -k cli_owned_precheck -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "CLI 产出 verification bundle artifact；无 artifact ref 的 agent 自报 pass 被拒绝",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-025/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-LG-026",
+      "ac_id": "AC-026",
+      "ac_theme": "truth-routing-branch-check",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v166_truth_canonical_branch.py::test_loop_goal_skill_declares_truth_canonical_gate -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "public SKILL.md Step 2 含 truth_canonical 校验与 `truth_canonical_branch_mismatch`",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-026/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
     }
   ],
   "ac_to_test_refs": {
@@ -702,6 +842,21 @@
     ],
     "AC-021": [
       "TC-LG-021"
+    ],
+    "AC-022": [
+      "TC-LG-022"
+    ],
+    "AC-023": [
+      "TC-LG-023"
+    ],
+    "AC-024": [
+      "TC-LG-024"
+    ],
+    "AC-025": [
+      "TC-LG-025"
+    ],
+    "AC-026": [
+      "TC-LG-026"
     ]
   },
   "qa_order_contract": {
@@ -737,6 +892,6 @@
   "status": "pass",
   "blocked": false,
   "reason_codes": [],
-  "generated_at": "2026-07-15T13:10:00.342772+00:00",
+  "generated_at": "2026-07-16T04:10:30.303712+00:00",
   "index_path": "docs/beacon/v1.6.6/.machine/testing/test-contract-index.json"
 }

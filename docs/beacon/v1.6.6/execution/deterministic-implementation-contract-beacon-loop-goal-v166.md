@@ -2,16 +2,16 @@
 
 - feature: `beacon-loop-goal-v166`
 - version: `v1.6.6`
-- revision_id: `R1`
+- revision_id: `R5`
 - review_status: `accepted`
-- approved_by: `codex`
-- reviewed_at: `2026-07-15T06:14:29.066783+00:00`
+- approved_by: `release-eval`
+- reviewed_at: `2026-07-16T04:10:57.888453+00:00`
 
 ## Git
 - base_branch: `main`
 - target_branch: `beacon/v1.6.6/beacon-loop-goal-v166`
 - branch_prefix: `beacon/`
-- branch_strategy: `dedicated-feature-worktree`
+- branch_strategy: `single-branch`
 
 ## Worktree
 - use_git_worktree: `False`
