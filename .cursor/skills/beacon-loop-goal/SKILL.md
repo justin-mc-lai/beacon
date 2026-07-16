@@ -74,10 +74,11 @@ When this skill is invoked, follow this decision tree sequentially:
 
 ### Step 2: Truth Stage
 
-1. Route to `beacon-gen-truth`.
-2. After it returns, read `docs/beacon/<version>/features/<feature>/truth.md` frontmatter.
-3. If `status: frozen`, transition to `review_routing`.
-4. If not frozen, stay in `truth_routing`, output the next route, and stop.
+1. Verify the current checkout is on governance `truth_canonical` (`main` or `master`); if not, route to `beacon-gov-debug` with `reason_code=truth_canonical_branch_mismatch` and stop.
+2. Route to `beacon-gen-truth`.
+3. After it returns, read `docs/beacon/<version>/features/<feature>/truth.md` frontmatter.
+4. If `status: frozen`, transition to `review_routing`.
+5. If not frozen, stay in `truth_routing`, output the next route, and stop.
 
 ### Step 2.5: Planner Review Decision Packet
 
@@ -128,7 +129,7 @@ When this skill is invoked, follow this decision tree sequentially:
 | Stage | Skill to Load | Check After Return |
 |-------|--------------|-------------------|
 | governance_precheck | CLI: `beacon plan start` | `status=pass` or `blocked` |
-| truth_routing | `beacon-gen-truth` | `truth.md status=frozen`? |
+| truth_routing | `beacon-gen-truth` | on `truth_canonical` branch? `truth.md status=frozen`? |
 | review_routing | `beacon-pln-review` | decision packet allows implement? |
 | standard_execution_precheck | CLI: `truth-map verify`; `verify-materials --strict`; `git diff --check`; `branch-governance verify`; `implement check-branch` | canonical baseline committed/merged? workspace admission pass? |
 | implement_routing | `beacon-gen-implement` | feature tests pass? |

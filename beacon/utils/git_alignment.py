@@ -50,6 +50,72 @@ def git_branch_exists(project_root: Path, branch: str) -> bool:
     return result.returncode == 0
 
 
+def resolve_truth_canonical_branch(project_root: Path, *, version: str) -> str:
+    """Resolve governance truth_canonical branch, defaulting to main or master."""
+    from beacon.utils.project_governance import load_governance_payload
+    from beacon.utils.versioning import resolve_target_version
+
+    root = project_root.expanduser().resolve()
+    resolved_version = resolve_target_version(root, version)
+    try:
+        payload = load_governance_payload(root)
+        scoped = payload.get("version_scoped_metadata") if isinstance(payload.get("version_scoped_metadata"), dict) else {}
+        contract = scoped.get(resolved_version) if isinstance(scoped.get(resolved_version), dict) else {}
+        truth_canonical = str(contract.get("truth_canonical") or "").strip()
+        if truth_canonical:
+            return truth_canonical
+    except Exception:  # noqa: BLE001
+        pass
+    if git_branch_exists(root, "main"):
+        return "main"
+    if git_branch_exists(root, "master"):
+        return "master"
+    return "main"
+
+
+def check_truth_authoring_branch(
+    project_root: Path,
+    *,
+    version: str,
+    operation: str = "truth_authoring",
+) -> dict[str, Any]:
+    """Fail-closed guard: truth/change/refreeze/freeze must run on truth_canonical."""
+    root = project_root.expanduser().resolve()
+    from beacon.utils.versioning import resolve_target_version
+
+    resolved_version = resolve_target_version(root, version)
+    truth_canonical = resolve_truth_canonical_branch(root, version=resolved_version)
+    current_branch = git_output(root, "rev-parse", "--abbrev-ref", "HEAD")
+    detached_head = current_branch == "HEAD"
+    repo_detected = git_repo_exists(root)
+    on_truth_canonical = bool(truth_canonical and current_branch == truth_canonical)
+    blocked = (not repo_detected) or detached_head or (not on_truth_canonical)
+    reason_code = ""
+    if not repo_detected:
+        reason_code = "git_repo_missing"
+    elif detached_head:
+        reason_code = "git_detached_head"
+    elif not on_truth_canonical:
+        reason_code = "truth_canonical_branch_mismatch"
+    return {
+        "status": "blocked" if blocked else "pass",
+        "operation": operation,
+        "version": resolved_version,
+        "truth_canonical": truth_canonical,
+        "current_branch": current_branch,
+        "on_truth_canonical": on_truth_canonical,
+        "repo_detected": repo_detected,
+        "detached_head": detached_head,
+        "reason_code": reason_code,
+        "blocked": blocked,
+        "recommended_command": (
+            f"git checkout {truth_canonical}"
+            if blocked and truth_canonical and reason_code == "truth_canonical_branch_mismatch"
+            else ""
+        ),
+    }
+
+
 def git_has_dirty_worktree(project_root: Path) -> bool:
     try:
         result = subprocess.run(

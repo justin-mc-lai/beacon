@@ -16,6 +16,16 @@ from beacon.utils.story_state import feature_slug
 
 SCHEMA_VERSION = "workspace-admission-v1"
 
+TRUTH_GIT_ADMISSION_PREAMBLE = """## GIT_ADMISSION (mandatory — truth authoring on canonical branch)
+
+Before ANY truth/change/refreeze/freeze write when version is known:
+1. Resolve `truth_canonical` from project governance (default: `main` or `master`)
+2. Verify `git rev-parse --abbrev-ref HEAD` equals `truth_canonical`
+3. If mismatch → STOP with `reason_code=truth_canonical_branch_mismatch`; do NOT edit requirement truth
+4. Commit refreeze/freeze artifacts on `truth_canonical` before loop-goal may route to implement
+5. Do NOT use feature worktree for truth authoring — use the canonical branch checkout only
+"""
+
 GIT_ADMISSION_PREAMBLE = """## GIT_ADMISSION (mandatory — Tier A/B when version+feature known)
 
 Before ANY repo write or implement/qa/release route:
@@ -24,13 +34,20 @@ Before ANY repo write or implement/qa/release route:
 3. Set cwd to worktree_path from payload
 4. Do NOT git checkout elsewhere to "fix" branch
 5. When admission is soft-skipped (`require_workspace_admission=false`), still verify `current_branch == resolved target_branch` before repo writes (R5 UD-024)
+6. (implement only) Before writing implementation, merge `truth_canonical` into the development branch so implementation bases on canonical frozen truth
 """
+
+TRUTH_AUTHORING_SKILLS = frozenset(
+    {
+        "beacon-gen-truth",
+        "beacon-gen-change",
+        "beacon-gen-refreeze",
+    }
+)
 
 TIER_A_SKILLS = frozenset(
     {
         "beacon-gen-implement",
-        "beacon-gen-change",
-        "beacon-gen-truth",
         "beacon-eval-qa",
         "beacon-eval-release",
         "beacon-gov-branch",
@@ -49,7 +66,7 @@ TIER_B_SKILLS = frozenset(
     }
 )
 
-GIT_ADMISSION_SKILLS = TIER_A_SKILLS | TIER_B_SKILLS
+GIT_ADMISSION_SKILLS = TIER_A_SKILLS | TIER_B_SKILLS | TRUTH_AUTHORING_SKILLS
 
 
 def _semver_tuple(value: str) -> tuple[int, int, int]:
@@ -651,17 +668,23 @@ def gate_workspace_admission_or_block(
 
 
 def inject_git_admission_into_skill_text(skill_id: str, text: str) -> str:
-    if skill_id not in GIT_ADMISSION_SKILLS:
+    if skill_id in TRUTH_AUTHORING_SKILLS:
+        preamble = TRUTH_GIT_ADMISSION_PREAMBLE
+        marker_text = "truth_canonical"
+    elif skill_id in GIT_ADMISSION_SKILLS:
+        preamble = GIT_ADMISSION_PREAMBLE
+        marker_text = "workspace admit"
+    else:
         return text
-    if "GIT_ADMISSION" in text and "workspace admit" in text:
+    if "GIT_ADMISSION" in text and marker_text in text:
         return text
     marker = "## Beacon v1.6.0 共享 Preamble"
     if marker in text:
         idx = text.find(marker)
         end = text.find("\n## ", idx + len(marker))
         insert_at = end if end != -1 else len(text)
-        return text[:insert_at].rstrip() + "\n\n" + GIT_ADMISSION_PREAMBLE + "\n" + text[insert_at:].lstrip("\n")
-    return text.rstrip() + "\n\n" + GIT_ADMISSION_PREAMBLE + "\n"
+        return text[:insert_at].rstrip() + "\n\n" + preamble + "\n" + text[insert_at:].lstrip("\n")
+    return text.rstrip() + "\n\n" + preamble + "\n"
 
 
 def _versions_requiring_admission(project_root: Path) -> list[str]:

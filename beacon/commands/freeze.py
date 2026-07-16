@@ -9,6 +9,7 @@ from typing import Optional
 import typer
 
 from beacon.utils.feature_package import sync_truth_frontmatter_status, validate_feature_package
+from beacon.utils.git_alignment import check_truth_authoring_branch
 from beacon.utils.material_sync import sync_change_loop_requirement_package
 from beacon.utils.requirement_clarity import (
     write_requirement_clarity_report,
@@ -27,6 +28,28 @@ app = typer.Typer(name="freeze", help="Freeze current feature revision as implem
 def _freeze_impl(feature: str, project: Optional[str], version: str, json_output: bool) -> int:
     project_root = (Path(project) if project else Path.cwd()).expanduser().resolve()
     resolved_version = resolve_target_version(project_root, version)
+    branch_guard = check_truth_authoring_branch(
+        project_root,
+        version=resolved_version,
+        operation="freeze",
+    )
+    if bool(branch_guard.get("blocked")):
+        payload = {
+            "schema_version": "1.0",
+            "feature": feature,
+            "version": resolved_version,
+            "status": "blocked",
+            "reason_code": str(branch_guard.get("reason_code") or "truth_canonical_branch_mismatch"),
+            "truth_authoring_branch": branch_guard,
+        }
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(
+                "Beacon freeze blocked: requirement truth must be authored on "
+                f"{branch_guard.get('truth_canonical', 'main')}"
+            )
+        return 2
     integrity_gate = build_truth_integrity_gate(
         project_root,
         version=resolved_version,

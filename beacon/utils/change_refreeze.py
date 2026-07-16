@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from beacon.utils.artifact_paths import change_docs_file, machine_change_file
+from beacon.utils.git_alignment import check_truth_authoring_branch
 from beacon.utils.feature_package import sync_truth_frontmatter_status, validate_feature_package
 from beacon.utils.legacy_cutover import build_legacy_cutover_preflight
 from beacon.utils.material_sync import sync_change_loop_requirement_package
@@ -273,6 +274,11 @@ def run_change_refreeze_chain(
     """Run one governed change -> requirement package -> clarity -> freeze attempt."""
 
     resolved_version = resolve_target_version(project_root, version)
+    branch_guard = check_truth_authoring_branch(
+        project_root,
+        version=resolved_version,
+        operation="change_refreeze",
+    )
     package_authoritative = feature_package_authoritative_feature(project_root, version=resolved_version, feature=feature)
     surface_statuses = _surface_statuses(project_root, version=resolved_version, feature=feature)
     before_revision = load_revision_state(
@@ -289,6 +295,19 @@ def run_change_refreeze_chain(
         before_revision=before_revision,
         surface_statuses=surface_statuses,
     )
+
+    if bool(branch_guard.get("blocked")):
+        payload["blocked_reason"] = str(branch_guard.get("reason_code") or "truth_canonical_branch_mismatch")
+        payload["truth_authoring_branch"] = branch_guard
+        payload["next_route"] = _next_route_payload(
+            project_root=project_root,
+            version=resolved_version,
+            feature=feature,
+            refreeze_status="blocked",
+            blocked_reason=payload["blocked_reason"],
+        )
+        payload["artifacts"] = _write_transaction(project_root, version=resolved_version, feature=feature, payload=payload)
+        return payload
 
     if package_authoritative:
         cutover_preflight = build_legacy_cutover_preflight(

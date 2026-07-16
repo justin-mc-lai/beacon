@@ -14,6 +14,7 @@ from beacon.utils.runtime import now_iso, write_json
 from beacon.utils.workspace_admission import (
     GIT_ADMISSION_SKILLS,
     TIER_A_SKILLS,
+    TRUTH_AUTHORING_SKILLS,
     inject_git_admission_into_skill_text,
 )
 
@@ -772,6 +773,9 @@ def _verify_v160_skill_content(skill_id: str, text: str) -> list[str]:
     if skill_id in TIER_A_SKILLS:
         if "GIT_ADMISSION" not in text or "workspace admit" not in text:
             errors.append("GIT_ADMISSION preamble missing for Tier A skill")
+    if skill_id in TRUTH_AUTHORING_SKILLS:
+        if "GIT_ADMISSION" not in text or "truth_canonical" not in text:
+            errors.append("GIT_ADMISSION preamble missing for truth authoring skill")
     return errors
 
 
