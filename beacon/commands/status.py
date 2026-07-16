@@ -814,6 +814,56 @@ def loop_budget(
     raise typer.Exit(code=0)
 
 
+@app.command("standard-execution-precheck")
+def standard_execution_precheck(
+    feature: str = typer.Argument(..., help="Feature name or slug"),
+    project_root: str = typer.Option("", "--project-root", "--project", "-p", help="Project root path"),
+    version: str = typer.Option("auto", "--version", "-v", help="Target docs version"),
+    run_id: str = typer.Option("", "--run-id", help="Loop-goal run id for artifact naming"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+    record: bool = typer.Option(
+        False,
+        "--record",
+        help="Also record the CLI bundle into loop-goal state when --run-id is provided",
+    ),
+):
+    """Run CLI-owned Standard Execution Flow verification bundle (AC-025)."""
+    from beacon.utils.loop_goal_state import record_standard_execution_precheck
+    from beacon.utils.standard_execution_precheck import run_standard_execution_precheck
+    from beacon.utils.versioning import resolve_target_version
+
+    root = (Path(project_root) if project_root else Path.cwd()).expanduser().resolve()
+    resolved_version = resolve_target_version(root, version)
+    payload = run_standard_execution_precheck(
+        root,
+        version=resolved_version,
+        feature=feature,
+        run_id=run_id or "",
+    )
+    if record and run_id:
+        recorded = record_standard_execution_precheck(
+            root,
+            run_id=run_id,
+            precheck={
+                **payload,
+                "cli_owned": True,
+                "verification_bundle_ref": payload.get("verification_bundle_ref"),
+                "workspace_admission_ref": payload.get("workspace_admission_ref"),
+                "verification_bundle": payload.get("verification_bundle"),
+            },
+        )
+        payload["loop_goal_record"] = recorded
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo("Beacon Standard Execution Precheck")
+        typer.echo(f"status: {payload.get('status')}")
+        typer.echo(f"reason_code: {payload.get('reason_code') or 'none'}")
+        typer.echo(f"artifact: {payload.get('verification_bundle_ref')}")
+        typer.echo(f"baseline: {payload.get('truth_baseline_commit') or 'none'}")
+    raise typer.Exit(code=0 if payload.get("status") == "pass" else 2)
+
+
 @app.command("loop-goal")
 def loop_goal(
     project_root: str = typer.Option("", "--project-root", help="Project root path"),

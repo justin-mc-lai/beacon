@@ -2,9 +2,9 @@
 
 - version: `v1.6.6`
 - feature: `beacon-loop-goal-v166`
-- revision_id: `R4`
+- revision_id: `R5`
 - verdict: `passed`
-- accepted_at: `2026-07-15T12:44:12.491300+00:00`
+- accepted_at: `2026-07-16T04:06:08.681862+00:00`
 - accepted_by: `qa`
 
 ## Summary
@@ -29,7 +29,7 @@
 - `.beacon/release-gate-report.json`
 
 ## Verdict Summary
-- required_ac_count: `21`
+- required_ac_count: `26`
 - required_test_count: `0`
 - story_status: `verified`
 - revision_delivery_status: `verified`

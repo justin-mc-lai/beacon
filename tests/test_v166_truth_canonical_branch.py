@@ -201,3 +201,31 @@ def test_loop_goal_skill_declares_truth_canonical_gate() -> None:
     content = skill_path.read_text(encoding="utf-8")
     assert "truth_canonical_branch_mismatch" in content
     assert "governance `truth_canonical`" in content
+
+
+def test_truth_file_write_allowed_on_main(tmp_path: Path) -> None:
+    from beacon.utils.workspace_admission import hook_should_deny_write
+
+    _seed_repo(tmp_path)
+    _seed_governance(tmp_path)
+    target = tmp_path / "docs" / "beacon" / VERSION / "features" / SLUG / "truth.md"
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text("# truth\n", encoding="utf-8")
+    deny, reason = hook_should_deny_write(tmp_path, target_path=target, cwd=tmp_path)
+    assert deny is False
+    assert reason == ""
+
+
+def test_truth_file_write_blocked_on_feature_branch(tmp_path: Path) -> None:
+    from beacon.utils.workspace_admission import hook_should_deny_write
+
+    _seed_repo(tmp_path)
+    _seed_governance(tmp_path)
+    feature_branch = f"beacon/{VERSION}/{SLUG}"
+    _git(["git", "checkout", "-b", feature_branch], cwd=tmp_path)
+    target = tmp_path / "docs" / "beacon" / VERSION / "features" / SLUG / "truth.md"
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text("# truth\n", encoding="utf-8")
+    deny, reason = hook_should_deny_write(tmp_path, target_path=target, cwd=tmp_path)
+    assert deny is True
+    assert reason == "truth_canonical_branch_mismatch"

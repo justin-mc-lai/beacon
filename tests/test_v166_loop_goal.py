@@ -40,7 +40,33 @@ def _passing_verification_bundle() -> dict[str, dict[str, str]]:
     }
 
 
-def _passing_standard_precheck() -> dict[str, object]:
+def _write_cli_owned_bundle(project: Path, *, run_id: str, extra: dict | None = None) -> str:
+    ref = f".beacon/state/loop-goal/{run_id}.verification-bundle.json"
+    path = project / ref
+    path.parent.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "schema_version": "standard-execution-precheck.v1",
+        "produced_by": "beacon.status.standard-execution-precheck",
+        "cli_owned": True,
+        "verification_bundle": _passing_verification_bundle(),
+        "canonical_refreeze_committed": True,
+        "truth_baseline_merged": True,
+        "truth_baseline_commit": "c57c1f6527dddd654616b57b3091b187b6fd4490",
+        "feature_worktree_reconciled": True,
+        "stale_feature_refreeze_detected": False,
+        "stale_feature_refreeze_quarantine_ref": "",
+        "workspace_admission_ref": ".beacon/state/workspace-admission/v1.6.6/f1.json",
+    }
+    if extra:
+        payload.update(extra)
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    return ref
+
+
+def _passing_standard_precheck(project: Path | None = None, *, run_id: str = "test-run") -> dict[str, object]:
+    ref = ""
+    if project is not None:
+        ref = _write_cli_owned_bundle(project, run_id=run_id)
     return {
         "truth_baseline_commit": "c57c1f6527dddd654616b57b3091b187b6fd4490",
         "canonical_refreeze_committed": True,
@@ -49,8 +75,11 @@ def _passing_standard_precheck() -> dict[str, object]:
         "stale_feature_refreeze_detected": False,
         "stale_feature_refreeze_quarantine_ref": "",
         "verification_bundle": _passing_verification_bundle(),
+        "verification_bundle_ref": ref or f".beacon/state/loop-goal/{run_id}.verification-bundle.json",
         "workspace_admission": {"status": "pass"},
         "workspace_admission_ref": ".beacon/state/workspace-admission/v1.6.6/f1.json",
+        "cli_owned": True,
+        "produced_by": "beacon.status.standard-execution-precheck",
     }
 
 
@@ -212,7 +241,7 @@ class TestSkillRouting:
         assert get_skill_for_stage("governance_precheck") == "CLI:beacon-plan-start"
         assert get_skill_for_stage("truth_routing") == "beacon-gen-truth"
         assert get_skill_for_stage("review_routing") == "beacon-pln-review"
-        assert get_skill_for_stage("standard_execution_precheck") == "CLI:standard-execution-precheck"
+        assert get_skill_for_stage("standard_execution_precheck") == "CLI:beacon-status-standard-execution-precheck"
         assert get_skill_for_stage("implement_routing") == "beacon-gen-implement"
         assert get_skill_for_stage("qa_routing") == "beacon-eval-qa"
         assert get_skill_for_stage("release_gate") == "beacon-eval-release"
@@ -326,15 +355,26 @@ class TestStandardExecutionPrecheck:
             assert "pass: implement_routing" in content
             assert "Standard Execution Precheck" in content
             assert "record_standard_execution_precheck" in content
-            assert "truth-map verify" in content
+            assert "standard-execution-precheck" in content
+            assert "verification_bundle_not_cli_owned" in content or "CLI-owned" in content
+            assert "truth_map verify" in content or "truth-map verify" in content
             assert "verify-materials --strict" in content
             assert "git diff --check" in content
             assert "branch-governance verify" in content
-            assert "implement check-branch" in content
+            assert "implement check-branch" in content or "workspace admission" in content
 
     def test_uncommitted_canonical_refreeze_blocks_implement(self, goal_project: Path):
         state = init(goal_project, version="v1.6.6", feature="f1", utterance="u1")
-        precheck = _passing_standard_precheck()
+        precheck = _passing_standard_precheck(
+            goal_project,
+            run_id=state["run_id"],
+        )
+        # Rewrite CLI artifact with uncommitted baseline.
+        _write_cli_owned_bundle(
+            goal_project,
+            run_id=state["run_id"],
+            extra={"canonical_refreeze_committed": False},
+        )
         precheck["canonical_refreeze_committed"] = False
         result = record_standard_execution_precheck(
             goal_project,
@@ -348,7 +388,15 @@ class TestStandardExecutionPrecheck:
 
     def test_stale_feature_refreeze_requires_quarantine(self, goal_project: Path):
         state = init(goal_project, version="v1.6.6", feature="f1", utterance="u1")
-        precheck = _passing_standard_precheck()
+        precheck = _passing_standard_precheck(goal_project, run_id=state["run_id"])
+        _write_cli_owned_bundle(
+            goal_project,
+            run_id=state["run_id"],
+            extra={
+                "stale_feature_refreeze_detected": True,
+                "stale_feature_refreeze_quarantine_ref": "",
+            },
+        )
         precheck["stale_feature_refreeze_detected"] = True
         precheck["stale_feature_refreeze_quarantine_ref"] = ""
         result = record_standard_execution_precheck(
@@ -363,7 +411,12 @@ class TestStandardExecutionPrecheck:
 
     def test_truth_baseline_commit_must_be_merged(self, goal_project: Path):
         state = init(goal_project, version="v1.6.6", feature="f1", utterance="u1")
-        precheck = _passing_standard_precheck()
+        precheck = _passing_standard_precheck(goal_project, run_id=state["run_id"])
+        _write_cli_owned_bundle(
+            goal_project,
+            run_id=state["run_id"],
+            extra={"truth_baseline_merged": False},
+        )
         precheck["truth_baseline_merged"] = False
         result = record_standard_execution_precheck(
             goal_project,
@@ -377,11 +430,17 @@ class TestStandardExecutionPrecheck:
 
     def test_standard_execution_verification_bundle_required(self, goal_project: Path):
         state = init(goal_project, version="v1.6.6", feature="f1", utterance="u1")
-        precheck = _passing_standard_precheck()
-        precheck["verification_bundle"] = {
+        incomplete = {
             "truth_map_verify": {"status": "pass"},
             "verify_materials_strict": {"status": "pass"},
         }
+        precheck = _passing_standard_precheck(goal_project, run_id=state["run_id"])
+        _write_cli_owned_bundle(
+            goal_project,
+            run_id=state["run_id"],
+            extra={"verification_bundle": incomplete},
+        )
+        precheck["verification_bundle"] = incomplete
         result = record_standard_execution_precheck(
             goal_project,
             run_id=state["run_id"],
@@ -395,7 +454,12 @@ class TestStandardExecutionPrecheck:
 
     def test_workspace_admission_ref_recorded_before_implement(self, goal_project: Path):
         state = init(goal_project, version="v1.6.6", feature="f1", utterance="u1")
-        precheck = _passing_standard_precheck()
+        precheck = _passing_standard_precheck(goal_project, run_id=state["run_id"])
+        _write_cli_owned_bundle(
+            goal_project,
+            run_id=state["run_id"],
+            extra={"workspace_admission_ref": ""},
+        )
         missing_ref = dict(precheck)
         missing_ref["workspace_admission_ref"] = ""
         result = record_standard_execution_precheck(
@@ -407,6 +471,7 @@ class TestStandardExecutionPrecheck:
         assert result["reason_code"] == "workspace_admission_missing"
 
         state = init(goal_project, version="v1.6.6", feature="f1", utterance="u1")
+        precheck = _passing_standard_precheck(goal_project, run_id=state["run_id"])
         result = record_standard_execution_precheck(
             goal_project,
             run_id=state["run_id"],
@@ -425,7 +490,7 @@ class TestStandardExecutionPrecheck:
     def test_standard_execution_precheck_is_idempotent(self, goal_project: Path):
         state = init(goal_project, version="v1.6.6", feature="f1", utterance="u1")
         run_id = state["run_id"]
-        precheck = _passing_standard_precheck()
+        precheck = _passing_standard_precheck(goal_project, run_id=run_id)
         result = record_standard_execution_precheck(goal_project, run_id=run_id, precheck=precheck)
         assert result["status"] == "pass"
         after_first = read_state(goal_project, run_id=run_id)
@@ -436,6 +501,18 @@ class TestStandardExecutionPrecheck:
         after_second = read_state(goal_project, run_id=run_id)
         assert len(after_second["stage_history"]) == history_len
         assert after_second["outputs"]["standard_execution_flow_status"] == "pass"
+
+    def test_cli_owned_precheck_rejects_agent_fabricated_bundle(self, goal_project: Path):
+        state = init(goal_project, version="v1.6.6", feature="f1", utterance="u1")
+        precheck = _passing_standard_precheck()
+        precheck["cli_owned"] = True  # agent claim without artifact file
+        result = record_standard_execution_precheck(
+            goal_project,
+            run_id=state["run_id"],
+            precheck=precheck,
+        )
+        assert result["status"] == "blocked"
+        assert result["reason_code"] == "verification_bundle_not_cli_owned"
 
 
 def test_state_init_creates_file(goal_project: Path):

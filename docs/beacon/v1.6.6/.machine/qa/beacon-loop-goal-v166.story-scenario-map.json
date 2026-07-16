@@ -496,6 +496,121 @@
           "replay_required": false
         }
       ]
+    },
+    {
+      "ac_id": "AC-022",
+      "theme": "truth-canonical-cli-gate",
+      "text": "`beacon freeze` / `beacon reopen` / `beacon change --refreeze-chain` 在非 governance `truth_canonical` 分支必须 blocked，`reason_code=truth_canonical_branch_mismatch`（**Must**）",
+      "scenario_ids": [
+        "SC-AUTO-TC-LG-022"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-LG-022",
+          "source_tc_id": "TC-LG-022",
+          "tc_id": "TC-LG-022-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-023",
+      "theme": "truth-file-write-gate",
+      "text": "写 feature package requirement Markdown（`features/<slug>/{truth,tests,tasks,evidence}.md`）时：不在 `truth_canonical` → blocked；在 `truth_canonical` → **允许**，且不得因 `require_workspace_admission` 强制要求 feature worktree cwd（**Must**）",
+      "scenario_ids": [
+        "SC-AUTO-TC-LG-023"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-LG-023",
+          "source_tc_id": "TC-LG-023",
+          "tc_id": "TC-LG-023-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-024",
+      "theme": "git-admission-dual-track",
+      "text": "`beacon-gen-truth` / `beacon-gen-change` / `beacon-gen-refreeze` 物化 skill 必须含 truth_canonical GIT_ADMISSION；`beacon-gen-implement` / qa / release / gov-branch 必须保留 worktree `workspace admit` preamble（**Must**）",
+      "scenario_ids": [
+        "SC-AUTO-TC-LG-024"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-LG-024",
+          "source_tc_id": "TC-LG-024",
+          "tc_id": "TC-LG-024-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-025",
+      "theme": "cli-owned-precheck-bundle",
+      "text": "必须提供 CLI 命令自跑 standard execution verification bundle（至少五类检查）并写 artifact；`record_standard_execution_precheck` 只接受带 CLI artifact ref 的结果，拒绝无 ref 的 agent 自报 pass（**Must**）",
+      "scenario_ids": [
+        "SC-AUTO-TC-LG-025"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-LG-025",
+          "source_tc_id": "TC-LG-025",
+          "tc_id": "TC-LG-025-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-026",
+      "theme": "truth-routing-branch-check",
+      "text": "public `beacon-loop-goal` SKILL.md Step 2 必须在进入 `beacon-gen-truth` 前校验当前分支为 `truth_canonical`，否则 route `beacon-gov-debug` + `truth_canonical_branch_mismatch`（**Must**）",
+      "scenario_ids": [
+        "SC-AUTO-TC-LG-026"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-LG-026",
+          "source_tc_id": "TC-LG-026",
+          "tc_id": "TC-LG-026-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
     }
   ],
   "scenarios": [
@@ -1226,6 +1341,181 @@
       "assertion": "重复执行 standard execution precheck 返回 pass/up_to_date，不 bump revision、不产生 reason-only refreeze",
       "priority": "P1",
       "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-021/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-LG-022",
+      "source_tc_id": "TC-LG-022",
+      "tc_id": "TC-LG-022-PRIMARY",
+      "ac_id": "AC-022",
+      "qa_type": "contract",
+      "layer": "negative",
+      "scenario_family": "primary",
+      "title": "feature 分支上 freeze/refreeze-chain blocked，`reason_code=truth_canonical_branch_mismatch`",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v166_truth_canonical_branch.py::test_change_refreeze_chain_blocks_on_feature_branch tests/test_v166_truth_canonical_branch.py::test_freeze_command_blocks_on_feature_branch -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "feature 分支上 freeze/refreeze-chain blocked，`reason_code=truth_canonical_branch_mismatch`",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-022/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-LG-023",
+      "source_tc_id": "TC-LG-023",
+      "tc_id": "TC-LG-023-PRIMARY",
+      "ac_id": "AC-023",
+      "qa_type": "contract",
+      "layer": "negative",
+      "scenario_family": "primary",
+      "title": "非 truth_canonical 写 feature package Markdown → blocked；在 main 写不要求 feature worktree cwd",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v166_truth_canonical_branch.py -k truth_file_write -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "非 truth_canonical 写 feature package Markdown → blocked；在 main 写不要求 feature worktree cwd",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-023/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-LG-024",
+      "source_tc_id": "TC-LG-024",
+      "tc_id": "TC-LG-024-PRIMARY",
+      "ac_id": "AC-024",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "truth 编写 skill 含 truth_canonical preamble；delivery skill 含 workspace admit",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v166_truth_canonical_branch.py::test_truth_authoring_skills_get_canonical_branch_preamble tests/test_v166_truth_canonical_branch.py::test_delivery_skills_keep_worktree_admission_preamble -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "truth 编写 skill 含 truth_canonical preamble；delivery skill 含 workspace admit",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-024/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-LG-025",
+      "source_tc_id": "TC-LG-025",
+      "tc_id": "TC-LG-025-PRIMARY",
+      "ac_id": "AC-025",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "CLI 产出 verification bundle artifact；无 artifact ref 的 agent 自报 pass 被拒绝",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v166_loop_goal.py -k cli_owned_precheck -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "CLI 产出 verification bundle artifact；无 artifact ref 的 agent 自报 pass 被拒绝",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-025/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-LG-026",
+      "source_tc_id": "TC-LG-026",
+      "tc_id": "TC-LG-026-PRIMARY",
+      "ac_id": "AC-026",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "public SKILL.md Step 2 含 truth_canonical 校验与 `truth_canonical_branch_mismatch`",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v166_truth_canonical_branch.py::test_loop_goal_skill_declares_truth_canonical_gate -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "public SKILL.md Step 2 含 truth_canonical 校验与 `truth_canonical_branch_mismatch`",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-026/__RUN_ID__.json",
       "required_files": [
         "command.txt",
         "stdout.log",
