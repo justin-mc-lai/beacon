@@ -121,7 +121,12 @@ fn tc021_projects_list() {
 fn tc021_projects_show_with_versions_and_is_current() {
     let conn = open();
     let row = ProjectDao::register(&conn, "/tmp/proj-x", "x").unwrap();
-    // insert a feature_package to populate versions[]
+    // insert project_versions + feature_package (AC-068 primary path)
+    conn.execute(
+        "INSERT INTO project_versions (project_id, version, is_current) VALUES (?1, ?2, 1)",
+        rusqlite::params![row.id, "v2.0.0"],
+    )
+    .unwrap();
     conn.execute(
         "INSERT INTO feature_packages (project_id, slug, version, status) VALUES (?1, ?2, ?3, ?4)",
         rusqlite::params![row.id, "demo", "v2.0.0", "draft"],

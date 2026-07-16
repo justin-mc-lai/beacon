@@ -11,6 +11,7 @@ pub struct ArtifactRow {
 pub struct ArtifactDao;
 
 impl ArtifactDao {
+    /// Insert into artifact_refs (AC-074). `path` is stored as abs_path.
     pub fn insert(
         conn: &Connection,
         feature_package_id: i64,
@@ -20,7 +21,7 @@ impl ArtifactDao {
         content_hash: Option<&str>,
     ) -> rusqlite::Result<i64> {
         conn.execute(
-            "INSERT INTO artifacts (feature_package_id, run_id, kind, path, content_hash)
+            "INSERT INTO artifact_refs (feature_package_id, run_id, kind, abs_path, content_hash)
              VALUES (?1, ?2, ?3, ?4, ?5)",
             params![feature_package_id, run_id, kind, path, content_hash],
         )?;
@@ -32,7 +33,7 @@ impl ArtifactDao {
         feature_package_id: i64,
     ) -> rusqlite::Result<Vec<ArtifactRow>> {
         let mut stmt = conn.prepare(
-            "SELECT id, feature_package_id, kind, path FROM artifacts WHERE feature_package_id = ?1",
+            "SELECT id, feature_package_id, kind, abs_path FROM artifact_refs WHERE feature_package_id = ?1",
         )?;
         let rows = stmt
             .query_map([feature_package_id], |row| {

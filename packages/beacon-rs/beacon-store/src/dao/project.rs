@@ -116,11 +116,20 @@ impl ProjectDao {
     }
 
     fn versions_for(conn: &Connection, project_id: i64) -> rusqlite::Result<Vec<String>> {
+        // Prefer project_versions (AC-068); fall back to feature_packages for legacy rows.
         let mut stmt = conn.prepare(
-            "SELECT DISTINCT version FROM feature_packages WHERE project_id = ?1 ORDER BY version",
+            "SELECT version FROM project_versions WHERE project_id = ?1 ORDER BY version",
         )?;
         let rows = stmt.query_map([project_id], |row| row.get::<_, String>(0))?;
-        rows.collect::<Result<Vec<_>, _>>()
+        let mut versions = rows.collect::<Result<Vec<_>, _>>()?;
+        if versions.is_empty() {
+            let mut stmt = conn.prepare(
+                "SELECT DISTINCT version FROM feature_packages WHERE project_id = ?1 ORDER BY version",
+            )?;
+            let rows = stmt.query_map([project_id], |row| row.get::<_, String>(0))?;
+            versions = rows.collect::<Result<Vec<_>, _>>()?;
+        }
+        Ok(versions)
     }
 }
 

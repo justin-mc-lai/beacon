@@ -89,3 +89,14 @@ Deliverables (historical candidate, superseded by R8 minimal-kernel closure wher
 - P0 action: removed `beacon-python` from workspace members; crate archived under `packages/beacon-rs/_archive/beacon-python`
 - verification: `cd packages/beacon-rs && cargo test --workspace` → all suites ok (5 core crates)
 - remaining: schema 8 vs 9 decision (AC-161), dual-track writer lease (AC-158), full phase delivery P1–P6, QA/release human gate
+
+## Loop-goal P0/P1 progress (2026-07-16 continue)
+
+- run_id: `lg-c9924966448c`
+- **AC-161 path (a)**: SCHEMA_VERSION=2 nine-table contract closed
+  - ADR: `docs/beacon/v2.0.0/execution/adr-schema-v2-nine-table-contract.md`
+  - tables: projects, project_versions, feature_packages, feature_lifecycle, runs, lifecycle_events, gate_results, artifact_refs, checkpoints
+  - tests: `tc161_schema_contract_nine_tables_present`, `tc068_project_versions_ensured_on_feature_insert`, `tc075_checkpoints_write_and_read`
+- **P1 Spine/projects**: existing AC-017/018/019/021/085 store+CLI tests remain green under V2 schema
+- verification: `cd packages/beacon-rs && cargo test --workspace` → pass
+- remaining: AC-158 dual-track writer lease, full P2+ orchestrator/gate parity, QA/release

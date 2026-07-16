@@ -1,5 +1,7 @@
 use rusqlite::{params, Connection, OptionalExtension};
 
+use super::ProjectVersionDao;
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct FeatureRow {
     pub id: i64,
@@ -20,10 +22,11 @@ impl FeatureDao {
         status: &str,
         truth_path: Option<&str>,
     ) -> rusqlite::Result<i64> {
+        let project_version_id = ProjectVersionDao::ensure(conn, project_id, version, None, false)?;
         conn.execute(
-            "INSERT INTO feature_packages (project_id, slug, version, status, truth_path)
-             VALUES (?1, ?2, ?3, ?4, ?5)",
-            params![project_id, slug, version, status, truth_path],
+            "INSERT INTO feature_packages (project_id, project_version_id, slug, version, status, truth_path)
+             VALUES (?1, ?2, ?3, ?4, ?5, ?6)",
+            params![project_id, project_version_id, slug, version, status, truth_path],
         )?;
         let feature_id = conn.last_insert_rowid();
         conn.execute(

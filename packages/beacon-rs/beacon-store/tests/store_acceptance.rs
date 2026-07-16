@@ -82,3 +82,54 @@ fn tc084_p0_workspace_smoke() {
     assert_eq!(RunStatus::all().len(), 12);
     let _store = BeaconStore::open_in_memory().unwrap();
 }
+
+#[test]
+fn tc161_schema_contract_nine_tables_present() {
+    // AC-161 / TC-161: migrate must materialize all nine truth tables.
+    let store = BeaconStore::open_in_memory().unwrap();
+    let conn = store.connection();
+    beacon_store::assert_schema_contract(conn).expect("schema_contract_drift");
+    for table in beacon_store::REQUIRED_TRUTH_TABLES {
+        let n: i64 = conn
+            .query_row(
+                "SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name=?1",
+                [*table],
+                |row| row.get(0),
+            )
+            .unwrap();
+        assert_eq!(n, 1, "missing table {table}");
+    }
+    assert_eq!(current_user_version(conn).unwrap(), SCHEMA_VERSION);
+    assert_eq!(SCHEMA_VERSION, 2);
+}
+
+#[test]
+fn tc075_checkpoints_write_and_read() {
+    // AC-075 checkpoints table behavioral write.
+    use beacon_store::CheckpointDao;
+    let store = BeaconStore::open_in_memory().unwrap();
+    let conn = store.connection();
+    let project_id = ProjectDao::insert(conn, "/tmp/cp", "cp").unwrap();
+    let feature_id = FeatureDao::insert(conn, project_id, "f", "v2.0.0", "draft", None).unwrap();
+    let run_id = RunDao::insert(conn, feature_id, "test", RunStatus::Running).unwrap();
+    let cp_id = CheckpointDao::insert(conn, run_id, 3, r#"{"i":3}"#).unwrap();
+    assert!(cp_id > 0);
+    let latest = CheckpointDao::latest_for_run(conn, run_id).unwrap().expect("checkpoint");
+    assert_eq!(latest.iteration, 3);
+    assert!(latest.state_json.contains("\"i\":3"));
+}
+
+#[test]
+fn tc068_project_versions_ensured_on_feature_insert() {
+    use beacon_store::ProjectVersionDao;
+    let store = BeaconStore::open_in_memory().unwrap();
+    let conn = store.connection();
+    let project_id = ProjectDao::insert(conn, "/tmp/pv", "pv").unwrap();
+    FeatureDao::insert(conn, project_id, "slug", "v2.0.0", "draft", None).unwrap();
+    let versions = ProjectVersionDao::list_for_project(conn, project_id).unwrap();
+    assert!(versions.iter().any(|v| v.version == "v2.0.0"));
+    let show = ProjectDao::show(conn, "/tmp/pv", "/tmp/pv")
+        .unwrap()
+        .expect("show");
+    assert!(show.versions.contains(&"v2.0.0".to_string()));
+}
