@@ -502,7 +502,7 @@ class TestStandardExecutionPrecheck:
         assert len(after_second["stage_history"]) == history_len
         assert after_second["outputs"]["standard_execution_flow_status"] == "pass"
 
-    def test_agent_fabricated_precheck_without_cli_artifact_blocked(self, goal_project: Path):
+    def test_cli_owned_precheck_rejects_agent_fabricated_bundle(self, goal_project: Path):
         state = init(goal_project, version="v1.6.6", feature="f1", utterance="u1")
         precheck = _passing_standard_precheck()
         precheck["cli_owned"] = True  # agent claim without artifact file
