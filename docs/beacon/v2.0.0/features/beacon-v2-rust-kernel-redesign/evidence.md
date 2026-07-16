@@ -119,3 +119,12 @@ Deliverables (historical candidate, superseded by R8 minimal-kernel closure wher
   - live `codex --version` health probe when binary present
   - tests: `p2_codex_backend.rs` (tc043_*) all pass
 - verification: `cargo test --workspace` + `cargo test -p beacon-orchestrator --test p2_codex_backend` pass
+
+## Loop-goal implement continue (2026-07-16 AC-045/046 Claude+ACP)
+
+- run_id: `lg-c9924966448c` / ralph `run-20260716T140351Z-4825`
+- **AC-045 ClaudeBackend**: health/iterate/abort + orchestrator artifact_refs (`p2_claude_acp_backends.rs`)
+- **AC-046 AcpBackend** (`acp:<target>` name form): health/iterate + artifact_refs
+- junit: `.beacon/qa/features/beacon-v2-rust-kernel-redesign/junit.xml` (cargo test workspace cases)
+- preflight fix merged: feature branch under runtime_mirror allowed
+- verification: `cargo test --workspace` pass

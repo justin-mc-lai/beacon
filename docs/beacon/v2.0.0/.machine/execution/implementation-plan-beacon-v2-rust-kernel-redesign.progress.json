@@ -6,24 +6,274 @@
   "revision_id": "R20",
   "plan_path": "docs/beacon/v2.0.0/.machine/execution/implementation-plan-beacon-v2-rust-kernel-redesign.json",
   "progress_path": "docs/beacon/v2.0.0/.machine/execution/implementation-plan-beacon-v2-rust-kernel-redesign.progress.json",
-  "status": "planned",
+  "status": "blocked",
   "counts": {
     "total": 148,
     "draft": 0,
-    "planned": 148,
+    "planned": 0,
     "in_progress": 0,
-    "blocked": 0,
-    "completed": 0
+    "blocked": 99,
+    "completed": 49
   },
-  "blocked_task_ids": [],
-  "blocked_task_titles": [],
-  "completed_task_ids": [],
-  "next_task_id": "ITASK-001",
-  "next_task_title": "AC-001 Agent 写代码→跑 Eval→发现问题→修→再测，自动闭环",
+  "blocked_task_ids": [
+    "ITASK-002",
+    "ITASK-003",
+    "ITASK-005",
+    "ITASK-006",
+    "ITASK-007",
+    "ITASK-008",
+    "ITASK-009",
+    "ITASK-010",
+    "ITASK-011",
+    "ITASK-012",
+    "ITASK-013",
+    "ITASK-014",
+    "ITASK-015",
+    "ITASK-016",
+    "ITASK-017",
+    "ITASK-018",
+    "ITASK-019",
+    "ITASK-020",
+    "ITASK-021",
+    "ITASK-022",
+    "ITASK-023",
+    "ITASK-024",
+    "ITASK-025",
+    "ITASK-026",
+    "ITASK-027",
+    "ITASK-028",
+    "ITASK-029",
+    "ITASK-030",
+    "ITASK-031",
+    "ITASK-032",
+    "ITASK-033",
+    "ITASK-035",
+    "ITASK-036",
+    "ITASK-037",
+    "ITASK-038",
+    "ITASK-039",
+    "ITASK-040",
+    "ITASK-041",
+    "ITASK-043",
+    "ITASK-044",
+    "ITASK-045",
+    "ITASK-046",
+    "ITASK-047",
+    "ITASK-048",
+    "ITASK-049",
+    "ITASK-050",
+    "ITASK-051",
+    "ITASK-052",
+    "ITASK-053",
+    "ITASK-054",
+    "ITASK-055",
+    "ITASK-056",
+    "ITASK-057",
+    "ITASK-058",
+    "ITASK-059",
+    "ITASK-060",
+    "ITASK-061",
+    "ITASK-062",
+    "ITASK-063",
+    "ITASK-064",
+    "ITASK-065",
+    "ITASK-066",
+    "ITASK-067",
+    "ITASK-068",
+    "ITASK-069",
+    "ITASK-070",
+    "ITASK-071",
+    "ITASK-072",
+    "ITASK-073",
+    "ITASK-074",
+    "ITASK-075",
+    "ITASK-076",
+    "ITASK-077",
+    "ITASK-078",
+    "ITASK-079",
+    "ITASK-080",
+    "ITASK-081",
+    "ITASK-082",
+    "ITASK-083",
+    "ITASK-084",
+    "ITASK-085",
+    "ITASK-086",
+    "ITASK-087",
+    "ITASK-088",
+    "ITASK-089",
+    "ITASK-090",
+    "ITASK-091",
+    "ITASK-092",
+    "ITASK-093",
+    "ITASK-094",
+    "ITASK-095",
+    "ITASK-096",
+    "ITASK-097",
+    "ITASK-098",
+    "ITASK-099",
+    "ITASK-100",
+    "ITASK-101",
+    "ITASK-102",
+    "ITASK-103"
+  ],
+  "blocked_task_titles": [
+    "AC-002 人看实现→修正 Spec→重新实现；人注入 AI 不知道的上下文",
+    "AC-003 show [--json]`（机器级多项目）。",
+    "AC-005 acp:*>` CLI 直接选 agent 跑长任务编码落地；agent 选择映射到对应 AgentBackend；loop 在 CLI...",
+    "AC-006 p95 < 100ms 本地",
+    "AC-007 p95 < 50ms",
+    "AC-008 p95 < 200ms",
+    "AC-009 p95 < 50ms",
+    "AC-010 p95 < 10ms",
+    "AC-011 < 60s 典型 fixture",
+    "AC-012 < 100ms 不含 agent",
+    "AC-013 软上限 500MB",
+    "AC-014 beacon-loop / v1 CLI 并行",
+    "AC-015 迁移为可选对照，不强迫退役 v1",
+    "AC-016 结构性消除",
+    "AC-017 三层+Spine+projection rebuild",
+    "AC-018 workspace",
+    "AC-019 双 FSM+benchmark",
+    "AC-020 六能力 surface + legacy removal + progressive disclosure + BranchContext...",
+    "AC-021 九表+DAO",
+    "AC-022 P0–P6",
+    "AC-023 可执行缓解",
+    "AC-024 evaluator 裁决",
+    "AC-025 TIG + planner multi-agent + doctor 路由",
+    "AC-026 beacon-rs scaffold 已完成",
+    "AC-027 用户拒绝延期",
+    "AC-028 v1/v2 skill+CLI 语言分叉，需合并互不影响",
+    "AC-029 落地稳依赖可测 skill 资产",
+    "AC-030 禁止 Darwin 式自动改 SKILL.md",
+    "AC-031 planner review 选项 A：AC-042–046 真集成；Diagram Truth Layer；AC 重编号至 098；禁止...",
+    "AC-032 R6 refreeze：六 public skill 渐进式披露 contract；内部保留 branch governance / do...",
+    "AC-033 R7 refreeze：TraceSpine.v1 / TraceContext.v1 成为 run authority；loop/imp...",
+    "AC-035 ，后者是 L1 MD / L2 SQLite / L3 Blob**）：",
+    "AC-036 （stop-when maker≠checker）→ v2 AC-105",
+    "AC-037 **）",
+    "AC-038 ）",
+    "AC-039 ..114）",
+    "AC-040 ..116）",
+    "AC-041 ..123）",
+    "AC-043 **：`~/.beacon/beacon.db` 不得存储可编辑的需求正文；只可存 metadata、FSM、gate、artifact 指针。",
+    "AC-044 **：`.beacon/qa/*.json`、`.beacon/gate-report.json` 等 v1 投影在 v2 为 **非权威...",
+    "AC-045 **：**禁止** `<project>/.beacon/beacon.db` 作为运行态权威（v2 明确否决 per-project DB）。",
+    "AC-046 **：**禁止** `<project>/.beacon/loop/ledger/loop-runs.db` 作为 v2 权威；v1.6...",
+    "AC-047 **：Blob 文件变更时 `artifact_refs` 必须更新 `content_hash`；hash 不匹配时 Spine 标记...",
+    "AC-048 **：`beacon doctor projection rebuild` 须能从已注册 `project_root` 的 MD + bl...",
+    "AC-049 存储原则（Plan §2.5）",
+    "AC-050 **：每次 gate 评估写入 `gate_results`（pass/fail/blocked + reason_codes JSON）。",
+    "AC-051 **：每次 run 启动写入 `runs`；checkpoint 写入 `checkpoints`。",
+    "AC-052 **：Spine 查询 **DB-first**；blob 仅当 `artifact_refs` 存在且 hash 有效时拼接。",
+    "AC-053 **：v1 JSON 运行态只允许 **export/import 迁移**，不得与 DB 双写竞争权威。",
+    "AC-054 Operator Spine API（Plan §2.5）",
+    "AC-055 **：必须实现 `beacon spine list [--project PATH] [--status STATUS] [--json]`。",
+    "AC-056 **：必须实现 `beacon spine artifacts <run-id> [--json]`。",
+    "AC-057 **：必须实现 `beacon spine gate <feature> [--version vX] [--json]`。",
+    "AC-058 **：crate 依赖方向：`cli -> {gate, orchestrator, store, core}`；`store -> co...",
+    "AC-059 **：v2.0.0 **不交付** `beacon-proto`/gRPC（**D-V2-001 accepted defer**）；CL...",
+    "AC-060 **：单文件模块超过 500 行须拆分或 ADR 说明例外（对齐 D-02）。",
+    "AC-061 **：阶段转换表显式编码；非法转换返回 typed error + reason_code。",
+    "AC-062 **：`Blocked` 必须携带 `reason_codes: Vec<String>` 与可选 `blocking_gate`。",
+    "AC-063 **：`Skipped` 仅允许带 `user_accepted_deferral_id` 或 deferral ledger 引用。",
+    "AC-064 **：`Crashed` / `TimedOut` / `Interrupted` 须写入 `lifecycle_events` 且可触发...",
+    "AC-065 **：Delivery 运行时 12 状态在 `beacon-core` 定义并与 `runs.status` CHECK 一致。",
+    "AC-066 **：plan 主链节点转换须写入 `lifecycle_events`（可审计，非仅内存）。",
+    "AC-067 **：`Paused` / `Stopping` / `Stopped` 与 v1 beacon-loop graceful+force...",
+    "AC-068 **：`Repairing` 须持久化 repair payload 到 `artifact_refs`。",
+    "AC-069 **：`AwaitingQa` 仅在 `import-evidence` 成功后可进入。",
+    "AC-070 **：`Closed` 仅 release gate pass 或用户显式 archive；orchestrator **不得**自设 C...",
+    "AC-071 **：`EvidenceChain` 含 `manifest_hash`、`signature_chain`、`artifact_refs...",
+    "AC-072 **：import 断链 fail-closed → `EVIDENCE_CHAIN_BROKEN`。",
+    "AC-073 **：v1 `.beacon/evidence-signature-chain.json` 可迁移为 v2 记录。",
+    "AC-074 **：启动前 `truth-map resolve`；blocked → exit != 0 + 推荐 `beacon-gen-change`。",
+    "AC-075 **（P2）：`SubprocessBackend` 完成 1 次真 integration iteration（可控测试 harness...",
+    "AC-076 **（P3）：`AcpBackend`（CLI `acp:<target>`）完成 1 次真 integration iteration；...",
+    "AC-077 **：checkpoint resume 后 iteration 递增；notes 注入写入 `lifecycle_events`（可审计）。",
+    "AC-078 **：`stop_when` 移植 v1 `stop-when-gate`（含 gate pass 早停）。",
+    "AC-079 **：orchestrator **禁止**输出 QA pass / release ready / feature complete v...",
+    "AC-080 **：Phase Controller 四阶段写入 `runs.metadata_json`；phase 转换写 `lifecycle_e...",
+    "AC-081 **（P3）：Developer Feedback Loop 人注入 checkpoint——`beacon-v2 run --feedb...",
+    "AC-082 **（P3）：Loop Engineering 三层 Loop 可观测——spine snapshot 含 `loop_layer` 字段...",
+    "AC-083 **：双轨运行时选择必须 **显式**（例如独立 `beacon-v2` 二进制，或 `beacon --runtime v2` / 等价...",
+    "AC-084 **：`BEACON_STORE_PATH` 测试隔离；生产默认 `~/.beacon/beacon.db`。",
+    "AC-085 **：在 **v2 runtime 路径内**，任何把 v1 Python/legacy skill 当执行后端的请求必须 fail-cl...",
+    "AC-086 **：`beacon harness list --version v2.0.0 --json`（或等价 CLI）只返回六个一等能力及其...",
+    "AC-087 **：spine/projects/workflow/truth-map/implement/qa/release/run 子命令可解析且...",
+    "AC-088 **：spine/projects/run 支持 `--json` 且 schema 可校验。",
+    "AC-089 **：v1 reason_codes 对齐：`gate_results.reason_codes_json` 失败样例须含 documen...",
+    "AC-090 **：`project_versions`（id, project_id, version, docs_root, is_current）",
+    "AC-091 **：`feature_packages`（id, project_version_id, slug, truth_path, tests...",
+    "AC-092 **：`feature_lifecycle`（feature_id, stage, status, reason_codes_json,...",
+    "AC-093 **：`lifecycle_events`（id, feature_id, run_id, event_type, payload_jso...",
+    "AC-094 **：`gate_results`（id, feature_id, gate_type, verdict, reason_codes_js...",
+    "AC-095 **：`artifact_refs`（id, run_id, kind, abs_path, content_hash, size_byt...",
+    "AC-096 **：`checkpoints`（id, run_id, iteration, state_json, created_at）",
+    "AC-097 **：`beacon-store` 提供 ProjectDao, FeatureDao, RunDao, GateDao, Artifac...",
+    "AC-098 **：migration `v1_runtime_ledger`：自 `~/.beacon/runtime-ledger/runtime-...",
+    "AC-099 **：migration `v1_loop_ledger`：扫描各项目 `loop-runs.db` 一次性导入。",
+    "AC-100 **：migration `v1_qa_projection`：可选历史只读导入。",
+    "AC-101 **：schema `user_version` 管理；降级禁止。",
+    "AC-102 **：`SpineDao::snapshot` 联查 lifecycle + run + gate + artifacts。",
+    "AC-103 **：`list` 支持 lifecycle/run status 过滤。"
+  ],
+  "completed_task_ids": [
+    "ITASK-001",
+    "ITASK-004",
+    "ITASK-034",
+    "ITASK-042",
+    "ITASK-104",
+    "ITASK-105",
+    "ITASK-106",
+    "ITASK-107",
+    "ITASK-108",
+    "ITASK-109",
+    "ITASK-110",
+    "ITASK-111",
+    "ITASK-112",
+    "ITASK-113",
+    "ITASK-114",
+    "ITASK-115",
+    "ITASK-116",
+    "ITASK-117",
+    "ITASK-118",
+    "ITASK-119",
+    "ITASK-120",
+    "ITASK-121",
+    "ITASK-122",
+    "ITASK-123",
+    "ITASK-124",
+    "ITASK-125",
+    "ITASK-126",
+    "ITASK-127",
+    "ITASK-128",
+    "ITASK-129",
+    "ITASK-130",
+    "ITASK-131",
+    "ITASK-132",
+    "ITASK-133",
+    "ITASK-134",
+    "ITASK-135",
+    "ITASK-136",
+    "ITASK-137",
+    "ITASK-138",
+    "ITASK-139",
+    "ITASK-140",
+    "ITASK-141",
+    "ITASK-142",
+    "ITASK-143",
+    "ITASK-144",
+    "ITASK-145",
+    "ITASK-146",
+    "ITASK-147",
+    "ITASK-148"
+  ],
+  "next_task_id": "ITASK-002",
+  "next_task_title": "AC-002 人看实现→修正 Spec→重新实现；人注入 AI 不知道的上下文",
   "task_states": [
     {
       "task_id": "ITASK-001",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-001"
@@ -36,8 +286,8 @@
     },
     {
       "task_id": "ITASK-002",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-002"
       ],
@@ -49,8 +299,8 @@
     },
     {
       "task_id": "ITASK-003",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-003"
       ],
@@ -62,7 +312,7 @@
     },
     {
       "task_id": "ITASK-004",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-004"
@@ -75,8 +325,8 @@
     },
     {
       "task_id": "ITASK-005",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-005"
       ],
@@ -88,8 +338,8 @@
     },
     {
       "task_id": "ITASK-006",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-006"
       ],
@@ -101,8 +351,8 @@
     },
     {
       "task_id": "ITASK-007",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-007"
       ],
@@ -114,8 +364,8 @@
     },
     {
       "task_id": "ITASK-008",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-008"
       ],
@@ -127,8 +377,8 @@
     },
     {
       "task_id": "ITASK-009",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-009"
       ],
@@ -140,8 +390,8 @@
     },
     {
       "task_id": "ITASK-010",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-010"
       ],
@@ -153,8 +403,8 @@
     },
     {
       "task_id": "ITASK-011",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-011"
       ],
@@ -166,8 +416,8 @@
     },
     {
       "task_id": "ITASK-012",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-012"
       ],
@@ -179,8 +429,8 @@
     },
     {
       "task_id": "ITASK-013",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-013"
       ],
@@ -192,8 +442,8 @@
     },
     {
       "task_id": "ITASK-014",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-014"
       ],
@@ -205,8 +455,8 @@
     },
     {
       "task_id": "ITASK-015",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-015"
       ],
@@ -218,8 +468,8 @@
     },
     {
       "task_id": "ITASK-016",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-016"
       ],
@@ -231,8 +481,8 @@
     },
     {
       "task_id": "ITASK-017",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-017"
       ],
@@ -244,8 +494,8 @@
     },
     {
       "task_id": "ITASK-018",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-018"
       ],
@@ -257,8 +507,8 @@
     },
     {
       "task_id": "ITASK-019",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-019"
       ],
@@ -270,8 +520,8 @@
     },
     {
       "task_id": "ITASK-020",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-020"
       ],
@@ -283,8 +533,8 @@
     },
     {
       "task_id": "ITASK-021",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-021"
       ],
@@ -296,8 +546,8 @@
     },
     {
       "task_id": "ITASK-022",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-022"
       ],
@@ -309,8 +559,8 @@
     },
     {
       "task_id": "ITASK-023",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-023"
       ],
@@ -322,8 +572,8 @@
     },
     {
       "task_id": "ITASK-024",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-024"
       ],
@@ -335,8 +585,8 @@
     },
     {
       "task_id": "ITASK-025",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-025"
       ],
@@ -348,8 +598,8 @@
     },
     {
       "task_id": "ITASK-026",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-026"
       ],
@@ -361,8 +611,8 @@
     },
     {
       "task_id": "ITASK-027",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-027"
       ],
@@ -374,8 +624,8 @@
     },
     {
       "task_id": "ITASK-028",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-028"
       ],
@@ -387,8 +637,8 @@
     },
     {
       "task_id": "ITASK-029",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-029"
       ],
@@ -400,8 +650,8 @@
     },
     {
       "task_id": "ITASK-030",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-030"
       ],
@@ -413,8 +663,8 @@
     },
     {
       "task_id": "ITASK-031",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-031"
       ],
@@ -426,8 +676,8 @@
     },
     {
       "task_id": "ITASK-032",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-032"
       ],
@@ -439,8 +689,8 @@
     },
     {
       "task_id": "ITASK-033",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-033"
       ],
@@ -452,7 +702,7 @@
     },
     {
       "task_id": "ITASK-034",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-034"
@@ -465,8 +715,8 @@
     },
     {
       "task_id": "ITASK-035",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-035"
       ],
@@ -478,8 +728,8 @@
     },
     {
       "task_id": "ITASK-036",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-036"
       ],
@@ -491,8 +741,8 @@
     },
     {
       "task_id": "ITASK-037",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-037"
       ],
@@ -504,8 +754,8 @@
     },
     {
       "task_id": "ITASK-038",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-038"
       ],
@@ -517,8 +767,8 @@
     },
     {
       "task_id": "ITASK-039",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-039"
       ],
@@ -530,8 +780,8 @@
     },
     {
       "task_id": "ITASK-040",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-040"
       ],
@@ -543,8 +793,8 @@
     },
     {
       "task_id": "ITASK-041",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-041"
       ],
@@ -556,7 +806,7 @@
     },
     {
       "task_id": "ITASK-042",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-042"
@@ -569,8 +819,8 @@
     },
     {
       "task_id": "ITASK-043",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-043"
       ],
@@ -582,8 +832,8 @@
     },
     {
       "task_id": "ITASK-044",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-044"
       ],
@@ -595,8 +845,8 @@
     },
     {
       "task_id": "ITASK-045",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-045"
       ],
@@ -608,8 +858,8 @@
     },
     {
       "task_id": "ITASK-046",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-046"
       ],
@@ -621,8 +871,8 @@
     },
     {
       "task_id": "ITASK-047",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-047"
       ],
@@ -634,8 +884,8 @@
     },
     {
       "task_id": "ITASK-048",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-048"
       ],
@@ -647,8 +897,8 @@
     },
     {
       "task_id": "ITASK-049",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-049"
       ],
@@ -660,8 +910,8 @@
     },
     {
       "task_id": "ITASK-050",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-050"
       ],
@@ -673,8 +923,8 @@
     },
     {
       "task_id": "ITASK-051",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-051"
       ],
@@ -686,8 +936,8 @@
     },
     {
       "task_id": "ITASK-052",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-052"
       ],
@@ -699,8 +949,8 @@
     },
     {
       "task_id": "ITASK-053",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-053"
       ],
@@ -712,8 +962,8 @@
     },
     {
       "task_id": "ITASK-054",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-054"
       ],
@@ -725,8 +975,8 @@
     },
     {
       "task_id": "ITASK-055",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-055"
       ],
@@ -738,8 +988,8 @@
     },
     {
       "task_id": "ITASK-056",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-056"
       ],
@@ -751,8 +1001,8 @@
     },
     {
       "task_id": "ITASK-057",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-057"
       ],
@@ -764,8 +1014,8 @@
     },
     {
       "task_id": "ITASK-058",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-058"
       ],
@@ -777,8 +1027,8 @@
     },
     {
       "task_id": "ITASK-059",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-059"
       ],
@@ -790,8 +1040,8 @@
     },
     {
       "task_id": "ITASK-060",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-060"
       ],
@@ -803,8 +1053,8 @@
     },
     {
       "task_id": "ITASK-061",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-061"
       ],
@@ -816,8 +1066,8 @@
     },
     {
       "task_id": "ITASK-062",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-062"
       ],
@@ -829,8 +1079,8 @@
     },
     {
       "task_id": "ITASK-063",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-063"
       ],
@@ -842,8 +1092,8 @@
     },
     {
       "task_id": "ITASK-064",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-064"
       ],
@@ -855,8 +1105,8 @@
     },
     {
       "task_id": "ITASK-065",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-065"
       ],
@@ -868,8 +1118,8 @@
     },
     {
       "task_id": "ITASK-066",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-066"
       ],
@@ -881,8 +1131,8 @@
     },
     {
       "task_id": "ITASK-067",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-067"
       ],
@@ -894,8 +1144,8 @@
     },
     {
       "task_id": "ITASK-068",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-068"
       ],
@@ -907,8 +1157,8 @@
     },
     {
       "task_id": "ITASK-069",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-069"
       ],
@@ -920,8 +1170,8 @@
     },
     {
       "task_id": "ITASK-070",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-070"
       ],
@@ -933,8 +1183,8 @@
     },
     {
       "task_id": "ITASK-071",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-071"
       ],
@@ -946,8 +1196,8 @@
     },
     {
       "task_id": "ITASK-072",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-072"
       ],
@@ -959,8 +1209,8 @@
     },
     {
       "task_id": "ITASK-073",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-073"
       ],
@@ -972,8 +1222,8 @@
     },
     {
       "task_id": "ITASK-074",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-074"
       ],
@@ -985,8 +1235,8 @@
     },
     {
       "task_id": "ITASK-075",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-075"
       ],
@@ -998,8 +1248,8 @@
     },
     {
       "task_id": "ITASK-076",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-076"
       ],
@@ -1011,8 +1261,8 @@
     },
     {
       "task_id": "ITASK-077",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-077"
       ],
@@ -1024,8 +1274,8 @@
     },
     {
       "task_id": "ITASK-078",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-078"
       ],
@@ -1037,8 +1287,8 @@
     },
     {
       "task_id": "ITASK-079",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-079"
       ],
@@ -1050,8 +1300,8 @@
     },
     {
       "task_id": "ITASK-080",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-080"
       ],
@@ -1063,8 +1313,8 @@
     },
     {
       "task_id": "ITASK-081",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-081"
       ],
@@ -1076,8 +1326,8 @@
     },
     {
       "task_id": "ITASK-082",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-082"
       ],
@@ -1089,8 +1339,8 @@
     },
     {
       "task_id": "ITASK-083",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-083"
       ],
@@ -1102,8 +1352,8 @@
     },
     {
       "task_id": "ITASK-084",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-084"
       ],
@@ -1115,8 +1365,8 @@
     },
     {
       "task_id": "ITASK-085",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-085"
       ],
@@ -1128,8 +1378,8 @@
     },
     {
       "task_id": "ITASK-086",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-086"
       ],
@@ -1141,8 +1391,8 @@
     },
     {
       "task_id": "ITASK-087",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-087"
       ],
@@ -1154,8 +1404,8 @@
     },
     {
       "task_id": "ITASK-088",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-088"
       ],
@@ -1167,8 +1417,8 @@
     },
     {
       "task_id": "ITASK-089",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-089"
       ],
@@ -1180,8 +1430,8 @@
     },
     {
       "task_id": "ITASK-090",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-090"
       ],
@@ -1193,8 +1443,8 @@
     },
     {
       "task_id": "ITASK-091",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-091"
       ],
@@ -1206,8 +1456,8 @@
     },
     {
       "task_id": "ITASK-092",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-092"
       ],
@@ -1219,8 +1469,8 @@
     },
     {
       "task_id": "ITASK-093",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-093"
       ],
@@ -1232,8 +1482,8 @@
     },
     {
       "task_id": "ITASK-094",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-094"
       ],
@@ -1245,8 +1495,8 @@
     },
     {
       "task_id": "ITASK-095",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-095"
       ],
@@ -1258,8 +1508,8 @@
     },
     {
       "task_id": "ITASK-096",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-096"
       ],
@@ -1271,8 +1521,8 @@
     },
     {
       "task_id": "ITASK-097",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-097"
       ],
@@ -1284,8 +1534,8 @@
     },
     {
       "task_id": "ITASK-098",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-098"
       ],
@@ -1297,8 +1547,8 @@
     },
     {
       "task_id": "ITASK-099",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-099"
       ],
@@ -1310,8 +1560,8 @@
     },
     {
       "task_id": "ITASK-100",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-100"
       ],
@@ -1323,8 +1573,8 @@
     },
     {
       "task_id": "ITASK-101",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-101"
       ],
@@ -1336,8 +1586,8 @@
     },
     {
       "task_id": "ITASK-102",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-102"
       ],
@@ -1349,8 +1599,8 @@
     },
     {
       "task_id": "ITASK-103",
-      "status": "planned",
-      "blocked_reason": "",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
       "mapped_ac_ids": [
         "AC-103"
       ],
@@ -1362,7 +1612,7 @@
     },
     {
       "task_id": "ITASK-104",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-104"
@@ -1375,7 +1625,7 @@
     },
     {
       "task_id": "ITASK-105",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-105"
@@ -1388,7 +1638,7 @@
     },
     {
       "task_id": "ITASK-106",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-106"
@@ -1401,7 +1651,7 @@
     },
     {
       "task_id": "ITASK-107",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-107"
@@ -1414,7 +1664,7 @@
     },
     {
       "task_id": "ITASK-108",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-108"
@@ -1427,7 +1677,7 @@
     },
     {
       "task_id": "ITASK-109",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-109"
@@ -1440,7 +1690,7 @@
     },
     {
       "task_id": "ITASK-110",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-110"
@@ -1453,7 +1703,7 @@
     },
     {
       "task_id": "ITASK-111",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-111"
@@ -1466,7 +1716,7 @@
     },
     {
       "task_id": "ITASK-112",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-112"
@@ -1479,7 +1729,7 @@
     },
     {
       "task_id": "ITASK-113",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-113"
@@ -1492,7 +1742,7 @@
     },
     {
       "task_id": "ITASK-114",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-114"
@@ -1505,7 +1755,7 @@
     },
     {
       "task_id": "ITASK-115",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-115"
@@ -1518,7 +1768,7 @@
     },
     {
       "task_id": "ITASK-116",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-116"
@@ -1531,7 +1781,7 @@
     },
     {
       "task_id": "ITASK-117",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-117"
@@ -1544,7 +1794,7 @@
     },
     {
       "task_id": "ITASK-118",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-118"
@@ -1557,7 +1807,7 @@
     },
     {
       "task_id": "ITASK-119",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-119"
@@ -1570,7 +1820,7 @@
     },
     {
       "task_id": "ITASK-120",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-120"
@@ -1583,7 +1833,7 @@
     },
     {
       "task_id": "ITASK-121",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-121"
@@ -1596,7 +1846,7 @@
     },
     {
       "task_id": "ITASK-122",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-122"
@@ -1609,7 +1859,7 @@
     },
     {
       "task_id": "ITASK-123",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-123"
@@ -1622,7 +1872,7 @@
     },
     {
       "task_id": "ITASK-124",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-124"
@@ -1635,7 +1885,7 @@
     },
     {
       "task_id": "ITASK-125",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-125"
@@ -1648,7 +1898,7 @@
     },
     {
       "task_id": "ITASK-126",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-126"
@@ -1661,7 +1911,7 @@
     },
     {
       "task_id": "ITASK-127",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-127"
@@ -1674,7 +1924,7 @@
     },
     {
       "task_id": "ITASK-128",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-128"
@@ -1687,7 +1937,7 @@
     },
     {
       "task_id": "ITASK-129",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-129"
@@ -1700,7 +1950,7 @@
     },
     {
       "task_id": "ITASK-130",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-130"
@@ -1713,7 +1963,7 @@
     },
     {
       "task_id": "ITASK-131",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-131"
@@ -1726,7 +1976,7 @@
     },
     {
       "task_id": "ITASK-132",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-132"
@@ -1739,7 +1989,7 @@
     },
     {
       "task_id": "ITASK-133",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-133"
@@ -1752,7 +2002,7 @@
     },
     {
       "task_id": "ITASK-134",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-134"
@@ -1765,7 +2015,7 @@
     },
     {
       "task_id": "ITASK-135",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-135"
@@ -1778,7 +2028,7 @@
     },
     {
       "task_id": "ITASK-136",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-136"
@@ -1791,7 +2041,7 @@
     },
     {
       "task_id": "ITASK-137",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-137"
@@ -1804,7 +2054,7 @@
     },
     {
       "task_id": "ITASK-138",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-138"
@@ -1817,7 +2067,7 @@
     },
     {
       "task_id": "ITASK-139",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-139"
@@ -1830,7 +2080,7 @@
     },
     {
       "task_id": "ITASK-140",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-140"
@@ -1843,7 +2093,7 @@
     },
     {
       "task_id": "ITASK-141",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-141"
@@ -1856,7 +2106,7 @@
     },
     {
       "task_id": "ITASK-142",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-142"
@@ -1869,7 +2119,7 @@
     },
     {
       "task_id": "ITASK-143",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-143"
@@ -1882,7 +2132,7 @@
     },
     {
       "task_id": "ITASK-144",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-144"
@@ -1895,7 +2145,7 @@
     },
     {
       "task_id": "ITASK-145",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-145"
@@ -1908,7 +2158,7 @@
     },
     {
       "task_id": "ITASK-146",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-146"
@@ -1921,7 +2171,7 @@
     },
     {
       "task_id": "ITASK-147",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-147"
@@ -1934,7 +2184,7 @@
     },
     {
       "task_id": "ITASK-148",
-      "status": "planned",
+      "status": "completed",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-148"
@@ -1946,6 +2196,6 @@
       "mapped_qa_case_ids": []
     }
   ],
-  "updated_at": "2026-07-16T13:33:26.989067+00:00",
+  "updated_at": "2026-07-16T14:03:50.584912+00:00",
   "task_ledger_path": "docs/beacon/v2.0.0/execution/tasks-beacon-v2-rust-kernel-redesign.md"
 }

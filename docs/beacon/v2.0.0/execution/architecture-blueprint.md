@@ -5,8 +5,8 @@
 
 - version: `v2.0.0`
 - feature_count: `1`
-- transaction_id: `tx-5ee3cba9d9e9121bf`
-- source_hash: `sha256:c608d2c6be724fe3b72f9d805c130dd41f4104344af720579802d3f317e6cb88`
+- transaction_id: `tx-fa4278a04cbb13015`
+- source_hash: `sha256:ec18838d7caef595f4294e2a816a2bcc0da46713489d0402686694c689fee477`
 
 ### Registered Feature Baselines
 - `beacon-v2-rust-kernel-redesign` | revision=`R20` | branch=`beacon/v2.0.0/beacon-v2-rust-kernel-redesign` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v2.0.0/.machine/execution/implementation-delivery-baseline-beacon-v2-rust-kernel-redesign.json`

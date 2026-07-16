@@ -4,7 +4,7 @@
 //! beacon-store, and honors stop_when. It does NOT issue QA/release verdicts (AC-049).
 
 mod backends;
-pub use backends::CodexBackend;
+pub use backends::{AcpBackend, ClaudeBackend, CodexBackend};
 
 use beacon_core::agent::{AgentBackend, IterationResult};
 use beacon_store::{ArtifactDao, BeaconStore, LifecycleEventDao, RunDao};
