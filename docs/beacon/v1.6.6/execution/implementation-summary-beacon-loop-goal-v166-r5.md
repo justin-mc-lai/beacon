@@ -38,3 +38,9 @@ PYTHONPATH=. python3 -m pytest tests/test_v166_loop_goal.py tests/test_v166_trut
 - Formal QA remains `beacon-eval-qa` (TASK-022).
 - Do not treat this summary as QA/release verdict.
 - Next route recommendation: `beacon-eval-qa` for AC-022..026 behavioral scorecard.
+
+## Machine Evidence
+
+- junit: `.beacon/junit-v166-loop-goal-r5.xml` (51 passed)
+- tests: `tests/test_v166_loop_goal.py`, `tests/test_v166_truth_canonical_branch.py`
+

@@ -90,13 +90,14 @@ When this skill is invoked, follow this decision tree sequentially:
 
 ### Step 2.6: Standard Execution Precheck
 
-1. Verify canonical truth/refreeze has been committed on `main` or `master`.
-2. Verify the feature worktree contains `truth_baseline_commit`; if not, block with `reason_code=truth_baseline_not_merged`.
-3. If feature-local `.machine` revision/projection dirty state or stale refreeze is detected, require a scoped stash/archive quarantine ref before continuing.
-4. Require a verification bundle containing `truth-map verify`, `verify-materials --strict`, `git diff --check`, `branch-governance verify`, and workspace admission results.
-5. Require `implement check-branch` / workspace admission to pass and record `workspace_admission_ref`.
-6. Record the result with `loop_goal_state.record_standard_execution_precheck()`.
-7. If the result is blocked, route to `beacon-gov-debug`; only `pass` or `up_to_date` may continue to `implement_routing`.
+1. Run `beacon status standard-execution-precheck <feature> --project-root . --version <version> --run-id <run_id> --json` (CLI-owned verification bundle; do not hand-craft pass results).
+2. Verify canonical truth/refreeze has been committed on `main` or `master`.
+3. Verify the feature worktree contains `truth_baseline_commit`; if not, block with `reason_code=truth_baseline_not_merged`.
+4. If feature-local `.machine` revision/projection dirty state or stale refreeze is detected, require a scoped stash/archive quarantine ref before continuing.
+5. Require the CLI verification bundle containing `truth-map verify` / `truth_map verify`, `verify-materials --strict`, `git diff --check`, `branch-governance verify`, and workspace admission results.
+6. Require `implement check-branch` / workspace admission to pass and record `workspace_admission_ref`.
+7. Record the CLI artifact with `loop_goal_state.record_standard_execution_precheck()` (rejects non-CLI artifacts with `verification_bundle_not_cli_owned`).
+8. If the result is blocked, route to `beacon-gov-debug`; only `pass` or `up_to_date` may continue to `implement_routing`.
 
 ### Step 3: Implement Stage
 
@@ -131,7 +132,7 @@ When this skill is invoked, follow this decision tree sequentially:
 | governance_precheck | CLI: `beacon plan start` | `status=pass` or `blocked` |
 | truth_routing | `beacon-gen-truth` | on `truth_canonical` branch? `truth.md status=frozen`? |
 | review_routing | `beacon-pln-review` | decision packet allows implement? |
-| standard_execution_precheck | CLI: `truth-map verify`; `verify-materials --strict`; `git diff --check`; `branch-governance verify`; `implement check-branch` | canonical baseline committed/merged? workspace admission pass? |
+| standard_execution_precheck | CLI: `beacon status standard-execution-precheck`; then `record_standard_execution_precheck` | CLI-owned bundle artifact present? canonical baseline committed/merged? workspace admission pass? |
 | implement_routing | `beacon-gen-implement` | feature tests pass? |
 | qa_routing | `beacon-eval-qa` | verdict=pass? |
 | release_gate | `beacon-eval-release` | go/no-go after human confirmation |
