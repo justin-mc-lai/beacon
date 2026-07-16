@@ -100,3 +100,11 @@ Deliverables (historical candidate, superseded by R8 minimal-kernel closure wher
 - **P1 Spine/projects**: existing AC-017/018/019/021/085 store+CLI tests remain green under V2 schema
 - verification: `cd packages/beacon-rs && cargo test --workspace` → pass
 - remaining: AC-158 dual-track writer lease, full P2+ orchestrator/gate parity, QA/release
+
+## Loop-goal implement continue (2026-07-16 AC-158 + AC-106)
+
+- run_id: `lg-c9924966448c`
+- **AC-158 dual-track writer lease**: `beacon-store::writer_lease` + `writer_leases` table; fail-closed `dual_track_writer_conflict`; tests `dual_track_writer.rs`
+- **AC-106 maker≠checker**: agent `stop_signal` alone → `stop_when_unverified` continue; external via `notify_external_gate_pass()`
+- commit: `b90df6a6`
+- verification: `cargo test --workspace` pass
