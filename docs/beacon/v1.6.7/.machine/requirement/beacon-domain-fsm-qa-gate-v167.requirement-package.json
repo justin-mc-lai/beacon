@@ -1,0 +1,172 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-16T15:08:24.234336+00:00",
+  "feature": "beacon-domain-fsm-qa-gate-v167",
+  "feature_slug": "beacon-domain-fsm-qa-gate-v167",
+  "version": "v1.6.7",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.7/features/beacon-domain-fsm-qa-gate-v167/truth.md",
+    "tests": "docs/beacon/v1.6.7/features/beacon-domain-fsm-qa-gate-v167/tests.md",
+    "tasks": "docs/beacon/v1.6.7/features/beacon-domain-fsm-qa-gate-v167/tasks.md",
+    "evidence": "docs/beacon/v1.6.7/features/beacon-domain-fsm-qa-gate-v167/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "523d827956cda9ee23f3a8ebeb8943e3aefa22775a056ce662e6e7b618732e17",
+    "tests": "83a81993df74b97827a67bb4706b0e3a6575c284354ac01b6adf4b96b0b98940",
+    "tasks": "33dba4451e529d147a6165bcb99dc56e6cfad8d6befe55d84363edc7ecc0ecc5",
+    "evidence": "d14e0213dab329dd2c53ace8e99926aff5c601ba9426d85b144fb0ea27556724"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-domain-fsm-qa-gate-v167",
+    "version": "v1.6.7",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "P0 domain FSM QA enforcement",
+    "canonical_refs": {
+      "truth": "docs/beacon/v1.6.7/features/beacon-domain-fsm-qa-gate-v167/truth.md",
+      "tests": "docs/beacon/v1.6.7/features/beacon-domain-fsm-qa-gate-v167/tests.md",
+      "tasks": "docs/beacon/v1.6.7/features/beacon-domain-fsm-qa-gate-v167/tasks.md",
+      "evidence": "docs/beacon/v1.6.7/features/beacon-domain-fsm-qa-gate-v167/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "program_ref": "docs/beacon/v1.6.7/programs/beacon-product-goal-domain-delivery-v167/feature-graph.json"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-FQA-001",
+      "theme": "matrix-legal",
+      "description": "domain 特征 QA 矩阵强制 legal walk 行（**Must**）"
+    },
+    {
+      "ac_id": "AC-FQA-002",
+      "theme": "matrix-illegal",
+      "description": "domain 特征 QA 矩阵强制 illegal/precedence 行（**Must**）"
+    },
+    {
+      "ac_id": "AC-FQA-003",
+      "theme": "fail-closed",
+      "description": "缺 domain_fsm_coverage 时 qa/release_ready fail-closed（**Must**）"
+    },
+    {
+      "ac_id": "AC-FQA-004",
+      "theme": "golden-bind",
+      "description": "golden commerce 负例被 QA 消费并期望 fail（**Must**）"
+    },
+    {
+      "ac_id": "AC-FQA-005",
+      "theme": "deep-route",
+      "description": "组合爆炸时推荐 qa-deep（**Should**）"
+    },
+    {
+      "ac_id": "AC-FQA-006",
+      "theme": "evidence-index",
+      "description": "evidence 可索引 FSM walk 结果工件（**Should**）"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-FQA-001",
+      "tc_id": "TC-FQA-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_domain_fsm_qa.py::test_matrix_requires_legal_walk -q`",
+      "assertion": "矩阵强制合法 walk",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-FQA-002",
+      "tc_id": "TC-FQA-002",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_domain_fsm_qa.py::test_matrix_requires_illegal -q`",
+      "assertion": "矩阵强制非法用例",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-FQA-003",
+      "tc_id": "TC-FQA-003",
+      "layer": "negative",
+      "command": "`python3 -m pytest tests/test_v167_domain_fsm_qa.py::test_missing_coverage_blocks_ready -q`",
+      "assertion": "缺覆盖阻断 ready",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-FQA-004",
+      "tc_id": "TC-FQA-004",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_v167_domain_fsm_qa.py::test_golden_negative_consumed -q`",
+      "assertion": "golden 负例被消费",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Materialize feature package",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Author domain/product acceptance criteria",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Wire freeze/QA/CLI hard gates",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Add golden/negative fixtures where applicable",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Implement + unit/contract tests",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Run beacon-eval-qa and bind evidence",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "Extend QA matrix builder + scorecard domain_fsm_coverage",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-gen-truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.7/features/beacon-domain-fsm-qa-gate-v167/truth.md",
+      "status": "frozen",
+      "route": "truth"
+    },
+    {
+      "surface": "analysis",
+      "authority": "support_advisory",
+      "canonical_artifact": "session analysis product-goal-domain-delivery",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "program",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.7/programs/beacon-product-goal-domain-delivery-v167/feature-graph.json",
+      "status": "indexed",
+      "route": "program"
+    }
+  ]
+}

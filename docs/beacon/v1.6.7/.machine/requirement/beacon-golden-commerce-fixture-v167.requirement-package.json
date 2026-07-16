@@ -1,0 +1,172 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-16T15:08:22.897207+00:00",
+  "feature": "beacon-golden-commerce-fixture-v167",
+  "feature_slug": "beacon-golden-commerce-fixture-v167",
+  "version": "v1.6.7",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.7/features/beacon-golden-commerce-fixture-v167/truth.md",
+    "tests": "docs/beacon/v1.6.7/features/beacon-golden-commerce-fixture-v167/tests.md",
+    "tasks": "docs/beacon/v1.6.7/features/beacon-golden-commerce-fixture-v167/tasks.md",
+    "evidence": "docs/beacon/v1.6.7/features/beacon-golden-commerce-fixture-v167/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "ba67d76bf09d39c49daf8add27d63d4d17a0b9fd14981b35e070b40368b8cf70",
+    "tests": "4ddb79b43984b1e74ee04cba954e371ca780038695a2f1f7e9ebe32e1601be95",
+    "tasks": "4dbd2f3693d3fa8dcb8f9b58b3bd228813dacd21d2edd52a35947f3d3e944a32",
+    "evidence": "e4a31682a1f5efb31d5560ba9f675865ddf19ec59ad6d3ca1578a66b4f378f26"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-golden-commerce-fixture-v167",
+    "version": "v1.6.7",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "P0 golden commerce fixture positive+negative",
+    "canonical_refs": {
+      "truth": "docs/beacon/v1.6.7/features/beacon-golden-commerce-fixture-v167/truth.md",
+      "tests": "docs/beacon/v1.6.7/features/beacon-golden-commerce-fixture-v167/tests.md",
+      "tasks": "docs/beacon/v1.6.7/features/beacon-golden-commerce-fixture-v167/tasks.md",
+      "evidence": "docs/beacon/v1.6.7/features/beacon-golden-commerce-fixture-v167/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "program_ref": "docs/beacon/v1.6.7/programs/beacon-product-goal-domain-delivery-v167/feature-graph.json"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-GOLD-001",
+      "theme": "positive-package",
+      "description": "正例 fixture 含 truth/tests/tasks/evidence + domain-fsm + entity-precedence（**Must**）"
+    },
+    {
+      "ac_id": "AC-GOLD-002",
+      "theme": "negative-package",
+      "description": "坏例 fixture 或负例矩阵：无 Product 创建 Order 必须失败（**Must**）"
+    },
+    {
+      "ac_id": "AC-GOLD-003",
+      "theme": "fsm-content",
+      "description": "至少覆盖 Product 与 Order 两聚合根状态与合法/非法转移（**Must**）"
+    },
+    {
+      "ac_id": "AC-GOLD-004",
+      "theme": "skill-pointer",
+      "description": "skills/beacon/examples 增加指向本 fixture 的完整示范入口（**Must**）"
+    },
+    {
+      "ac_id": "AC-GOLD-005",
+      "theme": "agent-readable",
+      "description": "fixture 可作为 materialize/validate 的可读输入（**Should**）"
+    },
+    {
+      "ac_id": "AC-GOLD-006",
+      "theme": "design-stub",
+      "description": "含最小 DESIGN.md 或 UI state matrix stub 绑定订单态徽章（**Should**）"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-GOLD-001",
+      "tc_id": "TC-GOLD-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_golden_commerce.py::test_positive_package_present -q`",
+      "assertion": "正例 package 存在且可解析",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-GOLD-002",
+      "tc_id": "TC-GOLD-002",
+      "layer": "negative",
+      "command": "`python3 -m pytest tests/test_v167_golden_commerce.py::test_order_without_product_fails -q`",
+      "assertion": "无商品下单失败",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-GOLD-003",
+      "tc_id": "TC-GOLD-003",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_golden_commerce.py::test_fsm_covers_product_and_order -q`",
+      "assertion": "FSM 覆盖两聚合根",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-GOLD-004",
+      "tc_id": "TC-GOLD-004",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_golden_commerce.py::test_skill_example_points_to_fixture -q`",
+      "assertion": "skill 示例指向 fixture",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Materialize feature package",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Author domain/product acceptance criteria",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Wire freeze/QA/CLI hard gates",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Add golden/negative fixtures where applicable",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Implement + unit/contract tests",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Run beacon-eval-qa and bind evidence",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "Author positive+negative fixture packages under fixtures/golden-commerce-checkout",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-gen-truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.7/features/beacon-golden-commerce-fixture-v167/truth.md",
+      "status": "frozen",
+      "route": "truth"
+    },
+    {
+      "surface": "analysis",
+      "authority": "support_advisory",
+      "canonical_artifact": "session analysis product-goal-domain-delivery",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "program",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.7/programs/beacon-product-goal-domain-delivery-v167/feature-graph.json",
+      "status": "indexed",
+      "route": "program"
+    }
+  ]
+}

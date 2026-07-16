@@ -1,0 +1,172 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-16T15:08:26.856831+00:00",
+  "feature": "beacon-ui-design-ship-gate-v167",
+  "feature_slug": "beacon-ui-design-ship-gate-v167",
+  "version": "v1.6.7",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.7/features/beacon-ui-design-ship-gate-v167/truth.md",
+    "tests": "docs/beacon/v1.6.7/features/beacon-ui-design-ship-gate-v167/tests.md",
+    "tasks": "docs/beacon/v1.6.7/features/beacon-ui-design-ship-gate-v167/tasks.md",
+    "evidence": "docs/beacon/v1.6.7/features/beacon-ui-design-ship-gate-v167/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "210f7173024ec973462077682b08aa5c51a8a6195842dc2833f11810fda37f3e",
+    "tests": "d83edeaff0a59f733e087fb3c4e1e957299f0d8df45959c8f9127bb5659aaa44",
+    "tasks": "4c496f1413c13196d252f0b063d38961eb1adb392c50aed716966853aae15653",
+    "evidence": "34b60775e3d8e1d55c32013c47762b8c8fe7dabac0a8cbda381ee8d1cdf8cad8"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-ui-design-ship-gate-v167",
+    "version": "v1.6.7",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "P1 UI design philosophy ship gate",
+    "canonical_refs": {
+      "truth": "docs/beacon/v1.6.7/features/beacon-ui-design-ship-gate-v167/truth.md",
+      "tests": "docs/beacon/v1.6.7/features/beacon-ui-design-ship-gate-v167/tests.md",
+      "tasks": "docs/beacon/v1.6.7/features/beacon-ui-design-ship-gate-v167/tasks.md",
+      "evidence": "docs/beacon/v1.6.7/features/beacon-ui-design-ship-gate-v167/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "program_ref": "docs/beacon/v1.6.7/programs/beacon-product-goal-domain-delivery-v167/feature-graph.json"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-UID-001",
+      "theme": "matrix-schema",
+      "description": "ui-state-matrix.v1 绑定 domain-fsm 状态（**Must**）"
+    },
+    {
+      "ac_id": "AC-UID-002",
+      "theme": "design-required",
+      "description": "UX feature 无 DESIGN 且无 deferral → freeze/ship block（**Must**）"
+    },
+    {
+      "ac_id": "AC-UID-003",
+      "theme": "ship-gate",
+      "description": "release scorecard 增加 design_alignment / ui_state_matrix 检查（**Must**）"
+    },
+    {
+      "ac_id": "AC-UID-004",
+      "theme": "implement-read",
+      "description": "implement skill/CLI precheck 记录 DESIGN 已读证据（**Should**）"
+    },
+    {
+      "ac_id": "AC-UID-005",
+      "theme": "qa-visual",
+      "description": "QA 可索引视觉/态徽章一致性检查（**Should**）"
+    },
+    {
+      "ac_id": "AC-UID-006",
+      "theme": "golden-link",
+      "description": "golden commerce 含最小 state matrix（**Must**）"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-UID-001",
+      "tc_id": "TC-UID-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_ui_design_ship.py::test_matrix_schema -q`",
+      "assertion": "matrix schema",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-UID-002",
+      "tc_id": "TC-UID-002",
+      "layer": "negative",
+      "command": "`python3 -m pytest tests/test_v167_ui_design_ship.py::test_missing_design_blocks_ship -q`",
+      "assertion": "缺 DESIGN 阻断",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-UID-003",
+      "tc_id": "TC-UID-003",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_ui_design_ship.py::test_scorecard_design_checks -q`",
+      "assertion": "scorecard 含设计检查",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-UID-006",
+      "tc_id": "TC-UID-004",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_ui_design_ship.py::test_golden_has_matrix -q`",
+      "assertion": "golden 含 matrix",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Materialize feature package",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Author domain/product acceptance criteria",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Wire freeze/QA/CLI hard gates",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Add golden/negative fixtures where applicable",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Implement + unit/contract tests",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Run beacon-eval-qa and bind evidence",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "Wire release scorecard + implement DESIGN precheck",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-gen-truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.7/features/beacon-ui-design-ship-gate-v167/truth.md",
+      "status": "frozen",
+      "route": "truth"
+    },
+    {
+      "surface": "analysis",
+      "authority": "support_advisory",
+      "canonical_artifact": "session analysis product-goal-domain-delivery",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "program",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.7/programs/beacon-product-goal-domain-delivery-v167/feature-graph.json",
+      "status": "indexed",
+      "route": "program"
+    }
+  ]
+}

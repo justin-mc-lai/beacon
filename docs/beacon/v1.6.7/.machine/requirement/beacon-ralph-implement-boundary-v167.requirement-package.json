@@ -1,0 +1,167 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-16T15:08:29.437571+00:00",
+  "feature": "beacon-ralph-implement-boundary-v167",
+  "feature_slug": "beacon-ralph-implement-boundary-v167",
+  "version": "v1.6.7",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.7/features/beacon-ralph-implement-boundary-v167/truth.md",
+    "tests": "docs/beacon/v1.6.7/features/beacon-ralph-implement-boundary-v167/tests.md",
+    "tasks": "docs/beacon/v1.6.7/features/beacon-ralph-implement-boundary-v167/tasks.md",
+    "evidence": "docs/beacon/v1.6.7/features/beacon-ralph-implement-boundary-v167/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "8e208b8772f035a5cd06667e5303f194ca24b2f134428d60c623e8f05cbd57b1",
+    "tests": "eff363866ae26fc2ee90a3cbd7ad06df096c9658f7d341bf9dfc4d0c18f74a0e",
+    "tasks": "66ae523435e5036e62a2718f93f8bbf42b141f574a9fbd8c3995e4aeca75e246",
+    "evidence": "445a008d1e000ca9e58143a6eca4aa8891b1b7a0986ba088be37223c91cea233"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-ralph-implement-boundary-v167",
+    "version": "v1.6.7",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "P2 Ralph implement-only boundary under Product Goal",
+    "canonical_refs": {
+      "truth": "docs/beacon/v1.6.7/features/beacon-ralph-implement-boundary-v167/truth.md",
+      "tests": "docs/beacon/v1.6.7/features/beacon-ralph-implement-boundary-v167/tests.md",
+      "tasks": "docs/beacon/v1.6.7/features/beacon-ralph-implement-boundary-v167/tasks.md",
+      "evidence": "docs/beacon/v1.6.7/features/beacon-ralph-implement-boundary-v167/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "program_ref": "docs/beacon/v1.6.7/programs/beacon-product-goal-domain-delivery-v167/feature-graph.json"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-RLP-001",
+      "theme": "skill-contract",
+      "description": "implement-ralph.md + skill 明示边界（**Must**）"
+    },
+    {
+      "ac_id": "AC-RLP-002",
+      "theme": "runtime-guard",
+      "description": "ralph_runtime 不得设置 qa_verdict/release_verdict（**Must**）"
+    },
+    {
+      "ac_id": "AC-RLP-003",
+      "theme": "goal-delegate",
+      "description": "product-goal state 可记录 implement_delegate=ralph（**Must**）"
+    },
+    {
+      "ac_id": "AC-RLP-004",
+      "theme": "handoff",
+      "description": "ralph handoff 仅到 qa/review/repair routes（**Must**）"
+    },
+    {
+      "ac_id": "AC-RLP-005",
+      "theme": "tests",
+      "description": "contract tests 锁边界（**Must**）"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-RLP-001",
+      "tc_id": "TC-RLP-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_ralph_boundary.py::test_skill_boundary_text -q`",
+      "assertion": "skill 边界",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-RLP-002",
+      "tc_id": "TC-RLP-002",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_ralph_boundary.py::test_ralph_state_no_qa_verdict -q`",
+      "assertion": "无 qa_verdict 字段权威",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-RLP-003",
+      "tc_id": "TC-RLP-003",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_ralph_boundary.py::test_goal_delegate_field -q`",
+      "assertion": "goal delegate 字段",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-RLP-004",
+      "tc_id": "TC-RLP-004",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_ralph_boundary.py::test_handoff_routes -q`",
+      "assertion": "handoff 路由集合",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Materialize feature package",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Author domain/product acceptance criteria",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Wire freeze/QA/CLI hard gates",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Add golden/negative fixtures where applicable",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Implement + unit/contract tests",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Run beacon-eval-qa and bind evidence",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "Tighten ralph_runtime + skill docs",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-gen-truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.7/features/beacon-ralph-implement-boundary-v167/truth.md",
+      "status": "frozen",
+      "route": "truth"
+    },
+    {
+      "surface": "analysis",
+      "authority": "support_advisory",
+      "canonical_artifact": "session analysis product-goal-domain-delivery",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "program",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.7/programs/beacon-product-goal-domain-delivery-v167/feature-graph.json",
+      "status": "indexed",
+      "route": "program"
+    }
+  ]
+}

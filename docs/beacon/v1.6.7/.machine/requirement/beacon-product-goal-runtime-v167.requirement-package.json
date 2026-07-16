@@ -1,0 +1,190 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-16T15:08:25.558429+00:00",
+  "feature": "beacon-product-goal-runtime-v167",
+  "feature_slug": "beacon-product-goal-runtime-v167",
+  "version": "v1.6.7",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.7/features/beacon-product-goal-runtime-v167/truth.md",
+    "tests": "docs/beacon/v1.6.7/features/beacon-product-goal-runtime-v167/tests.md",
+    "tasks": "docs/beacon/v1.6.7/features/beacon-product-goal-runtime-v167/tasks.md",
+    "evidence": "docs/beacon/v1.6.7/features/beacon-product-goal-runtime-v167/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "a86699bec83ad1eb447a7a66e44d30c8dcd815f32b791a327fb888533aa2c6a5",
+    "tests": "6f3617db9ec09e8feddd10b4afbf4db4c34e23954635fc5c8e79f925b09fb557",
+    "tasks": "b1a7507180a83488aa615c53385e5dfd0dc75b7acd8711434f31161324dbb01f",
+    "evidence": "892ff81378709f632028ac97ce51ef3b4f02d506b7f788904694eac6d1b9a933"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-product-goal-runtime-v167",
+    "version": "v1.6.7",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "P1 product goal runtime full lifecycle",
+    "canonical_refs": {
+      "truth": "docs/beacon/v1.6.7/features/beacon-product-goal-runtime-v167/truth.md",
+      "tests": "docs/beacon/v1.6.7/features/beacon-product-goal-runtime-v167/tests.md",
+      "tasks": "docs/beacon/v1.6.7/features/beacon-product-goal-runtime-v167/tasks.md",
+      "evidence": "docs/beacon/v1.6.7/features/beacon-product-goal-runtime-v167/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "program_ref": "docs/beacon/v1.6.7/programs/beacon-product-goal-domain-delivery-v167/feature-graph.json"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-PGR-001",
+      "theme": "state-schema",
+      "description": "定义 product-goal-state.v1（objective/done_when/budget/status/stage_pointer）（**Must**）"
+    },
+    {
+      "ac_id": "AC-PGR-002",
+      "theme": "cli-surface",
+      "description": "beacon goal start"
+    },
+    {
+      "ac_id": "AC-PGR-003",
+      "theme": "host-parity",
+      "description": "host /goal 与 CLI 共享或可映射同一 state（**Must**）"
+    },
+    {
+      "ac_id": "AC-PGR-004",
+      "theme": "done-audit",
+      "description": "complete 前必须 CLI verifier（tests/qa/domain）；禁止自述完成（**Must**）"
+    },
+    {
+      "ac_id": "AC-PGR-005",
+      "theme": "blocked-audit",
+      "description": "同一 blocker 连续 ≥3 goal turn 才可 blocked（**Must**）"
+    },
+    {
+      "ac_id": "AC-PGR-006",
+      "theme": "lifecycle-span",
+      "description": "goal 状态可指向 truth/implement/qa/release_gate 阶段（**Must**）"
+    },
+    {
+      "ac_id": "AC-PGR-007",
+      "theme": "budget",
+      "description": "token/turn budget + pause（**Should**）"
+    },
+    {
+      "ac_id": "AC-PGR-008",
+      "theme": "intent-queue",
+      "description": "可消费 intent/goal-queue 顶项（**Should**）"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-PGR-001",
+      "tc_id": "TC-PGR-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_state_schema -q`",
+      "assertion": "state schema",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PGR-002",
+      "tc_id": "TC-PGR-002",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_cli_surface -q`",
+      "assertion": "CLI 合同",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PGR-004",
+      "tc_id": "TC-PGR-003",
+      "layer": "negative",
+      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_complete_requires_verifier -q`",
+      "assertion": "无 verifier 不可 complete",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PGR-005",
+      "tc_id": "TC-PGR-004",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_blocked_requires_three_turns -q`",
+      "assertion": "blocked≥3",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PGR-006",
+      "tc_id": "TC-PGR-005",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_stage_pointer_spans_lifecycle -q`",
+      "assertion": "阶段指针跨生命周期",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Materialize feature package",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Author domain/product acceptance criteria",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Wire freeze/QA/CLI hard gates",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Add golden/negative fixtures where applicable",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Implement + unit/contract tests",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Run beacon-eval-qa and bind evidence",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "Implement beacon goal CLI + state under .beacon/state/product-goal/",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-gen-truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.7/features/beacon-product-goal-runtime-v167/truth.md",
+      "status": "frozen",
+      "route": "truth"
+    },
+    {
+      "surface": "analysis",
+      "authority": "support_advisory",
+      "canonical_artifact": "session analysis product-goal-domain-delivery",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "program",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.7/programs/beacon-product-goal-domain-delivery-v167/feature-graph.json",
+      "status": "indexed",
+      "route": "program"
+    }
+  ]
+}
