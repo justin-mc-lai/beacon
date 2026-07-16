@@ -3,8 +3,11 @@
 //! Orchestrator drives an AgentBackend through iterations, persists run state to
 //! beacon-store, and honors stop_when. It does NOT issue QA/release verdicts (AC-049).
 
+mod backends;
+pub use backends::CodexBackend;
+
 use beacon_core::agent::{AgentBackend, IterationResult};
-use beacon_store::{BeaconStore, LifecycleEventDao, RunDao};
+use beacon_store::{ArtifactDao, BeaconStore, LifecycleEventDao, RunDao};
 use std::sync::atomic::{AtomicBool, Ordering};
 
 /// Stop condition for the iterate loop (AC-048 stop_when).
@@ -67,11 +70,10 @@ impl<'a> Orchestrator<'a> {
         Ok(row.status)
     }
 
-    /// AC-042/044 run the iterate loop. Returns the steps.
-    /// AC-049: never emits QA/release/complete verdicts — only iteration results.
-    /// AC-042/044 run the iterate loop. Returns the steps.
+    /// AC-042/043/044 run the iterate loop. Returns the steps.
     /// AC-049: never emits QA/release/complete verdicts — only iteration results.
     /// AC-106: agent stop_signal alone does not stop; requires external_gate_passed or max iterations.
+    /// AC-043: each successful iterate writes an `artifact_refs` row for the run.
     pub fn run(&mut self, backend: &mut dyn AgentBackend, prompt: &str) -> Result<Vec<StepResult>, String> {
         backend.health_check().map_err(|e| format!("health check failed: {e}"))?;
         let mut steps: Vec<StepResult> = Vec::new();
@@ -80,13 +82,19 @@ impl<'a> Orchestrator<'a> {
             StopWhen::GatePass(_) => 100,
             StopWhen::Never => 100,
         };
+        let feature_id = {
+            let conn = self.store.connection();
+            RunDao::get(conn, self.run_id)
+                .map_err(|e| format!("store error: {e}"))?
+                .ok_or_else(|| format!("run {} not found", self.run_id))?
+                .feature_package_id
+        };
+
         for i in 1..=max {
             if self.aborted.load(Ordering::SeqCst) {
                 if let Some(last) = steps.last_mut() {
                     last.stopped = true;
                     last.stop_reason = "aborted".to_string();
-                } else {
-                    // no steps yet
                 }
                 break;
             }
@@ -94,25 +102,53 @@ impl<'a> Orchestrator<'a> {
             let mut stopped = false;
             let mut stop_reason = String::new();
 
-            // AC-106: agent self-report is not a stop condition
             if let Some(ref sig) = result.stop_signal {
                 stop_reason = format!("stop_when_unverified: agent claimed {sig}");
             }
-
-            // External verified gate (maker≠checker)
             if matches!(self.stop_when, StopWhen::GatePass(_))
                 && self.external_gate_passed.load(Ordering::SeqCst)
             {
                 stopped = true;
                 stop_reason = "stop_when gate pass: external_verified".to_string();
             }
-
-            // Max iterations
             if matches!(&self.stop_when, StopWhen::MaxIterations(n) if i >= *n) {
                 stopped = true;
                 if !stop_reason.starts_with("stop_when gate") {
                     stop_reason = "max_iterations".to_string();
                 }
+            }
+
+            // AC-043: persist iteration product into artifact_refs
+            {
+                let dir = std::env::temp_dir().join(format!("beacon-v2-run-{}", self.run_id));
+                let _ = std::fs::create_dir_all(&dir);
+                let path = dir.join(format!("iter-{i}.json"));
+                let body = serde_json::to_string_pretty(&result)
+                    .map_err(|e| format!("serialize iteration: {e}"))?;
+                std::fs::write(&path, &body).map_err(|e| format!("write artifact: {e}"))?;
+                let hash = {
+                    use std::collections::hash_map::DefaultHasher;
+                    use std::hash::{Hash, Hasher};
+                    let mut h = DefaultHasher::new();
+                    body.hash(&mut h);
+                    format!("{:016x}", h.finish())
+                };
+                let abs = path
+                    .canonicalize()
+                    .unwrap_or(path)
+                    .to_string_lossy()
+                    .to_string();
+                let conn = self.store.connection();
+                let _ = self.store.require_write("artifact_refs");
+                ArtifactDao::insert(
+                    conn,
+                    feature_id,
+                    Some(self.run_id),
+                    "iteration_result",
+                    &abs,
+                    Some(&hash),
+                )
+                .map_err(|e| format!("artifact_refs insert: {e}"))?;
             }
 
             steps.push(StepResult {

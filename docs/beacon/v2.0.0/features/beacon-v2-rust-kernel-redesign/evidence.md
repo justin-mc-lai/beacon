@@ -108,3 +108,14 @@ Deliverables (historical candidate, superseded by R8 minimal-kernel closure wher
 - **AC-106 maker≠checker**: agent `stop_signal` alone → `stop_when_unverified` continue; external via `notify_external_gate_pass()`
 - commit: `b90df6a6`
 - verification: `cargo test --workspace` pass
+
+## Loop-goal implement continue (2026-07-16 AC-043 Codex multi-round)
+
+- run_id: `lg-c9924966448c`
+- **AC-043 CodexBackend multi-round true integration**
+  - module: `beacon-orchestrator::CodexBackend`
+  - multi-round harness with distinct `CODEX_BACKEND_ITER` outputs (≥2 iterates)
+  - orchestrator writes each iterate into `artifact_refs` (abs_path + hash)
+  - live `codex --version` health probe when binary present
+  - tests: `p2_codex_backend.rs` (tc043_*) all pass
+- verification: `cargo test --workspace` + `cargo test -p beacon-orchestrator --test p2_codex_backend` pass
