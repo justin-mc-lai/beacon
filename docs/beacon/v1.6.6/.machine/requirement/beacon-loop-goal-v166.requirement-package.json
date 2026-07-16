@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-16T05:10:42.542954+00:00",
+  "generated_at": "2026-07-16T06:48:44.385998+00:00",
   "feature": "beacon-loop-goal-v166",
   "feature_slug": "beacon-loop-goal-v166",
   "version": "v1.6.6",
@@ -18,15 +18,15 @@
     "evidence": "docs/beacon/v1.6.6/features/beacon-loop-goal-v166/evidence.md"
   },
   "source_hashes": {
-    "truth": "74c3813483b92f9cbe201653419eed3835401a852e46e48007041de54c0f482e",
+    "truth": "6f82df066708124d32ce9269976c953c1b4539bb02ab1c546efc3bc407dc4d64",
     "tests": "80eb74b41a649b7464f409af52d25e60df015f710cdcd13161a10523ae3a56bc",
-    "tasks": "163e60e33f0f1889f31b6e9381627a58517fc7babff3176f1a845a18c82bf6db",
+    "tasks": "7248c550874cf886e166591f6b9f4a4a9ef1fd31c05925699f1a029e5190e303",
     "evidence": "7a38efd1c00e6bce7a8731f54682036a08a5f317c393889784a72fef073fb59a"
   },
   "truth_frontmatter": {
     "slug": "beacon-loop-goal-v166",
     "version": "v1.6.6",
-    "status": "draft",
+    "status": "frozen",
     "revision_id": "R6",
     "language": "zh",
     "change_reason": "R6 - Redefine human-gate set (P1 advisory continue; P0|user_decision_required|drift routes block; same-session continue + resume CLI; observability metrics)",
@@ -450,27 +450,27 @@
     {
       "id": "TASK-024",
       "title": "implement → `beacon-gen-implement` — update `loop_goal_state.record_review_decision`：P1-only → `standard_execution_precheck` + continue audit；blocking = P0 | user_decision_required | drift routes",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-025",
       "title": "implement → `beacon-gen-implement` — update public/packaged `beacon-loop-goal` SKILL.md：AC-014 R6 规则、同会话立即加载下一 skill、auto-decide 表对齐",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-026",
       "title": "implement → `beacon-gen-implement` — add `beacon status loop-goal --resume`（读 state，返回 stage + next skill；禁止 no-op 伪装）",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-027",
       "title": "implement → `beacon-gen-implement` — emit observability fields：human_stops_per_run / stop_reason 分布 / p1_continue_count（pseudo_stall 可判定时）",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-028",
       "title": "implement → `beacon-gen-implement` — pytest TC-LG-014 行为翻转 + TC-LG-027..030",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-029",

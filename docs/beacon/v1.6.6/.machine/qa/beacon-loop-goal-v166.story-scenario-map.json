@@ -611,6 +611,98 @@
           "replay_required": false
         }
       ]
+    },
+    {
+      "ac_id": "AC-027",
+      "theme": "auto-decide-human-gate-alignment",
+      "text": "Auto-decide 表必须与 AC-007/AC-014 对齐：默认人类急停仅 release + review blocking 集合；P1-only 默认续跑；`--human-gate` 可把 P1 升为停；release 永远不可 auto 覆盖（**Must**）",
+      "scenario_ids": [
+        "SC-AUTO-TC-LG-027"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-LG-027",
+          "source_tc_id": "TC-LG-027",
+          "tc_id": "TC-LG-027-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-028",
+      "theme": "same-session-skill-continue",
+      "text": "public SKILL.md 决策树必须声明：输出 next route 后**同会话立即加载**下一 skill；禁止以「仅打印下一步」结束编排回合（**Must**）",
+      "scenario_ids": [
+        "SC-AUTO-TC-LG-028"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-LG-028",
+          "source_tc_id": "TC-LG-028",
+          "tc_id": "TC-LG-028-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-029",
+      "theme": "loop-goal-resume-cli",
+      "text": "必须提供 `beacon status loop-goal --resume`（或等价），按 state 文件返回 `current_stage` + next skill + reason_code；禁止无状态变更的 no-op 打印充当 resume（**Must**）",
+      "scenario_ids": [
+        "SC-AUTO-TC-LG-029"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-LG-029",
+          "source_tc_id": "TC-LG-029",
+          "tc_id": "TC-LG-029-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-030",
+      "theme": "loop-goal-observability-metrics",
+      "text": "state/status 必须暴露 `human_stops_per_run`、`stop_reason` 分布、`p1_continue_count`；假性卡死（pseudo_stall）在可判定时计数（**Should**）",
+      "scenario_ids": [
+        "SC-AUTO-TC-LG-030"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-LG-030",
+          "source_tc_id": "TC-LG-030",
+          "tc_id": "TC-LG-030-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
     }
   ],
   "scenarios": [
@@ -1092,7 +1184,7 @@
       "depends_on": [],
       "stop_on_fail": false,
       "automation": "auto",
-      "command": "python3 -m pytest tests/test_v166_loop_goal.py::test_review_decision_packet_blocks_unsafe_implement_route -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "command": "python3 -m pytest tests/test_v166_loop_goal.py -k \"review_decision_packet\" -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "P1/user-decision/change route 的 review decision packet 不会自动进入 `implement_routing`",
       "priority": "P1",
       "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-014/__RUN_ID__.json",
@@ -1516,6 +1608,146 @@
       "assertion": "public SKILL.md Step 2 含 truth_canonical 校验与 `truth_canonical_branch_mismatch`",
       "priority": "P1",
       "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-026/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-LG-027",
+      "source_tc_id": "TC-LG-027",
+      "tc_id": "TC-LG-027-PRIMARY",
+      "ac_id": "AC-027",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "SKILL/auto-decide 表与 AC-007/AC-014 对齐；release 不可覆盖；P1-only 默认可续跑",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v166_loop_goal.py -k human_gate_alignment -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "SKILL/auto-decide 表与 AC-007/AC-014 对齐；release 不可覆盖；P1-only 默认可续跑",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-027/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-LG-028",
+      "source_tc_id": "TC-LG-028",
+      "tc_id": "TC-LG-028-PRIMARY",
+      "ac_id": "AC-028",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "public SKILL.md 声明同会话立即加载下一 skill，禁止只打印下一步",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v166_loop_goal.py -k same_session_continue -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "public SKILL.md 声明同会话立即加载下一 skill，禁止只打印下一步",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-028/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-LG-029",
+      "source_tc_id": "TC-LG-029",
+      "tc_id": "TC-LG-029-PRIMARY",
+      "ac_id": "AC-029",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "`beacon status loop-goal --resume` 返回 current_stage + next skill；无状态时不得伪装成功",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v166_loop_goal.py -k loop_goal_resume -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`beacon status loop-goal --resume` 返回 current_stage + next skill；无状态时不得伪装成功",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-029/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-LG-030",
+      "source_tc_id": "TC-LG-030",
+      "tc_id": "TC-LG-030-PRIMARY",
+      "ac_id": "AC-030",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "state/status 暴露 human_stops_per_run、stop_reason 分布、p1_continue_count",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v166_loop_goal.py -k observability_metrics -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "state/status 暴露 human_stops_per_run、stop_reason 分布、p1_continue_count",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-v166/tc-lg-030/__RUN_ID__.json",
       "required_files": [
         "command.txt",
         "stdout.log",
