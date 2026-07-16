@@ -868,6 +868,7 @@ def standard_execution_precheck(
 def loop_goal(
     project_root: str = typer.Option("", "--project-root", help="Project root path"),
     run_id: str = typer.Option("", "--run-id", help="Loop-goal run id; omit to list all runs"),
+    utterance: str = typer.Option("", "--utterance", help="Latest user utterance for resume short-map (R7)"),
     resume: bool = typer.Option(
         False,
         "--resume",
@@ -880,7 +881,7 @@ def loop_goal(
 
     root = (Path(project_root) if project_root else Path.cwd()).expanduser().resolve()
     if resume:
-        payload = build_resume(root, run_id=run_id or "")
+        payload = build_resume(root, run_id=run_id or "", utterance=utterance)
     else:
         payload = build_status(root, run_id=run_id or "")
     if json_output:

@@ -20,13 +20,22 @@ QUIET_SKIP_PATTERNS = (
     ".beacon/memory/*.json",
     ".beacon/qa/status.json",
     ".beacon/raw-command-log.jsonl",
+    ".beacon/state/agent-surfaces.json",
     ".beacon/state/eval-lab/*",
     ".beacon/state/learning/*.json",
+    ".beacon/state/project-onboarding.json",
+    ".cursor/rules/beacon-agent-surface.mdc",
+    ".cursor/skills/**",
+    ".trae/rules/project_rules.md",
+    ".trae/skills/**",
+    ".windsurf/skills/**",
+    ".windsurf/workflows/beacon-agent-surface.md",
     "docs/beacon/*/.machine/execution/change-impact.json",
     "docs/beacon/*/.machine/execution/config.json",
     "docs/beacon/*/.machine/execution/delivery-manifest.json",
     "docs/beacon/*/.machine/execution/git-alignment.json",
     "docs/beacon/*/.machine/execution/source.json",
+    "docs/beacon/.machine/hooks/*.latest.json",
 )
 
 QUIET_EXCLUDE_PATTERNS = (

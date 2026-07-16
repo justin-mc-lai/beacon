@@ -175,6 +175,21 @@ def default_artifact_ref(run_id: str) -> str:
     return f".beacon/state/loop-goal/{slug}.verification-bundle.json"
 
 
+
+
+def _topology_gate_check(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+) -> tuple[dict[str, Any], str]:
+    from beacon.utils.git_scope_graph import topology_gate_check, topology_gate_required
+
+    if not topology_gate_required(version):
+        return _check_payload("pass", details={"skipped": True}), ""
+    check, ref = topology_gate_check(project_root, version=version, feature=feature)
+    return check, ref
+
 def run_standard_execution_precheck(
     project_root: Path,
     *,
@@ -195,6 +210,7 @@ def run_standard_execution_precheck(
     diff_check = _run_git_diff_check(root)
     branch_gov = _branch_governance_verify(root, version=resolved_version, feature=feature)
     workspace, workspace_ref = _workspace_admission_check(root, version=resolved_version, feature=feature)
+    topology_gate, topology_ref = _topology_gate_check(root, version=resolved_version, feature=feature)
     commit_evidence = _canonical_commit_evidence(root, version=resolved_version)
 
     verification_bundle = {
@@ -203,6 +219,7 @@ def run_standard_execution_precheck(
         "git_diff_check": diff_check,
         "branch_governance_verify": branch_gov,
         "workspace_admission": workspace,
+        "topology_gate": topology_gate,
     }
     failed = [
         key
@@ -220,6 +237,7 @@ def run_standard_execution_precheck(
         "run_id": run,
         "verification_bundle_ref": ref,
         "workspace_admission_ref": workspace_ref,
+        "topology_gate_ref": topology_ref,
         "verification_bundle": verification_bundle,
         **commit_evidence,
         "status": "pass" if not failed else "blocked",

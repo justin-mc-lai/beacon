@@ -8,6 +8,7 @@ from typing import Optional
 
 import typer
 
+from beacon.utils.git_scope_graph import run_topology_resolve
 from beacon.utils.workspace_admission import release_workspace_lease, run_workspace_admit, validate_workspace_admission
 
 app = typer.Typer(
@@ -64,6 +65,34 @@ def validate(
             typer.echo(f"reason_codes: {', '.join(payload.get('reason_codes') or [])}")
     raise typer.Exit(code=2 if not payload.get("valid") else 0)
 
+
+
+@app.command("topology-resolve")
+def topology_resolve(
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p", help="Project root"),
+    version: str = typer.Option(..., "--version", "-v", help="Beacon version (e.g. v1.6.7)"),
+    feature: str = typer.Option(..., "--feature", help="Feature slug"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Plan topology resolve without writing artifact"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Resolve GitScopeGraph and topology_gate for single_repo / monorepo / multi_git."""
+    project_root = Path(project).expanduser().resolve() if project else Path.cwd().resolve()
+    payload = run_topology_resolve(
+        project_root,
+        version=version,
+        feature=feature,
+        dry_run=dry_run,
+    )
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"Beacon workspace topology-resolve: {payload.get('topology_gate_status')}")
+        typer.echo(f"project_topology: {payload.get('project_topology')}")
+        if payload.get("topology_gate_ref"):
+            typer.echo(f"topology_gate_ref: {payload.get('topology_gate_ref')}")
+        if payload.get("reason_codes"):
+            typer.echo(f"reason_codes: {', '.join(payload.get('reason_codes') or [])}")
+    raise typer.Exit(code=2 if payload.get("topology_gate_status") != "pass" else 0)
 
 @app.command("release")
 def release(

@@ -1,22 +1,22 @@
 ---
 name: beacon
-version: 1.6.6
+version: 1.6.7
 description: Evidence-first Product Workflow Kernel for product thinking, user stories, PRDs, test cases, and release workflows
 ---
 
 # Beacon - Evidence-first Product Workflow Kernel
 
-> **Skill Version**: v1.6.6
-> **CLI Version**: v1.6.6
+> **Skill Version**: v1.6.7
+> **CLI Version**: v1.6.7
 > **Last Updated**: 2026-06-01
 
 Beacon 是 AI 产品工作流内核，把 requirement materials、实现证据、QA 结论和 release 决策统一到一个版本化系统。
 
 ## 当前版本 / 发布线
 
-- **当前发布线**：`v1.6.6`
-- **当前包版本**：`1.6.6`
-- **最新已接受文档线**：`v1.6.6`
+- **当前发布线**：`v1.6.7`
+- **当前包版本**：`1.6.7`
+- **最新已接受文档线**：`v1.6.7`
 - **标准打包入口**：`skills/beacon/`
 - **文档主源**：`docs/beacon/{version}/`
 - `beacon <subcommand>`（推荐）

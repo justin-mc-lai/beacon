@@ -57,6 +57,18 @@ REQUIRED_STANDARD_EXECUTION_CHECKS = (
 )
 PASSING_CHECK_STATUSES = frozenset({"pass", "passed", "ok", "up_to_date"})
 
+RESUME_SHORT_UTTERANCES = frozenset({"继续", "continue", "resume", "go"})
+HOST_INTERRUPT_REASON = "host_turn_interrupted"
+
+
+def required_standard_execution_checks(version: str) -> tuple[str, ...]:
+    from beacon.utils.git_scope_graph import topology_gate_required
+
+    checks = list(REQUIRED_STANDARD_EXECUTION_CHECKS)
+    if topology_gate_required(version):
+        checks.append("topology_gate")
+    return tuple(checks)
+
 
 def _now_iso() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -116,6 +128,13 @@ def init(
             "qa_verdict": None,
             "release_verdict": None,
             "planner_review_continue_audit": {},
+            "latest_utterance": utterance,
+            "intent_forks": [],
+            "decision_cache": [],
+            "topology_gate_status": "not_checked",
+            "topology_gate_ref": "",
+            "last_substep": "",
+            "loop_execution_mode": "host_skill",
             "human_stop_metrics": {
                 "human_stops_per_run": 0,
                 "stop_reason_counts": {},
@@ -396,6 +415,98 @@ def _review_packet_incomplete(
     return False
 
 
+
+def record_intent_fork(
+    project_root: Path,
+    *,
+    run_id: str,
+    stage: str,
+    utterance_slice: str,
+    decision: str,
+    reason_code: str = "",
+) -> dict[str, Any]:
+    """Append an intent fork record at a routing decision point (R7)."""
+    root = project_root.expanduser().resolve()
+    state = read_state(root, run_id=run_id)
+    if state.get("status") == "blocked":
+        return state
+    outputs = dict(state.get("outputs") or {})
+    forks = list(outputs.get("intent_forks") or [])
+    forks.append(
+        {
+            "stage": stage,
+            "utterance_slice": utterance_slice,
+            "decision": decision,
+            "reason_code": reason_code,
+            "at": _now_iso(),
+        }
+    )
+    outputs["intent_forks"] = forks
+    if utterance_slice:
+        outputs["latest_utterance"] = utterance_slice
+    state["outputs"] = outputs
+    state["outputs"]["last_substep"] = stage
+    _state_path(root, run_id).write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
+    return {"status": "pass", "run_id": run_id, "outputs": outputs}
+
+
+def record_host_interrupt(
+    project_root: Path,
+    *,
+    run_id: str,
+    substep: str = "",
+) -> dict[str, Any]:
+    """Mark a host turn interrupt without treating it as stage_blocked (R7)."""
+    root = project_root.expanduser().resolve()
+    state = read_state(root, run_id=run_id)
+    if state.get("status") == "blocked":
+        return state
+    outputs = dict(state.get("outputs") or {})
+    outputs["last_substep"] = substep or str(state.get("current_stage") or "")
+    metrics = _ensure_human_stop_metrics(outputs)
+    metrics["human_stops_per_run"] = int(metrics.get("human_stops_per_run") or 0) + 1
+    counts = dict(metrics.get("stop_reason_counts") or {})
+    counts[HOST_INTERRUPT_REASON] = int(counts.get(HOST_INTERRUPT_REASON) or 0) + 1
+    metrics["stop_reason_counts"] = counts
+    outputs["human_stop_metrics"] = metrics
+    state["outputs"] = outputs
+    _state_path(root, run_id).write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
+    return {
+        "status": "pass",
+        "reason_code": HOST_INTERRUPT_REASON,
+        "resume_action": "replay_substep",
+        "run_id": run_id,
+        "last_substep": outputs["last_substep"],
+    }
+
+
+def _decision_cache_hit(outputs: dict[str, Any], decision_key: str) -> bool:
+    cache = outputs.get("decision_cache") or []
+    return any(
+        isinstance(item, dict) and str(item.get("key") or "") == decision_key
+        for item in cache
+    )
+
+
+def record_user_decision(
+    project_root: Path,
+    *,
+    run_id: str,
+    decision_key: str,
+    decision_value: str,
+) -> dict[str, Any]:
+    root = project_root.expanduser().resolve()
+    state = read_state(root, run_id=run_id)
+    if state.get("status") == "blocked":
+        return state
+    outputs = dict(state.get("outputs") or {})
+    cache = list(outputs.get("decision_cache") or [])
+    cache.append({"key": decision_key, "value": decision_value, "at": _now_iso()})
+    outputs["decision_cache"] = cache
+    state["outputs"] = outputs
+    _state_path(root, run_id).write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
+    return {"status": "pass", "run_id": run_id, "outputs": outputs}
+
 def record_review_decision(
     project_root: Path,
     *,
@@ -480,7 +591,7 @@ def record_review_decision(
     elif recommended_route in DRIFT_REVIEW_ROUTES:
         next_stage = "drift_routing"
         reason_code = f"planner_review_route_{recommended_route.replace('-', '_')}"
-    elif user_decision_required:
+    elif user_decision_required and not _decision_cache_hit(outputs, "planner_review_user_decision"):
         next_stage = "error_recovery"
         reason_code = "planner_review_user_decision_required"
     elif highest_severity in BLOCKING_REVIEW_SEVERITIES:
@@ -558,10 +669,11 @@ def _check_passed(value: Any) -> bool:
     return False
 
 
-def _normalise_verification_bundle(bundle: dict[str, Any] | None) -> dict[str, Any]:
+def _normalise_verification_bundle(bundle: dict[str, Any] | None, *, version: str = "") -> dict[str, Any]:
     if not isinstance(bundle, dict):
         return {}
-    return {key: bundle.get(key) for key in REQUIRED_STANDARD_EXECUTION_CHECKS if key in bundle}
+    keys = required_standard_execution_checks(version) if version else REQUIRED_STANDARD_EXECUTION_CHECKS
+    return {key: bundle.get(key) for key in keys if key in bundle}
 
 
 def _default_verification_bundle_ref(run_id: str) -> str:
@@ -667,6 +779,8 @@ def record_standard_execution_precheck(
             precheck.get("verification_bundle_ref") or _default_verification_bundle_ref(run_id)
         ),
         "workspace_admission_ref": str(precheck.get("workspace_admission_ref") or ""),
+        "topology_gate_ref": str(precheck.get("topology_gate_ref") or ""),
+        "topology_gate_status": str(precheck.get("topology_gate_status") or "not_checked"),
     }
 
     previous_outputs = state.get("outputs", {})
@@ -685,7 +799,8 @@ def record_standard_execution_precheck(
         }
 
     verification_bundle = _normalise_verification_bundle(
-        precheck.get("verification_bundle") if isinstance(precheck, dict) else None
+        precheck.get("verification_bundle") if isinstance(precheck, dict) else None,
+        version=str(state.get("version") or ""),
     )
     workspace_admission = precheck.get("workspace_admission")
     if "workspace_admission" in verification_bundle and not workspace_admission:
@@ -707,7 +822,14 @@ def record_standard_execution_precheck(
     if cli_bundle:
         # Prefer authoritative CLI artifact fields when present.
         if isinstance(cli_bundle.get("verification_bundle"), dict):
-            verification_bundle = _normalise_verification_bundle(cli_bundle.get("verification_bundle"))
+            verification_bundle = _normalise_verification_bundle(
+                cli_bundle.get("verification_bundle"),
+                version=str(state.get("version") or ""),
+            )
+        if cli_bundle.get("topology_gate_ref"):
+            outputs["topology_gate_ref"] = str(cli_bundle.get("topology_gate_ref") or "")
+        if cli_bundle.get("topology_gate_status"):
+            outputs["topology_gate_status"] = str(cli_bundle.get("topology_gate_status") or "")
         if cli_bundle.get("workspace_admission_ref"):
             outputs["workspace_admission_ref"] = str(cli_bundle.get("workspace_admission_ref") or "")
         if "canonical_refreeze_committed" in cli_bundle:
@@ -763,8 +885,9 @@ def record_standard_execution_precheck(
             reason_code="truth_baseline_not_merged",
         )
 
+    required_checks = required_standard_execution_checks(str(state.get("version") or ""))
     missing_checks = [
-        key for key in REQUIRED_STANDARD_EXECUTION_CHECKS
+        key for key in required_checks
         if key not in verification_bundle or not _check_passed(verification_bundle.get(key))
     ]
     if missing_checks:
@@ -785,6 +908,30 @@ def record_standard_execution_precheck(
             outputs=outputs,
             reason_code="workspace_admission_missing",
         )
+
+
+    if "topology_gate" in required_checks:
+        topo = verification_bundle.get("topology_gate")
+        if not _check_passed(topo):
+            reason_code = "topology_gate_blocked"
+            if isinstance(topo, dict):
+                reason_code = str(topo.get("reason_code") or reason_code)
+            return _standard_execution_block(
+                root,
+                run_id=run_id,
+                state=state,
+                outputs=outputs,
+                reason_code=reason_code,
+            )
+        if not outputs.get("topology_gate_ref"):
+            return _standard_execution_block(
+                root,
+                run_id=run_id,
+                state=state,
+                outputs=outputs,
+                reason_code="topology_gate_ref_missing",
+            )
+        outputs["topology_gate_status"] = "pass"
 
     if not _check_passed(workspace_admission):
         reason_code = "workspace_admission_blocked"
@@ -935,13 +1082,14 @@ def build_status(project_root: Path, *, run_id: str = "") -> dict[str, Any]:
     }
 
 
-def build_resume(project_root: Path, *, run_id: str = "") -> dict[str, Any]:
+def build_resume(project_root: Path, *, run_id: str = "", utterance: str = "") -> dict[str, Any]:
     """Resume helper for ``beacon status loop-goal --resume``.
 
     Returns actionable ``current_stage`` + ``next_skill``. Refuses no-op success
     when there is no runnable stage/skill (AC-029).
     """
     root = project_root.expanduser().resolve()
+    utterance_slice = str(utterance or "").strip().lower()
     if not run_id:
         listed = build_status(root, run_id="")
         runs = list(listed.get("runs") or [])

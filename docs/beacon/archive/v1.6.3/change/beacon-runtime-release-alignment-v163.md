@@ -1,0 +1,28 @@
+# Beacon Feature Change Document
+
+- feature: `beacon-runtime-release-alignment-v163`
+- feature_slug: `beacon-runtime-release-alignment-v163`
+- version: `v1.6.3`
+- status: `completed`
+
+## Scope
+- codex-subagents implementation completed via implement-team flow
+
+## Added
+- none
+
+## Removed / Reduced
+- none
+
+## Fixed
+- Updated `.beacon/evidence-manifest.json`
+- Updated `.beacon/state/agent-surfaces.json`
+- Updated `docs/beacon/archive/v1.6.3/.machine/execution/implementation-delivery-host.json`
+- Updated `docs/beacon/archive/v1.6.3/.machine/requirement/feature-package-validation.json`
+- Updated `docs/beacon/archive/v1.6.3/execution/architecture-blueprint.md`
+
+## Traceability Refs
+- `docs/beacon/archive/v1.6.3/.machine/execution/technical-implementation-beacon-runtime-release-alignment-v163.json`
+- `docs/beacon/archive/v1.6.3/.machine/execution/technical-implementation-beacon-runtime-release-alignment-v163.json`
+- `docs/beacon/archive/v1.6.3/.machine/execution/implementation-summary-beacon-runtime-release-alignment-v163.json`
+- `docs/beacon/archive/v1.6.3/execution/implementation-brief-beacon-runtime-release-alignment-v163.md`
