@@ -42,8 +42,9 @@ truth_routing -> invoke beacon-gen-truth -> truth_verify
   -> frozen: review_routing | not_frozen: truth_routing (retry) | blocked: error_recovery
 review_routing -> invoke beacon-pln-review -> review_verify
   -> implement_ready: standard_execution_precheck
+  -> implement_ready (non_blocking incl P1-only advisory): standard_execution_precheck + continue audit
   -> truth_or_change_route: drift_routing
-  -> user_decision_required: error_recovery
+  -> user_decision_required | P0: error_recovery
   -> blocked: error_recovery
 standard_execution_precheck -> verify canonical baseline + branch governance + workspace admission
   -> pass: implement_routing
@@ -56,6 +57,10 @@ release_gate -> human_confirmed: invoke beacon-eval-release -> done
   -> human_rejected: idle
 error_recovery -> invoke beacon-gov-debug -> resume from blocked stage
 ```
+
+## Same-Session Continue (AC-028)
+
+After emitting the next route / next skill, **immediately load that skill in the same session**. Do not end the orchestration turn by only printing the next step. Use `beacon status loop-goal --resume --run-id <run_id> --json` when recovering mid-run; a successful resume always returns actionable `current_stage` + `next_skill` (or an explicit human-wait at `release_gate`). No-op success printing is forbidden.
 
 ## Decision Tree
 
@@ -74,28 +79,32 @@ When this skill is invoked, follow this decision tree sequentially:
 
 ### Step 2: Truth Stage
 
-1. Route to `beacon-gen-truth`.
-2. After it returns, read `docs/beacon/<version>/features/<feature>/truth.md` frontmatter.
-3. If `status: frozen`, transition to `review_routing`.
-4. If not frozen, stay in `truth_routing`, output the next route, and stop.
+1. Verify the current checkout is on governance `truth_canonical` (`main` or `master`); if not, route to `beacon-gov-debug` with `reason_code=truth_canonical_branch_mismatch` and stop.
+2. Route to `beacon-gen-truth`.
+3. After it returns, read `docs/beacon/<version>/features/<feature>/truth.md` frontmatter.
+4. If `status: frozen`, transition to `review_routing`.
+5. If not frozen, stay in `truth_routing`, output the next route, and stop.
 
 ### Step 2.5: Planner Review Decision Packet
 
 1. Route to `beacon-pln-review` when lifecycle, state, loop, source parity, deferral, design, or cross-harness risk is present.
 2. When runtime evidence is needed, run `beacon planner-review run <feature> --project-root . --version <version> --prompt "<utterance>" --json`.
 3. Record the returned artifact with `loop_goal_state.record_review_decision()`.
-4. If the review packet has P0/P1 findings, `user_decision_required=true`, or recommends `beacon-gen-truth` / `beacon-gen-change` / `beacon-gen-refreeze`, stop and route instead of implementing.
-5. Only transition to `standard_execution_precheck` when the recorded decision packet is implement-ready.
+4. **R6 blocking set only:** stop when `highest_severity=P0`, or `user_decision_required=true`, or `recommended_route ∈ {beacon-gen-truth, beacon-gen-change, beacon-gen-refreeze}`, or the packet is incomplete / unhandled. Route to `drift_routing` / `error_recovery` / `beacon-gov-debug` as recorded — do **not** auto-enter `implement_routing`.
+5. **Standalone P1 (and P2/P3) must not block** when the route is implement-ready: continue to `standard_execution_precheck`, and require the continue audit (`continued_with_advisory=true` + severity). `--human-gate` / `auto_decide=false` may elevate P1 to a stop.
+6. Only transition to `standard_execution_precheck` when the recorded decision packet is implement-ready (including P1-only advisory continue).
+7. After recording, **same-session continue**: immediately load the next skill / CLI precheck — do not end the turn with print-only routing.
 
 ### Step 2.6: Standard Execution Precheck
 
-1. Verify canonical truth/refreeze has been committed on `main` or `master`.
-2. Verify the feature worktree contains `truth_baseline_commit`; if not, block with `reason_code=truth_baseline_not_merged`.
-3. If feature-local `.machine` revision/projection dirty state or stale refreeze is detected, require a scoped stash/archive quarantine ref before continuing.
-4. Require a verification bundle containing `truth-map verify`, `verify-materials --strict`, `git diff --check`, `branch-governance verify`, and workspace admission results.
-5. Require `implement check-branch` / workspace admission to pass and record `workspace_admission_ref`.
-6. Record the result with `loop_goal_state.record_standard_execution_precheck()`.
-7. If the result is blocked, route to `beacon-gov-debug`; only `pass` or `up_to_date` may continue to `implement_routing`.
+1. Run `beacon status standard-execution-precheck <feature> --project-root . --version <version> --run-id <run_id> --json` (CLI-owned verification bundle; do not hand-craft pass results).
+2. Verify canonical truth/refreeze has been committed on `main` or `master`.
+3. Verify the feature worktree contains `truth_baseline_commit`; if not, block with `reason_code=truth_baseline_not_merged`.
+4. If feature-local `.machine` revision/projection dirty state or stale refreeze is detected, require a scoped stash/archive quarantine ref before continuing.
+5. Require the CLI verification bundle containing `truth-map verify` / `truth_map verify`, `verify-materials --strict`, `git diff --check`, `branch-governance verify`, and workspace admission results.
+6. Require `implement check-branch` / workspace admission to pass and record `workspace_admission_ref`.
+7. Record the CLI artifact with `loop_goal_state.record_standard_execution_precheck()` (rejects non-CLI artifacts with `verification_bundle_not_cli_owned`).
+8. If the result is blocked, route to `beacon-gov-debug`; only `pass` or `up_to_date` may continue to `implement_routing`.
 
 ### Step 3: Implement Stage
 
@@ -128,9 +137,9 @@ When this skill is invoked, follow this decision tree sequentially:
 | Stage | Skill to Load | Check After Return |
 |-------|--------------|-------------------|
 | governance_precheck | CLI: `beacon plan start` | `status=pass` or `blocked` |
-| truth_routing | `beacon-gen-truth` | `truth.md status=frozen`? |
+| truth_routing | `beacon-gen-truth` | on `truth_canonical` branch? `truth.md status=frozen`? |
 | review_routing | `beacon-pln-review` | decision packet allows implement? |
-| standard_execution_precheck | CLI: `truth-map verify`; `verify-materials --strict`; `git diff --check`; `branch-governance verify`; `implement check-branch` | canonical baseline committed/merged? workspace admission pass? |
+| standard_execution_precheck | CLI: `beacon status standard-execution-precheck`; then `record_standard_execution_precheck` | CLI-owned bundle artifact present? canonical baseline committed/merged? workspace admission pass? |
 | implement_routing | `beacon-gen-implement` | feature tests pass? |
 | qa_routing | `beacon-eval-qa` | verdict=pass? |
 | release_gate | `beacon-eval-release` | go/no-go after human confirmation |
@@ -142,7 +151,9 @@ When this skill is invoked, follow this decision tree sequentially:
 |---------------|-----------------|---------------|
 | truth scope (lake/ocean) | auto-decide | `--human-gate` |
 | truth freeze | auto-decide after verify pass | `--human-gate` |
-| implement start | auto-decide after truth frozen | `--human-gate` |
+| planner-review P1-only | auto-continue → `standard_execution_precheck` + continue audit | `--human-gate` elevates P1 to stop |
+| planner-review blocking (P0 / user_decision_required / drift routes) | always stop | never auto-bypass |
+| implement start | auto-decide after truth frozen + review implement-ready + precheck pass | `--human-gate` |
 | QA start | auto-decide after tests pass | `--human-gate` |
 | release start | must human confirm | never |
 
@@ -150,6 +161,8 @@ When this skill is invoked, follow this decision tree sequentially:
 
 State is persisted at `.beacon/state/loop-goal/<run_id>.json` with schema `loop-goal-state.v1`.
 Standard execution outputs include `standard_execution_flow_status`, `truth_baseline_commit`, `canonical_refreeze_committed`, `feature_worktree_reconciled`, `stale_feature_refreeze_quarantine_ref`, `verification_bundle_ref`, and `workspace_admission_ref`.
+Observability outputs include `human_stop_metrics` (`human_stops_per_run`, `stop_reason_counts`, `p1_continue_count`, `pseudo_stall_flag`) and `planner_review_continue_audit`.
+Resume via `beacon status loop-goal --resume [--run-id <id>] --json`.
 
 ## Boundary
 
@@ -157,3 +170,4 @@ Standard execution outputs include `standard_execution_flow_status`, `truth_base
 - It uses sequential skill loading; each skill completes before the next route decision.
 - It relies on file-system state, not agent memory.
 - Release is always human-gated.
+- Standalone P1 is advisory continue by default; only release + review blocking set are default human hard-stops.

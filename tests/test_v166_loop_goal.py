@@ -12,6 +12,8 @@ from beacon.utils.loop_goal_state import (
     VALID_STAGES,
     MAX_REPAIR_LOOPS,
     RELEASE_HUMAN_GATE_STAGES,
+    build_resume,
+    build_status,
     check_release_gate,
     check_stop_when,
     get_skill_for_stage,
@@ -314,6 +316,9 @@ class TestReviewDecisionPacket:
         assert outputs["planner_review_user_decision_required"] is False
         assert outputs["planner_review_highest_severity"] == "P2"
         assert outputs["planner_review_finding_count"] == 1
+        audit = outputs.get("planner_review_continue_audit") or {}
+        assert audit.get("continued_with_advisory") is True
+        assert audit.get("continued_severity") == "P2"
 
     def test_review_decision_packet_blocks_unsafe_implement_route(self, goal_project: Path):
         state = init(goal_project, version="v1.6.6", feature="f1", utterance="u1")
@@ -338,6 +343,182 @@ class TestReviewDecisionPacket:
         assert result["reason_code"] == "planner_review_route_beacon_gen_change"
         updated = read_state(goal_project, run_id=run_id)
         assert updated["current_stage"] != "implement_routing"
+
+    def test_review_decision_packet_p1_only_continues_with_audit(self, goal_project: Path):
+        """TC-LG-014 R6: naked P1 + continue_delivery must not hard-stop."""
+        state = init(goal_project, version="v1.6.6", feature="f1", utterance="u1")
+        run_id = state["run_id"]
+        artifact = {
+            "review_id": "pln-review-p1-only",
+            "synthesis": {
+                "recommended_route": "continue_delivery",
+                "highest_severity": "P1",
+                "finding_count": 1,
+                "user_decision_required": False,
+            },
+            "findings": [{"severity": "P1", "title": "advisory"}],
+            "evidence_paths": {
+                "runtime": ".beacon/state/planner-review/f1/pln-review-p1-only.json",
+            },
+        }
+        result = record_review_decision(goal_project, run_id=run_id, review_artifact=artifact)
+        assert result["status"] == "pass"
+        assert result["current_stage"] == "standard_execution_precheck"
+        assert result["reason_code"] == ""
+        outputs = result["outputs"]
+        audit = outputs.get("planner_review_continue_audit") or {}
+        assert audit.get("continued_with_advisory") is True
+        assert audit.get("continued_severity") == "P1"
+        metrics = outputs.get("human_stop_metrics") or {}
+        assert metrics.get("p1_continue_count") == 1
+        assert metrics.get("human_stops_per_run") == 0
+
+    def test_review_decision_packet_p0_blocks(self, goal_project: Path):
+        state = init(goal_project, version="v1.6.6", feature="f1", utterance="u1")
+        run_id = state["run_id"]
+        artifact = {
+            "review_id": "pln-review-p0",
+            "synthesis": {
+                "recommended_route": "continue_delivery",
+                "highest_severity": "P0",
+                "finding_count": 1,
+                "user_decision_required": False,
+            },
+            "findings": [{"severity": "P0"}],
+            "evidence_paths": {
+                "runtime": ".beacon/state/planner-review/f1/pln-review-p0.json",
+            },
+        }
+        result = record_review_decision(goal_project, run_id=run_id, review_artifact=artifact)
+        assert result["status"] == "blocked"
+        assert result["current_stage"] == "error_recovery"
+        assert result["reason_code"] == "planner_review_blocking_finding"
+        metrics = result["outputs"].get("human_stop_metrics") or {}
+        assert metrics.get("human_stops_per_run") == 1
+        assert "planner_review_blocking_finding" in (metrics.get("stop_reason_counts") or {})
+
+    def test_review_decision_packet_incomplete_fail_closed(self, goal_project: Path):
+        state = init(goal_project, version="v1.6.6", feature="f1", utterance="u1")
+        run_id = state["run_id"]
+        result = record_review_decision(goal_project, run_id=run_id, review_artifact={})
+        assert result["status"] == "blocked"
+        assert result["reason_code"] == "planner_review_packet_incomplete"
+
+
+class TestHumanGateAlignment:
+    """AC-027 / TC-LG-027: auto-decide table aligns with AC-007/AC-014."""
+
+    def test_human_gate_alignment_skill_contract(self):
+        skill_paths = [
+            Path(__file__).parent.parent / "skills" / "beacon" / "beacon-loop-goal" / "SKILL.md",
+            Path(__file__).parent.parent / ".agents" / "skills" / "beacon-loop-goal" / "SKILL.md",
+        ]
+        for skill_path in skill_paths:
+            content = skill_path.read_text(encoding="utf-8")
+            assert "P1-only" in content or "Standalone P1" in content
+            assert "must human confirm" in content
+            assert "never" in content
+            assert "continue audit" in content or "auto-continue" in content
+            assert "HUMAN GATE" in content or "human confirm" in content.lower()
+
+    def test_human_gate_alignment_p1_override_stops(self, goal_project: Path):
+        state = init(
+            goal_project,
+            version="v1.6.6",
+            feature="f1",
+            utterance="u1",
+            auto_decide=True,
+            human_gate_overrides=["p1"],
+        )
+        artifact = {
+            "review_id": "pln-review-p1-gated",
+            "synthesis": {
+                "recommended_route": "continue_delivery",
+                "highest_severity": "P1",
+                "finding_count": 1,
+                "user_decision_required": False,
+            },
+            "findings": [{"severity": "P1"}],
+            "evidence_paths": {
+                "runtime": ".beacon/state/planner-review/f1/pln-review-p1-gated.json",
+            },
+        }
+        result = record_review_decision(
+            goal_project, run_id=state["run_id"], review_artifact=artifact
+        )
+        assert result["status"] == "blocked"
+        assert result["reason_code"] == "planner_review_human_gate_p1"
+
+
+class TestSameSessionContinue:
+    """AC-028 / TC-LG-028."""
+
+    def test_same_session_continue_skill_contract(self):
+        skill_paths = [
+            Path(__file__).parent.parent / "skills" / "beacon" / "beacon-loop-goal" / "SKILL.md",
+            Path(__file__).parent.parent / ".agents" / "skills" / "beacon-loop-goal" / "SKILL.md",
+        ]
+        for skill_path in skill_paths:
+            content = skill_path.read_text(encoding="utf-8")
+            assert "Same-Session Continue" in content or "same-session" in content.lower()
+            assert "immediately load" in content.lower() or "同会话立即加载" in content
+            assert "print-only" in content.lower() or "only printing" in content.lower() or "只打印" in content
+
+
+class TestLoopGoalResume:
+    """AC-029 / TC-LG-029."""
+
+    def test_loop_goal_resume_returns_next_skill(self, goal_project: Path):
+        state = init(goal_project, version="v1.6.6", feature="f1", utterance="u1")
+        run_id = state["run_id"]
+        transition(goal_project, run_id=run_id, to_stage="implement_routing")
+        payload = build_resume(goal_project, run_id=run_id)
+        assert payload["status"] == "pass"
+        assert payload["current_stage"] == "implement_routing"
+        assert payload["next_skill"] == "beacon-gen-implement"
+        assert payload["resume_action"] == "load_next_skill"
+        assert payload["same_session_continue_required"] is True
+
+    def test_loop_goal_resume_noop_forbidden_without_state(self, goal_project: Path):
+        payload = build_resume(goal_project, run_id="")
+        assert payload["status"] == "blocked"
+        assert payload["reason_code"] == "loop_goal_resume_no_runs"
+
+    def test_loop_goal_resume_cli_flag_wired(self):
+        status_src = (
+            Path(__file__).parent.parent / "beacon" / "commands" / "status.py"
+        ).read_text(encoding="utf-8")
+        assert "--resume" in status_src
+        assert "build_resume" in status_src
+
+
+class TestObservabilityMetrics:
+    """AC-030 / TC-LG-030."""
+
+    def test_observability_metrics_on_status(self, goal_project: Path):
+        state = init(goal_project, version="v1.6.6", feature="f1", utterance="u1")
+        run_id = state["run_id"]
+        artifact = {
+            "review_id": "pln-review-metrics",
+            "synthesis": {
+                "recommended_route": "continue_delivery",
+                "highest_severity": "P1",
+                "finding_count": 1,
+                "user_decision_required": False,
+            },
+            "findings": [{"severity": "P1"}],
+            "evidence_paths": {
+                "runtime": ".beacon/state/planner-review/f1/pln-review-metrics.json",
+            },
+        }
+        record_review_decision(goal_project, run_id=run_id, review_artifact=artifact)
+        status = build_status(goal_project, run_id=run_id)
+        metrics = status.get("human_stop_metrics") or {}
+        assert "human_stops_per_run" in metrics
+        assert "stop_reason_counts" in metrics
+        assert "p1_continue_count" in metrics
+        assert metrics["p1_continue_count"] == 1
+        assert "pseudo_stall_flag" in metrics
 
 
 class TestStandardExecutionPrecheck:

@@ -32,7 +32,9 @@ VALID_STAGES = frozenset({
 MAX_REPAIR_LOOPS = 3
 
 RELEASE_HUMAN_GATE_STAGES = frozenset({"release_gate"})
-BLOCKING_REVIEW_SEVERITIES = frozenset({"P0", "P1"})
+# R6: only P0 blocks by severity. Standalone P1 is advisory continue.
+# Intent / scope / parity still stop via user_decision_required or drift routes.
+BLOCKING_REVIEW_SEVERITIES = frozenset({"P0"})
 DRIFT_REVIEW_ROUTES = frozenset({
     "beacon-gen-truth",
     "beacon-gen-change",
@@ -43,7 +45,9 @@ IMPLEMENT_READY_REVIEW_ROUTES = frozenset({
     "continue_delivery",
     "beacon-gen-implement",
     "beacon-pln-friction",
+    "beacon-eval-qa",
 })
+ADVISORY_CONTINUE_SEVERITIES = frozenset({"P1", "P2", "P3"})
 REQUIRED_STANDARD_EXECUTION_CHECKS = (
     "truth_map_verify",
     "verify_materials_strict",
@@ -111,6 +115,13 @@ def init(
             "tests_pass": False,
             "qa_verdict": None,
             "release_verdict": None,
+            "planner_review_continue_audit": {},
+            "human_stop_metrics": {
+                "human_stops_per_run": 0,
+                "stop_reason_counts": {},
+                "p1_continue_count": 0,
+                "pseudo_stall_flag": False,
+            },
         },
         "repair_loop_count": 0,
         "stop_when": [],
@@ -329,22 +340,93 @@ def _highest_review_severity(findings: list[dict[str, Any]], synthesis: dict[str
     return highest
 
 
+def _default_human_stop_metrics() -> dict[str, Any]:
+    return {
+        "human_stops_per_run": 0,
+        "stop_reason_counts": {},
+        "p1_continue_count": 0,
+        "pseudo_stall_flag": False,
+    }
+
+
+def _ensure_human_stop_metrics(outputs: dict[str, Any]) -> dict[str, Any]:
+    metrics = outputs.get("human_stop_metrics")
+    if not isinstance(metrics, dict):
+        metrics = _default_human_stop_metrics()
+    else:
+        metrics = {
+            **_default_human_stop_metrics(),
+            **metrics,
+            "stop_reason_counts": dict(metrics.get("stop_reason_counts") or {}),
+        }
+    outputs["human_stop_metrics"] = metrics
+    return metrics
+
+
+def _bump_stop_reason(metrics: dict[str, Any], reason_code: str) -> None:
+    metrics["human_stops_per_run"] = int(metrics.get("human_stops_per_run") or 0) + 1
+    counts = dict(metrics.get("stop_reason_counts") or {})
+    counts[reason_code] = int(counts.get(reason_code) or 0) + 1
+    metrics["stop_reason_counts"] = counts
+
+
+def _review_packet_incomplete(
+    review_artifact: dict[str, Any],
+    *,
+    synthesis: dict[str, Any],
+    findings: list[Any],
+    recommended_route: str,
+) -> bool:
+    """Fail-closed when the decision packet lacks minimum routing fields."""
+    review_id = review_artifact.get("review_id") or review_artifact.get("id")
+    artifact_ref = _review_artifact_ref(review_artifact)
+    has_route = bool(recommended_route)
+    has_findings = bool(findings)
+    has_synthesis_marker = bool(
+        synthesis.get("highest_severity")
+        or synthesis.get("finding_count") is not None
+        or "user_decision_required" in synthesis
+        or "recommended_route" in synthesis
+    )
+    # Empty / placeholder packets cannot authorize implement continue.
+    if not review_id and not artifact_ref and not has_route and not has_findings:
+        return True
+    if not has_route and not has_findings and not has_synthesis_marker:
+        return True
+    return False
+
+
 def record_review_decision(
     project_root: Path,
     *,
     run_id: str,
     review_artifact: dict[str, Any],
 ) -> dict[str, Any]:
-    """Record a planner-review decision packet and route fail-closed.
+    """Record a planner-review decision packet and route fail-closed (R6).
 
-    The governor does not interpret review text heuristically. It consumes the
-    structured planner-review artifact and records the stable decision fields in
-    loop-goal state before selecting the next stage.
+    Blocking stops only for:
+    - P0 severity
+    - ``user_decision_required=true``
+    - drift routes (truth / change / refreeze)
+    - incomplete or unhandled packets
+
+    Standalone P1/P2/P3 with an implement-ready route continues to
+    ``standard_execution_precheck`` and records a continue audit.
     """
     root = project_root.expanduser().resolve()
     state = read_state(root, run_id=run_id)
     if state.get("status") == "blocked":
         return state
+
+    if not isinstance(review_artifact, dict) or not review_artifact:
+        return {
+            "status": "blocked",
+            "reason_code": "planner_review_packet_incomplete",
+            "current_stage": "error_recovery",
+            "run_id": run_id,
+            "recommended_route": "",
+            "outputs": {},
+        }
 
     synthesis = review_artifact.get("synthesis")
     if not isinstance(synthesis, dict):
@@ -360,6 +442,8 @@ def record_review_decision(
         or review_artifact.get("user_decision_required")
     )
     highest_severity = _highest_review_severity(findings, synthesis)
+    outputs = dict(state.get("outputs") or {})
+    metrics = _ensure_human_stop_metrics(outputs)
     packet = {
         "planner_review_id": review_artifact.get("review_id"),
         "planner_review_artifact_ref": _review_artifact_ref(review_artifact),
@@ -373,24 +457,69 @@ def record_review_decision(
         ),
     }
 
-    blocking_severity = highest_severity in BLOCKING_REVIEW_SEVERITIES
-    if recommended_route in DRIFT_REVIEW_ROUTES:
+    continue_audit: dict[str, Any] = {}
+    next_stage = "error_recovery"
+    reason_code = ""
+    overrides = {
+        str(item).strip().lower()
+        for item in (state.get("human_gate_overrides") or [])
+    }
+    # Opt-out: auto_decide=false or --human-gate p1 elevates standalone P1 to a stop.
+    force_p1_human_gate = (not bool(state.get("auto_decide", True))) or bool(
+        overrides.intersection({"p1", "planner_review_p1", "review_p1", "review"})
+    )
+
+    if _review_packet_incomplete(
+        review_artifact,
+        synthesis=synthesis,
+        findings=findings,
+        recommended_route=recommended_route,
+    ):
+        next_stage = "error_recovery"
+        reason_code = "planner_review_packet_incomplete"
+    elif recommended_route in DRIFT_REVIEW_ROUTES:
         next_stage = "drift_routing"
         reason_code = f"planner_review_route_{recommended_route.replace('-', '_')}"
     elif user_decision_required:
         next_stage = "error_recovery"
         reason_code = "planner_review_user_decision_required"
-    elif blocking_severity:
+    elif highest_severity in BLOCKING_REVIEW_SEVERITIES:
         next_stage = "error_recovery"
         reason_code = "planner_review_blocking_finding"
+    elif (
+        highest_severity == "P1"
+        and force_p1_human_gate
+        and recommended_route in IMPLEMENT_READY_REVIEW_ROUTES
+    ):
+        next_stage = "error_recovery"
+        reason_code = "planner_review_human_gate_p1"
     elif recommended_route in IMPLEMENT_READY_REVIEW_ROUTES:
         next_stage = "standard_execution_precheck"
         reason_code = ""
+        if highest_severity in ADVISORY_CONTINUE_SEVERITIES:
+            continue_audit = {
+                "continued_with_advisory": True,
+                "continued_severity": highest_severity,
+                "blocking_reason_code": "",
+                "recommended_route": recommended_route or "continue_delivery",
+            }
+            metrics["p1_continue_count"] = int(metrics.get("p1_continue_count") or 0) + (
+                1 if highest_severity == "P1" else 0
+            )
+            # Non-P1 advisory still records audit without inflating p1 counter.
+            if highest_severity != "P1":
+                continue_audit["advisory_only"] = True
     else:
         next_stage = "error_recovery"
         reason_code = "planner_review_route_unhandled"
 
-    state["outputs"].update(packet)
+    if reason_code:
+        _bump_stop_reason(metrics, reason_code)
+
+    packet["planner_review_continue_audit"] = continue_audit
+    packet["human_stop_metrics"] = metrics
+    outputs.update(packet)
+    state["outputs"] = outputs
     state["current_stage"] = next_stage
     state["stage_history"].append({
         "stage": next_stage,
@@ -398,6 +527,7 @@ def record_review_decision(
         "at": _now_iso(),
         "recommended_route": recommended_route,
         "reason_code": reason_code,
+        "continued_with_advisory": bool(continue_audit.get("continued_with_advisory")),
     })
     _state_path(root, run_id).write_text(
         json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8"
@@ -410,6 +540,7 @@ def record_review_decision(
         "run_id": run_id,
         "recommended_route": recommended_route,
         "outputs": packet,
+        "next_skill": get_skill_for_stage(next_stage),
     }
 
 
@@ -754,6 +885,10 @@ def build_status(project_root: Path, *, run_id: str = "") -> dict[str, Any]:
                 "run_id": run_id,
             }
         current_stage = str(state.get("current_stage") or "idle")
+        outputs = dict(state.get("outputs") or {})
+        metrics = outputs.get("human_stop_metrics")
+        if not isinstance(metrics, dict):
+            metrics = _default_human_stop_metrics()
         return {
             "schema_version": "loop-goal-status.v1",
             "status": "pass",
@@ -764,7 +899,8 @@ def build_status(project_root: Path, *, run_id: str = "") -> dict[str, Any]:
             "next_skill": get_skill_for_stage(current_stage),
             "auto_decide": state.get("auto_decide"),
             "repair_loop_count": state.get("repair_loop_count", 0),
-            "outputs": state.get("outputs", {}),
+            "outputs": outputs,
+            "human_stop_metrics": metrics,
             "stop_when": state.get("stop_when", []),
             "stage_history": state.get("stage_history", []),
         }
@@ -778,6 +914,10 @@ def build_status(project_root: Path, *, run_id: str = "") -> dict[str, Any]:
             except (json.JSONDecodeError, OSError):
                 continue
             current_stage = str(data.get("current_stage") or "idle")
+            outputs = dict(data.get("outputs") or {})
+            metrics = outputs.get("human_stop_metrics")
+            if not isinstance(metrics, dict):
+                metrics = _default_human_stop_metrics()
             runs.append({
                 "run_id": data.get("run_id", path.stem),
                 "feature": data.get("feature"),
@@ -785,10 +925,110 @@ def build_status(project_root: Path, *, run_id: str = "") -> dict[str, Any]:
                 "current_stage": current_stage,
                 "next_skill": get_skill_for_stage(current_stage),
                 "repair_loop_count": data.get("repair_loop_count", 0),
+                "human_stop_metrics": metrics,
             })
     return {
         "schema_version": "loop-goal-status.v1",
         "status": "pass",
         "run_count": len(runs),
         "runs": runs,
+    }
+
+
+def build_resume(project_root: Path, *, run_id: str = "") -> dict[str, Any]:
+    """Resume helper for ``beacon status loop-goal --resume``.
+
+    Returns actionable ``current_stage`` + ``next_skill``. Refuses no-op success
+    when there is no runnable stage/skill (AC-029).
+    """
+    root = project_root.expanduser().resolve()
+    if not run_id:
+        listed = build_status(root, run_id="")
+        runs = list(listed.get("runs") or [])
+        if not runs:
+            return {
+                "schema_version": "loop-goal-resume.v1",
+                "status": "blocked",
+                "reason_code": "loop_goal_resume_no_runs",
+                "resume_action": "none",
+            }
+        # Prefer the latest run id (sorted glob order ends with newest uuid suffix).
+        run_id = str(runs[-1].get("run_id") or "")
+        if not run_id:
+            return {
+                "schema_version": "loop-goal-resume.v1",
+                "status": "blocked",
+                "reason_code": "loop_goal_resume_no_runs",
+                "resume_action": "none",
+            }
+
+    status = build_status(root, run_id=run_id)
+    if status.get("status") == "blocked":
+        return {
+            "schema_version": "loop-goal-resume.v1",
+            "status": "blocked",
+            "reason_code": status.get("reason_code") or "state_not_found",
+            "run_id": run_id,
+            "resume_action": "none",
+        }
+
+    current_stage = str(status.get("current_stage") or "idle")
+    next_skill = str(status.get("next_skill") or "")
+    outputs = dict(status.get("outputs") or {})
+    metrics = status.get("human_stop_metrics") or outputs.get("human_stop_metrics") or {}
+
+    if current_stage == "done":
+        return {
+            "schema_version": "loop-goal-resume.v1",
+            "status": "pass",
+            "reason_code": "loop_goal_already_done",
+            "run_id": run_id,
+            "current_stage": current_stage,
+            "next_skill": "",
+            "resume_action": "none",
+            "human_stop_metrics": metrics,
+        }
+
+    if current_stage == "release_gate":
+        return {
+            "schema_version": "loop-goal-resume.v1",
+            "status": "pass",
+            "reason_code": "await_human_confirmation",
+            "run_id": run_id,
+            "feature": status.get("feature"),
+            "version": status.get("version"),
+            "current_stage": current_stage,
+            "next_skill": next_skill,
+            "resume_action": "await_human_confirmation",
+            "same_session_continue_required": False,
+            "human_stop_metrics": metrics,
+            "outputs": outputs,
+        }
+
+    if current_stage in {"idle", ""} or not next_skill:
+        return {
+            "schema_version": "loop-goal-resume.v1",
+            "status": "blocked",
+            "reason_code": "loop_goal_resume_noop_forbidden",
+            "run_id": run_id,
+            "current_stage": current_stage,
+            "next_skill": next_skill,
+            "resume_action": "none",
+            "human_stop_metrics": metrics,
+        }
+
+    return {
+        "schema_version": "loop-goal-resume.v1",
+        "status": "pass",
+        "reason_code": "",
+        "run_id": run_id,
+        "feature": status.get("feature"),
+        "version": status.get("version"),
+        "current_stage": current_stage,
+        "next_skill": next_skill,
+        "resume_action": "load_next_skill",
+        "same_session_continue_required": True,
+        "human_stop_metrics": metrics,
+        "outputs": outputs,
+        "repair_loop_count": status.get("repair_loop_count", 0),
     }
