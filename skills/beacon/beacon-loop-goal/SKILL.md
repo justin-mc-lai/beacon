@@ -12,7 +12,9 @@ description: "【support/internal】发现与排队写入 goal-queue。日常一
 
 ## Overview
 
-Cross-harness orchestrator skill that sequences all Beacon lifecycle skills (truth -> implement -> QA -> release) using a deterministic state machine. Governor harness type - only routes, never executes.
+**Support/internal discovery surface.** Enqueues intents into `goal-queue` for `$beacon-goal` to consume.
+May assist advanced/heartbeat routing, but is **not** the user-facing one-shot delivery entry.
+Governor harness type — only routes/discovers, never executes truth/implement/QA/release verdicts.
 
 
 ## Product Goal Split (v1.6.7+ R3)
@@ -26,9 +28,11 @@ Cross-harness orchestrator skill that sequences all Beacon lifecycle skills (tru
 
 ## When to Use
 
-- User wants one prompt to drive the full Beacon lifecycle (truth -> implement -> QA -> release)
-- User wants automatic stage transitions with stop-when checks
-- User wants error recovery routing to beacon-gov-debug
+- Advanced/heartbeat discovery needs to **enqueue** work for `$beacon-goal`
+- Debugging support routing / queue inspection
+- Explicit support-path recovery (not the default daily entry)
+
+**Daily delivery:** always prefer `$beacon-goal` / `beacon goal run`.
 
 ## Harness
 

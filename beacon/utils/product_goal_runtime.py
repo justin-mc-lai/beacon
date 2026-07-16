@@ -16,6 +16,7 @@ from typing import Any, Literal
 from beacon.utils.runtime import now_iso, write_json
 from beacon.utils.story_state import feature_slug
 from beacon.utils.versioning import normalize_version, resolve_target_version
+from beacon.utils.goal_queue import consume_next, list_queued
 
 SCHEMA_VERSION = "1.0"
 PUBLIC_ENTRY = "beacon-goal"
@@ -195,6 +196,7 @@ def create_goal_run(
         "progressive_loaded_skills": [],
         "parallel_plan": parallel,
         "blocked_streak": 0,
+        "implement_delegate": "",
         "verifier": {
             "required_for_complete": True,
             "present": False,
@@ -439,3 +441,48 @@ def loop_goal_support_metadata(skill_md: str) -> dict[str, Any]:
     if "role: support" in lowered or "entry: support" in lowered or "support/internal" in lowered:
         marked = True
     return {"marked_support": marked, "status": "pass" if marked else "blocked"}
+
+
+def delegate_implement_to_ralph(project_root: Path, run_id: str, *, feature: str = "") -> dict[str, Any]:
+    """Product Goal records implement stage delegation to Ralph (not product complete)."""
+    payload = load_goal_run(project_root, run_id)
+    if payload.get("reason_code") == REASON_NOT_FOUND:
+        return payload
+    payload["implement_delegate"] = "ralph"
+    if feature:
+        payload["feature"] = feature_slug(feature)
+    # ensure implement stage annotated
+    for item in payload.get("stages") or []:
+        if isinstance(item, dict) and item.get("stage") == "implement":
+            item["delegate"] = "ralph"
+            item["status"] = item.get("status") or "planned"
+    hist = list(payload.get("history") or [])
+    hist.append({"event": "implement_delegate_ralph", "at": now_iso()})
+    payload["history"] = hist
+    payload = load_stage_skills(project_root, run_id, "implement")
+    payload = load_goal_run(project_root, run_id)
+    payload["implement_delegate"] = "ralph"
+    return _save(project_root, payload)
+
+
+def consume_discovery_queue(project_root: Path, *, version: str = "auto") -> dict[str, Any]:
+    """Goal consumes one loop discovery queue item and starts a facade run."""
+    queued = list_queued(project_root, status="queued")
+    consumed = consume_next(project_root, consumer="beacon-goal")
+    if consumed.get("status") == "empty":
+        return {
+            "status": "empty",
+            "blocked": False,
+            "reason_code": "goal_queue_empty",
+            "queued_count": 0,
+        }
+    item = consumed.get("item") if isinstance(consumed.get("item"), dict) else {}
+    run = run_goal_facade(
+        project_root,
+        utterance=str(item.get("utterance") or ""),
+        version=str(item.get("version") or version or "auto"),
+        feature=str(item.get("feature") or ""),
+    )
+    run["from_queue_item"] = item.get("id")
+    run["discovery_source"] = item.get("source")
+    return run

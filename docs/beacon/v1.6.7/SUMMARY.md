@@ -24,16 +24,16 @@ Promotion ref: `friction:2e306f7acea7`.
 ## Program: Product Goal + Domain Delivery
 
 - **program**: `docs/beacon/v1.6.7/programs/beacon-product-goal-domain-delivery-v167/`
-- **status**: truth-frozen lakes (R1); implement pending
+- **status**: P0–P2 lakes implemented on feature branch; evaluator QA pending
 - **intent**: Goal spans full lifecycle; domain FSM hard gates; kill empty-castle greens
 
 | Priority | Feature | Status |
 |----------|---------|--------|
-| P0 | beacon-domain-fsm-authority-v167 | frozen R1 |
-| P0 | beacon-golden-commerce-fixture-v167 | frozen R1 |
-| P0 | beacon-domain-fsm-qa-gate-v167 | frozen R1 |
-| P1 | beacon-product-goal-runtime-v167 | frozen R1 |
-| P1 | beacon-ui-design-ship-gate-v167 | frozen R1 |
-| P2 | beacon-loop-discover-goal-finish-v167 | frozen R1 |
-| P2 | beacon-ralph-implement-boundary-v167 | frozen R1 |
+| P0 | beacon-domain-fsm-authority-v167 | implement-landed |
+| P0 | beacon-golden-commerce-fixture-v167 | implement-landed |
+| P0 | beacon-domain-fsm-qa-gate-v167 | implement-landed |
+| P1 | beacon-product-goal-runtime-v167 | implement-landed |
+| P1 | beacon-ui-design-ship-gate-v167 | implement-landed |
+| P2 | beacon-loop-discover-goal-finish-v167 | implement-landed |
+| P2 | beacon-ralph-implement-boundary-v167 | implement-landed |
 

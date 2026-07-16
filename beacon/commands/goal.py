@@ -12,6 +12,8 @@ from beacon.utils.product_goal_runtime import (
     PUBLIC_ENTRY,
     attach_verifier,
     complete_goal_run,
+    consume_discovery_queue,
+    delegate_implement_to_ralph,
     load_goal_run,
     public_entry_contract,
     record_blocker,
@@ -164,3 +166,28 @@ def goal_entry_contract(json_output: bool = typer.Option(True, "--json/--no-json
     payload = public_entry_contract()
     _emit(payload, json_output)
     raise typer.Exit(0)
+
+
+@app.command("consume-queue")
+def goal_consume_queue(
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p"),
+    version: str = typer.Option("auto", "--version", "-v"),
+    json_output: bool = typer.Option(False, "--json"),
+) -> None:
+    """Consume one support discovery queue item into a goal run."""
+    payload = consume_discovery_queue(_root(project), version=version)
+    _emit(payload, json_output)
+    raise typer.Exit(0 if payload.get("status") in {"running", "pass", "awaiting_verifier", "completed"} or payload.get("run_id") else (0 if payload.get("status") == "empty" else 2))
+
+
+@app.command("delegate-ralph")
+def goal_delegate_ralph(
+    run_id: str = typer.Option(..., "--run-id"),
+    feature: str = typer.Option("", "--feature", "-f"),
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p"),
+    json_output: bool = typer.Option(False, "--json"),
+) -> None:
+    """Delegate implement stage to Ralph (implement-only; not product complete)."""
+    payload = delegate_implement_to_ralph(_root(project), run_id, feature=feature)
+    _emit(payload, json_output)
+    raise typer.Exit(0 if payload.get("implement_delegate") == "ralph" else 2)

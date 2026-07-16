@@ -9,6 +9,7 @@ from typing import Optional
 import typer
 
 from beacon.utils.loop_goal_state import build_resume, init, read_state
+from beacon.utils.goal_queue import enqueue_discovery, reject_loop_product_complete
 
 app = typer.Typer(name="loop-goal", help="Loop-goal orchestrator CLI driver.", no_args_is_help=True)
 
@@ -42,3 +43,44 @@ def run(
         typer.echo(f"resume_action: {payload.get('resume_action', 'none')}")
         typer.echo(f"next_skill: {payload.get('next_skill') or 'none'}")
     raise typer.Exit(code=0 if payload.get("status") == "pass" else 2)
+
+
+@app.command("discover")
+def discover(
+    utterance: str = typer.Argument(..., help="Discovery utterance to enqueue for beacon-goal"),
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p"),
+    version: str = typer.Option("", "--version", "-v"),
+    feature: str = typer.Option("", "--feature", "-f"),
+    json_output: bool = typer.Option(False, "--json"),
+):
+    """Support discovery: write goal-queue item (does not start product delivery)."""
+    root = Path(project).expanduser().resolve() if project else Path.cwd().resolve()
+    payload = enqueue_discovery(
+        root,
+        utterance=utterance,
+        version=version,
+        feature=feature,
+        source="beacon-loop-goal",
+    )
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"Beacon loop-goal discover: {payload.get('status')}")
+        item = payload.get("item") if isinstance(payload.get("item"), dict) else {}
+        typer.echo(f"queue_item: {item.get('id')}")
+        typer.echo("next: beacon goal run (or beacon-goal) to consume queue / deliver")
+    raise typer.Exit(0)
+
+
+@app.command("mark-complete")
+def mark_complete_forbidden(
+    json_output: bool = typer.Option(False, "--json"),
+):
+    """Explicitly rejected: loop cannot mark product complete."""
+    payload = reject_loop_product_complete(attempted_by="beacon-loop-goal")
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"blocked: {payload.get('reason_code')}")
+        typer.echo(payload.get("message"))
+    raise typer.Exit(2)
