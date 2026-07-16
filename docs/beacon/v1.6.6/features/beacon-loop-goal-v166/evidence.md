@@ -2,7 +2,7 @@
 slug: beacon-loop-goal-v166
 version: v1.6.6
 status: draft
-revision_id: R5
+revision_id: R6
 language: zh
 truth_ref: docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md
 parser_contract: beacon-feature-package-v2
@@ -77,3 +77,19 @@ parser_contract: beacon-feature-package-v2
 - Close remaining soft gaps so requirement truth cannot be authored or frozen outside `truth_canonical`.
 - Make standard_execution_precheck evidence CLI-owned.
 - Keep governor routing-only; do not make loop-goal execute git itself.
+
+## R6 Human-gate Redefinition Evidence
+
+| Surface | Authority | Canonical Artifact | Status | Route |
+|---------|-----------|--------------------|--------|-------|
+| beacon-gen-change | requirement_truth | docs/beacon/v1.6.6/features/beacon-loop-goal-v166/{truth,tests,tasks,evidence}.md | R6 draft (AC-014 rewrite + AC-027..030) | refreeze |
+| user confirmation | decision | chat: confirm Phase A/B/C human-gate set | accepted | change |
+| beacon-gen-implement | support_advisory | loop_goal_state.record_review_decision; status loop-goal --resume; SKILL.md | queued for post-freeze implement | implement |
+
+### R6 Accepted Scope
+
+- Default human stops: `release_gate` + review blocking (`P0` | `user_decision_required` | drift routes only).
+- Standalone P1 → advisory continue into `standard_execution_precheck` with severity/continue audit.
+- Same-session skill continue + `beacon status loop-goal --resume`.
+- Observability: human_stops_per_run / stop_reason / p1_continue_count (/ pseudo_stall when detectable).
+- AC-007 unchanged: release never auto-decide.

@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-16T04:02:56.163882+00:00",
+  "generated_at": "2026-07-16T05:10:42.542954+00:00",
   "feature": "beacon-loop-goal-v166",
   "feature_slug": "beacon-loop-goal-v166",
   "version": "v1.6.6",
@@ -18,18 +18,18 @@
     "evidence": "docs/beacon/v1.6.6/features/beacon-loop-goal-v166/evidence.md"
   },
   "source_hashes": {
-    "truth": "736eb59db23088be951506a78ddb0736ebe6202de84ef3ba7d0eb2606b4cb905",
-    "tests": "c71c58b3a4f1888aeda25ad3b1fb3932150a4940158879b4ab09caea5aae9939",
-    "tasks": "ca2baaa0a836e667caa34eea6265b3174dc30cb147261220725e9c4317444cf9",
-    "evidence": "381c4cfda16136112d293c7805a8068456ded13d8b03fe42fa31fbc2a6d68ba7"
+    "truth": "74c3813483b92f9cbe201653419eed3835401a852e46e48007041de54c0f482e",
+    "tests": "80eb74b41a649b7464f409af52d25e60df015f710cdcd13161a10523ae3a56bc",
+    "tasks": "163e60e33f0f1889f31b6e9381627a58517fc7babff3176f1a845a18c82bf6db",
+    "evidence": "7a38efd1c00e6bce7a8731f54682036a08a5f317c393889784a72fef073fb59a"
   },
   "truth_frontmatter": {
     "slug": "beacon-loop-goal-v166",
     "version": "v1.6.6",
-    "status": "frozen",
-    "revision_id": "R5",
+    "status": "draft",
+    "revision_id": "R6",
     "language": "zh",
-    "change_reason": "R5 - Truth-on-main first-principles closure (file write gate + CLI-owned standard_execution_precheck + truth GIT_ADMISSION split)",
+    "change_reason": "R6 - Redefine human-gate set (P1 advisory continue; P0|user_decision_required|drift routes block; same-session continue + resume CLI; observability metrics)",
     "canonical_refs": {
       "truth": "docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
       "tests": "docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
@@ -111,7 +111,7 @@
     {
       "ac_id": "AC-014",
       "theme": "review-gate-fail-closed",
-      "description": "当 review decision packet 存在 P0/P1、`user_decision_required=true`，或推荐 route 指向 `beacon-gen-truth` / `beacon-gen-change` / `beacon-gen-refreeze` 时，loop-goal 不得自动进入 `implement_routing`，必须停在对应 route 或 error recovery"
+      "description": "**R6**：blocking 仅当 `highest_severity=P0` **或** `user_decision_required=true` **或** `recommended_route ∈ {beacon-gen-truth, beacon-gen-change, beacon-gen-refreeze}` → 不得自动进入 `implement_routing`，必须停在 drift_routing / error_recovery。**单独的 P1（及更低）不得阻断**；必须进入 `standard_execution_precheck`，并写入 continue audit（severity + `continued_with_advisory=true`）（**Must**）"
     },
     {
       "ac_id": "AC-015",
@@ -172,6 +172,26 @@
       "ac_id": "AC-026",
       "theme": "truth-routing-branch-check",
       "description": "public `beacon-loop-goal` SKILL.md Step 2 必须在进入 `beacon-gen-truth` 前校验当前分支为 `truth_canonical`，否则 route `beacon-gov-debug` + `truth_canonical_branch_mismatch`（**Must**）"
+    },
+    {
+      "ac_id": "AC-027",
+      "theme": "auto-decide-human-gate-alignment",
+      "description": "Auto-decide 表必须与 AC-007/AC-014 对齐：默认人类急停仅 release + review blocking 集合；P1-only 默认续跑；`--human-gate` 可把 P1 升为停；release 永远不可 auto 覆盖（**Must**）"
+    },
+    {
+      "ac_id": "AC-028",
+      "theme": "same-session-skill-continue",
+      "description": "public SKILL.md 决策树必须声明：输出 next route 后**同会话立即加载**下一 skill；禁止以「仅打印下一步」结束编排回合（**Must**）"
+    },
+    {
+      "ac_id": "AC-029",
+      "theme": "loop-goal-resume-cli",
+      "description": "必须提供 `beacon status loop-goal --resume`（或等价），按 state 文件返回 `current_stage` + next skill + reason_code；禁止无状态变更的 no-op 打印充当 resume（**Must**）"
+    },
+    {
+      "ac_id": "AC-030",
+      "theme": "loop-goal-observability-metrics",
+      "description": "state/status 必须暴露 `human_stops_per_run`、`stop_reason` 分布、`p1_continue_count`；假性卡死（pseudo_stall）在可判定时计数（**Should**）"
     }
   ],
   "test_rows": [
@@ -283,8 +303,8 @@
       "ac_id": "AC-014",
       "tc_id": "TC-LG-014",
       "layer": "negative",
-      "command": "`python3 -m pytest tests/test_v166_loop_goal.py::test_review_decision_packet_blocks_unsafe_implement_route -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
-      "assertion": "P1/user-decision/change route 的 review decision packet 不会自动进入 `implement_routing`",
+      "command": "`python3 -m pytest tests/test_v166_loop_goal.py -k \"review_decision_packet\" -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "P0 / user_decision_required / drift route 阻断；**单独 P1 进入 standard_execution_precheck 且写入 continue audit**；不得因仅 P1 停在 error_recovery",
       "evidence_path": ""
     },
     {
@@ -382,127 +402,84 @@
       "command": "`python3 -m pytest tests/test_v166_truth_canonical_branch.py::test_loop_goal_skill_declares_truth_canonical_gate -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
       "assertion": "public SKILL.md Step 2 含 truth_canonical 校验与 `truth_canonical_branch_mismatch`",
       "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-027",
+      "tc_id": "TC-LG-027",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v166_loop_goal.py -k human_gate_alignment -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "SKILL/auto-decide 表与 AC-007/AC-014 对齐；release 不可覆盖；P1-only 默认可续跑",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-028",
+      "tc_id": "TC-LG-028",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v166_loop_goal.py -k same_session_continue -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "public SKILL.md 声明同会话立即加载下一 skill，禁止只打印下一步",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-029",
+      "tc_id": "TC-LG-029",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v166_loop_goal.py -k loop_goal_resume -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "`beacon status loop-goal --resume` 返回 current_stage + next skill；无状态时不得伪装成功",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-030",
+      "tc_id": "TC-LG-030",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v166_loop_goal.py -k observability_metrics -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "state/status 暴露 human_stops_per_run、stop_reason 分布、p1_continue_count",
+      "evidence_path": ""
     }
   ],
   "task_rows": [
     {
-      "id": "TASK-001",
-      "title": "truth → `beacon-gen-truth` — freeze truth.md + tests.md + tasks.md + evidence.md",
+      "id": "LINE-15",
+      "title": "TASK-001..022 — prior revisions R1..R5 (truth-on-main + standard execution + public skill) delivered / accepted under R5 QA",
       "status": "checked"
     },
     {
-      "id": "TASK-002",
-      "title": "implement → `beacon-gen-implement` — create `beacon/utils/loop_goal_state.py` with init, transition, read_state, check_stop_when",
+      "id": "TASK-023",
+      "title": "change → `beacon-gen-change` — R6 reopen + draft human-gate redefinition (AC-014 rewrite + AC-027..030)",
       "status": "checked"
     },
     {
-      "id": "TASK-003",
-      "title": "implement → `beacon-gen-implement` — create `.agents/skills/beacon-loop-goal/SKILL.md` with full decision tree + state machine + skill routing matrix",
-      "status": "checked"
-    },
-    {
-      "id": "LINE-18",
-      "title": "TASK-003A change → `beacon-gen-change` — freeze `beacon-loop-goal` as public host-visible governor skill; update taxonomy, agent surface expected list, inventory/counts, and release governance coverage",
-      "status": "checked"
-    },
-    {
-      "id": "LINE-19",
-      "title": "TASK-003B implement → `beacon-gen-implement` — implement R2 public skill release shape in packaged skill source, agent surface taxonomy, agent eval inventory, fixtures, and regression tests",
-      "status": "checked"
-    },
-    {
-      "id": "TASK-004",
-      "title": "implement → `beacon-gen-implement` — integrate `loop-goal` status view into `beacon/commands/status.py` (deferred)",
-      "status": "blocked"
-    },
-    {
-      "id": "TASK-005",
-      "title": "implement → `beacon-gen-implement` — create `tests/test_v166_loop_goal.py` with 10 test cases",
-      "status": "checked"
-    },
-    {
-      "id": "TASK-006",
-      "title": "qa → `beacon-eval-qa` — R2 QA passed for AC-001..011 with run `run-20260715T135541350657`",
-      "status": "checked"
-    },
-    {
-      "id": "TASK-007",
-      "title": "release → `beacon-eval-release` — release evaluator owns final verdict after acceptance/read-model projection is complete",
-      "status": "blocked"
-    },
-    {
-      "id": "TASK-008",
-      "title": "change → `beacon-gen-change` — R3 refreeze `review_routing` as public loop-goal decision contract (AC-012..014)",
-      "status": "checked"
-    },
-    {
-      "id": "TASK-009",
-      "title": "implement → `beacon-gen-implement` — add `review_routing` to public SKILL.md state machine, decision tree, and routing matrix",
-      "status": "checked"
-    },
-    {
-      "id": "TASK-010",
-      "title": "implement → `beacon-gen-implement` — add loop-goal review decision packet output recording in `loop_goal_state.py`",
-      "status": "checked"
-    },
-    {
-      "id": "TASK-011",
-      "title": "implement → `beacon-gen-implement` — add pytest coverage for AC-012..014",
-      "status": "checked"
-    },
-    {
-      "id": "TASK-012",
-      "title": "change → `beacon-gen-change` — R4 refreeze Standard Execution Flow admission contract into package truth/tests/tasks/evidence (AC-015..021)",
-      "status": "checked"
-    },
-    {
-      "id": "TASK-013",
-      "title": "implement → `beacon-gen-implement` — add `standard_execution_precheck` to public and packaged `beacon-loop-goal` SKILL.md state machine, decision tree, and routing matrix",
+      "id": "TASK-024",
+      "title": "implement → `beacon-gen-implement` — update `loop_goal_state.record_review_decision`：P1-only → `standard_execution_precheck` + continue audit；blocking = P0 | user_decision_required | drift routes",
       "status": "unchecked"
     },
     {
-      "id": "TASK-014",
-      "title": "implement → `beacon-gen-implement` — extend `loop_goal_state.py` with standard execution flow outputs: baseline commit, quarantine ref, verification bundle ref, workspace admission ref",
+      "id": "TASK-025",
+      "title": "implement → `beacon-gen-implement` — update public/packaged `beacon-loop-goal` SKILL.md：AC-014 R6 规则、同会话立即加载下一 skill、auto-decide 表对齐",
       "status": "unchecked"
     },
     {
-      "id": "TASK-015",
-      "title": "implement → `beacon-gen-implement` — implement deterministic precheck helpers for canonical refreeze committed, stale feature-local refreeze quarantine, truth baseline merged, verification bundle completeness, workspace admission pass, and idempotent resume",
+      "id": "TASK-026",
+      "title": "implement → `beacon-gen-implement` — add `beacon status loop-goal --resume`（读 state，返回 stage + next skill；禁止 no-op 伪装）",
       "status": "unchecked"
     },
     {
-      "id": "TASK-016",
-      "title": "implement → `beacon-gen-implement` — add pytest coverage for TC-LG-015..021",
+      "id": "TASK-027",
+      "title": "implement → `beacon-gen-implement` — emit observability fields：human_stops_per_run / stop_reason 分布 / p1_continue_count（pseudo_stall 可判定时）",
       "status": "unchecked"
     },
     {
-      "id": "TASK-017",
-      "title": "qa → `beacon-eval-qa` — run behavioral QA for AC-015..021 after implementation; formal verdict remains evaluator-owned",
+      "id": "TASK-028",
+      "title": "implement → `beacon-gen-implement` — pytest TC-LG-014 行为翻转 + TC-LG-027..030",
       "status": "unchecked"
     },
     {
-      "id": "TASK-018",
-      "title": "change → `beacon-gen-change` — R5 reopen + draft truth-on-main first-principles closure (AC-022..026)",
-      "status": "checked"
-    },
-    {
-      "id": "TASK-019",
-      "title": "implement → `beacon-gen-implement` — complete truth package file write gate: on truth_canonical allow writes without forcing feature worktree; off-canonical deny",
+      "id": "TASK-029",
+      "title": "qa → `beacon-eval-qa` — behavioral QA for AC-014/027..030 after implementation；formal verdict remains evaluator-owned",
       "status": "unchecked"
     },
     {
-      "id": "TASK-020",
-      "title": "implement → `beacon-gen-implement` — add CLI command to run standard_execution_precheck verification bundle and write artifact; wire `record_standard_execution_precheck` to require CLI artifact ref",
-      "status": "unchecked"
-    },
-    {
-      "id": "TASK-021",
-      "title": "implement → `beacon-gen-implement` — ensure truth authoring skill injection stays dual-track; regression tests TC-LG-022..026",
-      "status": "unchecked"
-    },
-    {
-      "id": "TASK-022",
-      "title": "qa → `beacon-eval-qa` — behavioral QA for AC-022..026 after implementation; formal verdict remains evaluator-owned",
+      "id": "TASK-030",
+      "title": "release → `beacon-eval-release` — human gate before ship（unchanged AC-007）",
       "status": "unchecked"
     }
   ],

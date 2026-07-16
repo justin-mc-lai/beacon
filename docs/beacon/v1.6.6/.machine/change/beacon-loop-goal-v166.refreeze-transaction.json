@@ -1,10 +1,10 @@
 {
   "schema_version": "1.0",
-  "transaction_id": "tx-change-refreeze-beacon-loop-goal-v166-20260716t034215z",
+  "transaction_id": "tx-change-refreeze-beacon-loop-goal-v166-20260716t051039z",
   "feature": "beacon-loop-goal-v166",
   "feature_slug": "beacon-loop-goal-v166",
   "version": "v1.6.6",
-  "change_reason": "R5 truth-on-main first-principles closure",
+  "change_reason": "R6 - Redefine human-gate set: P1 advisory continue; only P0|user_decision_required|drift routes block; same-session continue + resume; observability",
   "touched_surfaces": [
     "change",
     "truth",
@@ -72,16 +72,16 @@
     }
   },
   "truth_revision_before": {
-    "revision_id": "R5",
+    "revision_id": "R6",
     "doc_status": "draft",
     "lifecycle_status": "idle",
     "baseline_hash": ""
   },
   "truth_revision_after": {
-    "revision_id": "R5",
+    "revision_id": "R6",
     "doc_status": "frozen",
     "lifecycle_status": "frozen",
-    "baseline_hash": "sha256:0111d22cd8ff847d8d438de83d855565e08b28c8bf0dcef12a0958c118a3c27a"
+    "baseline_hash": "sha256:9b490121211c3941ccfab4ff62ffa202341ac414cf44050f1a3705275f6a6cd9"
   },
   "refreeze_status": "complete",
   "next_route": {
@@ -95,21 +95,21 @@
     "qa_executed": false,
     "release_executed": false
   },
-  "created_at": "2026-07-16T03:42:15.152384+00:00",
+  "created_at": "2026-07-16T05:10:39.560814+00:00",
   "previous_revision": {
-    "revision_id": "R4",
+    "revision_id": "R5",
     "doc_status": "superseded",
     "lifecycle_status": "superseded",
     "baseline_hash": ""
   },
   "opened_revision": {
-    "revision_id": "R5",
+    "revision_id": "R6",
     "doc_status": "draft",
     "lifecycle_status": "idle",
     "baseline_hash": ""
   },
   "story_reopen": {
-    "current_revision_id": "R5",
+    "current_revision_id": "R6",
     "lifecycle_status": "draft"
   },
   "requirement_package": {
@@ -154,10 +154,10 @@
         "evidence": "docs/beacon/v1.6.6/features/beacon-loop-goal-v166/evidence.md"
       },
       "source_hashes": {
-        "truth": "67e4a85ccef652c02b3ad8067159ac32d431ecc4177890855a0acf9d526c13d4",
-        "tests": "c71c58b3a4f1888aeda25ad3b1fb3932150a4940158879b4ab09caea5aae9939",
-        "tasks": "ca2baaa0a836e667caa34eea6265b3174dc30cb147261220725e9c4317444cf9",
-        "evidence": "381c4cfda16136112d293c7805a8068456ded13d8b03fe42fa31fbc2a6d68ba7"
+        "truth": "74c3813483b92f9cbe201653419eed3835401a852e46e48007041de54c0f482e",
+        "tests": "80eb74b41a649b7464f409af52d25e60df015f710cdcd13161a10523ae3a56bc",
+        "tasks": "163e60e33f0f1889f31b6e9381627a58517fc7babff3176f1a845a18c82bf6db",
+        "evidence": "7a38efd1c00e6bce7a8731f54682036a08a5f317c393889784a72fef073fb59a"
       },
       "plan": {
         "schema_version": "1.0",
@@ -211,10 +211,14 @@
       "path": "docs/beacon/v1.6.6/.machine/user-story/beacon-loop-goal-v166.json",
       "feature": "beacon-loop-goal-v166",
       "version": "v1.6.6",
-      "revision_id": "R5",
-      "ac_count": 26,
-      "test_count": 26,
+      "revision_id": "R6",
+      "ac_count": 30,
+      "test_count": 30,
       "story_ids": [
+        "",
+        "",
+        "",
+        "",
         "",
         "",
         "",
@@ -274,7 +278,7 @@
         "review_gates": [],
         "qa_coverage_hints": [],
         "evidence_lines": {},
-        "generated_at": "2026-07-16T03:42:18.395534+00:00",
+        "generated_at": "2026-07-16T05:10:42.583387+00:00",
         "feature": "beacon-loop-goal-v166",
         "feature_slug": "beacon-loop-goal-v166",
         "prd_ref": "docs/beacon/v1.6.6/prd/beacon-loop-goal-v166.md",
@@ -349,7 +353,11 @@
             "AC-023",
             "AC-024",
             "AC-025",
-            "AC-026"
+            "AC-026",
+            "AC-027",
+            "AC-028",
+            "AC-029",
+            "AC-030"
           ],
           "user_story_ac_ids": [
             "AC-001",
@@ -377,7 +385,11 @@
             "AC-023",
             "AC-024",
             "AC-025",
-            "AC-026"
+            "AC-026",
+            "AC-027",
+            "AC-028",
+            "AC-029",
+            "AC-030"
           ],
           "test_case_ac_ids": [
             "AC-001",
@@ -405,7 +417,11 @@
             "AC-023",
             "AC-024",
             "AC-025",
-            "AC-026"
+            "AC-026",
+            "AC-027",
+            "AC-028",
+            "AC-029",
+            "AC-030"
           ],
           "upstream_ac_ids": [
             "AC-001",
@@ -433,7 +449,11 @@
             "AC-023",
             "AC-024",
             "AC-025",
-            "AC-026"
+            "AC-026",
+            "AC-027",
+            "AC-028",
+            "AC-029",
+            "AC-030"
           ],
           "missing_test_case_ac_ids": []
         }
@@ -500,7 +520,7 @@
       "finding_count": 0,
       "run_id": "",
       "source": "change.refreeze-chain",
-      "written_at": "2026-07-16T03:42:18.507064+00:00",
+      "written_at": "2026-07-16T05:10:42.780552+00:00",
       "state_path": ".beacon/state/requirement-clarity-beacon-loop-goal-v166.json"
     }
   },
@@ -545,7 +565,7 @@
         "review_gates": [],
         "qa_coverage_hints": [],
         "evidence_lines": {},
-        "generated_at": "2026-07-16T03:42:18.518334+00:00",
+        "generated_at": "2026-07-16T05:10:42.791044+00:00",
         "feature": "beacon-loop-goal-v166",
         "feature_slug": "beacon-loop-goal-v166",
         "prd_ref": "docs/beacon/v1.6.6/prd/beacon-loop-goal-v166.md",
@@ -620,7 +640,11 @@
             "AC-023",
             "AC-024",
             "AC-025",
-            "AC-026"
+            "AC-026",
+            "AC-027",
+            "AC-028",
+            "AC-029",
+            "AC-030"
           ],
           "user_story_ac_ids": [
             "AC-001",
@@ -648,7 +672,11 @@
             "AC-023",
             "AC-024",
             "AC-025",
-            "AC-026"
+            "AC-026",
+            "AC-027",
+            "AC-028",
+            "AC-029",
+            "AC-030"
           ],
           "test_case_ac_ids": [
             "AC-001",
@@ -676,7 +704,11 @@
             "AC-023",
             "AC-024",
             "AC-025",
-            "AC-026"
+            "AC-026",
+            "AC-027",
+            "AC-028",
+            "AC-029",
+            "AC-030"
           ],
           "upstream_ac_ids": [
             "AC-001",
@@ -704,7 +736,11 @@
             "AC-023",
             "AC-024",
             "AC-025",
-            "AC-026"
+            "AC-026",
+            "AC-027",
+            "AC-028",
+            "AC-029",
+            "AC-030"
           ],
           "missing_test_case_ac_ids": []
         }
@@ -777,15 +813,15 @@
       "status": "pass",
       "blocked": false,
       "reason_code": "",
-      "generated_at": "2026-07-16T03:42:18.592402+00:00",
+      "generated_at": "2026-07-16T05:10:42.859652+00:00",
       "package_dir": "docs/beacon/v1.6.6/features/beacon-loop-goal-v166",
       "truth_frontmatter": {
         "slug": "beacon-loop-goal-v166",
         "version": "v1.6.6",
         "status": "draft",
-        "revision_id": "R5",
+        "revision_id": "R6",
         "language": "zh",
-        "change_reason": "R5 - Truth-on-main first-principles closure (file write gate + CLI-owned standard_execution_precheck + truth GIT_ADMISSION split)",
+        "change_reason": "R6 - Redefine human-gate set (P1 advisory continue; P0|user_decision_required|drift routes block; same-session continue + resume CLI; observability metrics)",
         "canonical_refs": {
           "truth": "docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
           "tests": "docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md",
@@ -797,9 +833,9 @@
         "truth_map_contract": "beacon-truth-map-v1",
         "program_ref": "docs/beacon/v1.6.6/programs/beacon-loop-meta-remediation-v166/feature-graph.json"
       },
-      "ac_count": 26,
-      "test_count": 26,
-      "checkbox_count": 24,
+      "ac_count": 30,
+      "test_count": 30,
+      "checkbox_count": 9,
       "evidence_row_count": 15,
       "gate_authority": "canonical_surfaces_preserved",
       "checkbox_gate_bypass": false,
@@ -819,10 +855,10 @@
         "evidence": "docs/beacon/v1.6.6/features/beacon-loop-goal-v166/evidence.md"
       },
       "source_hashes": {
-        "truth": "67e4a85ccef652c02b3ad8067159ac32d431ecc4177890855a0acf9d526c13d4",
-        "tests": "c71c58b3a4f1888aeda25ad3b1fb3932150a4940158879b4ab09caea5aae9939",
-        "tasks": "ca2baaa0a836e667caa34eea6265b3174dc30cb147261220725e9c4317444cf9",
-        "evidence": "381c4cfda16136112d293c7805a8068456ded13d8b03fe42fa31fbc2a6d68ba7"
+        "truth": "74c3813483b92f9cbe201653419eed3835401a852e46e48007041de54c0f482e",
+        "tests": "80eb74b41a649b7464f409af52d25e60df015f710cdcd13161a10523ae3a56bc",
+        "tasks": "163e60e33f0f1889f31b6e9381627a58517fc7babff3176f1a845a18c82bf6db",
+        "evidence": "7a38efd1c00e6bce7a8731f54682036a08a5f317c393889784a72fef073fb59a"
       },
       "runtime_json_requires_markdown_twin": false,
       "report_path": "docs/beacon/v1.6.6/.machine/requirement/feature-package-validation.json"
@@ -848,160 +884,14 @@
     "feature": "beacon-loop-goal-v166",
     "feature_slug": "beacon-loop-goal-v166",
     "version": "v1.6.6",
-    "revision_id": "R5",
-    "source_revision_id": "R4",
+    "revision_id": "R6",
+    "source_revision_id": "R5",
     "status": "ready",
-    "cleanup_required": false,
-    "removed_requirement_count": 0,
-    "added_requirement_count": 5,
-    "retained_requirement_count": 21,
-    "removed_requirement_surfaces": [],
-    "added_requirement_surfaces": [
-      {
-        "revision_id": "R5",
-        "id": "AC-025",
-        "story_id": "",
-        "kind": "ac",
-        "theme": "cli-owned-precheck-bundle",
-        "text": "必须提供 CLI 命令自跑 standard execution verification bundle（至少五类检查）并写 artifact；`record_standard_execution_precheck` 只接受带 CLI artifact ref 的结果，拒绝无 ref 的 agent 自报 pass（**Must**）",
-        "details": [],
-        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
-        "signature": "ac::::cli-owned-precheck-bundle::必须提供 cli 命令自跑 standard execution verification bundle（至少五类检查）并写 artifact；`record_standard_execution_precheck` 只接受带 cli artifact ref 的结果，拒绝无 ref 的 agent 自报 pass（**must**）::"
-      },
-      {
-        "revision_id": "R5",
-        "id": "AC-024",
-        "story_id": "",
-        "kind": "ac",
-        "theme": "git-admission-dual-track",
-        "text": "`beacon-gen-truth` / `beacon-gen-change` / `beacon-gen-refreeze` 物化 skill 必须含 truth_canonical GIT_ADMISSION；`beacon-gen-implement` / qa / release / gov-branch 必须保留 worktree `workspace admit` preamble（**Must**）",
-        "details": [],
-        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
-        "signature": "ac::::git-admission-dual-track::`beacon-gen-truth` / `beacon-gen-change` / `beacon-gen-refreeze` 物化 skill 必须含 truth_canonical git_admission；`beacon-gen-implement` / qa / release / gov-branch 必须保留 worktree `workspace admit` preamble（**must**）::"
-      },
-      {
-        "revision_id": "R5",
-        "id": "AC-022",
-        "story_id": "",
-        "kind": "ac",
-        "theme": "truth-canonical-cli-gate",
-        "text": "`beacon freeze` / `beacon reopen` / `beacon change --refreeze-chain` 在非 governance `truth_canonical` 分支必须 blocked，`reason_code=truth_canonical_branch_mismatch`（**Must**）",
-        "details": [],
-        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
-        "signature": "ac::::truth-canonical-cli-gate::`beacon freeze` / `beacon reopen` / `beacon change --refreeze-chain` 在非 governance `truth_canonical` 分支必须 blocked，`reason_code=truth_canonical_branch_mismatch`（**must**）::"
-      },
-      {
-        "revision_id": "R5",
-        "id": "AC-023",
-        "story_id": "",
-        "kind": "ac",
-        "theme": "truth-file-write-gate",
-        "text": "写 feature package requirement Markdown（`features/<slug>/{truth,tests,tasks,evidence}.md`）时：不在 `truth_canonical` → blocked；在 `truth_canonical` → **允许**，且不得因 `require_workspace_admission` 强制要求 feature worktree cwd（**Must**）",
-        "details": [],
-        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
-        "signature": "ac::::truth-file-write-gate::写 feature package requirement markdown（`features/<slug>/{truth,tests,tasks,evidence}.md`）时：不在 `truth_canonical` → blocked；在 `truth_canonical` → **允许**，且不得因 `require_workspace_admission` 强制要求 feature worktree cwd（**must**）::"
-      },
-      {
-        "revision_id": "R5",
-        "id": "AC-026",
-        "story_id": "",
-        "kind": "ac",
-        "theme": "truth-routing-branch-check",
-        "text": "public `beacon-loop-goal` SKILL.md Step 2 必须在进入 `beacon-gen-truth` 前校验当前分支为 `truth_canonical`，否则 route `beacon-gov-debug` + `truth_canonical_branch_mismatch`（**Must**）",
-        "details": [],
-        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
-        "signature": "ac::::truth-routing-branch-check::public `beacon-loop-goal` skill.md step 2 必须在进入 `beacon-gen-truth` 前校验当前分支为 `truth_canonical`，否则 route `beacon-gov-debug` + `truth_canonical_branch_mismatch`（**must**）::"
-      }
-    ],
-    "retained_requirement_surfaces": [
-      {
-        "revision_id": "R5",
-        "id": "AC-018",
-        "story_id": "",
-        "kind": "ac",
-        "theme": "baseline-merged-gate",
-        "text": "loop-goal 进入 implement 前必须验证 feature branch 包含 `truth_baseline_commit`；未合入时 fail-closed",
-        "details": [],
-        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
-        "signature": "ac::::baseline-merged-gate::loop-goal 进入 implement 前必须验证 feature branch 包含 `truth_baseline_commit`；未合入时 fail-closed::"
-      },
-      {
-        "revision_id": "R5",
-        "id": "AC-016",
-        "story_id": "",
-        "kind": "ac",
-        "theme": "canonical-commit-boundary",
-        "text": "canonical truth/refreeze 只有在 main/master 提交后才可成为 loop-goal baseline；未提交 refreeze artifact 不得进入 implement",
-        "details": [],
-        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
-        "signature": "ac::::canonical-commit-boundary::canonical truth/refreeze 只有在 main/master 提交后才可成为 loop-goal baseline；未提交 refreeze artifact 不得进入 implement::"
-      },
-      {
-        "revision_id": "R5",
-        "id": "AC-008",
-        "story_id": "",
-        "kind": "ac",
-        "theme": "error-recovery",
-        "text": "任何阶段 `blocked` 时，`current_stage` 转为 `error_recovery`，输出推荐路由 `beacon-gov-debug`",
-        "details": [],
-        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
-        "signature": "ac::::error-recovery::任何阶段 `blocked` 时，`current_stage` 转为 `error_recovery`，输出推荐路由 `beacon-gov-debug`::"
-      },
-      {
-        "revision_id": "R5",
-        "id": "AC-021",
-        "story_id": "",
-        "kind": "ac",
-        "theme": "idempotent-resume",
-        "text": "standard execution flow 重复执行已完成步骤时必须返回 pass/up_to_date，不得再次 bump requirement revision 或产生 reason-only refreeze",
-        "details": [],
-        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
-        "signature": "ac::::idempotent-resume::standard execution flow 重复执行已完成步骤时必须返回 pass/up_to_date，不得再次 bump requirement revision 或产生 reason-only refreeze::"
-      },
-      {
-        "revision_id": "R5",
-        "id": "AC-005",
-        "story_id": "",
-        "kind": "ac",
-        "theme": "implement-gate",
-        "text": "Implement 阶段完成后，编排器检查 pytest exit code；失败时回到 `implement_routing`（repair loop），最多 3 次",
-        "details": [],
-        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
-        "signature": "ac::::implement-gate::implement 阶段完成后，编排器检查 pytest exit code；失败时回到 `implement_routing`（repair loop），最多 3 次::"
-      },
-      {
-        "revision_id": "R5",
-        "id": "AC-003",
-        "story_id": "",
-        "kind": "ac",
-        "theme": "precheck-gate",
-        "text": "编排器启动前调用 governance precheck；`blocked` 时停止并输出 `reason_code=governance_version_not_registered`",
-        "details": [],
-        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
-        "signature": "ac::::precheck-gate::编排器启动前调用 governance precheck；`blocked` 时停止并输出 `reason_code=governance_version_not_registered`::"
-      },
-      {
-        "revision_id": "R5",
-        "id": "AC-011",
-        "story_id": "",
-        "kind": "ac",
-        "theme": "public-skill-release-shape",
-        "text": "`beacon-loop-goal` 作为公开 host-visible governor skill 被 v1.6 taxonomy、agent surface expected list、skill inventory/count 和 release governance 接受；公开 skill 总数为 38",
-        "details": [],
-        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
-        "signature": "ac::::public-skill-release-shape::`beacon-loop-goal` 作为公开 host-visible governor skill 被 v1.6 taxonomy、agent surface expected list、skill inventory/count 和 release governance 接受；公开 skill 总数为 38::"
-      },
-      {
-        "revision_id": "R5",
-        "id": "AC-006",
-        "story_id": "",
-        "kind": "ac",
-        "theme": "qa-gate",
-        "text": "QA 阶段完成后，编排器读 qa verdict；`fail` 时回到 `implement_routing`（repair loop），最多 3 次",
-        "details": [],
-        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
-        "signature": "ac::::qa-gate::qa 阶段完成后，编排器读 qa verdict；`fail` 时回到 `implement_routing`（repair loop），最多 3 次::"
-      },
+    "cleanup_required": true,
+    "removed_requirement_count": 2,
+    "added_requirement_count": 6,
+    "retained_requirement_count": 24,
+    "removed_requirement_surfaces": [
       {
         "revision_id": "R5",
         "id": "AC-007",
@@ -1015,7 +905,198 @@
       },
       {
         "revision_id": "R5",
-        "id": "AC-013",
+        "id": "AC-014",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "review-gate-fail-closed",
+        "text": "当 review decision packet 存在 P0/P1、`user_decision_required=true`，或推荐 route 指向 `beacon-gen-truth` / `beacon-gen-change` / `beacon-gen-refreeze` 时，loop-goal 不得自动进入 `implement_routing`，必须停在对应 route 或 error recovery",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
+        "signature": "ac::::review-gate-fail-closed::当 review decision packet 存在 p0/p1、`user_decision_required=true`，或推荐 route 指向 `beacon-gen-truth` / `beacon-gen-change` / `beacon-gen-refreeze` 时，loop-goal 不得自动进入 `implement_routing`，必须停在对应 route 或 error recovery::"
+      }
+    ],
+    "added_requirement_surfaces": [
+      {
+        "revision_id": "R6",
+        "id": "AC-002",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "**必须人工确认**",
+        "text": "**不可覆盖**",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
+        "signature": "ac::::**必须人工确认**::**不可覆盖**::"
+      },
+      {
+        "revision_id": "R6",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "auto-continue → `standard_execution_precheck`（记 severity + continue audit）",
+        "text": "`--human-gate` 可强制停",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
+        "signature": "ac::::auto-continue → `standard_execution_precheck`（记 severity + continue audit）::`--human-gate` 可强制停::"
+      },
+      {
+        "revision_id": "R6",
+        "id": "AC-027",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "auto-decide-human-gate-alignment",
+        "text": "Auto-decide 表必须与 AC-007/AC-014 对齐：默认人类急停仅 release + review blocking 集合；P1-only 默认续跑；`--human-gate` 可把 P1 升为停；release 永远不可 auto 覆盖（**Must**）",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
+        "signature": "ac::::auto-decide-human-gate-alignment::auto-decide 表必须与 ac-007/ac-014 对齐：默认人类急停仅 release + review blocking 集合；p1-only 默认续跑；`--human-gate` 可把 p1 升为停；release 永远不可 auto 覆盖（**must**）::"
+      },
+      {
+        "revision_id": "R6",
+        "id": "AC-030",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "loop-goal-observability-metrics",
+        "text": "state/status 必须暴露 `human_stops_per_run`、`stop_reason` 分布、`p1_continue_count`；假性卡死（pseudo_stall）在可判定时计数（**Should**）",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
+        "signature": "ac::::loop-goal-observability-metrics::state/status 必须暴露 `human_stops_per_run`、`stop_reason` 分布、`p1_continue_count`；假性卡死（pseudo_stall）在可判定时计数（**should**）::"
+      },
+      {
+        "revision_id": "R6",
+        "id": "AC-029",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "loop-goal-resume-cli",
+        "text": "必须提供 `beacon status loop-goal --resume`（或等价），按 state 文件返回 `current_stage` + next skill + reason_code；禁止无状态变更的 no-op 打印充当 resume（**Must**）",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
+        "signature": "ac::::loop-goal-resume-cli::必须提供 `beacon status loop-goal --resume`（或等价），按 state 文件返回 `current_stage` + next skill + reason_code；禁止无状态变更的 no-op 打印充当 resume（**must**）::"
+      },
+      {
+        "revision_id": "R6",
+        "id": "AC-028",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "same-session-skill-continue",
+        "text": "public SKILL.md 决策树必须声明：输出 next route 后**同会话立即加载**下一 skill；禁止以「仅打印下一步」结束编排回合（**Must**）",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
+        "signature": "ac::::same-session-skill-continue::public skill.md 决策树必须声明：输出 next route 后**同会话立即加载**下一 skill；禁止以「仅打印下一步」结束编排回合（**must**）::"
+      }
+    ],
+    "retained_requirement_surfaces": [
+      {
+        "revision_id": "R6",
+        "id": "AC-018",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "baseline-merged-gate",
+        "text": "loop-goal 进入 implement 前必须验证 feature branch 包含 `truth_baseline_commit`；未合入时 fail-closed",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
+        "signature": "ac::::baseline-merged-gate::loop-goal 进入 implement 前必须验证 feature branch 包含 `truth_baseline_commit`；未合入时 fail-closed::"
+      },
+      {
+        "revision_id": "R6",
+        "id": "AC-016",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "canonical-commit-boundary",
+        "text": "canonical truth/refreeze 只有在 main/master 提交后才可成为 loop-goal baseline；未提交 refreeze artifact 不得进入 implement",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
+        "signature": "ac::::canonical-commit-boundary::canonical truth/refreeze 只有在 main/master 提交后才可成为 loop-goal baseline；未提交 refreeze artifact 不得进入 implement::"
+      },
+      {
+        "revision_id": "R6",
+        "id": "AC-025",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "cli-owned-precheck-bundle",
+        "text": "必须提供 CLI 命令自跑 standard execution verification bundle（至少五类检查）并写 artifact；`record_standard_execution_precheck` 只接受带 CLI artifact ref 的结果，拒绝无 ref 的 agent 自报 pass（**Must**）",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
+        "signature": "ac::::cli-owned-precheck-bundle::必须提供 cli 命令自跑 standard execution verification bundle（至少五类检查）并写 artifact；`record_standard_execution_precheck` 只接受带 cli artifact ref 的结果，拒绝无 ref 的 agent 自报 pass（**must**）::"
+      },
+      {
+        "revision_id": "R6",
+        "id": "AC-009",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "error-recovery",
+        "text": "任何阶段 `blocked` 时，`current_stage` 转为 `error_recovery`，输出推荐路由 `beacon-gov-debug`",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
+        "signature": "ac::::error-recovery::任何阶段 `blocked` 时，`current_stage` 转为 `error_recovery`，输出推荐路由 `beacon-gov-debug`::"
+      },
+      {
+        "revision_id": "R6",
+        "id": "AC-024",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "git-admission-dual-track",
+        "text": "`beacon-gen-truth` / `beacon-gen-change` / `beacon-gen-refreeze` 物化 skill 必须含 truth_canonical GIT_ADMISSION；`beacon-gen-implement` / qa / release / gov-branch 必须保留 worktree `workspace admit` preamble（**Must**）",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
+        "signature": "ac::::git-admission-dual-track::`beacon-gen-truth` / `beacon-gen-change` / `beacon-gen-refreeze` 物化 skill 必须含 truth_canonical git_admission；`beacon-gen-implement` / qa / release / gov-branch 必须保留 worktree `workspace admit` preamble（**must**）::"
+      },
+      {
+        "revision_id": "R6",
+        "id": "AC-021",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "idempotent-resume",
+        "text": "standard execution flow 重复执行已完成步骤时必须返回 pass/up_to_date，不得再次 bump requirement revision 或产生 reason-only refreeze",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
+        "signature": "ac::::idempotent-resume::standard execution flow 重复执行已完成步骤时必须返回 pass/up_to_date，不得再次 bump requirement revision 或产生 reason-only refreeze::"
+      },
+      {
+        "revision_id": "R6",
+        "id": "AC-007",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "implement-gate",
+        "text": "Implement 阶段完成后，编排器检查 pytest exit code；失败时回到 `implement_routing`（repair loop），最多 3 次",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
+        "signature": "ac::::implement-gate::implement 阶段完成后，编排器检查 pytest exit code；失败时回到 `implement_routing`（repair loop），最多 3 次::"
+      },
+      {
+        "revision_id": "R6",
+        "id": "AC-005",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "precheck-gate",
+        "text": "编排器启动前调用 governance precheck；`blocked` 时停止并输出 `reason_code=governance_version_not_registered`",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
+        "signature": "ac::::precheck-gate::编排器启动前调用 governance precheck；`blocked` 时停止并输出 `reason_code=governance_version_not_registered`::"
+      },
+      {
+        "revision_id": "R6",
+        "id": "AC-012",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "public-skill-release-shape",
+        "text": "`beacon-loop-goal` 作为公开 host-visible governor skill 被 v1.6 taxonomy、agent surface expected list、skill inventory/count 和 release governance 接受；公开 skill 总数为 38",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
+        "signature": "ac::::public-skill-release-shape::`beacon-loop-goal` 作为公开 host-visible governor skill 被 v1.6 taxonomy、agent surface expected list、skill inventory/count 和 release governance 接受；公开 skill 总数为 38::"
+      },
+      {
+        "revision_id": "R6",
+        "id": "AC-008",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "qa-gate",
+        "text": "QA 阶段完成后，编排器读 qa verdict；`fail` 时回到 `implement_routing`（repair loop），最多 3 次",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
+        "signature": "ac::::qa-gate::qa 阶段完成后，编排器读 qa verdict；`fail` 时回到 `implement_routing`（repair loop），最多 3 次::"
+      },
+      {
+        "revision_id": "R6",
+        "id": "AC-014",
         "story_id": "",
         "kind": "ac",
         "theme": "review-decision-packet-state",
@@ -1025,19 +1106,8 @@
         "signature": "ac::::review-decision-packet-state::`loop_goal_state` 必须提供 deterministic review decision packet 写入函数，把 planner-review artifact 的 review id、artifact ref、recommended route、user decision flag、highest severity、finding count 写入 state outputs::"
       },
       {
-        "revision_id": "R5",
-        "id": "AC-014",
-        "story_id": "",
-        "kind": "ac",
-        "theme": "review-gate-fail-closed",
-        "text": "当 review decision packet 存在 P0/P1、`user_decision_required=true`，或推荐 route 指向 `beacon-gen-truth` / `beacon-gen-change` / `beacon-gen-refreeze` 时，loop-goal 不得自动进入 `implement_routing`，必须停在对应 route 或 error recovery",
-        "details": [],
-        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
-        "signature": "ac::::review-gate-fail-closed::当 review decision packet 存在 p0/p1、`user_decision_required=true`，或推荐 route 指向 `beacon-gen-truth` / `beacon-gen-change` / `beacon-gen-refreeze` 时，loop-goal 不得自动进入 `implement_routing`，必须停在对应 route 或 error recovery::"
-      },
-      {
-        "revision_id": "R5",
-        "id": "AC-012",
+        "revision_id": "R6",
+        "id": "AC-013",
         "story_id": "",
         "kind": "ac",
         "theme": "review-routing-public-skill",
@@ -1047,8 +1117,8 @@
         "signature": "ac::::review-routing-public-skill::public skill.md 的 state machine、decision tree、skill routing matrix 必须显式包含 `review_routing -> beacon-pln-review`，并声明 review 后才能自动进入 implement 的条件::"
       },
       {
-        "revision_id": "R5",
-        "id": "AC-010",
+        "revision_id": "R6",
+        "id": "AC-011",
         "story_id": "",
         "kind": "ac",
         "theme": "skill-routing",
@@ -1058,8 +1128,8 @@
         "signature": "ac::::skill-routing::编排器的 skill.md 包含完整决策树，agent 可按决策树顺序加载对应 skill::"
       },
       {
-        "revision_id": "R5",
-        "id": "AC-002",
+        "revision_id": "R6",
+        "id": "AC-004",
         "story_id": "",
         "kind": "ac",
         "theme": "stage-transition",
@@ -1069,7 +1139,7 @@
         "signature": "ac::::stage-transition::`loop_goal_state.transition()` 更新 `current_stage` 并追加 `stage_history`，每次转换写入 `at` 时间戳::"
       },
       {
-        "revision_id": "R5",
+        "revision_id": "R6",
         "id": "AC-017",
         "story_id": "",
         "kind": "ac",
@@ -1080,7 +1150,7 @@
         "signature": "ac::::stale-feature-refreeze-quarantine::feature/dev worktree 中发现本地 `.machine` revision/projection dirty 或 feature-local refreeze 时，必须 scoped stash/archive 并记录 quarantine ref；不得采信为 requirement authority::"
       },
       {
-        "revision_id": "R5",
+        "revision_id": "R6",
         "id": "AC-015",
         "story_id": "",
         "kind": "ac",
@@ -1091,8 +1161,8 @@
         "signature": "ac::::standard-flow-public-skill::public skill.md 的 state machine、decision tree、skill routing matrix 必须显式包含 `standard_execution_precheck`，位于 `review_verify` 和 `implement_routing` 之间::"
       },
       {
-        "revision_id": "R5",
-        "id": "AC-001",
+        "revision_id": "R6",
+        "id": "AC-003",
         "story_id": "",
         "kind": "ac",
         "theme": "state-init",
@@ -1102,8 +1172,8 @@
         "signature": "ac::::state-init::`loop_goal_state.init()` 创建状态文件，schema 为 `loop-goal-state.v1`，包含 run_id/version/feature/utterance/current_stage::"
       },
       {
-        "revision_id": "R5",
-        "id": "AC-009",
+        "revision_id": "R6",
+        "id": "AC-010",
         "story_id": "",
         "kind": "ac",
         "theme": "stop-when",
@@ -1113,8 +1183,30 @@
         "signature": "ac::::stop-when::每个阶段转换前检查 `stop_when` 条件；满足时停止并输出 `reason_code=stop_when_satisfied`::"
       },
       {
-        "revision_id": "R5",
-        "id": "AC-004",
+        "revision_id": "R6",
+        "id": "AC-022",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "truth-canonical-cli-gate",
+        "text": "`beacon freeze` / `beacon reopen` / `beacon change --refreeze-chain` 在非 governance `truth_canonical` 分支必须 blocked，`reason_code=truth_canonical_branch_mismatch`（**Must**）",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
+        "signature": "ac::::truth-canonical-cli-gate::`beacon freeze` / `beacon reopen` / `beacon change --refreeze-chain` 在非 governance `truth_canonical` 分支必须 blocked，`reason_code=truth_canonical_branch_mismatch`（**must**）::"
+      },
+      {
+        "revision_id": "R6",
+        "id": "AC-023",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "truth-file-write-gate",
+        "text": "写 feature package requirement Markdown（`features/<slug>/{truth,tests,tasks,evidence}.md`）时：不在 `truth_canonical` → blocked；在 `truth_canonical` → **允许**，且不得因 `require_workspace_admission` 强制要求 feature worktree cwd（**Must**）",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
+        "signature": "ac::::truth-file-write-gate::写 feature package requirement markdown（`features/<slug>/{truth,tests,tasks,evidence}.md`）时：不在 `truth_canonical` → blocked；在 `truth_canonical` → **允许**，且不得因 `require_workspace_admission` 强制要求 feature worktree cwd（**must**）::"
+      },
+      {
+        "revision_id": "R6",
+        "id": "AC-006",
         "story_id": "",
         "kind": "ac",
         "theme": "truth-gate",
@@ -1124,7 +1216,18 @@
         "signature": "ac::::truth-gate::truth 阶段完成后，编排器读 `truth.md` frontmatter；`status != frozen` 时停留在 `truth_routing`，不进入 implement::"
       },
       {
-        "revision_id": "R5",
+        "revision_id": "R6",
+        "id": "AC-026",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "truth-routing-branch-check",
+        "text": "public `beacon-loop-goal` SKILL.md Step 2 必须在进入 `beacon-gen-truth` 前校验当前分支为 `truth_canonical`，否则 route `beacon-gov-debug` + `truth_canonical_branch_mismatch`（**Must**）",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md",
+        "signature": "ac::::truth-routing-branch-check::public `beacon-loop-goal` skill.md step 2 必须在进入 `beacon-gen-truth` 前校验当前分支为 `truth_canonical`，否则 route `beacon-gov-debug` + `truth_canonical_branch_mismatch`（**must**）::"
+      },
+      {
+        "revision_id": "R6",
         "id": "AC-019",
         "story_id": "",
         "kind": "ac",
@@ -1135,7 +1238,7 @@
         "signature": "ac::::verification-bundle::standard execution precheck 必须产出 verification bundle，至少包含 truth-map verify、verify-materials strict、git diff check、branch-governance verify、workspace admission 五类结果::"
       },
       {
-        "revision_id": "R5",
+        "revision_id": "R6",
         "id": "AC-020",
         "story_id": "",
         "kind": "ac",
@@ -1146,10 +1249,10 @@
         "signature": "ac::::workspace-admission-gate::`implement check-branch` / workspace admission 必须 pass，并把 artifact ref 写入 loop-goal state outputs；缺失或 blocked 不得进入 implement::"
       }
     ],
-    "current_baseline_hash": "sha256:0111d22cd8ff847d8d438de83d855565e08b28c8bf0dcef12a0958c118a3c27a",
-    "source_baseline_hash": "sha256:3fafcead58ec19dc793bd0f8a2f8acd483004d71c83d7dbb6602da2e76d8b523",
+    "current_baseline_hash": "sha256:9b490121211c3941ccfab4ff62ffa202341ac414cf44050f1a3705275f6a6cd9",
+    "source_baseline_hash": "sha256:0111d22cd8ff847d8d438de83d855565e08b28c8bf0dcef12a0958c118a3c27a",
     "story_state_ref": "docs/beacon/v1.6.6/.machine/user-story/beacon-loop-goal-v166.json",
-    "generated_at": "2026-07-16T03:42:18.703843+00:00",
+    "generated_at": "2026-07-16T05:10:42.956836+00:00",
     "json_ref": "docs/beacon/v1.6.6/.machine/execution/revision-delta-beacon-loop-goal-v166.json",
     "markdown_ref": "docs/beacon/v1.6.6/execution/revision-delta-beacon-loop-goal-v166.md"
   },
@@ -1182,8 +1285,8 @@
         "feature_slug": "beacon-loop-goal-v166",
         "summary": "Maintains release-facing version aggregate projection guards so QA accepted features are included in version change scope before release check.",
         "status": "completed",
-        "accepted_at": "2026-07-15T12:44:12.491300+00:00",
-        "revision_id": "R5",
+        "accepted_at": "2026-07-16T04:06:08.681862+00:00",
+        "revision_id": "R6",
         "projection_role": {
           "artifact_role": "version_aggregate_projection",
           "truth_source": false,
@@ -1213,7 +1316,7 @@
           "docs/beacon/v1.6.6/.machine/execution/beacon-loop-goal-v166.revision.json",
           "docs/beacon/v1.6.6/.machine/execution/qa-acceptance-beacon-loop-goal-v166.json"
         ],
-        "generated_at": "2026-07-16T03:42:18.714918+00:00"
+        "generated_at": "2026-07-16T05:10:42.967396+00:00"
       }
     },
     "version_aggregate_projection": {

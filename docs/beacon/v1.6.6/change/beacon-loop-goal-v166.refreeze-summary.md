@@ -1,12 +1,12 @@
 # Change Refreeze Summary: beacon-loop-goal-v166
 
 - version: `v1.6.6`
-- change_reason: `R5 truth-on-main first-principles closure`
+- change_reason: `R6 - Redefine human-gate set: P1 advisory continue; only P0|user_decision_required|drift routes block; same-session continue + resume; observability`
 - refreeze_status: `complete`
 - blocked_reason: ``
 - next_route: `beacon-gen-implement`
-- revision_before: `R5`
-- revision_after: `R5`
+- revision_before: `R6`
+- revision_after: `R6`
 
 ## Surface Statuses
 - `change`: `present` (docs/beacon/v1.6.6/change/beacon-loop-goal-v166.md)

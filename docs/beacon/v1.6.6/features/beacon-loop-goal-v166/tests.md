@@ -2,7 +2,7 @@
 slug: beacon-loop-goal-v166
 version: v1.6.6
 status: draft
-revision_id: R5
+revision_id: R6
 language: zh
 truth_ref: docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md
 parser_contract: beacon-feature-package-v2
@@ -27,7 +27,7 @@ parser_contract: beacon-feature-package-v2
 | AC-011 | TC-LG-011 | contract | `python3 -m pytest tests/test_doctor_agent_surface.py::test_verify_agent_surface_v160_should_pass_after_setup tests/test_v160_skill_harness_taxonomy.py::test_v160_skill_package_materialize_should_create_harness_only_package tests/test_v161_agent_eval.py::test_v161_taxonomy_includes_beacon_eval_agent tests/test_v161_agent_eval.py::test_agent_eval_catalog_materialize -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | `beacon-loop-goal` 被 v1.6 taxonomy / agent surface expected list / skill inventory / release governance 计为公开 governor skill，公开 skill 总数为 38 |
 | AC-012 | TC-LG-012 | contract | `python3 -m pytest tests/test_v166_loop_goal.py::test_review_routing_public_skill_contract -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | public SKILL.md 的 state machine、decision tree、routing matrix 均显式包含 `review_routing` / `beacon-pln-review` |
 | AC-013 | TC-LG-013 | contract | `python3 -m pytest tests/test_v166_loop_goal.py::test_review_decision_packet_records_outputs -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | planner-review artifact 被记录为 loop-goal outputs 中的 review decision packet |
-| AC-014 | TC-LG-014 | negative | `python3 -m pytest tests/test_v166_loop_goal.py::test_review_decision_packet_blocks_unsafe_implement_route -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | P1/user-decision/change route 的 review decision packet 不会自动进入 `implement_routing` |
+| AC-014 | TC-LG-014 | negative | `python3 -m pytest tests/test_v166_loop_goal.py -k "review_decision_packet" -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | P0 / user_decision_required / drift route 阻断；**单独 P1 进入 standard_execution_precheck 且写入 continue audit**；不得因仅 P1 停在 error_recovery |
 | AC-015 | TC-LG-015 | contract | `python3 -m pytest tests/test_v166_loop_goal.py::test_standard_execution_precheck_public_skill_contract -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | public SKILL.md 的 state machine、decision tree、routing matrix 均显式包含 `review_verify -> standard_execution_precheck -> implement_routing` |
 | AC-016 | TC-LG-016 | negative | `python3 -m pytest tests/test_v166_loop_goal.py::test_uncommitted_canonical_refreeze_blocks_implement -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | refreeze complete 但 canonical branch 未提交时 blocked，`reason_code=canonical_refreeze_not_committed` |
 | AC-017 | TC-LG-017 | negative | `python3 -m pytest tests/test_v166_loop_goal.py::test_stale_feature_refreeze_requires_quarantine -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | feature worktree 存在本地 `.machine` revision/projection dirty 时必须记录 scoped stash/archive ref；直接进入 implement blocked |
@@ -40,6 +40,10 @@ parser_contract: beacon-feature-package-v2
 | AC-024 | TC-LG-024 | contract | `python3 -m pytest tests/test_v166_truth_canonical_branch.py::test_truth_authoring_skills_get_canonical_branch_preamble tests/test_v166_truth_canonical_branch.py::test_delivery_skills_keep_worktree_admission_preamble -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | truth 编写 skill 含 truth_canonical preamble；delivery skill 含 workspace admit |
 | AC-025 | TC-LG-025 | contract | `python3 -m pytest tests/test_v166_loop_goal.py -k cli_owned_precheck -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | CLI 产出 verification bundle artifact；无 artifact ref 的 agent 自报 pass 被拒绝 |
 | AC-026 | TC-LG-026 | contract | `python3 -m pytest tests/test_v166_truth_canonical_branch.py::test_loop_goal_skill_declares_truth_canonical_gate -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | public SKILL.md Step 2 含 truth_canonical 校验与 `truth_canonical_branch_mismatch` |
+| AC-027 | TC-LG-027 | contract | `python3 -m pytest tests/test_v166_loop_goal.py -k human_gate_alignment -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | SKILL/auto-decide 表与 AC-007/AC-014 对齐；release 不可覆盖；P1-only 默认可续跑 |
+| AC-028 | TC-LG-028 | contract | `python3 -m pytest tests/test_v166_loop_goal.py -k same_session_continue -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | public SKILL.md 声明同会话立即加载下一 skill，禁止只打印下一步 |
+| AC-029 | TC-LG-029 | contract | `python3 -m pytest tests/test_v166_loop_goal.py -k loop_goal_resume -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | `beacon status loop-goal --resume` 返回 current_stage + next skill；无状态时不得伪装成功 |
+| AC-030 | TC-LG-030 | contract | `python3 -m pytest tests/test_v166_loop_goal.py -k observability_metrics -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | state/status 暴露 human_stops_per_run、stop_reason 分布、p1_continue_count |
 
 ## Verification Notes
 
@@ -47,12 +51,14 @@ parser_contract: beacon-feature-package-v2
 - TC-LG-001/002/003/008/009 用 `tmp_path` project roots，mock state 文件。
 - TC-LG-004/005/006/007 模拟阶段产出状态，验证编排器决策逻辑。
 - TC-LG-010/012 读取 SKILL.md 内容，验证决策树完整性和 `review_routing` 公开契约。
-- TC-LG-013/014 用 deterministic planner-review artifact fixture 验证 state outputs 和 fail-closed route。
-- TC-LG-015..021 用 deterministic git/admission fixtures 验证 Standard Execution Flow 的顺序、baseline commit、stale local refreeze quarantine、verification bundle、workspace admission 和 idempotent resume。
-- TC-LG-022..026 验证 truth-on-main 第一性原理闭环：CLI 分支门、文件写门、GIT_ADMISSION 双轨、CLI-owned precheck、loop-goal Step 2 分支检查。
+- TC-LG-013/014 用 deterministic planner-review artifact fixture 验证 state outputs；R6 起 P1-only 必须 continue + audit，P0/user_decision/drift 仍阻断。
+- TC-LG-015..021 用 deterministic git/admission fixtures 验证 Standard Execution Flow。
+- TC-LG-022..026 验证 truth-on-main 第一性原理闭环。
+- TC-LG-027..030 验证人类门重划、同会话续跑、resume CLI、观测指标。
 
 ## Must vs Should
 
 | Priority | AC |
 |----------|-----|
-| Must | AC-001..026 |
+| Must | AC-001..029 |
+| Should | AC-030 |

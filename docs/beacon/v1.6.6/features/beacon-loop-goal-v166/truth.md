@@ -2,9 +2,9 @@
 slug: beacon-loop-goal-v166
 version: v1.6.6
 status: frozen
-revision_id: R5
+revision_id: R6
 language: zh
-change_reason: R5 - Truth-on-main first-principles closure (file write gate + CLI-owned standard_execution_precheck + truth GIT_ADMISSION split)
+change_reason: R6 - Redefine human-gate set (P1 advisory continue; P0|user_decision_required|drift routes block; same-session continue + resume CLI; observability metrics)
 canonical_refs:
   truth: docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md
   tests: docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md
@@ -77,8 +77,11 @@ Beacon v1.6 公开 host-visible skill surface 冻结为 38 个 skill：planner(7
 | 状态机驱动 | 6 阶段状态机：precheck → truth → implement → qa → release_gate → done |
 | 顺序 skill 加载 | 每个阶段加载对应 skill，skill 完成后编排器读状态文件做下一步决策 |
 | 文件状态传递 | `.beacon/state/loop-goal/<run_id>.json` 记录阶段、产出、时间戳 |
-| Auto-decide 模式 | truth freeze / implement start / QA start 可 auto-decide（opt-out `--human-gate`） |
+| Auto-decide 模式 | truth freeze / implement start / QA start / **P1-only review continue** 可 auto-decide（opt-out `--human-gate`） |
 | Release human gate | release 阶段永远需要人工确认，不可 auto-decide |
+| Review blocking human gate | 仅 `P0` / `user_decision_required` / drift routes（truth|change|refreeze）阻断；单独 P1 不阻断 |
+| Same-session continue + resume | 输出 route 后同会话加载下一 skill；`beacon status loop-goal --resume` 按 state 续跑 |
+| Observability metrics | `human_stops_per_run` / stop_reason 分布 / `p1_continue_count` / pseudo_stall（可判定时） |
 | Error recovery | 任何阶段 blocked → 路由 `beacon-gov-debug`，修复后回到对应阶段 |
 | Stop-when 检查 | 每个阶段转换前检查 stop 条件 |
 | Governance precheck | 启动前验证版本在 governance 中注册（消费 v1.6.6 governance_precheck） |
@@ -127,9 +130,8 @@ idle → governance_precheck
 truth_routing → invoke beacon-gen-truth → truth_verify
   → frozen: review_routing | not_frozen: truth_routing (retry) | blocked: error_recovery
 review_routing → invoke beacon-pln-review → review_verify
-  → implement_ready: standard_execution_precheck
-  → truth_or_change_route: drift_routing
-  → user_decision_required: error_recovery
+  → blocking (P0 | user_decision_required | drift route): drift_routing | error_recovery
+  → non_blocking (incl. P1-only advisory): standard_execution_precheck (record severity + continue audit)
   → blocked: error_recovery
 standard_execution_precheck → verify canonical baseline + branch governance + workspace admission
   → pass: implement_routing
@@ -182,6 +184,17 @@ error_recovery → invoke beacon-gov-debug → 修复后回到对应阶段
     "planner_review_user_decision_required": false,
     "planner_review_highest_severity": "P0|P1|P2|P3|",
     "planner_review_finding_count": 0,
+    "planner_review_continue_audit": {
+      "continued_with_advisory": false,
+      "continued_severity": "P1|P2|P3|",
+      "blocking_reason_code": ""
+    },
+    "human_stop_metrics": {
+      "human_stops_per_run": 0,
+      "stop_reason_counts": {},
+      "p1_continue_count": 0,
+      "pseudo_stall_count": 0
+    },
     "standard_execution_flow_status": "not_checked|pass|blocked",
     "truth_baseline_commit": "<git-sha|null>",
     "canonical_refreeze_committed": false,
@@ -202,9 +215,34 @@ error_recovery → invoke beacon-gov-debug → 修复后回到对应阶段
 |--------|----------|----------|------|
 | truth scope（海拆湖） | auto-decide | `--human-gate` | feature-graph.json |
 | truth freeze | auto-decide（verify pass 即 freeze） | `--human-gate` | `beacon truth verify` |
-| implement 启动 | auto-decide（truth frozen 即进入） | `--human-gate` | 状态文件 |
+| planner-review P1-only | auto-continue → `standard_execution_precheck`（记 severity + continue audit） | `--human-gate` 可强制停 | AC-014 R6 |
+| planner-review blocking | 停：`P0` 或 `user_decision_required=true` 或 route∈{truth,change,refreeze} | 不可用 auto-decide 绕过 | AC-014 R6 |
+| implement 启动 | auto-decide（review non-blocking + precheck pass） | `--human-gate` | 状态文件 |
 | QA 启动 | auto-decide（tests pass 即进入） | `--human-gate` | pytest exit code |
-| **release 启动** | **必须人工确认** | **不可覆盖** | global-boundaries §1 |
+| **release 启动** | **必须人工确认** | **不可覆盖** | global-boundaries §1 / AC-007 |
+
+### Human-gate 集合（R6 唯一默认人门）
+
+默认人类急停集合：
+
+1. `release_gate`（永远）
+2. review blocking：`highest_severity=P0` **或** `user_decision_required=true` **或** `recommended_route ∈ {beacon-gen-truth, beacon-gen-change, beacon-gen-refreeze}`
+
+**不**在默认急停集合：单独的 `P1` / `P2` / `P3` findings（记 advisory continue audit 后进入 precheck）。
+
+### Same-session continue + resume（R6 Phase B）
+
+- public SKILL.md 决策树必须写死：每次输出 next route 后，**同一会话立即加载**对应 skill；禁止以「只打印下一步」结束回合（假性卡死）。
+- 必须提供 `beacon status loop-goal --resume`（或等价 CLI）：读取 `.beacon/state/loop-goal/<run_id>.json`，输出当前 stage + 下一步 skill + 禁止 no-op 打印；agent 据此续跑。
+
+### Observability（R6 Phase C）
+
+loop-goal state / status 视图必须可观测：
+
+- `human_stops_per_run`
+- `stop_reason` 分布（release / p0 / user_decision_required / drift_route / human_gate_override / …）
+- `p1_continue_count`（P1 advisory 续跑次数）
+- `pseudo_stall_count`（检测到只打印 next-route 未加载 skill 的次数，若可判定）
 
 ## Acceptance Criteria
 
@@ -223,7 +261,7 @@ error_recovery → invoke beacon-gov-debug → 修复后回到对应阶段
 | AC-011 | public-skill-release-shape | `beacon-loop-goal` 作为公开 host-visible governor skill 被 v1.6 taxonomy、agent surface expected list、skill inventory/count 和 release governance 接受；公开 skill 总数为 38 |
 | AC-012 | review-routing-public-skill | public SKILL.md 的 State Machine、Decision Tree、Skill Routing Matrix 必须显式包含 `review_routing -> beacon-pln-review`，并声明 review 后才能自动进入 implement 的条件 |
 | AC-013 | review-decision-packet-state | `loop_goal_state` 必须提供 deterministic review decision packet 写入函数，把 planner-review artifact 的 review id、artifact ref、recommended route、user decision flag、highest severity、finding count 写入 state outputs |
-| AC-014 | review-gate-fail-closed | 当 review decision packet 存在 P0/P1、`user_decision_required=true`，或推荐 route 指向 `beacon-gen-truth` / `beacon-gen-change` / `beacon-gen-refreeze` 时，loop-goal 不得自动进入 `implement_routing`，必须停在对应 route 或 error recovery |
+| AC-014 | review-gate-fail-closed | **R6**：blocking 仅当 `highest_severity=P0` **或** `user_decision_required=true` **或** `recommended_route ∈ {beacon-gen-truth, beacon-gen-change, beacon-gen-refreeze}` → 不得自动进入 `implement_routing`，必须停在 drift_routing / error_recovery。**单独的 P1（及更低）不得阻断**；必须进入 `standard_execution_precheck`，并写入 continue audit（severity + `continued_with_advisory=true`）（**Must**） |
 | AC-015 | standard-flow-public-skill | public SKILL.md 的 State Machine、Decision Tree、Skill Routing Matrix 必须显式包含 `standard_execution_precheck`，位于 `review_verify` 和 `implement_routing` 之间 |
 | AC-016 | canonical-commit-boundary | canonical truth/refreeze 只有在 main/master 提交后才可成为 loop-goal baseline；未提交 refreeze artifact 不得进入 implement |
 | AC-017 | stale-feature-refreeze-quarantine | feature/dev worktree 中发现本地 `.machine` revision/projection dirty 或 feature-local refreeze 时，必须 scoped stash/archive 并记录 quarantine ref；不得采信为 requirement authority |
@@ -236,6 +274,10 @@ error_recovery → invoke beacon-gov-debug → 修复后回到对应阶段
 | AC-024 | git-admission-dual-track | `beacon-gen-truth` / `beacon-gen-change` / `beacon-gen-refreeze` 物化 skill 必须含 truth_canonical GIT_ADMISSION；`beacon-gen-implement` / qa / release / gov-branch 必须保留 worktree `workspace admit` preamble（**Must**） |
 | AC-025 | cli-owned-precheck-bundle | 必须提供 CLI 命令自跑 standard execution verification bundle（至少五类检查）并写 artifact；`record_standard_execution_precheck` 只接受带 CLI artifact ref 的结果，拒绝无 ref 的 agent 自报 pass（**Must**） |
 | AC-026 | truth-routing-branch-check | public `beacon-loop-goal` SKILL.md Step 2 必须在进入 `beacon-gen-truth` 前校验当前分支为 `truth_canonical`，否则 route `beacon-gov-debug` + `truth_canonical_branch_mismatch`（**Must**） |
+| AC-027 | auto-decide-human-gate-alignment | Auto-decide 表必须与 AC-007/AC-014 对齐：默认人类急停仅 release + review blocking 集合；P1-only 默认续跑；`--human-gate` 可把 P1 升为停；release 永远不可 auto 覆盖（**Must**） |
+| AC-028 | same-session-skill-continue | public SKILL.md 决策树必须声明：输出 next route 后**同会话立即加载**下一 skill；禁止以「仅打印下一步」结束编排回合（**Must**） |
+| AC-029 | loop-goal-resume-cli | 必须提供 `beacon status loop-goal --resume`（或等价），按 state 文件返回 `current_stage` + next skill + reason_code；禁止无状态变更的 no-op 打印充当 resume（**Must**） |
+| AC-030 | loop-goal-observability-metrics | state/status 必须暴露 `human_stops_per_run`、`stop_reason` 分布、`p1_continue_count`；假性卡死（pseudo_stall）在可判定时计数（**Should**） |
 
 ## State Model
 
@@ -262,6 +304,9 @@ drift_routing <--- review route requires truth/change/refreeze          error_re
 | UD-LG-007 | Truth-on-main physical closure | accepted |
 | UD-LG-008 | CLI-owned precheck evidence | accepted |
 | UD-LG-009 | GIT_ADMISSION dual-track | accepted |
+| UD-LG-010 | Human-gate set = release + review blocking only (P1 advisory continue) | accepted |
+| UD-LG-011 | Same-session skill continue + resume CLI | accepted |
+| UD-LG-012 | Loop-goal observability metrics (Phase C) | accepted |
 | D-LG-001 | Cross-project orchestration | accepted defer (v2) |
 | D-LG-002 | Subagent orchestration | accepted defer (v2) |
 | D-LG-003 | Probabilistic decisions | rejected |
@@ -278,3 +323,4 @@ drift_routing <--- review route requires truth/change/refreeze          error_re
 - R3 froze planner-review decision packet routing.
 - R4 adds Standard Execution Flow admission before implement routing. This is a v1.6.6 loop-goal governance contract only; it does not create a new public skill, does not execute implementation, and does not provide QA/release verdict authority.
 - R5 closes truth-on-main first principles: CLI + file write gates on `truth_canonical`, dual-track GIT_ADMISSION, and CLI-owned standard_execution_precheck evidence. Governor still only routes; it does not self-run git checks.
+- R6 redefines the default human-gate set to match first principles: only `release_gate` plus review **blocking** (`P0` | `user_decision_required` | drift routes) stop the loop. Standalone P1 is advisory continue with audit. Adds same-session skill continue, `loop-goal --resume` CLI, and observability metrics (AC-027..030). Does not weaken AC-007.
