@@ -3,7 +3,7 @@ slug: beacon-v2-rust-kernel-redesign
 version: v2.0.0
 status: frozen
 language: zh
-revision: r14-program-orchestration-surface-frozen
+revision: r15-dual-track-unified-skill-score
 canonical_refs:
   truth: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
   tests: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tests.md
@@ -14,6 +14,7 @@ truth_source_model: feature_package_authoritative
 truth_map_contract: beacon-truth-map-v1
 source_plan: docs/plans/beacon-v2-redesign.md
 planner_review: beacon-pln-review option-A true-integration
+change_reason: "UD-B long-term dual-track product; unified skill score in v2.0.0 contract usable for v1; score-only human-edit (no auto SKILL.md mutation)"
 ---
 
 # 需求真相：Beacon v2 Rust Kernel Redesign
@@ -31,7 +32,7 @@ beacon-cli       -> Rust 主 CLI：loop / truth / design / implement / qa-eviden
 beacon-harness   -> Rust 极简 harness contract：六个一等能力，不保留 v1 Python 兼容面
 ```
 
-**User Intent（冻结锚点，一行）**：v2.0.0 交付 **Rust 极简 harness kernel + 六个一等能力（loop / truth / design / implement / qa-evidence / release）+ 全局 `beacon.db` + Operator Spine + 跨 harness loop 闭环**；v1 Python / Node / 33 skills 历史兼容 **不进入 v2 core closure**，仅作为只读迁移语义源或 archive reference。
+**User Intent（冻结锚点，一行）**：v2.0.0 交付 **Rust 极简 harness kernel + 六个一等能力（loop / truth / design / implement / qa-evidence / release）+ 全局 `beacon.db` + Operator Spine + 跨 harness loop 闭环**；与 **v1 产品轨长期双轨并存（UD-B）**；**统一 skill 评分**（结构+实效，只评人改）写入合同且可用于 v1；v1 不得作为 v2 runtime 静默 fallback，亦不得被 v2 closure 强制退休。
 
 **需求真相** 仍只存在于 Markdown feature package（`docs/beacon/v2.0.0/` + `features/<slug>/truth.md`）。  
 **运行态权威** 迁入机器级全局 SQLite `~/.beacon/beacon.db`；大文件留在项目 `<project>/.beacon/` blob 层，DB 只存绝对路径 + hash 指针。
@@ -76,10 +77,10 @@ v2.0.0 按 [Loop Engineering](https://addyosmani.com/blog/loop-engineering/) 三
 
 | 字段 | 值 |
 |------|-----|
-| 用户原话（稳定 paraphrase） | v2 使用 Rust 重写极简 Beacon harness；抛弃 v1 Python 历史兼容；保留六个一等能力；plan 阶段强识别意图、保存提示词快照、反复对齐，产出 loop 可一键跑闭环的决策包；实现前必须有视觉/设计原语绑定 |
+| 用户原话（稳定 paraphrase） | v2 使用 Rust 重写极简 Beacon harness；保留六个一等能力；plan 阶段强识别意图、保存提示词快照、反复对齐，产出 loop 可一键跑闭环的决策包；实现前必须有视觉/设计原语绑定。**R15 用户拍板**：产品为 **长期双轨（选项 B）**——v1 与 v2 并存且合并互不影响；**统一 skill 评分**写入 v2.0.0 合同且对 v1 同样可用；评分模式为 **只评分、人改**（禁止优化器自动改 SKILL.md） |
 | `lake_or_ocean` | **海**（见 research）— 单包 truth **不**等于全量实现 closure；按 phase 煮干 |
-| 强度词 | 极简 harness、彻底抛弃历史包袱、强感知识别、一键决策跑闭环、视觉设计实现前前置 |
-| 非协商边界 | 需求不进 DB 当权威；orchestrator 不裁决 QA/release；无空壳验收；v1 Python/PyO3/33 skills 不作为 v2 core 验收；design_required 时未绑定设计原语不得 implement |
+| 强度词 | 极简 harness、长期双轨、统一稳定评分、只评人改、强感知识别、一键决策跑闭环、视觉设计实现前前置 |
+| 非协商边界 | 需求不进 DB 当权威；orchestrator 不裁决 QA/release；无空壳验收；**v2 runtime 路径不得静默 fallback 到 v1 Python**（反之亦然）；**不得以 P6「切默认」退休 v1 产品轨**；design_required 时未绑定设计原语不得 implement；skill 评分不得冒充 QA/release；评分器不得自动改写 SKILL.md |
 
 ### Alignment Surface（v2.0.0 冻结时必须煮干）
 
@@ -395,7 +396,7 @@ v1 架构级缺陷必须在 v2 被 **结构性消除**，不得仅靠文档或 w
 
 - **AC-001**：v2 默认执行面为 Rust workspace（`packages/beacon-rs/` 或等价根）。
 - **AC-002**：v2 core closure **不包含** `beacon-python` / PyO3 / v1 Python runtime fallback；若仓库仍存在历史 scaffold，必须在 P4 前移除或标记为 archive-only，不能作为验收依赖。
-- **AC-003**：v1 Python / Node / 33 skills 只可作为 migration/archive reference；v2 新能力不得 fallback 到 Python 路由。
+- **AC-003**：v1 Python / Node / v1 skill 面与 v2 Rust / 六能力面为 **长期双轨对等产品轨**（UD-B）；v2 新能力与 v2 runtime **不得** fallback 到 Python/v1 路由；v1 轨 **不得** 被 v2 core closure 要求退休或降为唯一 archive-only。跨轨调用必须显式、可审计，禁止静默混跑。
 
 ### AC-004 需求真相边界
 
@@ -551,10 +552,10 @@ optional stop_signal, token_usage, agent_name
 ## 极简 Harness Surface（取代 Plan §6 Python 兼容）
 
 - **AC-059**：v2 host-visible harness surface 只暴露 `loop`、`truth`、`design`、`implement`、`qa-evidence`、`release` 六个一等能力。
-- **AC-060**：v2 默认走 Rust 路径；`BEACON_V2=1` 不再是 opt-in 兼容开关。
+- **AC-060**：双轨运行时选择必须 **显式**（例如独立 `beacon-v2` 二进制，或 `beacon --runtime v2` / 等价显式 flag）。禁止用「环境默认偷偷切轨」替代用户/CI 的显式选择；`BEACON_V2=1` 若保留，只能作为 **显式选择的别名**，不得暗示 v1 已退役。
 - **AC-061**：`BEACON_STORE_PATH` 测试隔离；生产默认 `~/.beacon/beacon.db`。
-- **AC-062**：任何 v1 Python/legacy skill invocation 在 v2 core 中必须返回 migration/archive route 或 `reason_code=legacy_python_removed`，不得静默 fallback。
-- **AC-063**：`beacon harness list --version v2.0.0 --json`（或等价 CLI）只返回六个一等能力及其 contract metadata；不得要求 33 skills smoke 作为 v2 closure。
+- **AC-062**：在 **v2 runtime 路径内**，任何把 v1 Python/legacy skill 当执行后端的请求必须 fail-closed，返回 `reason_code=cross_track_fallback_forbidden`（或等价），stdout/stderr **不得** 含 `compat_route=python`。v1 runtime 路径内对 v1 skills 的正常调用 **不受** 本条退休。
+- **AC-063**：`beacon harness list --version v2.0.0 --json`（或等价 CLI）只返回六个一等能力及其 contract metadata；不得要求 33/37 skills smoke 作为 v2 closure；v1 skill 矩阵验收留在 v1 轨。
 
 ## CLI 面
 
@@ -591,25 +592,25 @@ optional stop_signal, token_usage, agent_name
 
 ## 并行共存（Plan §8）
 
-| Phase | 交付物 | v1 共存 |
+| Phase | 交付物 | v1 共存（长期双轨 UD-B） |
 |-------|--------|---------|
-| P0 | core + store + schema + migration **skeleton**（非 production migration） | v1 全功能 |
-| P1 | Spine read + projects | v1 JSON 仍可写 |
-| P2 | orchestrator MVP + **AC-043/044** codex/subprocess 真集成 | beacon-loop 并行 |
-| P3 | gate 写库 + **AC-045/046** claude/acp 真集成 + migration 完成 | legacy projection/import 只读对照 |
-| P4 | 六能力 harness surface + legacy removal | v1 Python/33 skills 仅 archive reference |
+| P0 | core + store + schema + migration **skeleton**（非 production migration） | v1 全功能；合并互不影响 |
+| P1 | Spine read + projects | v1 JSON/CLI 仍可写；分轨 CI |
+| P2 | orchestrator MVP + **AC-043/044** codex/subprocess 真集成 | beacon-loop / v1 CLI 并行 |
+| P3 | gate 写库 + **AC-045/046** claude/acp 真集成 + migration 完成 | 迁移为可选对照，不强迫退役 v1 |
+| P4 | 六能力 harness surface + **v2 路径内**禁止 cross-track fallback | v1 37-skill 面继续作为 v1 产品轨 |
 | P5 | ~~proto~~ **v2.0.0 跳过**（D-V2-001） | v1 无 gRPC 亦可 |
-| P6 | 默认 v2 + benchmark 门禁 | 切换 |
+| P6 | v2 benchmark / 成熟度门禁 | **不**以 P6 退休 v1；双轨继续 |
 
-- **AC-084**..**AC-090**：P0–P6 阶段出口（见 tests.md TC-084–090）；**P5 在 v2.0.0 以 D-V2-001 accepted defer 跳过**，不阻塞 P6 switch-over。
+- **AC-084**..**AC-090**：P0–P6 阶段出口（见 tests.md TC-084–090）；**P5 在 v2.0.0 以 D-V2-001 accepted defer 跳过**；P6 是 v2 成熟度出口，**不是** v1 产品轨关停开关。
 
 ## 风险与缓解（Plan §9）
 
 - **AC-091**：CI **必须**执行 `cargo build/test` for `beacon-rs` matrix（macOS + Linux 至少）；非仅 README 声明。
 - **AC-092**：migration 前自动备份 runtime-ledger 与既有 DB。
 - **AC-093**：双写期 **单一写者**；双向同时写须测试失败。
-- **AC-094**：harness surface / legacy removal 回归失败 → `beacon-gov-doctor`，禁止静默 legacy fallback。
-- **AC-095**：benchmark 相对 baseline 回退 >10% 阻断 P6 switch-over。
+- **AC-094**：v2 harness surface / cross-track isolation 回归失败 → `beacon-gov-doctor`（或 v2 等价诊断），禁止静默 cross-track fallback。
+- **AC-095**：v2 benchmark 相对 baseline 回退 >10% 阻断 **v2 P6 成熟度出口**；不授权、不要求关停 v1 轨。
 
 ## 验收总则（Plan §10）
 
@@ -627,7 +628,7 @@ optional stop_signal, token_usage, agent_name
 ### Minimal Kernel AC Extensions（AC-109–144）
 
 - **AC-109**：v2 public kernel surface 明确定义并只允许六个一等能力：loop / truth / design / implement / qa-evidence / release。
-- **AC-110**：v1 Python / Node / 33 skills compatibility 从 v2 core closure 移除；只保留为 migration/archive reference。
+- **AC-110**：v1 Python / Node / v1 skill 面 **不进入 v2 core closure 的验收依赖**；它们作为 **并行产品轨** 继续交付。v2 closure 不得把「全量 v1 skill 回归」或「PyO3 兼容层」列为必过项；也不得把「删除 v1 轨」列为 v2.0.0 必过项。
 - **AC-111**：truth pre-freeze 必须生成 `intent_snapshot.v1`，含 raw_prompt、normalized_intent、strength_signals、non_negotiables、open_questions、scope_mode、confidence。
 - **AC-112**：每轮 plan/truth/review/brainstorm 必须保存 prompt snapshot hash，并标记 accepted/latest；loop 只能消费 latest accepted snapshot。
 - **AC-113**：intent confidence 低、强意图冲突、scope 未确认或 deferral 未拍板时，truth freeze fail-closed。
@@ -663,6 +664,21 @@ optional stop_signal, token_usage, agent_name
 - **AC-143**：标准流必须可 idempotent resume；已对齐步骤重复执行时返回 `up_to_date` / `pass`，不得因重复执行产生新的 requirement revision。
 - **AC-144**：标准执行流通过六 public skill 的 progressive examples 暴露，不得新增第七个 public skill 或绕过 Harness Boundary。
 
+### Long-term Dual-Track + Unified Skill Score（R15 / UD-B）
+
+用户 2026-07-16 拍板：**选项 B 长期双轨产品**；**统一 skill 评分进入 v2.0.0 合同且可用于 v1**；**只评分、人改**（禁止自动改 SKILL.md）。
+
+- **AC-147**：Beacon 产品策略为长期双轨：`track_v1`（Python CLI + v1 skill 面）与 `track_v2`（Rust kernel + 六 public skill）对等并存；任一轨的 release/成熟度门禁 **不得** 隐含关停另一轨。
+- **AC-148**：双轨隔离契约——代码树、CLI 入口、skill 根、docs version tree、CI job 必须可分轨合并；同一 PR 若同时修改两轨「发布真源」，必须显式 `dual_track_shared_contract` admission，否则 fail-closed（`reason_code=dual_track_mixed_source`）。
+- **AC-149**：运行时选择必须显式（对齐 AC-060）；禁止 v2 路径执行 v1 backend，禁止 v1 路径把请求静默升级为 v2 并改写用户未请求的行为。
+- **AC-150**：迁移/导入工具可以只读对照另一轨状态，但不得在双写期成为第二写者（延续 AC-093 单写者原则，按轨分别强制）。
+- **AC-151**：v2.0.0 合同包含 **统一 skill 评分面**（`beacon skill-score` 或扩展现有 `beacon eval`），同一套维度 schema 必须能对 **v1 skill 包**与 **v2 六 public skill 包**打分；禁止为两轨维护互相不可比的私有满分制。
+- **AC-152**：统一评分必须包含 **结构质量**（SKILL.md/package/HARD GATE/progressive 合规，对齐 skill-creator / Beacon skill-package-standard）与 **实效质量**（固定 test-prompts 上的路由/边界/越权 negative；with_skill vs baseline 或等价对照），参考 Anthropic skill-creator 与 darwin-skill 的双评思想。
+- **AC-153**：skill 评分产物权威为 `runtime_evidence_only`；**不得**替代 `qa-evidence` formal QA，**不得**替代 `release` 人放行；scorecard 必须声明该边界。
+- **AC-154**：**只评分、人改**——评分/优化建议可以产出 diff 建议与维度短板，但 **禁止** 自动编辑、自动 commit、自动 revert 任何 `SKILL.md` 或 skill package 文件；保留/回滚由人执行。
+- **AC-155**：评分执行者与被评 skill 的「修改建议作者」在流程上必须可分离（独立评分会话或独立 grader）；禁止同一无审计步骤既改 skill 又自评涨分。
+- **AC-156**：v1 `beacon eval` 既有 scorecard 维度可映射进统一 schema，但发布门必须以统一 schema 的稳定字段为准；字段漂移须走 change，不得静默改权重冒充同比。
+
 ## Parity Matrix（Plan 场景复刻索引）
 
 | Plan 章节 | AC 范围 | 场景 |
@@ -690,27 +706,33 @@ optional stop_signal, token_usage, agent_name
 | D-V2-004 | worktree 全模式 parity | 用户拒绝延期 | **rejected**（in-scope **AC-099** P3） | — |
 | D-V2-005 | ImplementHarnessBackend 真集成 | 用户拒绝延期 | **rejected**（in-scope **AC-100** P3） | — |
 | DEF-loop-006 | Real-world Feedback Loop 闭环 | 需真实反馈源集成（用户反馈/数据/竞品） | **accepted defer** | post-v2.0.0 |
+| UD-dual-B | 长期双轨产品（选项 B） | v1/v2 skill+CLI 语言分叉，需合并互不影响 | **accepted**（2026-07-16）→ AC-003/060/062/110/147–150 | in-scope v2.0.0 |
+| UD-skill-score | 统一 skill 评分进 v2.0.0 且可用于 v1 | 落地稳依赖可测 skill 资产 | **accepted**（2026-07-16）→ AC-151–156 | in-scope v2.0.0 |
+| UD-score-human-edit | 只评分、人改 | 禁止 Darwin 式自动改 SKILL.md | **accepted**（2026-07-16）→ AC-154–155 | in-scope v2.0.0 |
 
 **已移除**：r1 AC-040 空壳 contract test 路径 — 由 AC-045/046 真集成取代；**不 defer** claude/acp/worktree/implement-harness。
+
+**R15 废止叙事**：凡将「P4/P6 legacy removal / 默认切 v2 / v1 仅 archive」理解为 **关停 v1 产品轨** 的表述，以 UD-B + AC-147–150 为准废止；保留的是 **v2 路径内禁止 cross-track fallback**，不是退休 v1。
 
 ## Non-Goals
 
 - 不把 Markdown truth 迁入 DB。
 - 不把 QA JSON 升格为 truth authority。
-- 不保留 v1 Python/PyO3/33 skills 作为 v2 runtime、fallback 或 closure 依赖。
+- 不把 v1 Python/PyO3/v1 skills 当作 **v2 runtime fallback** 或 **v2 core closure 必过依赖**（v1 作为并行产品轨继续存在，见 UD-B）。
 - 不用 orchestrator 替代 evaluator 裁决。
 - 不用空壳/stub/纯文档闭环 作为唯一 AC 验收。
+- 不用 skill 评分自动改写 SKILL.md，或用 scorecard 冒充 QA/release。
 
 ## Freeze Readiness
 
-1. ~~用户确认 Deferral Ledger~~ **已完成**：D-V2-001 accepted；D-V2-004/005 rejected（AC-099/100 in-scope）。
-2. `tests.md` 每个 AC 至少一行 **行为级** TC（非仅 `--help`/文件存在）。
-3. `tasks.md` P0–P6 与 AC 映射完成。
+1. ~~用户确认 Deferral Ledger~~ **已完成**：D-V2-001 accepted；D-V2-004/005 rejected（AC-099/100 in-scope）；**UD-dual-B / UD-skill-score / UD-score-human-edit accepted（2026-07-16）**。
+2. `tests.md` 每个 AC 至少一行 **行为级** TC（非仅 `--help`/文件存在）——R15 新增 AC-147–156 须补 TC。
+3. `tasks.md` P0–P6 与 AC 映射完成——R15 须补双轨隔离与统一评分任务。
 4. `requirement_clarity` open question 清零或 defer。
 5. **无空壳-only AC**；agent/worktree/implement 类 AC 须 integration tier（AC-043–046, AC-099–100）。
 6. **v1.6 upstream**（AC-101–103）在对应 phase 有 behavior-level TC，不得仅用「后续移植」一句带过。
 
-**当前状态**：`frozen` / **R14**（revision `r14-program-orchestration-surface-frozen`）— 2026-07-15 refreeze：在 R11 Standard Execution Flow 与 R12/R13 revision drift 暴露基础上，补充 `v2-0-0-rust` canonical program surface、海级 phase graph、湖级 slices、program admission gates，并要求实现前修复 machine/human revision projection 一致性。
+**当前状态**：`frozen` / **R15**（revision `r15-dual-track-unified-skill-score`）— 2026-07-16 refreeze：长期双轨（B）+ 统一 skill 评分入 v2.0.0 且可用于 v1 + 只评分人改。
 
 ## User Stories
 
@@ -738,6 +760,10 @@ optional stop_signal, token_usage, agent_name
 
 **AC**：AC-059–063, AC-109–144, AC-064–066
 
+### US-007 长期双轨 + 统一 skill 评分
+
+**AC**：AC-003, AC-060, AC-062, AC-110, AC-147–156
+
 ## Revision History
 
 | Rev | 变更 |
@@ -755,3 +781,4 @@ optional stop_signal, token_usage, agent_name
 | r10 | R7 refreeze：TraceSpine.v1 / TraceContext.v1 成为 run authority；loop/implement/qa-evidence/release 绑定 trace completeness；stagnation/remediation 报告绑定 trace event range；truth/change/refreeze 只能在 canonical truth branch 执行；阻断 reason-only/machine-only refreeze 与 revision narrative drift（AC-131–137） |
 | r11 | R8 refreeze：将 canonical truth author/refreeze/commit -> feature worktree reconcile -> governance verify -> workspace admission -> implement resume 固化为 Standard Execution Flow；新增 baseline commit、stale feature-local refreeze quarantine、verification bundle 与 idempotent resume contract（AC-138–144） |
 | r14 | R13 repair refreeze：materialize `v2-0-0-rust` program orchestration as canonical surface；补 phase graph、lake slices、admission gates、run-state；修复 reason-only / machine-only refreeze 造成的 revision authority drift 风险 |
+| r15 | R14 change（reopened）：UD-B 长期双轨；统一 skill 评分入 v2.0.0 且可用于 v1；只评分人改；重写 AC-003/060/062/110 与共存表；新增 AC-147–156 |

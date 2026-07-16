@@ -10,7 +10,7 @@ truth_ref: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
 
 ## 覆盖说明
 
-- 每个 AC（AC-001..AC-144）至少一行 TC。
+- 每个 AC（AC-001..AC-156）至少一行 TC。
 - **integration tier** 为 agent 类 AC（AC-043–046, AC-099–100）最低验收等级；禁止仅 contract/空壳验收。
 - **禁止非行为级验证列**：单独 `integration`、`目录存在`、`fixture`、`可选` 不算可执行 TC；必须写 **Command + Assertion**（或显式 `BLOCKED:<reason>`）。
 - Pass/Fail 由 `beacon-eval-qa` 裁决。
@@ -207,9 +207,9 @@ truth_ref: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
 | TC-057 | AC-057 | iteration 调度 | bench < 100ms | P6 |
 | TC-058 | AC-058 | DB 体积 WARN | 超 500MB 日志 | P6 |
 | TC-059 | AC-059 | 六能力 surface | `beacon harness list --version v2.0.0 --json` 精确返回 loop/truth/design/implement/qa-evidence/release | P4 |
-| TC-060 | AC-060 | 默认 Rust v2 | runtime payload 不要求 `BEACON_V2=1` opt-in | P4 |
+| TC-060 | AC-060 | explicit dual-track runtime | 显式选择 v2 runtime（二进制或 flag）；禁止文档/CLI 暗示「默认切 v2 即退役 v1」 | P4 |
 | TC-061 | AC-061 | BEACON_STORE_PATH | 隔离库 | P0 |
-| TC-062 | AC-062 | legacy fallback removed | legacy invocation fixture 返回 migration/archive route，stdout/stderr 不含 `compat_route=python` | P4 |
+| TC-062 | AC-062 | cross-track fallback forbidden on v2 path | v2 path legacy python backend → `cross_track_fallback_forbidden`；不得出现 `compat_route=python`；v1 path 不受影响 | P4 |
 | TC-063 | AC-063 | 六能力 contract | `beacon harness list --version v2.0.0 --json \| jq -e 'map(.id)==["loop","truth","design","implement","qa-evidence","release"]'` | P4 |
 | TC-064 | AC-064 | CLI help snapshot | 全子命令 | P1 |
 | TC-065 | AC-065 | --json schema | spine/projects/run validate | P1 |
@@ -302,6 +302,18 @@ truth_ref: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
 | TC-144 | AC-144 | public examples only | `beacon harness examples --version v2.0.0 --topic standard-flow --json` 只通过 loop/truth/implement/qa-evidence/release examples 暴露；不得新增 top-level `standard-flow` public skill | P4 |
 | TC-145 | program admission | v2 Rust program surface | `test -f docs/beacon/v2.0.0/programs/v2-0-0-rust/program-manifest.md && test -f docs/beacon/v2.0.0/programs/v2-0-0-rust/phase-graph.md && test -f docs/beacon/v2.0.0/programs/v2-0-0-rust/admission-gates.md && jq -e '.fsm_state=="canonical_truth_materialized" and .lake_or_ocean=="海"' docs/beacon/v2.0.0/programs/v2-0-0-rust/program-run-state.json` | P0 |
 | TC-146 | revision projection | human/machine revision alignment | refreeze summary revision, `.machine/execution/*revision.json`, truth frontmatter and evidence decision record must describe the same latest program-orchestration revision; mismatch blocked as `revision_authority_drift` | P2 |
+| TC-147 | AC-147 | long-term dual-track policy | truth/deferral 含 UD-dual-B accepted；P6 文档不得要求 retire v1 product track | P4 |
+| TC-148 | AC-148 | dual-track merge isolation | fixture PR 同时改 `beacon/` 与 `packages/beacon-rs/` 发布真源且无 `dual_track_shared_contract` admission → blocked `dual_track_mixed_source` | P4 |
+| TC-149 | AC-149 | explicit runtime selection | 未显式选轨时不得静默执行另一轨；CLI help/schema 暴露显式选择面 | P4 |
+| TC-150 | AC-150 | single writer per track | 双写期同轨第二写者 fail；跨轨只读对照允许 | P3 |
+| TC-151 | AC-151 | unified skill-score schema | 同一 score schema 对 v1 skill fixture 与 v2 六 public skill fixture 均可产出可比字段 | P4 |
+| TC-152 | AC-152 | structure+effectiveness dual eval | scorecard 同时含 structure 与 effectiveness 段；缺一段 → schema invalid | P4 |
+| TC-153 | AC-153 | score not QA/release | scorecard JSON `authority.runtime_evidence_only==true` 且 `formal_verdict_authority==false` | P4 |
+| TC-154 | AC-154 | score-only human-edit | optimizer/score CLI 在 dry-run 或默认模式下不得修改 SKILL.md（git dirty 检测为 0） | P4 |
+| TC-155 | AC-155 | scorer≠editor separation | 同一步骤既写 skill 又写自增 score 的 fixture 被拒绝 | P4 |
+| TC-156 | AC-156 | schema stability | 擅自改权重/维度名而无 change 记录 → contract fail | P4 |
+| TC-060b | AC-060 | explicit track select | 无显式 runtime/v2 flag 时不得声称「默认已切 v2 且 v1 退役」 | P4 |
+| TC-062b | AC-062 | cross-track fallback forbidden | v2 path 请求 python backend → `cross_track_fallback_forbidden`；v1 path 正常调用 v1 skill 仍 pass | P4 |
 
 ## 负向路径
 
@@ -330,6 +342,9 @@ truth_ref: docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md
 | TC-N21 | 重复执行标准流导致新的 requirement revision bump | `standard_flow_order_violation` |
 | TC-N22 | program intent 只留在 stash 或 support advisory，main 无 canonical program surface | `program_surface_missing` |
 | TC-N23 | refreeze bump 了 machine revision 但 truth/tests/tasks/evidence 未写入对应人类叙事 | `revision_authority_drift` |
+| TC-N24 | 评分 CLI 自动改写 SKILL.md | `skill_auto_edit_forbidden` |
+| TC-N25 | 用 skill scorecard 声称 release pass | authority boundary fail |
+| TC-N26 | P6 成熟度通过后自动禁用 v1 CLI | `dual_track_policy_violation` |
 
 ## E2E
 

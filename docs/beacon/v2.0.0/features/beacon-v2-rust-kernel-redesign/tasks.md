@@ -1,14 +1,23 @@
-# 任务：Beacon v2 Rust Kernel Redesign（r14）
+# 任务：Beacon v2 Rust Kernel Redesign（r15）
 
 ## Phase P0 — core + store 骨架（AC-022–031, AC-067–076, AC-084, AC-024）
 
 - [ ] TASK-P0-000-R14 materialize `v2-0-0-rust` program surface：manifest、phase graph、lake slices、admission gates、run-state；实现前必须由 TC-145 验证。
-- [ ] TASK-P0-001-R8 收敛 `packages/beacon-rs/` workspace 为 v2 core 五 crate（core/store/orchestrator/gate/cli），移除或 archive-only 标记 `beacon-python`。
+- [ ] TASK-P0-001-R8 收敛 `packages/beacon-rs/` workspace 为 v2 core 五 crate（core/store/orchestrator/gate/cli），移除或 archive-only 标记 `beacon-python`（**不**因此删除 v1 Python 产品轨）。
 - [x] TASK-P0-002 Diagram Truth Layer 类型：WorkflowStage（含 Prototype）、StageStatus（含 Crashed/TimedOut/Interrupted）、Delivery 运行时 enum + plan 链 event_type 常量。
 - [x] TASK-P0-003 `IterationResult` 与 `AgentBackend` trait 类型定义（beacon-core）。
 - [x] TASK-P0-004 schema v1 九表 + WAL + 六 DAO skeleton。
 - [x] TASK-P0-005 migration **skeleton**（user_version、备份钩子）；**非** production 全量迁移。
 - [x] TASK-P0-006 unit：TC-026–031, TC-067–076, TC-084。
+
+## Phase P4 / Cross-cutting — Dual-track + Unified skill score（AC-147–156, AC-003/060/062/110）
+
+- [ ] TASK-R15-001 双轨隔离契约文档 + CI path filters：`track_v1` vs `track_v2`；混改无 admission → `dual_track_mixed_source`（TC-148）。
+- [ ] TASK-R15-002 显式 runtime 选择面（`beacon-v2` 或 `--runtime v2`）；更新 AC-060/TC-060b（TC-149）。
+- [ ] TASK-R15-003 v2 路径 cross-track fallback fail-closed（TC-062b）；确认 v1 路径仍可调用 v1 skills。
+- [ ] TASK-R15-004 统一 skill-score schema（结构+实效）；映射现有 `beacon eval` 维度；权威 `runtime_evidence_only`（TC-151–153, TC-156）。
+- [ ] TASK-R15-005 score-only human-edit：CLI/skill 禁止自动改 SKILL.md；独立评分与修改建议分离（TC-154–155, TC-N24）。
+- [ ] TASK-R15-006 v1 与 v2 各至少一套可比 score fixture（37 面抽样 + 六 public）。
 
 ## Phase P1 — Spine + projects（AC-017–021, AC-081–083, AC-064–065, AC-085）
 

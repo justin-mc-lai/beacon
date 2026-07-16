@@ -1,12 +1,12 @@
 # Change Refreeze Summary: beacon-v2-rust-kernel-redesign
 
 - version: `v2.0.0`
-- change_reason: `change-request`
+- change_reason: `R15 UD-B long-term dual-track + unified skill score (score-only human-edit) — content-bearing refreeze after truth-cutover`
 - refreeze_status: `complete`
 - blocked_reason: ``
 - next_route: `beacon-gen-implement`
-- revision_before: `R13`
-- revision_after: `R14`
+- revision_before: `R16`
+- revision_after: `R17`
 
 ## Surface Statuses
 - `change`: `present` (docs/beacon/v2.0.0/change/beacon-v2-rust-kernel-redesign.md)

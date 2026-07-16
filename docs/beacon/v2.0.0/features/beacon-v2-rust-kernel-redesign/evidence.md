@@ -48,6 +48,7 @@
 - **R10 branch governance decision（2026-07-15）**：用户确认需求真相唯一来源应为 canonical truth branch（main，缺失时 master）；feature/dev branch 只能合入并消费 main/master 已冻结 truth，不能本地 bump requirement revision。
 - **R11 standard execution flow（2026-07-15）**：用户确认把已跑通的 main canonical refreeze、canonical commit、feature worktree stale refreeze quarantine、merge main、truth/materials/branch verification、workspace admission、implement resume 固化为 Beacon 标准执行流程。
 - **R14 program orchestration surface（2026-07-15）**：用户确认继续 v2 Rust program 编排；将 stash 中 `v2-0-0-rust` P0 intent capture 升级为 main canonical program surface，补 phase graph、lake slices、admission gates、run-state，并要求修复 R12/R13 machine/human projection 漂移后再进入 implement。
+- **R15 dual-track + unified skill score（2026-07-16）**：用户确认 **选项 B 长期双轨**；**统一 skill 评分进入 v2.0.0 合同且可用于 v1**；**只评分、人改**。废止「P6 切默认即退休 v1」叙事；保留 v2 路径内禁止 cross-track fallback。Planner runtime：`pln-review-20260716t024005z`。
 
 ## Implementation Candidate Evidence
 

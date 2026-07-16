@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-15T14:02:16.992644+00:00",
+  "generated_at": "2026-07-16T03:05:58.067227+00:00",
   "feature": "beacon-v2-rust-kernel-redesign",
   "feature_slug": "beacon-v2-rust-kernel-redesign",
   "version": "v2.0.0",
@@ -18,17 +18,17 @@
     "evidence": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/evidence.md"
   },
   "source_hashes": {
-    "truth": "de08586ce6bb68660171bd25639e3eedd3a049aeb1e4241b31d27de168418307",
-    "tests": "358fd2808d600e241b69aa8356d584cd4c4d39ea96ebdda56af8fde98ebce33b",
-    "tasks": "b51c10264e92d787c968cb20178dff89876359832ab92ebe39541ecaf3f4a5d0",
-    "evidence": "8c4524e7d8119ce405895bbf8c2f27e6400b6e184dba74cc90237c0d113c9ac1"
+    "truth": "676c7a317e3f157efefa50c7fdc9a28d7ab965f1b39a65120981ae2cb4557a59",
+    "tests": "e1acae4dc3c6041f9f3597f1f6a1a1e6e278ab7cfe7f72ee1000841335839a56",
+    "tasks": "b08224c061b54ff47b42b91eeb4e66305b41336a19e4a296f5b900206ea37cbd",
+    "evidence": "7cf5ced18d6424c88ea12e35f802c4208a8cb1f2ed43987e9d23cd8c13c803b9"
   },
   "truth_frontmatter": {
     "slug": "beacon-v2-rust-kernel-redesign",
     "version": "v2.0.0",
     "status": "frozen",
     "language": "zh",
-    "revision": "r14-program-orchestration-surface-frozen",
+    "revision": "r15-dual-track-unified-skill-score",
     "canonical_refs": {
       "truth": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
       "tests": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tests.md",
@@ -39,7 +39,8 @@
     "truth_source_model": "feature_package_authoritative",
     "truth_map_contract": "beacon-truth-map-v1",
     "source_plan": "docs/plans/beacon-v2-redesign.md",
-    "planner_review": "beacon-pln-review option-A true-integration"
+    "planner_review": "beacon-pln-review option-A true-integration",
+    "change_reason": "UD-B long-term dual-track product; unified skill score in v2.0.0 contract usable for v1; score-only human-edit (no auto SKILL.md mutation)"
   },
   "frontmatter_errors": [],
   "acceptance_criteria": [
@@ -66,7 +67,7 @@
     {
       "ac_id": "AC-003",
       "theme": "",
-      "description": "- **AC-003**：v1 Python / Node / 33 skills 只可作为 migration/archive reference；v2 新能力不得 fallback 到 Python 路由。"
+      "description": "- **AC-003**：v1 Python / Node / v1 skill 面与 v2 Rust / 六能力面为 **长期双轨对等产品轨**（UD-B）；v2 新能力与 v2 runtime **不得** fallback 到 Python/v1 路由；v1 轨 **不得** 被 v2 core closure 要求退休或降为唯一 archive-only。跨轨调用必须显式、可审计，禁止静默混跑。"
     },
     {
       "ac_id": "AC-004",
@@ -341,7 +342,7 @@
     {
       "ac_id": "AC-060",
       "theme": "",
-      "description": "- **AC-060**：v2 默认走 Rust 路径；`BEACON_V2=1` 不再是 opt-in 兼容开关。"
+      "description": "- **AC-060**：双轨运行时选择必须 **显式**（例如独立 `beacon-v2` 二进制，或 `beacon --runtime v2` / 等价显式 flag）。禁止用「环境默认偷偷切轨」替代用户/CI 的显式选择；`BEACON_V2=1` 若保留，只能作为 **显式选择的别名**，不得暗示 v1 已退役。"
     },
     {
       "ac_id": "AC-061",
@@ -351,12 +352,12 @@
     {
       "ac_id": "AC-062",
       "theme": "",
-      "description": "- **AC-062**：任何 v1 Python/legacy skill invocation 在 v2 core 中必须返回 migration/archive route 或 `reason_code=legacy_python_removed`，不得静默 fallback。"
+      "description": "- **AC-062**：在 **v2 runtime 路径内**，任何把 v1 Python/legacy skill 当执行后端的请求必须 fail-closed，返回 `reason_code=cross_track_fallback_forbidden`（或等价），stdout/stderr **不得** 含 `compat_route=python`。v1 runtime 路径内对 v1 skills 的正常调用 **不受** 本条退休。"
     },
     {
       "ac_id": "AC-063",
       "theme": "",
-      "description": "- **AC-063**：`beacon harness list --version v2.0.0 --json`（或等价 CLI）只返回六个一等能力及其 contract metadata；不得要求 33 skills smoke 作为 v2 closure。"
+      "description": "- **AC-063**：`beacon harness list --version v2.0.0 --json`（或等价 CLI）只返回六个一等能力及其 contract metadata；不得要求 33/37 skills smoke 作为 v2 closure；v1 skill 矩阵验收留在 v1 轨。"
     },
     {
       "ac_id": "AC-064",
@@ -461,7 +462,7 @@
     {
       "ac_id": "AC-084",
       "theme": "",
-      "description": "- **AC-084**..**AC-090**：P0–P6 阶段出口（见 tests.md TC-084–090）；**P5 在 v2.0.0 以 D-V2-001 accepted defer 跳过**，不阻塞 P6 switch-over。"
+      "description": "- **AC-084**..**AC-090**：P0–P6 阶段出口（见 tests.md TC-084–090）；**P5 在 v2.0.0 以 D-V2-001 accepted defer 跳过**；P6 是 v2 成熟度出口，**不是** v1 产品轨关停开关。"
     },
     {
       "ac_id": "AC-091",
@@ -481,12 +482,12 @@
     {
       "ac_id": "AC-094",
       "theme": "",
-      "description": "- **AC-094**：harness surface / legacy removal 回归失败 → `beacon-gov-doctor`，禁止静默 legacy fallback。"
+      "description": "- **AC-094**：v2 harness surface / cross-track isolation 回归失败 → `beacon-gov-doctor`（或 v2 等价诊断），禁止静默 cross-track fallback。"
     },
     {
       "ac_id": "AC-095",
       "theme": "",
-      "description": "- **AC-095**：benchmark 相对 baseline 回退 >10% 阻断 P6 switch-over。"
+      "description": "- **AC-095**：v2 benchmark 相对 baseline 回退 >10% 阻断 **v2 P6 成熟度出口**；不授权、不要求关停 v1 轨。"
     },
     {
       "ac_id": "AC-096",
@@ -531,7 +532,7 @@
     {
       "ac_id": "AC-110",
       "theme": "",
-      "description": "- **AC-110**：v1 Python / Node / 33 skills compatibility 从 v2 core closure 移除；只保留为 migration/archive reference。"
+      "description": "- **AC-110**：v1 Python / Node / v1 skill 面 **不进入 v2 core closure 的验收依赖**；它们作为 **并行产品轨** 继续交付。v2 closure 不得把「全量 v1 skill 回归」或「PyO3 兼容层」列为必过项；也不得把「删除 v1 轨」列为 v2.0.0 必过项。"
     },
     {
       "ac_id": "AC-111",
@@ -702,6 +703,56 @@
       "ac_id": "AC-144",
       "theme": "",
       "description": "- **AC-144**：标准执行流通过六 public skill 的 progressive examples 暴露，不得新增第七个 public skill 或绕过 Harness Boundary。"
+    },
+    {
+      "ac_id": "AC-147",
+      "theme": "",
+      "description": "- **AC-147**：Beacon 产品策略为长期双轨：`track_v1`（Python CLI + v1 skill 面）与 `track_v2`（Rust kernel + 六 public skill）对等并存；任一轨的 release/成熟度门禁 **不得** 隐含关停另一轨。"
+    },
+    {
+      "ac_id": "AC-148",
+      "theme": "",
+      "description": "- **AC-148**：双轨隔离契约——代码树、CLI 入口、skill 根、docs version tree、CI job 必须可分轨合并；同一 PR 若同时修改两轨「发布真源」，必须显式 `dual_track_shared_contract` admission，否则 fail-closed（`reason_code=dual_track_mixed_source`）。"
+    },
+    {
+      "ac_id": "AC-149",
+      "theme": "",
+      "description": "- **AC-149**：运行时选择必须显式（对齐 AC-060）；禁止 v2 路径执行 v1 backend，禁止 v1 路径把请求静默升级为 v2 并改写用户未请求的行为。"
+    },
+    {
+      "ac_id": "AC-150",
+      "theme": "",
+      "description": "- **AC-150**：迁移/导入工具可以只读对照另一轨状态，但不得在双写期成为第二写者（延续 AC-093 单写者原则，按轨分别强制）。"
+    },
+    {
+      "ac_id": "AC-151",
+      "theme": "",
+      "description": "- **AC-151**：v2.0.0 合同包含 **统一 skill 评分面**（`beacon skill-score` 或扩展现有 `beacon eval`），同一套维度 schema 必须能对 **v1 skill 包**与 **v2 六 public skill 包**打分；禁止为两轨维护互相不可比的私有满分制。"
+    },
+    {
+      "ac_id": "AC-152",
+      "theme": "",
+      "description": "- **AC-152**：统一评分必须包含 **结构质量**（SKILL.md/package/HARD GATE/progressive 合规，对齐 skill-creator / Beacon skill-package-standard）与 **实效质量**（固定 test-prompts 上的路由/边界/越权 negative；with_skill vs baseline 或等价对照），参考 Anthropic skill-creator 与 darwin-skill 的双评思想。"
+    },
+    {
+      "ac_id": "AC-153",
+      "theme": "",
+      "description": "- **AC-153**：skill 评分产物权威为 `runtime_evidence_only`；**不得**替代 `qa-evidence` formal QA，**不得**替代 `release` 人放行；scorecard 必须声明该边界。"
+    },
+    {
+      "ac_id": "AC-154",
+      "theme": "",
+      "description": "- **AC-154**：**只评分、人改**——评分/优化建议可以产出 diff 建议与维度短板，但 **禁止** 自动编辑、自动 commit、自动 revert 任何 `SKILL.md` 或 skill package 文件；保留/回滚由人执行。"
+    },
+    {
+      "ac_id": "AC-155",
+      "theme": "",
+      "description": "- **AC-155**：评分执行者与被评 skill 的「修改建议作者」在流程上必须可分离（独立评分会话或独立 grader）；禁止同一无审计步骤既改 skill 又自评涨分。"
+    },
+    {
+      "ac_id": "AC-156",
+      "theme": "",
+      "description": "- **AC-156**：v1 `beacon eval` 既有 scorecard 维度可映射进统一 schema，但发布门必须以统一 schema 的稳定字段为准；字段漂移须走 change，不得静默改权重冒充同比。"
     },
     {
       "ac_id": "AC-099",
@@ -1553,7 +1604,7 @@
     },
     {
       "id": "LINE-6",
-      "title": "TASK-P0-001-R8 收敛 `packages/beacon-rs/` workspace 为 v2 core 五 crate（core/store/orchestrator/gate/cli），移除或 archive-only 标记 `beacon-python`。",
+      "title": "TASK-P0-001-R8 收敛 `packages/beacon-rs/` workspace 为 v2 core 五 crate（core/store/orchestrator/gate/cli），移除或 archive-only 标记 `beacon-python`（**不**因此删除 v1 Python 产品轨）。",
       "status": "unchecked"
     },
     {
@@ -1580,6 +1631,36 @@
       "id": "TASK-P0-006",
       "title": "unit：TC-026–031, TC-067–076, TC-084。",
       "status": "checked"
+    },
+    {
+      "id": "TASK-R15-001",
+      "title": "双轨隔离契约文档 + CI path filters：`track_v1` vs `track_v2`；混改无 admission → `dual_track_mixed_source`（TC-148）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-R15-002",
+      "title": "显式 runtime 选择面（`beacon-v2` 或 `--runtime v2`）；更新 AC-060/TC-060b（TC-149）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-R15-003",
+      "title": "v2 路径 cross-track fallback fail-closed（TC-062b）；确认 v1 路径仍可调用 v1 skills。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-R15-004",
+      "title": "统一 skill-score schema（结构+实效）；映射现有 `beacon eval` 维度；权威 `runtime_evidence_only`（TC-151–153, TC-156）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-R15-005",
+      "title": "score-only human-edit：CLI/skill 禁止自动改 SKILL.md；独立评分与修改建议分离（TC-154–155, TC-N24）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-R15-006",
+      "title": "v1 与 v2 各至少一套可比 score fixture（37 面抽样 + 六 public）。",
+      "status": "unchecked"
     },
     {
       "id": "TASK-P1-001",
