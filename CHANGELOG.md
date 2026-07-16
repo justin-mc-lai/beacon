@@ -1,3 +1,14 @@
+## [1.6.7] — 2026-07-16 · version-surface + catalog cutover
+
+### Fixed
+- Promote package/runtime/docs default line to **v1.6.7** via `beacon/version-truth.json` and `beacon doctor sync-version-surfaces`
+- Align public entry surfaces (README current-line claims, root `SKILL.md`, host skill metadata) with package truth
+- Advance version-truth-catalog active window to `v1.6.5 / v1.6.6 / v1.6.7` (archive older delivery roots)
+
+### Notes
+- Feature program `beacon-unified-topology-loop-goal-v167` remains the v1.6.7 capability delivery (GitScopeGraph + loop-goal R7)
+- This entry closes the release-entry consistency gap called out after comprehensive project diagnosis
+
 ## [1.6.1] — 2026-06-23 · fix/p0-p1-p2 (P0/P1/P2 fix batch)
 
 ### Added (P1)

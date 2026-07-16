@@ -1,9 +1,9 @@
 ---
 name: beacon
-description: Beacon v1.6.0 host-level router for harness-first planner/generator/evaluator/governor skills.
+description: Beacon v1.6.7 host-level router for harness-first planner/generator/evaluator/governor skills.
 metadata:
   author: Beacon CLI
-  version: "v1.6.0"
+  version: "v1.6.7"
   organization: Beacon
   date: June 2026
   abstract: Harness-first Beacon meta-protocol. Route coarse user intent into planner, generator, evaluator, or governor skills without preserving old host-visible aliases.
@@ -13,7 +13,7 @@ metadata:
 
 This package is the canonical `skills/beacon/` host-visible Beacon skill package for Codex and Claude.
 
-v1.6.0 is a breaking skill-surface migration. Host-visible child skills use only:
+v1.6.0 introduced a breaking skill-surface migration (still the taxonomy baseline through v1.6.7). Host-visible child skills use only:
 
 - `beacon-pln-*`
 - `beacon-gen-*`

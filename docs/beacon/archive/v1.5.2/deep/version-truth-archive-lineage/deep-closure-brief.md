@@ -1,0 +1,44 @@
+# Deep Closure Brief
+
+- schema_version: `1.0`
+- feature: `version-truth-archive-lineage`
+- feature_slug: `version-truth-archive-lineage`
+- version: `v1.5.2`
+- generated_at: `2026-06-04T02:56:29.223491+00:00`
+## source_refs
+```json
+{
+  "prd": "docs/beacon/archive/v1.5.2/prd/version-truth-archive-lineage.md",
+  "user_story": "docs/beacon/archive/v1.5.2/user-story/version-truth-archive-lineage.md",
+  "test_case": "docs/beacon/archive/v1.5.2/qa/test-cases/version-truth-archive-lineage.md"
+}
+```
+
+- canonical_truth_policy: `read_only_frozen_truth`
+- lineage_policy: `trace-on-promotion; L0/L1 are non-canonical support projections, L2 requires truth-surface adoption, L3 belongs to PRD/user-story/test-case`
+- artifact_type: `deep_closure_brief`
+- deep_requirement_state: `required`
+- verdict: `closed`
+## executed_delta_cases
+```json
+[]
+```
+
+## open_findings
+```json
+[]
+```
+
+## waived_findings
+```json
+[]
+```
+
+## accepted_backlog_risks
+```json
+[]
+```
+
+- release_recommendation: `ready_with_deep_supplement`
+- skip_reason: ``
+- release_blocking_open_count: `0`
