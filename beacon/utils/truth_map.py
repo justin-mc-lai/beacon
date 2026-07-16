@@ -929,6 +929,9 @@ def evaluate_implement_version_governance_preflight(
         and selected_branch
         and workflow_expected_branch
         and workflow_expected_branch != selected_branch
+        # Per-feature worktrees use next_version_feature_branch under runtime_mirror
+        # (e.g. selected=beacon/v2.0.0, expected=beacon/v2.0.0/<feature-slug>).
+        and not str(workflow_expected_branch).startswith(str(selected_branch).rstrip("/") + "/")
     ):
         reason_code = "implement_git_workflow_metadata_drift"
         diagnostics.append(
