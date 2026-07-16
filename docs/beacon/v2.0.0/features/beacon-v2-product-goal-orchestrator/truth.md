@@ -2,9 +2,9 @@
 slug: beacon-v2-product-goal-orchestrator
 version: v2.0.0
 status: frozen
-revision_id: R1
+revision_id: R2
 language: zh
-change_reason: v2 product goal parallel + main-star satellite; parity with v1.6.7 R2
+change_reason: R2 single public entry beacon-goal; loop support-only; parity v1.6.7 R3
 canonical_refs:
   truth: docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md
   tests: docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tests.md
@@ -16,27 +16,29 @@ truth_map_contract: beacon-truth-map-v1
 program_ref: docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/feature-graph.json
 ---
 
-# Requirement Truth: v2 Product Goal Orchestrator
-
+# Requirement Truth: v2 Product Goal Orchestrator (R2)
 
 ## Overview
 
-Rust Operator Spine 实现 Product Goal Runtime：
+Rust Operator Spine 实现 Product Goal Runtime，**调用侧与 v1.6.7 R3 相同：唯一入口 `beacon-goal`**。
 
-- host skill **`beacon-goal`** + CLI `beacon goal`
-- 与 **`beacon-loop-goal`** 双 skill 分工（发现 vs 完成）
-- **渐进式 skill 加载**（阶段映射）
-- 用户意图 / program graph 触发 **并行 sub-agent**
-- done_when / blocked≥3 / release human gate 与 v1.6.7 R2 同构
+## Public entry
+
+| 入口 | 层级 |
+|------|------|
+| `beacon-goal` / `beacon goal run` | **唯一公共交付入口** |
+| `beacon run` | 可选别名 |
+| `beacon-loop-goal` | support discovery only |
 
 ## User Decisions
 
 | ID | Value |
 |----|-------|
-| UD-V2-PGO-001 | Rust orchestrator is source of runtime truth; Python is compat shim |
-| UD-V2-PGO-002 | Progressive skill load map is data-driven JSON in ~/.beacon or project .beacon |
+| UD-V2-PGO-001 | Rust orchestrator is runtime source; Python compat shim |
+| UD-V2-PGO-002 | Progressive skill load map data-driven |
 | UD-V2-PGO-003 | Sub-agent fan-out only for lakes without unmet depends_on |
-
+| UD-V2-PGO-004 | Single public facade `beacon-goal` |
+| UD-V2-PGO-005 | loop-goal support tier only |
 
 ## Acceptance Criteria
 
@@ -48,3 +50,5 @@ Rust Operator Spine 实现 Product Goal Runtime：
 | AC-V2-PGO-004 | subagent | parallel_plan 驱动 sub-agent；尊重 feature-graph 依赖（**Must**） |
 | AC-V2-PGO-005 | done | complete 需 verifier；禁止自述（**Must**） |
 | AC-V2-PGO-006 | compat | Python CLI 入口保持 `beacon goal`（**Must**） |
+| AC-V2-PGO-007 | single-entry | 用户主路径仅 beacon-goal；loop 为 support（**Must**） |
+| AC-V2-PGO-008 | docs | 30s 用法与 v1 同构引用（**Must**） |

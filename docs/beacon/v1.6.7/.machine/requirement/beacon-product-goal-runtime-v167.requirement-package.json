@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-16T15:22:25.406069+00:00",
+  "generated_at": "2026-07-16T15:35:39.265502+00:00",
   "feature": "beacon-product-goal-runtime-v167",
   "feature_slug": "beacon-product-goal-runtime-v167",
   "version": "v1.6.7",
@@ -18,8 +18,8 @@
     "evidence": "docs/beacon/v1.6.7/features/beacon-product-goal-runtime-v167/evidence.md"
   },
   "source_hashes": {
-    "truth": "70cbc10b0aec0df32d8ac86f3bb43aa79ad75744b15b326049905b9fcfd5abe7",
-    "tests": "af183c78fab4456b36a0ba6aff7e88a3aefdf960a1ce41e6cfa52f336663f1a0",
+    "truth": "aa5ef11dfbdb1631c0e0eb6d34b5f482ff25f633a2656f9625871da6df02e226",
+    "tests": "171ea0ef862dc60b3e170631fe43339ca03543b8052aa9b898c83e3e15f97741",
     "tasks": "b1a7507180a83488aa615c53385e5dfd0dc75b7acd8711434f31161324dbb01f",
     "evidence": "892ff81378709f632028ac97ce51ef3b4f02d506b7f788904694eac6d1b9a933"
   },
@@ -27,9 +27,9 @@
     "slug": "beacon-product-goal-runtime-v167",
     "version": "v1.6.7",
     "status": "frozen",
-    "revision_id": "R2",
+    "revision_id": "R3",
     "language": "zh",
-    "change_reason": "R2 - parallel subagent + progressive skill load + main-star/satellite worktree pool; host skill beacon-goal",
+    "change_reason": "R3 - single public entry beacon-goal (or beacon run); loop-goal is support discovery only; 30s UX",
     "canonical_refs": {
       "truth": "docs/beacon/v1.6.7/features/beacon-product-goal-runtime-v167/truth.md",
       "tests": "docs/beacon/v1.6.7/features/beacon-product-goal-runtime-v167/tests.md",
@@ -45,146 +45,115 @@
   "acceptance_criteria": [
     {
       "ac_id": "AC-PGR-001",
-      "theme": "state-schema",
-      "description": "product-goal-state.v1 含 objective/done_when/budget/status/stage_pointer/**parallel_plan**/**worktree_mode**（**Must**）"
+      "theme": "single-entry",
+      "description": "用户主路径只需 `beacon-goal` / `beacon goal run`（**Must**）"
     },
     {
       "ac_id": "AC-PGR-002",
-      "theme": "cli-surface",
-      "description": "`beacon goal start\\"
+      "theme": "no-dual-call",
+      "description": "主文档与 host router **不得**要求「先 loop 后 goal」（**Must**）"
     },
     {
       "ac_id": "AC-PGR-003",
-      "theme": "host-skill",
-      "description": "新增 host-visible **`beacon-goal`** skill 包（governor 编排，不自证完成）（**Must**）"
+      "theme": "facade",
+      "description": "`beacon-goal` 门面内完成：拆解→truth→implement→qa→（release 门）（**Must**）"
     },
     {
       "ac_id": "AC-PGR-004",
-      "theme": "dual-skill",
-      "description": "文档与 inventory：`beacon-loop-goal`≠`beacon-goal`；loop 不得 emit product complete（**Must**）"
+      "theme": "loop-support",
+      "description": "`beacon-loop-goal` 元数据/描述标 support；inventory 可保留但路由为 support（**Must**）"
     },
     {
       "ac_id": "AC-PGR-005",
-      "theme": "progressive-load",
-      "description": "Goal 决策树按阶段加载 skill（truth→gen-truth；implement→gen-implement；qa→eval-qa…）；禁止默认全量加载（**Must**）"
+      "theme": "alias",
+      "description": "`beacon run` 可映射到 `beacon goal run`（**Should**）"
     },
     {
       "ac_id": "AC-PGR-006",
-      "theme": "intent-subagent",
-      "description": "用户 utterance / program 含 `subagent`/`parallel`/`主星`/`卫星` 时解析为 parallel_plan（**Must**）"
+      "theme": "progressive",
+      "description": "阶段 skill 渐进加载（**Must**）"
     },
     {
       "ac_id": "AC-PGR-007",
-      "theme": "parallel-lakes",
-      "description": "parallel_plan 将可并行湖分配给 satellite agents；依赖边尊重 feature-graph（**Must**）"
+      "theme": "parallel",
+      "description": "parallel_plan + 主星卫星 pool（**Must**，承 R2）"
     },
     {
       "ac_id": "AC-PGR-008",
-      "theme": "worktree-single",
-      "description": "`worktree_mode=single_worktree`：一 goal 一 worktree 串行阶段（**Must**）"
+      "theme": "done-audit",
+      "description": "complete 需 verifier（**Must**）"
     },
     {
       "ac_id": "AC-PGR-009",
-      "theme": "worktree-pool",
-      "description": "`worktree_mode=main_star_satellite_pool`：主星 integration branch + N 卫星 worktree（每湖一个）（**Must**）"
+      "theme": "example-30s",
+      "description": "`skills/beacon/examples/goal-one-shot-30s.md` 存在且只教单入口（**Must**）"
     },
     {
       "ac_id": "AC-PGR-010",
-      "theme": "merge-to-star",
-      "description": "卫星完成 implement 本地验证后 PR/merge 回主星；冲突 → blocked 或主星协调 agent（**Must**）"
+      "theme": "host-router",
+      "description": "`skills/beacon/SKILL.md` 标明 goal 为一句话交付入口（**Must**）"
     },
     {
       "ac_id": "AC-PGR-011",
-      "theme": "done-audit",
-      "description": "complete 前 CLI verifier（tests/qa/domain）；禁止自述（**Must**）"
-    },
-    {
-      "ac_id": "AC-PGR-012",
-      "theme": "blocked-audit",
-      "description": "同 blocker ≥3 goal turns 才 blocked（**Must**）"
-    },
-    {
-      "ac_id": "AC-PGR-013",
-      "theme": "release-human",
-      "description": "release_gate 永不 auto（**Must**）"
-    },
-    {
-      "ac_id": "AC-PGR-014",
       "theme": "v2-parity",
-      "description": "state/parallel/worktree 字段进入 v2 schema fixture 并被 v2 program 引用（**Must**）"
+      "description": "v2 orchestrator 合同同步单入口（**Must**）"
     }
   ],
   "test_rows": [
     {
       "ac_id": "AC-PGR-001",
-      "tc_id": "TC-PGR-001",
+      "tc_id": "TC-PGR-R3-001",
       "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_state_schema_parallel_worktree -q`",
-      "assertion": "state 含 parallel_plan/worktree_mode",
+      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_single_public_entry -q`",
+      "assertion": "单入口合同",
       "evidence_path": ""
     },
     {
-      "ac_id": "AC-PGR-003",
-      "tc_id": "TC-PGR-002",
+      "ac_id": "AC-PGR-002",
+      "tc_id": "TC-PGR-R3-002",
       "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_beacon_goal_skill_present -q`",
-      "assertion": "skills/beacon/beacon-goal 存在",
+      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_docs_no_dual_call_path -q`",
+      "assertion": "主文档无双调用",
       "evidence_path": ""
     },
     {
       "ac_id": "AC-PGR-004",
-      "tc_id": "TC-PGR-003",
+      "tc_id": "TC-PGR-R3-003",
       "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_loop_vs_goal_skills_split -q`",
-      "assertion": "两 skill 边界文案",
-      "evidence_path": ""
-    },
-    {
-      "ac_id": "AC-PGR-005",
-      "tc_id": "TC-PGR-004",
-      "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_progressive_skill_load_map -q`",
-      "assertion": "阶段→skill 映射",
-      "evidence_path": ""
-    },
-    {
-      "ac_id": "AC-PGR-006",
-      "tc_id": "TC-PGR-005",
-      "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_intent_parses_subagent -q`",
-      "assertion": "意图解析 parallel",
+      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_loop_goal_marked_support -q`",
+      "assertion": "loop 标 support",
       "evidence_path": ""
     },
     {
       "ac_id": "AC-PGR-009",
-      "tc_id": "TC-PGR-006",
-      "layer": "integration",
-      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_main_star_satellite_pool -q`",
-      "assertion": "主星卫星 pool",
+      "tc_id": "TC-PGR-R3-004",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_30s_example_exists -q`",
+      "assertion": "30s 示例存在",
       "evidence_path": ""
     },
     {
       "ac_id": "AC-PGR-010",
-      "tc_id": "TC-PGR-007",
-      "layer": "integration",
-      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_satellite_merge_to_star -q`",
-      "assertion": "merge 回主星",
+      "tc_id": "TC-PGR-R3-005",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_host_router_mentions_goal_entry -q`",
+      "assertion": "host router 指向 goal",
       "evidence_path": ""
     },
     {
-      "ac_id": "AC-PGR-011",
-      "tc_id": "TC-PGR-008",
+      "ac_id": "AC-PGR-007",
+      "tc_id": "TC-PGR-R3-006",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_main_star_satellite_pool -q`",
+      "assertion": "主星卫星",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PGR-008",
+      "tc_id": "TC-PGR-R3-007",
       "layer": "negative",
       "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_complete_requires_verifier -q`",
       "assertion": "无 verifier 不可 complete",
-      "evidence_path": ""
-    },
-    {
-      "ac_id": "AC-PGR-014",
-      "tc_id": "TC-PGR-009",
-      "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_v2_schema_fixture_parity -q`",
-      "assertion": "v2 fixture 可加载",
       "evidence_path": ""
     }
   ],

@@ -1,3 +1,5 @@
+> 日常入口：`$beacon-goal`（见 goal-one-shot-30s.md）
+
 # Full Product Domain Freeze Example
 
 This is the **recommended complete demonstration** for business products (not CLI meta-features).

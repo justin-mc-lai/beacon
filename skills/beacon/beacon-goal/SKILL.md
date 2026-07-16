@@ -1,48 +1,59 @@
 ---
 name: beacon-goal
-description: Beacon Product Goal skill — run-until-done across truth→implement→qa→release. Discover is beacon-loop-goal; this skill finishes queue items with progressive skill load and optional parallel sub-agents (main-star/satellite worktrees).
+description: "【唯一公共入口】一句话目标 → 自动拆需求/编排/实现/验收直到 done。内部可委托 program、truth、implement(ralph)、qa、release；beacon-loop-goal 仅为 support 发现器，用户不必先调它。"
 metadata:
   version: "v1.6.7"
+  entry: public_primary
+  role: product_goal_facade
 ---
 
-# Beacon Goal (Product Goal)
+# Beacon Goal — 唯一公共交付入口
 
-## Role
+## 你要什么就说什么
 
-**Finish** work units from the goal queue until `done_when` is verified.
+```text
+$beacon-goal
+目标：...
+项目：.
+版本：...
+```
 
-## Not this skill
+**一句话，跑到验收。** 不要先调 `$beacon-loop-goal`。
 
-- Discovery / triage heartbeat → use **`beacon-loop-goal`**
-- Program ocean split → **`beacon-pln-program*`**
-- Code-only multi-round repair → **`beacon-gen-implement --mode ralph`** (delegate only)
+## 30 秒用法
 
-## Harness
+见：`skills/beacon/examples/goal-one-shot-30s.md`
 
-Governor/orchestrator: routes and loads stage skills progressively. Does **not** self-certify QA/release.
+## 内部会加载什么（渐进，对用户不可见）
 
-## Progressive load (default)
+| 阶段 | 可能加载 |
+|------|----------|
+| 拆海 | beacon-pln-program* |
+| 需求 | beacon-gen-truth / change |
+| 实现 | beacon-gen-implement（+ ralph） |
+| 验收 | beacon-eval-qa（+ deep） |
+| 发布 | beacon-eval-release（人工门） |
+| 发现队列 | beacon-loop-goal（**support only**） |
 
-| Stage | Load |
-|-------|------|
-| truth | beacon-gen-truth / change |
-| implement | beacon-gen-implement (+ ralph if delegated) |
-| qa | beacon-eval-qa (+ deep if needed) |
-| release | beacon-eval-release (human gate) |
+## 并行（可选）
 
-## Parallel
-
-If intent/program requests subagents and lakes are independent:
-`worktree_mode=main_star_satellite_pool` — one satellite worktree per lake; merge to main-star.
+意图含并行/subagent/多湖时：`main_star_satellite_pool` — 卫星 worktree 各啃一湖，合并回主星。
 
 ## CLI
 
 ```bash
-beacon goal start|status|pause|resume|complete|tick --project . --version <v> ...
+beacon goal run "<目标>" --project . --version <v>
+# 可选别名
+beacon run "<目标>" --project . --version <v>
+beacon goal status|pause|resume|complete|tick ...
 ```
 
-## Boundaries
+## Hard rules
 
-- release always human-confirmed
-- complete requires CLI verifier evidence
-- satellites must not author package truth on truth_canonical
+- 禁止自证完成；complete 需 CLI verifier
+- release 默认人工确认
+- 不得要求用户手搓双 skill 流水线
+
+## Harness
+
+Orchestrator/facade：可路由 generator/evaluator；**不**自己发 QA/release verdict。

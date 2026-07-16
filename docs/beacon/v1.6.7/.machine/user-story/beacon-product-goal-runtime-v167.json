@@ -3,9 +3,9 @@
   "feature": "beacon-product-goal-runtime-v167",
   "feature_slug": "beacon-product-goal-runtime-v167",
   "version": "v1.6.7",
-  "current_revision_id": "R2",
+  "current_revision_id": "R3",
   "lifecycle_status": "frozen",
-  "updated_at": "2026-07-16T15:22:25.055303+00:00",
+  "updated_at": "2026-07-16T15:35:38.878959+00:00",
   "revisions": [
     {
       "revision_id": "R1",
@@ -26,12 +26,26 @@
       "feature_slug": "beacon-product-goal-runtime-v167",
       "source_revision_id": "R1",
       "reason": "add parallel subagent + progressive skill load + main-star satellite worktree pool",
-      "doc_status": "frozen",
-      "delivery_status": "idle",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
       "baseline_hash": "sha256:e9635d2e4de63f0f3ff2d768c7834724ac3232c71d3435290d11d3fa974433f9",
-      "superseded_by": null,
+      "superseded_by": "R3",
       "created_at": "2026-07-16T15:20:34.217253+00:00",
       "frozen_at": "2026-07-16T15:22:25.147067+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R3",
+      "feature_slug": "beacon-product-goal-runtime-v167",
+      "source_revision_id": "R2",
+      "reason": "single public entry beacon-goal; loop-goal demoted to support discovery",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:c2a39cee822c1389923537b26505d8eb55ff3693af8c3b9c042f36e74cac0205",
+      "superseded_by": null,
+      "created_at": "2026-07-16T15:34:02.196677+00:00",
+      "frozen_at": "2026-07-16T15:35:38.995784+00:00",
       "accepted_at": null,
       "accepted_by": null
     }
@@ -103,7 +117,7 @@
       "revision_id": "R2",
       "title": "beacon-product-goal-runtime-v167",
       "priority": "medium",
-      "status": "frozen",
+      "status": "superseded",
       "items": [
         {
           "id": "AC-001",
@@ -141,6 +155,67 @@
           "verified_by_run_id": null,
           "accepted_at": null,
           "changed_in_revision": "R2",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "fallback"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-product-goal-runtime-v167",
+        "version": "v1.6.7",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/research/beacon-product-goal-runtime-v167.md",
+        "present": false,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      }
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R3",
+      "title": "beacon-product-goal-runtime-v167",
+      "priority": "medium",
+      "status": "frozen",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "general",
+          "text": "Acceptance criteria TBD",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "fallback"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Acceptance criteria TBD",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
           "covers": [
             "AC-001"
           ],

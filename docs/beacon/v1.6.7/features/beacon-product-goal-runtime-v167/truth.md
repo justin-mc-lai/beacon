@@ -2,9 +2,9 @@
 slug: beacon-product-goal-runtime-v167
 version: v1.6.7
 status: frozen
-revision_id: R2
+revision_id: R3
 language: zh
-change_reason: "R2 - parallel subagent + progressive skill load + main-star/satellite worktree pool; host skill beacon-goal"
+change_reason: "R3 - single public entry beacon-goal (or beacon run); loop-goal is support discovery only; 30s UX"
 canonical_refs:
   truth: docs/beacon/v1.6.7/features/beacon-product-goal-runtime-v167/truth.md
   tests: docs/beacon/v1.6.7/features/beacon-product-goal-runtime-v167/tests.md
@@ -16,96 +16,79 @@ truth_map_contract: beacon-truth-map-v1
 program_ref: docs/beacon/v1.6.7/programs/beacon-product-goal-domain-delivery-v167/feature-graph.json
 ---
 
-# Requirement Truth: Product Goal Runtime v1.6.7 (R2)
+# Requirement Truth: Product Goal Runtime v1.6.7 (R3)
 
 ## Overview
 
-**Product Goal Runtime** 是跨 `truth → implement → qa → release` 的 run-until-done 完成机。
+**对用户只有一个入口：`beacon-goal`（CLI 等价 `beacon goal run` / 可选别名 `beacon run`）。**
 
-### 宿主 Skill 形态（回答「立项 skill 是啥」）
+一句话目标 → 自动拆解需求、编排执行、持续验收，直到 `done_when` 通过（release 仍可人工确认）。
 
-| 角色 | Host-visible skill（拟） | 现状 | 职责 |
-|------|-------------------------|------|------|
-| **Loop 发现** | `beacon-loop-goal`（既有，角色收窄） | 已有 | 发现/分拣/写入 goal-queue；**不**宣称产品完成 |
-| **Goal 完成** | **`beacon-goal`**（新 governor/orchestrator skill） | **本 lake 立项交付** | 啃 queue 项到 done_when；渐进加载 lifecycle skills |
-| Program 拆海 | `beacon-pln-program*` | 已有 | 意图→feature-graph/lakes |
-| Implement 长跑 | `beacon-gen-implement` + mode ralph | 已有 | 仅实现段；可被 Goal 委托 |
+内部模块可以拆（discover / finish / ralph / program），**不得**要求用户先调 loop 再调 goal。
 
-**结论：对外是两个编排面（Loop vs Goal），不是把一切塞进一个 skill。**  
-CLI：`beacon goal …` 与 host `$beacon-goal` 共享 state。
+## Public call surface（Must — 调用侧简单）
+
+| 入口 | 可见性 | 用户是否需要记 |
+|------|--------|----------------|
+| **`$beacon-goal` / `beacon goal run "<目标>"`** | **唯一主编排入口** | **只要记这一个** |
+| `beacon run "<目标>"` | 可选别名 → goal run | 可选 |
+| `$beacon-loop-goal` | **support / internal discovery** | **默认不出现在主文档调用路径** |
+| `$beacon-pln-program*` | planner 支持面 | 仅调试/显式拆海时 |
+| `$beacon-gen-implement --mode ralph` | implement 子控制器 | 由 goal 委托，用户不手点 |
+
+### 用户本意映射
+
+```text
+用户：做一个 X，验收通过
+     ↓
+唯一入口：beacon-goal
+     ↓ 内部（对用户不可见）
+  pln-program? → gen-truth → gen-implement(ralph?) → eval-qa → release_gate
+  可选：loop-goal 只写 queue / 心跳发现
+```
 
 ## User Intent（一行）
 
-Goal 跨全生命周期跑到可验证交付；支持意图声明的并行 sub-agent；实现阶段可用主星/卫星 worktree 并行啃多个湖并合并回主星。
+一句话目标，Beacon 自动拆需求、编排到验收；调用侧不暴露双主编排。
 
 ## User Decisions（locked）
 
 | ID | Decision | Value |
 |----|----------|-------|
-| UD-PGR-001 | Goal 单位 | **产品交付单位 / lake-feature，非单次 prompt** |
-| UD-PGR-002 | Done | **done_when 含 domain_fsm + evidence_chain + continuous qa** |
-| UD-PGR-003 | Host parity | **对齐 create_goal/update_goal/blocked≥3** |
-| UD-PGR-004 | Inner routers | **阶段路由可调 loop-goal 子步骤；Ralph 仅 implement** |
-| UD-PGR-005 | Release | **release 仍 human gate** |
-| UD-PGR-006 | Skill 分裂 | **`beacon-loop-goal`=发现；`beacon-goal`=完成**（两个 host skill） |
-| UD-PGR-007 | 渐进加载 | **按阶段只加载当前需要的 pln/gen/eval skill，禁止一次塞满 38 skill** |
-| UD-PGR-008 | Sub-agent | **用户意图或 program graph 声明 parallel 时，Goal 可 spawn 子代理** |
-| UD-PGR-009 | Worktree 模式 | **两种：`single_worktree`（串行）与 `main_star_satellite_pool`（主星+卫星并行）** |
-| UD-PGR-010 | 主星/卫星 | **主星持 integration 分支；每卫星一湖一 worktree；完成验后 merge 回主星** |
-| UD-PGR-011 | v2 | **合同字段与 v2 Rust orchestrator / BranchContext 对齐（见 v2 program）** |
+| UD-PGR-001 | Goal 单位 | **产品交付单位 / lake-feature** |
+| UD-PGR-002 | Done | **domain_fsm + evidence_chain + continuous qa** |
+| UD-PGR-003 | Host parity | **create_goal/update_goal/blocked≥3** |
+| UD-PGR-004 | Inner | **可委托 loop 子步骤、ralph implement** |
+| UD-PGR-005 | Release | **human gate** |
+| UD-PGR-006 | **Public entry** | **唯一：`beacon-goal`（+ CLI `beacon goal run` / 可选 `beacon run`）** |
+| UD-PGR-007 | Loop skill | **`beacon-loop-goal` = support discovery only，非并列主编排** |
+| UD-PGR-008 | Progressive load | **按阶段加载 skill，默认不全量** |
+| UD-PGR-009 | Sub-agent | **意图/program 声明时可并行** |
+| UD-PGR-010 | Worktree | **`single_worktree` \| `main_star_satellite_pool`** |
+| UD-PGR-011 | Docs | **主文档/examples 只教单入口 30 秒用法** |
+| UD-PGR-012 | v2 | **v2 同构：单入口 + support loop** |
 
 ## Acceptance Criteria
 
 | AC ID | Theme | Description |
 |-------|-------|-------------|
-| AC-PGR-001 | state-schema | product-goal-state.v1 含 objective/done_when/budget/status/stage_pointer/**parallel_plan**/**worktree_mode**（**Must**） |
-| AC-PGR-002 | cli-surface | `beacon goal start\|status\|pause\|resume\|complete\|tick`（**Must**） |
-| AC-PGR-003 | host-skill | 新增 host-visible **`beacon-goal`** skill 包（governor 编排，不自证完成）（**Must**） |
-| AC-PGR-004 | dual-skill | 文档与 inventory：`beacon-loop-goal`≠`beacon-goal`；loop 不得 emit product complete（**Must**） |
-| AC-PGR-005 | progressive-load | Goal 决策树按阶段加载 skill（truth→gen-truth；implement→gen-implement；qa→eval-qa…）；禁止默认全量加载（**Must**） |
-| AC-PGR-006 | intent-subagent | 用户 utterance / program 含 `subagent`/`parallel`/`主星`/`卫星` 时解析为 parallel_plan（**Must**） |
-| AC-PGR-007 | parallel-lakes | parallel_plan 将可并行湖分配给 satellite agents；依赖边尊重 feature-graph（**Must**） |
-| AC-PGR-008 | worktree-single | `worktree_mode=single_worktree`：一 goal 一 worktree 串行阶段（**Must**） |
-| AC-PGR-009 | worktree-pool | `worktree_mode=main_star_satellite_pool`：主星 integration branch + N 卫星 worktree（每湖一个）（**Must**） |
-| AC-PGR-010 | merge-to-star | 卫星完成 implement 本地验证后 PR/merge 回主星；冲突 → blocked 或主星协调 agent（**Must**） |
-| AC-PGR-011 | done-audit | complete 前 CLI verifier（tests/qa/domain）；禁止自述（**Must**） |
-| AC-PGR-012 | blocked-audit | 同 blocker ≥3 goal turns 才 blocked（**Must**） |
-| AC-PGR-013 | release-human | release_gate 永不 auto（**Must**） |
-| AC-PGR-014 | v2-parity | state/parallel/worktree 字段进入 v2 schema fixture 并被 v2 program 引用（**Must**） |
-
-## Parallel + Worktree Model
-
-```text
-Program feature-graph (lakes)
-        │
-        ▼
-   beacon-goal (Product Goal)
-        │
-        ├─ progressive skill load per stage
-        │
-        ├─ mode: single_worktree
-        │     one agent walks stages serially
-        │
-        └─ mode: main_star_satellite_pool
-              main-star: integration branch + merge/qa/release
-              satellite-i: worktree for lake-i implement (optional local qa smoke)
-              merge satellite → main-star when lake AC smoke green
-```
-
-### Merge policy (Must)
-
-- Satellite 不得直推 `truth_canonical`（main）需求真相；truth 仍在 main 写。
-- Satellite 默认可写 **implement 交付分支**；merge 目标是 **main-star feature integration branch**。
-- 主星负责：合入、跨湖回归、qa、release 门。
+| AC-PGR-001 | single-entry | 用户主路径只需 `beacon-goal` / `beacon goal run`（**Must**） |
+| AC-PGR-002 | no-dual-call | 主文档与 host router **不得**要求「先 loop 后 goal」（**Must**） |
+| AC-PGR-003 | facade | `beacon-goal` 门面内完成：拆解→truth→implement→qa→（release 门）（**Must**） |
+| AC-PGR-004 | loop-support | `beacon-loop-goal` 元数据/描述标 support；inventory 可保留但路由为 support（**Must**） |
+| AC-PGR-005 | alias | `beacon run` 可映射到 `beacon goal run`（**Should**） |
+| AC-PGR-006 | progressive | 阶段 skill 渐进加载（**Must**） |
+| AC-PGR-007 | parallel | parallel_plan + 主星卫星 pool（**Must**，承 R2） |
+| AC-PGR-008 | done-audit | complete 需 verifier（**Must**） |
+| AC-PGR-009 | example-30s | `skills/beacon/examples/goal-one-shot-30s.md` 存在且只教单入口（**Must**） |
+| AC-PGR-010 | host-router | `skills/beacon/SKILL.md` 标明 goal 为一句话交付入口（**Must**） |
+| AC-PGR-011 | v2-parity | v2 orchestrator 合同同步单入口（**Must**） |
 
 ## Non-Goals
 
-- 不在本 lake 实现完整 multi-agent 框架产品化 UI
-- 不取消 harness hard gate（planner 不实现等）
-- 不让 satellite 写 package truth
+- 不强迫用户理解 discover/finish 两个按钮
+- 不删除 loop-goal 实现能力，只降调用层级
 
 ## Dependencies
 
-- domain-fsm-authority（done_when）
-- loop-discover-goal-finish（queue handoff）
-- git-scope-graph / worktree admission（pool）
+- domain-fsm-authority, loop-discover-goal-finish (support role), git-scope-graph

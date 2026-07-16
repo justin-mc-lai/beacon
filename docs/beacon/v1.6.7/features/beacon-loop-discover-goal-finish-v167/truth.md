@@ -2,9 +2,9 @@
 slug: beacon-loop-discover-goal-finish-v167
 version: v1.6.7
 status: frozen
-revision_id: R2
+revision_id: R3
 language: zh
-change_reason: "R2 - dual host skills: beacon-loop-goal (discover) vs beacon-goal (finish); queue handoff"
+change_reason: "R3 - beacon-loop-goal is support/internal discovery only; not co-equal public entry"
 canonical_refs:
   truth: docs/beacon/v1.6.7/features/beacon-loop-discover-goal-finish-v167/truth.md
   tests: docs/beacon/v1.6.7/features/beacon-loop-discover-goal-finish-v167/tests.md
@@ -16,45 +16,49 @@ truth_map_contract: beacon-truth-map-v1
 program_ref: docs/beacon/v1.6.7/programs/beacon-product-goal-domain-delivery-v167/feature-graph.json
 ---
 
-# Requirement Truth: Loop Discover / Goal Finish Split v1.6.7 (R2)
+# Requirement Truth: Loop as Support Discovery v1.6.7 (R3)
 
 ## Overview
 
-**两个 host-visible 编排 skill，不是一个。**
+**用户不需要「两个主编排」。**
 
-| Skill | 职责 | 不做什么 |
-|-------|------|----------|
-| **`beacon-loop-goal`** | 发现、分拣、写入 `goal-queue` / STATE；可定时/会话触发 | 不 mark product complete；不跑满 lifecycle 自证交付 |
-| **`beacon-goal`** | 消费 queue 顶项，run-until-done（渐进加载阶段 skill） | 不做无目标的无限发现心跳 |
+| Skill | 调用层级 | 职责 |
+|-------|----------|------|
+| **`beacon-goal`** | **唯一公共入口** | 一句话目标 → 验收 |
+| **`beacon-loop-goal`** | **support / internal** | 发现、分拣、写 queue；可被 goal 内部调用或定时心跳 |
+| `beacon-pln-program*` | support planner | 显式拆海时用 |
 
-Program 拆海仍用 **`beacon-pln-program*`**（planner），产出 lakes 供 Goal 并行计划。
+`beacon-loop-goal` **可以保留 host 目录**（兼容、调试），但：
+
+1. description 必须标明 **support**
+2. 主路由 / 30 秒用法 **不得** 要求用户先调它
+3. 不得 mark product complete
 
 ## User Intent（一行）
 
-Loop 发现排队；Goal 啃到完成；skill 面一分为二且交接合同明确。
+Loop 降为发现支持面；Goal 独占用户侧一句话交付入口。
 
 ## User Decisions（locked）
 
 | ID | Decision | Value |
 |----|----------|-------|
-| UD-LDG-001 | Loop skill | **`beacon-loop-goal`（既有，角色收窄为 discover）** |
-| UD-LDG-002 | Goal skill | **`beacon-goal`（新建，finish）** |
-| UD-LDG-003 | Handoff | **`.beacon/state/goal-queue/*.json` + 可选 STATE.md** |
-| UD-LDG-004 | Conflict | **同路径活跃 goal 时 loop 不抢写实现分支** |
-| UD-LDG-005 | Inventory | **agent surface expected list 同时包含两 skill** |
+| UD-LDG-001 | Public entry | **仅 beacon-goal** |
+| UD-LDG-002 | Loop tier | **support/internal discovery** |
+| UD-LDG-003 | Handoff | **goal-queue；由 goal 消费** |
+| UD-LDG-004 | Docs | **主路径不展示双 skill 流水线** |
+| UD-LDG-005 | Compatibility | **旧 `$beacon-loop-goal` 调用仍可用，但应 redirect/说明改用 goal 做交付** |
 
 ## Acceptance Criteria
 
 | AC ID | Theme | Description |
 |-------|-------|-------------|
-| AC-LDG-001 | queue-schema | goal-queue.v1（**Must**） |
-| AC-LDG-002 | loop-write-only | loop 只 append queue，不得 `goal.status=complete`（**Must**） |
-| AC-LDG-003 | goal-consume | beacon-goal start 消费顶项（**Must**） |
-| AC-LDG-004 | skill-docs | 两 skill SKILL.md 互指边界（**Must**） |
-| AC-LDG-005 | inventory | skill inventory/count 接受 beacon-goal 为第 N 个 host skill（**Must**） |
-| AC-LDG-006 | v2 | queue schema 进 v2 fixture（**Must**） |
+| AC-LDG-001 | support-meta | loop-goal skill frontmatter/description 含 support 语义（**Must**） |
+| AC-LDG-002 | no-coequal | program/SUMMARY/examples 不把 loop 与 goal 并列为两主编排入口（**Must**） |
+| AC-LDG-003 | queue | 仍可写 goal-queue 供 goal 消费（**Must**） |
+| AC-LDG-004 | no-complete | loop 不得 product complete（**Must**） |
+| AC-LDG-005 | redirect | loop skill 正文指向「交付请用 beacon-goal」（**Must**） |
 
 ## Non-Goals
 
-- 不删除 beacon-loop-goal
-- 不把 program planner 合并进 loop/goal
+- 不删除 loop-goal 代码路径
+- 不禁止高级用户显式调用 support 面
