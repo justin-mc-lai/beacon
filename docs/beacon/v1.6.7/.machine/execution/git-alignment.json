@@ -2,38 +2,38 @@
   "schema_version": "1.0",
   "version": "v1.6.7",
   "feature": "beacon-loop-goal-v166",
-  "run_id": "repair-v1.6.7-20260716T101849133956Z0000",
-  "generated_at": "2026-07-16T10:18:49.387914+00:00",
-  "status": "warn",
+  "run_id": "release-closeout-main-2026-07-16T122358.772110+0000",
+  "generated_at": "2026-07-16T12:23:58.772468+00:00",
+  "status": "pass",
   "strict_required": true,
   "repo_url": "https://github.com/justin-mc-lai/beacon.git",
   "version_ref": "v1.6.7",
   "allowed_refs": [
     "tag",
-    "branch"
+    "branch",
+    "truth_canonical"
   ],
   "enforce_branch_prefix": "beacon/",
   "git_refs": {
     "base_branch": "main",
     "target_branch": "beacon/v1.6.7",
-    "current_branch": "beacon/v1.6.7/beacon-git-scope-graph-v167",
-    "commit": "b3d07b9a15954b71dc325965b6b59943d54f3bf0",
+    "current_branch": "main",
+    "commit": "47c75c06c8d0aa98fdcb3d25ee39292492050485",
     "tag": "",
-    "worktree_path": "/Users/apple/Developer/Personal/products/beacon"
+    "worktree_path": "/Users/apple/Developer/Personal/products/beacon",
+    "truth_canonical": "main"
   },
   "alignment": {
     "branch_matches_target": false,
-    "branch_has_required_prefix": true,
+    "branch_has_required_prefix": false,
     "tag_matches_version": false,
-    "version_ref_satisfied": false
+    "version_ref_satisfied": true,
+    "on_truth_canonical": true
   },
-  "reason_codes": [
-    "git_branch_target_mismatch",
-    "git_version_ref_not_satisfied"
-  ],
-  "blocked": true,
+  "reason_codes": [],
+  "blocked": false,
   "notes": [
-    "Git alignment is validated against target branch or exact version tag.",
-    "This artifact is intended for doctor verify-git-alignment and delivery gate checks."
+    "Regenerated after merge to main for v1.6.7 release closeout.",
+    "truth_canonical=main satisfies version_ref per truth-on-main policy."
   ]
 }

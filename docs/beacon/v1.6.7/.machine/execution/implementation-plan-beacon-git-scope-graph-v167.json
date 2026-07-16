@@ -1,0 +1,607 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-git-scope-graph-v167-r1",
+  "feature": "beacon-git-scope-graph-v167",
+  "feature_slug": "beacon-git-scope-graph-v167",
+  "version": "v1.6.7",
+  "revision_id": "R1",
+  "baseline_hash": "sha256:fe34b05343f65800f13d31a9b86a96ab121b47d40dff4a572c4fe59916f2831c",
+  "plan_hash": "sha256:b08f3d61da5bb7db406e0b1236de2b15b0810b6f287e0ef97f6c729dab141c54",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.6.7/features/beacon-git-scope-graph-v167/truth.md",
+    "prd": "docs/beacon/v1.6.7/features/beacon-git-scope-graph-v167/truth.md",
+    "test_case": "docs/beacon/v1.6.7/features/beacon-git-scope-graph-v167/tests.md",
+    "truth": "docs/beacon/v1.6.7/features/beacon-git-scope-graph-v167/truth.md",
+    "tests": "docs/beacon/v1.6.7/features/beacon-git-scope-graph-v167/tests.md",
+    "tasks": "docs/beacon/v1.6.7/features/beacon-git-scope-graph-v167/tasks.md",
+    "evidence": "docs/beacon/v1.6.7/features/beacon-git-scope-graph-v167/evidence.md",
+    "source_of_truth_root": "docs/beacon/v1.6.7/features/beacon-git-scope-graph-v167",
+    "revision_delta": "docs/beacon/v1.6.7/.machine/execution/revision-delta-beacon-git-scope-graph-v167.json",
+    "story_scenario_map": "docs/beacon/v1.6.7/.machine/qa/beacon-git-scope-graph-v167.story-scenario-map.json",
+    "research_projection": "docs/beacon/v1.6.7/.machine/user-story/beacon-git-scope-graph-v167.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.6.7/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005"
+      ]
+    }
+  ],
+  "task_mapping_source": "package-tasks",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.7",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-07-16T12:32:51.972498+00:00",
+    "feature": "beacon-git-scope-graph-v167",
+    "feature_slug": "beacon-git-scope-graph-v167",
+    "prd_ref": "docs/beacon/v1.6.7/prd/beacon-git-scope-graph-v167.md",
+    "user_story_ref": "docs/beacon/v1.6.7/user-story/beacon-git-scope-graph-v167.md"
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "beacon-git-scope-graph-v167",
+    "version": "v1.6.7",
+    "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/research/beacon-git-scope-graph-v167.md",
+    "present": false,
+    "section_count": 0,
+    "sections": {},
+    "derived_items": [],
+    "source_artifact": "docs/beacon/v1.6.7/.machine/user-story/beacon-git-scope-graph-v167.json"
+  },
+  "review_gates": [],
+  "qa_coverage_hints": [],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "TASK-001 Materialize feature package",
+      "description": "Materialize feature package",
+      "source_task_id": "TASK-001",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001"
+      ],
+      "mapped_test_ids": [
+        "TEST-001"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-07-16T12:32:52.395475+00:00",
+      "state": "completed"
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "TASK-002 Validate frontmatter and acceptance criteria",
+      "description": "Validate frontmatter and acceptance criteria",
+      "source_task_id": "TASK-002",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-07-16T12:32:52.395483+00:00",
+      "state": "completed"
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "TASK-003 Validate checkbox ledger without gate bypass",
+      "description": "Validate checkbox ledger without gate bypass",
+      "source_task_id": "TASK-003",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-07-16T12:32:52.395485+00:00",
+      "state": "completed"
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "TASK-004 Validate evidence authority labels",
+      "description": "Validate evidence authority labels",
+      "source_task_id": "TASK-004",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-07-16T12:32:52.395487+00:00",
+      "state": "completed"
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "TASK-005 Run canonical implement and QA gates separately",
+      "description": "Run canonical implement and QA gates separately",
+      "source_task_id": "TASK-005",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-07-16T12:32:52.395488+00:00",
+      "state": "completed"
+    }
+  ],
+  "task_alignment": {
+    "schema_version": "1.0",
+    "status": "aligned",
+    "blocked": false,
+    "reason_code": "",
+    "feature": "beacon-git-scope-graph-v167",
+    "feature_slug": "beacon-git-scope-graph-v167",
+    "version": "v1.6.7",
+    "authority": "markdown_feature_package",
+    "package_tasks_path": "docs/beacon/v1.6.7/features/beacon-git-scope-graph-v167/tasks.md",
+    "task_count": 5,
+    "resolved": true,
+    "alignment_mode": "package_tasks_to_implementation_plan",
+    "progress_write_target": "docs/beacon/<version>/.machine/execution and docs/beacon/<version>/execution",
+    "package_tasks_mutated": false,
+    "tasks": [
+      {
+        "task_id": "TASK-001",
+        "title": "Materialize feature package",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-002",
+        "title": "Validate frontmatter and acceptance criteria",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-003",
+        "title": "Validate checkbox ledger without gate bypass",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-004",
+        "title": "Validate evidence authority labels",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-005",
+        "title": "Run canonical implement and QA gates separately",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      }
+    ],
+    "draft_implementation_tasks": [
+      {
+        "task_id": "ITASK-001",
+        "title": "Materialize feature package",
+        "description": "Materialize feature package",
+        "source_task_id": "TASK-001",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-002",
+        "title": "Validate frontmatter and acceptance criteria",
+        "description": "Validate frontmatter and acceptance criteria",
+        "source_task_id": "TASK-002",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-003",
+        "title": "Validate checkbox ledger without gate bypass",
+        "description": "Validate checkbox ledger without gate bypass",
+        "source_task_id": "TASK-003",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-004",
+        "title": "Validate evidence authority labels",
+        "description": "Validate evidence authority labels",
+        "source_task_id": "TASK-004",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-005",
+        "title": "Run canonical implement and QA gates separately",
+        "description": "Run canonical implement and QA gates separately",
+        "source_task_id": "TASK-005",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      }
+    ]
+  },
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "beacon-git-scope-graph-v167",
+    "feature_slug": "beacon-git-scope-graph-v167",
+    "version": "v1.6.7",
+    "revision_id": "R1",
+    "source_revision_id": "greenfield",
+    "status": "ready",
+    "cleanup_required": false,
+    "removed_requirement_count": 0,
+    "added_requirement_count": 1,
+    "retained_requirement_count": 0,
+    "removed_requirement_surfaces": [],
+    "added_requirement_surfaces": [
+      {
+        "revision_id": "R1",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "general",
+        "text": "Acceptance criteria TBD",
+        "details": [],
+        "source": "",
+        "signature": "ac::::general::acceptance criteria tbd::"
+      }
+    ],
+    "retained_requirement_surfaces": [],
+    "current_baseline_hash": "sha256:fe34b05343f65800f13d31a9b86a96ab121b47d40dff4a572c4fe59916f2831c",
+    "source_baseline_hash": "",
+    "story_state_ref": "docs/beacon/v1.6.7/.machine/user-story/beacon-git-scope-graph-v167.json",
+    "generated_at": "2026-07-16T12:32:51.957445+00:00",
+    "json_ref": "docs/beacon/v1.6.7/.machine/execution/revision-delta-beacon-git-scope-graph-v167.json",
+    "markdown_ref": "docs/beacon/v1.6.7/execution/revision-delta-beacon-git-scope-graph-v167.md"
+  },
+  "revision_delta_ref": "docs/beacon/v1.6.7/.machine/execution/revision-delta-beacon-git-scope-graph-v167.json",
+  "revision_delta_markdown_ref": "docs/beacon/v1.6.7/execution/revision-delta-beacon-git-scope-graph-v167.md",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"beacon-git-scope-graph-v167\" --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.7",
+    "run_command": "beacon implement team-run \"beacon-git-scope-graph-v167\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.7",
+    "dev_run_command": "beacon implement dev-run \"beacon-git-scope-graph-v167\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.7",
+    "ralph_command": "beacon implement run \"beacon-git-scope-graph-v167\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.7 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"beacon-git-scope-graph-v167\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.7",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-git-scope-graph-v167",
+    "feature_slug": "beacon-git-scope-graph-v167",
+    "version": "v1.6.7",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.6.7/beacon-git-scope-graph-v167",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": "/Users/apple/Developer/Personal/products/beacon",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.6.7/beacon-git-scope-graph-v167.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-07-16T12:32:51.974211+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.6.7-beacon-git-scope-graph-v167-R1",
+    "transaction_id": "tx-2b3634dc73f90fd06",
+    "source_hash": "sha256:c915487ff30472ac7b3e3991714df7499ec5d5e8be7cfc0b5deffdcdd9d36526",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.6.7/.machine/execution/implementation-delivery-baseline-beacon-git-scope-graph-v167.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.6.7/.machine/execution/git-workflow-beacon-git-scope-graph-v167.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.6.7/execution/git-workflow-beacon-git-scope-graph-v167.md",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.6.7/beacon-git-scope-graph-v167",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": "/Users/apple/Developer/Personal/products/beacon",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {},
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.6.7-beacon-git-scope-graph-v167-R1",
+    "transaction_id": "tx-2b3634dc73f90fd06",
+    "source_hash": "sha256:c915487ff30472ac7b3e3991714df7499ec5d5e8be7cfc0b5deffdcdd9d36526",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.6.7/.machine/execution/implementation-delivery-baseline-beacon-git-scope-graph-v167.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.6.7/.machine/execution/implementation-delivery-baseline-beacon-git-scope-graph-v167.json",
+  "generated_at": "2026-07-16T12:32:52.043947+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.6.7-beacon-git-scope-graph-v167-R1",
+  "transaction_id": "tx-2b3634dc73f90fd06",
+  "source_hash": "sha256:c915487ff30472ac7b3e3991714df7499ec5d5e8be7cfc0b5deffdcdd9d36526",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-07-16T12:32:52.043991+00:00",
+  "blocked": false
+}

@@ -1,0 +1,1302 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-loop-goal-v166-r7",
+  "feature": "beacon-loop-goal-v166",
+  "feature_slug": "beacon-loop-goal-v166",
+  "version": "v1.6.7",
+  "revision_id": "R7",
+  "baseline_hash": "sha256:533f5b4d2a4f33172ef810bdfa6630023f1423c82ccca845fe60d046c4bfff5b",
+  "plan_hash": "sha256:046070f47ce108f52e2538fbb415779a9f35c233a937c9a8ff2f2f0aee28409f",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.6.7/features/beacon-loop-goal-v166/truth.md",
+    "prd": "docs/beacon/v1.6.7/features/beacon-loop-goal-v166/truth.md",
+    "test_case": "docs/beacon/v1.6.7/features/beacon-loop-goal-v166/tests.md",
+    "truth": "docs/beacon/v1.6.7/features/beacon-loop-goal-v166/truth.md",
+    "tests": "docs/beacon/v1.6.7/features/beacon-loop-goal-v166/tests.md",
+    "tasks": "docs/beacon/v1.6.7/features/beacon-loop-goal-v166/tasks.md",
+    "evidence": "docs/beacon/v1.6.7/features/beacon-loop-goal-v166/evidence.md",
+    "source_of_truth_root": "docs/beacon/v1.6.7/features/beacon-loop-goal-v166",
+    "revision_delta": "docs/beacon/v1.6.7/.machine/execution/revision-delta-beacon-loop-goal-v166.json",
+    "story_scenario_map": "docs/beacon/v1.6.7/.machine/qa/beacon-loop-goal-v166.story-scenario-map.json",
+    "research_projection": "docs/beacon/v1.6.7/.machine/user-story/beacon-loop-goal-v166.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.6.7/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007",
+        "ITASK-008",
+        "ITASK-009",
+        "ITASK-010",
+        "ITASK-011",
+        "ITASK-012",
+        "ITASK-013",
+        "ITASK-014",
+        "ITASK-015"
+      ]
+    }
+  ],
+  "task_mapping_source": "package-tasks",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.7",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-07-16T12:32:47.867153+00:00",
+    "feature": "beacon-loop-goal-v166",
+    "feature_slug": "beacon-loop-goal-v166",
+    "prd_ref": "docs/beacon/v1.6.7/prd/beacon-loop-goal-v166.md",
+    "user_story_ref": "docs/beacon/v1.6.7/user-story/beacon-loop-goal-v166.md"
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "beacon-loop-goal-v166",
+    "version": "v1.6.7",
+    "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/research/beacon-loop-goal-v166.md",
+    "present": false,
+    "section_count": 0,
+    "sections": {},
+    "derived_items": [],
+    "source_artifact": "docs/beacon/v1.6.7/.machine/user-story/beacon-loop-goal-v166.json"
+  },
+  "review_gates": [],
+  "qa_coverage_hints": [],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "TASK-023 change → `beacon-gen-change` — R6 reopen + draft human-gate redefinition (AC-014 rewrite + AC-027..030)",
+      "description": "change → `beacon-gen-change` — R6 reopen + draft human-gate redefinition (AC-014 rewrite + AC-027..030)",
+      "source_task_id": "TASK-023",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-014",
+        "AC-027"
+      ],
+      "mapped_test_ids": [
+        "TEST-014",
+        "TEST-027",
+        "TC-LG-014",
+        "TC-LG-027"
+      ],
+      "mapped_scenario_ids": [
+        "SC-014",
+        "SC-027"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-07-16T12:32:52.388034+00:00",
+      "state": "completed"
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "TASK-024 implement → `beacon-gen-implement` — update `loop_goal_state.record_review_decision`：P1-only → `standard_execution_precheck` + continue audit；blocking = P0 | user_decision_required | drift routes",
+      "description": "implement → `beacon-gen-implement` — update `loop_goal_state.record_review_decision`：P1-only → `standard_execution_precheck` + continue audit；blocking = P0 | user_decision_required | drift routes",
+      "source_task_id": "TASK-024",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-015",
+        "AC-001"
+      ],
+      "mapped_test_ids": [
+        "TEST-015",
+        "TEST-001",
+        "TC-LG-001",
+        "TC-LG-015"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001",
+        "SC-015"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-07-16T12:32:52.389055+00:00",
+      "state": "completed"
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "TASK-025 implement → `beacon-gen-implement` — update public/packaged `beacon-loop-goal` SKILL.md：AC-014 R6 规则、同会话立即加载下一 skill、auto-decide 表对齐",
+      "description": "implement → `beacon-gen-implement` — update public/packaged `beacon-loop-goal` SKILL.md：AC-014 R6 规则、同会话立即加载下一 skill、auto-decide 表对齐",
+      "source_task_id": "TASK-025",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-029",
+        "AC-028",
+        "AC-013",
+        "AC-016"
+      ],
+      "mapped_test_ids": [
+        "TEST-029",
+        "TEST-028",
+        "TEST-013",
+        "TEST-016",
+        "TC-LG-013",
+        "TC-LG-016",
+        "TC-LG-028",
+        "TC-LG-029"
+      ],
+      "mapped_scenario_ids": [
+        "SC-013",
+        "SC-016",
+        "SC-028",
+        "SC-029"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-07-16T12:32:52.389060+00:00",
+      "state": "completed"
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "TASK-026 implement → `beacon-gen-implement` — add `beacon status loop-goal --resume`（读 state，返回 stage + next skill；禁止 no-op 伪装）",
+      "description": "implement → `beacon-gen-implement` — add `beacon status loop-goal --resume`（读 state，返回 stage + next skill；禁止 no-op 伪装）",
+      "source_task_id": "TASK-026",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-035",
+        "AC-034",
+        "AC-004"
+      ],
+      "mapped_test_ids": [
+        "TEST-035",
+        "TEST-034",
+        "TEST-004",
+        "TC-LG-004"
+      ],
+      "mapped_scenario_ids": [
+        "SC-004"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-07-16T12:32:52.389064+00:00",
+      "state": "completed"
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "TASK-027 implement → `beacon-gen-implement` — emit observability fields：human_stops_per_run / stop_reason 分布 / p1_continue_count（pseudo_stall 可判定时）",
+      "description": "implement → `beacon-gen-implement` — emit observability fields：human_stops_per_run / stop_reason 分布 / p1_continue_count（pseudo_stall 可判定时）",
+      "source_task_id": "TASK-027",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-040"
+      ],
+      "mapped_test_ids": [
+        "TEST-040"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-07-16T12:32:52.389067+00:00",
+      "state": "completed"
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "TASK-028 implement → `beacon-gen-implement` — pytest TC-LG-014 行为翻转 + TC-LG-027..030",
+      "description": "implement → `beacon-gen-implement` — pytest TC-LG-014 行为翻转 + TC-LG-027..030",
+      "source_task_id": "TASK-028",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-008",
+        "AC-003"
+      ],
+      "mapped_test_ids": [
+        "TEST-008",
+        "TEST-003",
+        "TC-LG-003",
+        "TC-LG-008"
+      ],
+      "mapped_scenario_ids": [
+        "SC-003",
+        "SC-008"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-07-16T12:32:52.389071+00:00",
+      "state": "completed"
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "TASK-029 qa → `beacon-eval-qa` — R6 regression QA (carried forward)",
+      "description": "qa → `beacon-eval-qa` — R6 regression QA (carried forward)",
+      "source_task_id": "TASK-029",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-009"
+      ],
+      "mapped_test_ids": [
+        "TEST-009",
+        "TC-LG-009"
+      ],
+      "mapped_scenario_ids": [
+        "SC-009"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-07-16T12:32:52.389075+00:00",
+      "state": "completed"
+    },
+    {
+      "task_id": "ITASK-008",
+      "title": "TASK-030 release → `beacon-eval-release` — human gate before ship（unchanged AC-007）",
+      "description": "release → `beacon-eval-release` — human gate before ship（unchanged AC-007）",
+      "source_task_id": "TASK-030",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-007"
+      ],
+      "mapped_test_ids": [
+        "TEST-007",
+        "TC-LG-007"
+      ],
+      "mapped_scenario_ids": [
+        "SC-007"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-007"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-07-16T12:32:52.389078+00:00",
+      "state": "completed"
+    },
+    {
+      "task_id": "ITASK-009",
+      "title": "TASK-031 change → `beacon-gen-change` — R7 reopen intent continuation + topology_gate + dual runtime (AC-031..040)",
+      "description": "change → `beacon-gen-change` — R7 reopen intent continuation + topology_gate + dual runtime (AC-031..040)",
+      "source_task_id": "TASK-031",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-031"
+      ],
+      "mapped_test_ids": [
+        "TEST-031"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-008"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-07-16T12:32:52.389081+00:00",
+      "state": "completed"
+    },
+    {
+      "task_id": "ITASK-010",
+      "title": "TASK-032 implement → `beacon-gen-implement` — IntentContext, record_intent_fork, decision_cache, interrupt semantics",
+      "description": "implement → `beacon-gen-implement` — IntentContext, record_intent_fork, decision_cache, interrupt semantics",
+      "source_task_id": "TASK-032",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-030",
+        "AC-032",
+        "AC-033"
+      ],
+      "mapped_test_ids": [
+        "TEST-030",
+        "TEST-032",
+        "TEST-033",
+        "TC-LG-030"
+      ],
+      "mapped_scenario_ids": [
+        "SC-030"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-009"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-07-16T12:32:52.389085+00:00",
+      "state": "completed"
+    },
+    {
+      "task_id": "ITASK-011",
+      "title": "TASK-033 implement → `beacon-gen-implement` — `beacon loop-goal run` CLI + resume utterance map",
+      "description": "implement → `beacon-gen-implement` — `beacon loop-goal run` CLI + resume utterance map",
+      "source_task_id": "TASK-033",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-023",
+        "AC-026",
+        "AC-022"
+      ],
+      "mapped_test_ids": [
+        "TEST-023",
+        "TEST-026",
+        "TEST-022",
+        "TC-LG-022",
+        "TC-LG-023",
+        "TC-LG-026"
+      ],
+      "mapped_scenario_ids": [
+        "SC-022",
+        "SC-023",
+        "SC-026"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-010"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-07-16T12:32:52.389088+00:00",
+      "state": "completed"
+    },
+    {
+      "task_id": "ITASK-012",
+      "title": "TASK-034 implement → `beacon-gen-implement` — topology_gate consume in precheck; SKILL.md R7 sync",
+      "description": "implement → `beacon-gen-implement` — topology_gate consume in precheck; SKILL.md R7 sync",
+      "source_task_id": "TASK-034",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-036"
+      ],
+      "mapped_test_ids": [
+        "TEST-036"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-011"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-07-16T12:32:52.389092+00:00",
+      "state": "completed"
+    },
+    {
+      "task_id": "ITASK-013",
+      "title": "TASK-035 implement → `beacon-gen-implement` — v2 schema parity fixtures + tests/test_v167_loop_goal.py",
+      "description": "implement → `beacon-gen-implement` — v2 schema parity fixtures + tests/test_v167_loop_goal.py",
+      "source_task_id": "TASK-035",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-039"
+      ],
+      "mapped_test_ids": [
+        "TEST-039"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-012"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-07-16T12:32:52.389095+00:00",
+      "state": "completed"
+    },
+    {
+      "task_id": "ITASK-014",
+      "title": "TASK-036 qa → `beacon-eval-qa` — AC-031..040 QA passed",
+      "description": "qa → `beacon-eval-qa` — AC-031..040 QA passed",
+      "source_task_id": "TASK-036",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-025"
+      ],
+      "mapped_test_ids": [
+        "TEST-025",
+        "TC-LG-025"
+      ],
+      "mapped_scenario_ids": [
+        "SC-025"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-013"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-07-16T12:32:52.389098+00:00",
+      "state": "completed"
+    },
+    {
+      "task_id": "ITASK-015",
+      "title": "TASK-037 release → `beacon-eval-release` — human gate before ship",
+      "description": "release → `beacon-eval-release` — human gate before ship",
+      "source_task_id": "TASK-037",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-006",
+        "AC-019",
+        "AC-021",
+        "AC-024",
+        "AC-002",
+        "AC-005",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-017",
+        "AC-018",
+        "AC-020",
+        "AC-037",
+        "AC-038"
+      ],
+      "mapped_test_ids": [
+        "TEST-006",
+        "TEST-019",
+        "TEST-021",
+        "TEST-024",
+        "TEST-002",
+        "TEST-005",
+        "TEST-010",
+        "TEST-011",
+        "TEST-012",
+        "TEST-017",
+        "TEST-018",
+        "TEST-020",
+        "TEST-037",
+        "TEST-038",
+        "TC-LG-002",
+        "TC-LG-005",
+        "TC-LG-006",
+        "TC-LG-010",
+        "TC-LG-011",
+        "TC-LG-012",
+        "TC-LG-017",
+        "TC-LG-018",
+        "TC-LG-019",
+        "TC-LG-020",
+        "TC-LG-021",
+        "TC-LG-024"
+      ],
+      "mapped_scenario_ids": [
+        "SC-002",
+        "SC-005",
+        "SC-006",
+        "SC-010",
+        "SC-011",
+        "SC-012",
+        "SC-017",
+        "SC-018",
+        "SC-019",
+        "SC-020",
+        "SC-021",
+        "SC-024"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-014"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-07-16T12:32:52.389102+00:00",
+      "state": "completed"
+    }
+  ],
+  "task_alignment": {
+    "schema_version": "1.0",
+    "status": "aligned",
+    "blocked": false,
+    "reason_code": "",
+    "feature": "beacon-loop-goal-v166",
+    "feature_slug": "beacon-loop-goal-v166",
+    "version": "v1.6.7",
+    "authority": "markdown_feature_package",
+    "package_tasks_path": "docs/beacon/v1.6.7/features/beacon-loop-goal-v166/tasks.md",
+    "task_count": 15,
+    "resolved": true,
+    "alignment_mode": "package_tasks_to_implementation_plan",
+    "progress_write_target": "docs/beacon/<version>/.machine/execution and docs/beacon/<version>/execution",
+    "package_tasks_mutated": false,
+    "tasks": [
+      {
+        "task_id": "TASK-023",
+        "title": "change → `beacon-gen-change` — R6 reopen + draft human-gate redefinition (AC-014 rewrite + AC-027..030)",
+        "requirement_checkbox_state": "completed",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-024",
+        "title": "implement → `beacon-gen-implement` — update `loop_goal_state.record_review_decision`：P1-only → `standard_execution_precheck` + continue audit；blocking = P0 | user_decision_required | drift routes",
+        "requirement_checkbox_state": "completed",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-025",
+        "title": "implement → `beacon-gen-implement` — update public/packaged `beacon-loop-goal` SKILL.md：AC-014 R6 规则、同会话立即加载下一 skill、auto-decide 表对齐",
+        "requirement_checkbox_state": "completed",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-026",
+        "title": "implement → `beacon-gen-implement` — add `beacon status loop-goal --resume`（读 state，返回 stage + next skill；禁止 no-op 伪装）",
+        "requirement_checkbox_state": "completed",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-027",
+        "title": "implement → `beacon-gen-implement` — emit observability fields：human_stops_per_run / stop_reason 分布 / p1_continue_count（pseudo_stall 可判定时）",
+        "requirement_checkbox_state": "completed",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-028",
+        "title": "implement → `beacon-gen-implement` — pytest TC-LG-014 行为翻转 + TC-LG-027..030",
+        "requirement_checkbox_state": "completed",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-029",
+        "title": "qa → `beacon-eval-qa` — R6 regression QA (carried forward)",
+        "requirement_checkbox_state": "completed",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-030",
+        "title": "release → `beacon-eval-release` — human gate before ship（unchanged AC-007）",
+        "requirement_checkbox_state": "completed",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-031",
+        "title": "change → `beacon-gen-change` — R7 reopen intent continuation + topology_gate + dual runtime (AC-031..040)",
+        "requirement_checkbox_state": "completed",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-032",
+        "title": "implement → `beacon-gen-implement` — IntentContext, record_intent_fork, decision_cache, interrupt semantics",
+        "requirement_checkbox_state": "completed",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-033",
+        "title": "implement → `beacon-gen-implement` — `beacon loop-goal run` CLI + resume utterance map",
+        "requirement_checkbox_state": "completed",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-034",
+        "title": "implement → `beacon-gen-implement` — topology_gate consume in precheck; SKILL.md R7 sync",
+        "requirement_checkbox_state": "completed",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-035",
+        "title": "implement → `beacon-gen-implement` — v2 schema parity fixtures + tests/test_v167_loop_goal.py",
+        "requirement_checkbox_state": "completed",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-036",
+        "title": "qa → `beacon-eval-qa` — AC-031..040 QA passed",
+        "requirement_checkbox_state": "completed",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-037",
+        "title": "release → `beacon-eval-release` — human gate before ship",
+        "requirement_checkbox_state": "completed",
+        "implementation_status": "planned"
+      }
+    ],
+    "draft_implementation_tasks": [
+      {
+        "task_id": "ITASK-001",
+        "title": "change → `beacon-gen-change` — R6 reopen + draft human-gate redefinition (AC-014 rewrite + AC-027..030)",
+        "description": "change → `beacon-gen-change` — R6 reopen + draft human-gate redefinition (AC-014 rewrite + AC-027..030)",
+        "source_task_id": "TASK-023",
+        "source_task_status": "completed",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-002",
+        "title": "implement → `beacon-gen-implement` — update `loop_goal_state.record_review_decision`：P1-only → `standard_execution_precheck` + continue audit；blocking = P0 | user_decision_required | drift routes",
+        "description": "implement → `beacon-gen-implement` — update `loop_goal_state.record_review_decision`：P1-only → `standard_execution_precheck` + continue audit；blocking = P0 | user_decision_required | drift routes",
+        "source_task_id": "TASK-024",
+        "source_task_status": "completed",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-003",
+        "title": "implement → `beacon-gen-implement` — update public/packaged `beacon-loop-goal` SKILL.md：AC-014 R6 规则、同会话立即加载下一 skill、auto-decide 表对齐",
+        "description": "implement → `beacon-gen-implement` — update public/packaged `beacon-loop-goal` SKILL.md：AC-014 R6 规则、同会话立即加载下一 skill、auto-decide 表对齐",
+        "source_task_id": "TASK-025",
+        "source_task_status": "completed",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-004",
+        "title": "implement → `beacon-gen-implement` — add `beacon status loop-goal --resume`（读 state，返回 stage + next skill；禁止 no-op 伪装）",
+        "description": "implement → `beacon-gen-implement` — add `beacon status loop-goal --resume`（读 state，返回 stage + next skill；禁止 no-op 伪装）",
+        "source_task_id": "TASK-026",
+        "source_task_status": "completed",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-005",
+        "title": "implement → `beacon-gen-implement` — emit observability fields：human_stops_per_run / stop_reason 分布 / p1_continue_count（pseudo_stall 可判定时）",
+        "description": "implement → `beacon-gen-implement` — emit observability fields：human_stops_per_run / stop_reason 分布 / p1_continue_count（pseudo_stall 可判定时）",
+        "source_task_id": "TASK-027",
+        "source_task_status": "completed",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-006",
+        "title": "implement → `beacon-gen-implement` — pytest TC-LG-014 行为翻转 + TC-LG-027..030",
+        "description": "implement → `beacon-gen-implement` — pytest TC-LG-014 行为翻转 + TC-LG-027..030",
+        "source_task_id": "TASK-028",
+        "source_task_status": "completed",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-007",
+        "title": "qa → `beacon-eval-qa` — R6 regression QA (carried forward)",
+        "description": "qa → `beacon-eval-qa` — R6 regression QA (carried forward)",
+        "source_task_id": "TASK-029",
+        "source_task_status": "completed",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-008",
+        "title": "release → `beacon-eval-release` — human gate before ship（unchanged AC-007）",
+        "description": "release → `beacon-eval-release` — human gate before ship（unchanged AC-007）",
+        "source_task_id": "TASK-030",
+        "source_task_status": "completed",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-009",
+        "title": "change → `beacon-gen-change` — R7 reopen intent continuation + topology_gate + dual runtime (AC-031..040)",
+        "description": "change → `beacon-gen-change` — R7 reopen intent continuation + topology_gate + dual runtime (AC-031..040)",
+        "source_task_id": "TASK-031",
+        "source_task_status": "completed",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-010",
+        "title": "implement → `beacon-gen-implement` — IntentContext, record_intent_fork, decision_cache, interrupt semantics",
+        "description": "implement → `beacon-gen-implement` — IntentContext, record_intent_fork, decision_cache, interrupt semantics",
+        "source_task_id": "TASK-032",
+        "source_task_status": "completed",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-011",
+        "title": "implement → `beacon-gen-implement` — `beacon loop-goal run` CLI + resume utterance map",
+        "description": "implement → `beacon-gen-implement` — `beacon loop-goal run` CLI + resume utterance map",
+        "source_task_id": "TASK-033",
+        "source_task_status": "completed",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-012",
+        "title": "implement → `beacon-gen-implement` — topology_gate consume in precheck; SKILL.md R7 sync",
+        "description": "implement → `beacon-gen-implement` — topology_gate consume in precheck; SKILL.md R7 sync",
+        "source_task_id": "TASK-034",
+        "source_task_status": "completed",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-013",
+        "title": "implement → `beacon-gen-implement` — v2 schema parity fixtures + tests/test_v167_loop_goal.py",
+        "description": "implement → `beacon-gen-implement` — v2 schema parity fixtures + tests/test_v167_loop_goal.py",
+        "source_task_id": "TASK-035",
+        "source_task_status": "completed",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-014",
+        "title": "qa → `beacon-eval-qa` — AC-031..040 QA passed",
+        "description": "qa → `beacon-eval-qa` — AC-031..040 QA passed",
+        "source_task_id": "TASK-036",
+        "source_task_status": "completed",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-015",
+        "title": "release → `beacon-eval-release` — human gate before ship",
+        "description": "release → `beacon-eval-release` — human gate before ship",
+        "source_task_id": "TASK-037",
+        "source_task_status": "completed",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      }
+    ]
+  },
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "beacon-loop-goal-v166",
+    "feature_slug": "beacon-loop-goal-v166",
+    "version": "v1.6.7",
+    "revision_id": "R7",
+    "source_revision_id": "R6",
+    "status": "ready",
+    "cleanup_required": false,
+    "removed_requirement_count": 0,
+    "added_requirement_count": 0,
+    "retained_requirement_count": 0,
+    "removed_requirement_surfaces": [],
+    "added_requirement_surfaces": [],
+    "retained_requirement_surfaces": [],
+    "current_baseline_hash": "sha256:533f5b4d2a4f33172ef810bdfa6630023f1423c82ccca845fe60d046c4bfff5b",
+    "source_baseline_hash": "",
+    "story_state_ref": "docs/beacon/v1.6.7/.machine/user-story/beacon-loop-goal-v166.json",
+    "generated_at": "2026-07-16T12:32:47.849661+00:00",
+    "json_ref": "docs/beacon/v1.6.7/.machine/execution/revision-delta-beacon-loop-goal-v166.json",
+    "markdown_ref": "docs/beacon/v1.6.7/execution/revision-delta-beacon-loop-goal-v166.md"
+  },
+  "revision_delta_ref": "docs/beacon/v1.6.7/.machine/execution/revision-delta-beacon-loop-goal-v166.json",
+  "revision_delta_markdown_ref": "docs/beacon/v1.6.7/execution/revision-delta-beacon-loop-goal-v166.md",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"beacon-loop-goal-v166\" --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.7",
+    "run_command": "beacon implement team-run \"beacon-loop-goal-v166\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.7",
+    "dev_run_command": "beacon implement dev-run \"beacon-loop-goal-v166\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.7",
+    "ralph_command": "beacon implement run \"beacon-loop-goal-v166\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.7 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"beacon-loop-goal-v166\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.7",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-loop-goal-v166",
+    "feature_slug": "beacon-loop-goal-v166",
+    "version": "v1.6.7",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.6.7/beacon-loop-goal-v166",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": "/Users/apple/Developer/Personal/products/beacon",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.6.7/beacon-loop-goal-v166.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-07-16T12:32:47.868862+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.6.7-beacon-loop-goal-v166-R7",
+    "transaction_id": "tx-5bf1e7f5a28b4504a",
+    "source_hash": "sha256:c99f0bb5796e23b309a950b4e0d6f112bfeb0e68113455866686a3ea159a714d",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.6.7/.machine/execution/implementation-delivery-baseline-beacon-loop-goal-v166.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.6.7/.machine/execution/git-workflow-beacon-loop-goal-v166.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.6.7/execution/git-workflow-beacon-loop-goal-v166.md",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.6.7/beacon-loop-goal-v166",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": "/Users/apple/Developer/Personal/products/beacon",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {},
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.6.7-beacon-loop-goal-v166-R7",
+    "transaction_id": "tx-5bf1e7f5a28b4504a",
+    "source_hash": "sha256:c99f0bb5796e23b309a950b4e0d6f112bfeb0e68113455866686a3ea159a714d",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.6.7/.machine/execution/implementation-delivery-baseline-beacon-loop-goal-v166.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.6.7/.machine/execution/implementation-delivery-baseline-beacon-loop-goal-v166.json",
+  "generated_at": "2026-07-16T12:32:48.117318+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.6.7-beacon-loop-goal-v166-R7",
+  "transaction_id": "tx-5bf1e7f5a28b4504a",
+  "source_hash": "sha256:c99f0bb5796e23b309a950b4e0d6f112bfeb0e68113455866686a3ea159a714d",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-07-16T12:32:48.117364+00:00",
+  "blocked": false
+}
