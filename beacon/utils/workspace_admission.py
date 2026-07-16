@@ -333,7 +333,14 @@ def validate_workspace_admission(
         expected_branch = str(branch_targets.get("feature_branch") or "").strip()
         check_root = Path(cwd).expanduser().resolve() if cwd is not None else requested_root
         current_branch = git_output(check_root, "branch", "--show-current")
-        if expected_branch and current_branch and current_branch != expected_branch:
+        from beacon.utils.git_alignment import resolve_truth_canonical_branch
+
+        truth_canonical = resolve_truth_canonical_branch(root, version=version)
+        accepted = {b for b in (expected_branch, truth_canonical, "main", "master") if b}
+        # Aggregation program branch beacon/<version> is satisfied by main when truth is on main.
+        if expected_branch.startswith("beacon/") and expected_branch.count("/") == 1 and truth_canonical in {"main", "master"}:
+            accepted.add(truth_canonical)
+        if expected_branch and current_branch and current_branch not in accepted:
             return {
                 "valid": False,
                 "status": "blocked",
@@ -343,6 +350,7 @@ def validate_workspace_admission(
                 "artifact_path": str(artifact_file.relative_to(root)) if artifact_file.is_file() else "",
                 "expected_branch": expected_branch,
                 "current_branch": current_branch,
+                "accepted_branches": sorted(accepted),
                 "branch_resolution": branch_targets,
             }
         return {

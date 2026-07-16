@@ -423,6 +423,8 @@ def infer_program_level_from_program_topology(
                 str(freeze.get("status") or "").strip().lower() == "frozen"
                 or str(manifest.get("program_plan_frozen") or "").strip().lower() == "true"
                 or str(graph.get("program_plan_frozen") or "").strip().lower() == "true"
+                # Lakes present in feature-graph imply program plan is authored enough for branch resolution.
+                or bool(lakes)
             )
             if not frozen:
                 continue
@@ -446,10 +448,43 @@ def infer_program_level_from_program_topology(
     return None
 
 
-def find_program_level_git_workflow(project_root: Path, *, version: str) -> dict[str, Any] | None:
-    """Return the first program-level git-workflow contract for a version, if any."""
+def _program_contains_feature(project_root: Path, *, version: str, program_slug: str, feature: str) -> bool:
+    """True when feature is the program itself or a lake under programs/<program_slug>."""
+    slug = feature_slug(feature)
+    prog = feature_slug(program_slug)
+    if not slug or not prog:
+        return False
+    if slug == prog:
+        return True
+    root = project_root.expanduser().resolve()
+    program_dir = root / "docs" / "beacon" / version / "programs" / program_slug
+    if not program_dir.is_dir():
+        # stem may use different naming; try exact and feature_slug dir
+        alt = root / "docs" / "beacon" / version / "programs" / prog
+        program_dir = alt if alt.is_dir() else program_dir
+    if not program_dir.is_dir():
+        return False
+    graph = _read_json(program_dir / "feature-graph.json")
+    freeze = _read_json(program_dir / "program-truth-freeze.json")
+    lakes = _lake_slug_set(graph) | _lake_slug_set(freeze)
+    return slug in lakes
+
+
+def find_program_level_git_workflow(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str = "",
+) -> dict[str, Any] | None:
+    """Return a program-level git-workflow contract for a version.
+
+    When ``feature`` is provided, only return a workflow that belongs to the same
+    program/lake as that feature. Never apply an unrelated program's expected_branch
+    (e.g. git-scope-graph) to product-goal domain lakes.
+    """
     resolved_version = resolve_target_version(project_root, version)
     root = project_root.expanduser().resolve()
+    feature_slug_value = feature_slug(feature) if feature else ""
     search_roots: list[Path] = [root]
     inferred = infer_program_level_from_governance(root, version=resolved_version)
     if inferred:
@@ -458,6 +493,7 @@ def find_program_level_git_workflow(project_root: Path, *, version: str) -> dict
             dedicated_path = Path(dedicated)
             if dedicated_path not in search_roots:
                 search_roots.append(dedicated_path)
+    candidates: list[dict[str, Any]] = []
     for search_root in search_roots:
         execution_dir = search_root / "docs" / "beacon" / resolved_version / "execution"
         if not execution_dir.is_dir():
@@ -466,13 +502,41 @@ def find_program_level_git_workflow(project_root: Path, *, version: str) -> dict
             local = _parse_git_workflow_markdown(path, root)
             if not is_program_level_branch_contract(local):
                 continue
-            return _program_level_from_parsed_markdown(
+            payload = _program_level_from_parsed_markdown(
                 root,
                 path=path,
                 local=local,
                 resolved_version=resolved_version,
             )
-    return inferred
+            program_slug = str(payload.get("program_slug") or path.stem.replace("git-workflow-", "")).strip()
+            if feature_slug_value:
+                # Exact feature workflow always wins.
+                if feature_slug(program_slug) == feature_slug_value or path.stem == f"git-workflow-{feature_slug_value}":
+                    return payload
+                if _program_contains_feature(
+                    root,
+                    version=resolved_version,
+                    program_slug=program_slug,
+                    feature=feature_slug_value,
+                ):
+                    candidates.append(payload)
+                    continue
+                # Unrelated program-level workflow — skip when feature is known.
+                continue
+            candidates.append(payload)
+    if candidates:
+        return candidates[0]
+    # Only fall back to version-wide governance inference when feature is unspecified
+    # or when inference does not pin an unrelated expected_branch.
+    if feature_slug_value and inferred:
+        expected = str(inferred.get("expected_branch") or "").strip()
+        # Reject naked patterns that are clearly another feature branch
+        if expected and "/" in expected and expected.count("/") >= 2:
+            tail = expected.rsplit("/", 1)[-1]
+            if tail and feature_slug(tail) != feature_slug_value and not tail.startswith("<"):
+                return None
+        return inferred
+    return inferred if not feature_slug_value else None
 
 
 def resolve_workspace_branch_targets(
@@ -486,20 +550,24 @@ def resolve_workspace_branch_targets(
     from beacon.utils.workspace_admission import resolve_feature_branch, resolve_worktree_path
 
     root = project_root.expanduser().resolve()
-    program = find_program_level_git_workflow(root, version=version)
     per_feature = load_execution_branch_contract(root, version=version, feature=feature)
-    ctx: dict[str, Any] | None = program
-    if not ctx:
-        ctx = infer_program_level_from_governance(
-            root,
-            version=version,
-            admission_contract={**admission_contract, "version": version},
-        )
+    # Prefer feature-aware sources before any version-wide "first program" workflow.
+    ctx: dict[str, Any] | None = None
+    if is_program_level_branch_contract(per_feature) and list(per_feature.get("material_paths") or []):
+        ctx = {**per_feature, "source": str(per_feature.get("source") or "execution_markdown")}
     if not ctx:
         ctx = infer_program_level_from_program_topology(
             root,
             version=version,
             feature=feature,
+            admission_contract={**admission_contract, "version": version},
+        )
+    if not ctx:
+        ctx = find_program_level_git_workflow(root, version=version, feature=feature)
+    if not ctx:
+        ctx = infer_program_level_from_governance(
+            root,
+            version=version,
             admission_contract={**admission_contract, "version": version},
         )
     if not ctx and is_program_level_branch_contract(per_feature):
