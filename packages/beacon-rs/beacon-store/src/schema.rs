@@ -129,6 +129,15 @@ CREATE TABLE IF NOT EXISTS schema_meta (
     key TEXT PRIMARY KEY,
     value TEXT NOT NULL
 );
+
+-- Dual-track writer lease (AC-158); not part of the nine-table contract
+CREATE TABLE IF NOT EXISTS writer_leases (
+    namespace TEXT PRIMARY KEY,
+    track TEXT NOT NULL,
+    holder_id TEXT,
+    acquired_at TEXT NOT NULL DEFAULT (datetime('now')),
+    expires_at TEXT
+);
 "#;
 
 /// Incremental migration from SCHEMA_V1 (user_version=1) → V2.

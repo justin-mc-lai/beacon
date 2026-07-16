@@ -4,6 +4,7 @@ use rusqlite::Connection;
 use thiserror::Error;
 
 use crate::schema::{assert_schema_contract, SCHEMA_V1_TO_V2, SCHEMA_V2};
+use crate::writer_lease::ensure_writer_leases_table;
 
 /// AC-161 closed: schema version 2 implements the nine-table truth contract.
 pub const SCHEMA_VERSION: i64 = 2;
@@ -140,6 +141,7 @@ pub fn migrate(conn: &Connection) -> Result<i64, MigrationError> {
     conn.pragma_update(None, "user_version", SCHEMA_VERSION)?;
 
     backfill_from_legacy(conn)?;
+    ensure_writer_leases_table(conn).map_err(|e| MigrationError::SchemaContract(e.to_string()))?;
     assert_schema_contract(conn).map_err(MigrationError::SchemaContract)?;
     Ok(SCHEMA_VERSION)
 }

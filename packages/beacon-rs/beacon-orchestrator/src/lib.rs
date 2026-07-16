@@ -24,6 +24,8 @@ pub struct Orchestrator<'a> {
     run_id: i64,
     stop_when: StopWhen,
     aborted: AtomicBool,
+    /// Set by external checker (AC-106 maker≠checker) — not by agent self-report.
+    external_gate_passed: AtomicBool,
 }
 
 /// Result of a single iterate step.
@@ -42,12 +44,18 @@ impl<'a> Orchestrator<'a> {
             run_id,
             stop_when,
             aborted: AtomicBool::new(false),
+            external_gate_passed: AtomicBool::new(false),
         }
     }
 
     /// Signal abort (SIGINT-like). The next iterate step returns stopped.
     pub fn abort(&self) {
         self.aborted.store(true, Ordering::SeqCst);
+    }
+
+    /// AC-106: external verified gate pass (harness / stop-check-cmd / evaluator).
+    pub fn notify_external_gate_pass(&self) {
+        self.external_gate_passed.store(true, Ordering::SeqCst);
     }
 
     /// AC-040 run status — read from store.
@@ -61,31 +69,52 @@ impl<'a> Orchestrator<'a> {
 
     /// AC-042/044 run the iterate loop. Returns the steps.
     /// AC-049: never emits QA/release/complete verdicts — only iteration results.
+    /// AC-042/044 run the iterate loop. Returns the steps.
+    /// AC-049: never emits QA/release/complete verdicts — only iteration results.
+    /// AC-106: agent stop_signal alone does not stop; requires external_gate_passed or max iterations.
     pub fn run(&mut self, backend: &mut dyn AgentBackend, prompt: &str) -> Result<Vec<StepResult>, String> {
         backend.health_check().map_err(|e| format!("health check failed: {e}"))?;
         let mut steps: Vec<StepResult> = Vec::new();
         let max = match &self.stop_when {
             StopWhen::MaxIterations(n) => *n,
-            _ => 100,
+            StopWhen::GatePass(_) => 100,
+            StopWhen::Never => 100,
         };
         for i in 1..=max {
             if self.aborted.load(Ordering::SeqCst) {
                 if let Some(last) = steps.last_mut() {
                     last.stopped = true;
                     last.stop_reason = "aborted".to_string();
+                } else {
+                    // no steps yet
                 }
                 break;
             }
             let result = backend.iterate(prompt).map_err(|e| format!("iterate error: {e}"))?;
-            let stop_signal = result.stop_signal.clone();
             let mut stopped = false;
             let mut stop_reason = String::new();
-            if let Some(ref sig) = stop_signal {
-                if sig == "qa_pass" || sig == "gate_pass" {
-                    stopped = true;
-                    stop_reason = format!("stop_when gate pass: {sig}");
+
+            // AC-106: agent self-report is not a stop condition
+            if let Some(ref sig) = result.stop_signal {
+                stop_reason = format!("stop_when_unverified: agent claimed {sig}");
+            }
+
+            // External verified gate (maker≠checker)
+            if matches!(self.stop_when, StopWhen::GatePass(_))
+                && self.external_gate_passed.load(Ordering::SeqCst)
+            {
+                stopped = true;
+                stop_reason = "stop_when gate pass: external_verified".to_string();
+            }
+
+            // Max iterations
+            if matches!(&self.stop_when, StopWhen::MaxIterations(n) if i >= *n) {
+                stopped = true;
+                if !stop_reason.starts_with("stop_when gate") {
+                    stop_reason = "max_iterations".to_string();
                 }
             }
+
             steps.push(StepResult {
                 iteration: i,
                 result: result.clone(),
@@ -98,6 +127,7 @@ impl<'a> Orchestrator<'a> {
         }
         Ok(steps)
     }
+
 }
 
 /// AC-044 SubprocessBackend — runs a harness command per iteration, parses JSON output.
