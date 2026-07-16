@@ -487,6 +487,8 @@ def _run_beacon_post_release_local_install(project_root: Path, *, version: str, 
     from beacon.utils.doctor_orchestrator import (
         run_agent_surface_setup,
         run_agent_surface_verify,
+        run_context_setup,
+        run_context_verify,
         run_launcher_setup,
         run_legacy_beacon_skills_cleanup,
     )
@@ -544,6 +546,32 @@ def _run_beacon_post_release_local_install(project_root: Path, *, version: str, 
 
     if claude_global_verify.get("status") != "pass":
         blocked_reasons.append("claude_global_beacon_subskills_verify_failed")
+
+    # Keep managed agent context (AGENTS.md / CLAUDE.md / .gitignore) on the
+    # released docs line. Skill surfaces alone can leave context at an older
+    # managed version and trip help/context guards after ship.
+    context_setup = run_context_setup(
+        project_root=str(project_root),
+        version=version,
+        dry_run=False,
+        force=True,
+        sync_materials=False,
+        feature=feature or "",
+        all_features=False,
+        overwrite_test_doc=False,
+        with_claude=True,
+        with_agents=True,
+        with_gitignore=True,
+    )
+    context_verify = run_context_verify(
+        project_root=str(project_root),
+        strict=True,
+        with_gitignore=True,
+    )
+    if context_setup.exit_code != 0 or context_setup.payload.get("status") != "PASS":
+        blocked_reasons.append("managed_context_setup_failed")
+    if context_verify.exit_code != 0 or context_verify.payload.get("status") != "PASS":
+        blocked_reasons.append("managed_context_verify_failed")
 
     launcher_setup = run_launcher_setup(bin_dir="", launcher_source="", force=True, dry_run=False)
     if launcher_setup.exit_code != 0 or launcher_setup.payload.get("status") != "PASS":
@@ -606,6 +634,8 @@ def _run_beacon_post_release_local_install(project_root: Path, *, version: str, 
         "claude_global_skill_install": claude_global_install,
         "claude_global_skill_verify": claude_global_verify,
         "agent_surfaces": agent_results,
+        "managed_context_setup": context_setup.payload,
+        "managed_context_verify": context_verify.payload,
         "launcher_setup": launcher_setup.payload,
         "cli_versions": cli_versions,
         "agent_eval_release_hook": agent_eval_release_hook,
@@ -616,6 +646,8 @@ def _run_beacon_post_release_local_install(project_root: Path, *, version: str, 
             f"python3 -m beacon.main doctor verify-agent-surface --project-root . --version {version} --agent codex --strict --json",
             f"python3 -m beacon.main doctor setup-agent-surface --project-root . --version {version} --agent claude --force --json",
             f"python3 -m beacon.main doctor verify-agent-surface --project-root . --version {version} --agent claude --strict --json",
+            f"python3 -m beacon.main doctor setup-context --project-root . --version {version} --force --json",
+            "python3 -m beacon.main doctor verify-context --project-root . --strict --json",
             "python3 -m beacon.main doctor setup --force --json",
             "beacon --version",
             "beacon-cli --version",

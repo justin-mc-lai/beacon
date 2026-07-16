@@ -1622,14 +1622,26 @@ def load_implementation_plan(project_root: Path, *, version: str = "auto", featu
     return payload if isinstance(payload, dict) else {}
 
 
+def _relative_to_project(project_root: Path, path: Path) -> str:
+    """Return path relative to project_root; tolerate unresolved '.' roots."""
+    root = project_root.expanduser().resolve()
+    target = path if path.is_absolute() else (root / path)
+    try:
+        return str(target.resolve().relative_to(root))
+    except ValueError:
+        return str(target)
+
+
 def load_implementation_plan_progress(project_root: Path, *, version: str = "auto", feature: str) -> dict[str, Any]:
+    project_root = project_root.expanduser().resolve()
     resolved_version = resolve_target_version(project_root, version)
     path = implementation_plan_progress_path(project_root, resolved_version, feature)
     payload = read_json(path, {})
     if isinstance(payload, dict) and payload:
         if "task_ledger_path" not in payload:
-            payload["task_ledger_path"] = str(
-                implementation_task_ledger_markdown_path(project_root, resolved_version, feature).relative_to(project_root)
+            payload["task_ledger_path"] = _relative_to_project(
+                project_root,
+                implementation_task_ledger_markdown_path(project_root, resolved_version, feature),
             )
         return payload
     plan = load_implementation_plan(project_root, version=resolved_version, feature=feature)
@@ -1640,9 +1652,15 @@ def load_implementation_plan_progress(project_root: Path, *, version: str = "aut
         "feature": summary.get("feature", ""),
         "version": summary.get("version", ""),
         "revision_id": summary.get("revision_id", ""),
-        "plan_path": str(implementation_plan_json_path(project_root, resolved_version, feature).relative_to(project_root)),
-        "progress_path": str(path.relative_to(project_root)),
-        "task_ledger_path": str(implementation_task_ledger_markdown_path(project_root, resolved_version, feature).relative_to(project_root)),
+        "plan_path": _relative_to_project(
+            project_root,
+            implementation_plan_json_path(project_root, resolved_version, feature),
+        ),
+        "progress_path": _relative_to_project(project_root, path),
+        "task_ledger_path": _relative_to_project(
+            project_root,
+            implementation_task_ledger_markdown_path(project_root, resolved_version, feature),
+        ),
         "status": summary.get("status", "missing"),
         "counts": summary.get("counts", {}),
         "blocked_task_ids": summary.get("blocked_task_ids", []),

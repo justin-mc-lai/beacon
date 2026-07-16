@@ -219,7 +219,7 @@ def _render_human(payload: dict[str, object]) -> str:
 
 
 def _help_impl(project_root: str, version: str, feature: str, run_id: str, change_intent: str, json_output: bool) -> int:
-    root = Path(project_root) if project_root else Path.cwd()
+    root = (Path(project_root) if project_root else Path.cwd()).expanduser().resolve()
     target_feature = feature.strip()
     if not target_feature:
         try:
