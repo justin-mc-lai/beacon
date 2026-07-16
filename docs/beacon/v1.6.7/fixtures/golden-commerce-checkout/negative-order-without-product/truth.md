@@ -7,6 +7,7 @@ language: zh
 parser_contract: beacon-feature-package-v2
 fixture: true
 expected_gate: freeze_or_qa_fail
+domain_required: true
 ---
 
 # Negative Fixture: Order Without Product

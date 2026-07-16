@@ -7,6 +7,7 @@ language: zh
 parser_contract: beacon-feature-package-v2
 truth_source_model: feature_package_authoritative
 fixture: true
+domain_required: true
 ---
 
 # Golden Fixture Truth: Commerce Checkout (Positive)
