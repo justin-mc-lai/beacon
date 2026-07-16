@@ -9,6 +9,7 @@ from typing import Any, Literal
 from beacon.utils.agent_surface import verify_v160_no_fake_delivery
 from beacon.utils.feature_package import package_paths, validate_feature_package, _parse_frontmatter, _read_text
 from beacon.utils.requirement_clarity import build_requirement_clarity_gate_payload
+from beacon.utils.domain_fsm import build_domain_fsm_gate_payload
 from beacon.utils.story_state import feature_slug
 from beacon.utils.truth_map import feature_package_authoritative, feature_package_ready
 from beacon.utils.versioning import resolve_target_version
@@ -411,6 +412,14 @@ def build_truth_integrity_gate(
     clarity_gate = build_requirement_clarity_gate_payload(
         project_root, version=resolved_version, feature=feature
     )
+    domain_fsm_gate = clarity_gate.get("domain_fsm_gate") if isinstance(clarity_gate.get("domain_fsm_gate"), dict) else {}
+    if not domain_fsm_gate:
+        domain_fsm_gate = build_domain_fsm_gate_payload(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            diagram_truth=clarity_gate.get("diagram_truth") if isinstance(clarity_gate.get("diagram_truth"), dict) else None,
+        )
     findings: list[dict[str, Any]] = _with_repair_route(
         list(clarity_gate.get("findings", [])) if isinstance(clarity_gate.get("findings"), list) else []
     )
@@ -491,6 +500,8 @@ def build_truth_integrity_gate(
         status = "blocked"
         blocked = True
         reason_code = str(clarity_gate.get("reason_code") or "")
+        if bool(domain_fsm_gate.get("blocked")) and str(domain_fsm_gate.get("reason_code") or ""):
+            reason_code = str(domain_fsm_gate.get("reason_code") or reason_code)
         if not fake_delivery.get("closure_allowed", True):
             reason_code = str(fake_delivery.get("reason_code") or "fake_delivery_closure_blocked")
         if str(validation.get("status") or "").lower() == "blocked":
@@ -515,6 +526,7 @@ def build_truth_integrity_gate(
         "findings": findings,
         "finding_count": len(findings),
         "requirement_clarity": clarity_gate,
+        "domain_fsm": domain_fsm_gate,
         "fake_delivery": fake_delivery,
         "feature_package_validation": validation,
         "determinism_check": {

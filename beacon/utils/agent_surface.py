@@ -72,6 +72,11 @@ _V160_PUBLIC_EVALUATOR_SKILLS = (
 _V160_PUBLIC_GOVERNOR_SKILLS = (
     "beacon-loop-goal",
 )
+# Product Goal public entry + support discoverer (v1.6.7 single-entry contract).
+_V160_PUBLIC_ORCHESTRATOR_SKILLS = (
+    "beacon-goal",
+    "beacon-loop-goal",
+)
 
 
 @dataclass(frozen=True)
@@ -693,6 +698,7 @@ def _v160_skill_projections() -> list[SkillProjection]:
     projections = _append_v160_native_packaged_projections(projections, source_root, _V160_PUBLIC_PLANNER_SKILLS)
     projections = _append_v160_native_packaged_projections(projections, source_root, _V160_PUBLIC_EVALUATOR_SKILLS)
     projections = _append_v160_native_packaged_projections(projections, source_root, _V160_PUBLIC_GOVERNOR_SKILLS)
+    projections = _append_v160_native_packaged_projections(projections, source_root, _V160_PUBLIC_ORCHESTRATOR_SKILLS)
     return sorted(projections, key=lambda item: item.id)
 
 
@@ -754,6 +760,11 @@ def _expected_skill_projections(source_root: Path, *, runtime_version: str, docs
 def _verify_v160_skill_content(skill_id: str, text: str) -> list[str]:
     errors: list[str] = []
     harness = _harness_from_skill_id(skill_id)
+    if skill_id in _V160_PUBLIC_ORCHESTRATOR_SKILLS:
+        # Product Goal / Loop discoverer are host orchestrator skills, not harness roles.
+        if _v160_frontmatter_name(text) != skill_id:
+            errors.append("frontmatter name must match directory name")
+        return errors
     if harness not in _V160_HARNESSES:
         errors.append("skill name must match beacon-(pln|gen|eval|gov)-<function>")
     if _v160_frontmatter_name(text) != skill_id:
@@ -1069,7 +1080,12 @@ def _verify_v160_surface(target: AgentSurfaceTarget, expected_ids: list[str]) ->
         for item in target.skills_root.iterdir()
         if (item.is_dir() or item.is_symlink()) and item.name in _V160_OLD_ALIAS_IDS
     ) if target.skills_root.exists() else []
-    wrong_names = [skill_id for skill_id in expected_ids if _harness_from_skill_id(skill_id) not in _V160_HARNESSES]
+    wrong_names = [
+        skill_id
+        for skill_id in expected_ids
+        if skill_id not in _V160_PUBLIC_ORCHESTRATOR_SKILLS
+        and _harness_from_skill_id(skill_id) not in _V160_HARNESSES
+    ]
     gate_errors: dict[str, list[str]] = {}
     route_errors: dict[str, list[str]] = {}
     for skill_id in expected_ids:

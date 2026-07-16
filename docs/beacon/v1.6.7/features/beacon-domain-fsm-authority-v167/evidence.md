@@ -7,6 +7,9 @@
 | beacon-gen-truth | requirement_truth | docs/beacon/v1.6.7/features/beacon-domain-fsm-authority-v167/truth.md | frozen | truth |
 | analysis | support_advisory | session analysis product-goal-domain-delivery | indexed | change |
 | program | support_advisory | docs/beacon/v1.6.7/programs/beacon-product-goal-domain-delivery-v167/feature-graph.json | indexed | program |
+| beacon-gen-implement | support_advisory | beacon/utils/domain_fsm.py | indexed | implement |
+| beacon-gen-implement | support_advisory | tests/test_v167_domain_fsm.py | indexed | implement |
+| beacon-gen-implement | support_advisory | docs/beacon/v1.6.7/.machine/execution/implementation-writeback-ledger-beacon-domain-fsm-authority-v167.json | indexed | implement |
 
 ## Boundary
 
