@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-16T15:08:28.095321+00:00",
+  "generated_at": "2026-07-16T15:22:27.334850+00:00",
   "feature": "beacon-loop-discover-goal-finish-v167",
   "feature_slug": "beacon-loop-discover-goal-finish-v167",
   "version": "v1.6.7",
@@ -18,8 +18,8 @@
     "evidence": "docs/beacon/v1.6.7/features/beacon-loop-discover-goal-finish-v167/evidence.md"
   },
   "source_hashes": {
-    "truth": "218d9c2b99ce34a46a746b12877448fa57421f48b46af2ef91ce94a8bfbcab41",
-    "tests": "84e1fe502001a832cb052bc36a2fc22416bd8359a51bea17060fb082893e34d2",
+    "truth": "bcd7e874b9a9d492adae2602856a4119a4a36c5eb6c67d10307e150d489f9a4c",
+    "tests": "edebc7927be960cf6a19d48d71a4650c4c734a50bc31c5a2ec300b3ebb3dc6ef",
     "tasks": "d710c018f543d8e6e57a1f0d9dd8981ec673e1e1e352e131b6fa168d76d2978a",
     "evidence": "ea7ec2d54310e8f454c707840f5c3178530910fbcbb575c27a7f5c6355ddc2d3"
   },
@@ -27,9 +27,9 @@
     "slug": "beacon-loop-discover-goal-finish-v167",
     "version": "v1.6.7",
     "status": "frozen",
-    "revision_id": "R1",
+    "revision_id": "R2",
     "language": "zh",
-    "change_reason": "P2 loop discovers goal finishes",
+    "change_reason": "R2 - dual host skills: beacon-loop-goal (discover) vs beacon-goal (finish); queue handoff",
     "canonical_refs": {
       "truth": "docs/beacon/v1.6.7/features/beacon-loop-discover-goal-finish-v167/truth.md",
       "tests": "docs/beacon/v1.6.7/features/beacon-loop-discover-goal-finish-v167/tests.md",
@@ -46,27 +46,32 @@
     {
       "ac_id": "AC-LDG-001",
       "theme": "queue-schema",
-      "description": "goal-queue.v1 字段合同（**Must**）"
+      "description": "goal-queue.v1（**Must**）"
     },
     {
       "ac_id": "AC-LDG-002",
-      "theme": "loop-write",
-      "description": "loop heartbeat/triage 只写 queue/STATE，不标 complete（**Must**）"
+      "theme": "loop-write-only",
+      "description": "loop 只 append queue，不得 `goal.status=complete`（**Must**）"
     },
     {
       "ac_id": "AC-LDG-003",
       "theme": "goal-consume",
-      "description": "product-goal start 可消费 queue 顶项（**Must**）"
+      "description": "beacon-goal start 消费顶项（**Must**）"
     },
     {
       "ac_id": "AC-LDG-004",
-      "theme": "boundary-docs",
-      "description": "loop-goal skill 明示非 product goal（**Must**）"
+      "theme": "skill-docs",
+      "description": "两 skill SKILL.md 互指边界（**Must**）"
     },
     {
       "ac_id": "AC-LDG-005",
-      "theme": "pause-on-conflict",
-      "description": "冲突路径 pause 语义（**Should**）"
+      "theme": "inventory",
+      "description": "skill inventory/count 接受 beacon-goal 为第 N 个 host skill（**Must**）"
+    },
+    {
+      "ac_id": "AC-LDG-006",
+      "theme": "v2",
+      "description": "queue schema 进 v2 fixture（**Must**）"
     }
   ],
   "test_rows": [
@@ -98,8 +103,16 @@
       "ac_id": "AC-LDG-004",
       "tc_id": "TC-LDG-004",
       "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v167_loop_goal_split.py::test_loop_goal_skill_boundary_text -q`",
-      "assertion": "skill 边界文案",
+      "command": "`python3 -m pytest tests/test_v167_loop_goal_split.py::test_dual_skill_boundary_docs -q`",
+      "assertion": "双 skill 边界",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-LDG-005",
+      "tc_id": "TC-LDG-005",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_loop_goal_split.py::test_inventory_lists_beacon_goal -q`",
+      "assertion": "inventory 含 beacon-goal",
       "evidence_path": ""
     }
   ],

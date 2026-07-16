@@ -9,6 +9,13 @@ description: Beacon v1.6.7 governor skill for public cross-harness lifecycle orc
 
 Cross-harness orchestrator skill that sequences all Beacon lifecycle skills (truth -> implement -> QA -> release) using a deterministic state machine. Governor harness type - only routes, never executes.
 
+
+## Product Goal Split (v1.6.7+)
+
+- **This skill (`beacon-loop-goal`)**: discovery / triage / enqueue only.
+- **Finish run-until-done**: use **`beacon-goal`** (Product Goal Runtime).
+- Do not mark product delivery complete from this skill.
+
 ## When to Use
 
 - User wants one prompt to drive the full Beacon lifecycle (truth -> implement -> QA -> release)

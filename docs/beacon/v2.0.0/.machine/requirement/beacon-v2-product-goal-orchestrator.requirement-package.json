@@ -1,0 +1,140 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-16T15:22:29.065402+00:00",
+  "feature": "beacon-v2-product-goal-orchestrator",
+  "feature_slug": "beacon-v2-product-goal-orchestrator",
+  "version": "v2.0.0",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+    "tests": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tests.md",
+    "tasks": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tasks.md",
+    "evidence": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "07e73fb4554ad86d1b3d25ca8ffa4946e9a7789586c9553b78541cf3631f9692",
+    "tests": "dc35205a9d5c7f2f98dc4fcb823162baa1dcb2bbb0865cb8749553e511ca77cf",
+    "tasks": "8a752749b8b0ac2d33d0b7d3aa0e4f5e7d9e5125f883eea128e5097c516edcd2",
+    "evidence": "98fae41bece433a6c7299ee3aeae547ec5f3bff764e4f68bf3910dfff5ae7070"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-v2-product-goal-orchestrator",
+    "version": "v2.0.0",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "v2 product goal parallel + main-star satellite; parity with v1.6.7 R2",
+    "canonical_refs": {
+      "truth": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+      "tests": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tests.md",
+      "tasks": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tasks.md",
+      "evidence": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "program_ref": "docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/feature-graph.json"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-V2-PGO-001",
+      "theme": "parity",
+      "description": "加载 v1.6.7 product-goal-state schema fixture 并通过 parity test（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-PGO-002",
+      "theme": "skill",
+      "description": "暴露 beacon-goal host skill + CLI（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-PGO-003",
+      "theme": "progressive",
+      "description": "阶段 skill map 可配置且默认不全量加载（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-PGO-004",
+      "theme": "subagent",
+      "description": "parallel_plan 驱动 sub-agent；尊重 feature-graph 依赖（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-PGO-005",
+      "theme": "done",
+      "description": "complete 需 verifier；禁止自述（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-PGO-006",
+      "theme": "compat",
+      "description": "Python CLI 入口保持 `beacon goal`（**Must**）"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-V2-PGO-001",
+      "tc_id": "TC-V2-PGO-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v200_product_goal.py::test_v167_schema_parity -q`",
+      "assertion": "v167 fixture parity",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-PGO-003",
+      "tc_id": "TC-V2-PGO-002",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v200_product_goal.py::test_progressive_load_default -q`",
+      "assertion": "默认不全量加载",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-PGO-004",
+      "tc_id": "TC-V2-PGO-003",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v200_product_goal.py::test_parallel_respects_deps -q`",
+      "assertion": "依赖边约束",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Author Rust orchestrator contracts",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Python compat CLI surfaces",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Parity tests vs v1.6.7 fixtures",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Implement + QA",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-gen-truth",
+      "authority": "requirement_truth",
+      "artifact": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+      "status": "frozen"
+    },
+    {
+      "surface": "upstream",
+      "authority": "support_advisory",
+      "artifact": "docs/beacon/v1.6.7/features/beacon-product-goal-runtime-v167/truth.md",
+      "status": "indexed"
+    }
+  ]
+}

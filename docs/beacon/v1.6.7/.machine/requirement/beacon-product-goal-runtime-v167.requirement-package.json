@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-16T15:08:25.558429+00:00",
+  "generated_at": "2026-07-16T15:22:25.406069+00:00",
   "feature": "beacon-product-goal-runtime-v167",
   "feature_slug": "beacon-product-goal-runtime-v167",
   "version": "v1.6.7",
@@ -18,8 +18,8 @@
     "evidence": "docs/beacon/v1.6.7/features/beacon-product-goal-runtime-v167/evidence.md"
   },
   "source_hashes": {
-    "truth": "a86699bec83ad1eb447a7a66e44d30c8dcd815f32b791a327fb888533aa2c6a5",
-    "tests": "6f3617db9ec09e8feddd10b4afbf4db4c34e23954635fc5c8e79f925b09fb557",
+    "truth": "70cbc10b0aec0df32d8ac86f3bb43aa79ad75744b15b326049905b9fcfd5abe7",
+    "tests": "af183c78fab4456b36a0ba6aff7e88a3aefdf960a1ce41e6cfa52f336663f1a0",
     "tasks": "b1a7507180a83488aa615c53385e5dfd0dc75b7acd8711434f31161324dbb01f",
     "evidence": "892ff81378709f632028ac97ce51ef3b4f02d506b7f788904694eac6d1b9a933"
   },
@@ -27,9 +27,9 @@
     "slug": "beacon-product-goal-runtime-v167",
     "version": "v1.6.7",
     "status": "frozen",
-    "revision_id": "R1",
+    "revision_id": "R2",
     "language": "zh",
-    "change_reason": "P1 product goal runtime full lifecycle",
+    "change_reason": "R2 - parallel subagent + progressive skill load + main-star/satellite worktree pool; host skill beacon-goal",
     "canonical_refs": {
       "truth": "docs/beacon/v1.6.7/features/beacon-product-goal-runtime-v167/truth.md",
       "tests": "docs/beacon/v1.6.7/features/beacon-product-goal-runtime-v167/tests.md",
@@ -46,42 +46,72 @@
     {
       "ac_id": "AC-PGR-001",
       "theme": "state-schema",
-      "description": "定义 product-goal-state.v1（objective/done_when/budget/status/stage_pointer）（**Must**）"
+      "description": "product-goal-state.v1 含 objective/done_when/budget/status/stage_pointer/**parallel_plan**/**worktree_mode**（**Must**）"
     },
     {
       "ac_id": "AC-PGR-002",
       "theme": "cli-surface",
-      "description": "beacon goal start"
+      "description": "`beacon goal start\\"
     },
     {
       "ac_id": "AC-PGR-003",
-      "theme": "host-parity",
-      "description": "host /goal 与 CLI 共享或可映射同一 state（**Must**）"
+      "theme": "host-skill",
+      "description": "新增 host-visible **`beacon-goal`** skill 包（governor 编排，不自证完成）（**Must**）"
     },
     {
       "ac_id": "AC-PGR-004",
-      "theme": "done-audit",
-      "description": "complete 前必须 CLI verifier（tests/qa/domain）；禁止自述完成（**Must**）"
+      "theme": "dual-skill",
+      "description": "文档与 inventory：`beacon-loop-goal`≠`beacon-goal`；loop 不得 emit product complete（**Must**）"
     },
     {
       "ac_id": "AC-PGR-005",
-      "theme": "blocked-audit",
-      "description": "同一 blocker 连续 ≥3 goal turn 才可 blocked（**Must**）"
+      "theme": "progressive-load",
+      "description": "Goal 决策树按阶段加载 skill（truth→gen-truth；implement→gen-implement；qa→eval-qa…）；禁止默认全量加载（**Must**）"
     },
     {
       "ac_id": "AC-PGR-006",
-      "theme": "lifecycle-span",
-      "description": "goal 状态可指向 truth/implement/qa/release_gate 阶段（**Must**）"
+      "theme": "intent-subagent",
+      "description": "用户 utterance / program 含 `subagent`/`parallel`/`主星`/`卫星` 时解析为 parallel_plan（**Must**）"
     },
     {
       "ac_id": "AC-PGR-007",
-      "theme": "budget",
-      "description": "token/turn budget + pause（**Should**）"
+      "theme": "parallel-lakes",
+      "description": "parallel_plan 将可并行湖分配给 satellite agents；依赖边尊重 feature-graph（**Must**）"
     },
     {
       "ac_id": "AC-PGR-008",
-      "theme": "intent-queue",
-      "description": "可消费 intent/goal-queue 顶项（**Should**）"
+      "theme": "worktree-single",
+      "description": "`worktree_mode=single_worktree`：一 goal 一 worktree 串行阶段（**Must**）"
+    },
+    {
+      "ac_id": "AC-PGR-009",
+      "theme": "worktree-pool",
+      "description": "`worktree_mode=main_star_satellite_pool`：主星 integration branch + N 卫星 worktree（每湖一个）（**Must**）"
+    },
+    {
+      "ac_id": "AC-PGR-010",
+      "theme": "merge-to-star",
+      "description": "卫星完成 implement 本地验证后 PR/merge 回主星；冲突 → blocked 或主星协调 agent（**Must**）"
+    },
+    {
+      "ac_id": "AC-PGR-011",
+      "theme": "done-audit",
+      "description": "complete 前 CLI verifier（tests/qa/domain）；禁止自述（**Must**）"
+    },
+    {
+      "ac_id": "AC-PGR-012",
+      "theme": "blocked-audit",
+      "description": "同 blocker ≥3 goal turns 才 blocked（**Must**）"
+    },
+    {
+      "ac_id": "AC-PGR-013",
+      "theme": "release-human",
+      "description": "release_gate 永不 auto（**Must**）"
+    },
+    {
+      "ac_id": "AC-PGR-014",
+      "theme": "v2-parity",
+      "description": "state/parallel/worktree 字段进入 v2 schema fixture 并被 v2 program 引用（**Must**）"
     }
   ],
   "test_rows": [
@@ -89,40 +119,72 @@
       "ac_id": "AC-PGR-001",
       "tc_id": "TC-PGR-001",
       "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_state_schema -q`",
-      "assertion": "state schema",
+      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_state_schema_parallel_worktree -q`",
+      "assertion": "state 含 parallel_plan/worktree_mode",
       "evidence_path": ""
     },
     {
-      "ac_id": "AC-PGR-002",
+      "ac_id": "AC-PGR-003",
       "tc_id": "TC-PGR-002",
       "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_cli_surface -q`",
-      "assertion": "CLI 合同",
+      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_beacon_goal_skill_present -q`",
+      "assertion": "skills/beacon/beacon-goal 存在",
       "evidence_path": ""
     },
     {
       "ac_id": "AC-PGR-004",
       "tc_id": "TC-PGR-003",
-      "layer": "negative",
-      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_complete_requires_verifier -q`",
-      "assertion": "无 verifier 不可 complete",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_loop_vs_goal_skills_split -q`",
+      "assertion": "两 skill 边界文案",
       "evidence_path": ""
     },
     {
       "ac_id": "AC-PGR-005",
       "tc_id": "TC-PGR-004",
       "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_blocked_requires_three_turns -q`",
-      "assertion": "blocked≥3",
+      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_progressive_skill_load_map -q`",
+      "assertion": "阶段→skill 映射",
       "evidence_path": ""
     },
     {
       "ac_id": "AC-PGR-006",
       "tc_id": "TC-PGR-005",
       "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_stage_pointer_spans_lifecycle -q`",
-      "assertion": "阶段指针跨生命周期",
+      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_intent_parses_subagent -q`",
+      "assertion": "意图解析 parallel",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PGR-009",
+      "tc_id": "TC-PGR-006",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_main_star_satellite_pool -q`",
+      "assertion": "主星卫星 pool",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PGR-010",
+      "tc_id": "TC-PGR-007",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_satellite_merge_to_star -q`",
+      "assertion": "merge 回主星",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PGR-011",
+      "tc_id": "TC-PGR-008",
+      "layer": "negative",
+      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_complete_requires_verifier -q`",
+      "assertion": "无 verifier 不可 complete",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PGR-014",
+      "tc_id": "TC-PGR-009",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_v2_schema_fixture_parity -q`",
+      "assertion": "v2 fixture 可加载",
       "evidence_path": ""
     }
   ],

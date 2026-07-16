@@ -1,0 +1,148 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-16T15:22:30.766315+00:00",
+  "feature": "beacon-v2-main-star-satellite-pool",
+  "feature_slug": "beacon-v2-main-star-satellite-pool",
+  "version": "v2.0.0",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v2.0.0/features/beacon-v2-main-star-satellite-pool/truth.md",
+    "tests": "docs/beacon/v2.0.0/features/beacon-v2-main-star-satellite-pool/tests.md",
+    "tasks": "docs/beacon/v2.0.0/features/beacon-v2-main-star-satellite-pool/tasks.md",
+    "evidence": "docs/beacon/v2.0.0/features/beacon-v2-main-star-satellite-pool/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "31a597d24b2611552d3fdfe478099a875b22e7a797f8514ea7c0f858eb5adbfa",
+    "tests": "5da3ed9a8d0986f317cc5f497551b06aa3161c98cbec1c5ca4c70d8f578eba7c",
+    "tasks": "c45370ce0e885f33a4d86565c6f303c396aab8a71ccfe7725d9bfa53f6bd1662",
+    "evidence": "b3e1fa54385d6d73603157ad81e4051865d65363b00570be1c47afcd28726cd0"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-v2-main-star-satellite-pool",
+    "version": "v2.0.0",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "v2 product goal parallel + main-star satellite; parity with v1.6.7 R2",
+    "canonical_refs": {
+      "truth": "docs/beacon/v2.0.0/features/beacon-v2-main-star-satellite-pool/truth.md",
+      "tests": "docs/beacon/v2.0.0/features/beacon-v2-main-star-satellite-pool/tests.md",
+      "tasks": "docs/beacon/v2.0.0/features/beacon-v2-main-star-satellite-pool/tasks.md",
+      "evidence": "docs/beacon/v2.0.0/features/beacon-v2-main-star-satellite-pool/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "program_ref": "docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/feature-graph.json"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-V2-MSS-001",
+      "theme": "modes",
+      "description": "支持 single_worktree 与 main_star_satellite_pool（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-MSS-002",
+      "theme": "allocate",
+      "description": "一湖一卫星 worktree；依赖未满足不分配（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-MSS-003",
+      "theme": "merge",
+      "description": "卫星 merge 仅到主星 integration；冲突可判定 blocked（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-MSS-004",
+      "theme": "truth",
+      "description": "卫星禁止写 docs/beacon feature truth 权威（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-MSS-005",
+      "theme": "branch-context",
+      "description": "v2 BranchContext 含 star/satellite + lake slug（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-MSS-006",
+      "theme": "topology",
+      "description": "复用/扩展 GitScopeGraph topology_gate（**Must**）"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-V2-MSS-001",
+      "tc_id": "TC-V2-MSS-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v200_star_satellite.py::test_modes -q`",
+      "assertion": "双模式",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-MSS-002",
+      "tc_id": "TC-V2-MSS-002",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_v200_star_satellite.py::test_one_lake_one_satellite -q`",
+      "assertion": "一湖一卫星",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-MSS-003",
+      "tc_id": "TC-V2-MSS-003",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_v200_star_satellite.py::test_merge_to_star_only -q`",
+      "assertion": "只合主星",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-MSS-004",
+      "tc_id": "TC-V2-MSS-004",
+      "layer": "negative",
+      "command": "`python3 -m pytest tests/test_v200_star_satellite.py::test_satellite_cannot_write_truth -q`",
+      "assertion": "卫星禁写 truth",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Author Rust orchestrator contracts",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Python compat CLI surfaces",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Parity tests vs v1.6.7 fixtures",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Implement + QA",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-gen-truth",
+      "authority": "requirement_truth",
+      "artifact": "docs/beacon/v2.0.0/features/beacon-v2-main-star-satellite-pool/truth.md",
+      "status": "frozen"
+    },
+    {
+      "surface": "upstream",
+      "authority": "support_advisory",
+      "artifact": "docs/beacon/v1.6.7/features/beacon-product-goal-runtime-v167/truth.md",
+      "status": "indexed"
+    }
+  ]
+}

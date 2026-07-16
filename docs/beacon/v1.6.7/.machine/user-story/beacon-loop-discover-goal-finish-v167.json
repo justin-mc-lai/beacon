@@ -3,21 +3,35 @@
   "feature": "beacon-loop-discover-goal-finish-v167",
   "feature_slug": "beacon-loop-discover-goal-finish-v167",
   "version": "v1.6.7",
-  "current_revision_id": "R1",
+  "current_revision_id": "R2",
   "lifecycle_status": "frozen",
-  "updated_at": "2026-07-16T15:08:27.768252+00:00",
+  "updated_at": "2026-07-16T15:22:26.859471+00:00",
   "revisions": [
     {
       "revision_id": "R1",
       "feature_slug": "beacon-loop-discover-goal-finish-v167",
       "source_revision_id": null,
       "reason": "draft",
-      "doc_status": "frozen",
-      "delivery_status": "idle",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
       "baseline_hash": "sha256:6351a3270128e5bf0d904c327995295335113f2f8db756aabf7cb432920bffeb",
-      "superseded_by": null,
+      "superseded_by": "R2",
       "created_at": "2026-07-16T15:08:27.762905+00:00",
       "frozen_at": "2026-07-16T15:08:27.841145+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R2",
+      "feature_slug": "beacon-loop-discover-goal-finish-v167",
+      "source_revision_id": "R1",
+      "reason": "clarify dual skill surfaces loop vs goal",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:bfa52d331d3225e76fdb408609db2746ff4ca2d57de3dcbb364e6533cf6ccf90",
+      "superseded_by": null,
+      "created_at": "2026-07-16T15:20:34.217060+00:00",
+      "frozen_at": "2026-07-16T15:22:27.009632+00:00",
       "accepted_at": null,
       "accepted_by": null
     }
@@ -28,7 +42,7 @@
       "revision_id": "R1",
       "title": "beacon-loop-discover-goal-finish-v167",
       "priority": "medium",
-      "status": "frozen",
+      "status": "superseded",
       "items": [
         {
           "id": "AC-001",
@@ -66,6 +80,67 @@
           "verified_by_run_id": null,
           "accepted_at": null,
           "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "fallback"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-loop-discover-goal-finish-v167",
+        "version": "v1.6.7",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/research/beacon-loop-discover-goal-finish-v167.md",
+        "present": false,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      }
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R2",
+      "title": "beacon-loop-discover-goal-finish-v167",
+      "priority": "medium",
+      "status": "frozen",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "general",
+          "text": "Acceptance criteria TBD",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "fallback"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Acceptance criteria TBD",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
           "covers": [
             "AC-001"
           ],

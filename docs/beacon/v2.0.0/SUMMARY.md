@@ -21,3 +21,10 @@ Primary v2.0.0 feature:
 Source plan (support advisory):
 
 - `docs/plans/beacon-v2-redesign.md`
+
+## Program: Product Goal Parallel (v2)
+
+- `docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/`
+- Lakes: `beacon-v2-product-goal-orchestrator`, `beacon-v2-main-star-satellite-pool`
+- Parity upstream: v1.6.7 Product Goal Domain Delivery R2 (dual skills, parallel subagent, main-star pool)
+
