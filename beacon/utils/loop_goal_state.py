@@ -443,18 +443,35 @@ def _write_verification_bundle(
     run_id: str,
     bundle: dict[str, Any],
     verification_bundle_ref: str,
+    cli_owned: bool = False,
+    produced_by: str = "",
 ) -> str:
     ref = verification_bundle_ref.strip() or _default_verification_bundle_ref(run_id)
     path = Path(ref)
     if not path.is_absolute():
         path = project_root.expanduser().resolve() / path
     path.parent.mkdir(parents=True, exist_ok=True)
+    existing: dict[str, Any] = {}
+    if path.is_file():
+        try:
+            loaded = json.loads(path.read_text(encoding="utf-8"))
+            if isinstance(loaded, dict):
+                existing = loaded
+        except Exception:  # noqa: BLE001
+            existing = {}
     payload = {
         "schema_version": "loop-goal-standard-execution-bundle.v1",
         "run_id": run_id,
         "checks": bundle,
         "required_checks": list(REQUIRED_STANDARD_EXECUTION_CHECKS),
         "updated_at": _now_iso(),
+        "cli_owned": bool(cli_owned or existing.get("cli_owned")),
+        "produced_by": str(
+            produced_by
+            or existing.get("produced_by")
+            or ("beacon.status.standard-execution-precheck" if cli_owned else "")
+        ),
+        "verification_bundle": existing.get("verification_bundle") or bundle,
     }
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     return ref
@@ -543,6 +560,49 @@ def record_standard_execution_precheck(
     if "workspace_admission" in verification_bundle and not workspace_admission:
         workspace_admission = verification_bundle.get("workspace_admission")
 
+    # AC-025: verification evidence must be CLI-owned. Agent-fabricated pass without
+    # a CLI artifact is rejected fail-closed.
+    from beacon.utils.standard_execution_precheck import load_cli_owned_bundle
+
+    cli_bundle = load_cli_owned_bundle(root, outputs["verification_bundle_ref"])
+    if not cli_bundle:
+        return _standard_execution_block(
+            root,
+            run_id=run_id,
+            state=state,
+            outputs=outputs,
+            reason_code="verification_bundle_not_cli_owned",
+        )
+    if cli_bundle:
+        # Prefer authoritative CLI artifact fields when present.
+        if isinstance(cli_bundle.get("verification_bundle"), dict):
+            verification_bundle = _normalise_verification_bundle(cli_bundle.get("verification_bundle"))
+        if cli_bundle.get("workspace_admission_ref"):
+            outputs["workspace_admission_ref"] = str(cli_bundle.get("workspace_admission_ref") or "")
+        if "canonical_refreeze_committed" in cli_bundle:
+            outputs["canonical_refreeze_committed"] = bool(cli_bundle.get("canonical_refreeze_committed"))
+            precheck = {
+                **precheck,
+                "canonical_refreeze_committed": bool(cli_bundle.get("canonical_refreeze_committed")),
+                "truth_baseline_merged": bool(cli_bundle.get("truth_baseline_merged")),
+                "truth_baseline_commit": cli_bundle.get("truth_baseline_commit") or outputs["truth_baseline_commit"],
+                "feature_worktree_reconciled": bool(cli_bundle.get("feature_worktree_reconciled", True)),
+                "stale_feature_refreeze_detected": bool(cli_bundle.get("stale_feature_refreeze_detected")),
+                "stale_feature_refreeze_quarantine_ref": str(
+                    cli_bundle.get("stale_feature_refreeze_quarantine_ref") or ""
+                ),
+                "workspace_admission": (
+                    (cli_bundle.get("verification_bundle") or {}).get("workspace_admission")
+                    if isinstance(cli_bundle.get("verification_bundle"), dict)
+                    else workspace_admission
+                ),
+            }
+            outputs["truth_baseline_commit"] = precheck.get("truth_baseline_commit")
+            outputs["stale_feature_refreeze_quarantine_ref"] = str(
+                precheck.get("stale_feature_refreeze_quarantine_ref") or ""
+            )
+            workspace_admission = precheck.get("workspace_admission") or workspace_admission
+
     if not outputs["canonical_refreeze_committed"]:
         return _standard_execution_block(
             root,
@@ -612,6 +672,12 @@ def record_standard_execution_precheck(
         run_id=run_id,
         bundle=verification_bundle,
         verification_bundle_ref=outputs["verification_bundle_ref"],
+        cli_owned=bool(precheck.get("cli_owned") or cli_bundle),
+        produced_by=str(
+            (cli_bundle or {}).get("produced_by")
+            or precheck.get("produced_by")
+            or ""
+        ),
     )
     outputs["verification_bundle_ref"] = bundle_ref
     outputs["standard_execution_flow_status"] = "pass"
@@ -657,7 +723,7 @@ def get_skill_for_stage(stage: str) -> str:
         "governance_precheck": "CLI:beacon-plan-start",
         "truth_routing": "beacon-gen-truth",
         "review_routing": "beacon-pln-review",
-        "standard_execution_precheck": "CLI:standard-execution-precheck",
+        "standard_execution_precheck": "CLI:beacon-status-standard-execution-precheck",
         "implement_routing": "beacon-gen-implement",
         "qa_routing": "beacon-eval-qa",
         "qa_deep_routing": "beacon-eval-qa-deep",

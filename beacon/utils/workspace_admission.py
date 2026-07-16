@@ -9,12 +9,20 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
-from beacon.utils.git_alignment import ensure_expected_worktree_lane, git_output
+from beacon.utils.git_alignment import (
+    check_truth_authoring_branch,
+    ensure_expected_worktree_lane,
+    git_output,
+)
 from beacon.utils.protected_paths import build_protected_path_block
 from beacon.utils.runtime import now_iso
 from beacon.utils.story_state import feature_slug
 
 SCHEMA_VERSION = "workspace-admission-v1"
+
+_FEATURE_PACKAGE_REQUIREMENT_RE = re.compile(
+    r"^docs/beacon/(?P<version>[^/]+)/features/[^/]+/(truth|tests|tasks|evidence)\.md$"
+)
 
 TRUTH_GIT_ADMISSION_PREAMBLE = """## GIT_ADMISSION (mandatory — truth authoring on canonical branch)
 
@@ -709,6 +717,39 @@ def _versions_requiring_admission(project_root: Path) -> list[str]:
     return []
 
 
+def is_feature_package_requirement_path(rel_text: str) -> bool:
+    """Return True for package-authoritative requirement Markdown paths."""
+    return bool(_FEATURE_PACKAGE_REQUIREMENT_RE.match(str(rel_text or "").strip()))
+
+
+def _version_from_feature_package_path(rel_text: str) -> str:
+    match = _FEATURE_PACKAGE_REQUIREMENT_RE.match(str(rel_text or "").strip())
+    if not match:
+        return ""
+    return str(match.group("version") or "").strip()
+
+
+def _checkout_root_for_write(
+    *,
+    primary_root: Path,
+    target: Path,
+    cwd: Path | None,
+) -> Path:
+    """Prefer the git checkout that owns the write (cwd/worktree), else primary."""
+    candidates: list[Path] = []
+    if cwd is not None:
+        candidates.append(Path(cwd).expanduser().resolve())
+    candidates.append(target if target.is_dir() else target.parent)
+    candidates.append(primary_root)
+    for candidate in candidates:
+        try:
+            if git_output(candidate, "rev-parse", "--show-toplevel"):
+                return candidate
+        except Exception:  # noqa: BLE001
+            continue
+    return primary_root
+
+
 def hook_should_deny_write(
     project_root: Path,
     *,
@@ -720,6 +761,7 @@ def hook_should_deny_write(
     # regardless of whether the gate was invoked from main or a worktree.
     root = resolve_workspace_project_root(Path(project_root).expanduser().resolve())
     target = Path(target_path).expanduser()
+    cwd_path = Path(cwd).expanduser().resolve() if cwd else None
     if not target.is_absolute():
         target = (Path(cwd or root) / target).resolve()
     try:
@@ -731,6 +773,21 @@ def hook_should_deny_write(
     if protected.get("blocked"):
         return True, "protected_path_denylist"
     if rel_text.startswith(".beacon/state/workspace-admission/"):
+        return False, ""
+
+    # AC-023: feature package requirement Markdown is authored on truth_canonical.
+    # On canonical branch: allow without forcing feature worktree admission.
+    # Off canonical branch: deny with truth_canonical_branch_mismatch.
+    if is_feature_package_requirement_path(rel_text):
+        version = _version_from_feature_package_path(rel_text)
+        checkout = _checkout_root_for_write(primary_root=root, target=target, cwd=cwd_path)
+        guard = check_truth_authoring_branch(
+            checkout,
+            version=version or "auto",
+            operation="truth_file_write",
+        )
+        if bool(guard.get("blocked")):
+            return True, str(guard.get("reason_code") or "truth_canonical_branch_mismatch")
         return False, ""
 
     required_versions = _versions_requiring_admission(root)
