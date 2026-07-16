@@ -1,0 +1,237 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-16T11:44:23.695084+00:00",
+  "feature": "beacon-git-scope-graph-v167",
+  "feature_slug": "beacon-git-scope-graph-v167",
+  "version": "v1.6.7",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.7/features/beacon-git-scope-graph-v167/truth.md",
+    "tests": "docs/beacon/v1.6.7/features/beacon-git-scope-graph-v167/tests.md",
+    "tasks": "docs/beacon/v1.6.7/features/beacon-git-scope-graph-v167/tasks.md",
+    "evidence": "docs/beacon/v1.6.7/features/beacon-git-scope-graph-v167/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "e9bebf722a328aa7a99c935cd6e21a5441c1aab7c06c416c8bf7c6dcfc70676b",
+    "tests": "93b4f03602e4f7b764a36284821499ae271da3c9cca43a1852c93461b98d9749",
+    "tasks": "97ff12d0a946f868b22b2f1adeb9108b122001ac65132459ac323a6e9378d040",
+    "evidence": "71bf9b878df1d971bd25b0dfc9ad666e1798a026d7000e1574b0f095d3f6cb62"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-git-scope-graph-v167",
+    "version": "v1.6.7",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "GitScopeGraph unified topology for single_repo/monorepo/multi_git_workspace; promotion_ref friction:2e306f7acea7",
+    "canonical_refs": {
+      "truth": "docs/beacon/v1.6.7/features/beacon-git-scope-graph-v167/truth.md",
+      "tests": "docs/beacon/v1.6.7/features/beacon-git-scope-graph-v167/tests.md",
+      "tasks": "docs/beacon/v1.6.7/features/beacon-git-scope-graph-v167/tasks.md",
+      "evidence": "docs/beacon/v1.6.7/features/beacon-git-scope-graph-v167/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "program_ref": "docs/beacon/v1.6.7/programs/beacon-unified-topology-loop-goal-v167/feature-graph.json"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-GSG-001",
+      "theme": "schema",
+      "description": "必须定义并写出 `git-scope-graph.v1` schema；含 scopes[] 与 topology_gate_status（**Must**）"
+    },
+    {
+      "ac_id": "AC-GSG-002",
+      "theme": "single-repo",
+      "description": "`single_repo` 仅 1 primary scope；行为与 v1.6.6 单 admission 回归等价（**Must**）"
+    },
+    {
+      "ac_id": "AC-GSG-003",
+      "theme": "monorepo",
+      "description": "`monorepo` 单 git 根；writable service dirty 违反时 topology_gate blocked（**Must**）"
+    },
+    {
+      "ac_id": "AC-GSG-004",
+      "theme": "multi-git",
+      "description": "`multi_git_workspace` 含 satellite scope；任 scope blocked → 汇总 blocked（**Must**）"
+    },
+    {
+      "ac_id": "AC-GSG-005",
+      "theme": "program-level-profile",
+      "description": "`branch_resolution_mode=program-level` 映射为单 scope profile；SidePilot fixture 回归（**Must**）"
+    },
+    {
+      "ac_id": "AC-GSG-006",
+      "theme": "topology-resolve-cli",
+      "description": "`beacon workspace topology-resolve` 写 artifact 并返回 JSON（**Must**）"
+    },
+    {
+      "ac_id": "AC-GSG-007",
+      "theme": "precheck-bundle",
+      "description": "standard execution verification bundle 增加 `topology_gate` 检查项（**Must**）"
+    },
+    {
+      "ac_id": "AC-GSG-008",
+      "theme": "loop-goal-consume",
+      "description": "loop-goal `record_standard_execution_precheck` 拒绝无 topology_gate_ref 的 pass（**Must**）"
+    },
+    {
+      "ac_id": "AC-GSG-009",
+      "theme": "v2-branch-context-parity",
+      "description": "v1 GitScopeGraph fixture 可被 v2 BranchContext parity test 加载（**Must**）"
+    },
+    {
+      "ac_id": "AC-GSG-010",
+      "theme": "sqlite-ledger-ref",
+      "description": "friction/git scope 事件可写入 runtime-ledger `git_scopes` 投影（**Should**）"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-GSG-001",
+      "tc_id": "TC-GSG-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_git_scope_graph.py::test_schema_minimum_fields -q`",
+      "assertion": "git-scope-graph.v1 字段齐全",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-GSG-002",
+      "tc_id": "TC-GSG-002",
+      "layer": "regression",
+      "command": "`python3 -m pytest tests/test_v167_git_scope_graph.py::test_single_repo_equivalent_to_v166 -q`",
+      "assertion": "single_repo 等价 v1.6.6 admission",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-GSG-003",
+      "tc_id": "TC-GSG-003",
+      "layer": "negative",
+      "command": "`python3 -m pytest tests/test_v167_git_scope_graph.py::test_monorepo_dirty_service_blocks -q`",
+      "assertion": "monorepo dirty → blocked",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-GSG-004",
+      "tc_id": "TC-GSG-004",
+      "layer": "negative",
+      "command": "`python3 -m pytest tests/test_v167_git_scope_graph.py::test_multi_git_satellite_blocked -q`",
+      "assertion": "卫星仓 blocked 汇总 blocked",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-GSG-005",
+      "tc_id": "TC-GSG-005",
+      "layer": "regression",
+      "command": "`python3 -m pytest tests/test_v167_git_scope_graph.py::test_program_level_profile_sidepilot -q`",
+      "assertion": "program-level profile 回归",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-GSG-006",
+      "tc_id": "TC-GSG-006",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_v167_git_scope_graph.py::test_topology_resolve_cli_writes_artifact -q`",
+      "assertion": "topology-resolve 写 artifact",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-GSG-007",
+      "tc_id": "TC-GSG-007",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_git_scope_graph.py::test_precheck_bundle_includes_topology_gate -q`",
+      "assertion": "verification bundle 含 topology_gate",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-GSG-008",
+      "tc_id": "TC-GSG-008",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_git_scope_graph.py::test_loop_goal_rejects_missing_topology_ref -q`",
+      "assertion": "无 topology ref 拒绝 pass",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-GSG-009",
+      "tc_id": "TC-GSG-009",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_git_scope_graph.py::test_v2_branch_context_parity_fixture -q`",
+      "assertion": "v2 parity fixture 可加载",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-GSG-010",
+      "tc_id": "TC-GSG-010",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_v167_git_scope_graph.py::test_git_scopes_ledger_projection -q`",
+      "assertion": "runtime-ledger git_scopes 投影",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Materialize feature package",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Validate frontmatter and acceptance criteria",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Validate checkbox ledger without gate bypass",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Validate evidence authority labels",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Run canonical implement and QA gates separately",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-deep",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.7/research/beacon-git-scope-graph-v167.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "beacon-ceo-review",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.7/change/beacon-git-scope-graph-v167.refreeze-summary.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "qa",
+      "authority": "qa_verdict",
+      "canonical_artifact": "docs/beacon/v1.6.7/.machine/qa/beacon-git-scope-graph-v167.qa9-matrix.json",
+      "status": "linked",
+      "route": "qa"
+    },
+    {
+      "surface": "release",
+      "authority": "release_verdict",
+      "canonical_artifact": "docs/beacon/v1.6.7/release/",
+      "status": "linked",
+      "route": "release"
+    }
+  ]
+}

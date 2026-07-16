@@ -1,6 +1,6 @@
 ---
 name: beacon-loop-goal
-description: Beacon v1.6.6 governor skill for public cross-harness lifecycle orchestration. Use when the user wants one prompt to route truth -> implement -> QA -> release while preserving every harness hard gate and requiring human confirmation before release.
+description: Beacon v1.6.7 governor skill for public cross-harness lifecycle orchestration. Use when the user wants one prompt to route truth -> implement -> QA -> release while preserving every harness hard gate, intent-aware resume, topology_gate consumption, and requiring human confirmation before release.
 ---
 
 # Beacon Loop Goal
@@ -60,7 +60,39 @@ error_recovery -> invoke beacon-gov-debug -> resume from blocked stage
 
 ## Same-Session Continue (AC-028)
 
-After emitting the next route / next skill, **immediately load that skill in the same session**. Do not end the orchestration turn by only printing the next step. Use `beacon status loop-goal --resume --run-id <run_id> --json` when recovering mid-run; a successful resume always returns actionable `current_stage` + `next_skill` (or an explicit human-wait at `release_gate`). No-op success printing is forbidden.
+After emitting the next route / next skill, **immediately load that skill in the same session**. Do not end the orchestration turn by only printing the next step. Use `beacon status loop-goal --resume [--utterance 继续] --run-id <run_id> --json` when recovering mid-run; a successful resume always returns actionable `current_stage` + `next_skill` + `resume_action` (or an explicit human-wait at `release_gate`). No-op success printing is forbidden.
+
+## R7 Intent Continuation & Dual Runtime (AC-031..040)
+
+### Resilient Stop Contract (AC-039)
+
+Every stop path must emit `reason_code` + `resume_action` (`none` | `load_next_skill` | `await_human_confirmation` | `replay_substep`). Never return pass/no-op without state change when blocked or waiting.
+
+### Intent Context (AC-031..033)
+
+1. On each routing fork call `loop_goal_state.record_intent_fork(stage, utterance_slice, decision, reason_code)`.
+2. Persist `seed_utterance`, `latest_utterance`, `intent_forks[]`, `decision_cache[]` in state outputs / `.beacon/state/loop-goal/<run_id>.intent-context.json`.
+3. When `user_decision_required`, cache the user answer via `record_user_decision()`; do not re-AskQuestion for the same decision key in the same run.
+
+### Interrupt Semantics (AC-034)
+
+- `host_turn_interrupted` → resume to `last_substep` with `resume_action=replay_substep` (not full error_recovery restart).
+- `stage_blocked` → route `beacon-gov-debug` or wait per stage contract.
+
+### Resume Utterance Map (AC-035)
+
+Short continuation tokens (`继续`, `continue`, `resume`, `go`) with a valid run map deterministically to `resume_action=load_next_skill` via `beacon status loop-goal --resume --utterance <token>`.
+
+### Dual Runtime Parity (AC-036, AC-038)
+
+| Mode | Entry | Contract |
+|------|-------|----------|
+| `host_skill` | Load this skill | AC-028 same-session continue |
+| `cli_agent` | `beacon loop-goal run --project . --version <version> --feature <feature> --utterance "<prompt>" [--json]` | Same `loop-goal-state.v1` file; `build_resume` output must match host skill for the same `run_id` |
+
+### Topology Gate (AC-037)
+
+Before implement, `standard_execution_precheck` must consume `topology_gate_status` from `GitScopeGraph` (`.beacon/state/git-scope-graph/<version>/<feature>.json`). `blocked` topology_gate → `error_recovery`; do not enter `implement_routing`.
 
 ## Decision Tree
 
@@ -101,10 +133,11 @@ When this skill is invoked, follow this decision tree sequentially:
 2. Verify canonical truth/refreeze has been committed on `main` or `master`.
 3. Verify the feature worktree contains `truth_baseline_commit`; if not, block with `reason_code=truth_baseline_not_merged`.
 4. If feature-local `.machine` revision/projection dirty state or stale refreeze is detected, require a scoped stash/archive quarantine ref before continuing.
-5. Require the CLI verification bundle containing `truth-map verify` / `truth_map verify`, `verify-materials --strict`, `git diff --check`, `branch-governance verify`, and workspace admission results.
+5. Require the CLI verification bundle containing `truth-map verify` / `truth_map verify`, `verify-materials --strict`, `git diff --check`, `branch-governance verify`, workspace admission results, and **`topology_gate`** (v1.6.7+ via `beacon workspace topology-resolve`).
 6. Require `implement check-branch` / workspace admission to pass and record `workspace_admission_ref`.
-7. Record the CLI artifact with `loop_goal_state.record_standard_execution_precheck()` (rejects non-CLI artifacts with `verification_bundle_not_cli_owned`).
-8. If the result is blocked, route to `beacon-gov-debug`; only `pass` or `up_to_date` may continue to `implement_routing`.
+7. Require `topology_gate_status=pass` (or `up_to_date`) and record `topology_gate_ref`; `blocked` → `error_recovery` with `reason_code` from graph.
+8. Record the CLI artifact with `loop_goal_state.record_standard_execution_precheck()` (rejects non-CLI artifacts with `verification_bundle_not_cli_owned`).
+9. If the result is blocked (including topology_gate), route to `beacon-gov-debug`; only `pass` or `up_to_date` may continue to `implement_routing`.
 
 ### Step 3: Implement Stage
 
@@ -160,9 +193,10 @@ When this skill is invoked, follow this decision tree sequentially:
 ## State File
 
 State is persisted at `.beacon/state/loop-goal/<run_id>.json` with schema `loop-goal-state.v1`.
-Standard execution outputs include `standard_execution_flow_status`, `truth_baseline_commit`, `canonical_refreeze_committed`, `feature_worktree_reconciled`, `stale_feature_refreeze_quarantine_ref`, `verification_bundle_ref`, and `workspace_admission_ref`.
+Standard execution outputs include `standard_execution_flow_status`, `truth_baseline_commit`, `canonical_refreeze_committed`, `feature_worktree_reconciled`, `stale_feature_refreeze_quarantine_ref`, `verification_bundle_ref`, `workspace_admission_ref`, and (v1.6.7+) `topology_gate_status` / `topology_gate_ref`.
+R7 intent outputs include `intent_context_ref`, `intent_forks`, `decision_cache`, `last_substep`, `loop_execution_mode`, and `resume_action`.
 Observability outputs include `human_stop_metrics` (`human_stops_per_run`, `stop_reason_counts`, `p1_continue_count`, `pseudo_stall_flag`) and `planner_review_continue_audit`.
-Resume via `beacon status loop-goal --resume [--run-id <id>] --json`.
+Resume via `beacon status loop-goal --resume [--run-id <id>] [--utterance <token>] --json` or `beacon loop-goal run` for CLI+agent parity.
 
 ## Boundary
 

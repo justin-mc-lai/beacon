@@ -1,0 +1,50 @@
+{
+  "schema_version": "beacon-feature-graph-v1",
+  "program_slug": "beacon-unified-topology-loop-goal-v167",
+  "version": "v1.6.7",
+  "plan_mode": "interactive",
+  "scope_mode": "full_parity",
+  "lake_or_ocean": "海拆湖",
+  "program_phase": "P1",
+  "p4_ack": true,
+  "promotion_ref": "friction:2e306f7acea7",
+  "user_decisions": {
+    "UD-TOPO-001": "GitScopeGraph_unified_main_plus_satellite_scopes",
+    "UD-TOPO-002": "resilient_stop_requires_reason_code_and_resume_action",
+    "UD-TOPO-003": "deterministic_intent_re_resolution_not_probabilistic",
+    "UD-TOPO-004": "dual_runtime_cli_agent_and_host_skill_share_state",
+    "UD-TOPO-005": "v2_schema_parity_with_BranchContext_TraceContext"
+  },
+  "upstream": {
+    "version": "v1.6.6",
+    "program_slug": "beacon-loop-meta-remediation-v166",
+    "required_features": [
+      "beacon-loop-goal-v166",
+      "beacon-global-workspace-git-admission-v162"
+    ]
+  },
+  "lakes": [
+    {
+      "phase": 1,
+      "slug": "beacon-git-scope-graph-v167",
+      "lake_or_ocean": "湖",
+      "depends_on": [],
+      "harness_route": "beacon-gen-change",
+      "summary": "GitScopeGraph + ProjectTopology + topology_gate for single/monorepo/multi_git"
+    },
+    {
+      "phase": 2,
+      "slug": "beacon-loop-goal-v166",
+      "lake_or_ocean": "湖",
+      "depends_on": [
+        "beacon-git-scope-graph-v167"
+      ],
+      "harness_route": "beacon-gen-change",
+      "summary": "R7 intent continuation + dual runtime + consumes topology_gate"
+    }
+  ],
+  "topology_order": [
+    "beacon-git-scope-graph-v167",
+    "beacon-loop-goal-v166"
+  ]
+}

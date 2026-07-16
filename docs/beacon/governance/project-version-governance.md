@@ -134,6 +134,23 @@ parser_contract: "beacon-project-governance-v1"
 - require_workspace_admission: `true`
 - admission_invalidation: `dirty_only`
 
+
+### v1.6.7
+- participating_services: `beacon`
+- branch_guard_mode: `strict`
+- validation_state: `active`
+- per_service_canonical_branch:
+  - `beacon`: `beacon/v1.6.7`
+- truth_canonical: `main`
+- runtime_mirror: `beacon/v1.6.7`
+- branch_governance_template: `standard-feature`
+- previous_version_baseline_branch: `main`
+- next_version_feature_branch: `beacon/v1.6.7/<feature-slug>`
+- worktree_mode: `branch-only`
+- worktree_path: `.beacon/worktrees/v1.6.7`
+- require_workspace_admission: `false`
+- admission_invalidation: `dirty_only`
+
 ### v2.0.0
 - participating_services: `beacon`
 - branch_guard_mode: `strict`
