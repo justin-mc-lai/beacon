@@ -2,9 +2,9 @@
 slug: beacon-loop-goal-v166
 version: v1.6.6
 status: frozen
-revision_id: R4
+revision_id: R5
 language: zh
-change_reason: R4 - Add Standard Execution Flow admission contract before loop-goal may route to implement
+change_reason: R5 - Truth-on-main first-principles closure (file write gate + CLI-owned standard_execution_precheck + truth GIT_ADMISSION split)
 canonical_refs:
   truth: docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md
   tests: docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md
@@ -46,6 +46,9 @@ Beacon v1.6 公开 host-visible skill surface 冻结为 38 个 skill：planner(7
 | UD-LG-004 | Auto-decide 白名单 | truth freeze / implement start / QA start 可 auto-decide；**release 永远人工确认** |
 | UD-LG-005 | Error 路由 | 任何阶段失败 → `beacon-gov-debug` → 修复后回到对应阶段 |
 | UD-LG-006 | 发布形态 | `beacon-loop-goal` 是公开 host-visible governor skill；v1.6 taxonomy、agent surface expected list、skill inventory/count、release governance 必须接受它 |
+| UD-LG-007 | Truth-on-main 物理闭环 | 需求真相 **只能** 在 governance `truth_canonical`（默认 `main`/`master`）上编写、reopen、freeze/refreeze；feature worktree 不得成为 requirement authority |
+| UD-LG-008 | Precheck 证据主权 | `standard_execution_precheck` 的 verification bundle **必须由 CLI 产出**；禁止 agent 口头/手工拼装 pass 结果进入 implement |
+| UD-LG-009 | GIT_ADMISSION 双轨 | truth 编写 skill（`beacon-gen-truth` / `beacon-gen-change` / `beacon-gen-refreeze`）走 `truth_canonical` preamble；delivery skill（implement/qa/release/branch）走 feature worktree admit |
 
 ## Problem Statement
 
@@ -55,6 +58,7 @@ Beacon v1.6 公开 host-visible skill surface 冻结为 38 个 skill：planner(7
 4. 没有统一的 stop-when / error-recovery 机制贯穿全流程。
 5. R2 truth 和 `loop_goal_state.py` 已出现 `review_routing`，但 public SKILL.md 决策树和 state outputs 未把 `beacon-pln-review` 的 decision packet 正式纳入 loop-goal 生命周期决策，导致 review artifact 只能人工转译。
 6. R3 已能消费 planner-review decision packet，但仍缺少 canonical truth branch commit、feature-local stale refreeze quarantine、merge-main verification bundle 和 workspace admission 这组标准执行流硬门；因此 review 通过后仍可能从未提交/未合入/本地漂移的 truth baseline 直接进入 implement。
+7. R4 消费端已能拦未提交/未合入 baseline，且 CLI 已对 freeze/reopen/refreeze-chain 做 `truth_canonical` 分支硬拦；但仍未煮干第一性原理闭环：**(a)** 直接改 feature package Markdown 仍可能在 feature 分支发生，且当前 workspace admission hook 反而把 truth 写操作赶进 feature worktree；**(b)** `record_standard_execution_precheck` 仍可消费 agent 自报的 verification bundle，而非 CLI 自跑证据；**(c)** skill GIT_ADMISSION 曾把 change 指向 worktree，与 truth-on-main 冲突（部分已修，需合同化）。
 
 ## Non-Goals
 
@@ -64,6 +68,7 @@ Beacon v1.6 公开 host-visible skill surface 冻结为 38 个 skill：planner(7
 - Subagent 级多 agent 协作（v2 scope）。
 - 概率模型决策（保持 deterministic）。
 - 替代 v1.6.0 Node.js `beacon-loop` CLI（保留兼容，不废弃）。
+- 让 governor `beacon-loop-goal` 自己执行 git/verify（仍只路由；CLI 负责跑 precheck，governor 只记录 CLI artifact）。
 
 ## Alignment Surface（本 revision 必煮干）
 
@@ -79,6 +84,10 @@ Beacon v1.6 公开 host-visible skill surface 冻结为 38 个 skill：planner(7
 | Governance precheck | 启动前验证版本在 governance 中注册（消费 v1.6.6 governance_precheck） |
 | Planner review decision packet | truth freeze 后、implement 前可进入 `review_routing`；读取 `beacon-pln-review` artifact 的 `review_id`、`recommended_route`、`user_decision_required`、highest severity、finding count、artifact ref，并写入 `.beacon/state/loop-goal/<run_id>.json` |
 | Standard Execution Flow admission | review 允许进入 implement 前，必须验证 canonical truth/refreeze 已提交、feature worktree 已合入 baseline、stale feature-local refreeze 已 quarantine、verification bundle 完整、workspace admission pass |
+| Truth-on-main CLI write gate | `freeze` / `reopen` / `change --refreeze-chain` 在非 `truth_canonical` 分支 fail-closed（`reason_code=truth_canonical_branch_mismatch`） |
+| Truth-on-main file write gate | 已知 version+feature 时，写 `docs/beacon/<version>/features/<slug>/{truth,tests,tasks,evidence}.md`（及等价 requirement 路径）若不在 `truth_canonical` → 文件级/hook 级 blocked；在 `truth_canonical` 上写 **不得** 被强制赶入 feature worktree |
+| CLI-owned precheck runner | 提供 CLI 入口自跑 standard execution verification bundle，写入可引用 artifact；loop-goal 只消费该 artifact，拒绝无 CLI 证据的 agent 自报 pass |
+| GIT_ADMISSION 双轨合同 | truth 编写 skill 注入 `truth_canonical` preamble；delivery skill 保留 worktree `workspace admit` |
 
 ## Phased Backlog（显式不在本包 closure 的范围）
 
@@ -101,6 +110,12 @@ Beacon v1.6 公开 host-visible skill surface 冻结为 38 个 skill：planner(7
 - `beacon/commands/status.py`: 新增 `loop-goal` 状态视图
 - `tests/test_v166_loop_goal.py` (new)
 - `tests/test_doctor_agent_surface.py`, `tests/test_v160_skill_harness_taxonomy.py`, `tests/test_v161_agent_eval.py`: public skill packaging and release governance regression coverage
+- `beacon/utils/git_alignment.py` (R5): `check_truth_authoring_branch` / `resolve_truth_canonical_branch`
+- `beacon/utils/change_refreeze.py`, `beacon/commands/freeze.py`, `beacon/commands/reopen.py` (R5): truth_canonical CLI write gate
+- `beacon/utils/workspace_admission.py` / hooks (R5): truth package path write gate; main checkout must not be forced to feature worktree for truth authoring
+- `beacon/utils/loop_goal_state.py` + new CLI precheck runner (R5): CLI-owned verification bundle for standard_execution_precheck
+- `tests/test_v166_truth_canonical_branch.py` (R5): truth_canonical branch + GIT_ADMISSION split coverage
+
 
 ## Orchestration Model
 
@@ -216,6 +231,11 @@ error_recovery → invoke beacon-gov-debug → 修复后回到对应阶段
 | AC-019 | verification-bundle | standard execution precheck 必须产出 verification bundle，至少包含 truth-map verify、verify-materials strict、git diff check、branch-governance verify、workspace admission 五类结果 |
 | AC-020 | workspace-admission-gate | `implement check-branch` / workspace admission 必须 pass，并把 artifact ref 写入 loop-goal state outputs；缺失或 blocked 不得进入 implement |
 | AC-021 | idempotent-resume | standard execution flow 重复执行已完成步骤时必须返回 pass/up_to_date，不得再次 bump requirement revision 或产生 reason-only refreeze |
+| AC-022 | truth-canonical-cli-gate | `beacon freeze` / `beacon reopen` / `beacon change --refreeze-chain` 在非 governance `truth_canonical` 分支必须 blocked，`reason_code=truth_canonical_branch_mismatch`（**Must**） |
+| AC-023 | truth-file-write-gate | 写 feature package requirement Markdown（`features/<slug>/{truth,tests,tasks,evidence}.md`）时：不在 `truth_canonical` → blocked；在 `truth_canonical` → **允许**，且不得因 `require_workspace_admission` 强制要求 feature worktree cwd（**Must**） |
+| AC-024 | git-admission-dual-track | `beacon-gen-truth` / `beacon-gen-change` / `beacon-gen-refreeze` 物化 skill 必须含 truth_canonical GIT_ADMISSION；`beacon-gen-implement` / qa / release / gov-branch 必须保留 worktree `workspace admit` preamble（**Must**） |
+| AC-025 | cli-owned-precheck-bundle | 必须提供 CLI 命令自跑 standard execution verification bundle（至少五类检查）并写 artifact；`record_standard_execution_precheck` 只接受带 CLI artifact ref 的结果，拒绝无 ref 的 agent 自报 pass（**Must**） |
+| AC-026 | truth-routing-branch-check | public `beacon-loop-goal` SKILL.md Step 2 必须在进入 `beacon-gen-truth` 前校验当前分支为 `truth_canonical`，否则 route `beacon-gov-debug` + `truth_canonical_branch_mismatch`（**Must**） |
 
 ## State Model
 
@@ -239,6 +259,9 @@ drift_routing <--- review route requires truth/change/refreeze          error_re
 | UD-LG-004 | Auto-decide whitelist | accepted |
 | UD-LG-005 | Error recovery via gov-debug | accepted |
 | UD-LG-006 | Public host-visible governor skill release shape | accepted |
+| UD-LG-007 | Truth-on-main physical closure | accepted |
+| UD-LG-008 | CLI-owned precheck evidence | accepted |
+| UD-LG-009 | GIT_ADMISSION dual-track | accepted |
 | D-LG-001 | Cross-project orchestration | accepted defer (v2) |
 | D-LG-002 | Subagent orchestration | accepted defer (v2) |
 | D-LG-003 | Probabilistic decisions | rejected |
@@ -254,3 +277,4 @@ drift_routing <--- review route requires truth/change/refreeze          error_re
 
 - R3 froze planner-review decision packet routing.
 - R4 adds Standard Execution Flow admission before implement routing. This is a v1.6.6 loop-goal governance contract only; it does not create a new public skill, does not execute implementation, and does not provide QA/release verdict authority.
+- R5 closes truth-on-main first principles: CLI + file write gates on `truth_canonical`, dual-track GIT_ADMISSION, and CLI-owned standard_execution_precheck evidence. Governor still only routes; it does not self-run git checks.

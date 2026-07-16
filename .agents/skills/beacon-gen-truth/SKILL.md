@@ -293,14 +293,14 @@ HARD GATE:
 只能在 resolver-selected truth、用户已接受 scope 和本 skill authority 内写 truth 或 delivery artifact。
 如需判断是否通过，必须路由到 evaluator。
 
-## GIT_ADMISSION (mandatory — Tier A/B when version+feature known)
+## GIT_ADMISSION (mandatory — truth authoring on canonical branch)
 
-Before ANY repo write or implement/qa/release route:
-1. `beacon workspace admit --project-root . --version <v> --feature <slug> --json`
-2. If status != pass → STOP; show reason_codes; do NOT edit files
-3. Set cwd to worktree_path from payload
-4. Do NOT git checkout elsewhere to "fix" branch
-5. When admission is soft-skipped (`require_workspace_admission=false`), still verify `current_branch == resolved target_branch` before repo writes (R5 UD-024)
+Before ANY truth/change/refreeze/freeze write when version is known:
+1. Resolve `truth_canonical` from project governance (default: `main` or `master`)
+2. Verify `git rev-parse --abbrev-ref HEAD` equals `truth_canonical`
+3. If mismatch → STOP with `reason_code=truth_canonical_branch_mismatch`; do NOT edit requirement truth
+4. Commit refreeze/freeze artifacts on `truth_canonical` before loop-goal may route to implement
+5. Do NOT use feature worktree for truth authoring — use the canonical branch checkout only
 
 ## v1.6.0 Harness Migration
 

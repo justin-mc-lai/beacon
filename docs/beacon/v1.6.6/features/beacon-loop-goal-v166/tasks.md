@@ -1,8 +1,8 @@
 ---
 slug: beacon-loop-goal-v166
 version: v1.6.6
-status: frozen
-revision_id: R4
+status: draft
+revision_id: R5
 language: zh
 truth_ref: docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md
 parser_contract: beacon-feature-package-v2
@@ -31,3 +31,9 @@ parser_contract: beacon-feature-package-v2
 - [ ] TASK-015 implement → `beacon-gen-implement` — implement deterministic precheck helpers for canonical refreeze committed, stale feature-local refreeze quarantine, truth baseline merged, verification bundle completeness, workspace admission pass, and idempotent resume
 - [ ] TASK-016 implement → `beacon-gen-implement` — add pytest coverage for TC-LG-015..021
 - [ ] TASK-017 qa → `beacon-eval-qa` — run behavioral QA for AC-015..021 after implementation; formal verdict remains evaluator-owned
+
+- [x] TASK-018 change → `beacon-gen-change` — R5 reopen + draft truth-on-main first-principles closure (AC-022..026)
+- [ ] TASK-019 implement → `beacon-gen-implement` — complete truth package file write gate: on truth_canonical allow writes without forcing feature worktree; off-canonical deny
+- [ ] TASK-020 implement → `beacon-gen-implement` — add CLI command to run standard_execution_precheck verification bundle and write artifact; wire `record_standard_execution_precheck` to require CLI artifact ref
+- [ ] TASK-021 implement → `beacon-gen-implement` — ensure truth authoring skill injection stays dual-track; regression tests TC-LG-022..026
+- [ ] TASK-022 qa → `beacon-eval-qa` — behavioral QA for AC-022..026 after implementation; formal verdict remains evaluator-owned

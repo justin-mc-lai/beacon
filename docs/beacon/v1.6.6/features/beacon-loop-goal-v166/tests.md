@@ -1,8 +1,8 @@
 ---
 slug: beacon-loop-goal-v166
 version: v1.6.6
-status: frozen
-revision_id: R4
+status: draft
+revision_id: R5
 language: zh
 truth_ref: docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md
 parser_contract: beacon-feature-package-v2
@@ -35,6 +35,11 @@ parser_contract: beacon-feature-package-v2
 | AC-019 | TC-LG-019 | contract | `python3 -m pytest tests/test_v166_loop_goal.py::test_standard_execution_verification_bundle_required -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | verification bundle 含 truth-map verify、verify-materials strict、git diff check、branch-governance verify、workspace admission；缺任一项 blocked |
 | AC-020 | TC-LG-020 | contract | `python3 -m pytest tests/test_v166_loop_goal.py::test_workspace_admission_ref_recorded_before_implement -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | workspace admission pass 后 artifact ref 写入 loop-goal outputs；缺失时不得进入 `implement_routing` |
 | AC-021 | TC-LG-021 | regression | `python3 -m pytest tests/test_v166_loop_goal.py::test_standard_execution_precheck_is_idempotent -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | 重复执行 standard execution precheck 返回 pass/up_to_date，不 bump revision、不产生 reason-only refreeze |
+| AC-022 | TC-LG-022 | negative | `python3 -m pytest tests/test_v166_truth_canonical_branch.py::test_change_refreeze_chain_blocks_on_feature_branch tests/test_v166_truth_canonical_branch.py::test_freeze_command_blocks_on_feature_branch -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | feature 分支上 freeze/refreeze-chain blocked，`reason_code=truth_canonical_branch_mismatch` |
+| AC-023 | TC-LG-023 | negative | `python3 -m pytest tests/test_v166_truth_canonical_branch.py -k truth_file_write -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | 非 truth_canonical 写 feature package Markdown → blocked；在 main 写不要求 feature worktree cwd |
+| AC-024 | TC-LG-024 | contract | `python3 -m pytest tests/test_v166_truth_canonical_branch.py::test_truth_authoring_skills_get_canonical_branch_preamble tests/test_v166_truth_canonical_branch.py::test_delivery_skills_keep_worktree_admission_preamble -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | truth 编写 skill 含 truth_canonical preamble；delivery skill 含 workspace admit |
+| AC-025 | TC-LG-025 | contract | `python3 -m pytest tests/test_v166_loop_goal.py -k cli_owned_precheck -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | CLI 产出 verification bundle artifact；无 artifact ref 的 agent 自报 pass 被拒绝 |
+| AC-026 | TC-LG-026 | contract | `python3 -m pytest tests/test_v166_truth_canonical_branch.py::test_loop_goal_skill_declares_truth_canonical_gate -q --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | public SKILL.md Step 2 含 truth_canonical 校验与 `truth_canonical_branch_mismatch` |
 
 ## Verification Notes
 
@@ -44,9 +49,10 @@ parser_contract: beacon-feature-package-v2
 - TC-LG-010/012 读取 SKILL.md 内容，验证决策树完整性和 `review_routing` 公开契约。
 - TC-LG-013/014 用 deterministic planner-review artifact fixture 验证 state outputs 和 fail-closed route。
 - TC-LG-015..021 用 deterministic git/admission fixtures 验证 Standard Execution Flow 的顺序、baseline commit、stale local refreeze quarantine、verification bundle、workspace admission 和 idempotent resume。
+- TC-LG-022..026 验证 truth-on-main 第一性原理闭环：CLI 分支门、文件写门、GIT_ADMISSION 双轨、CLI-owned precheck、loop-goal Step 2 分支检查。
 
 ## Must vs Should
 
 | Priority | AC |
 |----------|-----|
-| Must | AC-001..021 |
+| Must | AC-001..026 |

@@ -2,21 +2,19 @@
 
 - feature: `beacon-loop-goal-v166`
 - version: `v1.6.6`
-- revision_id: `R4`
-- source_revision_id: `R3`
+- revision_id: `R5`
+- source_revision_id: `R4`
 - status: `ready`
 - cleanup_required: `False`
 - removed_requirement_count: `0`
-- added_requirement_count: `7`
+- added_requirement_count: `5`
 
 ## Removed Requirement Surfaces
 - none
 
 ## Added Requirement Surfaces
-- `AC-018` loop-goal 进入 implement 前必须验证 feature branch 包含 `truth_baseline_commit`；未合入时 fail-closed
-- `AC-016` canonical truth/refreeze 只有在 main/master 提交后才可成为 loop-goal baseline；未提交 refreeze artifact 不得进入 implement
-- `AC-021` standard execution flow 重复执行已完成步骤时必须返回 pass/up_to_date，不得再次 bump requirement revision 或产生 reason-only refreeze
-- `AC-017` feature/dev worktree 中发现本地 `.machine` revision/projection dirty 或 feature-local refreeze 时，必须 scoped stash/archive 并记录 quarantine ref；不得采信为 requirement authority
-- `AC-015` public SKILL.md 的 State Machine、Decision Tree、Skill Routing Matrix 必须显式包含 `standard_execution_precheck`，位于 `review_verify` 和 `implement_routing` 之间
-- `AC-019` standard execution precheck 必须产出 verification bundle，至少包含 truth-map verify、verify-materials strict、git diff check、branch-governance verify、workspace admission 五类结果
-- `AC-020` `implement check-branch` / workspace admission 必须 pass，并把 artifact ref 写入 loop-goal state outputs；缺失或 blocked 不得进入 implement
+- `AC-025` 必须提供 CLI 命令自跑 standard execution verification bundle（至少五类检查）并写 artifact；`record_standard_execution_precheck` 只接受带 CLI artifact ref 的结果，拒绝无 ref 的 agent 自报 pass（**Must**）
+- `AC-024` `beacon-gen-truth` / `beacon-gen-change` / `beacon-gen-refreeze` 物化 skill 必须含 truth_canonical GIT_ADMISSION；`beacon-gen-implement` / qa / release / gov-branch 必须保留 worktree `workspace admit` preamble（**Must**）
+- `AC-022` `beacon freeze` / `beacon reopen` / `beacon change --refreeze-chain` 在非 governance `truth_canonical` 分支必须 blocked，`reason_code=truth_canonical_branch_mismatch`（**Must**）
+- `AC-023` 写 feature package requirement Markdown（`features/<slug>/{truth,tests,tasks,evidence}.md`）时：不在 `truth_canonical` → blocked；在 `truth_canonical` → **允许**，且不得因 `require_workspace_admission` 强制要求 feature worktree cwd（**Must**）
+- `AC-026` public `beacon-loop-goal` SKILL.md Step 2 必须在进入 `beacon-gen-truth` 前校验当前分支为 `truth_canonical`，否则 route `beacon-gov-debug` + `truth_canonical_branch_mismatch`（**Must**）

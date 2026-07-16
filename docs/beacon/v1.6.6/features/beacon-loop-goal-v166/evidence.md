@@ -1,8 +1,8 @@
 ---
 slug: beacon-loop-goal-v166
 version: v1.6.6
-status: frozen
-revision_id: R4
+status: draft
+revision_id: R5
 language: zh
 truth_ref: docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md
 parser_contract: beacon-feature-package-v2
@@ -62,3 +62,18 @@ parser_contract: beacon-feature-package-v2
 - Recommended route: `beacon-gen-change`
 - User decision: accepted to write Standard Execution Flow into v1.6.6 canonical package surfaces, then refreeze.
 - Scope: loop-goal must fail closed before implement unless canonical refreeze is committed, feature worktree has reconciled/stashed stale local refreeze, canonical baseline commit is merged, verification bundle is complete, and workspace admission passes.
+
+## R5 Truth-on-main Closure Evidence
+
+| Surface | Authority | Canonical Artifact | Status | Route |
+|---------|-----------|--------------------|--------|-------|
+| beacon-gen-change | requirement_truth | docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md (+ tests/tasks/evidence) | R5 draft reopen | refreeze |
+| beacon-gen-implement | support_advisory | beacon/utils/git_alignment.py; change_refreeze.py; freeze.py; reopen.py; workspace_admission.py | partial CLI gate landed pre-R5; file write + CLI precheck still open for implement | implement |
+| beacon-gen-implement | support_advisory | tests/test_v166_truth_canonical_branch.py | landed for AC-022/024/026 partial | implement |
+| beacon-loop-goal | support_advisory | skills/beacon/beacon-loop-goal/SKILL.md Step 2 truth_canonical check | landed | implement |
+
+### R5 Accepted Scope
+
+- Close remaining soft gaps so requirement truth cannot be authored or frozen outside `truth_canonical`.
+- Make standard_execution_precheck evidence CLI-owned.
+- Keep governor routing-only; do not make loop-goal execute git itself.

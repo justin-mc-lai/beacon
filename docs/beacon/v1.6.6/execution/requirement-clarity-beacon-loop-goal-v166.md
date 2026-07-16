@@ -22,7 +22,7 @@
 - prd_path: `docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md` exists=`True`
 - user_story_path: `docs/beacon/v1.6.6/features/beacon-loop-goal-v166/truth.md` exists=`True`
 - test_case_path: `docs/beacon/v1.6.6/features/beacon-loop-goal-v166/tests.md` exists=`True`
-- upstream_ac_ids: AC-001, AC-002, AC-003, AC-004, AC-005, AC-006, AC-007, AC-008, AC-009, AC-010, AC-011, AC-012, AC-013, AC-014, AC-015, AC-016, AC-017, AC-018, AC-019, AC-020, AC-021
+- upstream_ac_ids: AC-001, AC-002, AC-003, AC-004, AC-005, AC-006, AC-007, AC-008, AC-009, AC-010, AC-011, AC-012, AC-013, AC-014, AC-015, AC-016, AC-017, AC-018, AC-019, AC-020, AC-021, AC-022, AC-023, AC-024, AC-025, AC-026
 - missing_test_case_ac_ids: 
 
 ## Version Projection Truth Contract

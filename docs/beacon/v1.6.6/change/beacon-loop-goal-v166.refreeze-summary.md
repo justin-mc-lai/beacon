@@ -1,12 +1,12 @@
 # Change Refreeze Summary: beacon-loop-goal-v166
 
 - version: `v1.6.6`
-- change_reason: `refreeze v1.6.6 loop-goal Standard Execution Flow: canonical main truth author/refreeze/commit, stale feature-local refreeze quarantine, merge-main verification bundle, workspace admission, idempotent implement resume`
+- change_reason: `R5 truth-on-main first-principles closure`
 - refreeze_status: `complete`
 - blocked_reason: ``
 - next_route: `beacon-gen-implement`
-- revision_before: `R3`
-- revision_after: `R4`
+- revision_before: `R5`
+- revision_after: `R5`
 
 ## Surface Statuses
 - `change`: `present` (docs/beacon/v1.6.6/change/beacon-loop-goal-v166.md)
