@@ -79,3 +79,13 @@ Deliverables (historical candidate, superseded by R8 minimal-kernel closure wher
 ## QA / Release Verdict
 
 **无** — truth 已由当前 refreeze transaction 冻结；TraceSpine/canonical truth branch/standard execution flow implementation/QA/release closure 尚未裁决。formal closure 仅由 `beacon-eval-qa` / `beacon-eval-release` 产出。
+
+## Loop-goal P0 progress (2026-07-16)
+
+- run_id: `lg-c9924966448c`
+- standard_execution_precheck: pass
+- workspace admission: pass
+- topology_gate: pass (single_repo)
+- P0 action: removed `beacon-python` from workspace members; crate archived under `packages/beacon-rs/_archive/beacon-python`
+- verification: `cd packages/beacon-rs && cargo test --workspace` → all suites ok (5 core crates)
+- remaining: schema 8 vs 9 decision (AC-161), dual-track writer lease (AC-158), full phase delivery P1–P6, QA/release human gate
