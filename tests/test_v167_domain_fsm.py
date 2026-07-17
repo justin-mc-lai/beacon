@@ -212,18 +212,65 @@ parser_contract: beacon-feature-package-v2
 
 
 def test_orphan_ac_detected() -> None:
+    """Brownfield multi-concern policy (v1.6.7):
+
+    - Non-domain UX ACs are not treated as blocking orphans.
+    - When at least one AC binds to Domain FSM, remaining domain-flavored
+      unbound ACs are diagnostic-only (do not block freeze/QA).
+    - Fail-closed only when acceptance rows exist but *none* bind to FSM.
+    """
+    # Mixed package: weather widget (non-domain) + listed Product (bound)
     result = evaluate_domain_fsm_authority(truth_markdown=ORPHAN_TRUTH, version="v1.6.7")
     assert result["required"] is True
-    assert result["blocked"] is True
-    codes = {item.get("reason_code") for item in result["findings"]}
+    assert result["blocked"] is False
+    assert result["status"] == "pass"
+    projection = result.get("projection") if isinstance(result.get("projection"), dict) else {}
+    bound = set(projection.get("bound_ac_ids") or [])
+    orphan = set(projection.get("orphan_ac_ids") or [])
+    assert "AC-ORPH-002" in bound
+    # non-domain weather widget is not a blocking domain-flavored orphan
+    assert "AC-ORPH-001" not in orphan
+
+    # Zero-bound package: only non-mappable ACs with domain model present → blocked
+    zero_bound = """---
+slug: orphan-zero-bound
+version: v1.6.7
+status: draft
+domain_required: true
+parser_contract: beacon-feature-package-v2
+---
+
+# Orphan zero-bound
+
+## Domain Model
+
+| Entity | Key | Precedence |
+|--------|-----|------------|
+| Product | product_id | root |
+
+## Domain FSM — Product
+
+| State | From | Guard |
+|-------|------|-------|
+| draft | - | - |
+| listed | draft | ok |
+
+## Illegal transitions
+
+- Product.listed without title
+
+## Acceptance Criteria
+
+| AC ID | Description |
+|-------|-------------|
+| AC-ORPH-001 | User enjoys the dashboard weather widget |
+| AC-ORPH-003 | User can open settings panel
+"""
+    zero = evaluate_domain_fsm_authority(truth_markdown=zero_bound, version="v1.6.7")
+    assert zero["required"] is True
+    assert zero["blocked"] is True
+    codes = {item.get("reason_code") for item in zero["findings"]}
     assert REASON_ORPHAN_AC_WITHOUT_FSM_PATH in codes
-    orphan_ids = {
-        item.get("ac_id")
-        for item in result["findings"]
-        if item.get("reason_code") == REASON_ORPHAN_AC_WITHOUT_FSM_PATH
-    }
-    assert "AC-ORPH-001" in orphan_ids
-    assert "AC-ORPH-002" not in orphan_ids
 
 
 def test_illegal_transition_slot_required() -> None:
