@@ -438,12 +438,25 @@ def parse_domain_fsm_from_truth(truth_markdown: str) -> dict[str, Any]:
 
     orphan_acs: list[str] = []
     bound_acs: list[str] = []
+    domain_flavored_unbound: list[str] = []
+    _domain_flavor = (
+        "ready", "draft", "publish", "schedule", "archive", "ship", "place", "paid",
+        "order", "product", "listed", "transition", "状态", "发布", "草稿", "上架",
+        "入库", "续写", "pipeline", "prefill", "illegal", "reject",
+    )
     if aggregates or entities:
         for ac in acceptance:
             if _ac_binds_to_fsm(ac, aggregates, entities):
                 bound_acs.append(ac["ac_id"])
             else:
-                orphan_acs.append(ac["ac_id"])
+                desc = str(ac.get("description") or "").lower()
+                flavored = any(tok in desc for tok in _domain_flavor)
+                if flavored:
+                    domain_flavored_unbound.append(ac["ac_id"])
+                # non-domain UX/copy ACs are not treated as FSM orphans
+                orphan_acs.append(ac["ac_id"])  # kept for diagnostics only
+    # Blocking orphan set = domain-flavored unbound only (brownfield multi-concern packages)
+    orphan_acs = domain_flavored_unbound
 
     aggregates_missing_illegal: list[str] = []
     if aggregates:
@@ -495,9 +508,12 @@ def domain_fsm_is_required(
     diagram_truth: dict[str, Any] | None = None,
     version: str | None = None,
 ) -> dict[str, Any]:
-    """Decide whether domain-fsm authority applies to this package."""
-    if version is not None and not domain_fsm_supported(version):
-        return {"required": False, "reason": "version_below_v1_6_7"}
+    """Decide whether domain-fsm authority applies to this package.
+
+    Docs lines below v1.6.7 are not auto-required (avoid retroactive freeze breaks),
+    but brownfield packages may opt in via domain_required / Domain Model|FSM sections.
+    """
+    version_supported = version is None or domain_fsm_supported(version)
 
     fm = frontmatter if isinstance(frontmatter, dict) else {}
     if not fm:
@@ -553,15 +569,21 @@ def domain_fsm_is_required(
         "entity_precedence",
     }
 
-    required = bool(explicit or partial or section_presence or fixture_negative or (complexity and business_signal))
+    # Auto-require complexity only on v1.6.7+ docs lines; older lines need explicit/section opt-in.
+    complexity_driven = bool(complexity and business_signal and version_supported)
+    required = bool(explicit or partial or section_presence or fixture_negative or complexity_driven)
+    if not version_supported and not (explicit or partial or section_presence or fixture_negative):
+        required = False
     reason = "not_required"
-    if explicit:
+    if not version_supported and not required:
+        reason = "version_below_v1_6_7"
+    elif explicit:
         reason = "explicit_domain_mark"
     elif fixture_negative:
         reason = "fixture_expected_domain_gate"
     elif partial or section_presence:
         reason = "domain_section_present"
-    elif complexity and business_signal:
+    elif complexity_driven:
         reason = "complexity_with_business_domain"
     return {
         "required": required,
@@ -570,6 +592,7 @@ def domain_fsm_is_required(
         "partial": partial,
         "complexity": complexity,
         "business_signal": business_signal,
+        "version_supported": version_supported,
     }
 
 
@@ -595,6 +618,7 @@ def validate_domain_fsm_projection(projection: dict[str, Any], *, required: bool
         else []
     )
     orphan_acs = projection.get("orphan_ac_ids") if isinstance(projection.get("orphan_ac_ids"), list) else []
+    bound_acs = projection.get("bound_ac_ids") if isinstance(projection.get("bound_ac_ids"), list) else []
     missing_illegal = (
         projection.get("aggregates_missing_illegal_slots")
         if isinstance(projection.get("aggregates_missing_illegal_slots"), list)
@@ -669,15 +693,28 @@ def validate_domain_fsm_projection(projection: dict[str, Any], *, required: bool
                 "aggregate": str(name),
             }
         )
-    for ac_id in orphan_acs:
+    acceptance_rows = projection.get("acceptance_criteria") if isinstance(projection.get("acceptance_criteria"), list) else []
+    # Fail-closed when no AC maps to FSM. If some ACs bind, remaining domain-flavored
+    # orphans are recorded on projection for repair but do not block multi-concern packages.
+    if acceptance_rows and not bound_acs and (aggregates or entities):
         findings.append(
             {
                 "kind": "orphan_ac_without_fsm_path",
                 "reason_code": REASON_ORPHAN_AC_WITHOUT_FSM_PATH,
-                "text": f"acceptance criterion has no mappable Domain FSM legal path: {ac_id}",
-                "ac_id": str(ac_id),
+                "text": "domain package has acceptance criteria but none map to a Domain FSM legal path",
+                "ac_id": "",
             }
         )
+    elif orphan_acs and not bound_acs:
+        for ac_id in orphan_acs:
+            findings.append(
+                {
+                    "kind": "orphan_ac_without_fsm_path",
+                    "reason_code": REASON_ORPHAN_AC_WITHOUT_FSM_PATH,
+                    "text": f"domain-flavored acceptance criterion has no mappable Domain FSM legal path: {ac_id}",
+                    "ac_id": str(ac_id),
+                }
+            )
 
     # Schema contract surface (fields present on projection)
     required_fields = (
@@ -781,19 +818,7 @@ def build_domain_fsm_gate_payload(
     paths = package_paths(project_root, version=resolved_version, feature=slug)
     truth_md = _read_text(paths["truth"])
     tests_md = _read_text(paths["tests"])
-    if not domain_fsm_supported(resolved_version):
-        return {
-            "schema_version": DOMAIN_FSM_SCHEMA_VERSION,
-            "feature": feature,
-            "feature_slug": slug,
-            "version": resolved_version,
-            "required": False,
-            "blocked": False,
-            "status": "not_supported",
-            "reason_code": "",
-            "findings": [],
-            "truth_path": str(paths["truth"].relative_to(project_root)) if paths["truth"].exists() else "",
-        }
+    # Docs < v1.6.7: still evaluate when package opts into domain authority (see domain_fsm_is_required).
     if not truth_md.strip():
         # No package truth — do not invent domain requirement
         return {

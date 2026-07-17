@@ -224,14 +224,8 @@ def build_ui_design_ship_gate(
 ) -> dict[str, Any]:
     project_root = Path(project_root).expanduser().resolve()
     resolved = resolve_target_version(project_root, version)
-    if not ui_design_ship_supported(resolved):
-        return {
-            "schema_version": SCHEMA_VERSION,
-            "required": False,
-            "blocked": False,
-            "status": "not_supported",
-            "release_ready_allowed": True,
-        }
+    # Docs < v1.6.7: still enforce when UX is explicitly required or DESIGN/matrix present.
+    version_supported = ui_design_ship_supported(resolved)
 
     slug = feature_slug(feature) if feature else ""
     truth_md = truth_markdown
@@ -253,6 +247,17 @@ def build_ui_design_ship_gate(
     requires_ux = feature_requires_ux(truth_markdown=truth_md, frontmatter=fm if isinstance(fm, dict) else {}, explicit_ux=ux_required)
     baselines = find_design_baselines(project_root, version=resolved, feature=slug)
     deferred = _truthy((fm or {}).get("ux_deferred")) or bool(str((fm or {}).get("design_deferral") or "").strip())
+    if not version_supported and not requires_ux and not baselines.get("has_any"):
+        return {
+            "schema_version": SCHEMA_VERSION,
+            "feature": feature,
+            "feature_slug": slug,
+            "version": resolved,
+            "required": False,
+            "blocked": False,
+            "status": "not_supported",
+            "release_ready_allowed": True,
+        }
 
     findings: list[dict[str, str]] = []
     design_alignment = {

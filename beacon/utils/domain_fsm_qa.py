@@ -253,7 +253,9 @@ def build_domain_fsm_qa_gate_payload(
     project_root = Path(project_root).expanduser().resolve()
     resolved_version = resolve_target_version(project_root, version)
     slug = feature_slug(feature)
-    if not domain_fsm_qa_supported(resolved_version):
+    # Brownfield docs lines (< v1.6.7) still enforce when domain_gate.required (opt-in/sections).
+    domain_gate = build_domain_fsm_gate_payload(project_root, version=resolved_version, feature=feature)
+    if not domain_fsm_qa_supported(resolved_version) and not domain_gate.get("required"):
         return {
             "schema_version": SCHEMA_VERSION,
             "feature": feature,
@@ -265,9 +267,8 @@ def build_domain_fsm_qa_gate_payload(
             "reason_code": "",
             DOMAIN_FSM_COVERAGE_KEY: {},
             "release_ready_allowed": True,
+            "domain_gate": domain_gate,
         }
-
-    domain_gate = build_domain_fsm_gate_payload(project_root, version=resolved_version, feature=feature)
     paths = package_paths(project_root, version=resolved_version, feature=slug)
     truth_md = _read_text(paths["truth"])
     tests_md = _read_text(paths["tests"])
