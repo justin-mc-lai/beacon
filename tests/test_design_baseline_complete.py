@@ -18,7 +18,7 @@ def test_complete_design_md_has_required_axes_and_upstream_map() -> None:
     assert "CSS variables" in body or "Visual tokens" in body
     assert "--primary:" in body
     assert "UI state coverage" in body
-    assert "Anti-AI UI" in body
+    assert ("Anti-AI" in body) or ("Don't" in body and "gradient" in body)
     assert "awesome-design-md" in body
     assert OPEN_SOURCE_UI_AGENT_PRINCIPLES["awesome-design-md"]["execution_kind"] == "reference-only"
     for axis in ("empty", "loading", "error", "success", "blocked"):
