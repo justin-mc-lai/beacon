@@ -1,0 +1,261 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-ralph-implement-boundary-v167",
+  "feature_slug": "beacon-ralph-implement-boundary-v167",
+  "version": "v1.6.7",
+  "generated_at": "2026-07-16T16:41:40.457358+00:00",
+  "expansion_profile": "pua-web",
+  "scenario_depth": "standard",
+  "families_required": [
+    "happy",
+    "negative",
+    "boundary",
+    "recovery",
+    "compatibility"
+  ],
+  "stories": [
+    {
+      "ac_id": "AC-001",
+      "theme": "general",
+      "text": "Acceptance criteria TBD",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-RLP-001",
+      "theme": "",
+      "text": "skill 边界",
+      "scenario_ids": [
+        "SC-AUTO-TC-RLP-001"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-RLP-001",
+          "source_tc_id": "TC-RLP-001",
+          "tc_id": "TC-RLP-001-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-RLP-002",
+      "theme": "",
+      "text": "无 qa_verdict 字段权威",
+      "scenario_ids": [
+        "SC-AUTO-TC-RLP-002"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-RLP-002",
+          "source_tc_id": "TC-RLP-002",
+          "tc_id": "TC-RLP-002-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-RLP-003",
+      "theme": "",
+      "text": "goal delegate 字段",
+      "scenario_ids": [
+        "SC-AUTO-TC-RLP-003"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-RLP-003",
+          "source_tc_id": "TC-RLP-003",
+          "tc_id": "TC-RLP-003-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-RLP-004",
+      "theme": "",
+      "text": "handoff 路由集合",
+      "scenario_ids": [
+        "SC-AUTO-TC-RLP-004"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-RLP-004",
+          "source_tc_id": "TC-RLP-004",
+          "tc_id": "TC-RLP-004-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "SC-AUTO-TC-RLP-001",
+      "source_tc_id": "TC-RLP-001",
+      "tc_id": "TC-RLP-001-PRIMARY",
+      "ac_id": "AC-RLP-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "skill 边界",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_ralph_boundary.py::test_skill_boundary_text -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "skill 边界",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-ralph-implement-boundary-v167/tc-rlp-001/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-RLP-002",
+      "source_tc_id": "TC-RLP-002",
+      "tc_id": "TC-RLP-002-PRIMARY",
+      "ac_id": "AC-RLP-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "无 qa_verdict 字段权威",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_ralph_boundary.py::test_ralph_state_no_qa_verdict -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "无 qa_verdict 字段权威",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-ralph-implement-boundary-v167/tc-rlp-002/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-RLP-003",
+      "source_tc_id": "TC-RLP-003",
+      "tc_id": "TC-RLP-003-PRIMARY",
+      "ac_id": "AC-RLP-003",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "goal delegate 字段",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_ralph_boundary.py::test_goal_delegate_field -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "goal delegate 字段",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-ralph-implement-boundary-v167/tc-rlp-003/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-RLP-004",
+      "source_tc_id": "TC-RLP-004",
+      "tc_id": "TC-RLP-004-PRIMARY",
+      "ac_id": "AC-RLP-004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "handoff 路由集合",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_ralph_boundary.py::test_handoff_routes -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "handoff 路由集合",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-ralph-implement-boundary-v167/tc-rlp-004/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
+}

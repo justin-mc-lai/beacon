@@ -5,7 +5,7 @@
   "version": "v1.6.7",
   "current_revision_id": "R1",
   "lifecycle_status": "frozen",
-  "updated_at": "2026-07-16T16:05:10.731661+00:00",
+  "updated_at": "2026-07-16T16:41:12.453489+00:00",
   "revisions": [
     {
       "revision_id": "R1",
@@ -28,7 +28,7 @@
       "revision_id": "R1",
       "title": "beacon-domain-fsm-qa-gate-v167",
       "priority": "medium",
-      "status": "implemented",
+      "status": "accepted",
       "items": [
         {
           "id": "AC-001",
@@ -50,10 +50,10 @@
           "kind": "task",
           "text": "Implement current frozen revision",
           "required": true,
-          "status": "implemented",
+          "status": "accepted",
           "implemented_by_run_id": "run-20260716T160510Z-b28c",
           "verified_by_run_id": null,
-          "accepted_at": null,
+          "accepted_at": "2026-07-16T16:41:08.091845+00:00",
           "changed_in_revision": "R1"
         },
         {
@@ -61,9 +61,9 @@
           "kind": "test",
           "text": "Verify AC-001 — Acceptance criteria TBD",
           "required": true,
-          "status": "implemented",
+          "status": "passed",
           "implemented_by_run_id": "run-20260716T160510Z-b28c",
-          "verified_by_run_id": null,
+          "verified_by_run_id": "run-20260717T004108437104",
           "accepted_at": null,
           "changed_in_revision": "R1",
           "covers": [
@@ -90,7 +90,17 @@
         "beacon/utils/domain_fsm_qa.py",
         "beacon/utils/qa_feature.py",
         "tests/test_v167_domain_fsm_qa.py"
-      ]
+      ],
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-domain-fsm-qa-gate-v167/ac-closure.json",
+        ".beacon/qa/features/beacon-domain-fsm-qa-gate-v167/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "accepted_at": "2026-07-16T16:41:12.428788+00:00",
+      "accepted_by": "qa"
     }
   ]
 }

@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-16T15:08:24.234336+00:00",
+  "generated_at": "2026-07-16T16:33:55.430725+00:00",
   "feature": "beacon-domain-fsm-qa-gate-v167",
   "feature_slug": "beacon-domain-fsm-qa-gate-v167",
   "version": "v1.6.7",
@@ -20,8 +20,8 @@
   "source_hashes": {
     "truth": "523d827956cda9ee23f3a8ebeb8943e3aefa22775a056ce662e6e7b618732e17",
     "tests": "83a81993df74b97827a67bb4706b0e3a6575c284354ac01b6adf4b96b0b98940",
-    "tasks": "33dba4451e529d147a6165bcb99dc56e6cfad8d6befe55d84363edc7ecc0ecc5",
-    "evidence": "d14e0213dab329dd2c53ace8e99926aff5c601ba9426d85b144fb0ea27556724"
+    "tasks": "4acbf3dfeaec3d7d8a6dabdfe58cd030e66c411e822e136f06b986b6e58e2fa7",
+    "evidence": "b212634bc9d4289b3a7582b1486b4892314b7ea9bbb09d72ba15ffca48263418"
   },
   "truth_frontmatter": {
     "slug": "beacon-domain-fsm-qa-gate-v167",
@@ -112,27 +112,27 @@
     {
       "id": "TASK-001",
       "title": "Materialize feature package",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-002",
       "title": "Author domain/product acceptance criteria",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-003",
       "title": "Wire freeze/QA/CLI hard gates",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-004",
       "title": "Add golden/negative fixtures where applicable",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-005",
       "title": "Implement + unit/contract tests",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-006",
@@ -142,7 +142,7 @@
     {
       "id": "TASK-007",
       "title": "Extend QA matrix builder + scorecard domain_fsm_coverage",
-      "status": "unchecked"
+      "status": "checked"
     }
   ],
   "checkbox_errors": [],
@@ -167,6 +167,27 @@
       "canonical_artifact": "docs/beacon/v1.6.7/programs/beacon-product-goal-domain-delivery-v167/feature-graph.json",
       "status": "indexed",
       "route": "program"
+    },
+    {
+      "surface": "beacon-gen-implement",
+      "authority": "support_advisory",
+      "canonical_artifact": "beacon/utils/domain_fsm_qa.py",
+      "status": "indexed",
+      "route": "implement"
+    },
+    {
+      "surface": "beacon-gen-implement",
+      "authority": "support_advisory",
+      "canonical_artifact": "tests/test_v167_domain_fsm_qa.py",
+      "status": "indexed",
+      "route": "implement"
+    },
+    {
+      "surface": "beacon-gen-implement",
+      "authority": "support_advisory",
+      "canonical_artifact": "beacon/utils/qa_feature.py",
+      "status": "indexed",
+      "route": "implement"
     }
   ]
 }

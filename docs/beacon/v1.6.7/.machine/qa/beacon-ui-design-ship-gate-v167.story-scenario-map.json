@@ -1,0 +1,261 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-ui-design-ship-gate-v167",
+  "feature_slug": "beacon-ui-design-ship-gate-v167",
+  "version": "v1.6.7",
+  "generated_at": "2026-07-16T16:41:22.931347+00:00",
+  "expansion_profile": "pua-web",
+  "scenario_depth": "standard",
+  "families_required": [
+    "happy",
+    "negative",
+    "boundary",
+    "recovery",
+    "compatibility"
+  ],
+  "stories": [
+    {
+      "ac_id": "AC-001",
+      "theme": "general",
+      "text": "Acceptance criteria TBD",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-UID-001",
+      "theme": "",
+      "text": "matrix schema",
+      "scenario_ids": [
+        "SC-AUTO-TC-UID-001"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-UID-001",
+          "source_tc_id": "TC-UID-001",
+          "tc_id": "TC-UID-001-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-UID-002",
+      "theme": "",
+      "text": "缺 DESIGN 阻断",
+      "scenario_ids": [
+        "SC-AUTO-TC-UID-002"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-UID-002",
+          "source_tc_id": "TC-UID-002",
+          "tc_id": "TC-UID-002-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-UID-003",
+      "theme": "",
+      "text": "scorecard 含设计检查",
+      "scenario_ids": [
+        "SC-AUTO-TC-UID-003"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-UID-003",
+          "source_tc_id": "TC-UID-003",
+          "tc_id": "TC-UID-003-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-UID-006",
+      "theme": "",
+      "text": "golden 含 matrix",
+      "scenario_ids": [
+        "SC-AUTO-TC-UID-004"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-UID-004",
+          "source_tc_id": "TC-UID-004",
+          "tc_id": "TC-UID-004-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "SC-AUTO-TC-UID-001",
+      "source_tc_id": "TC-UID-001",
+      "tc_id": "TC-UID-001-PRIMARY",
+      "ac_id": "AC-UID-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "matrix schema",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_ui_design_ship.py::test_matrix_schema -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "matrix schema",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-ui-design-ship-gate-v167/tc-uid-001/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-UID-002",
+      "source_tc_id": "TC-UID-002",
+      "tc_id": "TC-UID-002-PRIMARY",
+      "ac_id": "AC-UID-002",
+      "qa_type": "contract",
+      "layer": "negative",
+      "scenario_family": "primary",
+      "title": "缺 DESIGN 阻断",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_ui_design_ship.py::test_missing_design_blocks_ship -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "缺 DESIGN 阻断",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-ui-design-ship-gate-v167/tc-uid-002/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-UID-003",
+      "source_tc_id": "TC-UID-003",
+      "tc_id": "TC-UID-003-PRIMARY",
+      "ac_id": "AC-UID-003",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "scorecard 含设计检查",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_ui_design_ship.py::test_scorecard_design_checks -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "scorecard 含设计检查",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-ui-design-ship-gate-v167/tc-uid-003/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-UID-004",
+      "source_tc_id": "TC-UID-004",
+      "tc_id": "TC-UID-004-PRIMARY",
+      "ac_id": "AC-UID-006",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "golden 含 matrix",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_ui_design_ship.py::test_golden_has_matrix -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "golden 含 matrix",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-ui-design-ship-gate-v167/tc-uid-004/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
+}

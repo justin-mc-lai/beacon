@@ -2,18 +2,41 @@
   "schema_version": "beacon-program-truth-freeze-v1",
   "program_slug": "beacon-product-goal-domain-delivery-v167",
   "version": "v1.6.7",
-  "status": "frozen",
+  "status": "released",
   "program_plan_frozen": true,
   "lakes": [
-    {"slug": "beacon-domain-fsm-authority-v167"},
-    {"slug": "beacon-golden-commerce-fixture-v167"},
-    {"slug": "beacon-domain-fsm-qa-gate-v167"},
-    {"slug": "beacon-product-goal-runtime-v167"},
-    {"slug": "beacon-ui-design-ship-gate-v167"},
-    {"slug": "beacon-loop-discover-goal-finish-v167"},
-    {"slug": "beacon-ralph-implement-boundary-v167"}
+    {
+      "slug": "beacon-domain-fsm-authority-v167"
+    },
+    {
+      "slug": "beacon-golden-commerce-fixture-v167"
+    },
+    {
+      "slug": "beacon-domain-fsm-qa-gate-v167"
+    },
+    {
+      "slug": "beacon-product-goal-runtime-v167"
+    },
+    {
+      "slug": "beacon-ui-design-ship-gate-v167"
+    },
+    {
+      "slug": "beacon-loop-discover-goal-finish-v167"
+    },
+    {
+      "slug": "beacon-ralph-implement-boundary-v167"
+    }
   ],
   "aggregation_branch": "beacon/v1.6.7",
   "truth_canonical": "main",
-  "notes": "Post-land QA/release may run on main (truth_canonical)."
+  "notes": "Post-land QA/release may run on main (truth_canonical).",
+  "delivery_status": "release-ready",
+  "release_verdict": "GO",
+  "release_check": {
+    "command": "beacon release check v1.6.7 --project . --json",
+    "status": "pass",
+    "release_ready": true
+  },
+  "human_confirmed": true,
+  "closeout_ref": "docs/beacon/v1.6.7/release/product-goal-domain-delivery-v167-go.md"
 }

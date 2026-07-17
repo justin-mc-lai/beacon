@@ -293,15 +293,6 @@ HARD GATE:
 只能在 resolver-selected truth、用户已接受 scope 和本 skill authority 内写 truth 或 delivery artifact。
 如需判断是否通过，必须路由到 evaluator。
 
-## GIT_ADMISSION (mandatory — truth authoring on canonical branch)
-
-Before ANY truth/change/refreeze/freeze write when version is known:
-1. Resolve `truth_canonical` from project governance (default: `main` or `master`)
-2. Verify `git rev-parse --abbrev-ref HEAD` equals `truth_canonical`
-3. If mismatch → STOP with `reason_code=truth_canonical_branch_mismatch`; do NOT edit requirement truth
-4. Commit refreeze/freeze artifacts on `truth_canonical` before loop-goal may route to implement
-5. Do NOT use feature worktree for truth authoring — use the canonical branch checkout only
-
 ## v1.6.0 Harness Migration
 
 - Harness：`generator`。
@@ -329,3 +320,7 @@ Before ANY truth/change/refreeze/freeze write when version is known:
 - 粗提示词先归约为 outcome、truth/source/evidence refs、湖/海、truth_gap、test_gap、implementation_risk、verification_risk 和 recommended_route。
 - `docs/beacon/<version>/research/<feature-slug>.md` 是 planner `support_advisory` artifact；没有用户确认和 `promotion_ref`，不能升级为 requirement truth。
 - 需要跨 harness 时，停止当前动作，输出 route recommendation，并等待用户确认。
+
+## Complete business product example
+
+Recommended full-domain freeze sample: `skills/beacon/examples/full-product-domain-freeze.md` → `docs/beacon/v1.6.7/fixtures/golden-commerce-checkout/`.

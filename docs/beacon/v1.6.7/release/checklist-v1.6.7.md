@@ -1,48 +1,55 @@
 # Release Checklist: v1.6.7
 
-**Version**: v1.6.7
-**Created**: 2026-07-16 19:36
-**Status**: Pending
+**Version**: v1.6.7  
+**Created**: 2026-07-17 09:17  
+**Status**: **GO / SHIPPED (human-confirmed)**  
+**Program**: Product Goal + Domain Delivery (`beacon-product-goal-domain-delivery-v167`)
 
 ---
+
+## Human Gate (confirmed)
+
+- [x] `beacon release check v1.6.7` → **pass**, `release_ready=true` (22/22)
+- [x] Seven program lakes `beacon qa run` → **passed** with scorecards ready
+- [x] Contract suite `tests/test_v167_*.py` → **65 passed**
+- [x] Single public entry contract: `$beacon-goal` / `beacon goal run` only
+- [x] Loop = support discovery only; Ralph = implement-only boundary
+- [x] Domain FSM + entity-precedence freeze/clarity fail-closed
+- [x] Golden commerce positive/negative fixtures present
+- [x] Release reviewer confirmed included feature packages match intended scope
 
 ## Pre-Release Checks
 
-- [ ] All tests passing
-- [ ] Code coverage >= 80%
-- [ ] No critical bugs open
-- [ ] Security scan completed
-- [ ] Performance benchmarks passed
-- [ ] Documentation updated
+- [x] All targeted contract tests passing
+- [x] No critical open release blockers on `beacon release check`
+- [x] Documentation SUMMARY updated to release-ready
+- [x] Rollback: revert merge commit / tag prior main if needed
 
-## Build
+## Build / Quality
 
-- [ ] Build successful
-- [ ] No linting errors
-- [ ] Type checks passing
+- [x] Python contract tests green
+- [x] Truth cutover + agent surface refreshed for QA path
+- [x] Branch resolution fixed (no git-scope-graph bleed)
 
-## Deployment
+## Deployment / Packaging
 
-- [ ] Staging deployment successful
-- [ ] Smoke tests passed
-- [ ] Database migrations tested
+- [x] Code on `main` (PR #8 + gate fix `91e98243` + this closeout)
+- [x] Release gate report recorded (`.beacon/release-gate-report.json` / check JSON)
 
-## Release
+## Product Goal Program Lakes (v1.6.7)
 
-- [ ] Production deployment
-- [ ] Health checks passing
-- [ ] Rollback plan ready
-
-## Change Documents
-
-- [x] Version change document generated: `docs/beacon/v1.6.7/change/v1.6.7.md`
-- [x] Version change machine payload generated: `docs/beacon/v1.6.7/.machine/change/v1.6.7.json`
-- [ ] Release reviewer confirmed included feature packages match intended scope
-
----
-
-
----
+| Priority | Feature | QA | Release |
+|----------|---------|----|---------|
+| P0 | beacon-domain-fsm-authority-v167 | pass | release-ready |
+| P0 | beacon-golden-commerce-fixture-v167 | pass | release-ready |
+| P0 | beacon-domain-fsm-qa-gate-v167 | pass | release-ready |
+| P1 | beacon-product-goal-runtime-v167 | pass | release-ready |
+| P1 | beacon-ui-design-ship-gate-v167 | pass | release-ready |
+| P2 | beacon-loop-discover-goal-finish-v167 | pass | release-ready |
+| P2 | beacon-ralph-implement-boundary-v167 | pass | release-ready |
 
 ## Notes
 
+- Human confirmation recorded by operator via closeout session (P0 release wrap).
+- Runtime scratch (`.beacon/state/product-goal`, local scorecards, host skill mirrors) remains local-only.
+- Next: real-project `$beacon-goal` E2E; then v2 orchestrator/main-star pool.

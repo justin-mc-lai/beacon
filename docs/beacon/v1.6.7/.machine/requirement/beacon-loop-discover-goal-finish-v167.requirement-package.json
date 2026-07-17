@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-16T15:35:40.770042+00:00",
+  "generated_at": "2026-07-16T16:34:17.428012+00:00",
   "feature": "beacon-loop-discover-goal-finish-v167",
   "feature_slug": "beacon-loop-discover-goal-finish-v167",
   "version": "v1.6.7",
@@ -20,8 +20,8 @@
   "source_hashes": {
     "truth": "0d531becb84a0ba2afb1ef846bd00632a885826d4523c93ee585359c960617b7",
     "tests": "2496854afbca5a4d7c11aa0d8f797a9e554d69d3d5e7224864e665f69a6a23a4",
-    "tasks": "d710c018f543d8e6e57a1f0d9dd8981ec673e1e1e352e131b6fa168d76d2978a",
-    "evidence": "ea7ec2d54310e8f454c707840f5c3178530910fbcbb575c27a7f5c6355ddc2d3"
+    "tasks": "2443ccae2219b2cb7b7c9babcc3348cfb80a60dbeab3e9b86d4e84348f23308d",
+    "evidence": "07d639557f343fb53ad3e11f47fe5dadd03a581fd9fc90d28fb3b5444991e0b2"
   },
   "truth_frontmatter": {
     "slug": "beacon-loop-discover-goal-finish-v167",
@@ -107,27 +107,27 @@
     {
       "id": "TASK-001",
       "title": "Materialize feature package",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-002",
       "title": "Author domain/product acceptance criteria",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-003",
       "title": "Wire freeze/QA/CLI hard gates",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-004",
       "title": "Add golden/negative fixtures where applicable",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-005",
       "title": "Implement + unit/contract tests",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-006",
@@ -136,8 +136,8 @@
     },
     {
       "id": "TASK-007",
-      "title": "Document handoff + wire queue files",
-      "status": "unchecked"
+      "title": "Loop support discovery + goal-queue + no product complete",
+      "status": "checked"
     }
   ],
   "checkbox_errors": [],
@@ -150,18 +150,25 @@
       "route": "truth"
     },
     {
-      "surface": "analysis",
+      "surface": "beacon-gen-implement",
       "authority": "support_advisory",
-      "canonical_artifact": "session analysis product-goal-domain-delivery",
+      "canonical_artifact": "beacon/utils/goal_queue.py",
       "status": "indexed",
-      "route": "change"
+      "route": "implement"
     },
     {
-      "surface": "program",
+      "surface": "beacon-gen-implement",
       "authority": "support_advisory",
-      "canonical_artifact": "docs/beacon/v1.6.7/programs/beacon-product-goal-domain-delivery-v167/feature-graph.json",
+      "canonical_artifact": "tests/test_v167_loop_goal_split.py",
       "status": "indexed",
-      "route": "program"
+      "route": "implement"
+    },
+    {
+      "surface": "skill",
+      "authority": "support_advisory",
+      "canonical_artifact": "skills/beacon/beacon-loop-goal/SKILL.md",
+      "status": "indexed",
+      "route": "support"
     }
   ]
 }

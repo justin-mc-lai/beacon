@@ -1,0 +1,261 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-domain-fsm-qa-gate-v167",
+  "feature_slug": "beacon-domain-fsm-qa-gate-v167",
+  "version": "v1.6.7",
+  "generated_at": "2026-07-16T16:41:03.246988+00:00",
+  "expansion_profile": "pua-web",
+  "scenario_depth": "standard",
+  "families_required": [
+    "happy",
+    "negative",
+    "boundary",
+    "recovery",
+    "compatibility"
+  ],
+  "stories": [
+    {
+      "ac_id": "AC-001",
+      "theme": "general",
+      "text": "Acceptance criteria TBD",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-FQA-001",
+      "theme": "",
+      "text": "矩阵强制合法 walk",
+      "scenario_ids": [
+        "SC-AUTO-TC-FQA-001"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-FQA-001",
+          "source_tc_id": "TC-FQA-001",
+          "tc_id": "TC-FQA-001-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-FQA-002",
+      "theme": "",
+      "text": "矩阵强制非法用例",
+      "scenario_ids": [
+        "SC-AUTO-TC-FQA-002"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-FQA-002",
+          "source_tc_id": "TC-FQA-002",
+          "tc_id": "TC-FQA-002-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-FQA-003",
+      "theme": "",
+      "text": "缺覆盖阻断 ready",
+      "scenario_ids": [
+        "SC-AUTO-TC-FQA-003"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-FQA-003",
+          "source_tc_id": "TC-FQA-003",
+          "tc_id": "TC-FQA-003-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-FQA-004",
+      "theme": "",
+      "text": "golden 负例被消费",
+      "scenario_ids": [
+        "SC-AUTO-TC-FQA-004"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-FQA-004",
+          "source_tc_id": "TC-FQA-004",
+          "tc_id": "TC-FQA-004-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "integration",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "SC-AUTO-TC-FQA-001",
+      "source_tc_id": "TC-FQA-001",
+      "tc_id": "TC-FQA-001-PRIMARY",
+      "ac_id": "AC-FQA-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "矩阵强制合法 walk",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_domain_fsm_qa.py::test_matrix_requires_legal_walk -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "矩阵强制合法 walk",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-domain-fsm-qa-gate-v167/tc-fqa-001/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-FQA-002",
+      "source_tc_id": "TC-FQA-002",
+      "tc_id": "TC-FQA-002-PRIMARY",
+      "ac_id": "AC-FQA-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "矩阵强制非法用例",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_domain_fsm_qa.py::test_matrix_requires_illegal -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "矩阵强制非法用例",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-domain-fsm-qa-gate-v167/tc-fqa-002/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-FQA-003",
+      "source_tc_id": "TC-FQA-003",
+      "tc_id": "TC-FQA-003-PRIMARY",
+      "ac_id": "AC-FQA-003",
+      "qa_type": "contract",
+      "layer": "negative",
+      "scenario_family": "primary",
+      "title": "缺覆盖阻断 ready",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_domain_fsm_qa.py::test_missing_coverage_blocks_ready -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "缺覆盖阻断 ready",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-domain-fsm-qa-gate-v167/tc-fqa-003/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-FQA-004",
+      "source_tc_id": "TC-FQA-004",
+      "tc_id": "TC-FQA-004-PRIMARY",
+      "ac_id": "AC-FQA-004",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "primary",
+      "title": "golden 负例被消费",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "integration",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_domain_fsm_qa.py::test_golden_negative_consumed -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "golden 负例被消费",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-domain-fsm-qa-gate-v167/tc-fqa-004/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
+}

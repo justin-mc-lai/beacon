@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-16T15:08:29.437571+00:00",
+  "generated_at": "2026-07-16T16:34:31.810838+00:00",
   "feature": "beacon-ralph-implement-boundary-v167",
   "feature_slug": "beacon-ralph-implement-boundary-v167",
   "version": "v1.6.7",
@@ -20,8 +20,8 @@
   "source_hashes": {
     "truth": "8e208b8772f035a5cd06667e5303f194ca24b2f134428d60c623e8f05cbd57b1",
     "tests": "eff363866ae26fc2ee90a3cbd7ad06df096c9658f7d341bf9dfc4d0c18f74a0e",
-    "tasks": "66ae523435e5036e62a2718f93f8bbf42b141f574a9fbd8c3995e4aeca75e246",
-    "evidence": "445a008d1e000ca9e58143a6eca4aa8891b1b7a0986ba088be37223c91cea233"
+    "tasks": "46b59f2d574b0c84b50afbe1d51e5c0addcff6b6af3c7ecf81120d5d5043b256",
+    "evidence": "8f7ba1443b8b7ba59b3599dc458a25b81c5235d145dd414702e1e71501090377"
   },
   "truth_frontmatter": {
     "slug": "beacon-ralph-implement-boundary-v167",
@@ -107,27 +107,27 @@
     {
       "id": "TASK-001",
       "title": "Materialize feature package",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-002",
       "title": "Author domain/product acceptance criteria",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-003",
       "title": "Wire freeze/QA/CLI hard gates",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-004",
       "title": "Add golden/negative fixtures where applicable",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-005",
       "title": "Implement + unit/contract tests",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-006",
@@ -136,8 +136,8 @@
     },
     {
       "id": "TASK-007",
-      "title": "Tighten ralph_runtime + skill docs",
-      "status": "unchecked"
+      "title": "Ralph boundary sanitize + goal implement_delegate",
+      "status": "checked"
     }
   ],
   "checkbox_errors": [],
@@ -150,18 +150,25 @@
       "route": "truth"
     },
     {
-      "surface": "analysis",
+      "surface": "beacon-gen-implement",
       "authority": "support_advisory",
-      "canonical_artifact": "session analysis product-goal-domain-delivery",
+      "canonical_artifact": "beacon/utils/ralph_boundary.py",
       "status": "indexed",
-      "route": "change"
+      "route": "implement"
     },
     {
-      "surface": "program",
+      "surface": "beacon-gen-implement",
       "authority": "support_advisory",
-      "canonical_artifact": "docs/beacon/v1.6.7/programs/beacon-product-goal-domain-delivery-v167/feature-graph.json",
+      "canonical_artifact": "tests/test_v167_ralph_boundary.py",
       "status": "indexed",
-      "route": "program"
+      "route": "implement"
+    },
+    {
+      "surface": "skill",
+      "authority": "support_advisory",
+      "canonical_artifact": "skills/beacon/beacon-gen-implement/references/implement-ralph.md",
+      "status": "indexed",
+      "route": "implement"
     }
   ]
 }

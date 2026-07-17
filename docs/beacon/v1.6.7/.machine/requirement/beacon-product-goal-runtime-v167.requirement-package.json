@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-16T15:35:39.265502+00:00",
+  "generated_at": "2026-07-16T16:33:59.184100+00:00",
   "feature": "beacon-product-goal-runtime-v167",
   "feature_slug": "beacon-product-goal-runtime-v167",
   "version": "v1.6.7",
@@ -20,8 +20,8 @@
   "source_hashes": {
     "truth": "aa5ef11dfbdb1631c0e0eb6d34b5f482ff25f633a2656f9625871da6df02e226",
     "tests": "171ea0ef862dc60b3e170631fe43339ca03543b8052aa9b898c83e3e15f97741",
-    "tasks": "b1a7507180a83488aa615c53385e5dfd0dc75b7acd8711434f31161324dbb01f",
-    "evidence": "892ff81378709f632028ac97ce51ef3b4f02d506b7f788904694eac6d1b9a933"
+    "tasks": "fcc2bf9df0bdf6f5ec849dc52954d1ba503129123f93735d3eb19eae2aecbaee",
+    "evidence": "f2da5226bb89e8093869730e9a10a65e7ae055fb6220252c9f2837124e81631e"
   },
   "truth_frontmatter": {
     "slug": "beacon-product-goal-runtime-v167",
@@ -161,27 +161,27 @@
     {
       "id": "TASK-001",
       "title": "Materialize feature package",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-002",
       "title": "Author domain/product acceptance criteria",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-003",
       "title": "Wire freeze/QA/CLI hard gates",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-004",
       "title": "Add golden/negative fixtures where applicable",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-005",
       "title": "Implement + unit/contract tests",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-006",
@@ -191,7 +191,7 @@
     {
       "id": "TASK-007",
       "title": "Implement beacon goal CLI + state under .beacon/state/product-goal/",
-      "status": "unchecked"
+      "status": "checked"
     }
   ],
   "checkbox_errors": [],
@@ -204,18 +204,25 @@
       "route": "truth"
     },
     {
-      "surface": "analysis",
+      "surface": "beacon-gen-implement",
       "authority": "support_advisory",
-      "canonical_artifact": "session analysis product-goal-domain-delivery",
+      "canonical_artifact": "beacon/utils/product_goal_runtime.py",
       "status": "indexed",
-      "route": "change"
+      "route": "implement"
     },
     {
-      "surface": "program",
+      "surface": "beacon-gen-implement",
       "authority": "support_advisory",
-      "canonical_artifact": "docs/beacon/v1.6.7/programs/beacon-product-goal-domain-delivery-v167/feature-graph.json",
+      "canonical_artifact": "beacon/commands/goal.py",
       "status": "indexed",
-      "route": "program"
+      "route": "implement"
+    },
+    {
+      "surface": "beacon-gen-implement",
+      "authority": "support_advisory",
+      "canonical_artifact": "tests/test_v167_product_goal.py",
+      "status": "indexed",
+      "route": "implement"
     }
   ]
 }
