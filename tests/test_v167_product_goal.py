@@ -12,6 +12,7 @@ from beacon.utils.product_goal_runtime import (
     loop_goal_support_metadata,
     build_parallel_plan,
     public_entry_contract,
+    progressive_skills_for_stage,
     run_goal_facade,
 )
 
@@ -81,3 +82,36 @@ def test_complete_requires_verifier(tmp_path: Path) -> None:
     done = complete_goal_run(tmp_path, run_id)
     assert done["status"] == "completed"
     assert done["verifier"]["present"] is True
+
+
+def test_facade_stage_plan(tmp_path: Path) -> None:
+    """AC-PGR-003: beacon-goal facade materializes plan→truth→implement→qa→release stages."""
+    run = run_goal_facade(tmp_path, utterance="交付一个可验收能力", version="v1.6.7", feature="demo")
+    stages = [s.get("stage") for s in (run.get("stages") or []) if isinstance(s, dict)]
+    assert stages == ["plan", "truth", "implement", "qa", "release"]
+    assert run.get("public_entry") == "beacon-goal"
+    assert run.get("entry_contract", {}).get("single_entry") is True
+
+
+def test_progressive_skill_load() -> None:
+    """AC-PGR-006: stages load skills progressively, not all at once."""
+    plan_skills = progressive_skills_for_stage("plan")
+    impl_skills = progressive_skills_for_stage("implement")
+    qa_skills = progressive_skills_for_stage("qa")
+    assert plan_skills
+    assert impl_skills
+    assert qa_skills
+    # not identical full dump
+    assert set(plan_skills) != set(impl_skills)
+    assert "beacon-gen-implement" in impl_skills
+    assert any("qa" in s for s in qa_skills)
+
+
+def test_v2_parity_program_exists() -> None:
+    """AC-PGR-011: v2 orchestrator contract exists for single-entry parity."""
+    root = Path(__file__).resolve().parents[1]
+    paths = [
+        root / "docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/program-manifest.md",
+        root / "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+    ]
+    assert any(p.exists() for p in paths), paths

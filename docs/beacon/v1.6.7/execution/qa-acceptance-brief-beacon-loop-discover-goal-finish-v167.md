@@ -4,7 +4,7 @@
 - feature: `beacon-loop-discover-goal-finish-v167`
 - revision_id: `R3`
 - verdict: `passed`
-- accepted_at: `2026-07-16T16:42:22.238746+00:00`
+- accepted_at: `2026-07-17T01:26:33.650391+00:00`
 - accepted_by: `qa`
 
 ## Summary

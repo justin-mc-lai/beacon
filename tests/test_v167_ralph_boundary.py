@@ -72,3 +72,12 @@ def test_handoff_routes() -> None:
     assert "release" in ALLOWED_HANDOFF_ROUTES  # route suggestion only
     contract = ralph_boundary_contract()
     assert contract["may_issue_release_verdict"] is False
+
+
+def test_contract_suite_locks_boundary() -> None:
+    """AC-RLP-005: dedicated contract tests module locks Ralph boundary."""
+    path = Path(__file__).resolve()
+    assert path.name == "test_v167_ralph_boundary.py"
+    src = path.read_text(encoding="utf-8")
+    for name in ("test_skill_boundary_text", "test_ralph_state_no_qa_verdict", "test_goal_delegate_field", "test_handoff_routes"):
+        assert f"def {name}" in src

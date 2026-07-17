@@ -18,8 +18,4 @@ parser_contract: beacon-feature-package-v2
 | AC-RLP-002 | TC-RLP-002 | contract | `python3 -m pytest tests/test_v167_ralph_boundary.py::test_ralph_state_no_qa_verdict -q` | 无 qa_verdict 字段权威 |
 | AC-RLP-003 | TC-RLP-003 | contract | `python3 -m pytest tests/test_v167_ralph_boundary.py::test_goal_delegate_field -q` | goal delegate 字段 |
 | AC-RLP-004 | TC-RLP-004 | contract | `python3 -m pytest tests/test_v167_ralph_boundary.py::test_handoff_routes -q` | handoff 路由集合 |
-
-## Verification Notes
-
-- Contract tests may land under `tests/test_v167_product_goal_domain.py` (or per-feature modules).
-- Negative fixtures must fail closed (freeze or QA).
+| AC-RLP-005 | TC-RLP-005 | contract | `python3 -m pytest tests/test_v167_ralph_boundary.py::test_contract_suite_locks_boundary -q` | 合同测试锁边界 |

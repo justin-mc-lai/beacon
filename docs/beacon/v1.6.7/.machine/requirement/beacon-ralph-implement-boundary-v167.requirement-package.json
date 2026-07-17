@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-16T16:34:31.810838+00:00",
+  "generated_at": "2026-07-17T01:27:58.186960+00:00",
   "feature": "beacon-ralph-implement-boundary-v167",
   "feature_slug": "beacon-ralph-implement-boundary-v167",
   "version": "v1.6.7",
@@ -19,7 +19,7 @@
   },
   "source_hashes": {
     "truth": "8e208b8772f035a5cd06667e5303f194ca24b2f134428d60c623e8f05cbd57b1",
-    "tests": "eff363866ae26fc2ee90a3cbd7ad06df096c9658f7d341bf9dfc4d0c18f74a0e",
+    "tests": "b3d0a19a5492ae980c322e3cc8b15a2f550856b704e2611236ebe48cd1a9f304",
     "tasks": "46b59f2d574b0c84b50afbe1d51e5c0addcff6b6af3c7ecf81120d5d5043b256",
     "evidence": "8f7ba1443b8b7ba59b3599dc458a25b81c5235d145dd414702e1e71501090377"
   },
@@ -100,6 +100,14 @@
       "layer": "contract",
       "command": "`python3 -m pytest tests/test_v167_ralph_boundary.py::test_handoff_routes -q`",
       "assertion": "handoff 路由集合",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-RLP-005",
+      "tc_id": "TC-RLP-005",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_ralph_boundary.py::test_contract_suite_locks_boundary -q`",
+      "assertion": "合同测试锁边界",
       "evidence_path": ""
     }
   ],

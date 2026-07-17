@@ -22,7 +22,414 @@
       "scenario_families": [],
       "required_families": [],
       "scenarios": []
+    },
+    {
+      "ac_id": "AC-DFSM-001",
+      "theme": "",
+      "text": "schema 字段齐全",
+      "scenario_ids": [
+        "SC-AUTO-TC-DFSM-001"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-DFSM-001",
+          "source_tc_id": "TC-DFSM-001",
+          "tc_id": "TC-DFSM-001-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-DFSM-002",
+      "theme": "",
+      "text": "Domain Model/FSM 可解析",
+      "scenario_ids": [
+        "SC-AUTO-TC-DFSM-006"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-DFSM-006",
+          "source_tc_id": "TC-DFSM-006",
+          "tc_id": "TC-DFSM-006-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-DFSM-003",
+      "theme": "",
+      "text": "缺 FSM freeze blocked",
+      "scenario_ids": [
+        "SC-AUTO-TC-DFSM-002"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-DFSM-002",
+          "source_tc_id": "TC-DFSM-002",
+          "tc_id": "TC-DFSM-002-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-DFSM-004",
+      "theme": "",
+      "text": "clarity fail-closed",
+      "scenario_ids": [
+        "SC-AUTO-TC-DFSM-003"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-DFSM-003",
+          "source_tc_id": "TC-DFSM-003",
+          "tc_id": "TC-DFSM-003-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-DFSM-005",
+      "theme": "",
+      "text": "孤儿 AC 被检出",
+      "scenario_ids": [
+        "SC-AUTO-TC-DFSM-004"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-DFSM-004",
+          "source_tc_id": "TC-DFSM-004",
+          "tc_id": "TC-DFSM-004-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-DFSM-006",
+      "theme": "",
+      "text": "非法转移槽位必填",
+      "scenario_ids": [
+        "SC-AUTO-TC-DFSM-005"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-DFSM-005",
+          "source_tc_id": "TC-DFSM-005",
+          "tc_id": "TC-DFSM-005-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-DFSM-007",
+      "theme": "",
+      "text": "checklist 非权威",
+      "scenario_ids": [
+        "SC-AUTO-TC-DFSM-007"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-DFSM-007",
+          "source_tc_id": "TC-DFSM-007",
+          "tc_id": "TC-DFSM-007-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
     }
   ],
-  "scenarios": []
+  "scenarios": [
+    {
+      "scenario_id": "SC-AUTO-TC-DFSM-001",
+      "source_tc_id": "TC-DFSM-001",
+      "tc_id": "TC-DFSM-001-PRIMARY",
+      "ac_id": "AC-DFSM-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "schema 字段齐全",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_domain_fsm.py::test_schema_contract -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "schema 字段齐全",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-domain-fsm-authority-v167/tc-dfsm-001/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-DFSM-006",
+      "source_tc_id": "TC-DFSM-006",
+      "tc_id": "TC-DFSM-006-PRIMARY",
+      "ac_id": "AC-DFSM-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "Domain Model/FSM 可解析",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_domain_fsm.py::test_truth_section_resolver_readable -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Domain Model/FSM 可解析",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-domain-fsm-authority-v167/tc-dfsm-006/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-DFSM-002",
+      "source_tc_id": "TC-DFSM-002",
+      "tc_id": "TC-DFSM-002-PRIMARY",
+      "ac_id": "AC-DFSM-003",
+      "qa_type": "contract",
+      "layer": "negative",
+      "scenario_family": "primary",
+      "title": "缺 FSM freeze blocked",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_domain_fsm.py::test_freeze_blocks_missing_fsm -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "缺 FSM freeze blocked",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-domain-fsm-authority-v167/tc-dfsm-002/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-DFSM-003",
+      "source_tc_id": "TC-DFSM-003",
+      "tc_id": "TC-DFSM-003-PRIMARY",
+      "ac_id": "AC-DFSM-004",
+      "qa_type": "contract",
+      "layer": "negative",
+      "scenario_family": "primary",
+      "title": "clarity fail-closed",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_domain_fsm.py::test_clarity_fail_closed -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "clarity fail-closed",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-domain-fsm-authority-v167/tc-dfsm-003/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-DFSM-004",
+      "source_tc_id": "TC-DFSM-004",
+      "tc_id": "TC-DFSM-004-PRIMARY",
+      "ac_id": "AC-DFSM-005",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "孤儿 AC 被检出",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_domain_fsm.py::test_orphan_ac_detected -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "孤儿 AC 被检出",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-domain-fsm-authority-v167/tc-dfsm-004/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-DFSM-005",
+      "source_tc_id": "TC-DFSM-005",
+      "tc_id": "TC-DFSM-005-PRIMARY",
+      "ac_id": "AC-DFSM-006",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "非法转移槽位必填",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_domain_fsm.py::test_illegal_transition_slot_required -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "非法转移槽位必填",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-domain-fsm-authority-v167/tc-dfsm-005/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-DFSM-007",
+      "source_tc_id": "TC-DFSM-007",
+      "tc_id": "TC-DFSM-007-PRIMARY",
+      "ac_id": "AC-DFSM-007",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "checklist 非权威",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_domain_fsm.py::test_checklist_is_noncanonical -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "checklist 非权威",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-domain-fsm-authority-v167/tc-dfsm-007/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
 }

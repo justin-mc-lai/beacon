@@ -344,3 +344,25 @@ parser_contract: beacon-feature-package-v2
     assert domain["blocked"] is True
     tig = build_truth_integrity_gate(tmp_path, version=version, feature=slug, mode="block")
     assert tig.get("domain_fsm", {}).get("blocked") is True or domain["blocked"] is True
+
+
+def test_truth_section_resolver_readable() -> None:
+    """AC-DFSM-002: Domain Model / Domain FSM sections are parseable from package truth."""
+    from beacon.utils.domain_fsm import parse_domain_fsm_from_truth
+    root = Path(__file__).resolve().parents[1]
+    truth = (root / "docs/beacon/v1.6.7/fixtures/golden-commerce-checkout/positive/truth.md").read_text(encoding="utf-8")
+    if "domain_required" not in truth:
+        truth = truth.replace("fixture: true", "fixture: true\ndomain_required: true", 1)
+    proj = parse_domain_fsm_from_truth(truth)
+    assert proj["has_domain_model_section"] is True
+    assert proj["has_domain_fsm_section"] is True
+    assert proj["entities"]
+    assert proj["aggregates"]
+
+
+def test_checklist_is_noncanonical() -> None:
+    """AC-DFSM-007: schema contract marks support checklists non-canonical."""
+    from beacon.utils.domain_fsm import schema_contract
+    contract = schema_contract()
+    assert contract["authority"]["support_checklists_noncanonical"] is True
+    assert "freeze" in contract["authority"]["gates"]

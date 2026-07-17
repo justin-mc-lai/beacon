@@ -183,6 +183,75 @@
           "replay_required": false
         }
       ]
+    },
+    {
+      "ac_id": "AC-PGR-003",
+      "theme": "",
+      "text": "facade 阶段齐全",
+      "scenario_ids": [
+        "SC-AUTO-TC-PGR-R3-008"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-PGR-R3-008",
+          "source_tc_id": "TC-PGR-R3-008",
+          "tc_id": "TC-PGR-R3-008-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-PGR-006",
+      "theme": "",
+      "text": "渐进 skill 加载",
+      "scenario_ids": [
+        "SC-AUTO-TC-PGR-R3-009"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-PGR-R3-009",
+          "source_tc_id": "TC-PGR-R3-009",
+          "tc_id": "TC-PGR-R3-009-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-PGR-011",
+      "theme": "",
+      "text": "v2 合同存在",
+      "scenario_ids": [
+        "SC-AUTO-TC-PGR-R3-010"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-PGR-R3-010",
+          "source_tc_id": "TC-PGR-R3-010",
+          "tc_id": "TC-PGR-R3-010-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
     }
   ],
   "scenarios": [
@@ -423,6 +492,111 @@
       "assertion": "无 verifier 不可 complete",
       "priority": "P1",
       "evidence_path": ".beacon/evidence/qa-feature/beacon-product-goal-runtime-v167/tc-pgr-r3-007/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-PGR-R3-008",
+      "source_tc_id": "TC-PGR-R3-008",
+      "tc_id": "TC-PGR-R3-008-PRIMARY",
+      "ac_id": "AC-PGR-003",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "facade 阶段齐全",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_product_goal.py::test_facade_stage_plan -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "facade 阶段齐全",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-product-goal-runtime-v167/tc-pgr-r3-008/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-PGR-R3-009",
+      "source_tc_id": "TC-PGR-R3-009",
+      "tc_id": "TC-PGR-R3-009-PRIMARY",
+      "ac_id": "AC-PGR-006",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "渐进 skill 加载",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_product_goal.py::test_progressive_skill_load -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "渐进 skill 加载",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-product-goal-runtime-v167/tc-pgr-r3-009/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-PGR-R3-010",
+      "source_tc_id": "TC-PGR-R3-010",
+      "tc_id": "TC-PGR-R3-010-PRIMARY",
+      "ac_id": "AC-PGR-011",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "v2 合同存在",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_product_goal.py::test_v2_parity_program_exists -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "v2 合同存在",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-product-goal-runtime-v167/tc-pgr-r3-010/__RUN_ID__.json",
       "required_files": [
         "command.txt",
         "stdout.log",

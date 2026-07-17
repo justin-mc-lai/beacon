@@ -4,7 +4,7 @@
 - feature: `beacon-domain-fsm-qa-gate-v167`
 - revision_id: `R1`
 - verdict: `passed`
-- accepted_at: `2026-07-16T16:41:12.428788+00:00`
+- accepted_at: `2026-07-17T01:27:21.886595+00:00`
 - accepted_by: `qa`
 
 ## Summary

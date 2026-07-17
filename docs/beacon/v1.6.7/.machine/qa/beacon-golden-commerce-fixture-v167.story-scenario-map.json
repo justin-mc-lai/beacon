@@ -22,7 +22,240 @@
       "scenario_families": [],
       "required_families": [],
       "scenarios": []
+    },
+    {
+      "ac_id": "AC-GOLD-001",
+      "theme": "",
+      "text": "正例 package 存在且可解析",
+      "scenario_ids": [
+        "SC-AUTO-TC-GOLD-001"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-GOLD-001",
+          "source_tc_id": "TC-GOLD-001",
+          "tc_id": "TC-GOLD-001-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-GOLD-002",
+      "theme": "",
+      "text": "无商品下单失败",
+      "scenario_ids": [
+        "SC-AUTO-TC-GOLD-002"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-GOLD-002",
+          "source_tc_id": "TC-GOLD-002",
+          "tc_id": "TC-GOLD-002-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-GOLD-003",
+      "theme": "",
+      "text": "FSM 覆盖两聚合根",
+      "scenario_ids": [
+        "SC-AUTO-TC-GOLD-003"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-GOLD-003",
+          "source_tc_id": "TC-GOLD-003",
+          "tc_id": "TC-GOLD-003-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-GOLD-004",
+      "theme": "",
+      "text": "skill 示例指向 fixture",
+      "scenario_ids": [
+        "SC-AUTO-TC-GOLD-004"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-GOLD-004",
+          "source_tc_id": "TC-GOLD-004",
+          "tc_id": "TC-GOLD-004-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
     }
   ],
-  "scenarios": []
+  "scenarios": [
+    {
+      "scenario_id": "SC-AUTO-TC-GOLD-001",
+      "source_tc_id": "TC-GOLD-001",
+      "tc_id": "TC-GOLD-001-PRIMARY",
+      "ac_id": "AC-GOLD-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "正例 package 存在且可解析",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_golden_commerce.py::test_positive_package_present -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "正例 package 存在且可解析",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-golden-commerce-fixture-v167/tc-gold-001/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-GOLD-002",
+      "source_tc_id": "TC-GOLD-002",
+      "tc_id": "TC-GOLD-002-PRIMARY",
+      "ac_id": "AC-GOLD-002",
+      "qa_type": "contract",
+      "layer": "negative",
+      "scenario_family": "primary",
+      "title": "无商品下单失败",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_golden_commerce.py::test_order_without_product_fails -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "无商品下单失败",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-golden-commerce-fixture-v167/tc-gold-002/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-GOLD-003",
+      "source_tc_id": "TC-GOLD-003",
+      "tc_id": "TC-GOLD-003-PRIMARY",
+      "ac_id": "AC-GOLD-003",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "FSM 覆盖两聚合根",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_golden_commerce.py::test_fsm_covers_product_and_order -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "FSM 覆盖两聚合根",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-golden-commerce-fixture-v167/tc-gold-003/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-GOLD-004",
+      "source_tc_id": "TC-GOLD-004",
+      "tc_id": "TC-GOLD-004-PRIMARY",
+      "ac_id": "AC-GOLD-004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "skill 示例指向 fixture",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_golden_commerce.py::test_skill_example_points_to_fixture -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "skill 示例指向 fixture",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-golden-commerce-fixture-v167/tc-gold-004/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
 }

@@ -114,6 +114,29 @@
           "replay_required": false
         }
       ]
+    },
+    {
+      "ac_id": "AC-LDG-003",
+      "theme": "",
+      "text": "goal-queue 可写可消费",
+      "scenario_ids": [
+        "SC-AUTO-TC-LDG-R3-005"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-LDG-R3-005",
+          "source_tc_id": "TC-LDG-R3-005",
+          "tc_id": "TC-LDG-R3-005-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
     }
   ],
   "scenarios": [
@@ -249,6 +272,41 @@
       "assertion": "指向 beacon-goal",
       "priority": "P1",
       "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-discover-goal-finish-v167/tc-ldg-r3-004/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-LDG-R3-005",
+      "source_tc_id": "TC-LDG-R3-005",
+      "tc_id": "TC-LDG-R3-005-PRIMARY",
+      "ac_id": "AC-LDG-003",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "goal-queue 可写可消费",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_loop_goal_split.py::test_queue_handoff_to_goal -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "goal-queue 可写可消费",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-discover-goal-finish-v167/tc-ldg-r3-005/__RUN_ID__.json",
       "required_files": [
         "command.txt",
         "stdout.log",

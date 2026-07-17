@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-16T16:33:59.184100+00:00",
+  "generated_at": "2026-07-17T01:27:30.285732+00:00",
   "feature": "beacon-product-goal-runtime-v167",
   "feature_slug": "beacon-product-goal-runtime-v167",
   "version": "v1.6.7",
@@ -19,7 +19,7 @@
   },
   "source_hashes": {
     "truth": "aa5ef11dfbdb1631c0e0eb6d34b5f482ff25f633a2656f9625871da6df02e226",
-    "tests": "171ea0ef862dc60b3e170631fe43339ca03543b8052aa9b898c83e3e15f97741",
+    "tests": "71814dadeb510283ef8b14199c5adbb5a9034116bb618238b2742fe10c705cdf",
     "tasks": "fcc2bf9df0bdf6f5ec849dc52954d1ba503129123f93735d3eb19eae2aecbaee",
     "evidence": "f2da5226bb89e8093869730e9a10a65e7ae055fb6220252c9f2837124e81631e"
   },
@@ -117,11 +117,43 @@
       "evidence_path": ""
     },
     {
+      "ac_id": "AC-PGR-003",
+      "tc_id": "TC-PGR-R3-008",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_facade_stage_plan -q`",
+      "assertion": "facade 阶段齐全",
+      "evidence_path": ""
+    },
+    {
       "ac_id": "AC-PGR-004",
       "tc_id": "TC-PGR-R3-003",
       "layer": "contract",
       "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_loop_goal_marked_support -q`",
       "assertion": "loop 标 support",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PGR-006",
+      "tc_id": "TC-PGR-R3-009",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_progressive_skill_load -q`",
+      "assertion": "渐进 skill 加载",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PGR-007",
+      "tc_id": "TC-PGR-R3-006",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_main_star_satellite_pool -q`",
+      "assertion": "主星卫星",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PGR-008",
+      "tc_id": "TC-PGR-R3-007",
+      "layer": "negative",
+      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_complete_requires_verifier -q`",
+      "assertion": "无 verifier 不可 complete",
       "evidence_path": ""
     },
     {
@@ -141,19 +173,11 @@
       "evidence_path": ""
     },
     {
-      "ac_id": "AC-PGR-007",
-      "tc_id": "TC-PGR-R3-006",
+      "ac_id": "AC-PGR-011",
+      "tc_id": "TC-PGR-R3-010",
       "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_main_star_satellite_pool -q`",
-      "assertion": "主星卫星",
-      "evidence_path": ""
-    },
-    {
-      "ac_id": "AC-PGR-008",
-      "tc_id": "TC-PGR-R3-007",
-      "layer": "negative",
-      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_complete_requires_verifier -q`",
-      "assertion": "无 verifier 不可 complete",
+      "command": "`python3 -m pytest tests/test_v167_product_goal.py::test_v2_parity_program_exists -q`",
+      "assertion": "v2 合同存在",
       "evidence_path": ""
     }
   ],

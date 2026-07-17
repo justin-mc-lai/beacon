@@ -114,6 +114,29 @@
           "replay_required": false
         }
       ]
+    },
+    {
+      "ac_id": "AC-RLP-005",
+      "theme": "",
+      "text": "合同测试锁边界",
+      "scenario_ids": [
+        "SC-AUTO-TC-RLP-005"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-RLP-005",
+          "source_tc_id": "TC-RLP-005",
+          "tc_id": "TC-RLP-005-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
     }
   ],
   "scenarios": [
@@ -249,6 +272,41 @@
       "assertion": "handoff 路由集合",
       "priority": "P1",
       "evidence_path": ".beacon/evidence/qa-feature/beacon-ralph-implement-boundary-v167/tc-rlp-004/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-RLP-005",
+      "source_tc_id": "TC-RLP-005",
+      "tc_id": "TC-RLP-005-PRIMARY",
+      "ac_id": "AC-RLP-005",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "合同测试锁边界",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_ralph_boundary.py::test_contract_suite_locks_boundary -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "合同测试锁边界",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-ralph-implement-boundary-v167/tc-rlp-005/__RUN_ID__.json",
       "required_files": [
         "command.txt",
         "stdout.log",
