@@ -226,8 +226,28 @@ def create_goal_run(
     resolved_version = resolve_target_version(project_root, version)
     run_id = _new_run_id()
     parallel = build_parallel_plan(lakes=lakes, mode=worktree_mode, utterance=utterance)
-    ux_required = detect_ux_intent(utterance, lakes=lakes)
-    stages = build_stage_plan(utterance=utterance, lakes=lakes, ux_required=ux_required)
+    # harvest feature/package truth so ux_required frontmatter is honored
+    truth_bits: list[str] = []
+    try:
+        resolved_for_truth = resolve_target_version(project_root, version)
+        if feature:
+            tp = Path(project_root) / "docs" / "beacon" / resolved_for_truth / "features" / feature_slug(feature) / "truth.md"
+            if tp.exists():
+                truth_bits.append(tp.read_text(encoding="utf-8")[:12000])
+        for lake in lakes or []:
+            tp = Path(project_root) / "docs" / "beacon" / resolved_for_truth / "features" / feature_slug(lake) / "truth.md"
+            if tp.exists():
+                truth_bits.append(tp.read_text(encoding="utf-8")[:8000])
+    except Exception:  # noqa: BLE001
+        truth_bits = []
+    truth_markdown = "\n".join(truth_bits)
+    ux_required = detect_ux_intent(utterance, truth_markdown=truth_markdown, lakes=lakes)
+    stages = build_stage_plan(
+        utterance=utterance,
+        lakes=lakes,
+        truth_markdown=truth_markdown,
+        ux_required=ux_required,
+    )
     default_done = ["domain_fsm", "evidence_chain", "continuous_qa"]
     if ux_required:
         default_done = ["design_baseline", "design_md_lint", "domain_fsm", "evidence_chain", "continuous_qa"]
