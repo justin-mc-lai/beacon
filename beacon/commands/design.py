@@ -117,6 +117,66 @@ def bootstrap(
     _emit(payload, json_output=json_output)
 
 
+
+@app.command("baseline")
+def baseline(
+    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Docs version"),
+    preset: str = typer.Option(
+        "restrained-product",
+        "--preset",
+        help="Visual preset: restrained-product|operator-console|editorial-calm",
+    ),
+    write: bool = typer.Option(True, "--write/--dry-run", help="Write DESIGN.md / fine-tune proposal"),
+    force: bool = typer.Option(False, "--force", help="Overwrite existing DESIGN.md"),
+    product_name: str = typer.Option("", "--product-name", help="Product display name for DESIGN.md title"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON payload"),
+):
+    """Unattended complete DESIGN.md baseline (open-source UI agent principles absorbed).
+
+    If DESIGN.md is missing: write a full reusable visual contract.
+    If DESIGN.md exists and --force is not set: preserve it and write fine-tune-proposal.md
+    so secondary polish can merge without discarding project identity.
+    """
+    from beacon.utils.design_baseline import (
+        render_complete_design_md,
+        resolve_design_preset,
+        synthesize_unattended_design_baseline,
+    )
+
+    project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, version)
+    if not write:
+        tokens = resolve_design_preset(preset)
+        body = render_complete_design_md(
+            product_name=product_name or project_root.name or "Product",
+            preset=tokens["preset"],
+            version=resolved_version,
+            mode="baseline",
+        )
+        payload = {
+            "schema_version": "1.0",
+            "status": "dry_run",
+            "version": resolved_version,
+            "preset": tokens["preset"],
+            "design_md_preview_chars": len(body),
+        }
+        _emit(payload, json_output=json_output)
+        if not json_output:
+            typer.echo(body)
+        return
+
+    payload = synthesize_unattended_design_baseline(
+        project_root,
+        resolved_version,
+        preset=preset,
+        force=force,
+        write_version_contracts=True,
+        product_name=product_name,
+    )
+    _emit(payload, json_output=json_output)
+
+
 @app.command()
 def create(
     feature: str = typer.Argument(..., help="Feature or problem to design"),

@@ -66,3 +66,16 @@ $beacon-goal
 - 发布前你点头  
 
 不是：agent 口头说「做完了」。
+
+
+## UI design (unattended)
+
+When no human design decision exists, establish a complete visual OS first:
+
+```bash
+beacon design baseline --project . --version auto --write --json
+```
+
+If `DESIGN.md` already exists, the same command writes a fine-tune proposal instead of overwriting.
+Secondary polish still routes through `beacon design route polish|review|system` and binds via prototype adapt / change.
+See `skills/beacon/examples/design-md-complete.md`.

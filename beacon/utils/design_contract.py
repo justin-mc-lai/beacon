@@ -195,36 +195,19 @@ Update this file only when accepted product facts become project-level truth. Pr
 """
 
 
-DESIGN_TRUTH_TEMPLATE = """# Design Truth
+def _complete_design_truth_template(product_name: str = "Product", version: str = "v1.6.7") -> str:
+    from beacon.utils.design_baseline import render_complete_design_md
 
-Status: draft
+    return render_complete_design_md(
+        product_name=product_name,
+        preset="restrained-product",
+        version=version,
+        mode="baseline",
+    )
 
-This file is Beacon project-level design truth. It records durable design facts that apply across versions.
 
-## Design Principles
-
-Describe the product-wide design principles and experience priorities.
-
-## Component System Baseline
-
-Describe the default component system, library choices, and reusable UI patterns.
-
-## Interaction Principles
-
-Describe navigation, feedback, recovery, and handoff expectations.
-
-## UI State Coverage
-
-Describe required loading, empty, error, success, blocked, stale, and recovery states.
-
-## Accessibility And Responsive Baseline
-
-Describe accessibility and responsive behavior expectations that apply across the product.
-
-## Truth Update Policy
-
-Update this file only when accepted design facts become project-level truth. Design support output is not truth until bound through Beacon truth routes.
-"""
+# Back-compat name; content is the complete baseline (open-source UI agent principles absorbed).
+DESIGN_TRUTH_TEMPLATE = _complete_design_truth_template()
 
 
 def design_route_contract(project_root: Path, version: str, *, feature: str = "") -> dict[str, Any]:
@@ -398,11 +381,18 @@ def write_version_design_contracts(
     resolved = resolve_target_version(project_root, version)
     paths = design_truth_paths(project_root, resolved)
     writes: dict[str, str] = {}
+    from beacon.utils.design_baseline import (
+        VERSION_COMPONENT_SYSTEM_TEMPLATE,
+        VERSION_INTERACTION_CONTRACT_TEMPLATE,
+        VERSION_STATE_MATRIX_TEMPLATE,
+        VERSION_STYLE_TEMPLATE,
+    )
+
     templates = {
-        "version_style": "# Version Design Style\n\nStatus: draft\n\nThis version-wide style contract applies across Beacon UI/UX-affecting features.\n",
-        "component_system": "# Component System Contract\n\nStatus: draft\n\nCovers component selection, states, accessibility, responsive behavior, and source-bound library choices.\n",
-        "interaction_contract": "# Interaction Contract\n\nStatus: draft\n\nCovers user feedback, navigation, recovery, and handoff expectations.\n",
-        "state_matrix": "# UI State Matrix\n\nStatus: draft\n\nCovers loading, empty, error, success, blocked, stale, and recovery states.\n",
+        "version_style": VERSION_STYLE_TEMPLATE,
+        "component_system": VERSION_COMPONENT_SYSTEM_TEMPLATE,
+        "interaction_contract": VERSION_INTERACTION_CONTRACT_TEMPLATE,
+        "state_matrix": VERSION_STATE_MATRIX_TEMPLATE,
     }
     for key, rel in paths.items():
         if key not in templates:
@@ -414,9 +404,13 @@ def write_version_design_contracts(
             PRODUCT_TRUTH_TEMPLATE,
             force=force,
         )
+        design_body = _complete_design_truth_template(
+            product_name=project_root.name or "Product",
+            version=resolved,
+        )
         writes["design_truth"] = _write_design_truth_file(
             project_root / paths["design_truth"],
-            DESIGN_TRUTH_TEMPLATE,
+            design_body,
             force=force,
         )
     machine_dir = project_root / paths["machine_design_projection"]
