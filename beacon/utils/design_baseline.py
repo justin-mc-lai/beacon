@@ -477,6 +477,7 @@ def synthesize_unattended_design_baseline(
     write_version_contracts: bool = True,
     product_name: str = "",
     truth_markdown: str = "",
+    company_template: str = "auto",
 ) -> dict[str, Any]:
     """Unattended visual baseline with surface auto-select from requirement truth."""
     from beacon.utils.design_contract import design_truth_paths, write_version_design_contracts
@@ -522,7 +523,44 @@ def synthesize_unattended_design_baseline(
     pack_preset = str(SURFACE_PACKS.get(surface_key, {}).get("preset") or preset)
     if not preset or preset == "restrained-product":
         preset = pack_preset
+    from beacon.utils.design_company_templates import auto_select_company_template, COMPANY_DESIGN_TEMPLATES
+    if company_template and company_template != "auto" and company_template in COMPANY_DESIGN_TEMPLATES:
+        company_decision = {
+            "company_template": company_template,
+            **{k: COMPANY_DESIGN_TEMPLATES[company_template].get(k) for k in ("label", "inspired_by", "default_surface", "default_preset", "colors")},
+            "reason": "explicit",
+            "catalog_size": len(COMPANY_DESIGN_TEMPLATES),
+            "hits": [],
+            "scores": {},
+        }
+    else:
+        company_decision = auto_select_company_template(*truth_bits, surface=surface_key)
+    if company_decision.get("default_preset") and (not preset or preset == "restrained-product"):
+        preset = str(company_decision.get("default_preset"))
     tokens = resolve_design_preset(preset)
+    # overlay commercial colors into token bridge when present
+    colors = company_decision.get("colors") if isinstance(company_decision.get("colors"), dict) else {}
+    if colors:
+        if colors.get("primary"):
+            tokens["primary"] = str(colors.get("primary"))
+        if colors.get("on-primary"):
+            tokens["primary_fg"] = str(colors.get("on-primary"))
+        if colors.get("canvas") or colors.get("neutral"):
+            tokens["bg"] = str(colors.get("neutral") or colors.get("canvas"))
+        if colors.get("canvas"):
+            tokens["card"] = str(colors.get("canvas"))
+        if colors.get("border"):
+            tokens["border"] = str(colors.get("border"))
+        if colors.get("secondary") or colors.get("muted"):
+            tokens["muted"] = str(colors.get("muted") or colors.get("secondary"))
+        if colors.get("danger"):
+            tokens["danger"] = str(colors.get("danger"))
+        if colors.get("success"):
+            tokens["success"] = str(colors.get("success"))
+        if colors.get("warning"):
+            tokens["warning"] = str(colors.get("warning"))
+        tokens["company_template"] = str(company_decision.get("company_template") or "")
+        tokens["inspired_by"] = str(company_decision.get("inspired_by") or "")
     ux_scan = scan_truth_for_ux("\n".join(truth_bits))
 
     design_path = project_root / "DESIGN.md"
@@ -614,6 +652,7 @@ def synthesize_unattended_design_baseline(
         "preset_source": tokens.get("source"),
         "surface": surface_key,
         "surface_decision": decision,
+        "company_template": company_decision,
         "visual_delivery_claimed": bool(ux_scan.get("visual_delivery_claimed")),
         "ux_signals": ux_scan.get("signals") or [],
         "open_source_ui_agent_principles": OPEN_SOURCE_UI_AGENT_PRINCIPLES,
@@ -640,6 +679,7 @@ def synthesize_unattended_design_baseline(
         "preset": tokens.get("preset"),
         "surface": surface_key,
         "surface_decision": decision,
+        "company_template": company_decision,
         "visual_delivery_claimed": bool(ux_scan.get("visual_delivery_claimed")),
         "ux_signals": ux_scan.get("signals") or [],
         "product_name": name,

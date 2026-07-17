@@ -191,3 +191,35 @@ def goal_delegate_ralph(
     payload = delegate_implement_to_ralph(_root(project), run_id, feature=feature)
     _emit(payload, json_output)
     raise typer.Exit(0 if payload.get("implement_delegate") == "ralph" else 2)
+
+
+@app.command("design-stage")
+def design_stage(
+    run_id: str = typer.Option(..., "--run-id", help="Product goal run id"),
+    project: str = typer.Option(".", "--project", "-p", help="Project root"),
+    force: bool = typer.Option(False, "--force", help="Overwrite DESIGN.md"),
+    surface: str = typer.Option("auto", "--surface"),
+    company_template: str = typer.Option("auto", "--company-template"),
+    json_output: bool = typer.Option(False, "--json"),
+):
+    """Run UX design stage for a goal run (baseline + company template + lint)."""
+    from beacon.utils.product_goal_runtime import run_design_stage_for_goal
+    from pathlib import Path
+    import json as _json
+
+    payload = run_design_stage_for_goal(
+        Path(project),
+        run_id,
+        force=force,
+        surface=surface,
+        company_template=company_template,
+    )
+    if json_output:
+        typer.echo(_json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"status: {payload.get('status')}")
+        ds = payload.get("design_stage") if isinstance(payload.get("design_stage"), dict) else {}
+        typer.echo(f"design: {ds.get('baseline', {}).get('status')} lint: {ds.get('lint', {}).get('status')}")
+    if payload.get("blocked"):
+        raise typer.Exit(2)
+

@@ -291,6 +291,46 @@ def build_ui_design_ship_gate(
             if isinstance(agg, dict):
                 domain_states.extend(str(s) for s in (agg.get("states") or []))
 
+    # google design.md lint evidence (ux required)
+    lint_eval: dict[str, Any] = {
+        "required": requires_ux and not deferred,
+        "status": "not_required",
+        "blocked": False,
+        "reason_code": "",
+        "evidence_path": "",
+        "summary": {},
+    }
+    if lint_eval["required"] and baselines["has_any"]:
+        from beacon.utils.design_md_lint import run_design_md_lint
+
+        lint_payload = run_design_md_lint(
+            project_root,
+            feature=slug or "project",
+            version=resolved,
+            write_evidence=True,
+        )
+        lint_eval = {
+            "required": True,
+            "status": lint_payload.get("status"),
+            "blocked": bool(lint_payload.get("blocked")),
+            "reason_code": lint_payload.get("reason_code") or "",
+            "evidence_path": lint_payload.get("evidence_path") or "",
+            "summary": lint_payload.get("summary") or {},
+            "runner": lint_payload.get("runner") or "",
+        }
+        if lint_eval["blocked"]:
+            findings.append(
+                {
+                    "kind": "design_md_lint",
+                    "reason_code": str(lint_eval.get("reason_code") or "design_md_lint_failed"),
+                    "text": "google design.md lint failed or DESIGN.md structural errors",
+                }
+            )
+    elif lint_eval["required"] and not baselines["has_any"]:
+        lint_eval["status"] = "blocked"
+        lint_eval["blocked"] = True
+        lint_eval["reason_code"] = "design_md_lint_missing"
+
     matrix_eval = {
         "schema": UI_STATE_MATRIX_SCHEMA,
         "required": requires_ux and not deferred,
@@ -328,6 +368,7 @@ def build_ui_design_ship_gate(
         "reason_code": findings[0]["reason_code"] if findings else "",
         "findings": findings,
         "design_alignment": design_alignment,
+        "design_md_lint": lint_eval,
         "ui_state_matrix": matrix_eval,
         "release_ready_allowed": not blocked,
         "recommended_action": (
@@ -341,6 +382,7 @@ def build_ui_design_ship_gate(
 def apply_ui_design_to_scorecard(scorecard: dict[str, Any], ship_gate: dict[str, Any]) -> dict[str, Any]:
     payload = dict(scorecard or {})
     payload["design_alignment"] = ship_gate.get("design_alignment") or {}
+    payload["design_md_lint"] = ship_gate.get("design_md_lint") or {}
     payload["ui_state_matrix"] = ship_gate.get("ui_state_matrix") or {}
     if not ship_gate.get("required"):
         payload["ui_design_ship_blocked"] = False

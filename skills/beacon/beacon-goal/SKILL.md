@@ -30,6 +30,7 @@ $beacon-goal
 |------|----------|
 | 拆海 | beacon-pln-program* |
 | 需求 | beacon-gen-truth / change |
+| **设计（ux_required）** | **design stage：baseline + 公司模板 + google design.md lint** |
 | 实现 | beacon-gen-implement（+ ralph） |
 | 验收 | beacon-eval-qa（+ deep） |
 | 发布 | beacon-eval-release（人工门） |
@@ -53,6 +54,7 @@ beacon goal status|pause|resume|complete|tick ...
 - 禁止自证完成；complete 需 CLI verifier
 - release 默认人工确认
 - 不得要求用户手搓双 skill 流水线
+- `ux_required` / 视觉交付时自动插入 design stage：`beacon design baseline --surface auto` + `beacon design lint` 证据
 
 ## Harness
 

@@ -30,12 +30,15 @@ PROGRESSIVE_SKILLS: dict[str, list[str]] = {
     "discover": [SUPPORT_LOOP],  # support only
     "plan": ["beacon-pln-program", "beacon-pln-program-auto", "beacon-pln-program-interactive"],
     "truth": ["beacon-gen-truth", "beacon-gen-change"],
+    "design": ["beacon-gen-design", "beacon-gen-design-system", "beacon-gen-design-polish"],
     "implement": ["beacon-gen-implement"],
     "qa": ["beacon-eval-qa", "beacon-eval-qa-deep"],
     "release": ["beacon-eval-release"],
 }
 
-STAGE_ORDER = ("plan", "truth", "implement", "qa", "release")
+# Base order; `design` is inserted when UX/visual delivery is claimed.
+STAGE_ORDER_BASE = ("plan", "truth", "implement", "qa", "release")
+STAGE_ORDER = STAGE_ORDER_BASE  # backward-compatible alias
 
 REASON_VERIFIER_REQUIRED = "product_goal_complete_requires_verifier"
 REASON_NOT_FOUND = "product_goal_run_not_found"
@@ -97,6 +100,43 @@ def detect_parallel_intent(utterance: str) -> bool:
     return any(m in text for m in markers)
 
 
+
+
+def detect_ux_intent(utterance: str = "", *, truth_markdown: str = "", lakes: list[str] | None = None) -> bool:
+    """Whether goal should insert design stage (ux_required / visual delivery)."""
+    from beacon.utils.design_surfaces import scan_truth_for_ux
+
+    if scan_truth_for_ux(truth_markdown).get("visual_delivery_claimed"):
+        return True
+    text = f"{utterance}\n{truth_markdown}".lower()
+    markers = (
+        "ux_required",
+        "design.md",
+        "ui-state-matrix",
+        "视觉",
+        "界面",
+        "ui/ux",
+        "ui design",
+        "前端页面",
+        "中台",
+        "h5",
+        "sidebar",
+        "design baseline",
+    )
+    if any(m in text for m in markers):
+        return True
+    for lake in lakes or []:
+        if any(tok in str(lake).lower() for tok in ("ui", "ux", "design", "前端", "中台")):
+            return True
+    return False
+
+
+def build_stage_order(*, ux_required: bool = False) -> tuple[str, ...]:
+    if ux_required:
+        return ("plan", "truth", "design", "implement", "qa", "release")
+    return STAGE_ORDER_BASE
+
+
 def build_parallel_plan(
     *,
     lakes: list[str] | None = None,
@@ -141,21 +181,30 @@ def progressive_skills_for_stage(stage: str) -> list[str]:
     return list(PROGRESSIVE_SKILLS.get(str(stage or "").strip().lower(), []))
 
 
-def build_stage_plan(*, utterance: str = "", lakes: list[str] | None = None) -> list[dict[str, Any]]:
+def build_stage_plan(
+    *,
+    utterance: str = "",
+    lakes: list[str] | None = None,
+    truth_markdown: str = "",
+    ux_required: bool | None = None,
+) -> list[dict[str, Any]]:
     stages: list[dict[str, Any]] = []
-    for stage in STAGE_ORDER:
+    ux = bool(ux_required) if ux_required is not None else detect_ux_intent(
+        utterance, truth_markdown=truth_markdown, lakes=lakes
+    )
+    order = build_stage_order(ux_required=ux)
+    for stage in order:
         skills = progressive_skills_for_stage(stage)
-        # discover/support is never a mandatory user stage
         stages.append(
             {
                 "stage": stage,
                 "skills": skills,
                 "status": "planned",
                 "loaded": False,
+                **({"ux_gated": True} if stage == "design" else {}),
             }
         )
     if detect_parallel_intent(utterance) or (lakes and len(lakes) > 1):
-        # annotate implement for parallel
         for item in stages:
             if item["stage"] == "implement":
                 item["parallel"] = True
@@ -177,7 +226,11 @@ def create_goal_run(
     resolved_version = resolve_target_version(project_root, version)
     run_id = _new_run_id()
     parallel = build_parallel_plan(lakes=lakes, mode=worktree_mode, utterance=utterance)
-    stages = build_stage_plan(utterance=utterance, lakes=lakes)
+    ux_required = detect_ux_intent(utterance, lakes=lakes)
+    stages = build_stage_plan(utterance=utterance, lakes=lakes, ux_required=ux_required)
+    default_done = ["domain_fsm", "evidence_chain", "continuous_qa"]
+    if ux_required:
+        default_done = ["design_baseline", "design_md_lint", "domain_fsm", "evidence_chain", "continuous_qa"]
     payload = {
         "schema_version": SCHEMA_VERSION,
         "run_id": run_id,
@@ -189,8 +242,8 @@ def create_goal_run(
         "version": resolved_version,
         "feature": feature_slug(feature) if feature else "",
         "lakes": [feature_slug(x) for x in (lakes or []) if str(x).strip()],
-        "done_when": done_when
-        or ["domain_fsm", "evidence_chain", "continuous_qa"],
+        "done_when": done_when or default_done,
+        "ux_required": ux_required,
         "stages": stages,
         "current_stage": stages[0]["stage"] if stages else "",
         "progressive_loaded_skills": [],
@@ -279,11 +332,13 @@ def tick_goal_run(project_root: Path, run_id: str, *, note: str = "") -> dict[st
             payload["progressive_loaded_skills"] = loaded
     next_idx = idx + 1
     if next_idx < len(stages) and isinstance(stages[next_idx], dict):
-        payload["current_stage"] = stages[next_idx]["stage"]
+        next_stage = str(stages[next_idx]["stage"])
+        payload["current_stage"] = next_stage
         payload["status"] = "running"
-        payload = load_stage_skills(project_root, run_id, str(stages[next_idx]["stage"]))
-        # load_stage_skills already saved; re-read
+        payload = load_stage_skills(project_root, run_id, next_stage)
         payload = load_goal_run(project_root, run_id)
+        if next_stage == "design":
+            payload = run_design_stage_for_goal(project_root, run_id)
     else:
         payload["status"] = "awaiting_verifier"
         payload["current_stage"] = "complete_gate"
@@ -291,6 +346,104 @@ def tick_goal_run(project_root: Path, run_id: str, *, note: str = "") -> dict[st
     hist.append({"event": "tick", "note": note, "at": now_iso()})
     payload["history"] = hist
     payload["stages"] = stages
+    return _save(project_root, payload)
+
+
+
+
+def run_design_stage_for_goal(
+    project_root: Path,
+    run_id: str,
+    *,
+    force: bool = False,
+    surface: str = "auto",
+    company_template: str = "auto",
+) -> dict[str, Any]:
+    """Execute unattended design baseline + lint for the goal design stage."""
+    from beacon.utils.design_baseline import synthesize_unattended_design_baseline
+    from beacon.utils.design_company_templates import auto_select_company_template
+    from beacon.utils.design_md_lint import run_design_md_lint
+    from beacon.utils.design_surfaces import auto_select_surface_from_text
+
+    payload = load_goal_run(project_root, run_id)
+    if payload.get("reason_code") == REASON_NOT_FOUND:
+        return payload
+    project_root = Path(project_root).expanduser().resolve()
+    version = str(payload.get("version") or "auto")
+    utterance = str(payload.get("utterance") or "")
+    lakes = list(payload.get("lakes") or [])
+    truth_bits = [utterance]
+    # harvest feature truth if feature set
+    feature = str(payload.get("feature") or "")
+    if feature:
+        tp = project_root / "docs" / "beacon" / version / "features" / feature / "truth.md"
+        if not tp.exists():
+            # version may be auto-resolved already in payload
+            from beacon.utils.versioning import resolve_target_version
+            resolved = resolve_target_version(project_root, version)
+            tp = project_root / "docs" / "beacon" / resolved / "features" / feature / "truth.md"
+        if tp.exists():
+            truth_bits.append(tp.read_text(encoding="utf-8")[:12000])
+    surface_decision = auto_select_surface_from_text(*truth_bits) if surface == "auto" else {"surface": surface, "reason": "explicit"}
+    company = auto_select_company_template(*truth_bits, surface=str(surface_decision.get("surface") or "web"))
+    if company_template and company_template != "auto":
+        from beacon.utils.design_company_templates import COMPANY_DESIGN_TEMPLATES
+        meta = COMPANY_DESIGN_TEMPLATES.get(company_template) or {}
+        company = {
+            **company,
+            "company_template": company_template,
+            "label": meta.get("label") or company_template,
+            "reason": "explicit",
+            "default_preset": meta.get("default_preset") or company.get("default_preset"),
+            "colors": meta.get("colors") or company.get("colors"),
+        }
+    baseline = synthesize_unattended_design_baseline(
+        project_root,
+        version,
+        preset=str(company.get("default_preset") or "restrained-product"),
+        surface=str(surface_decision.get("surface") or "web"),
+        force=force,
+        write_version_contracts=True,
+        product_name=project_root.name,
+        truth_markdown="\n".join(truth_bits),
+    )
+    # apply company colors overlay into machine projection note
+    lint = run_design_md_lint(project_root, feature=feature or "project", version=version, write_evidence=True)
+    design_state = {
+        "baseline": {
+            "status": baseline.get("status"),
+            "mode": baseline.get("mode"),
+            "surface": baseline.get("surface"),
+            "surface_decision": baseline.get("surface_decision"),
+            "design_path": baseline.get("design_path"),
+            "fine_tune_proposal_path": baseline.get("fine_tune_proposal_path"),
+            "writes": baseline.get("writes"),
+        },
+        "company_template": company,
+        "lint": {
+            "status": lint.get("status"),
+            "blocked": lint.get("blocked"),
+            "reason_code": lint.get("reason_code"),
+            "evidence_path": lint.get("evidence_path"),
+            "summary": lint.get("summary"),
+            "runner": lint.get("runner"),
+        },
+        "completed_at": now_iso(),
+    }
+    payload["design_stage"] = design_state
+    # mark design stage done if present
+    for item in payload.get("stages") or []:
+        if isinstance(item, dict) and item.get("stage") == "design":
+            item["status"] = "done" if not lint.get("blocked") else "blocked"
+            item["loaded"] = True
+            item["artifact"] = design_state
+    if lint.get("blocked"):
+        payload["blocked"] = True
+        payload["reason_code"] = str(lint.get("reason_code") or "design_md_lint_failed")
+        payload["status"] = "blocked"
+    hist = list(payload.get("history") or [])
+    hist.append({"event": "design_stage_ran", "at": now_iso(), "lint_status": lint.get("status"), "surface": baseline.get("surface")})
+    payload["history"] = hist
     return _save(project_root, payload)
 
 

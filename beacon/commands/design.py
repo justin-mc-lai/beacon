@@ -132,6 +132,11 @@ def baseline(
         "--surface",
         help="Delivery surface: auto|pc-console|web|h5|client",
     ),
+    company_template: str = typer.Option(
+        "auto",
+        "--company-template",
+        help="Commercial template: auto|vercel|stripe|linear|notion|figma|apple|shopify|airbnb|slack|ibm",
+    ),
     write: bool = typer.Option(True, "--write/--dry-run", help="Write DESIGN.md / fine-tune proposal"),
     force: bool = typer.Option(False, "--force", help="Overwrite existing DESIGN.md"),
     product_name: str = typer.Option("", "--product-name", help="Product display name for DESIGN.md title"),
@@ -180,8 +185,36 @@ def baseline(
         force=force,
         write_version_contracts=True,
         product_name=product_name,
+        company_template=company_template,
     )
     _emit(payload, json_output=json_output)
+
+
+
+@app.command("lint")
+def lint(
+    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Docs version"),
+    design_path: str = typer.Option("", "--design-path", help="Path to DESIGN.md (default: ./DESIGN.md)"),
+    feature: str = typer.Option("", "--feature", help="Feature slug for evidence naming"),
+    require_google: bool = typer.Option(False, "--require-google", help="Fail if npx @google/design.md unavailable"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON payload"),
+):
+    """Lint DESIGN.md via google design.md (+ Beacon structural fallback) and write ship evidence."""
+    from beacon.utils.design_md_lint import run_design_md_lint
+
+    project_root = Path(project) if project else Path.cwd()
+    payload = run_design_md_lint(
+        project_root,
+        design_path=design_path,
+        feature=feature,
+        version=version,
+        require_google_cli=require_google,
+        write_evidence=True,
+    )
+    _emit(payload, json_output=json_output)
+    if payload.get("blocked"):
+        raise typer.Exit(2)
 
 
 @app.command()
