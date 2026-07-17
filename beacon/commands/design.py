@@ -127,6 +127,11 @@ def baseline(
         "--preset",
         help="Visual preset: restrained-product|operator-console|editorial-calm",
     ),
+    surface: str = typer.Option(
+        "auto",
+        "--surface",
+        help="Delivery surface: auto|pc-console|web|h5|client",
+    ),
     write: bool = typer.Option(True, "--write/--dry-run", help="Write DESIGN.md / fine-tune proposal"),
     force: bool = typer.Option(False, "--force", help="Overwrite existing DESIGN.md"),
     product_name: str = typer.Option("", "--product-name", help="Product display name for DESIGN.md title"),
@@ -153,6 +158,7 @@ def baseline(
             preset=tokens["preset"],
             version=resolved_version,
             mode="baseline",
+            surface=surface if surface != "auto" else "web",
         )
         payload = {
             "schema_version": "1.0",
@@ -170,6 +176,7 @@ def baseline(
         project_root,
         resolved_version,
         preset=preset,
+        surface=surface,
         force=force,
         write_version_contracts=True,
         product_name=product_name,

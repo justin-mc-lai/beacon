@@ -88,6 +88,7 @@ For v1.5.2 features, implementation must bind to resolver-selected `features/<sl
 
 - Enter `implement` only after requirement truth is frozen enough for execution.
 - Block when frozen truth requires `change`, when cutover guardrails fail, or when a conditionally triggered prototype is still missing.
+- When truth claims visual delivery (`ux_required` / UI pages) and `DESIGN.md` is missing, run `beacon design baseline --project . --surface auto --write` before implement (unattended surface auto-select: pc-console/web/h5/client).
 - When `PRODUCT.md` or `DESIGN.md` exists at the project root, read both before starting any implementation that touches UI, visual design, or user-facing behavior. Treat them as binding design contracts, not optional reference material.
 - Keep `implement` as the only execution entry; `ask --execute` and support surfaces may route here but must not replace it.
 - Prefer explanation and routing logic in skill surface; keep final schema, contract, and gate writes in Python guardrails.

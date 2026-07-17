@@ -472,6 +472,7 @@ def build_default_task_prompt(
             *[f"- {line}" for line in global_boundary_prompt_lines()],
             "Implement only against the frozen PRD, user-story, and test-case truth above.",
             "Also align with project-level PRODUCT.md / DESIGN.md truth when those files are listed above.",
+            "If UX/visual delivery is claimed in truth (ux_required / UI pages) and DESIGN.md is missing, STOP freestyle UI: run `beacon design baseline --project . --version <version> --surface auto --write` first, then implement strictly against DESIGN.md + feature ui-state-matrix.",
             "Do not invent new user stories, acceptance criteria, or test scope.",
             "If the work would require requirement change or conflicts with frozen truth, stop and route to beacon-change/refreeze instead of coding around it.",
             (

@@ -120,6 +120,7 @@ def resolve_design_preset(preset: str | None) -> dict[str, str]:
     return tokens
 
 
+
 def render_complete_design_md(
     *,
     product_name: str = "Product",
@@ -127,8 +128,26 @@ def render_complete_design_md(
     existing_design_md: str = "",
     version: str = "v1.6.7",
     mode: str = "baseline",
+    surface: str = "web",
+    surface_decision: dict | None = None,
 ) -> str:
+    from beacon.utils.design_surfaces import (
+        SURFACE_PACKS,
+        google_yaml_frontmatter,
+        resolve_surface,
+        surface_copy_elements,
+    )
+
+    surface_key = resolve_surface(surface)
+    if surface_key == "auto" or surface_key not in SURFACE_PACKS:
+        surface_key = "web"
+    pack = SURFACE_PACKS[surface_key]
+    if not preset or preset == "restrained-product":
+        preset = str(pack.get("preset") or preset)
     tokens = resolve_design_preset(preset)
+    elements = surface_copy_elements(surface_key)
+    decision = surface_decision if isinstance(surface_decision, dict) else {}
+
     anti_forbidden = [
         "gradient text",
         "purple-to-blue ai gradient",
@@ -167,13 +186,24 @@ Previous DESIGN.md size: {len(existing)} chars (preserved; not auto-deleted).
     )
     interaction_bullets = "\n".join(f"- {rule}" for rule in interaction_rules)
     dont_bullets = "\n".join(f"- {item}" for item in anti_forbidden)
+    surface_do = "\n".join(f"- {x}" for x in (pack.get("do") or []))
+    surface_dont = "\n".join(f"- {x}" for x in (pack.get("dont") or []))
+    css_lines = "\n".join(f"  {k}: {v};" for k, v in elements["css_variables"].items())
+    front = google_yaml_frontmatter(surface_key, product_name=product_name)
 
-    return f"""# DESIGN.md — {product_name}
+    return f"""{front}
+
+# DESIGN.md — {product_name}
 
 Status: ready
 Preset: `{tokens['preset']}` ({tokens['label']}, source: {tokens['source']})
 Beacon version context: `{version}`
 Generation: unattended-complete-baseline
+Delivery surface: `{surface_key}` ({pack['label']})
+Surface auto-reason: {decision.get('reason') or 'explicit'}
+Nav pattern: {pack['nav']}
+Primary layout pattern: {pack['primary_pattern']}
+Touch min: {pack['touch_min']} · Density: {pack['density']}
 
 This file is the **project-level visual truth**. Implement / QA / UI ship gates treat it as binding when present.
 It is complete enough to ship a coherent UI **without human design decisions**, while remaining fine-tunable against an existing DESIGN.md.
@@ -189,7 +219,12 @@ Beacon design routes preserve upstream capabilities but **do not** treat them as
 Rules:
 - `awesome-design-md` is **reference-only** (patterns / analogies). Never authority for ship.
 - `vibe-to-ui` / `ui-ux-pro-max` / `impeccable` may generate candidates; accepted facts still bind via Beacon truth / this DESIGN.md / version `docs/beacon/<v>/design/*`.
+- Google `design.md` YAML front matter above is **normative machine-readable tokens**; prose below is rationale.
 - No external design skill is required at runtime to apply this baseline (`external_reference_runtime_dependency=false`).
+
+## Overview
+
+{pack['label']}. Density `{pack['density']}`. Navigation: {pack['nav']}. Primary pattern: {pack['primary_pattern']}.
 
 ## Design philosophy
 
@@ -199,8 +234,55 @@ Rules:
 4. **Restrained density**: no marketing hero, no fake dashboard charts, no AI gradient theater.
 5. **Domain-bound chrome**: badges and primary buttons bind to business FSM states when a domain FSM exists.
 6. **Fine-tune, don't freestyle**: when a prior DESIGN.md exists, extend it; do not invent a second design system.
+7. **Surface honesty**: PC 中台 / Web / H5 / Client each keep their IA; do not paste mobile IA onto desktop console.
 
-## Visual tokens (CSS variables)
+## Colors
+
+See YAML `colors` tokens. Primary drives interaction; neutrals carry structure.
+
+## Typography
+
+See YAML `typography` tokens. Prefer system stacks for product OS feel.
+
+## Layout
+
+- Base grid from YAML `spacing`.
+- First screen order: **status → primary action → supporting list → secondary disclosure**.
+- Surface nav: {pack['nav']}.
+
+## Elevation & Depth
+
+- Prefer borders over shadows.
+- No glassmorphism decoration.
+- One elevation language only.
+
+## Shapes
+
+See YAML `rounded` scale.
+
+## Components
+
+See YAML `components` map. Implement maps these tokens to real components.
+
+## Delivery surface pack (copy-ready)
+
+Surface: `{surface_key}` — {pack['label']}
+
+### Surface Do
+{surface_do}
+
+### Surface Don't
+{surface_dont}
+
+### CSS variables (surface)
+
+```css
+:root {{
+{css_lines}
+}}
+```
+
+## Visual tokens (CSS variables legacy bridge)
 
 ```css
 :root {{
@@ -222,54 +304,18 @@ Rules:
   --space-4: 16px;
   --space-5: 24px;
   --space-6: 32px;
-  --touch-min: 44px;
-  --density: {tokens['density']};
+  --touch-min: {pack['touch_min']};
+  --density: {pack['density']};
 }}
 ```
-
-## Typography
-
-| Role | Size | Weight | Notes |
-|------|------|--------|-------|
-| Page title | 20–24px | 600 | One primary title per view |
-| Section | 16px | 600 | Short, action-oriented |
-| Body | 14px | 400 | Line-height 1.5 |
-| Meta / muted | 12–13px | 400 | Secondary paths only |
-| Code / path | 12px mono | 400 | Never primary judgment copy |
-
-Font stack: `{tokens['font']}`
-
-## Spacing & layout
-
-- Base grid: 4/8px (`--space-*`).
-- Page padding: `--space-5` desktop, `--space-4` compact.
-- Card padding: `--space-4`.
-- Stack gap: `--space-3` default.
-- Max content width: 1100–1200px for product surfaces; full-bleed for dense consoles.
-- First screen order: **status → primary action → supporting list → secondary disclosure**.
-
-## Component system baseline
-
-| Component | Spec |
-|-----------|------|
-| Primary button | bg `--primary`, fg `--primary-fg`, min-height `--touch-min`, radius `--radius` |
-| Secondary button | border `--border`, bg transparent/card, same min-height |
-| Destructive button | border/fg `--danger`, never primary for non-destructive flows |
-| Input | border `--border`, focus ring `--primary` (visible), 44px min height |
-| Card | bg `--card`, border `--border`, radius `--radius`, no nested cards |
-| Badge | pill/chip; color encodes **domain/UI state only** |
-| Table/list row | clear hover; row action affordance explicit |
-| Empty state | title + one next action + optional secondary help |
-| Error/blocked | cause + recovery action (not only red text) |
-| Toast/inline feedback | success/error/warning using token colors |
 
 ## Interaction principles
 
 {interaction_bullets}
 - Keyboard: Tab order matches visual order; Escape closes overlays.
 - Loading: skeletons or explicit progress; never blank freeze without explanation.
-- Navigation: one primary nav region; overflow tools go to secondary/"更多" when IA is crowded.
-- Handoff: deep-links restore page + entity + state, not only route shell.
+- Navigation: surface-native ({pack['nav']}).
+- Handoff: deep-links restore page + entity + state.
 
 ## UI state coverage (required)
 
@@ -283,47 +329,48 @@ Font stack: `{tokens['font']}`
 | stale | data age / refresh needed | refresh |
 | recovery | post-failure path | resume / reset |
 
-When Domain FSM exists, also bind business states via `ui-state-matrix.md` (badge + primary action per state). Ship gates require matrix states ⊆ domain states.
+When Domain FSM exists, bind business states via `ui-state-matrix.md`. Ship gates require matrix states ⊆ domain states.
 
-## Anti-AI UI / visual Do & Don't
+## Do's and Don'ts
 
 ### Do
-- Quiet neutrals + one accent (`--primary`)
+- Quiet neutrals + one accent
 - Explicit empty/loading/error/success
 - Domain badges and disabled illegal actions
-- Focus-visible rings and 44×44 targets
-- Secondary disclosure for machine/debug paths
+- Focus-visible rings and adequate targets
+{surface_do}
 
 ### Don't
 {dont_bullets}
-- Marketing hero on operator workbench
-- Multiple competing primary CTAs
 - Invent FSM states not in truth
 - Copy reference-library aesthetics as project law
+- Cross-surface IA paste (e.g. H5 bottom tabs on PC 中台)
+{surface_dont}
 
 ## Accessibility & responsive
 
-- Contrast: body text on `--bg`/`--card` meets WCAG AA intent.
-- Focus visibility: required (never `outline: none` without replacement).
-- Touch targets: ≥ 44×44.
-- Responsive: collapse secondary detail before primary judgment content; keep primary action reachable.
-- Motion: no bounce/elastic; prefer 150–200ms opacity/transform max.
+- Contrast: body text meets WCAG AA intent.
+- Focus visibility: required.
+- Touch/pointer targets: surface min `{pack['touch_min']}` (critical actions still prefer 44px).
+- Responsive: collapse secondary detail before primary judgment content.
+- Motion: no bounce/elastic; prefer 150–200ms.
 
 ## Version-wide contracts
 
-Pair this file with (when present):
 - `docs/beacon/<version>/design/style.md`
 - `docs/beacon/<version>/design/component-system.md`
 - `docs/beacon/<version>/design/interaction-contract.md`
 - `docs/beacon/<version>/design/state-matrix.md`
+- `docs/beacon/<version>/design/surfaces/<surface>.DESIGN.md` (copy-ready surface snapshot)
 - feature `ui-state-matrix.md` bound to Domain FSM
 
 ## Unattended default & fine-tune policy
 
-1. **No human design decision**: implementers use this DESIGN.md + preset tokens as the visual OS.
-2. **Existing DESIGN.md**: run fine-tune mode — keep brand/domain specifics; fill missing axes from this baseline.
-3. **Upstream polish**: `beacon design route polish|review|system|explore` may propose deltas; accepted facts bind here or via `beacon prototype adapt` / change-refreeze.
-4. **Ship**: UX-required packages need DESIGN.md (or version design contracts) + ui-state-matrix when domain states exist.
+1. **No human design decision**: use this DESIGN.md + surface pack as visual OS.
+2. **Existing DESIGN.md**: fine-tune mode keeps brand/domain specifics; fills missing axes.
+3. **Requirement truth claims visual delivery** (`ux_required` / UI pages): auto-select surface from truth keywords, then freeze DESIGN.md before implement.
+4. **Upstream polish**: `beacon design route polish|review|system|explore` may propose deltas; bind via prototype adapt / change-refreeze.
+5. **Implement hard rule**: when DESIGN.md exists, LLM must not freestyle colors/spacing/components.
 {fine_tune_note}
 ## Truth update policy
 
@@ -338,7 +385,7 @@ Status: ready
 
 ## Token inheritance
 
-Inherit project `DESIGN.md` CSS variables. Version may tighten density or accent only when product truth allows.
+Inherit project `DESIGN.md` CSS variables and YAML front matter tokens. Version may tighten density or accent only when product truth allows.
 
 ## Atmosphere
 
@@ -348,7 +395,7 @@ Inherit project `DESIGN.md` CSS variables. Version may tighten density or accent
 
 ## Density
 
-Follow DESIGN.md `--density` (comfortable / compact / airy). Operator surfaces may go compact without reducing touch targets below 44px.
+Follow DESIGN.md `--density` (comfortable / compact / airy). Operator surfaces may go compact without reducing critical targets below safe minimums.
 """
 
 VERSION_COMPONENT_SYSTEM_TEMPLATE = """# Component System Contract
@@ -384,7 +431,7 @@ Status: ready
 
 ## Navigation
 
-- One primary nav region
+- One primary nav region matching delivery surface
 - Secondary tools fold into overflow when crowded
 - Deep links restore entity + state
 
@@ -425,22 +472,59 @@ def synthesize_unattended_design_baseline(
     version: str,
     *,
     preset: str = "restrained-product",
+    surface: str = "auto",
     force: bool = False,
     write_version_contracts: bool = True,
     product_name: str = "",
+    truth_markdown: str = "",
 ) -> dict[str, Any]:
-    """Unattended visual baseline: complete DESIGN.md + version design contracts.
-
-    - Missing DESIGN.md (or force): write complete reusable DESIGN.md.
-    - Existing DESIGN.md and not force: preserve it; write fine-tune proposal under docs/beacon/<v>/design/.
-    """
-    # local import avoids circular import with design_contract
+    """Unattended visual baseline with surface auto-select from requirement truth."""
     from beacon.utils.design_contract import design_truth_paths, write_version_design_contracts
+    from beacon.utils.design_surfaces import (
+        SURFACE_PACKS,
+        auto_select_surface_from_text,
+        resolve_surface,
+        scan_truth_for_ux,
+    )
 
     project_root = project_root.expanduser().resolve()
     resolved = resolve_target_version(project_root, version)
     name = str(product_name or project_root.name or "Product").strip() or "Product"
+
+    truth_bits: list[str] = [str(truth_markdown or "")]
+    docs = project_root / "docs" / "beacon" / resolved
+    if docs.exists():
+        for p in list(docs.rglob("truth.md"))[:40]:
+            try:
+                truth_bits.append(p.read_text(encoding="utf-8")[:8000])
+            except OSError:
+                pass
+    product_md = project_root / "PRODUCT.md"
+    if product_md.exists():
+        try:
+            truth_bits.append(product_md.read_text(encoding="utf-8")[:8000])
+        except OSError:
+            pass
+
+    surface_key = resolve_surface(surface)
+    if surface_key == "auto":
+        decision = auto_select_surface_from_text(*truth_bits)
+        surface_key = str(decision["surface"])
+    else:
+        decision = {
+            "surface": surface_key,
+            "label": SURFACE_PACKS.get(surface_key, {}).get("label", surface_key),
+            "preset": SURFACE_PACKS.get(surface_key, {}).get("preset", preset),
+            "reason": "explicit",
+            "scores": {},
+            "hits": [],
+        }
+    pack_preset = str(SURFACE_PACKS.get(surface_key, {}).get("preset") or preset)
+    if not preset or preset == "restrained-product":
+        preset = pack_preset
     tokens = resolve_design_preset(preset)
+    ux_scan = scan_truth_for_ux("\n".join(truth_bits))
+
     design_path = project_root / "DESIGN.md"
     existing = design_path.read_text(encoding="utf-8") if design_path.exists() else ""
     writes: dict[str, Any] = {}
@@ -452,10 +536,12 @@ def synthesize_unattended_design_baseline(
         status = "fine_tune_proposed"
         proposal = render_complete_design_md(
             product_name=name,
-            preset=tokens["preset"],
+            preset=tokens.get("preset", "restrained-product"),
             existing_design_md=existing,
             version=resolved,
             mode="fine_tune",
+            surface=surface_key,
+            surface_decision=decision,
         )
         proposal_path = project_root / "docs" / "beacon" / resolved / "design" / "fine-tune-proposal.md"
         writes["fine_tune_proposal"] = _write_file(proposal_path, proposal, force=True)
@@ -463,22 +549,22 @@ def synthesize_unattended_design_baseline(
     else:
         body = render_complete_design_md(
             product_name=name,
-            preset=tokens["preset"],
+            preset=tokens.get("preset", "restrained-product"),
             existing_design_md=existing,
             version=resolved,
             mode="baseline",
+            surface=surface_key,
+            surface_decision=decision,
         )
         writes["design_truth"] = _write_file(design_path, body, force=force or not design_path.exists())
 
     if write_version_contracts:
-        # force only version-wide drafts when force=True; otherwise leave existing
         version_payload = write_version_design_contracts(
             project_root,
             resolved,
             force=force,
             include_project_truth=False,
         )
-        # upgrade version templates if still stubs / drafts with incomplete content
         style = project_root / "docs" / "beacon" / resolved / "design" / "style.md"
         if force or not style.exists() or "Status: draft" in style.read_text(encoding="utf-8"):
             writes["version_style"] = _write_file(style, VERSION_STYLE_TEMPLATE, force=True)
@@ -499,6 +585,21 @@ def synthesize_unattended_design_baseline(
             )
         writes["version_contracts"] = version_payload.get("writes", {})
 
+    # materialize all surface examples (copy-ready library inside skill/docs)
+    surface_example_dir = project_root / "docs" / "beacon" / resolved / "design" / "surfaces"
+    surface_example_dir.mkdir(parents=True, exist_ok=True)
+    for skey in SURFACE_PACKS:
+        example_path = surface_example_dir / f"{skey}.DESIGN.md"
+        example_body = render_complete_design_md(
+            product_name=f"{name} ({SURFACE_PACKS[skey]['label']})",
+            preset=str(SURFACE_PACKS[skey].get("preset") or "restrained-product"),
+            version=resolved,
+            mode="baseline",
+            surface=skey,
+            surface_decision={"reason": "surface library materialize", "label": SURFACE_PACKS[skey]["label"]},
+        )
+        writes[f"surface_example_{skey}"] = _write_file(example_path, example_body, force=True)
+
     paths = design_truth_paths(project_root, resolved)
     machine_dir = project_root / paths["machine_design_projection"]
     machine_dir.mkdir(parents=True, exist_ok=True)
@@ -511,6 +612,10 @@ def synthesize_unattended_design_baseline(
         "preset": tokens.get("preset"),
         "preset_label": tokens.get("label"),
         "preset_source": tokens.get("source"),
+        "surface": surface_key,
+        "surface_decision": decision,
+        "visual_delivery_claimed": bool(ux_scan.get("visual_delivery_claimed")),
+        "ux_signals": ux_scan.get("signals") or [],
         "open_source_ui_agent_principles": OPEN_SOURCE_UI_AGENT_PRINCIPLES,
         "tokens": tokens,
         "existing_design_preserved": bool(existing and not force),
@@ -521,6 +626,7 @@ def synthesize_unattended_design_baseline(
             "polish": f'beacon design route polish "<feature>" --project {project_root} --version {resolved} --json',
             "system": f'beacon design route system "<feature>" --project {project_root} --version {resolved} --json',
             "bind": f'beacon prototype adapt "<feature>" --project {project_root} --version {resolved} --design-result-ref <accepted>',
+            "implement_rule": "When DESIGN.md exists, implement must align tokens/components; freestyle UI is process drift",
         },
     }
     projection_path.write_text(json.dumps(projection, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -532,11 +638,16 @@ def synthesize_unattended_design_baseline(
         "status": status,
         "mode": mode,
         "preset": tokens.get("preset"),
+        "surface": surface_key,
+        "surface_decision": decision,
+        "visual_delivery_claimed": bool(ux_scan.get("visual_delivery_claimed")),
+        "ux_signals": ux_scan.get("signals") or [],
         "product_name": name,
         "design_path": "DESIGN.md",
         "fine_tune_proposal_path": (
             f"docs/beacon/{resolved}/design/fine-tune-proposal.md" if mode == "fine_tune" else ""
         ),
+        "surface_examples_dir": f"docs/beacon/{resolved}/design/surfaces",
         "open_source_ui_agent_principles": OPEN_SOURCE_UI_AGENT_PRINCIPLES,
         "writes": writes,
         "paths": paths,

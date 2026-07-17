@@ -93,10 +93,10 @@ It preserves the useful intent split from `ui-ux-dev` while adding Beacon truth 
 Prefer unattended visual OS when no human design decision exists:
 
 ```bash
-beacon design baseline --project . --version auto --write --json
+beacon design baseline --project . --version auto --surface auto --write --json
 ```
 
-If `DESIGN.md` already exists, baseline writes a fine-tune proposal (non-destructive). Secondary polish still uses design routes, then binds through prototype adapt / change. See `skills/beacon/examples/design-md-complete.md`.
+If `DESIGN.md` already exists, baseline writes a fine-tune proposal (non-destructive). Secondary polish still uses design routes, then binds through prototype adapt / change. See `skills/beacon/examples/design-md-complete.md` and multi-end copy packs under `skills/beacon/examples/design-surfaces/` (pc-console / web / h5 / client).
 
 Prefer:
 

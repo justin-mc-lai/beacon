@@ -15,7 +15,7 @@ from beacon.utils.design_contract import write_version_design_contracts
 def test_complete_design_md_has_required_axes_and_upstream_map() -> None:
     body = render_complete_design_md(product_name="Demo", preset="restrained-product", version="v1.6.7")
     assert "Open-source UI agent principles" in body
-    assert "Visual tokens (CSS variables)" in body
+    assert "CSS variables" in body or "Visual tokens" in body
     assert "--primary:" in body
     assert "UI state coverage" in body
     assert "Anti-AI UI" in body
@@ -58,5 +58,6 @@ def test_write_version_design_contracts_include_complete_project_design(tmp_path
     payload = write_version_design_contracts(tmp_path, "v1.6.7", include_project_truth=True)
     assert payload["status"] == "ready"
     design = (tmp_path / "DESIGN.md").read_text(encoding="utf-8")
-    assert "Visual tokens (CSS variables)" in design
+    assert design.startswith("---") and ("CSS variables" in design or "colors:" in design)
     assert "Open-source UI agent principles" in design
+    assert "Delivery surface:" in design
