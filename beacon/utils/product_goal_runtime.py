@@ -285,10 +285,14 @@ def load_goal_run(project_root: Path, run_id: str) -> dict[str, Any]:
 def _save(project_root: Path, payload: dict[str, Any]) -> dict[str, Any]:
     run_id = str(payload.get("run_id") or "")
     payload["updated_at"] = now_iso()
-    path = goal_state_path(project_root, run_id)
+    root = Path(project_root).expanduser().resolve()
+    path = goal_state_path(root, run_id)
     path.parent.mkdir(parents=True, exist_ok=True)
     write_json(path, payload)
-    payload["state_path"] = str(path.relative_to(Path(project_root).resolve()))
+    try:
+        payload["state_path"] = str(path.resolve().relative_to(root))
+    except ValueError:
+        payload["state_path"] = str(path)
     return payload
 
 
