@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-goal-agent-driver-v167",
+  "version": "v1.6.7",
+  "aggregates": [
+    {
+      "name": "AgentDriver",
+      "states": ["idle", "arming", "turn_active", "turn_ended", "requeue", "halt_budget", "halt_terminal"]
+    },
+    {
+      "name": "GoalRun",
+      "states": ["created", "running", "stage_active", "host_interrupted", "stage_blocked", "awaiting_verifier", "completed", "blocked", "release_pending"]
+    }
+  ],
+  "defaults": {
+    "max_agent_turns": 32,
+    "turn_timeout_sec": 3600,
+    "longrun_starts_driver": true,
+    "default_run_driver": false
+  }
+}

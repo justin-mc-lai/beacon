@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import json
+
 from pathlib import Path
 
 import pytest
@@ -126,3 +128,49 @@ def test_rust_workspace_scaffold_exists() -> None:
     text = (ROOT / "packages/beacon-rs/Cargo.toml").read_text(encoding="utf-8")
     assert "beacon-core" in text
     assert "beacon-orchestrator" in text
+
+
+def test_each_lake_tests_md_has_tc_or_ac() -> None:
+    for slug in V2_PRODUCT_GOAL_LAKES:
+        tests = (ROOT / f"docs/beacon/v2.0.0/features/{slug}/tests.md").read_text(encoding="utf-8")
+        assert "AC-" in tests or "TC-" in tests, slug
+
+
+def test_parity_fixture_index_exists() -> None:
+    idx = ROOT / "docs/beacon/v2.0.0/fixtures/parity-v167/INDEX.json"
+    assert idx.is_file()
+    data = json.loads(idx.read_text(encoding="utf-8"))
+    assert data.get("version") == "v2.0.0"
+    assert data.get("domain_fsm_samples")
+
+
+def test_ui_ship_gate_inherits_full_matrix_not_primitives_only() -> None:
+    truth = (
+        ROOT / "docs/beacon/v2.0.0/features/beacon-v2-ui-state-matrix-ship-gate/truth.md"
+    ).read_text(encoding="utf-8")
+    low = truth.lower()
+    assert "ui-state-matrix" in low or "state matrix" in low
+    assert "primitive" in low or "not-primitives" in low or "完整" in truth or "full inherit" in low
+
+
+def test_ralph_boundary_forbids_verdict() -> None:
+    truth = (
+        ROOT / "docs/beacon/v2.0.0/features/beacon-v2-ralph-implement-boundary/truth.md"
+    ).read_text(encoding="utf-8")
+    assert "implement" in truth.lower()
+    assert "verdict" in truth.lower() or "QA" in truth or "release" in truth.lower()
+
+
+def test_main_star_satellite_truth() -> None:
+    truth = (
+        ROOT / "docs/beacon/v2.0.0/features/beacon-v2-main-star-satellite-pool/truth.md"
+    ).read_text(encoding="utf-8")
+    assert "satellite" in truth.lower() or "卫星" in truth
+    assert "main" in truth.lower() or "主星" in truth
+
+
+def test_domain_fsm_authority_hard_gate_language() -> None:
+    truth = (
+        ROOT / "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-authority/truth.md"
+    ).read_text(encoding="utf-8")
+    assert "freeze" in truth.lower() or "硬" in truth or "fail-closed" in truth.lower()

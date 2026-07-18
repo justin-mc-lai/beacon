@@ -1,0 +1,525 @@
+{
+  "schema_version": "1.0",
+  "contract_kind": "beacon_test_contract_index",
+  "version": "v2.0.0",
+  "runtime_line": "v2.0.0",
+  "runtime_release_line": "v1.6.7",
+  "docs_line": "v2.0.0",
+  "feature": "beacon-v2-goal-durable-longrun",
+  "feature_slug": "beacon-v2-goal-durable-longrun",
+  "feature_line_status": "planning_only",
+  "truth_refs": {
+    "truth": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/truth.md",
+    "tests": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+    "tasks": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tasks.md",
+    "evidence": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/evidence.md",
+    "ac_matrix": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+    "story_state": "docs/beacon/v2.0.0/.machine/user-story/beacon-v2-goal-durable-longrun.json"
+  },
+  "source_hashes": {
+    "truth": "sha256:04e2429137365e933a2284d45b719be72a49ab0d5c980a2248d150bd7273594b",
+    "tests": "sha256:9ba739ace76ef0c06f777f08f976a0c1e3c9e9f6ff2b854f159ef14b622f9f7e",
+    "tasks": "sha256:edf5762c7a02bde732bb50136d8a2e887fd49e2169d41b6a08bb738dbdb85e00",
+    "evidence": "sha256:896e07367f58cb5f40b7ba7394a8bb1ac56f4ed88f064bf8becd460ede094e86",
+    "ac_matrix": "sha256:9ba739ace76ef0c06f777f08f976a0c1e3c9e9f6ff2b854f159ef14b622f9f7e",
+    "story_state": "sha256:d0a646a7fd91a25bc487733c81b8eb420d1735a02ed8c559460f40b74478dc3f"
+  },
+  "lanes": {
+    "feature_release_facing": [
+      {
+        "tc_id": "TC-V2-DLR-001",
+        "ac_id": "AC-V2-DLR-001",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_parity_v167_fixture -q",
+        "assertion": "v1.6.7 durable fixture loads",
+        "evidence_path": ".beacon/qa/features/beacon-v2-goal-durable-longrun/scorecard.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-V2-DLR-002",
+        "ac_id": "AC-V2-DLR-002",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_longrun_flag_attaches -q",
+        "assertion": "--longrun attaches; default does not",
+        "evidence_path": ".beacon/qa/features/beacon-v2-goal-durable-longrun/scorecard.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-V2-DLR-003",
+        "ac_id": "AC-V2-DLR-003",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_skill_longrun_intent -q",
+        "assertion": "skill/docs 识别长跑意图",
+        "evidence_path": ".beacon/qa/features/beacon-v2-goal-durable-longrun/scorecard.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-V2-DLR-004",
+        "ac_id": "AC-V2-DLR-004",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "unit",
+        "command": "python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_heartbeat_default_120 -q",
+        "assertion": "120s default",
+        "evidence_path": ".beacon/qa/features/beacon-v2-goal-durable-longrun/scorecard.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-V2-DLR-005",
+        "ac_id": "AC-V2-DLR-005",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "unit",
+        "command": "python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_jsonl_append_only -q",
+        "assertion": "append-only log",
+        "evidence_path": ".beacon/qa/features/beacon-v2-goal-durable-longrun/scorecard.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-V2-DLR-006",
+        "ac_id": "AC-V2-DLR-006",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "unit",
+        "command": "python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_resume_pack_digest -q",
+        "assertion": "digest only",
+        "evidence_path": ".beacon/qa/features/beacon-v2-goal-durable-longrun/scorecard.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-V2-DLR-007",
+        "ac_id": "AC-V2-DLR-007",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_interrupt_ne_blocked -q",
+        "assertion": "interrupt ≠ blocked",
+        "evidence_path": ".beacon/qa/features/beacon-v2-goal-durable-longrun/scorecard.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-V2-DLR-008",
+        "ac_id": "AC-V2-DLR-008",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "unit",
+        "command": "python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_driver_auto_requeue -q",
+        "assertion": "auto requeue after turn_ended",
+        "evidence_path": ".beacon/qa/features/beacon-v2-goal-durable-longrun/scorecard.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-V2-DLR-009",
+        "ac_id": "AC-V2-DLR-009",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "unit",
+        "command": "python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_tick_execute_no_auto_release -q",
+        "assertion": "no auto release",
+        "evidence_path": ".beacon/qa/features/beacon-v2-goal-durable-longrun/scorecard.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-V2-DLR-010",
+        "ac_id": "AC-V2-DLR-010",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_complete_needs_verifier -q",
+        "assertion": "verifier required",
+        "evidence_path": ".beacon/qa/features/beacon-v2-goal-durable-longrun/scorecard.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-V2-DLR-011",
+        "ac_id": "AC-V2-DLR-011",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_human_release -q",
+        "assertion": "human release",
+        "evidence_path": ".beacon/qa/features/beacon-v2-goal-durable-longrun/scorecard.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-V2-DLR-012",
+        "ac_id": "AC-V2-DLR-012",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "unit",
+        "command": "python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_budget_halt -q",
+        "assertion": "budget halt no complete",
+        "evidence_path": ".beacon/qa/features/beacon-v2-goal-durable-longrun/scorecard.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-V2-DLR-013",
+        "ac_id": "AC-V2-DLR-013",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_rust_spine_owns_driver_contract -q",
+        "assertion": "spine owns driver contract",
+        "evidence_path": ".beacon/qa/features/beacon-v2-goal-durable-longrun/scorecard.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-V2-DLR-016",
+        "ac_id": "AC-V2-DLR-016",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_tests_md_legal_illegal -q",
+        "assertion": "legal/illegal rows present",
+        "evidence_path": ".beacon/qa/features/beacon-v2-goal-durable-longrun/scorecard.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      }
+    ],
+    "current_runtime_contract": [],
+    "generated_surface_sync": [],
+    "compatibility_contract": [],
+    "legacy_snapshot": [],
+    "browser_runtime_admission": []
+  },
+  "lane_counts": {
+    "feature_release_facing": 14,
+    "current_runtime_contract": 0,
+    "generated_surface_sync": 0,
+    "compatibility_contract": 0,
+    "legacy_snapshot": 0,
+    "browser_runtime_admission": 0
+  },
+  "canonical_lanes": [
+    "feature_release_facing",
+    "current_runtime_contract",
+    "generated_surface_sync",
+    "compatibility_contract",
+    "legacy_snapshot",
+    "browser_runtime_admission"
+  ],
+  "test_refs": [
+    {
+      "tc_id": "TC-V2-DLR-001",
+      "ac_id": "AC-V2-DLR-001",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_parity_v167_fixture -q",
+      "assertion": "v1.6.7 durable fixture loads",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-goal-durable-longrun/tc-v2-dlr-001/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-V2-DLR-002",
+      "ac_id": "AC-V2-DLR-002",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_longrun_flag_attaches -q",
+      "assertion": "--longrun attaches; default does not",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-goal-durable-longrun/tc-v2-dlr-002/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-V2-DLR-003",
+      "ac_id": "AC-V2-DLR-003",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_skill_longrun_intent -q",
+      "assertion": "skill/docs 识别长跑意图",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-goal-durable-longrun/tc-v2-dlr-003/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-V2-DLR-004",
+      "ac_id": "AC-V2-DLR-004",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_heartbeat_default_120 -q",
+      "assertion": "120s default",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-goal-durable-longrun/tc-v2-dlr-004/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-V2-DLR-005",
+      "ac_id": "AC-V2-DLR-005",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_jsonl_append_only -q",
+      "assertion": "append-only log",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-goal-durable-longrun/tc-v2-dlr-005/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-V2-DLR-006",
+      "ac_id": "AC-V2-DLR-006",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_resume_pack_digest -q",
+      "assertion": "digest only",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-goal-durable-longrun/tc-v2-dlr-006/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-V2-DLR-007",
+      "ac_id": "AC-V2-DLR-007",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_interrupt_ne_blocked -q",
+      "assertion": "interrupt ≠ blocked",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-goal-durable-longrun/tc-v2-dlr-007/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-V2-DLR-008",
+      "ac_id": "AC-V2-DLR-008",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_driver_auto_requeue -q",
+      "assertion": "auto requeue after turn_ended",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-goal-durable-longrun/tc-v2-dlr-008/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-V2-DLR-009",
+      "ac_id": "AC-V2-DLR-009",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_tick_execute_no_auto_release -q",
+      "assertion": "no auto release",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-goal-durable-longrun/tc-v2-dlr-009/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-V2-DLR-010",
+      "ac_id": "AC-V2-DLR-010",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_complete_needs_verifier -q",
+      "assertion": "verifier required",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-goal-durable-longrun/tc-v2-dlr-010/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-V2-DLR-011",
+      "ac_id": "AC-V2-DLR-011",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_human_release -q",
+      "assertion": "human release",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-goal-durable-longrun/tc-v2-dlr-011/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-V2-DLR-012",
+      "ac_id": "AC-V2-DLR-012",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_budget_halt -q",
+      "assertion": "budget halt no complete",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-goal-durable-longrun/tc-v2-dlr-012/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-V2-DLR-013",
+      "ac_id": "AC-V2-DLR-013",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_rust_spine_owns_driver_contract -q",
+      "assertion": "spine owns driver contract",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-goal-durable-longrun/tc-v2-dlr-013/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-V2-DLR-016",
+      "ac_id": "AC-V2-DLR-016",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_tests_md_legal_illegal -q",
+      "assertion": "legal/illegal rows present",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-goal-durable-longrun/tc-v2-dlr-016/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    }
+  ],
+  "ac_to_test_refs": {
+    "AC-V2-DLR-001": [
+      "TC-V2-DLR-001"
+    ],
+    "AC-V2-DLR-002": [
+      "TC-V2-DLR-002"
+    ],
+    "AC-V2-DLR-003": [
+      "TC-V2-DLR-003"
+    ],
+    "AC-V2-DLR-004": [
+      "TC-V2-DLR-004"
+    ],
+    "AC-V2-DLR-005": [
+      "TC-V2-DLR-005"
+    ],
+    "AC-V2-DLR-006": [
+      "TC-V2-DLR-006"
+    ],
+    "AC-V2-DLR-007": [
+      "TC-V2-DLR-007"
+    ],
+    "AC-V2-DLR-008": [
+      "TC-V2-DLR-008"
+    ],
+    "AC-V2-DLR-009": [
+      "TC-V2-DLR-009"
+    ],
+    "AC-V2-DLR-010": [
+      "TC-V2-DLR-010"
+    ],
+    "AC-V2-DLR-011": [
+      "TC-V2-DLR-011"
+    ],
+    "AC-V2-DLR-012": [
+      "TC-V2-DLR-012"
+    ],
+    "AC-V2-DLR-013": [
+      "TC-V2-DLR-013"
+    ],
+    "AC-V2-DLR-016": [
+      "TC-V2-DLR-016"
+    ]
+  },
+  "qa_order_contract": {
+    "sequence": [
+      "user_story_ac_order",
+      "scenario_divergence",
+      "current_round_execution",
+      "evidence_pack",
+      "coverage_current_gap",
+      "continue_decision",
+      "severe_blocker_stop_for_repair",
+      "repair_handoff",
+      "beacon_help_resume",
+      "next_qa_round_test_case_backfill",
+      "release_guidance"
+    ],
+    "source": "skills/beacon/references/usage-rules.md"
+  },
+  "deep_delta_policy": {
+    "owner": "deep",
+    "adoption_route": "test-case_or_supplemental_qa",
+    "executes_qa": false
+  },
+  "planning_line_safety": {
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "runtime_line": "v1.6.7",
+    "docs_default_line": "v1.6.7",
+    "current_runtime_release_line": "v1.6.7",
+    "feature_line_status": "planning_only"
+  },
+  "status": "pass",
+  "blocked": false,
+  "reason_codes": [],
+  "generated_at": "2026-07-18T07:08:32.259294+00:00",
+  "index_path": "docs/beacon/v2.0.0/.machine/testing/test-contract-index.json"
+}

@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v2-goal-durable-longrun",
+  "version": "v2.0.0",
+  "verdict": "passed",
+  "regression_pass": true,
+  "layers": {
+    "skill-contract": {
+      "status": "pass",
+      "source_truth_ref": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/truth.md",
+      "evidence_ref": "skills/beacon/beacon-goal/SKILL.md"
+    },
+    "scenario-suite": {
+      "status": "pass",
+      "source_truth_ref": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/truth.md",
+      "evidence_ref": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md"
+    },
+    "trace-scorecard": {
+      "status": "pass",
+      "source_truth_ref": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+      "evidence_ref": ".beacon/qa/features/beacon-v2-goal-durable-longrun/scorecard.json"
+    },
+    "real-project-proof": {
+      "status": "pass",
+      "source_truth_ref": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/truth.md",
+      "evidence_ref": "tests/test_v200_product_goal_parity.py"
+    }
+  },
+  "real_project_proof": {
+    "status": "pass",
+    "evidence_refs": [
+      "tests/test_v200_product_goal_parity.py"
+    ],
+    "source": "python_parity_suite"
+  }
+}

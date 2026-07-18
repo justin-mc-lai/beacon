@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-goal-durable-supervisor-v167",
+  "version": "v1.6.7",
+  "aggregates": [
+    {
+      "name": "GoalRun",
+      "states": ["created", "running", "stage_active", "host_interrupted", "stage_blocked", "awaiting_verifier", "completed", "blocked", "release_pending"],
+      "legal_walks": [
+        ["created", "running", "stage_active", "awaiting_verifier", "completed"],
+        ["stage_active", "host_interrupted", "stage_active", "completed"],
+        ["running", "stage_active", "completed"]
+      ],
+      "illegal": [
+        {"from": "host_interrupted", "to": "completed", "without": "verifier"},
+        {"from": "stage_blocked", "to": "completed", "without": "repair_and_verifier"},
+        {"from": "created", "to": "completed", "direct": true}
+      ]
+    },
+    {
+      "name": "SupervisorSession",
+      "states": ["detached", "active", "polling", "waiting_host", "stopped"],
+      "legal_walks": [
+        ["detached", "active", "polling", "stopped"]
+      ],
+      "illegal": [
+        {"from": "detached", "to": "polling"},
+        {"auto_attach_on_goal_run": true}
+      ]
+    }
+  ],
+  "defaults": {
+    "heartbeat_interval_sec": 120,
+    "supervise": "opt_in",
+    "memory_p2": "sqlite_fts"
+  }
+}

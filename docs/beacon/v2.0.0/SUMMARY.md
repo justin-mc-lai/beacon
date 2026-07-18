@@ -70,3 +70,10 @@ Source plan (support advisory):
 
 Goal run (longrun): see `.beacon/state/product-goal/` for active pgr when running delivery.
 
+## Docs-line delivery GO (2026-07-18)
+
+- **status**: package ready for human GO (`docs/beacon/v2.0.0/release/v2.0.0-docs-line-delivery-go.md`)
+- **release check**: `blocked` / release_ready=False
+- **pytest run_id**: `run-v200-20260718T065506`
+- **runtime promotion**: still blocked until W4
+
