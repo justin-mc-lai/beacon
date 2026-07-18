@@ -33,7 +33,15 @@
     "UD-V2-PG-007": "full_inherit_v167_ui_state_matrix_ship_hard_gate",
     "UD-V2-PG-008": "reject_early_default_beacon_v2_until_w4",
     "UD-V2-PG-009": "goal_durable_longrun_agent_driver_one_shot",
-    "UD-V2-PG-010": "inherit_v167_durable_supervisor_120s_heartbeat"
+    "UD-V2-PG-010": "inherit_v167_durable_supervisor_120s_heartbeat",
+    "UD-AXIS-001": "change_requires_main_axis_regenerate",
+    "UD-AXIS-002": "axis_artifact_goalrun_main_axis",
+    "UD-AXIS-003": "shared_state_names_v167_v200",
+    "UD-AXIS-004": "domain_bearing_done_when_domain_fsm_coverage",
+    "UD-AXIS-005": "submachines_cannot_complete_goalrun",
+    "UD-LOOM-001": "brand_loom",
+    "UD-LOOM-004": "dual_install_with_beacon",
+    "UD-LOOM-005": "no_default_replace_beacon"
   },
   "lakes": [
     {
@@ -108,6 +116,48 @@
         "beacon-v2-ralph-implement-boundary"
       ],
       "summary": "One-shot longrun AgentDriver + v1.6.7 durable supervisor parity; auto requeue host turns; budget halt; verifier/human release"
+    },
+    {
+      "slug": "loom-brand-surface",
+      "priority": "P0",
+      "depends_on": [],
+      "status": "truth_frozen",
+      "revision": "R1",
+      "summary": "Loom brand dual-install; no default replace beacon"
+    },
+    {
+      "slug": "loom-goal-optional-subagent",
+      "priority": "P0",
+      "depends_on": [
+        "loom-brand-surface",
+        "beacon-v2-main-star-satellite-pool",
+        "beacon-v2-product-goal-orchestrator"
+      ],
+      "status": "truth_frozen",
+      "revision": "R1",
+      "summary": "Opt-in subagent fan-out on goal; omx/omc behavior checklist"
+    },
+    {
+      "slug": "loom-goal-trace-bundle",
+      "priority": "P1",
+      "depends_on": [
+        "loom-brand-surface",
+        "beacon-v2-goal-durable-longrun"
+      ],
+      "status": "truth_frozen",
+      "revision": "R1",
+      "summary": "Driver turns write agent_trace; goal trace CLI aggregate"
+    },
+    {
+      "slug": "beacon-goalrun-main-axis-v167",
+      "priority": "P0",
+      "depends_on": [
+        "beacon-v2-product-goal-orchestrator",
+        "beacon-v2-goal-durable-longrun"
+      ],
+      "status": "truth_frozen",
+      "revision": "R1-v2-sync",
+      "summary": "GoalRun main axis (shared with v1.6.7); regenerate on change; embeds all program lakes"
     }
   ],
   "topology_order": [
@@ -117,6 +167,12 @@
     "beacon-v2-golden-commerce-fixture-parity",
     "beacon-v2-domain-fsm-qa-gate",
     "beacon-v2-ui-state-matrix-ship-gate",
-    "beacon-v2-ralph-implement-boundary"
-  ]
+    "beacon-v2-ralph-implement-boundary",
+    "beacon-v2-goal-durable-longrun",
+    "loom-brand-surface",
+    "loom-goal-optional-subagent",
+    "loom-goal-trace-bundle",
+    "beacon-goalrun-main-axis-v167"
+  ],
+  "main_axis_note": "v1.6.7 GoalRun main-axis shared; v2 embeds loom subagent+trace mounts"
 }

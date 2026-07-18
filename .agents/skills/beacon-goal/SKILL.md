@@ -133,3 +133,12 @@ beacon change "<feature>" --project . --version v1.6.7 --refreeze-chain
 Artifact: `docs/beacon/<ver>/programs/<program>/goalrun-main-axis.md`
 Submachines cannot complete GoalRun; complete needs verifier; release human.
 
+## v2.0.0 / Loom main axis
+
+```bash
+beacon goal axis generate -v v2.0.0 --program beacon-v2-product-goal-parallel-v200
+beacon goal axis validate -v v2.0.0 --program beacon-v2-product-goal-parallel-v200
+```
+
+Axis embeds Loom dual-install, optional subagent, and trace mounts. Same UD-AXIS rules as v1.6.7.
+
