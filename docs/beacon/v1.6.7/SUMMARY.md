@@ -42,7 +42,7 @@ Promotion ref: `friction:2e306f7acea7`.
 | P1 | beacon-ui-design-ship-gate-v167 | qa-pass / release-ready |
 | P2 | beacon-loop-discover-goal-finish-v167 | qa-pass / release-ready |
 | P0 | beacon-goal-durable-supervisor-v167 | qa-pass / release-ready (GO) |
-| P0 | beacon-goal-agent-driver-v167 | implement-landed / contract tests pass (GO Path C) |
+| P0 | beacon-goal-agent-driver-v167 | qa-pass / release-ready (GO Path C) |
 | P2 | beacon-ralph-implement-boundary-v167 | qa-pass / release-ready |
 
 ## Durable Supervisor (additive)

@@ -1,0 +1,817 @@
+{
+  "version": "v1.6.7",
+  "runtime_version": "v1.6.7",
+  "project_root": "/Users/apple/Developer/Personal/products/beacon",
+  "status": "pass",
+  "release_ready": true,
+  "failed_checks": [],
+  "warning_checks": [],
+  "checks": [
+    {
+      "name": "legacy cutover preflight",
+      "status": "pass",
+      "passed": true,
+      "detail": "reason=-"
+    },
+    {
+      "name": "auto-test status passed",
+      "status": "pass",
+      "passed": true,
+      "detail": "status=passed"
+    },
+    {
+      "name": "auto-test version matches release version",
+      "status": "pass",
+      "passed": true,
+      "detail": "artifact_version=v1.6.7, expected=v1.6.7"
+    },
+    {
+      "name": "auto-test run_id present",
+      "status": "pass",
+      "passed": true,
+      "detail": "run_id=run-20260718T123452342761"
+    },
+    {
+      "name": "gate report pass",
+      "status": "pass",
+      "passed": true,
+      "detail": "status=Pass"
+    },
+    {
+      "name": "gate report version matches release version",
+      "status": "pass",
+      "passed": true,
+      "detail": "artifact_version=v1.6.7, expected=v1.6.7"
+    },
+    {
+      "name": "gate report run_id matches auto-test",
+      "status": "pass",
+      "passed": true,
+      "detail": "gate_run_id=run-20260718T123452342761, auto_test_run_id=run-20260718T123452342761, authoritative_release_scorecard=true"
+    },
+    {
+      "name": "evidence manifest present",
+      "status": "pass",
+      "passed": true,
+      "detail": "entries=833"
+    },
+    {
+      "name": "evidence manifest version matches release version",
+      "status": "pass",
+      "passed": true,
+      "detail": "artifact_version=v1.6.7, expected=v1.6.7"
+    },
+    {
+      "name": "evidence manifest run_id matches test artifacts",
+      "status": "pass",
+      "passed": true,
+      "detail": "manifest_run_id=run-20260718T123452342761, expected=run-20260718T123452342761, authoritative_release_scorecard=true"
+    },
+    {
+      "name": "coverage artifact ready",
+      "status": "pass",
+      "passed": true,
+      "detail": "coverage_rate=1.0000"
+    },
+    {
+      "name": "coverage summary version matches release version",
+      "status": "pass",
+      "passed": true,
+      "detail": "artifact_version=v1.6.7, expected=v1.6.7"
+    },
+    {
+      "name": "coverage summary run_id matches test artifacts",
+      "status": "pass",
+      "passed": true,
+      "detail": "coverage_run_id=run-20260718T123452342761, expected=run-20260718T123452342761, authoritative_release_scorecard=true"
+    },
+    {
+      "name": "runtime projection transaction contract",
+      "status": "pass",
+      "passed": true,
+      "detail": "status=warn, reason=runtime_projection_transaction_context_missing"
+    },
+    {
+      "name": "acceptance projection transaction contract",
+      "status": "pass",
+      "passed": true,
+      "detail": "status=pass, reason=acceptance_projection_transaction_ok"
+    },
+    {
+      "name": "version change markdown exists",
+      "status": "pass",
+      "passed": true,
+      "detail": "path=docs/beacon/v1.6.7/change/v1.6.7.md"
+    },
+    {
+      "name": "version change payload exists",
+      "status": "pass",
+      "passed": true,
+      "detail": "path=docs/beacon/v1.6.7/.machine/change/v1.6.7.json"
+    },
+    {
+      "name": "version change payload matches release version",
+      "status": "pass",
+      "passed": true,
+      "detail": "feature_count=11"
+    },
+    {
+      "name": "version change document includes current feature",
+      "status": "pass",
+      "passed": true,
+      "detail": "current_feature=beacon-goal-agent-driver-v167, reason=-, repair=beacon doctor repair-version-aggregate-projection \"beacon-goal-agent-driver-v167\" --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.7 --json"
+    },
+    {
+      "name": "release scorecard ready",
+      "status": "pass",
+      "passed": true,
+      "detail": "feature=beacon-goal-agent-driver-v167, semantic_reason=-"
+    },
+    {
+      "name": "version surface governance pass",
+      "status": "pass",
+      "passed": true,
+      "detail": "status=pass, reason=-, manifest_path=/Users/apple/Developer/Personal/products/beacon/beacon/version-truth.json, repair=beacon doctor sync-version-surfaces --project-root /Users/apple/Developer/Personal/products/beacon, verify=beacon doctor verify-version-surfaces --project-root /Users/apple/Developer/Personal/products/beacon --strict"
+    },
+    {
+      "name": "implement prompt boundary verdict pass",
+      "status": "pass",
+      "passed": true,
+      "detail": "status=pass, classification=in_scope_implementation, surface=import-evidence, reason=-"
+    }
+  ],
+  "legacy_cutover_preflight": {
+    "schema_version": "1.0",
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "version": "v1.6.7",
+    "feature": "beacon-goal-agent-driver-v167",
+    "feature_slug": "beacon-goal-agent-driver-v167",
+    "resume_intent": "release",
+    "legacy_cutover": {
+      "schema_version": "1.0",
+      "feature": "beacon-goal-agent-driver-v167",
+      "feature_slug": "beacon-goal-agent-driver-v167",
+      "version": "v1.6.7",
+      "status": "blocked",
+      "blocked": true,
+      "reason_code": "legacy_or_mixed_truth_state",
+      "supported": true,
+      "dry_run": true,
+      "apply": false,
+      "agent": "codex",
+      "legacy_truth_present": false,
+      "generated_at": "2026-07-18T04:37:26.354603+00:00",
+      "phases": {
+        "inventory": {
+          "status": "blocked",
+          "blocked": true,
+          "reason_code": "legacy_or_mixed_truth_state",
+          "next_command": "",
+          "legacy_refs": []
+        },
+        "package": {
+          "status": "pass",
+          "blocked": false,
+          "reason_code": "",
+          "next_command": "beacon truth-map verify beacon-goal-agent-driver-v167 --project . --version v1.6.7 --json",
+          "missing_surfaces": [],
+          "paths": {
+            "truth": "docs/beacon/v1.6.7/features/beacon-goal-agent-driver-v167/truth.md",
+            "tests": "docs/beacon/v1.6.7/features/beacon-goal-agent-driver-v167/tests.md",
+            "tasks": "docs/beacon/v1.6.7/features/beacon-goal-agent-driver-v167/tasks.md",
+            "evidence": "docs/beacon/v1.6.7/features/beacon-goal-agent-driver-v167/evidence.md"
+          },
+          "validation": {
+            "schema_version": "1.0",
+            "feature": "beacon-goal-agent-driver-v167",
+            "feature_slug": "beacon-goal-agent-driver-v167",
+            "version": "v1.6.7",
+            "status": "pass",
+            "blocked": false,
+            "reason_code": "",
+            "generated_at": "2026-07-18T04:37:23.437484+00:00",
+            "package_dir": "docs/beacon/v1.6.7/features/beacon-goal-agent-driver-v167",
+            "truth_frontmatter": {
+              "slug": "beacon-goal-agent-driver-v167",
+              "version": "v1.6.7",
+              "status": "frozen",
+              "revision_id": "R1",
+              "language": "zh",
+              "change_reason": "P0 Python AgentDriver for one-shot longrun auto-requeue; GO parallel path C 2026-07-18; depends durable-supervisor",
+              "canonical_refs": {
+                "truth": "docs/beacon/v1.6.7/features/beacon-goal-agent-driver-v167/truth.md",
+                "tests": "docs/beacon/v1.6.7/features/beacon-goal-agent-driver-v167/tests.md",
+                "tasks": "docs/beacon/v1.6.7/features/beacon-goal-agent-driver-v167/tasks.md",
+                "evidence": "docs/beacon/v1.6.7/features/beacon-goal-agent-driver-v167/evidence.md"
+              },
+              "parser_contract": "beacon-feature-package-v2",
+              "truth_source_model": "feature_package_authoritative",
+              "truth_map_contract": "beacon-truth-map-v1",
+              "program_ref": "docs/beacon/v1.6.7/programs/beacon-product-goal-domain-delivery-v167/feature-graph.json",
+              "ux_required": "false",
+              "design_deferral": "CLI AgentDriver; no product marketing UI"
+            },
+            "ac_count": 14,
+            "test_count": 14,
+            "checkbox_count": 7,
+            "evidence_row_count": 6,
+            "gate_authority": "canonical_surfaces_preserved",
+            "checkbox_gate_bypass": false,
+            "evidence_gate_truth": false,
+            "diagnostics": [],
+            "truth_map_contract": "beacon-truth-map-v1",
+            "truth_source_model": "feature_package_authoritative",
+            "truth_package_contract": "beacon-feature-package-v2",
+            "machine_json_role": "generated_state_not_truth",
+            "generated_by": "beacon.truth_map.resolver",
+            "truth_authority": "markdown_feature_package",
+            "json_authority": false,
+            "source_paths": {
+              "truth": "docs/beacon/v1.6.7/features/beacon-goal-agent-driver-v167/truth.md",
+              "tests": "docs/beacon/v1.6.7/features/beacon-goal-agent-driver-v167/tests.md",
+              "tasks": "docs/beacon/v1.6.7/features/beacon-goal-agent-driver-v167/tasks.md",
+              "evidence": "docs/beacon/v1.6.7/features/beacon-goal-agent-driver-v167/evidence.md"
+            },
+            "source_hashes": {
+              "truth": "08903ed072d13a29f5b0647e74ac709d22b8627a7e550ae03679132095802645",
+              "tests": "a3ba01c1ede0add64b731263d450015341793959b530d683232070d6f6084a0a",
+              "tasks": "853e851e34202a37c4a613f45a57d55f5abe98a08e13bbd9a695fb37fd1d6e42",
+              "evidence": "742a3538cc7bfe47a39028d6e86ac122f61791eeb0592fbe019ef9be33a6b29b"
+            },
+            "runtime_json_requires_markdown_twin": false
+          },
+          "truth_map_verify": {
+            "schema_version": "1.0",
+            "truth_map_contract": "beacon-truth-map-v1",
+            "truth_source_model": "feature_package_authoritative",
+            "truth_package_contract": "beacon-feature-package-v2",
+            "machine_json_role": "generated_state_not_truth",
+            "feature": "beacon-goal-agent-driver-v167",
+            "feature_slug": "beacon-goal-agent-driver-v167",
+            "version": "v1.6.7",
+            "status": "pass",
+            "blocked": false,
+            "truth_authority": "markdown_feature_package",
+            "json_authority": false,
+            "source_paths": {
+              "truth": "docs/beacon/v1.6.7/features/beacon-goal-agent-driver-v167/truth.md",
+              "tests": "docs/beacon/v1.6.7/features/beacon-goal-agent-driver-v167/tests.md",
+              "tasks": "docs/beacon/v1.6.7/features/beacon-goal-agent-driver-v167/tasks.md",
+              "evidence": "docs/beacon/v1.6.7/features/beacon-goal-agent-driver-v167/evidence.md"
+            },
+            "source_hashes": {
+              "truth": "08903ed072d13a29f5b0647e74ac709d22b8627a7e550ae03679132095802645",
+              "tests": "a3ba01c1ede0add64b731263d450015341793959b530d683232070d6f6084a0a",
+              "tasks": "853e851e34202a37c4a613f45a57d55f5abe98a08e13bbd9a695fb37fd1d6e42",
+              "evidence": "742a3538cc7bfe47a39028d6e86ac122f61791eeb0592fbe019ef9be33a6b29b"
+            },
+            "checked_machine_json": [
+              "docs/beacon/v1.6.7/.machine/requirement/beacon-goal-agent-driver-v167.truth-map.json",
+              "docs/beacon/v1.6.7/.machine/requirement/beacon-goal-agent-driver-v167.requirement-package.json",
+              "docs/beacon/v1.6.7/.machine/requirement/feature-package-validation.json"
+            ],
+            "runtime_json_exemption": {
+              "role": "runtime_process_record_not_requirement_truth",
+              "applies_to": [
+                ".beacon/runs/**",
+                ".beacon/qa/**",
+                "runtime/process execution records"
+              ],
+              "requires_markdown_twin": false,
+              "requirement_authority": false
+            },
+            "validation_status": "pass",
+            "diagnostics": []
+          },
+          "materialized": {},
+          "machine_rebuild": {}
+        },
+        "governance": {
+          "status": "blocked",
+          "blocked": true,
+          "reason_code": "governance_verify_failed",
+          "next_command": "beacon doctor metadata verify --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.7 --json",
+          "verify": {
+            "status": "fail",
+            "project_root": "/Users/apple/Developer/Personal/products/beacon",
+            "version": "v1.6.7",
+            "resolved_metadata_view": {
+              "project_root": "/Users/apple/Developer/Personal/products/beacon",
+              "topology_kind": "single_repo",
+              "default_execution_service": "beacon",
+              "service_bindings": [
+                {
+                  "service_key": "beacon",
+                  "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+                  "repo_root_relative": "",
+                  "role": "service",
+                  "writable": true,
+                  "worktree_path_policy": "follow-repo-root"
+                }
+              ],
+              "service_bindings_by_key": {
+                "beacon": {
+                  "service_key": "beacon",
+                  "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+                  "repo_root_relative": "",
+                  "role": "service",
+                  "writable": true,
+                  "worktree_path_policy": "follow-repo-root"
+                }
+              },
+              "version": "v1.6.7",
+              "version_contract": {
+                "version": "v1.6.7",
+                "participating_services": [
+                  "beacon"
+                ],
+                "per_service_canonical_branch": {
+                  "beacon": "beacon/v1.6.7"
+                },
+                "branch_guard_mode": "strict",
+                "validation_state": "active",
+                "branch_governance": {
+                  "template_name": "standard-feature",
+                  "previous_version_baseline_branch": "main",
+                  "next_version_feature_branch": "beacon/v1.6.7/<feature-slug>",
+                  "hotfix_branch_naming_rule": "",
+                  "allow_worktree_when_feature_dirty": false,
+                  "merge_direction_policy": [],
+                  "forbidden_directions": [],
+                  "evidence_contract": [],
+                  "evidence": {},
+                  "worktree_mode": "branch-only",
+                  "worktree_path": ".beacon/worktrees/v1.6.7"
+                },
+                "truth_canonical": "main",
+                "runtime_mirror": "beacon/v1.6.7",
+                "branch_governance_template": "standard-feature",
+                "previous_version_baseline_branch": "main",
+                "next_version_feature_branch": "beacon/v1.6.7/<feature-slug>",
+                "worktree_mode": "branch-only",
+                "worktree_path": ".beacon/worktrees/v1.6.7",
+                "require_workspace_admission": false,
+                "admission_invalidation": "dirty_only"
+              },
+              "selected_service": "beacon",
+              "selected_service_binding": {
+                "service_key": "beacon",
+                "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+                "repo_root_relative": "",
+                "role": "service",
+                "writable": true,
+                "worktree_path_policy": "follow-repo-root"
+              },
+              "selected_branch": "beacon/v1.6.7",
+              "paths": {
+                "machine": "",
+                "human": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/governance/project-version-governance.md",
+                "state": "",
+                "governance_md": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/governance/project-version-governance.md"
+              },
+              "transaction": {
+                "transaction_id": "tx-project-governance-a2b75d2b3c3f21e5",
+                "committed_at": "2026-07-13T12:00:00.000000+00:00",
+                "source_hash": "governance-fix-v165-v166",
+                "event_type": "update"
+              },
+              "branch_governance": {
+                "schema_version": "1.0",
+                "tool_name": "beacon-toolkit-branch-governance",
+                "feature": "",
+                "version": "v1.6.7",
+                "template_name": "standard-feature",
+                "template_source": "project_metadata",
+                "service_key": "beacon",
+                "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+                "base_branch": "main",
+                "current_branch": "beacon/v1.6.7/beacon-goal-agent-driver-v167",
+                "target_branch": "beacon/v1.6.7/beacon-git-scope-graph-v167",
+                "worktree_mode": "branch-only",
+                "worktree_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.7",
+                "current_worktree_path": "/Users/apple/Developer/Personal/products/beacon",
+                "previous_version_baseline_branch": "main",
+                "next_version_feature_branch": "beacon/v1.6.7/<feature-slug>",
+                "hotfix_branch_naming_rule": "",
+                "allow_worktree_when_feature_dirty": false,
+                "merge_direction_policy": [],
+                "forbidden_directions": [],
+                "evidence_contract": [],
+                "evidence": {},
+                "status": "pass",
+                "blocked": false,
+                "reason_codes": [
+                  "branch_governance_branch_mismatch"
+                ],
+                "blocked_reason": "",
+                "recommended_action": "",
+                "missing_evidence_fields": [],
+                "evidence_contract_status": "pass",
+                "human_markdown": "## Branch Governance\n\n- toolkit: `beacon-toolkit-branch-governance`\n- template_name: `standard-feature`\n- template_source: `project_metadata`\n- service_key: `beacon`\n- repo_root: `/Users/apple/Developer/Personal/products/beacon`\n- base_branch: `main`\n- current_branch: `beacon/v1.6.7/beacon-goal-agent-driver-v167`\n- target_branch: `beacon/v1.6.7/beacon-git-scope-graph-v167`\n- worktree_mode: `branch-only`\n- worktree_path: `/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.7`\n- evidence_contract_status: `pass`\n- blocked_reason: ``\n- recommended_action: ``\n\n### Flow Diagram\n```text\nmain\n    -> beacon/v1.6.7/beacon-git-scope-graph-v167\n    -> uat\n```\n\n### Allowed Paths\n- `base_branch->feature_branch`\n\n### Forbidden Paths\n- none\n\n### Evidence Contract\n- none\n"
+              },
+              "authority": "markdown_project_governance",
+              "parser_contract": "beacon-project-governance-v1"
+            },
+            "checks": [
+              {
+                "status": "pass",
+                "name": "governance_json_forbidden",
+                "details": {
+                  "status": "pass",
+                  "blocked": false,
+                  "reason_code": ""
+                }
+              },
+              {
+                "status": "pass",
+                "name": "governance_projection_drift",
+                "details": {
+                  "status": "pass",
+                  "blocked": false,
+                  "reason_code": "",
+                  "details": {
+                    "source_hash": "governance-fix-v165-v166"
+                  }
+                }
+              },
+              {
+                "status": "pass",
+                "name": "topology_kind",
+                "details": {
+                  "value": "single_repo"
+                }
+              },
+              {
+                "status": "pass",
+                "name": "default_execution_service",
+                "details": {
+                  "value": "beacon"
+                }
+              },
+              {
+                "status": "pass",
+                "name": "version_contract",
+                "details": {
+                  "version": "v1.6.7",
+                  "services": [
+                    "beacon"
+                  ]
+                }
+              },
+              {
+                "status": "fail",
+                "name": "branch_contract:beacon",
+                "details": {
+                  "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+                  "expected_branch": "beacon/v1.6.7",
+                  "truth_canonical": "main",
+                  "accepted_branches": [
+                    "beacon/v1.6.7",
+                    "main"
+                  ],
+                  "current_branch": "beacon/v1.6.7/beacon-goal-agent-driver-v167"
+                }
+              },
+              {
+                "status": "pass",
+                "name": "branch_governance",
+                "details": {
+                  "template_name": "standard-feature",
+                  "blocked_reason": "",
+                  "reason_codes": [
+                    "branch_governance_branch_mismatch"
+                  ]
+                }
+              }
+            ]
+          },
+          "projection_sync": {}
+        },
+        "agent_surface": {
+          "status": "pass",
+          "blocked": false,
+          "reason_code": "",
+          "next_command": "beacon doctor setup-agent-surface --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.7 --agent codex --force --json",
+          "verify": {
+            "project_root": "/Users/apple/Developer/Personal/products/beacon",
+            "agent": "codex",
+            "surface_root": "/Users/apple/Developer/Personal/products/beacon/.agents/skills",
+            "runtime_version": "v1.6.7",
+            "docs_version": "v1.6.7",
+            "taxonomy_version": "v1.6.0",
+            "strict": true,
+            "status": "pass",
+            "ok": true,
+            "checks": [
+              {
+                "name": "agent_supported",
+                "status": "pass",
+                "details": {
+                  "agent": "codex"
+                }
+              },
+              {
+                "name": "surface_root_present",
+                "status": "pass",
+                "details": {
+                  "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills",
+                  "exists": true
+                }
+              },
+              {
+                "name": "host_visible_skills_present",
+                "status": "pass",
+                "details": {
+                  "expected": [
+                    "beacon-eval-agent",
+                    "beacon-eval-qa",
+                    "beacon-eval-qa-deep",
+                    "beacon-eval-real-project",
+                    "beacon-eval-release",
+                    "beacon-gen-change",
+                    "beacon-gen-design",
+                    "beacon-gen-design-explore",
+                    "beacon-gen-design-init",
+                    "beacon-gen-design-polish",
+                    "beacon-gen-design-system",
+                    "beacon-gen-implement",
+                    "beacon-gen-prototype",
+                    "beacon-gen-refreeze",
+                    "beacon-gen-truth",
+                    "beacon-gen-truth-init",
+                    "beacon-goal",
+                    "beacon-gov-archive",
+                    "beacon-gov-automation",
+                    "beacon-gov-branch",
+                    "beacon-gov-debug",
+                    "beacon-gov-doctor",
+                    "beacon-gov-extract",
+                    "beacon-gov-help",
+                    "beacon-gov-hooks",
+                    "beacon-gov-learn",
+                    "beacon-gov-library",
+                    "beacon-gov-lighthouse",
+                    "beacon-gov-metadata",
+                    "beacon-gov-router",
+                    "beacon-gov-status",
+                    "beacon-loop-goal",
+                    "beacon-pln-brainstorm",
+                    "beacon-pln-friction",
+                    "beacon-pln-program",
+                    "beacon-pln-program-auto",
+                    "beacon-pln-program-interactive",
+                    "beacon-pln-review",
+                    "beacon-pln-source"
+                  ],
+                  "missing": []
+                }
+              },
+              {
+                "name": "host_visible_skills_drift",
+                "status": "pass",
+                "details": {
+                  "drifted": []
+                }
+              },
+              {
+                "name": "v160_harness_skill_names",
+                "status": "pass",
+                "details": {
+                  "wrong_names": []
+                }
+              },
+              {
+                "name": "v160_no_skill_backup_directories",
+                "status": "pass",
+                "details": {
+                  "backup_dirs": []
+                }
+              },
+              {
+                "name": "v160_no_old_host_visible_aliases",
+                "status": "pass",
+                "details": {
+                  "old_aliases": [],
+                  "unexpected": []
+                }
+              },
+              {
+                "name": "v160_shared_preamble_and_hard_gates",
+                "status": "pass",
+                "details": {
+                  "gate_errors": {}
+                }
+              },
+              {
+                "name": "v160_canonical_route_references",
+                "status": "pass",
+                "details": {
+                  "route_errors": {}
+                }
+              },
+              {
+                "name": "agent_surface_state_projection",
+                "status": "pass",
+                "details": {
+                  "path": "/Users/apple/Developer/Personal/products/beacon/.beacon/state/agent-surfaces.json",
+                  "exists": true
+                }
+              }
+            ]
+          }
+        }
+      },
+      "resume": {
+        "intent": "release",
+        "next_command": "",
+        "blocked_until_cutover_passes": true
+      }
+    },
+    "next_route": {}
+  },
+  "browser_release_blockers": [],
+  "recommended_command": "",
+  "lifecycle_hook_advisory": {
+    "schema_version": "1.0",
+    "status": "ready",
+    "blocked": false,
+    "hook_code": "post_release",
+    "boundary_stage": "release",
+    "version": "v1.6.7",
+    "feature": "beacon-goal-agent-driver-v167",
+    "project_root": "/Users/apple/Developer/Personal/products/beacon",
+    "hook_count": 1,
+    "hooks": [
+      {
+        "hook_id": "beacon-post-release-local-install",
+        "hook_code": "post_release",
+        "boundary_stage": "release",
+        "trigger_policy": "manual_confirmed",
+        "plan_status": "planned",
+        "blocked": false,
+        "reason_codes": [],
+        "evidence_paths": {
+          "runtime_root": ".beacon/state/hooks/beacon-post-release-local-install",
+          "latest_read_model": "docs/beacon/.machine/hooks/beacon-post-release-local-install.latest.json"
+        },
+        "dry_run": {
+          "attempted": false,
+          "status": "",
+          "blocked": false,
+          "reason_code": "",
+          "evidence_paths": {},
+          "side_effect_executed": false
+        },
+        "dry_run_command": "beacon hooks run beacon-post-release-local-install --project . --version v1.6.7 --feature beacon-goal-agent-driver-v167 --hook-code post_release --dry-run",
+        "recommended_command": "beacon hooks run beacon-post-release-local-install --project . --version v1.6.7 --feature beacon-goal-agent-driver-v167 --hook-code post_release --confirm",
+        "manual_confirmation_required": true,
+        "side_effect_executed": false,
+        "truth_authority": false,
+        "runtime_evidence_only": true,
+        "admission": {
+          "schema_version": "1.0",
+          "hook_id": "beacon-post-release-local-install",
+          "hook_code": "post_release",
+          "feature": "beacon-goal-agent-driver-v167",
+          "path": "docs/beacon/hooks/beacon-post-release-local-install.md",
+          "status": "pass",
+          "blocked": false,
+          "reason_codes": [],
+          "diagnostics": [],
+          "contract": {
+            "hook_id": "beacon-post-release-local-install",
+            "hook_code": "post_release",
+            "enabled": true,
+            "trigger_policy": "manual_confirmed",
+            "skill": "beacon-project-hooks",
+            "command_template": "beacon hooks run beacon-post-release-local-install --project . --version {version} --feature {feature} --confirm",
+            "produces_evidence": [
+              "legacy_beacon_skill_cleanup",
+              "claude_global_beacon_subskills_install",
+              "claude_global_beacon_subskills_verify",
+              "codex_agent_surface_setup",
+              "codex_agent_surface_verify",
+              "claude_agent_surface_setup",
+              "claude_agent_surface_verify",
+              "global_beacon_cli_version",
+              "global_beacon_cli_launcher_path",
+              "macmini_hermes_beacon_sync_default",
+              "macmini_hermes_beacon_sync_finance"
+            ],
+            "failure_route": "release"
+          }
+        }
+      }
+    ],
+    "discovery": {
+      "schema_version": "1.0",
+      "project_root": "/Users/apple/Developer/Personal/products/beacon",
+      "hook_code": "post_release",
+      "feature": "beacon-goal-agent-driver-v167",
+      "status": "ready",
+      "hook_count": 1,
+      "hooks": [
+        {
+          "hook_id": "beacon-post-release-local-install",
+          "hook_code": "post_release",
+          "path": "docs/beacon/hooks/beacon-post-release-local-install.md",
+          "status": "ready",
+          "blocked": false,
+          "reason_codes": [],
+          "trigger_policy": "manual_confirmed",
+          "failure_route": "release",
+          "admission": {
+            "schema_version": "1.0",
+            "hook_id": "beacon-post-release-local-install",
+            "hook_code": "post_release",
+            "feature": "beacon-goal-agent-driver-v167",
+            "path": "docs/beacon/hooks/beacon-post-release-local-install.md",
+            "status": "pass",
+            "blocked": false,
+            "reason_codes": [],
+            "diagnostics": [],
+            "contract": {
+              "hook_id": "beacon-post-release-local-install",
+              "hook_code": "post_release",
+              "enabled": true,
+              "trigger_policy": "manual_confirmed",
+              "skill": "beacon-project-hooks",
+              "command_template": "beacon hooks run beacon-post-release-local-install --project . --version {version} --feature {feature} --confirm",
+              "produces_evidence": [
+                "legacy_beacon_skill_cleanup",
+                "claude_global_beacon_subskills_install",
+                "claude_global_beacon_subskills_verify",
+                "codex_agent_surface_setup",
+                "codex_agent_surface_verify",
+                "claude_agent_surface_setup",
+                "claude_agent_surface_verify",
+                "global_beacon_cli_version",
+                "global_beacon_cli_launcher_path",
+                "macmini_hermes_beacon_sync_default",
+                "macmini_hermes_beacon_sync_finance"
+              ],
+              "failure_route": "release"
+            }
+          }
+        }
+      ],
+      "truth_root": "docs/beacon/hooks",
+      "truth_authority": false,
+      "runtime_evidence_only": true
+    },
+    "recommended_command": "beacon hooks run beacon-post-release-local-install --project . --version v1.6.7 --feature beacon-goal-agent-driver-v167 --hook-code post_release --confirm",
+    "side_effect_executed": false,
+    "truth_authority": false,
+    "runtime_evidence_only": true,
+    "verdict_authority": "none",
+    "support_evidence_only": true
+  },
+  "decision_surface": {
+    "stage": "release",
+    "skill_ref": "skills/beacon/beacon-eval-release/SKILL.md",
+    "inputs_contract": [
+      "`project-root`",
+      "`version`",
+      "`feature` or version release target",
+      "layered QA proof",
+      "release gate status",
+      "version surface governance status"
+    ],
+    "decision_protocol": [
+      "Continue in `release` only when implementation and QA have already produced sufficient evidence.",
+      "Block on missing QA layers, unresolved truth drift, version-surface drift, or unresolved release gate blockers.",
+      "Prefer explicit no-go verdicts over soft optimism when evidence is incomplete.",
+      "Treat `real-project-validation` as highest proof, but still require the other layers."
+    ],
+    "anti_inertia_notes": [
+      "`release` is not a place to finish implementation or invent acceptance truth.",
+      "A green-looking dashboard without evidence chain is not release closure.",
+      "Version drift across docs, package, and runtime surfaces must block ship.",
+      "`release` cannot rewrite frozen truth or override gate truth by itself."
+    ],
+    "learning_notes": [
+      "Reuse prior release blockers as warning signals for current no-go checks.",
+      "Learning may influence inspection order, but it does not override gate verdicts.",
+      "Stale release learning should trigger re-check, not silent acceptance."
+    ],
+    "backstop_cli": [
+      "`beacon release ...`",
+      "`beacon qa ...` when proof is incomplete",
+      "`beacon doctor verify-version-surfaces --project-root . --strict`"
+    ],
+    "primary_reason": "Continue in `release` only when implementation and QA have already produced sufficient evidence.",
+    "recommended_command": "`beacon release ...`",
+    "reason_code": ""
+  },
+  "guardrail_contract": {
+    "stage": "release",
+    "decision_owner": "skill_surface",
+    "enforcement_owner": "python_guardrail",
+    "blocked": false,
+    "reason_code": "",
+    "dual_read_required_before_cutover": true,
+    "fail_closed": true
+  }
+}

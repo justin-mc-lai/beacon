@@ -5,7 +5,7 @@
   "version": "v1.6.7",
   "current_revision_id": "R1",
   "lifecycle_status": "frozen",
-  "updated_at": "2026-07-18T04:17:17.877290+00:00",
+  "updated_at": "2026-07-18T04:35:04.043222+00:00",
   "revisions": [
     {
       "revision_id": "R1",
@@ -28,7 +28,7 @@
       "revision_id": "R1",
       "title": "beacon-goal-agent-driver-v167",
       "priority": "medium",
-      "status": "frozen",
+      "status": "accepted",
       "items": [
         {
           "id": "AC-001",
@@ -36,11 +36,11 @@
           "theme": "general",
           "text": "Acceptance criteria TBD",
           "required": true,
-          "status": "draft",
-          "implemented_by_run_id": null,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260718T043430Z-e857",
           "verified_by_run_id": null,
           "accepted_at": null,
-          "changed_in_revision": null,
+          "changed_in_revision": "R1",
           "story_id": "",
           "details": [],
           "source": "fallback"
@@ -50,22 +50,22 @@
           "kind": "task",
           "text": "Implement current frozen revision",
           "required": true,
-          "status": "draft",
-          "implemented_by_run_id": null,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260718T043430Z-e857",
           "verified_by_run_id": null,
-          "accepted_at": null,
-          "changed_in_revision": null
+          "accepted_at": "2026-07-18T04:35:04.012854+00:00",
+          "changed_in_revision": "R1"
         },
         {
           "id": "TEST-001",
           "kind": "test",
           "text": "Verify AC-001 — Acceptance criteria TBD",
           "required": true,
-          "status": "draft",
-          "implemented_by_run_id": null,
-          "verified_by_run_id": null,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260718T043430Z-e857",
+          "verified_by_run_id": "run-20260718T123452342761",
           "accepted_at": null,
-          "changed_in_revision": null,
+          "changed_in_revision": "R1",
           "covers": [
             "AC-001"
           ],
@@ -118,7 +118,29 @@
             "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/research/beacon-goal-agent-driver-v167.md"
           }
         ]
-      }
+      },
+      "feature": "beacon-goal-agent-driver-v167",
+      "feature_slug": "beacon-goal-agent-driver-v167",
+      "version": "v1.6.7",
+      "last_changed_files": [
+        "beacon/utils/goal_agent_driver.py",
+        "beacon/commands/goal.py",
+        "beacon/utils/product_goal_runtime.py",
+        "beacon/utils/workspace_admission.py",
+        "tests/test_v167_goal_agent_driver.py",
+        "skills/beacon/beacon-goal/SKILL.md",
+        "."
+      ],
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-goal-agent-driver-v167/ac-closure.json",
+        ".beacon/qa/features/beacon-goal-agent-driver-v167/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "accepted_at": "2026-07-18T04:35:04.012854+00:00",
+      "accepted_by": "qa"
     }
   ]
 }
