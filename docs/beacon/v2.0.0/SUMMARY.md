@@ -55,3 +55,10 @@ Source plan (support advisory):
 - **Contract**: `--longrun` attaches AgentDriver auto-requeue; resume-pack digest on context full; 120s heartbeat; verifier + human release
 - **Upstream**: v1.6.7 `beacon-goal-durable-supervisor-v167` (shipped)
 - **Truth**: `docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/truth.md`
+
+## GoalRun main axis (synced from v1.6.7 UD-AXIS)
+
+- Shared policy with v1.6.7; generate:
+  `beacon goal axis generate -v v2.0.0 --program beacon-v2-product-goal-parallel-v200`
+- Artifact: `docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/goalrun-main-axis.md`
+- Embeds Loom: brand dual-install, optional subagent, trace bundle on the same GoalRun spine.

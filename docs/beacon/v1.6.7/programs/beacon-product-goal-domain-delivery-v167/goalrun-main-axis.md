@@ -2,7 +2,7 @@
 
 - **version**: `v1.6.7`
 - **program**: `beacon-product-goal-domain-delivery-v167`
-- **generated_at**: 2026-07-18T08:38:10.901489+00:00
+- **generated_at**: 2026-07-18T08:55:43.877230+00:00
 - **policy**: UD-AXIS-001..005 (change must regenerate this artifact)
 
 ## User intent
@@ -78,11 +78,12 @@ If `ux_required`: also `design_baseline`, `design_md_lint`.
 ## Wave (implementation order)
 
 ```text
+Wave 0   loom-brand-surface (L0 dual-install; if present)
 Wave 1   domain-fsm-authority → golden → domain-fsm-qa-gate → ui-ship
-Wave 1b  product-goal-runtime (axis owner) + ralph-boundary
-Wave 2   loop-discover (support)
-Wave 3   durable-supervisor → agent-driver
-Wave 4   axis validate on change/freeze
+Wave 1b  product-goal / v2 orchestrator (axis owner) + ralph-boundary
+Wave 2   main-star-satellite → loom-goal-optional-subagent (true fan-out)
+Wave 3   durable-longrun / agent-driver → loom-goal-trace-bundle
+Wave 4   axis validate on change/freeze; rust carrier optional
 ```
 
 ## First-principles exit checklist (Q1–Q6)
@@ -106,6 +107,13 @@ beacon change "<feature>" --project . --version v1.6.7 --refreeze-chain
 ```
 
 Do not implement against stale axis.
+
+## Subagent & Trace mounts (when present)
+
+- `loom-goal-optional-subagent` / parallel_plan: **opt-in only**; SubagentSession must not complete GoalRun.
+- Spawn path: planned → arming → running → collecting → merging → done|halted.
+- `loom-goal-trace-bundle`: AgentDriver turns append `agent_trace.v1` under traces/; `goal trace --run-id` aggregates with execution.jsonl.
+- Resume authority remains **resume-pack digest**, not full chat or full trace body.
 
 ## Shared with v2.0.0
 
