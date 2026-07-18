@@ -55,3 +55,18 @@ Source plan (support advisory):
 - **Contract**: `--longrun` attaches AgentDriver auto-requeue; resume-pack digest on context full; 120s heartbeat; verifier + human release
 - **Upstream**: v1.6.7 `beacon-goal-durable-supervisor-v167` (shipped)
 - **Truth**: `docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/truth.md`
+
+## Delivery readiness (2026-07-18)
+
+| Layer | Status |
+|-------|--------|
+| Feature packages (8 product-goal lakes + rust kernel) | **truth frozen** |
+| Python compat / parity contracts | **landed** (`tests/test_v200_product_goal_parity.py`, `beacon/utils/v2_product_goal_parity.py`) |
+| `$beacon-goal` skill | **stable** (v1.6.7 runtime; same skill serves v2.0.0 docs line) |
+| Durable/longrun behavior | **parity via v1.6.7 runtime** (AC-V2-DLR ↔ AC-DGS map) |
+| Rust Operator Spine | **scaffold** `packages/beacon-rs` (W0–W1); not default runtime |
+| `BEACON_V2=1` default | **forbidden** until W4 |
+| Formal runtime promotion | **pending** human gate after W4 |
+
+Goal run (longrun): see `.beacon/state/product-goal/` for active pgr when running delivery.
+

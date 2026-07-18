@@ -41,7 +41,9 @@
       "priority": "P0",
       "slug": "beacon-v2-product-goal-orchestrator",
       "depends_on": [],
-      "summary": "Rust Product Goal orchestrator; single public entry beacon-goal; progressive load; subagent parallel plan"
+      "summary": "Rust Product Goal orchestrator; single public entry beacon-goal; progressive load; subagent parallel plan",
+      "status": "truth_frozen",
+      "revision": "R1"
     },
     {
       "phase": 2,
@@ -50,7 +52,9 @@
       "depends_on": [
         "beacon-v2-product-goal-orchestrator"
       ],
-      "summary": "Main-star integration branch + satellite worktrees per lake; merge-to-star; topology_gate"
+      "summary": "Main-star integration branch + satellite worktrees per lake; merge-to-star; topology_gate",
+      "status": "truth_frozen",
+      "revision": "R1"
     },
     {
       "phase": 3,
@@ -59,7 +63,9 @@
       "depends_on": [
         "beacon-v2-product-goal-orchestrator"
       ],
-      "summary": "Domain FSM + entity-precedence as feature-package freeze hard gates (parity v1.6.7)"
+      "summary": "Domain FSM + entity-precedence as feature-package freeze hard gates (parity v1.6.7)",
+      "status": "truth_frozen",
+      "revision": "R1"
     },
     {
       "phase": 4,
@@ -68,7 +74,9 @@
       "depends_on": [
         "beacon-v2-domain-fsm-authority"
       ],
-      "summary": "Golden commerce positive+negative fixtures as v2 parity clamps"
+      "summary": "Golden commerce positive+negative fixtures as v2 parity clamps",
+      "status": "truth_frozen",
+      "revision": "R1"
     },
     {
       "phase": 5,
@@ -78,7 +86,9 @@
         "beacon-v2-domain-fsm-authority",
         "beacon-v2-golden-commerce-fixture-parity"
       ],
-      "summary": "QA enforces legal/illegal domain walks; coverage on scorecard"
+      "summary": "QA enforces legal/illegal domain walks; coverage on scorecard",
+      "status": "truth_frozen",
+      "revision": "R1"
     },
     {
       "phase": 6,
@@ -87,7 +97,9 @@
       "depends_on": [
         "beacon-v2-domain-fsm-authority"
       ],
-      "summary": "Full inherit v1.6.7 ui-state-matrix + DESIGN ship hard gate"
+      "summary": "Full inherit v1.6.7 ui-state-matrix + DESIGN ship hard gate",
+      "status": "truth_frozen",
+      "revision": "R1"
     },
     {
       "phase": 7,
@@ -96,7 +108,9 @@
       "depends_on": [
         "beacon-v2-product-goal-orchestrator"
       ],
-      "summary": "Ralph is implement-only subcontroller; not product complete"
+      "summary": "Ralph is implement-only subcontroller; not product complete",
+      "status": "truth_frozen",
+      "revision": "R1"
     },
     {
       "phase": 8,
@@ -107,7 +121,9 @@
         "beacon-v2-main-star-satellite-pool",
         "beacon-v2-ralph-implement-boundary"
       ],
-      "summary": "One-shot longrun AgentDriver + v1.6.7 durable supervisor parity; auto requeue host turns; budget halt; verifier/human release"
+      "summary": "One-shot longrun AgentDriver + v1.6.7 durable supervisor parity; auto requeue host turns; budget halt; verifier/human release",
+      "status": "truth_frozen_parity_tests",
+      "revision": "R2"
     }
   ],
   "topology_order": [
@@ -118,5 +134,6 @@
     "beacon-v2-domain-fsm-qa-gate",
     "beacon-v2-ui-state-matrix-ship-gate",
     "beacon-v2-ralph-implement-boundary"
-  ]
+  ],
+  "delivery_note": "python_compat_parity_landed; rust_runtime_pending_w4"
 }

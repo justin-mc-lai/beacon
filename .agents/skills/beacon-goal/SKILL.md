@@ -60,6 +60,21 @@ beacon goal status|pause|resume|complete|tick ...
 
 Orchestrator/facade：可路由 generator/evaluator；**不**自己发 QA/release verdict。
 
+
+## Version lines
+
+| Line | Skill / CLI | Notes |
+|------|-------------|--------|
+| **v1.6.7** | current runtime | durable supervisor + AgentDriver shipped |
+| **v2.0.0** | same `$beacon-goal` | docs-line program + parity contracts; runtime still v1.6.7 until W4 (`BEACON_V2` not default) |
+
+```bash
+# v2 delivery goal (docs version)
+beacon goal run "<v2 目标>" --project . --version v2.0.0 --longrun
+```
+
+Do **not** set `BEACON_V2=1` by default before Wave W4.
+
 ## Durable long-run (v1.6.7)
 
 Product Goal is durable via **opt-in** supervisor + disk logs. Do **not** expect a single chat turn to finish multi-hour implement/QA.
