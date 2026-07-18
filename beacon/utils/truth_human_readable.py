@@ -36,17 +36,24 @@ def _extract_frontmatter_language(text: str) -> Optional[str]:
 
 
 def extract_l0_sections(text: str) -> Dict[str, str]:
-    """Return mapping heading -> body until next ## heading."""
+    """Return mapping heading -> body until next ## heading (line-start only)."""
     found: Dict[str, str] = {}
-    for h in L0_HEADINGS:
-        if h not in text:
+    lines = text.splitlines()
+    for idx, line in enumerate(lines):
+        stripped = line.strip()
+        if stripped not in L0_HEADINGS:
             continue
-        i = text.index(h) + len(h)
-        rest = text[i:]
-        m = re.search(r"\n## ", rest)
-        body = rest[: m.start()] if m else rest
-        found[h] = body.strip()
+        h = stripped
+        body_lines: List[str] = []
+        for later in lines[idx + 1 :]:
+            if later.startswith("## ") and later.strip() not in L0_HEADINGS:
+                break
+            if later.strip() in L0_HEADINGS:
+                break
+            body_lines.append(later)
+        found[h] = chr(10).join(body_lines).strip()
     return found
+
 
 
 def count_cjk(s: str) -> int:

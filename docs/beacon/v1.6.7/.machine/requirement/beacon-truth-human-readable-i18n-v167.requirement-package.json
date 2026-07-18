@@ -1,0 +1,306 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-18T10:51:06.018047+00:00",
+  "feature": "beacon-truth-human-readable-i18n-v167",
+  "feature_slug": "beacon-truth-human-readable-i18n-v167",
+  "version": "v1.6.7",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/truth.md",
+    "tests": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/tests.md",
+    "tasks": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/tasks.md",
+    "evidence": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "52b5cfa73d14b7881c57c03c3f02420156b0d63f64d5c3a9ae7d7fd2ad7fa45f",
+    "tests": "184ae5c251815bbac3c43db87ca37ff9d95e8a62e27406b76feb70d3b404bbc1",
+    "tasks": "f942ef1cc77ed810dd3cc9cee192ef3163139d000f06784845f89f301836a725",
+    "evidence": "37dac5e981dae0852cc7057767967f985630a5714e737486c8ae048d289408ba"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-truth-human-readable-i18n-v167",
+    "version": "v1.6.7",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "domain_required": "false",
+    "change_reason": "User GO 2026-07-18: human-readable L0 + Humanizer-zh/blader humanizer norms; zh/en; mount GoalRun main axis",
+    "canonical_refs": {
+      "truth": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/truth.md",
+      "tests": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/tests.md",
+      "tasks": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/tasks.md",
+      "evidence": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "program_ref": "docs/beacon/v1.6.7/programs/beacon-product-goal-domain-delivery-v167/feature-graph.json",
+    "ux_required": "false",
+    "design_deferral": "Docs/prose gate; no product marketing UI"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-HR-001",
+      "theme": "l0-heading",
+      "description": "truth 含 `## 人话` 或 `## Plain language`（按 language）（**Must**）"
+    },
+    {
+      "ac_id": "AC-HR-002",
+      "theme": "l0-budget",
+      "description": "L0 不超过 UD-HR 限额（**Must**）"
+    },
+    {
+      "ac_id": "AC-HR-003",
+      "theme": "l0-four-q",
+      "description": "L0 覆盖意图/能做/不能做/完成（**Must**）"
+    },
+    {
+      "ac_id": "AC-HR-004",
+      "theme": "humanizer-norms",
+      "description": "规范文件存在且被 gen-truth/change 引用（**Must**）"
+    },
+    {
+      "ac_id": "AC-HR-005",
+      "theme": "freeze-gate",
+      "description": "缺 L0 → freeze fail-closed `truth_human_l0_missing`（**Must**）"
+    },
+    {
+      "ac_id": "AC-HR-006",
+      "theme": "l1-authority",
+      "description": "gate 校验 AC/FSM 仍读 L1；L0  alone 不足（**Must**）"
+    },
+    {
+      "ac_id": "AC-HR-007",
+      "theme": "i18n-fm",
+      "description": "frontmatter `language` 合法枚举（**Must**）"
+    },
+    {
+      "ac_id": "AC-HR-008",
+      "theme": "bilingual",
+      "description": "language=bilingual 时双 L0 段（**Must**）"
+    },
+    {
+      "ac_id": "AC-HR-009",
+      "theme": "examples",
+      "description": "zh+en 示例可复制（**Must**）"
+    },
+    {
+      "ac_id": "AC-HR-010",
+      "theme": "axis",
+      "description": "主轴 mount + regenerate后 validate ok（**Must**）"
+    },
+    {
+      "ac_id": "AC-HR-011",
+      "theme": "incremental",
+      "description": "存量全量蒸馏 **非**本湖 P0；工具支持按 slug 扫（**Should**）"
+    },
+    {
+      "ac_id": "AC-HR-012",
+      "theme": "no-weaken",
+      "description": "humanizer 不得删除/改写 AC ID 语义（**Must**）"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-HR-001",
+      "tc_id": "TC-HR-001",
+      "layer": "contract",
+      "command": "`pytest tests/test_v167_truth_human_readable_i18n.py::test_self_truth_has_l0 -q`",
+      "assertion": "self L0 heading",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-HR-002",
+      "tc_id": "TC-HR-002",
+      "layer": "contract",
+      "command": "`pytest ...::test_l0_budget_self -q`",
+      "assertion": "self within budget",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-HR-003",
+      "tc_id": "TC-HR-003",
+      "layer": "contract",
+      "command": "`pytest ...::test_l0_four_questions -q`",
+      "assertion": "four questions cues",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-HR-004",
+      "tc_id": "TC-HR-004",
+      "layer": "contract",
+      "command": "`pytest ...::test_norms_files_exist -q`",
+      "assertion": "zh+en norms present",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-HR-005",
+      "tc_id": "TC-HR-005",
+      "layer": "unit",
+      "command": "`pytest ...::test_gate_missing_l0 -q`",
+      "assertion": "reason truth_human_l0_missing",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-HR-006",
+      "tc_id": "TC-HR-006",
+      "layer": "unit",
+      "command": "`pytest ...::test_l0_not_sufficient_for_ac -q`",
+      "assertion": "L1 still required",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-HR-007",
+      "tc_id": "TC-HR-007",
+      "layer": "contract",
+      "command": "`pytest ...::test_language_enum -q`",
+      "assertion": "language values",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-HR-008",
+      "tc_id": "TC-HR-008",
+      "layer": "contract",
+      "command": "`pytest ...::test_bilingual_fixture -q`",
+      "assertion": "dual L0",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-HR-009",
+      "tc_id": "TC-HR-009",
+      "layer": "contract",
+      "command": "`pytest ...::test_examples_exist -q`",
+      "assertion": "examples zh+en",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-HR-010",
+      "tc_id": "TC-HR-010",
+      "layer": "contract",
+      "command": "`beacon goal axis validate -v v1.6.7`",
+      "assertion": "lake on axis",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-HR-012",
+      "tc_id": "TC-HR-012",
+      "layer": "negative",
+      "command": "`pytest ...::test_humanizer_must_not_drop_ac -q`",
+      "assertion": "AC ids preserved",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "LINE-10",
+      "title": "TASK-HR-01 Freeze dual-layer + humanizer + i18n decisions (this package)",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-11",
+      "title": "TASK-HR-02 Distill norms files under skills/beacon/references/truth-humanizer/",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-12",
+      "title": "TASK-HR-03 Ship zh/en examples under skills/beacon/examples/",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-13",
+      "title": "TASK-HR-04 Mount lake on v1.6.7 program feature-graph + GoalRun axis",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-14",
+      "title": "TASK-HR-05 Implement `beacon.utils.truth_human_readable` gate helper",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-15",
+      "title": "TASK-HR-06 Wire freeze/change precheck → `truth_human_l0_missing`",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-16",
+      "title": "TASK-HR-07 Point beacon-gen-truth / beacon-gen-change SKILL.md at norms",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-17",
+      "title": "TASK-HR-08 Contract tests tests/test_v167_truth_human_readable_i18n.py",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-18",
+      "title": "TASK-HR-09 Optional CLI: `beacon truth prose-check <slug>`",
+      "status": "checked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-gen-change",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/truth.md",
+      "status": "frozen",
+      "route": "truth"
+    },
+    {
+      "surface": "norms",
+      "authority": "requirement_truth",
+      "canonical_artifact": "skills/beacon/references/truth-humanizer/truth_prose.zh.md",
+      "status": "shipped",
+      "route": "implement"
+    },
+    {
+      "surface": "gate",
+      "authority": "test_truth",
+      "canonical_artifact": "beacon/utils/truth_human_readable.py",
+      "status": "shipped",
+      "route": "implement"
+    },
+    {
+      "surface": "package-gate",
+      "authority": "test_truth",
+      "canonical_artifact": "beacon/utils/feature_package.py (L0 fail-closed ≥v1.6.7)",
+      "status": "shipped",
+      "route": "implement"
+    },
+    {
+      "surface": "prose-check",
+      "authority": "test_truth",
+      "canonical_artifact": "beacon truth prose-check",
+      "status": "shipped",
+      "route": "implement"
+    },
+    {
+      "surface": "unit-tests",
+      "authority": "test_truth",
+      "canonical_artifact": "tests/test_v167_truth_human_readable_i18n.py",
+      "status": "shipped",
+      "route": "qa"
+    },
+    {
+      "surface": "acceptance",
+      "authority": "qa_verdict",
+      "canonical_artifact": ".beacon/qa/acceptance-beacon-truth-human-readable-i18n-v167.json",
+      "status": "indexed",
+      "route": "qa"
+    },
+    {
+      "surface": "planner",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/research/beacon-v167-v200-capability-boundary-humanizer-ui-pln-review.md",
+      "status": "indexed",
+      "route": "change"
+    }
+  ]
+}

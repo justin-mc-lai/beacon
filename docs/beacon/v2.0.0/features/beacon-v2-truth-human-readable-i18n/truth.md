@@ -4,6 +4,7 @@ version: v2.0.0
 status: frozen
 revision_id: R1
 language: zh
+domain_required: false
 change_reason: "User GO 2026-07-18: v2 parity of human-readable L0 + humanizer i18n; mount v2 GoalRun axis"
 canonical_refs:
   truth: docs/beacon/v2.0.0/features/beacon-v2-truth-human-readable-i18n/truth.md

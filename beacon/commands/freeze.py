@@ -137,7 +137,7 @@ def _freeze_impl(feature: str, project: Optional[str], version: str, json_output
             "feature": feature,
             "version": resolved_version,
             "status": "blocked",
-            "reason_code": "feature_package_validation_failed",
+            "reason_code": str(post_validation.get("reason_code") or "feature_package_validation_failed"),
             "truth_integrity_gate": integrity_gate,
             "feature_package_validation": post_validation,
             "requirement_clarity_gate": clarity_gate,

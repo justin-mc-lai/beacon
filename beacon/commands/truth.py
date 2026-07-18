@@ -315,3 +315,63 @@ def gen_cmd(
                     typer.echo(f"  - {f.get('kind')}: {f.get('text', '')[:80]}", err=True)
             raise typer.Exit(2)
         typer.echo("✓ TIG-DC passed — truth is deterministic.")
+
+
+@app.command("prose-check")
+def prose_check_cmd(
+    feature: str = typer.Option(..., "--feature", "-f", help="Feature slug"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    strict: bool = typer.Option(False, "--strict", help="Require four-question cues in L0"),
+    json_output: bool = typer.Option(False, "--json", help="JSON payload"),
+) -> None:
+    """Check truth.md human-readable L0 + language (Humanizer-oriented gate)."""
+    from beacon.utils.feature_package import package_paths
+    from beacon.utils.truth_human_readable import check_truth_file
+
+    project_root = _resolve_root(project)
+    resolved = resolve_target_version(project_root, version)
+    paths = package_paths(project_root, version=resolved, feature=feature)
+    truth_path = paths["truth"]
+    if not truth_path.exists():
+        payload = {
+            "ok": False,
+            "blocked": True,
+            "reason_code": "truth_missing",
+            "path": str(truth_path),
+            "version": resolved,
+            "feature": feature,
+        }
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(f"✗ truth missing: {truth_path}", err=True)
+        raise typer.Exit(2)
+    result = check_truth_file(truth_path, strict_four_q=strict)
+    payload = {
+        "ok": bool(result.get("ok")),
+        "blocked": not bool(result.get("ok")),
+        "reason_code": result.get("reason_code") or "",
+        "version": resolved,
+        "feature": feature,
+        "path": (
+            str(truth_path.relative_to(project_root))
+            if str(truth_path.resolve()).startswith(str(project_root.resolve()))
+            else str(truth_path)
+        ),
+        "language": result.get("language"),
+        "l0_headings": result.get("l0_headings") or list((result.get("l0") or {}).keys()),
+        "detail": result.get("detail") or result.get("missing") or result.get("missing_cues"),
+    }
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        if payload["ok"]:
+            typer.echo(f"✓ prose-check pass: {feature} ({payload.get('language')}) L0={payload.get('l0_headings')}")
+        else:
+            typer.echo(
+                f"✗ prose-check blocked: {payload.get('reason_code')} feature={feature}",
+                err=True,
+            )
+            raise typer.Exit(2)
+

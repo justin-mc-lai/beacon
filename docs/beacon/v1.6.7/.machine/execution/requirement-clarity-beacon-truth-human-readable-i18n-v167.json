@@ -1,0 +1,359 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-truth-human-readable-i18n-v167",
+  "feature_slug": "beacon-truth-human-readable-i18n-v167",
+  "version": "v1.6.7",
+  "runtime_version": "v1.6.7",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.6.7/.machine/execution/requirement-clarity-beacon-truth-human-readable-i18n-v167.json",
+  "report_markdown_path": "docs/beacon/v1.6.7/execution/requirement-clarity-beacon-truth-human-readable-i18n-v167.md",
+  "state_path": ".beacon/state/requirement-clarity-beacon-truth-human-readable-i18n-v167.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.7",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-07-18T10:51:05.056122+00:00",
+    "feature": "beacon-truth-human-readable-i18n-v167",
+    "feature_slug": "beacon-truth-human-readable-i18n-v167",
+    "prd_ref": "docs/beacon/v1.6.7/prd/beacon-truth-human-readable-i18n-v167.md",
+    "user_story_ref": "docs/beacon/v1.6.7/user-story/beacon-truth-human-readable-i18n-v167.md"
+  },
+  "domain_fsm_gate": {
+    "schema_version": "1.0",
+    "feature": "beacon-truth-human-readable-i18n-v167",
+    "feature_slug": "beacon-truth-human-readable-i18n-v167",
+    "version": "v1.6.7",
+    "truth_path": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/truth.md",
+    "tests_path": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/tests.md",
+    "required": false,
+    "blocked": false,
+    "status": "not_required",
+    "reason_code": "",
+    "findings": [],
+    "requirement": {
+      "required": false,
+      "reason": "not_required",
+      "explicit": false,
+      "partial": false,
+      "complexity": false,
+      "business_signal": true,
+      "version_supported": true
+    },
+    "projection": {
+      "schema_version": "1.0",
+      "domain_fsm_schema": "domain-fsm.v1",
+      "entity_precedence_schema": "entity-precedence.v1",
+      "frontmatter": {
+        "slug": "beacon-truth-human-readable-i18n-v167",
+        "version": "v1.6.7",
+        "status": "frozen",
+        "revision_id": "R1",
+        "language": "zh",
+        "domain_required": "false",
+        "change_reason": "User GO 2026-07-18: human-readable L0 + Humanizer-zh/blader humanizer norms; zh/en; mount GoalRun main axis",
+        "canonical_refs": {
+          "truth": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/truth.md",
+          "tests": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/tests.md",
+          "tasks": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/tasks.md",
+          "evidence": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/evidence.md"
+        },
+        "parser_contract": "beacon-feature-package-v2",
+        "truth_source_model": "feature_package_authoritative",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "program_ref": "docs/beacon/v1.6.7/programs/beacon-product-goal-domain-delivery-v167/feature-graph.json",
+        "ux_required": "false",
+        "design_deferral": "Docs/prose gate; no product marketing UI"
+      },
+      "frontmatter_errors": [],
+      "has_domain_model_section": false,
+      "has_domain_fsm_section": false,
+      "has_illegal_transition_section": false,
+      "entities": [],
+      "entity_precedence": [],
+      "aggregates": [],
+      "illegal_transition_slots": [],
+      "acceptance_criteria": [
+        {
+          "ac_id": "AC-HR-001",
+          "description": "truth 含 `## 人话` 或 `## Plain language`（按 language）（**Must**）"
+        },
+        {
+          "ac_id": "AC-HR-002",
+          "description": "L0 不超过 UD-HR 限额（**Must**）"
+        },
+        {
+          "ac_id": "AC-HR-003",
+          "description": "L0 覆盖意图/能做/不能做/完成（**Must**）"
+        },
+        {
+          "ac_id": "AC-HR-004",
+          "description": "规范文件存在且被 gen-truth/change 引用（**Must**）"
+        },
+        {
+          "ac_id": "AC-HR-005",
+          "description": "缺 L0 → freeze fail-closed `truth_human_l0_missing`（**Must**）"
+        },
+        {
+          "ac_id": "AC-HR-006",
+          "description": "gate 校验 AC/FSM 仍读 L1；L0  alone 不足（**Must**）"
+        },
+        {
+          "ac_id": "AC-HR-007",
+          "description": "frontmatter `language` 合法枚举（**Must**）"
+        },
+        {
+          "ac_id": "AC-HR-008",
+          "description": "language=bilingual 时双 L0 段（**Must**）"
+        },
+        {
+          "ac_id": "AC-HR-009",
+          "description": "zh+en 示例可复制（**Must**）"
+        },
+        {
+          "ac_id": "AC-HR-010",
+          "description": "主轴 mount + regenerate后 validate ok（**Must**）"
+        },
+        {
+          "ac_id": "AC-HR-011",
+          "description": "存量全量蒸馏 **非**本湖 P0；工具支持按 slug 扫（**Should**）"
+        },
+        {
+          "ac_id": "AC-HR-012",
+          "description": "humanizer 不得删除/改写 AC ID 语义（**Must**）"
+        }
+      ],
+      "bound_ac_ids": [],
+      "orphan_ac_ids": [],
+      "aggregates_missing_illegal_slots": [],
+      "raw_section_titles": [
+        "人话",
+        "User Intent（一行）",
+        "User Decisions（locked — GO 2026-07-18）",
+        "Dual-layer contract",
+        "L0 limits（Must）",
+        "Humanizer checklist（truth 专用 — Must 扫描 L0 + 叙述段）",
+        "Acceptance Criteria",
+        "ProseGate tooling states",
+        "Non-Goals",
+        "done_when（本湖）"
+      ]
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "required": false,
+      "blocked": false,
+      "status": "not_required",
+      "reason_code": "",
+      "findings": [],
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "beacon-truth-human-readable-i18n-v167",
+          "version": "v1.6.7",
+          "status": "frozen",
+          "revision_id": "R1",
+          "language": "zh",
+          "domain_required": "false",
+          "change_reason": "User GO 2026-07-18: human-readable L0 + Humanizer-zh/blader humanizer norms; zh/en; mount GoalRun main axis",
+          "canonical_refs": {
+            "truth": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/truth.md",
+            "tests": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/tests.md",
+            "tasks": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/tasks.md",
+            "evidence": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/evidence.md"
+          },
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "truth_map_contract": "beacon-truth-map-v1",
+          "program_ref": "docs/beacon/v1.6.7/programs/beacon-product-goal-domain-delivery-v167/feature-graph.json",
+          "ux_required": "false",
+          "design_deferral": "Docs/prose gate; no product marketing UI"
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": false,
+        "has_domain_fsm_section": false,
+        "has_illegal_transition_section": false,
+        "entities": [],
+        "entity_precedence": [],
+        "aggregates": [],
+        "illegal_transition_slots": [],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-HR-001",
+            "description": "truth 含 `## 人话` 或 `## Plain language`（按 language）（**Must**）"
+          },
+          {
+            "ac_id": "AC-HR-002",
+            "description": "L0 不超过 UD-HR 限额（**Must**）"
+          },
+          {
+            "ac_id": "AC-HR-003",
+            "description": "L0 覆盖意图/能做/不能做/完成（**Must**）"
+          },
+          {
+            "ac_id": "AC-HR-004",
+            "description": "规范文件存在且被 gen-truth/change 引用（**Must**）"
+          },
+          {
+            "ac_id": "AC-HR-005",
+            "description": "缺 L0 → freeze fail-closed `truth_human_l0_missing`（**Must**）"
+          },
+          {
+            "ac_id": "AC-HR-006",
+            "description": "gate 校验 AC/FSM 仍读 L1；L0  alone 不足（**Must**）"
+          },
+          {
+            "ac_id": "AC-HR-007",
+            "description": "frontmatter `language` 合法枚举（**Must**）"
+          },
+          {
+            "ac_id": "AC-HR-008",
+            "description": "language=bilingual 时双 L0 段（**Must**）"
+          },
+          {
+            "ac_id": "AC-HR-009",
+            "description": "zh+en 示例可复制（**Must**）"
+          },
+          {
+            "ac_id": "AC-HR-010",
+            "description": "主轴 mount + regenerate后 validate ok（**Must**）"
+          },
+          {
+            "ac_id": "AC-HR-011",
+            "description": "存量全量蒸馏 **非**本湖 P0；工具支持按 slug 扫（**Should**）"
+          },
+          {
+            "ac_id": "AC-HR-012",
+            "description": "humanizer 不得删除/改写 AC ID 语义（**Must**）"
+          }
+        ],
+        "bound_ac_ids": [],
+        "orphan_ac_ids": [],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "人话",
+          "User Intent（一行）",
+          "User Decisions（locked — GO 2026-07-18）",
+          "Dual-layer contract",
+          "L0 limits（Must）",
+          "Humanizer checklist（truth 专用 — Must 扫描 L0 + 叙述段）",
+          "Acceptance Criteria",
+          "ProseGate tooling states",
+          "Non-Goals",
+          "done_when（本湖）"
+        ]
+      }
+    },
+    "recommended_action": ""
+  },
+  "human_closure_contract": {
+    "required": false,
+    "research_path": "docs/beacon/v1.6.7/research/beacon-truth-human-readable-i18n-v167.md",
+    "research_exists": false,
+    "source_architecture_path": "docs/beacon/v1.6.7/source-architecture/index.md",
+    "source_architecture_exists": true,
+    "required_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "missing_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "diagram_types": [],
+    "complexity_signals": []
+  },
+  "requirement_closure_contract": {
+    "required": true,
+    "chain_order": [
+      "research",
+      "prd",
+      "user_story",
+      "test_case",
+      "requirement_clarity",
+      "freeze"
+    ],
+    "human_closure_required": false,
+    "paths": {
+      "research": "docs/beacon/v1.6.7/research/beacon-truth-human-readable-i18n-v167.md",
+      "prd": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/truth.md",
+      "user_story": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/truth.md",
+      "test_case": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/tests.md"
+    },
+    "exists": {
+      "research": false,
+      "prd": true,
+      "user_story": true,
+      "test_case": true
+    },
+    "required_research_sections": [],
+    "missing_research_sections": [],
+    "ac_projection": {
+      "prd_ac_ids": [],
+      "user_story_ac_ids": [],
+      "test_case_ac_ids": [],
+      "upstream_ac_ids": [],
+      "missing_test_case_ac_ids": []
+    }
+  },
+  "version_projection_truth_contract": {
+    "required": false,
+    "supported": true,
+    "projection_types": [],
+    "research_path": "docs/beacon/v1.6.7/research/beacon-truth-human-readable-i18n-v167.md",
+    "research_exists": false,
+    "required_fields": [
+      "prd_refs",
+      "user_story_refs",
+      "test_case_refs",
+      "coverage_notes",
+      "out_of_scope_notes"
+    ],
+    "field_presence": {
+      "prd_refs": false,
+      "user_story_refs": false,
+      "test_case_refs": false,
+      "coverage_notes": false,
+      "out_of_scope_notes": false
+    },
+    "missing_fields": [],
+    "required_refs": {
+      "prd_refs": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/truth.md",
+      "user_story_refs": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/truth.md",
+      "test_case_refs": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/tests.md"
+    },
+    "missing_ref_targets": [],
+    "ready": false
+  },
+  "support_write_topology_contract": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "diagnostics": []
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/truth.md",
+    "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/tests.md",
+    "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/tasks.md",
+    "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/evidence.md"
+  ]
+}

@@ -483,6 +483,31 @@ def validate_feature_package(
     if not ac_rows:
         diagnostics.append({"severity": "error", "code": "acceptance_criteria_table_missing", "path": _rel(project_root, paths["truth"])})
 
+    # v1.6.7+ human-readable L0 gate (AC-HR-001..005): fail-closed on freeze/change package validation
+    if _semver_tuple(version) >= (1, 6, 7) and paths["truth"].exists() and truth.strip():
+        from beacon.utils.truth_human_readable import check_truth_text
+
+        prose = check_truth_text(truth, strict_four_q=False)
+        payload_prose = {
+            "severity": "error" if not prose.get("ok") else "info",
+            "code": str(prose.get("reason_code") or "truth_human_l0_ok"),
+            "path": _rel(project_root, paths["truth"]),
+            "language": prose.get("language"),
+            "l0_headings": prose.get("l0_headings") or list((prose.get("l0") or {}).keys()),
+        }
+        if not prose.get("ok"):
+            # normalize reason_code for freeze consumers
+            code = str(prose.get("reason_code") or "truth_human_l0_missing")
+            payload_prose["code"] = code
+            payload_prose["severity"] = "error"
+            if prose.get("missing"):
+                payload_prose["missing"] = prose.get("missing")
+            if prose.get("detail"):
+                payload_prose["detail"] = prose.get("detail")
+            diagnostics.append(payload_prose)
+        else:
+            diagnostics.append(payload_prose)
+
     test_rows = _extract_test_rows(tests)
     if not test_rows:
         diagnostics.append({"severity": "warn", "code": "tests_coverage_table_missing", "path": _rel(project_root, paths["tests"])})
@@ -571,7 +596,18 @@ def validate_feature_package(
         "version": version,
         "status": "blocked" if has_errors else "pass",
         "blocked": has_errors,
-        "reason_code": "feature_package_validation_failed" if has_errors else "",
+        "reason_code": (
+            next(
+                (
+                    str(item.get("code") or "")
+                    for item in diagnostics
+                    if item.get("severity") == "error" and str(item.get("code") or "").startswith("truth_human_")
+                ),
+                "feature_package_validation_failed",
+            )
+            if has_errors
+            else ""
+        ),
         "generated_at": now_iso(),
         "package_dir": _rel(project_root, paths["dir"]),
         "truth_frontmatter": frontmatter,

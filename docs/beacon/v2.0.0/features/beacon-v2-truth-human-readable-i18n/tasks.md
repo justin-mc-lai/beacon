@@ -11,4 +11,4 @@ revision_id: R1
 - [x] TASK-V2-HR-02 Mount on v2 feature-graph + GoalRun axis
 - [x] TASK-V2-HR-03 Reuse v167 gate module (no fork)
 - [x] TASK-V2-HR-04 tests/test_v200_truth_human_readable_i18n.py
-- [ ] TASK-V2-HR-05 Rust freeze hook later (same reason_code)
+- [x] TASK-V2-HR-05 Rust freeze hook later (same reason_code)

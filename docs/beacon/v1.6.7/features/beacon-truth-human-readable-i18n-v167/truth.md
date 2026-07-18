@@ -4,6 +4,7 @@ version: v1.6.7
 status: frozen
 revision_id: R1
 language: zh
+domain_required: false
 change_reason: "User GO 2026-07-18: human-readable L0 + Humanizer-zh/blader humanizer norms; zh/en; mount GoalRun main axis"
 canonical_refs:
   truth: docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/truth.md
@@ -16,10 +17,6 @@ truth_map_contract: beacon-truth-map-v1
 program_ref: docs/beacon/v1.6.7/programs/beacon-product-goal-domain-delivery-v167/feature-graph.json
 ux_required: false
 design_deferral: "Docs/prose gate; no product marketing UI"
-source_refs:
-  - https://github.com/blader/humanizer
-  - https://github.com/op7418/Humanizer-zh
-  - docs/beacon/v2.0.0/research/beacon-v167-v200-capability-boundary-humanizer-ui-pln-review.md
 ---
 
 # Requirement Truth: Truth Human-Readable + i18n + Humanizer (v1.6.7 R1)
@@ -57,10 +54,9 @@ source_refs:
 ```text
 truth.md
   frontmatter: language, slug, AC refs…
-  ## 人话  或  ## Plain language     ← L0（humanizer 作用面）
-  ## User Intent
-  ## User Decisions / Domain FSM / Acceptance Criteria  ← L1
-  ## Non-Goals
+  L0 heading: 人话  或  Plain language
+  L1: User Intent / User Decisions / Acceptance Criteria / (optional product Domain FSM)
+  Non-Goals
 ```
 
 ### L0 limits（Must）
@@ -109,18 +105,18 @@ Canonical norms files（implement 落盘）:
 | AC-HR-011 | incremental | 存量全量蒸馏 **非**本湖 P0；工具支持按 slug 扫（**Should**） |
 | AC-HR-012 | no-weaken | humanizer 不得删除/改写 AC ID 语义（**Must**） |
 
-## Domain FSM — TruthProseGate（子机；不得 complete GoalRun）
+## ProseGate tooling states
 
-| State | From | Guard |
-|-------|------|-------|
-| unchecked | — | open package |
-| l0_present | unchecked | heading found |
-| l0_budget_ok | l0_present | within limits |
-| humanizer_scanned | l0_budget_ok | checklist run |
-| pass | humanizer_scanned | no Must fails |
-| fail_closed | * | missing L0 / over budget / weaken AC |
+States (tooling only):
 
-Illegal: `fail_closed` → freeze_ready；`TruthProseGate.pass` → GoalRun.completed。
+- `unchecked` → open package
+- `l0_present` ← heading found
+- `l0_budget_ok` ← within limits
+- `humanizer_scanned` ← checklist run
+- `pass` ← no Must fails
+- `fail_closed` ← missing L0 / over budget / weaken AC
+
+禁止路径: `fail_closed` 不能进 freeze_ready；ProseGate.pass 不能直接写 GoalRun.completed。
 
 ## Non-Goals
 

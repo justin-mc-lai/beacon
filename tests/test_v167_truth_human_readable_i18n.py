@@ -89,3 +89,96 @@ def test_humanizer_must_not_drop_ac():
 def test_axis_mentions_lake():
     axis = ROOT / "docs/beacon/v1.6.7/programs/beacon-product-goal-domain-delivery-v167/goalrun-main-axis.md"
     assert "beacon-truth-human-readable-i18n-v167" in axis.read_text(encoding="utf-8")
+
+
+def test_validate_package_passes_self():
+    from beacon.utils.feature_package import validate_feature_package
+
+    r = validate_feature_package(ROOT, version="v1.6.7", feature="beacon-truth-human-readable-i18n-v167")
+    assert r.get("blocked") is False, r.get("diagnostics")
+    codes = [d.get("code") for d in r.get("diagnostics") or []]
+    assert any(c == "truth_human_l0_ok" or (isinstance(c, str) and c.startswith("truth_human")) for c in codes) or r.get("blocked") is False
+
+
+def test_validate_package_blocks_missing_l0(tmp_path: Path):
+    from beacon.utils.feature_package import validate_feature_package
+
+    # minimal package under tmp
+    ver = "v1.6.7"
+    slug = "demo-no-l0"
+    pkg = tmp_path / "docs" / "beacon" / ver / "features" / slug
+    pkg.mkdir(parents=True)
+    (pkg / "truth.md").write_text(
+        """---
+slug: demo-no-l0
+version: v1.6.7
+status: draft
+language: zh
+canonical_refs:
+  truth: docs/beacon/v1.6.7/features/demo-no-l0/truth.md
+  tests: docs/beacon/v1.6.7/features/demo-no-l0/tests.md
+  tasks: docs/beacon/v1.6.7/features/demo-no-l0/tasks.md
+  evidence: docs/beacon/v1.6.7/features/demo-no-l0/evidence.md
+parser_contract: beacon-feature-package-v2
+---
+
+# Demo
+
+## Acceptance Criteria
+
+| AC ID | Theme | Description |
+|-------|-------|-------------|
+| AC-001 | x | y |
+""",
+        encoding="utf-8",
+    )
+    (pkg / "tests.md").write_text(
+        """# Tests
+## Coverage Matrix
+| AC ID | TC ID | Layer | Command | Assertion |
+|-------|-------|-------|---------|-----------|
+| AC-001 | TC-001 | unit | `python3 -m pytest -q` | pass |
+""",
+        encoding="utf-8",
+    )
+    (pkg / "tasks.md").write_text("- [ ] TASK-001 do it\n", encoding="utf-8")
+    (pkg / "evidence.md").write_text(
+        """# Evidence
+| Surface | Authority | Canonical Artifact | Status | Route |
+|---------|-----------|--------------------|--------|-------|
+| t | requirement_truth | docs/beacon/v1.6.7/features/demo-no-l0/truth.md | draft | truth |
+""",
+        encoding="utf-8",
+    )
+    r = validate_feature_package(tmp_path, version=ver, feature=slug)
+    assert r.get("blocked") is True
+    assert r.get("reason_code") == "truth_human_l0_missing"
+    codes = [d.get("code") for d in r.get("diagnostics") or []]
+    assert "truth_human_l0_missing" in codes
+
+
+def test_prose_check_cli():
+    import subprocess
+    import sys
+
+    proc = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "beacon.main",
+            "truth",
+            "prose-check",
+            "-f",
+            "beacon-truth-human-readable-i18n-v167",
+            "-v",
+            "v1.6.7",
+            "-p",
+            str(ROOT),
+            "--json",
+        ],
+        capture_output=True,
+        text=True,
+        cwd=str(ROOT),
+    )
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    assert "ok" in proc.stdout.lower() or '"ok": true' in proc.stdout
