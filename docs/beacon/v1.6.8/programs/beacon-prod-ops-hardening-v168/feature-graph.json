@@ -1,0 +1,107 @@
+{
+  "schema_version": "beacon-feature-graph-v1",
+  "program_slug": "beacon-prod-ops-hardening-v168",
+  "version": "v1.6.8",
+  "plan_mode": "interactive",
+  "scope_mode": "full_parity",
+  "lake_or_ocean": "海拆湖",
+  "program_phase": "P0",
+  "p4_ack": true,
+  "promotion_ref": "docs/beacon/v1.6.7/research/beacon-v168-prod-ops-hardening-pln-review.md",
+  "user_decisions": {
+    "UD-V168-001": "longrun_default_true_new_projects",
+    "UD-V168-002": "hotfix_entry_goal_mode_hotfix",
+    "UD-V168-003": "hotfix_requires_forward_port_plan",
+    "UD-V168-004": "evidence_repair_writes_dot_beacon",
+    "UD-V168-005": "v2_loom_parity_same_milestone",
+    "UD-V168-006": "single_public_entry_beacon_goal",
+    "UD-V168-007": "submachines_cannot_complete_goalrun"
+  },
+  "lakes": [
+    {
+      "phase": 0,
+      "priority": "P0",
+      "slug": "beacon-version-fleet-ops-v168",
+      "lake_or_ocean": "湖",
+      "depends_on": [],
+      "harness_route": "beacon-gen-change",
+      "summary": "version fleet read model + dual-version productization",
+      "status": "truth_frozen",
+      "wave": 0
+    },
+    {
+      "phase": 1,
+      "priority": "P0",
+      "slug": "beacon-release-profile-selfheal-v168",
+      "lake_or_ocean": "湖",
+      "depends_on": [],
+      "harness_route": "beacon-gen-change",
+      "summary": "full/hotfix profile + repair-evidence-manifest + align-run-id",
+      "status": "truth_frozen",
+      "wave": 1
+    },
+    {
+      "phase": 2,
+      "priority": "P0",
+      "slug": "beacon-hotfix-lane-v168",
+      "lake_or_ocean": "湖",
+      "depends_on": [
+        "beacon-version-fleet-ops-v168",
+        "beacon-release-profile-selfheal-v168"
+      ],
+      "harness_route": "beacon-gen-change",
+      "summary": "goal --mode hotfix + forward-port + rollback_notes",
+      "status": "truth_frozen",
+      "wave": 2
+    },
+    {
+      "phase": 3,
+      "priority": "P0",
+      "slug": "beacon-goal-longrun-default-v168",
+      "lake_or_ocean": "湖",
+      "depends_on": [],
+      "harness_route": "beacon-gen-change",
+      "summary": "project longrun_default=true + auto driver/supervise",
+      "status": "truth_frozen",
+      "wave": 3
+    },
+    {
+      "phase": 4,
+      "priority": "P0",
+      "slug": "beacon-v168-goalrun-axis-mount",
+      "lake_or_ocean": "湖",
+      "depends_on": [
+        "beacon-version-fleet-ops-v168",
+        "beacon-release-profile-selfheal-v168",
+        "beacon-hotfix-lane-v168",
+        "beacon-goal-longrun-default-v168"
+      ],
+      "harness_route": "beacon-gen-change",
+      "summary": "axis mount + UD-AXIS for ops lakes",
+      "status": "truth_frozen",
+      "wave": 4
+    },
+    {
+      "phase": 4,
+      "priority": "P0",
+      "slug": "beacon-v2-loom-ops-philosophy-sync",
+      "lake_or_ocean": "湖",
+      "depends_on": [
+        "beacon-v168-goalrun-axis-mount"
+      ],
+      "harness_route": "beacon-gen-change",
+      "summary": "parity contracts on v2 program + loom docs",
+      "status": "truth_frozen",
+      "wave": 4
+    }
+  ],
+  "topology_order": [
+    "beacon-version-fleet-ops-v168",
+    "beacon-release-profile-selfheal-v168",
+    "beacon-hotfix-lane-v168",
+    "beacon-goal-longrun-default-v168",
+    "beacon-v168-goalrun-axis-mount",
+    "beacon-v2-loom-ops-philosophy-sync"
+  ],
+  "main_axis_note": "GoalRun mounts hotfix/longrun/fleet/profile; regenerate on change (UD-AXIS)"
+}

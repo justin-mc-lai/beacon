@@ -1856,3 +1856,80 @@ def verify_agent_eval_admission_command(
     elif strict and result.get("status") == "skipped":
         exit_code = 2
     raise typer.Exit(code=exit_code)
+
+
+@app.command("repair-evidence-manifest")
+def repair_evidence_manifest_cmd(
+    project: Optional[str] = typer.Option(None, "--project-root", "--project", "-p"),
+    version: str = typer.Option("v1.6.8", "--version", "-v"),
+    json_output: bool = typer.Option(False, "--json", "-j"),
+) -> None:
+    """Recompute .beacon/evidence-manifest.json hashes (v1.6.8 self-heal)."""
+    from beacon.utils.prod_ops_v168 import repair_evidence_manifest
+
+    root = Path(project).expanduser().resolve() if project else Path.cwd().resolve()
+    result = repair_evidence_manifest(root, version=version)
+    payload = {"schema_version": "1.0", "action": "repair-evidence-manifest", "status": "PASS" if result.get("ok") else "FAIL", "result": result}
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"repair-evidence-manifest: entries={result.get('entry_count')} dropped={result.get('dropped_count')}")
+    raise typer.Exit(0 if result.get("ok") else 2)
+
+
+@app.command("align-run-id")
+def align_run_id_cmd(
+    run_id: str = typer.Option(..., "--run-id"),
+    project: Optional[str] = typer.Option(None, "--project-root", "--project", "-p"),
+    json_output: bool = typer.Option(False, "--json", "-j"),
+) -> None:
+    """Align run_id across status/coverage/manifest/signature chain."""
+    from beacon.utils.prod_ops_v168 import align_run_id
+
+    root = Path(project).expanduser().resolve() if project else Path.cwd().resolve()
+    result = align_run_id(root, run_id=run_id)
+    payload = {"schema_version": "1.0", "action": "align-run-id", "status": "PASS" if result.get("ok") else "FAIL", "result": result}
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"align-run-id: {result.get('run_id')} updated={len(result.get('updated') or [])}")
+    raise typer.Exit(0 if result.get("ok") else 2)
+
+
+@app.command("init-dual-version")
+def init_dual_version_cmd(
+    previous_baseline: str = typer.Option(..., "--previous-baseline"),
+    next_feature: str = typer.Option(..., "--next-feature"),
+    hotfix_rule: str = typer.Option("hotfix/*", "--hotfix-rule"),
+    project: Optional[str] = typer.Option(None, "--project-root", "--project", "-p"),
+    json_output: bool = typer.Option(False, "--json", "-j"),
+) -> None:
+    """Initialize dual-version hotfix forward-port contract (v1.6.8)."""
+    from beacon.utils.prod_ops_v168 import init_dual_version
+
+    root = Path(project).expanduser().resolve() if project else Path.cwd().resolve()
+    result = init_dual_version(root, previous_baseline=previous_baseline, next_feature=next_feature, hotfix_rule=hotfix_rule)
+    payload = {"schema_version": "1.0", "action": "init-dual-version", "status": "PASS", "result": result}
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"init-dual-version: {result.get('path')}")
+    raise typer.Exit(0)
+
+
+@app.command("verify-dual-version")
+def verify_dual_version_cmd(
+    project: Optional[str] = typer.Option(None, "--project-root", "--project", "-p"),
+    json_output: bool = typer.Option(False, "--json", "-j"),
+) -> None:
+    """Verify dual-version contract is complete."""
+    from beacon.utils.prod_ops_v168 import verify_dual_version
+
+    root = Path(project).expanduser().resolve() if project else Path.cwd().resolve()
+    result = verify_dual_version(root)
+    payload = {"schema_version": "1.0", "action": "verify-dual-version", "status": "PASS" if result.get("ok") else "FAIL", "result": result}
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"verify-dual-version: {'ok' if result.get('ok') else result.get('reason_code')}")
+    raise typer.Exit(0 if result.get("ok") else 2)

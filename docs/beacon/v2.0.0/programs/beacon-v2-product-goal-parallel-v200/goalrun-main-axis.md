@@ -2,7 +2,7 @@
 
 - **version**: `v2.0.0`
 - **program**: `beacon-v2-product-goal-parallel-v200`
-- **generated_at**: 2026-07-18T16:13:06.854544+00:00
+- **generated_at**: 2026-07-18T22:30:39.598585+00:00
 - **policy**: UD-AXIS-001..005 (change must regenerate this artifact)
 
 ## User intent
@@ -48,6 +48,11 @@ created → running → stage_active{plan|truth|design?|implement|qa|release}
 | `loom-goal-trace-bundle` | longrun observability | agent_trace + goal trace CLI |
 | `beacon-goalrun-main-axis-v167` | axis governance | regenerate on change |
 | `beacon-v2-truth-human-readable-i18n` | truth hard gate | L0 human + humanizer zh/en parity |
+| `beacon-v2-hotfix-lane` | hotfix mode (v2) | parity with v168 hotfix-lane |
+| `beacon-v2-release-profile-selfheal` | release profile (v2) | parity self-heal |
+| `beacon-v2-goal-longrun-default` | longrun default (v2) | parity longrun default |
+| `beacon-v2-version-fleet-ops` | ops fleet (v2) | parity fleet |
+| `beacon-v2-loom-ops-philosophy-sync` | philosophy sync | Loom ops same as v168 |
 
 ## done_when
 

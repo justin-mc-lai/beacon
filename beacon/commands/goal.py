@@ -72,20 +72,26 @@ def goal_run(
         help="single_worktree | main_star_satellite_pool (auto if empty)",
     ),
     auto_tick: bool = typer.Option(False, "--auto-tick", help="Advance plan/truth stages in facade only"),
+    mode: str = typer.Option("normal", "--mode", help="GoalRun mode: normal | hotfix (v1.6.8)"),
+    from_version: str = typer.Option("", "--from-version", help="Hotfix baseline version/tag"),
+    production_tag: str = typer.Option("", "--production-tag", help="Hotfix production tag"),
+    forward_port: str = typer.Option("", "--forward-port", help="Hotfix forward-port target branch"),
+    rollback_notes: str = typer.Option("", "--rollback-notes", help="Hotfix rollback notes"),
     longrun: bool = typer.Option(
         False,
         "--longrun",
-        help="One-shot longrun: attach supervisor + start AgentDriver for this run (default run stays idle)",
+        help="Force longrun on (also project goal.longrun_default)",
     ),
+    no_longrun: bool = typer.Option(False, "--no-longrun", help="Force longrun off for this run"),
     driver_start_flag: bool = typer.Option(
         True,
         "--driver-start/--no-driver-start",
-        help="With --longrun, start driver (default true)",
+        help="With longrun, start driver (default true)",
     ),
     driver_loop: bool = typer.Option(
         False,
         "--driver-loop",
-        help="With --longrun, run driver loop in-process (uses BEACON_HOST_GOAL_BRIDGE_CMD)",
+        help="With longrun, run driver loop in-process (uses BEACON_HOST_GOAL_BRIDGE_CMD)",
     ),
     max_driver_turns: Optional[int] = typer.Option(
         None,
@@ -95,29 +101,54 @@ def goal_run(
     json_output: bool = typer.Option(False, "--json"),
 ) -> None:
     """Unique public CLI entry equivalent to $beacon-goal."""
-    mode = worktree_mode.strip() or None
-    if mode and mode not in {"single_worktree", "main_star_satellite_pool"}:
-        payload = {
-            "status": "blocked",
-            "blocked": True,
-            "reason_code": "invalid_worktree_mode",
-            "public_entry": PUBLIC_ENTRY,
-        }
-        _emit(payload, json_output)
+    root = _root(project)
+    mode_norm = (mode or "normal").strip().lower()
+    if mode_norm not in {"normal", "hotfix"}:
+        _emit({"status": "blocked", "blocked": True, "reason_code": "invalid_goal_mode", "allowed": ["normal", "hotfix"]}, json_output)
         raise typer.Exit(2)
+    wt = worktree_mode.strip() or None
+    if wt and wt not in {"single_worktree", "main_star_satellite_pool"}:
+        _emit({"status": "blocked", "blocked": True, "reason_code": "invalid_worktree_mode", "public_entry": PUBLIC_ENTRY}, json_output)
+        raise typer.Exit(2)
+    hotfix_plan = None
+    if mode_norm == "hotfix":
+        from beacon.utils.prod_ops_v168 import build_hotfix_plan
+
+        hotfix_plan = build_hotfix_plan(
+            utterance=utterance,
+            from_version=from_version,
+            production_tag=production_tag,
+            forward_port_target=forward_port,
+            rollback_notes=rollback_notes,
+        )
+    if no_longrun:
+        lr = False
+    elif longrun:
+        lr = True
+    else:
+        from beacon.utils.prod_ops_v168 import resolve_longrun_enabled
+
+        lr = bool(resolve_longrun_enabled(root, cli_longrun=None).get("enabled"))
     payload = run_goal_facade(
-        _root(project),
+        root,
         utterance=utterance,
         version=version,
         feature=feature,
         lakes=list(lake or []),
-        worktree_mode=mode,  # type: ignore[arg-type]
+        worktree_mode=wt,  # type: ignore[arg-type]
         auto_tick=auto_tick,
-        longrun=longrun,
+        longrun=lr,
         driver_start=driver_start_flag,
         driver_run_loop=driver_loop,
         max_driver_turns=max_driver_turns,
     )
+    payload["goal_mode"] = mode_norm
+    if hotfix_plan is not None:
+        payload["hotfix_plan"] = hotfix_plan
+        if not str(from_version or production_tag).strip():
+            payload["blocked"] = True
+            payload["status"] = "blocked"
+            payload["reason_code"] = "hotfix_baseline_missing"
     _emit(payload, json_output)
     raise typer.Exit(0 if not payload.get("blocked") else 2)
 
@@ -430,3 +461,27 @@ def goal_trace(
     payload = aggregate_goal_trace(root, run_id, verbose=verbose)
     _emit(payload, json_output)
     raise typer.Exit(0 if payload.get("status") == "ok" else 2)
+
+
+@app.command("hotfix-plan")
+def goal_hotfix_plan(
+    utterance: str = typer.Argument("hotfix", help="Incident / goal text"),
+    from_version: str = typer.Option("", "--from-version"),
+    production_tag: str = typer.Option("", "--production-tag"),
+    forward_port: str = typer.Option("", "--forward-port"),
+    rollback_notes: str = typer.Option("", "--rollback-notes"),
+    json_output: bool = typer.Option(False, "--json"),
+) -> None:
+    """Build a hotfix plan (v1.6.8) without starting implement."""
+    from beacon.utils.prod_ops_v168 import build_hotfix_plan, validate_hotfix_for_release
+
+    plan = build_hotfix_plan(
+        utterance=utterance,
+        from_version=from_version,
+        production_tag=production_tag,
+        forward_port_target=forward_port,
+        rollback_notes=rollback_notes,
+    )
+    plan["release_validation"] = validate_hotfix_for_release(plan)
+    _emit(plan, json_output)
+    raise typer.Exit(0 if not plan.get("blocked") else 2)

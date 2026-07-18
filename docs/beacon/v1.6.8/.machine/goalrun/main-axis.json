@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0",
+  "artifact": "goalrun_main_axis",
+  "version": "v1.6.8",
+  "program_slug": "beacon-prod-ops-hardening-v168",
+  "generated_at": "2026-07-18T22:28:38.217750+00:00",
+  "goalrun_states": [
+    "created",
+    "running",
+    "stage_active",
+    "host_interrupted",
+    "stage_blocked",
+    "awaiting_verifier",
+    "completed",
+    "release_pending",
+    "release_confirmed"
+  ],
+  "lakes": [
+    "beacon-version-fleet-ops-v168",
+    "beacon-release-profile-selfheal-v168",
+    "beacon-hotfix-lane-v168",
+    "beacon-goal-longrun-default-v168",
+    "beacon-v168-goalrun-axis-mount",
+    "beacon-v2-loom-ops-philosophy-sync"
+  ],
+  "done_when_default": [
+    "domain_fsm",
+    "domain_fsm_coverage",
+    "evidence_chain",
+    "continuous_qa"
+  ],
+  "submachines_cannot_complete": [
+    "SupervisorSession",
+    "AgentDriver",
+    "SubagentSession",
+    "RalphDelegate",
+    "DesignStage"
+  ],
+  "change_triggers": [
+    "ac",
+    "acceptance",
+    "domain_fsm",
+    "driver",
+    "dual_install",
+    "entity_precedence",
+    "entry",
+    "longrun",
+    "parallel",
+    "promise",
+    "stage",
+    "subagent",
+    "supervise",
+    "worktree"
+  ],
+  "axis_md": "docs/beacon/v1.6.8/programs/beacon-prod-ops-hardening-v168/goalrun-main-axis.md",
+  "policy": [
+    "UD-AXIS-001",
+    "UD-AXIS-002",
+    "UD-AXIS-003",
+    "UD-AXIS-004",
+    "UD-AXIS-005"
+  ]
+}
