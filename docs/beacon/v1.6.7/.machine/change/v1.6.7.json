@@ -13,7 +13,7 @@
   "truth_authority": false,
   "lifecycle_stage": false,
   "release_publish_action": false,
-  "feature_count": 11,
+  "feature_count": 12,
   "features": [
     {
       "feature": "beacon-domain-fsm-authority-v167",
@@ -76,6 +76,12 @@
       "status": "generated"
     },
     {
+      "feature": "beacon-truth-human-readable-i18n-v167",
+      "feature_slug": "beacon-truth-human-readable-i18n-v167",
+      "summary": "Maintains release-facing version aggregate projection guards so QA accepted features are included in version change scope before release check.",
+      "status": "completed"
+    },
+    {
       "feature": "beacon-ui-design-ship-gate-v167",
       "feature_slug": "beacon-ui-design-ship-gate-v167",
       "summary": "Maintains release-facing version aggregate projection guards so QA accepted features are included in version change scope before release check.",
@@ -84,7 +90,7 @@
   ],
   "implementation_order": {
     "status": "analyzed",
-    "feature_count": 11,
+    "feature_count": 12,
     "ordered_feature_slugs": [
       "beacon-git-scope-graph-v167",
       "beacon-loop-goal-v166",
@@ -96,7 +102,8 @@
       "beacon-product-goal-runtime-v167",
       "beacon-loop-discover-goal-finish-v167",
       "beacon-goal-durable-supervisor-v167",
-      "beacon-goal-agent-driver-v167"
+      "beacon-goal-agent-driver-v167",
+      "beacon-truth-human-readable-i18n-v167"
     ],
     "waves": [
       {
@@ -178,15 +185,6 @@
             "writable_services": [],
             "parallelizable": true,
             "reason_code": "parallel_no_conflict"
-          },
-          {
-            "feature": "beacon-goal-agent-driver-v167",
-            "feature_slug": "beacon-goal-agent-driver-v167",
-            "depends_on_features": [],
-            "direct_delivery_services": [],
-            "writable_services": [],
-            "parallelizable": true,
-            "reason_code": "parallel_no_conflict"
           }
         ]
       },
@@ -220,6 +218,48 @@
             "feature_slug": "beacon-goal-durable-supervisor-v167",
             "depends_on_features": [
               "beacon-loop-goal-v166"
+            ],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": false,
+            "reason_code": "shared_delivery_service_conflict"
+          }
+        ]
+      },
+      {
+        "wave": 4,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "beacon-goal-agent-driver-v167",
+            "feature_slug": "beacon-goal-agent-driver-v167",
+            "depends_on_features": [
+              "beacon-goal-durable-supervisor-v167"
+            ],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": false,
+            "reason_code": "shared_delivery_service_conflict"
+          }
+        ]
+      },
+      {
+        "wave": 5,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "beacon-truth-human-readable-i18n-v167",
+            "feature_slug": "beacon-truth-human-readable-i18n-v167",
+            "depends_on_features": [
+              "beacon-goal-agent-driver-v167"
             ],
             "direct_delivery_services": [
               "."
@@ -265,6 +305,9 @@
     "[beacon-ralph-implement-boundary-v167] Feature-level release projection input for QA accepted current feature",
     "[beacon-ralph-implement-boundary-v167] Version aggregate projection inclusion guard and repair metadata",
     "[beacon-ralph-implement-boundary-v167] Repair-only projection rebuild path for release preflight artifacts",
+    "[beacon-truth-human-readable-i18n-v167] Feature-level release projection input for QA accepted current feature",
+    "[beacon-truth-human-readable-i18n-v167] Version aggregate projection inclusion guard and repair metadata",
+    "[beacon-truth-human-readable-i18n-v167] Repair-only projection rebuild path for release preflight artifacts",
     "[beacon-ui-design-ship-gate-v167] Feature-level release projection input for QA accepted current feature",
     "[beacon-ui-design-ship-gate-v167] Version aggregate projection inclusion guard and repair metadata",
     "[beacon-ui-design-ship-gate-v167] Repair-only projection rebuild path for release preflight artifacts"
@@ -280,6 +323,7 @@
     "[beacon-loop-goal-v166] Manual-only version aggregate projection repair before release check",
     "[beacon-product-goal-runtime-v167] Manual-only version aggregate projection repair before release check",
     "[beacon-ralph-implement-boundary-v167] Manual-only version aggregate projection repair before release check",
+    "[beacon-truth-human-readable-i18n-v167] Manual-only version aggregate projection repair before release check",
     "[beacon-ui-design-ship-gate-v167] Manual-only version aggregate projection repair before release check"
   ],
   "fixed": [
@@ -303,6 +347,8 @@
     "[beacon-product-goal-runtime-v167] Version aggregate projection remains a read model instead of requirement truth",
     "[beacon-ralph-implement-boundary-v167] Release check can route missing current feature projection to an actionable repair path",
     "[beacon-ralph-implement-boundary-v167] Version aggregate projection remains a read model instead of requirement truth",
+    "[beacon-truth-human-readable-i18n-v167] Release check can route missing current feature projection to an actionable repair path",
+    "[beacon-truth-human-readable-i18n-v167] Version aggregate projection remains a read model instead of requirement truth",
     "[beacon-ui-design-ship-gate-v167] Release check can route missing current feature projection to an actionable repair path",
     "[beacon-ui-design-ship-gate-v167] Version aggregate projection remains a read model instead of requirement truth"
   ],
@@ -369,6 +415,13 @@
     "docs/beacon/v1.6.7/qa/test-cases/beacon-ralph-implement-boundary-v167.md",
     "docs/beacon/v1.6.7/.machine/execution/beacon-ralph-implement-boundary-v167.revision.json",
     "docs/beacon/v1.6.7/.machine/change/beacon-ralph-implement-boundary-v167.json",
+    "docs/beacon/v1.6.7/change/beacon-truth-human-readable-i18n-v167.md",
+    "docs/beacon/v1.6.7/prd/beacon-truth-human-readable-i18n-v167.md",
+    "docs/beacon/v1.6.7/user-story/beacon-truth-human-readable-i18n-v167.md",
+    "docs/beacon/v1.6.7/qa/test-cases/beacon-truth-human-readable-i18n-v167.md",
+    "docs/beacon/v1.6.7/.machine/execution/beacon-truth-human-readable-i18n-v167.revision.json",
+    "docs/beacon/v1.6.7/.machine/execution/qa-acceptance-beacon-truth-human-readable-i18n-v167.json",
+    "docs/beacon/v1.6.7/.machine/change/beacon-truth-human-readable-i18n-v167.json",
     "docs/beacon/v1.6.7/change/beacon-ui-design-ship-gate-v167.md",
     "docs/beacon/v1.6.7/prd/beacon-ui-design-ship-gate-v167.md",
     "docs/beacon/v1.6.7/user-story/beacon-ui-design-ship-gate-v167.md",
@@ -376,5 +429,5 @@
     "docs/beacon/v1.6.7/.machine/execution/beacon-ui-design-ship-gate-v167.revision.json",
     "docs/beacon/v1.6.7/.machine/change/beacon-ui-design-ship-gate-v167.json"
   ],
-  "generated_at": "2026-07-18 12:36"
+  "generated_at": "2026-07-18 21:41"
 }

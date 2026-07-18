@@ -1,0 +1,1285 @@
+{
+  "schema_version": "1.0",
+  "version": "v1.6.7",
+  "runtime_version": "v1.6.7",
+  "release_ready": true,
+  "gate": {
+    "status": "Pass",
+    "stage": "release",
+    "blocked_count": 0,
+    "run_id": "run-release-repair-20260718T193500",
+    "artifact_version": "v1.6.7",
+    "version_match": true,
+    "reason_codes": []
+  },
+  "qa": {
+    "feature": "beacon-truth-human-readable-i18n-v167",
+    "status": "passed",
+    "evidence_done": true,
+    "release_ready": true,
+    "execution_mode": "feature-aware",
+    "project_profile_id": "",
+    "project_profile_gate_status": "not_configured",
+    "artifact_version": "v1.6.7",
+    "version_match": true,
+    "acceptance_envelope_path": "docs/beacon/v1.6.7/.machine/execution/qa-acceptance-beacon-truth-human-readable-i18n-v167.json",
+    "acceptance_transaction_id": "tx-qa-acceptance-beacon-truth-human-readable-i18n-v167-release-repair",
+    "acceptance_verdict": "passed",
+    "acceptance_transaction_status": "pass",
+    "acceptance_transaction_reason_code": "acceptance_projection_transaction_ok"
+  },
+  "delivery": {
+    "type": "initial",
+    "revision_id": "R1",
+    "source_revision_id": ""
+  },
+  "semantic": {},
+  "revision_binding": {
+    "status": "bound",
+    "reason_code": "",
+    "revision_id": "R1",
+    "source_revision_id": "",
+    "superseded_by": "",
+    "doc_status": "frozen",
+    "delivery_status": "idle",
+    "gate_bound_to_latest_revision": true
+  },
+  "exhaustiveness": {},
+  "acceptance": {
+    "status": "pass",
+    "source": "qa_acceptance_envelope",
+    "feature": "beacon-truth-human-readable-i18n-v167",
+    "qa_status": "passed",
+    "evidence_done": true,
+    "release_ready": true,
+    "continue_decision": "ready_for_release",
+    "project_profile_gate_status": "not_configured",
+    "unresolved_closure_outcomes": [],
+    "review_required_count": 0,
+    "needs_replay_count": 0,
+    "release_confidence_min": 1.0,
+    "coverage_current": {
+      "required_scenarios": 14,
+      "executed_scenarios": 14,
+      "coverage_rate": 1.0,
+      "required_scenario_families": [
+        "boundary",
+        "compatibility",
+        "happy",
+        "negative",
+        "recovery"
+      ],
+      "covered_scenario_families": [
+        "primary"
+      ],
+      "missing_scenario_families": [],
+      "missing_test_case_ids": []
+    },
+    "acceptance_envelope_path": "docs/beacon/v1.6.7/.machine/execution/qa-acceptance-beacon-truth-human-readable-i18n-v167.json",
+    "acceptance_transaction_id": "tx-qa-acceptance-beacon-truth-human-readable-i18n-v167-release-repair",
+    "acceptance_verdict": "passed",
+    "qa_status_source": "canonical",
+    "legacy_only_qa_blocked": false
+  },
+  "acceptance_kit": {
+    "present": false,
+    "summary": {
+      "schema_version": "1.0",
+      "feature": "",
+      "version": "",
+      "verdict": "blocked",
+      "layer_verdicts": {
+        "skill-contract": "missing",
+        "scenario-suite": "missing",
+        "trace-scorecard": "missing",
+        "real-project-proof": "missing"
+      },
+      "layer_details": [
+        {
+          "name": "skill-contract",
+          "status": "missing",
+          "source_truth_ref": "",
+          "evidence_ref": ""
+        },
+        {
+          "name": "scenario-suite",
+          "status": "missing",
+          "source_truth_ref": "",
+          "evidence_ref": ""
+        },
+        {
+          "name": "trace-scorecard",
+          "status": "missing",
+          "source_truth_ref": "",
+          "evidence_ref": ""
+        },
+        {
+          "name": "real-project-proof",
+          "status": "missing",
+          "source_truth_ref": "",
+          "evidence_ref": ""
+        }
+      ],
+      "failed_layers": [
+        "skill-contract",
+        "scenario-suite",
+        "trace-scorecard",
+        "real-project-proof"
+      ],
+      "contract_pass": false,
+      "scenario_pass": false,
+      "trace_pass": false,
+      "real_project_pass": false,
+      "regression_pass": false,
+      "real_project_proof": {
+        "status": "missing",
+        "evidence_refs": [],
+        "source": ""
+      },
+      "machine_path": "",
+      "summary": "Blocked",
+      "layer_count": 4,
+      "layer_order": [
+        "skill-contract",
+        "scenario-suite",
+        "trace-scorecard",
+        "real-project-proof"
+      ],
+      "all_layers_passed": false
+    },
+    "links": [],
+    "reason_code": "acceptance_kit_missing"
+  },
+  "acceptance_transaction": {
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "acceptance_projection_transaction_ok",
+    "message": "qa acceptance transaction metadata is consistent",
+    "details": {
+      "machine_ref": "docs/beacon/v1.6.7/.machine/execution/qa-acceptance-beacon-truth-human-readable-i18n-v167.json",
+      "markdown_ref": "docs/beacon/v1.6.7/execution/qa-acceptance-brief-beacon-truth-human-readable-i18n-v167.md",
+      "runtime_projection_ref": ".beacon/transactions/qa-acceptance-beacon-truth-human-readable-i18n-v167.json",
+      "transaction_id": "tx-qa-acceptance-beacon-truth-human-readable-i18n-v167-release-repair",
+      "source_hash": "sha256:8c8e99543bc0a2c39cc6f46fa4ba4213a12c2ddaddefa8907d3460f2aa43e98a",
+      "projection_seq": 1
+    }
+  },
+  "prototype_projection": {
+    "schema_version": "1.0",
+    "feature": "beacon-truth-human-readable-i18n-v167",
+    "feature_slug": "beacon-truth-human-readable-i18n-v167",
+    "version": "v1.6.7",
+    "status": "missing",
+    "reason_code": "design_result_adapter_binding_missing",
+    "adapter_role": "design-result-adapter",
+    "binding_ready": false,
+    "paths": {
+      "binding_json": "docs/beacon/v1.6.7/prototype-adapter/beacon-truth-human-readable-i18n-v167/design-result-binding.json",
+      "binding_md": "docs/beacon/v1.6.7/prototype-adapter/beacon-truth-human-readable-i18n-v167/design-result-binding.md"
+    },
+    "recommended_route": {
+      "target_surface": "ui-ux-dev",
+      "skill": "ui-ux-dev-review",
+      "command": "$ui-ux-dev:ui-ux-dev-review \"beacon-truth-human-readable-i18n-v167\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.7",
+      "bootstrap_command": "$ui-ux-dev:ui-ux-dev-bootstrap \"beacon-truth-human-readable-i18n-v167\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.7"
+    },
+    "recommended_command": "beacon prototype adapt \"beacon-truth-human-readable-i18n-v167\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.7 --design-result-ref <ui-ux-dev-output>",
+    "legacy_prototype": {
+      "status": "missing",
+      "exists": false,
+      "frozen": false,
+      "stale": false,
+      "inconsistent": false,
+      "inconsistent_reasons": [],
+      "prototype_mode": "wireframe",
+      "ui_kit": "wireframe-markdown-v1",
+      "compiler": {},
+      "review_status": "missing",
+      "design_review_outcome": "missing",
+      "gate_ready": false,
+      "requirement_completeness_gate": {
+        "schema_version": "1.0",
+        "enabled": true,
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "requirement_completeness_projection_missing",
+        "target_stage": "prototype",
+        "feature": "beacon-truth-human-readable-i18n-v167",
+        "version": "v1.6.7",
+        "stage_ready": true,
+        "paths": {
+          "envelope": "docs/beacon/v1.6.7/.machine/requirement/beacon-truth-human-readable-i18n-v167.envelope.json",
+          "candidate_ledger": "docs/beacon/v1.6.7/.machine/requirement/beacon-truth-human-readable-i18n-v167.candidate-ledger.json",
+          "decision_log": "docs/beacon/v1.6.7/.machine/requirement/beacon-truth-human-readable-i18n-v167.supplement-decision-log.json",
+          "freeze_contract": "docs/beacon/v1.6.7/.machine/requirement/beacon-truth-human-readable-i18n-v167.freeze-contract.json",
+          "completeness": "docs/beacon/v1.6.7/.machine/requirement/beacon-truth-human-readable-i18n-v167.completeness.json",
+          "supplement_task": "docs/beacon/v1.6.7/.machine/requirement/beacon-truth-human-readable-i18n-v167.supplement-task.json",
+          "re_freeze_transaction": "docs/beacon/v1.6.7/.machine/requirement/beacon-truth-human-readable-i18n-v167.re-freeze-transaction.json"
+        },
+        "projection_status": "package_authoritative",
+        "recommended_command": "",
+        "next_action": "prototype",
+        "stage_gates": {
+          "artifact_read_model": {
+            "status": "pass",
+            "blocked": false,
+            "reason_code": "requirement_completeness_projection_missing",
+            "summary": "machine completeness projection is missing, but v1.5.2 package truth and coverage are valid authority",
+            "details": {
+              "paths": {
+                "envelope": "docs/beacon/v1.6.7/.machine/requirement/beacon-truth-human-readable-i18n-v167.envelope.json",
+                "candidate_ledger": "docs/beacon/v1.6.7/.machine/requirement/beacon-truth-human-readable-i18n-v167.candidate-ledger.json",
+                "decision_log": "docs/beacon/v1.6.7/.machine/requirement/beacon-truth-human-readable-i18n-v167.supplement-decision-log.json",
+                "freeze_contract": "docs/beacon/v1.6.7/.machine/requirement/beacon-truth-human-readable-i18n-v167.freeze-contract.json",
+                "completeness": "docs/beacon/v1.6.7/.machine/requirement/beacon-truth-human-readable-i18n-v167.completeness.json",
+                "supplement_task": "docs/beacon/v1.6.7/.machine/requirement/beacon-truth-human-readable-i18n-v167.supplement-task.json",
+                "re_freeze_transaction": "docs/beacon/v1.6.7/.machine/requirement/beacon-truth-human-readable-i18n-v167.re-freeze-transaction.json"
+              },
+              "projection_status": "package_authoritative"
+            }
+          },
+          "decision_traceability": {
+            "status": "pass",
+            "blocked": false,
+            "reason_code": "",
+            "summary": "human requirement truth is carried by the authoritative feature package",
+            "details": {}
+          },
+          "coverage_closure": {
+            "status": "pass",
+            "blocked": false,
+            "reason_code": "",
+            "summary": "acceptance coverage is parseable from package tests",
+            "details": {
+              "ac_count": 12,
+              "test_count": 11
+            }
+          },
+          "downgrade_control": {
+            "status": "pass",
+            "blocked": false,
+            "reason_code": "",
+            "summary": "legacy completeness projection absence does not downgrade package authority",
+            "details": {}
+          },
+          "stage_admission": {
+            "status": "pass",
+            "blocked": false,
+            "reason_code": "",
+            "summary": "prototype admission uses authoritative package truth",
+            "details": {
+              "target_stage": "prototype",
+              "stage_ready": true,
+              "stage_key": "package_authoritative_truth"
+            }
+          }
+        },
+        "human_loop_handoff": {
+          "action": "prototype",
+          "reason": "package_authoritative_truth_pass",
+          "recommended_command": "",
+          "focus_areas": []
+        },
+        "package_authoritative_truth": {
+          "status": "pass",
+          "validation": {
+            "schema_version": "1.0",
+            "feature": "beacon-truth-human-readable-i18n-v167",
+            "feature_slug": "beacon-truth-human-readable-i18n-v167",
+            "version": "v1.6.7",
+            "status": "pass",
+            "blocked": false,
+            "reason_code": "",
+            "generated_at": "2026-07-18T13:56:32.325221+00:00",
+            "package_dir": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167",
+            "truth_frontmatter": {
+              "slug": "beacon-truth-human-readable-i18n-v167",
+              "version": "v1.6.7",
+              "status": "frozen",
+              "revision_id": "R1",
+              "language": "zh",
+              "domain_required": "false",
+              "change_reason": "User GO 2026-07-18: human-readable L0 + Humanizer-zh/blader humanizer norms; zh/en; mount GoalRun main axis",
+              "canonical_refs": {
+                "truth": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/truth.md",
+                "tests": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/tests.md",
+                "tasks": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/tasks.md",
+                "evidence": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/evidence.md"
+              },
+              "parser_contract": "beacon-feature-package-v2",
+              "truth_source_model": "feature_package_authoritative",
+              "truth_map_contract": "beacon-truth-map-v1",
+              "program_ref": "docs/beacon/v1.6.7/programs/beacon-product-goal-domain-delivery-v167/feature-graph.json",
+              "ux_required": "false",
+              "design_deferral": "Docs/prose gate; no product marketing UI"
+            },
+            "ac_count": 12,
+            "test_count": 11,
+            "checkbox_count": 9,
+            "evidence_row_count": 8,
+            "gate_authority": "canonical_surfaces_preserved",
+            "checkbox_gate_bypass": false,
+            "evidence_gate_truth": false,
+            "diagnostics": [
+              {
+                "severity": "info",
+                "code": "truth_human_l0_ok",
+                "path": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/truth.md",
+                "language": "zh",
+                "l0_headings": [
+                  "## 人话"
+                ]
+              }
+            ],
+            "truth_map_contract": "beacon-truth-map-v1",
+            "truth_source_model": "feature_package_authoritative",
+            "truth_package_contract": "beacon-feature-package-v2",
+            "machine_json_role": "generated_state_not_truth",
+            "generated_by": "beacon.truth_map.resolver",
+            "truth_authority": "markdown_feature_package",
+            "json_authority": false,
+            "source_paths": {
+              "truth": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/truth.md",
+              "tests": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/tests.md",
+              "tasks": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/tasks.md",
+              "evidence": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/evidence.md"
+            },
+            "source_hashes": {
+              "truth": "52b5cfa73d14b7881c57c03c3f02420156b0d63f64d5c3a9ae7d7fd2ad7fa45f",
+              "tests": "184ae5c251815bbac3c43db87ca37ff9d95e8a62e27406b76feb70d3b404bbc1",
+              "tasks": "f942ef1cc77ed810dd3cc9cee192ef3163139d000f06784845f89f301836a725",
+              "evidence": "37dac5e981dae0852cc7057767967f985630a5714e737486c8ae048d289408ba"
+            },
+            "runtime_json_requires_markdown_twin": false
+          }
+        },
+        "completeness": {},
+        "freeze_contract": {}
+      },
+      "root": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167",
+      "files": {
+        "root": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167",
+        "human_view_dir": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/human-view",
+        "machine_view_dir": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/machine-view",
+        "verification_dir": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/verification",
+        "assets_dir": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/assets",
+        "implementation_dir": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/implementation",
+        "manifest": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/manifest.json",
+        "prototype_plan": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/prototype-plan.json",
+        "prototype_brief": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/prototype-brief.json",
+        "canonical_envelope": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/canonical-envelope.json",
+        "artifact_topology": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/artifact-topology.json",
+        "source_map": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/source-map.json",
+        "freeze": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/freeze.json",
+        "review_json": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/prototype-review.json",
+        "review_md": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/prototype-review.md",
+        "verification_index": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/verification/index.json",
+        "wireframe_summary": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/wireframe-summary.md",
+        "wireframe_manifest": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/wireframe-manifest.json",
+        "navigation_map": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/navigation-map.json",
+        "navigation_map_md": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/navigation-map.md",
+        "state_flow_map": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/state-flow-map.json",
+        "state_flow_map_md": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/state-flow-map.md",
+        "component_catalog": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/component-catalog.json",
+        "component_catalog_md": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/component-catalog.md",
+        "automation_priority_matrix": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/automation-priority-matrix.json",
+        "automation_priority_matrix_md": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/automation-priority-matrix.md",
+        "interaction_map": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/interaction-map.json",
+        "coverage_report": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/coverage-report.json",
+        "theme": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/theme.json",
+        "tokens_css": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/tokens.css",
+        "platform_variants": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/platform-variants.json",
+        "implementation_map": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/implementation-map.json",
+        "implementation_index": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/implementation/index.json",
+        "route_closure_contract": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/route-closure-contract.json",
+        "pages_dir": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/pages",
+        "page_specs_dir": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/page-specs",
+        "design_artifacts_dir": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/design-artifacts",
+        "ux_prd": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/ux-prd.md",
+        "design_md": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/DESIGN.md",
+        "preview_html": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/preview.html",
+        "preview_dark_html": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/preview-dark.html",
+        "index_html": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/index.html"
+      },
+      "paths": {
+        "root": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167",
+        "human_view_dir": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/human-view",
+        "machine_view_dir": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/machine-view",
+        "verification_dir": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/verification",
+        "assets_dir": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/assets",
+        "implementation_dir": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/implementation",
+        "manifest": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/manifest.json",
+        "prototype_plan": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/prototype-plan.json",
+        "prototype_brief": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/prototype-brief.json",
+        "canonical_envelope": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/canonical-envelope.json",
+        "artifact_topology": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/artifact-topology.json",
+        "source_map": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/source-map.json",
+        "freeze": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/freeze.json",
+        "review_json": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/prototype-review.json",
+        "review_md": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/prototype-review.md",
+        "verification_index": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/verification/index.json",
+        "wireframe_summary": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/wireframe-summary.md",
+        "wireframe_manifest": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/wireframe-manifest.json",
+        "navigation_map": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/navigation-map.json",
+        "navigation_map_md": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/navigation-map.md",
+        "state_flow_map": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/state-flow-map.json",
+        "state_flow_map_md": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/state-flow-map.md",
+        "component_catalog": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/component-catalog.json",
+        "component_catalog_md": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/component-catalog.md",
+        "automation_priority_matrix": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/automation-priority-matrix.json",
+        "automation_priority_matrix_md": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/automation-priority-matrix.md",
+        "interaction_map": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/interaction-map.json",
+        "coverage_report": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/coverage-report.json",
+        "theme": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/theme.json",
+        "tokens_css": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/tokens.css",
+        "platform_variants": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/platform-variants.json",
+        "implementation_map": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/implementation-map.json",
+        "implementation_index": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/implementation/index.json",
+        "route_closure_contract": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/route-closure-contract.json",
+        "pages_dir": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/pages",
+        "page_specs_dir": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/page-specs",
+        "design_artifacts_dir": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/design-artifacts",
+        "ux_prd": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/ux-prd.md",
+        "design_md": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/DESIGN.md",
+        "preview_html": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/preview.html",
+        "preview_dark_html": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/preview-dark.html",
+        "index_html": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167/index.html"
+      },
+      "source_fingerprints": {},
+      "recorded_source_fingerprints": {},
+      "human_view_status": "missing",
+      "machine_contract_status": "missing",
+      "sqlite_projection_status": "missing",
+      "drift_status": "missing",
+      "transaction": {},
+      "legacy_source_status": "missing",
+      "legacy_source_path": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/prototype/beacon-truth-human-readable-i18n-v167.md"
+    }
+  },
+  "version_surface_governance": {
+    "reason_code": "",
+    "status": "pass",
+    "ok": true,
+    "blocked": false,
+    "configured": true,
+    "manifest_path": "/Users/apple/Developer/Personal/products/beacon/beacon/version-truth.json",
+    "repair_commands": [
+      "beacon doctor sync-version-surfaces --project-root /Users/apple/Developer/Personal/products/beacon",
+      "beacon doctor verify-version-surfaces --project-root /Users/apple/Developer/Personal/products/beacon --strict"
+    ],
+    "verify_command": "beacon doctor verify-version-surfaces --project-root /Users/apple/Developer/Personal/products/beacon --strict",
+    "checks": [
+      {
+        "name": "canonical_release_manifest_present",
+        "status": "pass",
+        "details": {
+          "path": "/Users/apple/Developer/Personal/products/beacon/beacon/version-truth.json",
+          "exists": true
+        }
+      },
+      {
+        "name": "beacon_init_surface",
+        "status": "pass",
+        "details": {
+          "path": "/Users/apple/Developer/Personal/products/beacon/beacon/__init__.py",
+          "expected": {
+            "package_version": "1.6.7",
+            "runtime_version": "v1.6.7"
+          },
+          "actual": {
+            "package_version": "1.6.7",
+            "runtime_version": "v1.6.7"
+          }
+        }
+      },
+      {
+        "name": "pyproject_surface",
+        "status": "pass",
+        "details": {
+          "path": "/Users/apple/Developer/Personal/products/beacon/pyproject.toml",
+          "configured": true,
+          "drift": {}
+        }
+      },
+      {
+        "name": "skill_metadata_surface",
+        "status": "pass",
+        "details": {
+          "path": "/Users/apple/Developer/Personal/products/beacon/skills/beacon/metadata.json",
+          "configured": true,
+          "drift": {}
+        }
+      },
+      {
+        "name": "root_skill_md_surface",
+        "status": "pass",
+        "details": {
+          "path": "/Users/apple/Developer/Personal/products/beacon/SKILL.md",
+          "configured": true,
+          "drift": {}
+        }
+      },
+      {
+        "name": "trae_rules_surface",
+        "status": "pass",
+        "details": {
+          "path": "/Users/apple/Developer/Personal/products/beacon/.trae/rules/project_rules.md",
+          "configured": true,
+          "drift": {}
+        }
+      },
+      {
+        "name": "agent_surface_state",
+        "status": "pass",
+        "details": {
+          "path": "/Users/apple/Developer/Personal/products/beacon/.beacon/state/agent-surfaces.json",
+          "configured": true,
+          "drift": {},
+          "allowed_docs_versions": [
+            "v1.2.1",
+            "v1.3.4",
+            "v1.3.5",
+            "v1.4.4",
+            "v1.6.7",
+            "v2.0.0"
+          ]
+        }
+      }
+    ]
+  },
+  "truth_map_governance": {
+    "schema_version": "1.0",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "truth_source_model": "feature_package_authoritative",
+    "resolver_mode": "resolver_first",
+    "version": "v1.6.7",
+    "status": "pass",
+    "blocked": false,
+    "authority_classification": {
+      "feature_truth": "markdown_feature_package",
+      "feature_truth_model": "feature_package_authoritative",
+      "version_governance_truth": "version_governance_truth",
+      "generated_governance_state": "generated_governance_state_not_truth",
+      "runtime_process_record": "runtime_process_record_not_requirement_truth"
+    },
+    "governance_projection_roles": {
+      "canonical_commit_surface": "docs/beacon/governance/project-version-governance.md",
+      "canonical_role": "version_governance_truth",
+      "sqlite_projection_surface": "project_governance_sqlite_projection",
+      "sqlite_projection_role": "generated_governance_state_not_truth",
+      "sqlite_ledger_path": "/Users/apple/.beacon/runtime-ledger/runtime-ledger.sqlite3",
+      "deprecated_legacy_json": ".beacon/metadata/project-version-metadata.json",
+      "write_direction": "governance_md_to_sqlite_only"
+    },
+    "truth_surfaces": {
+      "project_governance": {
+        "schema_version": "1.0",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "truth_source_model": "feature_package_authoritative",
+        "resolver_mode": "resolver_first",
+        "version": "v1.6.7",
+        "surface": "project_governance",
+        "path": "docs/beacon/governance/project-version-governance.md",
+        "exists": true,
+        "required": true,
+        "role": "version_governance_truth",
+        "authority": "version_governance_truth",
+        "truth_authority": true,
+        "json_authority": false,
+        "generated_governance_state": false,
+        "source_hash": "0af2c5530b31ae241bbef5d91bb5ea6ba2e2f7eaa81e69fa694385d7f7b1ce9d"
+      },
+      "global_boundaries": {
+        "schema_version": "1.0",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "truth_source_model": "feature_package_authoritative",
+        "resolver_mode": "resolver_first",
+        "version": "v1.6.7",
+        "surface": "global_boundaries",
+        "path": "docs/beacon/global-boundaries.md",
+        "exists": true,
+        "required": true,
+        "role": "global_governance_truth",
+        "authority": "global_governance_truth",
+        "truth_authority": true,
+        "json_authority": false,
+        "generated_governance_state": false,
+        "source_hash": "74cb5ee49e3981d1876919eff4ba6ce62696801fe5c77edf5fe1440bf978cdb4"
+      },
+      "summary": {
+        "schema_version": "1.0",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "truth_source_model": "feature_package_authoritative",
+        "resolver_mode": "resolver_first",
+        "version": "v1.6.7",
+        "surface": "summary",
+        "path": "docs/beacon/v1.6.7/SUMMARY.md",
+        "exists": true,
+        "required": true,
+        "role": "version_governance_truth",
+        "authority": "version_governance_truth",
+        "truth_authority": true,
+        "json_authority": false,
+        "generated_governance_state": false,
+        "source_hash": "f8549393209f243ed54cc38352556c92b24c73e1dd076470ec8b24e558297af3"
+      },
+      "execution_boundaries": {
+        "schema_version": "1.0",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "truth_source_model": "feature_package_authoritative",
+        "resolver_mode": "resolver_first",
+        "version": "v1.6.7",
+        "surface": "execution_boundaries",
+        "path": "docs/beacon/v1.6.7/execution/boundaries.md",
+        "exists": true,
+        "required": true,
+        "role": "version_governance_truth",
+        "authority": "version_governance_truth",
+        "truth_authority": true,
+        "json_authority": false,
+        "generated_governance_state": false,
+        "source_hash": "819fc4d95c025c3176b5b11b1c271094857133ab31243be564031d3e5bc08b2d"
+      },
+      "project_skill_blueprint": {
+        "schema_version": "1.0",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "truth_source_model": "feature_package_authoritative",
+        "resolver_mode": "resolver_first",
+        "version": "v1.6.7",
+        "surface": "project_skill_blueprint",
+        "path": "docs/beacon/v1.6.7/execution/project-skill-qa-evolution-blueprint.md",
+        "exists": true,
+        "required": true,
+        "role": "version_governance_truth",
+        "authority": "version_governance_truth",
+        "truth_authority": true,
+        "json_authority": false,
+        "generated_governance_state": false,
+        "source_hash": "b2f54437a1f20700b3dd43b9fff90621762d2658765e5b13c97ebf621441bce1"
+      },
+      "source_architecture_index": {
+        "schema_version": "1.0",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "truth_source_model": "feature_package_authoritative",
+        "resolver_mode": "resolver_first",
+        "version": "v1.6.7",
+        "surface": "source_architecture_index",
+        "path": "docs/beacon/v1.6.7/source-architecture/index.md",
+        "exists": true,
+        "required": true,
+        "role": "version_governance_truth",
+        "authority": "version_governance_truth",
+        "truth_authority": true,
+        "json_authority": false,
+        "generated_governance_state": false,
+        "source_hash": "49043e15739ba5a80c607649fee87d7c8f43cdaa038b383513eda2151866d17a"
+      },
+      "release_notes": {
+        "schema_version": "1.0",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "truth_source_model": "feature_package_authoritative",
+        "resolver_mode": "resolver_first",
+        "version": "v1.6.7",
+        "surface": "release_notes",
+        "path": "docs/beacon/v1.6.7/release/v1.6.7.md",
+        "exists": true,
+        "required": true,
+        "role": "version_governance_truth",
+        "authority": "version_governance_truth",
+        "truth_authority": true,
+        "json_authority": false,
+        "generated_governance_state": false,
+        "source_hash": "643c039f18a17257c8c9e6afde73913fdc2cb7c78b508512f190c70274154cc5"
+      }
+    },
+    "generated_state_surfaces": {
+      "version_feature_manifest": {
+        "schema_version": "1.0",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "truth_source_model": "feature_package_authoritative",
+        "resolver_mode": "resolver_first",
+        "version": "v1.6.7",
+        "surface": "version_feature_manifest",
+        "path": "docs/beacon/v1.6.7/.machine/manifest/version-features.json",
+        "exists": false,
+        "required": false,
+        "role": "generated_governance_state_not_truth",
+        "authority": "generated_governance_state_not_truth",
+        "truth_authority": false,
+        "json_authority": false,
+        "generated_governance_state": true,
+        "source_hash": ""
+      },
+      "project_version_metadata": {
+        "schema_version": "1.0",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "truth_source_model": "feature_package_authoritative",
+        "resolver_mode": "resolver_first",
+        "version": "v1.6.7",
+        "surface": "project_version_metadata",
+        "path": ".beacon/metadata/project-version-metadata.json",
+        "exists": false,
+        "required": false,
+        "role": "generated_governance_state_not_truth",
+        "authority": "generated_governance_state_not_truth",
+        "truth_authority": false,
+        "json_authority": false,
+        "generated_governance_state": true,
+        "source_hash": ""
+      },
+      "project_governance_sqlite_projection": {
+        "schema_version": "1.0",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "truth_source_model": "feature_package_authoritative",
+        "resolver_mode": "resolver_first",
+        "version": "v1.6.7",
+        "surface": "project_governance_sqlite_projection",
+        "path": "/Users/apple/.beacon/runtime-ledger/runtime-ledger.sqlite3",
+        "exists": true,
+        "required": false,
+        "role": "generated_governance_state_not_truth",
+        "authority": "generated_governance_state_not_truth",
+        "truth_authority": false,
+        "json_authority": false,
+        "generated_governance_state": true,
+        "source_hash": "9dafe82e0286cec5a024101171f0c910950c857969e6e5c4fa666908bd4dd869"
+      },
+      "evidence_manifest": {
+        "schema_version": "1.0",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "truth_source_model": "feature_package_authoritative",
+        "resolver_mode": "resolver_first",
+        "version": "v1.6.7",
+        "surface": "evidence_manifest",
+        "path": ".beacon/evidence-manifest.json",
+        "exists": true,
+        "required": false,
+        "role": "generated_governance_state_not_truth",
+        "authority": "generated_governance_state_not_truth",
+        "truth_authority": false,
+        "json_authority": false,
+        "generated_governance_state": true,
+        "source_hash": "a7e77b647ae10f2803941953339ea2fc944bdf50c38524ce00824c8f40ec6a60"
+      },
+      "qa_status": {
+        "schema_version": "1.0",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "truth_source_model": "feature_package_authoritative",
+        "resolver_mode": "resolver_first",
+        "version": "v1.6.7",
+        "surface": "qa_status",
+        "path": ".beacon/qa/status.json",
+        "exists": true,
+        "required": false,
+        "role": "generated_governance_state_not_truth",
+        "authority": "generated_governance_state_not_truth",
+        "truth_authority": false,
+        "json_authority": false,
+        "generated_governance_state": true,
+        "source_hash": "e2bd9dac8a99202bb9b31a7fd58ab89d679c07a4ae71a377e9ecad88724face4"
+      },
+      "release_gate_report": {
+        "schema_version": "1.0",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "truth_source_model": "feature_package_authoritative",
+        "resolver_mode": "resolver_first",
+        "version": "v1.6.7",
+        "surface": "release_gate_report",
+        "path": ".beacon/release-gate-report.json",
+        "exists": true,
+        "required": false,
+        "role": "generated_governance_state_not_truth",
+        "authority": "generated_governance_state_not_truth",
+        "truth_authority": false,
+        "json_authority": false,
+        "generated_governance_state": true,
+        "source_hash": "58fb9d525d5d47290259d5c03104a99d8ac02615b122d79d0bc90fad3c66c8e6"
+      }
+    },
+    "manifest_authority": false,
+    "json_authority": false,
+    "diagnostics": []
+  },
+  "implementation_plan": {
+    "schema_version": "1.0",
+    "feature": "beacon-truth-human-readable-i18n-v167",
+    "feature_slug": "beacon-truth-human-readable-i18n-v167",
+    "version": "v1.6.7",
+    "status": "completed",
+    "counts": {
+      "total": 3,
+      "completed": 3,
+      "blocked": 0,
+      "pending": 0
+    },
+    "blocked_task_ids": [],
+    "completed_task_ids": [
+      "ITASK-001",
+      "ITASK-002",
+      "ITASK-003"
+    ],
+    "updated_at": "2026-07-18T12:21:40.283612+00:00",
+    "task_ledger_path": "docs/beacon/v1.6.7/execution/tasks-beacon-truth-human-readable-i18n-v167.md"
+  },
+  "research_projection": {},
+  "git_workflow": {
+    "count": 3,
+    "modes": [
+      "single-repo"
+    ],
+    "expected_branches": [
+      "beacon/v1.6.7"
+    ],
+    "service_directories": [
+      "."
+    ]
+  },
+  "requirement_clarity": {
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "finding_count": 0,
+    "state_path": ".beacon/state/requirement-clarity-beacon-truth-human-readable-i18n-v167.json",
+    "report_json_path": "docs/beacon/v1.6.7/.machine/execution/requirement-clarity-beacon-truth-human-readable-i18n-v167.json",
+    "report_markdown_path": "docs/beacon/v1.6.7/execution/requirement-clarity-beacon-truth-human-readable-i18n-v167.md"
+  },
+  "requirement_completeness": {
+    "schema_version": "1.0",
+    "enabled": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "requirement_completeness_projection_missing",
+    "target_stage": "release",
+    "feature": "beacon-truth-human-readable-i18n-v167",
+    "version": "v1.6.7",
+    "stage_ready": true,
+    "paths": {
+      "envelope": "docs/beacon/v1.6.7/.machine/requirement/beacon-truth-human-readable-i18n-v167.envelope.json",
+      "candidate_ledger": "docs/beacon/v1.6.7/.machine/requirement/beacon-truth-human-readable-i18n-v167.candidate-ledger.json",
+      "decision_log": "docs/beacon/v1.6.7/.machine/requirement/beacon-truth-human-readable-i18n-v167.supplement-decision-log.json",
+      "freeze_contract": "docs/beacon/v1.6.7/.machine/requirement/beacon-truth-human-readable-i18n-v167.freeze-contract.json",
+      "completeness": "docs/beacon/v1.6.7/.machine/requirement/beacon-truth-human-readable-i18n-v167.completeness.json",
+      "supplement_task": "docs/beacon/v1.6.7/.machine/requirement/beacon-truth-human-readable-i18n-v167.supplement-task.json",
+      "re_freeze_transaction": "docs/beacon/v1.6.7/.machine/requirement/beacon-truth-human-readable-i18n-v167.re-freeze-transaction.json"
+    },
+    "projection_status": "package_authoritative",
+    "recommended_command": "",
+    "next_action": "release",
+    "stage_gates": {
+      "artifact_read_model": {
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "requirement_completeness_projection_missing",
+        "summary": "machine completeness projection is missing, but v1.5.2 package truth and coverage are valid authority",
+        "details": {
+          "paths": {
+            "envelope": "docs/beacon/v1.6.7/.machine/requirement/beacon-truth-human-readable-i18n-v167.envelope.json",
+            "candidate_ledger": "docs/beacon/v1.6.7/.machine/requirement/beacon-truth-human-readable-i18n-v167.candidate-ledger.json",
+            "decision_log": "docs/beacon/v1.6.7/.machine/requirement/beacon-truth-human-readable-i18n-v167.supplement-decision-log.json",
+            "freeze_contract": "docs/beacon/v1.6.7/.machine/requirement/beacon-truth-human-readable-i18n-v167.freeze-contract.json",
+            "completeness": "docs/beacon/v1.6.7/.machine/requirement/beacon-truth-human-readable-i18n-v167.completeness.json",
+            "supplement_task": "docs/beacon/v1.6.7/.machine/requirement/beacon-truth-human-readable-i18n-v167.supplement-task.json",
+            "re_freeze_transaction": "docs/beacon/v1.6.7/.machine/requirement/beacon-truth-human-readable-i18n-v167.re-freeze-transaction.json"
+          },
+          "projection_status": "package_authoritative"
+        }
+      },
+      "decision_traceability": {
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "summary": "human requirement truth is carried by the authoritative feature package",
+        "details": {}
+      },
+      "coverage_closure": {
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "summary": "acceptance coverage is parseable from package tests",
+        "details": {
+          "ac_count": 12,
+          "test_count": 11
+        }
+      },
+      "downgrade_control": {
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "summary": "legacy completeness projection absence does not downgrade package authority",
+        "details": {}
+      },
+      "stage_admission": {
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "summary": "release admission uses authoritative package truth",
+        "details": {
+          "target_stage": "release",
+          "stage_ready": true,
+          "stage_key": "package_authoritative_truth"
+        }
+      }
+    },
+    "human_loop_handoff": {
+      "action": "release",
+      "reason": "package_authoritative_truth_pass",
+      "recommended_command": "",
+      "focus_areas": []
+    },
+    "package_authoritative_truth": {
+      "status": "pass",
+      "validation": {
+        "schema_version": "1.0",
+        "feature": "beacon-truth-human-readable-i18n-v167",
+        "feature_slug": "beacon-truth-human-readable-i18n-v167",
+        "version": "v1.6.7",
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "generated_at": "2026-07-18T13:56:32.371446+00:00",
+        "package_dir": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167",
+        "truth_frontmatter": {
+          "slug": "beacon-truth-human-readable-i18n-v167",
+          "version": "v1.6.7",
+          "status": "frozen",
+          "revision_id": "R1",
+          "language": "zh",
+          "domain_required": "false",
+          "change_reason": "User GO 2026-07-18: human-readable L0 + Humanizer-zh/blader humanizer norms; zh/en; mount GoalRun main axis",
+          "canonical_refs": {
+            "truth": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/truth.md",
+            "tests": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/tests.md",
+            "tasks": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/tasks.md",
+            "evidence": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/evidence.md"
+          },
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "truth_map_contract": "beacon-truth-map-v1",
+          "program_ref": "docs/beacon/v1.6.7/programs/beacon-product-goal-domain-delivery-v167/feature-graph.json",
+          "ux_required": "false",
+          "design_deferral": "Docs/prose gate; no product marketing UI"
+        },
+        "ac_count": 12,
+        "test_count": 11,
+        "checkbox_count": 9,
+        "evidence_row_count": 8,
+        "gate_authority": "canonical_surfaces_preserved",
+        "checkbox_gate_bypass": false,
+        "evidence_gate_truth": false,
+        "diagnostics": [
+          {
+            "severity": "info",
+            "code": "truth_human_l0_ok",
+            "path": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/truth.md",
+            "language": "zh",
+            "l0_headings": [
+              "## 人话"
+            ]
+          }
+        ],
+        "truth_map_contract": "beacon-truth-map-v1",
+        "truth_source_model": "feature_package_authoritative",
+        "truth_package_contract": "beacon-feature-package-v2",
+        "machine_json_role": "generated_state_not_truth",
+        "generated_by": "beacon.truth_map.resolver",
+        "truth_authority": "markdown_feature_package",
+        "json_authority": false,
+        "source_paths": {
+          "truth": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/truth.md",
+          "tests": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/tests.md",
+          "tasks": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/tasks.md",
+          "evidence": "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/evidence.md"
+        },
+        "source_hashes": {
+          "truth": "52b5cfa73d14b7881c57c03c3f02420156b0d63f64d5c3a9ae7d7fd2ad7fa45f",
+          "tests": "184ae5c251815bbac3c43db87ca37ff9d95e8a62e27406b76feb70d3b404bbc1",
+          "tasks": "f942ef1cc77ed810dd3cc9cee192ef3163139d000f06784845f89f301836a725",
+          "evidence": "37dac5e981dae0852cc7057767967f985630a5714e737486c8ae048d289408ba"
+        },
+        "runtime_json_requires_markdown_twin": false
+      }
+    },
+    "completeness": {},
+    "freeze_contract": {}
+  },
+  "technical_review": {
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "review_status": "approved",
+    "approved_by": "operator",
+    "state_path": ".beacon/state/technical-review-contract-beacon-truth-human-readable-i18n-v167.json",
+    "contract_json_path": "docs/beacon/v1.6.7/.machine/execution/deterministic-implementation-contract-beacon-truth-human-readable-i18n-v167.json",
+    "contract_markdown_path": "docs/beacon/v1.6.7/execution/deterministic-implementation-contract-beacon-truth-human-readable-i18n-v167.md"
+  },
+  "deep_release_supplement": {
+    "schema_version": "1.0",
+    "feature": "beacon-truth-human-readable-i18n-v167",
+    "feature_slug": "beacon-truth-human-readable-i18n-v167",
+    "version": "v1.6.7",
+    "status": "not_required",
+    "blocked": false,
+    "reason_codes": [],
+    "reason_code": "",
+    "deep_requirement_state": "recommended",
+    "closure_verdict": "",
+    "release_recommendation": "",
+    "skip_accepted": false,
+    "open_finding_count": 0,
+    "waived_finding_count": 0,
+    "accepted_backlog_count": 0,
+    "release_blocking_open_count": 0,
+    "artifact_refs": {
+      "analysis_report": {
+        "json": "docs/beacon/v1.6.7/.machine/deep/beacon-truth-human-readable-i18n-v167/deep-analysis-report.json",
+        "markdown": "docs/beacon/v1.6.7/deep/beacon-truth-human-readable-i18n-v167/deep-analysis-report.md"
+      },
+      "state_machine_report": {
+        "json": "docs/beacon/v1.6.7/.machine/deep/beacon-truth-human-readable-i18n-v167/state-machine-report.json",
+        "markdown": "docs/beacon/v1.6.7/deep/beacon-truth-human-readable-i18n-v167/state-machine-report.md"
+      },
+      "test_delta": {
+        "json": "docs/beacon/v1.6.7/.machine/deep/beacon-truth-human-readable-i18n-v167/deep-test-delta.json",
+        "markdown": "docs/beacon/v1.6.7/deep/beacon-truth-human-readable-i18n-v167/deep-test-delta.md"
+      },
+      "risk_register": {
+        "json": "docs/beacon/v1.6.7/.machine/deep/beacon-truth-human-readable-i18n-v167/risk-register.json",
+        "markdown": "docs/beacon/v1.6.7/deep/beacon-truth-human-readable-i18n-v167/risk-register.md"
+      },
+      "loop_trace": {
+        "json": "docs/beacon/v1.6.7/.machine/deep/beacon-truth-human-readable-i18n-v167/deep-loop-trace.json",
+        "markdown": "docs/beacon/v1.6.7/deep/beacon-truth-human-readable-i18n-v167/deep-loop-trace.md"
+      },
+      "closure_brief": {
+        "json": "docs/beacon/v1.6.7/.machine/deep/beacon-truth-human-readable-i18n-v167/deep-closure-brief.json",
+        "markdown": "docs/beacon/v1.6.7/deep/beacon-truth-human-readable-i18n-v167/deep-closure-brief.md"
+      },
+      "skip_evidence": {
+        "json": "docs/beacon/v1.6.7/.machine/deep/beacon-truth-human-readable-i18n-v167/deep-skip-evidence.json",
+        "markdown": "docs/beacon/v1.6.7/deep/beacon-truth-human-readable-i18n-v167/deep-skip-evidence.md"
+      }
+    },
+    "generated_at": "2026-07-18T13:56:32.451164+00:00",
+    "recommended_command": "beacon deep run \"beacon-truth-human-readable-i18n-v167\" --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.7 --json"
+  },
+  "test_contract_governance": {
+    "schema_version": "1.0",
+    "status": "pass",
+    "blocked": false,
+    "reason_codes": [],
+    "release_gate": {
+      "status": "pass",
+      "blocked": false,
+      "reason_codes": []
+    },
+    "index_path": "docs/beacon/v1.6.7/.machine/testing/test-contract-index.json",
+    "lane_counts": {
+      "feature_release_facing": 11,
+      "current_runtime_contract": 0,
+      "generated_surface_sync": 0,
+      "compatibility_contract": 0,
+      "legacy_snapshot": 0,
+      "browser_runtime_admission": 0
+    },
+    "canonical_lanes": [
+      "feature_release_facing",
+      "current_runtime_contract",
+      "generated_surface_sync",
+      "compatibility_contract",
+      "legacy_snapshot",
+      "browser_runtime_admission"
+    ],
+    "qa_order_contract": {
+      "sequence": [
+        "user_story_ac_order",
+        "scenario_divergence",
+        "current_round_execution",
+        "evidence_pack",
+        "coverage_current_gap",
+        "continue_decision",
+        "severe_blocker_stop_for_repair",
+        "repair_handoff",
+        "beacon_help_resume",
+        "next_qa_round_test_case_backfill",
+        "release_guidance"
+      ],
+      "source": "skills/beacon/references/usage-rules.md"
+    },
+    "deep_delta_policy": {
+      "owner": "deep",
+      "adoption_route": "test-case_or_supplemental_qa",
+      "executes_qa": false
+    },
+    "planning_line_safety": {
+      "status": "pass",
+      "blocked": false,
+      "reason_code": "",
+      "runtime_line": "v1.6.7",
+      "docs_default_line": "v1.6.7",
+      "current_runtime_release_line": "v1.6.7",
+      "feature_line_status": "current_runtime_release"
+    },
+    "repair_commands": [
+      "beacon doctor build-test-contract-index \"beacon-truth-human-readable-i18n-v167\" --project-root . --version v1.6.7 --json",
+      "beacon doctor verify-test-contract-index \"beacon-truth-human-readable-i18n-v167\" --project-root . --version v1.6.7 --strict --json"
+    ]
+  },
+  "reconciliation": {
+    "required": false,
+    "reason_code": "",
+    "artifact_path": "",
+    "artifact": {}
+  },
+  "browser_release_reason_codes": [],
+  "prompt_boundary": {
+    "schema_version": "1.0",
+    "feature": "beacon-truth-human-readable-i18n-v167",
+    "feature_slug": "beacon-truth-human-readable-i18n-v167",
+    "version": "v1.6.7",
+    "required": true,
+    "prompt": "Import externally produced implementation evidence for the scoped Beacon feature beacon-truth-human-readable-i18n-v167. Read Beacon source of truth and bind the imported evidence to the frozen feature package truth. Implement only against the frozen feature package truth above. Evidence refs: tests/test_v167_truth_human_readable_i18n.py, beacon/utils/truth_human_readable.py.",
+    "classification": "in_scope_implementation",
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "next_action": "",
+    "recommended_command": "",
+    "matched_signals": [],
+    "frozen_refs": [
+      "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/truth.md",
+      "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/tests.md",
+      "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/tasks.md",
+      "docs/beacon/v1.6.7/features/beacon-truth-human-readable-i18n-v167/evidence.md"
+    ],
+    "surface": "host_prompt"
+  },
+  "change_documents": {
+    "schema_version": "1.0",
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "markdown_path": "docs/beacon/v1.6.7/change/v1.6.7.md",
+    "json_path": "docs/beacon/v1.6.7/.machine/change/v1.6.7.json",
+    "markdown_exists": true,
+    "json_exists": true,
+    "version_match": true,
+    "feature_count": 12,
+    "feature_slugs": [
+      "beacon-domain-fsm-authority-v167",
+      "beacon-domain-fsm-qa-gate-v167",
+      "beacon-git-scope-graph-v167",
+      "beacon-goal-agent-driver-v167",
+      "beacon-goal-durable-supervisor-v167",
+      "beacon-golden-commerce-fixture-v167",
+      "beacon-loop-discover-goal-finish-v167",
+      "beacon-loop-goal-v166",
+      "beacon-product-goal-runtime-v167",
+      "beacon-ralph-implement-boundary-v167",
+      "beacon-truth-human-readable-i18n-v167",
+      "beacon-ui-design-ship-gate-v167"
+    ],
+    "current_feature_slug": "beacon-truth-human-readable-i18n-v167",
+    "includes_current_feature": true,
+    "feature_projection": {
+      "schema_version": "1.0",
+      "status": "pass",
+      "blocked": false,
+      "repairable": false,
+      "reason_code": "",
+      "feature": "beacon-truth-human-readable-i18n-v167",
+      "feature_slug": "beacon-truth-human-readable-i18n-v167",
+      "version": "v1.6.7",
+      "path": "docs/beacon/v1.6.7/.machine/change/beacon-truth-human-readable-i18n-v167.json",
+      "exists": true,
+      "version_match": true,
+      "projection_role": {
+        "artifact_role": "version_aggregate_projection",
+        "truth_source": false,
+        "gate_source": false,
+        "lifecycle_stage": false,
+        "release_publish_action": false
+      },
+      "repair_commands": [
+        "beacon doctor repair-version-aggregate-projection \"beacon-truth-human-readable-i18n-v167\" --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.7 --json",
+        "beacon release create v1.6.7 --project /Users/apple/Developer/Personal/products/beacon",
+        "beacon doctor build-test-contract-index \"beacon-truth-human-readable-i18n-v167\" --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.7 --json",
+        "beacon doctor verify-test-contract-index \"beacon-truth-human-readable-i18n-v167\" --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.7 --strict --json"
+      ]
+    },
+    "projection_role": {
+      "artifact_role": "version_aggregate_projection",
+      "truth_source": false,
+      "gate_source": false,
+      "lifecycle_stage": false,
+      "release_publish_action": false
+    },
+    "repair_commands": [
+      "beacon doctor repair-version-aggregate-projection \"beacon-truth-human-readable-i18n-v167\" --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.7 --json",
+      "beacon release create v1.6.7 --project /Users/apple/Developer/Personal/products/beacon",
+      "beacon doctor build-test-contract-index \"beacon-truth-human-readable-i18n-v167\" --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.7 --json",
+      "beacon doctor verify-test-contract-index \"beacon-truth-human-readable-i18n-v167\" --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.7 --strict --json"
+    ]
+  },
+  "learning_scorecard": {
+    "main_kpi": "false_complete_rate",
+    "decision_summary": {
+      "keep": 2,
+      "review": 1,
+      "discard": 5
+    },
+    "candidate_count": 8
+  },
+  "latest_experiment": {},
+  "evidence_manifest": {
+    "status": "pass",
+    "blocked": false,
+    "blocked_count": 0,
+    "entry_count": 860,
+    "issues": []
+  },
+  "host_native_delivery": {
+    "schema_version": "1.0",
+    "implement": {
+      "schema_version": "1.0",
+      "feature": "beacon-truth-human-readable-i18n-v167",
+      "version": "v1.6.7",
+      "requested_mode": "single",
+      "effective_mode": "single",
+      "generator_mode": "single",
+      "execution_mode": "single",
+      "runner_mode": "native",
+      "host_runtime": "codex",
+      "fallback_reason": "",
+      "capability_snapshot": {
+        "schema_version": "1.0",
+        "host_runtime": "codex",
+        "subagent_required": false,
+        "subagent_runtime_status": "",
+        "subagent_delegation_status": "",
+        "host_semantic_ready": false,
+        "provider_available": false
+      },
+      "subagent_prechecks": {},
+      "requirement_binding": {},
+      "traceability_refs": [],
+      "runner": "native",
+      "adapter_type": "",
+      "execution_surface": "",
+      "team_mode": false,
+      "qa_status": "",
+      "gate_status": "",
+      "release_ready": false,
+      "risk_flags": []
+    },
+    "qa": {},
+    "semantic": {},
+    "status": "pass",
+    "reason_codes": [],
+    "traceability": {
+      "requirement_binding": {},
+      "requirement_refs": [],
+      "runtime_refs": []
+    }
+  },
+  "generated_at": "2026-07-18T13:56:32.477091+00:00"
+}
