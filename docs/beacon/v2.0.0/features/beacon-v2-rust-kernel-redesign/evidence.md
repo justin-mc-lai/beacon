@@ -79,3 +79,41 @@ Deliverables (historical candidate, superseded by R8 minimal-kernel closure wher
 ## QA / Release Verdict
 
 **无** — truth 已由当前 refreeze transaction 冻结；TraceSpine/canonical truth branch/standard execution flow implementation/QA/release closure 尚未裁决。formal closure 仅由 `beacon-eval-qa` / `beacon-eval-release` 产出。
+
+## Implement + contract QA (2026-07-18)
+
+- Product Goal run: `pgr-51a763f2a691`
+- Suite: `python3 -m pytest tests/test_v200_*.py` → **90 passed**
+- Scorecard: `.beacon/qa/features/v2-0-0-full-delivery/scorecard.json`
+- Release: **human gate** (not auto-confirmed)
+- Open: full Rust kernel P1/P2/carrier (track_v2); W4 default BEACON_V2 still forbidden
+
+## Deep implement slice (2026-07-18)
+
+Rust kernel deep work landed (not full P3/P6 closure):
+
+- `beacon-core`: TraceSpine.v1 + TraceContext hash chain; HarnessSurface six abilities; dual_track isolation
+- `beacon-orchestrator`: CodexBackend multi-turn (≥2 + artifact_refs); GoalController create/status/resume/stop; skill_load_plan.v1
+- `beacon-gate`: reason_codes parse; dual-track gate; release human invariant; trace completeness gate
+- `beacon-cli` (`beacon-v2`): harness list, goal run/status/stop, dual-track check, skill-load
+- `beacon-python`: **ARCHIVE_ONLY** marker (no PyO3 runtime fallback)
+- Docs: `docs/beacon/v2.0.0/execution/dual-track-isolation.md`
+- Tests: `cargo test --workspace` green (incl. p2_codex_goal, trace_and_track, archive_only)
+
+Still open: full P2-007..023 (TraceSpine hard gates in implement path, BranchContext, standard execution flow machine), P3 Claude/ACP/worktree, P4 CI matrix / legacy removal, P6 default switch.
+
+## TraceSpine hard gates + BranchContext/admission (2026-07-18)
+
+- `beacon-core/branch_context.rs`, enhanced `trace_spine.rs` (bindings + authority_gate)
+- `beacon-gate/harness_trace_gate.rs` — implement/qa-evidence/release fail-closed
+- `beacon-orchestrator/workspace_admission.rs`, `standard_flow.rs`, `harness_path.rs`
+- CLI: `beacon-v2 workspace admit | flow stages|verify | trace check`
+- `cargo test --workspace` green incl. `p2_trace_branch_flow` (13 tests)
+
+## Goal closure pgr-ee700a59d76b (2026-07-18)
+
+- Python: `pytest tests/test_v200_*.py` → **95 passed**
+- Rust: `cargo test --workspace` → green (incl. p2_trace_branch_flow 13 + p2_closure_slice 8)
+- Scorecard: `.beacon/qa/features/v2-0-0-full-delivery/scorecard.json`
+- Goal status: **completed** (verifier attached); **release_human_gate=true**
+- New: git BranchContext (`--git`), decision_packet/intent, stagnation, refreeze guards, harness boundary, checkpoints, reason-codes/storage-authority docs, route-examples

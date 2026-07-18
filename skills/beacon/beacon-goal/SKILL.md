@@ -142,3 +142,23 @@ beacon goal axis validate -v v2.0.0 --program beacon-v2-product-goal-parallel-v2
 
 Axis embeds Loom dual-install, optional subagent, and trace mounts. Same UD-AXIS rules as v1.6.7.
 
+
+
+## v1.6.8 Production ops
+
+```bash
+# Hotfix mode (not a second public skill entry)
+beacon goal run "生产：…" --mode hotfix --from-version <tag> --forward-port <branch> --rollback-notes "…"
+
+# Longrun default: project goal.longrun_default=true (new projects)
+beacon goal run "…" -v v1.6.8
+beacon goal run "…" --no-longrun   # opt-out
+
+# Fleet / dual-version
+beacon version fleet
+beacon doctor init-dual-version --previous-baseline release/v1.6.7 --next-feature main
+beacon doctor repair-evidence-manifest -v v1.6.8
+beacon doctor align-run-id --run-id <id>
+```
+
+Program: `beacon-prod-ops-hardening-v168`. Philosophy shared with Loom/v2.

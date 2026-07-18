@@ -1,8 +1,9 @@
-//! Beacon v2 gate engine — truth_freeze / qa / release / implement gates (P2 skeleton, AC-013/020).
-//!
-//! P2 skeleton: gate evaluation writes gate_results (AC-013); spine gate reads
-//! latest verdict (AC-020). Full reason_codes engine + FSM binding is P3.
+//! Beacon v2 gate engine — truth_freeze / qa / release / implement gates.
 
+pub mod harness_trace_gate;
+
+use beacon_core::dual_track::{admit_path_set, DualTrackAdmission};
+use beacon_core::trace_spine::TraceSpine;
 use beacon_store::{BeaconStore, FeatureDao, GateDao};
 use serde::{Deserialize, Serialize};
 
@@ -73,8 +74,6 @@ impl<'a> GateEngine<'a> {
     }
 
     /// AC-013 evaluate a gate for a feature package and persist to gate_results.
-    /// P2 skeleton: the verdict is provided by the caller (full reason_codes
-    /// engine arrives in P3). Returns the inserted gate_result id.
     pub fn evaluate(
         &self,
         feature_slug: &str,
@@ -84,7 +83,6 @@ impl<'a> GateEngine<'a> {
         reason_codes: Vec<String>,
     ) -> Result<i64, String> {
         let conn = self.store.connection();
-        // resolve feature_package_id by slug + version
         let feature = FeatureDao::find_by_slug_version(conn, feature_slug, version)
             .map_err(|e| format!("store error: {e}"))?
             .ok_or_else(|| format!("feature package not found: {feature_slug} @ {version}"))?;
@@ -93,12 +91,23 @@ impl<'a> GateEngine<'a> {
         } else {
             Some(serde_json::to_string(&reason_codes).unwrap_or_default())
         };
-        GateDao::insert(conn, feature.id, gate.as_str(), verdict.as_str(), reason_json.as_deref())
-            .map_err(|e| format!("store error: {e}"))
+        GateDao::insert(
+            conn,
+            feature.id,
+            gate.as_str(),
+            verdict.as_str(),
+            reason_json.as_deref(),
+        )
+        .map_err(|e| format!("store error: {e}"))
     }
 
     /// AC-020 spine gate — read the latest gate result for a feature.
-    pub fn latest(&self, feature_slug: &str, version: &str, gate: GateType) -> Result<Option<GateResult>, String> {
+    pub fn latest(
+        &self,
+        feature_slug: &str,
+        version: &str,
+        gate: GateType,
+    ) -> Result<Option<GateResult>, String> {
         let conn = self.store.connection();
         let feature = FeatureDao::find_by_slug_version(conn, feature_slug, version)
             .map_err(|e| format!("store error: {e}"))?
@@ -108,7 +117,60 @@ impl<'a> GateEngine<'a> {
         Ok(row.map(|r| GateResult {
             gate_type: r.gate_name,
             verdict: r.verdict,
-            reason_codes: vec![], // P3: parse reason_codes_json
+            reason_codes: parse_reason_codes_json(r.reason_codes_json.as_deref()),
         }))
+    }
+}
+
+fn parse_reason_codes_json(raw: Option<&str>) -> Vec<String> {
+    let Some(s) = raw else {
+        return vec![];
+    };
+    serde_json::from_str::<Vec<String>>(s).unwrap_or_default()
+}
+
+/// AC-123/124: release must remain human gate; auto release_confirmed is illegal.
+pub fn release_human_gate_invariant(auto_confirm: bool) -> Result<(), String> {
+    if auto_confirm {
+        Err("auto_release_confirmed_forbidden".into())
+    } else {
+        Ok(())
+    }
+}
+
+/// Dual-track mixed source fail-closed (TC-148).
+pub fn dual_track_gate(paths: &[&str], admitted_mixed: bool) -> DualTrackAdmission {
+    admit_path_set(paths, admitted_mixed)
+}
+
+/// AC-133: implement/qa/release require valid TraceSpine.
+pub fn require_trace_completeness(spine: &TraceSpine, phase: &str) -> Result<(), String> {
+    spine.completeness_gate(phase)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use beacon_core::trace_spine::TraceContext;
+
+    #[test]
+    fn release_not_auto() {
+        assert!(release_human_gate_invariant(false).is_ok());
+        assert!(release_human_gate_invariant(true).is_err());
+    }
+
+    #[test]
+    fn dual_track_blocks_mixed() {
+        let r = dual_track_gate(
+            &["beacon/main.py", "packages/beacon-rs/beacon-core/src/lib.rs"],
+            false,
+        );
+        assert!(r.blocked);
+    }
+
+    #[test]
+    fn trace_gate_requires_events() {
+        let spine = TraceSpine::create("r", TraceContext::new("r"));
+        assert!(require_trace_completeness(&spine, "implement").is_err());
     }
 }

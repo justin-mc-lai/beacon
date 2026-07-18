@@ -654,8 +654,26 @@ def run_goal_facade(
     longrun=False (default): driver stays idle; supervise remains opt-in.
     longrun=True: attach durable supervisor + AgentDriver for this run only.
     """
-    # skill/utterance intent may force longrun without CLI flag
-    effective_longrun = bool(longrun) or detect_longrun_intent(utterance)
+    # skill/utterance intent may force longrun without CLI flag;
+    # v1.6.8 project goal.longrun_default=true attaches longrun when CLI flag omitted.
+    try:
+        from beacon.utils.prod_ops_v168 import resolve_longrun_enabled
+
+        _lr = resolve_longrun_enabled(project_root, cli_longrun=True if longrun else None)
+        # if CLI longrun False explicitly we need tri-state; facade only has bool default False
+        # treat: longrun True -> on; longrun False + no intent -> use project default
+        if longrun:
+            effective_longrun = True
+            longrun_source = "cli_flag"
+        elif detect_longrun_intent(utterance):
+            effective_longrun = True
+            longrun_source = "utterance_intent"
+        else:
+            effective_longrun = bool(_lr.get("enabled"))
+            longrun_source = str(_lr.get("source") or "project_default")
+    except Exception:  # noqa: BLE001
+        effective_longrun = bool(longrun) or detect_longrun_intent(utterance)
+        longrun_source = "legacy"
     payload = create_goal_run(
         project_root,
         utterance=utterance,
@@ -672,6 +690,7 @@ def run_goal_facade(
         for _ in range(2):
             payload = tick_goal_run(project_root, payload["run_id"], note="auto_tick_facade")
     payload["longrun"] = False
+    payload["longrun_source"] = longrun_source
     payload["driver"] = {"state": "idle", "longrun": False}
     if effective_longrun:
         payload = attach_longrun_to_goal_run(

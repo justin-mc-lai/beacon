@@ -347,5 +347,25 @@ def experiment(
     typer.echo(f"  path: {payload['path']}")
 
 
+@app.command("fleet")
+def version_fleet(
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p"),
+    json_output: bool = typer.Option(False, "--json"),
+) -> None:
+    """Show multi-version fleet view (prod/maint/next/planning) — v1.6.8."""
+    from beacon.utils.prod_ops_v168 import build_version_fleet
+
+    root = Path(project).expanduser().resolve() if project else Path.cwd().resolve()
+    payload = build_version_fleet(root)
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        return
+    typer.echo("Beacon Version Fleet")
+    typer.echo(f"  prod/maint: {payload.get('prod')}")
+    typer.echo(f"  next:       {payload.get('next')}")
+    typer.echo(f"  planning:   {payload.get('planning')}")
+    typer.echo(f"  roots:      {', '.join(payload.get('active_roots') or [])}")
+
+
 if __name__ == "__main__":
     app()

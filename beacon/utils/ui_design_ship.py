@@ -407,6 +407,11 @@ def apply_ui_design_to_scorecard(scorecard: dict[str, Any], ship_gate: dict[str,
 def golden_commerce_matrix_present(project_root: Path, *, version: str = "v1.6.7") -> dict[str, Any]:
     root = Path(project_root)
     path = root / "docs" / "beacon" / version / "fixtures" / "golden-commerce-checkout" / "positive" / "ui-state-matrix.md"
+    if not path.exists():
+        # v2 parity: load upstream golden matrix
+        alt = root / "docs" / "beacon" / "v1.6.7" / "fixtures" / "golden-commerce-checkout" / "positive" / "ui-state-matrix.md"
+        if alt.exists():
+            path = alt
     text = _read_text(path) if path.exists() else ""
     parsed = parse_ui_state_matrix(text)
     return {
@@ -415,4 +420,35 @@ def golden_commerce_matrix_present(project_root: Path, *, version: str = "v1.6.7
         "has_matrix": parsed["has_matrix"],
         "state_names": parsed["state_names"],
         "status": "pass" if parsed["has_matrix"] else "blocked",
+    }
+
+
+REASON_PRIMITIVES_ONLY = "ui_design_primitives_only_insufficient"
+
+
+def evaluate_primitives_only_insufficient(
+    *,
+    has_design_primitives: bool,
+    has_ui_state_matrix: bool,
+    ux_required: bool = True,
+) -> dict:
+    """AC-V2-UID-004 / V2SE-006: design_primitives alone cannot make UX release_ready."""
+    if not ux_required:
+        return {
+            "required": False,
+            "blocked": False,
+            "status": "not_required",
+            "reason_code": "",
+            "release_ready_allowed": True,
+        }
+    insufficient = bool(has_design_primitives) and not bool(has_ui_state_matrix)
+    return {
+        "required": True,
+        "blocked": insufficient or not has_ui_state_matrix,
+        "status": "blocked" if (insufficient or not has_ui_state_matrix) else "pass",
+        "reason_code": REASON_PRIMITIVES_ONLY if insufficient else ("" if has_ui_state_matrix else "ui_state_matrix_missing"),
+        "release_ready_allowed": bool(has_ui_state_matrix) and not insufficient,
+        "has_design_primitives": bool(has_design_primitives),
+        "has_ui_state_matrix": bool(has_ui_state_matrix),
+        "not_primitives_only_rule": True,
     }

@@ -43,7 +43,8 @@
     "UD-LOOM-004": "dual_install_with_beacon",
     "UD-LOOM-005": "no_default_replace_beacon",
     "UD-V2-HR-001": "full_parity_v167_truth_human_readable",
-    "UD-V2-HR-003": "mount_on_goalrun_main_axis_v200"
+    "UD-V2-HR-003": "mount_on_goalrun_main_axis_v200",
+    "UD-V2-OPS-168": "v168_ops_philosophy_parity"
   },
   "lakes": [
     {
@@ -172,6 +173,56 @@
       "harness_route": "beacon-gen-change",
       "summary": "v2 parity: L0 human-readable + shared humanizer norms; axis mount",
       "status": "truth_frozen"
+    },
+    {
+      "phase": null,
+      "priority": "P0",
+      "slug": "beacon-v2-hotfix-lane",
+      "lake_or_ocean": "湖",
+      "depends_on": [],
+      "harness_route": "beacon-gen-change",
+      "summary": "v168 hotfix parity",
+      "status": "truth_frozen"
+    },
+    {
+      "phase": null,
+      "priority": "P0",
+      "slug": "beacon-v2-release-profile-selfheal",
+      "lake_or_ocean": "湖",
+      "depends_on": [],
+      "harness_route": "beacon-gen-change",
+      "summary": "v168 release self-heal parity",
+      "status": "truth_frozen"
+    },
+    {
+      "phase": null,
+      "priority": "P0",
+      "slug": "beacon-v2-goal-longrun-default",
+      "lake_or_ocean": "湖",
+      "depends_on": [],
+      "harness_route": "beacon-gen-change",
+      "summary": "v168 longrun default parity",
+      "status": "truth_frozen"
+    },
+    {
+      "phase": null,
+      "priority": "P0",
+      "slug": "beacon-v2-version-fleet-ops",
+      "lake_or_ocean": "湖",
+      "depends_on": [],
+      "harness_route": "beacon-gen-change",
+      "summary": "v168 fleet parity",
+      "status": "truth_frozen"
+    },
+    {
+      "phase": null,
+      "priority": "P0",
+      "slug": "beacon-v2-loom-ops-philosophy-sync",
+      "lake_or_ocean": "湖",
+      "depends_on": [],
+      "harness_route": "beacon-gen-change",
+      "summary": "ops philosophy sync",
+      "status": "truth_frozen"
     }
   ],
   "topology_order": [
@@ -187,7 +238,12 @@
     "loom-brand-surface",
     "loom-goal-optional-subagent",
     "loom-goal-trace-bundle",
-    "beacon-goalrun-main-axis-v167"
+    "beacon-goalrun-main-axis-v167",
+    "beacon-v2-hotfix-lane",
+    "beacon-v2-release-profile-selfheal",
+    "beacon-v2-goal-longrun-default",
+    "beacon-v2-version-fleet-ops",
+    "beacon-v2-loom-ops-philosophy-sync"
   ],
   "main_axis_note": "v1.6.7 GoalRun main-axis shared; v2 embeds loom subagent+trace mounts"
 }

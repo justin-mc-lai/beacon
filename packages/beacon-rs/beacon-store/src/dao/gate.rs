@@ -6,6 +6,7 @@ pub struct GateRow {
     pub feature_package_id: i64,
     pub gate_name: String,
     pub verdict: String,
+    pub reason_codes_json: Option<String>,
 }
 
 pub struct GateDao;
@@ -32,7 +33,7 @@ impl GateDao {
         gate_name: &str,
     ) -> rusqlite::Result<Option<GateRow>> {
         let mut stmt = conn.prepare(
-            "SELECT id, feature_package_id, gate_name, verdict
+            "SELECT id, feature_package_id, gate_name, verdict, reason_codes_json
              FROM gate_results
              WHERE feature_package_id = ?1 AND gate_name = ?2
              ORDER BY id DESC LIMIT 1",
@@ -44,6 +45,7 @@ impl GateDao {
                 feature_package_id: row.get(1)?,
                 gate_name: row.get(2)?,
                 verdict: row.get(3)?,
+                reason_codes_json: row.get(4)?,
             }))
         } else {
             Ok(None)
