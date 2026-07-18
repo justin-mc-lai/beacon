@@ -3,6 +3,27 @@
 //! Orchestrator drives an AgentBackend through iterations, persists run state to
 //! beacon-store, and honors stop_when. It does NOT issue QA/release verdicts (AC-049).
 
+pub mod codex_backend;
+pub mod goal_controller;
+pub mod skill_load;
+pub mod workspace_admission;
+pub mod standard_flow;
+pub mod harness_path;
+pub mod git_branch_context;
+pub mod checkpoint;
+
+pub use codex_backend::CodexBackend;
+pub use goal_controller::{GoalController, GoalRunHandle};
+pub use skill_load::{build_skill_load_plan, skills_for_stage, SkillLoadPlan};
+pub use workspace_admission::{admit_workspace, WorkspaceAdmissionRequest, WorkspaceAdmissionResult};
+pub use standard_flow::{
+    verify_flow_order, AdmissionBundle, FlowState, FLOW_STAGES, REASON_FLOW_ORDER,
+    REASON_FLOW_INCOMPLETE,
+};
+pub use harness_path::{HarnessPathBlocked, HarnessPathController};
+pub use git_branch_context::{collect_branch_context, probe_git, try_branch_context, GitProbe};
+pub use checkpoint::{load_checkpoint, save_checkpoint, stop_with_checkpoint, Checkpoint};
+
 use beacon_core::agent::{AgentBackend, IterationResult};
 use beacon_store::{BeaconStore, LifecycleEventDao, RunDao};
 use std::sync::atomic::{AtomicBool, Ordering};

@@ -43,7 +43,48 @@ def golden_fixture_root(project_root: Path, *, version: str = "v1.6.7") -> Path:
         resolved = resolve_target_version(Path(project_root), version)
     except Exception:  # noqa: BLE001
         resolved = normalize_version(version) or version
-    return Path(project_root) / "docs" / "beacon" / resolved / "fixtures" / FIXTURE_SLUG
+    root = Path(project_root) / "docs" / "beacon" / resolved / "fixtures" / FIXTURE_SLUG
+    # v2 parity: prefer local mirror; else load v1.6.7 golden (UD-V2-GOLD-001)
+    if not root.exists() and _semver_tuple(resolved) >= (2, 0, 0):
+        upstream = Path(project_root) / "docs" / "beacon" / "v1.6.7" / "fixtures" / FIXTURE_SLUG
+        if upstream.exists():
+            return upstream
+    return root
+
+
+def parity_index_path(project_root: Path, *, version: str = "v2.0.0") -> Path:
+    try:
+        resolved = resolve_target_version(Path(project_root), version)
+    except Exception:  # noqa: BLE001
+        resolved = normalize_version(version) or version
+    return Path(project_root) / "docs" / "beacon" / resolved / "fixtures" / "parity-v167" / "README.md"
+
+
+def resolve_v2_parity_index(project_root: Path, *, version: str = "v2.0.0") -> dict:
+    """AC-V2-GOLD-004: v2 fixtures/parity-v167 index must resolve loadable paths."""
+    idx = parity_index_path(project_root, version=version)
+    text = idx.read_text(encoding="utf-8") if idx.exists() else ""
+    positive = Path(project_root) / "docs/beacon/v1.6.7/fixtures/golden-commerce-checkout/positive"
+    negative = Path(project_root) / "docs/beacon/v1.6.7/fixtures/golden-commerce-checkout/negative-order-without-product"
+    findings = []
+    if not idx.exists():
+        findings.append({"reason_code": "parity_index_missing", "text": str(idx)})
+    if "golden-commerce-checkout" not in text and idx.exists():
+        findings.append({"reason_code": "parity_index_incomplete", "text": "missing golden commerce pointer"})
+    if not positive.exists():
+        findings.append({"reason_code": "parity_positive_missing", "text": str(positive)})
+    if not negative.exists():
+        findings.append({"reason_code": "parity_negative_missing", "text": str(negative)})
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "index_path": str(idx) if idx.exists() else "",
+        "positive_path": str(positive) if positive.exists() else "",
+        "negative_path": str(negative) if negative.exists() else "",
+        "resolves": not findings,
+        "blocked": bool(findings),
+        "status": "blocked" if findings else "pass",
+        "findings": findings,
+    }
 
 
 def positive_package_paths(root: Path) -> dict[str, Path]:

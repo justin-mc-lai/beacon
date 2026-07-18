@@ -102,7 +102,19 @@ MOUNT_ROLES = {
     "loom-goal-optional-subagent": ("implement fan-out execute", "SubagentSession opt-in spawn/merge"),
     "loom-goal-trace-bundle": ("longrun observability", "agent_trace + goal trace CLI"),
     "beacon-v2-rust-kernel-redesign": ("runtime carrier", "Rust spine; not product complete"),
+    # v1.6.8 prod-ops hardening
+    "beacon-version-fleet-ops-v168": ("ops fleet", "version fleet + dual-version"),
+    "beacon-release-profile-selfheal-v168": ("release profile", "full/hotfix + evidence self-heal"),
+    "beacon-hotfix-lane-v168": ("hotfix mode", "goal --mode hotfix + forward-port"),
+    "beacon-goal-longrun-default-v168": ("longrun default", "project longrun_default + auto driver"),
+    "beacon-v168-goalrun-axis-mount": ("axis governance", "v1.6.8 axis mount"),
+    "beacon-v2-hotfix-lane": ("hotfix mode (v2)", "parity with v168 hotfix-lane"),
+    "beacon-v2-release-profile-selfheal": ("release profile (v2)", "parity self-heal"),
+    "beacon-v2-goal-longrun-default": ("longrun default (v2)", "parity longrun default"),
+    "beacon-v2-version-fleet-ops": ("ops fleet (v2)", "parity fleet"),
+    "beacon-v2-loom-ops-philosophy-sync": ("philosophy sync", "Loom ops same as v168"),
 }
+
 
 
 

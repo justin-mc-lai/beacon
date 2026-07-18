@@ -655,6 +655,22 @@ def driver_run_once(
     state = save_driver_state(project_root, state)
 
     summary = f"turn={turn_n} exit={exit_code} timeout={timed_out}"
+
+    # Loom trace bundle: dual-channel agent_trace (path refs; no full chat)
+    try:
+        from beacon.utils.loom_trace import record_driver_turn_trace
+
+        record_driver_turn_trace(
+            project_root,
+            run_id,
+            turn_n=turn_n,
+            prompt_path=str(prompt_path),
+            exit_code=exit_code,
+            summary=summary[:240],
+        )
+    except Exception:  # noqa: BLE001
+        pass
+
     if isinstance(result_payload, dict) and result_payload.get("summary"):
         summary = f"{summary}; {result_payload.get('summary')}"
     try:

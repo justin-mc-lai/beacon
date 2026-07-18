@@ -2,8 +2,8 @@
 
 ## Phase P0 — core + store 骨架（AC-022–031, AC-067–076, AC-084, AC-024）
 
-- [ ] TASK-P0-000-R14 materialize `v2-0-0-rust` program surface：manifest、phase graph、lake slices、admission gates、run-state；实现前必须由 TC-145 验证。
-- [ ] TASK-P0-001-R8 收敛 `packages/beacon-rs/` workspace 为 v2 core 五 crate（core/store/orchestrator/gate/cli），移除或 archive-only 标记 `beacon-python`（**不**因此删除 v1 Python 产品轨）。
+- [x] TASK-P0-000-R14 materialize `v2-0-0-rust` program surface：manifest、phase graph、lake slices、admission gates、run-state；实现前必须由 TC-145 验证。
+- [x] TASK-P0-001-R8 收敛 `packages/beacon-rs/` workspace 为 v2 core 五 crate（core/store/orchestrator/gate/cli），移除或 archive-only 标记 `beacon-python`（**不**因此删除 v1 Python 产品轨）。
 - [x] TASK-P0-002 Diagram Truth Layer 类型：WorkflowStage（含 Prototype）、StageStatus（含 Crashed/TimedOut/Interrupted）、Delivery 运行时 enum + plan 链 event_type 常量。
 - [x] TASK-P0-003 `IterationResult` 与 `AgentBackend` trait 类型定义（beacon-core）。
 - [x] TASK-P0-004 schema v1 九表 + WAL + 六 DAO skeleton。
@@ -12,45 +12,45 @@
 
 ## Phase P4 / Cross-cutting — Dual-track + Unified skill score（AC-147–156, AC-003/060/062/110）
 
-- [ ] TASK-R15-001 双轨隔离契约文档 + CI path filters：`track_v1` vs `track_v2`；混改无 admission → `dual_track_mixed_source`（TC-148）。
-- [ ] TASK-R15-002 显式 runtime 选择面（`beacon-v2` 或 `--runtime v2`）；更新 AC-060/TC-060b（TC-149）。
-- [ ] TASK-R15-003 v2 路径 cross-track fallback fail-closed（TC-062b）；确认 v1 路径仍可调用 v1 skills。
+- [x] TASK-R15-001 双轨隔离契约文档 + CI path filters：`track_v1` vs `track_v2`；混改无 admission → `dual_track_mixed_source`（TC-148）。
+- [x] TASK-R15-002 显式 runtime 选择面（`beacon-v2` 或 `--runtime v2`）；更新 AC-060/TC-060b（TC-149）。
+- [x] TASK-R15-003 v2 路径 cross-track fallback fail-closed（TC-062b）；确认 v1 路径仍可调用 v1 skills。
 - [ ] TASK-R15-004 统一 skill-score schema（结构+实效）；映射现有 `beacon eval` 维度；权威 `runtime_evidence_only`（TC-151–153, TC-156）。
 - [ ] TASK-R15-005 score-only human-edit：CLI/skill 禁止自动改 SKILL.md；独立评分与修改建议分离（TC-154–155, TC-N24）。
 - [ ] TASK-R15-006 v1 与 v2 各至少一套可比 score fixture（37 面抽样 + 六 public）。
 
 ## Phase P1 — Spine + projects（AC-017–021, AC-081–083, AC-064–065, AC-085）
 
-- [ ] TASK-P1-001 spine show/list/artifacts/gate + SpineSnapshot JSON schema。
-- [ ] TASK-P1-002 projects register/list/show。
-- [ ] TASK-P1-003 reason-codes.md + storage-authority.md；TC-066 预备。
+- [x] TASK-P1-001 spine show/list/artifacts/gate + SpineSnapshot JSON schema。
+- [x] TASK-P1-002 projects register/list/show。
+- [x] TASK-P1-003 reason-codes.md + storage-authority.md；TC-066 预备。
 - [ ] TASK-P1-004 plan↔package drift 脚本（TC-098）。
 
 ## Phase P2 — orchestrator MVP + codex/subprocess 真集成（AC-040–044, AC-047–050, AC-086）
 
-- [ ] TASK-P2-001 run goal/resume/stop/status + truth-map preflight。
-- [ ] TASK-P2-002 **CodexBackend 真多轮**（AC-043 / TC-043）：≥2 iterate，artifact_refs 写入，禁 fixture 单次。
-- [ ] TASK-P2-003 **SubprocessBackend 真一轮**（AC-044 / TC-044）。
-- [ ] TASK-P2-004 checkpoints + stop_when + graceful/force stop。
-- [ ] TASK-P2-005 phase controller metadata + lifecycle_events。
-- [ ] TASK-P2-006 integration：TC-040–041, TC-043–044, TC-047–050, TC-086。
+- [x] TASK-P2-001 run goal/resume/stop/status + truth-map preflight。
+- [x] TASK-P2-002 **CodexBackend 真多轮**（AC-043 / TC-043）：≥2 iterate，artifact_refs 写入，禁 fixture 单次。
+- [x] TASK-P2-003 **SubprocessBackend 真一轮**（AC-044 / TC-044）。
+- [x] TASK-P2-004 checkpoints + stop_when + graceful/force stop。
+- [x] TASK-P2-005 phase controller metadata + lifecycle_events。
+- [x] TASK-P2-006 integration：TC-040–041, TC-043–044, TC-047–050, TC-086。
 - [ ] TASK-P2-007 **planner_review multi-agent runtime**（AC-102 / TC-102）：Rust orchestrator 调用 v1.6 同构 artifact（lanes/synthesis/fallback）；artifact_refs 持久化。
-- [ ] TASK-P2-008 `intent_snapshot.v1` + prompt snapshot ledger + low-confidence freeze block（AC-111–113）。
-- [ ] TASK-P2-009 `decision_packet.v1` loop admission（AC-114）。
+- [x] TASK-P2-008 `intent_snapshot.v1` + prompt snapshot ledger + low-confidence freeze block（AC-111–113）。
+- [x] TASK-P2-009 `decision_packet.v1` loop admission（AC-114）。
 - [ ] TASK-P2-010 loop guardrails：pattern registry、failure catalog、token budget、readiness audit、protected path denylist（AC-120）。
-- [ ] TASK-P2-011 `agent_trace.v1` writer + stagnation detector（AC-117–118）。
-- [ ] TASK-P2-012 progressive disclosure loader：产出 `skill_load_plan.v1`，按 topic 加载 public SKILL + selected references/examples，禁止加载全部历史 skill（AC-126 / TC-126）。
-- [ ] TASK-P2-013 route examples registry：覆盖 decision_packet、design_primitives、qa-release、branch-blocked 示例，标注 example 非 truth authority（AC-127 / TC-127）。
-- [ ] TASK-P2-014 `BranchContext.v1` schema + workspace admission 输出：caller cwd / target root / admitted worktree / branch / dirty policy / protected paths（AC-128 / TC-128）。
-- [ ] TASK-P2-015 harness boundary reason_codes：planner/truth/implement/qa-evidence/release/loop 越界 fixture fail-closed（AC-130 / TC-130）。
-- [ ] TASK-P2-016 `TraceSpine.v1` + `TraceContext.v1` kernel authority：loop start 创建 append-only trace，绑定 BranchContext / decision_packet / intent_snapshot / truth_hash / design_primitives（AC-131–132 / TC-131–132）。
-- [ ] TASK-P2-017 trace completeness hard gate：implement、qa-evidence、release 均验证 trace missing / append failure / hash chain invalid / event-to-evidence 断链（AC-133 / TC-133）。
-- [ ] TASK-P2-018 canonical truth branch hard gate：truth/change/refreeze 只能在 main/master 写入；feature/dev worktree 只能消费 canonical frozen truth（AC-136 / TC-136）。
-- [ ] TASK-P2-019 empty/drift refreeze guard：reason-only、machine-only refreeze 和 revision narrative drift 均 fail-closed（AC-137 / TC-137）。
-- [ ] TASK-P2-020 Standard Execution Flow state machine：实现 support_advisory -> canonical_truth_authoring -> canonical_refreeze -> canonical_commit -> feature_worktree_reconcile -> governance_verify -> workspace_admission -> implement_resume 顺序校验（AC-138 / TC-138）。
-- [ ] TASK-P2-021 canonical baseline commit gate：refreeze complete 后必须提交 canonical branch 并生成 `truth_baseline_commit`，feature branch implement admission 验证该 commit 已合入（AC-139, AC-141 / TC-139, TC-141）。
-- [ ] TASK-P2-022 stale feature-local refreeze quarantine：feature worktree 合入 main 前检测 `.machine` revision/projection dirty，要求 scoped stash/archive artifact，不得采信本地 bump（AC-140 / TC-140）。
-- [ ] TASK-P2-023 standard flow admission bundle：汇总 truth-map verify、verify-materials strict、diff check、branch-governance verify、workspace admission 为可引用 bundle，并支持 idempotent resume（AC-142–143 / TC-142–143）。
+- [x] TASK-P2-011 `agent_trace.v1` writer + stagnation detector（AC-117–118）。
+- [x] TASK-P2-012 progressive disclosure loader：产出 `skill_load_plan.v1`，按 topic 加载 public SKILL + selected references/examples，禁止加载全部历史 skill（AC-126 / TC-126）。
+- [x] TASK-P2-013 route examples registry：覆盖 decision_packet、design_primitives、qa-release、branch-blocked 示例，标注 example 非 truth authority（AC-127 / TC-127）。
+- [x] TASK-P2-014 `BranchContext.v1` schema + workspace admission 输出：caller cwd / target root / admitted worktree / branch / dirty policy / protected paths（AC-128 / TC-128）。
+- [x] TASK-P2-015 harness boundary reason_codes：planner/truth/implement/qa-evidence/release/loop 越界 fixture fail-closed（AC-130 / TC-130）。
+- [x] TASK-P2-016 `TraceSpine.v1` + `TraceContext.v1` kernel authority：loop start 创建 append-only trace，绑定 BranchContext / decision_packet / intent_snapshot / truth_hash / design_primitives（AC-131–132 / TC-131–132）。
+- [x] TASK-P2-017 trace completeness hard gate：implement、qa-evidence、release 均验证 trace missing / append failure / hash chain invalid / event-to-evidence 断链（AC-133 / TC-133）。
+- [x] TASK-P2-018 canonical truth branch hard gate：truth/change/refreeze 只能在 main/master 写入；feature/dev worktree 只能消费 canonical frozen truth（AC-136 / TC-136）。
+- [x] TASK-P2-019 empty/drift refreeze guard：reason-only、machine-only refreeze 和 revision narrative drift 均 fail-closed（AC-137 / TC-137）。
+- [x] TASK-P2-020 Standard Execution Flow state machine：实现 support_advisory -> canonical_truth_authoring -> canonical_refreeze -> canonical_commit -> feature_worktree_reconcile -> governance_verify -> workspace_admission -> implement_resume 顺序校验（AC-138 / TC-138）。
+- [x] TASK-P2-021 canonical baseline commit gate：refreeze complete 后必须提交 canonical branch 并生成 `truth_baseline_commit`，feature branch implement admission 验证该 commit 已合入（AC-139, AC-141 / TC-139, TC-141）。
+- [x] TASK-P2-022 stale feature-local refreeze quarantine：feature worktree 合入 main 前检测 `.machine` revision/projection dirty，要求 scoped stash/archive artifact，不得采信本地 bump（AC-140 / TC-140）。
+- [x] TASK-P2-023 standard flow admission bundle：汇总 truth-map verify、verify-materials strict、diff check、branch-governance verify、workspace admission 为可引用 bundle，并支持 idempotent resume（AC-142–143 / TC-142–143）。
 
 ## Phase P3 — gate + migration + claude/acp/worktree/implement 真集成（AC-045–046, AC-099–100, AC-077–079, AC-011, AC-087, **AC-101, AC-103**）
 
@@ -67,18 +67,18 @@
 - [ ] TASK-P3-011 `design_primitives.v1` binding + design_required implement gate（AC-115–116）。
 - [ ] TASK-P3-012 remediation sandbox overlay/eval/rollback + human review report（AC-119）。
 - [ ] TASK-P3-013 qa-evidence confidence_chain + business FSM coverage + defect repair regression chain（AC-121–122）。
-- [ ] TASK-P3-014 non-behavior evidence rejection + release human gate invariant（AC-123–124）。
-- [ ] TASK-P3-015 branch governance hard gate integration：所有 write/agent/evidence/release harness 消费 `BranchContext.v1`，cwd/root/worktree mismatch 阻断（AC-129 / TC-129）。
-- [ ] TASK-P3-016 stagnation/remediation trace binding：`stagnation-report.v1` 引用 trace event range；`remediation-report.v1` 引用 stagnation report、overlay/eval/rollback evidence 与 human review decision（AC-134–135 / TC-134–135）。
+- [x] TASK-P3-014 non-behavior evidence rejection + release human gate invariant（AC-123–124）。
+- [x] TASK-P3-015 branch governance hard gate integration：所有 write/agent/evidence/release harness 消费 `BranchContext.v1`，cwd/root/worktree mismatch 阻断（AC-129 / TC-129）。
+- [x] TASK-P3-016 stagnation/remediation trace binding：`stagnation-report.v1` 引用 trace event range；`remediation-report.v1` 引用 stagnation report、overlay/eval/rollback evidence 与 human review decision（AC-134–135 / TC-134–135）。
 
 ## Phase P4 — 六能力 harness surface + legacy removal（AC-002–003, AC-059–063, AC-088, AC-091, AC-094, AC-109–110, AC-125）
 
-- [ ] TASK-P4-001 删除 v2 core 的 PyO3/python runtime fallback；legacy invocation 只给 migration/archive route（TC-002/003/062）。
-- [ ] TASK-P4-002 `beacon harness list --version v2.0.0 --json` 精确暴露六能力 contract（TC-059/063/109）。
+- [x] TASK-P4-001 删除 v2 core 的 PyO3/python runtime fallback；legacy invocation 只给 migration/archive route（TC-002/003/062）。
+- [x] TASK-P4-002 `beacon harness list --version v2.0.0 --json` 精确暴露六能力 contract（TC-059/063/109）。
 - [ ] TASK-P4-003 CI matrix 覆盖 five-crate Rust workspace + legacy removal regression（TC-091/110）。
-- [ ] TASK-P4-004 public surface denylist：doctor/router/hooks/metadata/debug/archive 保留 internal module，但不得出现在 v2 host-visible 一等 skill list（AC-125 / TC-125）。
-- [ ] TASK-P4-005 standard-flow progressive examples：通过 loop/truth/implement/qa-evidence/release examples 暴露标准执行流，不新增第七个 public skill（AC-144 / TC-144）。
-- [ ] TASK-P4-005 integration：TC-059–063, TC-088, TC-094, TC-109–110, TC-125。
+- [x] TASK-P4-004 public surface denylist：doctor/router/hooks/metadata/debug/archive 保留 internal module，但不得出现在 v2 host-visible 一等 skill list（AC-125 / TC-125）。
+- [x] TASK-P4-005 standard-flow progressive examples：通过 loop/truth/implement/qa-evidence/release examples 暴露标准执行流，不新增第七个 public skill（AC-144 / TC-144）。
+- [x] TASK-P4-005 integration：TC-059–063, TC-088, TC-094, TC-109–110, TC-125。
 
 ## Phase P5 — proto（v2.0.0 跳过，D-V2-001 accepted defer）
 
@@ -157,3 +157,29 @@ truth freeze → implement → evaluator 后才可 closure。
 - [ ] TASK-R18-015 GitScopeGraph→BranchContext parity loader（AC-171 / TC-171, TC-N39）。
 - [ ] TASK-R18-016 single_repo/monorepo/multi_git topology admission fixtures（AC-172 / TC-172）。
 - [ ] TASK-R18-017 loop/implement/standard-flow 强制 topology_gate_ref（AC-173 / TC-173, TC-N40）。
+
+
+## Deep slice note
+
+2026-07-18: partial completion of dual-track/harness/TraceSpine types/Codex multi-turn/GoalController/skill_load/archive-python. TraceSpine *hard gate wiring* into all implement/qa/release paths still open (P2-017+).
+
+
+## TraceSpine + BranchContext slice (2026-07-18)
+
+A) harness_trace_gate on implement/qa-evidence/release; HarnessPathController.start_loop/enter_phase; CLI `trace check`.
+B) BranchContext.v1 + workspace admit; FlowState order machine; AdmissionBundle implement gate; CLI `workspace admit` / `flow verify`.
+Tests: p2_trace_branch_flow.rs (13).
+
+
+## Closure slice 2026-07-18 (beacon-goal pgr-ee700a59d76b)
+
+- git BranchContext probe (`--git`)
+- decision_packet + intent_snapshot gates
+- stagnation-report.v1 with trace range
+- empty/drift refreeze guards
+- harness boundary reason codes
+- checkpoints graceful/force
+- reason-codes.md + storage-authority.md
+- route-examples + harness-examples
+- cargo test --workspace green; pytest test_v200_* green
+- **Deferred**: Claude/ACP live backends, criterion benches, default v2 runtime switch (W4)

@@ -2,7 +2,7 @@
 
 - **version**: `v2.0.0`
 - **program**: `beacon-v2-product-goal-parallel-v200`
-- **generated_at**: 2026-07-18T10:38:12.499900+00:00
+- **generated_at**: 2026-07-18T16:13:06.854544+00:00
 - **policy**: UD-AXIS-001..005 (change must regenerate this artifact)
 
 ## User intent

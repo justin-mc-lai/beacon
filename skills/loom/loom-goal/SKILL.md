@@ -1,0 +1,41 @@
+---
+name: loom-goal
+description: "【Loom 公共入口】一句话目标 → 计划/需求/实现/验收。与 $beacon-goal 双装并行，不覆盖 beacon。"
+metadata:
+  version: "v2.0.0"
+  entry: public_primary
+  brand: Loom
+  dual_install_with: beacon-goal
+---
+
+# Loom Goal — Loom 轨唯一公共交付入口
+
+## 与 Beacon 的关系
+
+| | Beacon (生产) | Loom (进化/验收) |
+|--|---------------|------------------|
+| skill | `$beacon-goal` | **`$loom-goal`** |
+| CLI | `beacon goal` | **`loom goal`** |
+| 默认替换 | — | **禁止** Day-1 覆盖 beacon |
+
+两轨可同机安装。W4 前禁止默认 `BEACON_V2=1` 或 alias beacon→loom。
+
+## 30 秒
+
+```text
+$loom-goal
+目标：...
+版本：v2.0.0
+```
+
+```bash
+loom goal run "<目标>" --project . --version v2.0.0
+```
+
+## 规则
+
+- complete 需 verifier；release 人工门
+- loop 仅 support（`$loom-loop-goal` 若存在）
+- Phase-1 可共享 `skills/beacon/*` 实现路由
+
+详见 `skills/loom/examples/goal-one-shot-30s.md`。

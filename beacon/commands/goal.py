@@ -414,3 +414,19 @@ def goal_axis(
     _emit(payload if isinstance(payload, dict) else {"status": "ok"}, json_output)
     raise typer.Exit(0 if not payload.get("blocked") else 2)
 
+
+
+@app.command("trace")
+def goal_trace(
+    run_id: str = typer.Option(..., "--run-id"),
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p"),
+    verbose: bool = typer.Option(False, "--trace-verbose", "--verbose", help="Include event path refs (no full chat)"),
+    json_output: bool = typer.Option(True, "--json/--no-json"),
+) -> None:
+    """Aggregate agent_trace + execution.jsonl for a goal run (Loom trace bundle)."""
+    from beacon.utils.loom_trace import aggregate_goal_trace
+
+    root = _root(project)
+    payload = aggregate_goal_trace(root, run_id, verbose=verbose)
+    _emit(payload, json_output)
+    raise typer.Exit(0 if payload.get("status") == "ok" else 2)
