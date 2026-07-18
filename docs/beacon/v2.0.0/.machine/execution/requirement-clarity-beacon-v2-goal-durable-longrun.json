@@ -1,0 +1,940 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v2-goal-durable-longrun",
+  "feature_slug": "beacon-v2-goal-durable-longrun",
+  "version": "v2.0.0",
+  "runtime_version": "v1.6.7",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v2.0.0/.machine/execution/requirement-clarity-beacon-v2-goal-durable-longrun.json",
+  "report_markdown_path": "docs/beacon/v2.0.0/execution/requirement-clarity-beacon-v2-goal-durable-longrun.md",
+  "state_path": ".beacon/state/requirement-clarity-beacon-v2-goal-durable-longrun.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v2.0.0",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-07-18T03:43:37.190261+00:00",
+    "feature": "beacon-v2-goal-durable-longrun",
+    "feature_slug": "beacon-v2-goal-durable-longrun",
+    "prd_ref": "docs/beacon/v2.0.0/prd/beacon-v2-goal-durable-longrun.md",
+    "user_story_ref": "docs/beacon/v2.0.0/user-story/beacon-v2-goal-durable-longrun.md"
+  },
+  "domain_fsm_gate": {
+    "schema_version": "1.0",
+    "feature": "beacon-v2-goal-durable-longrun",
+    "feature_slug": "beacon-v2-goal-durable-longrun",
+    "version": "v2.0.0",
+    "truth_path": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/truth.md",
+    "tests_path": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+    "required": true,
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "findings": [],
+    "requirement": {
+      "required": true,
+      "reason": "domain_section_present",
+      "explicit": false,
+      "partial": true,
+      "complexity": false,
+      "business_signal": true,
+      "version_supported": true
+    },
+    "projection": {
+      "schema_version": "1.0",
+      "domain_fsm_schema": "domain-fsm.v1",
+      "entity_precedence_schema": "entity-precedence.v1",
+      "frontmatter": {
+        "slug": "beacon-v2-goal-durable-longrun",
+        "version": "v2.0.0",
+        "status": "frozen",
+        "revision_id": "R2",
+        "language": "zh",
+        "change_reason": "R2 - full AC-DGS-001..014 parity table + AgentDriver one-shot; pln-review 2026-07-18",
+        "canonical_refs": {
+          "truth": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/truth.md",
+          "tests": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+          "tasks": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tasks.md",
+          "evidence": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/evidence.md"
+        },
+        "parser_contract": "beacon-feature-package-v2",
+        "truth_source_model": "feature_package_authoritative",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "program_ref": "docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/feature-graph.json",
+        "ux_required": "false",
+        "design_deferral": "CLI/orchestrator long-run; no product marketing UI"
+      },
+      "frontmatter_errors": [],
+      "has_domain_model_section": true,
+      "has_domain_fsm_section": true,
+      "has_illegal_transition_section": true,
+      "entities": [
+        {
+          "entity": "GoalRun",
+          "key": "run_id",
+          "precedence": "ledger 权威",
+          "requires": "ledger 权威"
+        },
+        {
+          "entity": "SupervisorSession",
+          "key": "run_id + session_id",
+          "precedence": "longrun 自动 active；否则 opt-in",
+          "requires": "longrun 自动 active；否则 opt-in"
+        },
+        {
+          "entity": "AgentDriver",
+          "key": "run_id + driver_id",
+          "precedence": "v2 requeue 循环",
+          "requires": "v2 requeue 循环"
+        },
+        {
+          "entity": "Heartbeat / ExecutionLog / Checkpoint",
+          "key": "run_id",
+          "precedence": "同 v1.6.7",
+          "requires": "同 v1.6.7"
+        },
+        {
+          "entity": "WorkerJob",
+          "key": "run_id + stage",
+          "precedence": "ralph / qa / design",
+          "requires": "ralph / qa / design"
+        },
+        {
+          "entity": "MemoryIndex",
+          "key": "run_id",
+          "precedence": "sqlite FTS P2",
+          "requires": "sqlite FTS P2"
+        }
+      ],
+      "entity_precedence": [
+        {
+          "entity": "GoalRun",
+          "key": "run_id",
+          "precedence": "ledger 权威",
+          "requires": "ledger 权威"
+        },
+        {
+          "entity": "SupervisorSession",
+          "key": "run_id + session_id",
+          "precedence": "longrun 自动 active；否则 opt-in",
+          "requires": "longrun 自动 active；否则 opt-in"
+        },
+        {
+          "entity": "AgentDriver",
+          "key": "run_id + driver_id",
+          "precedence": "v2 requeue 循环",
+          "requires": "v2 requeue 循环"
+        },
+        {
+          "entity": "Heartbeat / ExecutionLog / Checkpoint",
+          "key": "run_id",
+          "precedence": "同 v1.6.7",
+          "requires": "同 v1.6.7"
+        },
+        {
+          "entity": "WorkerJob",
+          "key": "run_id + stage",
+          "precedence": "ralph / qa / design",
+          "requires": "ralph / qa / design"
+        },
+        {
+          "entity": "MemoryIndex",
+          "key": "run_id",
+          "precedence": "sqlite FTS P2",
+          "requires": "sqlite FTS P2"
+        }
+      ],
+      "aggregates": [
+        {
+          "name": "GoalRun（durable，继承 v1.6.7）",
+          "states": [
+            "awaiting_verifier",
+            "blocked",
+            "completed",
+            "completed path",
+            "created",
+            "host_interrupted",
+            "release_pending",
+            "running",
+            "stage_active",
+            "stage_blocked",
+            "work done"
+          ],
+          "transitions": [
+            {
+              "from": "",
+              "to": "created",
+              "guard": "goal run",
+              "initial": "true"
+            },
+            {
+              "from": "created",
+              "to": "running",
+              "guard": "—"
+            },
+            {
+              "from": "running",
+              "to": "stage_active",
+              "guard": "stage set"
+            },
+            {
+              "from": "stage_active",
+              "to": "host_interrupted",
+              "guard": "host turn end / stall"
+            },
+            {
+              "from": "stage_active",
+              "to": "stage_blocked",
+              "guard": "worker/gate fail"
+            },
+            {
+              "from": "work done",
+              "to": "awaiting_verifier",
+              "guard": "no verifier"
+            },
+            {
+              "from": "awaiting_verifier",
+              "to": "completed",
+              "guard": "verifier refs"
+            },
+            {
+              "from": "stage_blocked",
+              "to": "blocked",
+              "guard": "streak≥3"
+            },
+            {
+              "from": "completed path",
+              "to": "release_pending",
+              "guard": "human gate"
+            }
+          ]
+        },
+        {
+          "name": "AgentDriver（v2 新增）",
+          "states": [
+            "*",
+            "arming",
+            "halt_budget",
+            "halt_terminal",
+            "idle",
+            "requeue",
+            "turn_active",
+            "turn_ended"
+          ],
+          "transitions": [
+            {
+              "from": "",
+              "to": "idle",
+              "guard": "no longrun",
+              "initial": "true"
+            },
+            {
+              "from": "idle",
+              "to": "arming",
+              "guard": "--longrun or supervise"
+            },
+            {
+              "from": "arming",
+              "to": "turn_active",
+              "guard": "spawn/resume host agent"
+            },
+            {
+              "from": "requeue",
+              "to": "turn_active",
+              "guard": "spawn/resume host agent"
+            },
+            {
+              "from": "turn_active",
+              "to": "turn_ended",
+              "guard": "host exit / context full"
+            },
+            {
+              "from": "turn_ended",
+              "to": "requeue",
+              "guard": "not terminal & budget ok"
+            },
+            {
+              "from": "turn_ended",
+              "to": "halt_budget",
+              "guard": "max_turns/token exhausted"
+            },
+            {
+              "from": "*",
+              "to": "halt_terminal",
+              "guard": "completed/blocked/release_pending/user_stop"
+            }
+          ]
+        }
+      ],
+      "illegal_transition_slots": [
+        {
+          "description": "From | To | Guard violated | TC slot",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "------|-----|----------------|---------",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "host_interrupted | completed | no verifier | TC-V2-DLR-ILLEGAL-01",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "stage_blocked | completed | no repair | TC-V2-DLR-ILLEGAL-01",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "awaiting_verifier | completed | missing refs | TC-V2-DLR-ILLEGAL-01",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "turn_ended | completed | no verifier | TC-V2-DLR-ILLEGAL-01",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "halt_budget | completed | budget exhaust must not complete | TC-V2-DLR-ILLEGAL-03",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "turn_active | release_confirmed | auto release forbidden | TC-V2-DLR-ILLEGAL-02",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "detached | polling | must active first | TC-V2-DLR-002",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "idle default run | active | without --longrun or supervise | TC-V2-DLR-002",
+          "aggregate": "",
+          "source": "truth"
+        }
+      ],
+      "acceptance_criteria": [
+        {
+          "ac_id": "AC-V2-DLR-001",
+          "description": "v1.6.7 durable supervisor 行为 fixture 在 v2 可加载/通过（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-DLR-002",
+          "description": "`--longrun` 本 run attach supervisor+driver；默认 run 不 attach（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-DLR-003",
+          "description": "`$beacon-goal` 识别长跑意图并设置 longrun（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-DLR-004",
+          "description": "默认 120s 心跳（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-DLR-005",
+          "description": "事件 append-only JSONL（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-DLR-006",
+          "description": "digest-only resume-pack（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-DLR-007",
+          "description": "host_interrupted ≠ stage_blocked（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-DLR-008",
+          "description": "turn_ended 后 driver 自动 requeue（除非 terminal/budget/stop）（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-DLR-009",
+          "description": "tick --execute 可派 ralph/qa；不 auto-release（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-DLR-010",
+          "description": "complete 需 verifier（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-DLR-011",
+          "description": "release 永不 auto（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-DLR-012",
+          "description": "max_agent_turns/token_budget 可配；耗尽不 complete（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-DLR-013",
+          "description": "AgentDriver 归属 Rust Operator Spine；Python shim 同 CLI（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-DLR-014",
+          "description": "与 satellite pool 可组合（**Should**）"
+        },
+        {
+          "ac_id": "AC-V2-DLR-015",
+          "description": "sqlite FTS 非权威（**Should**）"
+        },
+        {
+          "ac_id": "AC-V2-DLR-016",
+          "description": "tests 含 legal walk + illegal 行（**Must**）"
+        }
+      ],
+      "bound_ac_ids": [
+        "AC-V2-DLR-001",
+        "AC-V2-DLR-002",
+        "AC-V2-DLR-003",
+        "AC-V2-DLR-004",
+        "AC-V2-DLR-005",
+        "AC-V2-DLR-006",
+        "AC-V2-DLR-007",
+        "AC-V2-DLR-008",
+        "AC-V2-DLR-009",
+        "AC-V2-DLR-010",
+        "AC-V2-DLR-011",
+        "AC-V2-DLR-012",
+        "AC-V2-DLR-013",
+        "AC-V2-DLR-014",
+        "AC-V2-DLR-015",
+        "AC-V2-DLR-016"
+      ],
+      "orphan_ac_ids": [],
+      "aggregates_missing_illegal_slots": [],
+      "raw_section_titles": [
+        "Overview",
+        "User Intent（一行）",
+        "User Decisions（locked）",
+        "Public CLI / skill surface",
+        "Domain Model",
+        "Domain FSM — GoalRun（durable，继承 v1.6.7）",
+        "Illegal transitions — GoalRun",
+        "Domain FSM — AgentDriver（v2 新增）",
+        "Legal walks",
+        "Illegal transitions — AgentDriver",
+        "Illegal transitions — SupervisorSession",
+        "Illegal (global IDs)",
+        "Context-full protocol（Must）",
+        "Acceptance Criteria",
+        "Full parity with v1.6.7 durable supervisor (Must)",
+        "Non-Goals",
+        "Dependencies",
+        "How one-shot works (normative)"
+      ]
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "required": true,
+      "blocked": false,
+      "status": "pass",
+      "reason_code": "",
+      "findings": [],
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "beacon-v2-goal-durable-longrun",
+          "version": "v2.0.0",
+          "status": "frozen",
+          "revision_id": "R2",
+          "language": "zh",
+          "change_reason": "R2 - full AC-DGS-001..014 parity table + AgentDriver one-shot; pln-review 2026-07-18",
+          "canonical_refs": {
+            "truth": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/truth.md",
+            "tests": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+            "tasks": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tasks.md",
+            "evidence": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/evidence.md"
+          },
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "truth_map_contract": "beacon-truth-map-v1",
+          "program_ref": "docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/feature-graph.json",
+          "ux_required": "false",
+          "design_deferral": "CLI/orchestrator long-run; no product marketing UI"
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": true,
+        "has_domain_fsm_section": true,
+        "has_illegal_transition_section": true,
+        "entities": [
+          {
+            "entity": "GoalRun",
+            "key": "run_id",
+            "precedence": "ledger 权威",
+            "requires": "ledger 权威"
+          },
+          {
+            "entity": "SupervisorSession",
+            "key": "run_id + session_id",
+            "precedence": "longrun 自动 active；否则 opt-in",
+            "requires": "longrun 自动 active；否则 opt-in"
+          },
+          {
+            "entity": "AgentDriver",
+            "key": "run_id + driver_id",
+            "precedence": "v2 requeue 循环",
+            "requires": "v2 requeue 循环"
+          },
+          {
+            "entity": "Heartbeat / ExecutionLog / Checkpoint",
+            "key": "run_id",
+            "precedence": "同 v1.6.7",
+            "requires": "同 v1.6.7"
+          },
+          {
+            "entity": "WorkerJob",
+            "key": "run_id + stage",
+            "precedence": "ralph / qa / design",
+            "requires": "ralph / qa / design"
+          },
+          {
+            "entity": "MemoryIndex",
+            "key": "run_id",
+            "precedence": "sqlite FTS P2",
+            "requires": "sqlite FTS P2"
+          }
+        ],
+        "entity_precedence": [
+          {
+            "entity": "GoalRun",
+            "key": "run_id",
+            "precedence": "ledger 权威",
+            "requires": "ledger 权威"
+          },
+          {
+            "entity": "SupervisorSession",
+            "key": "run_id + session_id",
+            "precedence": "longrun 自动 active；否则 opt-in",
+            "requires": "longrun 自动 active；否则 opt-in"
+          },
+          {
+            "entity": "AgentDriver",
+            "key": "run_id + driver_id",
+            "precedence": "v2 requeue 循环",
+            "requires": "v2 requeue 循环"
+          },
+          {
+            "entity": "Heartbeat / ExecutionLog / Checkpoint",
+            "key": "run_id",
+            "precedence": "同 v1.6.7",
+            "requires": "同 v1.6.7"
+          },
+          {
+            "entity": "WorkerJob",
+            "key": "run_id + stage",
+            "precedence": "ralph / qa / design",
+            "requires": "ralph / qa / design"
+          },
+          {
+            "entity": "MemoryIndex",
+            "key": "run_id",
+            "precedence": "sqlite FTS P2",
+            "requires": "sqlite FTS P2"
+          }
+        ],
+        "aggregates": [
+          {
+            "name": "GoalRun（durable，继承 v1.6.7）",
+            "states": [
+              "awaiting_verifier",
+              "blocked",
+              "completed",
+              "completed path",
+              "created",
+              "host_interrupted",
+              "release_pending",
+              "running",
+              "stage_active",
+              "stage_blocked",
+              "work done"
+            ],
+            "transitions": [
+              {
+                "from": "",
+                "to": "created",
+                "guard": "goal run",
+                "initial": "true"
+              },
+              {
+                "from": "created",
+                "to": "running",
+                "guard": "—"
+              },
+              {
+                "from": "running",
+                "to": "stage_active",
+                "guard": "stage set"
+              },
+              {
+                "from": "stage_active",
+                "to": "host_interrupted",
+                "guard": "host turn end / stall"
+              },
+              {
+                "from": "stage_active",
+                "to": "stage_blocked",
+                "guard": "worker/gate fail"
+              },
+              {
+                "from": "work done",
+                "to": "awaiting_verifier",
+                "guard": "no verifier"
+              },
+              {
+                "from": "awaiting_verifier",
+                "to": "completed",
+                "guard": "verifier refs"
+              },
+              {
+                "from": "stage_blocked",
+                "to": "blocked",
+                "guard": "streak≥3"
+              },
+              {
+                "from": "completed path",
+                "to": "release_pending",
+                "guard": "human gate"
+              }
+            ]
+          },
+          {
+            "name": "AgentDriver（v2 新增）",
+            "states": [
+              "*",
+              "arming",
+              "halt_budget",
+              "halt_terminal",
+              "idle",
+              "requeue",
+              "turn_active",
+              "turn_ended"
+            ],
+            "transitions": [
+              {
+                "from": "",
+                "to": "idle",
+                "guard": "no longrun",
+                "initial": "true"
+              },
+              {
+                "from": "idle",
+                "to": "arming",
+                "guard": "--longrun or supervise"
+              },
+              {
+                "from": "arming",
+                "to": "turn_active",
+                "guard": "spawn/resume host agent"
+              },
+              {
+                "from": "requeue",
+                "to": "turn_active",
+                "guard": "spawn/resume host agent"
+              },
+              {
+                "from": "turn_active",
+                "to": "turn_ended",
+                "guard": "host exit / context full"
+              },
+              {
+                "from": "turn_ended",
+                "to": "requeue",
+                "guard": "not terminal & budget ok"
+              },
+              {
+                "from": "turn_ended",
+                "to": "halt_budget",
+                "guard": "max_turns/token exhausted"
+              },
+              {
+                "from": "*",
+                "to": "halt_terminal",
+                "guard": "completed/blocked/release_pending/user_stop"
+              }
+            ]
+          }
+        ],
+        "illegal_transition_slots": [
+          {
+            "description": "From | To | Guard violated | TC slot",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "------|-----|----------------|---------",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "host_interrupted | completed | no verifier | TC-V2-DLR-ILLEGAL-01",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "stage_blocked | completed | no repair | TC-V2-DLR-ILLEGAL-01",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "awaiting_verifier | completed | missing refs | TC-V2-DLR-ILLEGAL-01",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "turn_ended | completed | no verifier | TC-V2-DLR-ILLEGAL-01",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "halt_budget | completed | budget exhaust must not complete | TC-V2-DLR-ILLEGAL-03",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "turn_active | release_confirmed | auto release forbidden | TC-V2-DLR-ILLEGAL-02",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "detached | polling | must active first | TC-V2-DLR-002",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "idle default run | active | without --longrun or supervise | TC-V2-DLR-002",
+            "aggregate": "",
+            "source": "truth"
+          }
+        ],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-V2-DLR-001",
+            "description": "v1.6.7 durable supervisor 行为 fixture 在 v2 可加载/通过（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-DLR-002",
+            "description": "`--longrun` 本 run attach supervisor+driver；默认 run 不 attach（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-DLR-003",
+            "description": "`$beacon-goal` 识别长跑意图并设置 longrun（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-DLR-004",
+            "description": "默认 120s 心跳（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-DLR-005",
+            "description": "事件 append-only JSONL（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-DLR-006",
+            "description": "digest-only resume-pack（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-DLR-007",
+            "description": "host_interrupted ≠ stage_blocked（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-DLR-008",
+            "description": "turn_ended 后 driver 自动 requeue（除非 terminal/budget/stop）（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-DLR-009",
+            "description": "tick --execute 可派 ralph/qa；不 auto-release（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-DLR-010",
+            "description": "complete 需 verifier（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-DLR-011",
+            "description": "release 永不 auto（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-DLR-012",
+            "description": "max_agent_turns/token_budget 可配；耗尽不 complete（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-DLR-013",
+            "description": "AgentDriver 归属 Rust Operator Spine；Python shim 同 CLI（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-DLR-014",
+            "description": "与 satellite pool 可组合（**Should**）"
+          },
+          {
+            "ac_id": "AC-V2-DLR-015",
+            "description": "sqlite FTS 非权威（**Should**）"
+          },
+          {
+            "ac_id": "AC-V2-DLR-016",
+            "description": "tests 含 legal walk + illegal 行（**Must**）"
+          }
+        ],
+        "bound_ac_ids": [
+          "AC-V2-DLR-001",
+          "AC-V2-DLR-002",
+          "AC-V2-DLR-003",
+          "AC-V2-DLR-004",
+          "AC-V2-DLR-005",
+          "AC-V2-DLR-006",
+          "AC-V2-DLR-007",
+          "AC-V2-DLR-008",
+          "AC-V2-DLR-009",
+          "AC-V2-DLR-010",
+          "AC-V2-DLR-011",
+          "AC-V2-DLR-012",
+          "AC-V2-DLR-013",
+          "AC-V2-DLR-014",
+          "AC-V2-DLR-015",
+          "AC-V2-DLR-016"
+        ],
+        "orphan_ac_ids": [],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "Overview",
+          "User Intent（一行）",
+          "User Decisions（locked）",
+          "Public CLI / skill surface",
+          "Domain Model",
+          "Domain FSM — GoalRun（durable，继承 v1.6.7）",
+          "Illegal transitions — GoalRun",
+          "Domain FSM — AgentDriver（v2 新增）",
+          "Legal walks",
+          "Illegal transitions — AgentDriver",
+          "Illegal transitions — SupervisorSession",
+          "Illegal (global IDs)",
+          "Context-full protocol（Must）",
+          "Acceptance Criteria",
+          "Full parity with v1.6.7 durable supervisor (Must)",
+          "Non-Goals",
+          "Dependencies",
+          "How one-shot works (normative)"
+        ]
+      },
+      "summary": {
+        "entity_count": 6,
+        "aggregate_count": 2,
+        "illegal_slot_count": 10,
+        "orphan_ac_count": 0,
+        "bound_ac_count": 16
+      }
+    },
+    "recommended_action": ""
+  },
+  "human_closure_contract": {
+    "required": false,
+    "research_path": "docs/beacon/v2.0.0/research/beacon-v2-goal-durable-longrun.md",
+    "research_exists": true,
+    "source_architecture_path": "docs/beacon/v2.0.0/source-architecture/index.md",
+    "source_architecture_exists": true,
+    "required_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "missing_sections": [],
+    "diagram_types": [],
+    "complexity_signals": []
+  },
+  "requirement_closure_contract": {
+    "required": true,
+    "chain_order": [
+      "research",
+      "prd",
+      "user_story",
+      "test_case",
+      "requirement_clarity",
+      "freeze"
+    ],
+    "human_closure_required": false,
+    "paths": {
+      "research": "docs/beacon/v2.0.0/research/beacon-v2-goal-durable-longrun.md",
+      "prd": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/truth.md",
+      "user_story": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/truth.md",
+      "test_case": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md"
+    },
+    "exists": {
+      "research": true,
+      "prd": true,
+      "user_story": true,
+      "test_case": true
+    },
+    "required_research_sections": [],
+    "missing_research_sections": [],
+    "ac_projection": {
+      "prd_ac_ids": [],
+      "user_story_ac_ids": [],
+      "test_case_ac_ids": [],
+      "upstream_ac_ids": [],
+      "missing_test_case_ac_ids": []
+    }
+  },
+  "version_projection_truth_contract": {
+    "required": true,
+    "supported": true,
+    "projection_types": [
+      "business_flow",
+      "state_machine",
+      "three_piece_map"
+    ],
+    "research_path": "docs/beacon/v2.0.0/research/beacon-v2-goal-durable-longrun.md",
+    "research_exists": true,
+    "required_fields": [
+      "prd_refs",
+      "user_story_refs",
+      "test_case_refs",
+      "coverage_notes",
+      "out_of_scope_notes"
+    ],
+    "field_presence": {
+      "prd_refs": true,
+      "user_story_refs": true,
+      "test_case_refs": true,
+      "coverage_notes": true,
+      "out_of_scope_notes": true
+    },
+    "missing_fields": [],
+    "required_refs": {
+      "prd_refs": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/truth.md",
+      "user_story_refs": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/truth.md",
+      "test_case_refs": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md"
+    },
+    "missing_ref_targets": [],
+    "ready": true
+  },
+  "support_write_topology_contract": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "diagnostics": []
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/truth.md",
+    "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+    "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tasks.md",
+    "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/evidence.md",
+    "docs/beacon/v2.0.0/research/beacon-v2-goal-durable-longrun.md"
+  ]
+}

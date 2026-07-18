@@ -1,0 +1,135 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-goal-durable-supervisor-v167",
+  "feature_slug": "beacon-goal-durable-supervisor-v167",
+  "version": "v1.6.7",
+  "current_revision_id": "R1",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-07-18T01:35:25.132672+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-goal-durable-supervisor-v167",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:a3d8e03d21f1f30125ee421611e822f20102f3e04997db487f7385455a497c0e",
+      "superseded_by": null,
+      "created_at": "2026-07-17T22:03:23.093624+00:00",
+      "frozen_at": "2026-07-18T01:28:36.613456+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "beacon-goal-durable-supervisor-v167",
+      "priority": "medium",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "general",
+          "text": "Acceptance criteria TBD",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "fallback"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Acceptance criteria TBD",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260718T093512395075",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "fallback"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-goal-durable-supervisor-v167",
+        "version": "v1.6.7",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/research/beacon-goal-durable-supervisor-v167.md",
+        "present": true,
+        "section_count": 2,
+        "sections": {
+          "architecture": [
+            "No second public entry; supervise is a **sub-command** of goal.",
+            "Authority: scorecards/verifier for complete; logs/FTS are support_advisory only.",
+            "zvec is **not** architecture core (optional P2 later)."
+          ],
+          "business_flow": [
+            "User: `beacon goal run \"...\"` → GoalRun `created/running` (no auto supervise).",
+            "Optional: `beacon goal supervise --run-id` → SupervisorSession `active` (interval default 120s).",
+            "Implement/QA work + `heartbeat` / auto heartbeat on interval.",
+            "Host interrupt or idle stall → `host_interrupted` + checkpoint frozen.",
+            "User/agent: `resume-pack` → continue `last_substep` / `next_action`.",
+            "`tick --execute` may dispatch qa/ralph for current stage.",
+            "Attach verifier → `complete` (never without refs).",
+            "Release remains human confirmation.",
+            "--"
+          ]
+        },
+        "derived_items": [
+          {
+            "theme": "business_flow",
+            "text": "Business flow remains explicit",
+            "details": [
+              "User: `beacon goal run \"...\"` → GoalRun `created/running` (no auto supervise).",
+              "Optional: `beacon goal supervise --run-id` → SupervisorSession `active` (interval default 120s).",
+              "Implement/QA work + `heartbeat` / auto heartbeat on interval.",
+              "Host interrupt or idle stall → `host_interrupted` + checkpoint frozen.",
+              "User/agent: `resume-pack` → continue `last_substep` / `next_action`.",
+              "`tick --execute` may dispatch qa/ralph for current stage.",
+              "Attach verifier → `complete` (never without refs).",
+              "Release remains human confirmation.",
+              "--"
+            ],
+            "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/research/beacon-goal-durable-supervisor-v167.md"
+          }
+        ]
+      },
+      "feature": "beacon-goal-durable-supervisor-v167",
+      "feature_slug": "beacon-goal-durable-supervisor-v167",
+      "version": "v1.6.7",
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-goal-durable-supervisor-v167/ac-closure.json",
+        ".beacon/qa/features/beacon-goal-durable-supervisor-v167/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "accepted_at": "2026-07-18T01:35:25.103172+00:00",
+      "accepted_by": "qa"
+    }
+  ]
+}

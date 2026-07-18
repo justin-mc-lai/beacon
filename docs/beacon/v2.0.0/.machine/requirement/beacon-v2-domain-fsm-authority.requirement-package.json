@@ -1,0 +1,194 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-17T07:58:18.374312+00:00",
+  "feature": "beacon-v2-domain-fsm-authority",
+  "feature_slug": "beacon-v2-domain-fsm-authority",
+  "version": "v2.0.0",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-authority/truth.md",
+    "tests": "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-authority/tests.md",
+    "tasks": "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-authority/tasks.md",
+    "evidence": "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-authority/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "1298242397bb0a9887ef45b9d8b12ee9835835cf897a6b063f912414423b1ed0",
+    "tests": "55b7e62e5b779a44ebeebcf7acef6ff7d02ea5c9547483fd2e6b6bc6a47bcb5d",
+    "tasks": "f76da7e81285945d2da88f6574a83333db9e6677649f33b4ffa338abdbf7d89b",
+    "evidence": "05d7933bd24142bd8791f86ced47dba9394e8fc7e96eeb6738c9463f43dcf807"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-v2-domain-fsm-authority",
+    "version": "v2.0.0",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "W3 Option A - domain FSM freeze hard gate parity with v1.6.7; planner user decisions 2026-07-17",
+    "canonical_refs": {
+      "truth": "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-authority/truth.md",
+      "tests": "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-authority/tests.md",
+      "tasks": "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-authority/tasks.md",
+      "evidence": "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-authority/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "program_ref": "docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/feature-graph.json",
+    "upstream_ref": "docs/beacon/v1.6.7/features/beacon-domain-fsm-authority-v167/truth.md"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-V2-DFSM-001",
+      "theme": "schema",
+      "description": "domain-fsm.v1 与 entity-precedence.v1 字段合同（状态、转移、guard、非法转移、实体前置）（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-DFSM-002",
+      "theme": "truth-section",
+      "description": "feature package truth 可承载 Domain Model / Domain FSM；resolver 可读（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-DFSM-003",
+      "theme": "freeze-hard-gate",
+      "description": "缺 FSM/前置/非法转移覆盖 → reason_code 阻断 freeze（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-DFSM-004",
+      "theme": "clarity-hard",
+      "description": "requirement_clarity 对 domain 特征 fail-closed（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-DFSM-005",
+      "theme": "story-order",
+      "description": "US/AC 须映射合法 FSM 路径；孤儿态/跳态 block（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-DFSM-006",
+      "theme": "illegal-required",
+      "description": "每聚合根 ≥1 非法转移 TC 槽位（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-DFSM-007",
+      "theme": "parity",
+      "description": "v1.6.7 domain-fsm fixture 可被 v2 gate 加载并给出等价 blocked/pass 语义（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-DFSM-008",
+      "theme": "machine-projection",
+      "description": "可选 .machine/domain-fsm.json 由 truth 单向投影，drift fail-closed（**Should**）"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-V2-DFSM-001",
+      "tc_id": "TC-V2-DFSM-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v200_domain_fsm.py::test_schema_contract -q`",
+      "assertion": "schema 字段齐全",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-DFSM-003",
+      "tc_id": "TC-V2-DFSM-002",
+      "layer": "negative",
+      "command": "`python3 -m pytest tests/test_v200_domain_fsm.py::test_missing_fsm_blocks_freeze -q`",
+      "assertion": "缺 FSM freeze blocked",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-DFSM-006",
+      "tc_id": "TC-V2-DFSM-003",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v200_domain_fsm.py::test_illegal_slot_required -q`",
+      "assertion": "非法转移槽位",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-DFSM-007",
+      "tc_id": "TC-V2-DFSM-004",
+      "layer": "parity",
+      "command": "`python3 -m pytest tests/test_v200_domain_fsm.py::test_v167_fixture_parity -q`",
+      "assertion": "v167 夹具等价语义",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Author domain-fsm.v1 / entity-precedence.v1 schemas in beacon-core/gate",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Wire freeze + requirement_clarity fail-closed checks",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Import/parity load v1.6.7 domain fixtures",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Contract tests TC-V2-DFSM-001..004",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Implement + formal QA",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-gen-change",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-authority/truth.md",
+      "status": "frozen",
+      "route": "truth"
+    },
+    {
+      "surface": "program",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/feature-graph.json",
+      "status": "indexed",
+      "route": "program"
+    },
+    {
+      "surface": "planner",
+      "authority": "support_advisory",
+      "canonical_artifact": ".beacon/state/planner-review/beacon-v2-architecture-se-standard/pln-review-20260717t073750z.json",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "se-standard",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/execution/v2-software-engineering-standards.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "upstream-v167",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.7/features/beacon-domain-fsm-authority-v167/truth.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "parent-change",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/change/beacon-v2-product-goal-domain-truth-chain-v200.md",
+      "status": "indexed",
+      "route": "change"
+    }
+  ]
+}

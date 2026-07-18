@@ -5,80 +5,220 @@
   "runtime_line": "v1.6.7",
   "runtime_release_line": "v1.6.7",
   "docs_line": "v1.6.7",
-  "feature": "beacon-ralph-implement-boundary-v167",
-  "feature_slug": "beacon-ralph-implement-boundary-v167",
+  "feature": "beacon-goal-durable-supervisor-v167",
+  "feature_slug": "beacon-goal-durable-supervisor-v167",
   "feature_line_status": "current_runtime_release",
   "truth_refs": {
-    "truth": "docs/beacon/v1.6.7/features/beacon-ralph-implement-boundary-v167/truth.md",
-    "tests": "docs/beacon/v1.6.7/features/beacon-ralph-implement-boundary-v167/tests.md",
-    "tasks": "docs/beacon/v1.6.7/features/beacon-ralph-implement-boundary-v167/tasks.md",
-    "evidence": "docs/beacon/v1.6.7/features/beacon-ralph-implement-boundary-v167/evidence.md",
-    "ac_matrix": "docs/beacon/v1.6.7/features/beacon-ralph-implement-boundary-v167/tests.md",
-    "story_state": "docs/beacon/v1.6.7/.machine/user-story/beacon-ralph-implement-boundary-v167.json"
+    "truth": "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/truth.md",
+    "tests": "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
+    "tasks": "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tasks.md",
+    "evidence": "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/evidence.md",
+    "ac_matrix": "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
+    "story_state": "docs/beacon/v1.6.7/.machine/user-story/beacon-goal-durable-supervisor-v167.json"
   },
   "source_hashes": {
-    "truth": "sha256:8e208b8772f035a5cd06667e5303f194ca24b2f134428d60c623e8f05cbd57b1",
-    "tests": "sha256:eff363866ae26fc2ee90a3cbd7ad06df096c9658f7d341bf9dfc4d0c18f74a0e",
-    "tasks": "sha256:46b59f2d574b0c84b50afbe1d51e5c0addcff6b6af3c7ecf81120d5d5043b256",
-    "evidence": "sha256:8f7ba1443b8b7ba59b3599dc458a25b81c5235d145dd414702e1e71501090377",
-    "ac_matrix": "sha256:eff363866ae26fc2ee90a3cbd7ad06df096c9658f7d341bf9dfc4d0c18f74a0e",
-    "story_state": "sha256:e003c9b3eb6b10c4c7486d0fed800217fe7fbb2571a92b686dece23c1b8dbeaa"
+    "truth": "sha256:1a452d8cf3c4cf409a2541b564177c5ad11dadc08df522e49f6aa9f425c1fc78",
+    "tests": "sha256:1559729db5d742b9a6decb1f7c64afada1a3a6191c1ed90e8806d87a89de8c6a",
+    "tasks": "sha256:f4775f8885854901f344d1a76d99a21548c6ace23c3103ff74ce1517b4e14800",
+    "evidence": "sha256:1179707e4590e208dea0842cd8266436b407dcc39d5cc2be0baa5b80ce785e79",
+    "ac_matrix": "sha256:1559729db5d742b9a6decb1f7c64afada1a3a6191c1ed90e8806d87a89de8c6a",
+    "story_state": "sha256:fd1f1ba97526a646d7b34f270a2818a6ad1861f35929b6728fab21c51000f1ae"
   },
   "lanes": {
     "feature_release_facing": [
       {
-        "tc_id": "TC-RLP-001",
-        "ac_id": "AC-RLP-001",
+        "tc_id": "TC-DGS-001",
+        "ac_id": "AC-DGS-001",
         "ac_theme": "",
         "lane": "feature_release_facing",
         "layer": "contract",
-        "command": "python3 -m pytest tests/test_v167_ralph_boundary.py::test_skill_boundary_text -q",
-        "assertion": "skill 边界",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-ralph-implement-boundary-v167/tc-rlp-001/__RUN_ID__.json",
-        "evidence_status": "missing",
-        "source": "feature-package:docs/beacon/v1.6.7/features/beacon-ralph-implement-boundary-v167/tests.md",
+        "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_supervise_is_opt_in -q",
+        "assertion": "goal run 不自动 attach supervise",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-001/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
       },
       {
-        "tc_id": "TC-RLP-002",
-        "ac_id": "AC-RLP-002",
+        "tc_id": "TC-DGS-002",
+        "ac_id": "AC-DGS-002",
         "ac_theme": "",
         "lane": "feature_release_facing",
         "layer": "contract",
-        "command": "python3 -m pytest tests/test_v167_ralph_boundary.py::test_ralph_state_no_qa_verdict -q",
-        "assertion": "无 qa_verdict 字段权威",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-ralph-implement-boundary-v167/tc-rlp-002/__RUN_ID__.json",
-        "evidence_status": "missing",
-        "source": "feature-package:docs/beacon/v1.6.7/features/beacon-ralph-implement-boundary-v167/tests.md",
+        "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_heartbeat_default_120s -q",
+        "assertion": "默认 interval=120",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-002/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
       },
       {
-        "tc_id": "TC-RLP-003",
-        "ac_id": "AC-RLP-003",
+        "tc_id": "TC-DGS-003",
+        "ac_id": "AC-DGS-003",
         "ac_theme": "",
         "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "python3 -m pytest tests/test_v167_ralph_boundary.py::test_goal_delegate_field -q",
-        "assertion": "goal delegate 字段",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-ralph-implement-boundary-v167/tc-rlp-003/__RUN_ID__.json",
-        "evidence_status": "missing",
-        "source": "feature-package:docs/beacon/v1.6.7/features/beacon-ralph-implement-boundary-v167/tests.md",
+        "layer": "unit",
+        "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_execution_jsonl_append -q",
+        "assertion": "heartbeat/tick append JSONL",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-003/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
       },
       {
-        "tc_id": "TC-RLP-004",
-        "ac_id": "AC-RLP-004",
+        "tc_id": "TC-DGS-004",
+        "ac_id": "AC-DGS-004",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "unit",
+        "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_checkpoint_and_resume_pack -q",
+        "assertion": "checkpoint + resume-pack digest only",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-004/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-DGS-005",
+        "ac_id": "AC-DGS-005",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "unit",
+        "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_stall_detects_idle -q",
+        "assertion": "idle≥interval → host_interrupted/stall",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-005/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-DGS-006",
+        "ac_id": "AC-DGS-006",
         "ac_theme": "",
         "lane": "feature_release_facing",
         "layer": "contract",
-        "command": "python3 -m pytest tests/test_v167_ralph_boundary.py::test_handoff_routes -q",
-        "assertion": "handoff 路由集合",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-ralph-implement-boundary-v167/tc-rlp-004/__RUN_ID__.json",
-        "evidence_status": "missing",
-        "source": "feature-package:docs/beacon/v1.6.7/features/beacon-ralph-implement-boundary-v167/tests.md",
+        "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_interrupt_ne_stage_blocked -q",
+        "assertion": "两类 reason 可区分",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-006/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-DGS-007",
+        "ac_id": "AC-DGS-007",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "unit",
+        "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_tick_execute_dispatches -q",
+        "assertion": "--execute 可派发；无 flag 不派发",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-007/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-DGS-008",
+        "ac_id": "AC-DGS-008",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_no_complete_without_verifier -q",
+        "assertion": "无 refs 不可 complete",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-008/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-DGS-009",
+        "ac_id": "AC-DGS-009",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_supervise_never_auto_release -q",
+        "assertion": "不自动 release",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-009/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-DGS-010",
+        "ac_id": "AC-DGS-010",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_no_second_public_entry -q",
+        "assertion": "文档/示例无第二入口",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-010/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-DGS-011",
+        "ac_id": "AC-DGS-011",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "unit",
+        "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_log_append_only -q",
+        "assertion": "禁止覆写 JSONL",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-011/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-DGS-012",
+        "ac_id": "AC-DGS-012",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "unit",
+        "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_sqlite_fts_non_authoritative -q",
+        "assertion": "FTS 结果不触发 complete",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-012/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-DGS-013",
+        "ac_id": "AC-DGS-013",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_skill_mentions_resume_pack -q",
+        "assertion": "SKILL 含 resume-pack/supervise",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-013/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-DGS-014",
+        "ac_id": "AC-DGS-014",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_tests_md_has_legal_and_illegal -q",
+        "assertion": "tests 含 legal/illegal 行",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-014/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
       }
@@ -90,7 +230,7 @@
     "browser_runtime_admission": []
   },
   "lane_counts": {
-    "feature_release_facing": 4,
+    "feature_release_facing": 14,
     "current_runtime_contract": 0,
     "generated_surface_sync": 0,
     "compatibility_contract": 0,
@@ -107,74 +247,244 @@
   ],
   "test_refs": [
     {
-      "tc_id": "TC-RLP-001",
-      "ac_id": "AC-RLP-001",
+      "tc_id": "TC-DGS-001",
+      "ac_id": "AC-DGS-001",
       "ac_theme": "",
       "lane": "feature_release_facing",
       "layer": "contract",
-      "command": "python3 -m pytest tests/test_v167_ralph_boundary.py::test_skill_boundary_text -q",
-      "assertion": "skill 边界",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-ralph-implement-boundary-v167/tc-rlp-001/__RUN_ID__.json",
-      "evidence_status": "missing",
-      "source": "feature-package:docs/beacon/v1.6.7/features/beacon-ralph-implement-boundary-v167/tests.md",
+      "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_supervise_is_opt_in -q",
+      "assertion": "goal run 不自动 attach supervise",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-001/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
     },
     {
-      "tc_id": "TC-RLP-002",
-      "ac_id": "AC-RLP-002",
+      "tc_id": "TC-DGS-002",
+      "ac_id": "AC-DGS-002",
       "ac_theme": "",
       "lane": "feature_release_facing",
       "layer": "contract",
-      "command": "python3 -m pytest tests/test_v167_ralph_boundary.py::test_ralph_state_no_qa_verdict -q",
-      "assertion": "无 qa_verdict 字段权威",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-ralph-implement-boundary-v167/tc-rlp-002/__RUN_ID__.json",
-      "evidence_status": "missing",
-      "source": "feature-package:docs/beacon/v1.6.7/features/beacon-ralph-implement-boundary-v167/tests.md",
+      "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_heartbeat_default_120s -q",
+      "assertion": "默认 interval=120",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-002/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
     },
     {
-      "tc_id": "TC-RLP-003",
-      "ac_id": "AC-RLP-003",
+      "tc_id": "TC-DGS-003",
+      "ac_id": "AC-DGS-003",
       "ac_theme": "",
       "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "python3 -m pytest tests/test_v167_ralph_boundary.py::test_goal_delegate_field -q",
-      "assertion": "goal delegate 字段",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-ralph-implement-boundary-v167/tc-rlp-003/__RUN_ID__.json",
-      "evidence_status": "missing",
-      "source": "feature-package:docs/beacon/v1.6.7/features/beacon-ralph-implement-boundary-v167/tests.md",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_execution_jsonl_append -q",
+      "assertion": "heartbeat/tick append JSONL",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-003/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
     },
     {
-      "tc_id": "TC-RLP-004",
-      "ac_id": "AC-RLP-004",
+      "tc_id": "TC-DGS-004",
+      "ac_id": "AC-DGS-004",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_checkpoint_and_resume_pack -q",
+      "assertion": "checkpoint + resume-pack digest only",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-004/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-DGS-005",
+      "ac_id": "AC-DGS-005",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_stall_detects_idle -q",
+      "assertion": "idle≥interval → host_interrupted/stall",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-005/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-DGS-006",
+      "ac_id": "AC-DGS-006",
       "ac_theme": "",
       "lane": "feature_release_facing",
       "layer": "contract",
-      "command": "python3 -m pytest tests/test_v167_ralph_boundary.py::test_handoff_routes -q",
-      "assertion": "handoff 路由集合",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-ralph-implement-boundary-v167/tc-rlp-004/__RUN_ID__.json",
-      "evidence_status": "missing",
-      "source": "feature-package:docs/beacon/v1.6.7/features/beacon-ralph-implement-boundary-v167/tests.md",
+      "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_interrupt_ne_stage_blocked -q",
+      "assertion": "两类 reason 可区分",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-006/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-DGS-007",
+      "ac_id": "AC-DGS-007",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_tick_execute_dispatches -q",
+      "assertion": "--execute 可派发；无 flag 不派发",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-007/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-DGS-008",
+      "ac_id": "AC-DGS-008",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_no_complete_without_verifier -q",
+      "assertion": "无 refs 不可 complete",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-008/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-DGS-009",
+      "ac_id": "AC-DGS-009",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_supervise_never_auto_release -q",
+      "assertion": "不自动 release",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-009/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-DGS-010",
+      "ac_id": "AC-DGS-010",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_no_second_public_entry -q",
+      "assertion": "文档/示例无第二入口",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-010/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-DGS-011",
+      "ac_id": "AC-DGS-011",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_log_append_only -q",
+      "assertion": "禁止覆写 JSONL",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-011/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-DGS-012",
+      "ac_id": "AC-DGS-012",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_sqlite_fts_non_authoritative -q",
+      "assertion": "FTS 结果不触发 complete",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-012/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-DGS-013",
+      "ac_id": "AC-DGS-013",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_skill_mentions_resume_pack -q",
+      "assertion": "SKILL 含 resume-pack/supervise",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-013/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-DGS-014",
+      "ac_id": "AC-DGS-014",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_tests_md_has_legal_and_illegal -q",
+      "assertion": "tests 含 legal/illegal 行",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-014/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
     }
   ],
   "ac_to_test_refs": {
-    "AC-RLP-001": [
-      "TC-RLP-001"
+    "AC-DGS-001": [
+      "TC-DGS-001"
     ],
-    "AC-RLP-002": [
-      "TC-RLP-002"
+    "AC-DGS-002": [
+      "TC-DGS-002"
     ],
-    "AC-RLP-003": [
-      "TC-RLP-003"
+    "AC-DGS-003": [
+      "TC-DGS-003"
     ],
-    "AC-RLP-004": [
-      "TC-RLP-004"
+    "AC-DGS-004": [
+      "TC-DGS-004"
+    ],
+    "AC-DGS-005": [
+      "TC-DGS-005"
+    ],
+    "AC-DGS-006": [
+      "TC-DGS-006"
+    ],
+    "AC-DGS-007": [
+      "TC-DGS-007"
+    ],
+    "AC-DGS-008": [
+      "TC-DGS-008"
+    ],
+    "AC-DGS-009": [
+      "TC-DGS-009"
+    ],
+    "AC-DGS-010": [
+      "TC-DGS-010"
+    ],
+    "AC-DGS-011": [
+      "TC-DGS-011"
+    ],
+    "AC-DGS-012": [
+      "TC-DGS-012"
+    ],
+    "AC-DGS-013": [
+      "TC-DGS-013"
+    ],
+    "AC-DGS-014": [
+      "TC-DGS-014"
     ]
   },
   "qa_order_contract": {
@@ -210,6 +520,6 @@
   "status": "pass",
   "blocked": false,
   "reason_codes": [],
-  "generated_at": "2026-07-16T16:35:12.039343+00:00",
+  "generated_at": "2026-07-18T03:03:57.495426+00:00",
   "index_path": "docs/beacon/v1.6.7/.machine/testing/test-contract-index.json"
 }

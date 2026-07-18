@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v2-goal-durable-longrun",
+  "version": "v2.0.0",
+  "aggregates": [
+    {
+      "name": "GoalRun",
+      "states": ["created", "running", "stage_active", "host_interrupted", "stage_blocked", "awaiting_verifier", "completed", "blocked", "release_pending"]
+    },
+    {
+      "name": "AgentDriver",
+      "states": ["idle", "arming", "turn_active", "turn_ended", "requeue", "halt_budget", "halt_terminal"]
+    },
+    {
+      "name": "SupervisorSession",
+      "states": ["detached", "active", "polling", "waiting_host", "stopped"]
+    }
+  ],
+  "defaults": {
+    "heartbeat_interval_sec": 120,
+    "longrun_attaches_driver": true,
+    "default_run_no_auto_attach": true
+  }
+}

@@ -27,11 +27,226 @@
     "review_gates": [],
     "qa_coverage_hints": [],
     "evidence_lines": {},
-    "generated_at": "2026-07-16T15:35:29.519024+00:00",
+    "generated_at": "2026-07-17T07:58:34.989064+00:00",
     "feature": "beacon-v2-product-goal-orchestrator",
     "feature_slug": "beacon-v2-product-goal-orchestrator",
     "prd_ref": "docs/beacon/v2.0.0/prd/beacon-v2-product-goal-orchestrator.md",
     "user_story_ref": "docs/beacon/v2.0.0/user-story/beacon-v2-product-goal-orchestrator.md"
+  },
+  "domain_fsm_gate": {
+    "schema_version": "1.0",
+    "feature": "beacon-v2-product-goal-orchestrator",
+    "feature_slug": "beacon-v2-product-goal-orchestrator",
+    "version": "v2.0.0",
+    "truth_path": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+    "tests_path": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tests.md",
+    "required": false,
+    "blocked": false,
+    "status": "not_required",
+    "reason_code": "",
+    "findings": [],
+    "requirement": {
+      "required": false,
+      "reason": "not_required",
+      "explicit": false,
+      "partial": false,
+      "complexity": false,
+      "business_signal": true,
+      "version_supported": true
+    },
+    "projection": {
+      "schema_version": "1.0",
+      "domain_fsm_schema": "domain-fsm.v1",
+      "entity_precedence_schema": "entity-precedence.v1",
+      "frontmatter": {
+        "slug": "beacon-v2-product-goal-orchestrator",
+        "version": "v2.0.0",
+        "status": "frozen",
+        "revision_id": "R3",
+        "language": "zh",
+        "change_reason": "R3 - lock user decisions 2026-07-17: Option A domain chain program merge; full ui-state-matrix inherit; reject early BEACON_V2 default; SE-V2 binding",
+        "canonical_refs": {
+          "truth": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+          "tests": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tests.md",
+          "tasks": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tasks.md",
+          "evidence": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/evidence.md"
+        },
+        "parser_contract": "beacon-feature-package-v2",
+        "truth_source_model": "feature_package_authoritative",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "program_ref": "docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/feature-graph.json"
+      },
+      "frontmatter_errors": [],
+      "has_domain_model_section": false,
+      "has_domain_fsm_section": false,
+      "has_illegal_transition_section": false,
+      "entities": [],
+      "entity_precedence": [],
+      "aggregates": [],
+      "illegal_transition_slots": [],
+      "acceptance_criteria": [
+        {
+          "ac_id": "AC-V2-PGO-001",
+          "description": "加载 v1.6.7 product-goal-state schema fixture 并通过 parity test（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-PGO-002",
+          "description": "暴露 beacon-goal host skill + CLI（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-PGO-003",
+          "description": "阶段 skill map 可配置且默认不全量加载（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-PGO-004",
+          "description": "parallel_plan 驱动 sub-agent；尊重 feature-graph 依赖（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-PGO-005",
+          "description": "complete 需 verifier；禁止自述（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-PGO-006",
+          "description": "Python CLI 入口保持 `beacon goal`（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-PGO-007",
+          "description": "用户主路径仅 beacon-goal；loop 为 support（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-PGO-008",
+          "description": "30s 用法与 v1 同构引用（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-PGO-009",
+          "description": "program topology 含 domain 真值链 5 lakes（Option A）（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-PGO-010",
+          "description": "domain-bearing goal 的 done_when 绑定 domain_fsm_coverage（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-PGO-011",
+          "description": "发布材料与 runtime 不得在 W4 前宣称默认 BEACON_V2=1（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-PGO-012",
+          "description": "gate/orchestrator 变更不得违反 SE-V2-00..13（**Must**）"
+        }
+      ],
+      "bound_ac_ids": [],
+      "orphan_ac_ids": [],
+      "aggregates_missing_illegal_slots": [],
+      "raw_section_titles": [
+        "Overview",
+        "Public entry",
+        "User Decisions",
+        "Acceptance Criteria",
+        "Non-Goals",
+        "Dependencies"
+      ]
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "required": false,
+      "blocked": false,
+      "status": "not_required",
+      "reason_code": "",
+      "findings": [],
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "beacon-v2-product-goal-orchestrator",
+          "version": "v2.0.0",
+          "status": "frozen",
+          "revision_id": "R3",
+          "language": "zh",
+          "change_reason": "R3 - lock user decisions 2026-07-17: Option A domain chain program merge; full ui-state-matrix inherit; reject early BEACON_V2 default; SE-V2 binding",
+          "canonical_refs": {
+            "truth": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+            "tests": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tests.md",
+            "tasks": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tasks.md",
+            "evidence": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/evidence.md"
+          },
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "truth_map_contract": "beacon-truth-map-v1",
+          "program_ref": "docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/feature-graph.json"
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": false,
+        "has_domain_fsm_section": false,
+        "has_illegal_transition_section": false,
+        "entities": [],
+        "entity_precedence": [],
+        "aggregates": [],
+        "illegal_transition_slots": [],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-V2-PGO-001",
+            "description": "加载 v1.6.7 product-goal-state schema fixture 并通过 parity test（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-PGO-002",
+            "description": "暴露 beacon-goal host skill + CLI（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-PGO-003",
+            "description": "阶段 skill map 可配置且默认不全量加载（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-PGO-004",
+            "description": "parallel_plan 驱动 sub-agent；尊重 feature-graph 依赖（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-PGO-005",
+            "description": "complete 需 verifier；禁止自述（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-PGO-006",
+            "description": "Python CLI 入口保持 `beacon goal`（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-PGO-007",
+            "description": "用户主路径仅 beacon-goal；loop 为 support（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-PGO-008",
+            "description": "30s 用法与 v1 同构引用（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-PGO-009",
+            "description": "program topology 含 domain 真值链 5 lakes（Option A）（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-PGO-010",
+            "description": "domain-bearing goal 的 done_when 绑定 domain_fsm_coverage（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-PGO-011",
+            "description": "发布材料与 runtime 不得在 W4 前宣称默认 BEACON_V2=1（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-PGO-012",
+            "description": "gate/orchestrator 变更不得违反 SE-V2-00..13（**Must**）"
+          }
+        ],
+        "bound_ac_ids": [],
+        "orphan_ac_ids": [],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "Overview",
+          "Public entry",
+          "User Decisions",
+          "Acceptance Criteria",
+          "Non-Goals",
+          "Dependencies"
+        ]
+      }
+    },
+    "recommended_action": ""
   },
   "human_closure_contract": {
     "required": false,

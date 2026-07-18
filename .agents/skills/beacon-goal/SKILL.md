@@ -30,6 +30,7 @@ $beacon-goal
 |------|----------|
 | 拆海 | beacon-pln-program* |
 | 需求 | beacon-gen-truth / change |
+| **设计（ux_required）** | **design stage：baseline + 公司模板 + google design.md lint** |
 | 实现 | beacon-gen-implement（+ ralph） |
 | 验收 | beacon-eval-qa（+ deep） |
 | 发布 | beacon-eval-release（人工门） |
@@ -53,7 +54,67 @@ beacon goal status|pause|resume|complete|tick ...
 - 禁止自证完成；complete 需 CLI verifier
 - release 默认人工确认
 - 不得要求用户手搓双 skill 流水线
+- `ux_required` / 视觉交付时自动插入 design stage：`beacon design baseline --surface auto` + `beacon design lint` 证据
 
 ## Harness
 
 Orchestrator/facade：可路由 generator/evaluator；**不**自己发 QA/release verdict。
+
+## Durable long-run (v1.6.7)
+
+Product Goal is durable via **opt-in** supervisor + disk logs. Do **not** expect a single chat turn to finish multi-hour implement/QA.
+
+### Opt-in supervise (not default)
+
+```bash
+beacon goal supervise --run-id <id> --interval-sec 120 --once
+```
+
+- Default interval: **120 seconds**
+- `goal run` does **not** auto-attach supervise
+- Not a system daemon; use `--once` or external loop
+
+### Heartbeat / checkpoint / resume-pack
+
+```bash
+beacon goal heartbeat --run-id <id> --summary "implemented X" --substep step-1
+beacon goal checkpoint --run-id <id> --next-action "run qa for lake Y" --substep step-1
+beacon goal resume-pack --run-id <id> --json
+```
+
+On host turn interrupt or context full: call **resume-pack**, inject digest only (utterance, stage, last heartbeats, blockers, one next_action, log paths). Never treat full chat as authority.
+
+### tick --execute
+
+```bash
+beacon goal tick --run-id <id> --execute
+```
+
+May dispatch ralph/qa **plans**; never auto-confirms release; complete still needs verifier.
+
+### Same-session continue
+
+After routing next stage, **continue in the same session** (load implement/qa skills). If the host turn ends, resume via `resume-pack` + `supervise --once` rather than restarting the whole goal.
+
+## Longrun AgentDriver (v1.6.7 Path C)
+
+One-shot uninterrupted multi-turn execution (no typing「继续」each host turn):
+
+```bash
+beacon goal run "<目标>" --longrun --project . --version v1.6.7
+# optional: run driver loop in-process (needs BEACON_HOST_GOAL_BRIDGE_CMD)
+beacon goal run "<目标>" --longrun --driver-loop
+beacon goal driver start --run-id <id>
+beacon goal driver status --run-id <id>
+beacon goal driver stop --run-id <id>
+```
+
+**Intent markers** (skill → longrun=true): 长跑 / 不中断 / 直到验收 / 自动续 / longrun / until done
+
+**Rules**
+- Default `goal run` does **not** start driver (idle)
+- `--longrun` attaches durable supervisor + AgentDriver for **this run only**
+- Each turn injects **resume-pack digest** only (not full chat/jsonl)
+- Complete still needs verifier; release always human
+- Env: `BEACON_HOST_GOAL_BRIDGE_CMD` with `{prompt_file}` `{run_id}` `{project}`
+- Budget defaults: max_agent_turns=32, turn_timeout_sec=3600, heartbeat=120s

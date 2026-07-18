@@ -3,9 +3,9 @@
   "feature": "beacon-v2-product-goal-orchestrator",
   "feature_slug": "beacon-v2-product-goal-orchestrator",
   "version": "v2.0.0",
-  "current_revision_id": "R2",
+  "current_revision_id": "R3",
   "lifecycle_status": "frozen",
-  "updated_at": "2026-07-16T15:35:30.132225+00:00",
+  "updated_at": "2026-07-17T07:58:34.981026+00:00",
   "revisions": [
     {
       "revision_id": "R1",
@@ -26,12 +26,26 @@
       "feature_slug": "beacon-v2-product-goal-orchestrator",
       "source_revision_id": "R1",
       "reason": "single public entry parity with v1.6.7",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": "sha256:9d78a168ccf2215536b4a6c27286ebf9d1a2c85bebf9f65126a2060ec45f3a83",
+      "superseded_by": "R3",
+      "created_at": "2026-07-16T15:34:03.766281+00:00",
+      "frozen_at": "2026-07-17T07:58:25.004963+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R3",
+      "feature_slug": "beacon-v2-product-goal-orchestrator",
+      "source_revision_id": "R2",
+      "reason": "R3 content already written; re-freeze after user decisions",
       "doc_status": "frozen",
       "delivery_status": "idle",
-      "baseline_hash": "sha256:455570d4d3320ff6070add51d51cb38086476a70b3edab1885478a78a4cdb5af",
+      "baseline_hash": "sha256:9d78a168ccf2215536b4a6c27286ebf9d1a2c85bebf9f65126a2060ec45f3a83",
       "superseded_by": null,
-      "created_at": "2026-07-16T15:34:03.766281+00:00",
-      "frozen_at": "2026-07-16T15:35:30.288738+00:00",
+      "created_at": "2026-07-17T07:58:34.684813+00:00",
+      "frozen_at": "2026-07-17T07:58:35.315439+00:00",
       "accepted_at": null,
       "accepted_by": null
     }
@@ -103,7 +117,7 @@
       "revision_id": "R2",
       "title": "beacon-v2-product-goal-orchestrator",
       "priority": "medium",
-      "status": "frozen",
+      "status": "superseded",
       "items": [
         {
           "id": "AC-001",
@@ -141,6 +155,67 @@
           "verified_by_run_id": null,
           "accepted_at": null,
           "changed_in_revision": "R2",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "fallback"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-v2-product-goal-orchestrator",
+        "version": "v2.0.0",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v2.0.0/research/beacon-v2-product-goal-orchestrator.md",
+        "present": false,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      }
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R3",
+      "title": "beacon-v2-product-goal-orchestrator",
+      "priority": "medium",
+      "status": "frozen",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "general",
+          "text": "Acceptance criteria TBD",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "fallback"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Acceptance criteria TBD",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
           "covers": [
             "AC-001"
           ],

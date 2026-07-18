@@ -41,5 +41,22 @@ Promotion ref: `friction:2e306f7acea7`.
 | P1 | beacon-product-goal-runtime-v167 | qa-pass / release-ready |
 | P1 | beacon-ui-design-ship-gate-v167 | qa-pass / release-ready |
 | P2 | beacon-loop-discover-goal-finish-v167 | qa-pass / release-ready |
+| P0 | beacon-goal-durable-supervisor-v167 | qa-pass / release-ready (GO) |
+| P0 | beacon-goal-agent-driver-v167 | implement-landed / contract tests pass (GO Path C) |
 | P2 | beacon-ralph-implement-boundary-v167 | qa-pass / release-ready |
 
+## Durable Supervisor (additive)
+
+- **lake**: `beacon-goal-durable-supervisor-v167`
+- **user locks**: opt-in `beacon goal supervise`; heartbeat **120s**; P2 memory **sqlite FTS**
+- **truth**: `docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/truth.md`
+- **status**: qa-pass / release-ready
+
+## AgentDriver longrun (additive, Path C)
+
+- **lake**: `beacon-goal-agent-driver-v167`
+- **depends**: `beacon-goal-durable-supervisor-v167`
+- **one-shot**: `beacon goal run "..." --longrun` attaches supervisor + starts Python Driver for **this run**
+- **default**: without `--longrun`, driver stays **idle** (supervise remains opt-in)
+- **truth**: `docs/beacon/v1.6.7/features/beacon-goal-agent-driver-v167/truth.md`
+- **v2 parity**: `beacon-v2-goal-durable-longrun`

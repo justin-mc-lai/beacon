@@ -1,0 +1,948 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-goal-durable-supervisor-v167",
+  "feature_slug": "beacon-goal-durable-supervisor-v167",
+  "version": "v1.6.7",
+  "runtime_version": "v1.6.7",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.6.7/.machine/execution/requirement-clarity-beacon-goal-durable-supervisor-v167.json",
+  "report_markdown_path": "docs/beacon/v1.6.7/execution/requirement-clarity-beacon-goal-durable-supervisor-v167.md",
+  "state_path": ".beacon/state/requirement-clarity-beacon-goal-durable-supervisor-v167.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.7",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-07-18T01:28:35.566704+00:00",
+    "feature": "beacon-goal-durable-supervisor-v167",
+    "feature_slug": "beacon-goal-durable-supervisor-v167",
+    "prd_ref": "docs/beacon/v1.6.7/prd/beacon-goal-durable-supervisor-v167.md",
+    "user_story_ref": "docs/beacon/v1.6.7/user-story/beacon-goal-durable-supervisor-v167.md"
+  },
+  "domain_fsm_gate": {
+    "schema_version": "1.0",
+    "feature": "beacon-goal-durable-supervisor-v167",
+    "feature_slug": "beacon-goal-durable-supervisor-v167",
+    "version": "v1.6.7",
+    "truth_path": "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/truth.md",
+    "tests_path": "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
+    "required": true,
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "findings": [],
+    "requirement": {
+      "required": true,
+      "reason": "domain_section_present",
+      "explicit": false,
+      "partial": true,
+      "complexity": false,
+      "business_signal": true,
+      "version_supported": true
+    },
+    "projection": {
+      "schema_version": "1.0",
+      "domain_fsm_schema": "domain-fsm.v1",
+      "entity_precedence_schema": "entity-precedence.v1",
+      "frontmatter": {
+        "slug": "beacon-goal-durable-supervisor-v167",
+        "version": "v1.6.7",
+        "status": "frozen",
+        "revision_id": "R1",
+        "language": "zh",
+        "change_reason": "P0 durable supervisor for product-goal: opt-in supervise, 2min heartbeat, execution.jsonl, tick-exec, host_interrupt/resume; P2 sqlite FTS memory (not zvec core)",
+        "canonical_refs": {
+          "truth": "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/truth.md",
+          "tests": "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
+          "tasks": "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tasks.md",
+          "evidence": "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/evidence.md"
+        },
+        "parser_contract": "beacon-feature-package-v2",
+        "truth_source_model": "feature_package_authoritative",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "program_ref": "docs/beacon/v1.6.7/programs/beacon-product-goal-domain-delivery-v167/feature-graph.json",
+        "ux_required": "false"
+      },
+      "frontmatter_errors": [],
+      "has_domain_model_section": true,
+      "has_domain_fsm_section": true,
+      "has_illegal_transition_section": true,
+      "entities": [
+        {
+          "entity": "GoalRun",
+          "key": "run_id",
+          "precedence": "产品目标账本权威；stages/done_when/verifier",
+          "requires": "产品目标账本权威；stages/done_when/verifier"
+        },
+        {
+          "entity": "SupervisorSession",
+          "key": "run_id + session_id",
+          "precedence": "opt-in 附着；默认 detached",
+          "requires": "opt-in 附着；默认 detached"
+        },
+        {
+          "entity": "Heartbeat",
+          "key": "run_id + ts",
+          "precedence": "追加；默认间隔 120s",
+          "requires": "追加；默认间隔 120s"
+        },
+        {
+          "entity": "ExecutionLog",
+          "key": "run_id + seq",
+          "precedence": "JSONL 追加；不可覆写",
+          "requires": "JSONL 追加；不可覆写"
+        },
+        {
+          "entity": "Checkpoint",
+          "key": "run_id",
+          "precedence": "last_substep + next_action；resume 输入",
+          "requires": "last_substep + next_action；resume 输入"
+        },
+        {
+          "entity": "WorkerJob",
+          "key": "run_id + stage + job_id",
+          "precedence": "tick --execute / supervise 派发的 qa",
+          "requires": "tick --execute / supervise 派发的 qa"
+        },
+        {
+          "entity": "MemoryIndex (P2)",
+          "key": "run_id",
+          "precedence": "**sqlite FTS** 对 summary；**非** complete 权威",
+          "requires": "**sqlite FTS** 对 summary；**非** complete 权威"
+        }
+      ],
+      "entity_precedence": [
+        {
+          "entity": "GoalRun",
+          "key": "run_id",
+          "precedence": "产品目标账本权威；stages/done_when/verifier",
+          "requires": "产品目标账本权威；stages/done_when/verifier"
+        },
+        {
+          "entity": "SupervisorSession",
+          "key": "run_id + session_id",
+          "precedence": "opt-in 附着；默认 detached",
+          "requires": "opt-in 附着；默认 detached"
+        },
+        {
+          "entity": "Heartbeat",
+          "key": "run_id + ts",
+          "precedence": "追加；默认间隔 120s",
+          "requires": "追加；默认间隔 120s"
+        },
+        {
+          "entity": "ExecutionLog",
+          "key": "run_id + seq",
+          "precedence": "JSONL 追加；不可覆写",
+          "requires": "JSONL 追加；不可覆写"
+        },
+        {
+          "entity": "Checkpoint",
+          "key": "run_id",
+          "precedence": "last_substep + next_action；resume 输入",
+          "requires": "last_substep + next_action；resume 输入"
+        },
+        {
+          "entity": "WorkerJob",
+          "key": "run_id + stage + job_id",
+          "precedence": "tick --execute / supervise 派发的 qa",
+          "requires": "tick --execute / supervise 派发的 qa"
+        },
+        {
+          "entity": "MemoryIndex (P2)",
+          "key": "run_id",
+          "precedence": "**sqlite FTS** 对 summary；**非** complete 权威",
+          "requires": "**sqlite FTS** 对 summary；**非** complete 权威"
+        }
+      ],
+      "aggregates": [
+        {
+          "name": "GoalRun（durable 扩展）",
+          "states": [
+            "awaiting_verifier",
+            "awaiting_verifier **or** running at complete_gate",
+            "blocked",
+            "completed",
+            "completed path optional",
+            "created",
+            "host_interrupted",
+            "release_pending",
+            "running",
+            "stage_active",
+            "stage_active(qa done) or tick past work stages",
+            "stage_blocked",
+            "stage_blocked (streak&lt;3)"
+          ],
+          "transitions": [
+            {
+              "from": "",
+              "to": "created",
+              "guard": "create_goal_run",
+              "initial": "true"
+            },
+            {
+              "from": "created",
+              "to": "running",
+              "guard": "not completed"
+            },
+            {
+              "from": "host_interrupted",
+              "to": "running",
+              "guard": "not completed"
+            },
+            {
+              "from": "stage_blocked (streak&lt;3)",
+              "to": "running",
+              "guard": "not completed"
+            },
+            {
+              "from": "running",
+              "to": "stage_active",
+              "guard": "stage ∈ {plan,truth,design,implement,qa,release}"
+            },
+            {
+              "from": "stage_active",
+              "to": "host_interrupted",
+              "guard": "host turn end **or** idle ≥ heartbeat_interval without heartbeat while stage needs work"
+            },
+            {
+              "from": "running",
+              "to": "host_interrupted",
+              "guard": "host turn end **or** idle ≥ heartbeat_interval without heartbeat while stage needs work"
+            },
+            {
+              "from": "stage_active",
+              "to": "stage_blocked",
+              "guard": "worker fail / gate fail / truth block"
+            },
+            {
+              "from": "stage_active(qa done) or tick past work stages",
+              "to": "awaiting_verifier",
+              "guard": "no verifier refs"
+            },
+            {
+              "from": "awaiting_verifier **or** running at complete_gate",
+              "to": "completed",
+              "guard": "verifier.present ∧ refs non-empty **or** force(dev)"
+            },
+            {
+              "from": "stage_blocked",
+              "to": "blocked",
+              "guard": "blocked_streak ≥ 3"
+            },
+            {
+              "from": "completed path optional",
+              "to": "release_pending",
+              "guard": "release_human_gate=true"
+            }
+          ]
+        },
+        {
+          "name": "SupervisorSession",
+          "states": [
+            "active",
+            "detached",
+            "polling",
+            "stopped",
+            "waiting_host"
+          ],
+          "transitions": [
+            {
+              "from": "",
+              "to": "detached",
+              "guard": "default",
+              "initial": "true"
+            },
+            {
+              "from": "detached",
+              "to": "active",
+              "guard": "`goal supervise`"
+            },
+            {
+              "from": "active",
+              "to": "polling",
+              "guard": "loop tick"
+            },
+            {
+              "from": "polling",
+              "to": "waiting_host",
+              "guard": "needs agent skill load"
+            },
+            {
+              "from": "active",
+              "to": "stopped",
+              "guard": "user stop / run completed / blocked≥3"
+            },
+            {
+              "from": "polling",
+              "to": "stopped",
+              "guard": "user stop / run completed / blocked≥3"
+            },
+            {
+              "from": "waiting_host",
+              "to": "stopped",
+              "guard": "user stop / run completed / blocked≥3"
+            }
+          ]
+        }
+      ],
+      "illegal_transition_slots": [
+        {
+          "description": "ID | Illegal | Why",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "----|---------|-----",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "I-DGS-001 | `host_interrupted → completed` 无 verifier | 禁止中断直通完成",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "I-DGS-002 | `stage_blocked → completed` 无修复与 verifier | 禁止带着 blocker complete",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "I-DGS-003 | supervisor marks QA green without scorecard refs | 禁止自证",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "I-DGS-004 | overwrite execution.jsonl (non-append) | 证据链不可篡改",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "I-DGS-005 | `goal run` auto-starts supervise without opt-in | 违反 UD-DGS-001",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "I-DGS-006 | resume injects full chat as sole authority | 违反 UD-DGS-010",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "I-DGS-007 | memory FTS hit overrides scorecard/verifier | 记忆非权威",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "I-DGS-008 | second public entry via supervise skill | 违反单入口",
+          "aggregate": "",
+          "source": "truth"
+        }
+      ],
+      "acceptance_criteria": [
+        {
+          "ac_id": "AC-DGS-001",
+          "description": "`goal run` 不自动 attach supervise；仅 `goal supervise` 进入 SupervisorSession.active（**Must**）"
+        },
+        {
+          "ac_id": "AC-DGS-002",
+          "description": "默认 heartbeat_interval_sec=120；可配置且 ≥30（**Must**）"
+        },
+        {
+          "ac_id": "AC-DGS-003",
+          "description": "每次 heartbeat/cmd/tick/supervise 事件 append execution.jsonl（**Must**）"
+        },
+        {
+          "ac_id": "AC-DGS-004",
+          "description": "checkpoint.json 含 last_substep + next_action；resume-pack 只吐 digest（**Must**）"
+        },
+        {
+          "ac_id": "AC-DGS-005",
+          "description": "stage 需工作时 idle≥interval 无 heartbeat → host_interrupted 或 stall_flag（**Must**）"
+        },
+        {
+          "ac_id": "AC-DGS-006",
+          "description": "host_interrupted ≠ stage_blocked；resume 回 last_substep（**Must**）"
+        },
+        {
+          "ac_id": "AC-DGS-007",
+          "description": "`tick --execute` 在 implement/qa 可派发工人；无 flag 不派发（**Must**）"
+        },
+        {
+          "ac_id": "AC-DGS-008",
+          "description": "supervisor/tick 不得在无 verifier refs 时 complete（**Must**）"
+        },
+        {
+          "ac_id": "AC-DGS-009",
+          "description": "release 永不被 supervise 自动确认（**Must**）"
+        },
+        {
+          "ac_id": "AC-DGS-010",
+          "description": "文档/CLI 不把 supervise 宣传为第二公共入口（**Must**）"
+        },
+        {
+          "ac_id": "AC-DGS-011",
+          "description": "禁止非 append 覆写 execution.jsonl（**Must**）"
+        },
+        {
+          "ac_id": "AC-DGS-012",
+          "description": "P2：sqlite FTS reindex/search 可选；结果非 complete 权威（**Should**）"
+        },
+        {
+          "ac_id": "AC-DGS-013",
+          "description": "beacon-goal SKILL 声明同会话续跑 + resume-pack 用法（**Must**）"
+        },
+        {
+          "ac_id": "AC-DGS-014",
+          "description": "tests.md 含 ≥1 legal walk 与 ≥2 illegal 行（**Must**）"
+        }
+      ],
+      "bound_ac_ids": [
+        "AC-DGS-001",
+        "AC-DGS-002",
+        "AC-DGS-003",
+        "AC-DGS-004",
+        "AC-DGS-005",
+        "AC-DGS-006",
+        "AC-DGS-014"
+      ],
+      "orphan_ac_ids": [],
+      "aggregates_missing_illegal_slots": [],
+      "raw_section_titles": [
+        "Overview",
+        "User Intent（一行）",
+        "User Decisions（locked — 2026-07-18）",
+        "Public CLI surface（Must）",
+        "Domain Model",
+        "Domain FSM — GoalRun（durable 扩展）",
+        "Legal walks（至少覆盖）",
+        "Illegal transitions（Must 有 TC）",
+        "Domain FSM — SupervisorSession",
+        "Checkpoint pack schema（Must）",
+        "Execution log schema（Must）",
+        "tick --execute 行为（Must）",
+        "Context-full protocol（Must）",
+        "P2 Memory（sqlite FTS）",
+        "Acceptance Criteria",
+        "Alignment Surface",
+        "Non-Goals",
+        "Dependencies",
+        "Planner promotion"
+      ]
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "required": true,
+      "blocked": false,
+      "status": "pass",
+      "reason_code": "",
+      "findings": [],
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "beacon-goal-durable-supervisor-v167",
+          "version": "v1.6.7",
+          "status": "frozen",
+          "revision_id": "R1",
+          "language": "zh",
+          "change_reason": "P0 durable supervisor for product-goal: opt-in supervise, 2min heartbeat, execution.jsonl, tick-exec, host_interrupt/resume; P2 sqlite FTS memory (not zvec core)",
+          "canonical_refs": {
+            "truth": "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/truth.md",
+            "tests": "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
+            "tasks": "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tasks.md",
+            "evidence": "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/evidence.md"
+          },
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "truth_map_contract": "beacon-truth-map-v1",
+          "program_ref": "docs/beacon/v1.6.7/programs/beacon-product-goal-domain-delivery-v167/feature-graph.json",
+          "ux_required": "false"
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": true,
+        "has_domain_fsm_section": true,
+        "has_illegal_transition_section": true,
+        "entities": [
+          {
+            "entity": "GoalRun",
+            "key": "run_id",
+            "precedence": "产品目标账本权威；stages/done_when/verifier",
+            "requires": "产品目标账本权威；stages/done_when/verifier"
+          },
+          {
+            "entity": "SupervisorSession",
+            "key": "run_id + session_id",
+            "precedence": "opt-in 附着；默认 detached",
+            "requires": "opt-in 附着；默认 detached"
+          },
+          {
+            "entity": "Heartbeat",
+            "key": "run_id + ts",
+            "precedence": "追加；默认间隔 120s",
+            "requires": "追加；默认间隔 120s"
+          },
+          {
+            "entity": "ExecutionLog",
+            "key": "run_id + seq",
+            "precedence": "JSONL 追加；不可覆写",
+            "requires": "JSONL 追加；不可覆写"
+          },
+          {
+            "entity": "Checkpoint",
+            "key": "run_id",
+            "precedence": "last_substep + next_action；resume 输入",
+            "requires": "last_substep + next_action；resume 输入"
+          },
+          {
+            "entity": "WorkerJob",
+            "key": "run_id + stage + job_id",
+            "precedence": "tick --execute / supervise 派发的 qa",
+            "requires": "tick --execute / supervise 派发的 qa"
+          },
+          {
+            "entity": "MemoryIndex (P2)",
+            "key": "run_id",
+            "precedence": "**sqlite FTS** 对 summary；**非** complete 权威",
+            "requires": "**sqlite FTS** 对 summary；**非** complete 权威"
+          }
+        ],
+        "entity_precedence": [
+          {
+            "entity": "GoalRun",
+            "key": "run_id",
+            "precedence": "产品目标账本权威；stages/done_when/verifier",
+            "requires": "产品目标账本权威；stages/done_when/verifier"
+          },
+          {
+            "entity": "SupervisorSession",
+            "key": "run_id + session_id",
+            "precedence": "opt-in 附着；默认 detached",
+            "requires": "opt-in 附着；默认 detached"
+          },
+          {
+            "entity": "Heartbeat",
+            "key": "run_id + ts",
+            "precedence": "追加；默认间隔 120s",
+            "requires": "追加；默认间隔 120s"
+          },
+          {
+            "entity": "ExecutionLog",
+            "key": "run_id + seq",
+            "precedence": "JSONL 追加；不可覆写",
+            "requires": "JSONL 追加；不可覆写"
+          },
+          {
+            "entity": "Checkpoint",
+            "key": "run_id",
+            "precedence": "last_substep + next_action；resume 输入",
+            "requires": "last_substep + next_action；resume 输入"
+          },
+          {
+            "entity": "WorkerJob",
+            "key": "run_id + stage + job_id",
+            "precedence": "tick --execute / supervise 派发的 qa",
+            "requires": "tick --execute / supervise 派发的 qa"
+          },
+          {
+            "entity": "MemoryIndex (P2)",
+            "key": "run_id",
+            "precedence": "**sqlite FTS** 对 summary；**非** complete 权威",
+            "requires": "**sqlite FTS** 对 summary；**非** complete 权威"
+          }
+        ],
+        "aggregates": [
+          {
+            "name": "GoalRun（durable 扩展）",
+            "states": [
+              "awaiting_verifier",
+              "awaiting_verifier **or** running at complete_gate",
+              "blocked",
+              "completed",
+              "completed path optional",
+              "created",
+              "host_interrupted",
+              "release_pending",
+              "running",
+              "stage_active",
+              "stage_active(qa done) or tick past work stages",
+              "stage_blocked",
+              "stage_blocked (streak&lt;3)"
+            ],
+            "transitions": [
+              {
+                "from": "",
+                "to": "created",
+                "guard": "create_goal_run",
+                "initial": "true"
+              },
+              {
+                "from": "created",
+                "to": "running",
+                "guard": "not completed"
+              },
+              {
+                "from": "host_interrupted",
+                "to": "running",
+                "guard": "not completed"
+              },
+              {
+                "from": "stage_blocked (streak&lt;3)",
+                "to": "running",
+                "guard": "not completed"
+              },
+              {
+                "from": "running",
+                "to": "stage_active",
+                "guard": "stage ∈ {plan,truth,design,implement,qa,release}"
+              },
+              {
+                "from": "stage_active",
+                "to": "host_interrupted",
+                "guard": "host turn end **or** idle ≥ heartbeat_interval without heartbeat while stage needs work"
+              },
+              {
+                "from": "running",
+                "to": "host_interrupted",
+                "guard": "host turn end **or** idle ≥ heartbeat_interval without heartbeat while stage needs work"
+              },
+              {
+                "from": "stage_active",
+                "to": "stage_blocked",
+                "guard": "worker fail / gate fail / truth block"
+              },
+              {
+                "from": "stage_active(qa done) or tick past work stages",
+                "to": "awaiting_verifier",
+                "guard": "no verifier refs"
+              },
+              {
+                "from": "awaiting_verifier **or** running at complete_gate",
+                "to": "completed",
+                "guard": "verifier.present ∧ refs non-empty **or** force(dev)"
+              },
+              {
+                "from": "stage_blocked",
+                "to": "blocked",
+                "guard": "blocked_streak ≥ 3"
+              },
+              {
+                "from": "completed path optional",
+                "to": "release_pending",
+                "guard": "release_human_gate=true"
+              }
+            ]
+          },
+          {
+            "name": "SupervisorSession",
+            "states": [
+              "active",
+              "detached",
+              "polling",
+              "stopped",
+              "waiting_host"
+            ],
+            "transitions": [
+              {
+                "from": "",
+                "to": "detached",
+                "guard": "default",
+                "initial": "true"
+              },
+              {
+                "from": "detached",
+                "to": "active",
+                "guard": "`goal supervise`"
+              },
+              {
+                "from": "active",
+                "to": "polling",
+                "guard": "loop tick"
+              },
+              {
+                "from": "polling",
+                "to": "waiting_host",
+                "guard": "needs agent skill load"
+              },
+              {
+                "from": "active",
+                "to": "stopped",
+                "guard": "user stop / run completed / blocked≥3"
+              },
+              {
+                "from": "polling",
+                "to": "stopped",
+                "guard": "user stop / run completed / blocked≥3"
+              },
+              {
+                "from": "waiting_host",
+                "to": "stopped",
+                "guard": "user stop / run completed / blocked≥3"
+              }
+            ]
+          }
+        ],
+        "illegal_transition_slots": [
+          {
+            "description": "ID | Illegal | Why",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "----|---------|-----",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "I-DGS-001 | `host_interrupted → completed` 无 verifier | 禁止中断直通完成",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "I-DGS-002 | `stage_blocked → completed` 无修复与 verifier | 禁止带着 blocker complete",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "I-DGS-003 | supervisor marks QA green without scorecard refs | 禁止自证",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "I-DGS-004 | overwrite execution.jsonl (non-append) | 证据链不可篡改",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "I-DGS-005 | `goal run` auto-starts supervise without opt-in | 违反 UD-DGS-001",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "I-DGS-006 | resume injects full chat as sole authority | 违反 UD-DGS-010",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "I-DGS-007 | memory FTS hit overrides scorecard/verifier | 记忆非权威",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "I-DGS-008 | second public entry via supervise skill | 违反单入口",
+            "aggregate": "",
+            "source": "truth"
+          }
+        ],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-DGS-001",
+            "description": "`goal run` 不自动 attach supervise；仅 `goal supervise` 进入 SupervisorSession.active（**Must**）"
+          },
+          {
+            "ac_id": "AC-DGS-002",
+            "description": "默认 heartbeat_interval_sec=120；可配置且 ≥30（**Must**）"
+          },
+          {
+            "ac_id": "AC-DGS-003",
+            "description": "每次 heartbeat/cmd/tick/supervise 事件 append execution.jsonl（**Must**）"
+          },
+          {
+            "ac_id": "AC-DGS-004",
+            "description": "checkpoint.json 含 last_substep + next_action；resume-pack 只吐 digest（**Must**）"
+          },
+          {
+            "ac_id": "AC-DGS-005",
+            "description": "stage 需工作时 idle≥interval 无 heartbeat → host_interrupted 或 stall_flag（**Must**）"
+          },
+          {
+            "ac_id": "AC-DGS-006",
+            "description": "host_interrupted ≠ stage_blocked；resume 回 last_substep（**Must**）"
+          },
+          {
+            "ac_id": "AC-DGS-007",
+            "description": "`tick --execute` 在 implement/qa 可派发工人；无 flag 不派发（**Must**）"
+          },
+          {
+            "ac_id": "AC-DGS-008",
+            "description": "supervisor/tick 不得在无 verifier refs 时 complete（**Must**）"
+          },
+          {
+            "ac_id": "AC-DGS-009",
+            "description": "release 永不被 supervise 自动确认（**Must**）"
+          },
+          {
+            "ac_id": "AC-DGS-010",
+            "description": "文档/CLI 不把 supervise 宣传为第二公共入口（**Must**）"
+          },
+          {
+            "ac_id": "AC-DGS-011",
+            "description": "禁止非 append 覆写 execution.jsonl（**Must**）"
+          },
+          {
+            "ac_id": "AC-DGS-012",
+            "description": "P2：sqlite FTS reindex/search 可选；结果非 complete 权威（**Should**）"
+          },
+          {
+            "ac_id": "AC-DGS-013",
+            "description": "beacon-goal SKILL 声明同会话续跑 + resume-pack 用法（**Must**）"
+          },
+          {
+            "ac_id": "AC-DGS-014",
+            "description": "tests.md 含 ≥1 legal walk 与 ≥2 illegal 行（**Must**）"
+          }
+        ],
+        "bound_ac_ids": [
+          "AC-DGS-001",
+          "AC-DGS-002",
+          "AC-DGS-003",
+          "AC-DGS-004",
+          "AC-DGS-005",
+          "AC-DGS-006",
+          "AC-DGS-014"
+        ],
+        "orphan_ac_ids": [],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "Overview",
+          "User Intent（一行）",
+          "User Decisions（locked — 2026-07-18）",
+          "Public CLI surface（Must）",
+          "Domain Model",
+          "Domain FSM — GoalRun（durable 扩展）",
+          "Legal walks（至少覆盖）",
+          "Illegal transitions（Must 有 TC）",
+          "Domain FSM — SupervisorSession",
+          "Checkpoint pack schema（Must）",
+          "Execution log schema（Must）",
+          "tick --execute 行为（Must）",
+          "Context-full protocol（Must）",
+          "P2 Memory（sqlite FTS）",
+          "Acceptance Criteria",
+          "Alignment Surface",
+          "Non-Goals",
+          "Dependencies",
+          "Planner promotion"
+        ]
+      },
+      "summary": {
+        "entity_count": 7,
+        "aggregate_count": 2,
+        "illegal_slot_count": 10,
+        "orphan_ac_count": 0,
+        "bound_ac_count": 7
+      }
+    },
+    "recommended_action": ""
+  },
+  "human_closure_contract": {
+    "required": false,
+    "research_path": "docs/beacon/v1.6.7/research/beacon-goal-durable-supervisor-v167.md",
+    "research_exists": true,
+    "source_architecture_path": "docs/beacon/v1.6.7/source-architecture/index.md",
+    "source_architecture_exists": true,
+    "required_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "missing_sections": [],
+    "diagram_types": [],
+    "complexity_signals": []
+  },
+  "requirement_closure_contract": {
+    "required": true,
+    "chain_order": [
+      "research",
+      "prd",
+      "user_story",
+      "test_case",
+      "requirement_clarity",
+      "freeze"
+    ],
+    "human_closure_required": false,
+    "paths": {
+      "research": "docs/beacon/v1.6.7/research/beacon-goal-durable-supervisor-v167.md",
+      "prd": "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/truth.md",
+      "user_story": "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/truth.md",
+      "test_case": "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md"
+    },
+    "exists": {
+      "research": true,
+      "prd": true,
+      "user_story": true,
+      "test_case": true
+    },
+    "required_research_sections": [],
+    "missing_research_sections": [],
+    "ac_projection": {
+      "prd_ac_ids": [],
+      "user_story_ac_ids": [],
+      "test_case_ac_ids": [],
+      "upstream_ac_ids": [],
+      "missing_test_case_ac_ids": []
+    }
+  },
+  "version_projection_truth_contract": {
+    "required": true,
+    "supported": true,
+    "projection_types": [
+      "business_flow",
+      "state_machine",
+      "three_piece_map"
+    ],
+    "research_path": "docs/beacon/v1.6.7/research/beacon-goal-durable-supervisor-v167.md",
+    "research_exists": true,
+    "required_fields": [
+      "prd_refs",
+      "user_story_refs",
+      "test_case_refs",
+      "coverage_notes",
+      "out_of_scope_notes"
+    ],
+    "field_presence": {
+      "prd_refs": true,
+      "user_story_refs": true,
+      "test_case_refs": true,
+      "coverage_notes": true,
+      "out_of_scope_notes": true
+    },
+    "missing_fields": [],
+    "required_refs": {
+      "prd_refs": "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/truth.md",
+      "user_story_refs": "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/truth.md",
+      "test_case_refs": "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md"
+    },
+    "missing_ref_targets": [],
+    "ready": true
+  },
+  "support_write_topology_contract": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "diagnostics": []
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/truth.md",
+    "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
+    "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tasks.md",
+    "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/evidence.md",
+    "docs/beacon/v1.6.7/research/beacon-goal-durable-supervisor-v167.md"
+  ]
+}

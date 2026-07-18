@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-goal-durable-supervisor-v167",
+  "feature_slug": "beacon-goal-durable-supervisor-v167",
+  "version": "v1.6.7",
+  "generated_at": "2026-07-18T01:27:16.389991+00:00",
+  "compiler": {
+    "requested_mode": "rule",
+    "effective_mode": "rule",
+    "generator_mode": "eval-qa"
+  },
+  "entries": [
+    {
+      "tc_id": "TC-DGS-SUITE",
+      "ac_id": "AC-DGS-001",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Full durable supervisor suite green covering AC-DGS-001..014 and legal/illegal walks",
+      "status": "planned",
+      "qa_type": "contract",
+      "automation": "auto",
+      "source": "qa-gate",
+      "evidence_path": ".beacon/evidence/test-results/beacon-goal-durable-supervisor-v167/{run_id}/TC-DGS-SUITE.json"
+    },
+    {
+      "tc_id": "TC-DGS-LEGAL-01",
+      "ac_id": "AC-DGS-008",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_legal_walk_create_to_complete tests/test_v167_goal_durable_supervisor.py::test_legal_walk_host_interrupt_resume tests/test_v167_goal_durable_supervisor.py::test_legal_walk_opt_in_supervise -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Legal walks for GoalRun durable FSM",
+      "status": "planned",
+      "qa_type": "unit",
+      "automation": "auto",
+      "source": "qa-gate",
+      "evidence_path": ".beacon/evidence/test-results/beacon-goal-durable-supervisor-v167/{run_id}/TC-DGS-LEGAL-01.json"
+    },
+    {
+      "tc_id": "TC-DGS-ILLEGAL-01",
+      "ac_id": "AC-DGS-008",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_illegal_interrupt_to_complete tests/test_v167_goal_durable_supervisor.py::test_illegal_auto_supervise_on_run tests/test_v167_goal_durable_supervisor.py::test_illegal_overwrite_jsonl tests/test_v167_goal_durable_supervisor.py::test_illegal_memory_overrides_verifier -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Illegal transitions fail-closed",
+      "status": "planned",
+      "qa_type": "unit",
+      "automation": "auto",
+      "source": "qa-gate",
+      "evidence_path": ".beacon/evidence/test-results/beacon-goal-durable-supervisor-v167/{run_id}/TC-DGS-ILLEGAL-01.json"
+    }
+  ]
+}

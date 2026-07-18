@@ -2,7 +2,7 @@
 slug: beacon-v2-product-goal-orchestrator
 version: v2.0.0
 status: draft
-revision_id: R1
+revision_id: R3
 truth_ref: docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md
 parser_contract: beacon-feature-package-v2
 ---
@@ -16,3 +16,6 @@ parser_contract: beacon-feature-package-v2
 | AC-V2-PGO-001 | TC-V2-PGO-001 | contract | `python3 -m pytest tests/test_v200_product_goal.py::test_v167_schema_parity -q` | v167 fixture parity |
 | AC-V2-PGO-003 | TC-V2-PGO-002 | contract | `python3 -m pytest tests/test_v200_product_goal.py::test_progressive_load_default -q` | 默认不全量加载 |
 | AC-V2-PGO-004 | TC-V2-PGO-003 | contract | `python3 -m pytest tests/test_v200_product_goal.py::test_parallel_respects_deps -q` | 依赖边约束 |
+| AC-V2-PGO-007 | TC-V2-PGO-004 | contract | `python3 -m pytest tests/test_v200_product_goal.py::test_single_public_entry -q` | 单入口 |
+| AC-V2-PGO-009 | TC-V2-PGO-005 | contract | `python3 -m pytest tests/test_v200_product_goal.py::test_program_has_domain_lakes -q` | program 含 domain lakes |
+| AC-V2-PGO-011 | TC-V2-PGO-006 | negative | `python3 -m pytest tests/test_v200_product_goal.py::test_no_early_default_flag -q` | 无提前默认 |

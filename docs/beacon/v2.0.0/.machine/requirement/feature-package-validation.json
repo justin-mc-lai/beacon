@@ -1,35 +1,37 @@
 {
   "schema_version": "1.0",
-  "feature": "beacon-v2-product-goal-orchestrator",
-  "feature_slug": "beacon-v2-product-goal-orchestrator",
+  "feature": "beacon-v2-goal-durable-longrun",
+  "feature_slug": "beacon-v2-goal-durable-longrun",
   "version": "v2.0.0",
   "status": "pass",
   "blocked": false,
   "reason_code": "",
-  "generated_at": "2026-07-16T15:35:30.329270+00:00",
-  "package_dir": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator",
+  "generated_at": "2026-07-18T03:43:38.879078+00:00",
+  "package_dir": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun",
   "truth_frontmatter": {
-    "slug": "beacon-v2-product-goal-orchestrator",
+    "slug": "beacon-v2-goal-durable-longrun",
     "version": "v2.0.0",
     "status": "frozen",
     "revision_id": "R2",
     "language": "zh",
-    "change_reason": "R2 single public entry beacon-goal; loop support-only; parity v1.6.7 R3",
+    "change_reason": "R2 - full AC-DGS-001..014 parity table + AgentDriver one-shot; pln-review 2026-07-18",
     "canonical_refs": {
-      "truth": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
-      "tests": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tests.md",
-      "tasks": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tasks.md",
-      "evidence": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/evidence.md"
+      "truth": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/truth.md",
+      "tests": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+      "tasks": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tasks.md",
+      "evidence": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/evidence.md"
     },
     "parser_contract": "beacon-feature-package-v2",
     "truth_source_model": "feature_package_authoritative",
     "truth_map_contract": "beacon-truth-map-v1",
-    "program_ref": "docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/feature-graph.json"
+    "program_ref": "docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/feature-graph.json",
+    "ux_required": "false",
+    "design_deferral": "CLI/orchestrator long-run; no product marketing UI"
   },
-  "ac_count": 8,
-  "test_count": 3,
-  "checkbox_count": 4,
-  "evidence_row_count": 2,
+  "ac_count": 16,
+  "test_count": 14,
+  "checkbox_count": 8,
+  "evidence_row_count": 6,
   "gate_authority": "canonical_surfaces_preserved",
   "checkbox_gate_bypass": false,
   "evidence_gate_truth": false,
@@ -42,16 +44,16 @@
   "truth_authority": "markdown_feature_package",
   "json_authority": false,
   "source_paths": {
-    "truth": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
-    "tests": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tests.md",
-    "tasks": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tasks.md",
-    "evidence": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/evidence.md"
+    "truth": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/truth.md",
+    "tests": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+    "tasks": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tasks.md",
+    "evidence": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/evidence.md"
   },
   "source_hashes": {
-    "truth": "9d67f261066f79aec5804be6f784b55e8ca6c6018c75497f2dcdc7d111828e3a",
-    "tests": "dc35205a9d5c7f2f98dc4fcb823162baa1dcb2bbb0865cb8749553e511ca77cf",
-    "tasks": "8a752749b8b0ac2d33d0b7d3aa0e4f5e7d9e5125f883eea128e5097c516edcd2",
-    "evidence": "98fae41bece433a6c7299ee3aeae547ec5f3bff764e4f68bf3910dfff5ae7070"
+    "truth": "04e2429137365e933a2284d45b719be72a49ab0d5c980a2248d150bd7273594b",
+    "tests": "9ba739ace76ef0c06f777f08f976a0c1e3c9e9f6ff2b854f159ef14b622f9f7e",
+    "tasks": "f39eed1666614741e8d7be6df95c71f4e08ff6168068cdad8345f03b2d1d28db",
+    "evidence": "896e07367f58cb5f40b7ba7394a8bb1ac56f4ed88f064bf8becd460ede094e86"
   },
   "runtime_json_requires_markdown_twin": false
 }

@@ -1,0 +1,315 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v2-ui-state-matrix-ship-gate",
+  "feature_slug": "beacon-v2-ui-state-matrix-ship-gate",
+  "version": "v2.0.0",
+  "runtime_version": "v1.6.7",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v2.0.0/.machine/execution/requirement-clarity-beacon-v2-ui-state-matrix-ship-gate.json",
+  "report_markdown_path": "docs/beacon/v2.0.0/execution/requirement-clarity-beacon-v2-ui-state-matrix-ship-gate.md",
+  "state_path": ".beacon/state/requirement-clarity-beacon-v2-ui-state-matrix-ship-gate.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v2.0.0",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-07-17T07:58:21.542319+00:00",
+    "feature": "beacon-v2-ui-state-matrix-ship-gate",
+    "feature_slug": "beacon-v2-ui-state-matrix-ship-gate",
+    "prd_ref": "docs/beacon/v2.0.0/prd/beacon-v2-ui-state-matrix-ship-gate.md",
+    "user_story_ref": "docs/beacon/v2.0.0/user-story/beacon-v2-ui-state-matrix-ship-gate.md"
+  },
+  "domain_fsm_gate": {
+    "schema_version": "1.0",
+    "feature": "beacon-v2-ui-state-matrix-ship-gate",
+    "feature_slug": "beacon-v2-ui-state-matrix-ship-gate",
+    "version": "v2.0.0",
+    "truth_path": "docs/beacon/v2.0.0/features/beacon-v2-ui-state-matrix-ship-gate/truth.md",
+    "tests_path": "docs/beacon/v2.0.0/features/beacon-v2-ui-state-matrix-ship-gate/tests.md",
+    "required": false,
+    "blocked": false,
+    "status": "not_required",
+    "reason_code": "",
+    "findings": [],
+    "requirement": {
+      "required": false,
+      "reason": "not_required",
+      "explicit": false,
+      "partial": false,
+      "complexity": false,
+      "business_signal": false,
+      "version_supported": true
+    },
+    "projection": {
+      "schema_version": "1.0",
+      "domain_fsm_schema": "domain-fsm.v1",
+      "entity_precedence_schema": "entity-precedence.v1",
+      "frontmatter": {
+        "slug": "beacon-v2-ui-state-matrix-ship-gate",
+        "version": "v2.0.0",
+        "status": "frozen",
+        "revision_id": "R1",
+        "language": "zh",
+        "change_reason": "V2SE-006 locked - full inherit v1.6.7 ui-state-matrix ship hard gate (not design_primitives-only)",
+        "canonical_refs": {
+          "truth": "docs/beacon/v2.0.0/features/beacon-v2-ui-state-matrix-ship-gate/truth.md",
+          "tests": "docs/beacon/v2.0.0/features/beacon-v2-ui-state-matrix-ship-gate/tests.md",
+          "tasks": "docs/beacon/v2.0.0/features/beacon-v2-ui-state-matrix-ship-gate/tasks.md",
+          "evidence": "docs/beacon/v2.0.0/features/beacon-v2-ui-state-matrix-ship-gate/evidence.md"
+        },
+        "parser_contract": "beacon-feature-package-v2",
+        "truth_source_model": "feature_package_authoritative",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "program_ref": "docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/feature-graph.json",
+        "upstream_ref": "docs/beacon/v1.6.7/features/beacon-ui-design-ship-gate-v167/truth.md"
+      },
+      "frontmatter_errors": [],
+      "has_domain_model_section": false,
+      "has_domain_fsm_section": false,
+      "has_illegal_transition_section": false,
+      "entities": [],
+      "entity_precedence": [],
+      "aggregates": [],
+      "illegal_transition_slots": [],
+      "acceptance_criteria": [
+        {
+          "ac_id": "AC-V2-UID-001",
+          "description": "ui-state-matrix.v1 绑定 domain-fsm 状态（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-UID-002",
+          "description": "UX feature 无 DESIGN 且无 deferral → freeze/ship block（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-UID-003",
+          "description": "release scorecard 含 design_alignment **与** ui_state_matrix（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-UID-004",
+          "description": "仅 design_primitives 不足以致 release_ready（UX）（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-UID-005",
+          "description": "implement precheck 记录 DESIGN 已读证据（**Should**）"
+        },
+        {
+          "ac_id": "AC-V2-UID-006",
+          "description": "QA 可索引态徽章/视觉一致性（**Should**）"
+        },
+        {
+          "ac_id": "AC-V2-UID-007",
+          "description": "golden commerce 含最小 state matrix（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-UID-008",
+          "description": "v1.6.7 ui ship-gate fixture/语义可被 v2 加载对照（**Must**）"
+        }
+      ],
+      "bound_ac_ids": [],
+      "orphan_ac_ids": [],
+      "aggregates_missing_illegal_slots": [],
+      "raw_section_titles": [
+        "Overview",
+        "User Intent（一行）",
+        "User Decisions（locked）",
+        "Acceptance Criteria",
+        "Non-Goals",
+        "Alignment Surface"
+      ]
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "required": false,
+      "blocked": false,
+      "status": "not_required",
+      "reason_code": "",
+      "findings": [],
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "beacon-v2-ui-state-matrix-ship-gate",
+          "version": "v2.0.0",
+          "status": "frozen",
+          "revision_id": "R1",
+          "language": "zh",
+          "change_reason": "V2SE-006 locked - full inherit v1.6.7 ui-state-matrix ship hard gate (not design_primitives-only)",
+          "canonical_refs": {
+            "truth": "docs/beacon/v2.0.0/features/beacon-v2-ui-state-matrix-ship-gate/truth.md",
+            "tests": "docs/beacon/v2.0.0/features/beacon-v2-ui-state-matrix-ship-gate/tests.md",
+            "tasks": "docs/beacon/v2.0.0/features/beacon-v2-ui-state-matrix-ship-gate/tasks.md",
+            "evidence": "docs/beacon/v2.0.0/features/beacon-v2-ui-state-matrix-ship-gate/evidence.md"
+          },
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "truth_map_contract": "beacon-truth-map-v1",
+          "program_ref": "docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/feature-graph.json",
+          "upstream_ref": "docs/beacon/v1.6.7/features/beacon-ui-design-ship-gate-v167/truth.md"
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": false,
+        "has_domain_fsm_section": false,
+        "has_illegal_transition_section": false,
+        "entities": [],
+        "entity_precedence": [],
+        "aggregates": [],
+        "illegal_transition_slots": [],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-V2-UID-001",
+            "description": "ui-state-matrix.v1 绑定 domain-fsm 状态（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-UID-002",
+            "description": "UX feature 无 DESIGN 且无 deferral → freeze/ship block（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-UID-003",
+            "description": "release scorecard 含 design_alignment **与** ui_state_matrix（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-UID-004",
+            "description": "仅 design_primitives 不足以致 release_ready（UX）（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-UID-005",
+            "description": "implement precheck 记录 DESIGN 已读证据（**Should**）"
+          },
+          {
+            "ac_id": "AC-V2-UID-006",
+            "description": "QA 可索引态徽章/视觉一致性（**Should**）"
+          },
+          {
+            "ac_id": "AC-V2-UID-007",
+            "description": "golden commerce 含最小 state matrix（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-UID-008",
+            "description": "v1.6.7 ui ship-gate fixture/语义可被 v2 加载对照（**Must**）"
+          }
+        ],
+        "bound_ac_ids": [],
+        "orphan_ac_ids": [],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "Overview",
+          "User Intent（一行）",
+          "User Decisions（locked）",
+          "Acceptance Criteria",
+          "Non-Goals",
+          "Alignment Surface"
+        ]
+      }
+    },
+    "recommended_action": ""
+  },
+  "human_closure_contract": {
+    "required": false,
+    "research_path": "docs/beacon/v2.0.0/research/beacon-v2-ui-state-matrix-ship-gate.md",
+    "research_exists": false,
+    "source_architecture_path": "docs/beacon/v2.0.0/source-architecture/index.md",
+    "source_architecture_exists": true,
+    "required_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "missing_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "diagram_types": [],
+    "complexity_signals": []
+  },
+  "requirement_closure_contract": {
+    "required": true,
+    "chain_order": [
+      "research",
+      "prd",
+      "user_story",
+      "test_case",
+      "requirement_clarity",
+      "freeze"
+    ],
+    "human_closure_required": false,
+    "paths": {
+      "research": "docs/beacon/v2.0.0/research/beacon-v2-ui-state-matrix-ship-gate.md",
+      "prd": "docs/beacon/v2.0.0/features/beacon-v2-ui-state-matrix-ship-gate/truth.md",
+      "user_story": "docs/beacon/v2.0.0/features/beacon-v2-ui-state-matrix-ship-gate/truth.md",
+      "test_case": "docs/beacon/v2.0.0/features/beacon-v2-ui-state-matrix-ship-gate/tests.md"
+    },
+    "exists": {
+      "research": false,
+      "prd": true,
+      "user_story": true,
+      "test_case": true
+    },
+    "required_research_sections": [],
+    "missing_research_sections": [],
+    "ac_projection": {
+      "prd_ac_ids": [],
+      "user_story_ac_ids": [],
+      "test_case_ac_ids": [],
+      "upstream_ac_ids": [],
+      "missing_test_case_ac_ids": []
+    }
+  },
+  "version_projection_truth_contract": {
+    "required": false,
+    "supported": true,
+    "projection_types": [],
+    "research_path": "docs/beacon/v2.0.0/research/beacon-v2-ui-state-matrix-ship-gate.md",
+    "research_exists": false,
+    "required_fields": [
+      "prd_refs",
+      "user_story_refs",
+      "test_case_refs",
+      "coverage_notes",
+      "out_of_scope_notes"
+    ],
+    "field_presence": {
+      "prd_refs": false,
+      "user_story_refs": false,
+      "test_case_refs": false,
+      "coverage_notes": false,
+      "out_of_scope_notes": false
+    },
+    "missing_fields": [],
+    "required_refs": {
+      "prd_refs": "docs/beacon/v2.0.0/features/beacon-v2-ui-state-matrix-ship-gate/truth.md",
+      "user_story_refs": "docs/beacon/v2.0.0/features/beacon-v2-ui-state-matrix-ship-gate/truth.md",
+      "test_case_refs": "docs/beacon/v2.0.0/features/beacon-v2-ui-state-matrix-ship-gate/tests.md"
+    },
+    "missing_ref_targets": [],
+    "ready": false
+  },
+  "support_write_topology_contract": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "diagnostics": []
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v2.0.0/features/beacon-v2-ui-state-matrix-ship-gate/truth.md",
+    "docs/beacon/v2.0.0/features/beacon-v2-ui-state-matrix-ship-gate/tests.md",
+    "docs/beacon/v2.0.0/features/beacon-v2-ui-state-matrix-ship-gate/tasks.md",
+    "docs/beacon/v2.0.0/features/beacon-v2-ui-state-matrix-ship-gate/evidence.md"
+  ]
+}

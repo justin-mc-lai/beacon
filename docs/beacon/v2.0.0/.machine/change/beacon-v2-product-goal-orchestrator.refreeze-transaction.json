@@ -1,0 +1,1402 @@
+{
+  "schema_version": "1.0",
+  "transaction_id": "tx-change-refreeze-beacon-v2-product-goal-orchestrator-20260717t075831z",
+  "feature": "beacon-v2-product-goal-orchestrator",
+  "feature_slug": "beacon-v2-product-goal-orchestrator",
+  "version": "v2.0.0",
+  "change_reason": "R3 content already written; re-freeze after user decisions",
+  "touched_surfaces": [
+    "change",
+    "truth",
+    "tests",
+    "tasks",
+    "evidence",
+    "requirement_clarity",
+    "freeze",
+    "feature_package_validation"
+  ],
+  "surface_statuses": {
+    "change": {
+      "path": "docs/beacon/v2.0.0/change/beacon-v2-product-goal-orchestrator.md",
+      "exists": true,
+      "status": "present",
+      "required": false,
+      "authority": "change_record_not_requirement_truth"
+    },
+    "truth": {
+      "path": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "tests": {
+      "path": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tests.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "tasks": {
+      "path": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tasks.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "evidence": {
+      "path": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/evidence.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "requirement_clarity": {
+      "path": "docs/beacon/v2.0.0/.machine/execution/requirement-clarity-beacon-v2-product-goal-orchestrator.json",
+      "exists": true,
+      "status": "passed",
+      "required": true
+    },
+    "freeze": {
+      "path": "docs/beacon/v2.0.0/.machine/change/beacon-v2-product-goal-orchestrator.refreeze-transaction.json",
+      "exists": true,
+      "status": "complete",
+      "required": true
+    },
+    "feature_package_validation": {
+      "path": "docs/beacon/v2.0.0/.machine/requirement/feature-package-validation.json",
+      "exists": true,
+      "status": "passed",
+      "required": true,
+      "diagnostics": []
+    }
+  },
+  "truth_revision_before": {
+    "revision_id": "R2",
+    "doc_status": "frozen",
+    "lifecycle_status": "idle",
+    "baseline_hash": "sha256:9d78a168ccf2215536b4a6c27286ebf9d1a2c85bebf9f65126a2060ec45f3a83"
+  },
+  "truth_revision_after": {
+    "revision_id": "R3",
+    "doc_status": "frozen",
+    "lifecycle_status": "frozen",
+    "baseline_hash": "sha256:9d78a168ccf2215536b4a6c27286ebf9d1a2c85bebf9f65126a2060ec45f3a83"
+  },
+  "refreeze_status": "complete",
+  "next_route": {
+    "target_surface": "beacon-gen-implement",
+    "command": "beacon implement \"beacon-v2-product-goal-orchestrator\" --project /Users/apple/Developer/Personal/products/beacon --version v2.0.0",
+    "why": "refreeze transaction completed; implementation may plan against the refreshed frozen truth"
+  },
+  "blocked_reason": "",
+  "delivery_execution": {
+    "implement_executed": false,
+    "qa_executed": false,
+    "release_executed": false
+  },
+  "created_at": "2026-07-17T07:58:31.847871+00:00",
+  "previous_revision": {
+    "revision_id": "R2",
+    "doc_status": "superseded",
+    "lifecycle_status": "superseded",
+    "baseline_hash": "sha256:9d78a168ccf2215536b4a6c27286ebf9d1a2c85bebf9f65126a2060ec45f3a83"
+  },
+  "opened_revision": {
+    "revision_id": "R3",
+    "doc_status": "draft",
+    "lifecycle_status": "draft",
+    "baseline_hash": ""
+  },
+  "story_reopen": {
+    "current_revision_id": "R3",
+    "lifecycle_status": "draft"
+  },
+  "requirement_package": {
+    "schema_version": "1.0",
+    "project_root": "/Users/apple/Developer/Personal/products/beacon",
+    "version": "v2.0.0",
+    "feature": "beacon-v2-product-goal-orchestrator",
+    "status": "synced",
+    "authority_state": "feature_package_authoritative",
+    "truth_authority": "markdown_feature_package",
+    "requirement_refs": {
+      "source_of_truth_root": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator",
+      "prd": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+      "user_story": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+      "test_case": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tests.md",
+      "truth": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+      "tests": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tests.md",
+      "tasks": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tasks.md",
+      "evidence": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/evidence.md"
+    },
+    "story_path": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+    "qa_matrix_path": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tests.md",
+    "qa9_matrix_path": "",
+    "story_scenario_map_path": "",
+    "machine_rebuild": {
+      "schema_version": "1.0",
+      "truth_map_contract": "beacon-truth-map-v1",
+      "truth_source_model": "feature_package_authoritative",
+      "truth_package_contract": "beacon-feature-package-v2",
+      "machine_json_role": "generated_state_not_truth",
+      "generated_by": "beacon.truth_map.resolver",
+      "feature": "beacon-v2-product-goal-orchestrator",
+      "feature_slug": "beacon-v2-product-goal-orchestrator",
+      "version": "v2.0.0",
+      "status": "rebuilt",
+      "blocked": false,
+      "validation_status": "pass",
+      "source_paths": {
+        "truth": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+        "tests": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tests.md",
+        "tasks": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tasks.md",
+        "evidence": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/evidence.md"
+      },
+      "source_hashes": {
+        "truth": "9c9fbcc0a1d7d01792a22850ed3bc496fe513797d13e7d0f7e3544891b24acba",
+        "tests": "0c44f66ee0448508a1b0f0867249c7d4398395624cd4100f55fb68dc8e44dc5a",
+        "tasks": "215890d3282cb32438cce61cb28f747992192329433703571893a620ad3ffe82",
+        "evidence": "d406abffcddc3495b1fef24658bbd4a7096272111e0eef6c7087744393cf8808"
+      },
+      "plan": {
+        "schema_version": "1.0",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "truth_source_model": "feature_package_authoritative",
+        "truth_package_contract": "beacon-feature-package-v2",
+        "machine_json_role": "generated_state_not_truth",
+        "generated_by": "beacon.truth_map.resolver",
+        "feature": "beacon-v2-product-goal-orchestrator",
+        "feature_slug": "beacon-v2-product-goal-orchestrator",
+        "version": "v2.0.0",
+        "source_paths": {
+          "truth": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+          "tests": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tests.md",
+          "tasks": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tasks.md",
+          "evidence": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/evidence.md"
+        },
+        "outputs": {
+          "truth_map_projection": "docs/beacon/v2.0.0/.machine/requirement/beacon-v2-product-goal-orchestrator.truth-map.json",
+          "requirement_package_state": "docs/beacon/v2.0.0/.machine/requirement/beacon-v2-product-goal-orchestrator.requirement-package.json",
+          "feature_package_validation": "docs/beacon/v2.0.0/.machine/requirement/feature-package-validation.json"
+        },
+        "runtime_json_exemption": {
+          "role": "runtime_process_record_not_requirement_truth",
+          "applies_to": [
+            ".beacon/runs/**",
+            ".beacon/qa/**",
+            "runtime/process execution records"
+          ],
+          "requires_markdown_twin": false,
+          "requirement_authority": false
+        },
+        "routes": {
+          "doctor_rebuild": {
+            "status": "legacy_output_only",
+            "command": "beacon truth-map rebuild-machine beacon-v2-product-goal-orchestrator --version v2.0.0"
+          },
+          "change_absorb": {
+            "status": "package_truth_target_only",
+            "command": "beacon change beacon-v2-product-goal-orchestrator --version v2.0.0 --reason absorb-legacy-truth-into-feature-package"
+          }
+        }
+      },
+      "written": [
+        "docs/beacon/v2.0.0/.machine/requirement/beacon-v2-product-goal-orchestrator.truth-map.json",
+        "docs/beacon/v2.0.0/.machine/requirement/beacon-v2-product-goal-orchestrator.requirement-package.json",
+        "docs/beacon/v2.0.0/.machine/requirement/feature-package-validation.json"
+      ]
+    },
+    "story_sync": {
+      "path": "docs/beacon/v2.0.0/.machine/user-story/beacon-v2-product-goal-orchestrator.json",
+      "feature": "beacon-v2-product-goal-orchestrator",
+      "version": "v2.0.0",
+      "revision_id": "R3",
+      "ac_count": 1,
+      "test_count": 1,
+      "story_ids": [
+        ""
+      ]
+    }
+  },
+  "requirement_clarity": {
+    "gate": {
+      "schema_version": "1.0",
+      "feature": "beacon-v2-product-goal-orchestrator",
+      "feature_slug": "beacon-v2-product-goal-orchestrator",
+      "version": "v2.0.0",
+      "runtime_version": "v1.6.7",
+      "runtime_capability_line": "v1.3.3",
+      "required": true,
+      "reason_code": "",
+      "blocked": false,
+      "status": "pass",
+      "findings": [],
+      "report_json_path": "docs/beacon/v2.0.0/.machine/execution/requirement-clarity-beacon-v2-product-goal-orchestrator.json",
+      "report_markdown_path": "docs/beacon/v2.0.0/execution/requirement-clarity-beacon-v2-product-goal-orchestrator.md",
+      "state_path": ".beacon/state/requirement-clarity-beacon-v2-product-goal-orchestrator.json",
+      "diagram_truth": {
+        "schema_version": "1.0",
+        "version": "v2.0.0",
+        "supported": true,
+        "required": false,
+        "ready": true,
+        "diagram_types": [],
+        "state_axes": [],
+        "missing_diagram_types": [],
+        "missing_state_axes": false,
+        "complexity_signals": [],
+        "review_gates": [],
+        "qa_coverage_hints": [],
+        "evidence_lines": {},
+        "generated_at": "2026-07-17T07:58:34.989064+00:00",
+        "feature": "beacon-v2-product-goal-orchestrator",
+        "feature_slug": "beacon-v2-product-goal-orchestrator",
+        "prd_ref": "docs/beacon/v2.0.0/prd/beacon-v2-product-goal-orchestrator.md",
+        "user_story_ref": "docs/beacon/v2.0.0/user-story/beacon-v2-product-goal-orchestrator.md"
+      },
+      "domain_fsm_gate": {
+        "schema_version": "1.0",
+        "feature": "beacon-v2-product-goal-orchestrator",
+        "feature_slug": "beacon-v2-product-goal-orchestrator",
+        "version": "v2.0.0",
+        "truth_path": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+        "tests_path": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tests.md",
+        "required": false,
+        "blocked": false,
+        "status": "not_required",
+        "reason_code": "",
+        "findings": [],
+        "requirement": {
+          "required": false,
+          "reason": "not_required",
+          "explicit": false,
+          "partial": false,
+          "complexity": false,
+          "business_signal": true,
+          "version_supported": true
+        },
+        "projection": {
+          "schema_version": "1.0",
+          "domain_fsm_schema": "domain-fsm.v1",
+          "entity_precedence_schema": "entity-precedence.v1",
+          "frontmatter": {
+            "slug": "beacon-v2-product-goal-orchestrator",
+            "version": "v2.0.0",
+            "status": "frozen",
+            "revision_id": "R3",
+            "language": "zh",
+            "change_reason": "R3 - lock user decisions 2026-07-17: Option A domain chain program merge; full ui-state-matrix inherit; reject early BEACON_V2 default; SE-V2 binding",
+            "canonical_refs": {
+              "truth": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+              "tests": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tests.md",
+              "tasks": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tasks.md",
+              "evidence": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/evidence.md"
+            },
+            "parser_contract": "beacon-feature-package-v2",
+            "truth_source_model": "feature_package_authoritative",
+            "truth_map_contract": "beacon-truth-map-v1",
+            "program_ref": "docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/feature-graph.json"
+          },
+          "frontmatter_errors": [],
+          "has_domain_model_section": false,
+          "has_domain_fsm_section": false,
+          "has_illegal_transition_section": false,
+          "entities": [],
+          "entity_precedence": [],
+          "aggregates": [],
+          "illegal_transition_slots": [],
+          "acceptance_criteria": [
+            {
+              "ac_id": "AC-V2-PGO-001",
+              "description": "加载 v1.6.7 product-goal-state schema fixture 并通过 parity test（**Must**）"
+            },
+            {
+              "ac_id": "AC-V2-PGO-002",
+              "description": "暴露 beacon-goal host skill + CLI（**Must**）"
+            },
+            {
+              "ac_id": "AC-V2-PGO-003",
+              "description": "阶段 skill map 可配置且默认不全量加载（**Must**）"
+            },
+            {
+              "ac_id": "AC-V2-PGO-004",
+              "description": "parallel_plan 驱动 sub-agent；尊重 feature-graph 依赖（**Must**）"
+            },
+            {
+              "ac_id": "AC-V2-PGO-005",
+              "description": "complete 需 verifier；禁止自述（**Must**）"
+            },
+            {
+              "ac_id": "AC-V2-PGO-006",
+              "description": "Python CLI 入口保持 `beacon goal`（**Must**）"
+            },
+            {
+              "ac_id": "AC-V2-PGO-007",
+              "description": "用户主路径仅 beacon-goal；loop 为 support（**Must**）"
+            },
+            {
+              "ac_id": "AC-V2-PGO-008",
+              "description": "30s 用法与 v1 同构引用（**Must**）"
+            },
+            {
+              "ac_id": "AC-V2-PGO-009",
+              "description": "program topology 含 domain 真值链 5 lakes（Option A）（**Must**）"
+            },
+            {
+              "ac_id": "AC-V2-PGO-010",
+              "description": "domain-bearing goal 的 done_when 绑定 domain_fsm_coverage（**Must**）"
+            },
+            {
+              "ac_id": "AC-V2-PGO-011",
+              "description": "发布材料与 runtime 不得在 W4 前宣称默认 BEACON_V2=1（**Must**）"
+            },
+            {
+              "ac_id": "AC-V2-PGO-012",
+              "description": "gate/orchestrator 变更不得违反 SE-V2-00..13（**Must**）"
+            }
+          ],
+          "bound_ac_ids": [],
+          "orphan_ac_ids": [],
+          "aggregates_missing_illegal_slots": [],
+          "raw_section_titles": [
+            "Overview",
+            "Public entry",
+            "User Decisions",
+            "Acceptance Criteria",
+            "Non-Goals",
+            "Dependencies"
+          ]
+        },
+        "validation": {
+          "schema_version": "1.0",
+          "required": false,
+          "blocked": false,
+          "status": "not_required",
+          "reason_code": "",
+          "findings": [],
+          "projection": {
+            "schema_version": "1.0",
+            "domain_fsm_schema": "domain-fsm.v1",
+            "entity_precedence_schema": "entity-precedence.v1",
+            "frontmatter": {
+              "slug": "beacon-v2-product-goal-orchestrator",
+              "version": "v2.0.0",
+              "status": "frozen",
+              "revision_id": "R3",
+              "language": "zh",
+              "change_reason": "R3 - lock user decisions 2026-07-17: Option A domain chain program merge; full ui-state-matrix inherit; reject early BEACON_V2 default; SE-V2 binding",
+              "canonical_refs": {
+                "truth": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+                "tests": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tests.md",
+                "tasks": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tasks.md",
+                "evidence": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/evidence.md"
+              },
+              "parser_contract": "beacon-feature-package-v2",
+              "truth_source_model": "feature_package_authoritative",
+              "truth_map_contract": "beacon-truth-map-v1",
+              "program_ref": "docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/feature-graph.json"
+            },
+            "frontmatter_errors": [],
+            "has_domain_model_section": false,
+            "has_domain_fsm_section": false,
+            "has_illegal_transition_section": false,
+            "entities": [],
+            "entity_precedence": [],
+            "aggregates": [],
+            "illegal_transition_slots": [],
+            "acceptance_criteria": [
+              {
+                "ac_id": "AC-V2-PGO-001",
+                "description": "加载 v1.6.7 product-goal-state schema fixture 并通过 parity test（**Must**）"
+              },
+              {
+                "ac_id": "AC-V2-PGO-002",
+                "description": "暴露 beacon-goal host skill + CLI（**Must**）"
+              },
+              {
+                "ac_id": "AC-V2-PGO-003",
+                "description": "阶段 skill map 可配置且默认不全量加载（**Must**）"
+              },
+              {
+                "ac_id": "AC-V2-PGO-004",
+                "description": "parallel_plan 驱动 sub-agent；尊重 feature-graph 依赖（**Must**）"
+              },
+              {
+                "ac_id": "AC-V2-PGO-005",
+                "description": "complete 需 verifier；禁止自述（**Must**）"
+              },
+              {
+                "ac_id": "AC-V2-PGO-006",
+                "description": "Python CLI 入口保持 `beacon goal`（**Must**）"
+              },
+              {
+                "ac_id": "AC-V2-PGO-007",
+                "description": "用户主路径仅 beacon-goal；loop 为 support（**Must**）"
+              },
+              {
+                "ac_id": "AC-V2-PGO-008",
+                "description": "30s 用法与 v1 同构引用（**Must**）"
+              },
+              {
+                "ac_id": "AC-V2-PGO-009",
+                "description": "program topology 含 domain 真值链 5 lakes（Option A）（**Must**）"
+              },
+              {
+                "ac_id": "AC-V2-PGO-010",
+                "description": "domain-bearing goal 的 done_when 绑定 domain_fsm_coverage（**Must**）"
+              },
+              {
+                "ac_id": "AC-V2-PGO-011",
+                "description": "发布材料与 runtime 不得在 W4 前宣称默认 BEACON_V2=1（**Must**）"
+              },
+              {
+                "ac_id": "AC-V2-PGO-012",
+                "description": "gate/orchestrator 变更不得违反 SE-V2-00..13（**Must**）"
+              }
+            ],
+            "bound_ac_ids": [],
+            "orphan_ac_ids": [],
+            "aggregates_missing_illegal_slots": [],
+            "raw_section_titles": [
+              "Overview",
+              "Public entry",
+              "User Decisions",
+              "Acceptance Criteria",
+              "Non-Goals",
+              "Dependencies"
+            ]
+          }
+        },
+        "recommended_action": ""
+      },
+      "human_closure_contract": {
+        "required": false,
+        "research_path": "docs/beacon/v2.0.0/research/beacon-v2-product-goal-orchestrator.md",
+        "research_exists": false,
+        "source_architecture_path": "docs/beacon/v2.0.0/source-architecture/index.md",
+        "source_architecture_exists": true,
+        "required_sections": [
+          "architecture",
+          "business_flow"
+        ],
+        "missing_sections": [
+          "architecture",
+          "business_flow"
+        ],
+        "diagram_types": [],
+        "complexity_signals": []
+      },
+      "requirement_closure_contract": {
+        "required": true,
+        "chain_order": [
+          "research",
+          "prd",
+          "user_story",
+          "test_case",
+          "requirement_clarity",
+          "freeze"
+        ],
+        "human_closure_required": false,
+        "paths": {
+          "research": "docs/beacon/v2.0.0/research/beacon-v2-product-goal-orchestrator.md",
+          "prd": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+          "user_story": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+          "test_case": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tests.md"
+        },
+        "exists": {
+          "research": false,
+          "prd": true,
+          "user_story": true,
+          "test_case": true
+        },
+        "required_research_sections": [],
+        "missing_research_sections": [],
+        "ac_projection": {
+          "prd_ac_ids": [],
+          "user_story_ac_ids": [],
+          "test_case_ac_ids": [],
+          "upstream_ac_ids": [],
+          "missing_test_case_ac_ids": []
+        }
+      },
+      "version_projection_truth_contract": {
+        "required": false,
+        "supported": true,
+        "projection_types": [],
+        "research_path": "docs/beacon/v2.0.0/research/beacon-v2-product-goal-orchestrator.md",
+        "research_exists": false,
+        "required_fields": [
+          "prd_refs",
+          "user_story_refs",
+          "test_case_refs",
+          "coverage_notes",
+          "out_of_scope_notes"
+        ],
+        "field_presence": {
+          "prd_refs": false,
+          "user_story_refs": false,
+          "test_case_refs": false,
+          "coverage_notes": false,
+          "out_of_scope_notes": false
+        },
+        "missing_fields": [],
+        "required_refs": {
+          "prd_refs": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+          "user_story_refs": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+          "test_case_refs": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tests.md"
+        },
+        "missing_ref_targets": [],
+        "ready": false
+      },
+      "support_write_topology_contract": {
+        "schema_version": "1.0",
+        "supported": true,
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "diagnostics": []
+      },
+      "required_artifacts": [],
+      "scanned_files": [
+        "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+        "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tests.md",
+        "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tasks.md",
+        "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/evidence.md"
+      ]
+    },
+    "report": {
+      "json": "docs/beacon/v2.0.0/.machine/execution/requirement-clarity-beacon-v2-product-goal-orchestrator.json",
+      "markdown": "docs/beacon/v2.0.0/execution/requirement-clarity-beacon-v2-product-goal-orchestrator.md"
+    },
+    "writeback": {
+      "schema_version": "1.0",
+      "feature": "beacon-v2-product-goal-orchestrator",
+      "feature_slug": "beacon-v2-product-goal-orchestrator",
+      "version": "v2.0.0",
+      "status": "pass",
+      "blocked": false,
+      "reason_code": "",
+      "report_json_path": "docs/beacon/v2.0.0/.machine/execution/requirement-clarity-beacon-v2-product-goal-orchestrator.json",
+      "report_markdown_path": "docs/beacon/v2.0.0/execution/requirement-clarity-beacon-v2-product-goal-orchestrator.md",
+      "finding_count": 0,
+      "run_id": "",
+      "source": "change.refreeze-chain",
+      "written_at": "2026-07-17T07:58:35.086818+00:00",
+      "state_path": ".beacon/state/requirement-clarity-beacon-v2-product-goal-orchestrator.json"
+    }
+  },
+  "truth_integrity_gate": {
+    "schema_version": "1.0",
+    "feature": "beacon-v2-product-goal-orchestrator",
+    "feature_slug": "beacon-v2-product-goal-orchestrator",
+    "version": "v2.0.0",
+    "mode": "block",
+    "truth_status": "frozen",
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "findings": [],
+    "finding_count": 0,
+    "requirement_clarity": {
+      "schema_version": "1.0",
+      "feature": "beacon-v2-product-goal-orchestrator",
+      "feature_slug": "beacon-v2-product-goal-orchestrator",
+      "version": "v2.0.0",
+      "runtime_version": "v1.6.7",
+      "runtime_capability_line": "v1.3.3",
+      "required": true,
+      "reason_code": "",
+      "blocked": false,
+      "status": "pass",
+      "findings": [],
+      "report_json_path": "docs/beacon/v2.0.0/.machine/execution/requirement-clarity-beacon-v2-product-goal-orchestrator.json",
+      "report_markdown_path": "docs/beacon/v2.0.0/execution/requirement-clarity-beacon-v2-product-goal-orchestrator.md",
+      "state_path": ".beacon/state/requirement-clarity-beacon-v2-product-goal-orchestrator.json",
+      "diagram_truth": {
+        "schema_version": "1.0",
+        "version": "v2.0.0",
+        "supported": true,
+        "required": false,
+        "ready": true,
+        "diagram_types": [],
+        "state_axes": [],
+        "missing_diagram_types": [],
+        "missing_state_axes": false,
+        "complexity_signals": [],
+        "review_gates": [],
+        "qa_coverage_hints": [],
+        "evidence_lines": {},
+        "generated_at": "2026-07-17T07:58:35.093827+00:00",
+        "feature": "beacon-v2-product-goal-orchestrator",
+        "feature_slug": "beacon-v2-product-goal-orchestrator",
+        "prd_ref": "docs/beacon/v2.0.0/prd/beacon-v2-product-goal-orchestrator.md",
+        "user_story_ref": "docs/beacon/v2.0.0/user-story/beacon-v2-product-goal-orchestrator.md"
+      },
+      "domain_fsm_gate": {
+        "schema_version": "1.0",
+        "feature": "beacon-v2-product-goal-orchestrator",
+        "feature_slug": "beacon-v2-product-goal-orchestrator",
+        "version": "v2.0.0",
+        "truth_path": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+        "tests_path": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tests.md",
+        "required": false,
+        "blocked": false,
+        "status": "not_required",
+        "reason_code": "",
+        "findings": [],
+        "requirement": {
+          "required": false,
+          "reason": "not_required",
+          "explicit": false,
+          "partial": false,
+          "complexity": false,
+          "business_signal": true,
+          "version_supported": true
+        },
+        "projection": {
+          "schema_version": "1.0",
+          "domain_fsm_schema": "domain-fsm.v1",
+          "entity_precedence_schema": "entity-precedence.v1",
+          "frontmatter": {
+            "slug": "beacon-v2-product-goal-orchestrator",
+            "version": "v2.0.0",
+            "status": "frozen",
+            "revision_id": "R3",
+            "language": "zh",
+            "change_reason": "R3 - lock user decisions 2026-07-17: Option A domain chain program merge; full ui-state-matrix inherit; reject early BEACON_V2 default; SE-V2 binding",
+            "canonical_refs": {
+              "truth": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+              "tests": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tests.md",
+              "tasks": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tasks.md",
+              "evidence": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/evidence.md"
+            },
+            "parser_contract": "beacon-feature-package-v2",
+            "truth_source_model": "feature_package_authoritative",
+            "truth_map_contract": "beacon-truth-map-v1",
+            "program_ref": "docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/feature-graph.json"
+          },
+          "frontmatter_errors": [],
+          "has_domain_model_section": false,
+          "has_domain_fsm_section": false,
+          "has_illegal_transition_section": false,
+          "entities": [],
+          "entity_precedence": [],
+          "aggregates": [],
+          "illegal_transition_slots": [],
+          "acceptance_criteria": [
+            {
+              "ac_id": "AC-V2-PGO-001",
+              "description": "加载 v1.6.7 product-goal-state schema fixture 并通过 parity test（**Must**）"
+            },
+            {
+              "ac_id": "AC-V2-PGO-002",
+              "description": "暴露 beacon-goal host skill + CLI（**Must**）"
+            },
+            {
+              "ac_id": "AC-V2-PGO-003",
+              "description": "阶段 skill map 可配置且默认不全量加载（**Must**）"
+            },
+            {
+              "ac_id": "AC-V2-PGO-004",
+              "description": "parallel_plan 驱动 sub-agent；尊重 feature-graph 依赖（**Must**）"
+            },
+            {
+              "ac_id": "AC-V2-PGO-005",
+              "description": "complete 需 verifier；禁止自述（**Must**）"
+            },
+            {
+              "ac_id": "AC-V2-PGO-006",
+              "description": "Python CLI 入口保持 `beacon goal`（**Must**）"
+            },
+            {
+              "ac_id": "AC-V2-PGO-007",
+              "description": "用户主路径仅 beacon-goal；loop 为 support（**Must**）"
+            },
+            {
+              "ac_id": "AC-V2-PGO-008",
+              "description": "30s 用法与 v1 同构引用（**Must**）"
+            },
+            {
+              "ac_id": "AC-V2-PGO-009",
+              "description": "program topology 含 domain 真值链 5 lakes（Option A）（**Must**）"
+            },
+            {
+              "ac_id": "AC-V2-PGO-010",
+              "description": "domain-bearing goal 的 done_when 绑定 domain_fsm_coverage（**Must**）"
+            },
+            {
+              "ac_id": "AC-V2-PGO-011",
+              "description": "发布材料与 runtime 不得在 W4 前宣称默认 BEACON_V2=1（**Must**）"
+            },
+            {
+              "ac_id": "AC-V2-PGO-012",
+              "description": "gate/orchestrator 变更不得违反 SE-V2-00..13（**Must**）"
+            }
+          ],
+          "bound_ac_ids": [],
+          "orphan_ac_ids": [],
+          "aggregates_missing_illegal_slots": [],
+          "raw_section_titles": [
+            "Overview",
+            "Public entry",
+            "User Decisions",
+            "Acceptance Criteria",
+            "Non-Goals",
+            "Dependencies"
+          ]
+        },
+        "validation": {
+          "schema_version": "1.0",
+          "required": false,
+          "blocked": false,
+          "status": "not_required",
+          "reason_code": "",
+          "findings": [],
+          "projection": {
+            "schema_version": "1.0",
+            "domain_fsm_schema": "domain-fsm.v1",
+            "entity_precedence_schema": "entity-precedence.v1",
+            "frontmatter": {
+              "slug": "beacon-v2-product-goal-orchestrator",
+              "version": "v2.0.0",
+              "status": "frozen",
+              "revision_id": "R3",
+              "language": "zh",
+              "change_reason": "R3 - lock user decisions 2026-07-17: Option A domain chain program merge; full ui-state-matrix inherit; reject early BEACON_V2 default; SE-V2 binding",
+              "canonical_refs": {
+                "truth": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+                "tests": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tests.md",
+                "tasks": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tasks.md",
+                "evidence": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/evidence.md"
+              },
+              "parser_contract": "beacon-feature-package-v2",
+              "truth_source_model": "feature_package_authoritative",
+              "truth_map_contract": "beacon-truth-map-v1",
+              "program_ref": "docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/feature-graph.json"
+            },
+            "frontmatter_errors": [],
+            "has_domain_model_section": false,
+            "has_domain_fsm_section": false,
+            "has_illegal_transition_section": false,
+            "entities": [],
+            "entity_precedence": [],
+            "aggregates": [],
+            "illegal_transition_slots": [],
+            "acceptance_criteria": [
+              {
+                "ac_id": "AC-V2-PGO-001",
+                "description": "加载 v1.6.7 product-goal-state schema fixture 并通过 parity test（**Must**）"
+              },
+              {
+                "ac_id": "AC-V2-PGO-002",
+                "description": "暴露 beacon-goal host skill + CLI（**Must**）"
+              },
+              {
+                "ac_id": "AC-V2-PGO-003",
+                "description": "阶段 skill map 可配置且默认不全量加载（**Must**）"
+              },
+              {
+                "ac_id": "AC-V2-PGO-004",
+                "description": "parallel_plan 驱动 sub-agent；尊重 feature-graph 依赖（**Must**）"
+              },
+              {
+                "ac_id": "AC-V2-PGO-005",
+                "description": "complete 需 verifier；禁止自述（**Must**）"
+              },
+              {
+                "ac_id": "AC-V2-PGO-006",
+                "description": "Python CLI 入口保持 `beacon goal`（**Must**）"
+              },
+              {
+                "ac_id": "AC-V2-PGO-007",
+                "description": "用户主路径仅 beacon-goal；loop 为 support（**Must**）"
+              },
+              {
+                "ac_id": "AC-V2-PGO-008",
+                "description": "30s 用法与 v1 同构引用（**Must**）"
+              },
+              {
+                "ac_id": "AC-V2-PGO-009",
+                "description": "program topology 含 domain 真值链 5 lakes（Option A）（**Must**）"
+              },
+              {
+                "ac_id": "AC-V2-PGO-010",
+                "description": "domain-bearing goal 的 done_when 绑定 domain_fsm_coverage（**Must**）"
+              },
+              {
+                "ac_id": "AC-V2-PGO-011",
+                "description": "发布材料与 runtime 不得在 W4 前宣称默认 BEACON_V2=1（**Must**）"
+              },
+              {
+                "ac_id": "AC-V2-PGO-012",
+                "description": "gate/orchestrator 变更不得违反 SE-V2-00..13（**Must**）"
+              }
+            ],
+            "bound_ac_ids": [],
+            "orphan_ac_ids": [],
+            "aggregates_missing_illegal_slots": [],
+            "raw_section_titles": [
+              "Overview",
+              "Public entry",
+              "User Decisions",
+              "Acceptance Criteria",
+              "Non-Goals",
+              "Dependencies"
+            ]
+          }
+        },
+        "recommended_action": ""
+      },
+      "human_closure_contract": {
+        "required": false,
+        "research_path": "docs/beacon/v2.0.0/research/beacon-v2-product-goal-orchestrator.md",
+        "research_exists": false,
+        "source_architecture_path": "docs/beacon/v2.0.0/source-architecture/index.md",
+        "source_architecture_exists": true,
+        "required_sections": [
+          "architecture",
+          "business_flow"
+        ],
+        "missing_sections": [
+          "architecture",
+          "business_flow"
+        ],
+        "diagram_types": [],
+        "complexity_signals": []
+      },
+      "requirement_closure_contract": {
+        "required": true,
+        "chain_order": [
+          "research",
+          "prd",
+          "user_story",
+          "test_case",
+          "requirement_clarity",
+          "freeze"
+        ],
+        "human_closure_required": false,
+        "paths": {
+          "research": "docs/beacon/v2.0.0/research/beacon-v2-product-goal-orchestrator.md",
+          "prd": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+          "user_story": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+          "test_case": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tests.md"
+        },
+        "exists": {
+          "research": false,
+          "prd": true,
+          "user_story": true,
+          "test_case": true
+        },
+        "required_research_sections": [],
+        "missing_research_sections": [],
+        "ac_projection": {
+          "prd_ac_ids": [],
+          "user_story_ac_ids": [],
+          "test_case_ac_ids": [],
+          "upstream_ac_ids": [],
+          "missing_test_case_ac_ids": []
+        }
+      },
+      "version_projection_truth_contract": {
+        "required": false,
+        "supported": true,
+        "projection_types": [],
+        "research_path": "docs/beacon/v2.0.0/research/beacon-v2-product-goal-orchestrator.md",
+        "research_exists": false,
+        "required_fields": [
+          "prd_refs",
+          "user_story_refs",
+          "test_case_refs",
+          "coverage_notes",
+          "out_of_scope_notes"
+        ],
+        "field_presence": {
+          "prd_refs": false,
+          "user_story_refs": false,
+          "test_case_refs": false,
+          "coverage_notes": false,
+          "out_of_scope_notes": false
+        },
+        "missing_fields": [],
+        "required_refs": {
+          "prd_refs": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+          "user_story_refs": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+          "test_case_refs": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tests.md"
+        },
+        "missing_ref_targets": [],
+        "ready": false
+      },
+      "support_write_topology_contract": {
+        "schema_version": "1.0",
+        "supported": true,
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "diagnostics": []
+      },
+      "required_artifacts": [],
+      "scanned_files": [
+        "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+        "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tests.md",
+        "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tasks.md",
+        "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/evidence.md"
+      ]
+    },
+    "domain_fsm": {
+      "schema_version": "1.0",
+      "feature": "beacon-v2-product-goal-orchestrator",
+      "feature_slug": "beacon-v2-product-goal-orchestrator",
+      "version": "v2.0.0",
+      "truth_path": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+      "tests_path": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tests.md",
+      "required": false,
+      "blocked": false,
+      "status": "not_required",
+      "reason_code": "",
+      "findings": [],
+      "requirement": {
+        "required": false,
+        "reason": "not_required",
+        "explicit": false,
+        "partial": false,
+        "complexity": false,
+        "business_signal": true,
+        "version_supported": true
+      },
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "beacon-v2-product-goal-orchestrator",
+          "version": "v2.0.0",
+          "status": "frozen",
+          "revision_id": "R3",
+          "language": "zh",
+          "change_reason": "R3 - lock user decisions 2026-07-17: Option A domain chain program merge; full ui-state-matrix inherit; reject early BEACON_V2 default; SE-V2 binding",
+          "canonical_refs": {
+            "truth": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+            "tests": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tests.md",
+            "tasks": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tasks.md",
+            "evidence": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/evidence.md"
+          },
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "truth_map_contract": "beacon-truth-map-v1",
+          "program_ref": "docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/feature-graph.json"
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": false,
+        "has_domain_fsm_section": false,
+        "has_illegal_transition_section": false,
+        "entities": [],
+        "entity_precedence": [],
+        "aggregates": [],
+        "illegal_transition_slots": [],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-V2-PGO-001",
+            "description": "加载 v1.6.7 product-goal-state schema fixture 并通过 parity test（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-PGO-002",
+            "description": "暴露 beacon-goal host skill + CLI（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-PGO-003",
+            "description": "阶段 skill map 可配置且默认不全量加载（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-PGO-004",
+            "description": "parallel_plan 驱动 sub-agent；尊重 feature-graph 依赖（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-PGO-005",
+            "description": "complete 需 verifier；禁止自述（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-PGO-006",
+            "description": "Python CLI 入口保持 `beacon goal`（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-PGO-007",
+            "description": "用户主路径仅 beacon-goal；loop 为 support（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-PGO-008",
+            "description": "30s 用法与 v1 同构引用（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-PGO-009",
+            "description": "program topology 含 domain 真值链 5 lakes（Option A）（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-PGO-010",
+            "description": "domain-bearing goal 的 done_when 绑定 domain_fsm_coverage（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-PGO-011",
+            "description": "发布材料与 runtime 不得在 W4 前宣称默认 BEACON_V2=1（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-PGO-012",
+            "description": "gate/orchestrator 变更不得违反 SE-V2-00..13（**Must**）"
+          }
+        ],
+        "bound_ac_ids": [],
+        "orphan_ac_ids": [],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "Overview",
+          "Public entry",
+          "User Decisions",
+          "Acceptance Criteria",
+          "Non-Goals",
+          "Dependencies"
+        ]
+      },
+      "validation": {
+        "schema_version": "1.0",
+        "required": false,
+        "blocked": false,
+        "status": "not_required",
+        "reason_code": "",
+        "findings": [],
+        "projection": {
+          "schema_version": "1.0",
+          "domain_fsm_schema": "domain-fsm.v1",
+          "entity_precedence_schema": "entity-precedence.v1",
+          "frontmatter": {
+            "slug": "beacon-v2-product-goal-orchestrator",
+            "version": "v2.0.0",
+            "status": "frozen",
+            "revision_id": "R3",
+            "language": "zh",
+            "change_reason": "R3 - lock user decisions 2026-07-17: Option A domain chain program merge; full ui-state-matrix inherit; reject early BEACON_V2 default; SE-V2 binding",
+            "canonical_refs": {
+              "truth": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+              "tests": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tests.md",
+              "tasks": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tasks.md",
+              "evidence": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/evidence.md"
+            },
+            "parser_contract": "beacon-feature-package-v2",
+            "truth_source_model": "feature_package_authoritative",
+            "truth_map_contract": "beacon-truth-map-v1",
+            "program_ref": "docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/feature-graph.json"
+          },
+          "frontmatter_errors": [],
+          "has_domain_model_section": false,
+          "has_domain_fsm_section": false,
+          "has_illegal_transition_section": false,
+          "entities": [],
+          "entity_precedence": [],
+          "aggregates": [],
+          "illegal_transition_slots": [],
+          "acceptance_criteria": [
+            {
+              "ac_id": "AC-V2-PGO-001",
+              "description": "加载 v1.6.7 product-goal-state schema fixture 并通过 parity test（**Must**）"
+            },
+            {
+              "ac_id": "AC-V2-PGO-002",
+              "description": "暴露 beacon-goal host skill + CLI（**Must**）"
+            },
+            {
+              "ac_id": "AC-V2-PGO-003",
+              "description": "阶段 skill map 可配置且默认不全量加载（**Must**）"
+            },
+            {
+              "ac_id": "AC-V2-PGO-004",
+              "description": "parallel_plan 驱动 sub-agent；尊重 feature-graph 依赖（**Must**）"
+            },
+            {
+              "ac_id": "AC-V2-PGO-005",
+              "description": "complete 需 verifier；禁止自述（**Must**）"
+            },
+            {
+              "ac_id": "AC-V2-PGO-006",
+              "description": "Python CLI 入口保持 `beacon goal`（**Must**）"
+            },
+            {
+              "ac_id": "AC-V2-PGO-007",
+              "description": "用户主路径仅 beacon-goal；loop 为 support（**Must**）"
+            },
+            {
+              "ac_id": "AC-V2-PGO-008",
+              "description": "30s 用法与 v1 同构引用（**Must**）"
+            },
+            {
+              "ac_id": "AC-V2-PGO-009",
+              "description": "program topology 含 domain 真值链 5 lakes（Option A）（**Must**）"
+            },
+            {
+              "ac_id": "AC-V2-PGO-010",
+              "description": "domain-bearing goal 的 done_when 绑定 domain_fsm_coverage（**Must**）"
+            },
+            {
+              "ac_id": "AC-V2-PGO-011",
+              "description": "发布材料与 runtime 不得在 W4 前宣称默认 BEACON_V2=1（**Must**）"
+            },
+            {
+              "ac_id": "AC-V2-PGO-012",
+              "description": "gate/orchestrator 变更不得违反 SE-V2-00..13（**Must**）"
+            }
+          ],
+          "bound_ac_ids": [],
+          "orphan_ac_ids": [],
+          "aggregates_missing_illegal_slots": [],
+          "raw_section_titles": [
+            "Overview",
+            "Public entry",
+            "User Decisions",
+            "Acceptance Criteria",
+            "Non-Goals",
+            "Dependencies"
+          ]
+        }
+      },
+      "recommended_action": ""
+    },
+    "fake_delivery": {
+      "schema_version": "1.0",
+      "status": "pass",
+      "ok": true,
+      "closure_allowed": true,
+      "detected": [],
+      "policy_terms": [
+        "placeholder implementation",
+        "docs-only completion",
+        "fake runner evidence",
+        "zero assertions",
+        "placeholder evidence"
+      ],
+      "reason_code": ""
+    },
+    "feature_package_validation": {
+      "schema_version": "1.0",
+      "feature": "beacon-v2-product-goal-orchestrator",
+      "feature_slug": "beacon-v2-product-goal-orchestrator",
+      "version": "v2.0.0",
+      "status": "pass",
+      "blocked": false,
+      "reason_code": "",
+      "generated_at": "2026-07-17T07:58:35.209143+00:00",
+      "package_dir": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator",
+      "truth_frontmatter": {
+        "slug": "beacon-v2-product-goal-orchestrator",
+        "version": "v2.0.0",
+        "status": "frozen",
+        "revision_id": "R3",
+        "language": "zh",
+        "change_reason": "R3 - lock user decisions 2026-07-17: Option A domain chain program merge; full ui-state-matrix inherit; reject early BEACON_V2 default; SE-V2 binding",
+        "canonical_refs": {
+          "truth": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+          "tests": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tests.md",
+          "tasks": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tasks.md",
+          "evidence": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/evidence.md"
+        },
+        "parser_contract": "beacon-feature-package-v2",
+        "truth_source_model": "feature_package_authoritative",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "program_ref": "docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/feature-graph.json"
+      },
+      "ac_count": 12,
+      "test_count": 6,
+      "checkbox_count": 6,
+      "evidence_row_count": 6,
+      "gate_authority": "canonical_surfaces_preserved",
+      "checkbox_gate_bypass": false,
+      "evidence_gate_truth": false,
+      "diagnostics": [],
+      "truth_map_contract": "beacon-truth-map-v1",
+      "truth_source_model": "feature_package_authoritative",
+      "truth_package_contract": "beacon-feature-package-v2",
+      "machine_json_role": "generated_state_not_truth",
+      "generated_by": "beacon.truth_map.resolver",
+      "truth_authority": "markdown_feature_package",
+      "json_authority": false,
+      "source_paths": {
+        "truth": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+        "tests": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tests.md",
+        "tasks": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/tasks.md",
+        "evidence": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/evidence.md"
+      },
+      "source_hashes": {
+        "truth": "9c9fbcc0a1d7d01792a22850ed3bc496fe513797d13e7d0f7e3544891b24acba",
+        "tests": "0c44f66ee0448508a1b0f0867249c7d4398395624cd4100f55fb68dc8e44dc5a",
+        "tasks": "215890d3282cb32438cce61cb28f747992192329433703571893a620ad3ffe82",
+        "evidence": "d406abffcddc3495b1fef24658bbd4a7096272111e0eef6c7087744393cf8808"
+      },
+      "runtime_json_requires_markdown_twin": false,
+      "report_path": "docs/beacon/v2.0.0/.machine/requirement/feature-package-validation.json"
+    },
+    "determinism_check": {
+      "placeholder_count": 0,
+      "hollow_template_count": 0
+    },
+    "closure_contract": {
+      "closure_allowed": true,
+      "detected": []
+    },
+    "recommended_action": ""
+  },
+  "truth_frontmatter_sync": {
+    "updated": false,
+    "status": "frozen",
+    "path": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md"
+  },
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "beacon-v2-product-goal-orchestrator",
+    "feature_slug": "beacon-v2-product-goal-orchestrator",
+    "version": "v2.0.0",
+    "revision_id": "R3",
+    "source_revision_id": "R2",
+    "status": "ready",
+    "cleanup_required": false,
+    "removed_requirement_count": 0,
+    "added_requirement_count": 0,
+    "retained_requirement_count": 1,
+    "removed_requirement_surfaces": [],
+    "added_requirement_surfaces": [],
+    "retained_requirement_surfaces": [
+      {
+        "revision_id": "R3",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "general",
+        "text": "Acceptance criteria TBD",
+        "details": [],
+        "source": "fallback",
+        "signature": "ac::::general::acceptance criteria tbd::"
+      }
+    ],
+    "current_baseline_hash": "sha256:9d78a168ccf2215536b4a6c27286ebf9d1a2c85bebf9f65126a2060ec45f3a83",
+    "source_baseline_hash": "sha256:9d78a168ccf2215536b4a6c27286ebf9d1a2c85bebf9f65126a2060ec45f3a83",
+    "story_state_ref": "docs/beacon/v2.0.0/.machine/user-story/beacon-v2-product-goal-orchestrator.json",
+    "generated_at": "2026-07-17T07:58:35.328279+00:00",
+    "json_ref": "docs/beacon/v2.0.0/.machine/execution/revision-delta-beacon-v2-product-goal-orchestrator.json",
+    "markdown_ref": "docs/beacon/v2.0.0/execution/revision-delta-beacon-v2-product-goal-orchestrator.md"
+  },
+  "release_projection_sync": {
+    "status": "pass",
+    "truth_authority": false,
+    "lifecycle_stage": false,
+    "release_publish_action": false,
+    "feature_projection": {
+      "schema_version": "1.0",
+      "status": "pass",
+      "feature": "beacon-v2-product-goal-orchestrator",
+      "feature_slug": "beacon-v2-product-goal-orchestrator",
+      "version": "v2.0.0",
+      "json_path": "docs/beacon/v2.0.0/.machine/change/beacon-v2-product-goal-orchestrator.json",
+      "markdown_path": "docs/beacon/v2.0.0/change/beacon-v2-product-goal-orchestrator.md",
+      "json_written": true,
+      "markdown_exists": true,
+      "projection_role": {
+        "artifact_role": "version_aggregate_projection",
+        "truth_source": false,
+        "gate_source": false,
+        "lifecycle_stage": false,
+        "release_publish_action": false
+      },
+      "payload": {
+        "schema_version": "1.0",
+        "version": "v2.0.0",
+        "feature": "beacon-v2-product-goal-orchestrator",
+        "feature_slug": "beacon-v2-product-goal-orchestrator",
+        "summary": "Maintains release-facing version aggregate projection guards so QA accepted features are included in version change scope before release check.",
+        "status": "generated",
+        "accepted_at": "",
+        "revision_id": "R3",
+        "projection_role": {
+          "artifact_role": "version_aggregate_projection",
+          "truth_source": false,
+          "gate_source": false,
+          "lifecycle_stage": false,
+          "release_publish_action": false
+        },
+        "truth_authority": false,
+        "lifecycle_stage": false,
+        "added": [
+          "Feature-level release projection input for QA accepted current feature",
+          "Version aggregate projection inclusion guard and repair metadata",
+          "Repair-only projection rebuild path for release preflight artifacts"
+        ],
+        "removed": [
+          "Manual-only version aggregate projection repair before release check"
+        ],
+        "fixed": [
+          "Release check can route missing current feature projection to an actionable repair path",
+          "Version aggregate projection remains a read model instead of requirement truth"
+        ],
+        "traceability_refs": [
+          "docs/beacon/v2.0.0/change/beacon-v2-product-goal-orchestrator.md",
+          "docs/beacon/v2.0.0/prd/beacon-v2-product-goal-orchestrator.md",
+          "docs/beacon/v2.0.0/user-story/beacon-v2-product-goal-orchestrator.md",
+          "docs/beacon/v2.0.0/qa/test-cases/beacon-v2-product-goal-orchestrator.md",
+          "docs/beacon/v2.0.0/.machine/execution/beacon-v2-product-goal-orchestrator.revision.json"
+        ],
+        "generated_at": "2026-07-17T07:58:35.402315+00:00"
+      }
+    },
+    "version_aggregate_projection": {
+      "schema_version": "1.0",
+      "status": "pass",
+      "version": "v2.0.0",
+      "markdown_path": "docs/beacon/v2.0.0/change/v2.0.0.md",
+      "json_path": "docs/beacon/v2.0.0/.machine/change/v2.0.0.json",
+      "feature_count": 2,
+      "feature_slugs": [
+        "beacon-v2-product-goal-orchestrator",
+        "beacon-v2-rust-kernel-redesign"
+      ],
+      "projection_role": {
+        "artifact_role": "version_aggregate_projection",
+        "truth_source": false,
+        "gate_source": false,
+        "lifecycle_stage": false,
+        "release_publish_action": false
+      },
+      "truth_authority": false,
+      "lifecycle_stage": false,
+      "release_publish_action": false,
+      "implementation_order": {
+        "status": "analyzed",
+        "feature_count": 2,
+        "ordered_feature_slugs": [
+          "beacon-v2-rust-kernel-redesign",
+          "beacon-v2-product-goal-orchestrator"
+        ],
+        "waves": [
+          {
+            "wave": 1,
+            "parallelizable": true,
+            "features": [
+              {
+                "feature": "beacon-v2-rust-kernel-redesign",
+                "feature_slug": "beacon-v2-rust-kernel-redesign",
+                "depends_on_features": [],
+                "direct_delivery_services": [],
+                "writable_services": [],
+                "parallelizable": true,
+                "reason_code": "parallel_no_conflict"
+              },
+              {
+                "feature": "beacon-v2-product-goal-orchestrator",
+                "feature_slug": "beacon-v2-product-goal-orchestrator",
+                "depends_on_features": [],
+                "direct_delivery_services": [],
+                "writable_services": [],
+                "parallelizable": true,
+                "reason_code": "parallel_no_conflict"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

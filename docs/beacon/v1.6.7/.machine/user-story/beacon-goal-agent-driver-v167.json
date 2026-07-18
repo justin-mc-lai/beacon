@@ -1,0 +1,124 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-goal-agent-driver-v167",
+  "feature_slug": "beacon-goal-agent-driver-v167",
+  "version": "v1.6.7",
+  "current_revision_id": "R1",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-07-18T04:17:17.877290+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-goal-agent-driver-v167",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:ff1d77e9351447097c4de9f9dc241858326d3be0f8edbb9e7c59a1282f2645b9",
+      "superseded_by": null,
+      "created_at": "2026-07-18T04:08:49.447855+00:00",
+      "frozen_at": "2026-07-18T04:17:17.979846+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "beacon-goal-agent-driver-v167",
+      "priority": "medium",
+      "status": "frozen",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "general",
+          "text": "Acceptance criteria TBD",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "fallback"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Acceptance criteria TBD",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "fallback"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-goal-agent-driver-v167",
+        "version": "v1.6.7",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/research/beacon-goal-agent-driver-v167.md",
+        "present": true,
+        "section_count": 2,
+        "sections": {
+          "business_flow": [
+            "用户：`beacon goal run \"目标\" --longrun` 或 `$beacon-goal`+长跑意图",
+            "创建 GoalRun；**本 run** attach supervisor + start driver",
+            "Driver 写 prompt 文件 = resume-pack digest + next_action + frozen truth paths",
+            "按 `BEACON_HOST_GOAL_BRIDGE_CMD` 或内置 adapter 拉起 codex/claude CLI",
+            "Turn 结束 → 解析退出码/可选 JSON 结果 → heartbeat/checkpoint",
+            "非终态 → 自动下一 turn；终态 → 停在 awaiting_verifier / blocked / release_pending",
+            "用户/CI 挂 verifier → complete；release 人工"
+          ],
+          "state_machine": [
+            "*AgentDriver**（v1.6.7 落地）:"
+          ]
+        },
+        "derived_items": [
+          {
+            "theme": "business_flow",
+            "text": "Business flow remains explicit",
+            "details": [
+              "用户：`beacon goal run \"目标\" --longrun` 或 `$beacon-goal`+长跑意图",
+              "创建 GoalRun；**本 run** attach supervisor + start driver",
+              "Driver 写 prompt 文件 = resume-pack digest + next_action + frozen truth paths",
+              "按 `BEACON_HOST_GOAL_BRIDGE_CMD` 或内置 adapter 拉起 codex/claude CLI",
+              "Turn 结束 → 解析退出码/可选 JSON 结果 → heartbeat/checkpoint",
+              "非终态 → 自动下一 turn；终态 → 停在 awaiting_verifier / blocked / release_pending",
+              "用户/CI 挂 verifier → complete；release 人工"
+            ],
+            "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/research/beacon-goal-agent-driver-v167.md"
+          },
+          {
+            "theme": "state_machine",
+            "text": "State machine transitions remain explicit",
+            "details": [
+              "*AgentDriver**（v1.6.7 落地）:"
+            ],
+            "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.7/research/beacon-goal-agent-driver-v167.md"
+          }
+        ]
+      }
+    }
+  ]
+}
