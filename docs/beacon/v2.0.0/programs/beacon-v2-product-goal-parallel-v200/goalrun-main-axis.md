@@ -2,7 +2,7 @@
 
 - **version**: `v2.0.0`
 - **program**: `beacon-v2-product-goal-parallel-v200`
-- **generated_at**: 2026-07-18T08:55:43.854723+00:00
+- **generated_at**: 2026-07-18T10:38:12.499900+00:00
 - **policy**: UD-AXIS-001..005 (change must regenerate this artifact)
 
 ## User intent
@@ -47,6 +47,7 @@ created → running → stage_active{plan|truth|design?|implement|qa|release}
 | `loom-goal-optional-subagent` | implement fan-out execute | SubagentSession opt-in spawn/merge |
 | `loom-goal-trace-bundle` | longrun observability | agent_trace + goal trace CLI |
 | `beacon-goalrun-main-axis-v167` | axis governance | regenerate on change |
+| `beacon-v2-truth-human-readable-i18n` | truth hard gate | L0 human + humanizer zh/en parity |
 
 ## done_when
 

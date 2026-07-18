@@ -62,3 +62,9 @@ Source plan (support advisory):
   `beacon goal axis generate -v v2.0.0 --program beacon-v2-product-goal-parallel-v200`
 - Artifact: `docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/goalrun-main-axis.md`
 - Embeds Loom: brand dual-install, optional subagent, trace bundle on the same GoalRun spine.
+
+## Truth human-readable + i18n parity (2026-07-18)
+
+- **Lake**: `beacon-v2-truth-human-readable-i18n` (full parity with v1.6.7; truth frozen R1)
+- **Shared norms**: `skills/beacon/references/truth-humanizer/`
+- **Axis**: mounted on `beacon-v2-product-goal-parallel-v200`

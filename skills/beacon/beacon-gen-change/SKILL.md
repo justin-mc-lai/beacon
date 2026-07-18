@@ -139,3 +139,17 @@ If the change touches AC/promise/stages/parallel/longrun/entry/domain FSM:
 
 Do not implement against a stale main axis.
 
+
+## Truth human-readable (v1.6.7+ / v2)
+
+When writing or changing feature `truth.md`:
+
+1. Include L0 section: `## 人话` (zh) or `## Plain language` (en); bilingual needs both.
+2. Keep L1 contract (AC / FSM) as gate authority — never drop AC IDs to "sound human".
+3. Follow norms:
+   - `skills/beacon/references/truth-humanizer/truth_prose.zh.md`
+   - `skills/beacon/references/truth-humanizer/truth_prose.en.md`
+4. Examples: `skills/beacon/examples/truth-human-readable.zh.md` / `.en.md`
+5. Missing L0 → reason_code `truth_human_l0_missing` (freeze fail-closed after gate is wired).
+
+Lakes: `beacon-truth-human-readable-i18n-v167`, `beacon-v2-truth-human-readable-i18n` (on GoalRun main axis).

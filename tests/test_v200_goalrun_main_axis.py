@@ -25,6 +25,7 @@ def test_mounts_loom() -> None:
     r = generate_main_axis(ROOT, version=VER, program_slug=PROG)
     text = (ROOT / r["axis_md"]).read_text(encoding="utf-8")
     for slug in (
+        "beacon-v2-truth-human-readable-i18n",
         "loom-brand-surface",
         "loom-goal-optional-subagent",
         "loom-goal-trace-bundle",

@@ -27,7 +27,10 @@
     "UD-AXIS-002": "axis_artifact_goalrun_main_axis",
     "UD-AXIS-003": "shared_state_names_v167_v200",
     "UD-AXIS-004": "domain_bearing_done_when_domain_fsm_coverage",
-    "UD-AXIS-005": "submachines_cannot_complete_goalrun"
+    "UD-AXIS-005": "submachines_cannot_complete_goalrun",
+    "UD-HR-001": "truth_dual_layer_l0_human_l1_contract",
+    "UD-HR-002": "humanizer_zh_en_norms_for_truth_prose",
+    "UD-HR-007": "mount_on_goalrun_main_axis_v167"
   },
   "upstream": {
     "version": "v1.6.7",
@@ -150,10 +153,23 @@
       "status": "truth_frozen",
       "revision": "R1",
       "summary": "GoalRun main axis regenerate on change; program lake mount table; anti-slice"
+    },
+    {
+      "phase": 1,
+      "priority": "P0",
+      "slug": "beacon-truth-human-readable-i18n-v167",
+      "lake_or_ocean": "湖",
+      "depends_on": [
+        "beacon-domain-fsm-authority-v167"
+      ],
+      "harness_route": "beacon-gen-change",
+      "summary": "L0 human-readable + Humanizer zh/en norms; freeze fail-closed truth_human_l0_missing",
+      "status": "truth_frozen"
     }
   ],
   "topology_order": [
     "beacon-domain-fsm-authority-v167",
+    "beacon-truth-human-readable-i18n-v167",
     "beacon-golden-commerce-fixture-v167",
     "beacon-domain-fsm-qa-gate-v167",
     "beacon-product-goal-runtime-v167",

@@ -37,6 +37,7 @@ def test_mount_table_covers_lakes() -> None:
         "beacon-product-goal-runtime-v167",
         "beacon-domain-fsm-authority-v167",
         "beacon-goal-durable-supervisor-v167",
+        "beacon-truth-human-readable-i18n-v167",
     ):
         assert slug in text
 

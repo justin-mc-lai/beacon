@@ -2,7 +2,7 @@
 
 - **version**: `v1.6.7`
 - **program**: `beacon-product-goal-domain-delivery-v167`
-- **generated_at**: 2026-07-18T08:55:43.877230+00:00
+- **generated_at**: 2026-07-18T10:38:12.489964+00:00
 - **policy**: UD-AXIS-001..005 (change must regenerate this artifact)
 
 ## User intent
@@ -45,6 +45,7 @@ created → running → stage_active{plan|truth|design?|implement|qa|release}
 | `beacon-goal-durable-supervisor-v167` | longrun bypass | SupervisorSession |
 | `beacon-goal-agent-driver-v167` | longrun bypass | AgentDriver |
 | `beacon-goalrun-main-axis-v167` | axis governance | regenerate on change |
+| `beacon-truth-human-readable-i18n-v167` | truth hard gate | L0 human + humanizer zh/en |
 
 ## done_when
 

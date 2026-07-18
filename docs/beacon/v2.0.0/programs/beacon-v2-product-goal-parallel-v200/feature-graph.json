@@ -41,7 +41,9 @@
     "UD-AXIS-005": "submachines_cannot_complete_goalrun",
     "UD-LOOM-001": "brand_loom",
     "UD-LOOM-004": "dual_install_with_beacon",
-    "UD-LOOM-005": "no_default_replace_beacon"
+    "UD-LOOM-005": "no_default_replace_beacon",
+    "UD-V2-HR-001": "full_parity_v167_truth_human_readable",
+    "UD-V2-HR-003": "mount_on_goalrun_main_axis_v200"
   },
   "lakes": [
     {
@@ -158,12 +160,25 @@
       "status": "truth_frozen",
       "revision": "R1-v2-sync",
       "summary": "GoalRun main axis (shared with v1.6.7); regenerate on change; embeds all program lakes"
+    },
+    {
+      "phase": 3,
+      "priority": "P0",
+      "slug": "beacon-v2-truth-human-readable-i18n",
+      "lake_or_ocean": "湖",
+      "depends_on": [
+        "beacon-v2-domain-fsm-authority"
+      ],
+      "harness_route": "beacon-gen-change",
+      "summary": "v2 parity: L0 human-readable + shared humanizer norms; axis mount",
+      "status": "truth_frozen"
     }
   ],
   "topology_order": [
     "beacon-v2-product-goal-orchestrator",
     "beacon-v2-main-star-satellite-pool",
     "beacon-v2-domain-fsm-authority",
+    "beacon-v2-truth-human-readable-i18n",
     "beacon-v2-golden-commerce-fixture-parity",
     "beacon-v2-domain-fsm-qa-gate",
     "beacon-v2-ui-state-matrix-ship-gate",

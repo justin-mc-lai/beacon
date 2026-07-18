@@ -66,3 +66,10 @@ Promotion ref: `friction:2e306f7acea7`.
 - **lake**: `beacon-goalrun-main-axis-v167`
 - **rule**: change touching promise/stage/parallel/longrun/entry/domain **must** regenerate `goalrun-main-axis.md`
 - **truth**: `docs/beacon/v1.6.7/features/beacon-goalrun-main-axis-v167/truth.md`
+
+## Truth human-readable + i18n (2026-07-18)
+
+- **Lake**: `beacon-truth-human-readable-i18n-v167` (truth frozen R1; gate implement pending)
+- **Intent**: L0 人话 + Humanizer-zh/blader norms; zh/en; freeze fail-closed `truth_human_l0_missing`
+- **Axis**: mounted on `beacon-product-goal-domain-delivery-v167`
+- **Norms**: `skills/beacon/references/truth-humanizer/`

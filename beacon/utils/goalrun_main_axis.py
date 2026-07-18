@@ -87,10 +87,12 @@ MOUNT_ROLES = {
     "beacon-goal-durable-supervisor-v167": ("longrun bypass", "SupervisorSession"),
     "beacon-goal-agent-driver-v167": ("longrun bypass", "AgentDriver"),
     "beacon-goalrun-main-axis-v167": ("axis governance", "regenerate on change"),
+    "beacon-truth-human-readable-i18n-v167": ("truth hard gate", "L0 human + humanizer zh/en"),
     # v2.0.0 / Loom
     "beacon-v2-product-goal-orchestrator": ("main axis owner (v2)", "facade + stages; dual-track entry"),
     "beacon-v2-main-star-satellite-pool": ("implement topology", "star/satellite structure"),
     "beacon-v2-domain-fsm-authority": ("truth hard gate", "L2 business FSM"),
+    "beacon-v2-truth-human-readable-i18n": ("truth hard gate", "L0 human + humanizer zh/en parity"),
     "beacon-v2-golden-commerce-fixture-parity": ("truth/qa fixture", "negative clamps"),
     "beacon-v2-domain-fsm-qa-gate": ("qa hard gate", "legal/illegal + domain_fsm_coverage"),
     "beacon-v2-ui-state-matrix-ship-gate": ("design/ship", "UX matrix when ux_required"),
