@@ -127,3 +127,15 @@ HARD GATE:
 - 粗提示词先归约为 outcome、truth/source/evidence refs、湖/海、truth_gap、test_gap、implementation_risk、verification_risk 和 recommended_route。
 - `docs/beacon/<version>/research/<feature-slug>.md` 是 planner `support_advisory` artifact；没有用户确认和 `promotion_ref`，不能升级为 requirement truth。
 - 需要跨 harness 时，停止当前动作，输出 route recommendation，并等待用户确认。
+
+## GoalRun main axis (UD-AXIS — v1.6.7+)
+
+If the change touches AC/promise/stages/parallel/longrun/entry/domain FSM:
+
+1. Update feature truth as usual
+2. **Regenerate** program main axis: `beacon goal axis generate -v <ver> --program <program>`
+3. **Validate** fail-closed: `beacon goal axis validate ...`
+4. Then `beacon change ... --refreeze-chain`
+
+Do not implement against a stale main axis.
+

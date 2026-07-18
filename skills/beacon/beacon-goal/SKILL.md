@@ -118,3 +118,18 @@ beacon goal driver stop --run-id <id>
 - Complete still needs verifier; release always human
 - Env: `BEACON_HOST_GOAL_BRIDGE_CMD` with `{prompt_file}` `{run_id}` `{project}`
 - Budget defaults: max_agent_turns=32, turn_timeout_sec=3600, heartbeat=120s
+
+## GoalRun main axis (v1.6.7 UD-AXIS)
+
+On **change** that touches promise/stage/parallel/longrun/entry/domain:
+
+```bash
+beacon goal axis generate --program beacon-product-goal-domain-delivery-v167 -v v1.6.7
+beacon goal axis validate --program beacon-product-goal-domain-delivery-v167 -v v1.6.7
+# then refreeze affected feature
+beacon change "<feature>" --project . --version v1.6.7 --refreeze-chain
+```
+
+Artifact: `docs/beacon/<ver>/programs/<program>/goalrun-main-axis.md`
+Submachines cannot complete GoalRun; complete needs verifier; release human.
+

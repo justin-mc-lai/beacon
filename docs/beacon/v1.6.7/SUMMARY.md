@@ -60,3 +60,9 @@ Promotion ref: `friction:2e306f7acea7`.
 - **default**: without `--longrun`, driver stays **idle** (supervise remains opt-in)
 - **truth**: `docs/beacon/v1.6.7/features/beacon-goal-agent-driver-v167/truth.md`
 - **v2 parity**: `beacon-v2-goal-durable-longrun`
+
+## GoalRun main axis (UD-AXIS GO 2026-07-18)
+
+- **lake**: `beacon-goalrun-main-axis-v167`
+- **rule**: change touching promise/stage/parallel/longrun/entry/domain **must** regenerate `goalrun-main-axis.md`
+- **truth**: `docs/beacon/v1.6.7/features/beacon-goalrun-main-axis-v167/truth.md`
