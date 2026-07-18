@@ -179,9 +179,11 @@ def test_v160_skill_package_materialize_should_create_harness_only_package(tmp_p
     assert "beacon-gov-router" in skill_dirs
     assert "beacon-loop-goal" in skill_dirs
     assert all(
-        name == "beacon-loop-goal" or name.startswith(("beacon-pln-", "beacon-gen-", "beacon-eval-", "beacon-gov-"))
+        name in {"beacon-loop-goal", "beacon-goal"}
+        or name.startswith(("beacon-pln-", "beacon-gen-", "beacon-eval-", "beacon-gov-"))
         for name in skill_dirs
     )
+    assert "beacon-goal" in skill_dirs  # v1.6.7 public product entry (orchestrator)
     for old_name in (
         "beacon-brainstorm",
         "beacon-prd",

@@ -212,6 +212,16 @@ HARD GATE:
 你的唯一产出是 evidence verdict、finding、reason code、block/pass/route recommendation。
 如需修复，必须路由到 generator 或 truth/change。
 
+## GIT_ADMISSION (mandatory — Tier A/B when version+feature known)
+
+Before ANY repo write or implement/qa/release route:
+1. `beacon workspace admit --project-root . --version <v> --feature <slug> --json`
+2. If status != pass → STOP; show reason_codes; do NOT edit files
+3. Set cwd to worktree_path from payload
+4. Do NOT git checkout elsewhere to "fix" branch
+5. When admission is soft-skipped (`require_workspace_admission=false`), still verify `current_branch == resolved target_branch` before repo writes (R5 UD-024)
+6. (implement only) Before writing implementation, merge `truth_canonical` into the development branch so implementation bases on canonical frozen truth
+
 ## v1.6.0 Harness Migration
 
 - Harness：`evaluator`。

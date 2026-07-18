@@ -1,10 +1,11 @@
 {
   "schema_version": "1.0",
   "name": "beacon",
-  "version": "1.6.7",
+  "version": "v1.6.0",
+  "product_runtime_version": "v1.6.7",
   "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content",
-  "generated_at": "2026-06-09T02:31:32.971655+00:00",
-  "expected_skill_count": 37,
+  "generated_at": "2026-07-18T11:08:17.031877+00:00",
+  "expected_skill_count": 39,
   "host_visible_skill_names": [
     "beacon-eval-agent",
     "beacon-eval-qa",
@@ -22,6 +23,7 @@
     "beacon-gen-refreeze",
     "beacon-gen-truth",
     "beacon-gen-truth-init",
+    "beacon-goal",
     "beacon-gov-archive",
     "beacon-gov-automation",
     "beacon-gov-branch",
@@ -36,6 +38,7 @@
     "beacon-gov-metadata",
     "beacon-gov-router",
     "beacon-gov-status",
+    "beacon-loop-goal",
     "beacon-pln-brainstorm",
     "beacon-pln-friction",
     "beacon-pln-program",
@@ -44,311 +47,6 @@
     "beacon-pln-review",
     "beacon-pln-source"
   ],
-  "old_aliases_removed": [
-    "beacon-archive",
-    "beacon-brainstorm",
-    "beacon-ceo-review",
-    "beacon-change",
-    "beacon-change-refreeze",
-    "beacon-context-engineering",
-    "beacon-debug-recovery",
-    "beacon-deep",
-    "beacon-design",
-    "beacon-design-bootstrap",
-    "beacon-design-explore",
-    "beacon-design-extract",
-    "beacon-design-library",
-    "beacon-design-polish",
-    "beacon-design-review",
-    "beacon-design-simplify",
-    "beacon-design-system",
-    "beacon-doctor",
-    "beacon-documentation-adr",
-    "beacon-doubt-review",
-    "beacon-evaluator-qa",
-    "beacon-evaluator-qa-deep",
-    "beacon-evaluator-real-project",
-    "beacon-evaluator-release",
-    "beacon-friction-intake",
-    "beacon-generator-design-bootstrap",
-    "beacon-generator-design-explore",
-    "beacon-generator-design-polish",
-    "beacon-generator-design-support",
-    "beacon-generator-design-system",
-    "beacon-generator-implementation",
-    "beacon-generator-prototype-binding",
-    "beacon-generator-truth-bootstrap",
-    "beacon-generator-truth-change",
-    "beacon-generator-truth-package",
-    "beacon-generator-truth-refreeze",
-    "beacon-governor-archive",
-    "beacon-governor-automation",
-    "beacon-governor-branch",
-    "beacon-governor-debug-recovery",
-    "beacon-governor-design-extract",
-    "beacon-governor-design-library",
-    "beacon-governor-doctor",
-    "beacon-governor-help",
-    "beacon-governor-hooks",
-    "beacon-governor-learn",
-    "beacon-governor-lighthouse",
-    "beacon-governor-metadata",
-    "beacon-governor-router",
-    "beacon-governor-status",
-    "beacon-help",
-    "beacon-implement",
-    "beacon-learn",
-    "beacon-performance-review",
-    "beacon-pln-adr",
-    "beacon-pln-context",
-    "beacon-pln-deep",
-    "beacon-pln-design",
-    "beacon-pln-doubt",
-    "beacon-pln-founder",
-    "beacon-pln-performance",
-    "beacon-pln-security",
-    "beacon-pln-simplify",
-    "beacon-planner-brainstorm",
-    "beacon-planner-context-engineering",
-    "beacon-planner-deep-analysis",
-    "beacon-planner-design-review",
-    "beacon-planner-design-simplify",
-    "beacon-planner-documentation-adr",
-    "beacon-planner-doubt-review",
-    "beacon-planner-founder-review",
-    "beacon-planner-friction-intake",
-    "beacon-planner-performance-review",
-    "beacon-planner-security-review",
-    "beacon-planner-source-driven",
-    "beacon-prd",
-    "beacon-prd-bootstrap",
-    "beacon-project-hooks",
-    "beacon-prototype",
-    "beacon-qa",
-    "beacon-qa-evo-deep",
-    "beacon-real-project-validation",
-    "beacon-release",
-    "beacon-security-review",
-    "beacon-source-driven",
-    "beacon-status",
-    "beacon-test-case",
-    "beacon-toolkit-automation",
-    "beacon-toolkit-branch-governance",
-    "beacon-toolkit-lighthouse",
-    "beacon-toolkit-metadata",
-    "beacon-truth",
-    "beacon-user-story",
-    "using-beacon"
-  ],
-  "rename_matrix": [
-    {
-      "old": "beacon-brainstorm",
-      "new": "beacon-pln-brainstorm",
-      "harness": "planner",
-      "role": "粗提示词拆分、湖海判断与路由收敛"
-    },
-    {
-      "old": "beacon-source-driven",
-      "new": "beacon-pln-source",
-      "harness": "planner",
-      "role": "源码和证据锚定分析"
-    },
-    {
-      "old": "beacon-review",
-      "new": "beacon-pln-review",
-      "harness": "planner",
-      "role": "多角度 planner review、意图保真、source parity 和状态机审查"
-    },
-    {
-      "old": "beacon-friction-intake",
-      "new": "beacon-pln-friction",
-      "harness": "planner",
-      "role": "摩擦记录、排队与只读治理"
-    },
-    {
-      "old": "beacon-truth",
-      "new": "beacon-gen-truth",
-      "harness": "generator",
-      "role": "package-authoritative 需求真相总入口"
-    },
-    {
-      "old": "beacon-prd-bootstrap",
-      "new": "beacon-gen-truth-init",
-      "harness": "generator",
-      "role": "需求真相包初始化"
-    },
-    {
-      "old": "beacon-change",
-      "new": "beacon-gen-change",
-      "harness": "generator",
-      "role": "受治理的需求真相变更"
-    },
-    {
-      "old": "beacon-change-refreeze",
-      "new": "beacon-gen-refreeze",
-      "harness": "generator",
-      "role": "受治理的需求重冻结"
-    },
-    {
-      "old": "beacon-prototype",
-      "new": "beacon-gen-prototype",
-      "harness": "generator",
-      "role": "已接受 UI/UX 原型结果绑定"
-    },
-    {
-      "old": "beacon-implement",
-      "new": "beacon-gen-implement",
-      "harness": "generator",
-      "role": "实现计划与执行"
-    },
-    {
-      "old": "beacon-design",
-      "new": "beacon-gen-design",
-      "harness": "generator",
-      "role": "设计支持总入口"
-    },
-    {
-      "old": "beacon-design-bootstrap",
-      "new": "beacon-gen-design-init",
-      "harness": "generator",
-      "role": "设计能力准入"
-    },
-    {
-      "old": "beacon-design-explore",
-      "new": "beacon-gen-design-explore",
-      "harness": "generator",
-      "role": "UI 方向探索"
-    },
-    {
-      "old": "beacon-design-system",
-      "new": "beacon-gen-design-system",
-      "harness": "generator",
-      "role": "组件系统规划"
-    },
-    {
-      "old": "beacon-design-polish",
-      "new": "beacon-gen-design-polish",
-      "harness": "generator",
-      "role": "UI 打磨支持"
-    },
-    {
-      "old": "beacon-qa",
-      "new": "beacon-eval-qa",
-      "harness": "evaluator",
-      "role": "验收证据验证"
-    },
-    {
-      "old": "beacon-qa-evo-deep",
-      "new": "beacon-eval-qa-deep",
-      "harness": "evaluator",
-      "role": "深度 QA findings"
-    },
-    {
-      "old": "beacon-release",
-      "new": "beacon-eval-release",
-      "harness": "evaluator",
-      "role": "发布就绪判断"
-    },
-    {
-      "old": "beacon-real-project-validation",
-      "new": "beacon-eval-real-project",
-      "harness": "evaluator",
-      "role": "真实项目发布证明"
-    },
-    {
-      "old": "beacon-design-library",
-      "new": "beacon-gov-library",
-      "harness": "governor",
-      "role": "设计参考检索"
-    },
-    {
-      "old": "beacon-design-extract",
-      "new": "beacon-gov-extract",
-      "harness": "governor",
-      "role": "截图和参考抽取"
-    },
-    {
-      "old": "beacon-doctor",
-      "new": "beacon-gov-doctor",
-      "harness": "governor",
-      "role": "上下文和环境修复"
-    },
-    {
-      "old": "beacon-debug-recovery",
-      "new": "beacon-gov-debug",
-      "harness": "governor",
-      "role": "阻断恢复"
-    },
-    {
-      "old": "beacon-status",
-      "new": "beacon-gov-status",
-      "harness": "governor",
-      "role": "状态和看板可见性"
-    },
-    {
-      "old": "beacon-help",
-      "new": "beacon-gov-help",
-      "harness": "governor",
-      "role": "下一步指导"
-    },
-    {
-      "old": "beacon-archive",
-      "new": "beacon-gov-archive",
-      "harness": "governor",
-      "role": "历史需求隔离"
-    },
-    {
-      "old": "beacon-learn",
-      "new": "beacon-gov-learn",
-      "harness": "governor",
-      "role": "受治理学习"
-    },
-    {
-      "old": "beacon-project-hooks",
-      "new": "beacon-gov-hooks",
-      "harness": "governor",
-      "role": "生命周期 hook 合约"
-    },
-    {
-      "old": "beacon-toolkit-automation",
-      "new": "beacon-gov-automation",
-      "harness": "governor",
-      "role": "自动化资产"
-    },
-    {
-      "old": "beacon-toolkit-branch-governance",
-      "new": "beacon-gov-branch",
-      "harness": "governor",
-      "role": "分支和工作区治理"
-    },
-    {
-      "old": "beacon-toolkit-lighthouse",
-      "new": "beacon-gov-lighthouse",
-      "harness": "governor",
-      "role": "快速源码和仓库分析"
-    },
-    {
-      "old": "beacon-toolkit-metadata",
-      "new": "beacon-gov-metadata",
-      "harness": "governor",
-      "role": "确定性 metadata 工具"
-    },
-    {
-      "old": "using-beacon",
-      "new": "beacon-gov-router",
-      "harness": "governor",
-      "role": "host 级路由提示"
-    }
-  ],
   "authority": "generated_skill_package",
-  "truth_ref": "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
-  "content_preservation": {
-    "policy": "compact harness skill directories preserve full pre-v1.6.0 SKILL.md body plus v1.6.0 preamble and HARD GATE",
-    "baseline_ref": "main:skills/beacon",
-    "legacy_truth_refs": [
-      "skills/beacon/beacon-gen-truth/references/legacy-beacon-prd.md",
-      "skills/beacon/beacon-gen-truth/references/legacy-beacon-user-story.md",
-      "skills/beacon/beacon-gen-truth/references/legacy-beacon-test-case.md"
-    ]
-  }
+  "truth_ref": "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md"
 }
