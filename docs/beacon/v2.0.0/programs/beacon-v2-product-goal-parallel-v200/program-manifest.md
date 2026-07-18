@@ -79,3 +79,12 @@ See `docs/beacon/v2.0.0/execution/v1.6-to-v2-migration-roadmap.md` Wave W0–W5 
 | UD-V2-PG-010 | Inherit v1.6.7 durable supervisor (120s heartbeat, append log, resume-pack, tick --execute) |
 
 Lake: `beacon-v2-goal-durable-longrun` — see `docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/truth.md`.
+
+## Additive lakes (User GO 2026-07-18 — Loom)
+
+9. `loom-brand-surface` — dual-install brand Loom
+10. `loom-goal-optional-subagent` — true opt-in subagent fan-out
+11. `loom-goal-trace-bundle` — driver ↔ agent_trace
+
+User decisions: brand Loom; parallel install; no default replace beacon.
+

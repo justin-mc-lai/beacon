@@ -33,7 +33,11 @@
     "UD-V2-PG-007": "full_inherit_v167_ui_state_matrix_ship_hard_gate",
     "UD-V2-PG-008": "reject_early_default_beacon_v2_until_w4",
     "UD-V2-PG-009": "goal_durable_longrun_agent_driver_one_shot",
-    "UD-V2-PG-010": "inherit_v167_durable_supervisor_120s_heartbeat"
+    "UD-V2-PG-010": "inherit_v167_durable_supervisor_120s_heartbeat",
+    "UD-LOOM-001": "brand_loom",
+    "UD-LOOM-004": "dual_install_with_beacon",
+    "UD-LOOM-005": "no_default_replace_beacon",
+    "UD-LOOM-GO-20260718": "loom_brand_subagent_trace_lakes"
   },
   "lakes": [
     {
@@ -124,6 +128,43 @@
       "summary": "One-shot longrun AgentDriver + v1.6.7 durable supervisor parity; auto requeue host turns; budget halt; verifier/human release",
       "status": "truth_frozen_parity_tests",
       "revision": "R2"
+    },
+    {
+      "slug": "loom-brand-surface",
+      "priority": "P0",
+      "depends_on": [],
+      "status": "truth_frozen",
+      "revision": "R1",
+      "summary": "Loom brand dual-install: package loom, CLI loom, $loom-goal; parallel with beacon; no default replace",
+      "lake_or_ocean": "湖",
+      "harness_route": "beacon-gen-change"
+    },
+    {
+      "slug": "loom-goal-optional-subagent",
+      "priority": "P0",
+      "depends_on": [
+        "loom-brand-surface",
+        "beacon-v2-main-star-satellite-pool",
+        "beacon-v2-product-goal-orchestrator"
+      ],
+      "status": "truth_frozen",
+      "revision": "R1",
+      "summary": "Opt-in subagent fan-out on goal: parallel_plan → worktree → spawn → merge_to_star; omx/omc behavior checklist parity",
+      "lake_or_ocean": "湖",
+      "harness_route": "beacon-gen-change"
+    },
+    {
+      "slug": "loom-goal-trace-bundle",
+      "priority": "P1",
+      "depends_on": [
+        "loom-brand-surface",
+        "beacon-v2-goal-durable-longrun"
+      ],
+      "status": "truth_frozen",
+      "revision": "R1",
+      "summary": "Driver turns write agent_trace.v1; goal trace CLI aggregates execution.jsonl + traces",
+      "lake_or_ocean": "湖",
+      "harness_route": "beacon-gen-change"
     }
   ],
   "topology_order": [
@@ -133,7 +174,11 @@
     "beacon-v2-golden-commerce-fixture-parity",
     "beacon-v2-domain-fsm-qa-gate",
     "beacon-v2-ui-state-matrix-ship-gate",
-    "beacon-v2-ralph-implement-boundary"
+    "beacon-v2-ralph-implement-boundary",
+    "loom-brand-surface",
+    "loom-goal-optional-subagent",
+    "loom-goal-trace-bundle"
   ],
-  "delivery_note": "python_compat_parity_landed; rust_runtime_pending_w4"
+  "delivery_note": "python_compat_parity_landed; rust_runtime_pending_w4",
+  "loom_note": "User GO 2026-07-18: Loom brand + optional subagent + trace bundle lakes frozen via change"
 }

@@ -77,3 +77,17 @@ Goal run (longrun): see `.beacon/state/product-goal/` for active pgr when runnin
 - **pytest run_id**: `run-v200-20260718T065506`
 - **runtime promotion**: still blocked until W4
 
+## Loom evolution line (User GO 2026-07-18)
+
+Brand for v2 evolution track: **Loom** (parallel install with Beacon; no default replace).
+
+| Lake | Priority | Status |
+|------|----------|--------|
+| `loom-brand-surface` | P0 | truth frozen R1 |
+| `loom-goal-optional-subagent` | P0 | truth frozen R1 |
+| `loom-goal-trace-bundle` | P1 | truth frozen R1 |
+
+Research: `docs/beacon/v2.0.0/research/beacon-v2-rename-loom-subagent-trace-pln-review.md`
+
+Next: freeze CLI → implement packaging/subagent/trace (do not replace `beacon` binary).
+
