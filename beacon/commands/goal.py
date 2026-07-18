@@ -383,3 +383,34 @@ def goal_driver(
     _emit(payload if isinstance(payload, dict) else {"status": "ok"}, json_output)
     raise typer.Exit(0 if payload.get("status") not in {"blocked"} or payload.get("driver") else 2)
 
+
+@app.command("axis")
+def goal_axis(
+    action: str = typer.Argument(..., help="generate | validate"),
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p"),
+    version: str = typer.Option("v1.6.7", "--version", "-v"),
+    program: str = typer.Option(
+        "beacon-product-goal-domain-delivery-v167",
+        "--program",
+        help="Program slug under docs/beacon/<ver>/programs/",
+    ),
+    intent: str = typer.Option("", "--intent", help="One-line user intent for axis header"),
+    json_output: bool = typer.Option(False, "--json"),
+) -> None:
+    """Generate or validate program GoalRun main-axis (UD-AXIS change policy)."""
+    from beacon.utils.goalrun_main_axis import generate_main_axis, validate_main_axis
+
+    root = _root(project)
+    act = action.strip().lower()
+    if act == "generate":
+        payload = generate_main_axis(root, version=version, program_slug=program, intent=intent)
+    elif act == "validate":
+        payload = validate_main_axis(root, version=version, program_slug=program)
+        payload = {"status": "ok" if payload.get("ok") else "blocked", **payload}
+    else:
+        payload = {"status": "blocked", "reason_code": "invalid_axis_action", "allowed": ["generate", "validate"]}
+        _emit(payload, json_output)
+        raise typer.Exit(2)
+    _emit(payload if isinstance(payload, dict) else {"status": "ok"}, json_output)
+    raise typer.Exit(0 if not payload.get("blocked") else 2)
+

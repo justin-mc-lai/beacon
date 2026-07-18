@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.0",
+  "artifact": "goalrun_main_axis",
+  "version": "v1.6.7",
+  "program_slug": "beacon-product-goal-domain-delivery-v167",
+  "generated_at": "2026-07-18T08:38:10.901734+00:00",
+  "goalrun_states": [
+    "created",
+    "running",
+    "stage_active",
+    "host_interrupted",
+    "stage_blocked",
+    "awaiting_verifier",
+    "completed",
+    "release_pending",
+    "release_confirmed"
+  ],
+  "lakes": [
+    "beacon-domain-fsm-authority-v167",
+    "beacon-golden-commerce-fixture-v167",
+    "beacon-domain-fsm-qa-gate-v167",
+    "beacon-product-goal-runtime-v167",
+    "beacon-ui-design-ship-gate-v167",
+    "beacon-loop-discover-goal-finish-v167",
+    "beacon-ralph-implement-boundary-v167",
+    "beacon-goal-durable-supervisor-v167",
+    "beacon-goal-agent-driver-v167",
+    "beacon-goalrun-main-axis-v167"
+  ],
+  "done_when_default": [
+    "domain_fsm",
+    "domain_fsm_coverage",
+    "evidence_chain",
+    "continuous_qa"
+  ],
+  "submachines_cannot_complete": [
+    "SupervisorSession",
+    "AgentDriver",
+    "SubagentSession",
+    "RalphDelegate",
+    "DesignStage"
+  ],
+  "change_triggers": [
+    "ac",
+    "acceptance",
+    "domain_fsm",
+    "driver",
+    "dual_install",
+    "entity_precedence",
+    "entry",
+    "longrun",
+    "parallel",
+    "promise",
+    "stage",
+    "subagent",
+    "supervise",
+    "worktree"
+  ],
+  "axis_md": "docs/beacon/v1.6.7/programs/beacon-product-goal-domain-delivery-v167/goalrun-main-axis.md",
+  "policy": [
+    "UD-AXIS-001",
+    "UD-AXIS-002",
+    "UD-AXIS-003",
+    "UD-AXIS-004",
+    "UD-AXIS-005"
+  ]
+}
