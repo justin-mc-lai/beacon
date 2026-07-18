@@ -88,6 +88,7 @@ For v1.5.2 features, implementation must bind to resolver-selected `features/<sl
 
 - Enter `implement` only after requirement truth is frozen enough for execution.
 - Block when frozen truth requires `change`, when cutover guardrails fail, or when a conditionally triggered prototype is still missing.
+- When truth claims visual delivery (`ux_required` / UI pages) and `DESIGN.md` is missing, run `beacon design baseline --project . --surface auto --write` before implement (unattended surface auto-select: pc-console/web/h5/client).
 - When `PRODUCT.md` or `DESIGN.md` exists at the project root, read both before starting any implementation that touches UI, visual design, or user-facing behavior. Treat them as binding design contracts, not optional reference material.
 - Keep `implement` as the only execution entry; `ask --execute` and support surfaces may route here but must not replace it.
 - Prefer explanation and routing logic in skill surface; keep final schema, contract, and gate writes in Python guardrails.
@@ -187,16 +188,6 @@ HARD GATE:
 只能在 resolver-selected truth、用户已接受 scope 和本 skill authority 内写 truth 或 delivery artifact。
 如需判断是否通过，必须路由到 evaluator。
 
-## GIT_ADMISSION (mandatory — Tier A/B when version+feature known)
-
-Before ANY repo write or implement/qa/release route:
-1. `beacon workspace admit --project-root . --version <v> --feature <slug> --json`
-2. If status != pass → STOP; show reason_codes; do NOT edit files
-3. Set cwd to worktree_path from payload
-4. Do NOT git checkout elsewhere to "fix" branch
-5. When admission is soft-skipped (`require_workspace_admission=false`), still verify `current_branch == resolved target_branch` before repo writes (R5 UD-024)
-6. (implement only) Before writing implementation, merge `truth_canonical` into the development branch so implementation bases on canonical frozen truth
-
 ## v1.6.0 Harness Migration
 
 - Harness：`generator`。
@@ -224,3 +215,12 @@ Before ANY repo write or implement/qa/release route:
 - 粗提示词先归约为 outcome、truth/source/evidence refs、湖/海、truth_gap、test_gap、implementation_risk、verification_risk 和 recommended_route。
 - `docs/beacon/<version>/research/<feature-slug>.md` 是 planner `support_advisory` artifact；没有用户确认和 `promotion_ref`，不能升级为 requirement truth。
 - 需要跨 harness 时，停止当前动作，输出 route recommendation，并等待用户确认。
+
+## GIT_ADMISSION (mandatory — Tier A/B when version+feature known)
+
+Before ANY repo write or implement/qa/release route:
+1. `beacon workspace admit --project-root . --version <v> --feature <slug> --json`
+2. If status != pass → STOP; show reason_codes; do NOT edit files
+3. Set cwd to worktree_path from payload
+4. Do NOT git checkout elsewhere to "fix" branch
+

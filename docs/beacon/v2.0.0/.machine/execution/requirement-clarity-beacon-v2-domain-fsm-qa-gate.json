@@ -1,0 +1,297 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v2-domain-fsm-qa-gate",
+  "feature_slug": "beacon-v2-domain-fsm-qa-gate",
+  "version": "v2.0.0",
+  "runtime_version": "v1.6.7",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v2.0.0/.machine/execution/requirement-clarity-beacon-v2-domain-fsm-qa-gate.json",
+  "report_markdown_path": "docs/beacon/v2.0.0/execution/requirement-clarity-beacon-v2-domain-fsm-qa-gate.md",
+  "state_path": ".beacon/state/requirement-clarity-beacon-v2-domain-fsm-qa-gate.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v2.0.0",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-07-17T07:58:20.171233+00:00",
+    "feature": "beacon-v2-domain-fsm-qa-gate",
+    "feature_slug": "beacon-v2-domain-fsm-qa-gate",
+    "prd_ref": "docs/beacon/v2.0.0/prd/beacon-v2-domain-fsm-qa-gate.md",
+    "user_story_ref": "docs/beacon/v2.0.0/user-story/beacon-v2-domain-fsm-qa-gate.md"
+  },
+  "domain_fsm_gate": {
+    "schema_version": "1.0",
+    "feature": "beacon-v2-domain-fsm-qa-gate",
+    "feature_slug": "beacon-v2-domain-fsm-qa-gate",
+    "version": "v2.0.0",
+    "truth_path": "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-qa-gate/truth.md",
+    "tests_path": "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-qa-gate/tests.md",
+    "required": false,
+    "blocked": false,
+    "status": "not_required",
+    "reason_code": "",
+    "findings": [],
+    "requirement": {
+      "required": false,
+      "reason": "not_required",
+      "explicit": false,
+      "partial": false,
+      "complexity": false,
+      "business_signal": false,
+      "version_supported": true
+    },
+    "projection": {
+      "schema_version": "1.0",
+      "domain_fsm_schema": "domain-fsm.v1",
+      "entity_precedence_schema": "entity-precedence.v1",
+      "frontmatter": {
+        "slug": "beacon-v2-domain-fsm-qa-gate",
+        "version": "v2.0.0",
+        "status": "frozen",
+        "revision_id": "R1",
+        "language": "zh",
+        "change_reason": "W3 domain FSM QA enforcement parity with v1.6.7",
+        "canonical_refs": {
+          "truth": "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-qa-gate/truth.md",
+          "tests": "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-qa-gate/tests.md",
+          "tasks": "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-qa-gate/tasks.md",
+          "evidence": "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-qa-gate/evidence.md"
+        },
+        "parser_contract": "beacon-feature-package-v2",
+        "truth_source_model": "feature_package_authoritative",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "program_ref": "docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/feature-graph.json",
+        "upstream_ref": "docs/beacon/v1.6.7/features/beacon-domain-fsm-qa-gate-v167/truth.md"
+      },
+      "frontmatter_errors": [],
+      "has_domain_model_section": false,
+      "has_domain_fsm_section": false,
+      "has_illegal_transition_section": false,
+      "entities": [],
+      "entity_precedence": [],
+      "aggregates": [],
+      "illegal_transition_slots": [],
+      "acceptance_criteria": [
+        {
+          "ac_id": "AC-V2-FQA-001",
+          "description": "domain 特征 QA 强制 legal walk 行（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-FQA-002",
+          "description": "domain 特征 QA 强制 illegal/precedence 行（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-FQA-003",
+          "description": "缺 domain_fsm_coverage → qa/release_ready fail-closed（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-FQA-004",
+          "description": "golden 负例被 QA 消费并期望 fail（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-FQA-005",
+          "description": "组合爆炸推荐 qa-deep（**Should**）"
+        },
+        {
+          "ac_id": "AC-V2-FQA-006",
+          "description": "evidence 可索引 FSM walk 工件（**Should**）"
+        }
+      ],
+      "bound_ac_ids": [],
+      "orphan_ac_ids": [],
+      "aggregates_missing_illegal_slots": [],
+      "raw_section_titles": [
+        "Overview",
+        "User Intent（一行）",
+        "User Decisions（locked）",
+        "Acceptance Criteria",
+        "Non-Goals"
+      ]
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "required": false,
+      "blocked": false,
+      "status": "not_required",
+      "reason_code": "",
+      "findings": [],
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "beacon-v2-domain-fsm-qa-gate",
+          "version": "v2.0.0",
+          "status": "frozen",
+          "revision_id": "R1",
+          "language": "zh",
+          "change_reason": "W3 domain FSM QA enforcement parity with v1.6.7",
+          "canonical_refs": {
+            "truth": "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-qa-gate/truth.md",
+            "tests": "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-qa-gate/tests.md",
+            "tasks": "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-qa-gate/tasks.md",
+            "evidence": "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-qa-gate/evidence.md"
+          },
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "truth_map_contract": "beacon-truth-map-v1",
+          "program_ref": "docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/feature-graph.json",
+          "upstream_ref": "docs/beacon/v1.6.7/features/beacon-domain-fsm-qa-gate-v167/truth.md"
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": false,
+        "has_domain_fsm_section": false,
+        "has_illegal_transition_section": false,
+        "entities": [],
+        "entity_precedence": [],
+        "aggregates": [],
+        "illegal_transition_slots": [],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-V2-FQA-001",
+            "description": "domain 特征 QA 强制 legal walk 行（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-FQA-002",
+            "description": "domain 特征 QA 强制 illegal/precedence 行（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-FQA-003",
+            "description": "缺 domain_fsm_coverage → qa/release_ready fail-closed（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-FQA-004",
+            "description": "golden 负例被 QA 消费并期望 fail（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-FQA-005",
+            "description": "组合爆炸推荐 qa-deep（**Should**）"
+          },
+          {
+            "ac_id": "AC-V2-FQA-006",
+            "description": "evidence 可索引 FSM walk 工件（**Should**）"
+          }
+        ],
+        "bound_ac_ids": [],
+        "orphan_ac_ids": [],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "Overview",
+          "User Intent（一行）",
+          "User Decisions（locked）",
+          "Acceptance Criteria",
+          "Non-Goals"
+        ]
+      }
+    },
+    "recommended_action": ""
+  },
+  "human_closure_contract": {
+    "required": false,
+    "research_path": "docs/beacon/v2.0.0/research/beacon-v2-domain-fsm-qa-gate.md",
+    "research_exists": false,
+    "source_architecture_path": "docs/beacon/v2.0.0/source-architecture/index.md",
+    "source_architecture_exists": true,
+    "required_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "missing_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "diagram_types": [],
+    "complexity_signals": []
+  },
+  "requirement_closure_contract": {
+    "required": true,
+    "chain_order": [
+      "research",
+      "prd",
+      "user_story",
+      "test_case",
+      "requirement_clarity",
+      "freeze"
+    ],
+    "human_closure_required": false,
+    "paths": {
+      "research": "docs/beacon/v2.0.0/research/beacon-v2-domain-fsm-qa-gate.md",
+      "prd": "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-qa-gate/truth.md",
+      "user_story": "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-qa-gate/truth.md",
+      "test_case": "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-qa-gate/tests.md"
+    },
+    "exists": {
+      "research": false,
+      "prd": true,
+      "user_story": true,
+      "test_case": true
+    },
+    "required_research_sections": [],
+    "missing_research_sections": [],
+    "ac_projection": {
+      "prd_ac_ids": [],
+      "user_story_ac_ids": [],
+      "test_case_ac_ids": [],
+      "upstream_ac_ids": [],
+      "missing_test_case_ac_ids": []
+    }
+  },
+  "version_projection_truth_contract": {
+    "required": false,
+    "supported": true,
+    "projection_types": [],
+    "research_path": "docs/beacon/v2.0.0/research/beacon-v2-domain-fsm-qa-gate.md",
+    "research_exists": false,
+    "required_fields": [
+      "prd_refs",
+      "user_story_refs",
+      "test_case_refs",
+      "coverage_notes",
+      "out_of_scope_notes"
+    ],
+    "field_presence": {
+      "prd_refs": false,
+      "user_story_refs": false,
+      "test_case_refs": false,
+      "coverage_notes": false,
+      "out_of_scope_notes": false
+    },
+    "missing_fields": [],
+    "required_refs": {
+      "prd_refs": "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-qa-gate/truth.md",
+      "user_story_refs": "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-qa-gate/truth.md",
+      "test_case_refs": "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-qa-gate/tests.md"
+    },
+    "missing_ref_targets": [],
+    "ready": false
+  },
+  "support_write_topology_contract": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "diagnostics": []
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-qa-gate/truth.md",
+    "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-qa-gate/tests.md",
+    "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-qa-gate/tasks.md",
+    "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-qa-gate/evidence.md"
+  ]
+}

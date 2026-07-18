@@ -1,0 +1,179 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-17T07:58:21.120128+00:00",
+  "feature": "beacon-v2-domain-fsm-qa-gate",
+  "feature_slug": "beacon-v2-domain-fsm-qa-gate",
+  "version": "v2.0.0",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-qa-gate/truth.md",
+    "tests": "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-qa-gate/tests.md",
+    "tasks": "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-qa-gate/tasks.md",
+    "evidence": "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-qa-gate/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "acee43f3329edcf1596c79b17587cc195e03906b9d7a0ce493a5922384ceeded",
+    "tests": "324e143606f1f89ffda1c4b8a6b7be1e6d35cf907d78520509f2caf4a29511c1",
+    "tasks": "a683b7eada2d1ceee627c95344399f928fe8e3642e38087b0c2a545441f1861a",
+    "evidence": "684d2e41cd4f89c3bc487a9d36fd29974a29bf113747ed25c6832752014bfde7"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-v2-domain-fsm-qa-gate",
+    "version": "v2.0.0",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "W3 domain FSM QA enforcement parity with v1.6.7",
+    "canonical_refs": {
+      "truth": "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-qa-gate/truth.md",
+      "tests": "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-qa-gate/tests.md",
+      "tasks": "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-qa-gate/tasks.md",
+      "evidence": "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-qa-gate/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "program_ref": "docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/feature-graph.json",
+    "upstream_ref": "docs/beacon/v1.6.7/features/beacon-domain-fsm-qa-gate-v167/truth.md"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-V2-FQA-001",
+      "theme": "matrix-legal",
+      "description": "domain 特征 QA 强制 legal walk 行（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-FQA-002",
+      "theme": "matrix-illegal",
+      "description": "domain 特征 QA 强制 illegal/precedence 行（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-FQA-003",
+      "theme": "fail-closed",
+      "description": "缺 domain_fsm_coverage → qa/release_ready fail-closed（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-FQA-004",
+      "theme": "golden-bind",
+      "description": "golden 负例被 QA 消费并期望 fail（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-FQA-005",
+      "theme": "deep-route",
+      "description": "组合爆炸推荐 qa-deep（**Should**）"
+    },
+    {
+      "ac_id": "AC-V2-FQA-006",
+      "theme": "evidence-index",
+      "description": "evidence 可索引 FSM walk 工件（**Should**）"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-V2-FQA-001",
+      "tc_id": "TC-V2-FQA-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v200_domain_fsm_qa.py::test_legal_walk_required -q`",
+      "assertion": "合法 walk 强制",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-FQA-002",
+      "tc_id": "TC-V2-FQA-002",
+      "layer": "negative",
+      "command": "`python3 -m pytest tests/test_v200_domain_fsm_qa.py::test_illegal_required -q`",
+      "assertion": "非法行强制",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-FQA-003",
+      "tc_id": "TC-V2-FQA-003",
+      "layer": "negative",
+      "command": "`python3 -m pytest tests/test_v200_domain_fsm_qa.py::test_missing_coverage_blocks_release -q`",
+      "assertion": "缺 coverage 阻断",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-FQA-004",
+      "tc_id": "TC-V2-FQA-004",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_v200_domain_fsm_qa.py::test_golden_negative_consumed -q`",
+      "assertion": "负例消费",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Scorecard field domain_fsm_coverage",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "QA matrix legal/illegal enforcement",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Golden negative binding",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Implement + formal QA",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-gen-change",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/beacon-v2-domain-fsm-qa-gate/truth.md",
+      "status": "frozen",
+      "route": "truth"
+    },
+    {
+      "surface": "program",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/feature-graph.json",
+      "status": "indexed",
+      "route": "program"
+    },
+    {
+      "surface": "planner",
+      "authority": "support_advisory",
+      "canonical_artifact": ".beacon/state/planner-review/beacon-v2-architecture-se-standard/pln-review-20260717t073750z.json",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "se-standard",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/execution/v2-software-engineering-standards.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "upstream-v167",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.7/features/beacon-domain-fsm-qa-gate-v167/truth.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "parent-change",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/change/beacon-v2-product-goal-domain-truth-chain-v200.md",
+      "status": "indexed",
+      "route": "change"
+    }
+  ]
+}

@@ -53,3 +53,20 @@
 - Human confirmation recorded by operator via closeout session (P0 release wrap).
 - Runtime scratch (`.beacon/state/product-goal`, local scorecards, host skill mirrors) remains local-only.
 - Next: real-project `$beacon-goal` E2E; then v2 orchestrator/main-star pool.
+
+## Additive GO — durable supervisor (2026-07-18)
+
+- [x] Feature package frozen R1
+- [x] Implement landed + contract tests 21 pass
+- [x] `beacon qa run beacon-goal-durable-supervisor-v167` → passed / release_ready
+- [x] technical-review accepted; deep loop closed
+- [x] `beacon release check v1.6.7` → **pass / release_ready=true**
+- [x] Human GO recorded: `docs/beacon/v1.6.7/release/beacon-goal-durable-supervisor-v167-go.md`
+
+## Additive GO — agent driver longrun (2026-07-18 Path C)
+
+- [x] `beacon qa run beacon-goal-agent-driver-v167` → passed / release_ready
+- [x] `beacon release check v1.6.7` → pass / release_ready=true
+- [x] Branch admission accepts `beacon/v1.6.7/<feature>` under program prefix
+- [x] Human GO recorded: `docs/beacon/v1.6.7/release/beacon-goal-agent-driver-v167-go.md`
+

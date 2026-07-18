@@ -5,33 +5,118 @@
   "plan_mode": "interactive",
   "scope_mode": "full_parity",
   "lake_or_ocean": "海拆湖",
+  "program_phase": "P0",
+  "p4_ack": true,
+  "promotion_ref": "planner-review:pln-review-20260717t073750z+user-decisions-20260717",
   "upstream": {
     "version": "v1.6.7",
     "program_slug": "beacon-product-goal-domain-delivery-v167",
     "required_features": [
       "beacon-product-goal-runtime-v167",
       "beacon-loop-discover-goal-finish-v167",
-      "beacon-git-scope-graph-v167"
+      "beacon-git-scope-graph-v167",
+      "beacon-domain-fsm-authority-v167",
+      "beacon-golden-commerce-fixture-v167",
+      "beacon-domain-fsm-qa-gate-v167",
+      "beacon-ui-design-ship-gate-v167",
+      "beacon-ralph-implement-boundary-v167",
+      "beacon-goal-durable-supervisor-v167"
     ]
+  },
+  "user_decisions": {
+    "UD-V2-PG-001": "rust_orchestrator_owns_product_goal_runtime",
+    "UD-V2-PG-002": "dual_skills_loop_vs_goal_parity_with_v167",
+    "UD-V2-PG-003": "parallel_subagent_main_star_satellite_pool",
+    "UD-V2-PG-004": "progressive_skill_load_in_operator_spine",
+    "UD-V2-PG-005": "python_compat_shim_preserves_cli_surface",
+    "UD-V2-PG-006": "domain_truth_chain_merged_into_this_program_option_a",
+    "UD-V2-PG-007": "full_inherit_v167_ui_state_matrix_ship_hard_gate",
+    "UD-V2-PG-008": "reject_early_default_beacon_v2_until_w4",
+    "UD-V2-PG-009": "goal_durable_longrun_agent_driver_one_shot",
+    "UD-V2-PG-010": "inherit_v167_durable_supervisor_120s_heartbeat"
   },
   "lakes": [
     {
       "phase": 1,
+      "priority": "P0",
       "slug": "beacon-v2-product-goal-orchestrator",
       "depends_on": [],
-      "summary": "Rust Product Goal orchestrator; beacon-goal skill; progressive load; subagent parallel plan"
+      "summary": "Rust Product Goal orchestrator; single public entry beacon-goal; progressive load; subagent parallel plan"
     },
     {
       "phase": 2,
+      "priority": "P0",
       "slug": "beacon-v2-main-star-satellite-pool",
       "depends_on": [
         "beacon-v2-product-goal-orchestrator"
       ],
-      "summary": "Main-star integration branch + satellite worktrees per lake; merge-to-star"
+      "summary": "Main-star integration branch + satellite worktrees per lake; merge-to-star; topology_gate"
+    },
+    {
+      "phase": 3,
+      "priority": "P0",
+      "slug": "beacon-v2-domain-fsm-authority",
+      "depends_on": [
+        "beacon-v2-product-goal-orchestrator"
+      ],
+      "summary": "Domain FSM + entity-precedence as feature-package freeze hard gates (parity v1.6.7)"
+    },
+    {
+      "phase": 4,
+      "priority": "P0",
+      "slug": "beacon-v2-golden-commerce-fixture-parity",
+      "depends_on": [
+        "beacon-v2-domain-fsm-authority"
+      ],
+      "summary": "Golden commerce positive+negative fixtures as v2 parity clamps"
+    },
+    {
+      "phase": 5,
+      "priority": "P0",
+      "slug": "beacon-v2-domain-fsm-qa-gate",
+      "depends_on": [
+        "beacon-v2-domain-fsm-authority",
+        "beacon-v2-golden-commerce-fixture-parity"
+      ],
+      "summary": "QA enforces legal/illegal domain walks; coverage on scorecard"
+    },
+    {
+      "phase": 6,
+      "priority": "P1",
+      "slug": "beacon-v2-ui-state-matrix-ship-gate",
+      "depends_on": [
+        "beacon-v2-domain-fsm-authority"
+      ],
+      "summary": "Full inherit v1.6.7 ui-state-matrix + DESIGN ship hard gate"
+    },
+    {
+      "phase": 7,
+      "priority": "P2",
+      "slug": "beacon-v2-ralph-implement-boundary",
+      "depends_on": [
+        "beacon-v2-product-goal-orchestrator"
+      ],
+      "summary": "Ralph is implement-only subcontroller; not product complete"
+    },
+    {
+      "phase": 8,
+      "priority": "P0",
+      "slug": "beacon-v2-goal-durable-longrun",
+      "depends_on": [
+        "beacon-v2-product-goal-orchestrator",
+        "beacon-v2-main-star-satellite-pool",
+        "beacon-v2-ralph-implement-boundary"
+      ],
+      "summary": "One-shot longrun AgentDriver + v1.6.7 durable supervisor parity; auto requeue host turns; budget halt; verifier/human release"
     }
   ],
   "topology_order": [
     "beacon-v2-product-goal-orchestrator",
-    "beacon-v2-main-star-satellite-pool"
+    "beacon-v2-main-star-satellite-pool",
+    "beacon-v2-domain-fsm-authority",
+    "beacon-v2-golden-commerce-fixture-parity",
+    "beacon-v2-domain-fsm-qa-gate",
+    "beacon-v2-ui-state-matrix-ship-gate",
+    "beacon-v2-ralph-implement-boundary"
   ]
 }

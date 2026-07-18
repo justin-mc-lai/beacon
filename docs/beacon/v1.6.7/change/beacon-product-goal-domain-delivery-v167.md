@@ -23,3 +23,7 @@ Seven lakes frozen as requirement truth packages (R1). Implementation is downstr
 ## Route
 
 After freeze: implement per topology_order → QA → program release.
+
+## Additive feature
+
+- `beacon-goal-durable-supervisor-v167` (durable goal supervisor; QA release_ready)

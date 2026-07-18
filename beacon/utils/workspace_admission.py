@@ -340,6 +340,19 @@ def validate_workspace_admission(
         # Aggregation program branch beacon/<version> is satisfied by main when truth is on main.
         if expected_branch.startswith("beacon/") and expected_branch.count("/") == 1 and truth_canonical in {"main", "master"}:
             accepted.add(truth_canonical)
+        # Git cannot host both beacon/<version> and beacon/<version>/<feature> refs.
+        # Feature lanes under the program aggregation prefix are accepted for program-level gates.
+        if (
+            expected_branch
+            and current_branch
+            and expected_branch.startswith("beacon/")
+            and expected_branch.count("/") == 1
+            and (
+                current_branch == expected_branch
+                or current_branch.startswith(expected_branch + "/")
+            )
+        ):
+            accepted.add(current_branch)
         if expected_branch and current_branch and current_branch not in accepted:
             return {
                 "valid": False,

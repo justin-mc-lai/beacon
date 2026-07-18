@@ -20,7 +20,9 @@
     "UD-PGD-009": "main_star_satellite_worktree_pool",
     "UD-PGD-010": "v2_parity_required",
     "UD-PGD-011": "single_public_entry_beacon_goal",
-    "UD-PGD-012": "loop_goal_support_discovery_only"
+    "UD-PGD-012": "loop_goal_support_discovery_only",
+    "UD-GAD-001": "path_c_v1_python_driver_v2_parity",
+    "UD-GAD-003": "longrun_flag_starts_driver_default_run_idle"
   },
   "upstream": {
     "version": "v1.6.7",
@@ -109,6 +111,28 @@
       ],
       "harness_route": "beacon-gen-truth",
       "summary": "Contract: Ralph is implement-only subcontroller under Product Goal"
+    },
+    {
+      "slug": "beacon-goal-durable-supervisor-v167",
+      "priority": "P0",
+      "depends_on": [
+        "beacon-product-goal-runtime-v167",
+        "beacon-loop-goal-v166",
+        "beacon-ralph-implement-boundary-v167"
+      ],
+      "status": "truth_frozen",
+      "revision": "R1"
+    },
+    {
+      "slug": "beacon-goal-agent-driver-v167",
+      "priority": "P0",
+      "depends_on": [
+        "beacon-goal-durable-supervisor-v167",
+        "beacon-product-goal-runtime-v167"
+      ],
+      "status": "truth_frozen",
+      "revision": "R1",
+      "summary": "Python AgentDriver: run --longrun auto-requeue host turns via resume-pack digest"
     }
   ],
   "topology_order": [
@@ -118,6 +142,8 @@
     "beacon-product-goal-runtime-v167",
     "beacon-ui-design-ship-gate-v167",
     "beacon-loop-discover-goal-finish-v167",
-    "beacon-ralph-implement-boundary-v167"
+    "beacon-ralph-implement-boundary-v167",
+    "beacon-goal-durable-supervisor-v167",
+    "beacon-goal-agent-driver-v167"
   ]
 }

@@ -1,0 +1,117 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v2-goal-durable-longrun",
+  "feature_slug": "beacon-v2-goal-durable-longrun",
+  "version": "v2.0.0",
+  "current_revision_id": "R1",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-07-18T03:43:38.610813+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-v2-goal-durable-longrun",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:a87bad70c7a6937a8ddf9e7f84a24ffd0717e3d2f7ec14b6830f181bfc57f252",
+      "superseded_by": null,
+      "created_at": "2026-07-18T03:36:42.496937+00:00",
+      "frozen_at": "2026-07-18T03:43:38.840246+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "beacon-v2-goal-durable-longrun",
+      "priority": "medium",
+      "status": "frozen",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "general",
+          "text": "Acceptance criteria TBD",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "fallback"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Acceptance criteria TBD",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "fallback"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-v2-goal-durable-longrun",
+        "version": "v2.0.0",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v2.0.0/research/beacon-v2-goal-durable-longrun.md",
+        "present": true,
+        "section_count": 2,
+        "sections": {
+          "architecture": [
+            "v1.6.7 parity: heartbeat 120s default, append-only log, host_interrupt ≠ stage_blocked, verifier complete, human release.",
+            "v2 delta: **AgentDriver** owned by Rust orchestrator so \"one command\" can re-enter agent turns without user typing「继续」each time (still not a silent fake-complete daemon)."
+          ],
+          "business_flow": [
+            "User one-shot: `beacon goal run \"...\" --longrun` (or skill `$beacon-goal` with longrun flag).",
+            "Orchestrator creates GoalRun; `--longrun` attaches SupervisorSession for this run only.",
+            "Driver selects next_action from stage + checkpoint; spawns/resumes agent turn with **digest-only** context.",
+            "Every ≤120s (or substep): heartbeat + execution.jsonl append.",
+            "Host turn ends / context full → host_interrupted + checkpoint; Driver **auto-requeues** next turn unless blocked≥3 or awaiting human release.",
+            "QA workers via tick --execute / driver; complete only with verifier refs.",
+            "release_pending always human."
+          ]
+        },
+        "derived_items": [
+          {
+            "theme": "business_flow",
+            "text": "Business flow remains explicit",
+            "details": [
+              "User one-shot: `beacon goal run \"...\" --longrun` (or skill `$beacon-goal` with longrun flag).",
+              "Orchestrator creates GoalRun; `--longrun` attaches SupervisorSession for this run only.",
+              "Driver selects next_action from stage + checkpoint; spawns/resumes agent turn with **digest-only** context.",
+              "Every ≤120s (or substep): heartbeat + execution.jsonl append.",
+              "Host turn ends / context full → host_interrupted + checkpoint; Driver **auto-requeues** next turn unless blocked≥3 or awaiting human release.",
+              "QA workers via tick --execute / driver; complete only with verifier refs.",
+              "release_pending always human."
+            ],
+            "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v2.0.0/research/beacon-v2-goal-durable-longrun.md"
+          }
+        ]
+      }
+    }
+  ]
+}

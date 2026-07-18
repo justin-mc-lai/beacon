@@ -1,0 +1,171 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-17T07:58:19.761266+00:00",
+  "feature": "beacon-v2-golden-commerce-fixture-parity",
+  "feature_slug": "beacon-v2-golden-commerce-fixture-parity",
+  "version": "v2.0.0",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v2.0.0/features/beacon-v2-golden-commerce-fixture-parity/truth.md",
+    "tests": "docs/beacon/v2.0.0/features/beacon-v2-golden-commerce-fixture-parity/tests.md",
+    "tasks": "docs/beacon/v2.0.0/features/beacon-v2-golden-commerce-fixture-parity/tasks.md",
+    "evidence": "docs/beacon/v2.0.0/features/beacon-v2-golden-commerce-fixture-parity/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "25438cd05cbac5b68e6ed94a8a21ffabaf06935aa3e01a3db1bc0a37b89a2640",
+    "tests": "dc18de59fa412469ec9409dd81d33a3e3d58b5788238532953bcb9644f7ad4b8",
+    "tasks": "735ec1e606e8f77f51c60c89b29a71af23565635cedcfede82e102b8b2cd7444",
+    "evidence": "83d882e5ab436b3df0f12aae9d11fe19cb0df107c5b120e94d7064b197cfee11"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-v2-golden-commerce-fixture-parity",
+    "version": "v2.0.0",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "W3 golden commerce positive+negative parity clamps from v1.6.7",
+    "canonical_refs": {
+      "truth": "docs/beacon/v2.0.0/features/beacon-v2-golden-commerce-fixture-parity/truth.md",
+      "tests": "docs/beacon/v2.0.0/features/beacon-v2-golden-commerce-fixture-parity/tests.md",
+      "tasks": "docs/beacon/v2.0.0/features/beacon-v2-golden-commerce-fixture-parity/tasks.md",
+      "evidence": "docs/beacon/v2.0.0/features/beacon-v2-golden-commerce-fixture-parity/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "program_ref": "docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/feature-graph.json",
+    "upstream_ref": "docs/beacon/v1.6.7/features/beacon-golden-commerce-fixture-v167/truth.md"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-V2-GOLD-001",
+      "theme": "positive",
+      "description": "正例含 truth/tests/tasks/evidence + domain-fsm + entity-precedence（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-GOLD-002",
+      "theme": "negative",
+      "description": "坏例：无 Product 创建 Order 必须失败（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-GOLD-003",
+      "theme": "fsm-content",
+      "description": "覆盖 Product 与 Order 聚合根合法/非法转移（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-GOLD-004",
+      "theme": "v2-index",
+      "description": "v2 fixtures/parity-v167 索引指向可加载路径（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-GOLD-005",
+      "theme": "gate-consume",
+      "description": "v2 freeze/QA 路径可消费夹具（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-GOLD-006",
+      "theme": "design-stub",
+      "description": "含最小 ui-state-matrix / DESIGN stub（**Should**）"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-V2-GOLD-001",
+      "tc_id": "TC-V2-GOLD-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v200_golden_commerce.py::test_positive_package -q`",
+      "assertion": "正例包完整",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-GOLD-002",
+      "tc_id": "TC-V2-GOLD-002",
+      "layer": "negative",
+      "command": "`python3 -m pytest tests/test_v200_golden_commerce.py::test_negative_order_without_product -q`",
+      "assertion": "负例必失败",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-GOLD-004",
+      "tc_id": "TC-V2-GOLD-003",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v200_golden_commerce.py::test_v2_index_resolves -q`",
+      "assertion": "索引可解析",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Create docs/beacon/v2.0.0/fixtures/parity-v167 index",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Wire fixture loader for v2 gate/QA",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Negative path contract tests",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Implement + formal QA",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-gen-change",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/beacon-v2-golden-commerce-fixture-parity/truth.md",
+      "status": "frozen",
+      "route": "truth"
+    },
+    {
+      "surface": "program",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/feature-graph.json",
+      "status": "indexed",
+      "route": "program"
+    },
+    {
+      "surface": "planner",
+      "authority": "support_advisory",
+      "canonical_artifact": ".beacon/state/planner-review/beacon-v2-architecture-se-standard/pln-review-20260717t073750z.json",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "se-standard",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/execution/v2-software-engineering-standards.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "upstream-v167",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.7/features/beacon-golden-commerce-fixture-v167/truth.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "parent-change",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/change/beacon-v2-product-goal-domain-truth-chain-v200.md",
+      "status": "indexed",
+      "route": "change"
+    }
+  ]
+}

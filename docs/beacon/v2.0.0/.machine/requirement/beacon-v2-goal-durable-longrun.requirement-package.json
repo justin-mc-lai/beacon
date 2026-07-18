@@ -1,0 +1,330 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-18T03:43:39.245287+00:00",
+  "feature": "beacon-v2-goal-durable-longrun",
+  "feature_slug": "beacon-v2-goal-durable-longrun",
+  "version": "v2.0.0",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/truth.md",
+    "tests": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+    "tasks": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tasks.md",
+    "evidence": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "04e2429137365e933a2284d45b719be72a49ab0d5c980a2248d150bd7273594b",
+    "tests": "9ba739ace76ef0c06f777f08f976a0c1e3c9e9f6ff2b854f159ef14b622f9f7e",
+    "tasks": "f39eed1666614741e8d7be6df95c71f4e08ff6168068cdad8345f03b2d1d28db",
+    "evidence": "896e07367f58cb5f40b7ba7394a8bb1ac56f4ed88f064bf8becd460ede094e86"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-v2-goal-durable-longrun",
+    "version": "v2.0.0",
+    "status": "frozen",
+    "revision_id": "R2",
+    "language": "zh",
+    "change_reason": "R2 - full AC-DGS-001..014 parity table + AgentDriver one-shot; pln-review 2026-07-18",
+    "canonical_refs": {
+      "truth": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/truth.md",
+      "tests": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+      "tasks": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tasks.md",
+      "evidence": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "program_ref": "docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/feature-graph.json",
+    "ux_required": "false",
+    "design_deferral": "CLI/orchestrator long-run; no product marketing UI"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-V2-DLR-001",
+      "theme": "parity-v167",
+      "description": "v1.6.7 durable supervisor 行为 fixture 在 v2 可加载/通过（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-DLR-002",
+      "theme": "longrun-flag",
+      "description": "`--longrun` 本 run attach supervisor+driver；默认 run 不 attach（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-DLR-003",
+      "theme": "skill-one-shot",
+      "description": "`$beacon-goal` 识别长跑意图并设置 longrun（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-DLR-004",
+      "theme": "heartbeat-120",
+      "description": "默认 120s 心跳（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-DLR-005",
+      "theme": "execution-jsonl",
+      "description": "事件 append-only JSONL（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-DLR-006",
+      "theme": "resume-pack",
+      "description": "digest-only resume-pack（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-DLR-007",
+      "theme": "interrupt-semantics",
+      "description": "host_interrupted ≠ stage_blocked（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-DLR-008",
+      "theme": "auto-requeue",
+      "description": "turn_ended 后 driver 自动 requeue（除非 terminal/budget/stop）（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-DLR-009",
+      "theme": "tick-execute",
+      "description": "tick --execute 可派 ralph/qa；不 auto-release（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-DLR-010",
+      "theme": "no-self-cert",
+      "description": "complete 需 verifier（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-DLR-011",
+      "theme": "human-release",
+      "description": "release 永不 auto（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-DLR-012",
+      "theme": "budget",
+      "description": "max_agent_turns/token_budget 可配；耗尽不 complete（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-DLR-013",
+      "theme": "rust-own",
+      "description": "AgentDriver 归属 Rust Operator Spine；Python shim 同 CLI（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-DLR-014",
+      "theme": "parallel",
+      "description": "与 satellite pool 可组合（**Should**）"
+    },
+    {
+      "ac_id": "AC-V2-DLR-015",
+      "theme": "fts-p2",
+      "description": "sqlite FTS 非权威（**Should**）"
+    },
+    {
+      "ac_id": "AC-V2-DLR-016",
+      "theme": "legal-illegal-tests",
+      "description": "tests 含 legal walk + illegal 行（**Must**）"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-V2-DLR-001",
+      "tc_id": "TC-V2-DLR-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_parity_v167_fixture -q`",
+      "assertion": "v1.6.7 durable fixture loads",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-DLR-002",
+      "tc_id": "TC-V2-DLR-002",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_longrun_flag_attaches -q`",
+      "assertion": "--longrun attaches; default does not",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-DLR-003",
+      "tc_id": "TC-V2-DLR-003",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_skill_longrun_intent -q`",
+      "assertion": "skill/docs 识别长跑意图",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-DLR-004",
+      "tc_id": "TC-V2-DLR-004",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_heartbeat_default_120 -q`",
+      "assertion": "120s default",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-DLR-005",
+      "tc_id": "TC-V2-DLR-005",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_jsonl_append_only -q`",
+      "assertion": "append-only log",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-DLR-006",
+      "tc_id": "TC-V2-DLR-006",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_resume_pack_digest -q`",
+      "assertion": "digest only",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-DLR-007",
+      "tc_id": "TC-V2-DLR-007",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_interrupt_ne_blocked -q`",
+      "assertion": "interrupt ≠ blocked",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-DLR-008",
+      "tc_id": "TC-V2-DLR-008",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_driver_auto_requeue -q`",
+      "assertion": "auto requeue after turn_ended",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-DLR-009",
+      "tc_id": "TC-V2-DLR-009",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_tick_execute_no_auto_release -q`",
+      "assertion": "no auto release",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-DLR-010",
+      "tc_id": "TC-V2-DLR-010",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_complete_needs_verifier -q`",
+      "assertion": "verifier required",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-DLR-011",
+      "tc_id": "TC-V2-DLR-011",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_human_release -q`",
+      "assertion": "human release",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-DLR-012",
+      "tc_id": "TC-V2-DLR-012",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_budget_halt -q`",
+      "assertion": "budget halt no complete",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-DLR-013",
+      "tc_id": "TC-V2-DLR-013",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_rust_spine_owns_driver_contract -q`",
+      "assertion": "spine owns driver contract",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-DLR-016",
+      "tc_id": "TC-V2-DLR-016",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_tests_md_legal_illegal -q`",
+      "assertion": "legal/illegal rows present",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "LINE-10",
+      "title": "TASK-V2-DLR-01 Port v1.6.7 durable supervisor contracts into Rust GoalRun schema",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-11",
+      "title": "TASK-V2-DLR-02 Implement AgentDriver requeue loop + --longrun CLI",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-12",
+      "title": "TASK-V2-DLR-03 resume-pack digest injection into host agent turns",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-13",
+      "title": "TASK-V2-DLR-04 max_agent_turns / token_budget halt",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-14",
+      "title": "TASK-V2-DLR-05 Python shim parity `beacon goal run --longrun`",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-15",
+      "title": "TASK-V2-DLR-06 skill `$beacon-goal` longrun intent detection",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-16",
+      "title": "TASK-V2-DLR-07 contract tests test_v200_goal_durable_longrun.py",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-17",
+      "title": "TASK-V2-DLR-08 parity fixture from v1.6.7 durable supervisor",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-gen-truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/truth.md",
+      "status": "frozen",
+      "route": "truth"
+    },
+    {
+      "surface": "beacon-gen-truth",
+      "authority": "test_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
+      "status": "frozen",
+      "route": "truth"
+    },
+    {
+      "surface": "upstream",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/truth.md",
+      "status": "frozen",
+      "route": "parity"
+    },
+    {
+      "surface": "program",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/feature-graph.json",
+      "status": "indexed",
+      "route": "program"
+    },
+    {
+      "surface": "research",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/research/beacon-v2-goal-durable-longrun.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "parent",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
+      "status": "frozen",
+      "route": "dependency"
+    }
+  ]
+}

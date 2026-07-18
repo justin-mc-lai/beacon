@@ -9,7 +9,9 @@ from __future__ import annotations
 
 import json
 import re
+import sqlite3
 import uuid
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Literal
 
@@ -17,6 +19,34 @@ from beacon.utils.runtime import now_iso, write_json
 from beacon.utils.story_state import feature_slug
 from beacon.utils.versioning import normalize_version, resolve_target_version
 from beacon.utils.goal_queue import consume_next, list_queued
+from beacon.utils.goal_durable_supervisor import (
+    DEFAULT_HEARTBEAT_INTERVAL_SEC as DGS_DEFAULT_HEARTBEAT,
+    MIN_HEARTBEAT_INTERVAL_SEC,
+    REASON_HOST_INTERRUPTED as DGS_HOST_INTERRUPTED,
+    append_execution_log,
+    attach_supervisor as dgs_attach_supervisor,
+    build_resume_pack,
+    detach_supervisor as dgs_detach_supervisor,
+    detect_stall,
+    load_checkpoint,
+    mark_host_interrupted,
+    memory_reindex,
+    memory_search,
+    normalize_interval,
+    plan_tick_execute,
+    record_heartbeat_on_payload,
+    supervise_once as dgs_supervise_once,
+    write_checkpoint,
+)
+from beacon.utils.goal_agent_driver import (
+    attach_longrun_to_goal_run,
+    detect_longrun_intent,
+    driver_start as gad_driver_start,
+    driver_status as gad_driver_status,
+    driver_stop as gad_driver_stop,
+    driver_run_loop as gad_driver_run_loop,
+    load_driver_state,
+)
 
 SCHEMA_VERSION = "1.0"
 PUBLIC_ENTRY = "beacon-goal"
@@ -44,6 +74,10 @@ REASON_VERIFIER_REQUIRED = "product_goal_complete_requires_verifier"
 REASON_NOT_FOUND = "product_goal_run_not_found"
 REASON_BLOCKED_STREAK = "product_goal_blocked_streak"
 REASON_DUAL_ENTRY = "product_goal_dual_public_entry_forbidden"
+REASON_HOST_INTERRUPTED = "host_interrupted"
+REASON_STAGE_BLOCKED = "stage_blocked"
+DEFAULT_HEARTBEAT_INTERVAL_SEC = 120
+MIN_HEARTBEAT_INTERVAL_SEC = 30
 
 
 def _semver_tuple(version: str | None) -> tuple[int, int, int]:
@@ -269,6 +303,17 @@ def create_goal_run(
         "progressive_loaded_skills": [],
         "parallel_plan": parallel,
         "blocked_streak": 0,
+        "heartbeat_interval_sec": DEFAULT_HEARTBEAT_INTERVAL_SEC,
+        "last_heartbeat_at": "",
+        "last_substep": "",
+        "stall_flag": False,
+        "supervisor": {
+            "attached": False,
+            "session_id": "",
+            "state": "detached",
+            "interval_sec": DEFAULT_HEARTBEAT_INTERVAL_SEC,
+            "attached_at": "",
+        },
         "implement_delegate": "",
         "verifier": {
             "required_for_complete": True,
@@ -337,18 +382,66 @@ def load_stage_skills(project_root: Path, run_id: str, stage: str) -> dict[str, 
     return _save(project_root, payload)
 
 
-def tick_goal_run(project_root: Path, run_id: str, *, note: str = "") -> dict[str, Any]:
-    """Advance one stage in the facade plan (orchestration record, not self-certify)."""
+def tick_goal_run(
+    project_root: Path,
+    run_id: str,
+    *,
+    note: str = "",
+    execute: bool = False,
+) -> dict[str, Any]:
+    """Advance one stage; with execute=True may plan/dispatch stage workers (no self-cert)."""
+    project_root = Path(project_root).expanduser().resolve()
     payload = load_goal_run(project_root, run_id)
     if payload.get("reason_code") == REASON_NOT_FOUND:
         return payload
     stages = payload.get("stages") if isinstance(payload.get("stages"), list) else []
     current = str(payload.get("current_stage") or "")
     idx = next((i for i, s in enumerate(stages) if isinstance(s, dict) and s.get("stage") == current), 0)
+
+    worker_plan = None
+    if execute:
+        worker_plan = plan_tick_execute(payload)
+        payload["last_tick_execute"] = worker_plan
+        append_execution_log(
+            project_root,
+            run_id,
+            stage=current,
+            event="tick",
+            summary=f"tick --execute dispatch={worker_plan.get('dispatch')}",
+            cmd=str(worker_plan.get("command") or ""),
+        )
+        # Soft dispatch hooks (do not claim QA/release)
+        if worker_plan.get("dispatch") == "ralph":
+            payload = delegate_implement_to_ralph(project_root, run_id, feature=str(payload.get("feature") or ""))
+            payload = load_goal_run(project_root, run_id)
+        elif worker_plan.get("dispatch") == "design":
+            try:
+                payload = run_design_stage_for_goal(project_root, run_id)
+            except Exception as exc:  # noqa: BLE001
+                payload = record_blocker(project_root, run_id, reason_code=f"design_stage_error:{exc}")
+                return payload
+        elif worker_plan.get("dispatch") == "none" and worker_plan.get("action") == "human_release_gate":
+            # never auto-confirm release
+            append_execution_log(
+                project_root,
+                run_id,
+                stage="release",
+                event="blocker",
+                summary="release requires human confirmation; tick --execute does not auto-release",
+            )
+        # qa dispatch is planned only here (caller/CLI may run beacon qa); do not fake scorecards
+    else:
+        append_execution_log(
+            project_root,
+            run_id,
+            stage=current,
+            event="tick",
+            summary=f"tick record-only note={str(note)[:80]}",
+        )
+
     if idx < len(stages) and isinstance(stages[idx], dict):
         stages[idx]["status"] = "done"
         stages[idx]["loaded"] = True
-        # progressive load for this stage if not yet
         for skill in stages[idx].get("skills") or []:
             loaded = list(payload.get("progressive_loaded_skills") or [])
             if skill not in loaded:
@@ -367,11 +460,12 @@ def tick_goal_run(project_root: Path, run_id: str, *, note: str = "") -> dict[st
         payload["status"] = "awaiting_verifier"
         payload["current_stage"] = "complete_gate"
     hist = list(payload.get("history") or [])
-    hist.append({"event": "tick", "note": note, "at": now_iso()})
+    hist.append({"event": "tick", "note": note, "execute": bool(execute), "at": now_iso()})
     payload["history"] = hist
     payload["stages"] = stages
+    if worker_plan is not None:
+        payload["last_tick_execute"] = worker_plan
     return _save(project_root, payload)
-
 
 
 
@@ -548,8 +642,20 @@ def run_goal_facade(
     lakes: list[str] | None = None,
     worktree_mode: WorktreeMode | None = None,
     auto_tick: bool = False,
+    longrun: bool = False,
+    driver_start: bool = True,
+    driver_run_loop: bool = False,
+    max_driver_turns: int | None = None,
+    bridge_cmd: str | None = None,
+    spawn_fn=None,
 ) -> dict[str, Any]:
-    """Public facade: create goal run and optionally advance planning stages."""
+    """Public facade: create goal run and optionally advance planning stages.
+
+    longrun=False (default): driver stays idle; supervise remains opt-in.
+    longrun=True: attach durable supervisor + AgentDriver for this run only.
+    """
+    # skill/utterance intent may force longrun without CLI flag
+    effective_longrun = bool(longrun) or detect_longrun_intent(utterance)
     payload = create_goal_run(
         project_root,
         utterance=utterance,
@@ -565,9 +671,23 @@ def run_goal_facade(
         # advance through plan→truth record only; never self-claim qa/release
         for _ in range(2):
             payload = tick_goal_run(project_root, payload["run_id"], note="auto_tick_facade")
+    payload["longrun"] = False
+    payload["driver"] = {"state": "idle", "longrun": False}
+    if effective_longrun:
+        payload = attach_longrun_to_goal_run(
+            project_root,
+            payload,
+            start_driver=driver_start,
+            run_loop=driver_run_loop,
+            max_loop_turns=max_driver_turns,
+            spawn_fn=spawn_fn,
+            bridge_cmd=bridge_cmd,
+        )
+        payload["longrun"] = True
     payload["entry_contract"] = public_entry_contract()
     payload["recommended_next"] = {
         "human": "continue via $beacon-goal or beacon goal tick/resume",
+        "longrun": 'beacon goal run "..." --longrun  # auto requeue host turns',
         "complete": "requires verifier refs (beacon-eval-qa evidence), then beacon goal complete",
         "release": "human gate via beacon-eval-release",
     }
@@ -663,3 +783,241 @@ def consume_discovery_queue(project_root: Path, *, version: str = "auto") -> dic
     run["from_queue_item"] = item.get("id")
     run["discovery_source"] = item.get("source")
     return run
+
+
+# --- Durable supervisor public API (v1.6.7) ---
+
+
+def goal_heartbeat(
+    project_root: Path,
+    run_id: str,
+    *,
+    summary: str,
+    substep: str = "",
+) -> dict[str, Any]:
+    project_root = Path(project_root).expanduser().resolve()
+    payload = load_goal_run(project_root, run_id)
+    if payload.get("reason_code") == REASON_NOT_FOUND:
+        return payload
+    payload = record_heartbeat_on_payload(payload, summary=summary, substep=substep)
+    append_execution_log(
+        project_root,
+        run_id,
+        stage=str(payload.get("current_stage") or ""),
+        event="heartbeat",
+        summary=summary,
+        substep=substep,
+    )
+    return _save(project_root, payload)
+
+
+def goal_checkpoint(
+    project_root: Path,
+    run_id: str,
+    *,
+    next_action: str,
+    substep: str = "",
+) -> dict[str, Any]:
+    project_root = Path(project_root).expanduser().resolve()
+    payload = load_goal_run(project_root, run_id)
+    if payload.get("reason_code") == REASON_NOT_FOUND:
+        return payload
+    if substep:
+        payload["last_substep"] = substep
+    recent = []
+    # heartbeats from history
+    for h in reversed(list(payload.get("history") or [])):
+        if isinstance(h, dict) and h.get("event") == "heartbeat":
+            recent.append({"ts": str(h.get("at") or ""), "summary": str(h.get("summary") or "")})
+        if len(recent) >= 5:
+            break
+    recent.reverse()
+    blockers = []
+    if payload.get("reason_code"):
+        blockers.append({"reason_code": str(payload.get("reason_code")), "summary": str(payload.get("reason_code"))})
+    pack = write_checkpoint(
+        project_root,
+        run_id,
+        stage=str(payload.get("current_stage") or ""),
+        last_substep=str(payload.get("last_substep") or substep or ""),
+        next_action=next_action,
+        open_blockers=blockers,
+        last_heartbeat_at=str(payload.get("last_heartbeat_at") or ""),
+        recent_heartbeats=recent,
+    )
+    payload["checkpoint"] = pack
+    hist = list(payload.get("history") or [])
+    hist.append({"event": "checkpoint", "next_action": next_action[:240], "at": now_iso()})
+    payload["history"] = hist
+    return _save(project_root, payload)
+
+
+def goal_resume_pack(project_root: Path, run_id: str) -> dict[str, Any]:
+    project_root = Path(project_root).expanduser().resolve()
+    payload = load_goal_run(project_root, run_id)
+    if payload.get("reason_code") == REASON_NOT_FOUND:
+        return payload
+    # if stalled, mark interrupted for resume semantics
+    if detect_stall(payload) and payload.get("reason_code") != DGS_HOST_INTERRUPTED:
+        payload = mark_host_interrupted(payload)
+        payload = _save(project_root, payload)
+        append_execution_log(
+            project_root,
+            run_id,
+            stage=str(payload.get("current_stage") or ""),
+            event="host_interrupt",
+            summary="resume-pack detected stall",
+            substep=str(payload.get("last_substep") or ""),
+        )
+    pack = build_resume_pack(project_root, payload)
+    return {
+        "status": "ok",
+        "run_id": run_id,
+        "resume_pack": pack,
+        "payload_status": payload.get("status"),
+        "reason_code": payload.get("reason_code"),
+        "authority_note": pack.get("authority_note"),
+    }
+
+
+def goal_supervise_attach(
+    project_root: Path,
+    run_id: str,
+    *,
+    interval_sec: int | None = None,
+    once: bool = False,
+) -> dict[str, Any]:
+    """Opt-in supervisor attach (+ optional single poll). Never called from goal run."""
+    project_root = Path(project_root).expanduser().resolve()
+    payload = load_goal_run(project_root, run_id)
+    if payload.get("reason_code") == REASON_NOT_FOUND:
+        return payload
+    payload = dgs_attach_supervisor(payload, interval_sec=interval_sec)
+    payload = _save(project_root, payload)
+    append_execution_log(
+        project_root,
+        run_id,
+        stage=str(payload.get("current_stage") or ""),
+        event="supervise_attach",
+        summary=f"supervisor attached interval={payload.get('heartbeat_interval_sec')}",
+    )
+    result: dict[str, Any] = {
+        "status": "active",
+        "run_id": run_id,
+        "supervisor": payload.get("supervisor"),
+        "opt_in": True,
+        "auto_on_goal_run": False,
+    }
+    if once:
+        poll = dgs_supervise_once(project_root, payload)
+        if isinstance(poll.get("payload"), dict):
+            payload = _save(project_root, poll["payload"])
+        result["poll"] = {k: v for k, v in poll.items() if k != "payload"}
+        result["payload"] = payload
+    else:
+        result["payload"] = payload
+        result["note"] = "call again with --once or loop externally; not a system daemon by default"
+    return result
+
+
+def goal_supervise_detach(project_root: Path, run_id: str) -> dict[str, Any]:
+    project_root = Path(project_root).expanduser().resolve()
+    payload = load_goal_run(project_root, run_id)
+    if payload.get("reason_code") == REASON_NOT_FOUND:
+        return payload
+    payload = dgs_detach_supervisor(payload)
+    payload = _save(project_root, payload)
+    append_execution_log(
+        project_root,
+        run_id,
+        stage=str(payload.get("current_stage") or ""),
+        event="supervise_detach",
+        summary="supervisor detached",
+    )
+    return {"status": "stopped", "run_id": run_id, "supervisor": payload.get("supervisor"), "payload": payload}
+
+
+def goal_memory_reindex(project_root: Path, run_id: str) -> dict[str, Any]:
+    project_root = Path(project_root).expanduser().resolve()
+    payload = load_goal_run(project_root, run_id)
+    if payload.get("reason_code") == REASON_NOT_FOUND:
+        return payload
+    return memory_reindex(project_root, run_id)
+
+
+def goal_memory_search(project_root: Path, run_id: str, query: str, *, limit: int = 10) -> dict[str, Any]:
+    project_root = Path(project_root).expanduser().resolve()
+    payload = load_goal_run(project_root, run_id)
+    if payload.get("reason_code") == REASON_NOT_FOUND:
+        return payload
+    result = memory_search(project_root, run_id, query, limit=limit)
+    result["can_complete"] = False
+    result["authority"] = "support_advisory"
+    return result
+
+
+def enrich_goal_status(project_root: Path, payload: dict[str, Any]) -> dict[str, Any]:
+    """Add stall / supervisor fields for status command."""
+    project_root = Path(project_root).expanduser().resolve()
+    if payload.get("reason_code") == REASON_NOT_FOUND:
+        return payload
+    out = dict(payload)
+    stalled = detect_stall(out)
+    out["stall_detected"] = stalled
+    if stalled and out.get("reason_code") not in {DGS_HOST_INTERRUPTED, REASON_BLOCKED_STREAK}:
+        out["stall_flag"] = True
+    out["resume_pack_preview"] = build_resume_pack(project_root, out)
+    return out
+
+
+# --- AgentDriver public API (v1.6.7 Path C) ---
+
+
+def goal_driver_start(
+    project_root: Path,
+    run_id: str,
+    *,
+    run_loop: bool = False,
+    max_turns: int | None = None,
+    turn_timeout_sec: int | None = None,
+    bridge_cmd: str | None = None,
+    spawn_fn=None,
+) -> dict[str, Any]:
+    """Start AgentDriver for an existing run (single lock)."""
+    return gad_driver_start(
+        project_root,
+        run_id,
+        longrun=True,
+        attach_supervisor=True,
+        run_loop=run_loop,
+        max_loop_turns=max_turns,
+        max_turns=max_turns,
+        turn_timeout_sec=turn_timeout_sec,
+        spawn_fn=spawn_fn,
+        bridge_cmd=bridge_cmd,
+    )
+
+
+def goal_driver_status(project_root: Path, run_id: str) -> dict[str, Any]:
+    return gad_driver_status(project_root, run_id)
+
+
+def goal_driver_stop(project_root: Path, run_id: str) -> dict[str, Any]:
+    return gad_driver_stop(project_root, run_id)
+
+
+def goal_driver_run_loop(
+    project_root: Path,
+    run_id: str,
+    *,
+    max_loop_turns: int | None = None,
+    bridge_cmd: str | None = None,
+    spawn_fn=None,
+) -> dict[str, Any]:
+    return gad_driver_run_loop(
+        project_root,
+        run_id,
+        max_loop_turns=max_loop_turns,
+        bridge_cmd=bridge_cmd,
+        spawn_fn=spawn_fn,
+    )

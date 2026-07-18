@@ -1,0 +1,841 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-goal-durable-supervisor-v167",
+  "feature_slug": "beacon-goal-durable-supervisor-v167",
+  "version": "v1.6.7",
+  "generated_at": "2026-07-18T01:29:00.476857+00:00",
+  "expansion_profile": "pua-web",
+  "scenario_depth": "standard",
+  "families_required": [
+    "happy",
+    "negative",
+    "boundary",
+    "recovery",
+    "compatibility"
+  ],
+  "stories": [
+    {
+      "ac_id": "AC-001",
+      "theme": "general",
+      "text": "Acceptance criteria TBD",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-DGS-001",
+      "theme": "",
+      "text": "goal run 不自动 attach supervise",
+      "scenario_ids": [
+        "SC-AUTO-TC-DGS-001"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-DGS-001",
+          "source_tc_id": "TC-DGS-001",
+          "tc_id": "TC-DGS-001-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-DGS-002",
+      "theme": "",
+      "text": "默认 interval=120",
+      "scenario_ids": [
+        "SC-AUTO-TC-DGS-002"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-DGS-002",
+          "source_tc_id": "TC-DGS-002",
+          "tc_id": "TC-DGS-002-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-DGS-003",
+      "theme": "",
+      "text": "heartbeat/tick append JSONL",
+      "scenario_ids": [
+        "SC-AUTO-TC-DGS-003"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-DGS-003",
+          "source_tc_id": "TC-DGS-003",
+          "tc_id": "TC-DGS-003-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-DGS-004",
+      "theme": "",
+      "text": "checkpoint + resume-pack digest only",
+      "scenario_ids": [
+        "SC-AUTO-TC-DGS-004"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-DGS-004",
+          "source_tc_id": "TC-DGS-004",
+          "tc_id": "TC-DGS-004-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-DGS-005",
+      "theme": "",
+      "text": "idle≥interval → host_interrupted/stall",
+      "scenario_ids": [
+        "SC-AUTO-TC-DGS-005"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-DGS-005",
+          "source_tc_id": "TC-DGS-005",
+          "tc_id": "TC-DGS-005-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-DGS-006",
+      "theme": "",
+      "text": "两类 reason 可区分",
+      "scenario_ids": [
+        "SC-AUTO-TC-DGS-006"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-DGS-006",
+          "source_tc_id": "TC-DGS-006",
+          "tc_id": "TC-DGS-006-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-DGS-007",
+      "theme": "",
+      "text": "--execute 可派发；无 flag 不派发",
+      "scenario_ids": [
+        "SC-AUTO-TC-DGS-007"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-DGS-007",
+          "source_tc_id": "TC-DGS-007",
+          "tc_id": "TC-DGS-007-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-DGS-008",
+      "theme": "",
+      "text": "无 refs 不可 complete",
+      "scenario_ids": [
+        "SC-AUTO-TC-DGS-008"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-DGS-008",
+          "source_tc_id": "TC-DGS-008",
+          "tc_id": "TC-DGS-008-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-DGS-009",
+      "theme": "",
+      "text": "不自动 release",
+      "scenario_ids": [
+        "SC-AUTO-TC-DGS-009"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-DGS-009",
+          "source_tc_id": "TC-DGS-009",
+          "tc_id": "TC-DGS-009-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-DGS-010",
+      "theme": "",
+      "text": "文档/示例无第二入口",
+      "scenario_ids": [
+        "SC-AUTO-TC-DGS-010"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-DGS-010",
+          "source_tc_id": "TC-DGS-010",
+          "tc_id": "TC-DGS-010-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-DGS-011",
+      "theme": "",
+      "text": "禁止覆写 JSONL",
+      "scenario_ids": [
+        "SC-AUTO-TC-DGS-011"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-DGS-011",
+          "source_tc_id": "TC-DGS-011",
+          "tc_id": "TC-DGS-011-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-DGS-012",
+      "theme": "",
+      "text": "FTS 结果不触发 complete",
+      "scenario_ids": [
+        "SC-AUTO-TC-DGS-012"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-DGS-012",
+          "source_tc_id": "TC-DGS-012",
+          "tc_id": "TC-DGS-012-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-DGS-013",
+      "theme": "",
+      "text": "SKILL 含 resume-pack/supervise",
+      "scenario_ids": [
+        "SC-AUTO-TC-DGS-013"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-DGS-013",
+          "source_tc_id": "TC-DGS-013",
+          "tc_id": "TC-DGS-013-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-DGS-014",
+      "theme": "",
+      "text": "tests 含 legal/illegal 行",
+      "scenario_ids": [
+        "SC-AUTO-TC-DGS-014"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-DGS-014",
+          "source_tc_id": "TC-DGS-014",
+          "tc_id": "TC-DGS-014-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "SC-AUTO-TC-DGS-001",
+      "source_tc_id": "TC-DGS-001",
+      "tc_id": "TC-DGS-001-PRIMARY",
+      "ac_id": "AC-DGS-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "goal run 不自动 attach supervise",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_supervise_is_opt_in -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "goal run 不自动 attach supervise",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-001/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-DGS-002",
+      "source_tc_id": "TC-DGS-002",
+      "tc_id": "TC-DGS-002-PRIMARY",
+      "ac_id": "AC-DGS-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "默认 interval=120",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_heartbeat_default_120s -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "默认 interval=120",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-002/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-DGS-003",
+      "source_tc_id": "TC-DGS-003",
+      "tc_id": "TC-DGS-003-PRIMARY",
+      "ac_id": "AC-DGS-003",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "heartbeat/tick append JSONL",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_execution_jsonl_append -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "heartbeat/tick append JSONL",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-003/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-DGS-004",
+      "source_tc_id": "TC-DGS-004",
+      "tc_id": "TC-DGS-004-PRIMARY",
+      "ac_id": "AC-DGS-004",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "checkpoint + resume-pack digest only",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_checkpoint_and_resume_pack -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "checkpoint + resume-pack digest only",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-004/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-DGS-005",
+      "source_tc_id": "TC-DGS-005",
+      "tc_id": "TC-DGS-005-PRIMARY",
+      "ac_id": "AC-DGS-005",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "idle≥interval → host_interrupted/stall",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_stall_detects_idle -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "idle≥interval → host_interrupted/stall",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-005/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-DGS-006",
+      "source_tc_id": "TC-DGS-006",
+      "tc_id": "TC-DGS-006-PRIMARY",
+      "ac_id": "AC-DGS-006",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "两类 reason 可区分",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_interrupt_ne_stage_blocked -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "两类 reason 可区分",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-006/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-DGS-007",
+      "source_tc_id": "TC-DGS-007",
+      "tc_id": "TC-DGS-007-PRIMARY",
+      "ac_id": "AC-DGS-007",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "--execute 可派发；无 flag 不派发",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_tick_execute_dispatches -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "--execute 可派发；无 flag 不派发",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-007/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-DGS-008",
+      "source_tc_id": "TC-DGS-008",
+      "tc_id": "TC-DGS-008-PRIMARY",
+      "ac_id": "AC-DGS-008",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "无 refs 不可 complete",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_no_complete_without_verifier -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "无 refs 不可 complete",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-008/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-DGS-009",
+      "source_tc_id": "TC-DGS-009",
+      "tc_id": "TC-DGS-009-PRIMARY",
+      "ac_id": "AC-DGS-009",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "不自动 release",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_supervise_never_auto_release -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "不自动 release",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-009/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-DGS-010",
+      "source_tc_id": "TC-DGS-010",
+      "tc_id": "TC-DGS-010-PRIMARY",
+      "ac_id": "AC-DGS-010",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "文档/示例无第二入口",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_no_second_public_entry -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "文档/示例无第二入口",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-010/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-DGS-011",
+      "source_tc_id": "TC-DGS-011",
+      "tc_id": "TC-DGS-011-PRIMARY",
+      "ac_id": "AC-DGS-011",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "禁止覆写 JSONL",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_log_append_only -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "禁止覆写 JSONL",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-011/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-DGS-012",
+      "source_tc_id": "TC-DGS-012",
+      "tc_id": "TC-DGS-012-PRIMARY",
+      "ac_id": "AC-DGS-012",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "FTS 结果不触发 complete",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_sqlite_fts_non_authoritative -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "FTS 结果不触发 complete",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-012/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-DGS-013",
+      "source_tc_id": "TC-DGS-013",
+      "tc_id": "TC-DGS-013-PRIMARY",
+      "ac_id": "AC-DGS-013",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "SKILL 含 resume-pack/supervise",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_skill_mentions_resume_pack -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "SKILL 含 resume-pack/supervise",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-013/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-DGS-014",
+      "source_tc_id": "TC-DGS-014",
+      "tc_id": "TC-DGS-014-PRIMARY",
+      "ac_id": "AC-DGS-014",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "tests 含 legal/illegal 行",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_tests_md_has_legal_and_illegal -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "tests 含 legal/illegal 行",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-durable-supervisor-v167/tc-dgs-014/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
+}

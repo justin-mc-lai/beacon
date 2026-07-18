@@ -1,0 +1,176 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-17T07:58:23.813911+00:00",
+  "feature": "beacon-v2-ralph-implement-boundary",
+  "feature_slug": "beacon-v2-ralph-implement-boundary",
+  "version": "v2.0.0",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v2.0.0/features/beacon-v2-ralph-implement-boundary/truth.md",
+    "tests": "docs/beacon/v2.0.0/features/beacon-v2-ralph-implement-boundary/tests.md",
+    "tasks": "docs/beacon/v2.0.0/features/beacon-v2-ralph-implement-boundary/tasks.md",
+    "evidence": "docs/beacon/v2.0.0/features/beacon-v2-ralph-implement-boundary/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "45ca980b4b5d4b650e7411f761254613f8989d2f41e2f186855f9a135a554113",
+    "tests": "ae3e7996f8b59139780d9839c61cb6f9b42a43441a6cd6730170792a2a275ceb",
+    "tasks": "636086104fb0b30b4589b1133db17b97d7edd39a50415ed326a8586c564c708d",
+    "evidence": "47f93bc27c95865cf707d020d2af331dd015826e8bf066664ab813fb1f3ce722"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-v2-ralph-implement-boundary",
+    "version": "v2.0.0",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "W3 Ralph implement-only boundary under Product Goal; parity v1.6.7",
+    "canonical_refs": {
+      "truth": "docs/beacon/v2.0.0/features/beacon-v2-ralph-implement-boundary/truth.md",
+      "tests": "docs/beacon/v2.0.0/features/beacon-v2-ralph-implement-boundary/tests.md",
+      "tasks": "docs/beacon/v2.0.0/features/beacon-v2-ralph-implement-boundary/tasks.md",
+      "evidence": "docs/beacon/v2.0.0/features/beacon-v2-ralph-implement-boundary/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "program_ref": "docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/feature-graph.json",
+    "upstream_ref": "docs/beacon/v1.6.7/features/beacon-ralph-implement-boundary-v167/truth.md"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-V2-RLP-001",
+      "theme": "skill-contract",
+      "description": "implement-ralph / skill 明示边界（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-RLP-002",
+      "theme": "runtime-guard",
+      "description": "ralph runtime 不得设置 qa_verdict/release_verdict（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-RLP-003",
+      "theme": "goal-delegate",
+      "description": "product-goal state 可记录 implement_delegate=ralph（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-RLP-004",
+      "theme": "handoff",
+      "description": "ralph handoff 仅到 qa/review/repair routes（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-RLP-005",
+      "theme": "tests",
+      "description": "contract tests 锁边界（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-RLP-006",
+      "theme": "no-default-v2",
+      "description": "与 DEF-SE-004 一致：不得用 Ralph 长跑作为切默认 BEACON_V2 的证据（**Must**）"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-V2-RLP-002",
+      "tc_id": "TC-V2-RLP-001",
+      "layer": "negative",
+      "command": "`python3 -m pytest tests/test_v200_ralph_boundary.py::test_no_qa_verdict -q`",
+      "assertion": "不得写 QA verdict",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-RLP-004",
+      "tc_id": "TC-V2-RLP-002",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v200_ralph_boundary.py::test_handoff_routes -q`",
+      "assertion": "handoff 路由合法",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-RLP-005",
+      "tc_id": "TC-V2-RLP-003",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v200_ralph_boundary.py::test_finalize_not_complete -q`",
+      "assertion": "finalize≠complete",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Document/skill boundary contracts",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Runtime guards against verdict writes",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Goal delegate field + handoff routes",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Contract tests",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Implement + formal QA",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-gen-change",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/beacon-v2-ralph-implement-boundary/truth.md",
+      "status": "frozen",
+      "route": "truth"
+    },
+    {
+      "surface": "program",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/feature-graph.json",
+      "status": "indexed",
+      "route": "program"
+    },
+    {
+      "surface": "planner",
+      "authority": "support_advisory",
+      "canonical_artifact": ".beacon/state/planner-review/beacon-v2-architecture-se-standard/pln-review-20260717t073750z.json",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "se-standard",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/execution/v2-software-engineering-standards.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "upstream-v167",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.7/features/beacon-ralph-implement-boundary-v167/truth.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "parent-change",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/change/beacon-v2-product-goal-domain-truth-chain-v200.md",
+      "status": "indexed",
+      "route": "change"
+    }
+  ]
+}

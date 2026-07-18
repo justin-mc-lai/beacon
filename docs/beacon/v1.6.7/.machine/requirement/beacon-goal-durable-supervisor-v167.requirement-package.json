@@ -1,0 +1,369 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-18T03:03:58.627286+00:00",
+  "feature": "beacon-goal-durable-supervisor-v167",
+  "feature_slug": "beacon-goal-durable-supervisor-v167",
+  "version": "v1.6.7",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/truth.md",
+    "tests": "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
+    "tasks": "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tasks.md",
+    "evidence": "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "1a452d8cf3c4cf409a2541b564177c5ad11dadc08df522e49f6aa9f425c1fc78",
+    "tests": "1559729db5d742b9a6decb1f7c64afada1a3a6191c1ed90e8806d87a89de8c6a",
+    "tasks": "f4775f8885854901f344d1a76d99a21548c6ace23c3103ff74ce1517b4e14800",
+    "evidence": "1179707e4590e208dea0842cd8266436b407dcc39d5cc2be0baa5b80ce785e79"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-goal-durable-supervisor-v167",
+    "version": "v1.6.7",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "P0 durable supervisor for product-goal: opt-in supervise, 2min heartbeat, execution.jsonl, tick-exec, host_interrupt/resume; P2 sqlite FTS memory (not zvec core)",
+    "canonical_refs": {
+      "truth": "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/truth.md",
+      "tests": "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
+      "tasks": "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tasks.md",
+      "evidence": "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "program_ref": "docs/beacon/v1.6.7/programs/beacon-product-goal-domain-delivery-v167/feature-graph.json",
+    "ux_required": "false",
+    "design_deferral": "CLI-only durable supervisor; no product UI surface"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-DGS-001",
+      "theme": "opt-in-supervise",
+      "description": "`goal run` 不自动 attach supervise；仅 `goal supervise` 进入 SupervisorSession.active（**Must**）"
+    },
+    {
+      "ac_id": "AC-DGS-002",
+      "theme": "heartbeat-default",
+      "description": "默认 heartbeat_interval_sec=120；可配置且 ≥30（**Must**）"
+    },
+    {
+      "ac_id": "AC-DGS-003",
+      "theme": "execution-jsonl",
+      "description": "每次 heartbeat/cmd/tick/supervise 事件 append execution.jsonl（**Must**）"
+    },
+    {
+      "ac_id": "AC-DGS-004",
+      "theme": "checkpoint",
+      "description": "checkpoint.json 含 last_substep + next_action；resume-pack 只吐 digest（**Must**）"
+    },
+    {
+      "ac_id": "AC-DGS-005",
+      "theme": "stall-detect",
+      "description": "stage 需工作时 idle≥interval 无 heartbeat → host_interrupted 或 stall_flag（**Must**）"
+    },
+    {
+      "ac_id": "AC-DGS-006",
+      "theme": "interrupt-semantics",
+      "description": "host_interrupted ≠ stage_blocked；resume 回 last_substep（**Must**）"
+    },
+    {
+      "ac_id": "AC-DGS-007",
+      "theme": "tick-execute",
+      "description": "`tick --execute` 在 implement/qa 可派发工人；无 flag 不派发（**Must**）"
+    },
+    {
+      "ac_id": "AC-DGS-008",
+      "theme": "no-self-cert",
+      "description": "supervisor/tick 不得在无 verifier refs 时 complete（**Must**）"
+    },
+    {
+      "ac_id": "AC-DGS-009",
+      "theme": "no-auto-release",
+      "description": "release 永不被 supervise 自动确认（**Must**）"
+    },
+    {
+      "ac_id": "AC-DGS-010",
+      "theme": "single-entry",
+      "description": "文档/CLI 不把 supervise 宣传为第二公共入口（**Must**）"
+    },
+    {
+      "ac_id": "AC-DGS-011",
+      "theme": "append-only-log",
+      "description": "禁止非 append 覆写 execution.jsonl（**Must**）"
+    },
+    {
+      "ac_id": "AC-DGS-012",
+      "theme": "sqlite-fts-p2",
+      "description": "P2：sqlite FTS reindex/search 可选；结果非 complete 权威（**Should**）"
+    },
+    {
+      "ac_id": "AC-DGS-013",
+      "theme": "skill-continue",
+      "description": "beacon-goal SKILL 声明同会话续跑 + resume-pack 用法（**Must**）"
+    },
+    {
+      "ac_id": "AC-DGS-014",
+      "theme": "legal-walk-tests",
+      "description": "tests.md 含 ≥1 legal walk 与 ≥2 illegal 行（**Must**）"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-DGS-001",
+      "tc_id": "TC-DGS-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_supervise_is_opt_in -q`",
+      "assertion": "goal run 不自动 attach supervise",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-DGS-002",
+      "tc_id": "TC-DGS-002",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_heartbeat_default_120s -q`",
+      "assertion": "默认 interval=120",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-DGS-003",
+      "tc_id": "TC-DGS-003",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_execution_jsonl_append -q`",
+      "assertion": "heartbeat/tick append JSONL",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-DGS-004",
+      "tc_id": "TC-DGS-004",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_checkpoint_and_resume_pack -q`",
+      "assertion": "checkpoint + resume-pack digest only",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-DGS-005",
+      "tc_id": "TC-DGS-005",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_stall_detects_idle -q`",
+      "assertion": "idle≥interval → host_interrupted/stall",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-DGS-006",
+      "tc_id": "TC-DGS-006",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_interrupt_ne_stage_blocked -q`",
+      "assertion": "两类 reason 可区分",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-DGS-007",
+      "tc_id": "TC-DGS-007",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_tick_execute_dispatches -q`",
+      "assertion": "--execute 可派发；无 flag 不派发",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-DGS-008",
+      "tc_id": "TC-DGS-008",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_no_complete_without_verifier -q`",
+      "assertion": "无 refs 不可 complete",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-DGS-009",
+      "tc_id": "TC-DGS-009",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_supervise_never_auto_release -q`",
+      "assertion": "不自动 release",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-DGS-010",
+      "tc_id": "TC-DGS-010",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_no_second_public_entry -q`",
+      "assertion": "文档/示例无第二入口",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-DGS-011",
+      "tc_id": "TC-DGS-011",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_log_append_only -q`",
+      "assertion": "禁止覆写 JSONL",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-DGS-012",
+      "tc_id": "TC-DGS-012",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_sqlite_fts_non_authoritative -q`",
+      "assertion": "FTS 结果不触发 complete",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-DGS-013",
+      "tc_id": "TC-DGS-013",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_skill_mentions_resume_pack -q`",
+      "assertion": "SKILL 含 resume-pack/supervise",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-DGS-014",
+      "tc_id": "TC-DGS-014",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v167_goal_durable_supervisor.py::test_tests_md_has_legal_and_illegal -q`",
+      "assertion": "tests 含 legal/illegal 行",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "LINE-12",
+      "title": "TASK-DGS-01 扩展 `product_goal_runtime` / `goal_durable_supervisor`：heartbeat / checkpoint / execution.jsonl / stall（AC-DGS-002..006,011）",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-13",
+      "title": "TASK-DGS-02 CLI：`goal supervise|heartbeat|checkpoint|resume-pack` + `tick --execute`（AC-DGS-001,007）",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-14",
+      "title": "TASK-DGS-03 complete/release 门禁不变量回归（AC-DGS-008,009）",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-15",
+      "title": "TASK-DGS-04 更新 `skills/beacon/beacon-goal/SKILL.md` resume-pack + supervise opt-in（AC-DGS-010,013）",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-16",
+      "title": "TASK-DGS-05 契约测试 `tests/test_v167_goal_durable_supervisor.py`（AC-DGS-014 全表）",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-20",
+      "title": "TASK-DGS-06 supervise 轮询：interval 默认 120s；可 `--once`；可 plan ralph/qa 工人",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-21",
+      "title": "TASK-DGS-07 status 输出 stall / supervisor / resume_pack_preview（enrich_goal_status）",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-25",
+      "title": "TASK-DGS-08 `goal memory reindex|search` sqlite FTS；非权威（AC-DGS-012）",
+      "status": "checked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-gen-truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/truth.md",
+      "status": "frozen",
+      "route": "truth"
+    },
+    {
+      "surface": "beacon-gen-truth",
+      "authority": "test_truth",
+      "canonical_artifact": "docs/beacon/v1.6.7/features/beacon-goal-durable-supervisor-v167/tests.md",
+      "status": "frozen",
+      "route": "truth"
+    },
+    {
+      "surface": "analysis",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.7/research/beacon-goal-durable-supervisor-v167.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "analysis",
+      "authority": "support_advisory",
+      "canonical_artifact": ".beacon/state/planner-review/beacon-goal-durable-supervisor-v167/pln-review-goal-durable-supervisor.json",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "program",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.7/programs/beacon-product-goal-domain-delivery-v167/feature-graph.json",
+      "status": "indexed",
+      "route": "program"
+    },
+    {
+      "surface": "parent",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.7/features/beacon-product-goal-runtime-v167/truth.md",
+      "status": "frozen",
+      "route": "dependency"
+    },
+    {
+      "surface": "interrupt-parity",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.7/features/beacon-loop-goal-v166/truth.md",
+      "status": "frozen",
+      "route": "dependency"
+    },
+    {
+      "surface": "domain-fsm",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.7/.machine/domain-fsm/beacon-goal-durable-supervisor-v167.json",
+      "status": "indexed",
+      "route": "truth"
+    },
+    {
+      "surface": "beacon-gen-implement",
+      "authority": "support_advisory",
+      "canonical_artifact": "beacon/utils/product_goal_runtime.py",
+      "status": "indexed",
+      "route": "implement"
+    },
+    {
+      "surface": "beacon-gen-implement",
+      "authority": "support_advisory",
+      "canonical_artifact": "beacon/commands/goal.py",
+      "status": "indexed",
+      "route": "implement"
+    },
+    {
+      "surface": "beacon-gen-implement",
+      "authority": "support_advisory",
+      "canonical_artifact": "beacon/utils/goal_durable_supervisor.py",
+      "status": "indexed",
+      "route": "implement"
+    },
+    {
+      "surface": "beacon-gen-implement",
+      "authority": "support_advisory",
+      "canonical_artifact": "tests/test_v167_goal_durable_supervisor.py",
+      "status": "indexed",
+      "route": "implement"
+    },
+    {
+      "surface": "beacon-gen-implement",
+      "authority": "support_advisory",
+      "canonical_artifact": "skills/beacon/beacon-goal/SKILL.md",
+      "status": "indexed",
+      "route": "implement"
+    }
+  ]
+}
