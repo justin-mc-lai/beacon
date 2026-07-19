@@ -57,8 +57,8 @@
 - [ ] TASK-P3-001 gate 写 `gate_results` + reason_codes 集成测试（TC-066）。
 - [ ] TASK-P3-002 **ClaudeBackend 真 integration**（AC-045 / TC-045）：iterate + health_check + abort。
 - [ ] TASK-P3-003 **AcpBackend 真 integration**（AC-046 / TC-046）：`acp:<target>` 一轮。
-- [ ] TASK-P3-004 **worktree 全模式 parity**（AC-099 / TC-099）：worktree/current-branch/run-branch + 非法组合 fail-closed。
-- [ ] TASK-P3-005 **ImplementHarnessBackend 真 integration**（AC-100 / TC-100）：worktree 内 implement harness 一轮。
+- [x] TASK-P3-004 **worktree 全模式 parity**（AC-099 / TC-099）：worktree/current-branch/run-branch + 非法组合 fail-closed。
+- [x] TASK-P3-005 **ImplementHarnessBackend 真 integration**（AC-100 / TC-100）：worktree 内 implement harness 一轮。
 - [ ] TASK-P3-006 全量 migration + **projection rebuild**（AC-011 / TC-011）。
 - [ ] TASK-P3-007 单一写者 + migration 备份。
 - [ ] TASK-P3-008 integration：TC-045–046, TC-099–100, TC-077–079, TC-087, TC-011。

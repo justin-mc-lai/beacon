@@ -20,3 +20,20 @@ revision_id: R1
 ## Boundary
 
 Index only — formal implement/QA verdicts appended after wave implementation.
+
+## Implement evidence (W1 R1 code)
+
+- Implemented: `packages/beacon-rs/beacon-orchestrator/src/git_worktree.rs`
+- Implemented: `packages/beacon-rs/beacon-orchestrator/src/implement_harness.rs`
+- Integration tests: `packages/beacon-rs/beacon-orchestrator/tests/w1_worktree_implement_harness.rs`
+- CLI: `beacon-v2 worktree resolve --materialize`, `beacon-v2 implement iterate`
+- Commands run (2026-07-19T11:41:18Z):
+  - `cargo test -p beacon-orchestrator --test w1_worktree_implement_harness` → 5 passed
+    - tc099_real_git_worktree
+    - tc100_implement_harness_one_iter
+    - tc099_illegal_combo
+    - iteration_result_schema_from_harness
+    - tc_w1_legal_modes_walk
+- Assertions: real `git worktree add` (`.git` is file), ImplementHarnessBackend not subprocess echo, AC-042 schema fields present.
+- Non-claim: does not mark W2–W5 complete; does not default-switch production `beacon`.
+

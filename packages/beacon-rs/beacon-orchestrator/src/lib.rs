@@ -11,6 +11,8 @@ pub mod standard_flow;
 pub mod harness_path;
 pub mod git_branch_context;
 pub mod checkpoint;
+pub mod git_worktree;
+pub mod implement_harness;
 
 pub use codex_backend::CodexBackend;
 pub use goal_controller::{GoalController, GoalRunHandle};
@@ -23,6 +25,13 @@ pub use standard_flow::{
 pub use harness_path::{HarnessPathBlocked, HarnessPathController};
 pub use git_branch_context::{collect_branch_context, probe_git, try_branch_context, GitProbe};
 pub use checkpoint::{load_checkpoint, save_checkpoint, stop_with_checkpoint, Checkpoint};
+pub use git_worktree::{
+    resolve_worktree, WorktreeMode, WorktreeResolveRequest, WorktreeResolveResult,
+    REASON_ILLEGAL_MODE_COMBO,
+};
+pub use implement_harness::{
+    run_one_implement_iteration, ImplementHarnessBackend, ImplementIterationArtifact,
+};
 
 use beacon_core::agent::{AgentBackend, IterationResult};
 use beacon_store::{BeaconStore, LifecycleEventDao, RunDao};
