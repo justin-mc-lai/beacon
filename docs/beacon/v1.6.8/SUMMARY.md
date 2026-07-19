@@ -30,7 +30,7 @@ Promotion: `docs/beacon/v1.6.7/research/beacon-v168-prod-ops-hardening-pln-revie
 - **implement**: landed on main (`e3d63efe` / merge `844739e4`)
 - **QA**: all 6 lakes `beacon qa run` → **passed** / `release_ready=true` (2026-07-19)
 - **release check**: `beacon release check v1.6.8` → **pass** / `release_ready=true`
-- **human GO**: pending (do not bump `current_runtime_release_line` until operator GO)
+- **human GO**: **GO / SHIPPED** — current_runtime_release_line=v1.6.8, global install done
 
 
 ## Philosophy (shared with Loom)
