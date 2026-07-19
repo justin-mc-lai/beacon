@@ -485,3 +485,27 @@ def goal_hotfix_plan(
     plan["release_validation"] = validate_hotfix_for_release(plan)
     _emit(plan, json_output)
     raise typer.Exit(0 if not plan.get("blocked") else 2)
+
+
+@app.command("longrun-doctor")
+def longrun_doctor_cmd(
+    project: str = typer.Option(".", "--project", "--project-root", "-p"),
+    run_id: str = typer.Option("", "--run-id"),
+    json_output: bool = typer.Option(False, "--json"),
+):
+    """Diagnose longrun default + host bridge readiness (v1.6.8 contract align)."""
+    from beacon.utils.runtime_install_truth import longrun_doctor
+
+    root = Path(project).expanduser().resolve()
+    result = longrun_doctor(root, run_id=run_id)
+    if json_output:
+        typer.echo(json.dumps(result, ensure_ascii=False, indent=2))
+    else:
+        lr = result.get("longrun_resolved") or {}
+        br = result.get("bridge") or {}
+        typer.echo(f"longrun enabled={lr.get('enabled')} source={lr.get('source')}")
+        typer.echo(f"bridge ok={br.get('ok')} mode={br.get('mode')} reason={br.get('reason_code') or '-'}")
+        if result.get("recommended_command"):
+            typer.echo(f"repair: {result.get('recommended_command')}")
+
+

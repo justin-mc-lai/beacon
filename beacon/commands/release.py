@@ -719,12 +719,36 @@ def create(
 def check(
     version: str = typer.Argument(..., help="Release version"),
     project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p", help="Project root"),
+    profile: Optional[str] = typer.Option(
+        None,
+        "--profile",
+        help="Release profile: full|hotfix|docs_only (default full; hotfix reduces gate set)",
+    ),
     json_output: bool = typer.Option(False, "--json", help="JSON output"),
 ):
     """Check release conditions"""
     project_root = (Path(project) if project else Path.cwd()).expanduser().resolve()
     resolved_version = resolve_target_version(project_root, version)
     resolved_runtime = resolve_runtime_version(project_root, "auto")
+    from beacon.utils.prod_ops_v168 import select_release_profile, load_goal_ops_config
+
+    cfg_profile = str((load_goal_ops_config(project_root) or {}).get("release_profile_default") or "full")
+    selected_profile = str(profile or cfg_profile or "full").strip().lower() or "full"
+    profile_payload = select_release_profile(selected_profile)
+    if profile_payload.get("blocked"):
+        payload = {
+            "schema_version": "1.0",
+            "version": resolved_version,
+            "status": "blocked",
+            "reason_code": profile_payload.get("reason_code") or "release_profile_invalid",
+            "release_profile": profile_payload,
+            "recommended_command": "beacon release check <version> --profile full|hotfix|docs_only",
+        }
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(f"Beacon release blocked: invalid profile {selected_profile}")
+        raise typer.Exit(code=2)
     if metadata_machine_path(project_root).exists():
         metadata_verdict = verify_project_metadata(project_root, version=resolved_version)
         if str(metadata_verdict.get("status") or "").lower() == "fail":
@@ -1243,8 +1267,29 @@ def check(
             )
         )
 
+    # v1.6.8 release-profile wiring: annotate profile; hotfix soft-skips non-required scorecard-only noise
+    # by marking selected non-critical checks as warn when profile=hotfix and core safety gates pass.
+    profile_name = str(profile_payload.get("profile") or "full")
+    if profile_name == "hotfix":
+        # Soft-demote only these if they fail; keep evidence/gate/version/hotfix safety hard.
+        soft = {
+            "implement prompt boundary verdict pass",
+            "semantic contract ready",
+            "project metadata contract",
+        }
+        rewritten: list[tuple[str, str, str]] = []
+        for name, status_label, detail in checks:
+            if status_label == "fail" and name in soft:
+                rewritten.append((name, "warn", f"{detail}; profile=hotfix soft-warn"))
+            else:
+                rewritten.append((name, status_label, f"{detail}; profile={profile_name}" if "profile=" not in detail else detail))
+        checks = rewritten
+    else:
+        checks = [(n, s, d if "profile=" in d else f"{d}; profile={profile_name}") for n, s, d in checks]
+
     all_passed = True
     failed_checks: list[str] = []
+
     warning_checks: list[str] = []
     check_records: list[dict[str, Any]] = []
     for check_name, status_label, detail in checks:
@@ -1313,6 +1358,7 @@ def check(
         "project_root": str(project_root),
         "status": status,
         "release_ready": all_passed,
+        "release_profile": profile_payload,
         "failed_checks": failed_checks,
         "warning_checks": warning_checks,
         "checks": check_records,

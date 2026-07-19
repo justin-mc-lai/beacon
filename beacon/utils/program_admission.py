@@ -293,6 +293,33 @@ def evaluate_program_next_action_admission(project_root: Path, *, version: str, 
             "recommended_command": f'beacon implement run "{first}" --project {root} --version {resolved_version}' if first else "",
         }
 
+    # v1.6.8 fsm-implement-order: entity precedence hard gate when domain_required
+    try:
+        from beacon.utils.fsm_implement_order import evaluate_fsm_implement_order
+
+        fsm_order = evaluate_fsm_implement_order(root, version=resolved_version, feature=lake_slug)
+    except Exception as exc:  # noqa: BLE001
+        fsm_order = {
+            "status": "pass",
+            "blocked": False,
+            "reason_code": "",
+            "error": str(exc),
+        }
+    if bool(fsm_order.get("blocked")):
+        return {
+            **topology,
+            "schema_version": "1.0",
+            "status": "blocked",
+            "blocked": True,
+            "program_admission_required": True,
+            "reason_code": str(fsm_order.get("reason_code") or "fsm_implement_order_violation"),
+            "reason_codes": list(fsm_order.get("reason_codes") or [fsm_order.get("reason_code")]),
+            "target_lake_slug": lake_slug,
+            "dependencies": dependency_results,
+            "fsm_implement_order": fsm_order,
+            "recommended_command": str(fsm_order.get("recommended_command") or ""),
+        }
+
     return {
         **topology,
         "schema_version": "1.0",
@@ -303,4 +330,5 @@ def evaluate_program_next_action_admission(project_root: Path, *, version: str, 
         "reason_codes": [],
         "target_lake_slug": lake_slug,
         "dependencies": dependency_results,
+        "fsm_implement_order": fsm_order,
     }

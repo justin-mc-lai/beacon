@@ -651,33 +651,35 @@ def run_goal_facade(
 ) -> dict[str, Any]:
     """Public facade: create goal run and optionally advance planning stages.
 
-    longrun=False (default): driver stays idle; supervise remains opt-in.
-    longrun=True: attach durable supervisor + AgentDriver for this run only.
+    longrun CLI default False means "do not force on"; project goal.longrun_default
+    (default true for new projects) is honored without env gates. Explicit CLI/env opt-out wins.
     """
-    # skill/utterance intent may force longrun without CLI flag.
-    # Default is opt-in off. Project longrun_default only when BEACON_GOAL_HONOR_LONGRUN_DEFAULT=1.
+    # v1.6.8 UD-FC-002 / UD-V168-001: honor project longrun_default without env gate.
+    # Priority: explicit CLI flag > utterance intent > project goal.longrun_default > False.
+    # BEACON_GOAL_FORCE_LONGRUN / BEACON_GOAL_FORCE_NO_LONGRUN remain optional overrides only.
     try:
         import os
 
-        if longrun:
+        force_on = str(os.environ.get("BEACON_GOAL_FORCE_LONGRUN", "")).strip().lower() in {"1", "true", "yes"}
+        force_off = str(os.environ.get("BEACON_GOAL_FORCE_NO_LONGRUN", "")).strip().lower() in {"1", "true", "yes"}
+        if force_off:
+            effective_longrun = False
+            longrun_source = "env_force_off"
+        elif force_on:
+            effective_longrun = True
+            longrun_source = "env_force_on"
+        elif longrun:
             effective_longrun = True
             longrun_source = "cli_flag"
         elif detect_longrun_intent(utterance):
             effective_longrun = True
             longrun_source = "utterance_intent"
-        elif str(os.environ.get("BEACON_GOAL_HONOR_LONGRUN_DEFAULT", "")).strip().lower() in {
-            "1",
-            "true",
-            "yes",
-        }:
+        else:
             from beacon.utils.prod_ops_v168 import resolve_longrun_enabled
 
             _lr = resolve_longrun_enabled(project_root, cli_longrun=None)
             effective_longrun = bool(_lr.get("enabled"))
             longrun_source = str(_lr.get("source") or "project_default")
-        else:
-            effective_longrun = False
-            longrun_source = "opt_in_default_off"
     except Exception:  # noqa: BLE001
         effective_longrun = bool(longrun) or detect_longrun_intent(utterance)
         longrun_source = "legacy"
