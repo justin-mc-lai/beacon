@@ -1,13 +1,18 @@
 ---
 name: loom
-description: "Loom v2 brand host — routes to loom-goal as public entry."
+description: "Loom — Beacon 进化品牌（v2 产品线）。入口 $loom-goal；与生产 beacon 双装。"
 metadata:
   version: "v2.0.0"
   brand: Loom
 ---
 
-# Loom host skill
+# Loom
 
-Public entry: **`$loom-goal`**. See `skills/loom/loom-goal/SKILL.md`.
+**Loom 就是 Beacon 的升级品牌线**，不是 loom-v2 旁支。
 
-Beacon production entry remains `$beacon-goal` (dual-install, no replace).
+| | 生产 Beacon | 进化 Loom |
+|--|-------------|-----------|
+| CLI | `beacon` | **`loom`** |
+| skill | `$beacon-goal` | **`$loom-goal`** |
+
+双装并行；安装 Loom **禁止**覆盖 `beacon`。
