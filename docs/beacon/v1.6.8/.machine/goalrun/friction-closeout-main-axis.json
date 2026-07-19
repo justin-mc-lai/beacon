@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0",
+  "artifact": "goalrun_main_axis",
+  "version": "v1.6.8",
+  "program_slug": "beacon-friction-closeout-v168",
+  "generated_at": "2026-07-19T10:41:45.910252+00:00",
+  "goalrun_states": [
+    "created",
+    "running",
+    "stage_active",
+    "host_interrupted",
+    "stage_blocked",
+    "awaiting_verifier",
+    "completed",
+    "release_pending",
+    "release_confirmed"
+  ],
+  "lakes": [
+    "beacon-runtime-install-truth-v168",
+    "beacon-longrun-contract-align-v168",
+    "beacon-release-profile-wiring-v168",
+    "beacon-fsm-implement-order-v168"
+  ],
+  "done_when_default": [
+    "evidence_chain",
+    "continuous_qa"
+  ],
+  "submachines_cannot_complete": [
+    "SupervisorSession",
+    "AgentDriver",
+    "SubagentSession",
+    "RalphDelegate",
+    "DesignStage"
+  ],
+  "change_triggers": [
+    "longrun",
+    "release_profile",
+    "install",
+    "domain_fsm",
+    "entity_precedence",
+    "implement_order",
+    "hotfix"
+  ],
+  "axis_md": "docs/beacon/v1.6.8/programs/beacon-friction-closeout-v168/goalrun-main-axis.md",
+  "policy": [
+    "UD-AXIS-001",
+    "UD-AXIS-002",
+    "UD-AXIS-003",
+    "UD-AXIS-004",
+    "UD-AXIS-005",
+    "UD-FC-001",
+    "UD-FC-002",
+    "UD-FC-003",
+    "UD-FC-004",
+    "UD-FC-005",
+    "UD-FC-006"
+  ],
+  "parent_program": "beacon-prod-ops-hardening-v168"
+}

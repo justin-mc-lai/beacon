@@ -40,3 +40,20 @@ Promotion: `docs/beacon/v1.6.7/research/beacon-v168-prod-ops-hardening-pln-revie
 3. Gates repairable; no fake green
 4. Durable by default; opt-out explicit
 5. Beacon prod + Loom evolve in parallel; no default replace
+
+
+## Program (hotfix follow-up): `beacon-friction-closeout-v168`
+
+Friction closeout on the same GoalRun spine (2026-07-19 GO):
+
+| Wave | Lake | Role |
+|------|------|------|
+| 0 | beacon-runtime-install-truth-v168 | install / version truth diagnose + pin |
+| 1 | beacon-longrun-contract-align-v168 | longrun_default contract = code |
+| 2 | beacon-release-profile-wiring-v168 | ReleaseProfile drives release check |
+| 3 | beacon-fsm-implement-order-v168 | entity precedence gates implement |
+
+- **graph**: `docs/beacon/v1.6.8/programs/beacon-friction-closeout-v168/feature-graph.json`
+- **axis**: `docs/beacon/v1.6.8/programs/beacon-friction-closeout-v168/goalrun-main-axis.md`
+- **status**: truth frozen R1; implement pending
+
