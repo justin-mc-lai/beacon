@@ -89,6 +89,57 @@ def entry_contract(json_output: bool = typer.Option(True, "--json/--no-json")) -
         typer.echo(payload["public_primary"])
 
 
+
+@app.command("slug")
+def slug_cmd(
+    action: str = typer.Argument("list", help="list | resolve"),
+    name: str = typer.Argument("", help="slug or alias for resolve"),
+    json_output: bool = typer.Option(True, "--json/--no-json"),
+) -> None:
+    """Feature slug alias + Loom display_name map (identity stays canonical)."""
+    import json
+    from beacon.utils.loom_slug_alias import list_feature_aliases, resolve_feature_slug
+
+    act = action.strip().lower()
+    if act == "list":
+        payload = list_feature_aliases()
+    elif act == "resolve":
+        payload = resolve_feature_slug(name)
+    else:
+        payload = {"ok": False, "reason_code": "invalid_slug_action", "allowed": ["list", "resolve"]}
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(str(payload))
+    raise typer.Exit(0 if payload.get("ok", True) is not False else 2)
+
+
+@app.command("skill-score")
+def skill_score_cmd(
+    skill: str = typer.Option("", "--skill", "-s", help="loom skill name; empty = all"),
+    project: str = typer.Option(".", "--project", "-p"),
+    json_output: bool = typer.Option(True, "--json/--no-json"),
+) -> None:
+    """Score Loom skills (facade + content-source fidelity)."""
+    import json
+    from pathlib import Path
+    from beacon.utils.loom_skill_score import score_all_loom_skills, score_loom_skill
+
+    root = Path(project).expanduser().resolve()
+    if skill.strip():
+        payload = score_loom_skill(root, skill.strip())
+    else:
+        payload = score_all_loom_skills(root)
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        if "average_composite" in payload:
+            typer.echo(f"avg={payload['average_composite']} failed={payload.get('failed')}")
+        else:
+            typer.echo(str(payload.get("scores")))
+    raise typer.Exit(0 if payload.get("ok", True) else 2)
+
+
 def main() -> None:
     app()
 
