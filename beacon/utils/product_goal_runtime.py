@@ -64,7 +64,15 @@ PROGRESSIVE_SKILLS: dict[str, list[str]] = {
     "implement": ["beacon-gen-implement"],
     "qa": ["beacon-eval-qa", "beacon-eval-qa-deep"],
     "release": ["beacon-eval-release"],
+    "goal": [PUBLIC_ENTRY],  # facade always-on surface
 }
+
+# Shared git worktree process norm (AC-WT-SKILL / progressive always-on ref)
+WORKTREE_FLOW_REF = "skills/beacon/references/git-worktree-execution-flow.md"
+WORKTREE_EXAMPLE_REF = "skills/beacon/examples/git-worktree-process-correct-30s.md"
+WORKTREE_FLOW_STAGES = frozenset(
+    {"goal", "plan", "truth", "implement", "qa", "release", "discover", "loop"}
+)
 
 # Base order; `design` is inserted when UX/visual delivery is claimed.
 STAGE_ORDER_BASE = ("plan", "truth", "implement", "qa", "release")
@@ -215,6 +223,22 @@ def progressive_skills_for_stage(stage: str) -> list[str]:
     return list(PROGRESSIVE_SKILLS.get(str(stage or "").strip().lower(), []))
 
 
+def progressive_worktree_refs(stage: str) -> dict[str, Any]:
+    """Always-on git worktree norms for progressive skill load (AC-WT-SKILL)."""
+    st = str(stage or "").strip().lower()
+    if st not in WORKTREE_FLOW_STAGES and st not in ("implement", "qa", "release", "truth", "plan", "goal"):
+        return {"schema": "git-worktree-execution-flow.v1", "required": False, "references": [], "examples": []}
+    refs = [WORKTREE_FLOW_REF]
+    examples = [WORKTREE_EXAMPLE_REF] if st in ("goal", "implement", "discover", "loop") else []
+    return {
+        "schema": "git-worktree-execution-flow.v1",
+        "required": True,
+        "references": refs,
+        "examples": examples,
+        "bulk_history_forbidden": True,
+    }
+
+
 def build_stage_plan(
     *,
     utterance: str = "",
@@ -229,15 +253,33 @@ def build_stage_plan(
     order = build_stage_order(ux_required=ux)
     for stage in order:
         skills = progressive_skills_for_stage(stage)
-        stages.append(
-            {
-                "stage": stage,
-                "skills": skills,
-                "status": "planned",
-                "loaded": False,
-                **({"ux_gated": True} if stage == "design" else {}),
-            }
-        )
+        item: dict[str, Any] = {
+            "stage": stage,
+            "skills": skills,
+            "status": "planned",
+            "loaded": False,
+            **({"ux_gated": True} if stage == "design" else {}),
+        }
+        if stage in WORKTREE_FLOW_STAGES or stage in ("implement", "qa", "release", "truth", "plan"):
+            item["references"] = [WORKTREE_FLOW_REF]
+            if stage in ("implement", "goal", "discover"):
+                item["examples"] = [WORKTREE_EXAMPLE_REF]
+            item["worktree_flow"] = "git-worktree-execution-flow.v1"
+        stages.append(item)
+    # Facade goal entry always listed for progressive consumers
+    stages.insert(
+        0,
+        {
+            "stage": "goal",
+            "skills": progressive_skills_for_stage("goal") or [PUBLIC_ENTRY],
+            "status": "planned",
+            "loaded": False,
+            "references": [WORKTREE_FLOW_REF],
+            "examples": [WORKTREE_EXAMPLE_REF],
+            "worktree_flow": "git-worktree-execution-flow.v1",
+            "public_entry": True,
+        },
+    )
     if detect_parallel_intent(utterance) or (lakes and len(lakes) > 1):
         for item in stages:
             if item["stage"] == "implement":
