@@ -117,3 +117,10 @@ Still open: full P2-007..023 (TraceSpine hard gates in implement path, BranchCon
 - Scorecard: `.beacon/qa/features/v2-0-0-full-delivery/scorecard.json`
 - Goal status: **completed** (verifier attached); **release_human_gate=true**
 - New: git BranchContext (`--git`), decision_packet/intent, stagnation, refreeze guards, harness boundary, checkpoints, reason-codes/storage-authority docs, route-examples
+
+## Kernel closure program mount (2026-07-19)
+
+- Program: `docs/beacon/v2.0.0/programs/loom-kernel-closure-w1w5-v200/`
+- Lakes W1–W5 frozen as separate packages (AC-099/100/105/106/101/103/166/167/171-173/169)
+- Implement order: W1→W2→W3→(W4a∥W4b)→W5
+- Change: `docs/beacon/v2.0.0/change/loom-kernel-closure-w1w5-v200.md`

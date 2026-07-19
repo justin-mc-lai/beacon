@@ -1,0 +1,313 @@
+{
+  "schema_version": "1.0",
+  "feature": "loom-cross-track-adversarial-release",
+  "feature_slug": "loom-cross-track-adversarial-release",
+  "version": "v2.0.0",
+  "runtime_version": "v1.6.8",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v2.0.0/.machine/execution/requirement-clarity-loom-cross-track-adversarial-release.json",
+  "report_markdown_path": "docs/beacon/v2.0.0/execution/requirement-clarity-loom-cross-track-adversarial-release.md",
+  "state_path": ".beacon/state/requirement-clarity-loom-cross-track-adversarial-release.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v2.0.0",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-07-19T11:35:18.015179+00:00",
+    "feature": "loom-cross-track-adversarial-release",
+    "feature_slug": "loom-cross-track-adversarial-release",
+    "prd_ref": "docs/beacon/v2.0.0/prd/loom-cross-track-adversarial-release.md",
+    "user_story_ref": "docs/beacon/v2.0.0/user-story/loom-cross-track-adversarial-release.md"
+  },
+  "domain_fsm_gate": {
+    "schema_version": "1.0",
+    "feature": "loom-cross-track-adversarial-release",
+    "feature_slug": "loom-cross-track-adversarial-release",
+    "version": "v2.0.0",
+    "truth_path": "docs/beacon/v2.0.0/features/loom-cross-track-adversarial-release/truth.md",
+    "tests_path": "docs/beacon/v2.0.0/features/loom-cross-track-adversarial-release/tests.md",
+    "required": false,
+    "blocked": false,
+    "status": "not_required",
+    "reason_code": "",
+    "findings": [],
+    "requirement": {
+      "required": false,
+      "reason": "not_required",
+      "explicit": false,
+      "partial": false,
+      "complexity": false,
+      "business_signal": true,
+      "version_supported": true
+    },
+    "projection": {
+      "schema_version": "1.0",
+      "domain_fsm_schema": "domain-fsm.v1",
+      "entity_precedence_schema": "entity-precedence.v1",
+      "frontmatter": {
+        "slug": "loom-cross-track-adversarial-release",
+        "version": "v2.0.0",
+        "status": "frozen",
+        "revision_id": "R1",
+        "language": "zh",
+        "change_reason": "User GO 2026-07-19 option2: freeze W1-W5 kernel closure lakes under program loom-kernel-closure-w1w5-v200",
+        "canonical_refs": {
+          "truth": "docs/beacon/v2.0.0/features/loom-cross-track-adversarial-release/truth.md",
+          "tests": "docs/beacon/v2.0.0/features/loom-cross-track-adversarial-release/tests.md",
+          "tasks": "docs/beacon/v2.0.0/features/loom-cross-track-adversarial-release/tasks.md",
+          "evidence": "docs/beacon/v2.0.0/features/loom-cross-track-adversarial-release/evidence.md"
+        },
+        "parser_contract": "beacon-feature-package-v2",
+        "truth_source_model": "feature_package_authoritative",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "program_ref": "docs/beacon/v2.0.0/programs/loom-kernel-closure-w1w5-v200/feature-graph.json",
+        "parent_kernel": "beacon-v2-rust-kernel-redesign",
+        "upstream_acs": "[\"AC-166\", \"AC-167\"]",
+        "wave": "W4a",
+        "priority": "P1",
+        "ux_required": "false",
+        "design_deferral": "kernel/CLI; no product marketing UI",
+        "display_name": "Loom Cross-Track + Adversarial Release",
+        "brand": "Loom"
+      },
+      "frontmatter_errors": [],
+      "has_domain_model_section": false,
+      "has_domain_fsm_section": false,
+      "has_illegal_transition_section": false,
+      "entities": [],
+      "entity_precedence": [],
+      "aggregates": [],
+      "illegal_transition_slots": [],
+      "acceptance_criteria": [
+        {
+          "ac_id": "AC-166",
+          "description": "混用跨轨证据 → cross_track_evidence_contamination（Must）"
+        },
+        {
+          "ac_id": "AC-167",
+          "description": "缺 adversarial_review.v1 → adversarial_review_missing fail-closed（Must）"
+        },
+        {
+          "ac_id": "AC-LOOM-W4A-001",
+          "description": "adversarial_review.v1 字段：≥3 failure points + evidence refs（Must）"
+        },
+        {
+          "ac_id": "AC-LOOM-W4A-002",
+          "description": "legal dual-track clean + illegal contamination（Must）"
+        }
+      ],
+      "bound_ac_ids": [],
+      "orphan_ac_ids": [],
+      "aggregates_missing_illegal_slots": [],
+      "raw_section_titles": [
+        "人话",
+        "Overview",
+        "User Intent",
+        "User Decisions（locked）",
+        "Acceptance Criteria",
+        "Illegal",
+        "Non-Goals",
+        "Alignment Surface"
+      ]
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "required": false,
+      "blocked": false,
+      "status": "not_required",
+      "reason_code": "",
+      "findings": [],
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "loom-cross-track-adversarial-release",
+          "version": "v2.0.0",
+          "status": "frozen",
+          "revision_id": "R1",
+          "language": "zh",
+          "change_reason": "User GO 2026-07-19 option2: freeze W1-W5 kernel closure lakes under program loom-kernel-closure-w1w5-v200",
+          "canonical_refs": {
+            "truth": "docs/beacon/v2.0.0/features/loom-cross-track-adversarial-release/truth.md",
+            "tests": "docs/beacon/v2.0.0/features/loom-cross-track-adversarial-release/tests.md",
+            "tasks": "docs/beacon/v2.0.0/features/loom-cross-track-adversarial-release/tasks.md",
+            "evidence": "docs/beacon/v2.0.0/features/loom-cross-track-adversarial-release/evidence.md"
+          },
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "truth_map_contract": "beacon-truth-map-v1",
+          "program_ref": "docs/beacon/v2.0.0/programs/loom-kernel-closure-w1w5-v200/feature-graph.json",
+          "parent_kernel": "beacon-v2-rust-kernel-redesign",
+          "upstream_acs": "[\"AC-166\", \"AC-167\"]",
+          "wave": "W4a",
+          "priority": "P1",
+          "ux_required": "false",
+          "design_deferral": "kernel/CLI; no product marketing UI",
+          "display_name": "Loom Cross-Track + Adversarial Release",
+          "brand": "Loom"
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": false,
+        "has_domain_fsm_section": false,
+        "has_illegal_transition_section": false,
+        "entities": [],
+        "entity_precedence": [],
+        "aggregates": [],
+        "illegal_transition_slots": [],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-166",
+            "description": "混用跨轨证据 → cross_track_evidence_contamination（Must）"
+          },
+          {
+            "ac_id": "AC-167",
+            "description": "缺 adversarial_review.v1 → adversarial_review_missing fail-closed（Must）"
+          },
+          {
+            "ac_id": "AC-LOOM-W4A-001",
+            "description": "adversarial_review.v1 字段：≥3 failure points + evidence refs（Must）"
+          },
+          {
+            "ac_id": "AC-LOOM-W4A-002",
+            "description": "legal dual-track clean + illegal contamination（Must）"
+          }
+        ],
+        "bound_ac_ids": [],
+        "orphan_ac_ids": [],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "人话",
+          "Overview",
+          "User Intent",
+          "User Decisions（locked）",
+          "Acceptance Criteria",
+          "Illegal",
+          "Non-Goals",
+          "Alignment Surface"
+        ]
+      }
+    },
+    "recommended_action": ""
+  },
+  "human_closure_contract": {
+    "required": false,
+    "research_path": "docs/beacon/v2.0.0/research/loom-cross-track-adversarial-release.md",
+    "research_exists": false,
+    "source_architecture_path": "docs/beacon/v2.0.0/source-architecture/index.md",
+    "source_architecture_exists": true,
+    "required_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "missing_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "diagram_types": [],
+    "complexity_signals": []
+  },
+  "requirement_closure_contract": {
+    "required": true,
+    "chain_order": [
+      "research",
+      "prd",
+      "user_story",
+      "test_case",
+      "requirement_clarity",
+      "freeze"
+    ],
+    "human_closure_required": false,
+    "paths": {
+      "research": "docs/beacon/v2.0.0/research/loom-cross-track-adversarial-release.md",
+      "prd": "docs/beacon/v2.0.0/features/loom-cross-track-adversarial-release/truth.md",
+      "user_story": "docs/beacon/v2.0.0/features/loom-cross-track-adversarial-release/truth.md",
+      "test_case": "docs/beacon/v2.0.0/features/loom-cross-track-adversarial-release/tests.md"
+    },
+    "exists": {
+      "research": false,
+      "prd": true,
+      "user_story": true,
+      "test_case": true
+    },
+    "required_research_sections": [],
+    "missing_research_sections": [],
+    "ac_projection": {
+      "prd_ac_ids": [
+        "AC-166",
+        "AC-167"
+      ],
+      "user_story_ac_ids": [
+        "AC-166",
+        "AC-167"
+      ],
+      "test_case_ac_ids": [
+        "AC-166",
+        "AC-167"
+      ],
+      "upstream_ac_ids": [
+        "AC-166",
+        "AC-167"
+      ],
+      "missing_test_case_ac_ids": []
+    }
+  },
+  "version_projection_truth_contract": {
+    "required": false,
+    "supported": true,
+    "projection_types": [],
+    "research_path": "docs/beacon/v2.0.0/research/loom-cross-track-adversarial-release.md",
+    "research_exists": false,
+    "required_fields": [
+      "prd_refs",
+      "user_story_refs",
+      "test_case_refs",
+      "coverage_notes",
+      "out_of_scope_notes"
+    ],
+    "field_presence": {
+      "prd_refs": false,
+      "user_story_refs": false,
+      "test_case_refs": false,
+      "coverage_notes": false,
+      "out_of_scope_notes": false
+    },
+    "missing_fields": [],
+    "required_refs": {
+      "prd_refs": "docs/beacon/v2.0.0/features/loom-cross-track-adversarial-release/truth.md",
+      "user_story_refs": "docs/beacon/v2.0.0/features/loom-cross-track-adversarial-release/truth.md",
+      "test_case_refs": "docs/beacon/v2.0.0/features/loom-cross-track-adversarial-release/tests.md"
+    },
+    "missing_ref_targets": [],
+    "ready": false
+  },
+  "support_write_topology_contract": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "diagnostics": []
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v2.0.0/features/loom-cross-track-adversarial-release/truth.md",
+    "docs/beacon/v2.0.0/features/loom-cross-track-adversarial-release/tests.md",
+    "docs/beacon/v2.0.0/features/loom-cross-track-adversarial-release/tasks.md",
+    "docs/beacon/v2.0.0/features/loom-cross-track-adversarial-release/evidence.md"
+  ]
+}

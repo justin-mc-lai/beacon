@@ -1,41 +1,57 @@
 {
   "schema_version": "1.0",
-  "feature": "beacon-v2-goal-durable-longrun",
-  "feature_slug": "beacon-v2-goal-durable-longrun",
+  "feature": "loom-skill-score-corpus-v1",
+  "feature_slug": "loom-skill-score-corpus-v1",
   "version": "v2.0.0",
   "status": "pass",
   "blocked": false,
   "reason_code": "",
-  "generated_at": "2026-07-18T03:43:38.879078+00:00",
-  "package_dir": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun",
+  "generated_at": "2026-07-19T11:35:21.069739+00:00",
+  "package_dir": "docs/beacon/v2.0.0/features/loom-skill-score-corpus-v1",
   "truth_frontmatter": {
-    "slug": "beacon-v2-goal-durable-longrun",
+    "slug": "loom-skill-score-corpus-v1",
     "version": "v2.0.0",
     "status": "frozen",
-    "revision_id": "R2",
+    "revision_id": "R1",
     "language": "zh",
-    "change_reason": "R2 - full AC-DGS-001..014 parity table + AgentDriver one-shot; pln-review 2026-07-18",
+    "change_reason": "User GO 2026-07-19 option2: freeze W1-W5 kernel closure lakes under program loom-kernel-closure-w1w5-v200",
     "canonical_refs": {
-      "truth": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/truth.md",
-      "tests": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
-      "tasks": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tasks.md",
-      "evidence": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/evidence.md"
+      "truth": "docs/beacon/v2.0.0/features/loom-skill-score-corpus-v1/truth.md",
+      "tests": "docs/beacon/v2.0.0/features/loom-skill-score-corpus-v1/tests.md",
+      "tasks": "docs/beacon/v2.0.0/features/loom-skill-score-corpus-v1/tasks.md",
+      "evidence": "docs/beacon/v2.0.0/features/loom-skill-score-corpus-v1/evidence.md"
     },
     "parser_contract": "beacon-feature-package-v2",
     "truth_source_model": "feature_package_authoritative",
     "truth_map_contract": "beacon-truth-map-v1",
-    "program_ref": "docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/feature-graph.json",
+    "program_ref": "docs/beacon/v2.0.0/programs/loom-kernel-closure-w1w5-v200/feature-graph.json",
+    "parent_kernel": "beacon-v2-rust-kernel-redesign",
+    "upstream_acs": "[\"AC-169\"]",
+    "wave": "W5",
+    "priority": "P2",
     "ux_required": "false",
-    "design_deferral": "CLI/orchestrator long-run; no product marketing UI"
+    "design_deferral": "kernel/CLI; no product marketing UI",
+    "display_name": "Loom Skill-Score Corpus v1",
+    "brand": "Loom"
   },
-  "ac_count": 16,
-  "test_count": 14,
-  "checkbox_count": 8,
-  "evidence_row_count": 6,
+  "ac_count": 4,
+  "test_count": 2,
+  "checkbox_count": 5,
+  "evidence_row_count": 7,
   "gate_authority": "canonical_surfaces_preserved",
   "checkbox_gate_bypass": false,
   "evidence_gate_truth": false,
-  "diagnostics": [],
+  "diagnostics": [
+    {
+      "severity": "info",
+      "code": "truth_human_l0_ok",
+      "path": "docs/beacon/v2.0.0/features/loom-skill-score-corpus-v1/truth.md",
+      "language": "zh",
+      "l0_headings": [
+        "## 人话"
+      ]
+    }
+  ],
   "truth_map_contract": "beacon-truth-map-v1",
   "truth_source_model": "feature_package_authoritative",
   "truth_package_contract": "beacon-feature-package-v2",
@@ -44,16 +60,16 @@
   "truth_authority": "markdown_feature_package",
   "json_authority": false,
   "source_paths": {
-    "truth": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/truth.md",
-    "tests": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
-    "tasks": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tasks.md",
-    "evidence": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/evidence.md"
+    "truth": "docs/beacon/v2.0.0/features/loom-skill-score-corpus-v1/truth.md",
+    "tests": "docs/beacon/v2.0.0/features/loom-skill-score-corpus-v1/tests.md",
+    "tasks": "docs/beacon/v2.0.0/features/loom-skill-score-corpus-v1/tasks.md",
+    "evidence": "docs/beacon/v2.0.0/features/loom-skill-score-corpus-v1/evidence.md"
   },
   "source_hashes": {
-    "truth": "04e2429137365e933a2284d45b719be72a49ab0d5c980a2248d150bd7273594b",
-    "tests": "9ba739ace76ef0c06f777f08f976a0c1e3c9e9f6ff2b854f159ef14b622f9f7e",
-    "tasks": "f39eed1666614741e8d7be6df95c71f4e08ff6168068cdad8345f03b2d1d28db",
-    "evidence": "896e07367f58cb5f40b7ba7394a8bb1ac56f4ed88f064bf8becd460ede094e86"
+    "truth": "8f9faf6931cd91d01e984781a6c122b3a0f874f195e64b43c4e4a8aa46dc675f",
+    "tests": "04874277344e0605f149a3520d10bbcf7f6bbe761d5554a33fd2d5a25f1af4b5",
+    "tasks": "bed3fbc968f53373409afef6b0c23f2303e57aa729fc8bb3103d99940e11b0f2",
+    "evidence": "2453e2f9f9d13e2efd2509539f7c42f2fd56486fbe167a72320949f9323ee6aa"
   },
   "runtime_json_requires_markdown_twin": false
 }

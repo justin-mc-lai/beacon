@@ -1,0 +1,163 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-19T11:35:20.054490+00:00",
+  "feature": "loom-gitscope-topology-gates",
+  "feature_slug": "loom-gitscope-topology-gates",
+  "version": "v2.0.0",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v2.0.0/features/loom-gitscope-topology-gates/truth.md",
+    "tests": "docs/beacon/v2.0.0/features/loom-gitscope-topology-gates/tests.md",
+    "tasks": "docs/beacon/v2.0.0/features/loom-gitscope-topology-gates/tasks.md",
+    "evidence": "docs/beacon/v2.0.0/features/loom-gitscope-topology-gates/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "236a971563d12943985f2c652430dff80b5eaf4429aa6200b0b8aa47c231ca8c",
+    "tests": "c7309b3fe463aa3457e5006a6a80d97df2b93d85e67e5e9f7c84a30ae4db6fb0",
+    "tasks": "143e9474de433fcf8d5ec7b07d9b5ed9755a95d8785b1f54b5f5fa88ed843c35",
+    "evidence": "ce03e213555cf13803b000450eb2e09f6c4aee84800fd76e00a6a5025997f1a0"
+  },
+  "truth_frontmatter": {
+    "slug": "loom-gitscope-topology-gates",
+    "version": "v2.0.0",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "User GO 2026-07-19 option2: freeze W1-W5 kernel closure lakes under program loom-kernel-closure-w1w5-v200",
+    "canonical_refs": {
+      "truth": "docs/beacon/v2.0.0/features/loom-gitscope-topology-gates/truth.md",
+      "tests": "docs/beacon/v2.0.0/features/loom-gitscope-topology-gates/tests.md",
+      "tasks": "docs/beacon/v2.0.0/features/loom-gitscope-topology-gates/tasks.md",
+      "evidence": "docs/beacon/v2.0.0/features/loom-gitscope-topology-gates/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "program_ref": "docs/beacon/v2.0.0/programs/loom-kernel-closure-w1w5-v200/feature-graph.json",
+    "parent_kernel": "beacon-v2-rust-kernel-redesign",
+    "upstream_acs": "[\"AC-171\", \"AC-172\", \"AC-173\"]",
+    "wave": "W4b",
+    "priority": "P2",
+    "ux_required": "false",
+    "design_deferral": "kernel/CLI; no product marketing UI",
+    "display_name": "Loom GitScope Topology Gates",
+    "brand": "Loom"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-171",
+      "theme": "gsg-parity",
+      "description": "GSG→BranchContext 扩展字段；失败 gitscope_branch_context_parity_failed（Must）"
+    },
+    {
+      "ac_id": "AC-172",
+      "theme": "three-topo",
+      "description": "三拓扑 admission 行为级 fixture（Must）"
+    },
+    {
+      "ac_id": "AC-173",
+      "theme": "force-topology",
+      "description": "缺 topology_gate_ref/pass → 不得 implement：topology_gate_missing"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-171",
+      "tc_id": "TC-W4B-001",
+      "layer": "integration",
+      "command": "`cargo test tc171_gsg_parity`",
+      "assertion": "fields present",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-172",
+      "tc_id": "TC-W4B-002",
+      "layer": "integration",
+      "command": "`cargo test tc172_three_topo`",
+      "assertion": "all three",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-173",
+      "tc_id": "TC-W4B-003",
+      "layer": "negative",
+      "command": "`cargo test tc173_missing_topology`",
+      "assertion": "blocked",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-W4B-001",
+      "title": "GSG loader → BranchContext fields",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-W4B-002",
+      "title": "Three topology fixtures",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-W4B-003",
+      "title": "Wire topology_gate into loop/implement admission",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-W4B-004",
+      "title": "TC-171..173",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "requirement_truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/loom-gitscope-topology-gates/truth.md",
+      "status": "frozen"
+    },
+    {
+      "surface": "acceptance",
+      "authority": "acceptance_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/loom-gitscope-topology-gates/truth.md",
+      "status": "frozen"
+    },
+    {
+      "surface": "test_case",
+      "authority": "test_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/loom-gitscope-topology-gates/tests.md",
+      "status": "frozen"
+    },
+    {
+      "surface": "planner",
+      "authority": "support_advisory",
+      "canonical_artifact": ".beacon/state/planner-review/beacon-v2-rust-kernel-redesign/pln-review-20260719t110159z.json",
+      "status": "accepted"
+    },
+    {
+      "surface": "program",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/programs/loom-kernel-closure-w1w5-v200/feature-graph.json",
+      "status": "frozen"
+    },
+    {
+      "surface": "parent-kernel",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
+      "status": "indexed"
+    },
+    {
+      "surface": "change",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/change/loom-kernel-closure-w1w5-v200.md",
+      "status": "indexed"
+    }
+  ]
+}

@@ -69,6 +69,30 @@ _FEATURE_MAP: dict[str, dict[str, Any]] = {
         "display_name": "Loom Goal Trace Bundle",
         "aliases": ["loom-trace-bundle", "goal-trace-bundle"],
     },
+    "loom-git-worktree-implement-harness": {
+        "display_name": "Loom Git Worktree + Implement Harness",
+        "aliases": ["git-worktree-implement-harness"],
+    },
+    "loom-run-agent-stop-when-external": {
+        "display_name": "Loom Run Agent + External Stop-When",
+        "aliases": ["run-agent-stop-when-external"],
+    },
+    "loom-tig-truth-integrity-v2": {
+        "display_name": "Loom TIG + Truth Integrity v2",
+        "aliases": ["tig-truth-integrity-v2"],
+    },
+    "loom-cross-track-adversarial-release": {
+        "display_name": "Loom Cross-Track + Adversarial Release",
+        "aliases": ["cross-track-adversarial-release"],
+    },
+    "loom-gitscope-topology-gates": {
+        "display_name": "Loom GitScope Topology Gates",
+        "aliases": ["gitscope-topology-gates"],
+    },
+    "loom-skill-score-corpus-v1": {
+        "display_name": "Loom Skill-Score Corpus v1",
+        "aliases": ["skill-score-corpus-v1"],
+    },
 }
 
 

@@ -1,0 +1,119 @@
+{
+  "schema_version": "beacon-feature-graph-v1",
+  "program_slug": "loom-kernel-closure-w1w5-v200",
+  "version": "v2.0.0",
+  "plan_mode": "interactive",
+  "scope_mode": "full_parity",
+  "lake_or_ocean": "海拆湖",
+  "program_phase": "W1",
+  "p4_ack": true,
+  "promotion_ref": "planner-review:pln-review-20260719t110159z+user-accept-option2-20260719",
+  "brand": "Loom",
+  "parent_feature": "beacon-v2-rust-kernel-redesign",
+  "user_decisions": {
+    "UD-LOOM-CLOSURE-001": "six_lake_program_topology_w1_to_w5",
+    "UD-LOOM-CLOSURE-002": "implement_order_w1_w2_w3_parallel_w4_w5",
+    "UD-LOOM-CLOSURE-003": "no_default_replace_beacon",
+    "UD-LOOM-CLOSURE-004": "cli_brand_loom_not_loom_v2"
+  },
+  "lakes": [
+    {
+      "phase": 1,
+      "wave": "W1",
+      "priority": "P0",
+      "slug": "loom-git-worktree-implement-harness",
+      "depends_on": [],
+      "upstream_acs": [
+        "AC-099",
+        "AC-100"
+      ],
+      "summary": "真 git worktree + ImplementHarness 一轮"
+    },
+    {
+      "phase": 2,
+      "wave": "W2",
+      "priority": "P0",
+      "slug": "loom-run-agent-stop-when-external",
+      "depends_on": [
+        "loom-git-worktree-implement-harness"
+      ],
+      "upstream_acs": [
+        "AC-105",
+        "AC-106"
+      ],
+      "summary": "run CLI agent + stop_when 外部校验"
+    },
+    {
+      "phase": 3,
+      "wave": "W3",
+      "priority": "P1",
+      "slug": "loom-tig-truth-integrity-v2",
+      "depends_on": [
+        "loom-run-agent-stop-when-external"
+      ],
+      "upstream_acs": [
+        "AC-101",
+        "AC-103"
+      ],
+      "summary": "TIG + truth-integrity v2 路由"
+    },
+    {
+      "phase": 4,
+      "wave": "W4a",
+      "priority": "P1",
+      "slug": "loom-cross-track-adversarial-release",
+      "depends_on": [
+        "loom-tig-truth-integrity-v2"
+      ],
+      "upstream_acs": [
+        "AC-166",
+        "AC-167"
+      ],
+      "summary": "跨轨证据污染 + adversarial release"
+    },
+    {
+      "phase": 5,
+      "wave": "W4b",
+      "priority": "P2",
+      "slug": "loom-gitscope-topology-gates",
+      "depends_on": [
+        "loom-git-worktree-implement-harness"
+      ],
+      "upstream_acs": [
+        "AC-171",
+        "AC-172",
+        "AC-173"
+      ],
+      "summary": "GitScope 拓扑三模式 + topology_gate"
+    },
+    {
+      "phase": 6,
+      "wave": "W5",
+      "priority": "P2",
+      "slug": "loom-skill-score-corpus-v1",
+      "depends_on": [
+        "loom-cross-track-adversarial-release"
+      ],
+      "upstream_acs": [
+        "AC-169"
+      ],
+      "summary": "skill-score corpus 统一"
+    }
+  ],
+  "implementation_order": [
+    "loom-git-worktree-implement-harness",
+    "loom-run-agent-stop-when-external",
+    "loom-tig-truth-integrity-v2",
+    "loom-cross-track-adversarial-release",
+    "loom-gitscope-topology-gates",
+    "loom-skill-score-corpus-v1"
+  ],
+  "wave_notes": {
+    "W1": "blocks W2",
+    "W2": "blocks W3 soft",
+    "W3": "blocks W4a soft",
+    "W4a": "parallel with W4b",
+    "W4b": "depends W1",
+    "W5": "after W4a preferred"
+  }
+}
