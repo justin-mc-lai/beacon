@@ -55,15 +55,15 @@
 ## Phase P3 — gate + migration + claude/acp/worktree/implement 真集成（AC-045–046, AC-099–100, AC-077–079, AC-011, AC-087, **AC-101, AC-103**）
 
 - [ ] TASK-P3-001 gate 写 `gate_results` + reason_codes 集成测试（TC-066）。
-- [x] TASK-P3-002 **ClaudeBackend 真 integration**（AC-045 / TC-045）：iterate + health_check + abort。
-- [x] TASK-P3-003 **AcpBackend 真 integration**（AC-046 / TC-046）：`acp:<target>` 一轮。
+- [ ] TASK-P3-002 **ClaudeBackend 真 integration**（AC-045 / TC-045）：iterate + health_check + abort。
+- [ ] TASK-P3-003 **AcpBackend 真 integration**（AC-046 / TC-046）：`acp:<target>` 一轮。
 - [x] TASK-P3-004 **worktree 全模式 parity**（AC-099 / TC-099）：worktree/current-branch/run-branch + 非法组合 fail-closed。
 - [x] TASK-P3-005 **ImplementHarnessBackend 真 integration**（AC-100 / TC-100）：worktree 内 implement harness 一轮。
 - [ ] TASK-P3-006 全量 migration + **projection rebuild**（AC-011 / TC-011）。
 - [ ] TASK-P3-007 单一写者 + migration 备份。
 - [ ] TASK-P3-008 integration：TC-045–046, TC-099–100, TC-077–079, TC-087, TC-011。
-- [ ] TASK-P3-009 **TIG port**（AC-101 / TC-101）：freeze/refreeze hard block；frozen 历史 audit_only。
-- [ ] TASK-P3-010 **verify-truth-integrity v2 路由**（AC-103 / TC-103）。
+- [x] TASK-P3-009 **TIG port**（AC-101 / TC-101）：freeze/refreeze hard block；frozen 历史 audit_only。
+- [x] TASK-P3-010 **verify-truth-integrity v2 路由**（AC-103 / TC-103）。
 - [ ] TASK-P3-011 `design_primitives.v1` binding + design_required implement gate（AC-115–116）。
 - [ ] TASK-P3-012 remediation sandbox overlay/eval/rollback + human review report（AC-119）。
 - [ ] TASK-P3-013 qa-evidence confidence_chain + business FSM coverage + defect repair regression chain（AC-121–122）。
@@ -149,12 +149,12 @@ truth freeze → implement → evaluator 后才可 closure。
 - [ ] TASK-R18-007 phase_exit_only 权威字段 + 禁止 phase 冒充 release（AC-163 / TC-163, TC-N33）。
 - [ ] TASK-R18-008 evaluator 弱 TC 检测 `weak_tc_insufficient`（AC-164 / TC-164, TC-N34）。
 - [ ] TASK-R18-009 reason_codes_core.v1 ≥20 全量往返（AC-165 / TC-165）。
-- [ ] TASK-R18-010 跨轨证据污染阻断（AC-166 / TC-166, TC-N35）。
+- [x] TASK-R18-010 跨轨证据污染阻断（AC-166 / TC-166, TC-N35）。
 - [ ] TASK-R18-011 adversarial_review.v1 release 强制点（AC-167 / TC-167, TC-N36）。
 - [ ] TASK-R18-012 dual_track_shared_contract 白名单与 CI path filter（AC-168 / TC-168）。
-- [ ] TASK-R18-013 skill-score-corpus.v1 + baseline 对照（AC-169 / TC-169, TC-N37）。
+- [x] TASK-R18-013 skill-score-corpus.v1 + baseline 对照（AC-169 / TC-169, TC-N37）。
 - [ ] TASK-R18-014 建议→人改→复评；禁止 auto apply（AC-170 / TC-170, TC-N38）。
-- [ ] TASK-R18-015 GitScopeGraph→BranchContext parity loader（AC-171 / TC-171, TC-N39）。
+- [x] TASK-R18-015 GitScopeGraph→BranchContext parity loader（AC-171 / TC-171, TC-N39）。
 - [ ] TASK-R18-016 single_repo/monorepo/multi_git topology admission fixtures（AC-172 / TC-172）。
 - [ ] TASK-R18-017 loop/implement/standard-flow 强制 topology_gate_ref（AC-173 / TC-173, TC-N40）。
 

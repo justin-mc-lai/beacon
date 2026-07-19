@@ -1,8 +1,8 @@
 """Loom display names + slug aliases for v2 features (identity stays canonical).
 
-Policy (planner GO 2026-07-19): stabilize external Loom brand; keep frozen
-package identity (`beacon-v2-*` paths) during transition; provide display_name
-and resolve aliases without big-bang rename.
+Policy: stabilize external Loom brand; keep frozen package identity
+(`beacon-v2-*` paths) during transition; provide display_name and resolve
+aliases without big-bang rename.
 """
 
 from __future__ import annotations
@@ -12,7 +12,6 @@ from typing import Any
 
 SCHEMA = "loom-slug-alias.v1"
 
-# canonical_slug -> meta (frozen package identity under docs/beacon/v2.0.0/features/)
 _FEATURE_MAP: dict[str, dict[str, Any]] = {
     "beacon-v2-product-goal-orchestrator": {
         "display_name": "Loom Product Goal Orchestrator",
@@ -103,14 +102,12 @@ def _alias_index() -> dict[str, str]:
         idx[canonical.lower()] = canonical
         for a in meta.get("aliases") or []:
             idx[str(a).lower()] = canonical
-        # loom-prefixed form of beacon-v2-* 
         if canonical.startswith("beacon-v2-"):
             idx[("loom-" + canonical[len("beacon-v2-") :]).lower()] = canonical
     return idx
 
 
 def resolve_feature_slug(name: str) -> dict[str, Any]:
-    """Resolve user/host input to canonical package slug + Loom display_name."""
     raw = str(name or "").strip()
     if not raw:
         return {
@@ -124,7 +121,6 @@ def resolve_feature_slug(name: str) -> dict[str, Any]:
     idx = _alias_index()
     canonical = idx.get(key)
     if not canonical:
-        # pass-through if directory exists under v2 features
         return {
             "schema": SCHEMA,
             "ok": True,

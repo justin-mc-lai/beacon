@@ -20,3 +20,9 @@ revision_id: R1
 ## Boundary
 
 Index only — formal implement/QA verdicts appended after wave implementation.
+
+## Implement evidence (W2)
+- `external_stop.rs` + `Orchestrator::run_with_external_stop` (AC-106 maker≠checker)
+- CLI: `beacon-v2 run --agent codex|subprocess|claude|acp:*` in-process, no daemon
+- Tests: `cargo test -p beacon-orchestrator --test w2_run_external_stop` (3 ok)
+- Timestamp: 2026-07-19T11:55:39Z

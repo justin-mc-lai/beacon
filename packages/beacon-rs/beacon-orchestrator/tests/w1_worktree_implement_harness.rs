@@ -3,7 +3,7 @@
 use beacon_core::agent::AgentBackend;
 use beacon_orchestrator::{
     admit_workspace, resolve_worktree, run_one_implement_iteration, ImplementHarnessBackend,
-    GitWorktreeMode, WorktreeResolveRequest, WorkspaceAdmissionRequest, REASON_ILLEGAL_MODE_COMBO,
+    WorktreeMode, WorktreeResolveRequest, WorkspaceAdmissionRequest, REASON_ILLEGAL_MODE_COMBO,
 };
 use std::path::{Path, PathBuf};
 use std::process::Command;
@@ -50,7 +50,7 @@ fn tc099_real_git_worktree() {
     init_repo(dir.path());
     let r = resolve_worktree(&WorktreeResolveRequest {
         project_root: dir.path().to_path_buf(),
-        mode: GitWorktreeMode::Worktree,
+        mode: WorktreeMode::Worktree,
         run_id: "tc099".into(),
         feature_slug: "loom-w1".into(),
         isolated: false,
@@ -86,7 +86,7 @@ fn iteration_result_schema_from_harness() {
     init_repo(dir.path());
     let r = resolve_worktree(&WorktreeResolveRequest {
         project_root: dir.path().to_path_buf(),
-        mode: GitWorktreeMode::CurrentBranch,
+        mode: WorktreeMode::CurrentBranch,
         run_id: "tc042".into(),
         feature_slug: "schema".into(),
         isolated: false,
@@ -125,7 +125,7 @@ fn tc100_implement_harness_one_iter() {
     init_repo(dir.path());
     let wt = resolve_worktree(&WorktreeResolveRequest {
         project_root: dir.path().to_path_buf(),
-        mode: GitWorktreeMode::Worktree,
+        mode: WorktreeMode::Worktree,
         run_id: "tc100".into(),
         feature_slug: "impl".into(),
         isolated: false,
@@ -169,7 +169,7 @@ fn tc099_illegal_combo() {
     init_repo(dir.path());
     let r = resolve_worktree(&WorktreeResolveRequest {
         project_root: dir.path().to_path_buf(),
-        mode: GitWorktreeMode::CurrentBranch,
+        mode: WorktreeMode::CurrentBranch,
         run_id: "bad".into(),
         feature_slug: "x".into(),
         isolated: true,
@@ -185,7 +185,7 @@ fn tc099_illegal_combo() {
 fn tc_w1_legal_modes_walk() {
     let dir = tempfile::tempdir().unwrap();
     init_repo(dir.path());
-    for mode in [GitWorktreeMode::CurrentBranch, GitWorktreeMode::RunBranch] {
+    for mode in [WorktreeMode::CurrentBranch, WorktreeMode::RunBranch] {
         let r = resolve_worktree(&WorktreeResolveRequest {
             project_root: dir.path().to_path_buf(),
             mode,

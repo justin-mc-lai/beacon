@@ -26,9 +26,12 @@ Promotion: `docs/beacon/v1.6.7/research/beacon-v168-prod-ops-hardening-pln-revie
 
 ## Status
 
-- **truth**: frozen R1 (all lakes)
-- **implement**: in progress
-- **release**: pending human after QA
+- **truth**: frozen R1 (all 6 lakes)
+- **implement**: landed on main (`e3d63efe` / merge `844739e4`)
+- **QA**: all 6 lakes `beacon qa run` → **passed** / `release_ready=true` (2026-07-19)
+- **release check**: `beacon release check v1.6.8` → **pass** / `release_ready=true`
+- **human GO**: **GO / SHIPPED** — current_runtime_release_line=v1.6.8, global install done
+
 
 ## Philosophy (shared with Loom)
 
@@ -37,3 +40,20 @@ Promotion: `docs/beacon/v1.6.7/research/beacon-v168-prod-ops-hardening-pln-revie
 3. Gates repairable; no fake green
 4. Durable by default; opt-out explicit
 5. Beacon prod + Loom evolve in parallel; no default replace
+
+
+## Program (hotfix follow-up): `beacon-friction-closeout-v168`
+
+Friction closeout on the same GoalRun spine (2026-07-19 GO):
+
+| Wave | Lake | Role |
+|------|------|------|
+| 0 | beacon-runtime-install-truth-v168 | install / version truth diagnose + pin |
+| 1 | beacon-longrun-contract-align-v168 | longrun_default contract = code |
+| 2 | beacon-release-profile-wiring-v168 | ReleaseProfile drives release check |
+| 3 | beacon-fsm-implement-order-v168 | entity precedence gates implement |
+
+- **graph**: `docs/beacon/v1.6.8/programs/beacon-friction-closeout-v168/feature-graph.json`
+- **axis**: `docs/beacon/v1.6.8/programs/beacon-friction-closeout-v168/goalrun-main-axis.md`
+- **status**: truth frozen R1; implement landed (goal pgr-cde3d76c48ee); tests/test_v168_friction_closeout.py green; human release pending
+

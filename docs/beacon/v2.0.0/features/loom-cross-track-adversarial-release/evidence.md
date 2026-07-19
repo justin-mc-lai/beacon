@@ -20,3 +20,9 @@ revision_id: R1
 ## Boundary
 
 Index only — formal implement/QA verdicts appended after wave implementation.
+
+## Implement evidence (W4a)
+- `beacon-gate/src/release_adversarial.rs` AC-166/167
+- CLI: `beacon-v2 release check --claim-track v2 --with-adversarial`
+- Tests: w3_w4a_gates tc166/tc167
+- Timestamp: 2026-07-19T11:55:39Z

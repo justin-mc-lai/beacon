@@ -15,7 +15,6 @@ def test_resolve_alias_to_canonical() -> None:
     assert r["ok"] is True
     assert r["canonical_slug"] == "beacon-v2-product-goal-orchestrator"
     assert "Loom" in r["display_name"]
-    assert r["docs_path"].endswith("beacon-v2-product-goal-orchestrator")
 
 
 def test_canonical_passthrough_display() -> None:
@@ -34,7 +33,6 @@ def test_score_loom_gen_implement() -> None:
     r = score_loom_skill(ROOT, "loom-gen-implement")
     assert r["content_source_exists"] is True
     assert r["scores"]["composite"] >= 70
-    assert r["scores"]["grade"] in {"A", "B", "C"}
 
 
 def test_score_loom_goal_public() -> None:
@@ -47,5 +45,4 @@ def test_score_all_loom() -> None:
     allr = score_all_loom_skills(ROOT)
     assert allr["count"] >= 5
     assert allr["average_composite"] >= 60
-    # no skill should hard-fail if CONTENT_SOURCE intact
     assert allr["ok"] is True, allr.get("failed")

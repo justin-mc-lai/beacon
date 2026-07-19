@@ -1896,6 +1896,40 @@ def align_run_id_cmd(
     raise typer.Exit(0 if result.get("ok") else 2)
 
 
+
+
+@app.command("diagnose-runtime")
+def diagnose_runtime(
+    project_root: str = typer.Option(".", "--project-root", "--project", "-p"),
+    json_output: bool = typer.Option(False, "--json", "-j"),
+):
+    """Diagnose CLI / version-truth / git HEAD install drift (v1.6.8)."""
+    from beacon.utils.runtime_install_truth import diagnose_runtime_install
+
+    root = Path(project_root).expanduser().resolve()
+    result = diagnose_runtime_install(root)
+    payload = {
+        "schema_version": "1.0",
+        "action": "diagnose-runtime",
+        "status": "PASS" if result.get("ok") else "FAIL",
+        "result": result,
+    }
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"diagnose-runtime: {payload['status']} reason={result.get('reason_code') or '-'}")
+        pkg = result.get("package") or {}
+        vt = result.get("version_truth") or {}
+        git = result.get("git") or {}
+        typer.echo(f"  package={pkg.get('version')} toolkit={pkg.get('toolkit_version')}")
+        typer.echo(f"  truth.current={vt.get('current_runtime_release_line')} package_version={vt.get('package_version')}")
+        typer.echo(f"  git.branch={git.get('branch')} head={(git.get('head') or '')[:12]}")
+        if result.get("recommended_command"):
+            typer.echo(f"  repair: {result.get('recommended_command')}")
+    if not result.get("ok"):
+        raise typer.Exit(code=2)
+
+
 @app.command("init-dual-version")
 def init_dual_version_cmd(
     previous_baseline: str = typer.Option(..., "--previous-baseline"),

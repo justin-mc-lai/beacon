@@ -11,6 +11,8 @@
 ```bash
 loom slug list --json
 loom slug resolve loom-product-goal-orchestrator --json
+loom skill-score --json
+loom skill-score --skill loom-gen-implement --json
 ```
 
 Do **not** rewrite frozen truth slugs for brand-only reasons.

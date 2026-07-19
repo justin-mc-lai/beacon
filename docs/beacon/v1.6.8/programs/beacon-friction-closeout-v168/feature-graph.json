@@ -1,0 +1,81 @@
+{
+  "schema_version": "beacon-feature-graph-v1",
+  "program_slug": "beacon-friction-closeout-v168",
+  "version": "v1.6.8",
+  "plan_mode": "interactive",
+  "scope_mode": "full_parity",
+  "lake_or_ocean": "海拆湖",
+  "program_phase": "P0",
+  "p4_ack": true,
+  "hotfix": true,
+  "promotion_ref": "docs/beacon/v1.6.8/research/beacon-friction-closeout-v168-gen-change.md",
+  "user_decisions": {
+    "UD-FC-001": "install_channel_must_not_follow_dirty_feature_branch",
+    "UD-FC-002": "longrun_default_contract_matches_code_without_env_gate",
+    "UD-FC-003": "release_profile_drives_release_check_set",
+    "UD-FC-004": "entity_precedence_gates_implement_admission",
+    "UD-FC-005": "single_public_entry_beacon_goal",
+    "UD-FC-006": "four_lakes_one_goalrun_axis",
+    "UD-V168-001": "longrun_default_true_new_projects_enforced_in_code",
+    "UD-V168-006": "single_public_entry_beacon_goal",
+    "UD-V168-007": "submachines_cannot_complete_goalrun"
+  },
+  "lakes": [
+    {
+      "phase": 0,
+      "priority": "P0",
+      "slug": "beacon-runtime-install-truth-v168",
+      "lake_or_ocean": "湖",
+      "depends_on": [],
+      "harness_route": "beacon-gen-change",
+      "summary": "生产安装通道与 CLI/version-truth/git HEAD 三联诊断，禁止 feature 分支污染全局",
+      "status": "truth_frozen",
+      "wave": 0
+    },
+    {
+      "phase": 1,
+      "priority": "P0",
+      "slug": "beacon-longrun-contract-align-v168",
+      "lake_or_ocean": "湖",
+      "depends_on": [],
+      "harness_route": "beacon-gen-change",
+      "summary": "对齐 longrun_default 合同与 product_goal_runtime：默认兑现，无需神秘环境变量",
+      "status": "truth_frozen",
+      "wave": 1
+    },
+    {
+      "phase": 2,
+      "priority": "P0",
+      "slug": "beacon-release-profile-wiring-v168",
+      "lake_or_ocean": "湖",
+      "depends_on": [
+        "beacon-runtime-install-truth-v168"
+      ],
+      "harness_route": "beacon-gen-change",
+      "summary": "ReleaseProfile.full|hotfix 真正驱动 release check 检查集；hotfix 减负+强制项",
+      "status": "truth_frozen",
+      "wave": 2
+    },
+    {
+      "phase": 3,
+      "priority": "P0",
+      "slug": "beacon-fsm-implement-order-v168",
+      "lake_or_ocean": "湖",
+      "depends_on": [
+        "beacon-longrun-contract-align-v168"
+      ],
+      "harness_route": "beacon-gen-change",
+      "summary": "domain FSM / entity precedence 强制 implement 任务序，禁止空中楼阁切片",
+      "status": "truth_frozen",
+      "wave": 3
+    }
+  ],
+  "topology_order": [
+    "beacon-runtime-install-truth-v168",
+    "beacon-longrun-contract-align-v168",
+    "beacon-release-profile-wiring-v168",
+    "beacon-fsm-implement-order-v168"
+  ],
+  "parent_program": "beacon-prod-ops-hardening-v168",
+  "generated_at": "2026-07-19T10:41:45.910252+00:00"
+}

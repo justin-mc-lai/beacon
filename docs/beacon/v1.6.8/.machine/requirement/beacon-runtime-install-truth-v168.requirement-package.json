@@ -1,0 +1,285 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-19T10:42:04.128936+00:00",
+  "feature": "beacon-runtime-install-truth-v168",
+  "feature_slug": "beacon-runtime-install-truth-v168",
+  "version": "v1.6.8",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.8/features/beacon-runtime-install-truth-v168/truth.md",
+    "tests": "docs/beacon/v1.6.8/features/beacon-runtime-install-truth-v168/tests.md",
+    "tasks": "docs/beacon/v1.6.8/features/beacon-runtime-install-truth-v168/tasks.md",
+    "evidence": "docs/beacon/v1.6.8/features/beacon-runtime-install-truth-v168/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "01d049a1ad488ae59075a6adde4b60de75d924627f099cbaf3015b477507f1fd",
+    "tests": "7029cdd655043b32be5f4fc754c1ee1f1efa7ceec010bdd3fcd0ac59b551eeee",
+    "tasks": "b82bb8c7bce9e7a8dec27b31f959d84600fdf4bed989410a4ae40bea0a33f848",
+    "evidence": "f6ad89f01669d9c9305a0e9afc19834ab91e26dfab96a113b18728182a85ea02"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-runtime-install-truth-v168",
+    "version": "v1.6.8",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "domain_required": "false",
+    "change_reason": "User GO 2026-07-19: v1.6.8 热修 friction closeout 四湖 program",
+    "canonical_refs": {
+      "truth": "docs/beacon/v1.6.8/features/beacon-runtime-install-truth-v168/truth.md",
+      "tests": "docs/beacon/v1.6.8/features/beacon-runtime-install-truth-v168/tests.md",
+      "tasks": "docs/beacon/v1.6.8/features/beacon-runtime-install-truth-v168/tasks.md",
+      "evidence": "docs/beacon/v1.6.8/features/beacon-runtime-install-truth-v168/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "program_ref": "docs/beacon/v1.6.8/programs/beacon-friction-closeout-v168/feature-graph.json",
+    "ux_required": "false",
+    "design_deferral": "Ops/runtime governance; no product marketing UI",
+    "promotion_ref": "docs/beacon/v1.6.8/research/beacon-friction-closeout-v168-gen-change.md"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-RIT-001",
+      "theme": "diagnose",
+      "description": "beacon doctor diagnose-runtime（或等价）输出 CLI path / package_version / toolkit_version / version-truth current line / git HEAD+branch / docs line"
+    },
+    {
+      "ac_id": "AC-RIT-002",
+      "theme": "pin",
+      "description": "生产安装支持非 editable 固定通道（tag/wheel 或 doctor setup --release-line）；文档明确禁止「任意 feature 分支 editable 当生产」"
+    },
+    {
+      "ac_id": "AC-RIT-003",
+      "theme": "drift",
+      "description": "当 CLI 版本 ≠ version-truth.current_runtime_release_line 时 fail-closed 并给单一 repair 命令"
+    },
+    {
+      "ac_id": "AC-RIT-004",
+      "theme": "fleet",
+      "description": "beacon version fleet（或 diagnose）展示 prod/maint/next 与本机实际安装源"
+    },
+    {
+      "ac_id": "AC-RIT-005",
+      "theme": "example",
+      "description": "skills/beacon/examples 提供 30s 安装诊断路径"
+    },
+    {
+      "ac_id": "AC-V168-FC-001",
+      "theme": "shared",
+      "description": "beacon-runtime-install-truth-v168: 合同入口与 reason_code 稳定"
+    },
+    {
+      "ac_id": "AC-V168-FC-002",
+      "theme": "shared",
+      "description": "beacon-runtime-install-truth-v168: 非法转移 fail-closed"
+    },
+    {
+      "ac_id": "AC-V168-FC-003",
+      "theme": "shared",
+      "description": "beacon-runtime-install-truth-v168: CLI/doctor 可调用"
+    },
+    {
+      "ac_id": "AC-V168-FC-004",
+      "theme": "shared",
+      "description": "beacon-runtime-install-truth-v168: 正负例测通过"
+    },
+    {
+      "ac_id": "AC-V168-FC-005",
+      "theme": "shared",
+      "description": "beacon-runtime-install-truth-v168: 挂 GoalRun 主轴"
+    },
+    {
+      "ac_id": "AC-V168-FC-006",
+      "theme": "shared",
+      "description": "beacon-runtime-install-truth-v168: examples 可跟做"
+    },
+    {
+      "ac_id": "AC-V168-FC-007",
+      "theme": "shared",
+      "description": "beacon-runtime-install-truth-v168: 禁止 placeholder/fake-runner 闭环"
+    },
+    {
+      "ac_id": "AC-V168-FC-008",
+      "theme": "shared",
+      "description": "beacon-runtime-install-truth-v168: 与 v1.6.8 产运/主轴哲学一致"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-RIT-001",
+      "tc_id": "TC-RUNTIM-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q -k runtime_install`",
+      "assertion": "diagnose",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-RIT-002",
+      "tc_id": "TC-RUNTIM-002",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
+      "assertion": "pin",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-RIT-003",
+      "tc_id": "TC-RUNTIM-003",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
+      "assertion": "drift",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-RIT-004",
+      "tc_id": "TC-RUNTIM-004",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
+      "assertion": "fleet",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-RIT-005",
+      "tc_id": "TC-RUNTIM-005",
+      "layer": "contract",
+      "command": "`beacon goal axis validate -v v1.6.8 --program beacon-friction-closeout-v168`",
+      "assertion": "example",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V168-FC-001",
+      "tc_id": "TC-FC-RUNT-S01",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
+      "assertion": "shared",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V168-FC-002",
+      "tc_id": "TC-FC-RUNT-S02",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
+      "assertion": "shared",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V168-FC-003",
+      "tc_id": "TC-FC-RUNT-S03",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
+      "assertion": "shared",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V168-FC-004",
+      "tc_id": "TC-FC-RUNT-S04",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
+      "assertion": "shared",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V168-FC-005",
+      "tc_id": "TC-FC-RUNT-S05",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
+      "assertion": "shared",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V168-FC-006",
+      "tc_id": "TC-FC-RUNT-S06",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
+      "assertion": "shared",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V168-FC-007",
+      "tc_id": "TC-FC-RUNT-S07",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
+      "assertion": "shared",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V168-FC-008",
+      "tc_id": "TC-FC-RUNT-S08",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
+      "assertion": "shared",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "LINE-10",
+      "title": "TASK-01 Freeze truth package (this)",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-11",
+      "title": "TASK-02 Implement: beacon/utils/runtime_install_truth.py + doctor diagnose-runtime",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-12",
+      "title": "TASK-03 Unit/contract tests in tests/test_v168_friction_closeout.py",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-13",
+      "title": "TASK-04 Examples + skill pointer if needed",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-14",
+      "title": "TASK-05 Mount axis validate green",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-15",
+      "title": "TASK-06 QA acceptance artifacts",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-gen-change",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.8/features/beacon-runtime-install-truth-v168/truth.md",
+      "status": "frozen",
+      "route": "truth"
+    },
+    {
+      "surface": "planner_audit",
+      "authority": "support_advisory",
+      "canonical_artifact": "conversation audit 2026-07-19 friction closeout",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "user_go",
+      "authority": "support_advisory",
+      "canonical_artifact": "User GO: gen-change v1.6.8 四湖热修",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "promotion",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.8/research/beacon-friction-closeout-v168-gen-change.md",
+      "status": "indexed",
+      "route": "change"
+    }
+  ]
+}

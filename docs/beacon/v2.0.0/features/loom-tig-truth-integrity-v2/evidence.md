@@ -20,3 +20,9 @@ revision_id: R1
 ## Boundary
 
 Index only — formal implement/QA verdicts appended after wave implementation.
+
+## Implement evidence (W3)
+- `beacon-gate/src/truth_integrity.rs` TIG block/audit_only + repair_route
+- CLI: `beacon-v2 doctor verify-truth-integrity --mode block`
+- Tests: `cargo test -p beacon-gate --test w3_w4a_gates` (tc101/tc103)
+- Timestamp: 2026-07-19T11:55:39Z

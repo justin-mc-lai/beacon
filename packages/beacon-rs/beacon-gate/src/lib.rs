@@ -1,6 +1,8 @@
 //! Beacon v2 gate engine — truth_freeze / qa / release / implement gates.
 
 pub mod harness_trace_gate;
+pub mod truth_integrity;
+pub mod release_adversarial;
 
 use beacon_core::dual_track::{admit_path_set, DualTrackAdmission};
 use beacon_core::trace_spine::TraceSpine;
@@ -174,3 +176,13 @@ mod tests {
         assert!(require_trace_completeness(&spine, "implement").is_err());
     }
 }
+
+pub use truth_integrity::{
+    doctor_exit_code, evaluate_truth_integrity, TigMode, TruthIntegrityGateResult,
+    TruthIntegrityInput, REASON_TIG_EMPTY_AC,
+};
+pub use release_adversarial::{
+    evaluate_release_gate, sample_valid_adversarial, AdversarialReview, EvidenceRef,
+    FailurePoint, ReleaseGateInput, ReleaseGateResult, REASON_ADVERSARIAL_MISSING,
+    REASON_CROSS_TRACK_EVIDENCE,
+};

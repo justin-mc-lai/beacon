@@ -1,10 +1,8 @@
 """Score Loom skill packages accurately (structure + content-source fidelity).
 
 Loom skills under skills/loom/loom-* are brand surfaces; CONTENT_SOURCE points
-to skills/beacon/* single source. Scoring must:
-- credit valid facade + pointer (not punish for thin SKILL.md)
-- score content package structure via the source
-- never treat loom skill as incomplete solely because body is a router
+to skills/beacon/* single source. Scoring must credit valid facade + pointer
+and score content package structure via the source.
 """
 
 from __future__ import annotations
@@ -51,9 +49,9 @@ def resolve_content_source(project_root: Path, skill_dir: Path) -> dict[str, Any
     fm = _parse_frontmatter(text)
     source_rel = ""
     if pointer.exists():
-        source_rel = _read(pointer).strip().splitlines()[0].strip() if _read(pointer).strip() else ""
+        raw = _read(pointer).strip()
+        source_rel = raw.splitlines()[0].strip() if raw else ""
     if not source_rel:
-        # try metadata / body
         source_rel = fm.get("content_source") or ""
         m = re.search(r"skills/beacon/[a-z0-9._-]+", text)
         if not source_rel and m:
@@ -87,15 +85,13 @@ def _structure_points(skill_name: str, skill_md: str, fm: dict[str, str], source
         notes.append("content_source_resolves")
     elif skill_name not in _PUBLIC_PRIMARY:
         notes.append("content_source_broken")
-    # dual-install / no replace
     if any(x in skill_md for x in ("不覆盖", "dual-install", "dual_install", "禁止", "does not replace", "不得")):
         score += 10
         notes.append("dual_install_stated")
-    # entry class
     if skill_name in _PUBLIC_PRIMARY and ("public" in skill_md.lower() or "公共" in skill_md):
         score += 10
         notes.append("public_entry_marked")
-    elif skill_name in _SUPPORT_ONLY and ("support" in skill_md.lower() or "support only" in skill_md.lower()):
+    elif skill_name in _SUPPORT_ONLY and "support" in skill_md.lower():
         score += 10
         notes.append("support_entry_marked")
     elif skill_name not in _PUBLIC_PRIMARY and skill_name not in _SUPPORT_ONLY:
@@ -105,7 +101,6 @@ def _structure_points(skill_name: str, skill_md: str, fm: dict[str, str], source
 
 
 def _content_structure_points(source_skill_md: str) -> tuple[float, list[str]]:
-    """Lightweight structure of content package (not rewriting source)."""
     score = 0.0
     notes: list[str] = []
     if not source_skill_md.strip():
@@ -116,7 +111,6 @@ def _content_structure_points(source_skill_md: str) -> tuple[float, list[str]]:
     if re.search(r"^#\s+\S+", source_skill_md, re.M):
         score += 20
         notes.append("source_title")
-    # meaningful body
     body_len = len(source_skill_md.strip())
     if body_len >= 200:
         score += 30
@@ -137,7 +131,6 @@ def score_loom_skill(project_root: Path, skill_name: str) -> dict[str, Any]:
     project_root = Path(project_root).expanduser().resolve()
     name = str(skill_name or "").strip()
     if name and not name.startswith("loom-") and name != "loom":
-        # allow bare name
         if (project_root / "skills" / "loom" / f"loom-{name}").is_dir():
             name = f"loom-{name}"
     skill_dir = project_root / "skills" / "loom" / (name if name != "loom" else "")
@@ -155,18 +148,19 @@ def score_loom_skill(project_root: Path, skill_name: str) -> dict[str, Any]:
 
     skill_md = _read(skill_dir / "SKILL.md")
     source = resolve_content_source(project_root, skill_dir)
-    facade_score, facade_notes = _structure_points(name if name != "loom" else "loom", skill_md, source.get("frontmatter") or {}, source)
+    facade_score, facade_notes = _structure_points(
+        name if name != "loom" else "loom", skill_md, source.get("frontmatter") or {}, source
+    )
 
-    content_score = 100.0 if name in _PUBLIC_PRIMARY and not source.get("content_source") else 0.0
+    content_score = 0.0
     content_notes: list[str] = []
     if source.get("content_source_exists"):
         content_md = _read(Path(source["content_source_path"]) / "SKILL.md")
         content_score, content_notes = _content_structure_points(content_md)
-    elif name in _PUBLIC_PRIMARY:
+    elif name in _PUBLIC_PRIMARY or name == "loom":
         content_score, content_notes = _content_structure_points(skill_md)
         content_notes.append("public_entry_self_contained_ok")
 
-    # composite: facade 40% + content 60% (accurate for thin loom wrappers)
     if name == "loom":
         composite = facade_score
     else:
@@ -228,3 +222,98 @@ def score_all_loom_skills(project_root: Path) -> dict[str, Any]:
         "ok": not failed,
         "skills": results,
     }
+
+
+REASON_CORPUS_MISSING = "skill_score_corpus_missing"
+CORPUS_SCHEMA = "skill-score-corpus.v1"
+DEFAULT_CORPUS_REL = "docs/beacon/v2.0.0/skill-score/skill-score-corpus.v1.json"
+
+
+def load_skill_score_corpus(project_root: Path, corpus_path: str | None = None) -> dict[str, Any]:
+    """Load skill-score-corpus.v1; fail-closed if missing (AC-169)."""
+    import json
+
+    root = Path(project_root)
+    path = Path(corpus_path) if corpus_path else root / DEFAULT_CORPUS_REL
+    if not path.is_file():
+        return {
+            "ok": False,
+            "blocked": True,
+            "reason_code": REASON_CORPUS_MISSING,
+            "path": str(path),
+            "schema": CORPUS_SCHEMA,
+        }
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as e:
+        return {
+            "ok": False,
+            "blocked": True,
+            "reason_code": REASON_CORPUS_MISSING,
+            "error": str(e),
+            "path": str(path),
+            "schema": CORPUS_SCHEMA,
+        }
+    if str(data.get("schema") or "") != CORPUS_SCHEMA:
+        return {
+            "ok": False,
+            "blocked": True,
+            "reason_code": REASON_CORPUS_MISSING,
+            "detail": "schema_mismatch",
+            "path": str(path),
+        }
+    return {
+        "ok": True,
+        "blocked": False,
+        "reason_code": "",
+        "path": str(path),
+        "corpus": data,
+        "schema": CORPUS_SCHEMA,
+        "auto_edit_skill_md": False,
+    }
+
+
+def score_with_corpus(
+    project_root: Path,
+    *,
+    skill: str = "",
+    corpus_path: str | None = None,
+    require_corpus: bool = True,
+) -> dict[str, Any]:
+    """Score skills under corpus authority; never auto-edits SKILL.md."""
+    root = Path(project_root)
+    if require_corpus:
+        loaded = load_skill_score_corpus(root, corpus_path)
+        if not loaded.get("ok"):
+            return loaded
+    else:
+        loaded = {"ok": True, "corpus": None, "path": ""}
+
+    if skill.strip():
+        scores = score_loom_skill(root, skill.strip())
+        payload: dict[str, Any] = {
+            "ok": bool(scores.get("ok", True)),
+            "schema": SCHEMA,
+            "corpus_schema": CORPUS_SCHEMA,
+            "corpus_path": loaded.get("path"),
+            "auto_edit_skill_md": False,
+            "scores": scores,
+        }
+    else:
+        scores = score_all_loom_skills(root)
+        payload = {
+            **scores,
+            "corpus_schema": CORPUS_SCHEMA,
+            "corpus_path": loaded.get("path"),
+            "auto_edit_skill_md": False,
+        }
+        if loaded.get("corpus"):
+            corpus = loaded["corpus"]
+            public = corpus.get("public_skills") or []
+            payload["corpus_public_skills"] = public
+            payload["baseline"] = corpus.get("baseline")
+            # v1 sample schema presence
+            v1s = corpus.get("v1_sample") or {}
+            payload["v1_sample"] = v1s
+    payload["require_corpus"] = require_corpus
+    return payload

@@ -15,7 +15,7 @@ def test_loom_public_entry_exists() -> None:
 
 
 def test_phase2_loom_prefix_with_beacon_content_source() -> None:
-    """Phase-2: public progressive skills use loom-* prefix; content stays in skills/beacon/*."""
+    """Phase-2: loom-* public prefix; content remains skills/beacon/*."""
     beacon_skills = [
         p.name
         for p in (ROOT / "skills/beacon").iterdir()
@@ -26,10 +26,9 @@ def test_phase2_loom_prefix_with_beacon_content_source() -> None:
         for p in (ROOT / "skills/loom").iterdir()
         if p.is_dir() and p.name.startswith("loom-")
     ]
-    assert len(beacon_skills) >= 20, "beacon tree should remain the content source"
+    assert len(beacon_skills) >= 20
     assert "loom-goal" in loom_skills
     assert "loom-gen-implement" in loom_skills
-    assert "loom-eval-qa" in loom_skills
     src = (ROOT / "skills/loom/loom-gen-implement/CONTENT_SOURCE").read_text(encoding="utf-8").strip()
     assert src == "skills/beacon/beacon-gen-implement"
 

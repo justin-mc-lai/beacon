@@ -1,0 +1,208 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-19T02:26:27.055477+00:00",
+  "feature": "beacon-v2-loom-ops-philosophy-sync",
+  "feature_slug": "beacon-v2-loom-ops-philosophy-sync",
+  "version": "v1.6.8",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/truth.md",
+    "tests": "docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
+    "tasks": "docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tasks.md",
+    "evidence": "docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "aa1a8cd7ee1723050309152fe9ec309063247532f15d1bbd68eab918ce0b68b6",
+    "tests": "80d5f73e685787b5adbc159dc0d7b3e6d337d2cd7c23e90483aefc27ecedf9e2",
+    "tasks": "eb9bf666ad52f7863b60f778db97136f0263af6f0d1f8b77fc97b55a75ad69f1",
+    "evidence": "b5e327aaddfd8c0532f0b1cd42472c672b05314cce3708b013f7310e3914c950"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-v2-loom-ops-philosophy-sync",
+    "version": "v1.6.8",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "domain_required": "false",
+    "change_reason": "User GO v1.6.8 prod-ops hardening; promotion_ref pln-review",
+    "canonical_refs": {
+      "truth": "docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/truth.md",
+      "tests": "docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
+      "tasks": "docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tasks.md",
+      "evidence": "docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "program_ref": "docs/beacon/v1.6.8/programs/beacon-prod-ops-hardening-v168/feature-graph.json",
+    "ux_required": "false",
+    "design_deferral": "Ops/CLI governance; no product marketing UI",
+    "promotion_ref": "docs/beacon/v1.6.7/research/beacon-v168-prod-ops-hardening-pln-review.md"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-V168-001",
+      "theme": "entry",
+      "description": "v2/Loom Ops Philosophy Sync: 合同入口与 reason_code 稳定"
+    },
+    {
+      "ac_id": "AC-V168-002",
+      "theme": "fsm",
+      "description": "v2/Loom Ops Philosophy Sync: 非法转移 fail-closed"
+    },
+    {
+      "ac_id": "AC-V168-003",
+      "theme": "cli",
+      "description": "v2/Loom Ops Philosophy Sync: CLI/doctor 命令可调用"
+    },
+    {
+      "ac_id": "AC-V168-004",
+      "theme": "test",
+      "description": "v2/Loom Ops Philosophy Sync: 正负例测通过"
+    },
+    {
+      "ac_id": "AC-V168-005",
+      "theme": "axis",
+      "description": "v2/Loom Ops Philosophy Sync: 挂 GoalRun 主轴"
+    },
+    {
+      "ac_id": "AC-V168-006",
+      "theme": "example",
+      "description": "v2/Loom Ops Philosophy Sync: examples 可跟做"
+    },
+    {
+      "ac_id": "AC-V168-007",
+      "theme": "no-fake",
+      "description": "v2/Loom Ops Philosophy Sync: 禁止 placeholder/fake-runner 闭环"
+    },
+    {
+      "ac_id": "AC-V168-008",
+      "theme": "loom-parity",
+      "description": "v2/Loom Ops Philosophy Sync: v2/Loom 哲学同源声明"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-V168-001",
+      "tc_id": "TC-PHY-SYNC-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v168_prod_ops_hardening.py -q -k loom_parity`",
+      "assertion": "contract",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V168-002",
+      "tc_id": "TC-PHY-SYNC-002",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v168_prod_ops_hardening.py -q`",
+      "assertion": "fsm/illegal",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V168-003",
+      "tc_id": "TC-PHY-SYNC-003",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v168_prod_ops_hardening.py -q`",
+      "assertion": "cli",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V168-004",
+      "tc_id": "TC-PHY-SYNC-004",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v168_prod_ops_hardening.py -q`",
+      "assertion": "positive/negative",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V168-005",
+      "tc_id": "TC-PHY-SYNC-005",
+      "layer": "contract",
+      "command": "`beacon goal axis validate -v v1.6.8 --program beacon-prod-ops-hardening-v168`",
+      "assertion": "axis",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V168-006",
+      "tc_id": "TC-PHY-SYNC-006",
+      "layer": "contract",
+      "command": "`python3 -c \"from pathlib import Path; assert Path('skills/beacon/examples').exists()\"`",
+      "assertion": "examples dir",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V168-007",
+      "tc_id": "TC-PHY-SYNC-007",
+      "layer": "negative",
+      "command": "`python3 -m pytest tests/test_v168_prod_ops_hardening.py -q -k no_fake`",
+      "assertion": "no fake",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V168-008",
+      "tc_id": "TC-PHY-SYNC-008",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v168_prod_ops_hardening.py -q -k loom`",
+      "assertion": "loom parity",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "LINE-10",
+      "title": "TASK-01 Freeze truth package (this)",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-11",
+      "title": "TASK-02 Implement module + CLI",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-12",
+      "title": "TASK-03 Unit/contract tests green",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-13",
+      "title": "TASK-04 Mount axis / examples / skill pointer",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-14",
+      "title": "TASK-05 QA acceptance artifacts",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-gen-change",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/truth.md",
+      "status": "frozen",
+      "route": "truth"
+    },
+    {
+      "surface": "planner",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.7/research/beacon-v168-prod-ops-hardening-pln-review.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "user_go",
+      "authority": "support_advisory",
+      "canonical_artifact": "User GO 2026-07-19 v1.6.8 program",
+      "status": "indexed",
+      "route": "change"
+    }
+  ]
+}
