@@ -1,4 +1,4 @@
-"""Audit: v2 skill calling surface is loom public-entry + shared beacon/* (Phase-1)."""
+"""Audit: v2 skill calling surface is loom public-entry + shared beacon/* content."""
 
 from __future__ import annotations
 
@@ -28,10 +28,8 @@ def test_phase2_loom_prefix_with_beacon_content_source() -> None:
     ]
     assert len(beacon_skills) >= 20, "beacon tree should remain the content source"
     assert "loom-goal" in loom_skills
-    # Phase-2 full public prefix
     assert "loom-gen-implement" in loom_skills
     assert "loom-eval-qa" in loom_skills
-    # content single-source
     src = (ROOT / "skills/loom/loom-gen-implement/CONTENT_SOURCE").read_text(encoding="utf-8").strip()
     assert src == "skills/beacon/beacon-gen-implement"
 
@@ -52,7 +50,6 @@ def test_no_third_public_orchestration_skill() -> None:
         if "entry: public_primary" in text or "public_primary" in text:
             primaries.append(skill_md.parent.name)
     assert "loom-goal" in primaries or (ROOT / "skills/loom/loom-goal/SKILL.md").exists()
-    # host skill must not also claim public_primary delivery
     host = (ROOT / "skills/loom/SKILL.md").read_text(encoding="utf-8")
     assert "routes to loom-goal" in host.lower() or "loom-goal" in host
 

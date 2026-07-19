@@ -654,19 +654,21 @@ def run_goal_facade(
     longrun=False (default): driver stays idle; supervise remains opt-in.
     longrun=True: attach durable supervisor + AgentDriver for this run only.
     """
-    # skill/utterance intent may force longrun without CLI flag;
-    # v1.6.8 project goal.longrun_default=true attaches longrun when CLI flag omitted.
+    # skill/utterance intent may force longrun without CLI flag.
+    # Default is opt-in off. Project longrun_default only when BEACON_GOAL_HONOR_LONGRUN_DEFAULT=1.
     try:
-        # longrun=False (default) is opt-in off. Only True CLI or utterance intent enables.
-        # Project-level longrun_default is advisory unless BEACON_GOAL_HONOR_LONGRUN_DEFAULT=1.
+        import os
+
         if longrun:
             effective_longrun = True
             longrun_source = "cli_flag"
         elif detect_longrun_intent(utterance):
             effective_longrun = True
             longrun_source = "utterance_intent"
-        elif str(__import__("os").environ.get("BEACON_GOAL_HONOR_LONGRUN_DEFAULT", "")).strip() in {
-            "1", "true", "TRUE", "yes",
+        elif str(os.environ.get("BEACON_GOAL_HONOR_LONGRUN_DEFAULT", "")).strip().lower() in {
+            "1",
+            "true",
+            "yes",
         }:
             from beacon.utils.prod_ops_v168 import resolve_longrun_enabled
 
@@ -679,6 +681,7 @@ def run_goal_facade(
     except Exception:  # noqa: BLE001
         effective_longrun = bool(longrun) or detect_longrun_intent(utterance)
         longrun_source = "legacy"
+
     payload = create_goal_run(
         project_root,
         utterance=utterance,
