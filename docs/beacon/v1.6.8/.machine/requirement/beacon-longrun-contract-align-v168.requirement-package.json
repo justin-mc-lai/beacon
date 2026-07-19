@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-19T10:42:04.927922+00:00",
+  "generated_at": "2026-07-19T11:48:52.923894+00:00",
   "feature": "beacon-longrun-contract-align-v168",
   "feature_slug": "beacon-longrun-contract-align-v168",
   "version": "v1.6.8",
@@ -19,8 +19,8 @@
   },
   "source_hashes": {
     "truth": "7646c3bc5745a1e96e31c477e889da8ddc7e904857b8763d5cd6ce2e0042f3eb",
-    "tests": "1dd8f6458358c5a626b2216c09451a068921196e01df4001a0ddb31228ad8280",
-    "tasks": "9893adbbe65ae822e61895f4822355c88c2e0e81666117a7b4b9e778dcc41c17",
+    "tests": "bb3d1efbb4a00bc9fdda3bb38d39ce4b3eb4900bbf6bbefdfcf63d6ceebb6c33",
+    "tasks": "12e8c950a9706b4d5c0912913efdf13a52984dcae261f2f98b9dd176e9a8e24c",
     "evidence": "c68fd30d3b50597e85f37b5cfef0dc8bc3b64cb08c40a2d98443e75cc4e9b374"
   },
   "truth_frontmatter": {
@@ -116,47 +116,47 @@
   "test_rows": [
     {
       "ac_id": "AC-LCA-001",
-      "tc_id": "TC-LONGRU-001",
+      "tc_id": "TC-LCA-001",
       "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q -k longrun_contract`",
-      "assertion": "default",
+      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q -k longrun_default`",
+      "assertion": "primary",
       "evidence_path": ""
     },
     {
       "ac_id": "AC-LCA-002",
-      "tc_id": "TC-LONGRU-002",
+      "tc_id": "TC-LCA-002",
       "layer": "contract",
       "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
-      "assertion": "opt_out",
+      "assertion": "suite",
       "evidence_path": ""
     },
     {
       "ac_id": "AC-LCA-003",
-      "tc_id": "TC-LONGRU-003",
+      "tc_id": "TC-LCA-003",
       "layer": "contract",
       "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
-      "assertion": "no_env_gate",
+      "assertion": "suite",
       "evidence_path": ""
     },
     {
       "ac_id": "AC-LCA-004",
-      "tc_id": "TC-LONGRU-004",
+      "tc_id": "TC-LCA-004",
       "layer": "contract",
       "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
-      "assertion": "bridge_doctor",
+      "assertion": "suite",
       "evidence_path": ""
     },
     {
       "ac_id": "AC-LCA-005",
-      "tc_id": "TC-LONGRU-005",
+      "tc_id": "TC-LCA-005",
       "layer": "contract",
-      "command": "`beacon goal axis validate -v v1.6.8 --program beacon-friction-closeout-v168`",
-      "assertion": "docs",
+      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
+      "assertion": "suite",
       "evidence_path": ""
     },
     {
       "ac_id": "AC-V168-FC-001",
-      "tc_id": "TC-FC-LONG-S01",
+      "tc_id": "TC-LCA-S01",
       "layer": "contract",
       "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
       "assertion": "shared",
@@ -164,7 +164,7 @@
     },
     {
       "ac_id": "AC-V168-FC-002",
-      "tc_id": "TC-FC-LONG-S02",
+      "tc_id": "TC-LCA-S02",
       "layer": "contract",
       "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
       "assertion": "shared",
@@ -172,47 +172,7 @@
     },
     {
       "ac_id": "AC-V168-FC-003",
-      "tc_id": "TC-FC-LONG-S03",
-      "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
-      "assertion": "shared",
-      "evidence_path": ""
-    },
-    {
-      "ac_id": "AC-V168-FC-004",
-      "tc_id": "TC-FC-LONG-S04",
-      "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
-      "assertion": "shared",
-      "evidence_path": ""
-    },
-    {
-      "ac_id": "AC-V168-FC-005",
-      "tc_id": "TC-FC-LONG-S05",
-      "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
-      "assertion": "shared",
-      "evidence_path": ""
-    },
-    {
-      "ac_id": "AC-V168-FC-006",
-      "tc_id": "TC-FC-LONG-S06",
-      "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
-      "assertion": "shared",
-      "evidence_path": ""
-    },
-    {
-      "ac_id": "AC-V168-FC-007",
-      "tc_id": "TC-FC-LONG-S07",
-      "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
-      "assertion": "shared",
-      "evidence_path": ""
-    },
-    {
-      "ac_id": "AC-V168-FC-008",
-      "tc_id": "TC-FC-LONG-S08",
+      "tc_id": "TC-LCA-S03",
       "layer": "contract",
       "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
       "assertion": "shared",
@@ -228,22 +188,22 @@
     {
       "id": "LINE-11",
       "title": "TASK-02 Implement: beacon/utils/product_goal_runtime.py run_goal_facade + prod_ops_v168.resolve_longrun_enabled",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "LINE-12",
       "title": "TASK-03 Unit/contract tests in tests/test_v168_friction_closeout.py",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "LINE-13",
       "title": "TASK-04 Examples + skill pointer if needed",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "LINE-14",
       "title": "TASK-05 Mount axis validate green",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "LINE-15",
