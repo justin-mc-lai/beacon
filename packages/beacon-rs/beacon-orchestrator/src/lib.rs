@@ -13,6 +13,8 @@ pub mod git_branch_context;
 pub mod checkpoint;
 pub mod git_worktree;
 pub mod implement_harness;
+pub mod external_stop;
+pub mod gitscope;
 
 pub use codex_backend::CodexBackend;
 pub use goal_controller::{GoalController, GoalRunHandle};
@@ -31,6 +33,16 @@ pub use git_worktree::{
 };
 pub use implement_harness::{
     run_one_implement_iteration, ImplementHarnessBackend, ImplementIterationArtifact,
+};
+pub use external_stop::{
+    map_agent_name, AllowStopChecker, CommandStopChecker, DenyStopChecker, ExternalStopCheckResult,
+    ExternalStopChecker, FileExistsStopChecker, REASON_EXTERNAL_STOP_VERIFIED,
+    REASON_STOP_WHEN_UNVERIFIED,
+};
+pub use gitscope::{
+    apply_gitscope_to_branch_context, build_gitscope, load_gitscope_fixture, require_topology_gate,
+    GitScopeGraph, TopologyGateResult, TopologyKind, REASON_GSG_PARITY_FAILED,
+    REASON_TOPOLOGY_GATE_BLOCKED, REASON_TOPOLOGY_GATE_MISSING,
 };
 
 use beacon_core::agent::{AgentBackend, IterationResult};
@@ -63,6 +75,8 @@ pub struct StepResult {
     pub result: IterationResult,
     pub stopped: bool,
     pub stop_reason: String,
+    /// AC-106: agent wanted to stop but external check failed.
+    pub stop_unverified: bool,
 }
 
 impl<'a> Orchestrator<'a> {
@@ -121,6 +135,68 @@ impl<'a> Orchestrator<'a> {
                 result: result.clone(),
                 stopped,
                 stop_reason: stop_reason.clone(),
+                stop_unverified: false,
+            });
+            if stopped {
+                break;
+            }
+        }
+        Ok(steps)
+    }
+
+    /// AC-105/106: iterate with external stop verification (maker ≠ checker).
+    /// Agent stop_signal alone never terminates; only external check or max_iterations.
+    pub fn run_with_external_stop(
+        &mut self,
+        backend: &mut dyn AgentBackend,
+        prompt: &str,
+        external: &mut dyn crate::external_stop::ExternalStopChecker,
+    ) -> Result<Vec<StepResult>, String> {
+        backend
+            .health_check()
+            .map_err(|e| format!("health check failed: {e}"))?;
+        let mut steps: Vec<StepResult> = Vec::new();
+        let max = match &self.stop_when {
+            StopWhen::MaxIterations(n) => *n,
+            _ => 100,
+        };
+        for i in 1..=max {
+            if self.aborted.load(Ordering::SeqCst) {
+                if let Some(last) = steps.last_mut() {
+                    last.stopped = true;
+                    last.stop_reason = "aborted".to_string();
+                }
+                break;
+            }
+            let result = backend
+                .iterate(prompt)
+                .map_err(|e| format!("iterate error: {e}"))?;
+            let mut stopped = false;
+            let mut stop_reason = String::new();
+            let mut stop_unverified = false;
+
+            // Max iterations hard stop (budget) — not agent self-report
+            if i >= max {
+                stopped = true;
+                stop_reason = "max_iterations".into();
+            } else if result.stop_signal.is_some() {
+                let check = external.check();
+                if check.allowed {
+                    stopped = true;
+                    stop_reason = check.reason_code;
+                } else {
+                    stop_unverified = true;
+                    stop_reason = crate::external_stop::REASON_STOP_WHEN_UNVERIFIED.into();
+                    // continue loop
+                }
+            }
+
+            steps.push(StepResult {
+                iteration: i,
+                result: result.clone(),
+                stopped,
+                stop_reason: stop_reason.clone(),
+                stop_unverified,
             });
             if stopped {
                 break;

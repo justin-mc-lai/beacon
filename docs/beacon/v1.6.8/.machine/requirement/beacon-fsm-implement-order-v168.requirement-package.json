@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-19T10:42:06.441425+00:00",
+  "generated_at": "2026-07-19T11:48:54.357573+00:00",
   "feature": "beacon-fsm-implement-order-v168",
   "feature_slug": "beacon-fsm-implement-order-v168",
   "version": "v1.6.8",
@@ -19,8 +19,8 @@
   },
   "source_hashes": {
     "truth": "ce62c09024fa26f71b06934bc45e16178f52709c615db1aaa13a78dc4a13e05b",
-    "tests": "3e5108b1238ccfda0300cdac98d403a1c2026a39feef3f09ba831bc9649d4737",
-    "tasks": "6a4a93d1b2aed32f81a0ae9dd1ad19af09b17db56627145e06b35a612f4b168c",
+    "tests": "093c36374633cc59a98407983647c308733d6e2ab5e5970ae7cc913dc63930f1",
+    "tasks": "73175c1ad5645dd0d1ea1e537d58dfb868d42cb3d4a22aceb64b9dc1c9b52d91",
     "evidence": "a7695e55ba0a4db630902c9b780a66eb7705d0f245ac56ffdde7098550e25d01"
   },
   "truth_frontmatter": {
@@ -116,47 +116,47 @@
   "test_rows": [
     {
       "ac_id": "AC-FIO-001",
-      "tc_id": "TC-FSM_IM-001",
+      "tc_id": "TC-FIO-001",
       "layer": "contract",
       "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q -k fsm_implement`",
-      "assertion": "admission",
+      "assertion": "primary",
       "evidence_path": ""
     },
     {
       "ac_id": "AC-FIO-002",
-      "tc_id": "TC-FSM_IM-002",
+      "tc_id": "TC-FIO-002",
       "layer": "contract",
       "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
-      "assertion": "tasks_order",
+      "assertion": "suite",
       "evidence_path": ""
     },
     {
       "ac_id": "AC-FIO-003",
-      "tc_id": "TC-FSM_IM-003",
+      "tc_id": "TC-FIO-003",
       "layer": "contract",
       "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
-      "assertion": "qa_negative",
+      "assertion": "suite",
       "evidence_path": ""
     },
     {
       "ac_id": "AC-FIO-004",
-      "tc_id": "TC-FSM_IM-004",
+      "tc_id": "TC-FIO-004",
       "layer": "contract",
       "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
-      "assertion": "axis",
+      "assertion": "suite",
       "evidence_path": ""
     },
     {
       "ac_id": "AC-FIO-005",
-      "tc_id": "TC-FSM_IM-005",
+      "tc_id": "TC-FIO-005",
       "layer": "contract",
-      "command": "`beacon goal axis validate -v v1.6.8 --program beacon-friction-closeout-v168`",
-      "assertion": "escape",
+      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
+      "assertion": "suite",
       "evidence_path": ""
     },
     {
       "ac_id": "AC-V168-FC-001",
-      "tc_id": "TC-FC-FSM_-S01",
+      "tc_id": "TC-FIO-S01",
       "layer": "contract",
       "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
       "assertion": "shared",
@@ -164,7 +164,7 @@
     },
     {
       "ac_id": "AC-V168-FC-002",
-      "tc_id": "TC-FC-FSM_-S02",
+      "tc_id": "TC-FIO-S02",
       "layer": "contract",
       "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
       "assertion": "shared",
@@ -172,47 +172,7 @@
     },
     {
       "ac_id": "AC-V168-FC-003",
-      "tc_id": "TC-FC-FSM_-S03",
-      "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
-      "assertion": "shared",
-      "evidence_path": ""
-    },
-    {
-      "ac_id": "AC-V168-FC-004",
-      "tc_id": "TC-FC-FSM_-S04",
-      "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
-      "assertion": "shared",
-      "evidence_path": ""
-    },
-    {
-      "ac_id": "AC-V168-FC-005",
-      "tc_id": "TC-FC-FSM_-S05",
-      "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
-      "assertion": "shared",
-      "evidence_path": ""
-    },
-    {
-      "ac_id": "AC-V168-FC-006",
-      "tc_id": "TC-FC-FSM_-S06",
-      "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
-      "assertion": "shared",
-      "evidence_path": ""
-    },
-    {
-      "ac_id": "AC-V168-FC-007",
-      "tc_id": "TC-FC-FSM_-S07",
-      "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
-      "assertion": "shared",
-      "evidence_path": ""
-    },
-    {
-      "ac_id": "AC-V168-FC-008",
-      "tc_id": "TC-FC-FSM_-S08",
+      "tc_id": "TC-FIO-S03",
       "layer": "contract",
       "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
       "assertion": "shared",
@@ -228,22 +188,22 @@
     {
       "id": "LINE-11",
       "title": "TASK-02 Implement: implement admission + domain_fsm helpers + task ordering",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "LINE-12",
       "title": "TASK-03 Unit/contract tests in tests/test_v168_friction_closeout.py",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "LINE-13",
       "title": "TASK-04 Examples + skill pointer if needed",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "LINE-14",
       "title": "TASK-05 Mount axis validate green",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "LINE-15",

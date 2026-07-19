@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-19T10:42:04.128936+00:00",
+  "generated_at": "2026-07-19T11:48:52.263559+00:00",
   "feature": "beacon-runtime-install-truth-v168",
   "feature_slug": "beacon-runtime-install-truth-v168",
   "version": "v1.6.8",
@@ -19,8 +19,8 @@
   },
   "source_hashes": {
     "truth": "01d049a1ad488ae59075a6adde4b60de75d924627f099cbaf3015b477507f1fd",
-    "tests": "7029cdd655043b32be5f4fc754c1ee1f1efa7ceec010bdd3fcd0ac59b551eeee",
-    "tasks": "b82bb8c7bce9e7a8dec27b31f959d84600fdf4bed989410a4ae40bea0a33f848",
+    "tests": "51b7877303b6f2a6728f7d9384f75f71e1677ce20d777b6ed4b61cc7f4361201",
+    "tasks": "3c13ff88450e815c0f1184eb6183066d1c1cf92c161ed71676111737d6a39df7",
     "evidence": "f6ad89f01669d9c9305a0e9afc19834ab91e26dfab96a113b18728182a85ea02"
   },
   "truth_frontmatter": {
@@ -116,47 +116,47 @@
   "test_rows": [
     {
       "ac_id": "AC-RIT-001",
-      "tc_id": "TC-RUNTIM-001",
+      "tc_id": "TC-RIT-001",
       "layer": "contract",
       "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q -k runtime_install`",
-      "assertion": "diagnose",
+      "assertion": "primary",
       "evidence_path": ""
     },
     {
       "ac_id": "AC-RIT-002",
-      "tc_id": "TC-RUNTIM-002",
+      "tc_id": "TC-RIT-002",
       "layer": "contract",
       "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
-      "assertion": "pin",
+      "assertion": "suite",
       "evidence_path": ""
     },
     {
       "ac_id": "AC-RIT-003",
-      "tc_id": "TC-RUNTIM-003",
+      "tc_id": "TC-RIT-003",
       "layer": "contract",
       "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
-      "assertion": "drift",
+      "assertion": "suite",
       "evidence_path": ""
     },
     {
       "ac_id": "AC-RIT-004",
-      "tc_id": "TC-RUNTIM-004",
+      "tc_id": "TC-RIT-004",
       "layer": "contract",
       "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
-      "assertion": "fleet",
+      "assertion": "suite",
       "evidence_path": ""
     },
     {
       "ac_id": "AC-RIT-005",
-      "tc_id": "TC-RUNTIM-005",
+      "tc_id": "TC-RIT-005",
       "layer": "contract",
-      "command": "`beacon goal axis validate -v v1.6.8 --program beacon-friction-closeout-v168`",
-      "assertion": "example",
+      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
+      "assertion": "suite",
       "evidence_path": ""
     },
     {
       "ac_id": "AC-V168-FC-001",
-      "tc_id": "TC-FC-RUNT-S01",
+      "tc_id": "TC-RIT-S01",
       "layer": "contract",
       "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
       "assertion": "shared",
@@ -164,7 +164,7 @@
     },
     {
       "ac_id": "AC-V168-FC-002",
-      "tc_id": "TC-FC-RUNT-S02",
+      "tc_id": "TC-RIT-S02",
       "layer": "contract",
       "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
       "assertion": "shared",
@@ -172,47 +172,7 @@
     },
     {
       "ac_id": "AC-V168-FC-003",
-      "tc_id": "TC-FC-RUNT-S03",
-      "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
-      "assertion": "shared",
-      "evidence_path": ""
-    },
-    {
-      "ac_id": "AC-V168-FC-004",
-      "tc_id": "TC-FC-RUNT-S04",
-      "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
-      "assertion": "shared",
-      "evidence_path": ""
-    },
-    {
-      "ac_id": "AC-V168-FC-005",
-      "tc_id": "TC-FC-RUNT-S05",
-      "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
-      "assertion": "shared",
-      "evidence_path": ""
-    },
-    {
-      "ac_id": "AC-V168-FC-006",
-      "tc_id": "TC-FC-RUNT-S06",
-      "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
-      "assertion": "shared",
-      "evidence_path": ""
-    },
-    {
-      "ac_id": "AC-V168-FC-007",
-      "tc_id": "TC-FC-RUNT-S07",
-      "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
-      "assertion": "shared",
-      "evidence_path": ""
-    },
-    {
-      "ac_id": "AC-V168-FC-008",
-      "tc_id": "TC-FC-RUNT-S08",
+      "tc_id": "TC-RIT-S03",
       "layer": "contract",
       "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
       "assertion": "shared",
@@ -228,22 +188,22 @@
     {
       "id": "LINE-11",
       "title": "TASK-02 Implement: beacon/utils/runtime_install_truth.py + doctor diagnose-runtime",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "LINE-12",
       "title": "TASK-03 Unit/contract tests in tests/test_v168_friction_closeout.py",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "LINE-13",
       "title": "TASK-04 Examples + skill pointer if needed",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "LINE-14",
       "title": "TASK-05 Mount axis validate green",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "LINE-15",

@@ -222,3 +222,98 @@ def score_all_loom_skills(project_root: Path) -> dict[str, Any]:
         "ok": not failed,
         "skills": results,
     }
+
+
+REASON_CORPUS_MISSING = "skill_score_corpus_missing"
+CORPUS_SCHEMA = "skill-score-corpus.v1"
+DEFAULT_CORPUS_REL = "docs/beacon/v2.0.0/skill-score/skill-score-corpus.v1.json"
+
+
+def load_skill_score_corpus(project_root: Path, corpus_path: str | None = None) -> dict[str, Any]:
+    """Load skill-score-corpus.v1; fail-closed if missing (AC-169)."""
+    import json
+
+    root = Path(project_root)
+    path = Path(corpus_path) if corpus_path else root / DEFAULT_CORPUS_REL
+    if not path.is_file():
+        return {
+            "ok": False,
+            "blocked": True,
+            "reason_code": REASON_CORPUS_MISSING,
+            "path": str(path),
+            "schema": CORPUS_SCHEMA,
+        }
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as e:
+        return {
+            "ok": False,
+            "blocked": True,
+            "reason_code": REASON_CORPUS_MISSING,
+            "error": str(e),
+            "path": str(path),
+            "schema": CORPUS_SCHEMA,
+        }
+    if str(data.get("schema") or "") != CORPUS_SCHEMA:
+        return {
+            "ok": False,
+            "blocked": True,
+            "reason_code": REASON_CORPUS_MISSING,
+            "detail": "schema_mismatch",
+            "path": str(path),
+        }
+    return {
+        "ok": True,
+        "blocked": False,
+        "reason_code": "",
+        "path": str(path),
+        "corpus": data,
+        "schema": CORPUS_SCHEMA,
+        "auto_edit_skill_md": False,
+    }
+
+
+def score_with_corpus(
+    project_root: Path,
+    *,
+    skill: str = "",
+    corpus_path: str | None = None,
+    require_corpus: bool = True,
+) -> dict[str, Any]:
+    """Score skills under corpus authority; never auto-edits SKILL.md."""
+    root = Path(project_root)
+    if require_corpus:
+        loaded = load_skill_score_corpus(root, corpus_path)
+        if not loaded.get("ok"):
+            return loaded
+    else:
+        loaded = {"ok": True, "corpus": None, "path": ""}
+
+    if skill.strip():
+        scores = score_loom_skill(root, skill.strip())
+        payload: dict[str, Any] = {
+            "ok": bool(scores.get("ok", True)),
+            "schema": SCHEMA,
+            "corpus_schema": CORPUS_SCHEMA,
+            "corpus_path": loaded.get("path"),
+            "auto_edit_skill_md": False,
+            "scores": scores,
+        }
+    else:
+        scores = score_all_loom_skills(root)
+        payload = {
+            **scores,
+            "corpus_schema": CORPUS_SCHEMA,
+            "corpus_path": loaded.get("path"),
+            "auto_edit_skill_md": False,
+        }
+        if loaded.get("corpus"):
+            corpus = loaded["corpus"]
+            public = corpus.get("public_skills") or []
+            payload["corpus_public_skills"] = public
+            payload["baseline"] = corpus.get("baseline")
+            # v1 sample schema presence
+            v1s = corpus.get("v1_sample") or {}
+            payload["v1_sample"] = v1s
+    payload["require_corpus"] = require_corpus
+    return payload

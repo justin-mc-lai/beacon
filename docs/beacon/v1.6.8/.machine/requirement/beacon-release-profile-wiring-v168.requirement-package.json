@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-19T10:42:05.669626+00:00",
+  "generated_at": "2026-07-19T11:48:53.684977+00:00",
   "feature": "beacon-release-profile-wiring-v168",
   "feature_slug": "beacon-release-profile-wiring-v168",
   "version": "v1.6.8",
@@ -19,8 +19,8 @@
   },
   "source_hashes": {
     "truth": "929d03fbd04645a0f66066045ae92f6050a184bf2606eaaea166dc19046f1437",
-    "tests": "df526e9e158861dd33f71ee5c0d2fffb412c8cc9a9376940f1aa8935af0b0967",
-    "tasks": "9efe6ee73230045361f352f27454c746ae658972de20819ee5db5a1d0d2c74e5",
+    "tests": "f2843d74f4f97c0464e7c11bcf9d4b4cb261f5513ceedaa50802ca811019e50b",
+    "tasks": "93b3188f735ad17ffd20a47be3793f6da4255c8d5a43fd3360dc2adcca0a3619",
     "evidence": "019abf8c54a53cc4617db5530331d4ec6cd480075f1f30b1702ef128fe2c5a85"
   },
   "truth_frontmatter": {
@@ -116,47 +116,47 @@
   "test_rows": [
     {
       "ac_id": "AC-RPW-001",
-      "tc_id": "TC-RELEAS-001",
+      "tc_id": "TC-RPW-001",
       "layer": "contract",
       "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q -k release_profile`",
-      "assertion": "wire",
+      "assertion": "primary",
       "evidence_path": ""
     },
     {
       "ac_id": "AC-RPW-002",
-      "tc_id": "TC-RELEAS-002",
+      "tc_id": "TC-RPW-002",
       "layer": "contract",
       "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
-      "assertion": "hotfix_min",
+      "assertion": "suite",
       "evidence_path": ""
     },
     {
       "ac_id": "AC-RPW-003",
-      "tc_id": "TC-RELEAS-003",
+      "tc_id": "TC-RPW-003",
       "layer": "contract",
       "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
-      "assertion": "repair",
+      "assertion": "suite",
       "evidence_path": ""
     },
     {
       "ac_id": "AC-RPW-004",
-      "tc_id": "TC-RELEAS-004",
+      "tc_id": "TC-RPW-004",
       "layer": "contract",
       "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
-      "assertion": "selfheal",
+      "assertion": "suite",
       "evidence_path": ""
     },
     {
       "ac_id": "AC-RPW-005",
-      "tc_id": "TC-RELEAS-005",
+      "tc_id": "TC-RPW-005",
       "layer": "contract",
-      "command": "`beacon goal axis validate -v v1.6.8 --program beacon-friction-closeout-v168`",
-      "assertion": "no_fake",
+      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
+      "assertion": "suite",
       "evidence_path": ""
     },
     {
       "ac_id": "AC-V168-FC-001",
-      "tc_id": "TC-FC-RELE-S01",
+      "tc_id": "TC-RPW-S01",
       "layer": "contract",
       "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
       "assertion": "shared",
@@ -164,7 +164,7 @@
     },
     {
       "ac_id": "AC-V168-FC-002",
-      "tc_id": "TC-FC-RELE-S02",
+      "tc_id": "TC-RPW-S02",
       "layer": "contract",
       "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
       "assertion": "shared",
@@ -172,47 +172,7 @@
     },
     {
       "ac_id": "AC-V168-FC-003",
-      "tc_id": "TC-FC-RELE-S03",
-      "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
-      "assertion": "shared",
-      "evidence_path": ""
-    },
-    {
-      "ac_id": "AC-V168-FC-004",
-      "tc_id": "TC-FC-RELE-S04",
-      "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
-      "assertion": "shared",
-      "evidence_path": ""
-    },
-    {
-      "ac_id": "AC-V168-FC-005",
-      "tc_id": "TC-FC-RELE-S05",
-      "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
-      "assertion": "shared",
-      "evidence_path": ""
-    },
-    {
-      "ac_id": "AC-V168-FC-006",
-      "tc_id": "TC-FC-RELE-S06",
-      "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
-      "assertion": "shared",
-      "evidence_path": ""
-    },
-    {
-      "ac_id": "AC-V168-FC-007",
-      "tc_id": "TC-FC-RELE-S07",
-      "layer": "contract",
-      "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
-      "assertion": "shared",
-      "evidence_path": ""
-    },
-    {
-      "ac_id": "AC-V168-FC-008",
-      "tc_id": "TC-FC-RELE-S08",
+      "tc_id": "TC-RPW-S03",
       "layer": "contract",
       "command": "`python3 -m pytest tests/test_v168_friction_closeout.py -q`",
       "assertion": "shared",
@@ -228,22 +188,22 @@
     {
       "id": "LINE-11",
       "title": "TASK-02 Implement: beacon/commands/release.py + prod_ops_v168.select_release_profile",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "LINE-12",
       "title": "TASK-03 Unit/contract tests in tests/test_v168_friction_closeout.py",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "LINE-13",
       "title": "TASK-04 Examples + skill pointer if needed",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "LINE-14",
       "title": "TASK-05 Mount axis validate green",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "LINE-15",

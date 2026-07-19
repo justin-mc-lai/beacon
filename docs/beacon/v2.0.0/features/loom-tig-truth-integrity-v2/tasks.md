@@ -7,10 +7,10 @@ revision_id: R1
 
 # Tasks: loom-tig-truth-integrity-v2
 
-- [ ] TASK-W3-001 Port TIG into beacon-gate freeze path
-- [ ] TASK-W3-002 Wire doctor verify-truth-integrity to Rust
-- [ ] TASK-W3-003 Fixtures empty-AC / soft-TC / frozen-audit
-- [ ] TASK-W3-004 Exit code parity tests
+- [x] TASK-W3-001 Port TIG into beacon-gate freeze path
+- [x] TASK-W3-002 Wire doctor verify-truth-integrity to Rust
+- [x] TASK-W3-003 Fixtures empty-AC / soft-TC / frozen-audit
+- [x] TASK-W3-004 Exit code parity tests
 
 ## Wave
 
