@@ -13,6 +13,8 @@ pub mod harness_path;
 pub mod git_branch_context;
 pub mod checkpoint;
 pub mod worktree_mode;
+pub mod git_worktree;
+pub mod implement_harness;
 
 pub use codex_backend::CodexBackend;
 pub use backends::{AcpBackend, ClaudeBackend};
@@ -30,6 +32,13 @@ pub use checkpoint::{load_checkpoint, save_checkpoint, stop_with_checkpoint, Che
 pub use worktree_mode::{
     assert_harness_cwd, ensure_worktree_dir, resolve_worktree_mode, WorktreeMode, WorktreePlan,
     REASON_WORKTREE_ILLEGAL_COMBO,
+};
+pub use git_worktree::{
+    resolve_worktree, WorktreeMode as GitWorktreeMode, WorktreeResolveRequest, WorktreeResolveResult,
+    REASON_ILLEGAL_MODE_COMBO,
+};
+pub use implement_harness::{
+    run_one_implement_iteration, ImplementHarnessBackend, ImplementIterationArtifact,
 };
 
 use beacon_core::agent::{AgentBackend, IterationResult};

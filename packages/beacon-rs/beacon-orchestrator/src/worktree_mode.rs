@@ -149,6 +149,41 @@ pub fn ensure_worktree_dir(plan: &WorktreePlan) -> Result<PathBuf, String> {
     }
     let p = PathBuf::from(&plan.harness_cwd);
     if matches!(plan.mode, WorktreeMode::Worktree) {
+        let root = PathBuf::from(&plan.project_root);
+        // Prefer real git worktree add (AC-099 / W1) when project is a git repo.
+        if root.join(".git").exists() {
+            use crate::git_worktree::{resolve_worktree, WorktreeMode as GMode, WorktreeResolveRequest};
+            let feature = plan
+                .run_id
+                .split('/')
+                .last()
+                .unwrap_or(plan.run_id.as_str());
+            let r = resolve_worktree(&WorktreeResolveRequest {
+                project_root: root,
+                mode: GMode::Worktree,
+                run_id: plan.run_id.clone(),
+                feature_slug: feature.to_string(),
+                isolated: false,
+                materialize: true,
+                base_ref: None,
+            });
+            if r.blocked {
+                return Err(r.reason_code);
+            }
+            let path = PathBuf::from(&r.admitted_worktree);
+            let marker = path.join(".loom-worktree.json");
+            let body = serde_json::json!({
+                "schema": "loom-worktree.v1",
+                "run_id": plan.run_id,
+                "mode": plan.mode.as_str(),
+                "branch": r.branch,
+                "git_worktree_added": r.git_worktree_added,
+                "git_dir_is_file": r.git_dir_is_file,
+            });
+            let _ = std::fs::write(&marker, body.to_string());
+            return Ok(path);
+        }
+        // Non-git fixture fallback: directory + marker only (integration tests without git).
         std::fs::create_dir_all(&p).map_err(|e| e.to_string())?;
         let marker = p.join(".loom-worktree.json");
         let body = serde_json::json!({
@@ -156,6 +191,7 @@ pub fn ensure_worktree_dir(plan: &WorktreePlan) -> Result<PathBuf, String> {
             "run_id": plan.run_id,
             "mode": plan.mode.as_str(),
             "branch": plan.branch,
+            "git_worktree_added": false,
         });
         std::fs::write(&marker, body.to_string()).map_err(|e| e.to_string())?;
     }

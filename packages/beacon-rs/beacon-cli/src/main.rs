@@ -10,8 +10,10 @@ use beacon_core::harness::HarnessSurface;
 use beacon_core::branch_context::BranchContext;
 use beacon_gate::harness_trace_gate::evaluate_harness_trace_gate;
 use beacon_orchestrator::{
-    admit_workspace, build_skill_load_plan, collect_branch_context, verify_flow_order, GoalController,
-    ensure_worktree_dir, resolve_worktree_mode, HarnessPathController, WorktreeMode, WorkspaceAdmissionRequest, FLOW_STAGES,
+    admit_workspace, build_skill_load_plan, collect_branch_context, resolve_worktree,
+    run_one_implement_iteration, verify_flow_order, GoalController, ensure_worktree_dir,
+    resolve_worktree_mode, HarnessPathController, WorktreeMode, WorktreeResolveRequest,
+    WorkspaceAdmissionRequest, FLOW_STAGES, GitWorktreeMode,
 };
 use beacon_store::{BeaconStore, ProjectDao, SpineDao};
 use clap::{Parser, Subcommand};
@@ -90,10 +92,15 @@ enum Command {
         #[command(subcommand)]
         action: TraceAction,
     },
-    /// Worktree modes (AC-099).
+    /// Worktree modes (AC-099 / W1 real git worktree).
     Worktree {
         #[command(subcommand)]
         action: WorktreeAction,
+    },
+    /// Implement harness one iteration (AC-100 / W1).
+    Implement {
+        #[command(subcommand)]
+        action: ImplementAction,
     },
 }
 
@@ -155,12 +162,37 @@ enum WorktreeAction {
         project_root: PathBuf,
         #[arg(long, default_value = "run")]
         run_id: String,
+        #[arg(long, default_value = "feature")]
+        feature: String,
         #[arg(long, default_value = "main")]
         branch: String,
         #[arg(long)]
         isolated: bool,
         #[arg(long)]
         current_branch: bool,
+        /// Prefer real `git worktree add` path (W1).
+        #[arg(long)]
+        materialize: bool,
+        #[arg(long)]
+        json: bool,
+    },
+}
+
+#[derive(Subcommand)]
+enum ImplementAction {
+    Iterate {
+        #[arg(long)]
+        project_root: PathBuf,
+        #[arg(long)]
+        worktree: Option<PathBuf>,
+        #[arg(long, default_value = "worktree")]
+        mode: String,
+        #[arg(long, default_value = "run")]
+        run_id: String,
+        #[arg(long, default_value = "feature")]
+        feature: String,
+        #[arg(long, default_value = "implement one round")]
+        prompt: String,
         #[arg(long)]
         materialize: bool,
         #[arg(long)]
@@ -460,6 +492,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 mode,
                 project_root,
                 run_id,
+                feature,
                 branch,
                 isolated,
                 current_branch,
@@ -467,6 +500,24 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 json,
             } => {
                 let abs = project_root.canonicalize().unwrap_or(project_root);
+                if materialize {
+                    if let Some(gm) = GitWorktreeMode::parse(&mode) {
+                        let result = resolve_worktree(&WorktreeResolveRequest {
+                            project_root: abs.clone(),
+                            mode: gm,
+                            run_id: run_id.clone(),
+                            feature_slug: feature.clone(),
+                            isolated,
+                            materialize: true,
+                            base_ref: None,
+                        });
+                        print_json_or_debug(&result, json)?;
+                        if result.blocked {
+                            std::process::exit(2);
+                        }
+                        return Ok(());
+                    }
+                }
                 let mode = WorktreeMode::parse(&mode)?;
                 let mut plan = resolve_worktree_mode(
                     mode,
@@ -485,6 +536,72 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 if plan.blocked {
                     std::process::exit(2);
                 }
+            }
+        },
+        Command::Implement { action } => match action {
+            ImplementAction::Iterate {
+                project_root,
+                worktree,
+                mode,
+                run_id,
+                feature,
+                prompt,
+                materialize,
+                json,
+            } => {
+                let abs = project_root.canonicalize().unwrap_or(project_root);
+                let gm = GitWorktreeMode::parse(&mode).ok_or_else(|| format!("unknown mode: {mode}"))?;
+                let wt = if let Some(w) = worktree {
+                    let path = w.canonicalize().unwrap_or(w);
+                    beacon_orchestrator::WorktreeResolveResult {
+                        blocked: false,
+                        status: "pass".into(),
+                        reason_code: String::new(),
+                        mode: gm.as_str().into(),
+                        admitted_worktree: path.to_string_lossy().to_string(),
+                        branch: "HEAD".into(),
+                        project_root: abs.to_string_lossy().to_string(),
+                        git_worktree_added: false,
+                        git_dir_is_file: path.join(".git").is_file(),
+                        materialize_requested: false,
+                    }
+                } else {
+                    resolve_worktree(&WorktreeResolveRequest {
+                        project_root: abs.clone(),
+                        mode: gm,
+                        run_id: run_id.clone(),
+                        feature_slug: feature.clone(),
+                        isolated: false,
+                        materialize,
+                        base_ref: None,
+                    })
+                };
+                if wt.blocked {
+                    print_json_or_debug(&wt, json)?;
+                    std::process::exit(2);
+                }
+                let admit = admit_workspace(&WorkspaceAdmissionRequest {
+                    run_id: run_id.clone(),
+                    caller_cwd: wt.admitted_worktree.clone(),
+                    target_project_root: abs.to_string_lossy().to_string(),
+                    worktree: Some(wt.admitted_worktree.clone()),
+                    branch: wt.branch.clone(),
+                    allow_cwd_as_root: true,
+                });
+                if admit.blocked {
+                    print_json_or_debug(&admit, json)?;
+                    std::process::exit(2);
+                }
+                let bc = admit.branch_context.ok_or("branch_context_missing")?;
+                let (result, refs) = run_one_implement_iteration(bc, &prompt)?;
+                let payload = serde_json::json!({
+                    "iteration_result": result,
+                    "artifact_refs": refs,
+                    "admitted_worktree": wt.admitted_worktree,
+                    "branch": wt.branch,
+                    "backend": "implement-harness",
+                });
+                print_json_or_debug(&payload, json)?;
             }
         },
         Command::Trace { action } => match action {
