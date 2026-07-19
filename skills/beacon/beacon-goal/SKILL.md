@@ -51,7 +51,27 @@ beacon goal status|pause|resume|complete|tick ...
 
 ## Hard rules
 
+## Git worktree 开发规范（渐进加载 always-on）
+
+**必须**打开并遵守：
+
+- 规范：`skills/beacon/references/git-worktree-execution-flow.md`
+- 示例：`skills/beacon/examples/git-worktree-process-correct-30s.md`
+
+| 阶段 | 树 |
+|------|-----|
+| truth / freeze / change | **canonical** `main`/`master` only |
+| implement / QA 写路径 | **admitted git worktree**（`beacon workspace admit` → cwd=`worktree_path`） |
+| 对齐主干 | `git merge` / `rebase` main → delivery；**禁止**用 cherry-pick 当主对齐路径 |
+
+进入 implement 前须等价完成 standard execution precheck（canonical baseline 已合入 feature、admission pass）。  
+CLI 双装（`beacon`/`loom`）≠ 开发 worktree；安装 skill 不会自动 admit。
+
+渐进加载：goal/implement/qa/release stage 的 `references` 必须包含上述 flow（见 `product_goal_runtime.progressive_worktree_refs` / Rust `skill_load_plan.v1`）。
+
+
 - 禁止自证完成；complete 需 CLI verifier
+- **git worktree 规范 always-on**（见下节）；implement 不得在未 admit 的脏 main 上直接写业务
 - release 默认人工确认
 - 不得要求用户手搓双 skill 流水线
 - `ux_required` / 视觉交付时自动插入 design stage：`beacon design baseline --surface auto` + `beacon design lint` 证据

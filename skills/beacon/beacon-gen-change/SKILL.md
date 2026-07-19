@@ -108,6 +108,7 @@ Before ANY truth/change/refreeze/freeze write when version is known:
 3. If mismatch → STOP with `reason_code=truth_canonical_branch_mismatch`; do NOT edit requirement truth
 4. Commit refreeze/freeze artifacts on `truth_canonical` before loop-goal may route to implement
 5. Do NOT use feature worktree for truth authoring — use the canonical branch checkout only
+6. Shared process: `skills/beacon/references/git-worktree-execution-flow.md`
 
 ## v1.6.0 Harness Migration
 

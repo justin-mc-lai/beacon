@@ -40,6 +40,9 @@ Governor harness type — only routes/discovers, never executes truth/implement/
 
 ## Beacon v1.6.0 共享 Preamble
 
+**Worktree flow (always):** `skills/beacon/references/git-worktree-execution-flow.md`
+
+
 1. 先判断湖还是海：湖要煮干；海要拆分、标超纲或延后。
 2. 先搜再造：推理前先读取 resolver 选中的 truth、source、evidence 和相关 memory。
 3. 用户主权：Beacon 推荐路由；是否接受范围或把 queue item 升级为 truth/change 由用户决定。

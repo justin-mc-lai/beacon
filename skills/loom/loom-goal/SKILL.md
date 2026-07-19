@@ -39,3 +39,7 @@ loom goal run "<目标>" --project . --version v2.0.0
 - Phase-1 可共享 `skills/beacon/*` 实现路由
 
 详见 `skills/loom/examples/goal-one-shot-30s.md`。
+
+## Git worktree
+
+See `skills/beacon/references/git-worktree-execution-flow.md` (shared; do not fork).

@@ -1,0 +1,220 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-19T13:16:09.164431+00:00",
+  "feature": "beacon-worktree-progressive-skill-flow-v168",
+  "feature_slug": "beacon-worktree-progressive-skill-flow-v168",
+  "version": "v1.6.8",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.8/features/beacon-worktree-progressive-skill-flow-v168/truth.md",
+    "tests": "docs/beacon/v1.6.8/features/beacon-worktree-progressive-skill-flow-v168/tests.md",
+    "tasks": "docs/beacon/v1.6.8/features/beacon-worktree-progressive-skill-flow-v168/tasks.md",
+    "evidence": "docs/beacon/v1.6.8/features/beacon-worktree-progressive-skill-flow-v168/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "dec767eba7ed50eec50268a32800bacf1cf063faa3a131ddbeafe506a526e31a",
+    "tests": "62bdce32daf29f8bafc6c60421086a01ccaa3a7f0f4cb5298804845342ce7f9a",
+    "tasks": "cd813bac793727ffa2e9cbfdc0be60d5e527b999036c30e8a900f84e5eafc5b3",
+    "evidence": "0d4ce907914fd3ea63cbf5ba6702bbfe50b01b5fea014d04a757a3ff3810b872"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-worktree-progressive-skill-flow-v168",
+    "version": "v1.6.8",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "User GO 2026-07-19: pln-review accepted — shared git worktree norms + progressive skill load mount for goal/all stages; dual v2.0.0+v1.6.8",
+    "canonical_refs": {
+      "truth": "docs/beacon/v2.0.0/features/beacon-worktree-progressive-skill-flow-v168/truth.md",
+      "tests": "docs/beacon/v2.0.0/features/beacon-worktree-progressive-skill-flow-v168/tests.md",
+      "tasks": "docs/beacon/v2.0.0/features/beacon-worktree-progressive-skill-flow-v168/tasks.md",
+      "evidence": "docs/beacon/v2.0.0/features/beacon-worktree-progressive-skill-flow-v168/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "display_name": "Worktree Progressive Skill Flow v168",
+    "brand": "Beacon",
+    "ux_required": "false",
+    "design_deferral": "skill/docs surface; no product marketing UI"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-WT-SKILL-001",
+      "theme": "shared-ref",
+      "description": "仓库存在 `skills/beacon/references/git-worktree-execution-flow.md` 且含 standard sequence + illegal table（Must）"
+    },
+    {
+      "ac_id": "AC-WT-SKILL-002",
+      "theme": "example",
+      "description": "存在 process-correct 30s 示例（Must）"
+    },
+    {
+      "ac_id": "AC-WT-SKILL-003",
+      "theme": "goal-surface",
+      "description": "`beacon-goal` SKILL 引用共享规范且写明 implement 前 admit/worktree（Must）"
+    },
+    {
+      "ac_id": "AC-WT-SKILL-004",
+      "theme": "progressive-py",
+      "description": "`progressive_skills` / stage plan 对 goal 入口相关 stage 暴露 worktree ref 路径（Must）"
+    },
+    {
+      "ac_id": "AC-WT-SKILL-005",
+      "theme": "progressive-rs",
+      "description": "`skill_load_plan.v1` 在 implement（及 goal/loop 若映射）附带 references 含 git-worktree-execution-flow（Must）"
+    },
+    {
+      "ac_id": "AC-WT-SKILL-006",
+      "theme": "no-bulk",
+      "description": "progressive plan 仍 `bulk_history_forbidden` 且 loaded_count 有界（Must）"
+    },
+    {
+      "ac_id": "AC-WT-SKILL-007",
+      "theme": "tests",
+      "description": "可执行 TC 验证 ref 文件 + progressive 挂载（Must）"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-WT-SKILL-001",
+      "tc_id": "TC-WT-001",
+      "layer": "contract",
+      "command": "path exists",
+      "assertion": "flow md present",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-WT-SKILL-002",
+      "tc_id": "TC-WT-002",
+      "layer": "contract",
+      "command": "path exists",
+      "assertion": "example present",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-WT-SKILL-003",
+      "tc_id": "TC-WT-003",
+      "layer": "contract",
+      "command": "grep beacon-goal",
+      "assertion": "references flow",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-WT-SKILL-004",
+      "tc_id": "TC-WT-004",
+      "layer": "unit",
+      "command": "pytest progressive",
+      "assertion": "ref in plan",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-WT-SKILL-005",
+      "tc_id": "TC-WT-005",
+      "layer": "unit",
+      "command": "cargo skill_load",
+      "assertion": "ref in plan",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-WT-SKILL-006",
+      "tc_id": "TC-WT-006",
+      "layer": "unit",
+      "command": "progressive",
+      "assertion": "bulk forbidden",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-WT-SKILL-007",
+      "tc_id": "TC-WT-007",
+      "layer": "integration",
+      "command": "pytest test_worktree_skill_flow",
+      "assertion": "all pass",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-WT-001",
+      "title": "Write shared git-worktree-execution-flow.md",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-WT-002",
+      "title": "Write process-correct 30s example",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-WT-003",
+      "title": "Wire progressive load (Python + Rust)",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-WT-004",
+      "title": "Update beacon-goal (+ loom-goal pointer)",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-WT-005",
+      "title": "Point implement/loop/change to shared ref",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-WT-006",
+      "title": "Tests + evidence",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "requirement_truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.8/features/beacon-worktree-progressive-skill-flow-v168/truth.md",
+      "status": "draft"
+    },
+    {
+      "surface": "acceptance",
+      "authority": "acceptance_truth",
+      "canonical_artifact": "docs/beacon/v1.6.8/features/beacon-worktree-progressive-skill-flow-v168/truth.md",
+      "status": "draft"
+    },
+    {
+      "surface": "test_case",
+      "authority": "test_truth",
+      "canonical_artifact": "docs/beacon/v1.6.8/features/beacon-worktree-progressive-skill-flow-v168/tests.md",
+      "status": "draft"
+    },
+    {
+      "surface": "planner",
+      "authority": "support_advisory",
+      "canonical_artifact": "pln-review chat 2026-07-19 worktree progressive skill",
+      "status": "accepted"
+    },
+    {
+      "surface": "change",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.8/change/beacon-worktree-progressive-skill-flow-v168.md",
+      "status": "indexed"
+    },
+    {
+      "surface": "shared_ref",
+      "authority": "support_advisory",
+      "canonical_artifact": "skills/beacon/references/git-worktree-execution-flow.md",
+      "status": "authored"
+    },
+    {
+      "surface": "example",
+      "authority": "support_advisory",
+      "canonical_artifact": "skills/beacon/examples/git-worktree-process-correct-30s.md",
+      "status": "authored"
+    }
+  ]
+}
