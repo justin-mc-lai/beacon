@@ -20,3 +20,9 @@ revision_id: R1
 ## Boundary
 
 Index only — formal implement/QA verdicts appended after wave implementation.
+
+## Implement evidence (W5)
+- corpus: `docs/beacon/v2.0.0/skill-score/skill-score-corpus.v1.json`
+- `score_with_corpus` + `loom skill-score --require-corpus`
+- Tests: `tests/test_v200_skill_score_corpus.py`
+- Timestamp: 2026-07-19T11:55:39Z

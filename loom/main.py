@@ -118,26 +118,41 @@ def slug_cmd(
 def skill_score_cmd(
     skill: str = typer.Option("", "--skill", "-s", help="loom skill name; empty = all"),
     project: str = typer.Option(".", "--project", "-p"),
+    corpus: str = typer.Option(
+        "",
+        "--corpus",
+        help="path to skill-score-corpus.v1 (default docs/beacon/v2.0.0/skill-score/...)",
+    ),
+    require_corpus: bool = typer.Option(
+        True,
+        "--require-corpus/--no-require-corpus",
+        help="fail-closed when corpus missing (AC-169 formal score)",
+    ),
     json_output: bool = typer.Option(True, "--json/--no-json"),
 ) -> None:
-    """Score Loom skills (facade + content-source fidelity)."""
+    """Score Loom skills under skill-score-corpus.v1 (never auto-edits SKILL.md)."""
     import json
     from pathlib import Path
-    from beacon.utils.loom_skill_score import score_all_loom_skills, score_loom_skill
+    from beacon.utils.loom_skill_score import score_with_corpus
 
     root = Path(project).expanduser().resolve()
-    if skill.strip():
-        payload = score_loom_skill(root, skill.strip())
-    else:
-        payload = score_all_loom_skills(root)
+    payload = score_with_corpus(
+        root,
+        skill=skill,
+        corpus_path=corpus.strip() or None,
+        require_corpus=require_corpus,
+    )
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
-        if "average_composite" in payload:
+        if payload.get("blocked"):
+            typer.echo(payload.get("reason_code"))
+        elif "average_composite" in payload:
             typer.echo(f"avg={payload['average_composite']} failed={payload.get('failed')}")
         else:
             typer.echo(str(payload.get("scores")))
-    raise typer.Exit(0 if payload.get("ok", True) else 2)
+    ok = bool(payload.get("ok", True)) and not payload.get("blocked")
+    raise typer.Exit(0 if ok else 2)
 
 
 def main() -> None:

@@ -126,3 +126,4 @@ Still open: full P2-007..023 (TraceSpine hard gates in implement path, BranchCon
 - Change: `docs/beacon/v2.0.0/change/loom-kernel-closure-w1w5-v200.md`
 
 - **W1 implement (2026-07-19T11:41:18Z)**: `loom-git-worktree-implement-harness` code landed — real git worktree + ImplementHarnessBackend; cargo test w1_worktree_implement_harness 5 passed (AC-099/100/042). W2–W5 still frozen pending implement.
+- **W1–W5 kernel closure implement (2026-07-19T11:55:39Z)**: lakes loom-*-w1w5 code+integration tests landed (worktree/harness, external stop_when, TIG, adversarial release, gitscope, skill-score corpus). Not P6 default switch.

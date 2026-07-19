@@ -1,0 +1,54 @@
+{
+  "schema": "skill-score-corpus.v1",
+  "version": "v2.0.0",
+  "brand": "Loom",
+  "baseline": {
+    "with_skill": true,
+    "no_skill": true,
+    "description": "with_skill vs no_skill structural comparison; score must not auto-edit SKILL.md"
+  },
+  "prompts": [
+    {
+      "id": "P-GOAL-01",
+      "skill": "loom-goal",
+      "prompt": "Run product goal until acceptance for a frozen lake",
+      "expect_contains": ["goal", "accept", "release"]
+    },
+    {
+      "id": "P-IMPL-01",
+      "skill": "loom-gen-implement",
+      "prompt": "Implement one frozen feature without claiming QA pass",
+      "expect_contains": ["implement", "frozen"]
+    },
+    {
+      "id": "P-QA-01",
+      "skill": "loom-eval-qa",
+      "prompt": "Evaluate feature QA evidence against truth",
+      "expect_contains": ["qa", "evidence"]
+    }
+  ],
+  "negative_cases": [
+    {
+      "id": "N-AUTO-EDIT",
+      "description": "score CLI must not rewrite SKILL.md",
+      "illegal": "auto_apply_skill_md"
+    },
+    {
+      "id": "N-NO-CORPUS",
+      "description": "formal score without corpus fails closed",
+      "illegal": "skill_score_corpus_missing"
+    }
+  ],
+  "public_skills": [
+    "loom-goal",
+    "loom-gen-truth",
+    "loom-gen-design",
+    "loom-gen-implement",
+    "loom-eval-qa",
+    "loom-eval-release"
+  ],
+  "v1_sample": {
+    "skill": "beacon-goal",
+    "schema_fields": ["schema", "ok", "scores", "average_composite"]
+  }
+}

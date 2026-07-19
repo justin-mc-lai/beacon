@@ -20,3 +20,9 @@ revision_id: R1
 ## Boundary
 
 Index only — formal implement/QA verdicts appended after wave implementation.
+
+## Implement evidence (W4b)
+- `gitscope.rs` three topologies + topology_gate_ref force
+- CLI: `beacon-v2 topology build|gate`
+- Tests: `cargo test -p beacon-orchestrator --test w4b_gitscope` (3 ok)
+- Timestamp: 2026-07-19T11:55:39Z

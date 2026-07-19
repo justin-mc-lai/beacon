@@ -6,13 +6,20 @@ use std::path::PathBuf;
 use beacon_core::dual_track::{admit_path_set, Track};
 use beacon_core::harness::HarnessSurface;
 use beacon_core::branch_context::BranchContext;
+use beacon_core::RunStatus;
 use beacon_gate::harness_trace_gate::evaluate_harness_trace_gate;
-use beacon_orchestrator::{
-    admit_workspace, build_skill_load_plan, collect_branch_context, resolve_worktree,
-    run_one_implement_iteration, verify_flow_order, GoalController, HarnessPathController,
-    WorktreeMode, WorktreeResolveRequest, WorkspaceAdmissionRequest, FLOW_STAGES,
+use beacon_gate::{
+    doctor_exit_code, evaluate_release_gate, evaluate_truth_integrity, sample_valid_adversarial,
+    EvidenceRef, ReleaseGateInput, TigMode, TruthIntegrityInput,
 };
-use beacon_store::{BeaconStore, ProjectDao, SpineDao};
+use beacon_orchestrator::{
+    admit_workspace, build_gitscope, build_skill_load_plan, collect_branch_context, map_agent_name,
+    require_topology_gate, resolve_worktree, run_one_implement_iteration, verify_flow_order,
+    AllowStopChecker, CodexBackend, CommandStopChecker, DenyStopChecker, GoalController,
+    HarnessPathController, Orchestrator, StopWhen, SubprocessBackend, TopologyKind, WorktreeMode,
+    WorktreeResolveRequest, WorkspaceAdmissionRequest, FLOW_STAGES,
+};
+use beacon_store::{BeaconStore, FeatureDao, ProjectDao, RunDao, SpineDao};
 use clap::{Parser, Subcommand};
 
 #[derive(Parser)]
@@ -98,6 +105,38 @@ enum Command {
     Implement {
         #[command(subcommand)]
         action: ImplementAction,
+    },
+    /// In-process agent run (AC-105/106). No daemon.
+    Run {
+        #[arg(long)]
+        agent: String,
+        #[arg(long, default_value = ".")]
+        project_root: PathBuf,
+        #[arg(long, default_value = "iterate")]
+        prompt: String,
+        #[arg(long, default_value = "5")]
+        max_iterations: u32,
+        #[arg(long, default_value = "")]
+        stop_check_cmd: String,
+        #[arg(long)]
+        stop_allow: bool,
+        #[arg(long)]
+        json: bool,
+    },
+    /// Doctor routes (AC-103).
+    Doctor {
+        #[command(subcommand)]
+        action: DoctorAction,
+    },
+    /// Release adversarial gate (AC-166/167).
+    Release {
+        #[command(subcommand)]
+        action: ReleaseAction,
+    },
+    /// GitScope topology (AC-171–173).
+    Topology {
+        #[command(subcommand)]
+        action: TopologyAction,
     },
 }
 
@@ -190,6 +229,70 @@ enum ImplementAction {
         prompt: String,
         #[arg(long)]
         materialize: bool,
+        #[arg(long)]
+        json: bool,
+    },
+}
+
+#[derive(Subcommand)]
+enum DoctorAction {
+    VerifyTruthIntegrity {
+        #[arg(long, default_value = "block")]
+        mode: String,
+        #[arg(long, default_value = "draft")]
+        status: String,
+        #[arg(long, default_value = "true")]
+        has_ac: String,
+        #[arg(long, default_value = "1")]
+        ac_count: u32,
+        #[arg(long, default_value = "false")]
+        soft_tc_only: String,
+        #[arg(long, default_value = "false")]
+        unapproved_deferral: String,
+        #[arg(long, default_value = "false")]
+        fake_delivery: String,
+        #[arg(long, default_value = "true")]
+        package_valid: String,
+        #[arg(long)]
+        json: bool,
+    },
+}
+
+#[derive(Subcommand)]
+enum ReleaseAction {
+    Check {
+        #[arg(long, default_value = "v2")]
+        claim_track: String,
+        #[arg(long, default_value = "")]
+        evidence: String,
+        #[arg(long)]
+        with_adversarial: bool,
+        #[arg(long)]
+        skill_score_as_adversarial: bool,
+        #[arg(long)]
+        json: bool,
+    },
+}
+
+#[derive(Subcommand)]
+enum TopologyAction {
+    Build {
+        #[arg(long)]
+        project_root: PathBuf,
+        #[arg(long, default_value = "single_repo")]
+        topology: String,
+        #[arg(long)]
+        json: bool,
+    },
+    Gate {
+        #[arg(long)]
+        project_root: PathBuf,
+        #[arg(long, default_value = "single_repo")]
+        topology: String,
+        #[arg(long, default_value = "")]
+        topology_gate_ref: String,
+        #[arg(long)]
+        missing: bool,
         #[arg(long)]
         json: bool,
     },
@@ -602,6 +705,206 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     "backend": "implement-harness",
                 });
                 print_json_or_debug(&payload, json)?;
+            }
+        },
+        Command::Run {
+            agent,
+            project_root,
+            prompt,
+            max_iterations,
+            stop_check_cmd,
+            stop_allow,
+            json,
+        } => {
+            let _mapped = map_agent_name(&agent)?;
+            let abs = project_root.canonicalize().unwrap_or(project_root);
+            let pid = ProjectDao::insert(conn, &abs.to_string_lossy(), "run-proj")?;
+            let fid = FeatureDao::insert(conn, pid, "run-feature", "v2.0.0", "draft", None)?;
+            let run_id = RunDao::insert(conn, fid, &agent, RunStatus::Running)?;
+            let mut orch =
+                Orchestrator::new(&store, run_id, StopWhen::MaxIterations(max_iterations));
+            let steps = if agent == "subprocess" {
+                let script = abs.join(".loom").join("run-echo.sh");
+                if let Some(parent) = script.parent() {
+                    let _ = std::fs::create_dir_all(parent);
+                }
+                let body = r#"#!/bin/sh
+echo '{"success":true,"summary":"subprocess-iter","key_changes_made":[],"key_learnings":[],"stop_signal":"gate_pass","token_usage":{"input_tokens":1,"output_tokens":1},"agent_name":"subprocess"}'
+"#;
+                std::fs::write(&script, body)?;
+                #[cfg(unix)]
+                {
+                    use std::os::unix::fs::PermissionsExt;
+                    let mut perms = std::fs::metadata(&script)?.permissions();
+                    perms.set_mode(0o755);
+                    std::fs::set_permissions(&script, perms)?;
+                }
+                let mut backend = SubprocessBackend::new(
+                    "subprocess",
+                    vec![script.to_string_lossy().to_string()],
+                    max_iterations,
+                );
+                if stop_allow {
+                    let mut chk = AllowStopChecker {
+                        label: "cli".into(),
+                    };
+                    orch.run_with_external_stop(&mut backend, &prompt, &mut chk)?
+                } else if !stop_check_cmd.is_empty() {
+                    let parts: Vec<String> = stop_check_cmd
+                        .split_whitespace()
+                        .map(|s| s.to_string())
+                        .collect();
+                    let mut chk = CommandStopChecker {
+                        command: parts,
+                        cwd: Some(abs.clone()),
+                    };
+                    orch.run_with_external_stop(&mut backend, &prompt, &mut chk)?
+                } else {
+                    let mut chk = DenyStopChecker;
+                    orch.run_with_external_stop(&mut backend, &prompt, &mut chk)?
+                }
+            } else {
+                let art = abs.join(".loom").join("run-artifacts");
+                let mut backend = CodexBackend::new(&art, max_iterations);
+                if stop_allow {
+                    let mut chk = AllowStopChecker {
+                        label: "cli".into(),
+                    };
+                    orch.run_with_external_stop(&mut backend, &prompt, &mut chk)?
+                } else if !stop_check_cmd.is_empty() {
+                    let parts: Vec<String> = stop_check_cmd
+                        .split_whitespace()
+                        .map(|s| s.to_string())
+                        .collect();
+                    let mut chk = CommandStopChecker {
+                        command: parts,
+                        cwd: Some(abs.clone()),
+                    };
+                    orch.run_with_external_stop(&mut backend, &prompt, &mut chk)?
+                } else {
+                    let mut chk = DenyStopChecker;
+                    orch.run_with_external_stop(&mut backend, &prompt, &mut chk)?
+                }
+            };
+            let payload = serde_json::json!({
+                "run_id": run_id,
+                "agent": agent,
+                "daemon": false,
+                "steps": steps.iter().map(|s| serde_json::json!({
+                    "iteration": s.iteration,
+                    "stopped": s.stopped,
+                    "stop_reason": s.stop_reason,
+                    "stop_unverified": s.stop_unverified,
+                    "success": s.result.success,
+                    "agent_name": s.result.agent_name,
+                })).collect::<Vec<_>>(),
+            });
+            print_json_or_debug(&payload, json)?;
+        },
+        Command::Doctor { action } => match action {
+            DoctorAction::VerifyTruthIntegrity {
+                mode,
+                status,
+                has_ac,
+                ac_count,
+                soft_tc_only,
+                unapproved_deferral,
+                fake_delivery,
+                package_valid,
+                json,
+            } => {
+                let parse_bool =
+                    |s: &str| matches!(s.to_ascii_lowercase().as_str(), "1" | "true" | "yes");
+                let input = TruthIntegrityInput {
+                    status,
+                    has_acceptance_criteria: parse_bool(&has_ac),
+                    soft_tc_only: parse_bool(&soft_tc_only),
+                    unapproved_deferral: parse_bool(&unapproved_deferral),
+                    fake_delivery_claim: parse_bool(&fake_delivery),
+                    package_valid: parse_bool(&package_valid),
+                    ac_count,
+                };
+                let result = evaluate_truth_integrity(&input, TigMode::parse(&mode));
+                print_json_or_debug(&result, json)?;
+                std::process::exit(doctor_exit_code(&result));
+            }
+        },
+        Command::Release { action } => match action {
+            ReleaseAction::Check {
+                claim_track,
+                evidence,
+                with_adversarial,
+                skill_score_as_adversarial,
+                json,
+            } => {
+                let mut evs = Vec::new();
+                if !evidence.is_empty() {
+                    for part in evidence.split(',') {
+                        let bits: Vec<&str> = part.splitn(3, ':').collect();
+                        if bits.len() == 3 {
+                            evs.push(EvidenceRef {
+                                path: bits[2].into(),
+                                track: bits[0].into(),
+                                kind: bits[1].into(),
+                            });
+                        }
+                    }
+                }
+                let input = ReleaseGateInput {
+                    claim_track,
+                    evidence: evs,
+                    adversarial: if with_adversarial {
+                        Some(sample_valid_adversarial())
+                    } else {
+                        None
+                    },
+                    skill_score_as_adversarial,
+                };
+                let result = evaluate_release_gate(&input);
+                print_json_or_debug(&result, json)?;
+                if result.blocked {
+                    std::process::exit(2);
+                }
+            }
+        },
+        Command::Topology { action } => match action {
+            TopologyAction::Build {
+                project_root,
+                topology,
+                json,
+            } => {
+                let abs = project_root.canonicalize().unwrap_or(project_root);
+                let t = TopologyKind::parse(&topology)
+                    .ok_or_else(|| format!("unknown topology: {topology}"))?;
+                let g = build_gitscope(&abs, t);
+                print_json_or_debug(&g, json)?;
+            }
+            TopologyAction::Gate {
+                project_root,
+                topology,
+                topology_gate_ref,
+                missing,
+                json,
+            } => {
+                if missing {
+                    let r = require_topology_gate(None, None);
+                    print_json_or_debug(&r, json)?;
+                    std::process::exit(2);
+                }
+                let abs = project_root.canonicalize().unwrap_or(project_root);
+                let t = TopologyKind::parse(&topology)
+                    .ok_or_else(|| format!("unknown topology: {topology}"))?;
+                let g = build_gitscope(&abs, t);
+                let pref = if topology_gate_ref.is_empty() {
+                    None
+                } else {
+                    Some(topology_gate_ref.as_str())
+                };
+                let r = require_topology_gate(Some(&g), pref);
+                print_json_or_debug(&r, json)?;
+                if r.blocked {
+                    std::process::exit(2);
+                }
             }
         },
     }
