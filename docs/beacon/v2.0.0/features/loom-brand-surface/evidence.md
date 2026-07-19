@@ -31,4 +31,12 @@ revision_id: R1
 - Content single-source remains `skills/beacon/*` via CONTENT_SOURCE
 - skill_load_plan defaults brand=loom
 - Isolated worktree path: `.loom/worktrees/<run_id>`
-- Rust binary primary name: `loom-v2` (compat alias `beacon-v2`)
+- Public CLI brand name: **`loom`** (Rust + Python); not `loom-v2` / `beacon-v2` as product name
+
+## Brand correction (2026-07-19)
+
+User intent: **Loom = Beacon 升级品牌（v2 产品线）**，不是 `loom-v2` 旁支命名。
+
+- Public CLI name: **`loom`** (Rust bin + Python facade)
+- Removed product naming: `loom-v2` / `beacon-v2` as user-facing brand
+- Version remains `v2.0.0` as release line under Loom brand

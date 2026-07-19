@@ -6,16 +6,16 @@ use assert_cmd::Command;
 
 #[test]
 fn tc064_cli_help_lists_all_subcommands() {
-    let output = Command::cargo_bin("beacon-v2").unwrap().arg("--help").unwrap();
+    let output = Command::cargo_bin("loom").unwrap().arg("--help").unwrap();
     let stdout = String::from_utf8(output.stdout).unwrap();
     assert!(stdout.contains("spine"), "help must list spine");
     assert!(stdout.contains("projects"), "help must list projects");
     // spine subcommands
-    let spine_help = Command::cargo_bin("beacon-v2").unwrap().args(["spine", "--help"]).unwrap();
+    let spine_help = Command::cargo_bin("loom").unwrap().args(["spine", "--help"]).unwrap();
     let s = String::from_utf8(spine_help.stdout).unwrap();
     assert!(s.contains("show") && s.contains("list") && s.contains("artifacts"));
     // projects subcommands
-    let proj_help = Command::cargo_bin("beacon-v2").unwrap().args(["projects", "--help"]).unwrap();
+    let proj_help = Command::cargo_bin("loom").unwrap().args(["projects", "--help"]).unwrap();
     let p = String::from_utf8(proj_help.stdout).unwrap();
     assert!(p.contains("register") && p.contains("list") && p.contains("show"));
 }
@@ -29,7 +29,7 @@ fn tc065_projects_register_json_has_project_key() {
     let proj = dir.path().join("myproj");
     std::fs::create_dir_all(&proj).unwrap();
     let abs = proj.canonicalize().unwrap();
-    let output = Command::cargo_bin("beacon-v2")
+    let output = Command::cargo_bin("loom")
         .unwrap()
         .args([
             "--store-path", db.to_str().unwrap(),
@@ -47,7 +47,7 @@ fn tc065_projects_register_json_has_project_key() {
 fn tc065_spine_list_json_is_array() {
     let dir = tempfile::tempdir().unwrap();
     let db = dir.path().join("beacon.db");
-    let output = Command::cargo_bin("beacon-v2")
+    let output = Command::cargo_bin("loom")
         .unwrap()
         .args(["--store-path", db.to_str().unwrap(), "spine", "list", "--json"])
         .unwrap();
@@ -65,7 +65,7 @@ fn tc065_projects_show_json_has_versions_and_is_current() {
     std::fs::create_dir_all(&proj).unwrap();
     let abs = proj.canonicalize().unwrap();
     // register first
-    let _ = Command::cargo_bin("beacon-v2")
+    let _ = Command::cargo_bin("loom")
         .unwrap()
         .args([
             "--store-path", db.to_str().unwrap(),
@@ -73,7 +73,7 @@ fn tc065_projects_show_json_has_versions_and_is_current() {
         ])
         .unwrap();
     // show
-    let output = Command::cargo_bin("beacon-v2")
+    let output = Command::cargo_bin("loom")
         .unwrap()
         .args([
             "--store-path", db.to_str().unwrap(),

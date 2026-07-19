@@ -190,4 +190,4 @@ Tests: p2_trace_branch_flow.rs (13).
 - Worktree modes worktree/current-branch/run-branch + illegal combo (AC-099)
 - ClaudeBackend / AcpBackend true process iterate + artifact_refs; missing cred BLOCKED:missing_claude_cred
 - Full loom-* public skill prefix mirror (content → skills/beacon/*)
-- Binary primary: loom-v2 (compat beacon-v2)
+- Binary brand name: **loom** (Beacon evolution CLI; not loom-v2)

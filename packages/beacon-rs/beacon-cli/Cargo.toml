@@ -1,6 +1,6 @@
 [package]
 name = "beacon-cli"
-description = "Beacon v2 CLI entry (P1+)"
+description = "Loom CLI — Beacon evolution-track kernel surface (dual-install with production beacon)"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
@@ -15,11 +15,7 @@ serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 
 [[bin]]
-name = "loom-v2"
-path = "src/main.rs"
-
-[[bin]]
-name = "beacon-v2"
+name = "loom"
 path = "src/main.rs"
 
 [dev-dependencies]

@@ -1,31 +1,22 @@
 ---
 name: loom
-description: "Loom v2 brand host — full loom-* public skill surface; content routes to skills/beacon/*."
+description: "Loom — Beacon 进化品牌（v2 产品线）公共 host。入口 $loom-goal；与生产 beacon 双装。"
 metadata:
   version: "v2.0.0"
   brand: Loom
-  track: track_v2
+  track: evolution
 ---
 
-# Loom host skill
+# Loom
 
-## Public entry
+**Loom 就是 Beacon 的升级品牌线**（产品版本可走 v2.0.0），不是旁支产品名 `loom-v2`。
 
-**`$loom-goal`** — 唯一公共交付入口（v2 进化轨）
+| | 生产 Beacon | 进化 Loom |
+|--|-------------|-----------|
+| CLI | `beacon` | **`loom`** |
+| 公共 skill | `$beacon-goal` | **`$loom-goal`** |
+| 前缀 | `beacon-*` | **`loom-*`** |
 
-## Skill 前缀
+双装并行；安装 Loom **禁止**覆盖 `beacon`。W4 前禁止默认接管生产轨。
 
-v2 全品牌使用 **`loom-*`** 前缀（`skills/loom/loom-*`）。  
-内容单源仍在 `skills/beacon/beacon-*`（CONTENT_SOURCE 指针），**禁止**双写两套逻辑。
-
-见 `skills/loom/mirror-manifest.json`。
-
-## 双装
-
-- 生产：`$beacon-goal` / `beacon` CLI / `skills/beacon/*`
-- 进化：`$loom-goal` / `loom` CLI / `skills/loom/loom-*`
-- **禁止** loom 安装覆盖 `beacon` launcher；W4 前禁止默认替换
-
-## Support
-
-`$loom-loop-goal` — support only，勿先 loop 再 goal。
+详见 `docs/loom/README.md`、`skills/loom/mirror-manifest.json`。

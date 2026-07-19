@@ -1,5 +1,7 @@
-//! Beacon v2 / Loom evolution CLI — Operator Spine + harness + goal surface.
-//! Binary name: `beacon-v2` (does not replace production `beacon`).
+//! Loom CLI — Beacon evolution track (v2 product line under the Loom brand).
+//!
+//! Public binary: `loom` (not `loom-v2` / `beacon-v2`).
+//! Dual-install with production `beacon`; must not overwrite the beacon launcher.
 
 use std::path::PathBuf;
 
@@ -16,16 +18,16 @@ use clap::{Parser, Subcommand};
 
 #[derive(Parser)]
 #[command(
-    name = "loom-v2",
+    name = "loom",
     version,
-    about = "Loom v2 Rust kernel CLI (dual-track; does not replace beacon)"
+    about = "Loom — Beacon evolution track (dual-install; does not replace production beacon)"
 )]
 struct Cli {
     /// Path to the global beacon.db (default: ~/.beacon/beacon.db).
     #[arg(long, env = "BEACON_STORE_PATH", global = true)]
     store_path: Option<PathBuf>,
 
-    /// Explicit runtime track (v1|v2). Default v2 for this binary; never silent v1 fallback.
+    /// Runtime track. Loom binary is evolution track (v2 line); never silent fallback to production beacon.
     #[arg(long, global = true, default_value = "v2")]
     runtime: String,
 
@@ -278,7 +280,7 @@ fn ensure_runtime(runtime: &str) -> Result<Track, Box<dyn std::error::Error>> {
     let track = Track::parse(runtime).ok_or_else(|| format!("invalid --runtime {runtime}"))?;
     // This binary is v2 surface; refuse silent v1 fallback as default execution
     if track == Track::V1 {
-        return Err("beacon-v2 binary refuses --runtime v1 (use production `beacon` CLI)".into());
+        return Err("loom binary refuses --runtime v1 (use production `beacon` CLI)".into());
     }
     Ok(track)
 }

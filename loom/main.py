@@ -8,7 +8,7 @@ from beacon.utils.loom_brand import naming_contract, public_entry_contract
 
 app = typer.Typer(
     name="loom",
-    help="Loom v2 evolution track (dual-install with Beacon). Not a default beacon replacement.",
+    help="Loom — Beacon evolution brand (v2 product line). Dual-install with production beacon; does not replace it.",
     add_completion=False,
 )
 
@@ -17,7 +17,7 @@ app = typer.Typer(
 def _root(ctx: typer.Context) -> None:
     if ctx.invoked_subcommand is None:
         c = naming_contract()
-        typer.echo(f"Loom {c['cli']} — dual-install with {c['beacon_cli']}; state={c['state_root']}")
+        typer.echo(f"Loom — Beacon evolution brand ({c['cli']}); dual-install with {c['beacon_cli']}; state={c['state_root']}")
         typer.echo("Public entry: loom goal run | $loom-goal")
         typer.echo("Does not replace beacon (UD-LOOM-005).")
 
@@ -60,7 +60,7 @@ def goal_run(
     from beacon.utils.product_goal_runtime import run_goal_facade
 
     root = Path(project).expanduser().resolve()
-    # Loom runs still use .beacon state for engine; brand is surface-only in Phase-1
+    # Engine may still use .beacon paths during transition; product brand is Loom.
     payload = run_goal_facade(
         root,
         utterance=utterance,

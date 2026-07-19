@@ -122,7 +122,7 @@ impl<'a> Orchestrator<'a> {
                 use std::hash::{Hash, Hasher};
                 let conn = self.store.connection();
                 if let Ok(Some(row)) = RunDao::get(conn, self.run_id) {
-                    let dir = std::env::temp_dir().join(format!("loom-v2-run-{}", self.run_id));
+                    let dir = std::env::temp_dir().join(format!("loom-run-{}", self.run_id));
                     let _ = std::fs::create_dir_all(&dir);
                     let path = dir.join(format!("iter-{i}.json"));
                     if let Ok(body) = serde_json::to_string_pretty(&result) {
