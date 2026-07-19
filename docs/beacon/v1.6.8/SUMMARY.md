@@ -57,3 +57,4 @@ Friction closeout on the same GoalRun spine (2026-07-19 GO):
 - **axis**: `docs/beacon/v1.6.8/programs/beacon-friction-closeout-v168/goalrun-main-axis.md`
 - **status**: truth frozen R1; implement landed; QA 4/4 lakes passed/release_ready; acceptance writeback ok; human release pending
 
+- **friction-closeout GO**: `docs/beacon/v1.6.8/release/beacon-friction-closeout-v168-go.md`
