@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-release-profile-selfheal-v168",
+  "feature_slug": "beacon-release-profile-selfheal-v168",
+  "version": "v1.6.8",
+  "status": "implemented",
+  "run_id": "run-20260719T102448523061",
+  "generated_at": "2026-07-19T02:34:47.068045+00:00",
+  "summary": "v1.6.8 prod-ops lake implemented and QA passed: beacon-release-profile-selfheal-v168",
+  "changed_files": [
+    "beacon/utils/prod_ops_v168.py",
+    "beacon/commands/goal.py",
+    "beacon/commands/doctor.py",
+    "beacon/utils/product_goal_runtime.py",
+    "tests/test_v168_prod_ops_hardening.py",
+    "skills/beacon/examples/hotfix-30s.md",
+    "skills/beacon/examples/goal-longrun-default-30s.md",
+    "skills/beacon/examples/version-fleet-30s.md"
+  ],
+  "prompt_boundary": {
+    "schema_version": "1.0",
+    "feature": "beacon-release-profile-selfheal-v168",
+    "feature_slug": "beacon-release-profile-selfheal-v168",
+    "version": "v1.6.8",
+    "required": true,
+    "prompt": "Import externally produced implementation evidence for the scoped Beacon feature beacon-release-profile-selfheal-v168.\nRead Beacon source of truth for version v1.6.8 feature package:\n- docs/beacon/v1.6.8/features/beacon-release-profile-selfheal-v168/truth.md\n- docs/beacon/v1.6.8/features/beacon-release-profile-selfheal-v168/tests.md\n- docs/beacon/v1.6.8/features/beacon-release-profile-selfheal-v168/tasks.md\n- docs/beacon/v1.6.8/features/beacon-release-profile-selfheal-v168/evidence.md\nBind the imported evidence to the frozen feature package truth.\nImplement only against the frozen feature package truth above.\nEvidence refs: tests/test_v168_prod_ops_hardening.py, beacon/utils/prod_ops_v168.py, beacon/commands/goal.py, beacon/commands/doctor.py, skills/beacon/examples/.\nChanged files or service directories: beacon/utils/prod_ops_v168.py, beacon/commands/goal.py, beacon/commands/doctor.py, beacon/utils/product_goal_runtime.py, tests/test_v168_prod_ops_hardening.py, skills/beacon/examples/hotfix-30s.md, skills/beacon/examples/goal-longrun-default-30s.md, skills/beacon/examples/version-fleet-30s.md.",
+    "classification": "in_scope_implementation",
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "next_action": "",
+    "recommended_command": "",
+    "matched_signals": [],
+    "frozen_refs": [
+      "docs/beacon/v1.6.8/features/beacon-release-profile-selfheal-v168/truth.md",
+      "docs/beacon/v1.6.8/features/beacon-release-profile-selfheal-v168/tests.md",
+      "docs/beacon/v1.6.8/features/beacon-release-profile-selfheal-v168/tasks.md",
+      "docs/beacon/v1.6.8/features/beacon-release-profile-selfheal-v168/evidence.md"
+    ],
+    "surface": "docs/beacon/v1.6.8/features/beacon-release-profile-selfheal-v168/"
+  },
+  "delivery_contract": {
+    "schema_version": "1.0",
+    "feature": "beacon-release-profile-selfheal-v168",
+    "version": "v1.6.8",
+    "requested_mode": "feature-aware",
+    "effective_mode": "feature-aware",
+    "execution_mode": "feature-aware",
+    "runner_mode": "file",
+    "host_runtime": "codex",
+    "requirement_binding": {
+      "truth": "docs/beacon/v1.6.8/features/beacon-release-profile-selfheal-v168/truth.md",
+      "tests": "docs/beacon/v1.6.8/features/beacon-release-profile-selfheal-v168/tests.md",
+      "tasks": "docs/beacon/v1.6.8/features/beacon-release-profile-selfheal-v168/tasks.md",
+      "evidence": "docs/beacon/v1.6.8/features/beacon-release-profile-selfheal-v168/evidence.md"
+    },
+    "traceability_refs": [
+      "docs/beacon/v1.6.8/features/beacon-release-profile-selfheal-v168/truth.md",
+      "docs/beacon/v1.6.8/features/beacon-release-profile-selfheal-v168/tests.md"
+    ],
+    "release_ready": true,
+    "risk_flags": []
+  },
+  "review_status": "approved",
+  "approved_by": "operator",
+  "reviewed_at": "2026-07-19T02:34:47.068045+00:00"
+}

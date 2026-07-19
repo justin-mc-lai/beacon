@@ -1,0 +1,339 @@
+{
+  "schema_version": "1.0",
+  "contract_kind": "beacon_test_contract_index",
+  "version": "v1.6.8",
+  "runtime_line": "v1.6.8",
+  "runtime_release_line": "v1.6.7",
+  "docs_line": "v1.6.8",
+  "feature": "beacon-v2-loom-ops-philosophy-sync",
+  "feature_slug": "beacon-v2-loom-ops-philosophy-sync",
+  "feature_line_status": "active_delivery",
+  "truth_refs": {
+    "truth": "docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/truth.md",
+    "tests": "docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
+    "tasks": "docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tasks.md",
+    "evidence": "docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/evidence.md",
+    "ac_matrix": "docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
+    "story_state": "docs/beacon/v1.6.8/.machine/user-story/beacon-v2-loom-ops-philosophy-sync.json"
+  },
+  "source_hashes": {
+    "truth": "sha256:aa1a8cd7ee1723050309152fe9ec309063247532f15d1bbd68eab918ce0b68b6",
+    "tests": "sha256:80d5f73e685787b5adbc159dc0d7b3e6d337d2cd7c23e90483aefc27ecedf9e2",
+    "tasks": "sha256:eb9bf666ad52f7863b60f778db97136f0263af6f0d1f8b77fc97b55a75ad69f1",
+    "evidence": "sha256:b5e327aaddfd8c0532f0b1cd42472c672b05314cce3708b013f7310e3914c950",
+    "ac_matrix": "sha256:80d5f73e685787b5adbc159dc0d7b3e6d337d2cd7c23e90483aefc27ecedf9e2",
+    "story_state": "sha256:59415113a68b361e369f69ea1c206a7e1287a94d3583c5058c398f507e7acca5"
+  },
+  "lanes": {
+    "feature_release_facing": [
+      {
+        "tc_id": "TC-PHY-SYNC-001",
+        "ac_id": "AC-V168-001",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v168_prod_ops_hardening.py -q -k loom_parity",
+        "assertion": "contract",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-loom-ops-philosophy-sync/tc-phy-sync-001/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-PHY-SYNC-002",
+        "ac_id": "AC-V168-002",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "unit",
+        "command": "python3 -m pytest tests/test_v168_prod_ops_hardening.py -q",
+        "assertion": "fsm/illegal",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-loom-ops-philosophy-sync/tc-phy-sync-002/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-PHY-SYNC-003",
+        "ac_id": "AC-V168-003",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v168_prod_ops_hardening.py -q",
+        "assertion": "cli",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-loom-ops-philosophy-sync/tc-phy-sync-003/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-PHY-SYNC-004",
+        "ac_id": "AC-V168-004",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "unit",
+        "command": "python3 -m pytest tests/test_v168_prod_ops_hardening.py -q",
+        "assertion": "positive/negative",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-loom-ops-philosophy-sync/tc-phy-sync-004/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-PHY-SYNC-005",
+        "ac_id": "AC-V168-005",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "beacon goal axis validate -v v1.6.8 --program beacon-prod-ops-hardening-v168",
+        "assertion": "axis",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-loom-ops-philosophy-sync/tc-phy-sync-005/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-PHY-SYNC-006",
+        "ac_id": "AC-V168-006",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -c \"from pathlib import Path; assert Path('skills/beacon/examples').exists()\"",
+        "assertion": "examples dir",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-loom-ops-philosophy-sync/tc-phy-sync-006/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-PHY-SYNC-007",
+        "ac_id": "AC-V168-007",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "negative",
+        "command": "python3 -m pytest tests/test_v168_prod_ops_hardening.py -q -k no_fake",
+        "assertion": "no fake",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-loom-ops-philosophy-sync/tc-phy-sync-007/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-PHY-SYNC-008",
+        "ac_id": "AC-V168-008",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v168_prod_ops_hardening.py -q -k loom",
+        "assertion": "loom parity",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-loom-ops-philosophy-sync/tc-phy-sync-008/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      }
+    ],
+    "current_runtime_contract": [],
+    "generated_surface_sync": [],
+    "compatibility_contract": [],
+    "legacy_snapshot": [],
+    "browser_runtime_admission": []
+  },
+  "lane_counts": {
+    "feature_release_facing": 8,
+    "current_runtime_contract": 0,
+    "generated_surface_sync": 0,
+    "compatibility_contract": 0,
+    "legacy_snapshot": 0,
+    "browser_runtime_admission": 0
+  },
+  "canonical_lanes": [
+    "feature_release_facing",
+    "current_runtime_contract",
+    "generated_surface_sync",
+    "compatibility_contract",
+    "legacy_snapshot",
+    "browser_runtime_admission"
+  ],
+  "test_refs": [
+    {
+      "tc_id": "TC-PHY-SYNC-001",
+      "ac_id": "AC-V168-001",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v168_prod_ops_hardening.py -q -k loom_parity",
+      "assertion": "contract",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-loom-ops-philosophy-sync/tc-phy-sync-001/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-PHY-SYNC-002",
+      "ac_id": "AC-V168-002",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v168_prod_ops_hardening.py -q",
+      "assertion": "fsm/illegal",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-loom-ops-philosophy-sync/tc-phy-sync-002/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-PHY-SYNC-003",
+      "ac_id": "AC-V168-003",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v168_prod_ops_hardening.py -q",
+      "assertion": "cli",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-loom-ops-philosophy-sync/tc-phy-sync-003/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-PHY-SYNC-004",
+      "ac_id": "AC-V168-004",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v168_prod_ops_hardening.py -q",
+      "assertion": "positive/negative",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-loom-ops-philosophy-sync/tc-phy-sync-004/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-PHY-SYNC-005",
+      "ac_id": "AC-V168-005",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "beacon goal axis validate -v v1.6.8 --program beacon-prod-ops-hardening-v168",
+      "assertion": "axis",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-loom-ops-philosophy-sync/tc-phy-sync-005/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-PHY-SYNC-006",
+      "ac_id": "AC-V168-006",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -c \"from pathlib import Path; assert Path('skills/beacon/examples').exists()\"",
+      "assertion": "examples dir",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-loom-ops-philosophy-sync/tc-phy-sync-006/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-PHY-SYNC-007",
+      "ac_id": "AC-V168-007",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "negative",
+      "command": "python3 -m pytest tests/test_v168_prod_ops_hardening.py -q -k no_fake",
+      "assertion": "no fake",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-loom-ops-philosophy-sync/tc-phy-sync-007/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-PHY-SYNC-008",
+      "ac_id": "AC-V168-008",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v168_prod_ops_hardening.py -q -k loom",
+      "assertion": "loom parity",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-loom-ops-philosophy-sync/tc-phy-sync-008/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    }
+  ],
+  "ac_to_test_refs": {
+    "AC-V168-001": [
+      "TC-PHY-SYNC-001"
+    ],
+    "AC-V168-002": [
+      "TC-PHY-SYNC-002"
+    ],
+    "AC-V168-003": [
+      "TC-PHY-SYNC-003"
+    ],
+    "AC-V168-004": [
+      "TC-PHY-SYNC-004"
+    ],
+    "AC-V168-005": [
+      "TC-PHY-SYNC-005"
+    ],
+    "AC-V168-006": [
+      "TC-PHY-SYNC-006"
+    ],
+    "AC-V168-007": [
+      "TC-PHY-SYNC-007"
+    ],
+    "AC-V168-008": [
+      "TC-PHY-SYNC-008"
+    ]
+  },
+  "qa_order_contract": {
+    "sequence": [
+      "user_story_ac_order",
+      "scenario_divergence",
+      "current_round_execution",
+      "evidence_pack",
+      "coverage_current_gap",
+      "continue_decision",
+      "severe_blocker_stop_for_repair",
+      "repair_handoff",
+      "beacon_help_resume",
+      "next_qa_round_test_case_backfill",
+      "release_guidance"
+    ],
+    "source": "skills/beacon/references/usage-rules.md"
+  },
+  "deep_delta_policy": {
+    "owner": "deep",
+    "adoption_route": "test-case_or_supplemental_qa",
+    "executes_qa": false
+  },
+  "planning_line_safety": {
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "runtime_line": "v1.6.7",
+    "docs_default_line": "v1.6.7",
+    "current_runtime_release_line": "v1.6.7",
+    "feature_line_status": "active_delivery"
+  },
+  "status": "pass",
+  "blocked": false,
+  "reason_codes": [],
+  "generated_at": "2026-07-19T03:02:20.591621+00:00",
+  "index_path": "docs/beacon/v1.6.8/.machine/testing/test-contract-index.json"
+}
