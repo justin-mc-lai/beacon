@@ -26,9 +26,12 @@ Promotion: `docs/beacon/v1.6.7/research/beacon-v168-prod-ops-hardening-pln-revie
 
 ## Status
 
-- **truth**: frozen R1 (all lakes)
-- **implement**: in progress
-- **release**: pending human after QA
+- **truth**: frozen R1 (all 6 lakes)
+- **implement**: landed on main (`e3d63efe` / merge `844739e4`)
+- **QA**: all 6 lakes `beacon qa run` → **passed** / `release_ready=true` (2026-07-19)
+- **release check**: `beacon release check v1.6.8` → **pass** / `release_ready=true`
+- **human GO**: pending (do not bump `current_runtime_release_line` until operator GO)
+
 
 ## Philosophy (shared with Loom)
 

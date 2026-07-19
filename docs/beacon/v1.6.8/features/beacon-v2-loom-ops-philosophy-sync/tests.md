@@ -11,7 +11,7 @@ revision_id: R1
 
 | AC ID | TC ID | Layer | Command | Assertion |
 |-------|-------|-------|---------|-----------|
-| AC-V168-001 | TC-PHY-SYNC-001 | contract | `python3 -m pytest tests/test_v168_prod_ops_hardening.py -q -k v2` | contract |
+| AC-V168-001 | TC-PHY-SYNC-001 | contract | `python3 -m pytest tests/test_v168_prod_ops_hardening.py -q -k loom_parity` | contract |
 | AC-V168-002 | TC-PHY-SYNC-002 | unit | `python3 -m pytest tests/test_v168_prod_ops_hardening.py -q` | fsm/illegal |
 | AC-V168-003 | TC-PHY-SYNC-003 | contract | `python3 -m pytest tests/test_v168_prod_ops_hardening.py -q` | cli |
 | AC-V168-004 | TC-PHY-SYNC-004 | unit | `python3 -m pytest tests/test_v168_prod_ops_hardening.py -q` | positive/negative |
