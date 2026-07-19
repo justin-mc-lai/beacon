@@ -9,16 +9,16 @@ use beacon_core::branch_context::BranchContext;
 use beacon_gate::harness_trace_gate::evaluate_harness_trace_gate;
 use beacon_orchestrator::{
     admit_workspace, build_skill_load_plan, collect_branch_context, verify_flow_order, GoalController,
-    HarnessPathController, WorkspaceAdmissionRequest, FLOW_STAGES,
+    ensure_worktree_dir, resolve_worktree_mode, HarnessPathController, WorktreeMode, WorkspaceAdmissionRequest, FLOW_STAGES,
 };
 use beacon_store::{BeaconStore, ProjectDao, SpineDao};
 use clap::{Parser, Subcommand};
 
 #[derive(Parser)]
 #[command(
-    name = "beacon-v2",
+    name = "loom-v2",
     version,
-    about = "Beacon v2 Rust CLI / Loom kernel surface (dual-track; does not replace beacon)"
+    about = "Loom v2 Rust kernel CLI (dual-track; does not replace beacon)"
 )]
 struct Cli {
     /// Path to the global beacon.db (default: ~/.beacon/beacon.db).
@@ -88,6 +88,11 @@ enum Command {
         #[command(subcommand)]
         action: TraceAction,
     },
+    /// Worktree modes (AC-099).
+    Worktree {
+        #[command(subcommand)]
+        action: WorktreeAction,
+    },
 }
 
 #[derive(Subcommand)]
@@ -134,6 +139,28 @@ enum TraceAction {
         phase: String,
         #[arg(long)]
         missing: bool,
+        #[arg(long)]
+        json: bool,
+    },
+}
+
+#[derive(Subcommand)]
+enum WorktreeAction {
+    Resolve {
+        #[arg(long, default_value = "worktree")]
+        mode: String,
+        #[arg(long)]
+        project_root: PathBuf,
+        #[arg(long, default_value = "run")]
+        run_id: String,
+        #[arg(long, default_value = "main")]
+        branch: String,
+        #[arg(long)]
+        isolated: bool,
+        #[arg(long)]
+        current_branch: bool,
+        #[arg(long)]
+        materialize: bool,
         #[arg(long)]
         json: bool,
     },
@@ -422,6 +449,38 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 };
                 print_json_or_debug(&result, json)?;
                 if result.get("blocked").and_then(|v| v.as_bool()).unwrap_or(false) {
+                    std::process::exit(2);
+                }
+            }
+        },
+        Command::Worktree { action } => match action {
+            WorktreeAction::Resolve {
+                mode,
+                project_root,
+                run_id,
+                branch,
+                isolated,
+                current_branch,
+                materialize,
+                json,
+            } => {
+                let abs = project_root.canonicalize().unwrap_or(project_root);
+                let mode = WorktreeMode::parse(&mode)?;
+                let mut plan = resolve_worktree_mode(
+                    mode,
+                    &abs,
+                    &run_id,
+                    &branch,
+                    isolated,
+                    current_branch,
+                );
+                if materialize && !plan.blocked {
+                    if let Ok(p) = ensure_worktree_dir(&plan) {
+                        plan.harness_cwd = p.to_string_lossy().to_string();
+                    }
+                }
+                print_json_or_debug(&plan, json)?;
+                if plan.blocked {
                     std::process::exit(2);
                 }
             }

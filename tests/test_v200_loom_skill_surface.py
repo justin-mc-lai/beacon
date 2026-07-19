@@ -14,8 +14,8 @@ def test_loom_public_entry_exists() -> None:
     assert "beacon-goal" in text  # dual-install relation
 
 
-def test_not_all_skills_are_loom_prefixed() -> None:
-    """Phase-1: sub-skills remain under skills/beacon/* (UD-LOOM-007)."""
+def test_phase2_loom_prefix_with_beacon_content_source() -> None:
+    """Phase-2: public progressive skills use loom-* prefix; content stays in skills/beacon/*."""
     beacon_skills = [
         p.name
         for p in (ROOT / "skills/beacon").iterdir()
@@ -27,11 +27,13 @@ def test_not_all_skills_are_loom_prefixed() -> None:
         if p.is_dir() and p.name.startswith("loom-")
     ]
     assert len(beacon_skills) >= 20, "beacon tree should remain the content source"
-    # only public entry required in Phase-1
     assert "loom-goal" in loom_skills
-    # must NOT claim full mirror yet
-    assert "loom-gen-implement" not in loom_skills
-    assert "loom-eval-qa" not in loom_skills
+    # Phase-2 full public prefix
+    assert "loom-gen-implement" in loom_skills
+    assert "loom-eval-qa" in loom_skills
+    # content single-source
+    src = (ROOT / "skills/loom/loom-gen-implement/CONTENT_SOURCE").read_text(encoding="utf-8").strip()
+    assert src == "skills/beacon/beacon-gen-implement"
 
 
 def test_phase1_shares_beacon_content() -> None:

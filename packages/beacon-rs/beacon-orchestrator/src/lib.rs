@@ -4,6 +4,7 @@
 //! beacon-store, and honors stop_when. It does NOT issue QA/release verdicts (AC-049).
 
 pub mod codex_backend;
+pub mod backends;
 pub mod goal_controller;
 pub mod skill_load;
 pub mod workspace_admission;
@@ -11,10 +12,13 @@ pub mod standard_flow;
 pub mod harness_path;
 pub mod git_branch_context;
 pub mod checkpoint;
+pub mod worktree_mode;
 
 pub use codex_backend::CodexBackend;
+pub use backends::{AcpBackend, ClaudeBackend};
+// Note: backends::CodexBackend also available; top-level CodexBackend is multi-turn artifact writer
 pub use goal_controller::{GoalController, GoalRunHandle};
-pub use skill_load::{build_skill_load_plan, skills_for_stage, SkillLoadPlan};
+pub use skill_load::{build_skill_load_plan, build_skill_load_plan_brand, skills_for_stage, skills_for_stage_brand, SkillLoadPlan};
 pub use workspace_admission::{admit_workspace, WorkspaceAdmissionRequest, WorkspaceAdmissionResult};
 pub use standard_flow::{
     verify_flow_order, AdmissionBundle, FlowState, FLOW_STAGES, REASON_FLOW_ORDER,
@@ -23,6 +27,10 @@ pub use standard_flow::{
 pub use harness_path::{HarnessPathBlocked, HarnessPathController};
 pub use git_branch_context::{collect_branch_context, probe_git, try_branch_context, GitProbe};
 pub use checkpoint::{load_checkpoint, save_checkpoint, stop_with_checkpoint, Checkpoint};
+pub use worktree_mode::{
+    assert_harness_cwd, ensure_worktree_dir, resolve_worktree_mode, WorktreeMode, WorktreePlan,
+    REASON_WORKTREE_ILLEGAL_COMBO,
+};
 
 use beacon_core::agent::{AgentBackend, IterationResult};
 use beacon_store::{BeaconStore, LifecycleEventDao, RunDao};
@@ -105,6 +113,33 @@ impl<'a> Orchestrator<'a> {
                 if sig == "qa_pass" || sig == "gate_pass" {
                     stopped = true;
                     stop_reason = format!("stop_when gate pass: {sig}");
+                }
+            }
+            // Persist iteration artifact (AC-043/045/046)
+            {
+                use beacon_store::{ArtifactDao, RunDao};
+                use std::collections::hash_map::DefaultHasher;
+                use std::hash::{Hash, Hasher};
+                let conn = self.store.connection();
+                if let Ok(Some(row)) = RunDao::get(conn, self.run_id) {
+                    let dir = std::env::temp_dir().join(format!("loom-v2-run-{}", self.run_id));
+                    let _ = std::fs::create_dir_all(&dir);
+                    let path = dir.join(format!("iter-{i}.json"));
+                    if let Ok(body) = serde_json::to_string_pretty(&result) {
+                        let _ = std::fs::write(&path, &body);
+                        let mut h = DefaultHasher::new();
+                        body.hash(&mut h);
+                        let hash = format!("{:016x}", h.finish());
+                        let abs = path.canonicalize().unwrap_or(path).to_string_lossy().to_string();
+                        let _ = ArtifactDao::insert(
+                            conn,
+                            row.feature_package_id,
+                            Some(self.run_id),
+                            "iteration_result",
+                            &abs,
+                            Some(&hash),
+                        );
+                    }
                 }
             }
             steps.push(StepResult {
