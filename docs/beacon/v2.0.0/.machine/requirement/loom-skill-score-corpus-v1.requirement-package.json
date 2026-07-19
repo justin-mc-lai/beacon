@@ -1,0 +1,165 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-19T11:35:21.288278+00:00",
+  "feature": "loom-skill-score-corpus-v1",
+  "feature_slug": "loom-skill-score-corpus-v1",
+  "version": "v2.0.0",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v2.0.0/features/loom-skill-score-corpus-v1/truth.md",
+    "tests": "docs/beacon/v2.0.0/features/loom-skill-score-corpus-v1/tests.md",
+    "tasks": "docs/beacon/v2.0.0/features/loom-skill-score-corpus-v1/tasks.md",
+    "evidence": "docs/beacon/v2.0.0/features/loom-skill-score-corpus-v1/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "8f9faf6931cd91d01e984781a6c122b3a0f874f195e64b43c4e4a8aa46dc675f",
+    "tests": "04874277344e0605f149a3520d10bbcf7f6bbe761d5554a33fd2d5a25f1af4b5",
+    "tasks": "bed3fbc968f53373409afef6b0c23f2303e57aa729fc8bb3103d99940e11b0f2",
+    "evidence": "2453e2f9f9d13e2efd2509539f7c42f2fd56486fbe167a72320949f9323ee6aa"
+  },
+  "truth_frontmatter": {
+    "slug": "loom-skill-score-corpus-v1",
+    "version": "v2.0.0",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "User GO 2026-07-19 option2: freeze W1-W5 kernel closure lakes under program loom-kernel-closure-w1w5-v200",
+    "canonical_refs": {
+      "truth": "docs/beacon/v2.0.0/features/loom-skill-score-corpus-v1/truth.md",
+      "tests": "docs/beacon/v2.0.0/features/loom-skill-score-corpus-v1/tests.md",
+      "tasks": "docs/beacon/v2.0.0/features/loom-skill-score-corpus-v1/tasks.md",
+      "evidence": "docs/beacon/v2.0.0/features/loom-skill-score-corpus-v1/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "program_ref": "docs/beacon/v2.0.0/programs/loom-kernel-closure-w1w5-v200/feature-graph.json",
+    "parent_kernel": "beacon-v2-rust-kernel-redesign",
+    "upstream_acs": "[\"AC-169\"]",
+    "wave": "W5",
+    "priority": "P2",
+    "ux_required": "false",
+    "design_deferral": "kernel/CLI; no product marketing UI",
+    "display_name": "Loom Skill-Score Corpus v1",
+    "brand": "Loom"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-169",
+      "theme": "corpus",
+      "description": "提供 skill-score-corpus.v1 + baseline；缺 → skill_score_corpus_missing（Must）"
+    },
+    {
+      "ac_id": "AC-LOOM-W5-001",
+      "theme": "six-public",
+      "description": "六 public loom skill 可被 corpus 跑通（Must）"
+    },
+    {
+      "ac_id": "AC-LOOM-W5-002",
+      "theme": "v1-sample",
+      "description": "至少一套 v1 skill fixture 同 schema（Must）"
+    },
+    {
+      "ac_id": "AC-LOOM-W5-003",
+      "theme": "no-auto-edit",
+      "description": "CLI 不得自动写 SKILL.md（Must）"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-169",
+      "tc_id": "TC-W5-001",
+      "layer": "contract",
+      "command": "`loom skill-score --corpus skill-score-corpus.v1`",
+      "assertion": "fields",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-169",
+      "tc_id": "TC-W5-002",
+      "layer": "negative",
+      "command": "`score without corpus`",
+      "assertion": "skill_score_corpus_missing",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-W5-001",
+      "title": "Author skill-score-corpus.v1 fixtures",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-W5-002",
+      "title": "Wire loom/beacon skill-score --corpus",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-W5-003",
+      "title": "Baseline protocol with_skill/no_skill",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-W5-004",
+      "title": "Fail-closed missing corpus",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-W5-005",
+      "title": "TC-169 + N37",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "requirement_truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/loom-skill-score-corpus-v1/truth.md",
+      "status": "frozen"
+    },
+    {
+      "surface": "acceptance",
+      "authority": "acceptance_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/loom-skill-score-corpus-v1/truth.md",
+      "status": "frozen"
+    },
+    {
+      "surface": "test_case",
+      "authority": "test_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/loom-skill-score-corpus-v1/tests.md",
+      "status": "frozen"
+    },
+    {
+      "surface": "planner",
+      "authority": "support_advisory",
+      "canonical_artifact": ".beacon/state/planner-review/beacon-v2-rust-kernel-redesign/pln-review-20260719t110159z.json",
+      "status": "accepted"
+    },
+    {
+      "surface": "program",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/programs/loom-kernel-closure-w1w5-v200/feature-graph.json",
+      "status": "frozen"
+    },
+    {
+      "surface": "parent-kernel",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
+      "status": "indexed"
+    },
+    {
+      "surface": "change",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/change/loom-kernel-closure-w1w5-v200.md",
+      "status": "indexed"
+    }
+  ]
+}

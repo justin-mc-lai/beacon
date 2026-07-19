@@ -1,0 +1,160 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-19T11:35:18.783303+00:00",
+  "feature": "loom-cross-track-adversarial-release",
+  "feature_slug": "loom-cross-track-adversarial-release",
+  "version": "v2.0.0",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v2.0.0/features/loom-cross-track-adversarial-release/truth.md",
+    "tests": "docs/beacon/v2.0.0/features/loom-cross-track-adversarial-release/tests.md",
+    "tasks": "docs/beacon/v2.0.0/features/loom-cross-track-adversarial-release/tasks.md",
+    "evidence": "docs/beacon/v2.0.0/features/loom-cross-track-adversarial-release/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "d10f23a8d227303db7e2f7094d56c44c3a4496d9b7c6b7193f5b74c711b91ba8",
+    "tests": "f7e4b56e371ea3d91d07b88893f6842a381c31744a9d48d58c762988976667fe",
+    "tasks": "e2f6b06f654ade682142631c5163376e91d70c40d0c0bb1220194cb0250e0f57",
+    "evidence": "7a59e66908ff6737ae4c3602b8d14a095e641e594615cd992486782c3332c224"
+  },
+  "truth_frontmatter": {
+    "slug": "loom-cross-track-adversarial-release",
+    "version": "v2.0.0",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "User GO 2026-07-19 option2: freeze W1-W5 kernel closure lakes under program loom-kernel-closure-w1w5-v200",
+    "canonical_refs": {
+      "truth": "docs/beacon/v2.0.0/features/loom-cross-track-adversarial-release/truth.md",
+      "tests": "docs/beacon/v2.0.0/features/loom-cross-track-adversarial-release/tests.md",
+      "tasks": "docs/beacon/v2.0.0/features/loom-cross-track-adversarial-release/tasks.md",
+      "evidence": "docs/beacon/v2.0.0/features/loom-cross-track-adversarial-release/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "program_ref": "docs/beacon/v2.0.0/programs/loom-kernel-closure-w1w5-v200/feature-graph.json",
+    "parent_kernel": "beacon-v2-rust-kernel-redesign",
+    "upstream_acs": "[\"AC-166\", \"AC-167\"]",
+    "wave": "W4a",
+    "priority": "P1",
+    "ux_required": "false",
+    "design_deferral": "kernel/CLI; no product marketing UI",
+    "display_name": "Loom Cross-Track + Adversarial Release",
+    "brand": "Loom"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-166",
+      "theme": "cross-track",
+      "description": "混用跨轨证据 → cross_track_evidence_contamination（Must）"
+    },
+    {
+      "ac_id": "AC-167",
+      "theme": "adversarial",
+      "description": "缺 adversarial_review.v1 → adversarial_review_missing fail-closed（Must）"
+    },
+    {
+      "ac_id": "AC-LOOM-W4A-001",
+      "theme": "schema",
+      "description": "adversarial_review.v1 字段：≥3 failure points + evidence refs（Must）"
+    },
+    {
+      "ac_id": "AC-LOOM-W4A-002",
+      "theme": "legal-illegal",
+      "description": "legal dual-track clean + illegal contamination（Must）"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-166",
+      "tc_id": "TC-W4A-001",
+      "layer": "negative",
+      "command": "`pytest or cargo tc166_contamination`",
+      "assertion": "blocked",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-167",
+      "tc_id": "TC-W4A-002",
+      "layer": "negative",
+      "command": "`pytest or cargo tc167_missing_adversarial`",
+      "assertion": "blocked",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-W4A-001",
+      "title": "Cross-track evidence detector in qa/release path",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-W4A-002",
+      "title": "adversarial_review.v1 schema + gate",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-W4A-003",
+      "title": "Fixtures contamination + missing adversarial",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-W4A-004",
+      "title": "Integration TC-166/167",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "requirement_truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/loom-cross-track-adversarial-release/truth.md",
+      "status": "frozen"
+    },
+    {
+      "surface": "acceptance",
+      "authority": "acceptance_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/loom-cross-track-adversarial-release/truth.md",
+      "status": "frozen"
+    },
+    {
+      "surface": "test_case",
+      "authority": "test_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/loom-cross-track-adversarial-release/tests.md",
+      "status": "frozen"
+    },
+    {
+      "surface": "planner",
+      "authority": "support_advisory",
+      "canonical_artifact": ".beacon/state/planner-review/beacon-v2-rust-kernel-redesign/pln-review-20260719t110159z.json",
+      "status": "accepted"
+    },
+    {
+      "surface": "program",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/programs/loom-kernel-closure-w1w5-v200/feature-graph.json",
+      "status": "frozen"
+    },
+    {
+      "surface": "parent-kernel",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
+      "status": "indexed"
+    },
+    {
+      "surface": "change",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/change/loom-kernel-closure-w1w5-v200.md",
+      "status": "indexed"
+    }
+  ]
+}

@@ -1,0 +1,186 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-19T11:35:14.811905+00:00",
+  "feature": "loom-git-worktree-implement-harness",
+  "feature_slug": "loom-git-worktree-implement-harness",
+  "version": "v2.0.0",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+    "tests": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tests.md",
+    "tasks": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tasks.md",
+    "evidence": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "c7cbc2f18dba96f389d0bb3c87fcd7db2092a108b865eb2495a293828879c357",
+    "tests": "8cd008774108d70106c44b92425a5b61c90fb3563eb5cfa1cae6f31ddaefd52c",
+    "tasks": "b1618c02aaa06c1b1b21050e6d869baa1262d064f8c41c99da2a06007f4efec1",
+    "evidence": "17e394dc29f8c765e74df9b99a46f2b0d7cda4c177dfb5daa1ad691bb2c40bf2"
+  },
+  "truth_frontmatter": {
+    "slug": "loom-git-worktree-implement-harness",
+    "version": "v2.0.0",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "User GO 2026-07-19 option2: freeze W1-W5 kernel closure lakes under program loom-kernel-closure-w1w5-v200",
+    "canonical_refs": {
+      "truth": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+      "tests": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tests.md",
+      "tasks": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tasks.md",
+      "evidence": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "program_ref": "docs/beacon/v2.0.0/programs/loom-kernel-closure-w1w5-v200/feature-graph.json",
+    "parent_kernel": "beacon-v2-rust-kernel-redesign",
+    "upstream_acs": "[\"AC-099\", \"AC-100\"]",
+    "wave": "W1",
+    "priority": "P0",
+    "ux_required": "false",
+    "design_deferral": "kernel/CLI; no product marketing UI",
+    "display_name": "Loom Git Worktree + Implement Harness",
+    "brand": "Loom"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-099",
+      "theme": "worktree-modes",
+      "description": "Git worktree 全模式 parity：worktree/current-branch/run-branch；非法组合 fail-closed；cwd 对齐（Must）"
+    },
+    {
+      "ac_id": "AC-100",
+      "theme": "implement-harness",
+      "description": "ImplementHarnessBackend 在 admitted worktree 内真一轮；IterationResult schema AC-042；非 subprocess 冒充（Must）"
+    },
+    {
+      "ac_id": "AC-LOOM-W1-001",
+      "theme": "git-real",
+      "description": "temp fixture 上可执行 git worktree add 并检出（Must）"
+    },
+    {
+      "ac_id": "AC-LOOM-W1-002",
+      "theme": "artifact",
+      "description": "成功 iterate 写入 artifact_refs/iteration_result（Must）"
+    },
+    {
+      "ac_id": "AC-LOOM-W1-003",
+      "theme": "legal-illegal",
+      "description": "tests 含合法 walk + 非法组合（Must）"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-099",
+      "tc_id": "TC-W1-001",
+      "layer": "integration",
+      "command": "`cargo test -p beacon-orchestrator tc099_real_git_worktree`",
+      "assertion": "git worktree exists",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-042",
+      "tc_id": "TC-W1-000",
+      "layer": "contract",
+      "command": "`cargo test -p beacon-core iteration_result_schema`",
+      "assertion": "schema fields",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-100",
+      "tc_id": "TC-W1-002",
+      "layer": "integration",
+      "command": "`cargo test -p beacon-orchestrator tc100_implement_harness_one_iter`",
+      "assertion": "IterationResult ok",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-099",
+      "tc_id": "TC-W1-003",
+      "layer": "negative",
+      "command": "`cargo test -p beacon-orchestrator tc099_illegal_combo`",
+      "assertion": "blocked",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-W1-001",
+      "title": "Real git worktree add path under .loom/worktrees or git worktree",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-W1-002",
+      "title": "Wire ImplementHarnessBackend to implement harness (not bare subprocess)",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-W1-003",
+      "title": "Enforce harness cwd == admitted_worktree",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-W1-004",
+      "title": "Integration tests TC-099/TC-100 behavior level",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-W1-005",
+      "title": "CLI loom worktree resolve --materialize uses git when available",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "requirement_truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+      "status": "frozen"
+    },
+    {
+      "surface": "acceptance",
+      "authority": "acceptance_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+      "status": "frozen"
+    },
+    {
+      "surface": "test_case",
+      "authority": "test_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tests.md",
+      "status": "frozen"
+    },
+    {
+      "surface": "planner",
+      "authority": "support_advisory",
+      "canonical_artifact": ".beacon/state/planner-review/beacon-v2-rust-kernel-redesign/pln-review-20260719t110159z.json",
+      "status": "accepted"
+    },
+    {
+      "surface": "program",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/programs/loom-kernel-closure-w1w5-v200/feature-graph.json",
+      "status": "frozen"
+    },
+    {
+      "surface": "parent-kernel",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
+      "status": "indexed"
+    },
+    {
+      "surface": "change",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/change/loom-kernel-closure-w1w5-v200.md",
+      "status": "indexed"
+    }
+  ]
+}

@@ -1,0 +1,178 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-19T11:35:16.114341+00:00",
+  "feature": "loom-run-agent-stop-when-external",
+  "feature_slug": "loom-run-agent-stop-when-external",
+  "version": "v2.0.0",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v2.0.0/features/loom-run-agent-stop-when-external/truth.md",
+    "tests": "docs/beacon/v2.0.0/features/loom-run-agent-stop-when-external/tests.md",
+    "tasks": "docs/beacon/v2.0.0/features/loom-run-agent-stop-when-external/tasks.md",
+    "evidence": "docs/beacon/v2.0.0/features/loom-run-agent-stop-when-external/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "d936fdbd208b85e95b43da737fa59aa5ea3e21db8f49d6df074678501fdcdcc2",
+    "tests": "aa4d3469b710255f551fcdfd714cfcef75af80a6bc6eaf7ac35221da0e79db2a",
+    "tasks": "2dce99f3d82710a036aa309cd4dd83c2d57e0b55113836ee50e7e458d1c0c7c0",
+    "evidence": "7c9d28f415715c7c6786987a69736f2e06c84a2e7e4d32b697e2a177f4ab5cda"
+  },
+  "truth_frontmatter": {
+    "slug": "loom-run-agent-stop-when-external",
+    "version": "v2.0.0",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "change_reason": "User GO 2026-07-19 option2: freeze W1-W5 kernel closure lakes under program loom-kernel-closure-w1w5-v200",
+    "canonical_refs": {
+      "truth": "docs/beacon/v2.0.0/features/loom-run-agent-stop-when-external/truth.md",
+      "tests": "docs/beacon/v2.0.0/features/loom-run-agent-stop-when-external/tests.md",
+      "tasks": "docs/beacon/v2.0.0/features/loom-run-agent-stop-when-external/tasks.md",
+      "evidence": "docs/beacon/v2.0.0/features/loom-run-agent-stop-when-external/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "program_ref": "docs/beacon/v2.0.0/programs/loom-kernel-closure-w1w5-v200/feature-graph.json",
+    "parent_kernel": "beacon-v2-rust-kernel-redesign",
+    "upstream_acs": "[\"AC-105\", \"AC-106\"]",
+    "wave": "W2",
+    "priority": "P0",
+    "ux_required": "false",
+    "design_deferral": "kernel/CLI; no product marketing UI",
+    "display_name": "Loom Run Agent + External Stop-When",
+    "brand": "Loom"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-105",
+      "theme": "run-cli",
+      "description": "loom run --agent 映射 AgentBackend；进程内 loop；checkpoint/resume/SIGINT；无 daemon（Must）"
+    },
+    {
+      "ac_id": "AC-106",
+      "theme": "stop-external",
+      "description": "agent stop_signal alone → stop_when_unverified 并继续；外部检查通过才可停（Must）"
+    },
+    {
+      "ac_id": "AC-LOOM-W2-001",
+      "theme": "agents",
+      "description": "至少 subprocess + 一种 agent 映射可测（Must）"
+    },
+    {
+      "ac_id": "AC-LOOM-W2-002",
+      "theme": "sigint",
+      "description": "SIGINT → graceful stop + checkpoint（Must）"
+    },
+    {
+      "ac_id": "AC-LOOM-W2-003",
+      "theme": "legal-illegal",
+      "description": "legal external stop + illegal self-stop（Must）"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-105",
+      "tc_id": "TC-W2-001",
+      "layer": "integration",
+      "command": "`cargo test -p beacon-cli tc105_run_agent`",
+      "assertion": "loop runs",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-106",
+      "tc_id": "TC-W2-002",
+      "layer": "negative",
+      "command": "`cargo test -p beacon-orchestrator tc106_self_stop_unverified`",
+      "assertion": "continues",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-106",
+      "tc_id": "TC-W2-003",
+      "layer": "integration",
+      "command": "`cargo test -p beacon-orchestrator tc106_external_stop`",
+      "assertion": "stops",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-W2-001",
+      "title": "CLI loom run --agent",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-W2-002",
+      "title": "External stop check after each iterate",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-W2-003",
+      "title": "stop_when_unverified reason_code",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-W2-004",
+      "title": "SIGINT graceful + checkpoint",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-W2-005",
+      "title": "Integration tests TC-105/106",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "requirement_truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/loom-run-agent-stop-when-external/truth.md",
+      "status": "frozen"
+    },
+    {
+      "surface": "acceptance",
+      "authority": "acceptance_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/loom-run-agent-stop-when-external/truth.md",
+      "status": "frozen"
+    },
+    {
+      "surface": "test_case",
+      "authority": "test_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/loom-run-agent-stop-when-external/tests.md",
+      "status": "frozen"
+    },
+    {
+      "surface": "planner",
+      "authority": "support_advisory",
+      "canonical_artifact": ".beacon/state/planner-review/beacon-v2-rust-kernel-redesign/pln-review-20260719t110159z.json",
+      "status": "accepted"
+    },
+    {
+      "surface": "program",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/programs/loom-kernel-closure-w1w5-v200/feature-graph.json",
+      "status": "frozen"
+    },
+    {
+      "surface": "parent-kernel",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
+      "status": "indexed"
+    },
+    {
+      "surface": "change",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/change/loom-kernel-closure-w1w5-v200.md",
+      "status": "indexed"
+    }
+  ]
+}
