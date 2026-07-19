@@ -24,3 +24,11 @@ revision_id: R1
 - Scorecard: `.beacon/qa/features/v2-0-0-full-delivery/scorecard.json`
 - Release: **human gate** (not auto-confirmed)
 - Open: full Rust kernel P1/P2/carrier (track_v2); W4 default BEACON_V2 still forbidden
+
+## Phase-2 public prefix mirror (2026-07-19)
+
+- Generated `skills/loom/loom-*` for public progressive skills (see `skills/loom/mirror-manifest.json`)
+- Content single-source remains `skills/beacon/*` via CONTENT_SOURCE
+- skill_load_plan defaults brand=loom
+- Isolated worktree path: `.loom/worktrees/<run_id>`
+- Rust binary primary name: `loom-v2` (compat alias `beacon-v2`)

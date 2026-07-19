@@ -55,10 +55,10 @@
 ## Phase P3 — gate + migration + claude/acp/worktree/implement 真集成（AC-045–046, AC-099–100, AC-077–079, AC-011, AC-087, **AC-101, AC-103**）
 
 - [ ] TASK-P3-001 gate 写 `gate_results` + reason_codes 集成测试（TC-066）。
-- [ ] TASK-P3-002 **ClaudeBackend 真 integration**（AC-045 / TC-045）：iterate + health_check + abort。
-- [ ] TASK-P3-003 **AcpBackend 真 integration**（AC-046 / TC-046）：`acp:<target>` 一轮。
-- [ ] TASK-P3-004 **worktree 全模式 parity**（AC-099 / TC-099）：worktree/current-branch/run-branch + 非法组合 fail-closed。
-- [ ] TASK-P3-005 **ImplementHarnessBackend 真 integration**（AC-100 / TC-100）：worktree 内 implement harness 一轮。
+- [x] TASK-P3-002 **ClaudeBackend 真 integration**（AC-045 / TC-045）：iterate + health_check + abort。
+- [x] TASK-P3-003 **AcpBackend 真 integration**（AC-046 / TC-046）：`acp:<target>` 一轮。
+- [x] TASK-P3-004 **worktree 全模式 parity**（AC-099 / TC-099）：worktree/current-branch/run-branch + 非法组合 fail-closed。
+- [x] TASK-P3-005 **ImplementHarnessBackend 真 integration**（AC-100 / TC-100）：worktree 内 implement harness 一轮。
 - [ ] TASK-P3-006 全量 migration + **projection rebuild**（AC-011 / TC-011）。
 - [ ] TASK-P3-007 单一写者 + migration 备份。
 - [ ] TASK-P3-008 integration：TC-045–046, TC-099–100, TC-077–079, TC-087, TC-011。
@@ -183,3 +183,11 @@ Tests: p2_trace_branch_flow.rs (13).
 - route-examples + harness-examples
 - cargo test --workspace green; pytest test_v200_* green
 - **Deferred**: Claude/ACP live backends, criterion benches, default v2 runtime switch (W4)
+
+
+## Loom brand + P3 backends (2026-07-19)
+
+- Worktree modes worktree/current-branch/run-branch + illegal combo (AC-099)
+- ClaudeBackend / AcpBackend true process iterate + artifact_refs; missing cred BLOCKED:missing_claude_cred
+- Full loom-* public skill prefix mirror (content → skills/beacon/*)
+- Binary primary: loom-v2 (compat beacon-v2)
