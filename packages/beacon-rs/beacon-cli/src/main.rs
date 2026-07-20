@@ -22,11 +22,27 @@ use beacon_orchestrator::{
 use beacon_store::{BeaconStore, FeatureDao, ProjectDao, RunDao, SpineDao};
 use clap::{Parser, Subcommand};
 
+#[allow(dead_code)]
+fn cli_bin_name() -> &'static str {
+    // PATH governance: same binary may be invoked as `loom` or `beacon-v2`.
+    let arg0 = std::env::args().next().unwrap_or_default();
+    let base = std::path::Path::new(&arg0)
+        .file_name()
+        .and_then(|s| s.to_str())
+        .unwrap_or("beacon-v2");
+    if base == "loom" || base.starts_with("loom-") {
+        "loom"
+    } else {
+        "beacon-v2"
+    }
+}
+
+
 #[derive(Parser)]
 #[command(
     name = "beacon-v2",
     version,
-    about = "Beacon v2 Rust CLI / Loom kernel surface (dual-track; does not replace beacon)"
+    about = "Beacon v2 / Loom Rust CLI (invoke as beacon-v2 or loom; does not replace production beacon)"
 )]
 struct Cli {
     /// Path to the global beacon.db (default: ~/.beacon/beacon.db).

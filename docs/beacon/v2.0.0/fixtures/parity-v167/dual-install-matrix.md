@@ -16,3 +16,11 @@
 
 - Install loom overwriting `beacon` path
 - W4 early default replace / alias
+
+## Runtime split (PATH governance)
+
+| Track | CLI on PATH | Implementation |
+|-------|-------------|----------------|
+| Beacon production | `beacon` | Python package |
+| Loom evolution | `loom`, `beacon-v2` | Rust via `scripts/install-loom-cli.sh` |
+| Python facade | `loom-py` only | `loom.main:app` — must not own name `loom` |

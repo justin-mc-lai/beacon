@@ -52,3 +52,14 @@ Each turn injects **InjectBundle**: steering (Codex distill templates under `doc
 ## Host subagent keyword (parity v1.6.8 / UD-SA-004)
 
 Same gate as Beacon (`beacon.utils.host_subagent_gate`). Default off; satellite parallel independent of host agents.
+
+## Backend
+
+`$loom-goal` 对应 **Rust CLI**（不是 Python `loom-py`）：
+
+```bash
+bash scripts/install-loom-cli.sh
+export PATH="$HOME/.local/bin:$PATH"
+loom --help          # Rust
+beacon --version     # Python production
+```
