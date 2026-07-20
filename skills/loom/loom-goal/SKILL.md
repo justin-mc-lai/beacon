@@ -48,3 +48,7 @@ See `skills/beacon/references/git-worktree-execution-flow.md` (shared; do not fo
 ## InjectBundle steering (v2.0.0 R3)
 
 Each turn injects **InjectBundle**: steering (Codex distill templates under `docs/beacon/v2.0.0/fixtures/steering/`) → **resume-pack digest** → next_action (not full chat/jsonl). Completion audit only prepares **awaiting_verifier**; never self-certify complete.
+
+## Host subagent keyword (parity v1.6.8 / UD-SA-004)
+
+Same gate as Beacon (`beacon.utils.host_subagent_gate`). Default off; satellite parallel independent of host agents.

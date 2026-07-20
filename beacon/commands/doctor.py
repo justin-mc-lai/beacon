@@ -1130,15 +1130,41 @@ def repair_version_aggregate_projection(
 def verify_subagent_runtime(
     project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
     host_runtime: str = typer.Option("unknown", "--host-runtime", help="Host runtime: codex|claude"),
+    require_agents: bool = typer.Option(
+        False, "--require-agents", help="Also require curated minimal pack under .codex/agents or .claude/agents"
+    ),
     json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
 ):
     """Verify host-native subagent runtime readiness for Codex/Claude skill execution."""
+    from pathlib import Path as _Path
+
+    from beacon.utils.host_subagent_pack import verify_subagent_agents
+
     execution = run_subagent_runtime_verify(
         project_root=project_root,
         host_runtime=host_runtime,
     )
     payload = execution.payload
     result = payload.get("result", {}) if isinstance(payload.get("result"), dict) else {}
+    exit_code = execution.exit_code
+    if require_agents:
+        root = _Path(project_root).expanduser().resolve() if project_root else _Path.cwd()
+        host = str(result.get("host_runtime") or host_runtime or "codex")
+        if host == "unknown":
+            host = "codex"
+        agents = verify_subagent_agents(root, host_runtime=host, require_pack=True)
+        result = dict(result)
+        result["agents_pack"] = agents
+        for item in agents.get("checks") or []:
+            result.setdefault("checks", []).append(item)
+        if agents.get("status") != "pass":
+            result["status"] = "fail"
+            result["reason_code"] = agents.get("reason_code") or "pack_roles_missing"
+            if agents.get("recommended_command"):
+                result["recommended_command"] = agents["recommended_command"]
+            payload["status"] = "BLOCKED"
+            exit_code = 2
+        payload["result"] = result
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
@@ -1150,7 +1176,40 @@ def verify_subagent_runtime(
             typer.echo(f"- {item.get('name')}: {item.get('ok')} ({item.get('detail')})")
         if result.get("recommended_command"):
             typer.echo(f"recommended_command: {result.get('recommended_command')}")
-    raise typer.Exit(code=execution.exit_code)
+    raise typer.Exit(code=exit_code)
+
+
+@app.command("install-subagent-pack")
+def install_subagent_pack_cmd(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    host_runtime: str = typer.Option("codex", "--host-runtime", help="Host runtime: codex|claude"),
+    pack: str = typer.Option("minimal", "--pack", help="Pack id (only minimal supported)"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Install curated minimal host subagent pack into .codex/agents or .claude/agents."""
+    from pathlib import Path as _Path
+
+    from beacon.utils.host_subagent_pack import install_subagent_pack
+
+    root = _Path(project_root).expanduser().resolve() if project_root else _Path.cwd()
+    result = install_subagent_pack(root, host_runtime=host_runtime, pack=pack)
+    payload = {
+        "schema_version": "2.0",
+        "action": "install-subagent-pack",
+        "status": "PASS" if result.get("status") == "ok" else "BLOCKED",
+        "result": result,
+    }
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo("Beacon Doctor Install Subagent Pack")
+        typer.echo("=" * 36)
+        typer.echo(f"status: {payload['status']}")
+        typer.echo(f"host_runtime: {result.get('host_runtime')}")
+        typer.echo(f"roles: {result.get('roles')}")
+        for path in result.get("written") or []:
+            typer.echo(f"- wrote {path}")
+    raise typer.Exit(code=0 if payload["status"] == "PASS" else 2)
 
 
 @app.command("verify-subagent-delegation")

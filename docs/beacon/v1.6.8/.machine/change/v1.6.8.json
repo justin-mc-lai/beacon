@@ -13,11 +13,23 @@
   "truth_authority": false,
   "lifecycle_stage": false,
   "release_publish_action": false,
-  "feature_count": 6,
+  "feature_count": 12,
   "features": [
+    {
+      "feature": "beacon-fsm-implement-order-v168",
+      "feature_slug": "beacon-fsm-implement-order-v168",
+      "summary": "entity precedence implement admission",
+      "status": "implemented"
+    },
     {
       "feature": "beacon-goal-longrun-default-v168",
       "feature_slug": "beacon-goal-longrun-default-v168",
+      "summary": "Maintains release-facing version aggregate projection guards so QA accepted features are included in version change scope before release check.",
+      "status": "generated"
+    },
+    {
+      "feature": "beacon-host-subagent-lifecycle-keyword-v168",
+      "feature_slug": "beacon-host-subagent-lifecycle-keyword-v168",
       "summary": "Maintains release-facing version aggregate projection guards so QA accepted features are included in version change scope before release check.",
       "status": "generated"
     },
@@ -28,10 +40,28 @@
       "status": "generated"
     },
     {
+      "feature": "beacon-longrun-contract-align-v168",
+      "feature_slug": "beacon-longrun-contract-align-v168",
+      "summary": "honor longrun_default without env gate",
+      "status": "implemented"
+    },
+    {
       "feature": "beacon-release-profile-selfheal-v168",
       "feature_slug": "beacon-release-profile-selfheal-v168",
       "summary": "Maintains release-facing version aggregate projection guards so QA accepted features are included in version change scope before release check.",
       "status": "generated"
+    },
+    {
+      "feature": "beacon-release-profile-wiring-v168",
+      "feature_slug": "beacon-release-profile-wiring-v168",
+      "summary": "release check --profile full|hotfix wiring",
+      "status": "implemented"
+    },
+    {
+      "feature": "beacon-runtime-install-truth-v168",
+      "feature_slug": "beacon-runtime-install-truth-v168",
+      "summary": "diagnose-runtime + install truth drift detection",
+      "status": "implemented"
     },
     {
       "feature": "beacon-v168-goalrun-axis-mount",
@@ -50,18 +80,30 @@
       "feature_slug": "beacon-version-fleet-ops-v168",
       "summary": "Maintains release-facing version aggregate projection guards so QA accepted features are included in version change scope before release check.",
       "status": "generated"
+    },
+    {
+      "feature": "beacon-worktree-progressive-skill-flow-v168",
+      "feature_slug": "beacon-worktree-progressive-skill-flow-v168",
+      "summary": "Maintains release-facing version aggregate projection guards so QA accepted features are included in version change scope before release check.",
+      "status": "generated"
     }
   ],
   "implementation_order": {
     "status": "analyzed",
-    "feature_count": 6,
+    "feature_count": 12,
     "ordered_feature_slugs": [
-      "beacon-goal-longrun-default-v168",
-      "beacon-hotfix-lane-v168",
+      "beacon-fsm-implement-order-v168",
+      "beacon-host-subagent-lifecycle-keyword-v168",
+      "beacon-longrun-contract-align-v168",
+      "beacon-release-profile-wiring-v168",
+      "beacon-runtime-install-truth-v168",
+      "beacon-version-fleet-ops-v168",
       "beacon-release-profile-selfheal-v168",
+      "beacon-hotfix-lane-v168",
+      "beacon-goal-longrun-default-v168",
       "beacon-v168-goalrun-axis-mount",
       "beacon-v2-loom-ops-philosophy-sync",
-      "beacon-version-fleet-ops-v168"
+      "beacon-worktree-progressive-skill-flow-v168"
     ],
     "waves": [
       {
@@ -69,8 +111,8 @@
         "parallelizable": true,
         "features": [
           {
-            "feature": "beacon-goal-longrun-default-v168",
-            "feature_slug": "beacon-goal-longrun-default-v168",
+            "feature": "beacon-fsm-implement-order-v168",
+            "feature_slug": "beacon-fsm-implement-order-v168",
             "depends_on_features": [],
             "direct_delivery_services": [],
             "writable_services": [],
@@ -78,8 +120,8 @@
             "reason_code": "parallel_no_conflict"
           },
           {
-            "feature": "beacon-hotfix-lane-v168",
-            "feature_slug": "beacon-hotfix-lane-v168",
+            "feature": "beacon-host-subagent-lifecycle-keyword-v168",
+            "feature_slug": "beacon-host-subagent-lifecycle-keyword-v168",
             "depends_on_features": [],
             "direct_delivery_services": [],
             "writable_services": [],
@@ -87,8 +129,8 @@
             "reason_code": "parallel_no_conflict"
           },
           {
-            "feature": "beacon-release-profile-selfheal-v168",
-            "feature_slug": "beacon-release-profile-selfheal-v168",
+            "feature": "beacon-longrun-contract-align-v168",
+            "feature_slug": "beacon-longrun-contract-align-v168",
             "depends_on_features": [],
             "direct_delivery_services": [],
             "writable_services": [],
@@ -96,8 +138,8 @@
             "reason_code": "parallel_no_conflict"
           },
           {
-            "feature": "beacon-v168-goalrun-axis-mount",
-            "feature_slug": "beacon-v168-goalrun-axis-mount",
+            "feature": "beacon-release-profile-wiring-v168",
+            "feature_slug": "beacon-release-profile-wiring-v168",
             "depends_on_features": [],
             "direct_delivery_services": [],
             "writable_services": [],
@@ -105,8 +147,8 @@
             "reason_code": "parallel_no_conflict"
           },
           {
-            "feature": "beacon-v2-loom-ops-philosophy-sync",
-            "feature_slug": "beacon-v2-loom-ops-philosophy-sync",
+            "feature": "beacon-runtime-install-truth-v168",
+            "feature_slug": "beacon-runtime-install-truth-v168",
             "depends_on_features": [],
             "direct_delivery_services": [],
             "writable_services": [],
@@ -117,10 +159,140 @@
             "feature": "beacon-version-fleet-ops-v168",
             "feature_slug": "beacon-version-fleet-ops-v168",
             "depends_on_features": [],
-            "direct_delivery_services": [],
-            "writable_services": [],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
             "parallelizable": true,
             "reason_code": "parallel_no_conflict"
+          }
+        ]
+      },
+      {
+        "wave": 2,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "beacon-release-profile-selfheal-v168",
+            "feature_slug": "beacon-release-profile-selfheal-v168",
+            "depends_on_features": [
+              "beacon-version-fleet-ops-v168"
+            ],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": false,
+            "reason_code": "shared_delivery_service_conflict"
+          }
+        ]
+      },
+      {
+        "wave": 3,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "beacon-hotfix-lane-v168",
+            "feature_slug": "beacon-hotfix-lane-v168",
+            "depends_on_features": [
+              "beacon-release-profile-selfheal-v168"
+            ],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": false,
+            "reason_code": "shared_delivery_service_conflict"
+          }
+        ]
+      },
+      {
+        "wave": 4,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "beacon-goal-longrun-default-v168",
+            "feature_slug": "beacon-goal-longrun-default-v168",
+            "depends_on_features": [
+              "beacon-hotfix-lane-v168"
+            ],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": false,
+            "reason_code": "shared_delivery_service_conflict"
+          }
+        ]
+      },
+      {
+        "wave": 5,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "beacon-v168-goalrun-axis-mount",
+            "feature_slug": "beacon-v168-goalrun-axis-mount",
+            "depends_on_features": [
+              "beacon-goal-longrun-default-v168"
+            ],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": false,
+            "reason_code": "shared_delivery_service_conflict"
+          }
+        ]
+      },
+      {
+        "wave": 6,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "beacon-v2-loom-ops-philosophy-sync",
+            "feature_slug": "beacon-v2-loom-ops-philosophy-sync",
+            "depends_on_features": [
+              "beacon-v168-goalrun-axis-mount"
+            ],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": false,
+            "reason_code": "shared_delivery_service_conflict"
+          }
+        ]
+      },
+      {
+        "wave": 7,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "beacon-worktree-progressive-skill-flow-v168",
+            "feature_slug": "beacon-worktree-progressive-skill-flow-v168",
+            "depends_on_features": [
+              "beacon-v2-loom-ops-philosophy-sync"
+            ],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": false,
+            "reason_code": "shared_delivery_service_conflict"
           }
         ]
       }
@@ -130,6 +302,9 @@
     "[beacon-goal-longrun-default-v168] Feature-level release projection input for QA accepted current feature",
     "[beacon-goal-longrun-default-v168] Version aggregate projection inclusion guard and repair metadata",
     "[beacon-goal-longrun-default-v168] Repair-only projection rebuild path for release preflight artifacts",
+    "[beacon-host-subagent-lifecycle-keyword-v168] Feature-level release projection input for QA accepted current feature",
+    "[beacon-host-subagent-lifecycle-keyword-v168] Version aggregate projection inclusion guard and repair metadata",
+    "[beacon-host-subagent-lifecycle-keyword-v168] Repair-only projection rebuild path for release preflight artifacts",
     "[beacon-hotfix-lane-v168] Feature-level release projection input for QA accepted current feature",
     "[beacon-hotfix-lane-v168] Version aggregate projection inclusion guard and repair metadata",
     "[beacon-hotfix-lane-v168] Repair-only projection rebuild path for release preflight artifacts",
@@ -144,49 +319,120 @@
     "[beacon-v2-loom-ops-philosophy-sync] Repair-only projection rebuild path for release preflight artifacts",
     "[beacon-version-fleet-ops-v168] Feature-level release projection input for QA accepted current feature",
     "[beacon-version-fleet-ops-v168] Version aggregate projection inclusion guard and repair metadata",
-    "[beacon-version-fleet-ops-v168] Repair-only projection rebuild path for release preflight artifacts"
+    "[beacon-version-fleet-ops-v168] Repair-only projection rebuild path for release preflight artifacts",
+    "[beacon-worktree-progressive-skill-flow-v168] Feature-level release projection input for QA accepted current feature",
+    "[beacon-worktree-progressive-skill-flow-v168] Version aggregate projection inclusion guard and repair metadata",
+    "[beacon-worktree-progressive-skill-flow-v168] Repair-only projection rebuild path for release preflight artifacts"
   ],
   "removed": [
     "[beacon-goal-longrun-default-v168] Manual-only version aggregate projection repair before release check",
+    "[beacon-host-subagent-lifecycle-keyword-v168] Manual-only version aggregate projection repair before release check",
     "[beacon-hotfix-lane-v168] Manual-only version aggregate projection repair before release check",
     "[beacon-release-profile-selfheal-v168] Manual-only version aggregate projection repair before release check",
     "[beacon-v168-goalrun-axis-mount] Manual-only version aggregate projection repair before release check",
     "[beacon-v2-loom-ops-philosophy-sync] Manual-only version aggregate projection repair before release check",
-    "[beacon-version-fleet-ops-v168] Manual-only version aggregate projection repair before release check"
+    "[beacon-version-fleet-ops-v168] Manual-only version aggregate projection repair before release check",
+    "[beacon-worktree-progressive-skill-flow-v168] Manual-only version aggregate projection repair before release check"
   ],
   "fixed": [
+    "[beacon-fsm-implement-order-v168] Updated `beacon/utils/runtime_install_truth.py`",
+    "[beacon-fsm-implement-order-v168] Updated `beacon/utils/fsm_implement_order.py`",
+    "[beacon-fsm-implement-order-v168] Updated `beacon/utils/product_goal_runtime.py`",
+    "[beacon-fsm-implement-order-v168] Updated `beacon/utils/program_admission.py`",
+    "[beacon-fsm-implement-order-v168] Updated `beacon/commands/release.py`",
+    "[beacon-fsm-implement-order-v168] Updated `beacon/commands/doctor.py`",
+    "[beacon-fsm-implement-order-v168] Updated `beacon/commands/goal.py`",
+    "[beacon-fsm-implement-order-v168] Updated `tests/test_v168_friction_closeout.py`",
+    "[beacon-fsm-implement-order-v168] Updated `skills/beacon/examples/friction-closeout-30s.md`",
     "[beacon-goal-longrun-default-v168] Release check can route missing current feature projection to an actionable repair path",
     "[beacon-goal-longrun-default-v168] Version aggregate projection remains a read model instead of requirement truth",
+    "[beacon-host-subagent-lifecycle-keyword-v168] Release check can route missing current feature projection to an actionable repair path",
+    "[beacon-host-subagent-lifecycle-keyword-v168] Version aggregate projection remains a read model instead of requirement truth",
     "[beacon-hotfix-lane-v168] Release check can route missing current feature projection to an actionable repair path",
     "[beacon-hotfix-lane-v168] Version aggregate projection remains a read model instead of requirement truth",
+    "[beacon-longrun-contract-align-v168] Updated `beacon/utils/runtime_install_truth.py`",
+    "[beacon-longrun-contract-align-v168] Updated `beacon/utils/fsm_implement_order.py`",
+    "[beacon-longrun-contract-align-v168] Updated `beacon/utils/product_goal_runtime.py`",
+    "[beacon-longrun-contract-align-v168] Updated `beacon/utils/program_admission.py`",
+    "[beacon-longrun-contract-align-v168] Updated `beacon/commands/release.py`",
+    "[beacon-longrun-contract-align-v168] Updated `beacon/commands/doctor.py`",
+    "[beacon-longrun-contract-align-v168] Updated `beacon/commands/goal.py`",
+    "[beacon-longrun-contract-align-v168] Updated `tests/test_v168_friction_closeout.py`",
+    "[beacon-longrun-contract-align-v168] Updated `skills/beacon/examples/friction-closeout-30s.md`",
     "[beacon-release-profile-selfheal-v168] Release check can route missing current feature projection to an actionable repair path",
     "[beacon-release-profile-selfheal-v168] Version aggregate projection remains a read model instead of requirement truth",
+    "[beacon-release-profile-wiring-v168] Updated `beacon/utils/runtime_install_truth.py`",
+    "[beacon-release-profile-wiring-v168] Updated `beacon/utils/fsm_implement_order.py`",
+    "[beacon-release-profile-wiring-v168] Updated `beacon/utils/product_goal_runtime.py`",
+    "[beacon-release-profile-wiring-v168] Updated `beacon/utils/program_admission.py`",
+    "[beacon-release-profile-wiring-v168] Updated `beacon/commands/release.py`",
+    "[beacon-release-profile-wiring-v168] Updated `beacon/commands/doctor.py`",
+    "[beacon-release-profile-wiring-v168] Updated `beacon/commands/goal.py`",
+    "[beacon-release-profile-wiring-v168] Updated `tests/test_v168_friction_closeout.py`",
+    "[beacon-release-profile-wiring-v168] Updated `skills/beacon/examples/friction-closeout-30s.md`",
+    "[beacon-runtime-install-truth-v168] Updated `beacon/utils/runtime_install_truth.py`",
+    "[beacon-runtime-install-truth-v168] Updated `beacon/utils/fsm_implement_order.py`",
+    "[beacon-runtime-install-truth-v168] Updated `beacon/utils/product_goal_runtime.py`",
+    "[beacon-runtime-install-truth-v168] Updated `beacon/utils/program_admission.py`",
+    "[beacon-runtime-install-truth-v168] Updated `beacon/commands/release.py`",
+    "[beacon-runtime-install-truth-v168] Updated `beacon/commands/doctor.py`",
+    "[beacon-runtime-install-truth-v168] Updated `beacon/commands/goal.py`",
+    "[beacon-runtime-install-truth-v168] Updated `tests/test_v168_friction_closeout.py`",
+    "[beacon-runtime-install-truth-v168] Updated `skills/beacon/examples/friction-closeout-30s.md`",
     "[beacon-v168-goalrun-axis-mount] Release check can route missing current feature projection to an actionable repair path",
     "[beacon-v168-goalrun-axis-mount] Version aggregate projection remains a read model instead of requirement truth",
     "[beacon-v2-loom-ops-philosophy-sync] Release check can route missing current feature projection to an actionable repair path",
     "[beacon-v2-loom-ops-philosophy-sync] Version aggregate projection remains a read model instead of requirement truth",
     "[beacon-version-fleet-ops-v168] Release check can route missing current feature projection to an actionable repair path",
-    "[beacon-version-fleet-ops-v168] Version aggregate projection remains a read model instead of requirement truth"
+    "[beacon-version-fleet-ops-v168] Version aggregate projection remains a read model instead of requirement truth",
+    "[beacon-worktree-progressive-skill-flow-v168] Release check can route missing current feature projection to an actionable repair path",
+    "[beacon-worktree-progressive-skill-flow-v168] Version aggregate projection remains a read model instead of requirement truth"
   ],
   "traceability_refs": [
+    "docs/beacon/v1.6.8/.machine/execution/technical-implementation-beacon-fsm-implement-order-v168.json",
+    "docs/beacon/v1.6.8/.machine/execution/implementation-summary-beacon-fsm-implement-order-v168.json",
+    "docs/beacon/v1.6.8/execution/implementation-brief-beacon-fsm-implement-order-v168.md",
+    "docs/beacon/v1.6.8/.machine/change/beacon-fsm-implement-order-v168.json",
+    "docs/beacon/v1.6.8/change/beacon-fsm-implement-order-v168.md",
     "docs/beacon/v1.6.8/change/beacon-goal-longrun-default-v168.md",
     "docs/beacon/v1.6.8/prd/beacon-goal-longrun-default-v168.md",
     "docs/beacon/v1.6.8/user-story/beacon-goal-longrun-default-v168.md",
     "docs/beacon/v1.6.8/qa/test-cases/beacon-goal-longrun-default-v168.md",
     "docs/beacon/v1.6.8/.machine/execution/beacon-goal-longrun-default-v168.revision.json",
     "docs/beacon/v1.6.8/.machine/change/beacon-goal-longrun-default-v168.json",
+    "docs/beacon/v1.6.8/change/beacon-host-subagent-lifecycle-keyword-v168.md",
+    "docs/beacon/v1.6.8/prd/beacon-host-subagent-lifecycle-keyword-v168.md",
+    "docs/beacon/v1.6.8/user-story/beacon-host-subagent-lifecycle-keyword-v168.md",
+    "docs/beacon/v1.6.8/qa/test-cases/beacon-host-subagent-lifecycle-keyword-v168.md",
+    "docs/beacon/v1.6.8/.machine/execution/beacon-host-subagent-lifecycle-keyword-v168.revision.json",
+    "docs/beacon/v1.6.8/.machine/change/beacon-host-subagent-lifecycle-keyword-v168.json",
     "docs/beacon/v1.6.8/change/beacon-hotfix-lane-v168.md",
     "docs/beacon/v1.6.8/prd/beacon-hotfix-lane-v168.md",
     "docs/beacon/v1.6.8/user-story/beacon-hotfix-lane-v168.md",
     "docs/beacon/v1.6.8/qa/test-cases/beacon-hotfix-lane-v168.md",
     "docs/beacon/v1.6.8/.machine/execution/beacon-hotfix-lane-v168.revision.json",
     "docs/beacon/v1.6.8/.machine/change/beacon-hotfix-lane-v168.json",
+    "docs/beacon/v1.6.8/.machine/execution/technical-implementation-beacon-longrun-contract-align-v168.json",
+    "docs/beacon/v1.6.8/.machine/execution/implementation-summary-beacon-longrun-contract-align-v168.json",
+    "docs/beacon/v1.6.8/execution/implementation-brief-beacon-longrun-contract-align-v168.md",
+    "docs/beacon/v1.6.8/.machine/change/beacon-longrun-contract-align-v168.json",
+    "docs/beacon/v1.6.8/change/beacon-longrun-contract-align-v168.md",
     "docs/beacon/v1.6.8/change/beacon-release-profile-selfheal-v168.md",
     "docs/beacon/v1.6.8/prd/beacon-release-profile-selfheal-v168.md",
     "docs/beacon/v1.6.8/user-story/beacon-release-profile-selfheal-v168.md",
     "docs/beacon/v1.6.8/qa/test-cases/beacon-release-profile-selfheal-v168.md",
     "docs/beacon/v1.6.8/.machine/execution/beacon-release-profile-selfheal-v168.revision.json",
     "docs/beacon/v1.6.8/.machine/change/beacon-release-profile-selfheal-v168.json",
+    "docs/beacon/v1.6.8/.machine/execution/technical-implementation-beacon-release-profile-wiring-v168.json",
+    "docs/beacon/v1.6.8/.machine/execution/implementation-summary-beacon-release-profile-wiring-v168.json",
+    "docs/beacon/v1.6.8/execution/implementation-brief-beacon-release-profile-wiring-v168.md",
+    "docs/beacon/v1.6.8/.machine/change/beacon-release-profile-wiring-v168.json",
+    "docs/beacon/v1.6.8/change/beacon-release-profile-wiring-v168.md",
+    "docs/beacon/v1.6.8/.machine/execution/technical-implementation-beacon-runtime-install-truth-v168.json",
+    "docs/beacon/v1.6.8/.machine/execution/implementation-summary-beacon-runtime-install-truth-v168.json",
+    "docs/beacon/v1.6.8/execution/implementation-brief-beacon-runtime-install-truth-v168.md",
+    "docs/beacon/v1.6.8/.machine/change/beacon-runtime-install-truth-v168.json",
+    "docs/beacon/v1.6.8/change/beacon-runtime-install-truth-v168.md",
     "docs/beacon/v1.6.8/change/beacon-v168-goalrun-axis-mount.md",
     "docs/beacon/v1.6.8/prd/beacon-v168-goalrun-axis-mount.md",
     "docs/beacon/v1.6.8/user-story/beacon-v168-goalrun-axis-mount.md",
@@ -204,7 +450,13 @@
     "docs/beacon/v1.6.8/user-story/beacon-version-fleet-ops-v168.md",
     "docs/beacon/v1.6.8/qa/test-cases/beacon-version-fleet-ops-v168.md",
     "docs/beacon/v1.6.8/.machine/execution/beacon-version-fleet-ops-v168.revision.json",
-    "docs/beacon/v1.6.8/.machine/change/beacon-version-fleet-ops-v168.json"
+    "docs/beacon/v1.6.8/.machine/change/beacon-version-fleet-ops-v168.json",
+    "docs/beacon/v1.6.8/change/beacon-worktree-progressive-skill-flow-v168.md",
+    "docs/beacon/v1.6.8/prd/beacon-worktree-progressive-skill-flow-v168.md",
+    "docs/beacon/v1.6.8/user-story/beacon-worktree-progressive-skill-flow-v168.md",
+    "docs/beacon/v1.6.8/qa/test-cases/beacon-worktree-progressive-skill-flow-v168.md",
+    "docs/beacon/v1.6.8/.machine/execution/beacon-worktree-progressive-skill-flow-v168.revision.json",
+    "docs/beacon/v1.6.8/.machine/change/beacon-worktree-progressive-skill-flow-v168.json"
   ],
-  "generated_at": "2026-07-19 10:14"
+  "generated_at": "2026-07-20 14:04"
 }

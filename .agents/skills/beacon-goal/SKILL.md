@@ -197,3 +197,19 @@ Rules:
 - Each track uses leaf admit: `beacon/<version>/<feature-slug>`
 - Implement never soft-falls back to main without admission
 - Complete still needs verifier per track; release human
+
+## Host subagent keyword gate (v1.6.8)
+
+**Default: single-thread.** Host Codex/Claude agents spawn only when utterance contains global tokens (`子代理` / `subagent` / `多代理` / …) or explicit flag, and not negated (`不要子代理` / `--no-subagent`).
+
+**UD-SA-001:** `并行` / `多湖` alone enable **satellite worktrees**, not host agents.
+
+```bash
+beacon doctor install-subagent-pack -p . --host-runtime codex --pack minimal
+beacon doctor install-subagent-pack -p . --host-runtime claude --pack minimal
+beacon doctor verify-subagent-runtime -p . --host-runtime codex --require-agents --json
+```
+
+Examples: `skills/beacon/examples/subagent-keyword-off-30s.md`, `subagent-review-on-30s.md`, `subagent-research-on-30s.md`.
+
+Enhancement only: cannot_complete_goal; no auto-release; no second public entry.

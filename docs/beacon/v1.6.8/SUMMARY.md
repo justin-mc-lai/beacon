@@ -58,3 +58,19 @@ Friction closeout on the same GoalRun spine (2026-07-19 GO):
 - **status**: truth frozen R1; implement landed; QA 4/4 lakes passed/release_ready; acceptance writeback ok; human release pending
 
 - **friction-closeout GO**: `docs/beacon/v1.6.8/release/beacon-friction-closeout-v168-go.md`
+
+## Program (SHIP): `beacon-host-subagent-lifecycle-v168`
+
+Host Codex/Claude subagent keyword gate + curated 6-role pack (2026-07-20 SHIP).
+
+| Item | Ref |
+|------|-----|
+| Feature | `beacon-host-subagent-lifecycle-keyword-v168` |
+| Program | `docs/beacon/v1.6.8/programs/beacon-host-subagent-lifecycle-v168/` |
+| Release check | pass (`release-check-v1.6.8-host-subagent-latest.json`) |
+| SHIP | `docs/beacon/v1.6.8/release/SHIP-v1.6.8-host-subagent-2026-07-20.md` |
+| Checklist | `docs/beacon/v1.6.8/release/checklist-v1.6.8.md` |
+| Contract tests | `tests/test_v168_host_subagent_keyword.py` (17 passed) |
+
+Rules: default single-thread; keyword/`--subagent` only; `并行` ≠ host agents; no second public entry.
+
