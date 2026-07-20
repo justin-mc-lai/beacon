@@ -1416,3 +1416,10 @@ def summarize_release_scorecard(scorecard: dict[str, Any] | None) -> dict[str, A
         "reconciliation_artifact_path": str(reconciliation.get("artifact_path") or ""),
         "reconciliation_reprojection_targets": list(((reconciliation.get("artifact") or {}).get("reprojection_targets")) or []),
     }
+
+
+def implement_lane_release_advisory(project_root, *, version: str = "") -> dict:
+    """UD-ENF-005 non-fatal advisory for release surfaces."""
+    from pathlib import Path
+    from beacon.utils.implement_lane_enforcement import release_implement_lane_advisory
+    return release_implement_lane_advisory(Path(project_root), version=version)

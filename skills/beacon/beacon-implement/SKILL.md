@@ -51,3 +51,10 @@ metadata:
 | Beacon | Loom |
 |--------|------|
 | `beacon-implement` | `loom-implement` |
+
+
+## HARD GATE — worktree lane (UD-ENF)
+
+- Implement only inside **admitted** `worktree_path` (not bare main).
+- `beacon doctor setup-git-hooks` installs pre-commit blocking `beacon/**` commits on main.
+- Violation reason_code: `main_implement_forbidden`.

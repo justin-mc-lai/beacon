@@ -54,6 +54,23 @@ beacon goal status|pause|resume|complete|tick ...
 
 ## Hard rules
 
+## HARD STOP — Implement lane (UD-ENF)
+
+**Before writing any business code** (`beacon/**`, `packages/**`, business tests):
+
+1. Run `beacon workspace admit -p <repo> -v <ver> --feature <slug> --json`
+2. **cwd must become** `worktree_path` (under `.beacon/worktrees/...`)
+3. Never `git commit` business paths on `main`/`master` — pre-commit will block (`main_implement_forbidden`)
+4. Dual-track: admit **both** v1.6.9 and v2.0.0 leaves when shipping dual packages
+5. Emergency only: `BEACON_ALLOW_MAIN_IMPLEMENT=1` + `.beacon/evidence/main-implement-exception.json`
+
+If you are on main and about to edit `beacon/**` → **STOP**, admit first.
+
+Install hooks: `beacon doctor setup-git-hooks -p .`
+Verify: `beacon doctor verify-git-hooks -p .` · `beacon doctor verify-implement-lane -p . --strict`
+
+
+
 ## Git worktree 开发规范（渐进加载 always-on）
 
 **必须**打开并遵守：
