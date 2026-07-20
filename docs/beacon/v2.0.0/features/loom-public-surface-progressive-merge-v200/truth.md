@@ -31,6 +31,9 @@ Parity implement of progressive merge with Beacon v1.6.9; brand Loom + Rust CLI 
 
 ## Intent
 
+Shared synonym table: `skills/beacon/references/public-surface-1plus6.md`.
+
+
 Loom/v2.0.0 parity of `beacon-public-surface-progressive-merge-v169` — same UD/AC; brand Loom / Rust CLI track.
 
 ## Parity
@@ -55,3 +58,4 @@ Loom/v2.0.0 parity of `beacon-public-surface-progressive-merge-v169` — same UD
 - Duplicate Python runtime implementation under a second code path
 - Auto-release
 
+Progressive map: `skills/beacon/references/public-surface-progressive-map.v1.json`.

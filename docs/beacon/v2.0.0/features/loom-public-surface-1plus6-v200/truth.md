@@ -27,6 +27,9 @@ design_deferral: "No product UI for this platform lake"
 
 ## Intent
 
+Shared synonym table: `skills/beacon/references/public-surface-1plus6.md`.
+
+
 Loom/v2.0.0 parity of `beacon-public-surface-1plus6-v169` — same UD/AC; brand Loom / Rust CLI track.
 
 ## Parity
