@@ -38,6 +38,10 @@ from beacon.utils.goal_durable_supervisor import (
     supervise_once as dgs_supervise_once,
     write_checkpoint,
 )
+from beacon.utils.multi_version_intent import (
+    apply_multi_version_to_goal_payload,
+    detect_multi_version_intent,
+)
 from beacon.utils.goal_agent_driver import (
     attach_longrun_to_goal_run,
     detect_longrun_intent,
@@ -368,10 +372,29 @@ def create_goal_run(
         "updated_at": now_iso(),
         "history": [{"event": "created", "at": now_iso()}],
     }
+    # Multi-version / dual-track intent (e.g. v1.6.8\v2.0.0)
+    try:
+        payload = apply_multi_version_to_goal_payload(project_root, payload, str(utterance or ""))
+        mv = payload.get("multi_version") or {}
+        if mv.get("enabled"):
+            payload.setdefault("history", []).append(
+                {
+                    "event": "multi_version_plan",
+                    "versions": mv.get("versions"),
+                    "parallel": mv.get("parallel"),
+                    "at": now_iso(),
+                }
+            )
+    except Exception:  # noqa: BLE001
+        pass
+
     path = goal_state_path(project_root, run_id)
     path.parent.mkdir(parents=True, exist_ok=True)
     write_json(path, payload)
-    payload["state_path"] = str(path.relative_to(project_root))
+    try:
+        payload["state_path"] = str(path.relative_to(project_root))
+    except ValueError:
+        payload["state_path"] = str(path)
     return payload
 
 
@@ -1091,3 +1114,10 @@ def goal_driver_run_loop(
         bridge_cmd=bridge_cmd,
         spawn_fn=spawn_fn,
     )
+
+
+def plan_multi_version(project_root: Path, utterance: str) -> dict[str, Any]:
+    """Public helper: multi-version intent → dual-track lake plan (no run mutation)."""
+    from beacon.utils.multi_version_intent import build_multi_version_execution_plan
+
+    return build_multi_version_execution_plan(Path(project_root), utterance)

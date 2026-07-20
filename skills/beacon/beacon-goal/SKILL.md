@@ -182,3 +182,18 @@ beacon doctor align-run-id --run-id <id>
 ```
 
 Program: `beacon-prod-ops-hardening-v168`. Philosophy shared with Loom/v2.
+
+
+## Multi-version dual-track (v1.6.8\\v2.0.0)
+
+One sentence may name multiple versions; Beacon decomposes into parallel tracks + lakes:
+
+```bash
+beacon goal multi-version-plan "双轨 v1.6.8\\v2.0.0 leaf-admit + InjectBundle" --json
+beacon goal run "v1.6.8\\v2.0.0 并行修复" --project . --version auto --longrun
+```
+
+Rules:
+- Each track uses leaf admit: `beacon/<version>/<feature-slug>`
+- Implement never soft-falls back to main without admission
+- Complete still needs verifier per track; release human
