@@ -293,36 +293,15 @@ def hook_main() -> int:
         return 0
     root = Path((proc.stdout or "").strip()).resolve()
     if kind == "pre-push":
-        # Re-check staged is empty on push; instead inspect commits about to push vs upstream if possible
-        # Minimal: if current branch is main and working tree/index has business — still check index
+        # Only block if index still has business paths staged on main.
+        # Do NOT re-scan HEAD~1..HEAD: legitimate leaf merges (incl. ff-only)
+        # already contain business paths and would false-positive.
         result = check_main_implement_commit(root)
-        # Also: if HEAD commit on main touches business and was created without exception — warn via same rule on tree vs parent
         if result.get("blocked"):
             print(result.get("message") or REASON_MAIN_IMPLEMENT, flush=True)
-            for p in result.get("business_files") or []:
-                print(f"  blocked: {p}", flush=True)
+            for pth in result.get("business_files") or []:
+                print(f"  blocked: {pth}", flush=True)
             return 1
-        # extra: last commit files if pushing main
-        br = current_branch(root)
-        if is_canonical_branch(br):
-            diff = _run_git(root, "diff", "--name-only", "HEAD~1..HEAD")
-            if diff.returncode == 0 and (diff.stdout or "").strip():
-                files = [normalize_rel(x) for x in diff.stdout.splitlines() if x.strip()]
-                result2 = check_main_implement_commit(root, files=files, branch=br)
-                # If exception env not set, block push of business-only tip commits
-                if result2.get("blocked") and not exception_allowed(root).get("allowed"):
-                    # allow if merge commit (two parents)
-                    parents = _run_git(root, "rev-list", "--parents", "-n", "1", "HEAD")
-                    parts = (parents.stdout or "").split()
-                    if len(parts) <= 2:  # not a merge
-                        print(
-                            "pre-push: main tip commit contains business paths without exception. "
-                            "Merge from admitted leaf worktree instead.",
-                            flush=True,
-                        )
-                        for p in result2.get("business_files") or []:
-                            print(f"  blocked: {p}", flush=True)
-                        return 1
         return 0
 
     # pre-commit

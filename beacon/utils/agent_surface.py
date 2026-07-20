@@ -2140,8 +2140,8 @@ def setup_agent_surface(
 
         if action != "unchanged":
             if not dry_run:
-                if destination.exists():
-                    shutil.rmtree(destination)
+                if destination.exists() or destination.is_symlink():
+                    _remove_skill_path(destination)
                 _copy_projected_skill(destination, source_skill)
         installed.append(
             {
