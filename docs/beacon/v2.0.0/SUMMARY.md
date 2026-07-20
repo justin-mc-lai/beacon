@@ -68,3 +68,14 @@ Source plan (support advisory):
 - **Lake**: `beacon-v2-truth-human-readable-i18n` (full parity with v1.6.7; truth frozen R1)
 - **Shared norms**: `skills/beacon/references/truth-humanizer/`
 - **Axis**: mounted on `beacon-v2-product-goal-parallel-v200`
+
+## Public surface 1+6 (Scheme A)
+
+Frozen dual-line public surface (parity with **v1.6.9**):
+
+- **1** transversal goal: `$loom-goal` / `$beacon-goal` (long-run only)
+- **6** harness: plan(=loop), truth, design, implement, qa(=qa-evidence), release
+- Canonical table: `skills/beacon/references/public-surface-1plus6.md`
+- Feature: `loom-public-surface-1plus6-v200`
+- Rust: `PUBLIC_ABILITIES` length 6 (`beacon-core/src/harness.rs`)
+- Brand-only diff vs Beacon production: Loom + Rust CLI vs Beacon + Python CLI

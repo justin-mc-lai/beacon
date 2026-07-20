@@ -213,3 +213,9 @@ beacon doctor verify-subagent-runtime -p . --host-runtime codex --require-agents
 Examples: `skills/beacon/examples/subagent-keyword-off-30s.md`, `subagent-review-on-30s.md`, `subagent-research-on-30s.md`.
 
 Enhancement only: cannot_complete_goal; no auto-release; no second public entry.
+
+## Public surface (Scheme A — 1+6)
+
+See `skills/beacon/references/public-surface-1plus6.md`.
+
+`$beacon-goal` is the **only** long-run facade. The six public harness verbs are plan/truth/design/implement/qa/release (synonyms to Rust PUBLIC_ABILITIES).

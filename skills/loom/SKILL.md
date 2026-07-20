@@ -33,3 +33,13 @@ bash scripts/install-loom-skills.sh   # skills/loom only
 
 - Python `loom-py` is debug facade only — must not own PATH name `loom`.
 - W4 前禁止默认 `BEACON_V2=1` / 用 loom 替换 beacon。
+
+## Public surface (Scheme A — 1+6)
+
+Canonical synonym table (shared with v1.6.9 Beacon):
+
+`skills/beacon/references/public-surface-1plus6.md`
+
+- **1** transversal: `$loom-goal` (long-run)
+- **6** harness: plan(=loop), truth, design, implement, qa(=qa-evidence), release
+- Default host-visible should not expand beyond this set (prefix mirrors are internal).
