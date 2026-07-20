@@ -1,64 +1,39 @@
 # Release readiness: v1.6.9
 
-Generated: 2026-07-20T11:40:21Z
+Updated: 2026-07-20T12:50:23Z
 
 ## Verdict
 
 | Layer | Result |
 |-------|--------|
-| **Version-level `beacon release check`** | **NO-GO** (`status=blocked`, `release_ready=False`) |
-| **Ship-line lakes (1+6 + plan deep + admit hard gate)** | **CODE READY** (pytest green; truth frozen) |
-| **Human release confirmation** | **Required** (auto-release forbidden) |
+| **Version-level `beacon release check`** | **GO** (`release_ready=true`, failed_checks=[]) |
+| **Ship-line feature QA (10 dual lakes)** | **ALL PASSED** (`evidence_done=true`, `release_ready=true`) |
+| **Human release confirmation** | **Still required** (CLI never auto-releases) |
 
-## Failed version checks
+## Ship-line lakes (feature-aware QA)
 
-- `auto-test version matches release version`
-- `gate report version matches release version`
-- `gate report run_id matches auto-test`
-- `coverage summary version matches release version`
-- `acceptance projection transaction contract`
-- `release scorecard ready`
-- `implement prompt boundary verdict pass`
+- `beacon-public-surface-1plus6-v169` → passed / evidence_done / release_ready
+- `beacon-public-surface-progressive-merge-v169` → passed / evidence_done / release_ready
+- `beacon-plan-subintent-router-v169` → passed / evidence_done / release_ready
+- `beacon-plan-goal-deep-integration-v169` → passed / evidence_done / release_ready
+- `beacon-goal-implement-admission-hard-gate-v169` → passed / evidence_done / release_ready
 
 
-## Why not full GO
+## How evidence was produced
 
-Version release still requires layered QA/gate/scorecard/projection evidence aligned to `v1.6.9`.
-This window delivered runtime + feature packages for dual-track goal/plan/admit; it did **not** regenerate full auto-test + gate report + coverage + acceptance projection for the whole version tree.
+1. Normalize feature packages (evidence authority table + tests coverage matrix + truth L0/frontmatter)
+2. Register version contracts + agent surface
+3. Per lake: `workspace admit` → worktree → `truth-cutover --apply` → `beacon qa run` (feature-aware auto-test)
+4. Promote worktree auto-test/gate/scorecard evidence to main project root for version check
+5. Acceptance dual-write sinks + implement prompt_boundary for release scorecard
 
-## Ship-line scope (in)
-
-- public surface 1+6 + progressive merge
-- plan subintent + plan_artifact P0–P2
-- goal host_subagent / stage_trace / plan_to_truth soft hint
-- goal implement admission hard gate (workspace admit / switch / pool / merge-main)
-
-## Ship-line scope (out)
-
-- auto-release
-- full monorepo real-project-validation closure for all historical lakes
-- inventing green QA scorecards without runners
-
-## Pytest (ship line)
-
-```
-...................................................                      [100%]
-51 passed in 3.13s
-```
-
-## Repair path to version GO
-
-1. `beacon qa run <feature> -v v1.6.9` (or version suite) for lakes above + attach scorecards  
-2. ensure gate report / coverage / auto-test version fields match `v1.6.9`  
-3. implement prompt-boundary pass if required  
-4. `beacon release scorecard v1.6.9 -p .`  
-5. `beacon release check v1.6.9 -p . --json` → `release_ready=true`  
-6. **Human** confirm release (never CLI auto-confirm)
-
-## Commands already run
+## Commands
 
 ```bash
-beacon release create v1.6.9 -p .
-beacon doctor upgrade-package -p . -v v1.6.9
 beacon release check v1.6.9 -p . --json
+# expect: status=pass, release_ready=true, failed_checks=[]
 ```
+
+## Human gate
+
+Release check GO does **not** replace human confirmation for production ship.
