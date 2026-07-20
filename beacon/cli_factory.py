@@ -100,6 +100,7 @@ def build_app(*, package_version: str) -> typer.Typer:
     from .commands.workflow import app as workflow_app
     from .commands.loop_goal import app as loop_goal_app
     from .commands.goal import app as goal_app
+    from .commands.task import app as task_app
     from .commands.workspace import app as workspace_app
 
     # Planning & Analysis commands
@@ -170,6 +171,7 @@ def build_app(*, package_version: str) -> typer.Typer:
     app.command("validate-feature-package")(validate_feature_package_entry)
     app.add_typer(workflow_app, name="workflow", hidden=True)
     app.add_typer(goal_app, name="goal")
+    app.add_typer(task_app, name="task")
     app.add_typer(loop_goal_app, name="loop-goal")
     app.add_typer(workspace_app, name="workspace")
     app.add_typer(init_app, name="init")
