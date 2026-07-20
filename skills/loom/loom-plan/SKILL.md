@@ -51,3 +51,10 @@ Primary first, then full set for capability non-regression.
 - `skills/beacon/examples/surface-plan-review-30s.md`
 - `skills/beacon/examples/surface-plan-brainstorm-30s.md`
 - `skills/beacon/examples/surface-plan-source-research-30s.md`
+
+## plan_artifact.v1（P0 first-principles）
+
+Same contract as beacon-plan (`beacon.utils.plan_artifact`). Brand Loom; runtime shared on Python track; Rust goal uses stage progressive loads.
+
+Soft gate: `plan_to_truth_gate` → goal `plan_to_truth_hint` (soft only).
+

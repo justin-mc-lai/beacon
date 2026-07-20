@@ -28,6 +28,8 @@ from beacon.utils.goal_durable_supervisor import (
     build_resume_pack,
     detach_supervisor as dgs_detach_supervisor,
     detect_stall,
+    execution_log_path,
+    goal_run_dir,
     load_checkpoint,
     mark_host_interrupted,
     memory_reindex,
@@ -43,6 +45,8 @@ from beacon.utils.multi_version_intent import (
     detect_multi_version_intent,
 )
 from beacon.utils.plan_subintent import plan_progressive_loads_for_utterance
+from beacon.utils.plan_artifact import plan_to_truth_gate
+from beacon.utils.host_subagent_gate import evaluate_host_subagent_gate
 from beacon.utils.goal_agent_driver import (
     attach_longrun_to_goal_run,
     detect_longrun_intent,
@@ -55,6 +59,9 @@ from beacon.utils.goal_agent_driver import (
 
 SCHEMA_VERSION = "1.0"
 PUBLIC_ENTRY = "beacon-goal"
+DESIGN_PHILOSOPHY_REF = "skills/beacon/references/design-philosophy-checklist.md"
+DOMAIN_FSM_TRUTH_REF = "skills/beacon/references/domain-fsm-truth-checklist.md"
+
 PUBLIC_CLI = "beacon goal run"
 PUBLIC_ALIAS = "beacon run"
 SUPPORT_LOOP = "beacon-loop-goal"
@@ -370,10 +377,20 @@ def build_stage_plan(
             item["plan_subintent"] = plan_progressive_loads_for_utterance(
                 utterance, brand="beacon"
             )
+            # hoist plan_artifact for stage consumers
+            pa = (item["plan_subintent"] or {}).get("plan_artifact")
+            if isinstance(pa, dict):
+                item["plan_artifact"] = pa
         # Lifecycle stages mount shared worktree norms (goal facade is separate).
         wt = progressive_worktree_refs(stage if stage != "design" else "plan")
+        refs: list[str] = list(wt.get("references") or []) if wt.get("required") else []
+        if stage == "design" and DESIGN_PHILOSOPHY_REF not in refs:
+            refs.append(DESIGN_PHILOSOPHY_REF)
+        if stage == "truth" and DOMAIN_FSM_TRUTH_REF not in refs:
+            refs.append(DOMAIN_FSM_TRUTH_REF)
+        if refs:
+            item["references"] = refs
         if wt.get("required"):
-            item["references"] = list(wt.get("references") or [])
             if stage == "implement":
                 item["examples"] = list(wt.get("examples") or [WORKTREE_EXAMPLE_REF])
             item["worktree_flow"] = "git-worktree-execution-flow.v1"
@@ -425,6 +442,15 @@ def create_goal_run(
         truth_markdown=truth_markdown,
         ux_required=ux_required,
     )
+    # P0: hoist plan_artifact; P1: host-subagent gate (no auto-spawn when off)
+    _plan_item = next((s for s in stages if isinstance(s, dict) and s.get("stage") == "plan"), {})
+    _plan_art = _plan_item.get("plan_artifact") if isinstance(_plan_item, dict) else None
+    if not isinstance(_plan_art, dict):
+        _ps = _plan_item.get("plan_subintent") if isinstance(_plan_item, dict) else None
+        _plan_art = (_ps or {}).get("plan_artifact") if isinstance(_ps, dict) else {}
+    if not isinstance(_plan_art, dict):
+        _plan_art = {}
+    _host_gate = evaluate_host_subagent_gate(utterance)
     default_done = ["domain_fsm", "evidence_chain", "continuous_qa"]
     if ux_required:
         default_done = ["design_baseline", "design_md_lint", "domain_fsm", "evidence_chain", "continuous_qa"]
@@ -475,6 +501,21 @@ def create_goal_run(
             "source": "",
         },
         "release_human_gate": True,
+        "plan_artifact": _plan_art,
+        "host_subagent": _host_gate,
+        "stage_trace": {
+            "schema": "goal-stage-trace.v1",
+            "run_id": run_id,
+            "log_relpath": f".beacon/state/product-goal/{run_id}/execution.jsonl",
+            "per_stage": {
+                (stages[0]["stage"] if stages else "plan"): {
+                    "status": "active",
+                    "trace_ref": f".beacon/state/product-goal/{run_id}/execution.jsonl",
+                    "at": now_iso(),
+                }
+            },
+        },
+        "plan_to_truth_hint": plan_to_truth_gate(_plan_art) if _plan_art else plan_to_truth_gate(None),
         "created_at": now_iso(),
         "updated_at": now_iso(),
         "history": [{"event": "created", "at": now_iso()}],
@@ -498,6 +539,32 @@ def create_goal_run(
     path = goal_state_path(project_root, run_id)
     path.parent.mkdir(parents=True, exist_ok=True)
     write_json(path, payload)
+    try:
+        # ensure run dir + seed execution log (stage_trace)
+        goal_run_dir(project_root, run_id).mkdir(parents=True, exist_ok=True)
+        log_path = execution_log_path(project_root, run_id)
+        try:
+            log_rel = str(log_path.resolve().relative_to(Path(project_root).resolve()))
+        except ValueError:
+            log_rel = str(log_path)
+        payload["stage_trace"]["log_relpath"] = log_rel
+        for st in payload.get("stage_trace", {}).get("per_stage", {}).values():
+            if isinstance(st, dict):
+                st["trace_ref"] = log_rel
+        append_execution_log(
+            project_root,
+            run_id,
+            stage=str(payload.get("current_stage") or "plan"),
+            event="created",
+            summary=(
+                f"goal created host_subagent={bool(_host_gate.get('gate_on'))} "
+                f"plan_track={(_plan_art or {}).get('methodology_track', '')}"
+            )[:240],
+            refs=[log_rel],
+        )
+        write_json(path, payload)
+    except Exception:  # noqa: BLE001
+        pass
     try:
         payload["state_path"] = str(path.relative_to(project_root))
     except ValueError:
@@ -622,10 +689,66 @@ def tick_goal_run(
     next_idx = idx + 1
     if next_idx < len(stages) and isinstance(stages[next_idx], dict):
         next_stage = str(stages[next_idx]["stage"])
+        # P1 soft plan→truth completeness hint (never hard-blocks tick)
+        hint_local: dict[str, Any] | None = None
+        if current == "plan" and next_stage == "truth":
+            art = payload.get("plan_artifact") if isinstance(payload.get("plan_artifact"), dict) else {}
+            if not art:
+                for s in stages:
+                    if isinstance(s, dict) and s.get("stage") == "plan":
+                        art = s.get("plan_artifact") if isinstance(s.get("plan_artifact"), dict) else {}
+                        if not art:
+                            ps = s.get("plan_subintent") if isinstance(s.get("plan_subintent"), dict) else {}
+                            art = ps.get("plan_artifact") if isinstance(ps.get("plan_artifact"), dict) else {}
+                        break
+            hint_local = plan_to_truth_gate(art if art else None)
+            append_execution_log(
+                project_root,
+                run_id,
+                stage="plan",
+                event="plan_to_truth_hint",
+                summary=str((hint_local or {}).get("reason_code") or "")[:240],
+            )
+        # stage_trace per-stage refs (before skill load so we can re-apply after)
+        st = payload.get("stage_trace") if isinstance(payload.get("stage_trace"), dict) else {}
+        if not st:
+            st = {"schema": "goal-stage-trace.v1", "run_id": run_id, "per_stage": {}}
+        per = dict(st.get("per_stage") if isinstance(st.get("per_stage"), dict) else {})
+        try:
+            log_rel = str(
+                execution_log_path(project_root, run_id).resolve().relative_to(Path(project_root).resolve())
+            )
+        except ValueError:
+            log_rel = str(execution_log_path(project_root, run_id))
+        st["log_relpath"] = log_rel
+        if current:
+            per[current] = {"status": "done", "trace_ref": log_rel, "at": now_iso()}
+        per[next_stage] = {"status": "active", "trace_ref": log_rel, "at": now_iso()}
+        st["per_stage"] = per
+        if isinstance(stages[next_idx], dict):
+            stages[next_idx]["trace_ref"] = log_rel
+
         payload["current_stage"] = next_stage
         payload["status"] = "running"
+        if hint_local is not None:
+            payload["plan_to_truth_hint"] = hint_local
+        payload["stage_trace"] = st
+        # persist hint/trace before load_stage_skills (which reloads from disk)
+        _save(project_root, payload)
+
         payload = load_stage_skills(project_root, run_id, next_stage)
         payload = load_goal_run(project_root, run_id)
+        if hint_local is not None:
+            payload["plan_to_truth_hint"] = hint_local
+        # merge stage_trace
+        existing = payload.get("stage_trace") if isinstance(payload.get("stage_trace"), dict) else {}
+        ep = existing.get("per_stage") if isinstance(existing.get("per_stage"), dict) else {}
+        ep.update(per)
+        existing["schema"] = existing.get("schema") or "goal-stage-trace.v1"
+        existing["run_id"] = existing.get("run_id") or run_id
+        existing["per_stage"] = ep
+        existing["log_relpath"] = log_rel
+        payload["stage_trace"] = existing
         if next_stage == "design":
             payload = run_design_stage_for_goal(project_root, run_id)
     else:

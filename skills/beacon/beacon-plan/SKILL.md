@@ -51,3 +51,27 @@ Primary first, then full set for capability non-regression.
 - `skills/beacon/examples/surface-plan-review-30s.md`
 - `skills/beacon/examples/surface-plan-brainstorm-30s.md`
 - `skills/beacon/examples/surface-plan-source-research-30s.md`
+
+## plan_artifact.v1（P0 first-principles）
+
+Runtime: `beacon.utils.plan_artifact.build_plan_artifact`  
+Attached on: `plan_progressive_loads_for_utterance` → `plan_artifact`, and goal `create_goal_run` top-level + plan stage.
+
+| Field | Meaning |
+|-------|---------|
+| surface_ask | 表层诉求 |
+| deep_want | 深层目标（脚手架；agent 须 refinement） |
+| options | 可走路径 + tradeoff |
+| recommended_next | 建议下一动作 / stage hint |
+| non_goals | 含：plan 不写 frozen truth、不实现 |
+| high_risk | 支付/权限/安全/状态机/parity 等 |
+| structurally_complete | 结构齐全标记 |
+
+**Soft gate**：`plan_to_truth_gate` → goal `plan_to_truth_hint`（不硬挡 tick）。
+
+## Examples（30s）
+
+- `skills/beacon/examples/surface-plan-review-30s.md`
+- `skills/beacon/examples/surface-plan-brainstorm-30s.md`
+- `skills/beacon/examples/surface-plan-source-research-30s.md`
+

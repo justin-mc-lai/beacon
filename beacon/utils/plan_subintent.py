@@ -8,6 +8,8 @@ from __future__ import annotations
 
 from typing import Any
 
+# plan_artifact imported lazily to avoid cycles
+
 # Primary internal skills (must remain planner HARD GATE)
 PRIMARY_REVIEW = "beacon-pln-review"
 PRIMARY_BRAINSTORM = "beacon-pln-brainstorm"
@@ -210,6 +212,9 @@ def plan_progressive_loads_for_utterance(utterance: str = "", *, brand: str = "b
 
     # default: do not force-load every heavy skill body — primary first, rest available
     # For default subintent, keep list shorter primary path but retain full set after
+    from beacon.utils.plan_artifact import build_plan_artifact
+
+    artifact = build_plan_artifact(utterance, subintent_payload=det)
     return {
         **det,
         "brand": brand,
@@ -217,4 +222,5 @@ def plan_progressive_loads_for_utterance(utterance: str = "", *, brand: str = "b
         "progressive_loads": ordered,
         "primary_load": ordered[1] if len(ordered) > 1 else ordered[0],
         "load_policy": "primary_first_then_full_set_for_non_regression",
+        "plan_artifact": artifact,
     }

@@ -56,3 +56,12 @@ metadata:
 | Beacon | Loom |
 |--------|------|
 | `beacon-design` | `loom-design` |
+
+## Design philosophy checklist (P2)
+
+Progressive load **must not** skip HARD GATE. Attach human checklist:
+
+- `skills/beacon/references/design-philosophy-checklist.md`
+
+Goal `build_stage_plan` also lists this under stage `references` when stage matches.
+

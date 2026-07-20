@@ -54,3 +54,12 @@ metadata:
 | Beacon | Loom |
 |--------|------|
 | `beacon-truth` | `loom-truth` |
+
+## Domain-FSM checklist (P2)
+
+Progressive load **must not** skip HARD GATE. Attach human checklist:
+
+- `skills/beacon/references/domain-fsm-truth-checklist.md`
+
+Goal `build_stage_plan` also lists this under stage `references` when stage matches.
+
