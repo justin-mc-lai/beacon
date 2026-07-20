@@ -1,0 +1,247 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-20T12:07:30.173989+00:00",
+  "feature": "beacon-plan-goal-deep-integration-v169",
+  "feature_slug": "beacon-plan-goal-deep-integration-v169",
+  "version": "v1.6.9",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md",
+    "tests": "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/tests.md",
+    "tasks": "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/tasks.md",
+    "evidence": "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "76f03fe5777506cceb6c55bc2815f555b13378ad87272e9e92c946f5ad83509d",
+    "tests": "e8a3cac4f21d509238bb196e2de6a3a7e6537a5a2ccd3bebe80382ac1f5efa0a",
+    "tasks": "60da5ee12a3a0c19e4d6c7248c9a2f893f13f5b3ffb9062f5c85cda6f2875a0d",
+    "evidence": "f6304f00cf5193d3c8c22d433dbba608ad75efbd55dfae6515c7f392b4afe334"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-plan-goal-deep-integration-v169",
+    "version": "v1.6.9",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "domain_required": "false",
+    "change_reason": "User GO: P0 plan_artifact + P1 host_subagent/stage_trace/plan_to_truth_hint + P2 design/truth checklists",
+    "canonical_refs": {
+      "truth": "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md",
+      "tests": "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/tests.md",
+      "tasks": "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/tasks.md",
+      "evidence": "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "ux_required": "false",
+    "design_deferral": "No product UI for this platform lake"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-PA-001",
+      "theme": "artifact schema + deep_want + options + recommended_next",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PA-002",
+      "theme": "plan_progressive_loads 附带 plan_artifact",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PA-003",
+      "theme": "build_stage_plan hoist plan_artifact",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PA-004",
+      "theme": "plan_to_truth_gate soft；missing/incomplete 不 hard-block",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PA-005",
+      "theme": "create_goal_run 顶层 plan_artifact",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-P1-001",
+      "theme": "无关键词 → host_subagent.gate_on false",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-P1-002",
+      "theme": "「子代理」→ gate_on true，不自完成 goal",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-P1-003",
+      "theme": "tick plan→truth 写入 plan_to_truth_hint + stage_trace",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-P2-001",
+      "theme": "两份 checklist 文件存在",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-P2-002",
+      "theme": "design/truth stage references 含 checklist",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-P2-003",
+      "theme": "SKILL 提及 artifact / checklist",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-PA-001",
+      "tc_id": "TC-001",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_plan_artifact_p0p1p2.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PA-002",
+      "tc_id": "TC-002",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_plan_artifact_p0p1p2.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PA-003",
+      "tc_id": "TC-003",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_plan_artifact_p0p1p2.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PA-004",
+      "tc_id": "TC-004",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_plan_artifact_p0p1p2.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PA-005",
+      "tc_id": "TC-005",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_plan_artifact_p0p1p2.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-P1-001",
+      "tc_id": "TC-006",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_plan_artifact_p0p1p2.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-P1-002",
+      "tc_id": "TC-007",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_plan_artifact_p0p1p2.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-P1-003",
+      "tc_id": "TC-008",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_plan_artifact_p0p1p2.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-P2-001",
+      "tc_id": "TC-009",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_plan_artifact_p0p1p2.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-P2-002",
+      "tc_id": "TC-010",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_plan_artifact_p0p1p2.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-P2-003",
+      "tc_id": "TC-011",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_plan_artifact_p0p1p2.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "plan_artifact module",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "goal create/tick wiring",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "checklists",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "pytest AC",
+      "status": "checked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "requirement_truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md",
+      "status": "frozen R1",
+      "route": "truth"
+    },
+    {
+      "surface": "test_truth",
+      "authority": "test_truth",
+      "canonical_artifact": "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/tests.md",
+      "status": "frozen R1",
+      "route": "truth"
+    },
+    {
+      "surface": "suite",
+      "authority": "test_truth",
+      "canonical_artifact": "tests/test_v169_plan_artifact_p0p1p2.py",
+      "status": "pytest ship-line",
+      "route": "qa"
+    },
+    {
+      "surface": "release_note",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.9/release/readiness-v1.6.9-goal-admit-ship.md",
+      "status": "NO-GO version / CODE READY line",
+      "route": "release"
+    }
+  ]
+}

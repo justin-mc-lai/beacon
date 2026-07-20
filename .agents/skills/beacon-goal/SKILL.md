@@ -2,6 +2,9 @@
 name: beacon-goal
 description: "【唯一公共入口】一句话目标 → 自动拆需求/编排/实现/验收直到 done。内部可委托 program、truth、implement(ralph)、qa、release；beacon-loop-goal 仅为 support 发现器，用户不必先调它。"
 metadata:
+  public_surface: true
+  public_id: "goal"
+  progressive_map: skills/beacon/references/public-surface-progressive-map.v1.json
   version: "v1.6.7"
   entry: public_primary
   role: product_goal_facade
@@ -213,3 +216,21 @@ beacon doctor verify-subagent-runtime -p . --host-runtime codex --require-agents
 Examples: `skills/beacon/examples/subagent-keyword-off-30s.md`, `subagent-review-on-30s.md`, `subagent-research-on-30s.md`.
 
 Enhancement only: cannot_complete_goal; no auto-release; no second public entry.
+
+## Public surface (Scheme A — 1+6)
+
+See `skills/beacon/references/public-surface-1plus6.md`.
+
+`$beacon-goal` is the **only** long-run facade. The six public harness verbs are plan/truth/design/implement/qa/release (synonyms to Rust PUBLIC_ABILITIES).
+
+## Implement admission hard gate (v1.6.9 / v2.0.0)
+
+Before implement write dispatch (`tick --execute` → ralph):
+
+1. `ensure_goal_implement_admission` → `workspace admit` (+ force leaf worktree if contract optional)
+2. switch existing worktree or `git worktree add`; pool lease when pooled; merge main
+3. fail → goal blocked; never implement on main without admission
+4. release remains human; complete needs verifier
+
+Ref: `skills/beacon/references/git-worktree-execution-flow.md`
+

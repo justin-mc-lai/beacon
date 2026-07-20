@@ -1,0 +1,153 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-20T12:07:51.628737+00:00",
+  "feature": "loom-public-surface-progressive-merge-v200",
+  "feature_slug": "loom-public-surface-progressive-merge-v200",
+  "version": "v2.0.0",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v2.0.0/features/loom-public-surface-progressive-merge-v200/truth.md",
+    "tests": "docs/beacon/v2.0.0/features/loom-public-surface-progressive-merge-v200/tests.md",
+    "tasks": "docs/beacon/v2.0.0/features/loom-public-surface-progressive-merge-v200/tasks.md",
+    "evidence": "docs/beacon/v2.0.0/features/loom-public-surface-progressive-merge-v200/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "881912c756ac0875ee4fb1d894c1d79b149c5160df1174eb1c89761e36240c5f",
+    "tests": "44e3fa4f9bdf48ab7526ea4263ae93fcf7aab8e2470bb86c36bdbbe8443c339c",
+    "tasks": "5bf4f89a6ce57c13261cc13351559421f87a2c6a107ec653b8a35bb27457a4f7",
+    "evidence": "0d55ce533558c133a3b72b909b76e174975df5d5cd0e061a79e2b36f4e10cab5"
+  },
+  "truth_frontmatter": {
+    "slug": "loom-public-surface-progressive-merge-v200",
+    "version": "v2.0.0",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "domain_required": "false",
+    "change_reason": "Loom parity of beacon-public-surface-progressive-merge-v169 for dual-track QA/release",
+    "canonical_refs": {
+      "truth": "docs/beacon/v2.0.0/features/loom-public-surface-progressive-merge-v200/truth.md",
+      "tests": "docs/beacon/v2.0.0/features/loom-public-surface-progressive-merge-v200/tests.md",
+      "tasks": "docs/beacon/v2.0.0/features/loom-public-surface-progressive-merge-v200/tasks.md",
+      "evidence": "docs/beacon/v2.0.0/features/loom-public-surface-progressive-merge-v200/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "parity_of": "docs/beacon/v1.6.9/features/beacon-public-surface-progressive-merge-v169/truth.md",
+    "ux_required": "false",
+    "design_deferral": "No product UI for this platform lake"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-PM-001",
+      "theme": "progressive map JSON exists and lists loads for all 6 harness + goal",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PM-002",
+      "theme": "progressive_skills_for_stage(plan",
+      "description": "truth"
+    },
+    {
+      "ac_id": "AC-PM-003",
+      "theme": "aggregate SKILL.md exists for beacon and loom 1+6 shells",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PM-004",
+      "theme": "goal create payload includes self_heal pre/mid/post",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PM-005",
+      "theme": "host_visible whitelist length 7 per brand",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PM-006",
+      "theme": "examples surface-*-30s exist for goal+6+selfheal",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PM-007",
+      "theme": "openai.yaml present on aggregate shells",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PM-008",
+      "theme": "install scripts default whitelist (INSTALL_ALL=1 opt-out)",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PM-009",
+      "theme": "capability non-regression: each harness progressive_loads non-empty",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-LOOM-PUB-001",
+      "tc_id": "TC-001",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_public_surface_progressive_merge.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Parity package freeze",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Progressive map shared",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Contract tests",
+      "status": "checked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "requirement_truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/loom-public-surface-progressive-merge-v200/truth.md",
+      "status": "frozen R1",
+      "route": "truth"
+    },
+    {
+      "surface": "test_truth",
+      "authority": "test_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/loom-public-surface-progressive-merge-v200/tests.md",
+      "status": "frozen R1",
+      "route": "truth"
+    },
+    {
+      "surface": "suite",
+      "authority": "test_truth",
+      "canonical_artifact": "tests/test_v169_public_surface_progressive_merge.py",
+      "status": "pytest ship-line",
+      "route": "qa"
+    },
+    {
+      "surface": "release_note",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/release/readiness-v2.0.0-goal-admit-ship.md",
+      "status": "NO-GO version / CODE READY line",
+      "route": "release"
+    }
+  ]
+}

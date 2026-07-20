@@ -107,3 +107,17 @@ Before ANY repo write or implement/qa/release route:
 - 粗提示词先归约为 outcome、truth/source/evidence refs、湖/海、truth_gap、test_gap、implementation_risk、verification_risk 和 recommended_route。
 - `docs/beacon/<version>/research/<feature-slug>.md` 是 planner `support_advisory` artifact；没有用户确认和 `promotion_ref`，不能升级为 requirement truth。
 - 需要跨 harness 时，停止当前动作，输出 route recommendation，并等待用户确认。
+
+## Product-goal implement hard gate (registration)
+
+Branch governance contract is **consumed** by product-goal before implement write paths:
+
+- Runtime: `beacon.utils.goal_implement_admission.ensure_goal_implement_admission`
+- CLI still: `beacon workspace admit --version <v> --feature <slug> --json`
+- Existing worktree: switch + merge main (same as admit)
+- Pool: when `worktree_mode=pooled`, lease in workspace-pool state
+- Fail-closed: no implement on truth_canonical without admission
+
+See also: `skills/beacon/references/git-worktree-execution-flow.md` § Goal implement admission hard gate.
+Doctor surface remains inspection-only; goal owns the hard gate on tick --execute.
+

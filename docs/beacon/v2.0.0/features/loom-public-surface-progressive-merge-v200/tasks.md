@@ -3,9 +3,11 @@ slug: loom-public-surface-progressive-merge-v200
 version: v2.0.0
 status: frozen
 revision_id: R1
-parity_of: docs/beacon/v1.6.9/features/beacon-public-surface-progressive-merge-v169/truth.md
+truth_ref: docs/beacon/v2.0.0/features/loom-public-surface-progressive-merge-v200/truth.md
 ---
 
-# tasks
+# Tasks: loom-public-surface-progressive-merge-v200
 
-Parity implement of progressive merge with Beacon v1.6.9; brand Loom + Rust CLI only.
+- [x] TASK-001 Parity package freeze
+- [x] TASK-002 Progressive map shared
+- [x] TASK-003 Contract tests

@@ -3,12 +3,12 @@ slug: beacon-public-surface-progressive-merge-v169
 version: v1.6.9
 status: frozen
 revision_id: R1
+truth_ref: docs/beacon/v1.6.9/features/beacon-public-surface-progressive-merge-v169/truth.md
 ---
 
-# tasks: progressive merge implement
+# Tasks: beacon-public-surface-progressive-merge-v169
 
-Implements Scheme A progressive map + aggregate shells + goal self-heal + examples + install whitelist.
-
-Shared map: `skills/beacon/references/public-surface-progressive-map.v1.json`  
-Synonym table: `skills/beacon/references/public-surface-1plus6.md`  
-Parity: v2.0.0 loom aggregates + same map.
+- [x] TASK-001 Progressive map JSON
+- [x] TASK-002 Aggregate shells
+- [x] TASK-003 Contract tests
+- [x] TASK-004 Dual loom parity

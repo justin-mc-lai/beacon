@@ -1,0 +1,148 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-20T12:07:44.442417+00:00",
+  "feature": "loom-public-surface-1plus6-v200",
+  "feature_slug": "loom-public-surface-1plus6-v200",
+  "version": "v2.0.0",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v2.0.0/features/loom-public-surface-1plus6-v200/truth.md",
+    "tests": "docs/beacon/v2.0.0/features/loom-public-surface-1plus6-v200/tests.md",
+    "tasks": "docs/beacon/v2.0.0/features/loom-public-surface-1plus6-v200/tasks.md",
+    "evidence": "docs/beacon/v2.0.0/features/loom-public-surface-1plus6-v200/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "38d29644ab981e43b871a63a034e27bed68d6d383ed18b3ba1370fa508a9e200",
+    "tests": "17f3567ce7ceab2447631e232c217acd139b3d79c9f004626e75a0ab0b846864",
+    "tasks": "4efcebbebe0a7b5132dd816f91f4db86378c94ba50567b3f7d20b671197129ba",
+    "evidence": "f683b8639ec9b4c479779b2116b749709e968073e37be9d72775c9436ae90ad1"
+  },
+  "truth_frontmatter": {
+    "slug": "loom-public-surface-1plus6-v200",
+    "version": "v2.0.0",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "domain_required": "false",
+    "change_reason": "Loom parity of beacon-public-surface-1plus6-v169 for dual-track QA/release",
+    "canonical_refs": {
+      "truth": "docs/beacon/v2.0.0/features/loom-public-surface-1plus6-v200/truth.md",
+      "tests": "docs/beacon/v2.0.0/features/loom-public-surface-1plus6-v200/tests.md",
+      "tasks": "docs/beacon/v2.0.0/features/loom-public-surface-1plus6-v200/tasks.md",
+      "evidence": "docs/beacon/v2.0.0/features/loom-public-surface-1plus6-v200/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "parity_of": "docs/beacon/v1.6.9/features/beacon-public-surface-1plus6-v169/truth.md",
+    "ux_required": "false",
+    "design_deferral": "No product UI for this platform lake"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-PS-001",
+      "theme": "synonym table file exists and lists goal + exactly 6 harness rows",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PS-002",
+      "theme": "Rust PUBLIC_ABILITIES length == 6 and maps 1:1 to table Rust column",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PS-003",
+      "theme": "goal is documented as transversal; not a 7th PUBLIC_ABILITY",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PS-004",
+      "theme": "v1.6.9 and v2.0.0 packages both freeze same table content (brand columns differ only by prefix)",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PS-005",
+      "theme": "INTERNAL_DENYLIST entries are not listed as public harness ids",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PS-006",
+      "theme": "default host-visible whitelist text present (goal+6 per brand)",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PS-007",
+      "theme": "illegal: seventh public harness skill",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PS-008",
+      "theme": "install docs/scripts may reference whitelist (implement phase)",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-LOOM-PUB-001",
+      "tc_id": "TC-001",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_public_surface_1plus6.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Parity package freeze",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Shared table reference",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Contract tests via shared suite",
+      "status": "checked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "requirement_truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/loom-public-surface-1plus6-v200/truth.md",
+      "status": "frozen R1",
+      "route": "truth"
+    },
+    {
+      "surface": "test_truth",
+      "authority": "test_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/loom-public-surface-1plus6-v200/tests.md",
+      "status": "frozen R1",
+      "route": "truth"
+    },
+    {
+      "surface": "suite",
+      "authority": "test_truth",
+      "canonical_artifact": "tests/test_v169_public_surface_1plus6.py",
+      "status": "pytest ship-line",
+      "route": "qa"
+    },
+    {
+      "surface": "release_note",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/release/readiness-v2.0.0-goal-admit-ship.md",
+      "status": "NO-GO version / CODE READY line",
+      "route": "release"
+    }
+  ]
+}

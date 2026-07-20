@@ -1,0 +1,221 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-20T12:07:23.146515+00:00",
+  "feature": "beacon-plan-subintent-router-v169",
+  "feature_slug": "beacon-plan-subintent-router-v169",
+  "version": "v1.6.9",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.9/features/beacon-plan-subintent-router-v169/truth.md",
+    "tests": "docs/beacon/v1.6.9/features/beacon-plan-subintent-router-v169/tests.md",
+    "tasks": "docs/beacon/v1.6.9/features/beacon-plan-subintent-router-v169/tasks.md",
+    "evidence": "docs/beacon/v1.6.9/features/beacon-plan-subintent-router-v169/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "5b57479f31a1da43343bb288fadd5466673cc786c8a9198d92f9917f2115e4db",
+    "tests": "4843ec7c57a50b6bef501a07ed829abf451e1c2397f720888785355898cf06dd",
+    "tasks": "e4c6ef306c5c54e8d18def25b43e9552c9062301de406050458eba37ce4081b9",
+    "evidence": "b9966e55695c5cb6f821877c3adba9978fd0b0b781b1b9c58571fc70270a17ff"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-plan-subintent-router-v169",
+    "version": "v1.6.9",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "domain_required": "false",
+    "change_reason": "User GO: plan-subintent-router for review/brainstorm/source intent stability",
+    "canonical_refs": {
+      "truth": "docs/beacon/v1.6.9/features/beacon-plan-subintent-router-v169/truth.md",
+      "tests": "docs/beacon/v1.6.9/features/beacon-plan-subintent-router-v169/tests.md",
+      "tasks": "docs/beacon/v1.6.9/features/beacon-plan-subintent-router-v169/tasks.md",
+      "evidence": "docs/beacon/v1.6.9/features/beacon-plan-subintent-router-v169/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "ux_required": "false",
+    "design_deferral": "No product UI for this platform lake"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-PSI-001",
+      "theme": "review intent → pln-review",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PSI-002",
+      "theme": "brainstorm → pln-brainstorm",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PSI-003",
+      "theme": "source → pln-source",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PSI-004",
+      "theme": "default → pln-program",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PSI-005",
+      "theme": "primary first + full set retained",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PSI-006",
+      "theme": "build_stage_plan attaches plan_subintent",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PSI-007",
+      "theme": "three examples exist",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PSI-008",
+      "theme": "Rust plan loads include review/brainstorm/source/friction",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PSI-009",
+      "theme": "HARD GATE flags false",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-PSI-001",
+      "tc_id": "TC-001",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_plan_subintent_router.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PSI-002",
+      "tc_id": "TC-002",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_plan_subintent_router.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PSI-003",
+      "tc_id": "TC-003",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_plan_subintent_router.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PSI-004",
+      "tc_id": "TC-004",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_plan_subintent_router.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PSI-005",
+      "tc_id": "TC-005",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_plan_subintent_router.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PSI-006",
+      "tc_id": "TC-006",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_plan_subintent_router.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PSI-007",
+      "tc_id": "TC-007",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_plan_subintent_router.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PSI-008",
+      "tc_id": "TC-008",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_plan_subintent_router.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PSI-009",
+      "tc_id": "TC-009",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_plan_subintent_router.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Subintent router module",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Stage plan attach",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Examples",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Contract tests",
+      "status": "checked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "requirement_truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.9/features/beacon-plan-subintent-router-v169/truth.md",
+      "status": "frozen R1",
+      "route": "truth"
+    },
+    {
+      "surface": "test_truth",
+      "authority": "test_truth",
+      "canonical_artifact": "docs/beacon/v1.6.9/features/beacon-plan-subintent-router-v169/tests.md",
+      "status": "frozen R1",
+      "route": "truth"
+    },
+    {
+      "surface": "suite",
+      "authority": "test_truth",
+      "canonical_artifact": "tests/test_v169_plan_subintent_router.py",
+      "status": "pytest ship-line",
+      "route": "qa"
+    },
+    {
+      "surface": "release_note",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.9/release/readiness-v1.6.9-goal-admit-ship.md",
+      "status": "NO-GO version / CODE READY line",
+      "route": "release"
+    }
+  ]
+}

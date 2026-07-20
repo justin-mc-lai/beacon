@@ -3,9 +3,17 @@ slug: loom-public-surface-progressive-merge-v200
 version: v2.0.0
 status: frozen
 revision_id: R1
-parity_of: docs/beacon/v1.6.9/features/beacon-public-surface-progressive-merge-v169/truth.md
+truth_ref: docs/beacon/v2.0.0/features/loom-public-surface-progressive-merge-v200/truth.md
 ---
 
-# tests
+# Tests: loom-public-surface-progressive-merge-v200
 
-Parity implement of progressive merge with Beacon v1.6.9; brand Loom + Rust CLI only.
+## Coverage Matrix
+
+| AC ID | TC ID | Layer | Command | Assertion |
+|-------|-------|-------|---------|-----------|
+| AC-LOOM-PUB-001 | TC-001 | unit | `python3 -m pytest tests/test_v169_public_surface_progressive_merge.py -q` | AC row covered by ship suite |
+
+## Primary suite
+
+`tests/test_v169_public_surface_progressive_merge.py`

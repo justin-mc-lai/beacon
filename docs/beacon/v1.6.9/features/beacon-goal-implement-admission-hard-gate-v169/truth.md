@@ -4,8 +4,23 @@ version: v1.6.9
 status: frozen
 revision_id: R1
 language: zh
+domain_required: false
 change_reason: "User GO: Scheme A goal implement hard gate via run_workspace_admit + pool + merge-main; dual v1.6.9\\v2.0.0"
+canonical_refs:
+  truth: docs/beacon/v1.6.9/features/beacon-goal-implement-admission-hard-gate-v169/truth.md
+  tests: docs/beacon/v1.6.9/features/beacon-goal-implement-admission-hard-gate-v169/tests.md
+  tasks: docs/beacon/v1.6.9/features/beacon-goal-implement-admission-hard-gate-v169/tasks.md
+  evidence: docs/beacon/v1.6.9/features/beacon-goal-implement-admission-hard-gate-v169/evidence.md
+parser_contract: beacon-feature-package-v2
+truth_source_model: feature_package_authoritative
+truth_map_contract: beacon-truth-map-v1
+ux_required: false
+design_deferral: "No product UI for this platform lake"
 ---
+
+## 人话
+
+goal implement 写路径前强制 workspace admit（switch/pool/merge-main），禁止 main 直写。
 
 # Requirement Truth: Goal Implement Admission Hard Gate
 
@@ -28,9 +43,8 @@ product-goal 在 **implement 写路径** 前强制 `workspace admit`（复用既
 | UD-GIA-009 | 当 contract `require_workspace_admission=false` 时，goal 仍 **force** dedicated leaf worktree（关 main 直写洞） |
 | UD-GIA-010 | parallel_plan satellite worktree 路径以 admit 解析为准对齐 |
 
-## AC
-
-| ID | Description |
+## Acceptance Criteria
+| AC ID | Description |
 |----|-------------|
 | AC-GIA-001 | tick --execute @ implement 无 feature → blocked goal_implement_feature_required |
 | AC-GIA-002 | require=true 路径复用 run_workspace_admit；pass 后才 ralph |

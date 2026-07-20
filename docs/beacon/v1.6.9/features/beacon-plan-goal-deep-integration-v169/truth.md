@@ -4,8 +4,23 @@ version: v1.6.9
 status: frozen
 revision_id: R1
 language: zh
+domain_required: false
 change_reason: "User GO: P0 plan_artifact + P1 host_subagent/stage_trace/plan_to_truth_hint + P2 design/truth checklists"
+canonical_refs:
+  truth: docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md
+  tests: docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/tests.md
+  tasks: docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/tasks.md
+  evidence: docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/evidence.md
+parser_contract: beacon-feature-package-v2
+truth_source_model: feature_package_authoritative
+truth_map_contract: beacon-truth-map-v1
+ux_required: false
+design_deferral: "No product UI for this platform lake"
 ---
+
+## 人话
+
+plan 第一性原理 artifact + goal host_subagent/trace + design/truth 清单，软闸不硬挡。
 
 # Requirement Truth: Plan ↔ Goal Deep Integration (P0–P2)
 
@@ -27,9 +42,8 @@ change_reason: "User GO: P0 plan_artifact + P1 host_subagent/stage_trace/plan_to
 | UD-P2-002 | domain-fsm-truth-checklist.md |
 | UD-P2-003 | build_stage_plan 对 design/truth 附加 references |
 
-## AC
-
-| ID | Description |
+## Acceptance Criteria
+| AC ID | Description |
 |----|-------------|
 | AC-PA-001 | artifact schema + deep_want + options + recommended_next |
 | AC-PA-002 | plan_progressive_loads 附带 plan_artifact |

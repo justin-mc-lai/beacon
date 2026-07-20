@@ -1,0 +1,148 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-20T12:08:45.231393+00:00",
+  "feature": "loom-goal-implement-admission-hard-gate-v200",
+  "feature_slug": "loom-goal-implement-admission-hard-gate-v200",
+  "version": "v2.0.0",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v2.0.0/features/loom-goal-implement-admission-hard-gate-v200/truth.md",
+    "tests": "docs/beacon/v2.0.0/features/loom-goal-implement-admission-hard-gate-v200/tests.md",
+    "tasks": "docs/beacon/v2.0.0/features/loom-goal-implement-admission-hard-gate-v200/tasks.md",
+    "evidence": "docs/beacon/v2.0.0/features/loom-goal-implement-admission-hard-gate-v200/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "cfd9850b9b8fca8f9bd59d4f5f618a669ccc882e93b47b88dbb09312e4233014",
+    "tests": "5f5dac657f8a6688348ab43caed6edc9ff042f970621504d4e3a8c49b2412c26",
+    "tasks": "a5e71ea9af8f24fd22708eebb2a7557fd568281b43d05666cf29460da0b23b38",
+    "evidence": "beedbd77ccc2dc354b6c0b448a49aac204e2ea1b2363f83ba001b9d08dfe260d"
+  },
+  "truth_frontmatter": {
+    "slug": "loom-goal-implement-admission-hard-gate-v200",
+    "version": "v2.0.0",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "domain_required": "false",
+    "change_reason": "Loom parity of beacon-goal-implement-admission-hard-gate-v169 for dual-track QA/release",
+    "canonical_refs": {
+      "truth": "docs/beacon/v2.0.0/features/loom-goal-implement-admission-hard-gate-v200/truth.md",
+      "tests": "docs/beacon/v2.0.0/features/loom-goal-implement-admission-hard-gate-v200/tests.md",
+      "tasks": "docs/beacon/v2.0.0/features/loom-goal-implement-admission-hard-gate-v200/tasks.md",
+      "evidence": "docs/beacon/v2.0.0/features/loom-goal-implement-admission-hard-gate-v200/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "parity_of": "docs/beacon/v1.6.9/features/beacon-goal-implement-admission-hard-gate-v169/truth.md",
+    "ux_required": "false",
+    "design_deferral": "No product UI for this platform lake"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-GIA-001",
+      "theme": "tick --execute @ implement 无 feature → blocked goal_implement_feature_required",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-GIA-002",
+      "theme": "require=true 路径复用 run_workspace_admit；pass 后才 ralph",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-GIA-003",
+      "theme": "require=false 时 goal_forced_worktree + created/switched",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-GIA-004",
+      "theme": "再次 admit/force → switched + merge 非 conflict",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-GIA-005",
+      "theme": "admit/force fail → 不设置 implement_delegate=ralph",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-GIA-006",
+      "theme": "execution log 含 implement_admission",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-GIA-007",
+      "theme": "双轨 feature 包 v169+v200",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-GIA-008",
+      "theme": "flow.md + gov-branch 登记 goal 硬闸",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-LOOM-GOA-001",
+      "tc_id": "TC-001",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_goal_implement_admission_hard_gate.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Parity package freeze",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Shared admit gate",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Contract tests",
+      "status": "checked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "requirement_truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/loom-goal-implement-admission-hard-gate-v200/truth.md",
+      "status": "frozen R1",
+      "route": "truth"
+    },
+    {
+      "surface": "test_truth",
+      "authority": "test_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/loom-goal-implement-admission-hard-gate-v200/tests.md",
+      "status": "frozen R1",
+      "route": "truth"
+    },
+    {
+      "surface": "suite",
+      "authority": "test_truth",
+      "canonical_artifact": "tests/test_v169_goal_implement_admission_hard_gate.py",
+      "status": "pytest ship-line",
+      "route": "qa"
+    },
+    {
+      "surface": "release_note",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/release/readiness-v2.0.0-goal-admit-ship.md",
+      "status": "NO-GO version / CODE READY line",
+      "route": "release"
+    }
+  ]
+}

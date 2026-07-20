@@ -1,0 +1,208 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-20T12:07:37.309466+00:00",
+  "feature": "beacon-goal-implement-admission-hard-gate-v169",
+  "feature_slug": "beacon-goal-implement-admission-hard-gate-v169",
+  "version": "v1.6.9",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.9/features/beacon-goal-implement-admission-hard-gate-v169/truth.md",
+    "tests": "docs/beacon/v1.6.9/features/beacon-goal-implement-admission-hard-gate-v169/tests.md",
+    "tasks": "docs/beacon/v1.6.9/features/beacon-goal-implement-admission-hard-gate-v169/tasks.md",
+    "evidence": "docs/beacon/v1.6.9/features/beacon-goal-implement-admission-hard-gate-v169/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "b46c44a21e50452e9a14f37fabb80d2ac5c5a794c066f1cee0a4d34cfb736152",
+    "tests": "6fb4d3be892c31777720e96d16e333b7f10feeacf0fb5a5112af90c94cf83370",
+    "tasks": "c8d1f30022321cf04cd2a82f3f4af8aee54f94038305e1f62e205a5a95b98b6d",
+    "evidence": "9abd1dbd5b4351aff22e397517e73d984a27d30f033c49bb43b19bf58b3f62c6"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-goal-implement-admission-hard-gate-v169",
+    "version": "v1.6.9",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "domain_required": "false",
+    "change_reason": "User GO: Scheme A goal implement hard gate via run_workspace_admit + pool + merge-main; dual v1.6.9\\\\v2.0.0",
+    "canonical_refs": {
+      "truth": "docs/beacon/v1.6.9/features/beacon-goal-implement-admission-hard-gate-v169/truth.md",
+      "tests": "docs/beacon/v1.6.9/features/beacon-goal-implement-admission-hard-gate-v169/tests.md",
+      "tasks": "docs/beacon/v1.6.9/features/beacon-goal-implement-admission-hard-gate-v169/tasks.md",
+      "evidence": "docs/beacon/v1.6.9/features/beacon-goal-implement-admission-hard-gate-v169/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "ux_required": "false",
+    "design_deferral": "No product UI for this platform lake"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-GIA-001",
+      "theme": "tick --execute @ implement 无 feature → blocked goal_implement_feature_required",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-GIA-002",
+      "theme": "require=true 路径复用 run_workspace_admit；pass 后才 ralph",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-GIA-003",
+      "theme": "require=false 时 goal_forced_worktree + created/switched",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-GIA-004",
+      "theme": "再次 admit/force → switched + merge 非 conflict",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-GIA-005",
+      "theme": "admit/force fail → 不设置 implement_delegate=ralph",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-GIA-006",
+      "theme": "execution log 含 implement_admission",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-GIA-007",
+      "theme": "双轨 feature 包 v169+v200",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-GIA-008",
+      "theme": "flow.md + gov-branch 登记 goal 硬闸",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-GIA-001",
+      "tc_id": "TC-001",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_goal_implement_admission_hard_gate.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-GIA-002",
+      "tc_id": "TC-002",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_goal_implement_admission_hard_gate.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-GIA-003",
+      "tc_id": "TC-003",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_goal_implement_admission_hard_gate.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-GIA-004",
+      "tc_id": "TC-004",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_goal_implement_admission_hard_gate.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-GIA-005",
+      "tc_id": "TC-005",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_goal_implement_admission_hard_gate.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-GIA-006",
+      "tc_id": "TC-006",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_goal_implement_admission_hard_gate.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-GIA-007",
+      "tc_id": "TC-007",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_goal_implement_admission_hard_gate.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-GIA-008",
+      "tc_id": "TC-008",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_goal_implement_admission_hard_gate.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "ensure_goal_implement_admission",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "tick hard gate",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "docs registration",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "pytest AC-GIA",
+      "status": "checked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "requirement_truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.9/features/beacon-goal-implement-admission-hard-gate-v169/truth.md",
+      "status": "frozen R1",
+      "route": "truth"
+    },
+    {
+      "surface": "test_truth",
+      "authority": "test_truth",
+      "canonical_artifact": "docs/beacon/v1.6.9/features/beacon-goal-implement-admission-hard-gate-v169/tests.md",
+      "status": "frozen R1",
+      "route": "truth"
+    },
+    {
+      "surface": "suite",
+      "authority": "test_truth",
+      "canonical_artifact": "tests/test_v169_goal_implement_admission_hard_gate.py",
+      "status": "pytest ship-line",
+      "route": "qa"
+    },
+    {
+      "surface": "release_note",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.9/release/readiness-v1.6.9-goal-admit-ship.md",
+      "status": "NO-GO version / CODE READY line",
+      "route": "release"
+    }
+  ]
+}

@@ -1,0 +1,163 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-20T12:08:20.080740+00:00",
+  "feature": "loom-plan-goal-deep-integration-v200",
+  "feature_slug": "loom-plan-goal-deep-integration-v200",
+  "version": "v2.0.0",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v2.0.0/features/loom-plan-goal-deep-integration-v200/truth.md",
+    "tests": "docs/beacon/v2.0.0/features/loom-plan-goal-deep-integration-v200/tests.md",
+    "tasks": "docs/beacon/v2.0.0/features/loom-plan-goal-deep-integration-v200/tasks.md",
+    "evidence": "docs/beacon/v2.0.0/features/loom-plan-goal-deep-integration-v200/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "d638ebde22f47f6edaf14c77dc097c5f3617bf27d0e29f3c2a047e63e8214e0e",
+    "tests": "76fbca7467fb55d0f17a3cfb5c917401eadbbf545ed1dcc6c5357b27e055aa40",
+    "tasks": "1b29c08f7a3981b2cd7263b1a9531b573d51e3fdc13b6c458a345110c2fd9403",
+    "evidence": "cc3022654906f62d739e78b47cb1ca4170add0a320a1b1e0c2dde443c8c49d9e"
+  },
+  "truth_frontmatter": {
+    "slug": "loom-plan-goal-deep-integration-v200",
+    "version": "v2.0.0",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "domain_required": "false",
+    "change_reason": "Loom parity of beacon-plan-goal-deep-integration-v169 for dual-track QA/release",
+    "canonical_refs": {
+      "truth": "docs/beacon/v2.0.0/features/loom-plan-goal-deep-integration-v200/truth.md",
+      "tests": "docs/beacon/v2.0.0/features/loom-plan-goal-deep-integration-v200/tests.md",
+      "tasks": "docs/beacon/v2.0.0/features/loom-plan-goal-deep-integration-v200/tasks.md",
+      "evidence": "docs/beacon/v2.0.0/features/loom-plan-goal-deep-integration-v200/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "parity_of": "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md",
+    "ux_required": "false",
+    "design_deferral": "No product UI for this platform lake"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-PA-001",
+      "theme": "artifact schema + deep_want + options + recommended_next",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PA-002",
+      "theme": "plan_progressive_loads 附带 plan_artifact",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PA-003",
+      "theme": "build_stage_plan hoist plan_artifact",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PA-004",
+      "theme": "plan_to_truth_gate soft；missing/incomplete 不 hard-block",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PA-005",
+      "theme": "create_goal_run 顶层 plan_artifact",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-P1-001",
+      "theme": "无关键词 → host_subagent.gate_on false",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-P1-002",
+      "theme": "「子代理」→ gate_on true，不自完成 goal",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-P1-003",
+      "theme": "tick plan→truth 写入 plan_to_truth_hint + stage_trace",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-P2-001",
+      "theme": "两份 checklist 文件存在",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-P2-002",
+      "theme": "design/truth stage references 含 checklist",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-P2-003",
+      "theme": "SKILL 提及 artifact / checklist",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-LOOM-PLA-001",
+      "tc_id": "TC-001",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_plan_artifact_p0p1p2.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Parity package freeze",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Shared runtime",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Contract tests",
+      "status": "checked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "requirement_truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/loom-plan-goal-deep-integration-v200/truth.md",
+      "status": "frozen R1",
+      "route": "truth"
+    },
+    {
+      "surface": "test_truth",
+      "authority": "test_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/loom-plan-goal-deep-integration-v200/tests.md",
+      "status": "frozen R1",
+      "route": "truth"
+    },
+    {
+      "surface": "suite",
+      "authority": "test_truth",
+      "canonical_artifact": "tests/test_v169_plan_artifact_p0p1p2.py",
+      "status": "pytest ship-line",
+      "route": "qa"
+    },
+    {
+      "surface": "release_note",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/release/readiness-v2.0.0-goal-admit-ship.md",
+      "status": "NO-GO version / CODE READY line",
+      "route": "release"
+    }
+  ]
+}

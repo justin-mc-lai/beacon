@@ -1,43 +1,38 @@
 {
   "schema_version": "1.0",
-  "feature": "loom-git-worktree-implement-harness",
-  "feature_slug": "loom-git-worktree-implement-harness",
+  "feature": "loom-goal-implement-admission-hard-gate-v200",
+  "feature_slug": "loom-goal-implement-admission-hard-gate-v200",
   "version": "v2.0.0",
   "status": "pass",
   "blocked": false,
   "reason_code": "",
-  "generated_at": "2026-07-20T01:41:17.436193+00:00",
-  "package_dir": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness",
+  "generated_at": "2026-07-20T12:08:44.485822+00:00",
+  "package_dir": "docs/beacon/v2.0.0/features/loom-goal-implement-admission-hard-gate-v200",
   "truth_frontmatter": {
-    "slug": "loom-git-worktree-implement-harness",
+    "slug": "loom-goal-implement-admission-hard-gate-v200",
     "version": "v2.0.0",
     "status": "frozen",
-    "revision_id": "R2",
+    "revision_id": "R1",
     "language": "zh",
-    "change_reason": "R2 - branch ref hierarchy hard gate: leaf-only lanes; admit fail never implements on main; user GO 1A/2A/3A 2026-07-20",
+    "domain_required": "false",
+    "change_reason": "Loom parity of beacon-goal-implement-admission-hard-gate-v169 for dual-track QA/release",
     "canonical_refs": {
-      "truth": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
-      "tests": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tests.md",
-      "tasks": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tasks.md",
-      "evidence": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/evidence.md"
+      "truth": "docs/beacon/v2.0.0/features/loom-goal-implement-admission-hard-gate-v200/truth.md",
+      "tests": "docs/beacon/v2.0.0/features/loom-goal-implement-admission-hard-gate-v200/tests.md",
+      "tasks": "docs/beacon/v2.0.0/features/loom-goal-implement-admission-hard-gate-v200/tasks.md",
+      "evidence": "docs/beacon/v2.0.0/features/loom-goal-implement-admission-hard-gate-v200/evidence.md"
     },
     "parser_contract": "beacon-feature-package-v2",
     "truth_source_model": "feature_package_authoritative",
     "truth_map_contract": "beacon-truth-map-v1",
-    "program_ref": "docs/beacon/v2.0.0/programs/loom-kernel-closure-w1w5-v200/feature-graph.json",
-    "parent_kernel": "beacon-v2-rust-kernel-redesign",
-    "upstream_acs": "[\"AC-099\", \"AC-100\"]",
-    "wave": "W1",
-    "priority": "P0",
+    "parity_of": "docs/beacon/v1.6.9/features/beacon-goal-implement-admission-hard-gate-v169/truth.md",
     "ux_required": "false",
-    "design_deferral": "kernel/CLI; no product marketing UI",
-    "display_name": "Loom Git Worktree + Implement Harness",
-    "brand": "Loom"
+    "design_deferral": "No product UI for this platform lake"
   },
-  "ac_count": 5,
-  "test_count": 9,
-  "checkbox_count": 7,
-  "evidence_row_count": 6,
+  "ac_count": 8,
+  "test_count": 1,
+  "checkbox_count": 3,
+  "evidence_row_count": 4,
   "gate_authority": "canonical_surfaces_preserved",
   "checkbox_gate_bypass": false,
   "evidence_gate_truth": false,
@@ -45,7 +40,7 @@
     {
       "severity": "info",
       "code": "truth_human_l0_ok",
-      "path": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+      "path": "docs/beacon/v2.0.0/features/loom-goal-implement-admission-hard-gate-v200/truth.md",
       "language": "zh",
       "l0_headings": [
         "## 人话"
@@ -60,16 +55,16 @@
   "truth_authority": "markdown_feature_package",
   "json_authority": false,
   "source_paths": {
-    "truth": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
-    "tests": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tests.md",
-    "tasks": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tasks.md",
-    "evidence": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/evidence.md"
+    "truth": "docs/beacon/v2.0.0/features/loom-goal-implement-admission-hard-gate-v200/truth.md",
+    "tests": "docs/beacon/v2.0.0/features/loom-goal-implement-admission-hard-gate-v200/tests.md",
+    "tasks": "docs/beacon/v2.0.0/features/loom-goal-implement-admission-hard-gate-v200/tasks.md",
+    "evidence": "docs/beacon/v2.0.0/features/loom-goal-implement-admission-hard-gate-v200/evidence.md"
   },
   "source_hashes": {
-    "truth": "750c2a2e502d5d34543f67b5e3331a8c7bf15914cd1c4596496c90db42840656",
-    "tests": "0a477cae20cdae59b2e2f0b785622cad636f0821c817dc03a71e1d3c7159fa00",
-    "tasks": "0025641e75de07234c37c40a1df916069914dc877227b807de8dce5d46694820",
-    "evidence": "22cf47edb29303750cb4cd3a26fd28acbac3225c714e1f7b60f4810470b7732b"
+    "truth": "cfd9850b9b8fca8f9bd59d4f5f618a669ccc882e93b47b88dbb09312e4233014",
+    "tests": "5f5dac657f8a6688348ab43caed6edc9ff042f970621504d4e3a8c49b2412c26",
+    "tasks": "a5e71ea9af8f24fd22708eebb2a7557fd568281b43d05666cf29460da0b23b38",
+    "evidence": "beedbd77ccc2dc354b6c0b448a49aac204e2ea1b2363f83ba001b9d08dfe260d"
   },
   "runtime_json_requires_markdown_twin": false
 }

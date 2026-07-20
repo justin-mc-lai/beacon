@@ -4,8 +4,23 @@ version: v1.6.9
 status: frozen
 revision_id: R1
 language: zh
+domain_required: false
 change_reason: "User GO: plan-subintent-router for review/brainstorm/source intent stability"
+canonical_refs:
+  truth: docs/beacon/v1.6.9/features/beacon-plan-subintent-router-v169/truth.md
+  tests: docs/beacon/v1.6.9/features/beacon-plan-subintent-router-v169/tests.md
+  tasks: docs/beacon/v1.6.9/features/beacon-plan-subintent-router-v169/tasks.md
+  evidence: docs/beacon/v1.6.9/features/beacon-plan-subintent-router-v169/evidence.md
+parser_contract: beacon-feature-package-v2
+truth_source_model: feature_package_authoritative
+truth_map_contract: beacon-truth-map-v1
+ux_required: false
+design_deferral: "No product UI for this platform lake"
 ---
+
+## 人话
+
+plan 阶段按强意图路由到 review/brainstorm/source/program/friction，不写 truth。
 
 # Requirement Truth: Plan Subintent Router
 
@@ -24,9 +39,8 @@ plan 公开面下按强用户意图选择 primary progressive skill；全量 loa
 | UD-PSI-005 | beacon-plan/loom-plan description is trigger surface |
 | UD-PSI-006 | Rust plan loads include full progressive set |
 
-## AC
-
-| ID | Description |
+## Acceptance Criteria
+| AC ID | Description |
 |----|-------------|
 | AC-PSI-001 | review intent → pln-review |
 | AC-PSI-002 | brainstorm → pln-brainstorm |

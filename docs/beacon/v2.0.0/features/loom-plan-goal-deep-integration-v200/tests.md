@@ -1,5 +1,19 @@
-# Tests
+---
+slug: loom-plan-goal-deep-integration-v200
+version: v2.0.0
+status: frozen
+revision_id: R1
+truth_ref: docs/beacon/v2.0.0/features/loom-plan-goal-deep-integration-v200/truth.md
+---
 
-- `tests/test_v169_plan_artifact_p0p1p2.py`
-- regression: `tests/test_v169_plan_subintent_router.py`
-- regression: `tests/test_v168_host_subagent_keyword.py`
+# Tests: loom-plan-goal-deep-integration-v200
+
+## Coverage Matrix
+
+| AC ID | TC ID | Layer | Command | Assertion |
+|-------|-------|-------|---------|-----------|
+| AC-LOOM-PLA-001 | TC-001 | unit | `python3 -m pytest tests/test_v169_plan_artifact_p0p1p2.py -q` | AC row covered by ship suite |
+
+## Primary suite
+
+`tests/test_v169_plan_artifact_p0p1p2.py`

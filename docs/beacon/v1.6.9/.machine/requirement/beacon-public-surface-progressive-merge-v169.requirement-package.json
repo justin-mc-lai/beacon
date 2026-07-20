@@ -1,0 +1,221 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-20T12:07:16.080372+00:00",
+  "feature": "beacon-public-surface-progressive-merge-v169",
+  "feature_slug": "beacon-public-surface-progressive-merge-v169",
+  "version": "v1.6.9",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.9/features/beacon-public-surface-progressive-merge-v169/truth.md",
+    "tests": "docs/beacon/v1.6.9/features/beacon-public-surface-progressive-merge-v169/tests.md",
+    "tasks": "docs/beacon/v1.6.9/features/beacon-public-surface-progressive-merge-v169/tasks.md",
+    "evidence": "docs/beacon/v1.6.9/features/beacon-public-surface-progressive-merge-v169/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "5096ddb6bcf6fadd4faa026789b64538cf833d9bb12f5973940e1a9c5bec5b71",
+    "tests": "3b9ead47e82855310758adb8a5dd560298b3f5e5a1eeddf5359e1877c9e816a9",
+    "tasks": "b8f81f73a1be1366d3b3669a8de48ae6c848b07ed01f50fada97636a15d41d0b",
+    "evidence": "8c4550194a6db83e1597a79256e0a9a680c5a033a856b31d2d3aa79105752190"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-public-surface-progressive-merge-v169",
+    "version": "v1.6.9",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "domain_required": "false",
+    "change_reason": "User confirmed implement lake: progressive map + aggregate shells + self-heal + examples + whitelist",
+    "canonical_refs": {
+      "truth": "docs/beacon/v1.6.9/features/beacon-public-surface-progressive-merge-v169/truth.md",
+      "tests": "docs/beacon/v1.6.9/features/beacon-public-surface-progressive-merge-v169/tests.md",
+      "tasks": "docs/beacon/v1.6.9/features/beacon-public-surface-progressive-merge-v169/tasks.md",
+      "evidence": "docs/beacon/v1.6.9/features/beacon-public-surface-progressive-merge-v169/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "ux_required": "false",
+    "design_deferral": "No product UI for this platform lake"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-PM-001",
+      "theme": "progressive map JSON exists and lists loads for all 6 harness + goal",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PM-002",
+      "theme": "progressive_skills_for_stage(plan",
+      "description": "truth"
+    },
+    {
+      "ac_id": "AC-PM-003",
+      "theme": "aggregate SKILL.md exists for beacon and loom 1+6 shells",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PM-004",
+      "theme": "goal create payload includes self_heal pre/mid/post",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PM-005",
+      "theme": "host_visible whitelist length 7 per brand",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PM-006",
+      "theme": "examples surface-*-30s exist for goal+6+selfheal",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PM-007",
+      "theme": "openai.yaml present on aggregate shells",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PM-008",
+      "theme": "install scripts default whitelist (INSTALL_ALL=1 opt-out)",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PM-009",
+      "theme": "capability non-regression: each harness progressive_loads non-empty",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-PM-001",
+      "tc_id": "TC-001",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_public_surface_progressive_merge.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PM-002",
+      "tc_id": "TC-002",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_public_surface_progressive_merge.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PM-003",
+      "tc_id": "TC-003",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_public_surface_progressive_merge.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PM-004",
+      "tc_id": "TC-004",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_public_surface_progressive_merge.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PM-005",
+      "tc_id": "TC-005",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_public_surface_progressive_merge.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PM-006",
+      "tc_id": "TC-006",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_public_surface_progressive_merge.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PM-007",
+      "tc_id": "TC-007",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_public_surface_progressive_merge.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PM-008",
+      "tc_id": "TC-008",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_public_surface_progressive_merge.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PM-009",
+      "tc_id": "TC-009",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_public_surface_progressive_merge.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Progressive map JSON",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Aggregate shells",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Contract tests",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Dual loom parity",
+      "status": "checked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "requirement_truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.9/features/beacon-public-surface-progressive-merge-v169/truth.md",
+      "status": "frozen R1",
+      "route": "truth"
+    },
+    {
+      "surface": "test_truth",
+      "authority": "test_truth",
+      "canonical_artifact": "docs/beacon/v1.6.9/features/beacon-public-surface-progressive-merge-v169/tests.md",
+      "status": "frozen R1",
+      "route": "truth"
+    },
+    {
+      "surface": "suite",
+      "authority": "test_truth",
+      "canonical_artifact": "tests/test_v169_public_surface_progressive_merge.py",
+      "status": "pytest ship-line",
+      "route": "qa"
+    },
+    {
+      "surface": "release_note",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.9/release/readiness-v1.6.9-goal-admit-ship.md",
+      "status": "NO-GO version / CODE READY line",
+      "route": "release"
+    }
+  ]
+}

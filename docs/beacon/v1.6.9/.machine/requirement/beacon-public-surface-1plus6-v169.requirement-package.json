@@ -1,0 +1,221 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-20T12:07:08.995220+00:00",
+  "feature": "beacon-public-surface-1plus6-v169",
+  "feature_slug": "beacon-public-surface-1plus6-v169",
+  "version": "v1.6.9",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.9/features/beacon-public-surface-1plus6-v169/truth.md",
+    "tests": "docs/beacon/v1.6.9/features/beacon-public-surface-1plus6-v169/tests.md",
+    "tasks": "docs/beacon/v1.6.9/features/beacon-public-surface-1plus6-v169/tasks.md",
+    "evidence": "docs/beacon/v1.6.9/features/beacon-public-surface-1plus6-v169/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "6c6ef11484685ba6f6d6f42fd0c1eadaad6b862d93dfb02313a981bf33339396",
+    "tests": "58561ee9761884c4aa0a6ff17e45058faa5477792de84103e087e6f344ba226e",
+    "tasks": "c8521301caa149db997b59987e8ecc7265d0791de9b4277606fc84a9d8b943ee",
+    "evidence": "26764b59f07ac202424120d1baf6f4627e036b936634bad83e3f5e760206d8d9"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-public-surface-1plus6-v169",
+    "version": "v1.6.9",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "domain_required": "false",
+    "change_reason": "User confirmed Scheme A; freeze 1+6 public surface synonym table for v1.6.9\\v2.0.0 parity",
+    "canonical_refs": {
+      "truth": "docs/beacon/v1.6.9/features/beacon-public-surface-1plus6-v169/truth.md",
+      "tests": "docs/beacon/v1.6.9/features/beacon-public-surface-1plus6-v169/tests.md",
+      "tasks": "docs/beacon/v1.6.9/features/beacon-public-surface-1plus6-v169/tasks.md",
+      "evidence": "docs/beacon/v1.6.9/features/beacon-public-surface-1plus6-v169/evidence.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "program_ref": "docs/beacon/v1.6.9/programs/beacon-public-surface-1plus6-v169/feature-graph.json",
+    "ux_required": "false",
+    "design_deferral": "Public surface naming contract; no product UI",
+    "shared_synonym_table": "skills/beacon/references/public-surface-1plus6.md",
+    "parity_with": "docs/beacon/v2.0.0/features/loom-public-surface-1plus6-v200/truth.md"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-PS-001",
+      "theme": "synonym table file exists and lists goal + exactly 6 harness rows",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PS-002",
+      "theme": "Rust PUBLIC_ABILITIES length == 6 and maps 1:1 to table Rust column",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PS-003",
+      "theme": "goal is documented as transversal; not a 7th PUBLIC_ABILITY",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PS-004",
+      "theme": "v1.6.9 and v2.0.0 packages both freeze same table content (brand columns differ only by prefix)",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PS-005",
+      "theme": "INTERNAL_DENYLIST entries are not listed as public harness ids",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PS-006",
+      "theme": "default host-visible whitelist text present (goal+6 per brand)",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PS-007",
+      "theme": "illegal: seventh public harness skill",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PS-008",
+      "theme": "install docs/scripts may reference whitelist (implement phase)",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-PS-001",
+      "tc_id": "TC-001",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_public_surface_1plus6.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PS-002",
+      "tc_id": "TC-002",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_public_surface_1plus6.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PS-003",
+      "tc_id": "TC-003",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_public_surface_1plus6.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PS-004",
+      "tc_id": "TC-004",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_public_surface_1plus6.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PS-005",
+      "tc_id": "TC-005",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_public_surface_1plus6.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PS-006",
+      "tc_id": "TC-006",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_public_surface_1plus6.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PS-007",
+      "tc_id": "TC-007",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_public_surface_1plus6.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PS-008",
+      "tc_id": "TC-008",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v169_public_surface_1plus6.py -q`",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Freeze shared synonym table reference",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Freeze v1.6.9 feature package",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Freeze v2.0.0 Loom parity package",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Contract tests",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Implement phase: host-visible install whitelist (follow-up)",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Implement phase: aggregate skill shells beacon-plan/… (follow-up)",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "requirement_truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.9/features/beacon-public-surface-1plus6-v169/truth.md",
+      "status": "frozen R1",
+      "route": "truth"
+    },
+    {
+      "surface": "test_truth",
+      "authority": "test_truth",
+      "canonical_artifact": "docs/beacon/v1.6.9/features/beacon-public-surface-1plus6-v169/tests.md",
+      "status": "frozen R1",
+      "route": "truth"
+    },
+    {
+      "surface": "suite",
+      "authority": "test_truth",
+      "canonical_artifact": "tests/test_v169_public_surface_1plus6.py",
+      "status": "pytest ship-line",
+      "route": "qa"
+    },
+    {
+      "surface": "release_note",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.9/release/readiness-v1.6.9-goal-admit-ship.md",
+      "status": "NO-GO version / CODE READY line",
+      "route": "release"
+    }
+  ]
+}

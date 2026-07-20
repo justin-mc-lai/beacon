@@ -1,8 +1,13 @@
-# Tasks
+---
+slug: loom-plan-goal-deep-integration-v200
+version: v2.0.0
+status: frozen
+revision_id: R1
+truth_ref: docs/beacon/v2.0.0/features/loom-plan-goal-deep-integration-v200/truth.md
+---
 
-- [x] P0 plan_artifact module + attach
-- [x] P0 create_goal_run hoist + AC tests
-- [x] P1 host_subagent on create
-- [x] P1 stage_trace + plan_to_truth_hint on tick
-- [x] P2 checklists + SKILL + stage refs
-- [x] dual freeze loom v2.0.0 parity package
+# Tasks: loom-plan-goal-deep-integration-v200
+
+- [x] TASK-001 Parity package freeze
+- [x] TASK-002 Shared runtime
+- [x] TASK-003 Contract tests
