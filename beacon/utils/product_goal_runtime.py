@@ -228,10 +228,20 @@ def progressive_skills_for_stage(stage: str) -> list[str]:
 
 
 def progressive_worktree_refs(stage: str) -> dict[str, Any]:
-    """Always-on git worktree norms for progressive skill load (AC-WT-SKILL)."""
+    """Always-on git worktree norms for progressive skill load (AC-WT-SKILL).
+
+    ``goal`` is a facade entry (not a lifecycle stage). Callers that load
+    ``beacon-goal`` should still request refs via stage="goal".
+    """
     st = str(stage or "").strip().lower()
-    if st not in WORKTREE_FLOW_STAGES and st not in ("implement", "qa", "release", "truth", "plan", "goal"):
-        return {"schema": "git-worktree-execution-flow.v1", "required": False, "references": [], "examples": []}
+    if st not in WORKTREE_FLOW_STAGES:
+        return {
+            "schema": "git-worktree-execution-flow.v1",
+            "required": False,
+            "references": [],
+            "examples": [],
+            "bulk_history_forbidden": True,
+        }
     refs = [WORKTREE_FLOW_REF]
     examples = [WORKTREE_EXAMPLE_REF] if st in ("goal", "implement", "discover", "loop") else []
     return {
@@ -264,26 +274,17 @@ def build_stage_plan(
             "loaded": False,
             **({"ux_gated": True} if stage == "design" else {}),
         }
-        if stage in WORKTREE_FLOW_STAGES or stage in ("implement", "qa", "release", "truth", "plan"):
-            item["references"] = [WORKTREE_FLOW_REF]
-            if stage in ("implement", "goal", "discover"):
-                item["examples"] = [WORKTREE_EXAMPLE_REF]
+        # Lifecycle stages mount shared worktree norms (goal facade is separate).
+        wt = progressive_worktree_refs(stage if stage != "design" else "plan")
+        if wt.get("required"):
+            item["references"] = list(wt.get("references") or [])
+            if stage == "implement":
+                item["examples"] = list(wt.get("examples") or [WORKTREE_EXAMPLE_REF])
             item["worktree_flow"] = "git-worktree-execution-flow.v1"
         stages.append(item)
-    # Facade goal entry always listed for progressive consumers
-    stages.insert(
-        0,
-        {
-            "stage": "goal",
-            "skills": progressive_skills_for_stage("goal") or [PUBLIC_ENTRY],
-            "status": "planned",
-            "loaded": False,
-            "references": [WORKTREE_FLOW_REF],
-            "examples": [WORKTREE_EXAMPLE_REF],
-            "worktree_flow": "git-worktree-execution-flow.v1",
-            "public_entry": True,
-        },
-    )
+    # Public facade metadata for consumers (not a runnable lifecycle stage).
+    stages[0]["public_entry_skill"] = PUBLIC_ENTRY
+    stages[0]["public_entry_worktree_refs"] = progressive_worktree_refs("goal")
     if detect_parallel_intent(utterance) or (lakes and len(lakes) > 1):
         for item in stages:
             if item["stage"] == "implement":

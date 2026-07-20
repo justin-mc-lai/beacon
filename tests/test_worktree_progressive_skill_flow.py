@@ -40,9 +40,11 @@ def test_tc_wt_004_progressive_refs_python() -> None:
         assert any("git-worktree-execution-flow" in r for r in payload["references"])
     plan = build_stage_plan(utterance="implement frozen lake")
     stages = {s["stage"]: s for s in plan}
-    assert "goal" in stages
-    assert any("git-worktree-execution-flow" in r for r in stages["goal"].get("references", []))
-    impl = stages.get("implement") or next(s for s in plan if s["stage"] == "implement")
+    assert "goal" not in stages  # goal is facade, not lifecycle stage
+    assert stages["plan"].get("public_entry_skill") == "beacon-goal"
+    entry_refs = stages["plan"].get("public_entry_worktree_refs") or {}
+    assert any("git-worktree-execution-flow" in r for r in entry_refs.get("references", []))
+    impl = stages["implement"]
     assert any("git-worktree-execution-flow" in r for r in impl.get("references", []))
 
 
