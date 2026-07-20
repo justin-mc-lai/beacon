@@ -2105,11 +2105,12 @@ def setup_agent_surface(
         })
     for skill_id in stale_ids:
         stale_path = target.skills_root / skill_id
-        if not stale_path.exists():
+        # Symlinks (common for host flat installs) must use unlink, not rmtree.
+        if not (stale_path.exists() or stale_path.is_symlink()):
             continue
         removed.append(str(stale_path))
         if not dry_run:
-            shutil.rmtree(stale_path)
+            _remove_skill_path(stale_path)
 
     installed_state: list[dict[str, Any]] = []
     for source_skill in source_skills:
