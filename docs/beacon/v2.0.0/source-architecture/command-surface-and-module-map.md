@@ -37,12 +37,14 @@ The command surface is registered through:
 | `friction-intake` | `beacon/commands/friction_intake.py` |
 | `gate` | `beacon/commands/gate.py` |
 | `git` | `beacon/commands/implement/git.py` |
+| `goal` | `beacon/commands/goal.py` |
 | `help` | `beacon/commands/help.py` |
 | `hooks` | `beacon/commands/hooks.py` |
 | `init` | `beacon/commands/init.py` |
 | `jtbd` | `beacon/commands/jtbd.py` |
 | `kano` | `beacon/commands/kano.py` |
 | `lighthouse` | `beacon/commands/lighthouse.py` |
+| `loop-goal` | `beacon/commands/loop_goal.py` |
 | `manifest` | `beacon/commands/manifest.py` |
 | `memory-friction-evolution` | `beacon/commands/memory_friction_evolution.py` |
 | `moscow` | `beacon/commands/moscow.py` |

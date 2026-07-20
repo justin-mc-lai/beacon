@@ -7,7 +7,7 @@
 
 ## Machine Secondary Surface
 
-- `docs/beacon/archive/v2.0.0/.machine/execution/`
+- `docs/beacon/v2.0.0/.machine/execution/`
 
 ## Notes
 

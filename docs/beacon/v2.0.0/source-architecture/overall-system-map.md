@@ -17,9 +17,9 @@ beacon/main.py
 
 ## Current Source Counts
 
-- command modules: `73`
-- utility modules: `155`
-- adapter modules: `4`
+- command modules: `75`
+- utility modules: `204`
+- adapter modules: `5`
 
 ## Major Code Roots
 
