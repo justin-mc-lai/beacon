@@ -113,10 +113,16 @@ def test_ac_pm_007_openai_yaml() -> None:
 def test_ac_pm_008_install_whitelist() -> None:
     claude = (ROOT / "scripts/install_claude_skills.sh").read_text(encoding="utf-8")
     loom = (ROOT / "scripts/install-loom-skills.sh").read_text(encoding="utf-8")
+    agents = (ROOT / "scripts/install_all_agents.sh").read_text(encoding="utf-8")
+    beacon_install = (ROOT / "scripts/beacon-install.sh").read_text(encoding="utf-8")
     assert "WHITELIST_BEACON" in claude or "beacon-plan" in claude
     assert "INSTALL_ALL" in claude
     assert "WHITELIST_LOOM" in loom
     assert "INSTALL_ALL" in loom
+    # Scheme A: no default package-root install for Codex/agents
+    assert "install_global_agents_beacon_skills" in agents
+    assert "package root" in beacon_install.lower() or "Scheme A" in beacon_install
+    assert "WHITELIST_BEACON" in beacon_install
 
 
 def test_ac_pm_009_non_empty_loads() -> None:

@@ -21,6 +21,8 @@ def _stub_heavy(payload_status: str = "PASS") -> dict:
 
     patchers = [
         patch.object(doc, "run_legacy_beacon_skills_cleanup", return_value=type("R", (), {"payload": {"result": {}}})()),
+        patch.object(asurf, "install_global_agents_beacon_skills", return_value={"status": "pass"}),
+        patch.object(asurf, "verify_global_agents_beacon_skills", return_value={"status": "pass"}),
         patch.object(asurf, "install_global_claude_beacon_skills", return_value={"status": "pass"}),
         patch.object(asurf, "verify_global_claude_beacon_skills", return_value={"status": "pass"}),
         patch.object(doc, "run_agent_surface_setup", return_value=type("R", (), {"exit_code": 0, "payload": {"status": payload_status, "result": {}}})()),
@@ -73,8 +75,9 @@ def test_drift_blocks_hook(tmp_path: Path) -> None:
     """When an agent verify fails (drift), hook blocks with verify_failed reason."""
     import beacon.utils.doctor_orchestrator as doc
     state = _stub_heavy()
-    # override verify to fail for cursor (simulate drift)
-    state["patchers"][4].stop()
+    # override agent surface verify to fail (index: after cleanup + 4 global install/verify stubs)
+    # 0 cleanup, 1-2 agents install/verify, 3-4 claude install/verify, 5 setup, 6 verify
+    state["patchers"][6].stop()
     fail_verify = type("R", (), {"exit_code": 1, "payload": {"status": "BLOCKED", "result": {"checks": [{"name": "host_visible_skills_drift", "status": "fail"}]}}})()
     with patch.object(doc, "run_agent_surface_verify", return_value=fail_verify):
         try:
@@ -82,7 +85,7 @@ def test_drift_blocks_hook(tmp_path: Path) -> None:
                 tmp_path, version="v1.6.3", feature="demo"
             )
         finally:
-            for p in state["patchers"][:4] + state["patchers"][5:]:
+            for p in state["patchers"][:6] + state["patchers"][7:]:
                 p.stop()
     assert payload.get("blocked") is True
     reasons = payload.get("reason_codes", [])
@@ -104,6 +107,8 @@ def test_claude_global_preserved(tmp_path: Path) -> None:
             p.stop()
     # payload should carry claude global install/verify evidence
     src = Path(project_hooks_mod.__file__).read_text(encoding="utf-8")
+    assert "install_global_agents_beacon_skills" in src
+    assert "verify_global_agents_beacon_skills" in src
     assert "install_global_claude_beacon_skills" in src
     assert "verify_global_claude_beacon_skills" in src
 

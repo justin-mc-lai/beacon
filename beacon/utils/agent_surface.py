@@ -925,7 +925,15 @@ def install_global_claude_beacon_skills(
     dry_run: bool = False,
     home: Path | None = None,
 ) -> dict[str, Any]:
-    """Install flat ~/.claude/skills/beacon-* symlinks required for Claude Code discovery."""
+    """Install flat ~/.claude/skills/beacon-* (Scheme A 1+6 by default).
+
+    Scheme A (default): only host-visible whitelist flat symlinks.
+    Does NOT link a package root `beacon` (repo or skills/beacon tree), because
+    hosts that recurse into package trees would re-expose progressive/internal
+    skills (gov/pln/gen/eval).
+
+    Set BEACON_INSTALL_ALL=1 to restore legacy package root + full sub-skill set.
+    """
     skills_source = packaged_beacon_skill_root()
     default_repo_root = skills_source.parent.parent.resolve()
     repo_root = default_repo_root
@@ -933,35 +941,53 @@ def install_global_claude_beacon_skills(
         candidate = Path(beacon_root).resolve()
         if (candidate / "skills" / "beacon").exists():
             repo_root = candidate
+            skills_source = (candidate / "skills" / "beacon").resolve()
     claude_dir = global_claude_skills_root(home)
     source_skills = list_host_visible_skills(skills_source)
+    install_all = _scheme_a_host_visible_whitelist("beacon") is None
     installed: list[dict[str, Any]] = []
     skipped: list[dict[str, Any]] = []
+    removed_package_roots: list[str] = []
 
     if not dry_run:
         claude_dir.mkdir(parents=True, exist_ok=True)
 
     canonical = claude_dir / "beacon"
-    canonical_action = "unchanged"
-    if not canonical.exists():
-        canonical_action = "planned" if dry_run else "created"
-        if not dry_run:
-            if canonical.is_symlink() or canonical.exists():
+    if install_all:
+        canonical_action = "unchanged"
+        if not canonical.exists():
+            canonical_action = "planned" if dry_run else "created"
+            if not dry_run:
+                if canonical.is_symlink() or canonical.exists():
+                    _remove_skill_path(canonical)
+                canonical.symlink_to(repo_root)
+        elif canonical.is_symlink() and canonical.resolve() != repo_root.resolve():
+            canonical_action = "planned" if dry_run else "updated"
+            if not dry_run:
+                canonical.unlink()
+                canonical.symlink_to(repo_root)
+        installed.append(
+            {
+                "id": "beacon",
+                "path": str(canonical),
+                "target": str(repo_root),
+                "action": canonical_action,
+            }
+        )
+    else:
+        # Scheme A: drop package root that recursively exposes nested SKILL.md
+        if canonical.exists() or canonical.is_symlink():
+            removed_package_roots.append(str(canonical))
+            if not dry_run:
                 _remove_skill_path(canonical)
-            canonical.symlink_to(repo_root)
-    elif canonical.is_symlink() and canonical.resolve() != repo_root.resolve():
-        canonical_action = "planned" if dry_run else "updated"
-        if not dry_run:
-            canonical.unlink()
-            canonical.symlink_to(repo_root)
-    installed.append(
-        {
-            "id": "beacon",
-            "path": str(canonical),
-            "target": str(repo_root),
-            "action": canonical_action,
-        }
-    )
+            installed.append(
+                {
+                    "id": "beacon",
+                    "path": str(canonical),
+                    "target": "",
+                    "action": "removed_package_root",
+                }
+            )
 
     for source_skill in source_skills:
         skill_id = source_skill.name
@@ -994,8 +1020,10 @@ def install_global_claude_beacon_skills(
         "skills_root": str(claude_dir),
         "repo_root": str(repo_root),
         "source_root": str(skills_source),
+        "scheme_a": not install_all,
         "installed": installed,
         "skipped": skipped,
+        "removed_package_roots": removed_package_roots,
         "installed_count": len(installed),
         "skipped_count": len(skipped),
         "dry_run": dry_run,
@@ -1008,13 +1036,21 @@ def verify_global_claude_beacon_skills(*, home: Path | None = None) -> dict[str,
     repo_root = skills_source.parent.parent.resolve()
     claude_dir = global_claude_skills_root(home)
     expected_ids = {item.name for item in list_host_visible_skills(skills_source)}
+    install_all = _scheme_a_host_visible_whitelist("beacon") is None
     missing: list[str] = []
     wrong_target: list[dict[str, str]] = []
+    leak_package_roots: list[str] = []
 
     canonical = claude_dir / "beacon"
-    canonical_ok = canonical.is_symlink() and canonical.resolve() == repo_root
-    if not canonical_ok:
-        missing.append("beacon")
+    if install_all:
+        canonical_ok = canonical.is_symlink() and canonical.resolve() == repo_root
+        if not canonical_ok:
+            missing.append("beacon")
+    else:
+        # Scheme A: package root is a discovery leak if present
+        if canonical.exists() or canonical.is_symlink():
+            leak_package_roots.append(str(canonical))
+        canonical_ok = not leak_package_roots
 
     for skill_id in sorted(expected_ids):
         link = claude_dir / skill_id
@@ -1036,10 +1072,167 @@ def verify_global_claude_beacon_skills(*, home: Path | None = None) -> dict[str,
     return {
         "status": status,
         "ok": status == "pass",
+        "scheme_a": not install_all,
         "skills_root": str(claude_dir),
-        "expected_count": len(expected_ids) + 1,
+        "expected_count": len(expected_ids) + (1 if install_all else 0),
         "missing": missing,
         "wrong_target": wrong_target,
+        "leak_package_roots": leak_package_roots,
+    }
+
+
+def global_agents_skills_root(home: Path | None = None) -> Path:
+    """Codex/agents global skill discovery root (~/.agents/skills)."""
+    return (home or Path.home()).expanduser() / ".agents" / "skills"
+
+
+def install_global_agents_beacon_skills(
+    *,
+    beacon_root: Path | str | None = None,
+    dry_run: bool = False,
+    home: Path | None = None,
+    brands: tuple[str, ...] = ("beacon", "loom"),
+) -> dict[str, Any]:
+    """Install flat ~/.agents/skills/{beacon,loom}-* for Codex discovery (Scheme A 1+6).
+
+    Removes package-level ~/.agents/skills/beacon and ~/.agents/skills/loom which
+    recursively expose progressive/internal skills to Codex skill index.
+    """
+    home_base = (home or Path.home()).expanduser()
+    agents_dir = global_agents_skills_root(home_base)
+    codex_dir = home_base / ".codex" / "skills"
+
+    if beacon_root is not None:
+        repo_root = Path(beacon_root).resolve()
+    else:
+        repo_root = packaged_beacon_skill_root().parent.parent.resolve()
+
+    install_all = _scheme_a_host_visible_whitelist("beacon") is None
+    installed: list[dict[str, Any]] = []
+    removed: list[dict[str, str]] = []
+    skipped: list[dict[str, Any]] = []
+
+    if not dry_run:
+        agents_dir.mkdir(parents=True, exist_ok=True)
+
+    # Drop codex-local package copies (unsupported / duplicate discovery)
+    for stale in (codex_dir / "beacon",):
+        if stale.exists() or stale.is_symlink():
+            removed.append({"path": str(stale), "kind": "codex_duplicate_package"})
+            if not dry_run:
+                _remove_skill_path(stale)
+
+    for brand in brands:
+        source_root = (repo_root / "skills" / brand).resolve()
+        if not source_root.is_dir():
+            skipped.append({"brand": brand, "reason": "missing_skills_source", "path": str(source_root)})
+            continue
+        package_link = agents_dir / brand
+        if install_all:
+            action = "unchanged"
+            if not package_link.exists():
+                action = "planned" if dry_run else "created"
+            elif package_link.is_symlink() and package_link.resolve() != source_root:
+                action = "planned" if dry_run else "updated"
+            if action != "unchanged" and not dry_run:
+                if package_link.exists() or package_link.is_symlink():
+                    _remove_skill_path(package_link)
+                package_link.symlink_to(source_root)
+            installed.append({"id": brand, "path": str(package_link), "target": str(source_root), "action": action})
+            # full nested install via package only when INSTALL_ALL
+            continue
+
+        # Scheme A: remove package root, install flat whitelist only
+        if package_link.exists() or package_link.is_symlink():
+            removed.append({"path": str(package_link), "kind": "package_root_leak"})
+            if not dry_run:
+                _remove_skill_path(package_link)
+        for skill_dir in list_host_visible_skills(source_root):
+            skill_id = skill_dir.name
+            destination = agents_dir / skill_id
+            source_path = skill_dir.resolve()
+            action = "unchanged"
+            if not destination.exists():
+                action = "planned" if dry_run else "created"
+            elif destination.is_symlink() and destination.resolve() != source_path:
+                action = "planned" if dry_run else "updated"
+            elif destination.is_dir() and not destination.is_symlink():
+                skipped.append({"id": skill_id, "path": str(destination), "reason": "unmanaged_existing_directory"})
+                continue
+            if action != "unchanged" and not dry_run:
+                if destination.exists() or destination.is_symlink():
+                    _remove_skill_path(destination)
+                destination.symlink_to(source_path)
+            installed.append({"id": skill_id, "path": str(destination), "target": str(source_path), "action": action})
+
+    return {
+        "skills_root": str(agents_dir),
+        "repo_root": str(repo_root),
+        "scheme_a": not install_all,
+        "installed": installed,
+        "removed": removed,
+        "skipped": skipped,
+        "installed_count": len(installed),
+        "removed_count": len(removed),
+        "dry_run": dry_run,
+    }
+
+
+def verify_global_agents_beacon_skills(
+    *,
+    home: Path | None = None,
+    brands: tuple[str, ...] = ("beacon", "loom"),
+) -> dict[str, Any]:
+    """Verify Codex global flat 1+6 surface; package roots must not exist under Scheme A."""
+    home_base = (home or Path.home()).expanduser()
+    agents_dir = global_agents_skills_root(home_base)
+    repo_root = packaged_beacon_skill_root().parent.parent.resolve()
+    install_all = _scheme_a_host_visible_whitelist("beacon") is None
+    missing: list[str] = []
+    wrong_target: list[dict[str, str]] = []
+    leak_package_roots: list[str] = []
+    expected_ids: list[str] = []
+
+    for brand in brands:
+        source_root = (repo_root / "skills" / brand).resolve()
+        if not source_root.is_dir():
+            continue
+        package_link = agents_dir / brand
+        if install_all:
+            if not package_link.is_symlink() or package_link.resolve() != source_root:
+                missing.append(brand)
+            continue
+        if package_link.exists() or package_link.is_symlink():
+            leak_package_roots.append(str(package_link))
+        for skill_dir in list_host_visible_skills(source_root):
+            skill_id = skill_dir.name
+            expected_ids.append(skill_id)
+            link = agents_dir / skill_id
+            expected_path = skill_dir.resolve()
+            if not link.is_symlink():
+                missing.append(skill_id)
+                continue
+            if link.resolve() != expected_path:
+                wrong_target.append(
+                    {
+                        "id": skill_id,
+                        "path": str(link),
+                        "expected": str(expected_path),
+                        "actual": str(link.resolve()),
+                    }
+                )
+
+    ok = not missing and not wrong_target and not leak_package_roots
+    return {
+        "status": "pass" if ok else "fail",
+        "ok": ok,
+        "scheme_a": not install_all,
+        "skills_root": str(agents_dir),
+        "expected_ids": expected_ids,
+        "expected_count": len(expected_ids) if not install_all else len(brands),
+        "missing": missing,
+        "wrong_target": wrong_target,
+        "leak_package_roots": leak_package_roots,
     }
 
 
@@ -1116,31 +1309,64 @@ def cleanup_legacy_beacon_skills(
             removed.append({"target": target_label, "path": str(backup_dir), "kind": "backup"})
             if not dry_run:
                 shutil.rmtree(backup_dir)
+        scheme_a = _scheme_a_public_surface_enabled(docs_version, runtime_version)
         if target_label.startswith("global:"):
             host_kind = target_label.split(":", 1)[1]
-            # Claude Code only discovers first-level ~/.claude/skills/beacon-* symlinks.
-            if host_kind != "claude":
-                for duplicate_path in _remove_global_canonical_beacon_duplicates(skills_root, dry_run=dry_run):
-                    removed.append(
-                        {"target": target_label, "path": duplicate_path, "kind": "global_materialized_duplicate"}
-                    )
+            if scheme_a:
+                # Scheme A: package roots recurse into progressive/internal skills — remove them.
+                for pkg_name in ("beacon", "loom"):
+                    package_path = skills_root / pkg_name
+                    if package_path.exists() or package_path.is_symlink():
+                        removed.append(
+                            {
+                                "target": target_label,
+                                "path": str(package_path),
+                                "kind": "package_root_leak",
+                            }
+                        )
+                        if not dry_run:
+                            _remove_skill_path(package_path)
+            else:
+                # v1.6.0 package-preferred hosts: drop flat materializations when package exists.
+                # Claude Code only discovers first-level ~/.claude/skills/beacon-* symlinks.
+                if host_kind != "claude":
+                    for duplicate_path in _remove_global_canonical_beacon_duplicates(skills_root, dry_run=dry_run):
+                        removed.append(
+                            {"target": target_label, "path": duplicate_path, "kind": "global_materialized_duplicate"}
+                        )
         # Scheme A / v160: remove stale aliases and unexpected host-visible dirs when force
-        if not v160_taxonomy and not _scheme_a_public_surface_enabled(docs_version, runtime_version):
+        if not v160_taxonomy and not scheme_a:
             continue
         for child in sorted(skills_root.iterdir(), key=lambda item: item.name):
             name = child.name
-            if name == "beacon":
+            if name in {"beacon", "loom"} and not scheme_a:
                 continue
             if child.is_file():
-                if force and (name.startswith("beacon-") or name in {"using-beacon", "beacon-cli"}):
+                if force and (
+                    name.startswith("beacon-")
+                    or name.startswith("loom-")
+                    or name in {"using-beacon", "beacon-cli"}
+                ):
                     removed.append({"target": target_label, "path": str(child), "kind": "legacy_file"})
                     if not dry_run:
                         _remove_skill_path(child)
                 continue
             if not (child.is_dir() or child.is_symlink()):
                 continue
-            stale = name in _V160_OLD_ALIAS_IDS or name == "using-beacon"
-            unexpected = (name.startswith("beacon-") or name == "using-beacon") and name not in expected_ids
+            # Scheme A reuses some names that were old v1.6.0 aliases (e.g. beacon-qa).
+            # Never treat host-visible whitelist / expected projections as stale.
+            scheme_a_allow = set(expected_ids)
+            if scheme_a:
+                scheme_a_allow |= set(_scheme_a_host_visible_whitelist("beacon") or [])
+                scheme_a_allow |= set(_scheme_a_host_visible_whitelist("loom") or [])
+            stale = (
+                (name in _V160_OLD_ALIAS_IDS or name == "using-beacon")
+                and name not in scheme_a_allow
+            )
+            unexpected_beacon = (name.startswith("beacon-") or name == "using-beacon") and name not in scheme_a_allow
+            loom_wl = set(_scheme_a_host_visible_whitelist("loom") or [])
+            unexpected_loom = name.startswith("loom-") and scheme_a and name not in loom_wl and name not in scheme_a_allow
+            unexpected = unexpected_beacon or unexpected_loom or (scheme_a and name in {"beacon", "loom"})
             if stale or (force and unexpected):
                 removed.append({"target": target_label, "path": str(child), "kind": "legacy_alias" if stale else "unexpected"})
                 if not dry_run:

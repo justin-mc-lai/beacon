@@ -1,97 +1,102 @@
 # Installing Beacon Host Skills for Codex
 
-Enable Beacon's `v1.6.0` harness-first host-visible workflow pack in Codex through native skill discovery.
+Enable Beacon's Scheme A **1+6 public surface** in Codex through native skill discovery.
 
-## Installed skill root
+## Installed skill root (Scheme A)
 
-Beacon's canonical install roots are:
+Beacon source of truth remains the packaged tree:
 
-- Beacon source of truth:
-  - `/absolute/path/to/beacon/skills/beacon`
-- Codex discovery root:
-  - `~/.agents/skills/beacon` -> `/absolute/path/to/beacon/skills/beacon`
+- `/absolute/path/to/beacon/skills/beacon/{beacon-goal,...}`
 
-Do not also install Beacon under any of these paths:
+Codex discovery root uses **flat first-level links only**:
 
-- `~/.codex/skills/beacon`
-- `~/.codex/skills/beacon/skills/beacon`
-- backup symlinks such as `~/.codex/skills/beacon.bak-*`
+- `~/.agents/skills/beacon-goal` → `…/skills/beacon/beacon-goal`
+- `~/.agents/skills/beacon-plan`
+- `~/.agents/skills/beacon-truth`
+- `~/.agents/skills/beacon-design`
+- `~/.agents/skills/beacon-implement`
+- `~/.agents/skills/beacon-qa`
+- `~/.agents/skills/beacon-release`
 
-Those paths create duplicate discovery and can make Codex restart onto a stale Beacon root.
+And Loom dual-track (same shape):
 
-## Public host-visible skills
+- `~/.agents/skills/loom-{goal,plan,truth,design,implement,qa,release}`
 
-Beacon v1.6.0 uses only harness-first skill names:
+### Do **not** install package roots
 
-- `beacon-pln-*`
-- `beacon-gen-*`
-- `beacon-eval-*`
-- `beacon-gov-*`
+These paths recursively re-expose progressive/internal skills (`beacon-gov-*`, `beacon-pln-*`, …) into the Codex skill index:
 
-Old aliases such as `using-beacon`, `beacon-prd`, `beacon-user-story`, `beacon-test-case`, `beacon-implement`, `beacon-qa`, `beacon-release`, and `beacon-brainstorm` are intentionally not emitted in the packaged host-visible skill root.
+- `~/.agents/skills/beacon` → full `skills/beacon` tree ❌
+- `~/.agents/skills/loom` → full `skills/loom` tree ❌
+- `~/.codex/skills/beacon` ❌
+- backup symlinks such as `~/.codex/skills/beacon.bak-*` ❌
+
+## Public host-visible skills (1+6)
+
+| Public skill | Role |
+|---|---|
+| `beacon-goal` | Long-run transversal entry |
+| `beacon-plan` | Plan harness (progressive: review/brainstorm/…) |
+| `beacon-truth` | Truth freeze harness |
+| `beacon-design` | Design harness |
+| `beacon-implement` | Implement harness |
+| `beacon-qa` | QA harness |
+| `beacon-release` | Release harness |
+
+Progressive/internal skills under `skills/beacon/beacon-{gov,pln,gen,eval}-*` remain in-repo for harness progressive load — they are **not** host-visible.
 
 ## Installation
 
-1. Clone this repository to a stable local path.
-2. Link the packaged Beacon skill root into Codex's native discovery path:
+Recommended (Python helper, dual-track):
 
 ```bash
-mkdir -p ~/.agents/skills
-ln -s /absolute/path/to/beacon/skills/beacon ~/.agents/skills/beacon
+python3 -c "from beacon.utils.agent_surface import install_global_agents_beacon_skills, verify_global_agents_beacon_skills; print(install_global_agents_beacon_skills(beacon_root='.')); print(verify_global_agents_beacon_skills())"
 ```
 
-Windows PowerShell:
+Or shell installer:
 
-```powershell
-New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.agents\skills"
-cmd /c mklink /J "$env:USERPROFILE\.agents\skills\beacon" "C:\absolute\path\to\beacon\skills\beacon"
+```bash
+bash scripts/beacon-install.sh agents
+bash scripts/install-loom-skills.sh agents
 ```
 
-3. Restart Codex.
+Unified:
+
+```bash
+bash scripts/install_all_agents.sh
+```
+
+Legacy full surface (not recommended for daily use):
+
+```bash
+INSTALL_ALL=1 bash scripts/beacon-install.sh agents
+```
 
 ## Cleanup before reinstall
-
-If Beacon was previously installed in multiple places, clean it first:
 
 ```bash
 rm -rf ~/.codex/skills/beacon
 rm -f ~/.codex/skills/beacon.bak-*
-rm -f ~/.agents/skills/beacon
-mkdir -p ~/.agents/skills
-ln -sf /absolute/path/to/beacon/skills/beacon ~/.agents/skills/beacon
+rm -f ~/.agents/skills/beacon ~/.agents/skills/loom
+# then reinstall flat 1+6
+bash scripts/beacon-install.sh agents
+bash scripts/install-loom-skills.sh agents
 ```
 
 ## Verify
 
 ```bash
 beacon --version
-beacon --help
-find ~/.agents/skills/beacon -maxdepth 2 -name SKILL.md | sort
-python3 scripts/check_skill_drift.py --project-root . --json
-beacon skill package verify --project-root . --version v1.6.0 --package-root skills/beacon --json
-beacon doctor verify-codex-hud-hook --project-root . --version v1.6.0 --json
-```
-
-Expected:
-
-- exactly one Codex Beacon root at `~/.agents/skills/beacon`
-- no `~/.codex/skills/beacon`
-- `beacon skill package verify --package-root skills/beacon --version v1.6.0` passes
-- no old host-visible aliases exist under `skills/beacon`
-
-## HUD hook recovery
-
-Use the doctor-managed hook instead of ad hoc config edits:
-
-```bash
-beacon doctor setup-codex-hud-hook --project-root . --version v1.6.0 --apply --json
-beacon doctor verify-codex-hud-hook --project-root . --version v1.6.0 --json
+find ~/.agents/skills -maxdepth 1 \( -name 'beacon*' -o -name 'loom*' \) | sort
+# package roots must be absent
+test ! -e ~/.agents/skills/beacon
+test ! -e ~/.agents/skills/loom
+# exactly 7 beacon + 7 loom flat skills
+find ~/.agents/skills -maxdepth 1 -name 'beacon-*' | wc -l   # 7
+find ~/.agents/skills -maxdepth 1 -name 'loom-*' | wc -l     # 7
 ```
 
 ## Notes
 
-- `~/.agents/skills/beacon` is the canonical install root.
-- `~/.codex/skills/beacon` is not a supported install location.
-- `brainstorm`, `team`, `implement-team`, and `qa-team` remain hidden machine lanes, not public skills.
-- The nested public skills exist to make the `v1.6.0` harness-first surface prompt-triggerable.
-- CLI compatibility may keep legacy commands, but old names must not reappear as host-visible skill directories in `skills/beacon`.
+- Progressive loads (gov/pln/gen/eval) are internal to harness shells — users only call `$beacon-goal` / `$beacon-plan` / …
+- Restart Codex after reinstall so the skill index rebuilds.

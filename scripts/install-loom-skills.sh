@@ -5,10 +5,14 @@
 # Backend for Loom evolution track is the Rust CLI (beacon-v2 / loom), NOT the
 # Python loom-py facade. This script only installs skill packages.
 #
+# Scheme A (default): flat 1+6 only. No package root ~/.HOST/skills/loom that
+# recursively exposes progressive/internal skills to host discovery.
+#
 # Usage:
 #   bash scripts/install-loom-skills.sh              # all known hosts
-#   bash scripts/install-loom-skills.sh agents       # Codex ~/.agents/skills
+#   bash scripts/install-loom-skills.sh agents       # Codex ~/.agents/skills flat
 #   bash scripts/install-loom-skills.sh claude       # flat ~/.claude/skills/loom-*
+#   INSTALL_ALL=1 bash scripts/install-loom-skills.sh
 #   DRY_RUN=true bash scripts/install-loom-skills.sh
 # =============================================================================
 set -euo pipefail
@@ -18,7 +22,6 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 SKILLS_SOURCE="$REPO_ROOT/skills/loom"
 DRY_RUN="${DRY_RUN:-false}"
 
-# Scheme A default: only 1+6 public surface (override with INSTALL_ALL=1)
 WHITELIST_LOOM=(
   loom-goal loom-plan loom-truth loom-design loom-implement loom-qa loom-release
 )
@@ -31,42 +34,96 @@ fail() { echo "[install-loom-skills] FAIL $*" >&2; exit 1; }
 [[ -d "$SKILLS_SOURCE" ]] || fail "missing $SKILLS_SOURCE"
 [[ -f "$SKILLS_SOURCE/SKILL.md" ]] || fail "missing $SKILLS_SOURCE/SKILL.md"
 
-install_package_host() {
-  # hosts that discover package trees: ~/.HOST/skills/loom -> skills/loom
+install_flat_host() {
+  # hosts that previously used package trees — now Scheme A flat whitelist
   local host="$1"
   local target_base="$HOME/.$host/skills"
-  local target="$target_base/loom"
+  local package_target="$target_base/loom"
   mkdir -p "$target_base"
-  if [[ -d "$target" && ! -L "$target" ]]; then
-    warn "$target is a real directory; skip (remove manually to replace)"
-    return 1
-  fi
-  if [[ "$DRY_RUN" == "true" ]]; then
-    log "DRY_RUN would link $target -> $SKILLS_SOURCE"
+
+  if [[ "$INSTALL_ALL" == "1" ]]; then
+    if [[ -d "$package_target" && ! -L "$package_target" ]]; then
+      warn "$package_target is a real directory; skip"
+      return 1
+    fi
+    if [[ "$DRY_RUN" == "true" ]]; then
+      log "DRY_RUN would link $package_target -> $SKILLS_SOURCE"
+      return 0
+    fi
+    [[ -L "$package_target" ]] && rm "$package_target"
+    ln -sfn "$SKILLS_SOURCE" "$package_target"
+    log "OK package $package_target -> $SKILLS_SOURCE"
     return 0
   fi
-  if [[ -L "$target" ]]; then
-    rm "$target"
+
+  # Scheme A: remove package root leak
+  if [[ -L "$package_target" || -e "$package_target" ]]; then
+    if [[ "$DRY_RUN" == "true" ]]; then
+      log "DRY_RUN would remove package root $package_target"
+    else
+      rm -rf "$package_target"
+      log "OK removed package root $package_target"
+    fi
   fi
-  ln -sfn "$SKILLS_SOURCE" "$target"
-  log "OK $target -> $SKILLS_SOURCE"
+
+  for skill in "${WHITELIST_LOOM[@]}"; do
+    local src="$SKILLS_SOURCE/$skill"
+    local dst="$target_base/$skill"
+    [[ -d "$src" ]] || continue
+    if [[ "$DRY_RUN" == "true" ]]; then
+      log "DRY_RUN would link $dst -> $src"
+      continue
+    fi
+    if [[ -e "$dst" && ! -L "$dst" ]]; then
+      warn "$dst exists and is not a symlink; skip"
+      continue
+    fi
+    [[ -L "$dst" ]] && rm "$dst"
+    ln -sfn "$src" "$dst"
+    log "OK $dst -> $src"
+  done
 }
 
 install_claude_flat() {
-  # Claude Code: first-level skills only
   local claude_dir="$HOME/.claude/skills"
   mkdir -p "$claude_dir"
-  # package root
   local pkg="$claude_dir/loom"
-  if [[ "$DRY_RUN" == "true" ]]; then
-    log "DRY_RUN would link $pkg -> $REPO_ROOT (or skills/loom tree)"
+
+  if [[ "$INSTALL_ALL" == "1" ]]; then
+    if [[ "$DRY_RUN" == "true" ]]; then
+      log "DRY_RUN would link $pkg -> $REPO_ROOT"
+    else
+      [[ -L "$pkg" || -e "$pkg" ]] && rm -rf "$pkg"
+      ln -sfn "$REPO_ROOT" "$pkg"
+      log "OK $pkg -> $REPO_ROOT"
+    fi
   else
-    if [[ -L "$pkg" ]]; then rm "$pkg"; fi
-    # Point at repo so skills/loom/* is reachable like beacon installer
-    ln -sfn "$REPO_ROOT" "$pkg"
-    log "OK $pkg -> $REPO_ROOT"
+    if [[ -L "$pkg" || -e "$pkg" ]]; then
+      if [[ "$DRY_RUN" == "true" ]]; then
+        log "DRY_RUN would remove package root $pkg"
+      else
+        rm -rf "$pkg"
+        log "OK removed package root $pkg"
+      fi
+    fi
   fi
-  # flat loom-* subskills
+
+  # remove stale loom-* outside whitelist when Scheme A
+  if [[ "$INSTALL_ALL" != "1" && "$DRY_RUN" != "true" ]]; then
+    for existing in "$claude_dir"/loom-*; do
+      [[ -e "$existing" ]] || continue
+      base="$(basename "$existing")"
+      keep=0
+      for w in "${WHITELIST_LOOM[@]}"; do
+        if [[ "$base" == "$w" ]]; then keep=1; break; fi
+      done
+      if [[ "$keep" != "1" && -L "$existing" ]]; then
+        rm "$existing"
+        log "OK removed stale $base"
+      fi
+    done
+  fi
+
   while IFS= read -r skill; do
     local src="$SKILLS_SOURCE/$skill"
     local dst="$claude_dir/$skill"
@@ -104,19 +161,19 @@ main() {
   local arg="${1:-all}"
   log "source=$SKILLS_SOURCE"
   log "Rust backend: install via scripts/install-loom-cli.sh (beacon-v2 + loom)"
-  log "Python loom-py is optional debug only — not the Loom product CLI"
+  log "INSTALL_ALL=${INSTALL_ALL} scheme_a=$([ "$INSTALL_ALL" = "1" ] && echo no || echo yes)"
 
   if [[ "$arg" == "all" ]]; then
     for h in "${HOSTS[@]}"; do
-      install_package_host "$h" || true
+      install_flat_host "$h" || true
     done
     install_claude_flat
   elif [[ "$arg" == "claude" ]]; then
     install_claude_flat
   else
-    install_package_host "$arg"
+    install_flat_host "$arg"
   fi
-  log "Done. Public entry: \$loom-goal (skills/loom/loom-goal) → Rust CLI loom / beacon-v2"
+  log "Done. Public entry: \$loom-goal → Rust CLI loom / beacon-v2"
 }
 
 main "$@"

@@ -1009,9 +1009,10 @@ def collect_compatibility_checks(
             "evidence": install_copy_versions.get("evidence", []),
             "impact": "Duplicate Codex roots or version drift across local skill copies can cause repeated public skills and inconsistent trigger behavior.",
             "repair": [
-                "For Codex, keep only ~/.agents/skills/beacon as the canonical Beacon skill root.",
+                "For Codex (Scheme A 1+6), install flat ~/.agents/skills/beacon-{goal,plan,truth,design,implement,qa,release} only.",
+                "Remove package root ~/.agents/skills/beacon (and loom) — nested SKILL.md leaks historical skills into Codex index.",
                 "Remove ~/.codex/skills/beacon if it exists, then restart Codex.",
-                "Sync ~/.agents/skills/beacon and ~/.claude/skills/beacon to the same version.",
+                "Sync Claude flat ~/.claude/skills/beacon-* with the same whitelist; do not link package/repo roots.",
                 "Reinstall/update launchers with `beacon doctor setup` if CLI entry mismatch persists.",
             ],
         },

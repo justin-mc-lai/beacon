@@ -510,7 +510,20 @@ def _run_beacon_post_release_local_install(project_root: Path, *, version: str, 
         force=True,
     )
 
-    from beacon.utils.agent_surface import install_global_claude_beacon_skills, verify_global_claude_beacon_skills, SUPPORTED_HOST_AGENTS
+    from beacon.utils.agent_surface import (
+        SUPPORTED_HOST_AGENTS,
+        install_global_agents_beacon_skills,
+        install_global_claude_beacon_skills,
+        verify_global_agents_beacon_skills,
+        verify_global_claude_beacon_skills,
+    )
+
+    # Codex/agents: flat Scheme A 1+6 (never package-root leak)
+    agents_global_install = install_global_agents_beacon_skills(
+        beacon_root=project_root,
+        dry_run=False,
+    )
+    agents_global_verify = verify_global_agents_beacon_skills()
 
     claude_global_install = install_global_claude_beacon_skills(
         beacon_root=project_root,
@@ -544,6 +557,8 @@ def _run_beacon_post_release_local_install(project_root: Path, *, version: str, 
         if verify.exit_code != 0 or verify.payload.get("status") != "PASS":
             blocked_reasons.append(f"{agent}_agent_surface_verify_failed")
 
+    if agents_global_verify.get("status") != "pass":
+        blocked_reasons.append("agents_global_beacon_subskills_verify_failed")
     if claude_global_verify.get("status") != "pass":
         blocked_reasons.append("claude_global_beacon_subskills_verify_failed")
 
@@ -631,6 +646,8 @@ def _run_beacon_post_release_local_install(project_root: Path, *, version: str, 
             "recommended_command": runtime_recommended,
         },
         "legacy_skill_cleanup": legacy_cleanup.payload.get("result", {}),
+        "agents_global_skill_install": agents_global_install,
+        "agents_global_skill_verify": agents_global_verify,
         "claude_global_skill_install": claude_global_install,
         "claude_global_skill_verify": claude_global_verify,
         "agent_surfaces": agent_results,
@@ -641,7 +658,7 @@ def _run_beacon_post_release_local_install(project_root: Path, *, version: str, 
         "agent_eval_release_hook": agent_eval_release_hook,
         "commands_confirmed": [
             f"python3 -m beacon.main doctor cleanup-legacy-beacon-skills --project-root . --version {version} --scope all --force --json",
-            f"python3 -c \"from beacon.utils.agent_surface import install_global_claude_beacon_skills, verify_global_claude_beacon_skills; install_global_claude_beacon_skills(beacon_root='{project_root}'); verify_global_claude_beacon_skills()\"",
+            f"python3 -c \"from beacon.utils.agent_surface import install_global_agents_beacon_skills, verify_global_agents_beacon_skills, install_global_claude_beacon_skills, verify_global_claude_beacon_skills; install_global_agents_beacon_skills(beacon_root='{project_root}'); verify_global_agents_beacon_skills(); install_global_claude_beacon_skills(beacon_root='{project_root}'); verify_global_claude_beacon_skills()\"",
             f"python3 -m beacon.main doctor setup-agent-surface --project-root . --version {version} --agent codex --force --json",
             f"python3 -m beacon.main doctor verify-agent-surface --project-root . --version {version} --agent codex --strict --json",
             f"python3 -m beacon.main doctor setup-agent-surface --project-root . --version {version} --agent claude --force --json",

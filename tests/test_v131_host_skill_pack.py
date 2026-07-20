@@ -48,13 +48,13 @@ def test_codex_install_doc_should_target_packaged_beacon_skill_root():
     install_doc = ROOT / ".codex" / "INSTALL.md"
     assert install_doc.exists()
     text = install_doc.read_text(encoding="utf-8")
-    assert "/absolute/path/to/beacon/skills/beacon" in text
-    assert "~/.agents/skills/beacon" in text
+    # Scheme A: flat 1+6 under ~/.agents/skills, not package root discovery
+    assert "beacon-goal" in text
+    assert "~/.agents/skills/beacon-goal" in text
+    assert "package roots" in text.lower() or "Do **not** install package roots" in text
     assert 'ln -s /absolute/path/to/beacon/skills/beacon ~/.codex/skills/beacon' not in text
-    assert "beacon-pln-*" in text
-    assert "beacon-gen-*" in text
-    assert "beacon-eval-*" in text
-    assert "beacon-gov-*" in text
+    # progressive/internal names must not be sold as host-visible install targets
+    assert "not** host-visible" in text or "not host-visible" in text
 
 
 def test_claude_plugin_metadata_should_exist_for_beacon_host_pack():

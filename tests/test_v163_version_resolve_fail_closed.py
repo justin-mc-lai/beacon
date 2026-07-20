@@ -67,6 +67,8 @@ def _stub_heavy_internals(payload_status: str = "PASS") -> dict:
 
     patchers = [
         patch.object(doc, "run_legacy_beacon_skills_cleanup", return_value=type("R", (), {"payload": {"result": {}}})()),
+        patch.object(asurf, "install_global_agents_beacon_skills", return_value={"status": "pass"}),
+        patch.object(asurf, "verify_global_agents_beacon_skills", return_value={"status": "pass"}),
         patch.object(asurf, "install_global_claude_beacon_skills", return_value={"status": "pass"}),
         patch.object(asurf, "verify_global_claude_beacon_skills", return_value={"status": "pass"}),
         patch.object(doc, "run_agent_surface_setup", return_value=type("R", (), {"exit_code": 0, "payload": {"status": payload_status}})()),
