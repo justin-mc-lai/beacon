@@ -2,6 +2,9 @@
 name: loom-goal
 description: "【Loom 公共入口】一句话目标 → 计划/需求/实现/验收。与 $beacon-goal 双装并行，不覆盖 beacon。"
 metadata:
+  public_surface: true
+  public_id: "goal"
+  progressive_map: skills/beacon/references/public-surface-progressive-map.v1.json
   version: "v2.0.0"
   entry: public_primary
   brand: Loom

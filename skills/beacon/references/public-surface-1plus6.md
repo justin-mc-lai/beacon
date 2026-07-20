@@ -58,3 +58,11 @@ plan → truth(freeze) → design? → implement → qa → release
 | UD-PS-003 | Brand-only differences (beacon/Python vs loom/Rust) |
 | UD-PS-004 | design stays in the six (align Rust PUBLIC_ABILITIES) |
 | UD-PS-005 | Default host-visible whitelist = 1 goal + 6 abilities per brand |
+
+## Progressive load (capability non-regression)
+
+Machine map: `skills/beacon/references/public-surface-progressive-map.v1.json`
+
+- Public aggregate shells load first, then internal fine-grained skills.
+- Goal attaches `self_heal` pre/mid/post (gov auto; users do not memorize gov skill names).
+- Default install whitelist = host_visible_whitelist in the map (`INSTALL_ALL=1` to install everything).

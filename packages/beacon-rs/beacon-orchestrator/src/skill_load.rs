@@ -11,15 +11,35 @@ pub const WORKTREE_EXAMPLE_REF: &str =
 
 /// Stage → public skills (mirrors Python progressive_skills_for_stage intent).
 pub fn skills_for_stage(stage: &str) -> Vec<&'static str> {
+    // Scheme A: public aggregate shell first, then progressive internal loads.
     match stage {
         "goal" => vec!["beacon-goal"],
-        "plan" => vec!["beacon-pln-program", "beacon-pln-program-auto"],
-        "truth" => vec!["beacon-gen-truth", "beacon-gen-change"],
-        "design" => vec!["beacon-gen-design", "beacon-gen-design-system"],
-        "implement" => vec!["beacon-gen-implement"],
-        "qa" | "qa-evidence" => vec!["beacon-eval-qa"],
-        "release" => vec!["beacon-eval-release"],
-        "loop" => vec!["beacon-loop-goal"],
+        "plan" | "loop" => vec![
+            "beacon-plan",
+            "beacon-pln-program",
+            "beacon-pln-program-auto",
+            "beacon-pln-program-interactive",
+            "beacon-pln-review",
+        ],
+        "truth" => vec![
+            "beacon-truth",
+            "beacon-gen-truth",
+            "beacon-gen-change",
+            "beacon-gen-refreeze",
+        ],
+        "design" => vec![
+            "beacon-design",
+            "beacon-gen-design",
+            "beacon-gen-design-system",
+            "beacon-gen-design-polish",
+        ],
+        "implement" | "generate" => vec!["beacon-implement", "beacon-gen-implement"],
+        "qa" | "qa-evidence" | "evaluate" => vec![
+            "beacon-qa",
+            "beacon-eval-qa",
+            "beacon-eval-qa-deep",
+        ],
+        "release" => vec!["beacon-release", "beacon-eval-release"],
         _ => vec![],
     }
 }

@@ -18,6 +18,12 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 SKILLS_SOURCE="$REPO_ROOT/skills/loom"
 DRY_RUN="${DRY_RUN:-false}"
 
+# Scheme A default: only 1+6 public surface (override with INSTALL_ALL=1)
+WHITELIST_LOOM=(
+  loom-goal loom-plan loom-truth loom-design loom-implement loom-qa loom-release
+)
+INSTALL_ALL="${INSTALL_ALL:-0}"
+
 log()  { echo "[install-loom-skills] $*"; }
 warn() { echo "[install-loom-skills] WARN $*" >&2; }
 fail() { echo "[install-loom-skills] FAIL $*" >&2; exit 1; }
@@ -65,6 +71,15 @@ install_claude_flat() {
     local src="$SKILLS_SOURCE/$skill"
     local dst="$claude_dir/$skill"
     [[ -d "$src" ]] || continue
+    if [[ "$INSTALL_ALL" != "1" ]]; then
+      local ok=0
+      for w in "${WHITELIST_LOOM[@]}"; do
+        if [[ "$skill" == "$w" ]]; then ok=1; break; fi
+      done
+      if [[ "$ok" != "1" ]]; then
+        continue
+      fi
+    fi
     if [[ "$DRY_RUN" == "true" ]]; then
       log "DRY_RUN would link $dst -> $src"
       continue

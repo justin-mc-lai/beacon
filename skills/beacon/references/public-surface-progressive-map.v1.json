@@ -1,0 +1,140 @@
+{
+  "schema": "public-surface-progressive-map.v1",
+  "scheme": "A",
+  "synonym_table": "skills/beacon/references/public-surface-1plus6.md",
+  "versions": ["v1.6.9", "v2.0.0"],
+  "goal_transversal": {
+    "public_id": "goal",
+    "beacon_skill": "beacon-goal",
+    "loom_skill": "loom-goal",
+    "longrun_only_on_goal": true,
+    "not_counted_in_six": true,
+    "pipeline": ["plan", "truth", "design?", "implement", "qa", "release"],
+    "always_load": ["beacon-goal"],
+    "self_heal": {
+      "pre": [
+        {"id": "verify-context", "command": "beacon doctor verify-context -p . --strict --json", "user_facing": "检查项目上下文是否就绪", "auto": true},
+        {"id": "verify-version-surfaces", "command": "beacon doctor verify-version-surfaces -p . --strict --json", "user_facing": "检查版本表面是否一致", "auto": true}
+      ],
+      "mid_on_block": [
+        {"id": "repair-evidence-manifest", "command": "beacon doctor repair-evidence-manifest -p . --json", "user_facing": "尝试修复证据清单", "auto": true},
+        {"id": "workspace-admit", "command": "beacon workspace admit -p . --json", "user_facing": "检查工作区准入", "auto": false}
+      ],
+      "post_release": [
+        {"id": "post-release-local-install", "command": "beacon hooks run beacon-post-release-local-install -p . --confirm", "user_facing": "发布后安装/对齐本机环境（需确认）", "auto": false}
+      ],
+      "user_language": "never_expose_gov_skill_names_as_required_user_knowledge"
+    }
+  },
+  "harness": {
+    "plan": {
+      "public_id": "plan",
+      "rust_ability": "loop",
+      "summary_alias": "plan",
+      "beacon_skill": "beacon-plan",
+      "loom_skill": "loom-plan",
+      "progressive_loads": [
+        "beacon-pln-program",
+        "beacon-pln-program-auto",
+        "beacon-pln-program-interactive",
+        "beacon-pln-review",
+        "beacon-pln-friction",
+        "beacon-pln-brainstorm",
+        "beacon-pln-source"
+      ]
+    },
+    "truth": {
+      "public_id": "truth",
+      "rust_ability": "truth",
+      "summary_alias": "truth",
+      "beacon_skill": "beacon-truth",
+      "loom_skill": "loom-truth",
+      "progressive_loads": [
+        "beacon-gen-truth",
+        "beacon-gen-truth-init",
+        "beacon-gen-change",
+        "beacon-gen-refreeze"
+      ]
+    },
+    "design": {
+      "public_id": "design",
+      "rust_ability": "design",
+      "summary_alias": "design",
+      "beacon_skill": "beacon-design",
+      "loom_skill": "loom-design",
+      "progressive_loads": [
+        "beacon-gen-design",
+        "beacon-gen-design-init",
+        "beacon-gen-design-system",
+        "beacon-gen-design-explore",
+        "beacon-gen-design-polish",
+        "beacon-gen-prototype"
+      ]
+    },
+    "implement": {
+      "public_id": "implement",
+      "rust_ability": "implement",
+      "summary_alias": "generate",
+      "beacon_skill": "beacon-implement",
+      "loom_skill": "loom-implement",
+      "progressive_loads": [
+        "beacon-gen-implement"
+      ]
+    },
+    "qa": {
+      "public_id": "qa",
+      "rust_ability": "qa-evidence",
+      "summary_alias": "evaluate",
+      "beacon_skill": "beacon-qa",
+      "loom_skill": "loom-qa",
+      "progressive_loads": [
+        "beacon-eval-qa",
+        "beacon-eval-qa-deep",
+        "beacon-eval-real-project",
+        "beacon-eval-agent"
+      ]
+    },
+    "release": {
+      "public_id": "release",
+      "rust_ability": "release",
+      "summary_alias": "release",
+      "beacon_skill": "beacon-release",
+      "loom_skill": "loom-release",
+      "progressive_loads": [
+        "beacon-eval-release"
+      ]
+    }
+  },
+  "host_visible_whitelist": {
+    "beacon": [
+      "beacon-goal",
+      "beacon-plan",
+      "beacon-truth",
+      "beacon-design",
+      "beacon-implement",
+      "beacon-qa",
+      "beacon-release"
+    ],
+    "loom": [
+      "loom-goal",
+      "loom-plan",
+      "loom-truth",
+      "loom-design",
+      "loom-implement",
+      "loom-qa",
+      "loom-release"
+    ]
+  },
+  "internal_compat_aliases": {
+    "beacon-pln-program": "beacon-plan",
+    "beacon-gen-truth": "beacon-truth",
+    "beacon-gen-implement": "beacon-implement",
+    "beacon-eval-qa": "beacon-qa",
+    "beacon-eval-release": "beacon-release",
+    "loom-pln-program": "loom-plan",
+    "loom-gen-implement": "loom-implement",
+    "loom-eval-qa": "loom-qa",
+    "loom-eval-release": "loom-release"
+  },
+  "capability_non_regression": "Merging public surface must not reduce progressive_loads coverage for each harness stage."
+}

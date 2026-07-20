@@ -38,10 +38,29 @@ fi
 ln -sf "${REPO_ROOT_SOURCE}" "${CLAUDE_SKILLS_DIR}/beacon"
 echo "  ✓ beacon -> ${REPO_ROOT_SOURCE}"
 
-# Install all sub-skills as flat symlinks
+# Scheme A: default host-visible whitelist (INSTALL_ALL=1 installs every sub-skill)
+WHITELIST_BEACON=(
+  beacon-goal beacon-plan beacon-truth beacon-design beacon-implement beacon-qa beacon-release
+)
+INSTALL_ALL="${INSTALL_ALL:-0}"
+
+# Install sub-skills as flat symlinks
 echo ""
-echo "Installing beacon sub-skills..."
+if [[ "${INSTALL_ALL}" == "1" ]]; then
+  echo "Installing ALL beacon sub-skills (INSTALL_ALL=1)..."
+else
+  echo "Installing Scheme A whitelist (1+6 public surface)..."
+fi
 for skill in "${BEACON_SUBSKILLS[@]}"; do
+  if [[ "${INSTALL_ALL}" != "1" ]]; then
+    keep=0
+    for w in "${WHITELIST_BEACON[@]}"; do
+      if [[ "${skill}" == "${w}" ]]; then keep=1; break; fi
+    done
+    if [[ "${keep}" != "1" ]]; then
+      continue
+    fi
+  fi
     target="${CLAUDE_SKILLS_DIR}/${skill}"
     source="${SKILLS_SOURCE}/${skill}"
 

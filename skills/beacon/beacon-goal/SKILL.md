@@ -2,6 +2,9 @@
 name: beacon-goal
 description: "【唯一公共入口】一句话目标 → 自动拆需求/编排/实现/验收直到 done。内部可委托 program、truth、implement(ralph)、qa、release；beacon-loop-goal 仅为 support 发现器，用户不必先调它。"
 metadata:
+  public_surface: true
+  public_id: "goal"
+  progressive_map: skills/beacon/references/public-surface-progressive-map.v1.json
   version: "v1.6.7"
   entry: public_primary
   role: product_goal_facade

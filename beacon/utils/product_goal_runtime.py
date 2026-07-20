@@ -71,6 +71,66 @@ PROGRESSIVE_SKILLS: dict[str, list[str]] = {
     "goal": [PUBLIC_ENTRY],  # facade always-on surface
 }
 
+
+_PROGRESSIVE_MAP_PATH = Path(__file__).resolve().parents[2] / "skills/beacon/references/public-surface-progressive-map.v1.json"
+
+
+def load_progressive_map() -> dict[str, Any]:
+    """Load Scheme A progressive map (public 1+6 → internal skills)."""
+    try:
+        if _PROGRESSIVE_MAP_PATH.is_file():
+            return json.loads(_PROGRESSIVE_MAP_PATH.read_text(encoding="utf-8"))
+    except Exception:  # noqa: BLE001
+        pass
+    return {}
+
+
+def progressive_loads_for_public_id(public_id: str) -> list[str]:
+    """Resolve progressive internal skills for a public harness id or stage alias."""
+    pid = str(public_id or "").strip().lower()
+    # map rust / summary aliases
+    aliases = {
+        "loop": "plan",
+        "qa-evidence": "qa",
+        "generate": "implement",
+        "evaluate": "qa",
+    }
+    pid = aliases.get(pid, pid)
+    m = load_progressive_map()
+    if pid == "goal":
+        return list((m.get("goal_transversal") or {}).get("always_load") or [PUBLIC_ENTRY])
+    harness = m.get("harness") if isinstance(m.get("harness"), dict) else {}
+    meta = harness.get(pid) if isinstance(harness.get(pid), dict) else {}
+    loads = meta.get("progressive_loads") if isinstance(meta.get("progressive_loads"), list) else None
+    if loads:
+        return [str(x) for x in loads if str(x).strip()]
+    # fallback legacy table
+    return list(PROGRESSIVE_SKILLS.get(pid, []))
+
+
+def plan_goal_self_heal(*, phase: str = "pre") -> dict[str, Any]:
+    """Gov self-heal band for goal lifecycle — user-facing language, not gov skill names."""
+    m = load_progressive_map()
+    sh = (m.get("goal_transversal") or {}).get("self_heal") if isinstance(m.get("goal_transversal"), dict) else {}
+    sh = sh if isinstance(sh, dict) else {}
+    key = "pre" if phase == "pre" else "mid_on_block" if phase in {"mid", "mid_on_block"} else "post_release"
+    steps = sh.get(key) if isinstance(sh.get(key), list) else []
+    return {
+        "schema": "goal-self-heal.v1",
+        "phase": key,
+        "user_language": sh.get("user_language") or "never_expose_gov_skill_names_as_required_user_knowledge",
+        "steps": steps,
+        "note": "Framework rules run here automatically; users only confirm destructive steps.",
+    }
+
+
+def host_visible_whitelist(brand: str = "beacon") -> list[str]:
+    m = load_progressive_map()
+    wl = m.get("host_visible_whitelist") if isinstance(m.get("host_visible_whitelist"), dict) else {}
+    items = wl.get(brand) if isinstance(wl.get(brand), list) else []
+    return [str(x) for x in items if str(x).strip()]
+
+
 # Shared git worktree process norm (AC-WT-SKILL / progressive always-on ref)
 WORKTREE_FLOW_REF = "skills/beacon/references/git-worktree-execution-flow.md"
 WORKTREE_EXAMPLE_REF = "skills/beacon/examples/git-worktree-process-correct-30s.md"
@@ -224,7 +284,34 @@ def build_parallel_plan(
 
 
 def progressive_skills_for_stage(stage: str) -> list[str]:
-    return list(PROGRESSIVE_SKILLS.get(str(stage or "").strip().lower(), []))
+    """Stage → skills; prefers Scheme A progressive map (capability non-regression)."""
+    st = str(stage or "").strip().lower()
+    # public aggregate shells also accepted as stage keys
+    if st.startswith("beacon-") or st.startswith("loom-"):
+        for prefix in ("beacon-", "loom-"):
+            if st.startswith(prefix):
+                st = st[len(prefix):]
+                break
+    # rust / summary aliases → public harness id
+    aliases = {
+        "loop": "plan",
+        "qa-evidence": "qa",
+        "generate": "implement",
+        "evaluate": "qa",
+    }
+    st = aliases.get(st, st)
+    loads = progressive_loads_for_public_id(st)
+    if loads:
+        m = load_progressive_map()
+        harness = m.get("harness") if isinstance(m.get("harness"), dict) else {}
+        meta = harness.get(st) if isinstance(harness.get(st), dict) else {}
+        shell = str(meta.get("beacon_skill") or "").strip()
+        if shell and shell not in loads:
+            return [shell, *loads]
+        if st == "goal":
+            return loads
+        return loads
+    return list(PROGRESSIVE_SKILLS.get(st, []))
 
 
 def progressive_worktree_refs(stage: str) -> dict[str, Any]:
@@ -348,6 +435,16 @@ def create_goal_run(
         "stages": stages,
         "current_stage": stages[0]["stage"] if stages else "",
         "progressive_loaded_skills": [],
+        "self_heal": {
+            "pre": plan_goal_self_heal(phase="pre"),
+            "mid_on_block": plan_goal_self_heal(phase="mid"),
+            "post_release": plan_goal_self_heal(phase="post_release"),
+        },
+        "public_surface": {
+            "scheme": "A",
+            "whitelist": host_visible_whitelist("beacon"),
+            "progressive_map": "skills/beacon/references/public-surface-progressive-map.v1.json",
+        },
         "parallel_plan": parallel,
         "blocked_streak": 0,
         "heartbeat_interval_sec": DEFAULT_HEARTBEAT_INTERVAL_SEC,
