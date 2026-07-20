@@ -3,7 +3,7 @@
   "feature": "beacon-v2-goal-durable-longrun",
   "feature_slug": "beacon-v2-goal-durable-longrun",
   "version": "v2.0.0",
-  "runtime_version": "v1.6.7",
+  "runtime_version": "v1.6.8",
   "runtime_capability_line": "v1.3.3",
   "required": true,
   "reason_code": "",
@@ -27,7 +27,7 @@
     "review_gates": [],
     "qa_coverage_hints": [],
     "evidence_lines": {},
-    "generated_at": "2026-07-18T03:43:37.190261+00:00",
+    "generated_at": "2026-07-19T15:18:23.254741+00:00",
     "feature": "beacon-v2-goal-durable-longrun",
     "feature_slug": "beacon-v2-goal-durable-longrun",
     "prd_ref": "docs/beacon/v2.0.0/prd/beacon-v2-goal-durable-longrun.md",
@@ -62,9 +62,9 @@
         "slug": "beacon-v2-goal-durable-longrun",
         "version": "v2.0.0",
         "status": "frozen",
-        "revision_id": "R2",
+        "revision_id": "R3",
         "language": "zh",
-        "change_reason": "R2 - full AC-DGS-001..014 parity table + AgentDriver one-shot; pln-review 2026-07-18",
+        "change_reason": "R3 - distill Codex Goal continuation/budget_limit/objective_updated into Loom steering contract; user GO 2026-07-19 1A/2A/3A/4A",
         "canonical_refs": {
           "truth": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/truth.md",
           "tests": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
@@ -76,7 +76,9 @@
         "truth_map_contract": "beacon-truth-map-v1",
         "program_ref": "docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/feature-graph.json",
         "ux_required": "false",
-        "design_deferral": "CLI/orchestrator long-run; no product marketing UI"
+        "design_deferral": "CLI/orchestrator long-run; no product marketing UI",
+        "promotion_ref": "user:2026-07-19 GO 1A durable-longrun change; 2A objective_updated Must; 3A audit→awaiting_verifier; 4A gen-change",
+        "source_advisory": "docs/beacon/v2.0.0/research/loom-goal-steering-codex-continuation-pln-review.md"
       },
       "frontmatter_errors": [],
       "has_domain_model_section": true,
@@ -118,6 +120,30 @@
           "key": "run_id",
           "precedence": "sqlite FTS P2",
           "requires": "sqlite FTS P2"
+        },
+        {
+          "entity": "SteeringTemplate",
+          "key": "template_id",
+          "precedence": "`continuation` \\",
+          "requires": "`continuation` \\"
+        },
+        {
+          "entity": "SteeringRender",
+          "key": "run_id + turn_id",
+          "precedence": "rendered text injected into host turn",
+          "requires": "rendered text injected into host turn"
+        },
+        {
+          "entity": "GoalTurnCounter",
+          "key": "run_id + blocker_id",
+          "precedence": "consecutive goal turns for blocked audit",
+          "requires": "consecutive goal turns for blocked audit"
+        },
+        {
+          "entity": "InjectBundle",
+          "key": "turn_id",
+          "precedence": "ordered: steering → resume-pack → next_action",
+          "requires": "ordered: steering → resume-pack → next_action"
         }
       ],
       "entity_precedence": [
@@ -156,6 +182,30 @@
           "key": "run_id",
           "precedence": "sqlite FTS P2",
           "requires": "sqlite FTS P2"
+        },
+        {
+          "entity": "SteeringTemplate",
+          "key": "template_id",
+          "precedence": "`continuation` \\",
+          "requires": "`continuation` \\"
+        },
+        {
+          "entity": "SteeringRender",
+          "key": "run_id + turn_id",
+          "precedence": "rendered text injected into host turn",
+          "requires": "rendered text injected into host turn"
+        },
+        {
+          "entity": "GoalTurnCounter",
+          "key": "run_id + blocker_id",
+          "precedence": "consecutive goal turns for blocked audit",
+          "requires": "consecutive goal turns for blocked audit"
+        },
+        {
+          "entity": "InjectBundle",
+          "key": "turn_id",
+          "precedence": "ordered: steering → resume-pack → next_action",
+          "requires": "ordered: steering → resume-pack → next_action"
         }
       ],
       "aggregates": [
@@ -224,13 +274,14 @@
           ]
         },
         {
-          "name": "AgentDriver（v2 新增）",
+          "name": "AgentDriver（v2 + R3 inject）",
           "states": [
             "*",
             "arming",
             "halt_budget",
             "halt_terminal",
             "idle",
+            "objective_changed",
             "requeue",
             "turn_active",
             "turn_ended"
@@ -271,6 +322,11 @@
               "from": "turn_ended",
               "to": "halt_budget",
               "guard": "max_turns/token exhausted"
+            },
+            {
+              "from": "*",
+              "to": "objective_changed",
+              "guard": "user edits objective"
             },
             {
               "from": "*",
@@ -318,6 +374,11 @@
         },
         {
           "description": "turn_active | release_confirmed | auto release forbidden | TC-V2-DLR-ILLEGAL-02",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "requeue | turn_active | digest-only without required steering | TC-V2-ST-ILLEGAL-01",
           "aggregate": "",
           "source": "truth"
         },
@@ -396,6 +457,42 @@
         {
           "ac_id": "AC-V2-DLR-016",
           "description": "tests 含 legal walk + illegal 行（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-ST-001",
+          "description": "存在 continuation/budget_limit/objective_updated 规范模板 + MUST_SECTIONS checklist（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-ST-002",
+          "description": "requeue→turn_active **必须** InjectBundle 顺序 steering→digest→next_action（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-ST-003",
+          "description": "objective 按 untrusted user data 处理，非 system override（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-ST-004",
+          "description": "completion audit 段存在且 **禁止** 指示绕过 verifier 的 complete；只进 awaiting_verifier（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-ST-005",
+          "description": "blocked audit 段：≥3 consecutive goal turns（含 auto-requeue）（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-ST-006",
+          "description": "halt_budget 时 inject budget_limit；禁新实质工作；禁预算伪 complete（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-ST-007",
+          "description": "用户改 objective 后 next turn inject objective_updated（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-ST-008",
+          "description": "tests 含 section presence / inject order / illegal inject（**Must**）"
+        },
+        {
+          "ac_id": "AC-V2-ST-009",
+          "description": "remaining tokens/turns 字段可渲染（**Should**）"
         }
       ],
       "bound_ac_ids": [
@@ -414,11 +511,21 @@
         "AC-V2-DLR-013",
         "AC-V2-DLR-014",
         "AC-V2-DLR-015",
-        "AC-V2-DLR-016"
+        "AC-V2-DLR-016",
+        "AC-V2-ST-001",
+        "AC-V2-ST-002",
+        "AC-V2-ST-003",
+        "AC-V2-ST-004",
+        "AC-V2-ST-005",
+        "AC-V2-ST-006",
+        "AC-V2-ST-007",
+        "AC-V2-ST-008",
+        "AC-V2-ST-009"
       ],
       "orphan_ac_ids": [],
       "aggregates_missing_illegal_slots": [],
       "raw_section_titles": [
+        "人话",
         "Overview",
         "User Intent（一行）",
         "User Decisions（locked）",
@@ -426,12 +533,16 @@
         "Domain Model",
         "Domain FSM — GoalRun（durable，继承 v1.6.7）",
         "Illegal transitions — GoalRun",
-        "Domain FSM — AgentDriver（v2 新增）",
+        "Domain FSM — AgentDriver（v2 + R3 inject）",
         "Legal walks",
         "Illegal transitions — AgentDriver",
         "Illegal transitions — SupervisorSession",
         "Illegal (global IDs)",
-        "Context-full protocol（Must）",
+        "Context-full / Inject protocol（Must）",
+        "Resume-pack digest（仍 Must）",
+        "InjectBundle（R3 Must）",
+        "Steering assets（normative）",
+        "Goal turn（blocked audit 定义）",
         "Acceptance Criteria",
         "Full parity with v1.6.7 durable supervisor (Must)",
         "Non-Goals",
@@ -454,9 +565,9 @@
           "slug": "beacon-v2-goal-durable-longrun",
           "version": "v2.0.0",
           "status": "frozen",
-          "revision_id": "R2",
+          "revision_id": "R3",
           "language": "zh",
-          "change_reason": "R2 - full AC-DGS-001..014 parity table + AgentDriver one-shot; pln-review 2026-07-18",
+          "change_reason": "R3 - distill Codex Goal continuation/budget_limit/objective_updated into Loom steering contract; user GO 2026-07-19 1A/2A/3A/4A",
           "canonical_refs": {
             "truth": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/truth.md",
             "tests": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
@@ -468,7 +579,9 @@
           "truth_map_contract": "beacon-truth-map-v1",
           "program_ref": "docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/feature-graph.json",
           "ux_required": "false",
-          "design_deferral": "CLI/orchestrator long-run; no product marketing UI"
+          "design_deferral": "CLI/orchestrator long-run; no product marketing UI",
+          "promotion_ref": "user:2026-07-19 GO 1A durable-longrun change; 2A objective_updated Must; 3A audit→awaiting_verifier; 4A gen-change",
+          "source_advisory": "docs/beacon/v2.0.0/research/loom-goal-steering-codex-continuation-pln-review.md"
         },
         "frontmatter_errors": [],
         "has_domain_model_section": true,
@@ -510,6 +623,30 @@
             "key": "run_id",
             "precedence": "sqlite FTS P2",
             "requires": "sqlite FTS P2"
+          },
+          {
+            "entity": "SteeringTemplate",
+            "key": "template_id",
+            "precedence": "`continuation` \\",
+            "requires": "`continuation` \\"
+          },
+          {
+            "entity": "SteeringRender",
+            "key": "run_id + turn_id",
+            "precedence": "rendered text injected into host turn",
+            "requires": "rendered text injected into host turn"
+          },
+          {
+            "entity": "GoalTurnCounter",
+            "key": "run_id + blocker_id",
+            "precedence": "consecutive goal turns for blocked audit",
+            "requires": "consecutive goal turns for blocked audit"
+          },
+          {
+            "entity": "InjectBundle",
+            "key": "turn_id",
+            "precedence": "ordered: steering → resume-pack → next_action",
+            "requires": "ordered: steering → resume-pack → next_action"
           }
         ],
         "entity_precedence": [
@@ -548,6 +685,30 @@
             "key": "run_id",
             "precedence": "sqlite FTS P2",
             "requires": "sqlite FTS P2"
+          },
+          {
+            "entity": "SteeringTemplate",
+            "key": "template_id",
+            "precedence": "`continuation` \\",
+            "requires": "`continuation` \\"
+          },
+          {
+            "entity": "SteeringRender",
+            "key": "run_id + turn_id",
+            "precedence": "rendered text injected into host turn",
+            "requires": "rendered text injected into host turn"
+          },
+          {
+            "entity": "GoalTurnCounter",
+            "key": "run_id + blocker_id",
+            "precedence": "consecutive goal turns for blocked audit",
+            "requires": "consecutive goal turns for blocked audit"
+          },
+          {
+            "entity": "InjectBundle",
+            "key": "turn_id",
+            "precedence": "ordered: steering → resume-pack → next_action",
+            "requires": "ordered: steering → resume-pack → next_action"
           }
         ],
         "aggregates": [
@@ -616,13 +777,14 @@
             ]
           },
           {
-            "name": "AgentDriver（v2 新增）",
+            "name": "AgentDriver（v2 + R3 inject）",
             "states": [
               "*",
               "arming",
               "halt_budget",
               "halt_terminal",
               "idle",
+              "objective_changed",
               "requeue",
               "turn_active",
               "turn_ended"
@@ -663,6 +825,11 @@
                 "from": "turn_ended",
                 "to": "halt_budget",
                 "guard": "max_turns/token exhausted"
+              },
+              {
+                "from": "*",
+                "to": "objective_changed",
+                "guard": "user edits objective"
               },
               {
                 "from": "*",
@@ -710,6 +877,11 @@
           },
           {
             "description": "turn_active | release_confirmed | auto release forbidden | TC-V2-DLR-ILLEGAL-02",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "requeue | turn_active | digest-only without required steering | TC-V2-ST-ILLEGAL-01",
             "aggregate": "",
             "source": "truth"
           },
@@ -788,6 +960,42 @@
           {
             "ac_id": "AC-V2-DLR-016",
             "description": "tests 含 legal walk + illegal 行（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-ST-001",
+            "description": "存在 continuation/budget_limit/objective_updated 规范模板 + MUST_SECTIONS checklist（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-ST-002",
+            "description": "requeue→turn_active **必须** InjectBundle 顺序 steering→digest→next_action（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-ST-003",
+            "description": "objective 按 untrusted user data 处理，非 system override（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-ST-004",
+            "description": "completion audit 段存在且 **禁止** 指示绕过 verifier 的 complete；只进 awaiting_verifier（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-ST-005",
+            "description": "blocked audit 段：≥3 consecutive goal turns（含 auto-requeue）（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-ST-006",
+            "description": "halt_budget 时 inject budget_limit；禁新实质工作；禁预算伪 complete（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-ST-007",
+            "description": "用户改 objective 后 next turn inject objective_updated（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-ST-008",
+            "description": "tests 含 section presence / inject order / illegal inject（**Must**）"
+          },
+          {
+            "ac_id": "AC-V2-ST-009",
+            "description": "remaining tokens/turns 字段可渲染（**Should**）"
           }
         ],
         "bound_ac_ids": [
@@ -806,11 +1014,21 @@
           "AC-V2-DLR-013",
           "AC-V2-DLR-014",
           "AC-V2-DLR-015",
-          "AC-V2-DLR-016"
+          "AC-V2-DLR-016",
+          "AC-V2-ST-001",
+          "AC-V2-ST-002",
+          "AC-V2-ST-003",
+          "AC-V2-ST-004",
+          "AC-V2-ST-005",
+          "AC-V2-ST-006",
+          "AC-V2-ST-007",
+          "AC-V2-ST-008",
+          "AC-V2-ST-009"
         ],
         "orphan_ac_ids": [],
         "aggregates_missing_illegal_slots": [],
         "raw_section_titles": [
+          "人话",
           "Overview",
           "User Intent（一行）",
           "User Decisions（locked）",
@@ -818,12 +1036,16 @@
           "Domain Model",
           "Domain FSM — GoalRun（durable，继承 v1.6.7）",
           "Illegal transitions — GoalRun",
-          "Domain FSM — AgentDriver（v2 新增）",
+          "Domain FSM — AgentDriver（v2 + R3 inject）",
           "Legal walks",
           "Illegal transitions — AgentDriver",
           "Illegal transitions — SupervisorSession",
           "Illegal (global IDs)",
-          "Context-full protocol（Must）",
+          "Context-full / Inject protocol（Must）",
+          "Resume-pack digest（仍 Must）",
+          "InjectBundle（R3 Must）",
+          "Steering assets（normative）",
+          "Goal turn（blocked audit 定义）",
           "Acceptance Criteria",
           "Full parity with v1.6.7 durable supervisor (Must)",
           "Non-Goals",
@@ -832,11 +1054,11 @@
         ]
       },
       "summary": {
-        "entity_count": 6,
+        "entity_count": 10,
         "aggregate_count": 2,
-        "illegal_slot_count": 10,
+        "illegal_slot_count": 11,
         "orphan_ac_count": 0,
-        "bound_ac_count": 16
+        "bound_ac_count": 25
       }
     },
     "recommended_action": ""

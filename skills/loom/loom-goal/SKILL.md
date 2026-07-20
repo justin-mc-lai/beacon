@@ -43,3 +43,23 @@ loom goal run "<目标>" --project . --version v2.0.0
 ## Git worktree
 
 See `skills/beacon/references/git-worktree-execution-flow.md` (shared; do not fork).
+
+
+## InjectBundle steering (v2.0.0 R3)
+
+Each turn injects **InjectBundle**: steering (Codex distill templates under `docs/beacon/v2.0.0/fixtures/steering/`) → **resume-pack digest** → next_action (not full chat/jsonl). Completion audit only prepares **awaiting_verifier**; never self-certify complete.
+
+## Host subagent keyword (parity v1.6.8 / UD-SA-004)
+
+Same gate as Beacon (`beacon.utils.host_subagent_gate`). Default off; satellite parallel independent of host agents.
+
+## Backend
+
+`$loom-goal` 对应 **Rust CLI**（不是 Python `loom-py`）：
+
+```bash
+bash scripts/install-loom-cli.sh
+export PATH="$HOME/.local/bin:$PATH"
+loom --help          # Rust
+beacon --version     # Python production
+```

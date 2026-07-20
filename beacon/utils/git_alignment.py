@@ -675,6 +675,24 @@ def ensure_expected_worktree_lane(
             "reason": "missing_expected_branch",
             "worktree_path": str(target_path),
         }
+    # Fail closed if creating this branch would collide with existing child/parent refs.
+    try:
+        from beacon.utils.branch_ref_hierarchy import hierarchy_collision
+
+        hit = hierarchy_collision(root, expected_branch)
+        children = [c for c in (hit.get("conflicts") or []) if str(c).startswith(expected_branch + "/")]
+        if children:
+            return {
+                "status": "failed",
+                "reason": "branch_ref_hierarchy_collision",
+                "reason_code": "branch_ref_hierarchy_collision",
+                "expected_branch": expected_branch,
+                "worktree_path": str(target_path),
+                "conflicts": children,
+                "summary": hit.get("summary") or "parent/child git ref collision",
+            }
+    except Exception:  # noqa: BLE001
+        pass
     if target_path == root:
         switch_payload = switch_to_expected_branch(root, expected_branch, create_if_missing=True)
         return {

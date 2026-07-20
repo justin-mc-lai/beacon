@@ -368,23 +368,6 @@
 - gates must block if projection metadata or service/branch/worktree fields drift.
 <!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:beacon-v168-goalrun-axis-mount:END -->
 
-<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:START -->
-## Implementation Delivery Host
-
-- version: `v1.6.8`
-- feature_count: `6`
-- transaction_id: `tx-b84873b5a6c8a1a84`
-- source_hash: `sha256:193ef6e0f3c2841648f4716163dab6e78dd4d12e825c77be6219fc250ec4d0a1`
-
-### Registered Feature Baselines
-- `beacon-goal-longrun-default-v168` | revision=`R1` | branch=`beacon/v1.6.8` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.8/.machine/execution/implementation-delivery-baseline-beacon-goal-longrun-default-v168.json`
-- `beacon-hotfix-lane-v168` | revision=`R1` | branch=`beacon/v1.6.8` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.8/.machine/execution/implementation-delivery-baseline-beacon-hotfix-lane-v168.json`
-- `beacon-release-profile-selfheal-v168` | revision=`R1` | branch=`beacon/v1.6.8` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.8/.machine/execution/implementation-delivery-baseline-beacon-release-profile-selfheal-v168.json`
-- `beacon-v168-goalrun-axis-mount` | revision=`R1` | branch=`beacon/v1.6.8` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.8/.machine/execution/implementation-delivery-baseline-beacon-v168-goalrun-axis-mount.json`
-- `beacon-v2-loom-ops-philosophy-sync` | revision=`R1` | branch=`beacon/v1.6.8` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.8/.machine/execution/implementation-delivery-baseline-beacon-v2-loom-ops-philosophy-sync.json`
-- `beacon-version-fleet-ops-v168` | revision=`R1` | branch=`beacon/v1.6.8` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.8/.machine/execution/implementation-delivery-baseline-beacon-version-fleet-ops-v168.json`
-<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:END -->
-
 <!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:beacon-v2-loom-ops-philosophy-sync:START -->
 ## Technical Delta Blueprint
 
@@ -451,3 +434,88 @@
 - deterministic implementation contract, git workflow contract, and implementation plan are projections.
 - gates must block if projection metadata or service/branch/worktree fields drift.
 <!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:beacon-v2-loom-ops-philosophy-sync:END -->
+
+<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:START -->
+## Implementation Delivery Host
+
+- version: `v1.6.8`
+- feature_count: `7`
+- transaction_id: `tx-63f24f1a01190fb8b`
+- source_hash: `sha256:4dad13501817bd1ae4272f521c0d7f78378bf1d8df515204daa50fe3d0ab5b3d`
+
+### Registered Feature Baselines
+- `beacon-goal-longrun-default-v168` | revision=`R1` | branch=`beacon/v1.6.8` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.8/.machine/execution/implementation-delivery-baseline-beacon-goal-longrun-default-v168.json`
+- `beacon-hotfix-lane-v168` | revision=`R1` | branch=`beacon/v1.6.8` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.8/.machine/execution/implementation-delivery-baseline-beacon-hotfix-lane-v168.json`
+- `beacon-release-profile-selfheal-v168` | revision=`R1` | branch=`beacon/v1.6.8` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.8/.machine/execution/implementation-delivery-baseline-beacon-release-profile-selfheal-v168.json`
+- `beacon-v168-goalrun-axis-mount` | revision=`R1` | branch=`beacon/v1.6.8` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.8/.machine/execution/implementation-delivery-baseline-beacon-v168-goalrun-axis-mount.json`
+- `beacon-v2-loom-ops-philosophy-sync` | revision=`R1` | branch=`beacon/v1.6.8` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.8/.machine/execution/implementation-delivery-baseline-beacon-v2-loom-ops-philosophy-sync.json`
+- `beacon-version-fleet-ops-v168` | revision=`R1` | branch=`beacon/v1.6.8` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.8/.machine/execution/implementation-delivery-baseline-beacon-version-fleet-ops-v168.json`
+- `beacon-worktree-progressive-skill-flow-v168` | revision=`` | branch=`beacon/v1.6.8` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.8/.machine/execution/implementation-delivery-baseline-beacon-worktree-progressive-skill-flow-v168.json`
+<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:END -->
+
+<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:beacon-worktree-progressive-skill-flow-v168:START -->
+## Technical Delta Blueprint
+
+- project_mode: `greenfield`
+- feature: `beacon-worktree-progressive-skill-flow-v168`
+- version: `v1.6.8`
+
+### Source Refs
+- none
+
+### Delivery Change Surface
+- none
+### Available Entry Surfaces
+- none
+### Current Service Facts
+- none
+
+### Must Change
+- none
+
+### Can Reuse
+- none
+
+### No-Expand Guardrails
+- none
+
+### Compatibility Rules
+- none
+
+### Delivery Constraints
+- none
+
+### Implement Handoff
+- none
+<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:beacon-worktree-progressive-skill-flow-v168:END -->
+
+<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:beacon-worktree-progressive-skill-flow-v168:START -->
+## Implementation Delivery Baseline
+
+- baseline_id: `impl-delivery-baseline-v1.6.8-beacon-worktree-progressive-skill-flow-v168-r0`
+- transaction_id: `tx-80f23d6e2bac867cc`
+- source_hash: `sha256:e40be3c9a0be0efcc610deb4f477eaf5a3a1683cc1a85f861b348e00091a6ed6`
+- projection_seq: `1`
+- version: `v1.6.8`
+- feature: `beacon-worktree-progressive-skill-flow-v168`
+- lifecycle_role: `pre-implement delivery blueprint projection`
+- projection_refresh_trigger: `implement plan against the active frozen revision`
+- branch_strategy: `single-branch`
+- base_branch: `main`
+- default_target_branch: `beacon/v1.6.8`
+- branch_prefix: `beacon/`
+- use_git_worktree: `False`
+- worktree_root: `/Users/apple/Developer/Personal/products/beacon`
+- workspace_root: `/Users/apple/Developer/Personal/products/beacon`
+
+### Delivery Service Scope
+- direct_delivery_services: .
+- writable_services: .
+- reference_only_services: docs
+- depends_on_features: -
+
+### Plan-Time Gate Contract
+- canonical envelope is the only delivery baseline source.
+- deterministic implementation contract, git workflow contract, and implementation plan are projections.
+- gates must block if projection metadata or service/branch/worktree fields drift.
+<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:beacon-worktree-progressive-skill-flow-v168:END -->

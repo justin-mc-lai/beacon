@@ -1,0 +1,1556 @@
+{
+  "schema_version": "1.0",
+  "transaction_id": "tx-change-refreeze-loom-git-worktree-implement-harness-20260720t014114z",
+  "feature": "loom-git-worktree-implement-harness",
+  "feature_slug": "loom-git-worktree-implement-harness",
+  "version": "v2.0.0",
+  "change_reason": "R2 branch ref hierarchy leaf-only + admit fail hard-stop",
+  "touched_surfaces": [
+    "change",
+    "truth",
+    "tests",
+    "tasks",
+    "evidence",
+    "requirement_clarity",
+    "freeze",
+    "feature_package_validation"
+  ],
+  "surface_statuses": {
+    "change": {
+      "path": "docs/beacon/v2.0.0/change/loom-git-worktree-implement-harness.md",
+      "exists": false,
+      "status": "package_change_optional",
+      "required": false,
+      "authority": "change_record_not_requirement_truth"
+    },
+    "truth": {
+      "path": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "tests": {
+      "path": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tests.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "tasks": {
+      "path": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tasks.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "evidence": {
+      "path": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/evidence.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "requirement_clarity": {
+      "path": "docs/beacon/v2.0.0/.machine/execution/requirement-clarity-loom-git-worktree-implement-harness.json",
+      "exists": true,
+      "status": "passed",
+      "required": true
+    },
+    "freeze": {
+      "path": "docs/beacon/v2.0.0/.machine/change/loom-git-worktree-implement-harness.refreeze-transaction.json",
+      "exists": true,
+      "status": "complete",
+      "required": true
+    },
+    "feature_package_validation": {
+      "path": "docs/beacon/v2.0.0/.machine/requirement/feature-package-validation.json",
+      "exists": true,
+      "status": "passed",
+      "required": true,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "code": "truth_human_l0_ok",
+          "path": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+          "language": "zh",
+          "l0_headings": [
+            "## 人话"
+          ]
+        }
+      ]
+    }
+  },
+  "truth_revision_before": {
+    "revision_id": "R2",
+    "doc_status": "draft",
+    "lifecycle_status": "idle",
+    "baseline_hash": ""
+  },
+  "truth_revision_after": {
+    "revision_id": "R2",
+    "doc_status": "frozen",
+    "lifecycle_status": "frozen",
+    "baseline_hash": "sha256:7b25ba56e28df8ae2541c8f495ba4464154c95dee391871a220d88fb4bd97f18"
+  },
+  "refreeze_status": "complete",
+  "next_route": {
+    "target_surface": "beacon-gen-implement",
+    "command": "beacon implement \"loom-git-worktree-implement-harness\" --project /Users/apple/Developer/Personal/products/beacon --version v2.0.0",
+    "why": "refreeze transaction completed; implementation may plan against the refreshed frozen truth"
+  },
+  "blocked_reason": "",
+  "delivery_execution": {
+    "implement_executed": false,
+    "qa_executed": false,
+    "release_executed": false
+  },
+  "created_at": "2026-07-20T01:41:14.061837+00:00",
+  "previous_revision": {
+    "revision_id": "R1",
+    "doc_status": "superseded",
+    "lifecycle_status": "superseded",
+    "baseline_hash": ""
+  },
+  "opened_revision": {
+    "revision_id": "R2",
+    "doc_status": "draft",
+    "lifecycle_status": "idle",
+    "baseline_hash": ""
+  },
+  "story_reopen": {
+    "current_revision_id": "R2",
+    "lifecycle_status": "draft"
+  },
+  "requirement_package": {
+    "schema_version": "1.0",
+    "project_root": "/Users/apple/Developer/Personal/products/beacon",
+    "version": "v2.0.0",
+    "feature": "loom-git-worktree-implement-harness",
+    "status": "synced",
+    "authority_state": "feature_package_authoritative",
+    "truth_authority": "markdown_feature_package",
+    "requirement_refs": {
+      "source_of_truth_root": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness",
+      "prd": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+      "user_story": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+      "test_case": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tests.md",
+      "truth": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+      "tests": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tests.md",
+      "tasks": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tasks.md",
+      "evidence": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/evidence.md"
+    },
+    "story_path": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+    "qa_matrix_path": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tests.md",
+    "qa9_matrix_path": "",
+    "story_scenario_map_path": "",
+    "machine_rebuild": {
+      "schema_version": "1.0",
+      "truth_map_contract": "beacon-truth-map-v1",
+      "truth_source_model": "feature_package_authoritative",
+      "truth_package_contract": "beacon-feature-package-v2",
+      "machine_json_role": "generated_state_not_truth",
+      "generated_by": "beacon.truth_map.resolver",
+      "feature": "loom-git-worktree-implement-harness",
+      "feature_slug": "loom-git-worktree-implement-harness",
+      "version": "v2.0.0",
+      "status": "rebuilt",
+      "blocked": false,
+      "validation_status": "pass",
+      "source_paths": {
+        "truth": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+        "tests": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tests.md",
+        "tasks": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tasks.md",
+        "evidence": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/evidence.md"
+      },
+      "source_hashes": {
+        "truth": "750c2a2e502d5d34543f67b5e3331a8c7bf15914cd1c4596496c90db42840656",
+        "tests": "0a477cae20cdae59b2e2f0b785622cad636f0821c817dc03a71e1d3c7159fa00",
+        "tasks": "0025641e75de07234c37c40a1df916069914dc877227b807de8dce5d46694820",
+        "evidence": "22cf47edb29303750cb4cd3a26fd28acbac3225c714e1f7b60f4810470b7732b"
+      },
+      "plan": {
+        "schema_version": "1.0",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "truth_source_model": "feature_package_authoritative",
+        "truth_package_contract": "beacon-feature-package-v2",
+        "machine_json_role": "generated_state_not_truth",
+        "generated_by": "beacon.truth_map.resolver",
+        "feature": "loom-git-worktree-implement-harness",
+        "feature_slug": "loom-git-worktree-implement-harness",
+        "version": "v2.0.0",
+        "source_paths": {
+          "truth": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+          "tests": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tests.md",
+          "tasks": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tasks.md",
+          "evidence": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/evidence.md"
+        },
+        "outputs": {
+          "truth_map_projection": "docs/beacon/v2.0.0/.machine/requirement/loom-git-worktree-implement-harness.truth-map.json",
+          "requirement_package_state": "docs/beacon/v2.0.0/.machine/requirement/loom-git-worktree-implement-harness.requirement-package.json",
+          "feature_package_validation": "docs/beacon/v2.0.0/.machine/requirement/feature-package-validation.json"
+        },
+        "runtime_json_exemption": {
+          "role": "runtime_process_record_not_requirement_truth",
+          "applies_to": [
+            ".beacon/runs/**",
+            ".beacon/qa/**",
+            "runtime/process execution records"
+          ],
+          "requires_markdown_twin": false,
+          "requirement_authority": false
+        },
+        "routes": {
+          "doctor_rebuild": {
+            "status": "legacy_output_only",
+            "command": "beacon truth-map rebuild-machine loom-git-worktree-implement-harness --version v2.0.0"
+          },
+          "change_absorb": {
+            "status": "package_truth_target_only",
+            "command": "beacon change loom-git-worktree-implement-harness --version v2.0.0 --reason absorb-legacy-truth-into-feature-package"
+          }
+        }
+      },
+      "written": [
+        "docs/beacon/v2.0.0/.machine/requirement/loom-git-worktree-implement-harness.truth-map.json",
+        "docs/beacon/v2.0.0/.machine/requirement/loom-git-worktree-implement-harness.requirement-package.json",
+        "docs/beacon/v2.0.0/.machine/requirement/feature-package-validation.json"
+      ]
+    },
+    "story_sync": {
+      "path": "docs/beacon/v2.0.0/.machine/user-story/loom-git-worktree-implement-harness.json",
+      "feature": "loom-git-worktree-implement-harness",
+      "version": "v2.0.0",
+      "revision_id": "R2",
+      "ac_count": 2,
+      "test_count": 2,
+      "story_ids": [
+        "",
+        ""
+      ]
+    }
+  },
+  "requirement_clarity": {
+    "gate": {
+      "schema_version": "1.0",
+      "feature": "loom-git-worktree-implement-harness",
+      "feature_slug": "loom-git-worktree-implement-harness",
+      "version": "v2.0.0",
+      "runtime_version": "v1.6.8",
+      "runtime_capability_line": "v1.3.3",
+      "required": true,
+      "reason_code": "",
+      "blocked": false,
+      "status": "pass",
+      "findings": [],
+      "report_json_path": "docs/beacon/v2.0.0/.machine/execution/requirement-clarity-loom-git-worktree-implement-harness.json",
+      "report_markdown_path": "docs/beacon/v2.0.0/execution/requirement-clarity-loom-git-worktree-implement-harness.md",
+      "state_path": ".beacon/state/requirement-clarity-loom-git-worktree-implement-harness.json",
+      "diagram_truth": {
+        "schema_version": "1.0",
+        "version": "v2.0.0",
+        "supported": true,
+        "required": false,
+        "ready": true,
+        "diagram_types": [],
+        "state_axes": [],
+        "missing_diagram_types": [],
+        "missing_state_axes": false,
+        "complexity_signals": [],
+        "review_gates": [],
+        "qa_coverage_hints": [],
+        "evidence_lines": {},
+        "generated_at": "2026-07-20T01:41:17.248243+00:00",
+        "feature": "loom-git-worktree-implement-harness",
+        "feature_slug": "loom-git-worktree-implement-harness",
+        "prd_ref": "docs/beacon/v2.0.0/prd/loom-git-worktree-implement-harness.md",
+        "user_story_ref": "docs/beacon/v2.0.0/user-story/loom-git-worktree-implement-harness.md"
+      },
+      "domain_fsm_gate": {
+        "schema_version": "1.0",
+        "feature": "loom-git-worktree-implement-harness",
+        "feature_slug": "loom-git-worktree-implement-harness",
+        "version": "v2.0.0",
+        "truth_path": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+        "tests_path": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tests.md",
+        "required": false,
+        "blocked": false,
+        "status": "not_required",
+        "reason_code": "",
+        "findings": [],
+        "requirement": {
+          "required": false,
+          "reason": "not_required",
+          "explicit": false,
+          "partial": false,
+          "complexity": false,
+          "business_signal": true,
+          "version_supported": true
+        },
+        "projection": {
+          "schema_version": "1.0",
+          "domain_fsm_schema": "domain-fsm.v1",
+          "entity_precedence_schema": "entity-precedence.v1",
+          "frontmatter": {
+            "slug": "loom-git-worktree-implement-harness",
+            "version": "v2.0.0",
+            "status": "frozen",
+            "revision_id": "R2",
+            "language": "zh",
+            "change_reason": "R2 - branch ref hierarchy hard gate: leaf-only lanes; admit fail never implements on main; user GO 1A/2A/3A 2026-07-20",
+            "canonical_refs": {
+              "truth": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+              "tests": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tests.md",
+              "tasks": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tasks.md",
+              "evidence": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/evidence.md"
+            },
+            "parser_contract": "beacon-feature-package-v2",
+            "truth_source_model": "feature_package_authoritative",
+            "truth_map_contract": "beacon-truth-map-v1",
+            "program_ref": "docs/beacon/v2.0.0/programs/loom-kernel-closure-w1w5-v200/feature-graph.json",
+            "parent_kernel": "beacon-v2-rust-kernel-redesign",
+            "upstream_acs": "[\"AC-099\", \"AC-100\"]",
+            "wave": "W1",
+            "priority": "P0",
+            "ux_required": "false",
+            "design_deferral": "kernel/CLI; no product marketing UI",
+            "display_name": "Loom Git Worktree + Implement Harness",
+            "brand": "Loom"
+          },
+          "frontmatter_errors": [],
+          "has_domain_model_section": false,
+          "has_domain_fsm_section": false,
+          "has_illegal_transition_section": false,
+          "entities": [],
+          "entity_precedence": [],
+          "aggregates": [],
+          "illegal_transition_slots": [],
+          "acceptance_criteria": [
+            {
+              "ac_id": "AC-099",
+              "description": "Git worktree 全模式 parity：worktree/current-branch/run-branch；非法组合 fail-closed；cwd 对齐（Must）"
+            },
+            {
+              "ac_id": "AC-100",
+              "description": "ImplementHarnessBackend 在 admitted worktree 内真一轮；IterationResult schema AC-042；非 subprocess 冒充（Must）"
+            },
+            {
+              "ac_id": "AC-LOOM-W1-001",
+              "description": "temp fixture 上可执行 git worktree add 并检出（Must）"
+            },
+            {
+              "ac_id": "AC-LOOM-W1-002",
+              "description": "成功 iterate 写入 artifact_refs/iteration_result（Must）"
+            },
+            {
+              "ac_id": "AC-LOOM-W1-003",
+              "description": "tests 含合法 walk + 非法组合（Must）"
+            },
+            {
+              "ac_id": "AC-BR-001",
+              "description": "workspace admit 物化的 `feature_branch` **必须**是 leaf（含 feature-slug）；不得仅为 `beacon/<version>`（**Must**）"
+            },
+            {
+              "ac_id": "AC-BR-002",
+              "description": "create/switch 前 hierarchy preflight；父子冲突 → `branch_ref_hierarchy_collision`（**Must**）"
+            },
+            {
+              "ac_id": "AC-BR-003",
+              "description": "program-level 模式保留 aggregation 元数据，但 checkout 仍用 leaf feature branch（**Must**）"
+            },
+            {
+              "ac_id": "AC-BR-004",
+              "description": "admit fail 后 implement/goal 不得在 truth_canonical（main/master）写业务实现（**Must**）"
+            },
+            {
+              "ac_id": "AC-BR-005",
+              "description": "暴露 `branch_ref_hierarchy_collision`、`workspace_admission_worktree_failed`、`implement_on_canonical_without_admission`（**Must**）"
+            },
+            {
+              "ac_id": "AC-BR-006",
+              "description": "含 collision fixture + leaf rewrite + no main soft fallback（**Must**）"
+            }
+          ],
+          "bound_ac_ids": [],
+          "orphan_ac_ids": [],
+          "aggregates_missing_illegal_slots": [],
+          "raw_section_titles": [
+            "人话",
+            "Overview",
+            "User Intent",
+            "User Decisions（locked）",
+            "Acceptance Criteria",
+            "Illegal",
+            "User Decisions — branch ref hierarchy (R2, user GO 1A/2A/3A)",
+            "Acceptance Criteria — R2",
+            "Illegal — R2",
+            "Domain note — Git ref tree",
+            "Non-Goals",
+            "Alignment Surface"
+          ]
+        },
+        "validation": {
+          "schema_version": "1.0",
+          "required": false,
+          "blocked": false,
+          "status": "not_required",
+          "reason_code": "",
+          "findings": [],
+          "projection": {
+            "schema_version": "1.0",
+            "domain_fsm_schema": "domain-fsm.v1",
+            "entity_precedence_schema": "entity-precedence.v1",
+            "frontmatter": {
+              "slug": "loom-git-worktree-implement-harness",
+              "version": "v2.0.0",
+              "status": "frozen",
+              "revision_id": "R2",
+              "language": "zh",
+              "change_reason": "R2 - branch ref hierarchy hard gate: leaf-only lanes; admit fail never implements on main; user GO 1A/2A/3A 2026-07-20",
+              "canonical_refs": {
+                "truth": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+                "tests": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tests.md",
+                "tasks": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tasks.md",
+                "evidence": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/evidence.md"
+              },
+              "parser_contract": "beacon-feature-package-v2",
+              "truth_source_model": "feature_package_authoritative",
+              "truth_map_contract": "beacon-truth-map-v1",
+              "program_ref": "docs/beacon/v2.0.0/programs/loom-kernel-closure-w1w5-v200/feature-graph.json",
+              "parent_kernel": "beacon-v2-rust-kernel-redesign",
+              "upstream_acs": "[\"AC-099\", \"AC-100\"]",
+              "wave": "W1",
+              "priority": "P0",
+              "ux_required": "false",
+              "design_deferral": "kernel/CLI; no product marketing UI",
+              "display_name": "Loom Git Worktree + Implement Harness",
+              "brand": "Loom"
+            },
+            "frontmatter_errors": [],
+            "has_domain_model_section": false,
+            "has_domain_fsm_section": false,
+            "has_illegal_transition_section": false,
+            "entities": [],
+            "entity_precedence": [],
+            "aggregates": [],
+            "illegal_transition_slots": [],
+            "acceptance_criteria": [
+              {
+                "ac_id": "AC-099",
+                "description": "Git worktree 全模式 parity：worktree/current-branch/run-branch；非法组合 fail-closed；cwd 对齐（Must）"
+              },
+              {
+                "ac_id": "AC-100",
+                "description": "ImplementHarnessBackend 在 admitted worktree 内真一轮；IterationResult schema AC-042；非 subprocess 冒充（Must）"
+              },
+              {
+                "ac_id": "AC-LOOM-W1-001",
+                "description": "temp fixture 上可执行 git worktree add 并检出（Must）"
+              },
+              {
+                "ac_id": "AC-LOOM-W1-002",
+                "description": "成功 iterate 写入 artifact_refs/iteration_result（Must）"
+              },
+              {
+                "ac_id": "AC-LOOM-W1-003",
+                "description": "tests 含合法 walk + 非法组合（Must）"
+              },
+              {
+                "ac_id": "AC-BR-001",
+                "description": "workspace admit 物化的 `feature_branch` **必须**是 leaf（含 feature-slug）；不得仅为 `beacon/<version>`（**Must**）"
+              },
+              {
+                "ac_id": "AC-BR-002",
+                "description": "create/switch 前 hierarchy preflight；父子冲突 → `branch_ref_hierarchy_collision`（**Must**）"
+              },
+              {
+                "ac_id": "AC-BR-003",
+                "description": "program-level 模式保留 aggregation 元数据，但 checkout 仍用 leaf feature branch（**Must**）"
+              },
+              {
+                "ac_id": "AC-BR-004",
+                "description": "admit fail 后 implement/goal 不得在 truth_canonical（main/master）写业务实现（**Must**）"
+              },
+              {
+                "ac_id": "AC-BR-005",
+                "description": "暴露 `branch_ref_hierarchy_collision`、`workspace_admission_worktree_failed`、`implement_on_canonical_without_admission`（**Must**）"
+              },
+              {
+                "ac_id": "AC-BR-006",
+                "description": "含 collision fixture + leaf rewrite + no main soft fallback（**Must**）"
+              }
+            ],
+            "bound_ac_ids": [],
+            "orphan_ac_ids": [],
+            "aggregates_missing_illegal_slots": [],
+            "raw_section_titles": [
+              "人话",
+              "Overview",
+              "User Intent",
+              "User Decisions（locked）",
+              "Acceptance Criteria",
+              "Illegal",
+              "User Decisions — branch ref hierarchy (R2, user GO 1A/2A/3A)",
+              "Acceptance Criteria — R2",
+              "Illegal — R2",
+              "Domain note — Git ref tree",
+              "Non-Goals",
+              "Alignment Surface"
+            ]
+          }
+        },
+        "recommended_action": ""
+      },
+      "human_closure_contract": {
+        "required": false,
+        "research_path": "docs/beacon/v2.0.0/research/loom-git-worktree-implement-harness.md",
+        "research_exists": false,
+        "source_architecture_path": "docs/beacon/v2.0.0/source-architecture/index.md",
+        "source_architecture_exists": true,
+        "required_sections": [
+          "architecture",
+          "business_flow"
+        ],
+        "missing_sections": [
+          "architecture",
+          "business_flow"
+        ],
+        "diagram_types": [],
+        "complexity_signals": []
+      },
+      "requirement_closure_contract": {
+        "required": true,
+        "chain_order": [
+          "research",
+          "prd",
+          "user_story",
+          "test_case",
+          "requirement_clarity",
+          "freeze"
+        ],
+        "human_closure_required": false,
+        "paths": {
+          "research": "docs/beacon/v2.0.0/research/loom-git-worktree-implement-harness.md",
+          "prd": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+          "user_story": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+          "test_case": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tests.md"
+        },
+        "exists": {
+          "research": false,
+          "prd": true,
+          "user_story": true,
+          "test_case": true
+        },
+        "required_research_sections": [],
+        "missing_research_sections": [],
+        "ac_projection": {
+          "prd_ac_ids": [
+            "AC-042",
+            "AC-099",
+            "AC-100"
+          ],
+          "user_story_ac_ids": [
+            "AC-042",
+            "AC-099",
+            "AC-100"
+          ],
+          "test_case_ac_ids": [
+            "AC-042",
+            "AC-099",
+            "AC-100"
+          ],
+          "upstream_ac_ids": [
+            "AC-042",
+            "AC-099",
+            "AC-100"
+          ],
+          "missing_test_case_ac_ids": []
+        }
+      },
+      "version_projection_truth_contract": {
+        "required": false,
+        "supported": true,
+        "projection_types": [],
+        "research_path": "docs/beacon/v2.0.0/research/loom-git-worktree-implement-harness.md",
+        "research_exists": false,
+        "required_fields": [
+          "prd_refs",
+          "user_story_refs",
+          "test_case_refs",
+          "coverage_notes",
+          "out_of_scope_notes"
+        ],
+        "field_presence": {
+          "prd_refs": false,
+          "user_story_refs": false,
+          "test_case_refs": false,
+          "coverage_notes": false,
+          "out_of_scope_notes": false
+        },
+        "missing_fields": [],
+        "required_refs": {
+          "prd_refs": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+          "user_story_refs": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+          "test_case_refs": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tests.md"
+        },
+        "missing_ref_targets": [],
+        "ready": false
+      },
+      "support_write_topology_contract": {
+        "schema_version": "1.0",
+        "supported": true,
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "diagnostics": []
+      },
+      "required_artifacts": [],
+      "scanned_files": [
+        "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+        "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tests.md",
+        "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tasks.md",
+        "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/evidence.md"
+      ]
+    },
+    "report": {
+      "json": "docs/beacon/v2.0.0/.machine/execution/requirement-clarity-loom-git-worktree-implement-harness.json",
+      "markdown": "docs/beacon/v2.0.0/execution/requirement-clarity-loom-git-worktree-implement-harness.md"
+    },
+    "writeback": {
+      "schema_version": "1.0",
+      "feature": "loom-git-worktree-implement-harness",
+      "feature_slug": "loom-git-worktree-implement-harness",
+      "version": "v2.0.0",
+      "status": "pass",
+      "blocked": false,
+      "reason_code": "",
+      "report_json_path": "docs/beacon/v2.0.0/.machine/execution/requirement-clarity-loom-git-worktree-implement-harness.json",
+      "report_markdown_path": "docs/beacon/v2.0.0/execution/requirement-clarity-loom-git-worktree-implement-harness.md",
+      "finding_count": 0,
+      "run_id": "",
+      "source": "change.refreeze-chain",
+      "written_at": "2026-07-20T01:41:17.345208+00:00",
+      "state_path": ".beacon/state/requirement-clarity-loom-git-worktree-implement-harness.json"
+    }
+  },
+  "truth_integrity_gate": {
+    "schema_version": "1.0",
+    "feature": "loom-git-worktree-implement-harness",
+    "feature_slug": "loom-git-worktree-implement-harness",
+    "version": "v2.0.0",
+    "mode": "block",
+    "truth_status": "frozen",
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "findings": [],
+    "finding_count": 0,
+    "requirement_clarity": {
+      "schema_version": "1.0",
+      "feature": "loom-git-worktree-implement-harness",
+      "feature_slug": "loom-git-worktree-implement-harness",
+      "version": "v2.0.0",
+      "runtime_version": "v1.6.8",
+      "runtime_capability_line": "v1.3.3",
+      "required": true,
+      "reason_code": "",
+      "blocked": false,
+      "status": "pass",
+      "findings": [],
+      "report_json_path": "docs/beacon/v2.0.0/.machine/execution/requirement-clarity-loom-git-worktree-implement-harness.json",
+      "report_markdown_path": "docs/beacon/v2.0.0/execution/requirement-clarity-loom-git-worktree-implement-harness.md",
+      "state_path": ".beacon/state/requirement-clarity-loom-git-worktree-implement-harness.json",
+      "diagram_truth": {
+        "schema_version": "1.0",
+        "version": "v2.0.0",
+        "supported": true,
+        "required": false,
+        "ready": true,
+        "diagram_types": [],
+        "state_axes": [],
+        "missing_diagram_types": [],
+        "missing_state_axes": false,
+        "complexity_signals": [],
+        "review_gates": [],
+        "qa_coverage_hints": [],
+        "evidence_lines": {},
+        "generated_at": "2026-07-20T01:41:17.352862+00:00",
+        "feature": "loom-git-worktree-implement-harness",
+        "feature_slug": "loom-git-worktree-implement-harness",
+        "prd_ref": "docs/beacon/v2.0.0/prd/loom-git-worktree-implement-harness.md",
+        "user_story_ref": "docs/beacon/v2.0.0/user-story/loom-git-worktree-implement-harness.md"
+      },
+      "domain_fsm_gate": {
+        "schema_version": "1.0",
+        "feature": "loom-git-worktree-implement-harness",
+        "feature_slug": "loom-git-worktree-implement-harness",
+        "version": "v2.0.0",
+        "truth_path": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+        "tests_path": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tests.md",
+        "required": false,
+        "blocked": false,
+        "status": "not_required",
+        "reason_code": "",
+        "findings": [],
+        "requirement": {
+          "required": false,
+          "reason": "not_required",
+          "explicit": false,
+          "partial": false,
+          "complexity": false,
+          "business_signal": true,
+          "version_supported": true
+        },
+        "projection": {
+          "schema_version": "1.0",
+          "domain_fsm_schema": "domain-fsm.v1",
+          "entity_precedence_schema": "entity-precedence.v1",
+          "frontmatter": {
+            "slug": "loom-git-worktree-implement-harness",
+            "version": "v2.0.0",
+            "status": "frozen",
+            "revision_id": "R2",
+            "language": "zh",
+            "change_reason": "R2 - branch ref hierarchy hard gate: leaf-only lanes; admit fail never implements on main; user GO 1A/2A/3A 2026-07-20",
+            "canonical_refs": {
+              "truth": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+              "tests": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tests.md",
+              "tasks": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tasks.md",
+              "evidence": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/evidence.md"
+            },
+            "parser_contract": "beacon-feature-package-v2",
+            "truth_source_model": "feature_package_authoritative",
+            "truth_map_contract": "beacon-truth-map-v1",
+            "program_ref": "docs/beacon/v2.0.0/programs/loom-kernel-closure-w1w5-v200/feature-graph.json",
+            "parent_kernel": "beacon-v2-rust-kernel-redesign",
+            "upstream_acs": "[\"AC-099\", \"AC-100\"]",
+            "wave": "W1",
+            "priority": "P0",
+            "ux_required": "false",
+            "design_deferral": "kernel/CLI; no product marketing UI",
+            "display_name": "Loom Git Worktree + Implement Harness",
+            "brand": "Loom"
+          },
+          "frontmatter_errors": [],
+          "has_domain_model_section": false,
+          "has_domain_fsm_section": false,
+          "has_illegal_transition_section": false,
+          "entities": [],
+          "entity_precedence": [],
+          "aggregates": [],
+          "illegal_transition_slots": [],
+          "acceptance_criteria": [
+            {
+              "ac_id": "AC-099",
+              "description": "Git worktree 全模式 parity：worktree/current-branch/run-branch；非法组合 fail-closed；cwd 对齐（Must）"
+            },
+            {
+              "ac_id": "AC-100",
+              "description": "ImplementHarnessBackend 在 admitted worktree 内真一轮；IterationResult schema AC-042；非 subprocess 冒充（Must）"
+            },
+            {
+              "ac_id": "AC-LOOM-W1-001",
+              "description": "temp fixture 上可执行 git worktree add 并检出（Must）"
+            },
+            {
+              "ac_id": "AC-LOOM-W1-002",
+              "description": "成功 iterate 写入 artifact_refs/iteration_result（Must）"
+            },
+            {
+              "ac_id": "AC-LOOM-W1-003",
+              "description": "tests 含合法 walk + 非法组合（Must）"
+            },
+            {
+              "ac_id": "AC-BR-001",
+              "description": "workspace admit 物化的 `feature_branch` **必须**是 leaf（含 feature-slug）；不得仅为 `beacon/<version>`（**Must**）"
+            },
+            {
+              "ac_id": "AC-BR-002",
+              "description": "create/switch 前 hierarchy preflight；父子冲突 → `branch_ref_hierarchy_collision`（**Must**）"
+            },
+            {
+              "ac_id": "AC-BR-003",
+              "description": "program-level 模式保留 aggregation 元数据，但 checkout 仍用 leaf feature branch（**Must**）"
+            },
+            {
+              "ac_id": "AC-BR-004",
+              "description": "admit fail 后 implement/goal 不得在 truth_canonical（main/master）写业务实现（**Must**）"
+            },
+            {
+              "ac_id": "AC-BR-005",
+              "description": "暴露 `branch_ref_hierarchy_collision`、`workspace_admission_worktree_failed`、`implement_on_canonical_without_admission`（**Must**）"
+            },
+            {
+              "ac_id": "AC-BR-006",
+              "description": "含 collision fixture + leaf rewrite + no main soft fallback（**Must**）"
+            }
+          ],
+          "bound_ac_ids": [],
+          "orphan_ac_ids": [],
+          "aggregates_missing_illegal_slots": [],
+          "raw_section_titles": [
+            "人话",
+            "Overview",
+            "User Intent",
+            "User Decisions（locked）",
+            "Acceptance Criteria",
+            "Illegal",
+            "User Decisions — branch ref hierarchy (R2, user GO 1A/2A/3A)",
+            "Acceptance Criteria — R2",
+            "Illegal — R2",
+            "Domain note — Git ref tree",
+            "Non-Goals",
+            "Alignment Surface"
+          ]
+        },
+        "validation": {
+          "schema_version": "1.0",
+          "required": false,
+          "blocked": false,
+          "status": "not_required",
+          "reason_code": "",
+          "findings": [],
+          "projection": {
+            "schema_version": "1.0",
+            "domain_fsm_schema": "domain-fsm.v1",
+            "entity_precedence_schema": "entity-precedence.v1",
+            "frontmatter": {
+              "slug": "loom-git-worktree-implement-harness",
+              "version": "v2.0.0",
+              "status": "frozen",
+              "revision_id": "R2",
+              "language": "zh",
+              "change_reason": "R2 - branch ref hierarchy hard gate: leaf-only lanes; admit fail never implements on main; user GO 1A/2A/3A 2026-07-20",
+              "canonical_refs": {
+                "truth": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+                "tests": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tests.md",
+                "tasks": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tasks.md",
+                "evidence": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/evidence.md"
+              },
+              "parser_contract": "beacon-feature-package-v2",
+              "truth_source_model": "feature_package_authoritative",
+              "truth_map_contract": "beacon-truth-map-v1",
+              "program_ref": "docs/beacon/v2.0.0/programs/loom-kernel-closure-w1w5-v200/feature-graph.json",
+              "parent_kernel": "beacon-v2-rust-kernel-redesign",
+              "upstream_acs": "[\"AC-099\", \"AC-100\"]",
+              "wave": "W1",
+              "priority": "P0",
+              "ux_required": "false",
+              "design_deferral": "kernel/CLI; no product marketing UI",
+              "display_name": "Loom Git Worktree + Implement Harness",
+              "brand": "Loom"
+            },
+            "frontmatter_errors": [],
+            "has_domain_model_section": false,
+            "has_domain_fsm_section": false,
+            "has_illegal_transition_section": false,
+            "entities": [],
+            "entity_precedence": [],
+            "aggregates": [],
+            "illegal_transition_slots": [],
+            "acceptance_criteria": [
+              {
+                "ac_id": "AC-099",
+                "description": "Git worktree 全模式 parity：worktree/current-branch/run-branch；非法组合 fail-closed；cwd 对齐（Must）"
+              },
+              {
+                "ac_id": "AC-100",
+                "description": "ImplementHarnessBackend 在 admitted worktree 内真一轮；IterationResult schema AC-042；非 subprocess 冒充（Must）"
+              },
+              {
+                "ac_id": "AC-LOOM-W1-001",
+                "description": "temp fixture 上可执行 git worktree add 并检出（Must）"
+              },
+              {
+                "ac_id": "AC-LOOM-W1-002",
+                "description": "成功 iterate 写入 artifact_refs/iteration_result（Must）"
+              },
+              {
+                "ac_id": "AC-LOOM-W1-003",
+                "description": "tests 含合法 walk + 非法组合（Must）"
+              },
+              {
+                "ac_id": "AC-BR-001",
+                "description": "workspace admit 物化的 `feature_branch` **必须**是 leaf（含 feature-slug）；不得仅为 `beacon/<version>`（**Must**）"
+              },
+              {
+                "ac_id": "AC-BR-002",
+                "description": "create/switch 前 hierarchy preflight；父子冲突 → `branch_ref_hierarchy_collision`（**Must**）"
+              },
+              {
+                "ac_id": "AC-BR-003",
+                "description": "program-level 模式保留 aggregation 元数据，但 checkout 仍用 leaf feature branch（**Must**）"
+              },
+              {
+                "ac_id": "AC-BR-004",
+                "description": "admit fail 后 implement/goal 不得在 truth_canonical（main/master）写业务实现（**Must**）"
+              },
+              {
+                "ac_id": "AC-BR-005",
+                "description": "暴露 `branch_ref_hierarchy_collision`、`workspace_admission_worktree_failed`、`implement_on_canonical_without_admission`（**Must**）"
+              },
+              {
+                "ac_id": "AC-BR-006",
+                "description": "含 collision fixture + leaf rewrite + no main soft fallback（**Must**）"
+              }
+            ],
+            "bound_ac_ids": [],
+            "orphan_ac_ids": [],
+            "aggregates_missing_illegal_slots": [],
+            "raw_section_titles": [
+              "人话",
+              "Overview",
+              "User Intent",
+              "User Decisions（locked）",
+              "Acceptance Criteria",
+              "Illegal",
+              "User Decisions — branch ref hierarchy (R2, user GO 1A/2A/3A)",
+              "Acceptance Criteria — R2",
+              "Illegal — R2",
+              "Domain note — Git ref tree",
+              "Non-Goals",
+              "Alignment Surface"
+            ]
+          }
+        },
+        "recommended_action": ""
+      },
+      "human_closure_contract": {
+        "required": false,
+        "research_path": "docs/beacon/v2.0.0/research/loom-git-worktree-implement-harness.md",
+        "research_exists": false,
+        "source_architecture_path": "docs/beacon/v2.0.0/source-architecture/index.md",
+        "source_architecture_exists": true,
+        "required_sections": [
+          "architecture",
+          "business_flow"
+        ],
+        "missing_sections": [
+          "architecture",
+          "business_flow"
+        ],
+        "diagram_types": [],
+        "complexity_signals": []
+      },
+      "requirement_closure_contract": {
+        "required": true,
+        "chain_order": [
+          "research",
+          "prd",
+          "user_story",
+          "test_case",
+          "requirement_clarity",
+          "freeze"
+        ],
+        "human_closure_required": false,
+        "paths": {
+          "research": "docs/beacon/v2.0.0/research/loom-git-worktree-implement-harness.md",
+          "prd": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+          "user_story": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+          "test_case": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tests.md"
+        },
+        "exists": {
+          "research": false,
+          "prd": true,
+          "user_story": true,
+          "test_case": true
+        },
+        "required_research_sections": [],
+        "missing_research_sections": [],
+        "ac_projection": {
+          "prd_ac_ids": [
+            "AC-042",
+            "AC-099",
+            "AC-100"
+          ],
+          "user_story_ac_ids": [
+            "AC-042",
+            "AC-099",
+            "AC-100"
+          ],
+          "test_case_ac_ids": [
+            "AC-042",
+            "AC-099",
+            "AC-100"
+          ],
+          "upstream_ac_ids": [
+            "AC-042",
+            "AC-099",
+            "AC-100"
+          ],
+          "missing_test_case_ac_ids": []
+        }
+      },
+      "version_projection_truth_contract": {
+        "required": false,
+        "supported": true,
+        "projection_types": [],
+        "research_path": "docs/beacon/v2.0.0/research/loom-git-worktree-implement-harness.md",
+        "research_exists": false,
+        "required_fields": [
+          "prd_refs",
+          "user_story_refs",
+          "test_case_refs",
+          "coverage_notes",
+          "out_of_scope_notes"
+        ],
+        "field_presence": {
+          "prd_refs": false,
+          "user_story_refs": false,
+          "test_case_refs": false,
+          "coverage_notes": false,
+          "out_of_scope_notes": false
+        },
+        "missing_fields": [],
+        "required_refs": {
+          "prd_refs": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+          "user_story_refs": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+          "test_case_refs": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tests.md"
+        },
+        "missing_ref_targets": [],
+        "ready": false
+      },
+      "support_write_topology_contract": {
+        "schema_version": "1.0",
+        "supported": true,
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "diagnostics": []
+      },
+      "required_artifacts": [],
+      "scanned_files": [
+        "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+        "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tests.md",
+        "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tasks.md",
+        "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/evidence.md"
+      ]
+    },
+    "domain_fsm": {
+      "schema_version": "1.0",
+      "feature": "loom-git-worktree-implement-harness",
+      "feature_slug": "loom-git-worktree-implement-harness",
+      "version": "v2.0.0",
+      "truth_path": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+      "tests_path": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tests.md",
+      "required": false,
+      "blocked": false,
+      "status": "not_required",
+      "reason_code": "",
+      "findings": [],
+      "requirement": {
+        "required": false,
+        "reason": "not_required",
+        "explicit": false,
+        "partial": false,
+        "complexity": false,
+        "business_signal": true,
+        "version_supported": true
+      },
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "loom-git-worktree-implement-harness",
+          "version": "v2.0.0",
+          "status": "frozen",
+          "revision_id": "R2",
+          "language": "zh",
+          "change_reason": "R2 - branch ref hierarchy hard gate: leaf-only lanes; admit fail never implements on main; user GO 1A/2A/3A 2026-07-20",
+          "canonical_refs": {
+            "truth": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+            "tests": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tests.md",
+            "tasks": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tasks.md",
+            "evidence": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/evidence.md"
+          },
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "truth_map_contract": "beacon-truth-map-v1",
+          "program_ref": "docs/beacon/v2.0.0/programs/loom-kernel-closure-w1w5-v200/feature-graph.json",
+          "parent_kernel": "beacon-v2-rust-kernel-redesign",
+          "upstream_acs": "[\"AC-099\", \"AC-100\"]",
+          "wave": "W1",
+          "priority": "P0",
+          "ux_required": "false",
+          "design_deferral": "kernel/CLI; no product marketing UI",
+          "display_name": "Loom Git Worktree + Implement Harness",
+          "brand": "Loom"
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": false,
+        "has_domain_fsm_section": false,
+        "has_illegal_transition_section": false,
+        "entities": [],
+        "entity_precedence": [],
+        "aggregates": [],
+        "illegal_transition_slots": [],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-099",
+            "description": "Git worktree 全模式 parity：worktree/current-branch/run-branch；非法组合 fail-closed；cwd 对齐（Must）"
+          },
+          {
+            "ac_id": "AC-100",
+            "description": "ImplementHarnessBackend 在 admitted worktree 内真一轮；IterationResult schema AC-042；非 subprocess 冒充（Must）"
+          },
+          {
+            "ac_id": "AC-LOOM-W1-001",
+            "description": "temp fixture 上可执行 git worktree add 并检出（Must）"
+          },
+          {
+            "ac_id": "AC-LOOM-W1-002",
+            "description": "成功 iterate 写入 artifact_refs/iteration_result（Must）"
+          },
+          {
+            "ac_id": "AC-LOOM-W1-003",
+            "description": "tests 含合法 walk + 非法组合（Must）"
+          },
+          {
+            "ac_id": "AC-BR-001",
+            "description": "workspace admit 物化的 `feature_branch` **必须**是 leaf（含 feature-slug）；不得仅为 `beacon/<version>`（**Must**）"
+          },
+          {
+            "ac_id": "AC-BR-002",
+            "description": "create/switch 前 hierarchy preflight；父子冲突 → `branch_ref_hierarchy_collision`（**Must**）"
+          },
+          {
+            "ac_id": "AC-BR-003",
+            "description": "program-level 模式保留 aggregation 元数据，但 checkout 仍用 leaf feature branch（**Must**）"
+          },
+          {
+            "ac_id": "AC-BR-004",
+            "description": "admit fail 后 implement/goal 不得在 truth_canonical（main/master）写业务实现（**Must**）"
+          },
+          {
+            "ac_id": "AC-BR-005",
+            "description": "暴露 `branch_ref_hierarchy_collision`、`workspace_admission_worktree_failed`、`implement_on_canonical_without_admission`（**Must**）"
+          },
+          {
+            "ac_id": "AC-BR-006",
+            "description": "含 collision fixture + leaf rewrite + no main soft fallback（**Must**）"
+          }
+        ],
+        "bound_ac_ids": [],
+        "orphan_ac_ids": [],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "人话",
+          "Overview",
+          "User Intent",
+          "User Decisions（locked）",
+          "Acceptance Criteria",
+          "Illegal",
+          "User Decisions — branch ref hierarchy (R2, user GO 1A/2A/3A)",
+          "Acceptance Criteria — R2",
+          "Illegal — R2",
+          "Domain note — Git ref tree",
+          "Non-Goals",
+          "Alignment Surface"
+        ]
+      },
+      "validation": {
+        "schema_version": "1.0",
+        "required": false,
+        "blocked": false,
+        "status": "not_required",
+        "reason_code": "",
+        "findings": [],
+        "projection": {
+          "schema_version": "1.0",
+          "domain_fsm_schema": "domain-fsm.v1",
+          "entity_precedence_schema": "entity-precedence.v1",
+          "frontmatter": {
+            "slug": "loom-git-worktree-implement-harness",
+            "version": "v2.0.0",
+            "status": "frozen",
+            "revision_id": "R2",
+            "language": "zh",
+            "change_reason": "R2 - branch ref hierarchy hard gate: leaf-only lanes; admit fail never implements on main; user GO 1A/2A/3A 2026-07-20",
+            "canonical_refs": {
+              "truth": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+              "tests": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tests.md",
+              "tasks": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tasks.md",
+              "evidence": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/evidence.md"
+            },
+            "parser_contract": "beacon-feature-package-v2",
+            "truth_source_model": "feature_package_authoritative",
+            "truth_map_contract": "beacon-truth-map-v1",
+            "program_ref": "docs/beacon/v2.0.0/programs/loom-kernel-closure-w1w5-v200/feature-graph.json",
+            "parent_kernel": "beacon-v2-rust-kernel-redesign",
+            "upstream_acs": "[\"AC-099\", \"AC-100\"]",
+            "wave": "W1",
+            "priority": "P0",
+            "ux_required": "false",
+            "design_deferral": "kernel/CLI; no product marketing UI",
+            "display_name": "Loom Git Worktree + Implement Harness",
+            "brand": "Loom"
+          },
+          "frontmatter_errors": [],
+          "has_domain_model_section": false,
+          "has_domain_fsm_section": false,
+          "has_illegal_transition_section": false,
+          "entities": [],
+          "entity_precedence": [],
+          "aggregates": [],
+          "illegal_transition_slots": [],
+          "acceptance_criteria": [
+            {
+              "ac_id": "AC-099",
+              "description": "Git worktree 全模式 parity：worktree/current-branch/run-branch；非法组合 fail-closed；cwd 对齐（Must）"
+            },
+            {
+              "ac_id": "AC-100",
+              "description": "ImplementHarnessBackend 在 admitted worktree 内真一轮；IterationResult schema AC-042；非 subprocess 冒充（Must）"
+            },
+            {
+              "ac_id": "AC-LOOM-W1-001",
+              "description": "temp fixture 上可执行 git worktree add 并检出（Must）"
+            },
+            {
+              "ac_id": "AC-LOOM-W1-002",
+              "description": "成功 iterate 写入 artifact_refs/iteration_result（Must）"
+            },
+            {
+              "ac_id": "AC-LOOM-W1-003",
+              "description": "tests 含合法 walk + 非法组合（Must）"
+            },
+            {
+              "ac_id": "AC-BR-001",
+              "description": "workspace admit 物化的 `feature_branch` **必须**是 leaf（含 feature-slug）；不得仅为 `beacon/<version>`（**Must**）"
+            },
+            {
+              "ac_id": "AC-BR-002",
+              "description": "create/switch 前 hierarchy preflight；父子冲突 → `branch_ref_hierarchy_collision`（**Must**）"
+            },
+            {
+              "ac_id": "AC-BR-003",
+              "description": "program-level 模式保留 aggregation 元数据，但 checkout 仍用 leaf feature branch（**Must**）"
+            },
+            {
+              "ac_id": "AC-BR-004",
+              "description": "admit fail 后 implement/goal 不得在 truth_canonical（main/master）写业务实现（**Must**）"
+            },
+            {
+              "ac_id": "AC-BR-005",
+              "description": "暴露 `branch_ref_hierarchy_collision`、`workspace_admission_worktree_failed`、`implement_on_canonical_without_admission`（**Must**）"
+            },
+            {
+              "ac_id": "AC-BR-006",
+              "description": "含 collision fixture + leaf rewrite + no main soft fallback（**Must**）"
+            }
+          ],
+          "bound_ac_ids": [],
+          "orphan_ac_ids": [],
+          "aggregates_missing_illegal_slots": [],
+          "raw_section_titles": [
+            "人话",
+            "Overview",
+            "User Intent",
+            "User Decisions（locked）",
+            "Acceptance Criteria",
+            "Illegal",
+            "User Decisions — branch ref hierarchy (R2, user GO 1A/2A/3A)",
+            "Acceptance Criteria — R2",
+            "Illegal — R2",
+            "Domain note — Git ref tree",
+            "Non-Goals",
+            "Alignment Surface"
+          ]
+        }
+      },
+      "recommended_action": ""
+    },
+    "fake_delivery": {
+      "schema_version": "1.0",
+      "status": "pass",
+      "ok": true,
+      "closure_allowed": true,
+      "detected": [],
+      "policy_terms": [
+        "placeholder implementation",
+        "docs-only completion",
+        "fake runner evidence",
+        "zero assertions",
+        "placeholder evidence"
+      ],
+      "reason_code": ""
+    },
+    "feature_package_validation": {
+      "schema_version": "1.0",
+      "feature": "loom-git-worktree-implement-harness",
+      "feature_slug": "loom-git-worktree-implement-harness",
+      "version": "v2.0.0",
+      "status": "pass",
+      "blocked": false,
+      "reason_code": "",
+      "generated_at": "2026-07-20T01:41:17.436193+00:00",
+      "package_dir": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness",
+      "truth_frontmatter": {
+        "slug": "loom-git-worktree-implement-harness",
+        "version": "v2.0.0",
+        "status": "frozen",
+        "revision_id": "R2",
+        "language": "zh",
+        "change_reason": "R2 - branch ref hierarchy hard gate: leaf-only lanes; admit fail never implements on main; user GO 1A/2A/3A 2026-07-20",
+        "canonical_refs": {
+          "truth": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+          "tests": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tests.md",
+          "tasks": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tasks.md",
+          "evidence": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/evidence.md"
+        },
+        "parser_contract": "beacon-feature-package-v2",
+        "truth_source_model": "feature_package_authoritative",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "program_ref": "docs/beacon/v2.0.0/programs/loom-kernel-closure-w1w5-v200/feature-graph.json",
+        "parent_kernel": "beacon-v2-rust-kernel-redesign",
+        "upstream_acs": "[\"AC-099\", \"AC-100\"]",
+        "wave": "W1",
+        "priority": "P0",
+        "ux_required": "false",
+        "design_deferral": "kernel/CLI; no product marketing UI",
+        "display_name": "Loom Git Worktree + Implement Harness",
+        "brand": "Loom"
+      },
+      "ac_count": 5,
+      "test_count": 9,
+      "checkbox_count": 7,
+      "evidence_row_count": 6,
+      "gate_authority": "canonical_surfaces_preserved",
+      "checkbox_gate_bypass": false,
+      "evidence_gate_truth": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "code": "truth_human_l0_ok",
+          "path": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+          "language": "zh",
+          "l0_headings": [
+            "## 人话"
+          ]
+        }
+      ],
+      "truth_map_contract": "beacon-truth-map-v1",
+      "truth_source_model": "feature_package_authoritative",
+      "truth_package_contract": "beacon-feature-package-v2",
+      "machine_json_role": "generated_state_not_truth",
+      "generated_by": "beacon.truth_map.resolver",
+      "truth_authority": "markdown_feature_package",
+      "json_authority": false,
+      "source_paths": {
+        "truth": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+        "tests": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tests.md",
+        "tasks": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tasks.md",
+        "evidence": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/evidence.md"
+      },
+      "source_hashes": {
+        "truth": "750c2a2e502d5d34543f67b5e3331a8c7bf15914cd1c4596496c90db42840656",
+        "tests": "0a477cae20cdae59b2e2f0b785622cad636f0821c817dc03a71e1d3c7159fa00",
+        "tasks": "0025641e75de07234c37c40a1df916069914dc877227b807de8dce5d46694820",
+        "evidence": "22cf47edb29303750cb4cd3a26fd28acbac3225c714e1f7b60f4810470b7732b"
+      },
+      "runtime_json_requires_markdown_twin": false,
+      "report_path": "docs/beacon/v2.0.0/.machine/requirement/feature-package-validation.json"
+    },
+    "determinism_check": {
+      "placeholder_count": 0,
+      "hollow_template_count": 0
+    },
+    "closure_contract": {
+      "closure_allowed": true,
+      "detected": []
+    },
+    "recommended_action": ""
+  },
+  "truth_frontmatter_sync": {
+    "updated": false,
+    "status": "frozen",
+    "path": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md"
+  },
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "loom-git-worktree-implement-harness",
+    "feature_slug": "loom-git-worktree-implement-harness",
+    "version": "v2.0.0",
+    "revision_id": "R2",
+    "source_revision_id": "R1",
+    "status": "ready",
+    "cleanup_required": false,
+    "removed_requirement_count": 0,
+    "added_requirement_count": 0,
+    "retained_requirement_count": 2,
+    "removed_requirement_surfaces": [],
+    "added_requirement_surfaces": [],
+    "retained_requirement_surfaces": [
+      {
+        "revision_id": "R2",
+        "id": "AC-002",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "implement-harness",
+        "text": "ImplementHarnessBackend 在 admitted worktree 内真一轮；IterationResult schema AC-042；非 subprocess 冒充（Must）",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+        "signature": "ac::::implement-harness::implementharnessbackend 在 admitted worktree 内真一轮；iterationresult schema ac-042；非 subprocess 冒充（must）::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "P0",
+        "text": "AC-099, AC-100",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+        "signature": "ac::::p0::ac-099, ac-100::"
+      }
+    ],
+    "current_baseline_hash": "sha256:7b25ba56e28df8ae2541c8f495ba4464154c95dee391871a220d88fb4bd97f18",
+    "source_baseline_hash": "sha256:291ce6bd0ebb0bf49299596f2a419053f4ecda37fd5dc68cc13ed5fa64406177",
+    "story_state_ref": "docs/beacon/v2.0.0/.machine/user-story/loom-git-worktree-implement-harness.json",
+    "generated_at": "2026-07-20T01:41:17.533169+00:00",
+    "json_ref": "docs/beacon/v2.0.0/.machine/execution/revision-delta-loom-git-worktree-implement-harness.json",
+    "markdown_ref": "docs/beacon/v2.0.0/execution/revision-delta-loom-git-worktree-implement-harness.md"
+  },
+  "release_projection_sync": {
+    "status": "pass",
+    "truth_authority": false,
+    "lifecycle_stage": false,
+    "release_publish_action": false,
+    "feature_projection": {
+      "schema_version": "1.0",
+      "status": "pass",
+      "feature": "loom-git-worktree-implement-harness",
+      "feature_slug": "loom-git-worktree-implement-harness",
+      "version": "v2.0.0",
+      "json_path": "docs/beacon/v2.0.0/.machine/change/loom-git-worktree-implement-harness.json",
+      "markdown_path": "docs/beacon/v2.0.0/change/loom-git-worktree-implement-harness.md",
+      "json_written": true,
+      "markdown_exists": true,
+      "projection_role": {
+        "artifact_role": "version_aggregate_projection",
+        "truth_source": false,
+        "gate_source": false,
+        "lifecycle_stage": false,
+        "release_publish_action": false
+      },
+      "payload": {
+        "schema_version": "1.0",
+        "version": "v2.0.0",
+        "feature": "loom-git-worktree-implement-harness",
+        "feature_slug": "loom-git-worktree-implement-harness",
+        "summary": "Maintains release-facing version aggregate projection guards so QA accepted features are included in version change scope before release check.",
+        "status": "generated",
+        "accepted_at": "",
+        "revision_id": "R2",
+        "projection_role": {
+          "artifact_role": "version_aggregate_projection",
+          "truth_source": false,
+          "gate_source": false,
+          "lifecycle_stage": false,
+          "release_publish_action": false
+        },
+        "truth_authority": false,
+        "lifecycle_stage": false,
+        "added": [
+          "Feature-level release projection input for QA accepted current feature",
+          "Version aggregate projection inclusion guard and repair metadata",
+          "Repair-only projection rebuild path for release preflight artifacts"
+        ],
+        "removed": [
+          "Manual-only version aggregate projection repair before release check"
+        ],
+        "fixed": [
+          "Release check can route missing current feature projection to an actionable repair path",
+          "Version aggregate projection remains a read model instead of requirement truth"
+        ],
+        "traceability_refs": [
+          "docs/beacon/v2.0.0/change/loom-git-worktree-implement-harness.md",
+          "docs/beacon/v2.0.0/prd/loom-git-worktree-implement-harness.md",
+          "docs/beacon/v2.0.0/user-story/loom-git-worktree-implement-harness.md",
+          "docs/beacon/v2.0.0/qa/test-cases/loom-git-worktree-implement-harness.md",
+          "docs/beacon/v2.0.0/.machine/execution/loom-git-worktree-implement-harness.revision.json"
+        ],
+        "generated_at": "2026-07-20T01:41:17.565792+00:00"
+      }
+    },
+    "version_aggregate_projection": {
+      "schema_version": "1.0",
+      "status": "pass",
+      "version": "v2.0.0",
+      "markdown_path": "docs/beacon/v2.0.0/change/v2.0.0.md",
+      "json_path": "docs/beacon/v2.0.0/.machine/change/v2.0.0.json",
+      "feature_count": 4,
+      "feature_slugs": [
+        "beacon-v2-goal-durable-longrun",
+        "beacon-v2-product-goal-orchestrator",
+        "beacon-v2-rust-kernel-redesign",
+        "loom-git-worktree-implement-harness"
+      ],
+      "projection_role": {
+        "artifact_role": "version_aggregate_projection",
+        "truth_source": false,
+        "gate_source": false,
+        "lifecycle_stage": false,
+        "release_publish_action": false
+      },
+      "truth_authority": false,
+      "lifecycle_stage": false,
+      "release_publish_action": false,
+      "implementation_order": {
+        "status": "analyzed",
+        "feature_count": 4,
+        "ordered_feature_slugs": [
+          "beacon-v2-rust-kernel-redesign",
+          "beacon-v2-product-goal-orchestrator",
+          "beacon-v2-goal-durable-longrun",
+          "loom-git-worktree-implement-harness"
+        ],
+        "waves": [
+          {
+            "wave": 1,
+            "parallelizable": true,
+            "features": [
+              {
+                "feature": "beacon-v2-rust-kernel-redesign",
+                "feature_slug": "beacon-v2-rust-kernel-redesign",
+                "depends_on_features": [],
+                "direct_delivery_services": [],
+                "writable_services": [],
+                "parallelizable": true,
+                "reason_code": "parallel_no_conflict"
+              },
+              {
+                "feature": "beacon-v2-product-goal-orchestrator",
+                "feature_slug": "beacon-v2-product-goal-orchestrator",
+                "depends_on_features": [],
+                "direct_delivery_services": [],
+                "writable_services": [],
+                "parallelizable": true,
+                "reason_code": "parallel_no_conflict"
+              },
+              {
+                "feature": "beacon-v2-goal-durable-longrun",
+                "feature_slug": "beacon-v2-goal-durable-longrun",
+                "depends_on_features": [],
+                "direct_delivery_services": [],
+                "writable_services": [],
+                "parallelizable": true,
+                "reason_code": "parallel_no_conflict"
+              },
+              {
+                "feature": "loom-git-worktree-implement-harness",
+                "feature_slug": "loom-git-worktree-implement-harness",
+                "depends_on_features": [],
+                "direct_delivery_services": [],
+                "writable_services": [],
+                "parallelizable": true,
+                "reason_code": "parallel_no_conflict"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

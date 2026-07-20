@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-18T03:43:39.245287+00:00",
+  "generated_at": "2026-07-19T15:18:23.216895+00:00",
   "feature": "beacon-v2-goal-durable-longrun",
   "feature_slug": "beacon-v2-goal-durable-longrun",
   "version": "v2.0.0",
@@ -18,18 +18,18 @@
     "evidence": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/evidence.md"
   },
   "source_hashes": {
-    "truth": "04e2429137365e933a2284d45b719be72a49ab0d5c980a2248d150bd7273594b",
-    "tests": "9ba739ace76ef0c06f777f08f976a0c1e3c9e9f6ff2b854f159ef14b622f9f7e",
-    "tasks": "f39eed1666614741e8d7be6df95c71f4e08ff6168068cdad8345f03b2d1d28db",
-    "evidence": "896e07367f58cb5f40b7ba7394a8bb1ac56f4ed88f064bf8becd460ede094e86"
+    "truth": "c537d52e43f3c0480570d7afa798a856d1faecd9878ce68ecbcde6c5a102c329",
+    "tests": "d013c53e3d486149a0606183fb03bba3349046166124f36ca227afcec64cb378",
+    "tasks": "f035a5835c3f24d97160f5d6fd0a70bb272f8ac30adc1d1b421ba839274da1c3",
+    "evidence": "87ae1ee135d9b051b6b6ad8edac28394bf3014038ca7c24100a65148d1ff49e6"
   },
   "truth_frontmatter": {
     "slug": "beacon-v2-goal-durable-longrun",
     "version": "v2.0.0",
     "status": "frozen",
-    "revision_id": "R2",
+    "revision_id": "R3",
     "language": "zh",
-    "change_reason": "R2 - full AC-DGS-001..014 parity table + AgentDriver one-shot; pln-review 2026-07-18",
+    "change_reason": "R3 - distill Codex Goal continuation/budget_limit/objective_updated into Loom steering contract; user GO 2026-07-19 1A/2A/3A/4A",
     "canonical_refs": {
       "truth": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/truth.md",
       "tests": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
@@ -41,7 +41,9 @@
     "truth_map_contract": "beacon-truth-map-v1",
     "program_ref": "docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/feature-graph.json",
     "ux_required": "false",
-    "design_deferral": "CLI/orchestrator long-run; no product marketing UI"
+    "design_deferral": "CLI/orchestrator long-run; no product marketing UI",
+    "promotion_ref": "user:2026-07-19 GO 1A durable-longrun change; 2A objective_updated Must; 3A audit→awaiting_verifier; 4A gen-change",
+    "source_advisory": "docs/beacon/v2.0.0/research/loom-goal-steering-codex-continuation-pln-review.md"
   },
   "frontmatter_errors": [],
   "acceptance_criteria": [
@@ -124,6 +126,51 @@
       "ac_id": "AC-V2-DLR-016",
       "theme": "legal-illegal-tests",
       "description": "tests 含 legal walk + illegal 行（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-ST-001",
+      "theme": "steering-assets",
+      "description": "存在 continuation/budget_limit/objective_updated 规范模板 + MUST_SECTIONS checklist（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-ST-002",
+      "theme": "inject-bundle",
+      "description": "requeue→turn_active **必须** InjectBundle 顺序 steering→digest→next_action（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-ST-003",
+      "theme": "objective-as-data",
+      "description": "objective 按 untrusted user data 处理，非 system override（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-ST-004",
+      "theme": "completion-audit-gate",
+      "description": "completion audit 段存在且 **禁止** 指示绕过 verifier 的 complete；只进 awaiting_verifier（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-ST-005",
+      "theme": "blocked-audit",
+      "description": "blocked audit 段：≥3 consecutive goal turns（含 auto-requeue）（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-ST-006",
+      "theme": "budget-wrap-up",
+      "description": "halt_budget 时 inject budget_limit；禁新实质工作；禁预算伪 complete（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-ST-007",
+      "theme": "objective-updated",
+      "description": "用户改 objective 后 next turn inject objective_updated（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-ST-008",
+      "theme": "section-tests",
+      "description": "tests 含 section presence / inject order / illegal inject（**Must**）"
+    },
+    {
+      "ac_id": "AC-V2-ST-009",
+      "theme": "budget-fields",
+      "description": "remaining tokens/turns 字段可渲染（**Should**）"
     }
   ],
   "test_rows": [
@@ -238,64 +285,163 @@
       "command": "`python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_tests_md_legal_illegal -q`",
       "assertion": "legal/illegal rows present",
       "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-ST-001",
+      "tc_id": "TC-V2-ST-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_steering_assets_exist -q`",
+      "assertion": "fixtures + MUST_SECTIONS exist",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-ST-001",
+      "tc_id": "TC-V2-ST-002",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_continuation_must_sections -q`",
+      "assertion": "continuation covers MUST tags",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-ST-002",
+      "tc_id": "TC-V2-ST-003",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_inject_bundle_order -q`",
+      "assertion": "steering before digest before next_action",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-ST-003",
+      "tc_id": "TC-V2-ST-004",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_objective_as_data_language -q`",
+      "assertion": "user-provided data wording present",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-ST-004",
+      "tc_id": "TC-V2-ST-005",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_no_self_complete_language -q`",
+      "assertion": "no verifier-bypass complete language",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-ST-005",
+      "tc_id": "TC-V2-ST-006",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_blocked_audit_three_turns -q`",
+      "assertion": "≥3 goal turns blocked audit",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-ST-006",
+      "tc_id": "TC-V2-ST-007",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_budget_limit_wrap_up_inject -q`",
+      "assertion": "halt_budget uses budget_limit template",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-ST-007",
+      "tc_id": "TC-V2-ST-008",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_objective_updated_inject -q`",
+      "assertion": "objective edit → objective_updated",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-V2-ST-008",
+      "tc_id": "TC-V2-ST-009",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v200_goal_durable_longrun.py::test_truth_lists_st_acs -q`",
+      "assertion": "truth lists AC-V2-ST-001..008",
+      "evidence_path": ""
     }
   ],
   "task_rows": [
     {
-      "id": "LINE-10",
-      "title": "TASK-V2-DLR-01 Port v1.6.7 durable supervisor contracts into Rust GoalRun schema",
-      "status": "unchecked"
-    },
-    {
-      "id": "LINE-11",
-      "title": "TASK-V2-DLR-02 Implement AgentDriver requeue loop + --longrun CLI",
-      "status": "unchecked"
-    },
-    {
-      "id": "LINE-12",
-      "title": "TASK-V2-DLR-03 resume-pack digest injection into host agent turns",
-      "status": "unchecked"
-    },
-    {
       "id": "LINE-13",
-      "title": "TASK-V2-DLR-04 max_agent_turns / token_budget halt",
-      "status": "unchecked"
+      "title": "TASK-V2-DLR-01 Durable supervisor parity hooks",
+      "status": "checked"
     },
     {
       "id": "LINE-14",
-      "title": "TASK-V2-DLR-05 Python shim parity `beacon goal run --longrun`",
-      "status": "unchecked"
+      "title": "TASK-V2-DLR-02 AgentDriver requeue loop + --longrun CLI",
+      "status": "checked"
     },
     {
       "id": "LINE-15",
-      "title": "TASK-V2-DLR-06 skill `$beacon-goal` longrun intent detection",
-      "status": "unchecked"
+      "title": "TASK-V2-DLR-03 resume-pack digest injection into host agent turns",
+      "status": "checked"
     },
     {
       "id": "LINE-16",
-      "title": "TASK-V2-DLR-07 contract tests test_v200_goal_durable_longrun.py",
+      "title": "TASK-V2-DLR-04 Contract tests test_v200_goal_durable_longrun.py (DLR core)",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-20",
+      "title": "TASK-V2-ST-01 Wire InjectBundle order in AgentDriver / render_turn_prompt",
       "status": "unchecked"
     },
     {
-      "id": "LINE-17",
-      "title": "TASK-V2-DLR-08 parity fixture from v1.6.7 durable supervisor",
+      "id": "LINE-21",
+      "title": "TASK-V2-ST-02 Load fixtures/steering templates; forbid private shortening of MUST sections",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-22",
+      "title": "TASK-V2-ST-03 halt_budget → budget_limit inject",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-23",
+      "title": "TASK-V2-ST-04 objective edit event → objective_updated inject",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-24",
+      "title": "TASK-V2-ST-05 GoalTurnCounter for blocked audit (≥3)",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-25",
+      "title": "TASK-V2-ST-06 Add TC-V2-ST-* tests in test_v200_goal_durable_longrun.py",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-26",
+      "title": "TASK-V2-ST-07 Update beacon-goal / loom-goal skill longrun section to mention steering",
+      "status": "unchecked"
+    },
+    {
+      "id": "LINE-27",
+      "title": "TASK-V2-ST-08 Regenerate GoalRun main axis after freeze; validate",
       "status": "unchecked"
     }
   ],
   "checkbox_errors": [],
   "evidence_rows": [
     {
-      "surface": "beacon-gen-truth",
+      "surface": "requirement_truth",
       "authority": "requirement_truth",
       "canonical_artifact": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/truth.md",
-      "status": "frozen",
+      "status": "frozen R3",
       "route": "truth"
     },
     {
-      "surface": "beacon-gen-truth",
+      "surface": "test_truth",
       "authority": "test_truth",
       "canonical_artifact": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
-      "status": "frozen",
+      "status": "frozen R3",
+      "route": "truth"
+    },
+    {
+      "surface": "tasks",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tasks.md",
+      "status": "frozen R3",
       "route": "truth"
     },
     {
@@ -313,11 +459,53 @@
       "route": "program"
     },
     {
-      "surface": "research",
+      "surface": "research_longrun",
       "authority": "support_advisory",
       "canonical_artifact": "docs/beacon/v2.0.0/research/beacon-v2-goal-durable-longrun.md",
       "status": "indexed",
       "route": "change"
+    },
+    {
+      "surface": "research_steering",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/research/loom-goal-steering-codex-continuation-pln-review.md",
+      "status": "accepted GO",
+      "route": "change"
+    },
+    {
+      "surface": "change_r3",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/change/beacon-v2-goal-durable-longrun-steering-r3.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "steering_fixtures",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/fixtures/steering/continuation.md",
+      "status": "contract asset",
+      "route": "implement"
+    },
+    {
+      "surface": "steering_fixtures",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/fixtures/steering/budget_limit.md",
+      "status": "contract asset",
+      "route": "implement"
+    },
+    {
+      "surface": "steering_fixtures",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/fixtures/steering/objective_updated.md",
+      "status": "contract asset",
+      "route": "implement"
+    },
+    {
+      "surface": "must_checklist",
+      "authority": "requirement_truth",
+      "canonical_artifact": "skills/beacon/references/goal-steering/MUST_SECTIONS.md",
+      "status": "contract asset",
+      "route": "implement"
     },
     {
       "surface": "parent",
@@ -325,6 +513,13 @@
       "canonical_artifact": "docs/beacon/v2.0.0/features/beacon-v2-product-goal-orchestrator/truth.md",
       "status": "frozen",
       "route": "dependency"
+    },
+    {
+      "surface": "implement_tests",
+      "authority": "test_truth",
+      "canonical_artifact": "tests/test_v200_goal_durable_longrun.py",
+      "status": "partial (ST package tests pass; inject wire open (TASK-V2-ST))",
+      "route": "implement"
     }
   ]
 }

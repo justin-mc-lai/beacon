@@ -29,7 +29,9 @@ classifiers = [
 [project.scripts]
 beacon = "beacon.main:app"
 ptk = "beacon.main:app"
-loom = "loom.main:app"
+# PATH governance (v2.0.0): production loom CLI is Rust (beacon-v2 / loom binary).
+# Python brand facade is opt-in only — must NOT shadow Rust `loom` on PATH.
+loom-py = "loom.main:app"
 
 [project.optional-dependencies]
 dev = [

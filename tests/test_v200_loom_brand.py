@@ -22,6 +22,9 @@ def test_naming_contract() -> None:
     c = naming_contract()
     assert c["pip"] == "loom"
     assert c["cli"] == "loom"
+    assert c["cli_rust_canonical"] == "beacon-v2"
+    assert c["python_escape_cli"] == "loom-py"
+    assert c["backend"] == "rust"
     assert c["public_skill"] == "loom-goal"
     assert c["default_replace_beacon"] is False
 
@@ -94,3 +97,25 @@ def test_legal_illegal_rows() -> None:
     assert rows["legal"]
     assert rows["illegal"]
     assert any("I-LOOM-BR-001" in (i.get("code") or "") for i in rows["illegal"])
+
+
+def test_pyproject_no_loom_console_script() -> None:
+    text = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    assert 'loom = "loom.main:app"' not in text
+    assert 'loom-py = "loom.main:app"' in text
+    assert 'beacon = "beacon.main:app"' in text
+
+
+def test_install_loom_cli_script_exists() -> None:
+    p = ROOT / "scripts/install-loom-cli.sh"
+    assert p.is_file()
+    text = p.read_text(encoding="utf-8")
+    assert "beacon-v2" in text
+    assert "production" in text.lower() or "unchanged" in text.lower() or "not modified" in text.lower()
+
+
+def test_install_loom_skills_script_exists() -> None:
+    p = ROOT / "scripts/install-loom-skills.sh"
+    assert p.is_file()
+    text = p.read_text(encoding="utf-8")
+    assert "skills/loom" in text

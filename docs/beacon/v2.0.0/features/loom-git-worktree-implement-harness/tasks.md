@@ -2,17 +2,20 @@
 slug: loom-git-worktree-implement-harness
 version: v2.0.0
 status: frozen
-revision_id: R1
+revision_id: R2
 ---
 
-# Tasks: loom-git-worktree-implement-harness
+# Tasks: loom-git-worktree-implement-harness R2
 
-- [x] TASK-W1-001 Real git worktree add path under .loom/worktrees or git worktree
-- [x] TASK-W1-002 Wire ImplementHarnessBackend to implement harness (not bare subprocess)
-- [x] TASK-W1-003 Enforce harness cwd == admitted_worktree
-- [x] TASK-W1-004 Integration tests TC-099/TC-100 behavior level
-- [x] TASK-W1-005 CLI loom worktree resolve --materialize uses git when available
+## R1 (retained)
 
-## Wave
+- [x] W1 worktree modes + implement harness contract
 
-W1 — implement only after dependencies frozen and previous wave evidence exists when serial.
+## R2 branch hierarchy (user GO 1A/2A/3A)
+
+- [x] TASK-BR-01 Leaf-only resolve in `resolve_workspace_branch_targets`
+- [x] TASK-BR-02 Hierarchy preflight helper + reason_code
+- [x] TASK-BR-03 `ensure_expected_worktree_lane` refuses parent-with-children create
+- [x] TASK-BR-04 implement/goal block on admit fail (no main soft fallback)
+- [x] TASK-BR-05 tests `tests/test_v200_branch_ref_hierarchy.py`
+- [x] TASK-BR-06 v1.6.8 note: shared Python path covers runtime (docs/evidence)

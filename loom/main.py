@@ -1,4 +1,11 @@
-"""Loom CLI surface — thin dual-install entry; does not overwrite beacon."""
+"""Loom Python facade — DEBUG / escape hatch only (`loom-py`).
+
+PATH governance (v2.0.0):
+  - Product CLI name `loom` is the **Rust** binary (scripts/install-loom-cli.sh).
+  - This module is registered as console script **`loom-py` only** — never `loom`.
+  - Goal runtime here reuses Python product_goal for transitional demos; evolution
+    track should call Rust `loom` / `beacon-v2`.
+"""
 
 from __future__ import annotations
 

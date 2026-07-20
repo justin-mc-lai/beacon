@@ -134,7 +134,7 @@ beacon goal driver stop --run-id <id>
 **Rules**
 - Default `goal run` does **not** start driver (idle)
 - `--longrun` attaches durable supervisor + AgentDriver for **this run only**
-- Each turn injects **resume-pack digest** only (not full chat/jsonl)
+- Each turn injects **InjectBundle**: steering (Codex distill templates under `docs/beacon/v2.0.0/fixtures/steering/`) → **resume-pack digest** → next_action (not full chat/jsonl). Completion audit only prepares **awaiting_verifier**; never self-certify complete.
 - Complete still needs verifier; release always human
 - Env: `BEACON_HOST_GOAL_BRIDGE_CMD` with `{prompt_file}` `{run_id}` `{project}`
 - Budget defaults: max_agent_turns=32, turn_timeout_sec=3600, heartbeat=120s
@@ -182,3 +182,34 @@ beacon doctor align-run-id --run-id <id>
 ```
 
 Program: `beacon-prod-ops-hardening-v168`. Philosophy shared with Loom/v2.
+
+
+## Multi-version dual-track (v1.6.8\\v2.0.0)
+
+One sentence may name multiple versions; Beacon decomposes into parallel tracks + lakes:
+
+```bash
+beacon goal multi-version-plan "双轨 v1.6.8\\v2.0.0 leaf-admit + InjectBundle" --json
+beacon goal run "v1.6.8\\v2.0.0 并行修复" --project . --version auto --longrun
+```
+
+Rules:
+- Each track uses leaf admit: `beacon/<version>/<feature-slug>`
+- Implement never soft-falls back to main without admission
+- Complete still needs verifier per track; release human
+
+## Host subagent keyword gate (v1.6.8)
+
+**Default: single-thread.** Host Codex/Claude agents spawn only when utterance contains global tokens (`子代理` / `subagent` / `多代理` / …) or explicit flag, and not negated (`不要子代理` / `--no-subagent`).
+
+**UD-SA-001:** `并行` / `多湖` alone enable **satellite worktrees**, not host agents.
+
+```bash
+beacon doctor install-subagent-pack -p . --host-runtime codex --pack minimal
+beacon doctor install-subagent-pack -p . --host-runtime claude --pack minimal
+beacon doctor verify-subagent-runtime -p . --host-runtime codex --require-agents --json
+```
+
+Examples: `skills/beacon/examples/subagent-keyword-off-30s.md`, `subagent-review-on-30s.md`, `subagent-research-on-30s.md`.
+
+Enhancement only: cannot_complete_goal; no auto-release; no second public entry.

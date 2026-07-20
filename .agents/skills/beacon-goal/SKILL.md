@@ -51,7 +51,27 @@ beacon goal status|pause|resume|complete|tick ...
 
 ## Hard rules
 
+## Git worktree 开发规范（渐进加载 always-on）
+
+**必须**打开并遵守：
+
+- 规范：`skills/beacon/references/git-worktree-execution-flow.md`
+- 示例：`skills/beacon/examples/git-worktree-process-correct-30s.md`
+
+| 阶段 | 树 |
+|------|-----|
+| truth / freeze / change | **canonical** `main`/`master` only |
+| implement / QA 写路径 | **admitted git worktree**（`beacon workspace admit` → cwd=`worktree_path`） |
+| 对齐主干 | `git merge` / `rebase` main → delivery；**禁止**用 cherry-pick 当主对齐路径 |
+
+进入 implement 前须等价完成 standard execution precheck（canonical baseline 已合入 feature、admission pass）。  
+CLI 双装（`beacon`/`loom`）≠ 开发 worktree；安装 skill 不会自动 admit。
+
+渐进加载：goal/implement/qa/release stage 的 `references` 必须包含上述 flow（见 `product_goal_runtime.progressive_worktree_refs` / Rust `skill_load_plan.v1`）。
+
+
 - 禁止自证完成；complete 需 CLI verifier
+- **git worktree 规范 always-on**（见下节）；implement 不得在未 admit 的脏 main 上直接写业务
 - release 默认人工确认
 - 不得要求用户手搓双 skill 流水线
 - `ux_required` / 视觉交付时自动插入 design stage：`beacon design baseline --surface auto` + `beacon design lint` 证据
@@ -114,7 +134,7 @@ beacon goal driver stop --run-id <id>
 **Rules**
 - Default `goal run` does **not** start driver (idle)
 - `--longrun` attaches durable supervisor + AgentDriver for **this run only**
-- Each turn injects **resume-pack digest** only (not full chat/jsonl)
+- Each turn injects **InjectBundle**: steering (Codex distill templates under `docs/beacon/v2.0.0/fixtures/steering/`) → **resume-pack digest** → next_action (not full chat/jsonl). Completion audit only prepares **awaiting_verifier**; never self-certify complete.
 - Complete still needs verifier; release always human
 - Env: `BEACON_HOST_GOAL_BRIDGE_CMD` with `{prompt_file}` `{run_id}` `{project}`
 - Budget defaults: max_agent_turns=32, turn_timeout_sec=3600, heartbeat=120s
@@ -142,3 +162,54 @@ beacon goal axis validate -v v2.0.0 --program beacon-v2-product-goal-parallel-v2
 
 Axis embeds Loom dual-install, optional subagent, and trace mounts. Same UD-AXIS rules as v1.6.7.
 
+
+
+## v1.6.8 Production ops
+
+```bash
+# Hotfix mode (not a second public skill entry)
+beacon goal run "生产：…" --mode hotfix --from-version <tag> --forward-port <branch> --rollback-notes "…"
+
+# Longrun default: project goal.longrun_default=true (new projects)
+beacon goal run "…" -v v1.6.8
+beacon goal run "…" --no-longrun   # opt-out
+
+# Fleet / dual-version
+beacon version fleet
+beacon doctor init-dual-version --previous-baseline release/v1.6.7 --next-feature main
+beacon doctor repair-evidence-manifest -v v1.6.8
+beacon doctor align-run-id --run-id <id>
+```
+
+Program: `beacon-prod-ops-hardening-v168`. Philosophy shared with Loom/v2.
+
+
+## Multi-version dual-track (v1.6.8\\v2.0.0)
+
+One sentence may name multiple versions; Beacon decomposes into parallel tracks + lakes:
+
+```bash
+beacon goal multi-version-plan "双轨 v1.6.8\\v2.0.0 leaf-admit + InjectBundle" --json
+beacon goal run "v1.6.8\\v2.0.0 并行修复" --project . --version auto --longrun
+```
+
+Rules:
+- Each track uses leaf admit: `beacon/<version>/<feature-slug>`
+- Implement never soft-falls back to main without admission
+- Complete still needs verifier per track; release human
+
+## Host subagent keyword gate (v1.6.8)
+
+**Default: single-thread.** Host Codex/Claude agents spawn only when utterance contains global tokens (`子代理` / `subagent` / `多代理` / …) or explicit flag, and not negated (`不要子代理` / `--no-subagent`).
+
+**UD-SA-001:** `并行` / `多湖` alone enable **satellite worktrees**, not host agents.
+
+```bash
+beacon doctor install-subagent-pack -p . --host-runtime codex --pack minimal
+beacon doctor install-subagent-pack -p . --host-runtime claude --pack minimal
+beacon doctor verify-subagent-runtime -p . --host-runtime codex --require-agents --json
+```
+
+Examples: `skills/beacon/examples/subagent-keyword-off-30s.md`, `subagent-review-on-30s.md`, `subagent-research-on-30s.md`.
+
+Enhancement only: cannot_complete_goal; no auto-release; no second public entry.

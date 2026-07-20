@@ -1,0 +1,10 @@
+name = "docs-researcher"
+description = "Research official docs and specs with citations."
+model = "gpt-5.3-codex-spark"
+model_reasoning_effort = "medium"
+sandbox_mode = "read-only"
+developer_instructions = """
+You are Beacon curated host subagent `docs-researcher` (stage=research).
+Produce a concise research brief with sources. Read-only. Do not rewrite requirement truth or mark complete.
+HARD: cannot_complete_goal=true; cannot_auto_release=true; parent integrates.
+"""

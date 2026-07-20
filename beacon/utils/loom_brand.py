@@ -11,9 +11,13 @@ from typing import Any
 
 SCHEMA = "loom-brand-surface.v1"
 
-# Locked naming matrix (AC-LOOM-BR-001)
-PIP_NAME = "loom"
-CLI_NAME = "loom"
+# Locked naming matrix (AC-LOOM-BR-001) — dual runtime tracks
+# Production: Python `beacon`. Evolution: Rust `beacon-v2` / brand alias `loom`.
+# Python `loom-py` is optional debug facade only (must not own PATH name `loom`).
+PIP_NAME = "loom"  # brand name
+CLI_NAME = "loom"  # PATH product CLI = Rust binary
+CLI_RUST_CANONICAL = "beacon-v2"
+PYTHON_ESCAPE_CLI = "loom-py"
 PUBLIC_SKILL = "loom-goal"
 SUPPORT_SKILL = "loom-loop-goal"
 STATE_ROOT_DIR = ".loom"
@@ -21,6 +25,7 @@ HOME_STATE = "~/.loom"
 BEACON_CLI = "beacon"
 BEACON_PUBLIC_SKILL = "beacon-goal"
 BEACON_STATE_ROOT = ".beacon"
+BACKEND = "rust"
 
 REASON_REPLACE_BEACON = "loom_must_not_replace_beacon"
 REASON_SHARED_STATE = "loom_beacon_shared_unlabeled_state"
@@ -32,6 +37,9 @@ def naming_contract() -> dict[str, Any]:
         "schema": SCHEMA,
         "pip": PIP_NAME,
         "cli": CLI_NAME,
+        "cli_rust_canonical": CLI_RUST_CANONICAL,
+        "python_escape_cli": PYTHON_ESCAPE_CLI,
+        "backend": BACKEND,
         "public_skill": PUBLIC_SKILL,
         "support_skill": SUPPORT_SKILL,
         "state_root": STATE_ROOT_DIR,
@@ -42,6 +50,11 @@ def naming_contract() -> dict[str, Any]:
         "dual_install": True,
         "default_replace_beacon": False,
         "w4_early_default_forbidden": True,
+        "path_governance": {
+            "product_loom": "Rust binary from scripts/install-loom-cli.sh",
+            "python_facade": "loom-py only; must not register console script name loom",
+            "production_beacon": "Python beacon CLI — never overwritten by loom install",
+        },
     }
 
 
@@ -139,8 +152,8 @@ def docs_forbid_early_default(paths: list[Path]) -> dict[str, Any]:
 def dual_matrix_checklist() -> dict[str, Any]:
     return {
         "rows": [
-            {"id": "which-cli", "beacon": "beacon", "loom": "loom"},
-            {"id": "version", "beacon": "v1.6.7 production", "loom": "v2.0.0 evolution"},
+            {"id": "which-cli", "beacon": "beacon (Python)", "loom": "loom / beacon-v2 (Rust)"},
+            {"id": "version", "beacon": "v1.6.8 production Python", "loom": "v2.0.0 evolution Rust"},
             {"id": "goal-entry", "beacon": "$beacon-goal / beacon goal", "loom": "$loom-goal / loom goal"},
             {"id": "release", "beacon": "human gate", "loom": "human gate"},
             {"id": "state-root", "beacon": ".beacon", "loom": ".loom"},

@@ -22,3 +22,10 @@ path = "src/main.rs"
 assert_cmd = "2"
 tempfile = "3"
 serde_json = "1"
+
+# Brand alias for evolution track (same binary as beacon-v2). Install script may
+# also symlink loom -> beacon-v2; having both cargo bins keeps `cargo install` usable.
+[[bin]]
+name = "loom"
+path = "src/main.rs"
+

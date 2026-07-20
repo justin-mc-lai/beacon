@@ -3,138 +3,124 @@
   "contract_kind": "beacon_test_contract_index",
   "version": "v1.6.8",
   "runtime_line": "v1.6.8",
-  "runtime_release_line": "v1.6.7",
+  "runtime_release_line": "v1.6.8",
   "docs_line": "v1.6.8",
-  "feature": "beacon-v2-loom-ops-philosophy-sync",
-  "feature_slug": "beacon-v2-loom-ops-philosophy-sync",
-  "feature_line_status": "active_delivery",
+  "feature": "beacon-worktree-progressive-skill-flow-v168",
+  "feature_slug": "beacon-worktree-progressive-skill-flow-v168",
+  "feature_line_status": "current_runtime_release",
   "truth_refs": {
-    "truth": "docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/truth.md",
-    "tests": "docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
-    "tasks": "docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tasks.md",
-    "evidence": "docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/evidence.md",
-    "ac_matrix": "docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
-    "story_state": "docs/beacon/v1.6.8/.machine/user-story/beacon-v2-loom-ops-philosophy-sync.json"
+    "truth": "docs/beacon/v1.6.8/features/beacon-worktree-progressive-skill-flow-v168/truth.md",
+    "tests": "docs/beacon/v1.6.8/features/beacon-worktree-progressive-skill-flow-v168/tests.md",
+    "tasks": "docs/beacon/v1.6.8/features/beacon-worktree-progressive-skill-flow-v168/tasks.md",
+    "evidence": "docs/beacon/v1.6.8/features/beacon-worktree-progressive-skill-flow-v168/evidence.md",
+    "ac_matrix": "docs/beacon/v1.6.8/features/beacon-worktree-progressive-skill-flow-v168/tests.md",
+    "story_state": "docs/beacon/v1.6.8/.machine/user-story/beacon-worktree-progressive-skill-flow-v168.json"
   },
   "source_hashes": {
-    "truth": "sha256:aa1a8cd7ee1723050309152fe9ec309063247532f15d1bbd68eab918ce0b68b6",
-    "tests": "sha256:80d5f73e685787b5adbc159dc0d7b3e6d337d2cd7c23e90483aefc27ecedf9e2",
-    "tasks": "sha256:eb9bf666ad52f7863b60f778db97136f0263af6f0d1f8b77fc97b55a75ad69f1",
-    "evidence": "sha256:b5e327aaddfd8c0532f0b1cd42472c672b05314cce3708b013f7310e3914c950",
-    "ac_matrix": "sha256:80d5f73e685787b5adbc159dc0d7b3e6d337d2cd7c23e90483aefc27ecedf9e2",
-    "story_state": "sha256:59415113a68b361e369f69ea1c206a7e1287a94d3583c5058c398f507e7acca5"
+    "truth": "sha256:dec767eba7ed50eec50268a32800bacf1cf063faa3a131ddbeafe506a526e31a",
+    "tests": "sha256:62bdce32daf29f8bafc6c60421086a01ccaa3a7f0f4cb5298804845342ce7f9a",
+    "tasks": "sha256:06487591ddf66f5076adcfdd6ea497a75cf2f9557745c409c1ff2abe77ec3edd",
+    "evidence": "sha256:97e2f51917edf79eb0533c4b8facb63b07be7d5239e1bb36fe0ea6338bde623a",
+    "ac_matrix": "sha256:62bdce32daf29f8bafc6c60421086a01ccaa3a7f0f4cb5298804845342ce7f9a",
+    "story_state": "sha256:697e6e12d716bc181e841c717e1d13d4ca9b66ed1c05985dc3b9dc6169812557"
   },
   "lanes": {
     "feature_release_facing": [
       {
-        "tc_id": "TC-PHY-SYNC-001",
-        "ac_id": "AC-V168-001",
+        "tc_id": "TC-WT-001",
+        "ac_id": "AC-WT-SKILL-001",
         "ac_theme": "",
         "lane": "feature_release_facing",
         "layer": "contract",
-        "command": "python3 -m pytest tests/test_v168_prod_ops_hardening.py -q -k loom_parity",
-        "assertion": "contract",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-loom-ops-philosophy-sync/tc-phy-sync-001/__RUN_ID__.json",
+        "command": "path exists",
+        "assertion": "flow md present",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-worktree-progressive-skill-flow-v168/tc-wt-001/__RUN_ID__.json",
         "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
+        "source": "feature-package:docs/beacon/v1.6.8/features/beacon-worktree-progressive-skill-flow-v168/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
       },
       {
-        "tc_id": "TC-PHY-SYNC-002",
-        "ac_id": "AC-V168-002",
+        "tc_id": "TC-WT-002",
+        "ac_id": "AC-WT-SKILL-002",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "path exists",
+        "assertion": "example present",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-worktree-progressive-skill-flow-v168/tc-wt-002/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.8/features/beacon-worktree-progressive-skill-flow-v168/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-WT-003",
+        "ac_id": "AC-WT-SKILL-003",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "grep beacon-goal",
+        "assertion": "references flow",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-worktree-progressive-skill-flow-v168/tc-wt-003/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.8/features/beacon-worktree-progressive-skill-flow-v168/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-WT-004",
+        "ac_id": "AC-WT-SKILL-004",
         "ac_theme": "",
         "lane": "feature_release_facing",
         "layer": "unit",
-        "command": "python3 -m pytest tests/test_v168_prod_ops_hardening.py -q",
-        "assertion": "fsm/illegal",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-loom-ops-philosophy-sync/tc-phy-sync-002/__RUN_ID__.json",
+        "command": "pytest progressive",
+        "assertion": "ref in plan",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-worktree-progressive-skill-flow-v168/tc-wt-004/__RUN_ID__.json",
         "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
+        "source": "feature-package:docs/beacon/v1.6.8/features/beacon-worktree-progressive-skill-flow-v168/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
       },
       {
-        "tc_id": "TC-PHY-SYNC-003",
-        "ac_id": "AC-V168-003",
-        "ac_theme": "",
-        "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "python3 -m pytest tests/test_v168_prod_ops_hardening.py -q",
-        "assertion": "cli",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-loom-ops-philosophy-sync/tc-phy-sync-003/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-PHY-SYNC-004",
-        "ac_id": "AC-V168-004",
+        "tc_id": "TC-WT-005",
+        "ac_id": "AC-WT-SKILL-005",
         "ac_theme": "",
         "lane": "feature_release_facing",
         "layer": "unit",
-        "command": "python3 -m pytest tests/test_v168_prod_ops_hardening.py -q",
-        "assertion": "positive/negative",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-loom-ops-philosophy-sync/tc-phy-sync-004/__RUN_ID__.json",
+        "command": "cargo skill_load",
+        "assertion": "ref in plan",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-worktree-progressive-skill-flow-v168/tc-wt-005/__RUN_ID__.json",
         "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
+        "source": "feature-package:docs/beacon/v1.6.8/features/beacon-worktree-progressive-skill-flow-v168/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
       },
       {
-        "tc_id": "TC-PHY-SYNC-005",
-        "ac_id": "AC-V168-005",
+        "tc_id": "TC-WT-006",
+        "ac_id": "AC-WT-SKILL-006",
         "ac_theme": "",
         "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "beacon goal axis validate -v v1.6.8 --program beacon-prod-ops-hardening-v168",
-        "assertion": "axis",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-loom-ops-philosophy-sync/tc-phy-sync-005/__RUN_ID__.json",
+        "layer": "unit",
+        "command": "progressive",
+        "assertion": "bulk forbidden",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-worktree-progressive-skill-flow-v168/tc-wt-006/__RUN_ID__.json",
         "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
+        "source": "feature-package:docs/beacon/v1.6.8/features/beacon-worktree-progressive-skill-flow-v168/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
       },
       {
-        "tc_id": "TC-PHY-SYNC-006",
-        "ac_id": "AC-V168-006",
+        "tc_id": "TC-WT-007",
+        "ac_id": "AC-WT-SKILL-007",
         "ac_theme": "",
         "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "python3 -c \"from pathlib import Path; assert Path('skills/beacon/examples').exists()\"",
-        "assertion": "examples dir",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-loom-ops-philosophy-sync/tc-phy-sync-006/__RUN_ID__.json",
+        "layer": "integration",
+        "command": "pytest test_worktree_skill_flow",
+        "assertion": "all pass",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-worktree-progressive-skill-flow-v168/tc-wt-007/__RUN_ID__.json",
         "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-PHY-SYNC-007",
-        "ac_id": "AC-V168-007",
-        "ac_theme": "",
-        "lane": "feature_release_facing",
-        "layer": "negative",
-        "command": "python3 -m pytest tests/test_v168_prod_ops_hardening.py -q -k no_fake",
-        "assertion": "no fake",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-loom-ops-philosophy-sync/tc-phy-sync-007/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-PHY-SYNC-008",
-        "ac_id": "AC-V168-008",
-        "ac_theme": "",
-        "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "python3 -m pytest tests/test_v168_prod_ops_hardening.py -q -k loom",
-        "assertion": "loom parity",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-loom-ops-philosophy-sync/tc-phy-sync-008/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
+        "source": "feature-package:docs/beacon/v1.6.8/features/beacon-worktree-progressive-skill-flow-v168/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
       }
@@ -146,7 +132,7 @@
     "browser_runtime_admission": []
   },
   "lane_counts": {
-    "feature_release_facing": 8,
+    "feature_release_facing": 7,
     "current_runtime_contract": 0,
     "generated_surface_sync": 0,
     "compatibility_contract": 0,
@@ -163,142 +149,125 @@
   ],
   "test_refs": [
     {
-      "tc_id": "TC-PHY-SYNC-001",
-      "ac_id": "AC-V168-001",
+      "tc_id": "TC-WT-001",
+      "ac_id": "AC-WT-SKILL-001",
       "ac_theme": "",
       "lane": "feature_release_facing",
       "layer": "contract",
-      "command": "python3 -m pytest tests/test_v168_prod_ops_hardening.py -q -k loom_parity",
-      "assertion": "contract",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-loom-ops-philosophy-sync/tc-phy-sync-001/__RUN_ID__.json",
+      "command": "path exists",
+      "assertion": "flow md present",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-worktree-progressive-skill-flow-v168/tc-wt-001/__RUN_ID__.json",
       "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
+      "source": "feature-package:docs/beacon/v1.6.8/features/beacon-worktree-progressive-skill-flow-v168/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
     },
     {
-      "tc_id": "TC-PHY-SYNC-002",
-      "ac_id": "AC-V168-002",
+      "tc_id": "TC-WT-002",
+      "ac_id": "AC-WT-SKILL-002",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "path exists",
+      "assertion": "example present",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-worktree-progressive-skill-flow-v168/tc-wt-002/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.8/features/beacon-worktree-progressive-skill-flow-v168/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-WT-003",
+      "ac_id": "AC-WT-SKILL-003",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "grep beacon-goal",
+      "assertion": "references flow",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-worktree-progressive-skill-flow-v168/tc-wt-003/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.8/features/beacon-worktree-progressive-skill-flow-v168/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-WT-004",
+      "ac_id": "AC-WT-SKILL-004",
       "ac_theme": "",
       "lane": "feature_release_facing",
       "layer": "unit",
-      "command": "python3 -m pytest tests/test_v168_prod_ops_hardening.py -q",
-      "assertion": "fsm/illegal",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-loom-ops-philosophy-sync/tc-phy-sync-002/__RUN_ID__.json",
+      "command": "pytest progressive",
+      "assertion": "ref in plan",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-worktree-progressive-skill-flow-v168/tc-wt-004/__RUN_ID__.json",
       "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
+      "source": "feature-package:docs/beacon/v1.6.8/features/beacon-worktree-progressive-skill-flow-v168/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
     },
     {
-      "tc_id": "TC-PHY-SYNC-003",
-      "ac_id": "AC-V168-003",
-      "ac_theme": "",
-      "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "python3 -m pytest tests/test_v168_prod_ops_hardening.py -q",
-      "assertion": "cli",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-loom-ops-philosophy-sync/tc-phy-sync-003/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-PHY-SYNC-004",
-      "ac_id": "AC-V168-004",
+      "tc_id": "TC-WT-005",
+      "ac_id": "AC-WT-SKILL-005",
       "ac_theme": "",
       "lane": "feature_release_facing",
       "layer": "unit",
-      "command": "python3 -m pytest tests/test_v168_prod_ops_hardening.py -q",
-      "assertion": "positive/negative",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-loom-ops-philosophy-sync/tc-phy-sync-004/__RUN_ID__.json",
+      "command": "cargo skill_load",
+      "assertion": "ref in plan",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-worktree-progressive-skill-flow-v168/tc-wt-005/__RUN_ID__.json",
       "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
+      "source": "feature-package:docs/beacon/v1.6.8/features/beacon-worktree-progressive-skill-flow-v168/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
     },
     {
-      "tc_id": "TC-PHY-SYNC-005",
-      "ac_id": "AC-V168-005",
+      "tc_id": "TC-WT-006",
+      "ac_id": "AC-WT-SKILL-006",
       "ac_theme": "",
       "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "beacon goal axis validate -v v1.6.8 --program beacon-prod-ops-hardening-v168",
-      "assertion": "axis",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-loom-ops-philosophy-sync/tc-phy-sync-005/__RUN_ID__.json",
+      "layer": "unit",
+      "command": "progressive",
+      "assertion": "bulk forbidden",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-worktree-progressive-skill-flow-v168/tc-wt-006/__RUN_ID__.json",
       "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
+      "source": "feature-package:docs/beacon/v1.6.8/features/beacon-worktree-progressive-skill-flow-v168/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
     },
     {
-      "tc_id": "TC-PHY-SYNC-006",
-      "ac_id": "AC-V168-006",
+      "tc_id": "TC-WT-007",
+      "ac_id": "AC-WT-SKILL-007",
       "ac_theme": "",
       "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "python3 -c \"from pathlib import Path; assert Path('skills/beacon/examples').exists()\"",
-      "assertion": "examples dir",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-loom-ops-philosophy-sync/tc-phy-sync-006/__RUN_ID__.json",
+      "layer": "integration",
+      "command": "pytest test_worktree_skill_flow",
+      "assertion": "all pass",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-worktree-progressive-skill-flow-v168/tc-wt-007/__RUN_ID__.json",
       "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-PHY-SYNC-007",
-      "ac_id": "AC-V168-007",
-      "ac_theme": "",
-      "lane": "feature_release_facing",
-      "layer": "negative",
-      "command": "python3 -m pytest tests/test_v168_prod_ops_hardening.py -q -k no_fake",
-      "assertion": "no fake",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-loom-ops-philosophy-sync/tc-phy-sync-007/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-PHY-SYNC-008",
-      "ac_id": "AC-V168-008",
-      "ac_theme": "",
-      "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "python3 -m pytest tests/test_v168_prod_ops_hardening.py -q -k loom",
-      "assertion": "loom parity",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-v2-loom-ops-philosophy-sync/tc-phy-sync-008/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.8/features/beacon-v2-loom-ops-philosophy-sync/tests.md",
+      "source": "feature-package:docs/beacon/v1.6.8/features/beacon-worktree-progressive-skill-flow-v168/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
     }
   ],
   "ac_to_test_refs": {
-    "AC-V168-001": [
-      "TC-PHY-SYNC-001"
+    "AC-WT-SKILL-001": [
+      "TC-WT-001"
     ],
-    "AC-V168-002": [
-      "TC-PHY-SYNC-002"
+    "AC-WT-SKILL-002": [
+      "TC-WT-002"
     ],
-    "AC-V168-003": [
-      "TC-PHY-SYNC-003"
+    "AC-WT-SKILL-003": [
+      "TC-WT-003"
     ],
-    "AC-V168-004": [
-      "TC-PHY-SYNC-004"
+    "AC-WT-SKILL-004": [
+      "TC-WT-004"
     ],
-    "AC-V168-005": [
-      "TC-PHY-SYNC-005"
+    "AC-WT-SKILL-005": [
+      "TC-WT-005"
     ],
-    "AC-V168-006": [
-      "TC-PHY-SYNC-006"
+    "AC-WT-SKILL-006": [
+      "TC-WT-006"
     ],
-    "AC-V168-007": [
-      "TC-PHY-SYNC-007"
-    ],
-    "AC-V168-008": [
-      "TC-PHY-SYNC-008"
+    "AC-WT-SKILL-007": [
+      "TC-WT-007"
     ]
   },
   "qa_order_contract": {
@@ -326,14 +295,14 @@
     "status": "pass",
     "blocked": false,
     "reason_code": "",
-    "runtime_line": "v1.6.7",
-    "docs_default_line": "v1.6.7",
-    "current_runtime_release_line": "v1.6.7",
-    "feature_line_status": "active_delivery"
+    "runtime_line": "v1.6.8",
+    "docs_default_line": "v1.6.8",
+    "current_runtime_release_line": "v1.6.8",
+    "feature_line_status": "current_runtime_release"
   },
   "status": "pass",
   "blocked": false,
   "reason_codes": [],
-  "generated_at": "2026-07-19T03:02:20.591621+00:00",
+  "generated_at": "2026-07-20T05:18:42.727674+00:00",
   "index_path": "docs/beacon/v1.6.8/.machine/testing/test-contract-index.json"
 }

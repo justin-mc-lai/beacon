@@ -27,7 +27,7 @@
     "review_gates": [],
     "qa_coverage_hints": [],
     "evidence_lines": {},
-    "generated_at": "2026-07-19T11:35:14.132801+00:00",
+    "generated_at": "2026-07-20T01:41:17.248243+00:00",
     "feature": "loom-git-worktree-implement-harness",
     "feature_slug": "loom-git-worktree-implement-harness",
     "prd_ref": "docs/beacon/v2.0.0/prd/loom-git-worktree-implement-harness.md",
@@ -62,9 +62,9 @@
         "slug": "loom-git-worktree-implement-harness",
         "version": "v2.0.0",
         "status": "frozen",
-        "revision_id": "R1",
+        "revision_id": "R2",
         "language": "zh",
-        "change_reason": "User GO 2026-07-19 option2: freeze W1-W5 kernel closure lakes under program loom-kernel-closure-w1w5-v200",
+        "change_reason": "R2 - branch ref hierarchy hard gate: leaf-only lanes; admit fail never implements on main; user GO 1A/2A/3A 2026-07-20",
         "canonical_refs": {
           "truth": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
           "tests": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tests.md",
@@ -112,6 +112,30 @@
         {
           "ac_id": "AC-LOOM-W1-003",
           "description": "tests 含合法 walk + 非法组合（Must）"
+        },
+        {
+          "ac_id": "AC-BR-001",
+          "description": "workspace admit 物化的 `feature_branch` **必须**是 leaf（含 feature-slug）；不得仅为 `beacon/<version>`（**Must**）"
+        },
+        {
+          "ac_id": "AC-BR-002",
+          "description": "create/switch 前 hierarchy preflight；父子冲突 → `branch_ref_hierarchy_collision`（**Must**）"
+        },
+        {
+          "ac_id": "AC-BR-003",
+          "description": "program-level 模式保留 aggregation 元数据，但 checkout 仍用 leaf feature branch（**Must**）"
+        },
+        {
+          "ac_id": "AC-BR-004",
+          "description": "admit fail 后 implement/goal 不得在 truth_canonical（main/master）写业务实现（**Must**）"
+        },
+        {
+          "ac_id": "AC-BR-005",
+          "description": "暴露 `branch_ref_hierarchy_collision`、`workspace_admission_worktree_failed`、`implement_on_canonical_without_admission`（**Must**）"
+        },
+        {
+          "ac_id": "AC-BR-006",
+          "description": "含 collision fixture + leaf rewrite + no main soft fallback（**Must**）"
         }
       ],
       "bound_ac_ids": [],
@@ -124,6 +148,10 @@
         "User Decisions（locked）",
         "Acceptance Criteria",
         "Illegal",
+        "User Decisions — branch ref hierarchy (R2, user GO 1A/2A/3A)",
+        "Acceptance Criteria — R2",
+        "Illegal — R2",
+        "Domain note — Git ref tree",
         "Non-Goals",
         "Alignment Surface"
       ]
@@ -143,9 +171,9 @@
           "slug": "loom-git-worktree-implement-harness",
           "version": "v2.0.0",
           "status": "frozen",
-          "revision_id": "R1",
+          "revision_id": "R2",
           "language": "zh",
-          "change_reason": "User GO 2026-07-19 option2: freeze W1-W5 kernel closure lakes under program loom-kernel-closure-w1w5-v200",
+          "change_reason": "R2 - branch ref hierarchy hard gate: leaf-only lanes; admit fail never implements on main; user GO 1A/2A/3A 2026-07-20",
           "canonical_refs": {
             "truth": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
             "tests": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tests.md",
@@ -193,6 +221,30 @@
           {
             "ac_id": "AC-LOOM-W1-003",
             "description": "tests 含合法 walk + 非法组合（Must）"
+          },
+          {
+            "ac_id": "AC-BR-001",
+            "description": "workspace admit 物化的 `feature_branch` **必须**是 leaf（含 feature-slug）；不得仅为 `beacon/<version>`（**Must**）"
+          },
+          {
+            "ac_id": "AC-BR-002",
+            "description": "create/switch 前 hierarchy preflight；父子冲突 → `branch_ref_hierarchy_collision`（**Must**）"
+          },
+          {
+            "ac_id": "AC-BR-003",
+            "description": "program-level 模式保留 aggregation 元数据，但 checkout 仍用 leaf feature branch（**Must**）"
+          },
+          {
+            "ac_id": "AC-BR-004",
+            "description": "admit fail 后 implement/goal 不得在 truth_canonical（main/master）写业务实现（**Must**）"
+          },
+          {
+            "ac_id": "AC-BR-005",
+            "description": "暴露 `branch_ref_hierarchy_collision`、`workspace_admission_worktree_failed`、`implement_on_canonical_without_admission`（**Must**）"
+          },
+          {
+            "ac_id": "AC-BR-006",
+            "description": "含 collision fixture + leaf rewrite + no main soft fallback（**Must**）"
           }
         ],
         "bound_ac_ids": [],
@@ -205,6 +257,10 @@
           "User Decisions（locked）",
           "Acceptance Criteria",
           "Illegal",
+          "User Decisions — branch ref hierarchy (R2, user GO 1A/2A/3A)",
+          "Acceptance Criteria — R2",
+          "Illegal — R2",
+          "Domain note — Git ref tree",
           "Non-Goals",
           "Alignment Surface"
         ]

@@ -196,14 +196,16 @@ def load_admission_contract(project_root: Path, *, version: str) -> dict[str, An
 
 
 def resolve_feature_branch(contract: dict[str, Any], *, feature: str, version: str) -> str:
-    slug = feature_slug(feature)
+    """Always return a leaf feature branch (UD-BR-003 scheme A)."""
+    from beacon.utils.branch_ref_hierarchy import leaf_feature_branch
+
     pattern = str(contract.get("feature_branch_pattern") or "").strip()
-    if pattern:
-        return pattern.replace("<feature-slug>", slug).replace("{feature-slug}", slug)
-    canonical = str(contract.get("canonical_branch") or "").strip()
-    if canonical:
-        return f"{canonical}/{slug}"
-    return f"beacon/{version}/{slug}"
+    if not pattern:
+        canonical = str(contract.get("canonical_branch") or "").strip()
+        if canonical and "<feature" not in canonical.lower():
+            # If governance sets beacon/vX as pattern-like, append slug via leaf helper
+            pattern = canonical
+    return leaf_feature_branch(version=version, feature=feature, pattern=pattern)
 
 
 def resolve_worktree_path(project_root: Path, contract: dict[str, Any], *, feature: str) -> str:
@@ -522,6 +524,43 @@ def run_workspace_admit(
             payload["pool_entry"] = entry
             payload["pool_state_path"] = str(pool_path)
             return payload
+    # UD-BR-001/003/005: never materialize aggregation parent when children exist.
+    from beacon.utils.branch_ref_hierarchy import ensure_leaf_checkout_branch, hierarchy_collision
+
+    leaf_info = ensure_leaf_checkout_branch(
+        root,
+        version=version,
+        feature=feature,
+        candidate=feature_branch,
+        pattern=str(contract.get("feature_branch_pattern") or ""),
+    )
+    if not leaf_info.get("ok"):
+        payload["status"] = "blocked"
+        payload["blocked"] = True
+        payload["reason_codes"] = [str(leaf_info.get("reason_code") or "branch_ref_hierarchy_collision")]
+        payload["reason_code"] = str(leaf_info.get("reason_code") or "branch_ref_hierarchy_collision")
+        payload["summary"] = str((leaf_info.get("collision") or {}).get("summary") or "branch ref hierarchy collision")
+        payload["leaf_rewrite"] = leaf_info
+        return payload
+    if leaf_info.get("rewrote") or leaf_info.get("feature_branch") != feature_branch:
+        payload["branch_rewrite"] = {
+            "from": feature_branch,
+            "to": leaf_info.get("feature_branch"),
+            "aggregation_branch": leaf_info.get("aggregation_branch"),
+        }
+        feature_branch = str(leaf_info.get("feature_branch") or feature_branch)
+        branch_targets = {**branch_targets, "feature_branch": feature_branch}
+    pre = hierarchy_collision(root, feature_branch)
+    children = [c for c in (pre.get("conflicts") or []) if str(c).startswith(feature_branch + "/")]
+    if children:
+        payload["status"] = "blocked"
+        payload["blocked"] = True
+        payload["reason_codes"] = ["branch_ref_hierarchy_collision"]
+        payload["reason_code"] = "branch_ref_hierarchy_collision"
+        payload["summary"] = pre.get("summary") or "cannot create parent branch while children exist"
+        payload["hierarchy"] = pre
+        return payload
+
     worktree_attempt = ensure_expected_worktree_lane(
         root,
         feature_branch,
@@ -677,23 +716,72 @@ def gate_workspace_admission_or_block(
         cwd=cwd,
         contract=contract,
     )
-    if validation.get("valid"):
-        return None
-    slug = feature_slug(feature)
     root = project_root.expanduser().resolve()
-    return {
-        "schema_version": "1.0",
-        "status": "blocked",
-        "reason_code": str(validation.get("reason_code") or "workspace_admission_required"),
-        "reason_codes": list(validation.get("reason_codes") or []),
-        "feature": feature,
-        "feature_slug": slug,
-        "version": version,
-        "workspace_admission": validation,
-        "recommended_command": (
-            f"beacon workspace admit --project-root {root} --version {version} --feature {slug} --json"
-        ),
-    }
+    slug = feature_slug(feature)
+    check_root = Path(cwd).expanduser().resolve() if cwd is not None else root
+    current_branch = git_output(check_root, "branch", "--show-current")
+    from beacon.utils.git_alignment import resolve_truth_canonical_branch
+
+    truth_canonical = resolve_truth_canonical_branch(root, version=version)
+    # UD-BR-004: never implement on truth canonical without a real admission artifact
+    # when workspace admission is required for this version.
+    if contract.get("require_workspace_admission"):
+        artifact_file = artifact_path(root, version=version, feature=feature)
+        has_artifact = artifact_file.is_file()
+        on_canonical = current_branch in {truth_canonical, "main", "master"}
+        if not validation.get("valid"):
+            reason = str(validation.get("reason_code") or "workspace_admission_required")
+            if on_canonical:
+                reason = "implement_on_canonical_without_admission"
+            return {
+                "schema_version": "1.0",
+                "status": "blocked",
+                "reason_code": reason,
+                "reason_codes": list(
+                    dict.fromkeys(
+                        list(validation.get("reason_codes") or [])
+                        + ([reason] if reason else [])
+                    )
+                ),
+                "feature": feature,
+                "feature_slug": slug,
+                "version": version,
+                "workspace_admission": validation,
+                "current_branch": current_branch,
+                "recommended_command": (
+                    f"beacon workspace admit --project-root {root} --version {version} --feature {slug} --json"
+                ),
+            }
+        if on_canonical and not has_artifact:
+            return {
+                "schema_version": "1.0",
+                "status": "blocked",
+                "reason_code": "implement_on_canonical_without_admission",
+                "reason_codes": ["implement_on_canonical_without_admission"],
+                "feature": feature,
+                "feature_slug": slug,
+                "version": version,
+                "workspace_admission": validation,
+                "current_branch": current_branch,
+                "recommended_command": (
+                    f"beacon workspace admit --project-root {root} --version {version} --feature {slug} --json"
+                ),
+            }
+    elif not validation.get("valid"):
+        return {
+            "schema_version": "1.0",
+            "status": "blocked",
+            "reason_code": str(validation.get("reason_code") or "workspace_admission_required"),
+            "reason_codes": list(validation.get("reason_codes") or []),
+            "feature": feature,
+            "feature_slug": slug,
+            "version": version,
+            "workspace_admission": validation,
+            "recommended_command": (
+                f"beacon workspace admit --project-root {root} --version {version} --feature {slug} --json"
+            ),
+        }
+    return None
 
 
 def inject_git_admission_into_skill_text(skill_id: str, text: str) -> str:

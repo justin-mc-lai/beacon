@@ -301,6 +301,7 @@ Before ANY truth/change/refreeze/freeze write when version is known:
 3. If mismatch → STOP with `reason_code=truth_canonical_branch_mismatch`; do NOT edit requirement truth
 4. Commit refreeze/freeze artifacts on `truth_canonical` before loop-goal may route to implement
 5. Do NOT use feature worktree for truth authoring — use the canonical branch checkout only
+6. Shared process: `skills/beacon/references/git-worktree-execution-flow.md`
 
 ## v1.6.0 Harness Migration
 
@@ -333,3 +334,17 @@ Before ANY truth/change/refreeze/freeze write when version is known:
 ## Complete business product example
 
 Recommended full-domain freeze sample: `skills/beacon/examples/full-product-domain-freeze.md` → `docs/beacon/v1.6.7/fixtures/golden-commerce-checkout/`.
+
+## Truth human-readable (v1.6.7+ / v2)
+
+When writing or changing feature `truth.md`:
+
+1. Include L0 section: `## 人话` (zh) or `## Plain language` (en); bilingual needs both.
+2. Keep L1 contract (AC / FSM) as gate authority — never drop AC IDs to "sound human".
+3. Follow norms:
+   - `skills/beacon/references/truth-humanizer/truth_prose.zh.md`
+   - `skills/beacon/references/truth-humanizer/truth_prose.en.md`
+4. Examples: `skills/beacon/examples/truth-human-readable.zh.md` / `.en.md`
+5. Missing L0 → reason_code `truth_human_l0_missing` (freeze fail-closed after gate is wired).
+
+Lakes: `beacon-truth-human-readable-i18n-v167`, `beacon-v2-truth-human-readable-i18n` (on GoalRun main axis).

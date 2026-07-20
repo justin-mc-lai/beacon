@@ -509,3 +509,22 @@ def longrun_doctor_cmd(
             typer.echo(f"repair: {result.get('recommended_command')}")
 
 
+@app.command("multi-version-plan")
+def multi_version_plan_cmd(
+    utterance: str = typer.Argument(..., help="One-shot utterance possibly containing multiple versions"),
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p"),
+    json_output: bool = typer.Option(False, "--json"),
+):
+    """Parse multi-version intent (e.g. v1.6.8\\v2.0.0) and print dual-track lake plan."""
+    from beacon.utils.product_goal_runtime import plan_multi_version
+
+    root = Path(project).expanduser().resolve() if project else Path.cwd().resolve()
+    payload = plan_multi_version(root, utterance)
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"multi_version: parallel={payload.get('parallel_tracks')} versions={[tr.get('version') for tr in payload.get('tracks') or []]}")
+        for tr in payload.get("tracks") or []:
+            typer.echo(f"- {tr.get('version')} ({tr.get('track_label')}): lakes={tr.get('lakes')}")
+    raise typer.Exit(0)
+

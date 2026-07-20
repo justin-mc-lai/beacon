@@ -2,9 +2,9 @@
 slug: loom-git-worktree-implement-harness
 version: v2.0.0
 status: frozen
-revision_id: R1
+revision_id: R2
 language: zh
-change_reason: "User GO 2026-07-19 option2: freeze W1-W5 kernel closure lakes under program loom-kernel-closure-w1w5-v200"
+change_reason: "R2 - branch ref hierarchy hard gate: leaf-only lanes; admit fail never implements on main; user GO 1A/2A/3A 2026-07-20"
 canonical_refs:
   truth: docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md
   tests: docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tests.md
@@ -29,6 +29,8 @@ brand: Loom
 ## 人话
 
 进化轨在隔离 git worktree 上真实现一轮，禁止 mkdir/subprocess 冒充。
+
+实现 lane 永远是 **leaf 分支**（`beacon/<version>/<feature>`）；禁止因 `beacon/<version>` 与子路径冲突而退回 **main** 写实现。
 
 本湖是 Loom（Beacon 进化品牌）内核补齐的一部分；**不**把生产 `beacon` 默认切走。
 
@@ -72,6 +74,43 @@ Depends on: （无）
 | I-W1-001 | mkdir-only 冒充 worktree |
 | I-W1-002 | subprocess echo JSON 冒充 ImplementHarness |
 | I-W1-003 | current-branch + isolated 通过 |
+
+
+## User Decisions — branch ref hierarchy (R2, user GO 1A/2A/3A)
+
+| ID | Decision | Value |
+|----|----------|-------|
+| UD-BR-001 | hierarchy | 禁止任意 prefix `P` 与 `P/*` 同时作为 git branch ref；create 前 preflight |
+| UD-BR-002 | namespace≠leaf | program aggregation（如 `beacon/<version>`）是**命名空间/策略 key**，不是必须存在的 leaf checkout branch |
+| UD-BR-003 | default lane | **Always leaf** `beacon/<version>/<feature-slug>`；worktree `.beacon/worktrees/<version>/<feature-slug>`（方案 A） |
+| UD-BR-004 | admit fail | admit blocked ⇒ **硬停** implement/goal 实现写路径；禁止 soft fallback 到 main |
+| UD-BR-005 | materialize | collision 时 rewrite 到 leaf 或 `branch_ref_hierarchy_collision` 阻断；**禁止**创建 parent while children exist |
+| UD-BR-006 | debt | 已有 `beacon/<version>/*` children 合法；不得再创建 parent `beacon/<version>` leaf |
+
+## Acceptance Criteria — R2
+
+| AC ID | Theme | Description |
+|-------|-------|-------------|
+| AC-BR-001 | leaf-only | workspace admit 物化的 `feature_branch` **必须**是 leaf（含 feature-slug）；不得仅为 `beacon/<version>`（**Must**） |
+| AC-BR-002 | preflight | create/switch 前 hierarchy preflight；父子冲突 → `branch_ref_hierarchy_collision`（**Must**） |
+| AC-BR-003 | program-level | program-level 模式保留 aggregation 元数据，但 checkout 仍用 leaf feature branch（**Must**） |
+| AC-BR-004 | no-main-fallback | admit fail 后 implement/goal 不得在 truth_canonical（main/master）写业务实现（**Must**） |
+| AC-BR-005 | reason-codes | 暴露 `branch_ref_hierarchy_collision`、`workspace_admission_worktree_failed`、`implement_on_canonical_without_admission`（**Must**） |
+| AC-BR-006 | tests | 含 collision fixture + leaf rewrite + no main soft fallback（**Must**） |
+
+## Illegal — R2
+
+| ID | Illegal |
+|----|---------|
+| I-BR-001 | 创建 `beacon/<version>` parent leaf 当 `beacon/<version>/*` children 已存在 |
+| I-BR-002 | admit failed 后在 main 继续 implement |
+| I-BR-003 | program-level 把 aggregation branch 当作唯一 checkout target 且忽略 feature slug |
+| I-BR-004 | soft-warn 后继续在未 admit 工作区写实现 |
+
+## Domain note — Git ref tree
+
+Git refs 是前缀树：`P` 与 `P/child` 互斥。Beacon 必须在 materialize 前检测并 **rewrite 到 leaf** 或 fail-closed。
+
 
 ## Non-Goals
 
