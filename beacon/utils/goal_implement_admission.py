@@ -22,6 +22,7 @@ SCHEMA = "goal-implement-admission.v1"
 REASON_FEATURE_REQUIRED = "goal_implement_feature_required"
 REASON_ADMIT_BLOCKED = "goal_implement_admission_blocked"
 REASON_FORCE_WORKTREE_FAILED = "goal_implement_force_worktree_failed"
+REASON_ENF_ADMISSION = "goal_implement_admission_required"  # UD-ENF-003
 REASON_MERGE_CONFLICT = "merge_main_conflict"
 
 

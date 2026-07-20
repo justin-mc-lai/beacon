@@ -2026,3 +2026,80 @@ def verify_dual_version_cmd(
     else:
         typer.echo(f"verify-dual-version: {'ok' if result.get('ok') else result.get('reason_code')}")
     raise typer.Exit(0 if result.get("ok") else 2)
+
+@app.command("setup-git-hooks")
+def setup_git_hooks_command(
+    project_root: str = typer.Option(".", "--project-root", "--project", "-p"),
+    force: bool = typer.Option(True, "--force/--no-force"),
+    json_output: bool = typer.Option(False, "--json"),
+) -> None:
+    """Install pre-commit/pre-push implement-lane enforcement hooks (UD-ENF-006)."""
+    from beacon.utils.implement_lane_enforcement import setup_git_hooks
+
+    payload = setup_git_hooks(Path(project_root), force=force)
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"status: {payload.get('status')} hooks_dir: {payload.get('hooks_dir')}")
+        for row in payload.get("written") or []:
+            typer.echo(f"  {row.get('action')}: {row.get('path')}")
+    raise typer.Exit(0 if payload.get("status") == "ok" else 1)
+
+
+@app.command("verify-git-hooks")
+def verify_git_hooks_command(
+    project_root: str = typer.Option(".", "--project-root", "--project", "-p"),
+    json_output: bool = typer.Option(False, "--json"),
+) -> None:
+    """Verify implement-lane git hooks are installed and executable."""
+    from beacon.utils.implement_lane_enforcement import verify_git_hooks
+
+    payload = verify_git_hooks(Path(project_root))
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"status: {payload.get('status')}")
+        for c in payload.get("checks") or []:
+            typer.echo(f"  {c.get('hook')}: {c.get('status')} {c.get('reason_code') or ''}")
+    raise typer.Exit(0 if payload.get("ok") else 1)
+
+
+@app.command("verify-implement-lane")
+def verify_implement_lane_command(
+    project_root: str = typer.Option(".", "--project-root", "--project", "-p"),
+    json_output: bool = typer.Option(False, "--json"),
+    strict: bool = typer.Option(False, "--strict"),
+) -> None:
+    """Check current checkout is not main+dirty business implement paths."""
+    from beacon.utils.implement_lane_enforcement import check_working_tree_lane
+
+    payload = check_working_tree_lane(Path(project_root))
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"status: {payload.get('status')} branch: {payload.get('branch')}")
+        if payload.get("message"):
+            typer.echo(payload["message"])
+        for f in payload.get("dirty_business_files") or []:
+            typer.echo(f"  dirty-business: {f}")
+    bad = payload.get("status") in {"blocked", "fail"} or (strict and payload.get("status") == "warn")
+    raise typer.Exit(1 if bad else 0)
+
+
+@app.command("check-main-implement-commit")
+def check_main_implement_commit_command(
+    project_root: str = typer.Option(".", "--project-root", "--project", "-p"),
+    json_output: bool = typer.Option(False, "--json"),
+) -> None:
+    """Simulate pre-commit: block business paths staged on main/master."""
+    from beacon.utils.implement_lane_enforcement import check_main_implement_commit
+
+    payload = check_main_implement_commit(Path(project_root))
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"status: {payload.get('status')} reason: {payload.get('reason_code')}")
+        if payload.get("message"):
+            typer.echo(payload["message"])
+    raise typer.Exit(1 if payload.get("blocked") else 0)
+
