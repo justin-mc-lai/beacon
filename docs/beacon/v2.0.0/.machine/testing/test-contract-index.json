@@ -1,0 +1,122 @@
+{
+  "schema_version": "1.0",
+  "contract_kind": "beacon_test_contract_index",
+  "version": "v2.0.0",
+  "runtime_line": "v2.0.0",
+  "runtime_release_line": "v1.6.8",
+  "docs_line": "v2.0.0",
+  "feature": "loom-goal-implement-admission-hard-gate-v200",
+  "feature_slug": "loom-goal-implement-admission-hard-gate-v200",
+  "feature_line_status": "planning_only",
+  "truth_refs": {
+    "truth": "docs/beacon/v2.0.0/features/loom-goal-implement-admission-hard-gate-v200/truth.md",
+    "tests": "docs/beacon/v2.0.0/features/loom-goal-implement-admission-hard-gate-v200/tests.md",
+    "tasks": "docs/beacon/v2.0.0/features/loom-goal-implement-admission-hard-gate-v200/tasks.md",
+    "evidence": "docs/beacon/v2.0.0/features/loom-goal-implement-admission-hard-gate-v200/evidence.md",
+    "ac_matrix": "docs/beacon/v2.0.0/features/loom-goal-implement-admission-hard-gate-v200/tests.md",
+    "story_state": "docs/beacon/v2.0.0/.machine/user-story/loom-goal-implement-admission-hard-gate-v200.json"
+  },
+  "source_hashes": {
+    "truth": "sha256:cfd9850b9b8fca8f9bd59d4f5f618a669ccc882e93b47b88dbb09312e4233014",
+    "tests": "sha256:5f5dac657f8a6688348ab43caed6edc9ff042f970621504d4e3a8c49b2412c26",
+    "tasks": "sha256:a5e71ea9af8f24fd22708eebb2a7557fd568281b43d05666cf29460da0b23b38",
+    "evidence": "sha256:beedbd77ccc2dc354b6c0b448a49aac204e2ea1b2363f83ba001b9d08dfe260d",
+    "ac_matrix": "sha256:5f5dac657f8a6688348ab43caed6edc9ff042f970621504d4e3a8c49b2412c26",
+    "story_state": ""
+  },
+  "lanes": {
+    "feature_release_facing": [
+      {
+        "tc_id": "TC-001",
+        "ac_id": "AC-LOOM-GOA-001",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "unit",
+        "command": "python3 -m pytest tests/test_v169_goal_implement_admission_hard_gate.py -q",
+        "assertion": "AC row covered by ship suite",
+        "evidence_path": ".beacon/evidence/qa-feature/loom-goal-implement-admission-hard-gate-v200/tc-001/__RUN_ID__.json",
+        "evidence_status": "missing",
+        "source": "feature-package:docs/beacon/v2.0.0/features/loom-goal-implement-admission-hard-gate-v200/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      }
+    ],
+    "current_runtime_contract": [],
+    "generated_surface_sync": [],
+    "compatibility_contract": [],
+    "legacy_snapshot": [],
+    "browser_runtime_admission": []
+  },
+  "lane_counts": {
+    "feature_release_facing": 1,
+    "current_runtime_contract": 0,
+    "generated_surface_sync": 0,
+    "compatibility_contract": 0,
+    "legacy_snapshot": 0,
+    "browser_runtime_admission": 0
+  },
+  "canonical_lanes": [
+    "feature_release_facing",
+    "current_runtime_contract",
+    "generated_surface_sync",
+    "compatibility_contract",
+    "legacy_snapshot",
+    "browser_runtime_admission"
+  ],
+  "test_refs": [
+    {
+      "tc_id": "TC-001",
+      "ac_id": "AC-LOOM-GOA-001",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v169_goal_implement_admission_hard_gate.py -q",
+      "assertion": "AC row covered by ship suite",
+      "evidence_path": ".beacon/evidence/qa-feature/loom-goal-implement-admission-hard-gate-v200/tc-001/__RUN_ID__.json",
+      "evidence_status": "missing",
+      "source": "feature-package:docs/beacon/v2.0.0/features/loom-goal-implement-admission-hard-gate-v200/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    }
+  ],
+  "ac_to_test_refs": {
+    "AC-LOOM-GOA-001": [
+      "TC-001"
+    ]
+  },
+  "qa_order_contract": {
+    "sequence": [
+      "user_story_ac_order",
+      "scenario_divergence",
+      "current_round_execution",
+      "evidence_pack",
+      "coverage_current_gap",
+      "continue_decision",
+      "severe_blocker_stop_for_repair",
+      "repair_handoff",
+      "beacon_help_resume",
+      "next_qa_round_test_case_backfill",
+      "release_guidance"
+    ],
+    "source": "skills/beacon/references/usage-rules.md"
+  },
+  "deep_delta_policy": {
+    "owner": "deep",
+    "adoption_route": "test-case_or_supplemental_qa",
+    "executes_qa": false
+  },
+  "planning_line_safety": {
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "runtime_line": "v1.6.8",
+    "docs_default_line": "v1.6.8",
+    "current_runtime_release_line": "v1.6.8",
+    "feature_line_status": "planning_only"
+  },
+  "status": "pass",
+  "blocked": false,
+  "reason_codes": [],
+  "generated_at": "2026-07-20T12:32:49.049129+00:00",
+  "index_path": "docs/beacon/v2.0.0/.machine/testing/test-contract-index.json"
+}

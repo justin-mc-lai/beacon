@@ -13,7 +13,7 @@
   "truth_authority": false,
   "lifecycle_stage": false,
   "release_publish_action": false,
-  "feature_count": 4,
+  "feature_count": 9,
   "features": [
     {
       "feature": "beacon-v2-goal-durable-longrun",
@@ -38,16 +38,51 @@
       "feature_slug": "loom-git-worktree-implement-harness",
       "summary": "Maintains release-facing version aggregate projection guards so QA accepted features are included in version change scope before release check.",
       "status": "generated"
+    },
+    {
+      "feature": "loom-goal-implement-admission-hard-gate-v200",
+      "feature_slug": "loom-goal-implement-admission-hard-gate-v200",
+      "summary": "Loom parity goal implement admission hard gate",
+      "status": "implemented"
+    },
+    {
+      "feature": "loom-plan-goal-deep-integration-v200",
+      "feature_slug": "loom-plan-goal-deep-integration-v200",
+      "summary": "Loom parity plan-goal deep integration",
+      "status": "implemented"
+    },
+    {
+      "feature": "loom-plan-subintent-router-v200",
+      "feature_slug": "loom-plan-subintent-router-v200",
+      "summary": "Loom parity plan subintent router",
+      "status": "implemented"
+    },
+    {
+      "feature": "loom-public-surface-1plus6-v200",
+      "feature_slug": "loom-public-surface-1plus6-v200",
+      "summary": "Maintains release-facing version aggregate projection guards so QA accepted features are included in version change scope before release check.",
+      "status": "generated"
+    },
+    {
+      "feature": "loom-public-surface-progressive-merge-v200",
+      "feature_slug": "loom-public-surface-progressive-merge-v200",
+      "summary": "Loom parity progressive merge",
+      "status": "implemented"
     }
   ],
   "implementation_order": {
     "status": "analyzed",
-    "feature_count": 4,
+    "feature_count": 9,
     "ordered_feature_slugs": [
       "beacon-v2-rust-kernel-redesign",
       "beacon-v2-product-goal-orchestrator",
       "beacon-v2-goal-durable-longrun",
-      "loom-git-worktree-implement-harness"
+      "loom-git-worktree-implement-harness",
+      "loom-public-surface-1plus6-v200",
+      "loom-public-surface-progressive-merge-v200",
+      "loom-plan-subintent-router-v200",
+      "loom-plan-goal-deep-integration-v200",
+      "loom-goal-implement-admission-hard-gate-v200"
     ],
     "waves": [
       {
@@ -89,6 +124,103 @@
             "writable_services": [],
             "parallelizable": true,
             "reason_code": "parallel_no_conflict"
+          },
+          {
+            "feature": "loom-public-surface-1plus6-v200",
+            "feature_slug": "loom-public-surface-1plus6-v200",
+            "depends_on_features": [],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": true,
+            "reason_code": "parallel_no_conflict"
+          }
+        ]
+      },
+      {
+        "wave": 2,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "loom-public-surface-progressive-merge-v200",
+            "feature_slug": "loom-public-surface-progressive-merge-v200",
+            "depends_on_features": [
+              "loom-public-surface-1plus6-v200"
+            ],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": false,
+            "reason_code": "shared_delivery_service_conflict"
+          }
+        ]
+      },
+      {
+        "wave": 3,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "loom-plan-subintent-router-v200",
+            "feature_slug": "loom-plan-subintent-router-v200",
+            "depends_on_features": [
+              "loom-public-surface-progressive-merge-v200"
+            ],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": false,
+            "reason_code": "shared_delivery_service_conflict"
+          }
+        ]
+      },
+      {
+        "wave": 4,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "loom-plan-goal-deep-integration-v200",
+            "feature_slug": "loom-plan-goal-deep-integration-v200",
+            "depends_on_features": [
+              "loom-plan-subintent-router-v200"
+            ],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": false,
+            "reason_code": "shared_delivery_service_conflict"
+          }
+        ]
+      },
+      {
+        "wave": 5,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "loom-goal-implement-admission-hard-gate-v200",
+            "feature_slug": "loom-goal-implement-admission-hard-gate-v200",
+            "depends_on_features": [
+              "loom-plan-goal-deep-integration-v200"
+            ],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": false,
+            "reason_code": "shared_delivery_service_conflict"
           }
         ]
       }
@@ -106,13 +238,17 @@
     "[beacon-v2-rust-kernel-redesign] Repair-only projection rebuild path for release preflight artifacts",
     "[loom-git-worktree-implement-harness] Feature-level release projection input for QA accepted current feature",
     "[loom-git-worktree-implement-harness] Version aggregate projection inclusion guard and repair metadata",
-    "[loom-git-worktree-implement-harness] Repair-only projection rebuild path for release preflight artifacts"
+    "[loom-git-worktree-implement-harness] Repair-only projection rebuild path for release preflight artifacts",
+    "[loom-public-surface-1plus6-v200] Feature-level release projection input for QA accepted current feature",
+    "[loom-public-surface-1plus6-v200] Version aggregate projection inclusion guard and repair metadata",
+    "[loom-public-surface-1plus6-v200] Repair-only projection rebuild path for release preflight artifacts"
   ],
   "removed": [
     "[beacon-v2-goal-durable-longrun] Manual-only version aggregate projection repair before release check",
     "[beacon-v2-product-goal-orchestrator] Manual-only version aggregate projection repair before release check",
     "[beacon-v2-rust-kernel-redesign] Manual-only version aggregate projection repair before release check",
-    "[loom-git-worktree-implement-harness] Manual-only version aggregate projection repair before release check"
+    "[loom-git-worktree-implement-harness] Manual-only version aggregate projection repair before release check",
+    "[loom-public-surface-1plus6-v200] Manual-only version aggregate projection repair before release check"
   ],
   "fixed": [
     "[beacon-v2-goal-durable-longrun] Release check can route missing current feature projection to an actionable repair path",
@@ -122,7 +258,17 @@
     "[beacon-v2-rust-kernel-redesign] Release check can route missing current feature projection to an actionable repair path",
     "[beacon-v2-rust-kernel-redesign] Version aggregate projection remains a read model instead of requirement truth",
     "[loom-git-worktree-implement-harness] Release check can route missing current feature projection to an actionable repair path",
-    "[loom-git-worktree-implement-harness] Version aggregate projection remains a read model instead of requirement truth"
+    "[loom-git-worktree-implement-harness] Version aggregate projection remains a read model instead of requirement truth",
+    "[loom-goal-implement-admission-hard-gate-v200] Updated `beacon/utils/goal_implement_admission.py`",
+    "[loom-goal-implement-admission-hard-gate-v200] Updated `tests/test_v169_goal_implement_admission_hard_gate.py`",
+    "[loom-plan-goal-deep-integration-v200] Updated `beacon/utils/plan_artifact.py`",
+    "[loom-plan-goal-deep-integration-v200] Updated `tests/test_v169_plan_artifact_p0p1p2.py`",
+    "[loom-plan-subintent-router-v200] Updated `beacon/utils/plan_subintent.py`",
+    "[loom-plan-subintent-router-v200] Updated `tests/test_v169_plan_subintent_router.py`",
+    "[loom-public-surface-1plus6-v200] Release check can route missing current feature projection to an actionable repair path",
+    "[loom-public-surface-1plus6-v200] Version aggregate projection remains a read model instead of requirement truth",
+    "[loom-public-surface-progressive-merge-v200] Updated `skills/beacon/references/public-surface-progressive-map.v1.json`",
+    "[loom-public-surface-progressive-merge-v200] Updated `tests/test_v169_public_surface_progressive_merge.py`"
   ],
   "traceability_refs": [
     "docs/beacon/v2.0.0/change/beacon-v2-goal-durable-longrun.md",
@@ -149,7 +295,33 @@
     "docs/beacon/v2.0.0/user-story/loom-git-worktree-implement-harness.md",
     "docs/beacon/v2.0.0/qa/test-cases/loom-git-worktree-implement-harness.md",
     "docs/beacon/v2.0.0/.machine/execution/loom-git-worktree-implement-harness.revision.json",
-    "docs/beacon/v2.0.0/.machine/change/loom-git-worktree-implement-harness.json"
+    "docs/beacon/v2.0.0/.machine/change/loom-git-worktree-implement-harness.json",
+    "docs/beacon/v2.0.0/.machine/execution/technical-implementation-loom-goal-implement-admission-hard-gate-v200.json",
+    "docs/beacon/v2.0.0/.machine/execution/implementation-summary-loom-goal-implement-admission-hard-gate-v200.json",
+    "docs/beacon/v2.0.0/execution/implementation-brief-loom-goal-implement-admission-hard-gate-v200.md",
+    "docs/beacon/v2.0.0/.machine/change/loom-goal-implement-admission-hard-gate-v200.json",
+    "docs/beacon/v2.0.0/change/loom-goal-implement-admission-hard-gate-v200.md",
+    "docs/beacon/v2.0.0/.machine/execution/technical-implementation-loom-plan-goal-deep-integration-v200.json",
+    "docs/beacon/v2.0.0/.machine/execution/implementation-summary-loom-plan-goal-deep-integration-v200.json",
+    "docs/beacon/v2.0.0/execution/implementation-brief-loom-plan-goal-deep-integration-v200.md",
+    "docs/beacon/v2.0.0/.machine/change/loom-plan-goal-deep-integration-v200.json",
+    "docs/beacon/v2.0.0/change/loom-plan-goal-deep-integration-v200.md",
+    "docs/beacon/v2.0.0/.machine/execution/technical-implementation-loom-plan-subintent-router-v200.json",
+    "docs/beacon/v2.0.0/.machine/execution/implementation-summary-loom-plan-subintent-router-v200.json",
+    "docs/beacon/v2.0.0/execution/implementation-brief-loom-plan-subintent-router-v200.md",
+    "docs/beacon/v2.0.0/.machine/change/loom-plan-subintent-router-v200.json",
+    "docs/beacon/v2.0.0/change/loom-plan-subintent-router-v200.md",
+    "docs/beacon/v2.0.0/change/loom-public-surface-1plus6-v200.md",
+    "docs/beacon/v2.0.0/prd/loom-public-surface-1plus6-v200.md",
+    "docs/beacon/v2.0.0/user-story/loom-public-surface-1plus6-v200.md",
+    "docs/beacon/v2.0.0/qa/test-cases/loom-public-surface-1plus6-v200.md",
+    "docs/beacon/v2.0.0/.machine/execution/loom-public-surface-1plus6-v200.revision.json",
+    "docs/beacon/v2.0.0/.machine/change/loom-public-surface-1plus6-v200.json",
+    "docs/beacon/v2.0.0/.machine/execution/technical-implementation-loom-public-surface-progressive-merge-v200.json",
+    "docs/beacon/v2.0.0/.machine/execution/implementation-summary-loom-public-surface-progressive-merge-v200.json",
+    "docs/beacon/v2.0.0/execution/implementation-brief-loom-public-surface-progressive-merge-v200.md",
+    "docs/beacon/v2.0.0/.machine/change/loom-public-surface-progressive-merge-v200.json",
+    "docs/beacon/v2.0.0/change/loom-public-surface-progressive-merge-v200.md"
   ],
-  "generated_at": "2026-07-20 09:41"
+  "generated_at": "2026-07-20 20:32"
 }

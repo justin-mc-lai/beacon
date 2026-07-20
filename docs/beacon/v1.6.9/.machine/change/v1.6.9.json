@@ -13,17 +13,206 @@
   "truth_authority": false,
   "lifecycle_stage": false,
   "release_publish_action": false,
-  "feature_count": 0,
-  "features": [],
+  "feature_count": 5,
+  "features": [
+    {
+      "feature": "beacon-goal-implement-admission-hard-gate-v169",
+      "feature_slug": "beacon-goal-implement-admission-hard-gate-v169",
+      "summary": "Goal implement admission hard gate via workspace admit",
+      "status": "implemented"
+    },
+    {
+      "feature": "beacon-plan-goal-deep-integration-v169",
+      "feature_slug": "beacon-plan-goal-deep-integration-v169",
+      "summary": "plan_artifact P0-P2 + host_subagent + stage_trace + checklists",
+      "status": "implemented"
+    },
+    {
+      "feature": "beacon-plan-subintent-router-v169",
+      "feature_slug": "beacon-plan-subintent-router-v169",
+      "summary": "Plan subintent router primary-first progressive loads",
+      "status": "implemented"
+    },
+    {
+      "feature": "beacon-public-surface-1plus6-v169",
+      "feature_slug": "beacon-public-surface-1plus6-v169",
+      "summary": "Maintains release-facing version aggregate projection guards so QA accepted features are included in version change scope before release check.",
+      "status": "generated"
+    },
+    {
+      "feature": "beacon-public-surface-progressive-merge-v169",
+      "feature_slug": "beacon-public-surface-progressive-merge-v169",
+      "summary": "Progressive map + aggregate skill shells for 1+6",
+      "status": "implemented"
+    }
+  ],
   "implementation_order": {
-    "status": "empty",
-    "feature_count": 0,
-    "ordered_feature_slugs": [],
-    "waves": []
+    "status": "analyzed",
+    "feature_count": 5,
+    "ordered_feature_slugs": [
+      "beacon-public-surface-1plus6-v169",
+      "beacon-public-surface-progressive-merge-v169",
+      "beacon-plan-subintent-router-v169",
+      "beacon-plan-goal-deep-integration-v169",
+      "beacon-goal-implement-admission-hard-gate-v169"
+    ],
+    "waves": [
+      {
+        "wave": 1,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "beacon-public-surface-1plus6-v169",
+            "feature_slug": "beacon-public-surface-1plus6-v169",
+            "depends_on_features": [],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": true,
+            "reason_code": "parallel_no_conflict"
+          }
+        ]
+      },
+      {
+        "wave": 2,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "beacon-public-surface-progressive-merge-v169",
+            "feature_slug": "beacon-public-surface-progressive-merge-v169",
+            "depends_on_features": [
+              "beacon-public-surface-1plus6-v169"
+            ],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": false,
+            "reason_code": "shared_delivery_service_conflict"
+          }
+        ]
+      },
+      {
+        "wave": 3,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "beacon-plan-subintent-router-v169",
+            "feature_slug": "beacon-plan-subintent-router-v169",
+            "depends_on_features": [
+              "beacon-public-surface-progressive-merge-v169"
+            ],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": false,
+            "reason_code": "shared_delivery_service_conflict"
+          }
+        ]
+      },
+      {
+        "wave": 4,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "beacon-plan-goal-deep-integration-v169",
+            "feature_slug": "beacon-plan-goal-deep-integration-v169",
+            "depends_on_features": [
+              "beacon-plan-subintent-router-v169"
+            ],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": false,
+            "reason_code": "shared_delivery_service_conflict"
+          }
+        ]
+      },
+      {
+        "wave": 5,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "beacon-goal-implement-admission-hard-gate-v169",
+            "feature_slug": "beacon-goal-implement-admission-hard-gate-v169",
+            "depends_on_features": [
+              "beacon-plan-goal-deep-integration-v169"
+            ],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": false,
+            "reason_code": "shared_delivery_service_conflict"
+          }
+        ]
+      }
+    ]
   },
-  "added": [],
-  "removed": [],
-  "fixed": [],
-  "traceability_refs": [],
-  "generated_at": "2026-07-20 19:34"
+  "added": [
+    "[beacon-public-surface-1plus6-v169] Feature-level release projection input for QA accepted current feature",
+    "[beacon-public-surface-1plus6-v169] Version aggregate projection inclusion guard and repair metadata",
+    "[beacon-public-surface-1plus6-v169] Repair-only projection rebuild path for release preflight artifacts"
+  ],
+  "removed": [
+    "[beacon-public-surface-1plus6-v169] Manual-only version aggregate projection repair before release check"
+  ],
+  "fixed": [
+    "[beacon-goal-implement-admission-hard-gate-v169] Updated `beacon/utils/goal_implement_admission.py`",
+    "[beacon-goal-implement-admission-hard-gate-v169] Updated `beacon/utils/product_goal_runtime.py`",
+    "[beacon-goal-implement-admission-hard-gate-v169] Updated `tests/test_v169_goal_implement_admission_hard_gate.py`",
+    "[beacon-plan-goal-deep-integration-v169] Updated `beacon/utils/plan_artifact.py`",
+    "[beacon-plan-goal-deep-integration-v169] Updated `beacon/utils/product_goal_runtime.py`",
+    "[beacon-plan-goal-deep-integration-v169] Updated `tests/test_v169_plan_artifact_p0p1p2.py`",
+    "[beacon-plan-subintent-router-v169] Updated `beacon/utils/plan_subintent.py`",
+    "[beacon-plan-subintent-router-v169] Updated `tests/test_v169_plan_subintent_router.py`",
+    "[beacon-plan-subintent-router-v169] Updated `skills/beacon/beacon-plan/SKILL.md`",
+    "[beacon-public-surface-1plus6-v169] Release check can route missing current feature projection to an actionable repair path",
+    "[beacon-public-surface-1plus6-v169] Version aggregate projection remains a read model instead of requirement truth",
+    "[beacon-public-surface-progressive-merge-v169] Updated `skills/beacon/references/public-surface-progressive-map.v1.json`",
+    "[beacon-public-surface-progressive-merge-v169] Updated `beacon/utils/product_goal_runtime.py`",
+    "[beacon-public-surface-progressive-merge-v169] Updated `tests/test_v169_public_surface_progressive_merge.py`"
+  ],
+  "traceability_refs": [
+    "docs/beacon/v1.6.9/.machine/execution/technical-implementation-beacon-goal-implement-admission-hard-gate-v169.json",
+    "docs/beacon/v1.6.9/.machine/execution/implementation-summary-beacon-goal-implement-admission-hard-gate-v169.json",
+    "docs/beacon/v1.6.9/execution/implementation-brief-beacon-goal-implement-admission-hard-gate-v169.md",
+    "docs/beacon/v1.6.9/.machine/change/beacon-goal-implement-admission-hard-gate-v169.json",
+    "docs/beacon/v1.6.9/change/beacon-goal-implement-admission-hard-gate-v169.md",
+    "docs/beacon/v1.6.9/.machine/execution/technical-implementation-beacon-plan-goal-deep-integration-v169.json",
+    "docs/beacon/v1.6.9/.machine/execution/implementation-summary-beacon-plan-goal-deep-integration-v169.json",
+    "docs/beacon/v1.6.9/execution/implementation-brief-beacon-plan-goal-deep-integration-v169.md",
+    "docs/beacon/v1.6.9/.machine/change/beacon-plan-goal-deep-integration-v169.json",
+    "docs/beacon/v1.6.9/change/beacon-plan-goal-deep-integration-v169.md",
+    "docs/beacon/v1.6.9/.machine/execution/technical-implementation-beacon-plan-subintent-router-v169.json",
+    "docs/beacon/v1.6.9/.machine/execution/implementation-summary-beacon-plan-subintent-router-v169.json",
+    "docs/beacon/v1.6.9/execution/implementation-brief-beacon-plan-subintent-router-v169.md",
+    "docs/beacon/v1.6.9/.machine/change/beacon-plan-subintent-router-v169.json",
+    "docs/beacon/v1.6.9/change/beacon-plan-subintent-router-v169.md",
+    "docs/beacon/v1.6.9/change/beacon-public-surface-1plus6-v169.md",
+    "docs/beacon/v1.6.9/prd/beacon-public-surface-1plus6-v169.md",
+    "docs/beacon/v1.6.9/user-story/beacon-public-surface-1plus6-v169.md",
+    "docs/beacon/v1.6.9/qa/test-cases/beacon-public-surface-1plus6-v169.md",
+    "docs/beacon/v1.6.9/.machine/execution/beacon-public-surface-1plus6-v169.revision.json",
+    "docs/beacon/v1.6.9/.machine/change/beacon-public-surface-1plus6-v169.json",
+    "docs/beacon/v1.6.9/.machine/execution/technical-implementation-beacon-public-surface-progressive-merge-v169.json",
+    "docs/beacon/v1.6.9/.machine/execution/implementation-summary-beacon-public-surface-progressive-merge-v169.json",
+    "docs/beacon/v1.6.9/execution/implementation-brief-beacon-public-surface-progressive-merge-v169.md",
+    "docs/beacon/v1.6.9/.machine/change/beacon-public-surface-progressive-merge-v169.json",
+    "docs/beacon/v1.6.9/change/beacon-public-surface-progressive-merge-v169.md"
+  ],
+  "generated_at": "2026-07-20 20:32"
 }
