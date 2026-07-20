@@ -2,7 +2,7 @@
 
 - **version**: `v2.0.0`
 - **program**: `beacon-v2-product-goal-parallel-v200`
-- **generated_at**: 2026-07-18T22:30:39.598585+00:00
+- **generated_at**: 2026-07-19T15:06:56.048183+00:00
 - **policy**: UD-AXIS-001..005 (change must regenerate this artifact)
 
 ## User intent
@@ -42,7 +42,7 @@ created → running → stage_active{plan|truth|design?|implement|qa|release}
 | `beacon-v2-domain-fsm-qa-gate` | qa hard gate | legal/illegal + domain_fsm_coverage |
 | `beacon-v2-ui-state-matrix-ship-gate` | design/ship | UX matrix when ux_required |
 | `beacon-v2-ralph-implement-boundary` | implement delegate | no verdict write |
-| `beacon-v2-goal-durable-longrun` | longrun bypass | SupervisorSession + AgentDriver |
+| `beacon-v2-goal-durable-longrun` | longrun bypass | SupervisorSession + AgentDriver + InjectBundle steering (R3 Codex distill) |
 | `loom-brand-surface` | L0 install surface | dual-install Loom; no replace beacon |
 | `loom-goal-optional-subagent` | implement fan-out execute | SubagentSession opt-in spawn/merge |
 | `loom-goal-trace-bundle` | longrun observability | agent_trace + goal trace CLI |

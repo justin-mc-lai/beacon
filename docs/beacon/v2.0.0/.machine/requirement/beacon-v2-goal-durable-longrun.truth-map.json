@@ -34,9 +34,9 @@
       "slug": "beacon-v2-goal-durable-longrun",
       "version": "v2.0.0",
       "status": "frozen",
-      "revision_id": "R2",
+      "revision_id": "R3",
       "language": "zh",
-      "change_reason": "R2 - full AC-DGS-001..014 parity table + AgentDriver one-shot; pln-review 2026-07-18",
+      "change_reason": "R3 - distill Codex Goal continuation/budget_limit/objective_updated into Loom steering contract; user GO 2026-07-19 1A/2A/3A/4A",
       "canonical_refs": {
         "truth": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/truth.md",
         "tests": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
@@ -48,7 +48,9 @@
       "truth_map_contract": "beacon-truth-map-v1",
       "program_ref": "docs/beacon/v2.0.0/programs/beacon-v2-product-goal-parallel-v200/feature-graph.json",
       "ux_required": "false",
-      "design_deferral": "CLI/orchestrator long-run; no product marketing UI"
+      "design_deferral": "CLI/orchestrator long-run; no product marketing UI",
+      "promotion_ref": "user:2026-07-19 GO 1A durable-longrun change; 2A objective_updated Must; 3A audit→awaiting_verifier; 4A gen-change",
+      "source_advisory": "docs/beacon/v2.0.0/research/loom-goal-steering-codex-continuation-pln-review.md"
     },
     "frontmatter_errors": [],
     "canonical_refs": {
@@ -64,10 +66,10 @@
       "evidence": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/evidence.md"
     },
     "source_hashes": {
-      "truth": "04e2429137365e933a2284d45b719be72a49ab0d5c980a2248d150bd7273594b",
-      "tests": "9ba739ace76ef0c06f777f08f976a0c1e3c9e9f6ff2b854f159ef14b622f9f7e",
-      "tasks": "f39eed1666614741e8d7be6df95c71f4e08ff6168068cdad8345f03b2d1d28db",
-      "evidence": "896e07367f58cb5f40b7ba7394a8bb1ac56f4ed88f064bf8becd460ede094e86"
+      "truth": "c537d52e43f3c0480570d7afa798a856d1faecd9878ce68ecbcde6c5a102c329",
+      "tests": "d013c53e3d486149a0606183fb03bba3349046166124f36ca227afcec64cb378",
+      "tasks": "f035a5835c3f24d97160f5d6fd0a70bb272f8ac30adc1d1b421ba839274da1c3",
+      "evidence": "87ae1ee135d9b051b6b6ad8edac28394bf3014038ca7c24100a65148d1ff49e6"
     },
     "surfaces": {
       "truth": {
@@ -82,7 +84,7 @@
         "filename": "truth.md",
         "path": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/truth.md",
         "exists": true,
-        "source_hash": "04e2429137365e933a2284d45b719be72a49ab0d5c980a2248d150bd7273594b",
+        "source_hash": "c537d52e43f3c0480570d7afa798a856d1faecd9878ce68ecbcde6c5a102c329",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -98,7 +100,7 @@
         "filename": "tests.md",
         "path": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tests.md",
         "exists": true,
-        "source_hash": "9ba739ace76ef0c06f777f08f976a0c1e3c9e9f6ff2b854f159ef14b622f9f7e",
+        "source_hash": "d013c53e3d486149a0606183fb03bba3349046166124f36ca227afcec64cb378",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -114,7 +116,7 @@
         "filename": "tasks.md",
         "path": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/tasks.md",
         "exists": true,
-        "source_hash": "f39eed1666614741e8d7be6df95c71f4e08ff6168068cdad8345f03b2d1d28db",
+        "source_hash": "f035a5835c3f24d97160f5d6fd0a70bb272f8ac30adc1d1b421ba839274da1c3",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -130,7 +132,7 @@
         "filename": "evidence.md",
         "path": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/evidence.md",
         "exists": true,
-        "source_hash": "896e07367f58cb5f40b7ba7394a8bb1ac56f4ed88f064bf8becd460ede094e86",
+        "source_hash": "87ae1ee135d9b051b6b6ad8edac28394bf3014038ca7c24100a65148d1ff49e6",
         "authority": "markdown_feature_package",
         "json_authority": false
       }
@@ -252,7 +254,7 @@
         "truth_authority": true,
         "json_authority": false,
         "generated_governance_state": false,
-        "source_hash": "cdb3a7bc02447f7ee9e6ca1665c38ad7a3e545a327653724c48154acc7a44467"
+        "source_hash": "f4904a3136377b9f5c6d353899d8c5f902de00670e1e26988b84fd6ef1fbbbcb"
       },
       "execution_boundaries": {
         "schema_version": "1.0",
@@ -373,7 +375,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "9dafe82e0286cec5a024101171f0c910950c857969e6e5c4fa666908bd4dd869"
+        "source_hash": "13da088df6aac7f687ae8c3551275cfab6f30337d046858653ba2bd7f7f264cf"
       },
       "evidence_manifest": {
         "schema_version": "1.0",
@@ -390,7 +392,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "71484746b4b7751f08430ff9f08fc9dddfd16dbd146825686b56a6fa2e31d96c"
+        "source_hash": "50634d407eb09492d383af6bb000fa693dcd60a287c4e95c8091f2a0f16419b2"
       },
       "qa_status": {
         "schema_version": "1.0",
@@ -407,7 +409,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "44866a301201d617896b60d411067987c93c78607fe5e76997d1a5a5381f1d1c"
+        "source_hash": "deaff120131c8766973710b9672e37e66bd450c11d88f1fbfc3ba5d0b73e648b"
       },
       "release_gate_report": {
         "schema_version": "1.0",
@@ -424,7 +426,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "6d4c576d0e6f0735fc95970967b610545b1eed6f50b7ee392bc5b6437223b2f8"
+        "source_hash": "3dc9cae06140225cf42fad3b8dd62458d577700c7ccdda31bee80deef5869d69"
       }
     },
     "manifest_authority": false,
@@ -616,7 +618,7 @@
     "diagnostics": []
   },
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-18T03:43:39.228437+00:00",
+  "generated_at": "2026-07-19T15:18:23.203718+00:00",
   "truth_authority": false,
   "source_paths": {
     "truth": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/truth.md",
@@ -625,9 +627,9 @@
     "evidence": "docs/beacon/v2.0.0/features/beacon-v2-goal-durable-longrun/evidence.md"
   },
   "source_hashes": {
-    "truth": "04e2429137365e933a2284d45b719be72a49ab0d5c980a2248d150bd7273594b",
-    "tests": "9ba739ace76ef0c06f777f08f976a0c1e3c9e9f6ff2b854f159ef14b622f9f7e",
-    "tasks": "f39eed1666614741e8d7be6df95c71f4e08ff6168068cdad8345f03b2d1d28db",
-    "evidence": "896e07367f58cb5f40b7ba7394a8bb1ac56f4ed88f064bf8becd460ede094e86"
+    "truth": "c537d52e43f3c0480570d7afa798a856d1faecd9878ce68ecbcde6c5a102c329",
+    "tests": "d013c53e3d486149a0606183fb03bba3349046166124f36ca227afcec64cb378",
+    "tasks": "f035a5835c3f24d97160f5d6fd0a70bb272f8ac30adc1d1b421ba839274da1c3",
+    "evidence": "87ae1ee135d9b051b6b6ad8edac28394bf3014038ca7c24100a65148d1ff49e6"
   }
 }

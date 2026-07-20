@@ -43,3 +43,8 @@ loom goal run "<目标>" --project . --version v2.0.0
 ## Git worktree
 
 See `skills/beacon/references/git-worktree-execution-flow.md` (shared; do not fork).
+
+
+## InjectBundle steering (v2.0.0 R3)
+
+Each turn injects **InjectBundle**: steering (Codex distill templates under `docs/beacon/v2.0.0/fixtures/steering/`) → **resume-pack digest** → next_action (not full chat/jsonl). Completion audit only prepares **awaiting_verifier**; never self-certify complete.

@@ -1,38 +1,43 @@
 {
   "schema_version": "1.0",
-  "feature": "loom-worktree-progressive-skill-flow",
-  "feature_slug": "loom-worktree-progressive-skill-flow",
+  "feature": "loom-git-worktree-implement-harness",
+  "feature_slug": "loom-git-worktree-implement-harness",
   "version": "v2.0.0",
   "status": "pass",
   "blocked": false,
   "reason_code": "",
-  "generated_at": "2026-07-19T13:16:00.504771+00:00",
-  "package_dir": "docs/beacon/v2.0.0/features/loom-worktree-progressive-skill-flow",
+  "generated_at": "2026-07-20T01:41:17.436193+00:00",
+  "package_dir": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness",
   "truth_frontmatter": {
-    "slug": "loom-worktree-progressive-skill-flow",
+    "slug": "loom-git-worktree-implement-harness",
     "version": "v2.0.0",
     "status": "frozen",
-    "revision_id": "R1",
+    "revision_id": "R2",
     "language": "zh",
-    "change_reason": "User GO 2026-07-19: pln-review accepted — shared git worktree norms + progressive skill load mount for goal/all stages; dual v2.0.0+v1.6.8",
+    "change_reason": "R2 - branch ref hierarchy hard gate: leaf-only lanes; admit fail never implements on main; user GO 1A/2A/3A 2026-07-20",
     "canonical_refs": {
-      "truth": "docs/beacon/v2.0.0/features/loom-worktree-progressive-skill-flow/truth.md",
-      "tests": "docs/beacon/v2.0.0/features/loom-worktree-progressive-skill-flow/tests.md",
-      "tasks": "docs/beacon/v2.0.0/features/loom-worktree-progressive-skill-flow/tasks.md",
-      "evidence": "docs/beacon/v2.0.0/features/loom-worktree-progressive-skill-flow/evidence.md"
+      "truth": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+      "tests": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tests.md",
+      "tasks": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tasks.md",
+      "evidence": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/evidence.md"
     },
     "parser_contract": "beacon-feature-package-v2",
     "truth_source_model": "feature_package_authoritative",
     "truth_map_contract": "beacon-truth-map-v1",
-    "display_name": "Loom Worktree Progressive Skill Flow",
-    "brand": "Loom",
+    "program_ref": "docs/beacon/v2.0.0/programs/loom-kernel-closure-w1w5-v200/feature-graph.json",
+    "parent_kernel": "beacon-v2-rust-kernel-redesign",
+    "upstream_acs": "[\"AC-099\", \"AC-100\"]",
+    "wave": "W1",
+    "priority": "P0",
     "ux_required": "false",
-    "design_deferral": "skill/docs surface; no product marketing UI"
+    "design_deferral": "kernel/CLI; no product marketing UI",
+    "display_name": "Loom Git Worktree + Implement Harness",
+    "brand": "Loom"
   },
-  "ac_count": 7,
-  "test_count": 7,
-  "checkbox_count": 6,
-  "evidence_row_count": 7,
+  "ac_count": 5,
+  "test_count": 9,
+  "checkbox_count": 7,
+  "evidence_row_count": 6,
   "gate_authority": "canonical_surfaces_preserved",
   "checkbox_gate_bypass": false,
   "evidence_gate_truth": false,
@@ -40,7 +45,7 @@
     {
       "severity": "info",
       "code": "truth_human_l0_ok",
-      "path": "docs/beacon/v2.0.0/features/loom-worktree-progressive-skill-flow/truth.md",
+      "path": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
       "language": "zh",
       "l0_headings": [
         "## 人话"
@@ -55,16 +60,16 @@
   "truth_authority": "markdown_feature_package",
   "json_authority": false,
   "source_paths": {
-    "truth": "docs/beacon/v2.0.0/features/loom-worktree-progressive-skill-flow/truth.md",
-    "tests": "docs/beacon/v2.0.0/features/loom-worktree-progressive-skill-flow/tests.md",
-    "tasks": "docs/beacon/v2.0.0/features/loom-worktree-progressive-skill-flow/tasks.md",
-    "evidence": "docs/beacon/v2.0.0/features/loom-worktree-progressive-skill-flow/evidence.md"
+    "truth": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/truth.md",
+    "tests": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tests.md",
+    "tasks": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/tasks.md",
+    "evidence": "docs/beacon/v2.0.0/features/loom-git-worktree-implement-harness/evidence.md"
   },
   "source_hashes": {
-    "truth": "ba586e63007df52978aa7c6b5ddcb34e1940abddda223b6dda49e0ba14958919",
-    "tests": "a650f8cebb22ff85d80dc75aba57ceea11f445b52aa8117c5f11b2b0660f9565",
-    "tasks": "893e8faf8685b85da1e9dc1b9edd77fb6238a49f6a431be1a0855dc502baf525",
-    "evidence": "5b5eb388e78401593ca95d85953d2c4ef5308afd5f0fb38d9a03cab5b4448526"
+    "truth": "750c2a2e502d5d34543f67b5e3331a8c7bf15914cd1c4596496c90db42840656",
+    "tests": "0a477cae20cdae59b2e2f0b785622cad636f0821c817dc03a71e1d3c7159fa00",
+    "tasks": "0025641e75de07234c37c40a1df916069914dc877227b807de8dce5d46694820",
+    "evidence": "22cf47edb29303750cb4cd3a26fd28acbac3225c714e1f7b60f4810470b7732b"
   },
   "runtime_json_requires_markdown_twin": false
 }

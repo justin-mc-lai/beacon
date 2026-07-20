@@ -1,6 +1,7 @@
 """Python AgentDriver for beacon-goal longrun (v1.6.7).
 
-Spawns host agent turns after each exit using resume-pack digest only.
+Spawns host agent turns after each exit using InjectBundle:
+steering (Codex distill) → resume-pack digest → next_action.
 Does not self-certify complete and never auto-confirms release.
 Depends on goal_durable_supervisor APIs.
 """
@@ -24,6 +25,14 @@ from beacon.utils.goal_durable_supervisor import (
     build_resume_pack,
     ensure_run_dir,
     goal_run_dir,
+)
+from beacon.utils.goal_steering import (
+    build_inject_bundle,
+    bump_blocker_streak,
+    detect_objective_updated,
+    objective_fingerprint,
+    render_inject_bundle_prompt,
+    render_steering,
 )
 from beacon.utils.runtime import now_iso, write_json
 
@@ -274,38 +283,48 @@ def render_turn_prompt(
     goal_payload: dict[str, Any],
     *,
     turn_n: int,
+    driver_state: dict[str, Any] | None = None,
+    halt_budget: bool = False,
+    version: str = "v2.0.0",
 ) -> str:
-    """Digest-only prompt: resume-pack fields, never full chat/jsonl body."""
+    """InjectBundle prompt: steering → resume-pack digest → next_action.
+
+    Never embeds full chat/jsonl body. Never includes update_goal self-complete tools.
+    """
     pack = build_resume_pack(project_root, goal_payload)
+    driver_state = dict(driver_state or {})
+    obj_updated = detect_objective_updated(goal_payload, driver_state)
+    next_action = str(
+        pack.get("next_action")
+        or goal_payload.get("next_action")
+        or "continue current stage against frozen truth via InjectBundle"
+    )
+    # Serialize list fields for digest readability
+    pack_view = dict(pack)
+    pack_view["done_when"] = json.dumps(pack.get("done_when") or [], ensure_ascii=False)
+    pack_view["open_blockers"] = json.dumps(pack.get("open_blockers") or [], ensure_ascii=False)
+    pack_view["recent_heartbeats"] = json.dumps(pack.get("recent_heartbeats") or [], ensure_ascii=False)
+
+    bundle = build_inject_bundle(
+        project_root,
+        goal_payload,
+        resume_pack=pack_view,
+        next_action=next_action,
+        turn_n=turn_n,
+        version=str(goal_payload.get("version") or version),
+        driver_state=driver_state,
+        halt_budget=halt_budget,
+        objective_updated=obj_updated and not halt_budget,
+    )
+    body = render_inject_bundle_prompt(bundle)
     run_id = str(goal_payload.get("run_id") or pack.get("run_id") or "")
-    lines = [
-        f"# Beacon Goal Driver Turn {turn_n}",
-        "",
-        f"run_id: {run_id}",
-        f"utterance: {pack.get('utterance')}",
-        f"current_stage: {pack.get('current_stage')}",
-        f"status: {pack.get('status')}",
-        f"last_substep: {pack.get('last_substep')}",
-        f"next_action: {pack.get('next_action')}",
-        f"done_when: {json.dumps(pack.get('done_when') or [], ensure_ascii=False)}",
-        f"open_blockers: {json.dumps(pack.get('open_blockers') or [], ensure_ascii=False)}",
-        f"recent_heartbeats: {json.dumps(pack.get('recent_heartbeats') or [], ensure_ascii=False)}",
-        f"authority_note: {pack.get('authority_note')}",
-        "",
-        "## Rules",
-        "- Use frozen feature truth + resume-pack only; do not treat full chat as authority.",
-        "- On progress: `beacon goal heartbeat --run-id ... --summary ...`",
-        "- On pause: `beacon goal checkpoint --run-id ... --next-action ...`",
-        "- Complete only with verifier refs; never self-certify; never auto-release.",
-        "",
-        "## Optional result file",
-        f"Write `{goal_run_dir(project_root, run_id) / f'turn-{turn_n}.result.json'}` when useful.",
-        "",
-    ]
-    body = "\n".join(lines)
-    # hard guard: never embed full execution log body
+    body += (
+        f"\n## Optional result file\n"
+        f"Write `{goal_run_dir(project_root, run_id) / f'turn-{turn_n}.result.json'}` when useful.\n"
+    )
     assert "execution_jsonl_body" not in body
     assert "full_chat" not in body
+    assert "update_goal" not in body.lower()
     return body
 
 
@@ -553,6 +572,19 @@ def driver_run_once(
         state["state"] = "halt_budget"
         state["halt_reason"] = REASON_BUDGET
         state["lock_held"] = False
+        # budget_limit steering artifact (wrap-up only; no new substantive work)
+        try:
+            wrap = render_turn_prompt(
+                project_root,
+                goal,
+                turn_n=turn_n,
+                driver_state=state,
+                halt_budget=True,
+                version=str(goal.get("version") or "v2.0.0"),
+            )
+            wrap_path = write_turn_prompt(project_root, run_id, turn_n, wrap)
+        except Exception:  # noqa: BLE001
+            wrap_path = None
         state = save_driver_state(project_root, state)
         release_driver_lock(project_root, run_id, driver_id=str(state.get("driver_id") or ""))
         # explicitly refuse complete
@@ -562,7 +594,10 @@ def driver_run_once(
             run_id,
             stage=str(goal.get("current_stage") or ""),
             event="driver_halt_budget",
-            summary=f"turns={turn_n - 1} max={max_turns}; complete refused={rejected.get('reason_code')}",
+            summary=(
+                f"turns={turn_n - 1} max={max_turns}; complete refused={rejected.get('reason_code')}; "
+                f"budget_limit_prompt={getattr(wrap_path, 'name', None)}"
+            ),
         )
         return {
             "status": "halt_budget",
@@ -575,7 +610,16 @@ def driver_run_once(
         }
 
     # arming / requeue → turn_active
-    prompt = render_turn_prompt(project_root, goal, turn_n=turn_n)
+    prompt = render_turn_prompt(
+        project_root,
+        goal,
+        turn_n=turn_n,
+        driver_state=state,
+        halt_budget=False,
+        version=str(goal.get("version") or "v2.0.0"),
+    )
+    # remember objective fingerprint for objective_updated on next turn
+    state["last_objective_fp"] = objective_fingerprint(goal)
     prompt_path = write_turn_prompt(project_root, run_id, turn_n, prompt)
     bridge = resolve_bridge_command(
         prompt_file=prompt_path,
@@ -693,6 +737,19 @@ def driver_run_once(
 
     # reload goal after heartbeat
     goal = load(project_root, run_id)
+    # GoalTurnCounter: consecutive same blocker_id (blocked audit ≥3)
+    try:
+        blocker = None
+        if isinstance(result_payload, dict):
+            blocker = result_payload.get("blocker_id") or result_payload.get("blocker")
+        if not blocker and goal.get("open_blockers"):
+            ob = goal.get("open_blockers")
+            if isinstance(ob, list) and ob:
+                blocker = ob[0] if not isinstance(ob[0], dict) else ob[0].get("id")
+        goal = bump_blocker_streak(goal, str(blocker) if blocker else None)
+        goal = save(project_root, goal)
+    except Exception:  # noqa: BLE001
+        pass
 
     # never auto-complete / auto-release
     if is_goal_terminal(goal):

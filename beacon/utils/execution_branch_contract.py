@@ -573,38 +573,68 @@ def resolve_workspace_branch_targets(
     if not ctx and is_program_level_branch_contract(per_feature):
         ctx = per_feature
     if ctx and is_program_level_branch_contract(ctx):
-        branch = str(
+        aggregation = str(
             ctx.get("expected_branch")
             or ctx.get("aggregation_branch")
             or ctx.get("program_aggregation_branch")
             or ""
         ).strip()
-        if not branch:
-            branch = resolve_feature_branch(admission_contract, feature=feature, version=version)
         worktree_path = str(ctx.get("dedicated_worktree_path") or ctx.get("worktree_root") or ctx.get("worktree_path") or "").strip()
         if not worktree_path:
             worktree_path = resolve_worktree_path(root, admission_contract, feature=feature)
+        # UD-BR-002/003: aggregation is namespace metadata; checkout is always leaf per feature.
+        from beacon.utils.branch_ref_hierarchy import ensure_leaf_checkout_branch
+
+        pattern = str(admission_contract.get("feature_branch_pattern") or "").strip()
+        leaf_info = ensure_leaf_checkout_branch(
+            root,
+            version=version,
+            feature=feature,
+            candidate=aggregation,
+            pattern=pattern,
+        )
+        leaf = str(leaf_info.get("feature_branch") or resolve_feature_branch(admission_contract, feature=feature, version=version))
+        # Prefer dedicated per-feature worktree path under version root when aggregation path is version-only.
+        from beacon.utils.workspace_admission import resolve_worktree_path as _rwp
+        feature_wt = _rwp(root, {**admission_contract, "version": version}, feature=feature)
+        # If program path is a bare version worktree dir, still use feature subdir for isolation.
+        from pathlib import Path as _P
+        wt_path = _P(worktree_path) if worktree_path else None
+        if not worktree_path:
+            worktree_path = feature_wt
+        elif wt_path is not None and (
+            wt_path.name == str(version)
+            or wt_path.name == str(version).lstrip("v")
+            or str(wt_path).endswith(f"/{version}")
+            or str(wt_path).endswith(f"/{version}")
+        ):
+            # program version root → feature subdir leaf worktree
+            worktree_path = feature_wt
         if _should_prefer_governance_feature_branch(
             ctx,
             admission_contract=admission_contract,
-            resolved_branch=branch,
+            resolved_branch=aggregation,
         ):
             return {
                 "branch_resolution_mode": "per-feature",
-                "feature_branch": resolve_feature_branch(admission_contract, feature=feature, version=version),
+                "feature_branch": leaf,
                 "worktree_path": worktree_path,
                 "program_slug": "",
                 "material_path": str(ctx.get("material_path") or (per_feature.get("material_paths") or [""])[0]).strip(),
                 "source": "governance_feature_pattern",
-                "ignored_execution_branch": branch,
+                "ignored_execution_branch": aggregation,
+                "aggregation_branch": aggregation,
+                "leaf_rewrite": leaf_info,
             }
         return {
             "branch_resolution_mode": "program-level",
-            "feature_branch": branch,
+            "feature_branch": leaf,
+            "aggregation_branch": aggregation or str(leaf_info.get("aggregation_branch") or ""),
             "worktree_path": worktree_path,
             "program_slug": str(ctx.get("program_slug") or ctx.get("feature") or "").strip(),
             "material_path": str(ctx.get("material_path") or (per_feature.get("material_paths") or [""])[0]).strip(),
             "source": str(ctx.get("source") or "").strip(),
+            "leaf_rewrite": leaf_info,
         }
     return {
         "branch_resolution_mode": "per-feature",

@@ -218,6 +218,9 @@ HARD GATE:
 
 ## GIT_ADMISSION (mandatory — Tier A/B when version+feature known)
 
+**Also load:** `skills/beacon/references/git-worktree-execution-flow.md` + example `skills/beacon/examples/git-worktree-process-correct-30s.md`.
+
+
 Before ANY repo write or implement/qa/release route:
 1. `beacon workspace admit --project-root . --version <v> --feature <slug> --json`
 2. If status != pass → STOP; show reason_codes; do NOT edit files

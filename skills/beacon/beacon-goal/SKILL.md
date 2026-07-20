@@ -134,7 +134,7 @@ beacon goal driver stop --run-id <id>
 **Rules**
 - Default `goal run` does **not** start driver (idle)
 - `--longrun` attaches durable supervisor + AgentDriver for **this run only**
-- Each turn injects **resume-pack digest** only (not full chat/jsonl)
+- Each turn injects **InjectBundle**: steering (Codex distill templates under `docs/beacon/v2.0.0/fixtures/steering/`) → **resume-pack digest** → next_action (not full chat/jsonl). Completion audit only prepares **awaiting_verifier**; never self-certify complete.
 - Complete still needs verifier; release always human
 - Env: `BEACON_HOST_GOAL_BRIDGE_CMD` with `{prompt_file}` `{run_id}` `{project}`
 - Budget defaults: max_agent_turns=32, turn_timeout_sec=3600, heartbeat=120s

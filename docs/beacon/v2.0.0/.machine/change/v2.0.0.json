@@ -13,8 +13,14 @@
   "truth_authority": false,
   "lifecycle_stage": false,
   "release_publish_action": false,
-  "feature_count": 2,
+  "feature_count": 4,
   "features": [
+    {
+      "feature": "beacon-v2-goal-durable-longrun",
+      "feature_slug": "beacon-v2-goal-durable-longrun",
+      "summary": "Maintains release-facing version aggregate projection guards so QA accepted features are included in version change scope before release check.",
+      "status": "generated"
+    },
     {
       "feature": "beacon-v2-product-goal-orchestrator",
       "feature_slug": "beacon-v2-product-goal-orchestrator",
@@ -26,14 +32,22 @@
       "feature_slug": "beacon-v2-rust-kernel-redesign",
       "summary": "Maintains release-facing version aggregate projection guards so QA accepted features are included in version change scope before release check.",
       "status": "generated"
+    },
+    {
+      "feature": "loom-git-worktree-implement-harness",
+      "feature_slug": "loom-git-worktree-implement-harness",
+      "summary": "Maintains release-facing version aggregate projection guards so QA accepted features are included in version change scope before release check.",
+      "status": "generated"
     }
   ],
   "implementation_order": {
     "status": "analyzed",
-    "feature_count": 2,
+    "feature_count": 4,
     "ordered_feature_slugs": [
       "beacon-v2-rust-kernel-redesign",
-      "beacon-v2-product-goal-orchestrator"
+      "beacon-v2-product-goal-orchestrator",
+      "beacon-v2-goal-durable-longrun",
+      "loom-git-worktree-implement-harness"
     ],
     "waves": [
       {
@@ -57,30 +71,66 @@
             "writable_services": [],
             "parallelizable": true,
             "reason_code": "parallel_no_conflict"
+          },
+          {
+            "feature": "beacon-v2-goal-durable-longrun",
+            "feature_slug": "beacon-v2-goal-durable-longrun",
+            "depends_on_features": [],
+            "direct_delivery_services": [],
+            "writable_services": [],
+            "parallelizable": true,
+            "reason_code": "parallel_no_conflict"
+          },
+          {
+            "feature": "loom-git-worktree-implement-harness",
+            "feature_slug": "loom-git-worktree-implement-harness",
+            "depends_on_features": [],
+            "direct_delivery_services": [],
+            "writable_services": [],
+            "parallelizable": true,
+            "reason_code": "parallel_no_conflict"
           }
         ]
       }
     ]
   },
   "added": [
+    "[beacon-v2-goal-durable-longrun] Feature-level release projection input for QA accepted current feature",
+    "[beacon-v2-goal-durable-longrun] Version aggregate projection inclusion guard and repair metadata",
+    "[beacon-v2-goal-durable-longrun] Repair-only projection rebuild path for release preflight artifacts",
     "[beacon-v2-product-goal-orchestrator] Feature-level release projection input for QA accepted current feature",
     "[beacon-v2-product-goal-orchestrator] Version aggregate projection inclusion guard and repair metadata",
     "[beacon-v2-product-goal-orchestrator] Repair-only projection rebuild path for release preflight artifacts",
     "[beacon-v2-rust-kernel-redesign] Feature-level release projection input for QA accepted current feature",
     "[beacon-v2-rust-kernel-redesign] Version aggregate projection inclusion guard and repair metadata",
-    "[beacon-v2-rust-kernel-redesign] Repair-only projection rebuild path for release preflight artifacts"
+    "[beacon-v2-rust-kernel-redesign] Repair-only projection rebuild path for release preflight artifacts",
+    "[loom-git-worktree-implement-harness] Feature-level release projection input for QA accepted current feature",
+    "[loom-git-worktree-implement-harness] Version aggregate projection inclusion guard and repair metadata",
+    "[loom-git-worktree-implement-harness] Repair-only projection rebuild path for release preflight artifacts"
   ],
   "removed": [
+    "[beacon-v2-goal-durable-longrun] Manual-only version aggregate projection repair before release check",
     "[beacon-v2-product-goal-orchestrator] Manual-only version aggregate projection repair before release check",
-    "[beacon-v2-rust-kernel-redesign] Manual-only version aggregate projection repair before release check"
+    "[beacon-v2-rust-kernel-redesign] Manual-only version aggregate projection repair before release check",
+    "[loom-git-worktree-implement-harness] Manual-only version aggregate projection repair before release check"
   ],
   "fixed": [
+    "[beacon-v2-goal-durable-longrun] Release check can route missing current feature projection to an actionable repair path",
+    "[beacon-v2-goal-durable-longrun] Version aggregate projection remains a read model instead of requirement truth",
     "[beacon-v2-product-goal-orchestrator] Release check can route missing current feature projection to an actionable repair path",
     "[beacon-v2-product-goal-orchestrator] Version aggregate projection remains a read model instead of requirement truth",
     "[beacon-v2-rust-kernel-redesign] Release check can route missing current feature projection to an actionable repair path",
-    "[beacon-v2-rust-kernel-redesign] Version aggregate projection remains a read model instead of requirement truth"
+    "[beacon-v2-rust-kernel-redesign] Version aggregate projection remains a read model instead of requirement truth",
+    "[loom-git-worktree-implement-harness] Release check can route missing current feature projection to an actionable repair path",
+    "[loom-git-worktree-implement-harness] Version aggregate projection remains a read model instead of requirement truth"
   ],
   "traceability_refs": [
+    "docs/beacon/v2.0.0/change/beacon-v2-goal-durable-longrun.md",
+    "docs/beacon/v2.0.0/prd/beacon-v2-goal-durable-longrun.md",
+    "docs/beacon/v2.0.0/user-story/beacon-v2-goal-durable-longrun.md",
+    "docs/beacon/v2.0.0/qa/test-cases/beacon-v2-goal-durable-longrun.md",
+    "docs/beacon/v2.0.0/.machine/execution/beacon-v2-goal-durable-longrun.revision.json",
+    "docs/beacon/v2.0.0/.machine/change/beacon-v2-goal-durable-longrun.json",
     "docs/beacon/v2.0.0/change/beacon-v2-product-goal-orchestrator.md",
     "docs/beacon/v2.0.0/prd/beacon-v2-product-goal-orchestrator.md",
     "docs/beacon/v2.0.0/user-story/beacon-v2-product-goal-orchestrator.md",
@@ -93,7 +143,13 @@
     "docs/beacon/archive/v2.0.0/qa/test-cases/beacon-v2-rust-kernel-redesign.md",
     "docs/beacon/archive/v2.0.0/.machine/execution/beacon-v2-rust-kernel-redesign.revision.json",
     "docs/beacon/v2.0.0/.machine/change/beacon-v2-rust-kernel-redesign.json",
-    "docs/beacon/v2.0.0/change/beacon-v2-rust-kernel-redesign.md"
+    "docs/beacon/v2.0.0/change/beacon-v2-rust-kernel-redesign.md",
+    "docs/beacon/v2.0.0/change/loom-git-worktree-implement-harness.md",
+    "docs/beacon/v2.0.0/prd/loom-git-worktree-implement-harness.md",
+    "docs/beacon/v2.0.0/user-story/loom-git-worktree-implement-harness.md",
+    "docs/beacon/v2.0.0/qa/test-cases/loom-git-worktree-implement-harness.md",
+    "docs/beacon/v2.0.0/.machine/execution/loom-git-worktree-implement-harness.revision.json",
+    "docs/beacon/v2.0.0/.machine/change/loom-git-worktree-implement-harness.json"
   ],
-  "generated_at": "2026-07-17 15:58"
+  "generated_at": "2026-07-20 09:41"
 }
