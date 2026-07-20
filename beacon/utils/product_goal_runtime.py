@@ -47,6 +47,10 @@ from beacon.utils.multi_version_intent import (
 from beacon.utils.plan_subintent import plan_progressive_loads_for_utterance
 from beacon.utils.plan_artifact import plan_to_truth_gate
 from beacon.utils.host_subagent_gate import evaluate_host_subagent_gate
+from beacon.utils.goal_implement_admission import (
+    apply_admission_to_goal_payload,
+    ensure_goal_implement_admission,
+)
 from beacon.utils.goal_agent_driver import (
     attach_longrun_to_goal_run,
     detect_longrun_intent,
@@ -651,8 +655,43 @@ def tick_goal_run(
         )
         # Soft dispatch hooks (do not claim QA/release)
         if worker_plan.get("dispatch") == "ralph":
-            payload = delegate_implement_to_ralph(project_root, run_id, feature=str(payload.get("feature") or ""))
+            # UD-GIA: hard gate — workspace admit (+ pool / merge-main) before implement write path
+            gate = ensure_goal_implement_admission(project_root, payload)
+            payload = apply_admission_to_goal_payload(payload, gate)
+            append_execution_log(
+                project_root,
+                run_id,
+                stage="implement",
+                event="implement_admission",
+                summary=(
+                    f"allow={gate.get('allow_implement')} reason={gate.get('reason_code')} "
+                    f"forced={gate.get('goal_forced_worktree')}"
+                )[:240],
+                refs=[str(gate.get("worktree_path") or "")],
+            )
+            if not gate.get("allow_implement"):
+                payload["blocked"] = True
+                payload["status"] = "blocked"
+                payload["reason_code"] = str(gate.get("reason_code") or "goal_implement_admission_blocked")
+                hist = list(payload.get("history") or [])
+                hist.append(
+                    {
+                        "event": "implement_admission_blocked",
+                        "reason_code": payload["reason_code"],
+                        "at": now_iso(),
+                    }
+                )
+                payload["history"] = hist
+                return _save(project_root, payload)
+            _save(project_root, payload)
+            payload = delegate_implement_to_ralph(
+                project_root, run_id, feature=str(gate.get("feature_slug") or payload.get("feature") or "")
+            )
             payload = load_goal_run(project_root, run_id)
+            # re-attach gate if reload dropped it
+            if not payload.get("implement_admission"):
+                payload = apply_admission_to_goal_payload(payload, gate)
+                payload = _save(project_root, payload)
         elif worker_plan.get("dispatch") == "design":
             try:
                 payload = run_design_stage_for_goal(project_root, run_id)
@@ -749,6 +788,22 @@ def tick_goal_run(
         existing["per_stage"] = ep
         existing["log_relpath"] = log_rel
         payload["stage_trace"] = existing
+        if next_stage == "implement":
+            # Pre-warm implement admission (fail-closed only blocks write dispatch; record attempt)
+            pre = ensure_goal_implement_admission(project_root, payload)
+            payload = apply_admission_to_goal_payload(payload, pre)
+            append_execution_log(
+                project_root,
+                run_id,
+                stage="implement",
+                event="implement_admission_prewarm",
+                summary=f"allow={pre.get('allow_implement')} reason={pre.get('reason_code')}"[:240],
+                refs=[str(pre.get("worktree_path") or "")],
+            )
+            if not pre.get("allow_implement"):
+                payload["blocked"] = True
+                payload["status"] = "blocked"
+                payload["reason_code"] = str(pre.get("reason_code") or "goal_implement_admission_blocked")
         if next_stage == "design":
             payload = run_design_stage_for_goal(project_root, run_id)
     else:

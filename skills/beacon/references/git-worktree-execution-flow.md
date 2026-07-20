@@ -87,3 +87,24 @@ See: `skills/beacon/examples/git-worktree-process-correct-30s.md`
 | git worktree path | **Where humans/agents edit this repo** for a feature |
 
 Both must succeed independently. Skill install never implies worktree admission.
+
+## Goal implement admission hard gate (product-goal)
+
+**Runtime (Must for goal implement write path):**
+
+1. `ensure_goal_implement_admission` → `run_workspace_admit` (same branch governance contract).
+2. Existing worktree lane → **switch**; else **`git worktree add`** (real worktree).
+3. Register **workspace pool** when `worktree_mode=pooled` (`.beacon/state/workspace-pool/<version>/pool.json`).
+4. **Merge** `truth_canonical` / baseline (`main`) into feature branch; conflict → `merge_main_conflict` blocked.
+5. `tick --execute` dispatch `ralph` **only if** `allow_implement=true`; else goal `blocked`.
+6. When version contract has `require_workspace_admission=false`, goal still **forces** a dedicated leaf worktree (closes main-write hole) — see UD-GIA-009.
+7. Align `parallel_plan.satellites[].worktree` to admit-resolved path (do not invent a second satellite tree).
+
+**Does not** auto-confirm release. Complete still needs verifier.
+
+Code: `beacon/utils/goal_implement_admission.py` · feature packages:
+- `docs/beacon/v1.6.9/features/beacon-goal-implement-admission-hard-gate-v169/`
+- `docs/beacon/v2.0.0/features/loom-goal-implement-admission-hard-gate-v200/`
+
+Human surface remains: `beacon doctor branch-governance` / `$beacon-gov-branch`.
+

@@ -222,3 +222,15 @@ Enhancement only: cannot_complete_goal; no auto-release; no second public entry.
 See `skills/beacon/references/public-surface-1plus6.md`.
 
 `$beacon-goal` is the **only** long-run facade. The six public harness verbs are plan/truth/design/implement/qa/release (synonyms to Rust PUBLIC_ABILITIES).
+
+## Implement admission hard gate (v1.6.9 / v2.0.0)
+
+Before implement write dispatch (`tick --execute` → ralph):
+
+1. `ensure_goal_implement_admission` → `workspace admit` (+ force leaf worktree if contract optional)
+2. switch existing worktree or `git worktree add`; pool lease when pooled; merge main
+3. fail → goal blocked; never implement on main without admission
+4. release remains human; complete needs verifier
+
+Ref: `skills/beacon/references/git-worktree-execution-flow.md`
+
