@@ -348,6 +348,91 @@ def _semver_tuple(value: str | None) -> tuple[int, int, int]:
     return tuple(numbers[:3])
 
 
+def _scheme_a_host_visible_whitelist(brand: str = "beacon") -> list[str] | None:
+    """Load Scheme A public 1+6 host-visible whitelist from progressive map.
+
+    Set BEACON_INSTALL_ALL=1 to disable whitelist filtering (legacy full surface).
+    """
+    import os
+
+    if str(os.environ.get("BEACON_INSTALL_ALL") or "").strip() in {"1", "true", "yes", "on"}:
+        return None
+    candidates = [
+        Path(__file__).resolve().parents[1].parent / "skills" / "beacon" / "references" / "public-surface-progressive-map.v1.json",
+        packaged_beacon_skill_root().parent / "beacon" / "references" / "public-surface-progressive-map.v1.json",
+    ]
+    # packaged root is skills/beacon
+    candidates.append(packaged_beacon_skill_root() / "references" / "public-surface-progressive-map.v1.json")
+    for path in candidates:
+        try:
+            if not path.is_file():
+                continue
+            data = json.loads(path.read_text(encoding="utf-8"))
+            wl = (data.get("host_visible_whitelist") or {}).get(brand)
+            if isinstance(wl, list) and wl:
+                return [str(x).strip() for x in wl if str(x).strip()]
+        except Exception:  # noqa: BLE001
+            continue
+    # hard fallback Scheme A
+    if brand == "loom":
+        return [
+            "loom-goal",
+            "loom-plan",
+            "loom-truth",
+            "loom-design",
+            "loom-implement",
+            "loom-qa",
+            "loom-release",
+        ]
+    return [
+        "beacon-goal",
+        "beacon-plan",
+        "beacon-truth",
+        "beacon-design",
+        "beacon-implement",
+        "beacon-qa",
+        "beacon-release",
+    ]
+
+
+def _scheme_a_public_surface_enabled(docs_version: str | None, runtime_version: str | None = None) -> bool:
+    """Scheme A 1+6 public surface for v1.6.9+ / v2.0.0 dual-track installs."""
+    import os
+
+    if str(os.environ.get("BEACON_INSTALL_ALL") or "").strip() in {"1", "true", "yes", "on"}:
+        return False
+    if str(os.environ.get("BEACON_SCHEME_A") or "").strip() in {"0", "false", "no", "off"}:
+        return False
+    target = docs_version or runtime_version
+    # Prefer progressive map always when present for modern docs lines
+    if _semver_tuple(target) >= (1, 6, 9):
+        return True
+    # v2.0.0 may parse as (2,0,0)
+    if _semver_tuple(target) >= (2, 0, 0):
+        return True
+    return False
+
+
+def _scheme_a_skill_projections(source_root: Path, *, brand: str = "beacon") -> list[SkillProjection]:
+    """Project only Scheme A public harness + goal shells."""
+    whitelist = _scheme_a_host_visible_whitelist(brand) or []
+    projections: list[SkillProjection] = []
+    for skill_id in whitelist:
+        source_skill = source_root / skill_id
+        if not (source_skill / "SKILL.md").exists():
+            continue
+        projections.append(
+            SkillProjection(
+                id=skill_id,
+                source_path=str(source_skill.relative_to(source_root)),
+                source_hash=_hash_directory(source_skill),
+                source_kind="scheme_a_public_surface",
+                source_dir=source_skill,
+            )
+        )
+    return projections
+
+
 def _uses_v160_taxonomy(docs_version: str | None, runtime_version: str | None = None) -> bool:
     target = docs_version or runtime_version
     return _semver_tuple(target) >= (1, 6, 0)
@@ -752,6 +837,12 @@ def _legacy_skill_projections(source_root: Path) -> list[SkillProjection]:
 
 
 def _expected_skill_projections(source_root: Path, *, runtime_version: str, docs_version: str | None = None) -> list[SkillProjection]:
+    # Scheme A dual-track public surface (goal + 6 harness) for v1.6.9 / v2.0.0
+    if _scheme_a_public_surface_enabled(docs_version, runtime_version):
+        brand = "loom" if source_root.name == "loom" else "beacon"
+        projected = _scheme_a_skill_projections(source_root, brand=brand)
+        if projected:
+            return projected
     if _uses_v160_taxonomy(docs_version, runtime_version):
         return _v160_skill_projections()
     return _legacy_skill_projections(source_root)
@@ -1033,7 +1124,8 @@ def cleanup_legacy_beacon_skills(
                     removed.append(
                         {"target": target_label, "path": duplicate_path, "kind": "global_materialized_duplicate"}
                     )
-        if not v160_taxonomy:
+        # Scheme A / v160: remove stale aliases and unexpected host-visible dirs when force
+        if not v160_taxonomy and not _scheme_a_public_surface_enabled(docs_version, runtime_version):
             continue
         for child in sorted(skills_root.iterdir(), key=lambda item: item.name):
             name = child.name
@@ -1564,13 +1656,21 @@ def resolve_agent_surface_target(project_root: Path | str, agent: str) -> AgentS
 
 
 def list_host_visible_skills(skill_root: Path | None = None) -> list[Path]:
-    """List packaged Beacon host-visible skill directories."""
+    """List packaged host-visible skill directories (Scheme A 1+6 by default)."""
     base = (skill_root or packaged_beacon_skill_root()).resolve()
     skills = [
         child
         for child in base.iterdir()
         if child.is_dir() and (child / "SKILL.md").exists()
     ]
+    brand = "loom" if base.name == "loom" or any(c.name.startswith("loom-") for c in skills[:3]) else "beacon"
+    # Detect loom root by path name
+    if base.name == "loom" or base.as_posix().endswith("/skills/loom"):
+        brand = "loom"
+    whitelist = _scheme_a_host_visible_whitelist(brand)
+    if whitelist is not None:
+        allowed = set(whitelist)
+        skills = [child for child in skills if child.name in allowed]
     return sorted(skills, key=lambda item: item.name)
 
 
@@ -1922,7 +2022,8 @@ def verify_agent_surface(
         },
     ]
 
-    if v160_taxonomy:
+    scheme_a = _scheme_a_public_surface_enabled(docs_version, runtime_version)
+    if v160_taxonomy and not scheme_a:
         v160_surface = _verify_v160_surface(target, expected_ids)
         checks.extend(
             [
