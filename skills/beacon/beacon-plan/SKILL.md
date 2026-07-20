@@ -1,9 +1,12 @@
 ---
 name: beacon-plan
 description: >
-  beacon public harness surface for `plan`.
-  Progressive-loads internal skills without dropping capability.
-  Dual-install; does not replace the other brand. Longrun only on goal.
+  beacon public plan harness. Use when the user wants planning, multi-angle review,
+  brainstorming before freeze, source-anchored research from code, sea-to-lake program planning,
+  or friction capture — without implementing or freezing truth.
+  Triggers on: 规划, 审查, review, brainstorm, 先想清楚, 对着代码, 源码调研, 拆海, program, parity, 状态机.
+  Routes by strong intent to pln-review / pln-brainstorm / pln-source / pln-program / pln-friction.
+  Not for longrun (use beacon-goal). Not for implement/qa/release.
 metadata:
   version: "v1.6.9"
   brand: Beacon
@@ -11,49 +14,40 @@ metadata:
   public_id: "plan"
   harness: "plan"
   progressive_map: skills/beacon/references/public-surface-progressive-map.v1.json
-  progressive_loads: ["beacon-pln-program", "beacon-pln-program-auto", "beacon-pln-program-interactive", "beacon-pln-review", "beacon-pln-friction", "beacon-pln-brainstorm", "beacon-pln-source"]
+  subintent_router: beacon.utils.plan_subintent
   dual_install_with: loom-plan
   longrun: false
 ---
 
 # beacon-plan
 
-**公开面（Scheme A）**：`plan`  
-**渐进加载（能力不降级）**：`beacon-pln-program`, `beacon-pln-program-auto`, `beacon-pln-program-interactive`, `beacon-pln-review`, `beacon-pln-friction`, `beacon-pln-brainstorm` …(+1)
+**公开面**：plan（Rust ability: `loop`）  
+**长程**：否 → 用 `beacon-goal`
 
-本 skill **不**负责多小时 longrun；长程只用 `$beacon-goal` / `$loom-goal`。
+## 强意图路由（primary）
 
-## When to use
+| 意图 | Primary skill | 产出 |
+|------|---------------|------|
+| 审查 / review / parity / 状态机 | pln-review | planner_review |
+| brainstorm / 先想清楚 / 先别写需求 | pln-brainstorm | brainstorm_note |
+| 对着代码 / 源码 / 别瞎编 | pln-source (+ review) | source_research |
+| 拆海 / program / 多模块 | pln-program* | program_plan |
+| 摩擦 / 阻塞 | pln-friction | friction_queue_item |
+| 默认 | pln-program | light plan |
 
-- 需要 **plan** 场景的稳定入口（host-visible 白名单内）
-- 细粒度旧名（如 gen-implement）仍可用作兼容，但默认安装不再暴露
+Runtime: `detect_plan_subintent` / `plan_progressive_loads_for_utterance`.
 
-## Progressive load
+## HARD GATE（planner）
 
-按 `public-surface-progressive-map.v1.json` 加载内部 skill；**禁止**为了合并而跳过原有 HARD GATE。
+- 禁止 implement / 写 frozen truth / QA·release verdict
+- 深研与审查结果是 **plan artifact**，升级 freeze 必须走 truth
 
-| Internal skill | Role |
-|----------------|------|
-| `beacon-pln-program` | progressive |
-| `beacon-pln-program-auto` | progressive |
-| `beacon-pln-program-interactive` | progressive |
-| `beacon-pln-review` | progressive |
-| `beacon-pln-friction` | progressive |
-| `beacon-pln-brainstorm` | progressive |
-| `beacon-pln-source` | progressive |
+## Progressive
 
-## Boundary
-
-- 不成为第二公共 goal 流水线
-- harness HARD GATE 继承被加载的内部 skill
-- gov/doctor 不由用户背名；goal 自愈带自动调度
+Primary first, then full set for capability non-regression.
 
 ## Examples
 
-见 `skills/beacon/examples/surface-plan-30s.md`（若存在）与 `goal-one-shot-30s.md`。
-
-## Dual brand
-
-| Beacon | Loom |
-|--------|------|
-| `beacon-plan` | `loom-plan` |
+- `skills/beacon/examples/surface-plan-review-30s.md`
+- `skills/beacon/examples/surface-plan-brainstorm-30s.md`
+- `skills/beacon/examples/surface-plan-source-research-30s.md`

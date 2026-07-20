@@ -20,6 +20,9 @@ pub fn skills_for_stage(stage: &str) -> Vec<&'static str> {
             "beacon-pln-program-auto",
             "beacon-pln-program-interactive",
             "beacon-pln-review",
+            "beacon-pln-friction",
+            "beacon-pln-brainstorm",
+            "beacon-pln-source",
         ],
         "truth" => vec![
             "beacon-truth",

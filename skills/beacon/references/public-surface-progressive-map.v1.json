@@ -2,26 +2,63 @@
   "schema": "public-surface-progressive-map.v1",
   "scheme": "A",
   "synonym_table": "skills/beacon/references/public-surface-1plus6.md",
-  "versions": ["v1.6.9", "v2.0.0"],
+  "versions": [
+    "v1.6.9",
+    "v2.0.0"
+  ],
   "goal_transversal": {
     "public_id": "goal",
     "beacon_skill": "beacon-goal",
     "loom_skill": "loom-goal",
     "longrun_only_on_goal": true,
     "not_counted_in_six": true,
-    "pipeline": ["plan", "truth", "design?", "implement", "qa", "release"],
-    "always_load": ["beacon-goal"],
+    "pipeline": [
+      "plan",
+      "truth",
+      "design?",
+      "implement",
+      "qa",
+      "release"
+    ],
+    "always_load": [
+      "beacon-goal"
+    ],
     "self_heal": {
       "pre": [
-        {"id": "verify-context", "command": "beacon doctor verify-context -p . --strict --json", "user_facing": "检查项目上下文是否就绪", "auto": true},
-        {"id": "verify-version-surfaces", "command": "beacon doctor verify-version-surfaces -p . --strict --json", "user_facing": "检查版本表面是否一致", "auto": true}
+        {
+          "id": "verify-context",
+          "command": "beacon doctor verify-context -p . --strict --json",
+          "user_facing": "检查项目上下文是否就绪",
+          "auto": true
+        },
+        {
+          "id": "verify-version-surfaces",
+          "command": "beacon doctor verify-version-surfaces -p . --strict --json",
+          "user_facing": "检查版本表面是否一致",
+          "auto": true
+        }
       ],
       "mid_on_block": [
-        {"id": "repair-evidence-manifest", "command": "beacon doctor repair-evidence-manifest -p . --json", "user_facing": "尝试修复证据清单", "auto": true},
-        {"id": "workspace-admit", "command": "beacon workspace admit -p . --json", "user_facing": "检查工作区准入", "auto": false}
+        {
+          "id": "repair-evidence-manifest",
+          "command": "beacon doctor repair-evidence-manifest -p . --json",
+          "user_facing": "尝试修复证据清单",
+          "auto": true
+        },
+        {
+          "id": "workspace-admit",
+          "command": "beacon workspace admit -p . --json",
+          "user_facing": "检查工作区准入",
+          "auto": false
+        }
       ],
       "post_release": [
-        {"id": "post-release-local-install", "command": "beacon hooks run beacon-post-release-local-install -p . --confirm", "user_facing": "发布后安装/对齐本机环境（需确认）", "auto": false}
+        {
+          "id": "post-release-local-install",
+          "command": "beacon hooks run beacon-post-release-local-install -p . --confirm",
+          "user_facing": "发布后安装/对齐本机环境（需确认）",
+          "auto": false
+        }
       ],
       "user_language": "never_expose_gov_skill_names_as_required_user_knowledge"
     }
@@ -41,7 +78,22 @@
         "beacon-pln-friction",
         "beacon-pln-brainstorm",
         "beacon-pln-source"
-      ]
+      ],
+      "subintent_router": {
+        "module": "beacon.utils.plan_subintent",
+        "api": "detect_plan_subintent|plan_progressive_loads_for_utterance",
+        "primary_first": true,
+        "default_subintent": "default",
+        "subintents": [
+          "review",
+          "brainstorm",
+          "source",
+          "program",
+          "friction",
+          "default"
+        ]
+      },
+      "intent_notes": "Strong user intent selects primary progressive skill; full set retained for non-regression."
     },
     "truth": {
       "public_id": "truth",

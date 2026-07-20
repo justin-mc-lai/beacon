@@ -42,6 +42,7 @@ from beacon.utils.multi_version_intent import (
     apply_multi_version_to_goal_payload,
     detect_multi_version_intent,
 )
+from beacon.utils.plan_subintent import plan_progressive_loads_for_utterance
 from beacon.utils.goal_agent_driver import (
     attach_longrun_to_goal_run,
     detect_longrun_intent,
@@ -283,16 +284,14 @@ def build_parallel_plan(
     }
 
 
-def progressive_skills_for_stage(stage: str) -> list[str]:
-    """Stage → skills; prefers Scheme A progressive map (capability non-regression)."""
+def progressive_skills_for_stage(stage: str, utterance: str = "") -> list[str]:
+    """Stage → skills; Scheme A map + plan subintent primary-first routing."""
     st = str(stage or "").strip().lower()
-    # public aggregate shells also accepted as stage keys
     if st.startswith("beacon-") or st.startswith("loom-"):
         for prefix in ("beacon-", "loom-"):
             if st.startswith(prefix):
                 st = st[len(prefix):]
                 break
-    # rust / summary aliases → public harness id
     aliases = {
         "loop": "plan",
         "qa-evidence": "qa",
@@ -300,6 +299,12 @@ def progressive_skills_for_stage(stage: str) -> list[str]:
         "evaluate": "qa",
     }
     st = aliases.get(st, st)
+
+    # Plan harness: strong-intent primary_load (review/brainstorm/source/program/friction)
+    if st == "plan" and str(utterance or "").strip():
+        routed = plan_progressive_loads_for_utterance(utterance, brand="beacon")
+        return list(routed.get("progressive_loads") or [])
+
     loads = progressive_loads_for_public_id(st)
     if loads:
         m = load_progressive_map()
@@ -353,7 +358,7 @@ def build_stage_plan(
     )
     order = build_stage_order(ux_required=ux)
     for stage in order:
-        skills = progressive_skills_for_stage(stage)
+        skills = progressive_skills_for_stage(stage, utterance=utterance)
         item: dict[str, Any] = {
             "stage": stage,
             "skills": skills,
@@ -361,6 +366,10 @@ def build_stage_plan(
             "loaded": False,
             **({"ux_gated": True} if stage == "design" else {}),
         }
+        if stage == "plan":
+            item["plan_subintent"] = plan_progressive_loads_for_utterance(
+                utterance, brand="beacon"
+            )
         # Lifecycle stages mount shared worktree norms (goal facade is separate).
         wt = progressive_worktree_refs(stage if stage != "design" else "plan")
         if wt.get("required"):
