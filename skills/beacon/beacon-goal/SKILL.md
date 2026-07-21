@@ -68,3 +68,5 @@ beacon release check <baseline> --profile hotfix -p .
 4. 消费仓 hooks：`beacon doctor setup-git-hooks` 会 import **已安装** `beacon` 包拦截 main 业务 commit。
 5. 产品 `v0.x` 默认 `require_workspace_admission=true`（显式 false 才跳过）。
 
+
+- Runtime gate: `ensure_goal_implement_admission` on tick --execute (ralph) and create preflight for 实现/交付 intents.
