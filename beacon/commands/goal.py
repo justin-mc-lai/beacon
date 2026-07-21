@@ -111,8 +111,10 @@ def goal_run(
         _emit({"status": "blocked", "blocked": True, "reason_code": "invalid_worktree_mode", "public_entry": PUBLIC_ENTRY}, json_output)
         raise typer.Exit(2)
     hotfix_plan = None
+    goal_version = version
     if mode_norm == "hotfix":
         from beacon.utils.prod_ops_v168 import build_hotfix_plan
+        from beacon.utils.version_defaults import resolve_goal_version
 
         hotfix_plan = build_hotfix_plan(
             utterance=utterance,
@@ -120,7 +122,13 @@ def goal_run(
             production_tag=production_tag,
             forward_port_target=forward_port,
             rollback_notes=rollback_notes,
+            project_root=root,
+            feature=feature,
+            auto_defaults=True,
         )
+        # Pin goal docs/work version to production baseline (no patch bump)
+        gv = resolve_goal_version(root, version, goal_mode="hotfix")
+        goal_version = str(gv.get("version") or hotfix_plan.get("baseline_ref") or version)
     if no_longrun:
         lr = False
     elif longrun:
@@ -132,7 +140,7 @@ def goal_run(
     payload = run_goal_facade(
         root,
         utterance=utterance,
-        version=version,
+        version=goal_version if mode_norm == "hotfix" else version,
         feature=feature,
         lakes=list(lake or []),
         worktree_mode=wt,  # type: ignore[arg-type]
@@ -145,7 +153,9 @@ def goal_run(
     payload["goal_mode"] = mode_norm
     if hotfix_plan is not None:
         payload["hotfix_plan"] = hotfix_plan
-        if not str(from_version or production_tag).strip():
+        payload["hotfix_branch"] = hotfix_plan.get("hotfix_branch")
+        # baseline auto-filled: only block if still missing after defaults
+        if hotfix_plan.get("blocked") and "hotfix_baseline_missing" in (hotfix_plan.get("reason_codes") or []):
             payload["blocked"] = True
             payload["status"] = "blocked"
             payload["reason_code"] = "hotfix_baseline_missing"
@@ -470,17 +480,21 @@ def goal_hotfix_plan(
     production_tag: str = typer.Option("", "--production-tag"),
     forward_port: str = typer.Option("", "--forward-port"),
     rollback_notes: str = typer.Option("", "--rollback-notes"),
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p"),
     json_output: bool = typer.Option(False, "--json"),
 ) -> None:
     """Build a hotfix plan (v1.6.8) without starting implement."""
     from beacon.utils.prod_ops_v168 import build_hotfix_plan, validate_hotfix_for_release
 
+    root = _root(project)
     plan = build_hotfix_plan(
         utterance=utterance,
         from_version=from_version,
         production_tag=production_tag,
         forward_port_target=forward_port,
         rollback_notes=rollback_notes,
+        project_root=root,
+        auto_defaults=True,
     )
     plan["release_validation"] = validate_hotfix_for_release(plan)
     _emit(plan, json_output)

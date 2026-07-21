@@ -1,68 +1,33 @@
 ---
 name: loom-goal
-description: "【Loom 公共入口】一句话目标 → 计划/需求/实现/验收。与 $beacon-goal 双装并行，不覆盖 beacon。"
+description: >
+  Loom 公共 goal 入口（与 beacon-goal 同义 1+6）。后端优先 Rust CLI loom/beacon-v2。
+  无版本默认与 hotfix 主线规则同 beacon-goal。
 metadata:
   public_surface: true
   public_id: "goal"
-  progressive_map: skills/beacon/references/public-surface-progressive-map.v1.json
+  brand: loom
   version: "v2.0.0"
-  entry: public_primary
-  brand: Loom
   dual_install_with: beacon-goal
 ---
 
-# Loom Goal — Loom 轨唯一公共交付入口
+# loom-goal
 
-## 与 Beacon 的关系
-
-| | Beacon (生产) | Loom (进化/验收) |
-|--|---------------|------------------|
-| skill | `$beacon-goal` | **`$loom-goal`** |
-| CLI | `beacon goal` | **`loom goal`** |
-| 默认替换 | — | **禁止** Day-1 覆盖 beacon |
-
-两轨可同机安装。W4 前禁止默认 `BEACON_V2=1` 或 alias beacon→loom。
-
-## 30 秒
-
-```text
-$loom-goal
-目标：...
-版本：v2.0.0
-```
+与 **`$beacon-goal`** 同一交付哲学；品牌 Loom / v2。
 
 ```bash
-loom goal run "<目标>" --project . --version v2.0.0
+# 文档与合同线
+beacon goal run "<目标>" -p . -v auto
+# 或安装后的 loom CLI 能力面（Rust）
 ```
 
-## 规则
+## 两场景（同 beacon）
 
-- complete 需 verifier；release 人工门
-- loop 仅 support（`$loom-loop-goal` 若存在）
-- Phase-1 可共享 `skills/beacon/*` 实现路由
+1. **正常**：admit leaf worktree  
+2. **生产热修**：`--mode hotfix` + `hotfix/*` 分支登记，不进 feature 开发轨  
 
-详见 `skills/loom/examples/goal-one-shot-30s.md`。
+## HARD
 
-## Git worktree
-
-See `skills/beacon/references/git-worktree-execution-flow.md` (shared; do not fork).
-
-
-## InjectBundle steering (v2.0.0 R3)
-
-Each turn injects **InjectBundle**: steering (Codex distill templates under `docs/beacon/v2.0.0/fixtures/steering/`) → **resume-pack digest** → next_action (not full chat/jsonl). Completion audit only prepares **awaiting_verifier**; never self-certify complete.
-
-## Host subagent keyword (parity v1.6.8 / UD-SA-004)
-
-Same gate as Beacon (`beacon.utils.host_subagent_gate`). Default off; satellite parallel independent of host agents.
-
-## Backend
-
-`$loom-goal` 对应 **Rust CLI**（不是 Python `loom-py`）：
-
-```bash
-bash scripts/install-loom-cli.sh
-export PATH="$HOME/.local/bin:$PATH"
-loom --help          # Rust
-beacon --version     # Python production
-```
+- 不 auto-release；不自证 complete  
+- 无版本：planning 优先否则 patch+1；热修钉发布线  
+- 细节：`skills/beacon/references/{version-default,hotfix-prod-incident,git-worktree-execution-flow}.md`

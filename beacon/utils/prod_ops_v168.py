@@ -86,20 +86,64 @@ def build_hotfix_plan(
     production_tag: str = "",
     forward_port_target: str = "",
     rollback_notes: str = "",
+    project_root: str | Path | None = None,
+    feature: str = "",
+    auto_defaults: bool = True,
 ) -> dict[str, Any]:
+    """Build hotfix plan (UD-HF).
+
+    When auto_defaults and baseline missing: pin current_runtime_release_line.
+    forward_port defaults to main for draft; release_ready still needs rollback_notes.
+    Registers hotfix/* branch plan (mainline hotfix, not feature worktree).
+    """
     baseline = (from_version or production_tag or "").strip()
-    blocked = False
+    baseline_source = "explicit"
     reasons: list[str] = []
+    if not baseline and auto_defaults and project_root is not None:
+        from beacon.utils.version_defaults import default_hotfix_baseline
+
+        hb = default_hotfix_baseline(project_root)
+        baseline = str(hb.get("baseline") or "").strip()
+        baseline_source = str(hb.get("source") or "current_runtime_release_line")
+        if not from_version and baseline:
+            from_version = baseline
+    blocked = False
     if not baseline:
         blocked = True
         reasons.append(REASON_HF_MISSING_BASELINE)
-    if not str(forward_port_target or "").strip():
-        # plan may be drafted later; mark required not satisfied until filled
+    fp = str(forward_port_target or "").strip()
+    if not fp and auto_defaults:
+        fp = "main"
+        forward_port_target = fp
+    if not fp:
         reasons.append(REASON_HF_FORWARD_PORT)
     if not str(rollback_notes or "").strip():
         reasons.append(REASON_HF_ROLLBACK)
-    # release-ready for hotfix requires all
-    release_ready = (not blocked) and not reasons
+    # release-ready for hotfix requires all required gates fields filled
+    release_ready = (not blocked) and REASON_HF_FORWARD_PORT not in reasons and REASON_HF_ROLLBACK not in reasons
+
+    branch_registry = None
+    if baseline and project_root is not None:
+        from beacon.utils.version_defaults import build_hotfix_branch_registry
+
+        branch_registry = build_hotfix_branch_registry(
+            project_root,
+            baseline=baseline,
+            utterance=utterance,
+            feature=feature,
+            forward_port_target=fp or "main",
+        )
+    elif baseline:
+        from beacon.utils.version_defaults import build_hotfix_branch_registry
+
+        branch_registry = build_hotfix_branch_registry(
+            Path("."),
+            baseline=baseline,
+            utterance=utterance,
+            feature=feature,
+            forward_port_target=fp or "main",
+        )
+
     return {
         "schema_version": "1.0",
         "mode": "hotfix",
@@ -107,19 +151,24 @@ def build_hotfix_plan(
         "from_version": from_version,
         "production_tag": production_tag,
         "baseline_ref": baseline,
+        "baseline_source": baseline_source,
         "forward_port_target": forward_port_target,
         "rollback_notes": rollback_notes,
         "release_profile": "hotfix",
         "required_gates": list(HOTFIX_REQUIRED_GATES),
-        "blocked": blocked or bool(reasons),
+        "blocked": blocked,
         "reason_codes": reasons,
         "release_ready": release_ready,
+        "hotfix_branch": (branch_registry or {}).get("branch") or "",
+        "hotfix_branch_registry": branch_registry,
+        "not_feature_worktree": True,
         "generated_at": now_iso(),
         "illegal": [
             "I-HF-001 hotfix without baseline",
             "I-HF-002 hotfix without forward_port plan",
             "I-HF-003 next_feature as first_production_fix",
             "I-HF-004 HotfixLane completes GoalRun",
+            "I-HF-005 bare main business commit without hotfix branch",
         ],
     }
 

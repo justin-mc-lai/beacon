@@ -18,6 +18,7 @@ from typing import Any, Literal
 from beacon.utils.runtime import now_iso, write_json
 from beacon.utils.story_state import feature_slug
 from beacon.utils.versioning import normalize_version, resolve_target_version
+from beacon.utils.version_defaults import resolve_goal_version
 from beacon.utils.goal_queue import consume_next, list_queued
 from beacon.utils.goal_durable_supervisor import (
     DEFAULT_HEARTBEAT_INTERVAL_SEC as DGS_DEFAULT_HEARTBEAT,
@@ -421,13 +422,15 @@ def create_goal_run(
     done_when: list[str] | None = None,
 ) -> dict[str, Any]:
     project_root = Path(project_root).expanduser().resolve()
-    resolved_version = resolve_target_version(project_root, version)
+    _gv = resolve_goal_version(project_root, version, goal_mode="normal")
+    resolved_version = str(_gv.get("version") or resolve_target_version(project_root, version))
+    version_resolve_meta = _gv
     run_id = _new_run_id()
     parallel = build_parallel_plan(lakes=lakes, mode=worktree_mode, utterance=utterance)
     # harvest feature/package truth so ux_required frontmatter is honored
     truth_bits: list[str] = []
     try:
-        resolved_for_truth = resolve_target_version(project_root, version)
+        resolved_for_truth = resolved_version
         if feature:
             tp = Path(project_root) / "docs" / "beacon" / resolved_for_truth / "features" / feature_slug(feature) / "truth.md"
             if tp.exists():
@@ -467,6 +470,7 @@ def create_goal_run(
         "reason_code": "",
         "utterance": str(utterance or "").strip(),
         "version": resolved_version,
+        "version_resolve": version_resolve_meta,
         "feature": feature_slug(feature) if feature else "",
         "lakes": [feature_slug(x) for x in (lakes or []) if str(x).strip()],
         "done_when": done_when or default_done,
