@@ -31,3 +31,7 @@ beacon goal run "<目标>" -p . -v auto
 - 不 auto-release；不自证 complete  
 - 无版本：planning 优先否则 patch+1；热修钉发布线  
 - 细节：`skills/beacon/references/{version-default,hotfix-prod-incident,git-worktree-execution-flow}.md`
+
+## Progressive
+
+内部 progressive 加载与 `beacon-goal` 同构；细节见 `skills/beacon/references/public-surface-progressive-map.v1.json`。
