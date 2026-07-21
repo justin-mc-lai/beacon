@@ -411,6 +411,32 @@ def build_stage_plan(
     return stages
 
 
+def utterance_requests_implement_delivery(utterance: str) -> bool:
+    """Detect delivery/implement intent that must not bypass workspace admit."""
+    text = str(utterance or "")
+    low = text.lower()
+    tokens = (
+        "implement",
+        "ralph",
+        "coding",
+        "write code",
+        "实现",
+        "交付",
+        "写代码",
+        "冻结并实现",
+        "到交付",
+        "implement到",
+        "dev work",
+    )
+    if any(tok in text or tok in low for tok in tokens):
+        return True
+    # English bare "deliver" / "ship code"
+    if "deliver" in low and ("code" in low or "feature" in low or "product" in low):
+        return True
+    return False
+
+
+
 def create_goal_run(
     project_root: Path,
     *,
@@ -528,6 +554,69 @@ def create_goal_run(
         "updated_at": now_iso(),
         "history": [{"event": "created", "at": now_iso()}],
     }
+
+    # P0: delivery/implement intent → admit preflight at create (do not wait only for tick→ralph)
+    try:
+        wants_impl = utterance_requests_implement_delivery(str(utterance or ""))
+        payload["implement_intent"] = wants_impl
+        payload["discipline"] = {
+            "must_tick_execute_for_ralph_dispatch": True,
+            "must_not_edit_main_business_paths": True,
+            "must_use_admitted_worktree_for_packages": True,
+            "message": (
+                "交付/实现类 goal：业务代码只允许在 admit worktree 写入；"
+                "dispatch implement 须 `beacon goal tick --run-id <id> --execute`；"
+                "禁止在 main 上直接改 packages/** 或 beacon/**。"
+            ),
+        }
+        if wants_impl:
+            has_target = bool(payload.get("feature") or payload.get("lakes"))
+            if has_target:
+                pre = ensure_goal_implement_admission(project_root, payload)
+                payload = apply_admission_to_goal_payload(payload, pre)
+                payload["implement_admission_preflight"] = {
+                    "allow_implement": pre.get("allow_implement"),
+                    "reason_code": pre.get("reason_code"),
+                    "worktree_path": pre.get("worktree_path") or (pre.get("admission") or {}).get("worktree_path"),
+                    "branch": pre.get("branch") or (pre.get("admission") or {}).get("branch"),
+                    "goal_forced_worktree": pre.get("goal_forced_worktree"),
+                    "at": now_iso(),
+                }
+                payload["recommended_implement_cwd"] = payload["implement_admission_preflight"].get("worktree_path") or ""
+                hist = list(payload.get("history") or [])
+                hist.append(
+                    {
+                        "event": "implement_admission_preflight",
+                        "allow_implement": pre.get("allow_implement"),
+                        "reason_code": pre.get("reason_code"),
+                        "worktree_path": payload.get("recommended_implement_cwd"),
+                        "at": now_iso(),
+                    }
+                )
+                payload["history"] = hist
+                if not pre.get("allow_implement"):
+                    # Soft-block: do not prevent plan/truth; surface for operators/agents
+                    payload["admission_preflight_blocked"] = True
+                    payload["reason_code"] = str(
+                        pre.get("reason_code") or "goal_implement_admission_preflight_blocked"
+                    )
+            else:
+                payload["admission_preflight_warning"] = (
+                    "implement/交付意图已识别，但缺少 --feature 或 lakes；"
+                    "进入 implement 前必须提供 feature slug 并 workspace admit。"
+                )
+                hist = list(payload.get("history") or [])
+                hist.append(
+                    {
+                        "event": "implement_admission_preflight_skipped",
+                        "reason_code": "feature_required_for_admit",
+                        "at": now_iso(),
+                    }
+                )
+                payload["history"] = hist
+    except Exception as exc:  # noqa: BLE001
+        payload["admission_preflight_error"] = str(exc)[:240]
+
     # Multi-version / dual-track intent (e.g. v1.6.8\v2.0.0)
     try:
         payload = apply_multi_version_to_goal_payload(project_root, payload, str(utterance or ""))

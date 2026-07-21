@@ -175,7 +175,18 @@ def load_admission_contract(project_root: Path, *, version: str) -> dict[str, An
     if require_raw is None:
         require_raw = branch_governance.get("require_workspace_admission")
     if require_raw is None:
-        require = _semver_tuple(version) >= (1, 6, 2) and worktree_mode in {"dedicated-worktree", "pooled"}
+        # Fail-closed defaults (closes goal-bypass / main-write hole):
+        # - dedicated/pooled worktree modes always require admission
+        # - product/docs versions 0.x default require=true even when mode is empty/branch-only
+        # - Beacon toolkit 1.6.2+ with empty mode keeps historical toolkit soft path
+        sv = _semver_tuple(version)
+        if worktree_mode in {"dedicated-worktree", "pooled"}:
+            require = True
+        elif sv < (1, 0, 0):
+            # consumer product lines (v0.0.x / v0.1.x): require admission by default
+            require = True
+        else:
+            require = sv >= (1, 6, 2) and worktree_mode in {"dedicated-worktree", "pooled"}
     else:
         require = bool(require_raw) if not isinstance(require_raw, str) else require_raw.lower() in {"1", "true", "yes", "on"}
     invalidation = str(
