@@ -77,6 +77,16 @@ Rule of thumb:
    - Why it matters:
      freezes a cross-version judgment that Ralph should be the closure controller, subagents should remain bounded execution units, and long tasks should be modeled as a requirement-to-release loop rather than open-ended agent expansion.
 
+11. [Open SaaS Base from `@zyailive` + `ItusiAI/get-saas`](./open-saas-base-from-zyailive-get-saas.md)
+   - Why it matters:
+     freezes the dual-source direction for a self-owned open SaaS kernel: low-cost/edge stack and data-sovereign auth from the zyailive note, product-surface parity checklist from get-saas, plus first-class plugin products and agent skills for later in-house products.
+   - Linked product project:
+     `/Users/apple/Developer/Personal/products/open-saas-base/`
+12. [Intent decomposition hardening (2026-07-21)](./intent-decomposition-hardening-2026-07-21.md)
+   - Why it matters:
+     prevents ocean goals from auto-ticking past plan without journey freeze; multi-signal plan_subintent + host 子代理 gate.
+
+
 ---
 
 ## 3. Version-bound research entrypoints
