@@ -75,3 +75,11 @@ beacon release check <baseline> --profile hotfix -p .
 
 
 - Runtime gate: `ensure_goal_implement_admission` on tick --execute (ralph) and create preflight for 实现/交付 intents.
+
+## Host subagent keyword gate
+
+- Default **single-thread** (`subagent_default_off`).
+- Utterance tokens like `子代理` / `subagent` / `并行子代理` open host agent packs.
+- `并行` alone enables satellite lakes, not host agents (UD-SA-001).
+- Host agents cannot complete goal or auto-release.
+

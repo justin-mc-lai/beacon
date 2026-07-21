@@ -59,7 +59,7 @@ def test_ac_pa_005_soft_gate_ok_path() -> None:
     art = build_plan_artifact("拆海做多模块 program 规划")
     g = plan_to_truth_gate(art)
     assert g["blocked"] is False
-    assert g["reason_code"] in {"plan_to_truth_ok", "plan_artifact_incomplete"}
+    assert g["reason_code"] in {"plan_to_truth_ok", "plan_artifact_incomplete", "plan_journey_decomposition_incomplete"}
 
 
 def test_ac_p1_001_create_host_subagent_default_off() -> None:

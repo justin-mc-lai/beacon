@@ -64,6 +64,13 @@ _RULES: list[tuple[str, tuple[str, ...], str, list[str]]] = [
             "based on code",
             "仓库现状",
             "现有实现",
+            "github.com",
+            "对照",
+            "参考这个",
+            "参考文章",
+            "get-saas",
+            "能力对照",
+            "oss-sync",
         ),
         PRIMARY_SOURCE,
         [PRIMARY_REVIEW],
@@ -128,6 +135,22 @@ _RULES: list[tuple[str, tuple[str, ...], str, list[str]]] = [
             "版本级规划",
             "多湖",
             "program plan",
+            "蒸干",
+            "底座",
+            "开源底座",
+            "foundation",
+            "全功能",
+            "插件化",
+            "多产品",
+            "l0",
+            "l1",
+            "l2",
+            "l3",
+            "l4",
+            "l5",
+            "l6",
+            "能力对照",
+            "saas",
         ),
         PRIMARY_PROGRAM,
         ["beacon-pln-program-auto", "beacon-pln-program-interactive"],
@@ -136,59 +159,95 @@ _RULES: list[tuple[str, tuple[str, ...], str, list[str]]] = [
 
 
 def detect_plan_subintent(utterance: str = "") -> dict[str, Any]:
-    """Detect plan subintent from utterance. Default = program (light plan)."""
+    """Detect plan subintent from utterance.
+
+    Multi-signal scoring: collects all matching tracks, then picks primary by
+    priority (friction > source/review/brainstorm/program). Ocean/source can
+    attach as secondary tracks so program+source is not collapsed to default.
+    Default = light program only when nothing matches.
+    """
     text = str(utterance or "")
     raw = text
     low = text.lower()
-    matched: list[str] = []
+    scored: list[tuple[int, str, str, list[str], list[str]]] = []
     for subintent, tokens, primary, secondary in _RULES:
-        hits = []
+        hits: list[str] = []
         for tok in tokens:
             if tok.lower() in low or tok in raw:
                 hits.append(tok)
         if hits:
-            matched = hits
-            secondaries = [s for s in secondary if s != primary]
-            # source+review research mode: keep both
-            ordered = [primary, *secondaries]
-            # always allow shell first later
-            return {
-                "schema": "plan-subintent.v1",
-                "subintent": subintent,
-                "primary": primary,
-                "secondary": secondaries,
-                "ordered_focus": ordered,
-                "matched_tokens": matched,
-                "confidence": 100 if len(hits) >= 2 else 75,
-                "reason_code": f"plan_subintent_{subintent}",
-                "writes_truth": False,
-                "may_implement": False,
-                "may_qa_verdict": False,
-                "artifact_kind": {
-                    "review": "planner_review",
-                    "brainstorm": "brainstorm_note",
-                    "source": "source_research",
-                    "program": "program_plan",
-                    "friction": "friction_queue_item",
-                }.get(subintent, "plan_note"),
-                "status": "ok",
-            }
+            score = len(hits) * 10
+            # boost program when lake markers present
+            if subintent == "program" and any(
+                x in low for x in ("l0", "l1", "l2", "l3", "l4", "l5", "l6", "多湖", "底座")
+            ):
+                score += 15
+            if subintent == "source" and any(x in low for x in ("github.com", "get-saas", "对照")):
+                score += 10
+            scored.append((score, subintent, primary, list(secondary), hits))
 
+    if not scored:
+        return {
+            "schema": "plan-subintent.v1",
+            "subintent": "default",
+            "primary": PRIMARY_DEFAULT,
+            "secondary": [],
+            "ordered_focus": [PRIMARY_DEFAULT],
+            "matched_tokens": [],
+            "confidence": 50,
+            "reason_code": "plan_subintent_default",
+            "writes_truth": False,
+            "may_implement": False,
+            "may_qa_verdict": False,
+            "artifact_kind": "plan_note",
+            "secondary_tracks": [],
+            "status": "ok",
+        }
+
+    # priority for primary selection when scores close
+    priority = {"friction": 100, "brainstorm": 90, "source": 80, "review": 70, "program": 60}
+    scored.sort(key=lambda x: (x[0], priority.get(x[1], 0)), reverse=True)
+    best_score, subintent, primary, secondary, matched = scored[0]
+    secondary_tracks = [s[1] for s in scored[1:] if s[1] != subintent]
+    # merge skill secondaries
+    secondaries = [s for s in secondary if s != primary]
+    for _sc, si, pr, sec, _h in scored[1:]:
+        if pr not in secondaries and pr != primary:
+            secondaries.append(pr)
+        for s in sec:
+            if s not in secondaries and s != primary:
+                secondaries.append(s)
+    # program+source common case: keep source research under program primary
+    if subintent == "program" and "source" in secondary_tracks and PRIMARY_SOURCE not in secondaries:
+        secondaries.insert(0, PRIMARY_SOURCE)
+    if subintent == "source" and "program" in secondary_tracks and PRIMARY_PROGRAM not in secondaries:
+        secondaries.insert(0, PRIMARY_PROGRAM)
+
+    ordered = [primary, *secondaries]
+    conf = 100 if best_score >= 20 else 75 if best_score >= 10 else 60
     return {
         "schema": "plan-subintent.v1",
-        "subintent": "default",
-        "primary": PRIMARY_DEFAULT,
-        "secondary": ["beacon-pln-program-auto"],
-        "ordered_focus": [PRIMARY_DEFAULT, "beacon-pln-program-auto"],
-        "matched_tokens": [],
-        "confidence": 50,
-        "reason_code": "plan_subintent_default",
+        "subintent": subintent,
+        "primary": primary,
+        "secondary": secondaries,
+        "ordered_focus": ordered,
+        "matched_tokens": matched,
+        "confidence": conf,
+        "reason_code": f"plan_subintent_{subintent}",
         "writes_truth": False,
         "may_implement": False,
         "may_qa_verdict": False,
-        "artifact_kind": "plan_note",
+        "artifact_kind": {
+            "review": "planner_review",
+            "brainstorm": "brainstorm_note",
+            "source": "source_research",
+            "program": "program_plan",
+            "friction": "friction_queue_item",
+        }.get(subintent, "plan_note"),
+        "secondary_tracks": secondary_tracks,
         "status": "ok",
     }
+
 
 
 def plan_progressive_loads_for_utterance(utterance: str = "", *, brand: str = "beacon") -> dict[str, Any]:
