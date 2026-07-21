@@ -296,4 +296,3 @@ Beacon 默认必须同时满足两条：
 - Silent major/minor bump without explicit user intent
 
 Runtime module: `beacon.utils.version_defaults` (`classify_project`, `default_target_version`, `default_hotfix_baseline`).
-

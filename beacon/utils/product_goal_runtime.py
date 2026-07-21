@@ -69,19 +69,49 @@ DOMAIN_FSM_TRUTH_REF = "skills/beacon/references/domain-fsm-truth-checklist.md"
 
 PUBLIC_CLI = "beacon goal run"
 PUBLIC_ALIAS = "beacon run"
-SUPPORT_LOOP = "beacon-loop-goal"
+SUPPORT_LOOP = "beacon-goal"  # loop-goal is mode:loop-goal inside beacon-goal (1+6 merge)
 
 WorktreeMode = Literal["single_worktree", "main_star_satellite_pool"]
 
 PROGRESSIVE_SKILLS: dict[str, list[str]] = {
-    "discover": [SUPPORT_LOOP],  # support only
-    "plan": ["beacon-pln-program", "beacon-pln-program-auto", "beacon-pln-program-interactive"],
-    "truth": ["beacon-gen-truth", "beacon-gen-change"],
-    "design": ["beacon-gen-design", "beacon-gen-design-system", "beacon-gen-design-polish"],
-    "implement": ["beacon-gen-implement"],
-    "qa": ["beacon-eval-qa", "beacon-eval-qa-deep"],
-    "release": ["beacon-eval-release"],
-    "goal": [PUBLIC_ENTRY],  # facade always-on surface
+    # After 1+6 merge: only public cores + in-package mode tokens (not separate skill dirs).
+    "discover": [PUBLIC_ENTRY],
+    "plan": [
+        "beacon-plan",
+        "mode:pln-program",
+        "mode:pln-program-auto",
+        "mode:pln-program-interactive",
+        "mode:pln-review",
+        "mode:pln-friction",
+        "mode:pln-brainstorm",
+        "mode:pln-source",
+    ],
+    "truth": [
+        "beacon-truth",
+        "mode:gen-truth",
+        "mode:gen-truth-init",
+        "mode:gen-change",
+        "mode:gen-refreeze",
+    ],
+    "design": [
+        "beacon-design",
+        "mode:gen-design",
+        "mode:gen-design-init",
+        "mode:gen-design-system",
+        "mode:gen-design-explore",
+        "mode:gen-design-polish",
+        "mode:gen-prototype",
+    ],
+    "implement": ["beacon-implement", "mode:gen-implement"],
+    "qa": [
+        "beacon-qa",
+        "mode:eval-qa",
+        "mode:eval-qa-deep",
+        "mode:eval-real-project",
+        "mode:eval-agent",
+    ],
+    "release": ["beacon-release", "mode:eval-release"],
+    "goal": [PUBLIC_ENTRY, "mode:loop-goal"],
 }
 
 
@@ -184,7 +214,7 @@ def public_entry_contract() -> dict[str, Any]:
         "public_primary": PUBLIC_ENTRY,
         "public_cli": PUBLIC_CLI,
         "public_alias": PUBLIC_ALIAS,
-        "support_only": [SUPPORT_LOOP],
+        "support_only": [],  # loop-goal merged into goal core
         "forbidden_user_sequence": [f"{SUPPORT_LOOP} then {PUBLIC_ENTRY}"],
         "single_entry": True,
         "dual_public_orchestration": False,

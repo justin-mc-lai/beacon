@@ -46,10 +46,11 @@ def test_ac_pm_001_map_exists() -> None:
 def test_ac_pm_002_progressive_stage_loads() -> None:
     plan = progressive_skills_for_stage("plan")
     assert "beacon-plan" in plan
-    assert "beacon-pln-program" in plan
+    # 1+6 merge: modes live inside core package (not separate skill dirs)
+    assert any(x == "mode:pln-program" or x.endswith("pln-program") for x in plan)
     impl = progressive_skills_for_stage("implement")
     assert "beacon-implement" in impl
-    assert "beacon-gen-implement" in impl
+    assert any(x == "mode:gen-implement" or "gen-implement" in x for x in impl)
     # rust alias
     assert progressive_skills_for_stage("loop")[0] == "beacon-plan"
     assert "beacon-qa" in progressive_skills_for_stage("qa-evidence")

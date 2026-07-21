@@ -1,6 +1,10 @@
 """Plan harness subintent router (Scheme A).
 
-Maps user utterance → primary progressive skill under public surface `plan`.
+Maps user utterance → primary **mode** under public core skill `beacon-plan` / `loom-plan`.
+After 1+6 merge, fine-grained skill packages are archived; modes live at
+`skills/<brand>/<brand>-plan/references/modes/<mode>.md`.
+
+Legacy primary ids (`beacon-pln-*`) remain as alias strings for API/tests.
 Does not write truth, implement, or issue QA/release verdicts.
 """
 
@@ -10,7 +14,7 @@ from typing import Any
 
 # plan_artifact imported lazily to avoid cycles
 
-# Primary internal skills (must remain planner HARD GATE)
+# Legacy primary aliases (resolve to modes under public plan skill)
 PRIMARY_REVIEW = "beacon-pln-review"
 PRIMARY_BRAINSTORM = "beacon-pln-brainstorm"
 PRIMARY_SOURCE = "beacon-pln-source"
@@ -18,16 +22,27 @@ PRIMARY_PROGRAM = "beacon-pln-program"
 PRIMARY_FRICTION = "beacon-pln-friction"
 PRIMARY_DEFAULT = "beacon-pln-program"
 
-# Full progressive set for plan (capability non-regression)
+# Mode ids inside beacon-plan / loom-plan package
+MODE_BY_PRIMARY = {
+    PRIMARY_REVIEW: "pln-review",
+    PRIMARY_BRAINSTORM: "pln-brainstorm",
+    PRIMARY_SOURCE: "pln-source",
+    PRIMARY_PROGRAM: "pln-program",
+    PRIMARY_FRICTION: "pln-friction",
+    "beacon-pln-program-auto": "pln-program-auto",
+    "beacon-pln-program-interactive": "pln-program-interactive",
+}
+
+# Full progressive set for plan: public shell + in-package modes (capability non-regression)
 PLAN_ALL_LOADS = [
     "beacon-plan",
-    "beacon-pln-program",
-    "beacon-pln-program-auto",
-    "beacon-pln-program-interactive",
-    "beacon-pln-review",
-    "beacon-pln-friction",
-    "beacon-pln-brainstorm",
-    "beacon-pln-source",
+    "mode:pln-program",
+    "mode:pln-program-auto",
+    "mode:pln-program-interactive",
+    "mode:pln-review",
+    "mode:pln-friction",
+    "mode:pln-brainstorm",
+    "mode:pln-source",
 ]
 
 # subintent → (primary, secondary list, reason_code)
@@ -250,27 +265,50 @@ def detect_plan_subintent(utterance: str = "") -> dict[str, Any]:
 
 
 
+def _primary_to_mode_token(primary: str, *, brand: str = "beacon") -> str:
+    """Map legacy primary skill id to mode:* token (or pass through mode:)."""
+    p = str(primary or "").strip()
+    if p.startswith("mode:"):
+        return p
+    # loom legacy names
+    if p.startswith("loom-"):
+        p = "beacon-" + p[len("loom-") :]
+    mode = MODE_BY_PRIMARY.get(p)
+    if mode:
+        return f"mode:{mode}"
+    if p.startswith("beacon-pln-"):
+        return "mode:" + p[len("beacon-") :]
+    return p
+
+
+def mode_reference_path(mode_token: str, *, brand: str = "beacon") -> str:
+    """Filesystem path for a mode under the public plan skill package."""
+    mid = mode_token[5:] if mode_token.startswith("mode:") else mode_token
+    shell = "loom-plan" if brand == "loom" else "beacon-plan"
+    return f"skills/{brand if brand == 'loom' else 'beacon'}/{shell}/references/modes/{mid}.md"
+
+
 def plan_progressive_loads_for_utterance(utterance: str = "", *, brand: str = "beacon") -> dict[str, Any]:
-    """Build progressive load list: public shell + primary/secondary first, then rest for non-regression."""
+    """Build progressive load list: public shell + primary mode first, then other modes.
+
+    After 1+6 merge there is only one installable plan skill package; modes are
+    progressive disclosure files inside it (not separate host-visible skills).
+    """
     det = detect_plan_subintent(utterance)
     shell = "beacon-plan" if brand != "loom" else "loom-plan"
-    focus = list(det.get("ordered_focus") or [])
-    # map to loom-* if brand loom and file naming
-    if brand == "loom":
-        focus = [x.replace("beacon-", "loom-", 1) for x in focus]
-        all_loads = [x.replace("beacon-", "loom-", 1) if x.startswith("beacon-") else x for x in PLAN_ALL_LOADS]
-        all_loads = ["loom-plan" if x == "beacon-plan" else x for x in all_loads]
-    else:
-        all_loads = list(PLAN_ALL_LOADS)
+    focus_raw = list(det.get("ordered_focus") or [])
+    focus = [_primary_to_mode_token(x, brand=brand) for x in focus_raw]
 
-    # shell first, then focus, then remaining (capability non-regression)
+    all_loads = list(PLAN_ALL_LOADS)
+    if brand == "loom":
+        all_loads = ["loom-plan" if x == "beacon-plan" else x for x in all_loads]
+
     ordered: list[str] = []
     for x in [shell, *focus, *all_loads]:
         if x not in ordered:
             ordered.append(x)
 
-    # default: do not force-load every heavy skill body — primary first, rest available
-    # For default subintent, keep list shorter primary path but retain full set after
+    primary_mode = focus[0] if focus else "mode:pln-program"
     from beacon.utils.plan_artifact import build_plan_artifact
 
     artifact = build_plan_artifact(utterance, subintent_payload=det)
@@ -279,7 +317,10 @@ def plan_progressive_loads_for_utterance(utterance: str = "", *, brand: str = "b
         "brand": brand,
         "public_shell": shell,
         "progressive_loads": ordered,
-        "primary_load": ordered[1] if len(ordered) > 1 else ordered[0],
-        "load_policy": "primary_first_then_full_set_for_non_regression",
+        "primary_load": primary_mode,
+        "primary_mode": primary_mode.replace("mode:", ""),
+        "primary_mode_path": mode_reference_path(primary_mode, brand=brand),
+        "load_policy": "single_core_skill_progressive_modes",
+        "merged_1plus6": True,
         "plan_artifact": artifact,
     }

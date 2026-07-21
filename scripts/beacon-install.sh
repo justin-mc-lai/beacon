@@ -77,8 +77,9 @@ install_host() {
       continue
     fi
     if [[ -e "$dst" && ! -L "$dst" ]]; then
-      warn "$dst exists and is not a symlink; skip"
-      continue
+      # Scheme A cores must be live links to repo packages; real dirs cause silent drift.
+      warn "$dst is a real directory; replacing with symlink to source"
+      rm -rf "$dst"
     fi
     ln -sfn "$src" "$dst"
     info "Linked: $dst -> $src"

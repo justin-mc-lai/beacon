@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0",
+  "program_slug": "beacon-goal-closed-loop-parallel-v200",
+  "version": "v2.0.0",
+  "brand": "Loom",
+  "compose_with": "beacon-v2-product-goal-parallel-v200",
+  "user_decisions": {
+    "UD-CL-001": "goal_lifecycle_primary_not_multi_version_ops",
+    "UD-CL-002": "fanout_only_ready_set_from_depends_on",
+    "UD-CL-003": "merge_satellites_to_main_star_only",
+    "UD-CL-004": "lake_and_program_done_when_explicit",
+    "UD-CL-005": "subagent_never_completes_goalrun",
+    "UD-CL-006": "prefer_change_existing_lakes_over_new_slugs"
+  },
+  "lakes": [
+    {
+      "slug": "beacon-v2-product-goal-orchestrator",
+      "depends_on": [],
+      "role": "orchestrator consumes feature-graph into parallel_plan.v2"
+    },
+    {
+      "slug": "beacon-v2-main-star-satellite-pool",
+      "depends_on": ["beacon-v2-product-goal-orchestrator"],
+      "role": "pool + merge to star"
+    },
+    {
+      "slug": "loom-goal-optional-subagent",
+      "depends_on": ["beacon-v2-main-star-satellite-pool"],
+      "role": "opt-in ready_set spawn execute"
+    },
+    {
+      "slug": "beacon-v2-goal-durable-longrun",
+      "depends_on": ["beacon-v2-product-goal-orchestrator"],
+      "role": "single-lake longrun; not multi-lake fan-out"
+    },
+    {
+      "slug": "loom-git-worktree-implement-harness",
+      "depends_on": [],
+      "role": "leaf admit / real worktree hygiene"
+    }
+  ],
+  "topology_order": [
+    "loom-git-worktree-implement-harness",
+    "beacon-v2-product-goal-orchestrator",
+    "beacon-v2-main-star-satellite-pool",
+    "loom-goal-optional-subagent",
+    "beacon-v2-goal-durable-longrun"
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "schema": "public-surface-progressive-map.v1",
-  "scheme": "A",
+  "scheme": "A-1plus6-merged",
   "synonym_table": "skills/beacon/references/public-surface-1plus6.md",
   "versions": [
     "v1.6.9",
@@ -61,7 +61,11 @@
         }
       ],
       "user_language": "never_expose_gov_skill_names_as_required_user_knowledge"
-    }
+    },
+    "mode_loads": [
+      "mode:loop-goal"
+    ],
+    "merged": true
   },
   "harness": {
     "plan": {
@@ -71,13 +75,14 @@
       "beacon_skill": "beacon-plan",
       "loom_skill": "loom-plan",
       "progressive_loads": [
-        "beacon-pln-program",
-        "beacon-pln-program-auto",
-        "beacon-pln-program-interactive",
-        "beacon-pln-review",
-        "beacon-pln-friction",
-        "beacon-pln-brainstorm",
-        "beacon-pln-source"
+        "beacon-plan",
+        "mode:pln-program",
+        "mode:pln-program-auto",
+        "mode:pln-program-interactive",
+        "mode:pln-review",
+        "mode:pln-friction",
+        "mode:pln-brainstorm",
+        "mode:pln-source"
       ],
       "subintent_router": {
         "module": "beacon.utils.plan_subintent",
@@ -93,7 +98,17 @@
           "default"
         ]
       },
-      "intent_notes": "Strong user intent selects primary progressive skill; full set retained for non-regression."
+      "intent_notes": "Strong user intent selects primary progressive skill; full set retained for non-regression.",
+      "mode_loads": [
+        "mode:pln-program",
+        "mode:pln-program-auto",
+        "mode:pln-program-interactive",
+        "mode:pln-review",
+        "mode:pln-friction",
+        "mode:pln-brainstorm",
+        "mode:pln-source"
+      ],
+      "merged": true
     },
     "truth": {
       "public_id": "truth",
@@ -102,11 +117,19 @@
       "beacon_skill": "beacon-truth",
       "loom_skill": "loom-truth",
       "progressive_loads": [
-        "beacon-gen-truth",
-        "beacon-gen-truth-init",
-        "beacon-gen-change",
-        "beacon-gen-refreeze"
-      ]
+        "beacon-truth",
+        "mode:gen-truth",
+        "mode:gen-truth-init",
+        "mode:gen-change",
+        "mode:gen-refreeze"
+      ],
+      "mode_loads": [
+        "mode:gen-truth",
+        "mode:gen-truth-init",
+        "mode:gen-change",
+        "mode:gen-refreeze"
+      ],
+      "merged": true
     },
     "design": {
       "public_id": "design",
@@ -115,13 +138,23 @@
       "beacon_skill": "beacon-design",
       "loom_skill": "loom-design",
       "progressive_loads": [
-        "beacon-gen-design",
-        "beacon-gen-design-init",
-        "beacon-gen-design-system",
-        "beacon-gen-design-explore",
-        "beacon-gen-design-polish",
-        "beacon-gen-prototype"
-      ]
+        "beacon-design",
+        "mode:gen-design",
+        "mode:gen-design-init",
+        "mode:gen-design-system",
+        "mode:gen-design-explore",
+        "mode:gen-design-polish",
+        "mode:gen-prototype"
+      ],
+      "mode_loads": [
+        "mode:gen-design",
+        "mode:gen-design-init",
+        "mode:gen-design-system",
+        "mode:gen-design-explore",
+        "mode:gen-design-polish",
+        "mode:gen-prototype"
+      ],
+      "merged": true
     },
     "implement": {
       "public_id": "implement",
@@ -130,8 +163,13 @@
       "beacon_skill": "beacon-implement",
       "loom_skill": "loom-implement",
       "progressive_loads": [
-        "beacon-gen-implement"
-      ]
+        "beacon-implement",
+        "mode:gen-implement"
+      ],
+      "mode_loads": [
+        "mode:gen-implement"
+      ],
+      "merged": true
     },
     "qa": {
       "public_id": "qa",
@@ -140,11 +178,19 @@
       "beacon_skill": "beacon-qa",
       "loom_skill": "loom-qa",
       "progressive_loads": [
-        "beacon-eval-qa",
-        "beacon-eval-qa-deep",
-        "beacon-eval-real-project",
-        "beacon-eval-agent"
-      ]
+        "beacon-qa",
+        "mode:eval-qa",
+        "mode:eval-qa-deep",
+        "mode:eval-real-project",
+        "mode:eval-agent"
+      ],
+      "mode_loads": [
+        "mode:eval-qa",
+        "mode:eval-qa-deep",
+        "mode:eval-real-project",
+        "mode:eval-agent"
+      ],
+      "merged": true
     },
     "release": {
       "public_id": "release",
@@ -153,8 +199,13 @@
       "beacon_skill": "beacon-release",
       "loom_skill": "loom-release",
       "progressive_loads": [
-        "beacon-eval-release"
-      ]
+        "beacon-release",
+        "mode:eval-release"
+      ],
+      "mode_loads": [
+        "mode:eval-release"
+      ],
+      "merged": true
     }
   },
   "host_visible_whitelist": {
@@ -188,5 +239,209 @@
     "loom-eval-qa": "loom-qa",
     "loom-eval-release": "loom-release"
   },
-  "capability_non_regression": "Merging public surface must not reduce progressive_loads coverage for each harness stage."
+  "capability_non_regression": "Merging public surface must not reduce progressive_loads coverage for each harness stage.",
+  "merge_note": "Fine-grained pln/gen/eval/loop skills archived under skills/_archive/pre-1plus6-merge-*. Capability lives as references/modes/* inside each public core skill package.",
+  "capability_home": {
+    "beacon-goal": "skills/beacon/beacon-goal/references/modes/",
+    "beacon-plan": "skills/beacon/beacon-plan/references/modes/",
+    "beacon-truth": "skills/beacon/beacon-truth/references/modes/",
+    "beacon-design": "skills/beacon/beacon-design/references/modes/",
+    "beacon-implement": "skills/beacon/beacon-implement/references/modes/",
+    "beacon-qa": "skills/beacon/beacon-qa/references/modes/",
+    "beacon-release": "skills/beacon/beacon-release/references/modes/"
+  },
+  "legacy_skill_aliases": {
+    "beacon-pln-program": {
+      "public_skill": "beacon-plan",
+      "mode": "pln-program"
+    },
+    "beacon-pln-program-auto": {
+      "public_skill": "beacon-plan",
+      "mode": "pln-program-auto"
+    },
+    "beacon-pln-program-interactive": {
+      "public_skill": "beacon-plan",
+      "mode": "pln-program-interactive"
+    },
+    "beacon-pln-review": {
+      "public_skill": "beacon-plan",
+      "mode": "pln-review"
+    },
+    "beacon-pln-friction": {
+      "public_skill": "beacon-plan",
+      "mode": "pln-friction"
+    },
+    "beacon-pln-brainstorm": {
+      "public_skill": "beacon-plan",
+      "mode": "pln-brainstorm"
+    },
+    "beacon-pln-source": {
+      "public_skill": "beacon-plan",
+      "mode": "pln-source"
+    },
+    "beacon-gen-truth": {
+      "public_skill": "beacon-truth",
+      "mode": "gen-truth"
+    },
+    "beacon-gen-truth-init": {
+      "public_skill": "beacon-truth",
+      "mode": "gen-truth-init"
+    },
+    "beacon-gen-change": {
+      "public_skill": "beacon-truth",
+      "mode": "gen-change"
+    },
+    "beacon-gen-refreeze": {
+      "public_skill": "beacon-truth",
+      "mode": "gen-refreeze"
+    },
+    "beacon-gen-design": {
+      "public_skill": "beacon-design",
+      "mode": "gen-design"
+    },
+    "beacon-gen-design-init": {
+      "public_skill": "beacon-design",
+      "mode": "gen-design-init"
+    },
+    "beacon-gen-design-system": {
+      "public_skill": "beacon-design",
+      "mode": "gen-design-system"
+    },
+    "beacon-gen-design-explore": {
+      "public_skill": "beacon-design",
+      "mode": "gen-design-explore"
+    },
+    "beacon-gen-design-polish": {
+      "public_skill": "beacon-design",
+      "mode": "gen-design-polish"
+    },
+    "beacon-gen-prototype": {
+      "public_skill": "beacon-design",
+      "mode": "gen-prototype"
+    },
+    "beacon-gen-implement": {
+      "public_skill": "beacon-implement",
+      "mode": "gen-implement"
+    },
+    "beacon-eval-qa": {
+      "public_skill": "beacon-qa",
+      "mode": "eval-qa"
+    },
+    "beacon-eval-qa-deep": {
+      "public_skill": "beacon-qa",
+      "mode": "eval-qa-deep"
+    },
+    "beacon-eval-real-project": {
+      "public_skill": "beacon-qa",
+      "mode": "eval-real-project"
+    },
+    "beacon-eval-agent": {
+      "public_skill": "beacon-qa",
+      "mode": "eval-agent"
+    },
+    "beacon-eval-release": {
+      "public_skill": "beacon-release",
+      "mode": "eval-release"
+    },
+    "beacon-loop-goal": {
+      "public_skill": "beacon-goal",
+      "mode": "loop-goal"
+    },
+    "loom-pln-program": {
+      "public_skill": "loom-plan",
+      "mode": "pln-program"
+    },
+    "loom-pln-program-auto": {
+      "public_skill": "loom-plan",
+      "mode": "pln-program-auto"
+    },
+    "loom-pln-program-interactive": {
+      "public_skill": "loom-plan",
+      "mode": "pln-program-interactive"
+    },
+    "loom-pln-review": {
+      "public_skill": "loom-plan",
+      "mode": "pln-review"
+    },
+    "loom-pln-friction": {
+      "public_skill": "loom-plan",
+      "mode": "pln-friction"
+    },
+    "loom-pln-brainstorm": {
+      "public_skill": "loom-plan",
+      "mode": "pln-brainstorm"
+    },
+    "loom-pln-source": {
+      "public_skill": "loom-plan",
+      "mode": "pln-source"
+    },
+    "loom-gen-truth": {
+      "public_skill": "loom-truth",
+      "mode": "gen-truth"
+    },
+    "loom-gen-truth-init": {
+      "public_skill": "loom-truth",
+      "mode": "gen-truth-init"
+    },
+    "loom-gen-change": {
+      "public_skill": "loom-truth",
+      "mode": "gen-change"
+    },
+    "loom-gen-refreeze": {
+      "public_skill": "loom-truth",
+      "mode": "gen-refreeze"
+    },
+    "loom-gen-design": {
+      "public_skill": "loom-design",
+      "mode": "gen-design"
+    },
+    "loom-gen-design-init": {
+      "public_skill": "loom-design",
+      "mode": "gen-design-init"
+    },
+    "loom-gen-design-system": {
+      "public_skill": "loom-design",
+      "mode": "gen-design-system"
+    },
+    "loom-gen-design-explore": {
+      "public_skill": "loom-design",
+      "mode": "gen-design-explore"
+    },
+    "loom-gen-design-polish": {
+      "public_skill": "loom-design",
+      "mode": "gen-design-polish"
+    },
+    "loom-gen-prototype": {
+      "public_skill": "loom-design",
+      "mode": "gen-prototype"
+    },
+    "loom-gen-implement": {
+      "public_skill": "loom-implement",
+      "mode": "gen-implement"
+    },
+    "loom-eval-qa": {
+      "public_skill": "loom-qa",
+      "mode": "eval-qa"
+    },
+    "loom-eval-qa-deep": {
+      "public_skill": "loom-qa",
+      "mode": "eval-qa-deep"
+    },
+    "loom-eval-real-project": {
+      "public_skill": "loom-qa",
+      "mode": "eval-real-project"
+    },
+    "loom-eval-agent": {
+      "public_skill": "loom-qa",
+      "mode": "eval-agent"
+    },
+    "loom-eval-release": {
+      "public_skill": "loom-release",
+      "mode": "eval-release"
+    },
+    "loom-loop-goal": {
+      "public_skill": "loom-goal",
+      "mode": "loop-goal"
+    }
+  }
 }

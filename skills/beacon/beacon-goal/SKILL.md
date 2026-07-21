@@ -1,85 +1,83 @@
 ---
 name: beacon-goal
 description: >
-  【唯一公共入口】一句话目标 → plan/truth/implement/qa/release 直到 done。
-  无版本默认规划线或 patch+1；生产事故用 hotfix 主线短分支。Triggers: 目标, goal, 交付, 热修, 生产事故, longrun.
+  Public goal harness (1+6 core). Long-run delivery facade: plan→truth→design?→implement→qa→release. Triggers: 长程, goal run, 全流程, supervise, driver, multi-stage. Mode loop-goal under references/modes/. Not a substitute for single-surface plan/truth/implement alone when user only wants that step.
 metadata:
+  version: "v1.6.9"
+  brand: Beacon
   public_surface: true
   public_id: "goal"
+  scheme: "A-1plus6-merged"
   progressive_map: skills/beacon/references/public-surface-progressive-map.v1.json
-  version: "v1.6.9"
-  entry: public_primary
-  role: product_goal_facade
+  dual_install_with: loom-goal
   longrun: true
 ---
 
 # beacon-goal
 
-**一句话目标 → 验收。** 不要先调 `$beacon-loop-goal`。
+**Public surface**: `goal` (Scheme A — only 1+6 host-visible cores)  
+**Brand**: beacon  
+**Capability home**: this package (`references/modes/` + nested refs). No separate fine-grained skill install required.
 
-## 默认（无版本）
+## HARD GATE
 
-```bash
-beacon goal run "<目标>" -p . -v auto
+Orchestrate pipeline only. Complete needs verifier evidence. Release always human gate. Longrun/supervise only on goal.
+
+Shared preamble:
+
+1. Lake vs sea — boil lakes; split/defer seas.
+2. Search before invent — truth, source, evidence, memory first.
+3. User sovereignty on scope and freeze.
+4. No fake delivery (placeholder, docs-only, zero assertions).
+5. Harness boundaries — planner ≠ implement; generator ≠ self-certify; evaluator ≠ rewrite truth.
+
+## Mandatory progressive load (do not skip)
+
+1. Select **exactly one** primary `mode_id` from the table (use subintent/runtime when available).
+2. **Read the mode file completely** before acting.
+3. Open nested `references/<mode>/…` only when the mode file links them.
+4. Emit the mode output contract + `mode_id` + `recommended_next_harness`.
+5. Stop at harness boundary; route to another public core instead of stretching this one.
+
+| mode_id | Load file | Purpose |
+|---------|-----------|---------|
+| `loop-goal` | `references/modes/loop-goal.md` | cross-harness loop orchestration |
+
+Index: `references/modes/INDEX.md`
+
+## Workflow
+
+1. Classify request → primary mode.
+2. Read mode file + required nested references.
+3. Produce artifacts for that mode only.
+4. Recommend next public harness (`goal` pipeline order when long-run).
+5. Never claim completion of another harness's job.
+
+## Goal pipeline
+
+```text
+plan → truth(freeze) → design? → implement → qa → release
 ```
 
-`auto` 解析 **项目交付线**（不是 toolkit 型号）：
-- 外项目 greenfield → **v0.0.1**
-- 外项目已有线 → 项目内 **patch +1**
-- Beacon 自仓 → 自驱 planning/patch
-- Runtime（`beacon --version`）始终是另一轴：螺丝刀型号
+- Load `references/modes/loop-goal.md` when cross-harness sequencing is required.
+- Self-heal pre/mid/post from package map `skills/beacon/references/public-surface-progressive-map.v1.json`.
+- Forbidden user sequence: treating loop-goal as a separate public skill (merged into this core).
 
+## Output contract (minimum)
 
-## 两场景
+- `mode_id` (required)
+- `public_id`: `goal`
+- `evidence_refs` (paths/commands used)
+- `recommended_next_harness` one of: goal|plan|truth|design|implement|qa|release|stop
+- Mode-specific fields (plan_artifact, findings, truth package paths, QA scorecard, release brief, …) per mode file
 
-| 场景 | 怎么做 |
-|------|--------|
-| **正常交付** | admit feature worktree → leaf 实现 → merge main → 人工 release |
-| **生产热修** | `--mode hotfix`；baseline=**当前发布线**；分支=`hotfix/<baseline>-<slug>`（**不进** feature 开发轨） |
+## Evals
 
-```bash
-# 热修（可不写 --from-version，默认当前发布线）
-beacon goal run "生产：…" --mode hotfix -p . \
-  --forward-port main --rollback-notes "revert <sha>"
-beacon goal hotfix-plan "生产：…" -p . --json   # 含 hotfix_branch 登记
-beacon release check <baseline> --profile hotfix -p .
-```
+Smoke + contract prompts: `evals/evals.json`  
+Examples (when present): `references/examples/`
 
-## HARD
+## Shared package refs
 
-1. **不自证 complete / 不 auto-release**
-2. **正常交付禁止裸 main 写业务**；热修必须 **先建 `hotfix/*` 分支**（pre-commit 拦 main）
-3. 细节与 longrun/admit/自愈 → **CLI + references**，用户不必记 gov skill 名
-
-## 渐进
-
-内部加载 plan/truth/design/implement/qa/release；map：`public-surface-progressive-map.v1.json`。
-
-## 参考（按需）
-
-- `references/git-worktree-execution-flow.md`
-- `references/hotfix-prod-incident.md`
-- `references/version-default.md`
-- `references/goal-full-ops.md`（完整 ops 备查）
-- 示例：`examples/goal-one-shot-30s.md` · `examples/hotfix-30s.md`
-
-## 操作纪律（堵住旁路 main 实现 — v1.6.9+）
-
-1. **`beacon goal run` 只创建 run / plan**，不会单独完成实现。
-2. 业务代码写入前必须：
-   - `beacon goal tick --run-id <id> --execute`（ralph 时强制 admit），或
-   - 已 `beacon workspace admit` 且 **cwd = worktree_path**。
-3. 交付/实现类 utterance 会写 `implement_admission_preflight` + `recommended_implement_cwd`。
-4. 消费仓 hooks：`beacon doctor setup-git-hooks` 会 import **已安装** `beacon` 包拦截 main 业务 commit。
-5. 产品 `v0.x` 默认 `require_workspace_admission=true`（显式 false 才跳过）。
-
-
-- Runtime gate: `ensure_goal_implement_admission` on tick --execute (ralph) and create preflight for 实现/交付 intents.
-
-## Host subagent keyword gate
-
-- Default **single-thread** (`subagent_default_off`).
-- Utterance tokens like `子代理` / `subagent` / `并行子代理` open host agent packs.
-- `并行` alone enables satellite lakes, not host agents (UD-SA-001).
-- Host agents cannot complete goal or auto-release.
-
+- `skills/beacon/references/public-surface-1plus6.md`
+- `skills/beacon/references/public-surface-progressive-map.v1.json`
+- `skills/beacon/references/git-worktree-execution-flow.md`

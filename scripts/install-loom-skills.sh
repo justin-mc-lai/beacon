@@ -75,8 +75,8 @@ install_flat_host() {
       continue
     fi
     if [[ -e "$dst" && ! -L "$dst" ]]; then
-      warn "$dst exists and is not a symlink; skip"
-      continue
+      warn "$dst is a real directory; replacing with symlink to source"
+      rm -rf "$dst"
     fi
     [[ -L "$dst" ]] && rm "$dst"
     ln -sfn "$src" "$dst"
@@ -142,8 +142,8 @@ install_claude_flat() {
       continue
     fi
     if [[ -e "$dst" && ! -L "$dst" ]]; then
-      warn "$dst exists and is not a symlink; skip"
-      continue
+      warn "$dst is a real directory; replacing with symlink to source"
+      rm -rf "$dst"
     fi
     [[ -L "$dst" ]] && rm "$dst"
     ln -sfn "$src" "$dst"
