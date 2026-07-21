@@ -23,7 +23,12 @@ metadata:
 beacon goal run "<目标>" -p . -v auto
 ```
 
-`auto` → **planning 线优先**，否则 `current_runtime` 的 **patch +1**（不 silent major/minor）。
+`auto` 解析 **项目交付线**（不是 toolkit 型号）：
+- 外项目 greenfield → **v0.0.1**
+- 外项目已有线 → 项目内 **patch +1**
+- Beacon 自仓 → 自驱 planning/patch
+- Runtime（`beacon --version`）始终是另一轴：螺丝刀型号
+
 
 ## 两场景
 

@@ -2,7 +2,7 @@
 name: loom-goal
 description: >
   Loom 公共 goal 入口（与 beacon-goal 同义 1+6）。后端优先 Rust CLI loom/beacon-v2。
-  无版本默认与 hotfix 主线规则同 beacon-goal。
+  无版本：外项目 v0.0.1；双轴 runtime≠project_docs。hotfix 主线规则同 beacon-goal。
 metadata:
   public_surface: true
   public_id: "goal"

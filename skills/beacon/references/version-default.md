@@ -1,19 +1,30 @@
-# 版本默认（无提示词版本）
+# 版本默认（双轴）
 
-## Normal
+> **Runtime = 螺丝刀型号；项目交付线 = 工件编号。**  
+> 新项目从 **v0.0.1** 起号，不是从 Beacon 的 v1.6.9 起号。
 
-```
-default_target_version():
-  runtime = current_runtime_release_line
-  if any docs/planning > runtime: return min(higher)
-  else: return bump_patch(runtime)  # v1.6.8 → v1.6.9
-```
+## 两轴
+
+| 轴 | 含义 |
+|----|------|
+| `runtime_version` | 本机 Beacon/Loom CLI 能力线 |
+| `project_docs_version` | 当前仓库产品版本（`docs/beacon/<ver>/`） |
+
+## 无 `-v` 时（normal）
+
+| 项目类型 | 默认 project_docs |
+|----------|-------------------|
+| 外项目 greenfield（无 docs 线） | **v0.0.1** |
+| 外项目已有 v0.2.3 | **v0.2.4**（项目内 patch+1） |
+| Beacon 自仓 monorepo | 自驱规则（planning 或相对自身 release 的 patch） |
 
 ## Hotfix
 
-- baseline = `current_runtime_release_line`
-- **never** patch-bump as first production fix target
+- baseline = **该项目生产基线**（自仓才用 `current_runtime_release_line`）
+- **不 bump**
+- 登记 `hotfix/*` 分支，禁止裸 main 直写
 
-## Explicit
+## 禁止
 
-- `vX.Y.Z` / `vA\vB` dual-track → 用用户写的
+- 用 toolkit 的 v1.6.x 当外项目默认产品版本  
+- silent major/minor bump  
