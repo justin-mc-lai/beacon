@@ -268,3 +268,32 @@ Beacon 默认必须同时满足两条：
 5. 把通用 skill 写成强模型的默认操作剧本，而不是边界、工具、事实说明
 6. 让 learning 静默决定 truth 或 release verdict，而不是作为可审计 advisory input
 7. 把内部复杂度、外部依赖或多宿主选择默认倾倒给人类主流程
+
+
+## Dual-axis version (Runtime vs Project docs)
+
+> **Permanent principle — do not collapse these axes.**
+
+**Runtime is the screwdriver model; project docs version is the workpiece serial number.**
+
+| Axis | Meaning | Typical source | Must not |
+|------|---------|----------------|----------|
+| **Beacon Runtime** | Installed toolkit / CLI capability line | `beacon --version`, `version-truth.runtime_version` | Become the default product version of a customer repo |
+| **Project docs / delivery line** | Product version under `docs/beacon/<ver>/` | project onboarding, explicit `-v`, project release baseline | Be inferred from toolkit semver (e.g. v1.6.8 → v1.6.9) for foreign projects |
+
+### Defaults when the user omits `-v`
+
+| Project kind | Project docs default | Hotfix baseline |
+|--------------|----------------------|-------------------|
+| External **greenfield** | **`v0.0.1`** | n/a or first ship (prefer normal, not hotfix) |
+| External **existing** | patch+1 of **project** baseline | pin **project** production line |
+| **Beacon/Loom self** monorepo | monorepo planning / self patch rules only | `current_runtime_release_line` |
+
+### Illegal (reason conceptual)
+
+- Treating Beacon monorepo `docs/beacon/v1.6.9` as the default for an empty customer project
+- Using toolkit runtime patch as the product version of an external greenfield project
+- Silent major/minor bump without explicit user intent
+
+Runtime module: `beacon.utils.version_defaults` (`classify_project`, `default_target_version`, `default_hotfix_baseline`).
+

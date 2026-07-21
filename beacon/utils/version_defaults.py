@@ -1,14 +1,19 @@
-"""Version defaults for goal (UD-VER) and hotfix baseline (UD-HF).
+"""Dual-axis version defaults (UD-VER-AXIS).
 
-Normal no-version: planning line > runtime if exists, else patch+1.
-Hotfix no-version: pin current_runtime_release_line (no bump).
+Runtime = screwdriver (Beacon toolkit).
+Project docs = workpiece serial (product delivery line under docs/beacon/<ver>/).
+
+- external greenfield → v0.0.1 (NOT toolkit v1.6.x)
+- external existing → patch+1 of project baseline
+- beacon_self monorepo → monorepo planning/patch relative to toolkit release
+- hotfix baseline → project production line; self uses current_runtime_release_line
 """
 
 from __future__ import annotations
 
 import re
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 from beacon.utils.versioning import (
     current_runtime_release_version,
@@ -17,6 +22,10 @@ from beacon.utils.versioning import (
     normalize_version,
     resolve_runtime_version,
 )
+
+ProjectKind = Literal["beacon_self", "external_greenfield", "external_existing"]
+
+GREENFIELD_DEFAULT = "v0.0.1"
 
 
 def _version_key(version: str) -> tuple[int, ...]:
@@ -33,7 +42,7 @@ def _version_key(version: str) -> tuple[int, ...]:
 
 
 def bump_patch(version: str) -> str:
-    """v1.6.8 → v1.6.9 (never silent major/minor)."""
+    """v0.2.3 → v0.2.4 (never silent major/minor)."""
     norm = normalize_version(version) or "v0.0.0"
     parts = norm[1:].split(".")
     while len(parts) < 3:
@@ -45,56 +54,189 @@ def bump_patch(version: str) -> str:
     return f"v{parts[0]}.{parts[1]}.{patch}"
 
 
-def default_hotfix_baseline(project_root: Path | str) -> dict[str, Any]:
+def _toolkit_runtime(project_root: Path) -> str:
+    runtime = current_runtime_release_version(project_root)
+    if runtime:
+        return runtime
+    return normalize_version(str(resolve_runtime_version(project_root, "auto") or "")) or "v0.0.0"
+
+
+def classify_project(project_root: Path | str) -> dict[str, Any]:
+    """Classify cwd project for version default policy."""
     root = Path(project_root).expanduser().resolve()
-    runtime = current_runtime_release_version(root)
-    source = "current_runtime_release_line"
-    if not runtime:
-        runtime = normalize_version(str(resolve_runtime_version(root, "auto") or "")) or "v0.0.0"
-        source = "runtime_auto"
+    reasons: list[str] = []
+
+    # Strong self signals: this is the Beacon/Loom toolkit monorepo
+    self_signals = [
+        (root / "beacon" / "version-truth.json").is_file(),
+        (root / "skills" / "beacon" / "beacon-goal" / "SKILL.md").is_file(),
+        (root / "pyproject.toml").is_file()
+        and "name = \"beacon\"" in (root / "pyproject.toml").read_text(encoding="utf-8", errors="replace")[:2000],
+    ]
+    if sum(1 for x in self_signals if x) >= 2:
+        reasons.append("toolkit_monorepo_signals")
+        return {
+            "project_kind": "beacon_self",
+            "reasons": reasons,
+            "project_docs_versions": discover_versions(root),
+            "runtime_version": _toolkit_runtime(root),
+        }
+
+    docs_versions = discover_versions(root)
+    # onboarding / metadata may hold project docs version
+    onboarding = root / ".beacon" / "state" / "project-onboarding.json"
+    meta = root / ".beacon" / "project-metadata.json"
+    onboarding_docs = ""
+    if onboarding.is_file():
+        try:
+            import json
+
+            payload = json.loads(onboarding.read_text(encoding="utf-8"))
+            onboarding_docs = normalize_version(str((payload or {}).get("docs_version") or "")) or ""
+        except Exception:  # noqa: BLE001
+            onboarding_docs = ""
+
+    if docs_versions or onboarding_docs:
+        reasons.append("has_project_docs_or_onboarding")
+        return {
+            "project_kind": "external_existing",
+            "reasons": reasons,
+            "project_docs_versions": docs_versions,
+            "onboarding_docs_version": onboarding_docs,
+            "runtime_version": _toolkit_runtime(root),
+        }
+
+    reasons.append("no_project_docs_lines")
     return {
-        "baseline": runtime,
-        "source": source,
+        "project_kind": "external_greenfield",
+        "reasons": reasons,
+        "project_docs_versions": [],
+        "runtime_version": _toolkit_runtime(root),
+    }
+
+
+def _project_release_baseline(root: Path, *, docs_versions: list[str], onboarding_docs: str = "") -> str:
+    """Best-effort current project delivery baseline (not toolkit runtime)."""
+    if onboarding_docs:
+        return onboarding_docs
+    if not docs_versions:
+        return GREENFIELD_DEFAULT
+    return sorted(docs_versions, key=_version_key)[-1]
+
+
+def default_hotfix_baseline(project_root: Path | str) -> dict[str, Any]:
+    """Hotfix pins project production baseline; beacon_self uses toolkit release line."""
+    root = Path(project_root).expanduser().resolve()
+    kind_info = classify_project(root)
+    kind = str(kind_info.get("project_kind") or "external_greenfield")
+    runtime = str(kind_info.get("runtime_version") or _toolkit_runtime(root))
+
+    if kind == "beacon_self":
+        return {
+            "baseline": runtime,
+            "source": "current_runtime_release_line",
+            "bump": False,
+            "mode": "hotfix",
+            "project_kind": kind,
+            "runtime_version": runtime,
+            "axis": "project_docs_pinned_to_toolkit_release_for_self",
+        }
+
+    docs_versions = list(kind_info.get("project_docs_versions") or [])
+    onboarding = str(kind_info.get("onboarding_docs_version") or "")
+    if kind == "external_greenfield" and not docs_versions and not onboarding:
+        # No production line yet — still return v0.0.1 as placeholder baseline
+        return {
+            "baseline": GREENFIELD_DEFAULT,
+            "source": "greenfield_no_release_yet",
+            "bump": False,
+            "mode": "hotfix",
+            "project_kind": kind,
+            "runtime_version": runtime,
+            "axis": "project_docs",
+            "note": "Greenfield has no production release; prefer normal first ship over hotfix.",
+        }
+
+    baseline = _project_release_baseline(root, docs_versions=docs_versions, onboarding_docs=onboarding)
+    return {
+        "baseline": baseline,
+        "source": "project_delivery_baseline",
         "bump": False,
         "mode": "hotfix",
+        "project_kind": kind,
+        "runtime_version": runtime,
+        "axis": "project_docs",
     }
 
 
 def default_target_version(project_root: Path | str) -> dict[str, Any]:
-    """UD-VER-001: planning preferred else patch+1 of runtime release line."""
+    """Resolve project_docs_version when user omits -v (normal mode)."""
     root = Path(project_root).expanduser().resolve()
-    runtime = current_runtime_release_version(root) or normalize_version(
-        str(resolve_runtime_version(root, "auto") or "")
-    ) or "v0.0.0"
+    kind_info = classify_project(root)
+    kind = str(kind_info.get("project_kind") or "external_greenfield")
+    runtime = str(kind_info.get("runtime_version") or _toolkit_runtime(root))
+
+    if kind == "external_greenfield":
+        return {
+            "version": GREENFIELD_DEFAULT,
+            "source": "external_greenfield_default",
+            "project_kind": kind,
+            "runtime_version": runtime,
+            "runtime_baseline": runtime,
+            "axis": "project_docs",
+            "mode": "normal",
+            "principle": "Runtime is screwdriver; project serial starts at v0.0.1",
+        }
+
+    if kind == "external_existing":
+        docs_versions = list(kind_info.get("project_docs_versions") or [])
+        onboarding = str(kind_info.get("onboarding_docs_version") or "")
+        baseline = _project_release_baseline(root, docs_versions=docs_versions, onboarding_docs=onboarding)
+        target = bump_patch(baseline)
+        return {
+            "version": target,
+            "source": "external_project_patch_bump",
+            "project_kind": kind,
+            "project_baseline": baseline,
+            "runtime_version": runtime,
+            "runtime_baseline": runtime,
+            "axis": "project_docs",
+            "mode": "normal",
+            "principle": "patch+1 relative to project delivery baseline, not toolkit runtime",
+        }
+
+    # beacon_self: monorepo planning / docs higher than toolkit release, else patch toolkit release
     truth = load_version_truth(root)
-    planning = []
+    planning: list[str] = []
     for item in truth.get("planning_lines") or []:
         n = normalize_version(str(item or ""))
         if n:
             planning.append(n)
     scanned = discover_versions(root)
     higher = sorted(
-        {
-            v
-            for v in (*planning, *scanned)
-            if v and _version_key(v) > _version_key(runtime)
-        },
+        {v for v in (*planning, *scanned) if v and _version_key(v) > _version_key(runtime)},
         key=_version_key,
     )
     if higher:
         return {
             "version": higher[0],
-            "source": "planning_or_docs_higher_than_runtime",
+            "source": "beacon_self_planning_or_docs_higher_than_runtime",
+            "project_kind": kind,
+            "runtime_version": runtime,
             "runtime_baseline": runtime,
             "candidates": higher,
+            "axis": "project_docs_self",
             "mode": "normal",
         }
     bumped = bump_patch(runtime)
     return {
         "version": bumped,
-        "source": "patch_bump",
+        "source": "beacon_self_patch_bump_of_runtime_release",
+        "project_kind": kind,
+        "runtime_version": runtime,
         "runtime_baseline": runtime,
         "candidates": [bumped],
+        "axis": "project_docs_self",
         "mode": "normal",
     }
 
@@ -105,35 +247,49 @@ def resolve_goal_version(
     *,
     goal_mode: str = "normal",
 ) -> dict[str, Any]:
-    """Resolve version for goal facade.
-
-    - hotfix: always pin production baseline (no bump); requested explicit still wins for docs line
-      but baseline separate.
-    - normal + auto/empty: default_target_version
-    - normal + explicit: use explicit
-    """
+    """Resolve goal project_docs version + always report runtime axis."""
     root = Path(project_root).expanduser().resolve()
     raw = str(requested or "").strip().lower()
     mode = (goal_mode or "normal").strip().lower()
+    runtime = _toolkit_runtime(root)
+    kind_info = classify_project(root)
+
     if mode == "hotfix":
         base = default_hotfix_baseline(root)
-        # docs/work version for hotfix stays on baseline (do not open next patch line)
         return {
             "version": base["baseline"],
-            "source": f"hotfix:{base['source']}",
+            "source": f"hotfix:{base.get('source')}",
             "goal_mode": "hotfix",
             "hotfix_baseline": base["baseline"],
+            "project_kind": base.get("project_kind") or kind_info.get("project_kind"),
+            "runtime_version": runtime,
+            "project_docs_version": base["baseline"],
+            "axis": {
+                "runtime_version": runtime,
+                "project_docs_version": base["baseline"],
+            },
             "requested": requested or "",
         }
+
     if raw in {"", "auto", "latest"}:
         target = default_target_version(root)
+        ver = str(target.get("version") or GREENFIELD_DEFAULT)
         return {
-            "version": target["version"],
-            "source": target["source"],
+            "version": ver,
+            "source": target.get("source"),
             "goal_mode": "normal",
-            "runtime_baseline": target.get("runtime_baseline"),
+            "project_kind": target.get("project_kind") or kind_info.get("project_kind"),
+            "runtime_version": runtime,
+            "project_docs_version": ver,
+            "runtime_baseline": target.get("runtime_baseline") or runtime,
+            "axis": {
+                "runtime_version": runtime,
+                "project_docs_version": ver,
+            },
             "requested": requested or "auto",
+            "principle": target.get("principle") or "",
         }
+
     from beacon.utils.versioning import resolve_target_version
 
     explicit = resolve_target_version(root, requested)
@@ -141,6 +297,13 @@ def resolve_goal_version(
         "version": explicit,
         "source": "explicit",
         "goal_mode": mode,
+        "project_kind": kind_info.get("project_kind"),
+        "runtime_version": runtime,
+        "project_docs_version": explicit,
+        "axis": {
+            "runtime_version": runtime,
+            "project_docs_version": explicit,
+        },
         "requested": requested or "",
     }
 
@@ -149,10 +312,8 @@ _SLUG_RE = re.compile(r"[^a-z0-9]+")
 
 
 def hotfix_branch_name(baseline: str, utterance: str = "", *, feature: str = "") -> str:
-    """Register-style branch: hotfix/v1.6.8-<slug>."""
     base = normalize_version(baseline) or "v0.0.0"
     raw = (feature or utterance or "incident").strip().lower()
-    # take first meaningful chunk
     raw = raw.replace("生产：", "").replace("生产:", "")[:80]
     slug = _SLUG_RE.sub("-", raw).strip("-")[:40] or "incident"
     if slug.startswith("hotfix-"):
@@ -168,22 +329,24 @@ def build_hotfix_branch_registry(
     feature: str = "",
     forward_port_target: str = "main",
 ) -> dict[str, Any]:
-    """Plan hotfix branch registration (mainline hotfix, not feature worktree lane)."""
     branch = hotfix_branch_name(baseline, utterance, feature=feature)
     base = normalize_version(baseline) or baseline
+    kind = classify_project(project_root).get("project_kind")
     return {
         "schema": "hotfix-branch-registry.v1",
         "branch": branch,
         "baseline_ref": base,
+        "project_kind": kind,
         "not_feature_worktree": True,
         "illegal_lanes": ["beacon/v*/feature-*", "loom/v*/feature-* long-dev lakes"],
         "forward_port_target": forward_port_target or "main",
         "recommended_commands": [
-            f"git fetch --tags origin 2>/dev/null || true",
+            "git fetch --tags origin 2>/dev/null || true",
             f"git switch -c {branch} {base} 2>/dev/null || git switch -c {branch} main",
             "# implement on hotfix branch (not feature worktree stream)",
             f"git push -u origin {branch}",
             f"# after human release: forward-port to {forward_port_target or 'main'}",
         ],
         "pre_commit_note": "Business commits allowed on hotfix/*; bare main still blocked (UD-ENF-HF).",
+        "axis_note": "baseline is project_docs production line; toolkit runtime is separate screwdriver version",
     }

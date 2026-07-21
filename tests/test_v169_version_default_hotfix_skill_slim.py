@@ -27,7 +27,10 @@ def test_ac_vd_default_target_on_real_repo() -> None:
     assert r["source"] in {
         "planning_or_docs_higher_than_runtime",
         "patch_bump",
+        "beacon_self_planning_or_docs_higher_than_runtime",
+        "beacon_self_patch_bump_of_runtime_release",
     }
+    assert r.get("project_kind") == "beacon_self"
     # must not be major jump from runtime without planning
     assert r.get("runtime_baseline")
 
