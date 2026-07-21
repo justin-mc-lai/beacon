@@ -57,3 +57,14 @@ beacon release check <baseline> --profile hotfix -p .
 - `references/version-default.md`
 - `references/goal-full-ops.md`（完整 ops 备查）
 - 示例：`examples/goal-one-shot-30s.md` · `examples/hotfix-30s.md`
+
+## 操作纪律（堵住旁路 main 实现 — v1.6.9+）
+
+1. **`beacon goal run` 只创建 run / plan**，不会单独完成实现。
+2. 业务代码写入前必须：
+   - `beacon goal tick --run-id <id> --execute`（ralph 时强制 admit），或
+   - 已 `beacon workspace admit` 且 **cwd = worktree_path**。
+3. 交付/实现类 utterance 会写 `implement_admission_preflight` + `recommended_implement_cwd`。
+4. 消费仓 hooks：`beacon doctor setup-git-hooks` 会 import **已安装** `beacon` 包拦截 main 业务 commit。
+5. 产品 `v0.x` 默认 `require_workspace_admission=true`（显式 false 才跳过）。
+
