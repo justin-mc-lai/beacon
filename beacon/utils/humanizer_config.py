@@ -46,11 +46,15 @@ def _candidate_oss_sync_roots(project_root: Path) -> list[Path]:
 
 
 def default_humanizer_block(project_root: Path) -> dict[str, Any]:
-    zh_path = ""
-    en_path = ""
-    for root in _candidate_oss_sync_roots(project_root):
-        zh = root / DEFAULT_REL_ZH
-        en = root / DEFAULT_REL_EN
+    root = Path(project_root).expanduser().resolve()
+    # Prefer in-repo vendor (committed open-source skill fulltext)
+    vendor_zh = root / "skills/beacon/references/truth-humanizer/vendor/Humanizer-zh/SKILL.md"
+    vendor_en = root / "skills/beacon/references/truth-humanizer/vendor/humanizer/SKILL.md"
+    zh_path = str(vendor_zh.resolve()) if vendor_zh.is_file() else ""
+    en_path = str(vendor_en.resolve()) if vendor_en.is_file() else ""
+    for oss_root in _candidate_oss_sync_roots(root):
+        zh = oss_root / DEFAULT_REL_ZH
+        en = oss_root / DEFAULT_REL_EN
         if not zh_path and zh.is_file():
             zh_path = str(zh.resolve())
         if not en_path and en.is_file():
@@ -58,9 +62,13 @@ def default_humanizer_block(project_root: Path) -> dict[str, Any]:
         if zh_path and en_path:
             break
     if not zh_path:
-        zh_path = str((project_root / "oss-sync" / DEFAULT_REL_ZH))
+        zh_path = str(vendor_zh if not vendor_zh.is_file() else vendor_zh)
+        if not Path(zh_path).is_file():
+            zh_path = str((root / "oss-sync" / DEFAULT_REL_ZH))
     if not en_path:
-        en_path = str((project_root / "oss-sync" / DEFAULT_REL_EN))
+        en_path = str(vendor_en if not vendor_en.is_file() else vendor_en)
+        if not Path(en_path).is_file():
+            en_path = str((root / "oss-sync" / DEFAULT_REL_EN))
     return {
         "default_language": "zh",
         "require_on_truth_write": True,
