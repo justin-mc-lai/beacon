@@ -40,9 +40,11 @@ def test_ac_psi_005_primary_first_full_set() -> None:
     r = plan_progressive_loads_for_utterance("多角度 review 一下")
     loads = r["progressive_loads"]
     assert loads[0] == "beacon-plan"
-    assert loads[1] == "beacon-pln-review"
-    assert "beacon-pln-brainstorm" in loads
-    assert "beacon-pln-source" in loads
+    assert loads[1] == "mode:pln-review"
+    assert r.get("primary_mode") == "pln-review"
+    assert "mode:pln-brainstorm" in loads
+    assert "mode:pln-source" in loads
+    assert "references/modes/pln-review.md" in str(r.get("primary_mode_path") or "")
 
 
 def test_ac_psi_006_stage_plan_attaches() -> None:
@@ -50,7 +52,7 @@ def test_ac_psi_006_stage_plan_attaches() -> None:
     plan = next(s for s in stages if s["stage"] == "plan")
     assert plan.get("plan_subintent", {}).get("subintent") == "source"
     skills = progressive_skills_for_stage("plan", "全面审查 parity")
-    assert "beacon-pln-review" in skills[:4]
+    assert any(x in skills[:4] for x in ("mode:pln-review", "beacon-pln-review"))
 
 
 def test_ac_psi_007_examples() -> None:

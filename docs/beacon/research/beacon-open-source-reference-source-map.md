@@ -68,6 +68,19 @@ Absolute path rule:
 
 ---
 
+
+## 2.1 Missing mirrors pending import (2026-07-21)
+
+| Project | oss-sync status | Recommended canonical path | Upstream | Main Beacon docs |
+| --- | --- | --- | --- | --- |
+| `get-saas` | `canonical` | `saas/templates/get-saas` | `https://github.com/ItusiAI/get-saas.git` | `docs/beacon/research/open-saas-base-from-zyailive-get-saas.md`, product `open-saas-base` |
+| `zyailive-2026-saas-base-article` | `n/a (article)` | product local capture only | `https://x.com/zyailive/status/2058790586052903250` | same research note; local text in `open-saas-base/references/zyailive-2026-saas-base-article.md` |
+
+Notes:
+
+- `get-saas` should be mirrored before deep parity work so source research can be path-anchored.
+- The X article is not a git repo; keep the local markdown capture as the durable research input.
+
 ## 3. Key source entrypoints for the main active references
 
 ### `gstack`
@@ -310,7 +323,7 @@ Absolute path rule:
 
 ## 4. Current gap status
 
-当前 Beacon 高优先级研究里显式点名的开源参考项目，已经全部有 `oss-sync` canonical mirrors。
+当前 Beacon 高优先级研究里大部分开源参考已有 `oss-sync` canonical mirrors；`get-saas` 已于 2026-07-21 mirror 到 `saas/templates/get-saas`（见 §2.1）。
 
 补充说明：
 

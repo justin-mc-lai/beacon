@@ -69,19 +69,49 @@ DOMAIN_FSM_TRUTH_REF = "skills/beacon/references/domain-fsm-truth-checklist.md"
 
 PUBLIC_CLI = "beacon goal run"
 PUBLIC_ALIAS = "beacon run"
-SUPPORT_LOOP = "beacon-loop-goal"
+SUPPORT_LOOP = "beacon-goal"  # loop-goal is mode:loop-goal inside beacon-goal (1+6 merge)
 
 WorktreeMode = Literal["single_worktree", "main_star_satellite_pool"]
 
 PROGRESSIVE_SKILLS: dict[str, list[str]] = {
-    "discover": [SUPPORT_LOOP],  # support only
-    "plan": ["beacon-pln-program", "beacon-pln-program-auto", "beacon-pln-program-interactive"],
-    "truth": ["beacon-gen-truth", "beacon-gen-change"],
-    "design": ["beacon-gen-design", "beacon-gen-design-system", "beacon-gen-design-polish"],
-    "implement": ["beacon-gen-implement"],
-    "qa": ["beacon-eval-qa", "beacon-eval-qa-deep"],
-    "release": ["beacon-eval-release"],
-    "goal": [PUBLIC_ENTRY],  # facade always-on surface
+    # After 1+6 merge: only public cores + in-package mode tokens (not separate skill dirs).
+    "discover": [PUBLIC_ENTRY],
+    "plan": [
+        "beacon-plan",
+        "mode:pln-program",
+        "mode:pln-program-auto",
+        "mode:pln-program-interactive",
+        "mode:pln-review",
+        "mode:pln-friction",
+        "mode:pln-brainstorm",
+        "mode:pln-source",
+    ],
+    "truth": [
+        "beacon-truth",
+        "mode:gen-truth",
+        "mode:gen-truth-init",
+        "mode:gen-change",
+        "mode:gen-refreeze",
+    ],
+    "design": [
+        "beacon-design",
+        "mode:gen-design",
+        "mode:gen-design-init",
+        "mode:gen-design-system",
+        "mode:gen-design-explore",
+        "mode:gen-design-polish",
+        "mode:gen-prototype",
+    ],
+    "implement": ["beacon-implement", "mode:gen-implement"],
+    "qa": [
+        "beacon-qa",
+        "mode:eval-qa",
+        "mode:eval-qa-deep",
+        "mode:eval-real-project",
+        "mode:eval-agent",
+    ],
+    "release": ["beacon-release", "mode:eval-release"],
+    "goal": [PUBLIC_ENTRY, "mode:loop-goal"],
 }
 
 
@@ -184,7 +214,7 @@ def public_entry_contract() -> dict[str, Any]:
         "public_primary": PUBLIC_ENTRY,
         "public_cli": PUBLIC_CLI,
         "public_alias": PUBLIC_ALIAS,
-        "support_only": [SUPPORT_LOOP],
+        "support_only": [],  # loop-goal merged into goal core
         "forbidden_user_sequence": [f"{SUPPORT_LOOP} then {PUBLIC_ENTRY}"],
         "single_entry": True,
         "dual_public_orchestration": False,
@@ -478,6 +508,20 @@ def create_goal_run(
     # P0: hoist plan_artifact; P1: host-subagent gate (no auto-spawn when off)
     _plan_item = next((s for s in stages if isinstance(s, dict) and s.get("stage") == "plan"), {})
     _plan_art = _plan_item.get("plan_artifact") if isinstance(_plan_item, dict) else None
+    # Re-build plan artifact with lakes so journey seeds attach to multi-lake goals
+    try:
+        from beacon.utils.plan_artifact import build_plan_artifact as _build_pa
+        from beacon.utils.plan_subintent import detect_plan_subintent as _det_psi
+
+        _det = _det_psi(utterance)
+        _plan_art = _build_pa(utterance, subintent_payload=_det, lakes=list(lakes or []))
+        if isinstance(_plan_item, dict):
+            _plan_item["plan_artifact"] = _plan_art
+            if isinstance(_plan_item.get("plan_subintent"), dict):
+                _plan_item["plan_subintent"]["plan_artifact"] = _plan_art
+    except Exception:
+        pass
+
     if not isinstance(_plan_art, dict):
         _ps = _plan_item.get("plan_subintent") if isinstance(_plan_item, dict) else None
         _plan_art = (_ps or {}).get("plan_artifact") if isinstance(_ps, dict) else {}
@@ -536,6 +580,9 @@ def create_goal_run(
         },
         "release_human_gate": True,
         "plan_artifact": _plan_art,
+        "intent_decomposition": (_plan_art.get("intent_decomposition") if isinstance(_plan_art, dict) else {}),
+        "journeys": (list(_plan_art.get("journeys") or []) if isinstance(_plan_art, dict) else []),
+
         "host_subagent": _host_gate,
         "stage_trace": {
             "schema": "goal-stage-trace.v1",
@@ -1138,9 +1185,28 @@ def run_goal_facade(
     first = str(payload.get("current_stage") or "plan")
     payload = load_stage_skills(project_root, payload["run_id"], first)
     if auto_tick:
-        # advance through plan→truth record only; never self-claim qa/release
+        # advance plan only when journey decomposition allows; never skip ocean freeze;
+        # never self-claim qa/release
         for _ in range(2):
+            cur = str(payload.get("current_stage") or "")
+            if cur == "plan":
+                art = payload.get("plan_artifact") if isinstance(payload.get("plan_artifact"), dict) else {}
+                hint = plan_to_truth_gate(art if art else None)
+                payload["plan_to_truth_hint"] = hint
+                if hint.get("blocks_auto_tick_past_plan") or hint.get("blocked"):
+                    append_execution_log(
+                        project_root,
+                        payload["run_id"],
+                        stage="plan",
+                        event="auto_tick_blocked",
+                        summary=str(hint.get("reason_code") or "auto_tick_blocked")[:240],
+                    )
+                    payload["status"] = "running"
+                    payload["reason_code"] = str(hint.get("reason_code") or "plan_journey_decomposition_incomplete")
+                    payload = _save(project_root, payload)
+                    break
             payload = tick_goal_run(project_root, payload["run_id"], note="auto_tick_facade")
+            payload = load_goal_run(project_root, payload["run_id"])
     payload["longrun"] = False
     payload["longrun_source"] = longrun_source
     payload["driver"] = {"state": "idle", "longrun": False}

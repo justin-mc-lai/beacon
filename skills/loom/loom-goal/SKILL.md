@@ -1,37 +1,83 @@
 ---
 name: loom-goal
 description: >
-  Loom 公共 goal 入口（与 beacon-goal 同义 1+6）。后端优先 Rust CLI loom/beacon-v2。
-  无版本：外项目 v0.0.1；双轴 runtime≠project_docs。hotfix 主线规则同 beacon-goal。
+  Public goal harness (1+6 core). Long-run delivery facade: plan→truth→design?→implement→qa→release. Triggers: 长程, goal run, 全流程, supervise, driver, multi-stage. Mode loop-goal under references/modes/. Not a substitute for single-surface plan/truth/implement alone when user only wants that step.
 metadata:
+  version: "v1.6.9"
+  brand: Loom
   public_surface: true
   public_id: "goal"
-  brand: loom
-  version: "v2.0.0"
+  scheme: "A-1plus6-merged"
+  progressive_map: skills/beacon/references/public-surface-progressive-map.v1.json
   dual_install_with: beacon-goal
+  longrun: true
 ---
 
 # loom-goal
 
-与 **`$beacon-goal`** 同一交付哲学；品牌 Loom / v2。
+**Public surface**: `goal` (Scheme A — only 1+6 host-visible cores)  
+**Brand**: loom  
+**Capability home**: this package (`references/modes/` + nested refs). No separate fine-grained skill install required.
 
-```bash
-# 文档与合同线
-beacon goal run "<目标>" -p . -v auto
-# 或安装后的 loom CLI 能力面（Rust）
+## HARD GATE
+
+Orchestrate pipeline only. Complete needs verifier evidence. Release always human gate. Longrun/supervise only on goal.
+
+Shared preamble:
+
+1. Lake vs sea — boil lakes; split/defer seas.
+2. Search before invent — truth, source, evidence, memory first.
+3. User sovereignty on scope and freeze.
+4. No fake delivery (placeholder, docs-only, zero assertions).
+5. Harness boundaries — planner ≠ implement; generator ≠ self-certify; evaluator ≠ rewrite truth.
+
+## Mandatory progressive load (do not skip)
+
+1. Select **exactly one** primary `mode_id` from the table (use subintent/runtime when available).
+2. **Read the mode file completely** before acting.
+3. Open nested `references/<mode>/…` only when the mode file links them.
+4. Emit the mode output contract + `mode_id` + `recommended_next_harness`.
+5. Stop at harness boundary; route to another public core instead of stretching this one.
+
+| mode_id | Load file | Purpose |
+|---------|-----------|---------|
+| `loop-goal` | `references/modes/loop-goal.md` | cross-harness loop orchestration |
+
+Index: `references/modes/INDEX.md`
+
+## Workflow
+
+1. Classify request → primary mode.
+2. Read mode file + required nested references.
+3. Produce artifacts for that mode only.
+4. Recommend next public harness (`goal` pipeline order when long-run).
+5. Never claim completion of another harness's job.
+
+## Goal pipeline
+
+```text
+plan → truth(freeze) → design? → implement → qa → release
 ```
 
-## 两场景（同 beacon）
+- Load `references/modes/loop-goal.md` when cross-harness sequencing is required.
+- Self-heal pre/mid/post from package map `skills/beacon/references/public-surface-progressive-map.v1.json`.
+- Forbidden user sequence: treating loop-goal as a separate public skill (merged into this core).
 
-1. **正常**：admit leaf worktree  
-2. **生产热修**：`--mode hotfix` + `hotfix/*` 分支登记，不进 feature 开发轨  
+## Output contract (minimum)
 
-## HARD
+- `mode_id` (required)
+- `public_id`: `goal`
+- `evidence_refs` (paths/commands used)
+- `recommended_next_harness` one of: goal|plan|truth|design|implement|qa|release|stop
+- Mode-specific fields (plan_artifact, findings, truth package paths, QA scorecard, release brief, …) per mode file
 
-- 不 auto-release；不自证 complete  
-- 无版本：planning 优先否则 patch+1；热修钉发布线  
-- 细节：`skills/beacon/references/{version-default,hotfix-prod-incident,git-worktree-execution-flow}.md`
+## Evals
 
-## Progressive
+Smoke + contract prompts: `evals/evals.json`  
+Examples (when present): `references/examples/`
 
-内部 progressive 加载与 `beacon-goal` 同构；细节见 `skills/beacon/references/public-surface-progressive-map.v1.json`。
+## Shared package refs
+
+- `skills/beacon/references/public-surface-1plus6.md`
+- `skills/beacon/references/public-surface-progressive-map.v1.json`
+- `skills/beacon/references/git-worktree-execution-flow.md`

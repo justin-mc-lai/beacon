@@ -17,8 +17,13 @@ SCHEMA = "plan_artifact.v1"
 _HIGH_RISK = (
     "支付",
     "payment",
+    "billing",
+    "stripe",
+    "订阅",
     "权限",
     "auth",
+    "认证",
+    "登录",
     "安全",
     "security",
     "状态机",
@@ -30,20 +35,24 @@ _HIGH_RISK = (
     "迁移",
     "migration",
     "合规",
+    "插件",
+    "plugin",
+    "webhook",
 )
 
 
-def _infer_deep_want(utterance: str, subintent: str) -> str:
-    """Lightweight deep-want heuristic (not a substitute for agent analysis)."""
+def _infer_deep_want(utterance: str, subintent: str, *, decomposition: dict | None = None) -> str:
+    """Deep-want heuristic enriched by intent_decomposition when present."""
     text = str(utterance or "").strip()
     if not text:
         return "未提供明确诉求；需澄清：成功时看得见什么、最怕什么失败。"
-    # Surface ask compressed into deep-want scaffold by track
+    if isinstance(decomposition, dict) and decomposition.get("deep_want"):
+        return str(decomposition["deep_want"])
     scaffolds = {
         "review": f"深层想要：在动手前确认方案可落地、边界清晰、状态/风险可审查。表层：{text[:200]}",
         "brainstorm": f"深层想要：先想清楚问题与选项，避免过早冻需求。表层：{text[:200]}",
         "source": f"深层想要：以仓库真实代码/接口为锚做需求调研，避免空中楼阁。表层：{text[:200]}",
-        "program": f"深层想要：把大海拆成可交付的湖，控制范围与顺序。表层：{text[:200]}",
+        "program": f"深层想要：把大海拆成可交付的湖与用户旅程，控制范围与顺序后再 freeze。表层：{text[:200]}",
         "friction": f"深层想要：扫清阻塞/摩擦，恢复可前进状态。表层：{text[:200]}",
         "default": f"深层想要：推进可验证的下一步计划（尚待澄清约束与成功标准）。表层：{text[:200]}",
     }
@@ -129,6 +138,7 @@ def build_plan_artifact(
     *,
     subintent_payload: dict[str, Any] | None = None,
     evidence_anchors: list[str] | None = None,
+    lakes: list[str] | None = None,
 ) -> dict[str, Any]:
     """Build plan_artifact.v1 from utterance + optional subintent detection."""
     if isinstance(subintent_payload, dict):
@@ -143,9 +153,25 @@ def build_plan_artifact(
     if sub == "source" and not anchors:
         anchors = ["(required) path/symbol from repo — agent must fill during source research"]
 
-    deep_want = _infer_deep_want(utterance, sub)
+    from beacon.utils.intent_decomposition import decompose_product_intent
+
+    decomposition = decompose_product_intent(
+        utterance, lakes=lakes, subintent=sub
+    )
+    if decomposition.get("high_risk_domains"):
+        high_risk = True
+    deep_want = _infer_deep_want(utterance, sub, decomposition=decomposition)
     options = _default_options(sub)
     rec = _recommended_next(sub, high_risk=high_risk)
+    # Ocean / multi-journey: do not recommend auto truth skip
+    tr = decomposition.get("truth_readiness") if isinstance(decomposition.get("truth_readiness"), dict) else {}
+    if tr.get("blocks_auto_tick_past_plan"):
+        rec = {
+            "action": "decompose_and_freeze_journeys",
+            "next_stage_hint": "truth",
+            "message": str(tr.get("user_facing") or "先完成用户旅程拆解与冻结，再 auto 推进。"),
+            "blocks_auto_tick_past_plan": True,
+        }
 
     completeness = {
         "surface_ask": bool(str(utterance or "").strip()),
@@ -178,6 +204,9 @@ def build_plan_artifact(
         "recommended_next": rec,
         "evidence_anchors": anchors,
         "high_risk": high_risk,
+        "intent_decomposition": decomposition,
+        "journeys": list(decomposition.get("journeys") or []),
+        "truth_readiness": decomposition.get("truth_readiness") or {},
         "plan_subintent": {
             "subintent": sub,
             "reason_code": det.get("reason_code"),
@@ -195,34 +224,64 @@ def build_plan_artifact(
 
 
 def plan_to_truth_gate(plan_artifact: dict[str, Any] | None) -> dict[str, Any]:
-    """P1: hint before plan → truth. Soft block only when high_risk and incomplete deep_want."""
+    """Gate before plan → truth (soft for humans; hard flag for auto_tick only).
+
+    - ``blocked`` stays soft (False) so manual tick/agent authoring is not hard-stopped.
+    - ``blocks_auto_tick_past_plan`` is the hard signal for ``--auto-tick`` facade.
+    """
     art = plan_artifact if isinstance(plan_artifact, dict) else {}
     if not art:
         return {
             "status": "warn",
             "blocked": False,
             "reason_code": "plan_artifact_missing",
-            "user_facing": "尚未形成 plan 产出；建议先澄清深层目标再冻需求。",
-            "recommended_action": "stay_plan_or_fill_artifact",
+            "user_facing": "缺少 plan_artifact，建议重建 plan 后再 truth。",
+            "recommended_action": "rebuild_plan_artifact",
+            "blocks_auto_tick_past_plan": True,
+            "missing": ["plan_artifact"],
         }
-    high = bool(art.get("high_risk"))
     deep_ok = bool((art.get("completeness") or {}).get("deep_want"))
+    high = bool(art.get("high_risk"))
+    tr = art.get("truth_readiness") if isinstance(art.get("truth_readiness"), dict) else {}
+    if not tr and isinstance(art.get("intent_decomposition"), dict):
+        tr = (art.get("intent_decomposition") or {}).get("truth_readiness") or {}
+    missing = list(tr.get("missing") or [])
+    blocks_auto = bool(tr.get("blocks_auto_tick_past_plan")) or bool(
+        (art.get("recommended_next") or {}).get("blocks_auto_tick_past_plan")
+    )
     if high and not deep_ok:
         return {
             "status": "warn",
-            "blocked": False,  # soft — do not hard-stop tick; surface hint
+            "blocked": False,
             "reason_code": "plan_deep_want_incomplete_high_risk",
             "user_facing": "高风险诉求但深层目标仍模糊；进入 truth 前建议补齐 deep_want / 先 review。",
-            "recommended_action": "enrich_plan_or_run_review",
+            "recommended_action": "enrich_deep_want_or_review",
+            "blocks_auto_tick_past_plan": True,
+            "missing": missing or ["deep_want"],
         }
-    if not art.get("structurally_complete"):
+    if not art.get("structurally_complete", True) and not deep_ok:
         return {
             "status": "warn",
             "blocked": False,
             "reason_code": "plan_artifact_incomplete",
-            "user_facing": "plan 产出不完整；可继续，但 freeze 前请补齐深层目标与选项。",
+            "user_facing": "plan_artifact 结构不齐，建议补齐后再 truth。",
             "recommended_action": "enrich_plan_artifact",
-            "missing_fields": art.get("missing_fields") or [],
+            "blocks_auto_tick_past_plan": True,
+            "missing": missing or list(art.get("missing_fields") or []),
+        }
+    if blocks_auto or missing:
+        return {
+            "status": "ok",
+            "blocked": False,
+            "reason_code": "plan_journey_decomposition_incomplete",
+            "user_facing": str(
+                tr.get("user_facing")
+                or "已识别海级/多旅程诉求，但用户旅程与 AC 尚未冻结；禁止 auto_tick 跳过 truth。"
+            ),
+            "recommended_action": "freeze_user_journeys_then_truth",
+            "blocks_auto_tick_past_plan": True,
+            "missing": missing,
+            "journeys": list(art.get("journeys") or []),
         }
     return {
         "status": "ok",
@@ -230,4 +289,8 @@ def plan_to_truth_gate(plan_artifact: dict[str, Any] | None) -> dict[str, Any]:
         "reason_code": "plan_to_truth_ok",
         "user_facing": "plan 产出结构齐全，可进入 truth。",
         "recommended_action": "proceed_truth",
+        "blocks_auto_tick_past_plan": False,
+        "missing": [],
     }
+
+

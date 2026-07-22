@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "program_slug": "beacon-goal-closed-loop-parallel-v169",
+  "version": "v1.6.9",
+  "brand": "Beacon",
+  "scope_mode": "full_parity",
+  "user_decisions": {
+    "UD-CL-001": "goal_lifecycle_primary_not_multi_version_ops",
+    "UD-CL-002": "fanout_only_ready_set_from_depends_on",
+    "UD-CL-003": "merge_satellites_to_main_star_only",
+    "UD-CL-004": "lake_and_program_done_when_explicit",
+    "UD-CL-005": "subagent_never_completes_goalrun"
+  },
+  "lakes": [
+    {
+      "slug": "beacon-goal-graph-driven-parallel-plan-v169",
+      "depends_on": [],
+      "role": "parallel_plan.v2 from feature-graph"
+    },
+    {
+      "slug": "beacon-goal-subagent-ready-set-scheduler-v169",
+      "depends_on": ["beacon-goal-graph-driven-parallel-plan-v169"],
+      "role": "ready_set scheduler + completed_lakes ledger"
+    },
+    {
+      "slug": "beacon-goal-satellite-merge-to-star-v169",
+      "depends_on": ["beacon-goal-subagent-ready-set-scheduler-v169"],
+      "role": "git merge to main_star + conflict blocked"
+    },
+    {
+      "slug": "beacon-goal-lake-done-when-v169",
+      "depends_on": ["beacon-goal-satellite-merge-to-star-v169"],
+      "role": "lake/wave/program boil-dry done_when"
+    },
+    {
+      "slug": "beacon-plan-goal-deep-integration-v169",
+      "depends_on": ["beacon-goal-graph-driven-parallel-plan-v169"],
+      "role": "existing plan artifact into goal stages"
+    },
+    {
+      "slug": "beacon-goal-implement-admission-hard-gate-v169",
+      "depends_on": [],
+      "role": "existing leaf admit hard gate"
+    }
+  ],
+  "topology_order": [
+    "beacon-goal-implement-admission-hard-gate-v169",
+    "beacon-goal-graph-driven-parallel-plan-v169",
+    "beacon-plan-goal-deep-integration-v169",
+    "beacon-goal-subagent-ready-set-scheduler-v169",
+    "beacon-goal-satellite-merge-to-star-v169",
+    "beacon-goal-lake-done-when-v169"
+  ]
+}

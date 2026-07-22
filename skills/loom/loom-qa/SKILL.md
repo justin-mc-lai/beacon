@@ -1,56 +1,76 @@
 ---
 name: loom-qa
 description: >
-  loom public harness surface for `qa`.
-  Progressive-loads internal skills without dropping capability.
-  Dual-install; does not replace the other brand. Longrun only on goal.
+  Public qa harness (1+6 core). QA evidence, deep QA, real-project eval, agent eval, acceptance. Triggers: 验收, QA, evidence, deep qa, real project. Modes under references/modes/. Evaluator only: no truth rewrite as verdict, no silent implement.
 metadata:
   version: "v1.6.9"
   brand: Loom
   public_surface: true
   public_id: "qa"
-  harness: "qa"
+  scheme: "A-1plus6-merged"
   progressive_map: skills/beacon/references/public-surface-progressive-map.v1.json
-  progressive_loads: ["loom-eval-qa", "loom-eval-qa-deep", "loom-eval-real-project", "loom-eval-agent"]
   dual_install_with: beacon-qa
   longrun: false
 ---
 
 # loom-qa
 
-**公开面（Scheme A）**：`qa`  
-**渐进加载（能力不降级）**：`loom-eval-qa`, `loom-eval-qa-deep`, `loom-eval-real-project`, `loom-eval-agent`
+**Public surface**: `qa` (Scheme A — only 1+6 host-visible cores)  
+**Brand**: loom  
+**Capability home**: this package (`references/modes/` + nested refs). No separate fine-grained skill install required.
 
-本 skill **不**负责多小时 longrun；长程只用 `$beacon-goal` / `$loom-goal`。
+## HARD GATE
 
-## When to use
+Evaluator only. Forbidden: rewrite truth to pass, silent implement, release verdict.
 
-- 需要 **qa** 场景的稳定入口（host-visible 白名单内）
-- 细粒度旧名（如 gen-implement）仍可用作兼容，但默认安装不再暴露
+Shared preamble:
 
-## Progressive load
+1. Lake vs sea — boil lakes; split/defer seas.
+2. Search before invent — truth, source, evidence, memory first.
+3. User sovereignty on scope and freeze.
+4. No fake delivery (placeholder, docs-only, zero assertions).
+5. Harness boundaries — planner ≠ implement; generator ≠ self-certify; evaluator ≠ rewrite truth.
 
-按 `public-surface-progressive-map.v1.json` 加载内部 skill；**禁止**为了合并而跳过原有 HARD GATE。
+## Mandatory progressive load (do not skip)
 
-| Internal skill | Role |
-|----------------|------|
-| `loom-eval-qa` | progressive |
-| `loom-eval-qa-deep` | progressive |
-| `loom-eval-real-project` | progressive |
-| `loom-eval-agent` | progressive |
+1. Select **exactly one** primary `mode_id` from the table (use subintent/runtime when available).
+2. **Read the mode file completely** before acting.
+3. Open nested `references/<mode>/…` only when the mode file links them.
+4. Emit the mode output contract + `mode_id` + `recommended_next_harness`.
+5. Stop at harness boundary; route to another public core instead of stretching this one.
 
-## Boundary
+| mode_id | Load file | Purpose |
+|---------|-----------|---------|
+| `eval-qa` | `references/modes/eval-qa.md` | standard QA |
+| `eval-qa-deep` | `references/modes/eval-qa-deep.md` | deep QA |
+| `eval-real-project` | `references/modes/eval-real-project.md` | real-project eval |
+| `eval-agent` | `references/modes/eval-agent.md` | agent eval |
 
-- 不成为第二公共 goal 流水线
-- harness HARD GATE 继承被加载的内部 skill
-- gov/doctor 不由用户背名；goal 自愈带自动调度
+Index: `references/modes/INDEX.md`
 
-## Examples
+## Workflow
 
-见 `skills/beacon/examples/surface-qa-30s.md`（若存在）与 `goal-one-shot-30s.md`。
+1. Classify request → primary mode.
+2. Read mode file + required nested references.
+3. Produce artifacts for that mode only.
+4. Recommend next public harness (`goal` pipeline order when long-run).
+5. Never claim completion of another harness's job.
 
-## Dual brand
+## Output contract (minimum)
 
-| Beacon | Loom |
-|--------|------|
-| `beacon-qa` | `loom-qa` |
+- `mode_id` (required)
+- `public_id`: `qa`
+- `evidence_refs` (paths/commands used)
+- `recommended_next_harness` one of: goal|plan|truth|design|implement|qa|release|stop
+- Mode-specific fields (plan_artifact, findings, truth package paths, QA scorecard, release brief, …) per mode file
+
+## Evals
+
+Smoke + contract prompts: `evals/evals.json`  
+Examples (when present): `references/examples/`
+
+## Shared package refs
+
+- `skills/beacon/references/public-surface-1plus6.md`
+- `skills/beacon/references/public-surface-progressive-map.v1.json`
+- `skills/beacon/references/git-worktree-execution-flow.md`

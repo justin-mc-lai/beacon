@@ -63,6 +63,19 @@ plan → truth(freeze) → design? → implement → qa → release
 
 Machine map: `skills/beacon/references/public-surface-progressive-map.v1.json`
 
-- Public aggregate shells load first, then internal fine-grained skills.
+**1+6 merge (2026-07-21):** fine-grained `pln-*` / `gen-*` / `eval-*` / `loop-goal` skill **packages** were archived to `skills/_archive/pre-1plus6-merge-*`. Capability now lives **inside** each public core as:
+
+```text
+skills/beacon/beacon-<surface>/
+  SKILL.md                 # thin workflow + HARD GATE
+  agents/openai.yaml
+  references/modes/*.md    # former skill bodies
+  references/<mode>/       # former references/*
+  references/examples/     # 30s examples
+  evals/evals.json         # smoke eval prompts
+```
+
+- Public aggregate shells load first; agent reads **only the mode file** required.
 - Goal attaches `self_heal` pre/mid/post (gov auto; users do not memorize gov skill names).
-- Default install whitelist = host_visible_whitelist in the map (`INSTALL_ALL=1` to install everything).
+- Default install whitelist = host_visible_whitelist in the map (`INSTALL_ALL=1` still installs gov/*).
+- Legacy skill ids (`beacon-pln-review`, …) resolve via `legacy_skill_aliases` in the map → `{public_skill, mode}`.
