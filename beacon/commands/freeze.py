@@ -239,10 +239,14 @@ def _freeze_impl(feature: str, project: Optional[str], version: str, json_output
         "truth_review_gate": truth_review,
         "tasks_sync": tasks_sync,
     }
-    # v1.6.10 lifecycle agent_trace
+    # v1.6.10 lifecycle agent_trace (governed fail-closed by default)
     try:
-        from beacon.utils.agent_trace import record_lifecycle_stage_trace
+        from beacon.utils.agent_trace import (
+            lifecycle_trace_fail_closed_enabled,
+            record_lifecycle_stage_trace,
+        )
 
+        _fc = lifecycle_trace_fail_closed_enabled()
         payload["agent_trace"] = record_lifecycle_stage_trace(
             project_root,
             harness="freeze",
@@ -257,10 +261,23 @@ def _freeze_impl(feature: str, project: Optional[str], version: str, json_output
                 "baseline_hash": payload.get("baseline_hash"),
                 "version": resolved_version,
             },
-            fail_closed=False,
+            fail_closed=_fc,
         )
     except Exception as _trc_exc:  # noqa: BLE001
         payload["agent_trace"] = {"status": "blocked", "reason_code": "agent_trace_append_failed", "error": str(_trc_exc)}
+
+    _at = payload.get("agent_trace") if isinstance(payload.get("agent_trace"), dict) else {}
+    if str(_at.get("status") or "") != "pass":
+        from beacon.utils.agent_trace import lifecycle_trace_fail_closed_enabled
+
+        if lifecycle_trace_fail_closed_enabled():
+            payload["status"] = "blocked"
+            payload["reason_code"] = str(_at.get("reason_code") or "agent_trace_missing")
+            if json_output:
+                typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+            else:
+                typer.echo(f"Beacon freeze blocked: agent_trace fail-closed ({payload['reason_code']})")
+            return 2
 
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))

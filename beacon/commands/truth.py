@@ -420,9 +420,13 @@ def review_cmd(
 
     # v1.6.10 lifecycle agent_trace (path refs only; no full chat)
     try:
-        from beacon.utils.agent_trace import record_lifecycle_stage_trace
+        from beacon.utils.agent_trace import (
+            lifecycle_trace_fail_closed_enabled,
+            record_lifecycle_stage_trace,
+        )
 
         ok_trace = bool(payload.get("pass") or payload.get("review_gate_pass"))
+        _fc = lifecycle_trace_fail_closed_enabled()
         payload["agent_trace"] = record_lifecycle_stage_trace(
             project_root,
             harness="truth",
@@ -436,7 +440,7 @@ def review_cmd(
                 "report_path": payload.get("report_path"),
                 "version": resolved,
             },
-            fail_closed=False,
+            fail_closed=_fc,
         )
     except Exception as _trc_exc:  # noqa: BLE001
         payload["agent_trace"] = {"status": "blocked", "reason_code": "agent_trace_append_failed", "error": str(_trc_exc)}
@@ -465,6 +469,18 @@ def review_cmd(
             raise typer.Exit(2)
     if not bool(payload.get("pass") or payload.get("review_gate_pass")):
         raise typer.Exit(2)
+    # governed write: block when fail-closed and agent_trace did not land
+    _at = payload.get("agent_trace") if isinstance(payload.get("agent_trace"), dict) else {}
+    if str(_at.get("status") or "") != "pass":
+        from beacon.utils.agent_trace import lifecycle_trace_fail_closed_enabled
+
+        if lifecycle_trace_fail_closed_enabled():
+            if not json_output:
+                typer.echo(
+                    f"✗ agent_trace fail-closed: {_at.get('reason_code') or 'agent_trace_missing'}",
+                    err=True,
+                )
+            raise typer.Exit(2)
 
 
 @app.command("prose-check")

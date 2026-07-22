@@ -3,7 +3,7 @@ name: loom-plan
 description: >
   Public plan harness (1+6 core). Planning, multi-angle review, brainstorm before freeze, source-anchored research (对着代码/源码/别瞎编), program/sea-to-lake parity, friction capture. Triggers: 规划, 审查, review, brainstorm, 先想清楚, 源码, 代码, 拆海, program, parity, 状态机. Modes under references/modes/. Not longrun (use goal). No implement/truth freeze/QA verdict.
 metadata:
-  version: "v1.6.9"
+  version: "v1.6.10"
   brand: Loom
   public_surface: true
   public_id: "plan"

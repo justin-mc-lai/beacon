@@ -3,7 +3,7 @@ name: beacon-design
 description: >
   Public design harness (1+6 core). Design system, explore, polish, prototype, UX delivery. Triggers: 设计, design system, prototype, polish, UI/UX. Modes under references/modes/. No silent truth rewrite or implement.
 metadata:
-  version: "v1.6.9"
+  version: "v1.6.10"
   brand: Beacon
   public_surface: true
   public_id: "design"

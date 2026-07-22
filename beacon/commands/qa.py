@@ -2390,6 +2390,9 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
 
         _feat = str(feature or qa_status.get("feature") or "").strip()
         _rid = str(qa_status.get("run_id") or payload.get("run_id") or "").strip() or None
+        from beacon.utils.agent_trace import lifecycle_trace_fail_closed_enabled
+
+        _fc = lifecycle_trace_fail_closed_enabled()
         payload["agent_trace"] = record_lifecycle_stage_trace(
             project_root,
             harness="qa",
@@ -2404,10 +2407,22 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
                 "evidence_done": bool(qa_status.get("evidence_done")),
                 "version": version,
             },
-            fail_closed=False,
+            fail_closed=_fc,
         )
+        if _fc and str((payload.get("agent_trace") or {}).get("status") or "") != "pass":
+            final_status = "failed"
+            payload["status"] = "failed"
+            payload["reason_code"] = str((payload.get("agent_trace") or {}).get("reason_code") or "agent_trace_missing")
     except Exception as _trc_exc:  # noqa: BLE001
         payload["agent_trace"] = {"status": "blocked", "reason_code": "agent_trace_append_failed", "error": str(_trc_exc)}
+        try:
+            from beacon.utils.agent_trace import lifecycle_trace_fail_closed_enabled
+            if lifecycle_trace_fail_closed_enabled():
+                final_status = "failed"
+                payload["status"] = "failed"
+                payload["reason_code"] = "agent_trace_append_failed"
+        except Exception:
+            pass
 
     exit_code = 0 if final_status == "passed" else command_exit
     if exit_code == 0 and final_status != "passed":

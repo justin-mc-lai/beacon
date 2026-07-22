@@ -30,6 +30,7 @@ from beacon.utils.acceptance_kit import build_acceptance_kit_projection
 from beacon.utils.semantic_runtime import evaluate_semantic_contract
 from beacon.utils.story_state import feature_slug
 from beacon.utils.truth_review_gate import evaluate_release_truth_materials_gate, truth_review_gate_supported
+from beacon.utils.agent_trace import agent_trace_coverage_signal
 from beacon.utils.technical_review_contract import build_technical_review_gate_payload, load_technical_review_state
 from beacon.utils.test_contract_governance import build_test_contract_gate_payload
 from beacon.utils.truth_map import resolve_version_governance
@@ -730,6 +731,26 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         if feature and truth_review_gate_supported(resolved_version)
         else {"required": False, "blocked": False, "pass": True, "skipped": True}
     )
+    # Soft signal (v1.6.10): agent_trace coverage advisory — hard block deferred (INT-TRC-08)
+    try:
+        agent_trace_coverage = agent_trace_coverage_signal(project_root)
+    except Exception as _atc_exc:  # noqa: BLE001
+        agent_trace_coverage = {
+            "signal": "agent_trace_coverage",
+            "status": "missing",
+            "reason_code": "agent_trace_coverage_error",
+            "findings": [{"message": str(_atc_exc)}],
+        }
+    agent_trace_soft = {
+        "schema": "release-agent-trace-soft.v1",
+        "required": False,
+        "hard_gate": False,
+        "status": str(agent_trace_coverage.get("status") or "missing"),
+        "pass": str(agent_trace_coverage.get("status") or "") == "pass",
+        "reason_code": str(agent_trace_coverage.get("reason_code") or ""),
+        "signal": agent_trace_coverage,
+        "note": "soft advisory only; missing trace does not hard-block release (INT-TRC-08 deferred)",
+    }
     deep_release_supplement = (
         build_deep_release_supplement_gate(project_root, version=resolved_version, feature=feature)
         if feature and deep_loop_supported(resolved_version)
@@ -940,6 +961,10 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         runtime_version=resolved_runtime,
     ):
         release_ready = release_ready and str(acceptance_transaction.get("status") or "warn").strip().lower() == "pass"
+    # Soft: surface missing agent_trace without hard block
+    if str(agent_trace_soft.get("status") or "") != "pass":
+        # keep release_ready unchanged; annotate only
+        pass
     if feature and requirement_completeness_gate:
         release_ready = release_ready and str(requirement_completeness_gate.get("status") or "pass") in {"pass", "pass_with_downgrade"}
     release_ready = release_ready and version_surface_governance_pass and deep_release_supplement_pass and test_contract_governance_pass and not bool(reconciliation_gate.get("required"))
@@ -1235,7 +1260,9 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             "contract_json_path": str(technical_review_gate.get("contract_json_path") or ""),
             "contract_markdown_path": str(technical_review_gate.get("contract_markdown_path") or ""),
         },
-        "truth_materials_gate": truth_materials_gate if isinstance(truth_materials_gate, dict) else {},
+        "truth_materials_gate": truth_materials_gate,
+        "agent_trace_soft": agent_trace_soft,
+        "agent_trace_coverage": agent_trace_coverage,
         "deep_release_supplement": deep_release_supplement,
         "test_contract_governance": test_contract_governance,
         "reconciliation": reconciliation_gate if isinstance(reconciliation_gate, dict) else {},

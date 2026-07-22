@@ -3,7 +3,7 @@ name: loom-goal
 description: >
   Public goal harness (1+6 core). Long-run delivery facade: plan→truth→design?→implement→qa→release. Triggers: 长程, goal run, 全流程, supervise, driver, multi-stage. Mode loop-goal under references/modes/. Not a substitute for single-surface plan/truth/implement alone when user only wants that step.
 metadata:
-  version: "v1.6.9"
+  version: "v1.6.10"
   brand: Loom
   public_surface: true
   public_id: "goal"

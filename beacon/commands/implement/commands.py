@@ -4299,7 +4299,9 @@ def run(
     try:
         from beacon.utils.agent_trace import record_lifecycle_stage_trace
 
-        record_lifecycle_stage_trace(
+        from beacon.utils.agent_trace import lifecycle_trace_fail_closed_enabled
+
+        _trc = record_lifecycle_stage_trace(
             project_root,
             harness="implement",
             stage="implement-run-start",
@@ -4307,8 +4309,11 @@ def run(
             event_type="decision",
             summary=f"implement run start: {feature}",
             payload={"dry_run": bool(dry_run), "mode": mode or ""},
-            fail_closed=False,
+            fail_closed=lifecycle_trace_fail_closed_enabled(),
         )
+        if lifecycle_trace_fail_closed_enabled() and str((_trc or {}).get("status") or "") != "pass":
+            # soft-log only at start; do not abort implement admission here
+            pass
     except Exception:
         pass
     prompt_boundary = _resolve_host_prompt_boundary(

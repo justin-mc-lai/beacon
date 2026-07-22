@@ -8,6 +8,17 @@ from typing import Any
 
 from beacon.utils.runtime import now_iso
 from beacon.utils.workflow_memory import ensure_lifecycle_files, lifecycle_index_path
+import os
+
+
+def lifecycle_trace_fail_closed_enabled() -> bool:
+    """Governed stages fail when agent_trace append fails (default on).
+
+    Override with BEACON_AGENT_TRACE_FAIL_CLOSED=0|false|off for soft mode.
+    """
+    raw = str(os.environ.get("BEACON_AGENT_TRACE_FAIL_CLOSED", "1") or "1").strip().lower()
+    return raw not in {"0", "false", "no", "off", "soft"}
+
 
 SCHEMA_VERSION = "agent_trace.v1"
 

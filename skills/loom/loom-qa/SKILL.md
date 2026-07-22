@@ -3,7 +3,7 @@ name: loom-qa
 description: >
   Public qa harness (1+6 core). QA evidence, deep QA, real-project eval, agent eval, acceptance. Triggers: 验收, QA, evidence, deep qa, real project. Modes under references/modes/. Evaluator only: no truth rewrite as verdict, no silent implement.
 metadata:
-  version: "v1.6.9"
+  version: "v1.6.10"
   brand: Loom
   public_surface: true
   public_id: "qa"

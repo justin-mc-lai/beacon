@@ -3,7 +3,7 @@ name: beacon-truth
 description: >
   Public truth harness (1+6 core). Freeze/init feature package truth, change, refreeze, user-story/prd/test-case materials. Triggers: 冻需求, freeze, truth, change, refreeze, 写 truth. Modes under references/modes/. No implement or QA self-pass.
 metadata:
-  version: "v1.6.9"
+  version: "v1.6.10"
   brand: Beacon
   public_surface: true
   public_id: "truth"

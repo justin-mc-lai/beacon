@@ -33,8 +33,10 @@
 
 ## Status
 
-- truth: **frozen R3** (2026-07-22)
-- implement: open（truth review CLI / doctor / freeze precheck / humanizer resolve）
+- runtime / package / docs line: **v1.6.10** (current)
+- truth lakes: **frozen** — core R3 · gold R3 · humanizer R2 · **trace-lifecycle-binding R1**
+- implement / gates: **closed for v1.6.10 lakes** (TRG CLI · freeze precheck · humanizer resolve · lifecycle agent_trace hooks)
+- residual: stage trace fail-closed optional/env; release missing-trace soft signal (hard gate deferred INT-TRC-08)
 
 ## Locked decisions
 
