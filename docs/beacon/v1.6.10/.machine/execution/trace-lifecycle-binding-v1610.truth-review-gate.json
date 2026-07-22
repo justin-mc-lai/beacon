@@ -1,0 +1,191 @@
+{
+  "schema": "truth-review-gate.v1",
+  "schema_version": "1.0",
+  "feature": "trace-lifecycle-binding-v1610",
+  "version": "v1.6.10",
+  "pass": true,
+  "blocked": false,
+  "review_gate_pass": true,
+  "abc_pass": true,
+  "reason_code": "",
+  "domain_required": true,
+  "checks": {
+    "A_intent_coverage": {
+      "pass": true,
+      "check": "A",
+      "name": "intent_coverage",
+      "required": true,
+      "matrix_rows": 8,
+      "missing_must": [],
+      "reason": "",
+      "findings": [],
+      "matrix": [
+        {
+          "intent_id": "INT-TRC-01",
+          "source": "prompt/handoff",
+          "strength": "must",
+          "landing": "AC-TRC-001",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-TRC-02",
+          "source": "prompt/handoff",
+          "strength": "must",
+          "landing": "AC-TRC-002",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-TRC-03",
+          "source": "prompt/handoff",
+          "strength": "must",
+          "landing": "AC-TRC-003",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-TRC-04",
+          "source": "prompt/handoff",
+          "strength": "must",
+          "landing": "AC-TRC-004",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-TRC-05",
+          "source": "review/v1.6.6 parent",
+          "strength": "must",
+          "landing": "AC-TRC-005",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-TRC-06",
+          "source": "prompt",
+          "strength": "must",
+          "landing": "AC-TRC-006",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-TRC-07",
+          "source": "review",
+          "strength": "must",
+          "landing": "AC-TRC-007",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-TRC-08",
+          "source": "vision optional",
+          "strength": "should",
+          "landing": "Non-goal: hard release gate on missing trace 另湖",
+          "status": "deferred"
+        }
+      ]
+    },
+    "B_fsm_audit": {
+      "pass": true,
+      "check": "B",
+      "name": "fsm_audit",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "fsm": {
+        "transition_count": 7,
+        "from_states": [
+          "blocked_trace",
+          "event_appending",
+          "idle",
+          "indexed",
+          "stage_entered",
+          "stage_exited"
+        ],
+        "hanging_states": [],
+        "terminals": [
+          "coverage_pass"
+        ],
+        "illegal_present": true,
+        "five_tuple_present": true
+      }
+    },
+    "C_testability": {
+      "pass": true,
+      "check": "C",
+      "name": "testability",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "ac_count": 10,
+      "tc_count": 12,
+      "missing_ac": [],
+      "covered": {
+        "AC-TRC-001": [
+          "TC-TRC-001",
+          "TC-TRC-012"
+        ],
+        "AC-TRC-002": [
+          "TC-TRC-002"
+        ],
+        "AC-TRC-003": [
+          "TC-TRC-003"
+        ],
+        "AC-TRC-004": [
+          "TC-TRC-004"
+        ],
+        "AC-TRC-005": [
+          "TC-TRC-005",
+          "TC-TRC-006"
+        ],
+        "AC-TRC-006": [
+          "TC-TRC-007"
+        ],
+        "AC-TRC-007": [
+          "TC-TRC-008"
+        ],
+        "AC-TRC-008": [
+          "TC-TRC-009"
+        ],
+        "AC-TRC-009": [
+          "TC-TRC-010"
+        ],
+        "AC-TRC-010": [
+          "TC-TRC-011"
+        ]
+      }
+    },
+    "C_domain_exec_layer": {
+      "pass": true,
+      "check": "C_exec",
+      "name": "domain_exec_layer",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "exec_tc_count": 2,
+      "exec_tc_ids": [
+        "TC-TRC-009",
+        "TC-TRC-012"
+      ],
+      "domain_kind": "business"
+    },
+    "D_fill_depth": {
+      "pass": true,
+      "check": "D",
+      "name": "fill_depth",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "package_maturity": "unspecified",
+      "domain_kind": "business",
+      "business_domain": true
+    }
+  },
+  "findings": [],
+  "humanizer": {
+    "rule": "humanizer_only_after_abc_pass_before_freeze",
+    "abc_pass": true,
+    "allowed_now": true,
+    "fill_depth_pass": true,
+    "note": "Polish L0/narrative only after A/B/C; preserve_machine_fields=true; freeze needs D+exec too"
+  },
+  "evaluated_at": "2026-07-22T07:40:48.013301+00:00",
+  "paths": {
+    "truth": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md",
+    "tests": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/tests.md",
+    "report": "docs/beacon/v1.6.10/.machine/execution/trace-lifecycle-binding-v1610.truth-review-gate.json"
+  }
+}

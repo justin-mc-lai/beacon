@@ -701,10 +701,11 @@ def driver_run_once(
     summary = f"turn={turn_n} exit={exit_code} timeout={timed_out}"
 
     # Loom trace bundle: dual-channel agent_trace (path refs; no full chat)
+    # AC-TRC-005: do not silent-swallow append failures
     try:
         from beacon.utils.loom_trace import record_driver_turn_trace
 
-        record_driver_turn_trace(
+        _trace_out = record_driver_turn_trace(
             project_root,
             run_id,
             turn_n=turn_n,
@@ -712,8 +713,25 @@ def driver_run_once(
             exit_code=exit_code,
             summary=summary[:240],
         )
-    except Exception:  # noqa: BLE001
-        pass
+        state["last_agent_trace"] = {
+            "status": (_trace_out or {}).get("status"),
+            "run_id": run_id,
+            "turn_n": turn_n,
+            "trace_path": (_trace_out or {}).get("trace_path"),
+        }
+        if str((_trace_out or {}).get("status") or "") != "ok":
+            state["last_agent_trace_error"] = str((_trace_out or {}).get("status") or "trace_blocked")
+            state = save_driver_state(project_root, state)
+        else:
+            state.pop("last_agent_trace_error", None)
+            state = save_driver_state(project_root, state)
+    except Exception as _trace_exc:  # noqa: BLE001
+        state["last_agent_trace"] = {"status": "blocked", "error": str(_trace_exc)[:500]}
+        state["last_agent_trace_error"] = str(_trace_exc)[:500]
+        try:
+            state = save_driver_state(project_root, state)
+        except Exception:  # noqa: BLE001
+            pass
 
     if isinstance(result_payload, dict) and result_payload.get("summary"):
         summary = f"{summary}; {result_payload.get('summary')}"
