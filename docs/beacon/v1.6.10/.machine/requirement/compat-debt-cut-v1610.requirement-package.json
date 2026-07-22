@@ -1,0 +1,195 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-22T09:07:43.561833+00:00",
+  "feature": "compat-debt-cut-v1610",
+  "feature_slug": "compat-debt-cut-v1610",
+  "version": "v1.6.10",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.10/features/compat-debt-cut-v1610/truth.md",
+    "tests": "docs/beacon/v1.6.10/features/compat-debt-cut-v1610/tests.md",
+    "tasks": "docs/beacon/v1.6.10/features/compat-debt-cut-v1610/tasks.md",
+    "evidence": "docs/beacon/v1.6.10/features/compat-debt-cut-v1610/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "466ed79707e3a4fae95db39d1c0cd1c2902625c70ded3923b7eda82a6fb7b134",
+    "tests": "e93d7e8c2bc93ce3b6aa90ec3096023ddc82d5fb44e56ed2d5239f774bb0cc52",
+    "tasks": "e628710b0de5739ad9a5141ba8236e414d7dc9c80812328527aa44f5438c9e3f",
+    "evidence": "20b5f4ff07336675e4288376ecca83f007f8d7daa25547e6f1ed08cdac0605ec"
+  },
+  "truth_frontmatter": {
+    "slug": "compat-debt-cut-v1610",
+    "version": "v1.6.10",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "domain_required": "false",
+    "ux_required": "false",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.10/features/compat-debt-cut-v1610/truth.md",
+      "user_story": "docs/beacon/v1.6.10/features/compat-debt-cut-v1610/truth.md",
+      "test_case": "docs/beacon/v1.6.10/features/compat-debt-cut-v1610/tests.md"
+    },
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "change_reason": "R1: cut soft-compat — feature_package_authoritative always-on; freeze no legacy_split_truth skip"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-CDC-001",
+      "theme": "`feature_package_authoritative` 对 v0.0.13/v1.4/v1.6 均为 True",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-CDC-002",
+      "theme": "`truth_source_model_for_version` 恒为 feature_package_authoritative",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-CDC-003",
+      "theme": "freeze 源码不含 `legacy_split_truth` skip",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-CDC-004",
+      "theme": "triptych-only / 缺四件套 package integrity 不得 status=skipped",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-CDC-005",
+      "theme": "v0.0.x 回归测试存在且通过",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-CDC-001",
+      "tc_id": "TC-CDC-001",
+      "layer": "",
+      "command": "`python3 -c \"from beacon.utils.truth_map import feature_package_authoritative as f; assert f('v0.0.13')\"`",
+      "assertion": "True",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-CDC-002",
+      "tc_id": "TC-CDC-002",
+      "layer": "",
+      "command": "`rg -n \"return TRUTH_SOURCE_MODEL_AUTHORITATIVE\" beacon/utils/truth_map.py`",
+      "assertion": "恒权威",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-CDC-003",
+      "tc_id": "TC-CDC-003",
+      "layer": "",
+      "command": "`rg -n \"legacy_split_truth\" beacon/commands/freeze.py`",
+      "assertion": "无命中",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-CDC-004",
+      "tc_id": "TC-CDC-004",
+      "layer": "",
+      "command": "`rg -n \"legacy_split_truth\" beacon/utils/truth_integrity.py`",
+      "assertion": "无 skip 理由",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-CDC-005",
+      "tc_id": "TC-CDC-005",
+      "layer": "",
+      "command": "`python3 -m pytest tests/test_v1610_compat_debt_cut.py -q`",
+      "assertion": "pass",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-CDC-004",
+      "tc_id": "TC-CDC-006",
+      "layer": "",
+      "command": "`rg -n \"no_longer_skips|legacy_split_truth_no_longer\" tests/test_truth_integrity.py`",
+      "assertion": "回归改名",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-CDC-003",
+      "tc_id": "TC-CDC-007",
+      "layer": "",
+      "command": "`rg -n \"legacy_split_truth|Illegal\" docs/beacon/v1.6.10/features/compat-debt-cut-v1610/truth.md`",
+      "assertion": "no illegal skip path",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Implement AC-CDC-001: `feature_package_authoritative` 对 v0.0.13/v1.4/v1.6 均为 True · ac=AC-CDC-001 · evidence=`.beacon/evidence/implement/compat-debt-cut-v1610/AC-CDC-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Implement AC-CDC-002: `truth_source_model_for_version` 恒为 feature_package_authoritative · ac=AC-CDC-002 · evidence=`.beacon/evidence/implement/compat-debt-cut-v1610/AC-CDC-002.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Implement AC-CDC-003: freeze 源码不含 `legacy_split_truth` skip · ac=AC-CDC-003 · evidence=`.beacon/evidence/implement/compat-debt-cut-v1610/AC-CDC-003.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Implement AC-CDC-004: triptych-only / 缺四件套 package integrity 不得 status=skipped · ac=AC-CDC-004 · evidence=`.beacon/evidence/implement/compat-debt-cut-v1610/AC-CDC-004.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Implement AC-CDC-005: v0.0.x 回归测试存在且通过 · ac=AC-CDC-005 · evidence=`.beacon/evidence/implement/compat-debt-cut-v1610/AC-CDC-005.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/compat-debt-cut-v1610/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/compat-debt-cut-v1610/QA-MATRIX.json`",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "package",
+      "authority": "requirement_truth",
+      "path": "docs/beacon/v1.6.10/features/compat-debt-cut-v1610/truth.md"
+    },
+    {
+      "surface": "tests",
+      "authority": "test_truth",
+      "path": "docs/beacon/v1.6.10/features/compat-debt-cut-v1610/tests.md"
+    },
+    {
+      "surface": "util",
+      "authority": "support_advisory",
+      "path": "beacon/utils/truth_map.py"
+    },
+    {
+      "surface": "freeze",
+      "authority": "support_advisory",
+      "path": "beacon/commands/freeze.py"
+    },
+    {
+      "surface": "unit",
+      "authority": "qa_verdict",
+      "path": "tests/test_v1610_compat_debt_cut.py"
+    }
+  ]
+}

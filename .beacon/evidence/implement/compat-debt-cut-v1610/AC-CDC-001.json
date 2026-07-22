@@ -1,0 +1,19 @@
+{
+  "schema": "implement-evidence.v1",
+  "feature": "compat-debt-cut-v1610",
+  "version": "v1.6.10",
+  "ac": "AC-CDC-001",
+  "status": "done",
+  "proof": {
+    "unit_tests": [
+      "tests/test_v1610_compat_debt_cut.py",
+      "tests/test_v152_package_authoritative.py",
+      "tests/test_truth_integrity.py"
+    ],
+    "code_paths": [
+      "beacon/utils/truth_map.py",
+      "beacon/commands/freeze.py",
+      "beacon/utils/truth_integrity.py"
+    ]
+  }
+}

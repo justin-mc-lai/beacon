@@ -20,7 +20,7 @@ from beacon.utils.revision_state import freeze_revision_state
 from beacon.utils.story_state import freeze_story_state, feature_slug
 from beacon.utils.truth_integrity import build_truth_integrity_gate
 from beacon.utils.truth_review_gate import build_truth_review_gate_payload
-from beacon.utils.truth_map import feature_package_authoritative, feature_package_ready, rebuild_machine_json
+from beacon.utils.truth_map import rebuild_machine_json
 from beacon.utils.versioning import resolve_target_version
 
 app = typer.Typer(name="freeze", help="Freeze current feature revision as implementation baseline", invoke_without_command=True, no_args_is_help=False)
@@ -113,25 +113,14 @@ def _freeze_impl(feature: str, project: Optional[str], version: str, json_output
         else:
             typer.echo("Beacon freeze blocked: machine requirement package sync failed")
         return 2
-    package_gate_enabled = feature_package_authoritative(resolved_version) or feature_package_ready(
+    # v1.6.10+ §2.1: never skip package validation (no legacy soft-skip path)
+    package_gate_enabled = True
+    post_validation = validate_feature_package(
         project_root,
         version=resolved_version,
         feature=feature,
+        write_report=True,
     )
-    post_validation = {
-        "status": "skipped",
-        "blocked": False,
-        "reason_code": "",
-        "skip_reason": "legacy_split_truth",
-        "diagnostics": [],
-    }
-    if package_gate_enabled:
-        post_validation = validate_feature_package(
-            project_root,
-            version=resolved_version,
-            feature=feature,
-            write_report=True,
-        )
     if str(post_validation.get("status") or "").lower() == "blocked":
         payload = {
             "schema_version": "1.0",
@@ -182,15 +171,11 @@ def _freeze_impl(feature: str, project: Optional[str], version: str, json_output
 
     revision = freeze_revision_state(project_root, version=resolved_version, feature=feature)
     freeze_story_state(project_root, version=resolved_version, feature=feature)
-    truth_frontmatter_sync = (
-        sync_truth_frontmatter_status(
-            project_root,
-            version=resolved_version,
-            feature=feature,
-            status="frozen",
-        )
-        if package_gate_enabled
-        else {"updated": False, "reason": "legacy_split_truth"}
+    truth_frontmatter_sync = sync_truth_frontmatter_status(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        status="frozen",
     )
     # v1.6.10+: freeze-time tasks ledger derived from AC (implement evidence spine)
     tasks_sync: dict = {"updated": False}
@@ -201,25 +186,20 @@ def _freeze_impl(feature: str, project: Optional[str], version: str, json_output
             n = (_nv(v) or "v0.0.0").lstrip("v").split(".")
             return int(n[0]), int(n[1]), int(n[2] if len(n) > 2 else 0)
 
-        if package_gate_enabled:
-            from beacon.utils.feature_package import package_paths, render_tasks_package
+        from beacon.utils.feature_package import package_paths, render_tasks_package
 
-            tpath = package_paths(project_root, version=resolved_version, feature=feature)["tasks"]
-            content = render_tasks_package(project_root, version=resolved_version, feature=feature)
-            tpath.parent.mkdir(parents=True, exist_ok=True)
-            tpath.write_text(content, encoding="utf-8")
-            tasks_sync = {"updated": True, "path": str(tpath.relative_to(project_root)), "source": "acceptance_criteria"}
+        tpath = package_paths(project_root, version=resolved_version, feature=feature)["tasks"]
+        content = render_tasks_package(project_root, version=resolved_version, feature=feature)
+        tpath.parent.mkdir(parents=True, exist_ok=True)
+        tpath.write_text(content, encoding="utf-8")
+        tasks_sync = {"updated": True, "path": str(tpath.relative_to(project_root)), "source": "acceptance_criteria"}
     except Exception as _tasks_exc:  # noqa: BLE001
         tasks_sync = {"updated": False, "error": str(_tasks_exc)}
     revision_delta = materialize_revision_delta(project_root, version=resolved_version, feature=feature)
     # Rebuild machine json so .machine source hashes stay in sync with frozen
     # truth. Without this, any post-freeze truth edit leaves .machine stale and
     # truth-map verify reports machine_json_source_hash_stale.
-    machine_rebuild = (
-        rebuild_machine_json(project_root, version=resolved_version, feature=feature)
-        if package_gate_enabled
-        else {"status": "skipped", "reason": "legacy_split_truth", "written": []}
-    )
+    machine_rebuild = rebuild_machine_json(project_root, version=resolved_version, feature=feature)
     payload = {
         "schema_version": "1.0",
         "feature": feature,

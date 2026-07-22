@@ -1,0 +1,129 @@
+{
+  "schema": "truth-review-gate.v1",
+  "schema_version": "1.0",
+  "feature": "compat-debt-cut-v1610",
+  "version": "v1.6.10",
+  "pass": true,
+  "blocked": false,
+  "review_gate_pass": true,
+  "abc_pass": true,
+  "reason_code": "",
+  "domain_required": false,
+  "checks": {
+    "A_intent_coverage": {
+      "pass": true,
+      "check": "A",
+      "name": "intent_coverage",
+      "required": true,
+      "matrix_rows": 4,
+      "missing_must": [],
+      "reason": "",
+      "findings": [],
+      "matrix": [
+        {
+          "intent_id": "INT-CDC-01",
+          "source": "review",
+          "strength": "must",
+          "landing": "AC-CDC-001",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-CDC-02",
+          "source": "review",
+          "strength": "must",
+          "landing": "AC-CDC-002",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-CDC-03",
+          "source": "review",
+          "strength": "must",
+          "landing": "AC-CDC-003",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-CDC-04",
+          "source": "review",
+          "strength": "must",
+          "landing": "AC-CDC-004",
+          "status": "covered"
+        }
+      ]
+    },
+    "B_fsm_audit": {
+      "pass": true,
+      "check": "B",
+      "name": "fsm_audit",
+      "required": false,
+      "skipped": true,
+      "reason": "",
+      "findings": []
+    },
+    "C_testability": {
+      "pass": true,
+      "check": "C",
+      "name": "testability",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "ac_count": 5,
+      "tc_count": 7,
+      "missing_ac": [],
+      "covered": {
+        "AC-CDC-001": [
+          "TC-CDC-001"
+        ],
+        "AC-CDC-002": [
+          "TC-CDC-002"
+        ],
+        "AC-CDC-003": [
+          "TC-CDC-003",
+          "TC-CDC-007"
+        ],
+        "AC-CDC-004": [
+          "TC-CDC-004",
+          "TC-CDC-006"
+        ],
+        "AC-CDC-005": [
+          "TC-CDC-005"
+        ]
+      }
+    },
+    "C_domain_exec_layer": {
+      "pass": true,
+      "check": "C_exec",
+      "name": "domain_exec_layer",
+      "required": false,
+      "skipped": true,
+      "reason": "",
+      "findings": [],
+      "exec_tc_count": 0,
+      "domain_kind": "general"
+    },
+    "D_fill_depth": {
+      "pass": true,
+      "check": "D",
+      "name": "fill_depth",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "package_maturity": "unspecified",
+      "domain_kind": "general",
+      "business_domain": false
+    }
+  },
+  "findings": [],
+  "humanizer": {
+    "rule": "humanizer_only_after_abc_pass_before_freeze",
+    "abc_pass": true,
+    "allowed_now": true,
+    "fill_depth_pass": true,
+    "note": "Polish L0/narrative only after A/B/C; preserve_machine_fields=true; freeze needs D+exec too"
+  },
+  "evaluated_at": "2026-07-22T09:07:43.218147+00:00",
+  "paths": {
+    "truth": "docs/beacon/v1.6.10/features/compat-debt-cut-v1610/truth.md",
+    "tests": "docs/beacon/v1.6.10/features/compat-debt-cut-v1610/tests.md",
+    "report": "docs/beacon/v1.6.10/.machine/execution/compat-debt-cut-v1610.truth-review-gate.json"
+  }
+}

@@ -11,7 +11,6 @@ from beacon.utils.feature_package import package_paths, validate_feature_package
 from beacon.utils.requirement_clarity import build_requirement_clarity_gate_payload
 from beacon.utils.domain_fsm import build_domain_fsm_gate_payload
 from beacon.utils.story_state import feature_slug
-from beacon.utils.truth_map import feature_package_authoritative, feature_package_ready
 from beacon.utils.versioning import resolve_target_version
 
 TIG_SCHEMA_VERSION = "1.0"
@@ -424,17 +423,14 @@ def build_truth_integrity_gate(
         list(clarity_gate.get("findings", [])) if isinstance(clarity_gate.get("findings"), list) else []
     )
 
-    package_gate_enabled = feature_package_authoritative(resolved_version) or feature_package_ready(
-        project_root,
-        version=resolved_version,
-        feature=feature,
-    )
+    # v1.6.10+ §2.1: package integrity always evaluated (no legacy soft-skip)
+    package_gate_enabled = True
 
     validation: dict[str, Any] = {
-        "status": "skipped",
+        "status": "pass",
         "blocked": False,
         "reason_code": "",
-        "skip_reason": "legacy_split_truth",
+        "skip_reason": "",
         "diagnostics": [],
     }
     if package_gate_enabled:

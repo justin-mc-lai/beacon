@@ -1,0 +1,295 @@
+{
+  "schema_version": "1.0",
+  "feature": "compat-debt-cut-v1610",
+  "feature_slug": "compat-debt-cut-v1610",
+  "version": "v1.6.10",
+  "runtime_version": "v1.6.10",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.6.10/.machine/execution/requirement-clarity-compat-debt-cut-v1610.json",
+  "report_markdown_path": "docs/beacon/v1.6.10/execution/requirement-clarity-compat-debt-cut-v1610.md",
+  "state_path": ".beacon/state/requirement-clarity-compat-debt-cut-v1610.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.10",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-07-22T09:07:42.207786+00:00",
+    "feature": "compat-debt-cut-v1610",
+    "feature_slug": "compat-debt-cut-v1610",
+    "prd_ref": "docs/beacon/v1.6.10/prd/compat-debt-cut-v1610.md",
+    "user_story_ref": "docs/beacon/v1.6.10/user-story/compat-debt-cut-v1610.md"
+  },
+  "domain_fsm_gate": {
+    "schema_version": "1.0",
+    "feature": "compat-debt-cut-v1610",
+    "feature_slug": "compat-debt-cut-v1610",
+    "version": "v1.6.10",
+    "truth_path": "docs/beacon/v1.6.10/features/compat-debt-cut-v1610/truth.md",
+    "tests_path": "docs/beacon/v1.6.10/features/compat-debt-cut-v1610/tests.md",
+    "required": false,
+    "blocked": false,
+    "status": "not_required",
+    "reason_code": "",
+    "findings": [],
+    "requirement": {
+      "required": false,
+      "reason": "not_required",
+      "explicit": false,
+      "partial": false,
+      "complexity": false,
+      "business_signal": false,
+      "version_supported": true
+    },
+    "projection": {
+      "schema_version": "1.0",
+      "domain_fsm_schema": "domain-fsm.v1",
+      "entity_precedence_schema": "entity-precedence.v1",
+      "frontmatter": {
+        "slug": "compat-debt-cut-v1610",
+        "version": "v1.6.10",
+        "status": "draft",
+        "revision_id": "R1",
+        "language": "zh",
+        "domain_required": "false",
+        "ux_required": "false",
+        "canonical_refs": {
+          "prd": "docs/beacon/v1.6.10/features/compat-debt-cut-v1610/truth.md",
+          "user_story": "docs/beacon/v1.6.10/features/compat-debt-cut-v1610/truth.md",
+          "test_case": "docs/beacon/v1.6.10/features/compat-debt-cut-v1610/tests.md"
+        },
+        "parser_contract": "beacon-feature-package-v2",
+        "truth_source_model": "feature_package_authoritative",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "change_reason": "R1: cut soft-compat — feature_package_authoritative always-on; freeze no legacy_split_truth skip"
+      },
+      "frontmatter_errors": [],
+      "has_domain_model_section": false,
+      "has_domain_fsm_section": false,
+      "has_illegal_transition_section": false,
+      "entities": [],
+      "entity_precedence": [],
+      "aggregates": [],
+      "illegal_transition_slots": [],
+      "acceptance_criteria": [
+        {
+          "ac_id": "AC-CDC-001",
+          "description": "`feature_package_authoritative` 对 v0.0.13/v1.4/v1.6 均为 True"
+        },
+        {
+          "ac_id": "AC-CDC-002",
+          "description": "`truth_source_model_for_version` 恒为 feature_package_authoritative"
+        },
+        {
+          "ac_id": "AC-CDC-003",
+          "description": "freeze 源码不含 `legacy_split_truth` skip"
+        },
+        {
+          "ac_id": "AC-CDC-004",
+          "description": "triptych-only / 缺四件套 package integrity 不得 status=skipped"
+        },
+        {
+          "ac_id": "AC-CDC-005",
+          "description": "v0.0.x 回归测试存在且通过"
+        }
+      ],
+      "bound_ac_ids": [],
+      "orphan_ac_ids": [],
+      "aggregates_missing_illegal_slots": [],
+      "raw_section_titles": [
+        "人话",
+        "User Intent",
+        "User Intent Snapshot",
+        "Intent Coverage Matrix",
+        "First principles",
+        "Acceptance Criteria",
+        "FSM 五元组",
+        "Non-goals",
+        "Downstream Routes"
+      ]
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "required": false,
+      "blocked": false,
+      "status": "not_required",
+      "reason_code": "",
+      "findings": [],
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "compat-debt-cut-v1610",
+          "version": "v1.6.10",
+          "status": "draft",
+          "revision_id": "R1",
+          "language": "zh",
+          "domain_required": "false",
+          "ux_required": "false",
+          "canonical_refs": {
+            "prd": "docs/beacon/v1.6.10/features/compat-debt-cut-v1610/truth.md",
+            "user_story": "docs/beacon/v1.6.10/features/compat-debt-cut-v1610/truth.md",
+            "test_case": "docs/beacon/v1.6.10/features/compat-debt-cut-v1610/tests.md"
+          },
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "truth_map_contract": "beacon-truth-map-v1",
+          "change_reason": "R1: cut soft-compat — feature_package_authoritative always-on; freeze no legacy_split_truth skip"
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": false,
+        "has_domain_fsm_section": false,
+        "has_illegal_transition_section": false,
+        "entities": [],
+        "entity_precedence": [],
+        "aggregates": [],
+        "illegal_transition_slots": [],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-CDC-001",
+            "description": "`feature_package_authoritative` 对 v0.0.13/v1.4/v1.6 均为 True"
+          },
+          {
+            "ac_id": "AC-CDC-002",
+            "description": "`truth_source_model_for_version` 恒为 feature_package_authoritative"
+          },
+          {
+            "ac_id": "AC-CDC-003",
+            "description": "freeze 源码不含 `legacy_split_truth` skip"
+          },
+          {
+            "ac_id": "AC-CDC-004",
+            "description": "triptych-only / 缺四件套 package integrity 不得 status=skipped"
+          },
+          {
+            "ac_id": "AC-CDC-005",
+            "description": "v0.0.x 回归测试存在且通过"
+          }
+        ],
+        "bound_ac_ids": [],
+        "orphan_ac_ids": [],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "人话",
+          "User Intent",
+          "User Intent Snapshot",
+          "Intent Coverage Matrix",
+          "First principles",
+          "Acceptance Criteria",
+          "FSM 五元组",
+          "Non-goals",
+          "Downstream Routes"
+        ]
+      }
+    },
+    "recommended_action": ""
+  },
+  "human_closure_contract": {
+    "required": false,
+    "research_path": "docs/beacon/v1.6.10/research/compat-debt-cut-v1610.md",
+    "research_exists": false,
+    "source_architecture_path": "docs/beacon/v1.6.10/source-architecture/compat-debt-cut-v1610.md",
+    "source_architecture_exists": false,
+    "required_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "missing_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "diagram_types": [],
+    "complexity_signals": []
+  },
+  "requirement_closure_contract": {
+    "required": true,
+    "chain_order": [
+      "research",
+      "prd",
+      "user_story",
+      "test_case",
+      "requirement_clarity",
+      "freeze"
+    ],
+    "human_closure_required": false,
+    "paths": {
+      "research": "docs/beacon/v1.6.10/research/compat-debt-cut-v1610.md",
+      "prd": "docs/beacon/v1.6.10/features/compat-debt-cut-v1610/truth.md",
+      "user_story": "docs/beacon/v1.6.10/features/compat-debt-cut-v1610/truth.md",
+      "test_case": "docs/beacon/v1.6.10/features/compat-debt-cut-v1610/tests.md"
+    },
+    "exists": {
+      "research": false,
+      "prd": true,
+      "user_story": true,
+      "test_case": true
+    },
+    "required_research_sections": [],
+    "missing_research_sections": [],
+    "ac_projection": {
+      "prd_ac_ids": [],
+      "user_story_ac_ids": [],
+      "test_case_ac_ids": [],
+      "upstream_ac_ids": [],
+      "missing_test_case_ac_ids": []
+    }
+  },
+  "version_projection_truth_contract": {
+    "required": false,
+    "supported": true,
+    "projection_types": [],
+    "research_path": "docs/beacon/v1.6.10/research/compat-debt-cut-v1610.md",
+    "research_exists": false,
+    "required_fields": [
+      "prd_refs",
+      "user_story_refs",
+      "test_case_refs",
+      "coverage_notes",
+      "out_of_scope_notes"
+    ],
+    "field_presence": {
+      "prd_refs": false,
+      "user_story_refs": false,
+      "test_case_refs": false,
+      "coverage_notes": false,
+      "out_of_scope_notes": false
+    },
+    "missing_fields": [],
+    "required_refs": {
+      "prd_refs": "docs/beacon/v1.6.10/features/compat-debt-cut-v1610/truth.md",
+      "user_story_refs": "docs/beacon/v1.6.10/features/compat-debt-cut-v1610/truth.md",
+      "test_case_refs": "docs/beacon/v1.6.10/features/compat-debt-cut-v1610/tests.md"
+    },
+    "missing_ref_targets": [],
+    "ready": false
+  },
+  "support_write_topology_contract": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "diagnostics": []
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.6.10/features/compat-debt-cut-v1610/truth.md",
+    "docs/beacon/v1.6.10/features/compat-debt-cut-v1610/tests.md",
+    "docs/beacon/v1.6.10/features/compat-debt-cut-v1610/tasks.md",
+    "docs/beacon/v1.6.10/features/compat-debt-cut-v1610/evidence.md"
+  ]
+}

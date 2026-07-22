@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import subprocess
 from pathlib import Path
 
 from typer.testing import CliRunner
@@ -49,6 +50,17 @@ def _write(root: Path, rel: str, content: str) -> None:
     path = root / rel
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content, encoding="utf-8")
+
+
+
+def _init_git_repo(root: Path, branch: str = "main") -> None:
+    """Seed a minimal git repo so truth-authoring branch guards pass in tmp fixtures."""
+    subprocess.run(["git", "init", "-b", branch], cwd=root, check=True, capture_output=True, text=True)
+    subprocess.run(["git", "config", "user.name", "Beacon Tests"], cwd=root, check=True, capture_output=True, text=True)
+    subprocess.run(["git", "config", "user.email", "beacon-tests@example.com"], cwd=root, check=True, capture_output=True, text=True)
+    _write(root, ".gitkeep", "test\n")
+    subprocess.run(["git", "add", ".gitkeep"], cwd=root, check=True, capture_output=True, text=True)
+    subprocess.run(["git", "commit", "-m", "init"], cwd=root, check=True, capture_output=True, text=True)
 
 
 def _seed_governance(root: Path, version: str = VERSION) -> None:
@@ -158,8 +170,25 @@ def _seed_package(root: Path, *, version: str = VERSION, legacy: bool = False) -
     _write(
         root,
         f"{base}/features/{SLUG}/tasks.md",
-        "# Tasks\n\n- [ ] TASK-001 Route through resolver\n- [x] TASK-002 Validate package\n",
+        "\n".join(
+            [
+                "# Tasks",
+                "",
+                "> Gold shape: every task binds ac= + evidence= (global-boundaries §2.1).",
+                "",
+                f"- [ ] TASK-001 Route through resolver · ac=AC-001 · evidence=`.beacon/evidence/implement/{SLUG}/AC-001.json`",
+                f"- [ ] TASK-002 Validate package · ac=AC-002 · evidence=`.beacon/evidence/implement/{SLUG}/AC-002.json`",
+                "",
+            ]
+        ),
     )
+    # Evidence stubs for binding paths (unchecked tasks only need metadata; stubs keep freeze/refreeze happy)
+    for ac in ("AC-001", "AC-002"):
+        _write(
+            root,
+            f".beacon/evidence/implement/{SLUG}/{ac}.json",
+            f'{{"schema":"implement-evidence.v1","feature":"{SLUG}","ac":"{ac}","status":"planned"}}\n',
+        )
     _write(
         root,
         f"{base}/features/{SLUG}/evidence.md",
@@ -167,13 +196,14 @@ def _seed_package(root: Path, *, version: str = VERSION, legacy: bool = False) -
             [
                 "# Evidence",
                 "",
-                "| Surface | Authority | Canonical Artifact | Status | Route |",
-                "|---|---|---|---|---|",
-                f"| feature-package | requirement_truth | {base}/features/{SLUG}/truth.md | frozen | change |",
-                f"| package-tests | test_truth | {base}/features/{SLUG}/tests.md | frozen | test-case |",
+                "| surface | authority | path |",
+                "|---------|-----------|------|",
+                f"| package | requirement_truth | {base}/features/{SLUG}/truth.md |",
+                f"| tests | test_truth | {base}/features/{SLUG}/tests.md |",
+                f"| unit | qa_verdict | tests/test_v152_package_authoritative.py |",
+                "",
             ]
-        )
-        + "\n",
+        ),
     )
     if legacy:
         _write(root, f"{base}/prd/{SLUG}.md", "# PRD\n\nlegacy drift\n")
@@ -285,10 +315,12 @@ def test_legacy_drift_fails_closed_package_wins(tmp_path: Path) -> None:
 
 
 def test_resolver_policy_is_version_aware() -> None:
-    assert truth_source_model_for_version(V151) == TRUTH_SOURCE_MODEL
+    # v1.6.10+ §2.1: docs version is not a package-authority downgrade switch
+    assert truth_source_model_for_version(V151) == TRUTH_SOURCE_MODEL_AUTHORITATIVE
     assert truth_source_model_for_version(VERSION) == TRUTH_SOURCE_MODEL_AUTHORITATIVE
-    assert feature_package_authoritative(V151) is False
+    assert feature_package_authoritative(V151) is True
     assert feature_package_authoritative(VERSION) is True
+    assert feature_package_authoritative("v0.0.13") is True
 
 
 def test_truth_frontmatter_model_matches_resolver_policy(tmp_path: Path) -> None:
@@ -463,6 +495,7 @@ def test_requirement_completeness_gate_accepts_authoritative_package_without_leg
 
 def test_change_refreeze_chain_uses_package_surfaces_without_legacy_triptych(tmp_path: Path) -> None:
     _seed_package(tmp_path)
+    _init_git_repo(tmp_path)
     freeze_revision_state(tmp_path, version=VERSION, feature=FEATURE)
     freeze_story_state(tmp_path, VERSION, FEATURE)
 
@@ -514,6 +547,7 @@ def test_change_refreeze_chain_uses_package_surfaces_without_legacy_triptych(tmp
 
 def test_change_refreeze_chain_accepts_relative_project_root_for_package_authority(tmp_path: Path, monkeypatch) -> None:
     _seed_package(tmp_path)
+    _init_git_repo(tmp_path)
     freeze_revision_state(tmp_path, version=VERSION, feature=FEATURE)
     freeze_story_state(tmp_path, VERSION, FEATURE)
 

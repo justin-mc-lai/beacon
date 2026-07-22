@@ -21,6 +21,7 @@
 | truth-gold-order-pay-v1610 | **R3** | Gold + Intent Coverage Matrix |
 | truth-humanizer-runtime-v1610 | R2 | Humanizing Engine（R3 无行为变更，仅交叉引用 Gate 序） |
 | trace-lifecycle-binding-v1610 | **R1** | 1+6 lifecycle → agent_trace.v1 绑定 |
+| compat-debt-cut-v1610 | **R1** | 去 soft-compat：authoritative always-on + freeze 无 legacy_split skip |
 
 ## Evolution
 

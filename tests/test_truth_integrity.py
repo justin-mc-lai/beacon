@@ -75,14 +75,16 @@ scope_mode = smoke
     tasks = """
 # Tasks
 
-- [ ] TASK-001 Implement gate
+- [ ] TASK-001 Implement gate · ac=AC-001 · evidence=`.beacon/evidence/implement/good-smoke/AC-001.json`
 """
     evidence = """
 # Evidence
 
-| Surface | Authority | Canonical Artifact | Status | Route |
-|---------|-----------|--------------------|--------|-------|
-| qa | qa_verdict | tests/test_truth_integrity.py | linked | qa |
+| surface | authority | path |
+|---------|-----------|------|
+| package | requirement_truth | docs/beacon/v1.6.0/features/good-smoke/truth.md |
+| tests | test_truth | docs/beacon/v1.6.0/features/good-smoke/tests.md |
+| unit | qa_verdict | tests/test_truth_integrity.py |
 """
     return truth, tests, tasks, evidence
 
@@ -102,7 +104,8 @@ def test_good_smoke_scope_passes_block_mode(good_smoke: tuple[Path, str]) -> Non
     assert not gate["blocked"]
 
 
-def test_legacy_split_truth_skips_package_integrity_gate(tmp_path: Path) -> None:
+def test_legacy_split_truth_no_longer_skips_package_integrity_gate(tmp_path: Path) -> None:
+    """§2.1: triptych-only legacy layout cannot soft-skip package integrity."""
     version = "v1.3.3"
     slug = "legacy-split-feature"
     base = tmp_path / "docs" / "beacon" / version
@@ -129,11 +132,15 @@ def test_legacy_split_truth_skips_package_integrity_gate(tmp_path: Path) -> None
 
     gate = build_truth_integrity_gate(tmp_path, version=version, feature=slug, mode="block")
 
-    assert not gate["blocked"]
-    assert gate["feature_package_validation"]["status"] == "skipped"
+    assert gate["blocked"]
+    # package four-piece missing → incomplete / validation fail (not skipped)
+    assert gate["feature_package_validation"].get("status") != "skipped"
     reason_codes = {item.get("reason_code") for item in gate.get("findings", [])}
-    assert "feature_package_incomplete" not in reason_codes
-    assert "feature_package_validation_failed" not in reason_codes
+    assert (
+        "feature_package_incomplete" in reason_codes
+        or gate.get("reason_code") in {"feature_package_validation_failed", "feature_package_incomplete", "truth_integrity_blocked"}
+        or any("missing_" in str(item.get("text") or "") for item in gate.get("findings", []))
+    )
 
 
 def test_bad_placeholder_ac_blocks(tmp_path: Path) -> None:
@@ -237,16 +244,33 @@ def test_v2_rust_kernel_redesign_audit_passes() -> None:
 
 
 def test_tig_feature_package_block_mode() -> None:
+    """Archive v1.6.0 package keeps old task ledger shape.
+
+    Package gate is always on (no legacy_split soft-skip). Old archive tasks
+    without ac=/evidence= must block — replan+freeze under gold shape if
+    reopened; archive remains read-only history (global-boundaries §2.1).
+    """
     gate = build_truth_integrity_gate(
         REPO_ROOT,
         version=VERSION,
         feature="beacon-truth-integrity-gates-v160",
         mode="block",
     )
-    fake = gate.get("fake_delivery", {})
-    assert fake.get("closure_allowed", True)
     validation = gate.get("feature_package_validation", {})
-    assert str(validation.get("status", "")).lower() != "blocked"
+    assert str(validation.get("status", "")).lower() == "blocked"
+    assert validation.get("status") != "skipped"
+    codes = {
+        str(item.get("code") or "")
+        for item in (validation.get("diagnostics") or [])
+        if isinstance(item, dict)
+    }
+    assert "task_binding_missing" in codes
+    # integrity findings must not use soft-skip path
+    assert all(
+        str(item.get("reason_code") or "") != "legacy_split_truth"
+        for item in gate.get("findings") or []
+        if isinstance(item, dict)
+    )
 
 
 # --- TIG-DC Phase A tests ---

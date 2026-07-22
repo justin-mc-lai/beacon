@@ -204,7 +204,9 @@ def _semver_tuple(version: str | None) -> tuple[int, int, int]:
 
 
 def truth_map_supported(version: str | None) -> bool:
-    return _semver_tuple(version) >= (1, 5, 1)
+    """Truth-map is always active under current runtime (docs version is path-only)."""
+    _ = version
+    return True
 
 
 def feature_package_ready(project_root: Path, *, version: str, feature: str) -> bool:
@@ -222,16 +224,25 @@ def truth_map_supported_for_feature(project_root: Path, *, version: str, feature
 
 
 def truth_source_model_for_version(version: str | None) -> str:
-    return TRUTH_SOURCE_MODEL_AUTHORITATIVE if _semver_tuple(version) >= (1, 5, 2) else TRUTH_SOURCE_MODEL
+    """Active delivery always uses feature-package authority (global-boundaries §2.1).
+
+    Product docs lines (e.g. v0.0.13) must not soft-downgrade to legacy split truth.
+    """
+    _ = version
+    return TRUTH_SOURCE_MODEL_AUTHORITATIVE
 
 
 def feature_package_authoritative(version: str | None) -> bool:
-    return truth_source_model_for_version(version) == TRUTH_SOURCE_MODEL_AUTHORITATIVE
+    """Package authority is always on for the installed runtime (docs version is not a downgrade switch)."""
+    _ = version
+    return True
 
 
 def feature_package_authoritative_feature(project_root: Path, *, version: str, feature: str) -> bool:
-    """Return True if version >= v1.5.2 OR feature truth exists on disk."""
-    return feature_package_authoritative(version) or feature_package_present(project_root, version=version, feature=feature)
+    """Active runtime package authority; disk presence remains available for diagnostics."""
+    if feature_package_authoritative(version):
+        return True
+    return feature_package_present(project_root, version=version, feature=feature)
 
 
 def _rel(root: Path, path: Path) -> str:
