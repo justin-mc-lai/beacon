@@ -5,7 +5,7 @@ revision_id: R3
 materials_status: current
 ---
 
-| TC ID | AC | Command | Assertion |
+| TC ID | AC ID | Command | Assertion |
 |-------|-----|---------|-----------|
 | TC-PAY-001 | AC-PAY-001 | `rg -n "PayRequested" docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md` | 存在 |
 | TC-PAY-002 | AC-PAY-002 | `rg -n "非 created|拒绝" docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md` | 拒绝 |

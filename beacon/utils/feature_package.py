@@ -141,7 +141,11 @@ def _extract_test_rows(markdown: str) -> list[dict[str, str]]:
             continue
         if in_table and all(set(cell) <= {"-"} for cell in cells if cell):
             continue
-        if in_table and cells and re.match(r"AC-[A-Z0-9]+(?:-[A-Z0-9]+)*", cells[0]):
+        if in_table and cells and (
+            re.match(r"AC-[A-Z0-9]+(?:-[A-Z0-9]+)*", cells[0])
+            or re.match(r"TC-[A-Z0-9]+(?:-[A-Z0-9]+)*", cells[0], re.IGNORECASE)
+        ):
+            # Rejoin command cells when pipes appear inside command (naive split)
             if headers and len(cells) > len(headers) and ("command" in headers or "planned_command" in headers):
                 command_index = headers.index("command") if "command" in headers else headers.index("planned_command")
                 tail_count = len(headers) - command_index - 1
@@ -152,13 +156,32 @@ def _extract_test_rows(markdown: str) -> list[dict[str, str]]:
                     *cells[command_end:],
                 ]
             row = {headers[index]: cells[index] if index < len(cells) else "" for index in range(len(headers))}
+            # Support both AC-first and TC-first layouts
+            ac_id = row.get("ac_id") or ""
+            tc_id = row.get("tc_id") or ""
+            if not ac_id and re.match(r"AC-", cells[0] or ""):
+                ac_id = cells[0]
+            if not tc_id and re.match(r"TC-", cells[0] or "", re.I):
+                tc_id = cells[0]
+            if not ac_id:
+                for cell in cells:
+                    m = re.match(r"(AC-[A-Z0-9]+(?:-[A-Z0-9]+)*)", cell or "", re.I)
+                    if m:
+                        ac_id = m.group(1).upper()
+                        break
+            if not tc_id:
+                for cell in cells:
+                    m = re.match(r"(TC-[A-Z0-9]+(?:-[A-Z0-9]+)*)", cell or "", re.I)
+                    if m:
+                        tc_id = m.group(1).upper()
+                        break
             rows.append(
                 {
-                    "ac_id": row.get("ac_id") or cells[0],
-                    "tc_id": row.get("tc_id") or (cells[1] if len(cells) > 1 else ""),
-                    "layer": row.get("layer") or (cells[2] if len(cells) > 2 else ""),
+                    "ac_id": ac_id or cells[0],
+                    "tc_id": tc_id or (cells[1] if len(cells) > 1 else ""),
+                    "layer": row.get("layer") or "",
                     "command": row.get("command") or row.get("planned_command") or "",
-                    "assertion": row.get("assertion") or (cells[4] if len(cells) > 4 else ""),
+                    "assertion": row.get("assertion") or "",
                     "evidence_path": row.get("evidence_path") or "",
                 }
             )

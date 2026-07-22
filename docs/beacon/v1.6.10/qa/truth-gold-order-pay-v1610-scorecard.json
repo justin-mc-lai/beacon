@@ -1,0 +1,341 @@
+{
+  "schema": "beacon-qa-scorecard.v1",
+  "mode_id": "eval-qa",
+  "public_id": "qa",
+  "version": "v1.6.10",
+  "feature": "truth-gold-order-pay-v1610",
+  "generated_at": "2026-07-22T03:42:21.065664+00:00",
+  "overall": "pass",
+  "layers": {
+    "truth_review_gate": {
+      "pass": true,
+      "reason_code": "",
+      "report": "docs/beacon/v1.6.10/.machine/execution/truth-gold-order-pay-v1610.truth-review-gate.json"
+    },
+    "tc_execution": {
+      "total": 18,
+      "passed": 18,
+      "failed": 0,
+      "pass": true
+    },
+    "ac_coverage": {
+      "ac_total": 18,
+      "missing_ac": [],
+      "pass": true,
+      "map": {
+        "AC-PAY-001": [
+          "TC-PAY-001"
+        ],
+        "AC-PAY-002": [
+          "TC-PAY-002"
+        ],
+        "AC-PAY-003": [
+          "TC-PAY-003"
+        ],
+        "AC-PAY-010": [
+          "TC-PAY-010"
+        ],
+        "AC-PAY-011": [
+          "TC-PAY-011"
+        ],
+        "AC-PAY-020": [
+          "TC-PAY-020"
+        ],
+        "AC-PAY-021": [
+          "TC-PAY-021"
+        ],
+        "AC-PAY-022": [
+          "TC-PAY-022"
+        ],
+        "AC-PAY-023": [
+          "TC-PAY-023"
+        ],
+        "AC-RF-001": [
+          "TC-RF-001"
+        ],
+        "AC-RF-002": [
+          "TC-RF-002"
+        ],
+        "AC-RF-003": [
+          "TC-RF-003"
+        ],
+        "AC-RF-004": [
+          "TC-RF-004"
+        ],
+        "AC-PAY-030": [
+          "TC-PAY-030"
+        ],
+        "AC-PAY-031": [
+          "TC-PAY-031"
+        ],
+        "AC-PAY-032": [
+          "TC-PAY-032"
+        ],
+        "AC-PAY-033": [
+          "TC-PAY-033"
+        ],
+        "AC-PAY-034": [
+          "TC-PAY-034"
+        ]
+      }
+    },
+    "freeze_drill": {
+      "cli_branch_guard": "blocked truth_canonical_branch_mismatch (current != main)",
+      "post_bypass_freeze": "status=frozen review_gate_pass=true (see freeze-drill.json)",
+      "artifact": "docs/beacon/v1.6.10/qa/truth-gold-order-pay-v1610-freeze-drill.json"
+    },
+    "adversarial_review": [
+      {
+        "risk": "freeze 在非 main 分支被误放行",
+        "evidence": "CLI freeze 返回 truth_canonical_branch_mismatch；drill 显式 bypass branch 后才 frozen",
+        "status": "mitigated"
+      },
+      {
+        "risk": "domain_required 包缺 Domain Model/FSM 标题导致 integrity 假绿",
+        "evidence": "补 Domain Model + Domain FSM Order + Illegal transitions 后 tig blocked=false",
+        "status": "mitigated"
+      },
+      {
+        "risk": "TC 表 TC-first 解析为 0 行导致 coverage 空",
+        "evidence": "feature_package._extract_test_rows 已支持 TC-first；本轮 18 TC 全执行",
+        "status": "mitigated"
+      },
+      {
+        "risk": "must 意图 missing 仍 freeze",
+        "evidence": "truth review review_gate_pass=True",
+        "status": "pass"
+      },
+      {
+        "risk": "AC 无 TC 静默放行",
+        "evidence": "missing_ac=[]",
+        "status": "pass"
+      }
+    ]
+  },
+  "results": [
+    {
+      "tc_id": "TC-PAY-001",
+      "ac_ids": [
+        "AC-PAY-001"
+      ],
+      "command": "rg -n \"PayRequested\" docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md",
+      "assertion": "存在",
+      "status": "pass",
+      "returncode": 0,
+      "note": "rc=0",
+      "stdout_preview": "78:| AC-PAY-001 | created + PayRequested → paying + intent |\n82:| AC-PAY-011 | paid 再 PayRequested → 拒绝 |\n86:| AC-PAY-023 | closed 再 PayRequested → 拒绝 |\n110:| paying | created | order_exists + PayRequ"
+    },
+    {
+      "tc_id": "TC-PAY-002",
+      "ac_ids": [
+        "AC-PAY-002"
+      ],
+      "command": "rg -n \"非 created|拒绝\" docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md",
+      "assertion": "拒绝",
+      "status": "pass",
+      "returncode": 0,
+      "note": "rc=0",
+      "stdout_preview": "68:| FP-PAY-004 | shipped 退款请求拒绝（本示例） |\n79:| AC-PAY-002 | 非 created 支付 → 拒绝 |\n82:| AC-PAY-011 | paid 再 PayRequested → 拒绝 |\n86:| AC-PAY-023 | closed 再 PayRequested → 拒绝 |\n89:| AC-RF-003 | shipped 退款 → "
+    },
+    {
+      "tc_id": "TC-PAY-003",
+      "ac_ids": [
+        "AC-PAY-003"
+      ],
+      "command": "rg -n \"幂等|record_success_once\" docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md",
+      "assertion": "幂等",
+      "status": "pass",
+      "returncode": 0,
+      "note": "rc=0",
+      "stdout_preview": "27:- 能做：支付、重试、关单、合规退款、幂等\n80:| AC-PAY-003 | PaymentSucceeded 幂等 → paid，success=1 |\n88:| AC-RF-002 | RefundSucceeded 幂等 → refunded |\n131:| paying | PaymentSucceeded | intent_matches | paid | record_succ"
+    },
+    {
+      "tc_id": "TC-PAY-010",
+      "ac_ids": [
+        "AC-PAY-010"
+      ],
+      "command": "rg -n \"PaymentFailed\" docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md",
+      "assertion": "失败",
+      "status": "pass",
+      "returncode": 0,
+      "note": "rc=0",
+      "stdout_preview": "81:| AC-PAY-010 | PaymentFailed → created |\n112:| created | paying | PaymentFailed + intent_matches |\n132:| paying | PaymentFailed | intent_matches | created | record_failure |\n147:  paying --> create"
+    },
+    {
+      "tc_id": "TC-PAY-011",
+      "ac_ids": [
+        "AC-PAY-011"
+      ],
+      "command": "rg -n \"paid 再 PayRequested|paid 再\" docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md",
+      "assertion": "拒绝再付",
+      "status": "pass",
+      "returncode": 0,
+      "note": "rc=0",
+      "stdout_preview": "82:| AC-PAY-011 | paid 再 PayRequested → 拒绝 |\n"
+    },
+    {
+      "tc_id": "TC-PAY-020",
+      "ac_ids": [
+        "AC-PAY-020"
+      ],
+      "command": "rg -n \"created→paid|跳态\" docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md",
+      "assertion": "illegal",
+      "status": "pass",
+      "returncode": 0,
+      "note": "rc=0",
+      "stdout_preview": "28:- 不能做：跳态 paid、无 success 进 paid、关单后再付成功、shipped 退款成功\n83:| AC-PAY-020 | 禁 created→paid 跳态 |\n140:invalid：created→paid；无 success→paid；closed→paid；shipped 退款成功；refunded→paying\n"
+    },
+    {
+      "tc_id": "TC-PAY-021",
+      "ac_ids": [
+        "AC-PAY-021"
+      ],
+      "command": "rg -n \"无 success|without success\" docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md",
+      "assertion": "illegal",
+      "status": "pass",
+      "returncode": 0,
+      "note": "rc=0",
+      "stdout_preview": "28:- 不能做：跳态 paid、无 success 进 paid、关单后再付成功、shipped 退款成功\n84:| AC-PAY-021 | 禁无 success→paid |\n120:- created → paid (skip paying / without success)\n140:invalid：created→paid；无 success→paid；closed→paid；ship"
+    },
+    {
+      "tc_id": "TC-PAY-022",
+      "ac_ids": [
+        "AC-PAY-022"
+      ],
+      "command": "rg -n \"PayTimeout|closed\" docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md",
+      "assertion": "关单",
+      "status": "pass",
+      "returncode": 0,
+      "note": "rc=0",
+      "stdout_preview": "67:| FP-PAY-003 | closed/refunded 不再支付成功 |\n85:| AC-PAY-022 | PayTimeout → closed |\n86:| AC-PAY-023 | closed 再 PayRequested → 拒绝 |\n92:| AC-PAY-031 | 状态集含 created,paying,paid,closed,refunding,refunded |"
+    },
+    {
+      "tc_id": "TC-PAY-023",
+      "ac_ids": [
+        "AC-PAY-023"
+      ],
+      "command": "rg -n \"closed 再\" docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md",
+      "assertion": "closed 拒绝",
+      "status": "pass",
+      "returncode": 0,
+      "note": "rc=0",
+      "stdout_preview": "86:| AC-PAY-023 | closed 再 PayRequested → 拒绝 |\n"
+    },
+    {
+      "tc_id": "TC-RF-001",
+      "ac_ids": [
+        "AC-RF-001"
+      ],
+      "command": "rg -n \"RefundRequested|refunding\" docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md",
+      "assertion": "退款",
+      "status": "pass",
+      "returncode": 0,
+      "note": "rc=0",
+      "stdout_preview": "87:| AC-RF-001 | RefundRequested + 可退 → refunding |\n92:| AC-PAY-031 | 状态集含 created,paying,paid,closed,refunding,refunded |\n114:| refunding | paid | RefundRequested + not_shipped |\n115:| refunded | ref"
+    },
+    {
+      "tc_id": "TC-RF-002",
+      "ac_ids": [
+        "AC-RF-002"
+      ],
+      "command": "rg -n \"RefundSucceeded|refunded\" docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md",
+      "assertion": "退成功",
+      "status": "pass",
+      "returncode": 0,
+      "note": "rc=0",
+      "stdout_preview": "67:| FP-PAY-003 | closed/refunded 不再支付成功 |\n88:| AC-RF-002 | RefundSucceeded 幂等 → refunded |\n90:| AC-RF-004 | refunded 再支付/退成功路径 → 拒绝 |\n92:| AC-PAY-031 | 状态集含 created,paying,paid,closed,refunding,refun"
+    },
+    {
+      "tc_id": "TC-RF-003",
+      "ac_ids": [
+        "AC-RF-003"
+      ],
+      "command": "rg -n \"shipped\" docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md",
+      "assertion": "拦截",
+      "status": "pass",
+      "returncode": 0,
+      "note": "rc=0",
+      "stdout_preview": "28:- 不能做：跳态 paid、无 success 进 paid、关单后再付成功、shipped 退款成功\n68:| FP-PAY-004 | shipped 退款请求拒绝（本示例） |\n89:| AC-RF-003 | shipped 退款 → 拒绝，仍 paid |\n114:| refunding | paid | RefundRequested + not_shipped |\n123:- "
+    },
+    {
+      "tc_id": "TC-RF-004",
+      "ac_ids": [
+        "AC-RF-004"
+      ],
+      "command": "rg -n \"refunded 再\" docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md",
+      "assertion": "终态",
+      "status": "pass",
+      "returncode": 0,
+      "note": "rc=0",
+      "stdout_preview": "90:| AC-RF-004 | refunded 再支付/退成功路径 → 拒绝 |\n"
+    },
+    {
+      "tc_id": "TC-PAY-030",
+      "ac_ids": [
+        "AC-PAY-030"
+      ],
+      "command": "test -f skills/beacon/beacon-truth/references/examples/gold-order-pay-package.md",
+      "assertion": "示例",
+      "status": "pass",
+      "returncode": 0,
+      "note": "rc=0",
+      "stdout_preview": ""
+    },
+    {
+      "tc_id": "TC-PAY-031",
+      "ac_ids": [
+        "AC-PAY-031"
+      ],
+      "command": "rg -n \"closed|refunding|refunded\" skills/beacon/beacon-truth/references/examples/gold-order-pay-package.md",
+      "assertion": "状态集",
+      "status": "pass",
+      "returncode": 0,
+      "note": "rc=0",
+      "stdout_preview": "32:paying + PayTimeout → closed  \n33:paid + RefundRequested[not_shipped] → refunding  \n34:refunding + RefundSucceeded → refunded  \n"
+    },
+    {
+      "tc_id": "TC-PAY-032",
+      "ac_ids": [
+        "AC-PAY-032"
+      ],
+      "command": "rg -n \"Event \\| Guard|Guard\" docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md",
+      "assertion": "五元组",
+      "status": "pass",
+      "returncode": 0,
+      "note": "rc=0",
+      "stdout_preview": "108:| State | From | Guard |\n128:| State | Event | Guard | To | Action |\n"
+    },
+    {
+      "tc_id": "TC-PAY-033",
+      "ac_ids": [
+        "AC-PAY-033"
+      ],
+      "command": "rg -n \"Intent Coverage Matrix|INT-PAY-01\" docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md",
+      "assertion": "矩阵",
+      "status": "pass",
+      "returncode": 0,
+      "note": "rc=0",
+      "stdout_preview": "17:change_reason: \"R3: add Intent Coverage Matrix for Gold; demonstrate Truth Review Gate Check A\"\n33:公共 Gold 示例：支付/关单/退款 + **Intent Coverage Matrix**，供 Truth Review Gate 对照。\n43:## Intent Coverage Mat"
+    },
+    {
+      "tc_id": "TC-PAY-034",
+      "ac_ids": [
+        "AC-PAY-034"
+      ],
+      "command": "rg -c \"TC-PAY-|TC-RF-\" docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/tests.md",
+      "assertion": "TC 行数≥15",
+      "status": "pass",
+      "returncode": 0,
+      "note": "rc=0",
+      "stdout_preview": "18\n"
+    }
+  ],
+  "recommended_next_harness": "release",
+  "evidence_refs": [
+    "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/tests.md",
+    "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md",
+    "docs/beacon/v1.6.10/qa/truth-gold-order-pay-v1610-scorecard.json",
+    "docs/beacon/v1.6.10/qa/truth-gold-order-pay-v1610-scorecard.md",
+    "docs/beacon/v1.6.10/qa/truth-gold-order-pay-v1610-freeze-drill.json"
+  ]
+}

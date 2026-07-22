@@ -7,6 +7,10 @@ language: zh
 domain_required: true
 ux_required: false
 parser_contract: beacon-feature-package-v2
+canonical_refs:
+  prd: docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md
+  user_story: docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md
+  test_case: docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/tests.md
 truth_source_model: feature_package_authoritative
 program_ref: docs/beacon/v1.6.10/programs/beacon-truth-authority-humanizer-v1610/program-manifest.md
 previous_revision: R2
@@ -90,6 +94,35 @@ truth_review_gate: required
 | AC-PAY-033 | 含 Intent Coverage Matrix；must 无 missing |
 | AC-PAY-034 | 本 package 每 AC 在 tests.md 有 ≥1 行 |
 
+
+## Domain Model
+
+| Entity | Key | Precedence / Requires |
+|--------|-----|------------------------|
+| Order | order_id | root |
+| PaymentIntent | intent_id | requires Order |
+| RefundIntent | refund_id | requires Order + paid fact |
+
+## Domain FSM Order
+
+| State | From | Guard |
+|-------|------|-------|
+| paying | created | order_exists + PayRequested |
+| paid | paying | PaymentSucceeded + intent_matches |
+| created | paying | PaymentFailed + intent_matches |
+| closed | paying | PayTimeout |
+| refunding | paid | RefundRequested + not_shipped |
+| refunded | refunding | RefundSucceeded + intent_matches |
+| paid | refunding | RefundFailed + intent_matches |
+
+## Illegal transitions
+
+- created → paid (skip paying / without success)
+- closed → paid
+- refunded → paying
+- shipped 退款成功（RefundSucceeded while shipped）
+- 无 PaymentSucceeded 事实进入 paid
+
 ## FSM 五元组
 
 | State | Event | Guard | To | Action |
@@ -136,4 +169,4 @@ stateDiagram-v2
 
 - [x] Matrix + AC-PAY-033/034
 - [x] skill 同步
-- [ ] runtime truth review CLI
+- [x] runtime truth review CLI

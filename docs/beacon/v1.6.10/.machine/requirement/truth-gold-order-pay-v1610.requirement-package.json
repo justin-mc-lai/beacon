@@ -1,0 +1,335 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-22T03:41:36.308873+00:00",
+  "feature": "truth-gold-order-pay-v1610",
+  "feature_slug": "truth-gold-order-pay-v1610",
+  "version": "v1.6.10",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md",
+    "tests": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/tests.md",
+    "tasks": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/tasks.md",
+    "evidence": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "3d3c7100eb7dbf6ec1f32153de71df50c89a74b153d69fab2c4d9585b0c8738e",
+    "tests": "ad1ba745d508886fc4a50598ec7a10617d0409a6059cc18812622c999d55e49a",
+    "tasks": "b061b1662e7f820b5c356c519ba963c2c9bc0de1109ae1e65a16fd0ef5fd307c",
+    "evidence": "ee49f750303040a386d8fd7495f548a3fd7856940b76ea29e1b8d9dd0a90e87d"
+  },
+  "truth_frontmatter": {
+    "slug": "truth-gold-order-pay-v1610",
+    "version": "v1.6.10",
+    "status": "frozen",
+    "revision_id": "R3",
+    "language": "zh",
+    "domain_required": "true",
+    "ux_required": "false",
+    "parser_contract": "beacon-feature-package-v2",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md",
+      "user_story": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md",
+      "test_case": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/tests.md"
+    },
+    "truth_source_model": "feature_package_authoritative",
+    "program_ref": "docs/beacon/v1.6.10/programs/beacon-truth-authority-humanizer-v1610/program-manifest.md",
+    "previous_revision": "R2",
+    "change_reason": "R3: add Intent Coverage Matrix for Gold; demonstrate Truth Review Gate Check A",
+    "example_skill_path": "skills/beacon/beacon-truth/references/examples/gold-order-pay-package.md"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-PAY-001",
+      "theme": "created + PayRequested → paying + intent",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PAY-002",
+      "theme": "非 created 支付 → 拒绝",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PAY-003",
+      "theme": "PaymentSucceeded 幂等 → paid，success=1",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PAY-010",
+      "theme": "PaymentFailed → created",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PAY-011",
+      "theme": "paid 再 PayRequested → 拒绝",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PAY-020",
+      "theme": "禁 created→paid 跳态",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PAY-021",
+      "theme": "禁无 success→paid",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PAY-022",
+      "theme": "PayTimeout → closed",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PAY-023",
+      "theme": "closed 再 PayRequested → 拒绝",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-RF-001",
+      "theme": "RefundRequested + 可退 → refunding",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-RF-002",
+      "theme": "RefundSucceeded 幂等 → refunded",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-RF-003",
+      "theme": "shipped 退款 → 拒绝，仍 paid",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-RF-004",
+      "theme": "refunded 再支付/退成功路径 → 拒绝",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PAY-030",
+      "theme": "skill 示例含人话+mermaid",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PAY-031",
+      "theme": "状态集含 created,paying,paid,closed,refunding,refunded",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PAY-032",
+      "theme": "含 FSM 五元组表",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PAY-033",
+      "theme": "含 Intent Coverage Matrix；must 无 missing",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-PAY-034",
+      "theme": "本 package 每 AC 在 tests.md 有 ≥1 行",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-PAY-001",
+      "tc_id": "TC-PAY-001",
+      "layer": "",
+      "command": "`rg -n \"PayRequested\" docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md`",
+      "assertion": "存在",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PAY-002",
+      "tc_id": "TC-PAY-002",
+      "layer": "",
+      "command": "`rg -n \"非 created|拒绝\" docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md`",
+      "assertion": "拒绝",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PAY-003",
+      "tc_id": "TC-PAY-003",
+      "layer": "",
+      "command": "`rg -n \"幂等|record_success_once\" docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md`",
+      "assertion": "幂等",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PAY-010",
+      "tc_id": "TC-PAY-010",
+      "layer": "",
+      "command": "`rg -n \"PaymentFailed\" docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md`",
+      "assertion": "失败",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PAY-011",
+      "tc_id": "TC-PAY-011",
+      "layer": "",
+      "command": "`rg -n \"paid 再 PayRequested|paid 再\" docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md`",
+      "assertion": "拒绝再付",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PAY-020",
+      "tc_id": "TC-PAY-020",
+      "layer": "",
+      "command": "`rg -n \"created→paid|跳态\" docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md`",
+      "assertion": "illegal",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PAY-021",
+      "tc_id": "TC-PAY-021",
+      "layer": "",
+      "command": "`rg -n \"无 success|without success\" docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md`",
+      "assertion": "illegal",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PAY-022",
+      "tc_id": "TC-PAY-022",
+      "layer": "",
+      "command": "`rg -n \"PayTimeout|closed\" docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md`",
+      "assertion": "关单",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PAY-023",
+      "tc_id": "TC-PAY-023",
+      "layer": "",
+      "command": "`rg -n \"closed 再\" docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md`",
+      "assertion": "closed 拒绝",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-RF-001",
+      "tc_id": "TC-RF-001",
+      "layer": "",
+      "command": "`rg -n \"RefundRequested|refunding\" docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md`",
+      "assertion": "退款",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-RF-002",
+      "tc_id": "TC-RF-002",
+      "layer": "",
+      "command": "`rg -n \"RefundSucceeded|refunded\" docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md`",
+      "assertion": "退成功",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-RF-003",
+      "tc_id": "TC-RF-003",
+      "layer": "",
+      "command": "`rg -n \"shipped\" docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md`",
+      "assertion": "拦截",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-RF-004",
+      "tc_id": "TC-RF-004",
+      "layer": "",
+      "command": "`rg -n \"refunded 再\" docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md`",
+      "assertion": "终态",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PAY-030",
+      "tc_id": "TC-PAY-030",
+      "layer": "",
+      "command": "`test -f skills/beacon/beacon-truth/references/examples/gold-order-pay-package.md`",
+      "assertion": "示例",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PAY-031",
+      "tc_id": "TC-PAY-031",
+      "layer": "",
+      "command": "`rg -n \"closed|refunding|refunded\" skills/beacon/beacon-truth/references/examples/gold-order-pay-package.md`",
+      "assertion": "状态集",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PAY-032",
+      "tc_id": "TC-PAY-032",
+      "layer": "",
+      "command": "`rg -n \"Event \\|Guard|Guard\" docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md`",
+      "assertion": "五元组",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PAY-033",
+      "tc_id": "TC-PAY-033",
+      "layer": "",
+      "command": "`rg -n \"Intent Coverage Matrix|INT-PAY-01\" docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md`",
+      "assertion": "矩阵",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PAY-034",
+      "tc_id": "TC-PAY-034",
+      "layer": "",
+      "command": "`rg -c \"TC-PAY-|TC-RF-\" docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/tests.md`",
+      "assertion": "TC 行数≥15",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "LINE-8",
+      "title": "TASK-R3-G1 Intent Matrix",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-9",
+      "title": "TASK-R3-G2 tests 覆盖每 AC",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-10",
+      "title": "TASK-R3-G3 skill 示例同步",
+      "status": "checked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "package",
+      "authority": "requirement_truth",
+      "path": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md"
+    },
+    {
+      "surface": "tests",
+      "authority": "test_truth",
+      "path": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/tests.md"
+    },
+    {
+      "surface": "skill",
+      "authority": "support_advisory",
+      "path": "skills/beacon/beacon-truth/references/examples/gold-order-pay-package.md"
+    },
+    {
+      "surface": "change",
+      "authority": "support_advisory",
+      "path": "docs/beacon/v1.6.10/change/beacon-truth-authority-humanizer-v1610-r3.md"
+    },
+    {
+      "surface": "truth_review_gate",
+      "authority": "support_advisory",
+      "path": "docs/beacon/v1.6.10/.machine/execution/truth-gold-order-pay-v1610.truth-review-gate.json"
+    },
+    {
+      "surface": "qa_scorecard",
+      "authority": "qa_verdict",
+      "path": "docs/beacon/v1.6.10/qa/truth-gold-order-pay-v1610-scorecard.md"
+    }
+  ]
+}
