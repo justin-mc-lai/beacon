@@ -77,6 +77,19 @@ support research
 ```
 
 
+
+## Humanizer LLM（可选 · 规则引擎之上）
+
+- 默认 `llm_mode: auto`：有 `BEACON_LLM_API_KEY` 时用 oss-sync/vendor skill **全文**走 chat completions 润色 L0，再跑规则引擎收口。
+- 无 key / `BEACON_HUMANIZER_LLM_MODE=rules`：仅规则引擎。
+- `vendor_into_beacon: true`：将 oss-sync skill 导入 `skills/beacon/references/truth-humanizer/vendor/`。
+- 环境：`BEACON_LLM_API_BASE` / `BEACON_LLM_MODEL` / `BEACON_LLM_TIMEOUT`（同 llm_loop）。
+
+## Exec TC / implement 证据
+
+- domain tests 默认 `pytest` + `import beacon` / `beacon doctor` 契约，**禁止** `print(0)` 冒充 exec。
+- tasks：`ac=<AC> · evidence=\`.beacon/evidence/implement/<slug>/<AC>.json\``；`[x]` 仅当证据文件存在（implement 准入硬拦）。
+
 ## v1.6.10+ scaffold 只算 draft（强制 truth-review 填满再 freeze）
 
 1. `gen` / `materialize` 输出 **`package_maturity: scaffold`** + gold 结构骨架。

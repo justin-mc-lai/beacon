@@ -106,7 +106,7 @@ materials_status: current
 |-------|-------|---------|-----------|
 | TC-001 | AC-001 | `rg -n 'AC-001' docs/beacon/{version}/features/{slug}/truth.md` | present |
 | TC-002 | AC-002 | `rg -n 'AC-002' docs/beacon/{version}/features/{slug}/truth.md` | present |
-| TC-E | AC-001 | `python3 -c 'print(0)'` | exit_code==0 |
+| TC-E | AC-001 | `python3 -m pytest -q tests/ --tb=no` | exit_code==0 |
 """,
         encoding="utf-8",
     )

@@ -77,7 +77,7 @@ materials_status: current
 |-------|-----|---------|-----------|
 | TC-001 | AC-001 | `rg Pay truth.md` | exists |
 | TC-002 | AC-002 | `rg Timeout truth.md` | closes |
-| TC-E | AC-001 | `python3 -c 'print(0)'` | exit_code==0 |
+| TC-E | AC-001 | `python3 -m pytest -q tests/ --tb=no` | exit_code==0 |
 """
 
 

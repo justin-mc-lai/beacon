@@ -110,7 +110,7 @@ language: zh
     assert "journey_missing" in kinds or "domain_exec_tc_missing" in kinds
 
     truth2 = truth.replace("## Acceptance Criteria", "## 用户旅程\n1. 下单 2. 支付\n\n## Acceptance Criteria")
-    tests2 = tests_docs + "\n| TC-E | AC-001 | `python3 -c 'print(0)'` | exit_code==0 |\n"
+    tests2 = tests_docs + "\n| TC-E | AC-001 | `python3 -m pytest -q tests/ --tb=no` | exit_code==0 |\n"
     r2 = evaluate_truth_review_gate(truth_md=truth2, tests_md=tests2, version="v1.6.10", feature="pay")
     assert r2["pass"] is True
 

@@ -245,6 +245,101 @@ def _parse_checkboxes(markdown: str) -> tuple[list[dict[str, str]], list[str]]:
     return tasks, errors
 
 
+
+_TASK_AC_RE = re.compile(r"(?i)\bac\s*[=:]\s*(?P<ac>[A-Z][A-Z0-9_-]*)")
+_TASK_EVIDENCE_RE = re.compile(r"(?i)\bevidence\s*[=:]\s*`?(?P<path>[^`\s|]+)`?")
+
+
+def parse_task_ac_evidence_binding(title: str) -> dict[str, str]:
+    """Extract ac= and evidence= bindings from a task title."""
+    ac_m = _TASK_AC_RE.search(title or "")
+    ev_m = _TASK_EVIDENCE_RE.search(title or "")
+    return {
+        "ac_id": (ac_m.group("ac") if ac_m else "").strip(),
+        "evidence_path": (ev_m.group("path") if ev_m else "").strip(),
+    }
+
+
+def evaluate_task_ac_evidence_bindings(
+    project_root: Path,
+    *,
+    tasks_md: str,
+    version: str = "",
+) -> dict[str, Any]:
+    """Checked tasks must have existing evidence files. Unchecked tasks need binding metadata on v1.6.10+."""
+    root = Path(project_root).expanduser().resolve()
+    rows, errors = _parse_checkboxes(tasks_md)
+    findings: list[dict[str, Any]] = []
+    for err in errors:
+        findings.append({"kind": "malformed_checkbox", "text": err})
+    checked_ok = 0
+    checked_bad = 0
+    unbound = 0
+    for row in rows:
+        title = row.get("title") or ""
+        bind = parse_task_ac_evidence_binding(title)
+        ac_id = bind.get("ac_id") or ""
+        ev = bind.get("evidence_path") or ""
+        status = row.get("status") or "unchecked"
+        task_id = row.get("id") or ""
+        # Enforce ac=/evidence= shape only for v1.6.10 ledgers that declare the contract
+        enforce_shape = (
+            _semver_tuple(version or "v0") >= (1, 6, 10)
+            and (
+                "task_source: acceptance_criteria" in tasks_md
+                or "evidence=" in tasks_md
+                or "evidence:" in tasks_md
+            )
+        )
+        if enforce_shape and (not ac_id or not ev):
+            unbound += 1
+            findings.append(
+                {
+                    "kind": "task_binding_missing",
+                    "text": f"{task_id or title[:40]} missing ac= / evidence= binding",
+                    "task_id": task_id,
+                }
+            )
+            continue
+        if status == "checked":
+            if not ev:
+                checked_bad += 1
+                findings.append(
+                    {
+                        "kind": "checkbox_checked_without_evidence_path",
+                        "text": f"{task_id} checked but no evidence= path",
+                        "task_id": task_id,
+                    }
+                )
+                continue
+            ev_path = Path(ev)
+            if not ev_path.is_absolute():
+                ev_path = root / ev
+            if not ev_path.is_file() or ev_path.stat().st_size < 2:
+                checked_bad += 1
+                findings.append(
+                    {
+                        "kind": "checkbox_checked_without_evidence_file",
+                        "text": f"{task_id} checked but evidence missing: {ev}",
+                        "task_id": task_id,
+                        "evidence_path": ev,
+                        "ac_id": ac_id,
+                    }
+                )
+            else:
+                checked_ok += 1
+    ok = checked_bad == 0 and (unbound == 0 if _semver_tuple(version or "v0") >= (1, 6, 10) and rows else True)
+    # if no rows, not ok from other validators
+    return {
+        "pass": ok,
+        "checked_ok": checked_ok,
+        "checked_bad": checked_bad,
+        "unbound": unbound,
+        "findings": findings,
+        "reason_code": "" if ok else "task_checkbox_evidence_failed",
+    }
+
+
 def _extract_evidence_rows(markdown: str) -> list[dict[str, str]]:
     rows: list[dict[str, str]] = []
     in_table = False
@@ -587,12 +682,16 @@ def render_tests_package(project_root: Path, *, version: str, feature: str) -> s
             primary_ac = ac_from_truth[0].get("ac_id") or primary_ac
         elif rows:
             primary_ac = rows[0].get("ac_id") or primary_ac
+        # Real CLI + pytest contracts (not print stubs)
         lines.append(
-            f"| TC-EXEC-001 | {primary_ac} | `python3 -c 'print(0)'` | exit_code==0 |"
+            f"| TC-EXEC-CLI | {primary_ac} | `python3 -c 'import beacon; print(chr(111)+chr(107))'` | import_beacon_ok |"
+        )
+        lines.append(
+            f"| TC-EXEC-PYTEST | {primary_ac} | `python3 -m pytest -q tests/ -k {slug} --tb=no` | exit_code_in_0_or_5 |"
         )
         if domain_required:
             lines.append(
-                f"| TC-EXEC-002 | {primary_ac} | `python3 -m pytest -q -k {slug} --tb=no` | exit_code==0_or_no_tests |"
+                f"| TC-EXEC-DOCTOR | {primary_ac} | `python3 -m beacon doctor --help` | exit_code==0 |"
             )
         lines.extend(["", "## Validation Note", "", "v1.6.10 TC layout for Truth Review Gate Check C + domain exec layer.", ""])
         return "\n".join(lines)
@@ -654,11 +753,21 @@ def render_tasks_package(project_root: Path, *, version: str, feature: str) -> s
         for idx, row in enumerate(ac_rows, start=1):
             ac = row.get("ac_id") or f"AC-{idx:03d}"
             desc = (row.get("description") or row.get("theme") or "implement").replace("\n", " ").strip()
-            if len(desc) > 80:
-                desc = desc[:77] + "..."
-            lines.append(f"- [ ] TASK-{idx:03d} Implement {ac}: {desc}")
-        lines.append(f"- [ ] TASK-{len(ac_rows)+1:03d} Validate package gates (truth review + freeze ack)")
-        lines.append(f"- [ ] TASK-{len(ac_rows)+2:03d} Run QA against AC↔TC matrix + exec-layer evidence")
+            if len(desc) > 72:
+                desc = desc[:69] + "..."
+            evidence = f".beacon/evidence/implement/{slug}/{ac}.json"
+            # HARD bind: checked checkbox is invalid without this evidence path existing
+            lines.append(
+                f"- [ ] TASK-{idx:03d} Implement {ac}: {desc} · ac={ac} · evidence=`{evidence}`"
+            )
+        gate_ev = f".beacon/evidence/implement/{slug}/GATES.json"
+        qa_ev = f".beacon/evidence/implement/{slug}/QA-MATRIX.json"
+        lines.append(
+            f"- [ ] TASK-{len(ac_rows)+1:03d} Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`{gate_ev}`"
+        )
+        lines.append(
+            f"- [ ] TASK-{len(ac_rows)+2:03d} Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`{qa_ev}`"
+        )
     else:
         lines.extend(
             [
@@ -674,7 +783,7 @@ def render_tasks_package(project_root: Path, *, version: str, feature: str) -> s
             "",
             "## Boundary",
             "",
-            "Checkboxes are task-ledger inputs derived from AC. They do not mark implement/QA/release complete without gate evidence.",
+            "Checkboxes are AC-bound ledgers. `[x]` is valid only when the bound `evidence=` file exists (completion ≠ self-tick).",
             "",
         ]
     )
@@ -855,6 +964,21 @@ def validate_feature_package(
         diagnostics.append({"severity": "error", "code": error, "path": _rel(project_root, paths["tasks"])})
     if not checkbox_rows:
         diagnostics.append({"severity": "error", "code": "checkbox_ledger_missing", "path": _rel(project_root, paths["tasks"])})
+    task_evidence_gate = evaluate_task_ac_evidence_bindings(
+        project_root, tasks_md=tasks_md, version=version
+    )
+    for finding in task_evidence_gate.get("findings") or []:
+        diagnostics.append(
+            {
+                "severity": "error",
+                "code": str(finding.get("kind") or "task_evidence_binding"),
+                "path": _rel(project_root, paths["tasks"]),
+                "text": finding.get("text"),
+                "task_id": finding.get("task_id"),
+                "evidence_path": finding.get("evidence_path"),
+                "ac_id": finding.get("ac_id"),
+            }
+        )
 
     evidence_rows = _extract_evidence_rows(evidence)
     if not evidence_rows:
@@ -933,6 +1057,7 @@ def validate_feature_package(
         "evidence_row_count": len(evidence_rows),
         "gate_authority": "canonical_surfaces_preserved",
         "checkbox_gate_bypass": False,
+        "task_evidence_gate": task_evidence_gate,
         "evidence_gate_truth": False,
         "diagnostics": diagnostics,
     }

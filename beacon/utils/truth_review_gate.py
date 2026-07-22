@@ -511,6 +511,13 @@ def _is_docs_only_command(command: str) -> bool:
         return True
     if low.startswith("grep "):
         return True
+    # Weak stubs are not real pytest/CLI contracts
+    if re.search(r"print\s*\(\s*0\s*\)", low):
+        return True
+    if "import beacon" not in low and re.search(r"print\s*\(\s*['\"]ok['\"]\s*\)", low):
+        return True
+    if low in {"true", "echo ok", ":"}:
+        return True
     return False
 
 

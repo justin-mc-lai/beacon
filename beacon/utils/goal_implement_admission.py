@@ -140,6 +140,43 @@ def ensure_goal_implement_admission(
         )
         return base
 
+    # v1.6.10+: checked task checkboxes require AC evidence files (completion ≠ self-tick)
+    try:
+        from beacon.utils.feature_package import evaluate_task_ac_evidence_bindings, package_paths
+        from beacon.utils.versioning import normalize_version as _nv
+
+        def _sv(v: str):
+            n = (_nv(v) or "v0.0.0").lstrip("v").split(".")
+            return int(n[0]), int(n[1]), int(n[2] if len(n) > 2 else 0)
+
+        if _sv(admit_version) >= (1, 6, 10):
+            for feat in features or [slug]:
+                tpath = package_paths(root, version=admit_version, feature=feat)["tasks"]
+                if not tpath.is_file():
+                    continue
+                gate = evaluate_task_ac_evidence_bindings(
+                    root, tasks_md=tpath.read_text(encoding="utf-8"), version=admit_version
+                )
+                bad = [
+                    f
+                    for f in (gate.get("findings") or [])
+                    if str(f.get("kind") or "").startswith("checkbox_checked_without")
+                ]
+                if bad:
+                    base["reason_code"] = "task_checkbox_without_evidence"
+                    base["reason_codes"] = ["task_checkbox_without_evidence"]
+                    base["user_facing"] = (
+                        "implement blocked: tasks.md has [x] without evidence file "
+                        "(completion ≠ self-tick; write .beacon/evidence/implement/<slug>/<AC>.json first)"
+                    )
+                    base["task_evidence_gate"] = {"feature": feat, "findings": bad, **{k: gate.get(k) for k in ("checked_bad", "checked_ok")}}
+                    base["recommended_command"] = (
+                        f"write evidence under .beacon/evidence/implement/{feat}/ then re-admit"
+                    )
+                    return base
+    except Exception as _tev:  # noqa: BLE001
+        base["task_evidence_gate_error"] = str(_tev)
+
     admit = run_workspace_admit(
         root,
         version=admit_version,

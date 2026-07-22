@@ -65,6 +65,8 @@ def default_humanizer_block(project_root: Path) -> dict[str, Any]:
         "default_language": "zh",
         "require_on_truth_write": True,
         "preserve_machine_fields": True,
+        "llm_mode": "auto",  # rules | llm | auto (auto uses BEACON_LLM_API_KEY when set)
+        "vendor_into_beacon": True,
         "profiles": {
             "zh": {
                 "skill_path": zh_path,
@@ -196,6 +198,17 @@ def _build_slop_subs() -> list[tuple["re.Pattern[str]", str]]:
         (r"robust\s+", ""),
         (r"seamless\s+", ""),
         (r"cutting-edge\s+", ""),
+        (r"此外，?值得注意的是[，,]?", ""),
+        (r"需要指出的是[，,]?", ""),
+        (r"在当今.*?时代[，,]?", ""),
+        (r"全方位赋能", "支持"),
+        (r"深度赋能", "支持"),
+        (r"不可或缺", "重要"),
+        (r"it is worth noting that\s*", ""),
+        (r"In today's .*?world,\s*", ""),
+        (r"revolutionize[sd]?\s+", "change "),
+        (r"game-?changer", "important change"),
+        (r"unlock the potential of\s+", "use "),
     ]
     return [(_re.compile(p, _re.I), r) for p, r in pairs]
 
@@ -299,11 +312,39 @@ def apply_humanizer_l0(
             "truth_md": truth_md,
             "language": lang,
         }
+    skill_text = str(prof.get("skill_text") or "")
+    engines: list[str] = []
     polished = polish_l0_text(
         l0,
         language=lang if lang in {"zh", "en"} else "zh",
-        skill_text=str(prof.get("skill_text") or ""),
+        skill_text=skill_text,
     )
+    engines.append("rules")
+    llm_meta: dict[str, Any] = {"used": False}
+    cfg = prof.get("config") if isinstance(prof.get("config"), dict) else {}
+    try:
+        from beacon.utils.humanizer_llm import polish_l0_with_llm, should_use_llm
+
+        if should_use_llm(cfg) and skill_text.strip():
+            llm_out = polish_l0_with_llm(
+                polished,
+                skill_text=skill_text,
+                language=lang if lang in {"zh", "en"} else "zh",
+            )
+            if llm_out.get("ok") and llm_out.get("polished"):
+                polished = polish_l0_text(
+                    str(llm_out["polished"]),
+                    language=lang if lang in {"zh", "en"} else "zh",
+                    skill_text=skill_text,
+                )
+                engines.append("llm")
+                llm_meta = {
+                    "used": True,
+                    "model": llm_out.get("model"),
+                    "usage": llm_out.get("usage") or {},
+                }
+    except Exception as exc:  # noqa: BLE001
+        llm_meta = {"used": False, "error": str(exc), "fallback": "rules"}
     new_body = before + heading_line
     if not heading_line.endswith("\n"):
         new_body += "\n"
@@ -348,6 +389,9 @@ def apply_humanizer_l0(
         "skill_path": prof.get("skill_path") or "",
         "skill_chars": prof.get("skill_chars") or len(str(prof.get("skill_text") or "")),
         "preserve_machine_fields": preserve,
+        "engines": engines,
+        "engine": "+".join(engines),
+        "llm": llm_meta,
     }
 
 
@@ -371,9 +415,38 @@ def apply_humanizer_l0_to_path(
     truth_path = paths["truth"]
     if not truth_path.is_file():
         return {"applied": False, "reason_code": "truth_missing", "path": str(truth_path)}
-    prof = profile if isinstance(profile, dict) else resolve_humanizer_profile(root, language=language)
+    prof = dict(profile) if isinstance(profile, dict) else resolve_humanizer_profile(root, language=language)
+    cfg = prof.get("config") if isinstance(prof.get("config"), dict) else resolve_humanizer_config(root)
+    prof["config"] = cfg
+    vendor_info: dict[str, Any] = {}
+    if bool(cfg.get("vendor_into_beacon", True)):
+        try:
+            from beacon.utils.humanizer_llm import load_skill_text_prefer_vendor, vendor_humanizer_skills_into_beacon
+
+            zh = Path(str((cfg.get("profiles") or {}).get("zh", {}).get("skill_path") or ""))
+            en = Path(str((cfg.get("profiles") or {}).get("en", {}).get("skill_path") or ""))
+            vendor_info = vendor_humanizer_skills_into_beacon(
+                root,
+                zh_source=zh if zh.is_file() else Path(str(prof.get("skill_path") or "")),
+                en_source=en if en.is_file() else None,
+            )
+            loaded = load_skill_text_prefer_vendor(
+                root,
+                language=str(language or prof.get("language") or "zh"),
+                oss_skill_path=str(prof.get("skill_path") or ""),
+                oss_skill_text=str(prof.get("skill_text") or ""),
+            )
+            if loaded.get("skill_text"):
+                prof["skill_text"] = loaded["skill_text"]
+                prof["skill_chars"] = loaded.get("skill_chars") or len(loaded["skill_text"])
+                if loaded.get("skill_path"):
+                    prof["skill_path"] = loaded["skill_path"]
+                prof["skill_source"] = loaded.get("source")
+        except Exception as exc:  # noqa: BLE001
+            vendor_info = {"error": str(exc)}
     original = truth_path.read_text(encoding="utf-8")
     result = apply_humanizer_l0(original, profile=prof, language=language or prof.get("language"))
+    result["vendor"] = vendor_info
     if result.get("applied") and result.get("truth_md"):
         truth_path.write_text(str(result["truth_md"]), encoding="utf-8")
     result["path"] = str(truth_path)
