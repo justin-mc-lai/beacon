@@ -230,12 +230,27 @@ def build_event(
 def preflight_governed_trace(project_root: Path, *, run_id: str) -> dict[str, Any]:
     if not str(run_id or "").strip():
         return {"status": "blocked", "reason_code": REASON_MISSING, "findings": [{"message": "run_id required"}]}
-    traces_dir(project_root).mkdir(parents=True, exist_ok=True)
-    path = trace_path(project_root, run_id)
+    root = project_root.expanduser().resolve()
+    tdir = traces_dir(root)
+    if tdir.exists() and not tdir.is_dir():
+        return {
+            "status": "blocked",
+            "reason_code": REASON_MISSING,
+            "findings": [{"message": "traces path is not a directory"}],
+        }
+    try:
+        tdir.mkdir(parents=True, exist_ok=True)
+    except OSError as exc:
+        return {
+            "status": "blocked",
+            "reason_code": REASON_MISSING,
+            "findings": [{"message": str(exc)}],
+        }
+    path = trace_path(root, run_id)
     return {
         "status": "pass",
         "reason_code": "",
-        "trace_path": str(path.relative_to(project_root.expanduser().resolve())),
+        "trace_path": str(path.relative_to(root)),
     }
 
 
@@ -312,3 +327,78 @@ def agent_trace_coverage_signal(project_root: Path) -> dict[str, Any]:
         "reason_code": REASON_MISSING,
         "findings": findings or [{"message": "trace files present but none valid"}],
     }
+
+def resolve_lifecycle_trace_run_id(
+    *,
+    feature_slug: str | None = None,
+    run_id: str | None = None,
+    harness: str = "",
+) -> str:
+    """Prefer explicit/goal run_id; else stable per-feature lifecycle stream."""
+    explicit = str(run_id or "").strip()
+    if explicit:
+        return explicit
+    feat = str(feature_slug or "").strip() or "project"
+    # keep filename-safe
+    safe = "".join(ch if ch.isalnum() or ch in "-_." else "-" for ch in feat)
+    return f"lifecycle-{safe}"
+
+
+def record_lifecycle_stage_trace(
+    project_root: Path,
+    *,
+    harness: str,
+    stage: str = "",
+    feature_slug: str | None = None,
+    run_id: str | None = None,
+    event_type: str = "gate_verdict",
+    summary: str = "",
+    reason_code: str = "",
+    payload: dict[str, Any] | None = None,
+    iteration: int = 0,
+    loop_layer: str | None = "coding",
+    fail_closed: bool = False,
+) -> dict[str, Any]:
+    """Append one agent_trace.v1 event for a 1+6 lifecycle stage exit.
+
+    No full chat bodies. Binds harness (+ feature_slug when known).
+    When fail_closed=True, append/schema failure returns blocked (caller should not silent-pass).
+    """
+    root = Path(project_root).expanduser().resolve()
+    harness_name = str(harness or "").strip() or "unknown"
+    feat = str(feature_slug or "").strip() or None
+    resolved_run = resolve_lifecycle_trace_run_id(
+        feature_slug=feat,
+        run_id=run_id,
+        harness=harness_name,
+    )
+    body: dict[str, Any] = dict(payload or {})
+    # never allow full chat authority in lifecycle traces
+    body.pop("full_chat", None)
+    body.setdefault("stage", str(stage or harness_name))
+    body.setdefault("chat_body", None)
+    summary_text = str(summary or f"{harness_name} stage exit").strip()[:240]
+    result = record_governed_iteration(
+        root,
+        run_id=resolved_run,
+        event_type=event_type if event_type in EVENT_TYPES else "gate_verdict",
+        summary=summary_text,
+        iteration=int(iteration or 0),
+        reason_code=str(reason_code or ""),
+        payload=body,
+        loop_layer=loop_layer,
+        feature_slug=feat,
+        harness=harness_name,
+    )
+    out = {
+        **result,
+        "run_id": resolved_run,
+        "harness": harness_name,
+        "feature_slug": feat or "",
+        "fail_closed": bool(fail_closed),
+    }
+    if fail_closed and str(result.get("status") or "") != "pass":
+        out["status"] = "blocked"
+        out.setdefault("reason_code", result.get("reason_code") or REASON_MISSING)
+    return out
+

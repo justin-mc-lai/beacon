@@ -417,6 +417,30 @@ def review_cmd(
                     payload["humanizer_apply"] = applied
     except Exception as _hum_exc:  # noqa: BLE001
         payload["humanizer_apply"] = {"applied": False, "error": str(_hum_exc)}
+
+    # v1.6.10 lifecycle agent_trace (path refs only; no full chat)
+    try:
+        from beacon.utils.agent_trace import record_lifecycle_stage_trace
+
+        ok_trace = bool(payload.get("pass") or payload.get("review_gate_pass"))
+        payload["agent_trace"] = record_lifecycle_stage_trace(
+            project_root,
+            harness="truth",
+            stage="truth-review",
+            feature_slug=feature,
+            event_type="gate_verdict",
+            summary=f"truth review {'pass' if ok_trace else 'fail'}: {feature}",
+            reason_code="" if ok_trace else str(payload.get("reason_code") or "truth_review_gate_failed"),
+            payload={
+                "review_gate_pass": ok_trace,
+                "report_path": payload.get("report_path"),
+                "version": resolved,
+            },
+            fail_closed=False,
+        )
+    except Exception as _trc_exc:  # noqa: BLE001
+        payload["agent_trace"] = {"status": "blocked", "reason_code": "agent_trace_append_failed", "error": str(_trc_exc)}
+
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:

@@ -239,6 +239,29 @@ def _freeze_impl(feature: str, project: Optional[str], version: str, json_output
         "truth_review_gate": truth_review,
         "tasks_sync": tasks_sync,
     }
+    # v1.6.10 lifecycle agent_trace
+    try:
+        from beacon.utils.agent_trace import record_lifecycle_stage_trace
+
+        payload["agent_trace"] = record_lifecycle_stage_trace(
+            project_root,
+            harness="freeze",
+            stage="freeze",
+            feature_slug=feature,
+            event_type="output",
+            summary=f"freeze ok revision={payload.get('revision_id')}",
+            reason_code="",
+            payload={
+                "status": "frozen",
+                "revision_id": payload.get("revision_id"),
+                "baseline_hash": payload.get("baseline_hash"),
+                "version": resolved_version,
+            },
+            fail_closed=False,
+        )
+    except Exception as _trc_exc:  # noqa: BLE001
+        payload["agent_trace"] = {"status": "blocked", "reason_code": "agent_trace_append_failed", "error": str(_trc_exc)}
+
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:

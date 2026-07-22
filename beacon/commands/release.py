@@ -1426,6 +1426,24 @@ def check(
             "failed_checks": failed_checks,
         },
     )
+    # v1.6.10 lifecycle agent_trace (optional write; not hard fail-closed — AC non-goal INT-TRC-08)
+    try:
+        from beacon.utils.agent_trace import record_lifecycle_stage_trace
+
+        record_lifecycle_stage_trace(
+            project_root,
+            harness="release",
+            stage="release-check",
+            feature_slug=None,
+            event_type="gate_verdict",
+            summary=f"release check status={status}",
+            reason_code="" if all_passed else "release_check_failed",
+            payload={"version": resolved_version, "status": status, "failed_checks": failed_checks[:20] if isinstance(failed_checks, list) else failed_checks},
+            fail_closed=False,
+        )
+    except Exception:
+        pass
+
     if not all_passed:
         raise typer.Exit(1)
 
