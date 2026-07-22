@@ -1,5 +1,7 @@
 # 需求真相文风规范（中文）
 
+> **角色**：速查摘要，**非**润色权威。权威全文见全局 humanizer 配置指向的 oss-sync SKILL（zh: Humanizer-zh / en: blader/humanizer）。v1.6.10: `truth-humanizer-runtime-v1610`.
+
 蒸馏自 [Humanizer-zh](https://github.com/op7418/Humanizer-zh) / [blader/humanizer](https://github.com/blader/humanizer)。  
 **范围**：`truth.md` 的「人话」与叙述段。AC 表、FSM 表、命令、路径不套修辞规则。
 

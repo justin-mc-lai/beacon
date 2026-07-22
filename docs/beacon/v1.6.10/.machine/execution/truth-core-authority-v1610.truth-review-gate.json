@@ -1,0 +1,253 @@
+{
+  "schema": "truth-review-gate.v1",
+  "schema_version": "1.0",
+  "feature": "truth-core-authority-v1610",
+  "version": "v1.6.10",
+  "pass": false,
+  "blocked": true,
+  "review_gate_pass": false,
+  "reason_code": "truth_review_gate_failed",
+  "domain_required": true,
+  "checks": {
+    "A_intent_coverage": {
+      "pass": false,
+      "check": "A",
+      "name": "intent_coverage",
+      "required": true,
+      "matrix_rows": 0,
+      "missing_must": [],
+      "reason": "intent_matrix_missing",
+      "findings": [
+        {
+          "kind": "intent_matrix_missing",
+          "text": "Intent Coverage Matrix required but not found"
+        }
+      ]
+    },
+    "B_fsm_audit": {
+      "pass": true,
+      "check": "B",
+      "name": "fsm_audit",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "fsm": {
+        "transition_count": 8,
+        "from_states": [
+          "change_pending",
+          "draft",
+          "freeze_ready",
+          "frozen",
+          "humanize_pending",
+          "in_review",
+          "refreeze_review"
+        ],
+        "hanging_states": [],
+        "terminals": [],
+        "illegal_present": true,
+        "five_tuple_present": true
+      }
+    },
+    "C_testability": {
+      "pass": false,
+      "check": "C",
+      "name": "testability",
+      "required": true,
+      "reason": "testability_gaps",
+      "findings": [
+        {
+          "kind": "ac_without_tc",
+          "text": "AC-TCA-001 has no TC with Command+Assertion"
+        },
+        {
+          "kind": "ac_without_tc",
+          "text": "AC-TCA-002 has no TC with Command+Assertion"
+        },
+        {
+          "kind": "ac_without_tc",
+          "text": "AC-TCA-004 has no TC with Command+Assertion"
+        },
+        {
+          "kind": "ac_without_tc",
+          "text": "AC-TCA-005 has no TC with Command+Assertion"
+        },
+        {
+          "kind": "ac_without_tc",
+          "text": "AC-TCA-006 has no TC with Command+Assertion"
+        },
+        {
+          "kind": "ac_without_tc",
+          "text": "AC-TCA-008 has no TC with Command+Assertion"
+        },
+        {
+          "kind": "ac_without_tc",
+          "text": "AC-TCA-009 has no TC with Command+Assertion"
+        },
+        {
+          "kind": "ac_without_tc",
+          "text": "AC-TCA-010 has no TC with Command+Assertion"
+        },
+        {
+          "kind": "ac_without_tc",
+          "text": "AC-TCA-011 has no TC with Command+Assertion"
+        },
+        {
+          "kind": "ac_without_tc",
+          "text": "AC-TCA-012 has no TC with Command+Assertion"
+        },
+        {
+          "kind": "ac_without_tc",
+          "text": "AC-TCA-013 has no TC with Command+Assertion"
+        },
+        {
+          "kind": "ac_without_tc",
+          "text": "AC-TCA-014 has no TC with Command+Assertion"
+        },
+        {
+          "kind": "ac_without_tc",
+          "text": "AC-TCA-015 has no TC with Command+Assertion"
+        },
+        {
+          "kind": "ac_without_tc",
+          "text": "AC-TCA-016 has no TC with Command+Assertion"
+        }
+      ],
+      "ac_count": 28,
+      "tc_count": 15,
+      "missing_ac": [
+        "AC-TCA-001",
+        "AC-TCA-002",
+        "AC-TCA-004",
+        "AC-TCA-005",
+        "AC-TCA-006",
+        "AC-TCA-008",
+        "AC-TCA-009",
+        "AC-TCA-010",
+        "AC-TCA-011",
+        "AC-TCA-012",
+        "AC-TCA-013",
+        "AC-TCA-014",
+        "AC-TCA-015",
+        "AC-TCA-016"
+      ],
+      "covered": {
+        "AC-TRG-001": [
+          "TC-TRG-001"
+        ],
+        "AC-TRG-002": [
+          "TC-TRG-002"
+        ],
+        "AC-TRG-003": [
+          "TC-TRG-003"
+        ],
+        "AC-TRG-004": [
+          "TC-TRG-004"
+        ],
+        "AC-TRG-005": [
+          "TC-TRG-005"
+        ],
+        "AC-TRG-006": [
+          "TC-TRG-006"
+        ],
+        "AC-TRG-007": [
+          "TC-TRG-007"
+        ],
+        "AC-TRG-008": [
+          "TC-TRG-008"
+        ],
+        "AC-TRG-009": [
+          "TC-TRG-009"
+        ],
+        "AC-TRG-010": [
+          "TC-TRG-010"
+        ],
+        "AC-TRG-011": [
+          "TC-TRG-011"
+        ],
+        "AC-TRG-012": [
+          "TC-TRG-012"
+        ],
+        "AC-TCA-003": [
+          "TC-TCA-003"
+        ],
+        "AC-TCA-007": [
+          "TC-TCA-007"
+        ]
+      }
+    }
+  },
+  "findings": [
+    {
+      "kind": "intent_matrix_missing",
+      "text": "Intent Coverage Matrix required but not found"
+    },
+    {
+      "kind": "ac_without_tc",
+      "text": "AC-TCA-001 has no TC with Command+Assertion"
+    },
+    {
+      "kind": "ac_without_tc",
+      "text": "AC-TCA-002 has no TC with Command+Assertion"
+    },
+    {
+      "kind": "ac_without_tc",
+      "text": "AC-TCA-004 has no TC with Command+Assertion"
+    },
+    {
+      "kind": "ac_without_tc",
+      "text": "AC-TCA-005 has no TC with Command+Assertion"
+    },
+    {
+      "kind": "ac_without_tc",
+      "text": "AC-TCA-006 has no TC with Command+Assertion"
+    },
+    {
+      "kind": "ac_without_tc",
+      "text": "AC-TCA-008 has no TC with Command+Assertion"
+    },
+    {
+      "kind": "ac_without_tc",
+      "text": "AC-TCA-009 has no TC with Command+Assertion"
+    },
+    {
+      "kind": "ac_without_tc",
+      "text": "AC-TCA-010 has no TC with Command+Assertion"
+    },
+    {
+      "kind": "ac_without_tc",
+      "text": "AC-TCA-011 has no TC with Command+Assertion"
+    },
+    {
+      "kind": "ac_without_tc",
+      "text": "AC-TCA-012 has no TC with Command+Assertion"
+    },
+    {
+      "kind": "ac_without_tc",
+      "text": "AC-TCA-013 has no TC with Command+Assertion"
+    },
+    {
+      "kind": "ac_without_tc",
+      "text": "AC-TCA-014 has no TC with Command+Assertion"
+    },
+    {
+      "kind": "ac_without_tc",
+      "text": "AC-TCA-015 has no TC with Command+Assertion"
+    },
+    {
+      "kind": "ac_without_tc",
+      "text": "AC-TCA-016 has no TC with Command+Assertion"
+    }
+  ],
+  "humanizer": {
+    "rule": "humanizer_only_after_abc_pass_before_freeze",
+    "abc_pass": false,
+    "allowed_now": false,
+    "note": "Polish L0/narrative only; preserve_machine_fields=true"
+  },
+  "evaluated_at": "2026-07-22T03:27:14.467220+00:00",
+  "paths": {
+    "truth": "docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
+    "tests": "docs/beacon/v1.6.10/features/truth-core-authority-v1610/tests.md",
+    "report": "docs/beacon/v1.6.10/.machine/execution/truth-core-authority-v1610.truth-review-gate.json"
+  }
+}

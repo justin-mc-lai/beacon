@@ -712,6 +712,49 @@ def build_material_audit(
         }
     )
 
+    # v1.6.10+: Truth Review Gate (A/B/C) for domain packages / explicit feature
+    if _parse_semver_tuple(resolved_version) >= (1, 6, 10):
+        from beacon.utils.truth_review_gate import run_truth_review_gate
+        feature_dir = source_root / "features"
+        explicit = str(feature or "").strip().lower().replace(" ", "-").replace("_", "-")
+        targets: list[str] = []
+        if explicit:
+            targets = [explicit]
+        elif feature_dir.exists():
+            targets = sorted(p.name for p in feature_dir.iterdir() if p.is_dir())
+        for slug in targets:
+            truth_path = feature_dir / slug / "truth.md"
+            if not truth_path.is_file():
+                continue
+            try:
+                from beacon.utils.feature_package import _parse_frontmatter
+                fm, _, _ = _parse_frontmatter(truth_path.read_text(encoding="utf-8"))
+            except Exception:  # noqa: BLE001
+                fm = {}
+            domain_req = str(fm.get("domain_required") or "").lower() in {"1", "true", "yes", "on", "required"}
+            # hard fail for explicit feature or domain_required; otherwise advisory
+            trg = run_truth_review_gate(root, version=resolved_version, feature=slug, write_report=False)
+            passed = bool(trg.get("pass") or trg.get("review_gate_pass"))
+            if passed:
+                status = "pass"
+            elif explicit or domain_req:
+                status = "fail"
+            else:
+                status = "warn"
+            checks.append(
+                {
+                    "name": f"truth_review_gate:{slug}",
+                    "status": status,
+                    "details": {
+                        "feature": slug,
+                        "pass": passed,
+                        "reason_code": trg.get("reason_code") or "",
+                        "domain_required": domain_req,
+                        "findings": (trg.get("findings") or [])[:20],
+                    },
+                }
+            )
+
     overall = _status_from_checks(checks)
     return {
         "schema_version": "1.0",

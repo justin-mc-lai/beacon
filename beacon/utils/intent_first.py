@@ -118,45 +118,98 @@ def render_intent_first_truth(
     intents: list[IntentCapture],
     user_utterance: str,
 ) -> str:
-    """Phase 3: Render a complete truth.md from confirmed intents.
+    """Gold-aligned truth only (v1.6.10+ floor, global-boundaries §2.1)."""
+    from beacon.utils.feature_package import package_shape_floor_ok, REASON_PACKAGE_SHAPE_UPGRADE
 
-    The output is a deterministic truth package with:
-      - provenance frontmatter
-      - AC table derived from intents (not template fields)
-      - user intent section for traceability
-    """
+    if not package_shape_floor_ok(version):
+        raise ValueError(
+            f"{REASON_PACKAGE_SHAPE_UPGRADE}: version={version} feature={feature} floor=v1.6.10"
+        )
     slug = feature.strip().lower().replace(" ", "-").replace("_", "-")
     provenance = build_provenance(intents)
     ac_rows = [derive_ac_from_intent(intent, idx) for idx, intent in enumerate(intents, start=1)]
+    if not ac_rows:
+        ac_rows = [{"ac_id": "AC-001", "theme": "core", "description": "Confirm core intent is delivered"}]
 
     lines = [
-        _render_frontmatter(slug=slug, version=version, language="en", status="draft", provenance=provenance),
-        "",
-        f"# Feature: {feature}",
-        "",
-        "## Overview",
-        "",
-        "This truth package was generated via the Intent-First Protocol.",
-        "Every acceptance criterion is derived from a confirmed user intent.",
-        "",
-        "## User Intent",
-        "",
-        f"> {user_utterance}",
-        "",
-        "## Acceptance Criteria",
-        "",
-        "| AC ID | Theme | Description |",
-        "|-------|-------|-------------|",
+        "---",
+        f"slug: {slug}",
+        f"version: {version}",
+        "status: draft",
+        "language: zh",
+        "domain_required: false",
+        "parser_contract: beacon-feature-package-v2",
+        "materials_status: current",
+        "truth_source_model: intent_first",
+        "canonical_refs:",
+        f"  prd: docs/beacon/{version}/features/{slug}/truth.md",
+        f"  user_story: docs/beacon/{version}/features/{slug}/truth.md",
+        f"  test_case: docs/beacon/{version}/features/{slug}/tests.md",
+        "provenance:",
     ]
-    for row in ac_rows:
-        lines.append(f"| {row['ac_id']} | {row['theme']} | {row['description']} |")
+    for entry in provenance:
+        lines.append(f"  - ac_id: {entry['ac_id']}")
+        lines.append(f"    source_type: {entry['source_type']}")
+        lines.append(f'    source_ref: "{entry["source_ref"]}"')
+    lines.extend(
+        [
+            "---",
+            "",
+            f"# Requirement Truth: {feature} ({version})",
+            "",
+            "## 人话",
+            "",
+            f"根据用户意图生成 `{feature}` 的需求真相。能做的写清，不能做的写清，怎样算完写清。",
+            "",
+            "- 能做：已确认意图对应的结果",
+            "- 不能做：未确认意图默认实现",
+            "- 怎样算完：Intent Matrix must covered + 每 AC 有 TC + review 通过后再 freeze",
+            "",
+            "## User Intent",
+            "",
+            f"> {user_utterance}",
+            "",
+            "## Intent Coverage Matrix",
+            "",
+            "| intent_id | source | strength | landing | status |",
+            "|-----------|--------|----------|---------|--------|",
+        ]
+    )
+    for idx, row in enumerate(ac_rows, start=1):
+        lines.append(f"| INT-{idx:03d} | prompt | must | {row['ac_id']} | covered |")
     lines.extend(
         [
             "",
+            "## Acceptance Criteria",
+            "",
+            "| AC ID | Description |",
+            "|-------|-------------|",
+        ]
+    )
+    for row in ac_rows:
+        lines.append(f"| {row['ac_id']} | {row.get('description') or row.get('theme') or ''} |")
+    lines.extend(
+        [
+            "",
+            "## FSM 五元组",
+            "",
+            "| State | Event | Guard | To | Action |",
+            "|-------|-------|-------|-----|--------|",
+            "| draft | submit | package_complete | in_review | — |",
+            "| in_review | pass | gate_ok | frozen | set_frozen |",
+            "| in_review | fail | — | draft | attach_report |",
+            "",
+            "### invalid / illegal",
+            "",
+            "- draft → frozen without review",
+            "",
+            "## Non-goals",
+            "",
+            "- 未在 Matrix 声明的意图",
+            "",
             "## Provenance",
             "",
-            "Each AC above traces to a confirmed user intent (see frontmatter).",
-            "Source types allowed: `user_intent`, `context_analysis`, `constraint_derivation`.",
+            "Each AC traces to a confirmed user intent (see frontmatter provenance).",
             "",
             "## Source Excerpt",
             "",
@@ -169,37 +222,76 @@ def render_intent_first_truth(
     return "\n".join(lines)
 
 
-def render_intent_first_tests(feature: str, ac_rows: list[dict[str, str]]) -> str:
-    """Render a tests.md from derived AC rows."""
+def render_intent_first_tests(feature: str, ac_rows: list[dict[str, str]], version: str = "v1.6.10") -> str:
+    """Render tests.md from derived AC rows (v1.6.10 gold layout only)."""
+    from beacon.utils.feature_package import package_shape_floor_ok, REASON_PACKAGE_SHAPE_UPGRADE
+
+    ver = version or "v1.6.10"
+    if not package_shape_floor_ok(ver):
+        raise ValueError(
+            f"{REASON_PACKAGE_SHAPE_UPGRADE}: version={ver} feature={feature} floor=v1.6.10"
+        )
+    slug = feature.strip().lower().replace(" ", "-").replace("_", "-")
     lines = [
+        "---",
+        f"slug: {slug}",
+        f"version: {ver}",
+        "materials_status: current",
+        "---",
+        "",
         f"# Tests: {feature}",
         "",
-        "## Coverage Matrix",
-        "",
-        "| AC ID | TC ID | Layer | Command | Assertion |",
-        "|-------|-------|-------|---------|-----------|",
+        "| TC ID | AC ID | Command | Assertion |",
+        "|-------|-------|---------|-----------|",
     ]
     for idx, row in enumerate(ac_rows, start=1):
-        tc_id = f"TC-{idx:03d}"
-        lines.append(f"| {row['ac_id']} | {tc_id} | unit | `beacon doctor --help` | exit 0 |")
-    lines.extend(
-        [
-            "",
-            "## Validation Note",
-            "",
-            "Tests derived from intent-first AC table. Update commands and assertions to match implementation.",
-            "",
-        ]
-    )
+        ac = row["ac_id"]
+        lines.append(
+            f"| TC-{idx:03d} | {ac} | `rg -n '{ac}' docs/beacon/{ver}/features/{slug}/truth.md` | AC present |"
+        )
+    lines.append("")
     return "\n".join(lines)
 
 
 def render_intent_first_tasks(feature: str, ac_rows: list[dict[str, str]]) -> str:
-    """Render a tasks.md from derived AC rows."""
-    lines = [f"# Tasks: {feature}", ""]
-    for row in ac_rows:
-        lines.append(f"- [ ] Implement {row['ac_id']}: {row['description'][:60]}")
-    lines.append("")
+    """Render tasks.md with hard ac=/evidence= bindings (v1.6.10+)."""
+    slug = feature.strip().lower().replace(" ", "-").replace("_", "-")
+    lines = [
+        "---",
+        f"slug: {slug}",
+        "materials_status: current",
+        "task_source: acceptance_criteria",
+        "---",
+        "",
+        f"# Tasks: {feature}",
+        "",
+        "## Task Ledger",
+        "",
+    ]
+    for idx, row in enumerate(ac_rows, start=1):
+        ac = row["ac_id"]
+        desc = (row.get("description") or row.get("theme") or "implement").replace("\n", " ").strip()
+        if len(desc) > 72:
+            desc = desc[:69] + "..."
+        evidence = f".beacon/evidence/implement/{slug}/{ac}.json"
+        lines.append(f"- [ ] TASK-{idx:03d} Implement {ac}: {desc} · ac={ac} · evidence=`{evidence}`")
+    gate_ev = f".beacon/evidence/implement/{slug}/GATES.json"
+    qa_ev = f".beacon/evidence/implement/{slug}/QA-MATRIX.json"
+    lines.append(
+        f"- [ ] TASK-{len(ac_rows)+1:03d} Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`{gate_ev}`"
+    )
+    lines.append(
+        f"- [ ] TASK-{len(ac_rows)+2:03d} Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`{qa_ev}`"
+    )
+    lines.extend(
+        [
+            "",
+            "## Boundary",
+            "",
+            "Checkboxes are AC-bound ledgers. `[x]` is valid only when the bound `evidence=` file exists.",
+            "",
+        ]
+    )
     return "\n".join(lines)
 
 

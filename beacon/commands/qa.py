@@ -1258,7 +1258,118 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
                 typer.echo("Beacon QA blocked: workspace admission required", err=True)
             return 2, blocked_payload
 
+        # v1.6.10+: Truth Review Gate + AC↔TC matrix layer (fail-closed)
+        try:
+            from beacon.utils.truth_review_gate import run_truth_review_gate, truth_review_gate_supported
+
+            if truth_review_gate_supported(resolved_version):
+                trg = run_truth_review_gate(
+                    project_root,
+                    version=resolved_version,
+                    feature=feature,
+                    write_report=True,
+                )
+                if not bool(trg.get("pass") or trg.get("review_gate_pass")):
+                    blocked_payload = _with_qa_surface({
+                        "schema_version": "1.0",
+                        "feature": feature,
+                        "version": resolved_version,
+                        "status": "blocked",
+                        "reason_codes": ["truth_review_gate_failed"],
+                        "reason_code": str(trg.get("reason_code") or "truth_review_gate_failed"),
+                        "layers": {
+                            "truth_review_gate": {
+                                "status": "fail",
+                                "pass": False,
+                                "reason_code": trg.get("reason_code") or "truth_review_gate_failed",
+                                "checks": trg.get("checks") or {},
+                                "findings": (trg.get("findings") or [])[:30],
+                                "report_path": trg.get("report_path") or (trg.get("paths") or {}).get("report"),
+                            },
+                            "ac_tc_matrix": {
+                                "status": "fail",
+                                "missing_ac": ((trg.get("checks") or {}).get("C_testability") or {}).get("missing_ac") or [],
+                            },
+                        },
+                        "truth_review_gate": trg,
+                        "recommended_command": f"beacon truth review {feature} --project-root {project_root} --version {resolved_version} --json",
+                    }, blocked=True)
+                    if json_output:
+                        typer.echo(json.dumps(blocked_payload, ensure_ascii=False, indent=2))
+                    else:
+                        typer.echo("Beacon QA blocked: truth review gate failed (AC↔TC / matrix / FSM)", err=True)
+                    return 2, blocked_payload
+        except Exception as _trg_exc:  # noqa: BLE001
+            blocked_payload = _with_qa_surface({
+                "schema_version": "1.0",
+                "feature": feature,
+                "version": resolved_version,
+                "status": "blocked",
+                "reason_codes": ["truth_review_gate_error"],
+                "reason_code": "truth_review_gate_error",
+                "message": str(_trg_exc),
+            }, blocked=True)
+            if json_output:
+                typer.echo(json.dumps(blocked_payload, ensure_ascii=False, indent=2))
+            else:
+                typer.echo(f"Beacon QA blocked: truth review error: {_trg_exc}", err=True)
+            return 2, blocked_payload
+
     if metadata_machine_path(project_root).exists():
+
+        # v1.6.10+: execute package exec-layer TCs (shape was checked by TRG; now run)
+        try:
+            from beacon.utils.package_exec_tc import run_package_exec_tcs
+            from beacon.utils.truth_review_gate import truth_review_gate_supported as _trg_sup
+
+            if _trg_sup(resolved_version):
+                exec_payload = run_package_exec_tcs(
+                    project_root,
+                    version=resolved_version,
+                    feature=feature,
+                    write_evidence=True,
+                )
+                if exec_payload.get("blocked") or (
+                    exec_payload.get("domain_required") and not exec_payload.get("pass")
+                ) or (
+                    not exec_payload.get("skipped") and exec_payload.get("pass") is False
+                ):
+                    blocked_payload = _with_qa_surface({
+                        "schema_version": "1.0",
+                        "feature": feature,
+                        "version": resolved_version,
+                        "status": "blocked",
+                        "reason_codes": [str(exec_payload.get("reason_code") or "package_exec_tc_failed")],
+                        "reason_code": str(exec_payload.get("reason_code") or "package_exec_tc_failed"),
+                        "layers": {
+                            "package_exec_tc": exec_payload,
+                        },
+                        "package_exec_tc": exec_payload,
+                        "recommended_command": (
+                            f"inspect .beacon/evidence/test-results/{feature}/ and fix failing EXEC TCs"
+                        ),
+                    }, blocked=True)
+                    if json_output:
+                        typer.echo(json.dumps(blocked_payload, ensure_ascii=False, indent=2))
+                    else:
+                        typer.echo("Beacon QA blocked: package exec-layer TC failed", err=True)
+                    return 2, blocked_payload
+        except Exception as _exec_exc:  # noqa: BLE001
+            blocked_payload = _with_qa_surface({
+                "schema_version": "1.0",
+                "feature": feature,
+                "version": resolved_version,
+                "status": "blocked",
+                "reason_codes": ["package_exec_tc_error"],
+                "reason_code": "package_exec_tc_error",
+                "message": str(_exec_exc),
+            }, blocked=True)
+            if json_output:
+                typer.echo(json.dumps(blocked_payload, ensure_ascii=False, indent=2))
+            else:
+                typer.echo(f"Beacon QA blocked: package exec error: {_exec_exc}", err=True)
+            return 2, blocked_payload
+
         metadata_verdict = verify_project_metadata(project_root, version=version if version != "auto" else "")
         if str(metadata_verdict.get("status") or "").lower() == "fail":
             blocked_payload = _with_qa_surface({

@@ -29,6 +29,7 @@ from beacon.utils.revision_state import load_revision_state
 from beacon.utils.acceptance_kit import build_acceptance_kit_projection
 from beacon.utils.semantic_runtime import evaluate_semantic_contract
 from beacon.utils.story_state import feature_slug
+from beacon.utils.truth_review_gate import evaluate_release_truth_materials_gate, truth_review_gate_supported
 from beacon.utils.technical_review_contract import build_technical_review_gate_payload, load_technical_review_state
 from beacon.utils.test_contract_governance import build_test_contract_gate_payload
 from beacon.utils.truth_map import resolve_version_governance
@@ -724,6 +725,11 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         else {}
     )
     technical_review_state = load_technical_review_state(project_root, feature=feature) if feature else {}
+    truth_materials_gate = (
+        evaluate_release_truth_materials_gate(project_root, version=resolved_version, feature=feature)
+        if feature and truth_review_gate_supported(resolved_version)
+        else {"required": False, "blocked": False, "pass": True, "skipped": True}
+    )
     deep_release_supplement = (
         build_deep_release_supplement_gate(project_root, version=resolved_version, feature=feature)
         if feature and deep_loop_supported(resolved_version)
@@ -937,6 +943,12 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
     if feature and requirement_completeness_gate:
         release_ready = release_ready and str(requirement_completeness_gate.get("status") or "pass") in {"pass", "pass_with_downgrade"}
     release_ready = release_ready and version_surface_governance_pass and deep_release_supplement_pass and test_contract_governance_pass and not bool(reconciliation_gate.get("required"))
+    if feature and bool(truth_materials_gate.get("required")):
+        release_ready = release_ready and not bool(truth_materials_gate.get("blocked", False))
+        if bool(truth_materials_gate.get("blocked")):
+            gate_reason_codes = sorted({*gate_reason_codes, *(truth_materials_gate.get("reason_codes") or [str(truth_materials_gate.get("reason_code") or "materials_status_stale")])})
+            blocked_count = max(blocked_count, 1)
+
     if (
         runtime_feature_supported("v1.1.10", runtime_version=resolved_runtime)
         and gate_pass
@@ -963,6 +975,19 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         and not bool(reconciliation_gate.get("required"))
     ):
         release_ready = True
+    # v1.6.10+: materials stale / missing TRG report always fail-closed (after any ready override)
+    if feature and bool(truth_materials_gate.get("required")) and bool(truth_materials_gate.get("blocked")):
+        release_ready = False
+        gate_reason_codes = sorted(
+            {
+                *gate_reason_codes,
+                *(
+                    truth_materials_gate.get("reason_codes")
+                    or [str(truth_materials_gate.get("reason_code") or "materials_status_stale")]
+                ),
+            }
+        )
+        blocked_count = max(blocked_count, 1)
     release_delivery_read_model = load_delivery_read_model(
         project_root,
         version=resolved_version,
@@ -1210,6 +1235,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             "contract_json_path": str(technical_review_gate.get("contract_json_path") or ""),
             "contract_markdown_path": str(technical_review_gate.get("contract_markdown_path") or ""),
         },
+        "truth_materials_gate": truth_materials_gate if isinstance(truth_materials_gate, dict) else {},
         "deep_release_supplement": deep_release_supplement,
         "test_contract_governance": test_contract_governance,
         "reconciliation": reconciliation_gate if isinstance(reconciliation_gate, dict) else {},

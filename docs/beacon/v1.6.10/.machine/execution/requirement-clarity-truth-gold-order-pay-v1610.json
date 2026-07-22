@@ -1,0 +1,676 @@
+{
+  "schema_version": "1.0",
+  "feature": "truth-gold-order-pay-v1610",
+  "feature_slug": "truth-gold-order-pay-v1610",
+  "version": "v1.6.10",
+  "runtime_version": "v1.6.9",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.6.10/.machine/execution/requirement-clarity-truth-gold-order-pay-v1610.json",
+  "report_markdown_path": "docs/beacon/v1.6.10/execution/requirement-clarity-truth-gold-order-pay-v1610.md",
+  "state_path": ".beacon/state/requirement-clarity-truth-gold-order-pay-v1610.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.10",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-07-22T03:50:44.641308+00:00",
+    "feature": "truth-gold-order-pay-v1610",
+    "feature_slug": "truth-gold-order-pay-v1610",
+    "prd_ref": "docs/beacon/v1.6.10/prd/truth-gold-order-pay-v1610.md",
+    "user_story_ref": "docs/beacon/v1.6.10/user-story/truth-gold-order-pay-v1610.md"
+  },
+  "domain_fsm_gate": {
+    "schema_version": "1.0",
+    "feature": "truth-gold-order-pay-v1610",
+    "feature_slug": "truth-gold-order-pay-v1610",
+    "version": "v1.6.10",
+    "truth_path": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md",
+    "tests_path": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/tests.md",
+    "required": true,
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "findings": [],
+    "requirement": {
+      "required": true,
+      "reason": "explicit_domain_mark",
+      "explicit": true,
+      "partial": true,
+      "complexity": false,
+      "business_signal": true,
+      "version_supported": true
+    },
+    "projection": {
+      "schema_version": "1.0",
+      "domain_fsm_schema": "domain-fsm.v1",
+      "entity_precedence_schema": "entity-precedence.v1",
+      "frontmatter": {
+        "slug": "truth-gold-order-pay-v1610",
+        "version": "v1.6.10",
+        "status": "frozen",
+        "revision_id": "R3",
+        "language": "zh",
+        "domain_required": "true",
+        "ux_required": "false",
+        "parser_contract": "beacon-feature-package-v2",
+        "canonical_refs": {
+          "prd": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md",
+          "user_story": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md",
+          "test_case": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/tests.md"
+        },
+        "truth_source_model": "feature_package_authoritative",
+        "program_ref": "docs/beacon/v1.6.10/programs/beacon-truth-authority-humanizer-v1610/program-manifest.md",
+        "previous_revision": "R2",
+        "change_reason": "R3: add Intent Coverage Matrix for Gold; demonstrate Truth Review Gate Check A",
+        "example_skill_path": "skills/beacon/beacon-truth/references/examples/gold-order-pay-package.md"
+      },
+      "frontmatter_errors": [],
+      "has_domain_model_section": true,
+      "has_domain_fsm_section": true,
+      "has_illegal_transition_section": true,
+      "entities": [
+        {
+          "entity": "Order",
+          "key": "order_id",
+          "precedence": "root",
+          "requires": "root"
+        },
+        {
+          "entity": "PaymentIntent",
+          "key": "intent_id",
+          "precedence": "requires Order",
+          "requires": "requires Order"
+        },
+        {
+          "entity": "RefundIntent",
+          "key": "refund_id",
+          "precedence": "requires Order + paid fact",
+          "requires": "requires Order + paid fact"
+        }
+      ],
+      "entity_precedence": [
+        {
+          "entity": "Order",
+          "key": "order_id",
+          "precedence": "root",
+          "requires": "root"
+        },
+        {
+          "entity": "PaymentIntent",
+          "key": "intent_id",
+          "precedence": "requires Order",
+          "requires": "requires Order"
+        },
+        {
+          "entity": "RefundIntent",
+          "key": "refund_id",
+          "precedence": "requires Order + paid fact",
+          "requires": "requires Order + paid fact"
+        }
+      ],
+      "aggregates": [
+        {
+          "name": "Order",
+          "states": [
+            "closed",
+            "created",
+            "paid",
+            "paying",
+            "refunded",
+            "refunding"
+          ],
+          "transitions": [
+            {
+              "from": "created",
+              "to": "paying",
+              "guard": "order_exists + PayRequested"
+            },
+            {
+              "from": "paying",
+              "to": "paid",
+              "guard": "PaymentSucceeded + intent_matches"
+            },
+            {
+              "from": "paying",
+              "to": "created",
+              "guard": "PaymentFailed + intent_matches"
+            },
+            {
+              "from": "paying",
+              "to": "closed",
+              "guard": "PayTimeout"
+            },
+            {
+              "from": "paid",
+              "to": "refunding",
+              "guard": "RefundRequested + not_shipped"
+            },
+            {
+              "from": "refunding",
+              "to": "refunded",
+              "guard": "RefundSucceeded + intent_matches"
+            },
+            {
+              "from": "refunding",
+              "to": "paid",
+              "guard": "RefundFailed + intent_matches"
+            }
+          ]
+        }
+      ],
+      "illegal_transition_slots": [
+        {
+          "description": "created → paid (skip paying / without success)",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "closed → paid",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "refunded → paying",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "shipped 退款成功（RefundSucceeded while shipped）",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "无 PaymentSucceeded 事实进入 paid",
+          "aggregate": "",
+          "source": "truth"
+        }
+      ],
+      "acceptance_criteria": [
+        {
+          "ac_id": "AC-PAY-001",
+          "description": "created + PayRequested → paying + intent"
+        },
+        {
+          "ac_id": "AC-PAY-002",
+          "description": "非 created 支付 → 拒绝"
+        },
+        {
+          "ac_id": "AC-PAY-003",
+          "description": "PaymentSucceeded 幂等 → paid，success=1"
+        },
+        {
+          "ac_id": "AC-PAY-010",
+          "description": "PaymentFailed → created"
+        },
+        {
+          "ac_id": "AC-PAY-011",
+          "description": "paid 再 PayRequested → 拒绝"
+        },
+        {
+          "ac_id": "AC-PAY-020",
+          "description": "禁 created→paid 跳态"
+        },
+        {
+          "ac_id": "AC-PAY-021",
+          "description": "禁无 success→paid"
+        },
+        {
+          "ac_id": "AC-PAY-022",
+          "description": "PayTimeout → closed"
+        },
+        {
+          "ac_id": "AC-PAY-023",
+          "description": "closed 再 PayRequested → 拒绝"
+        },
+        {
+          "ac_id": "AC-RF-001",
+          "description": "RefundRequested + 可退 → refunding"
+        },
+        {
+          "ac_id": "AC-RF-002",
+          "description": "RefundSucceeded 幂等 → refunded"
+        },
+        {
+          "ac_id": "AC-RF-003",
+          "description": "shipped 退款 → 拒绝，仍 paid"
+        },
+        {
+          "ac_id": "AC-RF-004",
+          "description": "refunded 再支付/退成功路径 → 拒绝"
+        },
+        {
+          "ac_id": "AC-PAY-030",
+          "description": "skill 示例含人话+mermaid"
+        },
+        {
+          "ac_id": "AC-PAY-031",
+          "description": "状态集含 created,paying,paid,closed,refunding,refunded"
+        },
+        {
+          "ac_id": "AC-PAY-032",
+          "description": "含 FSM 五元组表"
+        },
+        {
+          "ac_id": "AC-PAY-033",
+          "description": "含 Intent Coverage Matrix；must 无 missing"
+        },
+        {
+          "ac_id": "AC-PAY-034",
+          "description": "本 package 每 AC 在 tests.md 有 ≥1 行"
+        }
+      ],
+      "bound_ac_ids": [
+        "AC-PAY-001",
+        "AC-PAY-002",
+        "AC-PAY-003",
+        "AC-PAY-010",
+        "AC-PAY-011",
+        "AC-PAY-020",
+        "AC-PAY-021",
+        "AC-PAY-022",
+        "AC-PAY-023",
+        "AC-RF-001",
+        "AC-RF-002",
+        "AC-RF-003",
+        "AC-RF-004",
+        "AC-PAY-031"
+      ],
+      "orphan_ac_ids": [],
+      "aggregates_missing_illegal_slots": [],
+      "raw_section_titles": [
+        "人话",
+        "User Intent",
+        "User Intent Snapshot",
+        "Intent Coverage Matrix（Check A 示例）",
+        "First principles（域）",
+        "用户旅程 / 故事",
+        "Acceptance Criteria",
+        "Domain Model",
+        "Domain FSM Order",
+        "Illegal transitions",
+        "FSM 五元组",
+        "Truth Review Gate 示范结论（文档层）",
+        "Non-goals",
+        "Freeze readiness R3"
+      ]
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "required": true,
+      "blocked": false,
+      "status": "pass",
+      "reason_code": "",
+      "findings": [],
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "truth-gold-order-pay-v1610",
+          "version": "v1.6.10",
+          "status": "frozen",
+          "revision_id": "R3",
+          "language": "zh",
+          "domain_required": "true",
+          "ux_required": "false",
+          "parser_contract": "beacon-feature-package-v2",
+          "canonical_refs": {
+            "prd": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md",
+            "user_story": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md",
+            "test_case": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/tests.md"
+          },
+          "truth_source_model": "feature_package_authoritative",
+          "program_ref": "docs/beacon/v1.6.10/programs/beacon-truth-authority-humanizer-v1610/program-manifest.md",
+          "previous_revision": "R2",
+          "change_reason": "R3: add Intent Coverage Matrix for Gold; demonstrate Truth Review Gate Check A",
+          "example_skill_path": "skills/beacon/beacon-truth/references/examples/gold-order-pay-package.md"
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": true,
+        "has_domain_fsm_section": true,
+        "has_illegal_transition_section": true,
+        "entities": [
+          {
+            "entity": "Order",
+            "key": "order_id",
+            "precedence": "root",
+            "requires": "root"
+          },
+          {
+            "entity": "PaymentIntent",
+            "key": "intent_id",
+            "precedence": "requires Order",
+            "requires": "requires Order"
+          },
+          {
+            "entity": "RefundIntent",
+            "key": "refund_id",
+            "precedence": "requires Order + paid fact",
+            "requires": "requires Order + paid fact"
+          }
+        ],
+        "entity_precedence": [
+          {
+            "entity": "Order",
+            "key": "order_id",
+            "precedence": "root",
+            "requires": "root"
+          },
+          {
+            "entity": "PaymentIntent",
+            "key": "intent_id",
+            "precedence": "requires Order",
+            "requires": "requires Order"
+          },
+          {
+            "entity": "RefundIntent",
+            "key": "refund_id",
+            "precedence": "requires Order + paid fact",
+            "requires": "requires Order + paid fact"
+          }
+        ],
+        "aggregates": [
+          {
+            "name": "Order",
+            "states": [
+              "closed",
+              "created",
+              "paid",
+              "paying",
+              "refunded",
+              "refunding"
+            ],
+            "transitions": [
+              {
+                "from": "created",
+                "to": "paying",
+                "guard": "order_exists + PayRequested"
+              },
+              {
+                "from": "paying",
+                "to": "paid",
+                "guard": "PaymentSucceeded + intent_matches"
+              },
+              {
+                "from": "paying",
+                "to": "created",
+                "guard": "PaymentFailed + intent_matches"
+              },
+              {
+                "from": "paying",
+                "to": "closed",
+                "guard": "PayTimeout"
+              },
+              {
+                "from": "paid",
+                "to": "refunding",
+                "guard": "RefundRequested + not_shipped"
+              },
+              {
+                "from": "refunding",
+                "to": "refunded",
+                "guard": "RefundSucceeded + intent_matches"
+              },
+              {
+                "from": "refunding",
+                "to": "paid",
+                "guard": "RefundFailed + intent_matches"
+              }
+            ]
+          }
+        ],
+        "illegal_transition_slots": [
+          {
+            "description": "created → paid (skip paying / without success)",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "closed → paid",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "refunded → paying",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "shipped 退款成功（RefundSucceeded while shipped）",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "无 PaymentSucceeded 事实进入 paid",
+            "aggregate": "",
+            "source": "truth"
+          }
+        ],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-PAY-001",
+            "description": "created + PayRequested → paying + intent"
+          },
+          {
+            "ac_id": "AC-PAY-002",
+            "description": "非 created 支付 → 拒绝"
+          },
+          {
+            "ac_id": "AC-PAY-003",
+            "description": "PaymentSucceeded 幂等 → paid，success=1"
+          },
+          {
+            "ac_id": "AC-PAY-010",
+            "description": "PaymentFailed → created"
+          },
+          {
+            "ac_id": "AC-PAY-011",
+            "description": "paid 再 PayRequested → 拒绝"
+          },
+          {
+            "ac_id": "AC-PAY-020",
+            "description": "禁 created→paid 跳态"
+          },
+          {
+            "ac_id": "AC-PAY-021",
+            "description": "禁无 success→paid"
+          },
+          {
+            "ac_id": "AC-PAY-022",
+            "description": "PayTimeout → closed"
+          },
+          {
+            "ac_id": "AC-PAY-023",
+            "description": "closed 再 PayRequested → 拒绝"
+          },
+          {
+            "ac_id": "AC-RF-001",
+            "description": "RefundRequested + 可退 → refunding"
+          },
+          {
+            "ac_id": "AC-RF-002",
+            "description": "RefundSucceeded 幂等 → refunded"
+          },
+          {
+            "ac_id": "AC-RF-003",
+            "description": "shipped 退款 → 拒绝，仍 paid"
+          },
+          {
+            "ac_id": "AC-RF-004",
+            "description": "refunded 再支付/退成功路径 → 拒绝"
+          },
+          {
+            "ac_id": "AC-PAY-030",
+            "description": "skill 示例含人话+mermaid"
+          },
+          {
+            "ac_id": "AC-PAY-031",
+            "description": "状态集含 created,paying,paid,closed,refunding,refunded"
+          },
+          {
+            "ac_id": "AC-PAY-032",
+            "description": "含 FSM 五元组表"
+          },
+          {
+            "ac_id": "AC-PAY-033",
+            "description": "含 Intent Coverage Matrix；must 无 missing"
+          },
+          {
+            "ac_id": "AC-PAY-034",
+            "description": "本 package 每 AC 在 tests.md 有 ≥1 行"
+          }
+        ],
+        "bound_ac_ids": [
+          "AC-PAY-001",
+          "AC-PAY-002",
+          "AC-PAY-003",
+          "AC-PAY-010",
+          "AC-PAY-011",
+          "AC-PAY-020",
+          "AC-PAY-021",
+          "AC-PAY-022",
+          "AC-PAY-023",
+          "AC-RF-001",
+          "AC-RF-002",
+          "AC-RF-003",
+          "AC-RF-004",
+          "AC-PAY-031"
+        ],
+        "orphan_ac_ids": [],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "人话",
+          "User Intent",
+          "User Intent Snapshot",
+          "Intent Coverage Matrix（Check A 示例）",
+          "First principles（域）",
+          "用户旅程 / 故事",
+          "Acceptance Criteria",
+          "Domain Model",
+          "Domain FSM Order",
+          "Illegal transitions",
+          "FSM 五元组",
+          "Truth Review Gate 示范结论（文档层）",
+          "Non-goals",
+          "Freeze readiness R3"
+        ]
+      },
+      "summary": {
+        "entity_count": 3,
+        "aggregate_count": 1,
+        "illegal_slot_count": 5,
+        "orphan_ac_count": 0,
+        "bound_ac_count": 14
+      }
+    },
+    "recommended_action": ""
+  },
+  "human_closure_contract": {
+    "required": false,
+    "research_path": "docs/beacon/v1.6.10/research/truth-gold-order-pay-v1610.md",
+    "research_exists": false,
+    "source_architecture_path": "docs/beacon/v1.6.10/source-architecture/truth-gold-order-pay-v1610.md",
+    "source_architecture_exists": false,
+    "required_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "missing_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "diagram_types": [],
+    "complexity_signals": []
+  },
+  "requirement_closure_contract": {
+    "required": true,
+    "chain_order": [
+      "research",
+      "prd",
+      "user_story",
+      "test_case",
+      "requirement_clarity",
+      "freeze"
+    ],
+    "human_closure_required": false,
+    "paths": {
+      "research": "docs/beacon/v1.6.10/research/truth-gold-order-pay-v1610.md",
+      "prd": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md",
+      "user_story": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md",
+      "test_case": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/tests.md"
+    },
+    "exists": {
+      "research": false,
+      "prd": true,
+      "user_story": true,
+      "test_case": true
+    },
+    "required_research_sections": [],
+    "missing_research_sections": [],
+    "ac_projection": {
+      "prd_ac_ids": [],
+      "user_story_ac_ids": [],
+      "test_case_ac_ids": [],
+      "upstream_ac_ids": [],
+      "missing_test_case_ac_ids": []
+    }
+  },
+  "version_projection_truth_contract": {
+    "required": false,
+    "supported": true,
+    "projection_types": [],
+    "research_path": "docs/beacon/v1.6.10/research/truth-gold-order-pay-v1610.md",
+    "research_exists": false,
+    "required_fields": [
+      "prd_refs",
+      "user_story_refs",
+      "test_case_refs",
+      "coverage_notes",
+      "out_of_scope_notes"
+    ],
+    "field_presence": {
+      "prd_refs": false,
+      "user_story_refs": false,
+      "test_case_refs": false,
+      "coverage_notes": false,
+      "out_of_scope_notes": false
+    },
+    "missing_fields": [],
+    "required_refs": {
+      "prd_refs": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md",
+      "user_story_refs": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md",
+      "test_case_refs": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/tests.md"
+    },
+    "missing_ref_targets": [],
+    "ready": false
+  },
+  "support_write_topology_contract": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "diagnostics": []
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md",
+    "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/tests.md",
+    "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/tasks.md",
+    "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/evidence.md"
+  ]
+}

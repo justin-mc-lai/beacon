@@ -6,10 +6,15 @@ from typing import Any
 
 
 _SKILL_DIR_MAP = {
-    "prd": "beacon-gen-truth",
-    "implement": "beacon-gen-implement",
-    "qa": "beacon-eval-qa",
-    "release": "beacon-eval-release",
+    # Scheme A 1+6 public cores first; archived fine-grained names as fallbacks.
+    "prd": ("beacon-truth", "beacon-gen-truth"),
+    "truth": ("beacon-truth", "beacon-gen-truth"),
+    "implement": ("beacon-implement", "beacon-gen-implement"),
+    "qa": ("beacon-qa", "beacon-eval-qa"),
+    "release": ("beacon-release", "beacon-eval-release"),
+    "plan": ("beacon-plan",),
+    "goal": ("beacon-goal",),
+    "design": ("beacon-design",),
 }
 
 _SECTION_MAP = {
@@ -26,10 +31,25 @@ def _repo_root() -> Path:
 
 
 def _skill_path(stage: str) -> Path:
-    skill_dir = _SKILL_DIR_MAP.get(stage, "")
-    if not skill_dir:
+    skill_dirs = _SKILL_DIR_MAP.get(stage)
+    if not skill_dirs:
         raise KeyError(f"unsupported decision surface stage: {stage}")
-    return _repo_root() / "skills" / "beacon" / skill_dir / "SKILL.md"
+    if isinstance(skill_dirs, str):
+        skill_dirs = (skill_dirs,)
+    root = _repo_root() / "skills" / "beacon"
+    for skill_dir in skill_dirs:
+        candidate = root / skill_dir / "SKILL.md"
+        if candidate.is_file():
+            return candidate
+        # progressive mode files may hold decision sections after 1+6 merge
+        modes = root / skill_dir / "references" / "modes"
+        if modes.is_dir():
+            for name in ("eval-qa.md", "gen-truth.md", "gen-implement.md", "eval-release.md"):
+                mode_path = modes / name
+                if mode_path.is_file():
+                    return mode_path
+    # last resort: first mapped dir even if missing (caller will raise FileNotFoundError)
+    return root / skill_dirs[0] / "SKILL.md"
 
 
 @lru_cache(maxsize=None)

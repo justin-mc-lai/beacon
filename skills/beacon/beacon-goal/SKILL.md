@@ -22,6 +22,7 @@ metadata:
 ## HARD GATE
 
 Orchestrate pipeline only. Complete needs verifier evidence. Release always human gate. Longrun/supervise only on goal.
+Hard stage exits via `goal_stage_exit_gates` + implement `ensure_goal_implement_admission` (workspace admit + freeze ack; fill-then-pass, not soft tick).
 
 Shared preamble:
 
