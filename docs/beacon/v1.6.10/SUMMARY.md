@@ -20,6 +20,7 @@
 | truth-core-authority-v1610 | **R3** | 一内核 + 三契约 + **Truth Review Gate 管线** |
 | truth-gold-order-pay-v1610 | **R3** | Gold + Intent Coverage Matrix |
 | truth-humanizer-runtime-v1610 | R2 | Humanizing Engine（R3 无行为变更，仅交叉引用 Gate 序） |
+| trace-lifecycle-binding-v1610 | **R1** | 1+6 lifecycle → agent_trace.v1 绑定 |
 
 ## Evolution
 
