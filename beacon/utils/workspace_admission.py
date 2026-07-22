@@ -483,6 +483,22 @@ def run_workspace_admit(
     )
     feature_branch = str(branch_targets.get("feature_branch") or "").strip()
     worktree_path = str(branch_targets.get("worktree_path") or "").strip()
+    # Dedicated mode: never treat primary repo root as the feature lane when a
+    # feature worktree path is available (execution markdown often sets
+    # worktree_root=project root with use_git_worktree=false).
+    feature_wt = resolve_worktree_path(root, {**contract, "version": version}, feature=feature)
+    wt_norm = _normalized_path(worktree_path, project_root=root) if worktree_path else ""
+    root_norm = str(root.resolve())
+    if str(contract.get("worktree_mode") or "") in {"dedicated-worktree", "dedicated", ""}:
+        if not worktree_path or wt_norm == root_norm:
+            worktree_path = feature_wt
+            branch_targets = {**branch_targets, "worktree_path": worktree_path, "worktree_path_forced_dedicated": True}
+        else:
+            # If path is version-only dir without feature slug, nest feature.
+            wt_path_obj = Path(wt_norm) if wt_norm else None
+            if wt_path_obj is not None and wt_path_obj.name in {str(version), str(version).lstrip("v")}:
+                worktree_path = feature_wt
+                branch_targets = {**branch_targets, "worktree_path": worktree_path, "worktree_path_forced_dedicated": True}
     base_branch = str(contract.get("previous_version_baseline_branch") or contract.get("canonical_branch") or "main").strip()
     artifact_file = artifact_path(root, version=version, feature=feature)
     payload: dict[str, Any] = {
@@ -579,7 +595,7 @@ def run_workspace_admit(
         base_branch=base_branch,
     )
     payload["worktree_attempt"] = worktree_attempt
-    if worktree_attempt.get("status") not in {"created", "switched"}:
+    if worktree_attempt.get("status") not in {"created", "switched", "already"}:
         payload["status"] = "blocked"
         payload["reason_codes"] = ["workspace_admission_worktree_failed"]
         payload["reason_code"] = "workspace_admission_worktree_failed"

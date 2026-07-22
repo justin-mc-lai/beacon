@@ -622,6 +622,14 @@ def switch_to_expected_branch(
             "expected_branch": expected_branch,
             "attempts": attempts,
         }
+    current = git_output(project_root, "branch", "--show-current")
+    if expected_branch and current == expected_branch:
+        return {
+            "status": "switched",
+            "expected_branch": expected_branch,
+            "already_on_branch": True,
+            "attempts": [],
+        }
     commands: list[list[str]] = [["git", "switch", expected_branch]]
     if create_if_missing:
         commands.append(["git", "switch", "-c", expected_branch])
@@ -693,22 +701,51 @@ def ensure_expected_worktree_lane(
             }
     except Exception:  # noqa: BLE001
         pass
+    def _already_payload(path: Path, *, reason: str = "already_on_lane") -> dict[str, Any]:
+        return {
+            "status": "already",
+            "expected_branch": expected_branch,
+            "worktree_path": str(path.resolve()),
+            "reason": reason,
+        }
+
+    def _switch_or_already(path: Path) -> dict[str, Any]:
+        # Path already hosts the expected branch → success without git switch thrash.
+        current = git_output(path, "branch", "--show-current")
+        if expected_branch and current == expected_branch:
+            return _already_payload(path)
+        switch_payload = switch_to_expected_branch(path, expected_branch, create_if_missing=True)
+        if switch_payload.get("status") == "switched":
+            status = "already" if switch_payload.get("already_on_branch") else "switched"
+            return {
+                "status": status,
+                "expected_branch": expected_branch,
+                "worktree_path": str(path.resolve()),
+                "switch_attempt": switch_payload,
+            }
+        # Branch checked out in another worktree: if that worktree IS the target, succeed.
+        stderr_blob = " ".join(
+            str((a or {}).get("stderr") or "") for a in (switch_payload.get("attempts") or [])
+        )
+        m = re.search(r"already used by worktree at ['\"]?([^'\"]+)['\"]?", stderr_blob)
+        if m:
+            other = Path(m.group(1)).expanduser().resolve()
+            if other == path.resolve() or (
+                other.exists() and git_output(other, "branch", "--show-current") == expected_branch
+            ):
+                # Prefer the worktree that actually holds the branch.
+                return _already_payload(other if other != path.resolve() else path, reason="branch_held_by_worktree")
+        return {
+            "status": "failed",
+            "expected_branch": expected_branch,
+            "worktree_path": str(path.resolve()),
+            "switch_attempt": switch_payload,
+        }
+
     if target_path == root:
-        switch_payload = switch_to_expected_branch(root, expected_branch, create_if_missing=True)
-        return {
-            "status": "switched" if switch_payload.get("status") == "switched" else "failed",
-            "expected_branch": expected_branch,
-            "worktree_path": str(target_path),
-            "switch_attempt": switch_payload,
-        }
+        return _switch_or_already(root)
     if target_path.exists() and git_repo_exists(target_path):
-        switch_payload = switch_to_expected_branch(target_path, expected_branch, create_if_missing=True)
-        return {
-            "status": "switched" if switch_payload.get("status") == "switched" else "failed",
-            "expected_branch": expected_branch,
-            "worktree_path": str(target_path),
-            "switch_attempt": switch_payload,
-        }
+        return _switch_or_already(target_path)
     commands = [
         ["git", "worktree", "add", str(target_path), expected_branch],
         ["git", "worktree", "add", "-b", expected_branch, str(target_path), base_branch],

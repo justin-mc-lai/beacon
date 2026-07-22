@@ -204,3 +204,20 @@ def test_manual_artifact_still_valid_without_ttl(tmp_path: Path) -> None:
 
 def test_no_ttl_still_valid(tmp_path: Path) -> None:
     test_manual_artifact_still_valid_without_ttl(tmp_path)
+
+
+def test_workspace_admit_already_existing_feature_worktree(tmp_path: Path) -> None:
+    """Re-admit succeeds when feature worktree already holds the branch (no thrash)."""
+    _seed_repo(tmp_path, branch="pre-main")
+    _seed_governance(tmp_path)
+    # first admit creates worktree
+    first = run_workspace_admit(tmp_path, version=VERSION, feature=FEATURE)
+    assert first.get("status") == "pass", first
+    wt = Path(str(first.get("worktree_path")))
+    assert wt.exists()
+    # second admit must pass with already/switched, not worktree_failed
+    second = run_workspace_admit(tmp_path, version=VERSION, feature=FEATURE)
+    assert second.get("status") == "pass", second
+    attempt = second.get("worktree_attempt") or {}
+    assert attempt.get("status") in {"already", "switched", "created"}
+    assert Path(str(second.get("worktree_path"))).resolve() == wt.resolve()
