@@ -43,7 +43,24 @@ GLOBAL_OFF = (
 # Stage packs (matched after gate is on)
 STAGE_PACKS: dict[str, tuple[str, ...]] = {
     "pack-research": ("调研", "搜索", "search", "竞品", "先搜", "docs-researcher", "search-specialist"),
-    "pack-review": ("全面审查", "多角度", "oracle", "challenge", "pln-review", "architect-reviewer"),
+    "pack-review": (
+        "全面审查",
+        "多角度",
+        "oracle",
+        "challenge",
+        "pln-review",
+        "architect-reviewer",
+        "架构",
+        "架构设计",
+        "架构审查",
+        "代码审查",
+        "code review",
+        "软件工程",
+        "全面分析",
+        "plan review",
+        "需求分析",
+        "设计审查",
+    ),
     "pack-implement": ("并行实现", "worker", "team implement", "backend-developer", "蒸干", "多湖", "l0", "l1", "实现湖"),
     "pack-qa": ("并行验收", "reviewer", "qa subagent", "correctness", "qa-expert", "验收子代理"),
 }
@@ -52,7 +69,18 @@ STAGE_PACKS: dict[str, tuple[str, ...]] = {
 DEFAULT_ROLES = ("search-specialist",)
 PACK_ROLES: dict[str, tuple[str, ...]] = {
     "pack-research": ("search-specialist", "docs-researcher"),
-    "pack-review": ("multi-agent-coordinator", "code-reviewer"),
+    "pack-review": (
+        "multi-agent-coordinator",
+        "architect-reviewer",
+        "code-reviewer",
+        "knowledge-synthesizer",
+        "security-auditor",
+        "performance-engineer",
+        "api-designer",
+        "qa-expert",
+        "docs-researcher",
+        "search-specialist",
+    ),
     "pack-implement": ("backend-developer",),
     "pack-qa": ("code-reviewer", "qa-expert"),
     "pack-default": DEFAULT_ROLES,
@@ -68,6 +96,24 @@ MINIMAL_SIX_ROLES = (
     "backend-developer",
     "qa-expert",
 )
+
+PLAN_REVIEW_CORE_ROLES = (
+    "multi-agent-coordinator",
+    "architect-reviewer",
+    "code-reviewer",
+    "knowledge-synthesizer",
+)
+
+PLAN_REVIEW_CONDITIONAL_ROLES = (
+    "security-auditor",
+    "performance-engineer",
+    "api-designer",
+    "qa-expert",
+    "docs-researcher",
+    "search-specialist",
+)
+
+PLAN_REVIEW_TEN_ROLES = PLAN_REVIEW_CORE_ROLES + PLAN_REVIEW_CONDITIONAL_ROLES
 
 
 def _norm(text: str) -> str:

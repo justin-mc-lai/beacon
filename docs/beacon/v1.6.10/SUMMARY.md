@@ -32,6 +32,13 @@
 | 三契约 | Freeze / Reopen+Verify / Cascade |
 | **Plan→Truth 强制门** | **R3 Truth Review Gate** |
 
+
+### Host plan-review VoltPack (R1)
+
+- feature: `beacon-plan-host-subagent-voltpack-v1610` **frozen**
+- pack: `plan-review` = **10** VoltAgent-curated roles; default single-thread
+- suite: `tests/test_v1610_plan_host_subagent_voltpack.py`
+
 ## Status
 
 - runtime / package / docs line: **v1.6.10** (current)

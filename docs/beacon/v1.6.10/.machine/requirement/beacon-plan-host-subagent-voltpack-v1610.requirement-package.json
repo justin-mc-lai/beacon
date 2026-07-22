@@ -1,0 +1,391 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-22T15:00:46.560941+00:00",
+  "feature": "beacon-plan-host-subagent-voltpack-v1610",
+  "feature_slug": "beacon-plan-host-subagent-voltpack-v1610",
+  "version": "v1.6.10",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md",
+    "tests": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/tests.md",
+    "tasks": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/tasks.md",
+    "evidence": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "771463c757b594b2bda094ac95cb572179eb9da5ce95300dbfa861ffe64ac5d7",
+    "tests": "b650f3fba5711a177ab4d4d11d390dcc2ca731a4e3032111f7f1d280b5d1dd85",
+    "tasks": "1a001964aa8bb2749656411112cff2f58dff179a0e82bf9c007837c8cb7a87ae",
+    "evidence": "0c5749f7242d8300687952fbb94351d6678b45f03ff71e884f0b0abe8edc8cc3"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-plan-host-subagent-voltpack-v1610",
+    "version": "v1.6.10",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "domain_required": "false",
+    "ux_required": "false",
+    "package_maturity": "filled",
+    "package_kind": "platform",
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "program_ref": "docs/beacon/v1.6.10/programs/beacon-plan-host-subagent-voltpack-v1610/program-manifest.md",
+    "change_reason": "UD lock D-VA: plan-review pack=10 from VoltAgent; gate tokens; readiness 1+6; default off",
+    "canonical_refs": {
+      "truth": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md",
+      "tests": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/tests.md",
+      "tasks": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/tasks.md",
+      "evidence": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/evidence.md"
+    }
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-VP-KW-001",
+      "theme": "off",
+      "description": "无关键词无 flag → spawn=false, reason=subagent_default_off"
+    },
+    {
+      "ac_id": "AC-VP-KW-002",
+      "theme": "review tokens",
+      "description": "「启用子代理」+ 架构/代码审查/全面分析 → pack-review，含 architect-reviewer 与 code-reviewer"
+    },
+    {
+      "ac_id": "AC-VP-KW-003",
+      "theme": "parallel alone",
+      "description": "仅「并行」→ host_agents=false"
+    },
+    {
+      "ac_id": "AC-VP-PK-001",
+      "theme": "pack10",
+      "description": "`--pack plan-review` 安装恰好 10 角色文件到 host agents dir"
+    },
+    {
+      "ac_id": "AC-VP-PK-002",
+      "theme": "hard",
+      "description": "每个角色文件含 cannot_complete_goal / cannot_write_truth（或等价 HARD）"
+    },
+    {
+      "ac_id": "AC-VP-PK-003",
+      "theme": "minimal",
+      "description": "`--pack minimal` 仍可装 6 角色（兼容 v1.6.8）"
+    },
+    {
+      "ac_id": "AC-VP-GT-001",
+      "theme": "gate roles",
+      "description": "pack-review gate 返回 roles 包含 core 4"
+    },
+    {
+      "ac_id": "AC-VP-GT-002",
+      "theme": "negate",
+      "description": "否定词覆盖正向词"
+    },
+    {
+      "ac_id": "AC-VP-GT-003",
+      "theme": "default pack",
+      "description": "全局 on 无阶段词 → pack-default（search-specialist only）"
+    },
+    {
+      "ac_id": "AC-VP-RD-001",
+      "theme": "readiness",
+      "description": "verify-subagent-runtime：1+6 flat skill（任一 beacon-goal 等）可过 skill_root；require-agents 校验 pack"
+    },
+    {
+      "ac_id": "AC-VP-BD-001",
+      "theme": "bound",
+      "description": "gate_on payload cannot_complete_goal=true"
+    },
+    {
+      "ac_id": "AC-VP-BD-002",
+      "theme": "entry",
+      "description": "无第二公共 skill 入口（仍 goal/plan）"
+    },
+    {
+      "ac_id": "AC-VP-FB-001",
+      "theme": "fallback",
+      "description": "planner-review 无 host subagent runtime → single_process_multi_reviewer + fallback_reason"
+    },
+    {
+      "ac_id": "AC-VP-EX-001",
+      "theme": "example",
+      "description": "examples 含 plan-review on 路径"
+    },
+    {
+      "ac_id": "AC-VP-DF-001",
+      "theme": "defer full",
+      "description": "文档/真相声明全量 VoltAgent dump 为 non-goal"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-VP-KW-001",
+      "tc_id": "TC-VP-001",
+      "layer": "",
+      "command": "`python3 -c \"from beacon.utils.host_subagent_gate import evaluate_host_subagent_gate as e; g=e('实现登录'); assert g['spawn'] is False and g['reason_code']=='subagent_default_off'\"`",
+      "assertion": "spawn false",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-VP-KW-002",
+      "tc_id": "TC-VP-002",
+      "layer": "",
+      "command": "`python3 -c \"from beacon.utils.host_subagent_gate import evaluate_host_subagent_gate as e; g=e('启用子代理做架构设计与代码审查全面分析'); assert 'pack-review' in g['packs'] and 'architect-reviewer' in g['roles'] and 'code-reviewer' in g['roles']\"`",
+      "assertion": "pack-review core",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-VP-KW-003",
+      "tc_id": "TC-VP-003",
+      "layer": "",
+      "command": "`python3 -c \"from beacon.utils.host_subagent_gate import evaluate_host_subagent_gate as e; g=e('并行实现多湖'); assert g['host_agents'] is False\"`",
+      "assertion": "parallel alone off",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-VP-PK-001",
+      "tc_id": "TC-VP-004",
+      "layer": "",
+      "command": "`python3 -m pytest tests/test_v1610_plan_host_subagent_voltpack.py -q -k plan_review_install`",
+      "assertion": "10 roles written",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-VP-PK-002",
+      "tc_id": "TC-VP-005",
+      "layer": "",
+      "command": "`python3 -m pytest tests/test_v1610_plan_host_subagent_voltpack.py -q -k hard_constraints`",
+      "assertion": "HARD in files",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-VP-PK-003",
+      "tc_id": "TC-VP-006",
+      "layer": "",
+      "command": "`python3 -m pytest tests/test_v1610_plan_host_subagent_voltpack.py -q -k minimal_pack`",
+      "assertion": "6 roles",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-VP-GT-001",
+      "tc_id": "TC-VP-007",
+      "layer": "",
+      "command": "`python3 -c \"from beacon.utils.host_subagent_gate import evaluate_host_subagent_gate as e, PLAN_REVIEW_CORE_ROLES; g=e('子代理 全面审查'); assert set(PLAN_REVIEW_CORE_ROLES)<=set(g['roles'])\"`",
+      "assertion": "core 4",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-VP-GT-002",
+      "tc_id": "TC-VP-008",
+      "layer": "",
+      "command": "`python3 -c \"from beacon.utils.host_subagent_gate import evaluate_host_subagent_gate as e; g=e('不要子代理 但启用子代理'); assert g['spawn'] is False\"`",
+      "assertion": "negate wins",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-VP-GT-003",
+      "tc_id": "TC-VP-009",
+      "layer": "",
+      "command": "`python3 -c \"from beacon.utils.host_subagent_gate import evaluate_host_subagent_gate as e; g=e('启用子代理'); assert g['packs']==['pack-default']\"`",
+      "assertion": "default pack",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-VP-RD-001",
+      "tc_id": "TC-VP-010",
+      "layer": "",
+      "command": "`python3 -m pytest tests/test_v1610_plan_host_subagent_voltpack.py -q -k readiness_flat`",
+      "assertion": "flat skill root",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-VP-BD-001",
+      "tc_id": "TC-VP-011",
+      "layer": "",
+      "command": "`python3 -c \"from beacon.utils.host_subagent_gate import evaluate_host_subagent_gate as e; g=e('启用子代理 全面审查'); assert g['cannot_complete_goal'] is True\"`",
+      "assertion": "bound",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-VP-BD-002",
+      "tc_id": "TC-VP-012",
+      "layer": "",
+      "command": "`rg -n \"第二公共|second public\" docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md`",
+      "assertion": "non-goal entry",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-VP-FB-001",
+      "tc_id": "TC-VP-013",
+      "layer": "",
+      "command": "`python3 -c \"from beacon.utils.planner_review_runtime import build_planner_review_runtime_artifact as b; from pathlib import Path; p=b(project_root=Path('.'),feature='x',version='v1.6.10',prompt='t',subagent_runtime_available=False,write=False); assert p['execution_mode']=='single_process_multi_reviewer' and p['fallback_reason']\"`",
+      "assertion": "fallback",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-VP-EX-001",
+      "tc_id": "TC-VP-014",
+      "layer": "",
+      "command": "`test -f skills/beacon/examples/subagent-plan-review-architecture-on-30s.md`",
+      "assertion": "example exists",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-VP-DF-001",
+      "tc_id": "TC-VP-015",
+      "layer": "",
+      "command": "`rg -n \"全量 VoltAgent|Non-goals\" docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md`",
+      "assertion": "defer dump",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-VP-PK-001",
+      "tc_id": "TC-VP-016",
+      "layer": "",
+      "command": "`python3 -m pytest tests/test_v1610_plan_host_subagent_voltpack.py -q`",
+      "assertion": "suite green",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Implement AC-VP-KW-001: 无关键词无 flag → spawn=false, reason=subagent_default_off · ac=AC-VP-KW-001 · evidence=`.beacon/evidence/implement/beacon-plan-host-subagent-voltpack-v1610/AC-VP-KW-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Implement AC-VP-KW-002: 「启用子代理」+ 架构/代码审查/全面分析 → pack-review，含 architect-reviewer 与 code-reviewer · ac=AC-VP-KW-002 · evidence=`.beacon/evidence/implement/beacon-plan-host-subagent-voltpack-v1610/AC-VP-KW-002.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Implement AC-VP-KW-003: 仅「并行」→ host_agents=false · ac=AC-VP-KW-003 · evidence=`.beacon/evidence/implement/beacon-plan-host-subagent-voltpack-v1610/AC-VP-KW-003.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Implement AC-VP-PK-001: `--pack plan-review` 安装恰好 10 角色文件到 host agents dir · ac=AC-VP-PK-001 · evidence=`.beacon/evidence/implement/beacon-plan-host-subagent-voltpack-v1610/AC-VP-PK-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Implement AC-VP-PK-002: 每个角色文件含 cannot_complete_goal / cannot_write_truth（或等价 HARD） · ac=AC-VP-PK-002 · evidence=`.beacon/evidence/implement/beacon-plan-host-subagent-voltpack-v1610/AC-VP-PK-002.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Implement AC-VP-PK-003: `--pack minimal` 仍可装 6 角色（兼容 v1.6.8） · ac=AC-VP-PK-003 · evidence=`.beacon/evidence/implement/beacon-plan-host-subagent-voltpack-v1610/AC-VP-PK-003.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "Implement AC-VP-GT-001: pack-review gate 返回 roles 包含 core 4 · ac=AC-VP-GT-001 · evidence=`.beacon/evidence/implement/beacon-plan-host-subagent-voltpack-v1610/AC-VP-GT-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-008",
+      "title": "Implement AC-VP-GT-002: 否定词覆盖正向词 · ac=AC-VP-GT-002 · evidence=`.beacon/evidence/implement/beacon-plan-host-subagent-voltpack-v1610/AC-VP-GT-002.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-009",
+      "title": "Implement AC-VP-GT-003: 全局 on 无阶段词 → pack-default（search-specialist only） · ac=AC-VP-GT-003 · evidence=`.beacon/evidence/implement/beacon-plan-host-subagent-voltpack-v1610/AC-VP-GT-003.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-010",
+      "title": "Implement AC-VP-RD-001: verify-subagent-runtime：1+6 flat skill（任一 beacon-goal 等）可过 skill_root... · ac=AC-VP-RD-001 · evidence=`.beacon/evidence/implement/beacon-plan-host-subagent-voltpack-v1610/AC-VP-RD-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-011",
+      "title": "Implement AC-VP-BD-001: gate_on payload cannot_complete_goal=true · ac=AC-VP-BD-001 · evidence=`.beacon/evidence/implement/beacon-plan-host-subagent-voltpack-v1610/AC-VP-BD-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-012",
+      "title": "Implement AC-VP-BD-002: 无第二公共 skill 入口（仍 goal/plan） · ac=AC-VP-BD-002 · evidence=`.beacon/evidence/implement/beacon-plan-host-subagent-voltpack-v1610/AC-VP-BD-002.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-013",
+      "title": "Implement AC-VP-FB-001: planner-review 无 host subagent runtime → single_process_multi_reviewe... · ac=AC-VP-FB-001 · evidence=`.beacon/evidence/implement/beacon-plan-host-subagent-voltpack-v1610/AC-VP-FB-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-014",
+      "title": "Implement AC-VP-EX-001: examples 含 plan-review on 路径 · ac=AC-VP-EX-001 · evidence=`.beacon/evidence/implement/beacon-plan-host-subagent-voltpack-v1610/AC-VP-EX-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-015",
+      "title": "Implement AC-VP-DF-001: 文档/真相声明全量 VoltAgent dump 为 non-goal · ac=AC-VP-DF-001 · evidence=`.beacon/evidence/implement/beacon-plan-host-subagent-voltpack-v1610/AC-VP-DF-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-016",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-plan-host-subagent-voltpack-v1610/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-017",
+      "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-plan-host-subagent-voltpack-v1610/QA-MATRIX.json`",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "package",
+      "authority": "requirement_truth",
+      "path": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md"
+    },
+    {
+      "surface": "tests",
+      "authority": "test_truth",
+      "path": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/tests.md"
+    },
+    {
+      "surface": "tasks",
+      "authority": "support_advisory",
+      "path": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/tasks.md"
+    },
+    {
+      "surface": "gate",
+      "authority": "support_advisory",
+      "path": "beacon/utils/host_subagent_gate.py"
+    },
+    {
+      "surface": "pack",
+      "authority": "support_advisory",
+      "path": "beacon/utils/host_subagent_pack.py"
+    },
+    {
+      "surface": "readiness",
+      "authority": "support_advisory",
+      "path": "beacon/utils/subagent_readiness.py"
+    },
+    {
+      "surface": "unit",
+      "authority": "qa_verdict",
+      "path": "tests/test_v1610_plan_host_subagent_voltpack.py"
+    },
+    {
+      "surface": "example",
+      "authority": "support_advisory",
+      "path": "skills/beacon/examples/subagent-plan-review-architecture-on-30s.md"
+    },
+    {
+      "surface": "change",
+      "authority": "support_advisory",
+      "path": "docs/beacon/v1.6.10/change/beacon-plan-host-subagent-voltpack-v1610.md"
+    }
+  ]
+}

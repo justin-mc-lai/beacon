@@ -228,6 +228,14 @@ Rules:
 beacon doctor install-subagent-pack -p . --host-runtime codex --pack minimal
 beacon doctor install-subagent-pack -p . --host-runtime claude --pack minimal
 beacon doctor verify-subagent-runtime -p . --host-runtime codex --require-agents --json
+
+```bash
+# Plan comprehensive multi-agent review pack (10 roles, VoltAgent curated; default still off)
+beacon doctor install-subagent-pack -p . --host-runtime codex --pack plan-review
+beacon doctor install-subagent-pack -p . --host-runtime claude --pack plan-review
+```
+Stage tokens for pack-review include: 架构 / 代码审查 / 全面分析 / pln-review (see host_subagent_gate).
+
 ```
 
 Examples: `skills/beacon/examples/subagent-keyword-off-30s.md`, `subagent-review-on-30s.md`, `subagent-research-on-30s.md`.

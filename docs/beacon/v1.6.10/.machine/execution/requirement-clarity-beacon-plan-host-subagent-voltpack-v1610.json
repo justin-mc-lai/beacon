@@ -1,0 +1,395 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-plan-host-subagent-voltpack-v1610",
+  "feature_slug": "beacon-plan-host-subagent-voltpack-v1610",
+  "version": "v1.6.10",
+  "runtime_version": "v1.6.10",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.6.10/.machine/execution/requirement-clarity-beacon-plan-host-subagent-voltpack-v1610.json",
+  "report_markdown_path": "docs/beacon/v1.6.10/execution/requirement-clarity-beacon-plan-host-subagent-voltpack-v1610.md",
+  "state_path": ".beacon/state/requirement-clarity-beacon-plan-host-subagent-voltpack-v1610.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.10",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-07-22T15:00:45.256749+00:00",
+    "feature": "beacon-plan-host-subagent-voltpack-v1610",
+    "feature_slug": "beacon-plan-host-subagent-voltpack-v1610",
+    "prd_ref": "docs/beacon/v1.6.10/prd/beacon-plan-host-subagent-voltpack-v1610.md",
+    "user_story_ref": "docs/beacon/v1.6.10/user-story/beacon-plan-host-subagent-voltpack-v1610.md"
+  },
+  "domain_fsm_gate": {
+    "schema_version": "1.0",
+    "feature": "beacon-plan-host-subagent-voltpack-v1610",
+    "feature_slug": "beacon-plan-host-subagent-voltpack-v1610",
+    "version": "v1.6.10",
+    "truth_path": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md",
+    "tests_path": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/tests.md",
+    "required": false,
+    "blocked": false,
+    "status": "not_required",
+    "reason_code": "",
+    "findings": [],
+    "requirement": {
+      "required": false,
+      "reason": "not_required",
+      "explicit": false,
+      "partial": false,
+      "complexity": false,
+      "business_signal": false,
+      "version_supported": true
+    },
+    "projection": {
+      "schema_version": "1.0",
+      "domain_fsm_schema": "domain-fsm.v1",
+      "entity_precedence_schema": "entity-precedence.v1",
+      "frontmatter": {
+        "slug": "beacon-plan-host-subagent-voltpack-v1610",
+        "version": "v1.6.10",
+        "status": "draft",
+        "revision_id": "R1",
+        "language": "zh",
+        "domain_required": "false",
+        "ux_required": "false",
+        "package_maturity": "filled",
+        "package_kind": "platform",
+        "parser_contract": "beacon-feature-package-v2",
+        "truth_source_model": "feature_package_authoritative",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "program_ref": "docs/beacon/v1.6.10/programs/beacon-plan-host-subagent-voltpack-v1610/program-manifest.md",
+        "change_reason": "UD lock D-VA: plan-review pack=10 from VoltAgent; gate tokens; readiness 1+6; default off",
+        "canonical_refs": {
+          "truth": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md",
+          "tests": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/tests.md",
+          "tasks": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/tasks.md",
+          "evidence": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/evidence.md"
+        }
+      },
+      "frontmatter_errors": [],
+      "has_domain_model_section": false,
+      "has_domain_fsm_section": false,
+      "has_illegal_transition_section": false,
+      "entities": [],
+      "entity_precedence": [],
+      "aggregates": [],
+      "illegal_transition_slots": [],
+      "acceptance_criteria": [
+        {
+          "ac_id": "AC-VP-KW-001",
+          "description": "无关键词无 flag → spawn=false, reason=subagent_default_off"
+        },
+        {
+          "ac_id": "AC-VP-KW-002",
+          "description": "「启用子代理」+ 架构/代码审查/全面分析 → pack-review，含 architect-reviewer 与 code-reviewer"
+        },
+        {
+          "ac_id": "AC-VP-KW-003",
+          "description": "仅「并行」→ host_agents=false"
+        },
+        {
+          "ac_id": "AC-VP-PK-001",
+          "description": "`--pack plan-review` 安装恰好 10 角色文件到 host agents dir"
+        },
+        {
+          "ac_id": "AC-VP-PK-002",
+          "description": "每个角色文件含 cannot_complete_goal / cannot_write_truth（或等价 HARD）"
+        },
+        {
+          "ac_id": "AC-VP-PK-003",
+          "description": "`--pack minimal` 仍可装 6 角色（兼容 v1.6.8）"
+        },
+        {
+          "ac_id": "AC-VP-GT-001",
+          "description": "pack-review gate 返回 roles 包含 core 4"
+        },
+        {
+          "ac_id": "AC-VP-GT-002",
+          "description": "否定词覆盖正向词"
+        },
+        {
+          "ac_id": "AC-VP-GT-003",
+          "description": "全局 on 无阶段词 → pack-default（search-specialist only）"
+        },
+        {
+          "ac_id": "AC-VP-RD-001",
+          "description": "verify-subagent-runtime：1+6 flat skill（任一 beacon-goal 等）可过 skill_root；require-agents 校验 pack"
+        },
+        {
+          "ac_id": "AC-VP-BD-001",
+          "description": "gate_on payload cannot_complete_goal=true"
+        },
+        {
+          "ac_id": "AC-VP-BD-002",
+          "description": "无第二公共 skill 入口（仍 goal/plan）"
+        },
+        {
+          "ac_id": "AC-VP-FB-001",
+          "description": "planner-review 无 host subagent runtime → single_process_multi_reviewer + fallback_reason"
+        },
+        {
+          "ac_id": "AC-VP-EX-001",
+          "description": "examples 含 plan-review on 路径"
+        },
+        {
+          "ac_id": "AC-VP-DF-001",
+          "description": "文档/真相声明全量 VoltAgent dump 为 non-goal"
+        }
+      ],
+      "bound_ac_ids": [],
+      "orphan_ac_ids": [],
+      "aggregates_missing_illegal_slots": [],
+      "raw_section_titles": [
+        "人话",
+        "User Intent（一行）",
+        "User Intent Snapshot",
+        "User Decisions（locked 2026-07-22）",
+        "Intent Coverage Matrix",
+        "First principles",
+        "用户旅程",
+        "Overview",
+        "Plan-review pack (10)",
+        "Keyword contract",
+        "Acceptance Criteria",
+        "FSM 五元组",
+        "invalid / illegal",
+        "Non-goals",
+        "done_when"
+      ]
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "required": false,
+      "blocked": false,
+      "status": "not_required",
+      "reason_code": "",
+      "findings": [],
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "beacon-plan-host-subagent-voltpack-v1610",
+          "version": "v1.6.10",
+          "status": "draft",
+          "revision_id": "R1",
+          "language": "zh",
+          "domain_required": "false",
+          "ux_required": "false",
+          "package_maturity": "filled",
+          "package_kind": "platform",
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "truth_map_contract": "beacon-truth-map-v1",
+          "program_ref": "docs/beacon/v1.6.10/programs/beacon-plan-host-subagent-voltpack-v1610/program-manifest.md",
+          "change_reason": "UD lock D-VA: plan-review pack=10 from VoltAgent; gate tokens; readiness 1+6; default off",
+          "canonical_refs": {
+            "truth": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md",
+            "tests": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/tests.md",
+            "tasks": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/tasks.md",
+            "evidence": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/evidence.md"
+          }
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": false,
+        "has_domain_fsm_section": false,
+        "has_illegal_transition_section": false,
+        "entities": [],
+        "entity_precedence": [],
+        "aggregates": [],
+        "illegal_transition_slots": [],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-VP-KW-001",
+            "description": "无关键词无 flag → spawn=false, reason=subagent_default_off"
+          },
+          {
+            "ac_id": "AC-VP-KW-002",
+            "description": "「启用子代理」+ 架构/代码审查/全面分析 → pack-review，含 architect-reviewer 与 code-reviewer"
+          },
+          {
+            "ac_id": "AC-VP-KW-003",
+            "description": "仅「并行」→ host_agents=false"
+          },
+          {
+            "ac_id": "AC-VP-PK-001",
+            "description": "`--pack plan-review` 安装恰好 10 角色文件到 host agents dir"
+          },
+          {
+            "ac_id": "AC-VP-PK-002",
+            "description": "每个角色文件含 cannot_complete_goal / cannot_write_truth（或等价 HARD）"
+          },
+          {
+            "ac_id": "AC-VP-PK-003",
+            "description": "`--pack minimal` 仍可装 6 角色（兼容 v1.6.8）"
+          },
+          {
+            "ac_id": "AC-VP-GT-001",
+            "description": "pack-review gate 返回 roles 包含 core 4"
+          },
+          {
+            "ac_id": "AC-VP-GT-002",
+            "description": "否定词覆盖正向词"
+          },
+          {
+            "ac_id": "AC-VP-GT-003",
+            "description": "全局 on 无阶段词 → pack-default（search-specialist only）"
+          },
+          {
+            "ac_id": "AC-VP-RD-001",
+            "description": "verify-subagent-runtime：1+6 flat skill（任一 beacon-goal 等）可过 skill_root；require-agents 校验 pack"
+          },
+          {
+            "ac_id": "AC-VP-BD-001",
+            "description": "gate_on payload cannot_complete_goal=true"
+          },
+          {
+            "ac_id": "AC-VP-BD-002",
+            "description": "无第二公共 skill 入口（仍 goal/plan）"
+          },
+          {
+            "ac_id": "AC-VP-FB-001",
+            "description": "planner-review 无 host subagent runtime → single_process_multi_reviewer + fallback_reason"
+          },
+          {
+            "ac_id": "AC-VP-EX-001",
+            "description": "examples 含 plan-review on 路径"
+          },
+          {
+            "ac_id": "AC-VP-DF-001",
+            "description": "文档/真相声明全量 VoltAgent dump 为 non-goal"
+          }
+        ],
+        "bound_ac_ids": [],
+        "orphan_ac_ids": [],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "人话",
+          "User Intent（一行）",
+          "User Intent Snapshot",
+          "User Decisions（locked 2026-07-22）",
+          "Intent Coverage Matrix",
+          "First principles",
+          "用户旅程",
+          "Overview",
+          "Plan-review pack (10)",
+          "Keyword contract",
+          "Acceptance Criteria",
+          "FSM 五元组",
+          "invalid / illegal",
+          "Non-goals",
+          "done_when"
+        ]
+      }
+    },
+    "recommended_action": ""
+  },
+  "human_closure_contract": {
+    "required": false,
+    "research_path": "docs/beacon/v1.6.10/research/beacon-plan-host-subagent-voltpack-v1610.md",
+    "research_exists": false,
+    "source_architecture_path": "docs/beacon/v1.6.10/source-architecture/beacon-plan-host-subagent-voltpack-v1610.md",
+    "source_architecture_exists": false,
+    "required_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "missing_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "diagram_types": [],
+    "complexity_signals": []
+  },
+  "requirement_closure_contract": {
+    "required": true,
+    "chain_order": [
+      "research",
+      "prd",
+      "user_story",
+      "test_case",
+      "requirement_clarity",
+      "freeze"
+    ],
+    "human_closure_required": false,
+    "paths": {
+      "research": "docs/beacon/v1.6.10/research/beacon-plan-host-subagent-voltpack-v1610.md",
+      "prd": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md",
+      "user_story": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md",
+      "test_case": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/tests.md"
+    },
+    "exists": {
+      "research": false,
+      "prd": true,
+      "user_story": true,
+      "test_case": true
+    },
+    "required_research_sections": [],
+    "missing_research_sections": [],
+    "ac_projection": {
+      "prd_ac_ids": [],
+      "user_story_ac_ids": [],
+      "test_case_ac_ids": [],
+      "upstream_ac_ids": [],
+      "missing_test_case_ac_ids": []
+    }
+  },
+  "version_projection_truth_contract": {
+    "required": false,
+    "supported": true,
+    "projection_types": [],
+    "research_path": "docs/beacon/v1.6.10/research/beacon-plan-host-subagent-voltpack-v1610.md",
+    "research_exists": false,
+    "required_fields": [
+      "prd_refs",
+      "user_story_refs",
+      "test_case_refs",
+      "coverage_notes",
+      "out_of_scope_notes"
+    ],
+    "field_presence": {
+      "prd_refs": false,
+      "user_story_refs": false,
+      "test_case_refs": false,
+      "coverage_notes": false,
+      "out_of_scope_notes": false
+    },
+    "missing_fields": [],
+    "required_refs": {
+      "prd_refs": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md",
+      "user_story_refs": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md",
+      "test_case_refs": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/tests.md"
+    },
+    "missing_ref_targets": [],
+    "ready": false
+  },
+  "support_write_topology_contract": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "diagnostics": []
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md",
+    "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/tests.md",
+    "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/tasks.md",
+    "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/evidence.md"
+  ]
+}

@@ -1,24 +1,45 @@
 {
   "schema": "beacon-host-subagent-pack.v1",
-  "pack": "minimal",
+  "pack": "plan-review",
   "host_runtime": "codex",
   "roles": [
-    "search-specialist",
-    "docs-researcher",
     "multi-agent-coordinator",
+    "architect-reviewer",
     "code-reviewer",
-    "backend-developer",
-    "qa-expert"
+    "knowledge-synthesizer",
+    "security-auditor",
+    "performance-engineer",
+    "api-designer",
+    "qa-expert",
+    "docs-researcher",
+    "search-specialist"
   ],
   "written": [
-    ".codex/agents/search-specialist.toml",
-    ".codex/agents/docs-researcher.toml",
     ".codex/agents/multi-agent-coordinator.toml",
+    ".codex/agents/architect-reviewer.toml",
     ".codex/agents/code-reviewer.toml",
-    ".codex/agents/backend-developer.toml",
-    ".codex/agents/qa-expert.toml"
+    ".codex/agents/knowledge-synthesizer.toml",
+    ".codex/agents/security-auditor.toml",
+    ".codex/agents/performance-engineer.toml",
+    ".codex/agents/api-designer.toml",
+    ".codex/agents/qa-expert.toml",
+    ".codex/agents/docs-researcher.toml",
+    ".codex/agents/search-specialist.toml"
+  ],
+  "projected_from_oss": [
+    "multi-agent-coordinator",
+    "architect-reviewer",
+    "code-reviewer",
+    "knowledge-synthesizer",
+    "security-auditor",
+    "performance-engineer",
+    "api-designer",
+    "qa-expert",
+    "docs-researcher",
+    "search-specialist"
   ],
   "cannot_complete_goal": true,
-  "installed_at": "2026-07-20T05:54:37.772323+00:00",
-  "source": "curated-minimal (oss-inspired; not full VoltAgent dump)"
+  "cannot_write_truth": true,
+  "installed_at": "2026-07-22T15:00:09.861190+00:00",
+  "source": "curated-plan-review (VoltAgent projection + Beacon HARD)"
 }

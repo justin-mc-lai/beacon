@@ -1183,10 +1183,10 @@ def verify_subagent_runtime(
 def install_subagent_pack_cmd(
     project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
     host_runtime: str = typer.Option("codex", "--host-runtime", help="Host runtime: codex|claude"),
-    pack: str = typer.Option("minimal", "--pack", help="Pack id (only minimal supported)"),
+    pack: str = typer.Option("minimal", "--pack", help="Pack id: minimal | plan-review"),
     json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
 ):
-    """Install curated minimal host subagent pack into .codex/agents or .claude/agents."""
+    """Install curated host subagent pack (minimal=6 or plan-review=10) into .codex/agents or .claude/agents."""
     from pathlib import Path as _Path
 
     from beacon.utils.host_subagent_pack import install_subagent_pack

@@ -1,0 +1,186 @@
+{
+  "schema": "truth-review-gate.v1",
+  "schema_version": "1.0",
+  "feature": "beacon-plan-host-subagent-voltpack-v1610",
+  "version": "v1.6.10",
+  "pass": true,
+  "blocked": false,
+  "review_gate_pass": true,
+  "abc_pass": true,
+  "reason_code": "",
+  "domain_required": false,
+  "checks": {
+    "A_intent_coverage": {
+      "pass": true,
+      "check": "A",
+      "name": "intent_coverage",
+      "required": true,
+      "matrix_rows": 8,
+      "missing_must": [],
+      "reason": "",
+      "findings": [],
+      "matrix": [
+        {
+          "intent_id": "INT-VP-01",
+          "source": "user",
+          "strength": "must",
+          "landing": "AC-VP-KW-001..003",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-VP-02",
+          "source": "user",
+          "strength": "must",
+          "landing": "AC-VP-PK-001..003",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-VP-03",
+          "source": "user",
+          "strength": "must",
+          "landing": "AC-VP-GT-001..003",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-VP-04",
+          "source": "plan",
+          "strength": "must",
+          "landing": "AC-VP-RD-001",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-VP-05",
+          "source": "plan",
+          "strength": "must",
+          "landing": "AC-VP-BD-001..002",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-VP-06",
+          "source": "user",
+          "strength": "must",
+          "landing": "AC-VP-FB-001",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-VP-07",
+          "source": "plan",
+          "strength": "should",
+          "landing": "AC-VP-EX-001",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-VP-08",
+          "source": "user",
+          "strength": "must",
+          "landing": "AC-VP-DF-001",
+          "status": "covered"
+        }
+      ]
+    },
+    "B_fsm_audit": {
+      "pass": true,
+      "check": "B",
+      "name": "fsm_audit",
+      "required": false,
+      "skipped": true,
+      "reason": "",
+      "findings": []
+    },
+    "C_testability": {
+      "pass": true,
+      "check": "C",
+      "name": "testability",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "ac_count": 15,
+      "tc_count": 16,
+      "missing_ac": [],
+      "covered": {
+        "AC-VP-KW-001": [
+          "TC-VP-001"
+        ],
+        "AC-VP-KW-002": [
+          "TC-VP-002"
+        ],
+        "AC-VP-KW-003": [
+          "TC-VP-003"
+        ],
+        "AC-VP-PK-001": [
+          "TC-VP-004",
+          "TC-VP-016"
+        ],
+        "AC-VP-PK-002": [
+          "TC-VP-005"
+        ],
+        "AC-VP-PK-003": [
+          "TC-VP-006"
+        ],
+        "AC-VP-GT-001": [
+          "TC-VP-007"
+        ],
+        "AC-VP-GT-002": [
+          "TC-VP-008"
+        ],
+        "AC-VP-GT-003": [
+          "TC-VP-009"
+        ],
+        "AC-VP-RD-001": [
+          "TC-VP-010"
+        ],
+        "AC-VP-BD-001": [
+          "TC-VP-011"
+        ],
+        "AC-VP-BD-002": [
+          "TC-VP-012"
+        ],
+        "AC-VP-FB-001": [
+          "TC-VP-013"
+        ],
+        "AC-VP-EX-001": [
+          "TC-VP-014"
+        ],
+        "AC-VP-DF-001": [
+          "TC-VP-015"
+        ]
+      }
+    },
+    "C_domain_exec_layer": {
+      "pass": true,
+      "check": "C_exec",
+      "name": "domain_exec_layer",
+      "required": false,
+      "skipped": true,
+      "reason": "",
+      "findings": [],
+      "exec_tc_count": 0,
+      "domain_kind": "platform"
+    },
+    "D_fill_depth": {
+      "pass": true,
+      "check": "D",
+      "name": "fill_depth",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "package_maturity": "filled",
+      "domain_kind": "platform",
+      "business_domain": false
+    }
+  },
+  "findings": [],
+  "humanizer": {
+    "rule": "humanizer_only_after_abc_pass_before_freeze",
+    "abc_pass": true,
+    "allowed_now": true,
+    "fill_depth_pass": true,
+    "note": "Polish L0/narrative only after A/B/C; preserve_machine_fields=true; freeze needs D+exec too"
+  },
+  "evaluated_at": "2026-07-22T15:00:46.265304+00:00",
+  "paths": {
+    "truth": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md",
+    "tests": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/tests.md",
+    "report": "docs/beacon/v1.6.10/.machine/execution/beacon-plan-host-subagent-voltpack-v1610.truth-review-gate.json"
+  }
+}

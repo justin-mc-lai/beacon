@@ -32,11 +32,39 @@ def detect_host_runtime(host_runtime: str | None = None) -> str:
     return "unknown"
 
 
+_FLAT_BEACON_SKILLS = (
+    "beacon-goal",
+    "beacon-plan",
+    "beacon-truth",
+    "beacon-design",
+    "beacon-implement",
+    "beacon-qa",
+    "beacon-release",
+)
+
+
 def _codex_skill_root() -> Path:
+    """Prefer Scheme A flat install; fall back to legacy monorepo path."""
+    flat_parent = Path.home() / ".agents" / "skills"
+    for name in _FLAT_BEACON_SKILLS:
+        candidate = flat_parent / name
+        if candidate.exists():
+            return candidate
+    # also accept project-local / codex skills mirrors
+    for base in (Path.home() / ".codex" / "skills",):
+        for name in _FLAT_BEACON_SKILLS:
+            candidate = base / name
+            if candidate.exists():
+                return candidate
     return Path.home() / ".agents" / "skills" / "beacon"
 
 
 def _claude_skill_root() -> Path:
+    flat_parent = Path.home() / ".claude" / "skills"
+    for name in _FLAT_BEACON_SKILLS:
+        candidate = flat_parent / name
+        if candidate.exists():
+            return candidate
     return Path.home() / ".claude" / "skills" / "beacon"
 
 
