@@ -139,14 +139,17 @@ def test_render_truth_v1610_gold_sections(tmp_path: Path):
 
 
 def test_render_truth_legacy_plain_language_removed(tmp_path: Path):
-    import pytest
-    from beacon.utils.feature_package import REASON_PACKAGE_SHAPE_UPGRADE, materialize_feature_package
+    """Any docs version emits gold shape; 大白话 legacy template is gone."""
+    from beacon.utils.feature_package import materialize_feature_package
 
-    with pytest.raises(ValueError, match=REASON_PACKAGE_SHAPE_UPGRADE):
-        render_truth_package(tmp_path, version="v1.5.0", feature="legacy-feat")
-    blocked = materialize_feature_package(tmp_path, version="v1.5.0", feature="legacy-feat")
-    assert blocked.get("blocked") is True
-    assert blocked.get("reason_code") == REASON_PACKAGE_SHAPE_UPGRADE
+    text = render_truth_package(tmp_path, version="v1.5.0", feature="legacy-feat")
+    assert "## 大白话说明" not in text
+    assert "## 人话" in text or "## Plain language" in text
+    assert "## Intent Coverage Matrix" in text
+    out = materialize_feature_package(tmp_path, version="v1.5.0", feature="legacy-feat")
+    assert out.get("blocked") is not True
+    written = (tmp_path / "docs/beacon/v1.5.0/features/legacy-feat/truth.md").read_text(encoding="utf-8")
+    assert "## Intent Coverage Matrix" in written
 
 
 def test_postwrite_recommend_freeze_on_pass(tmp_path: Path):

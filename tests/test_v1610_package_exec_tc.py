@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from beacon.utils.feature_package import REASON_PACKAGE_SHAPE_UPGRADE, materialize_feature_package
+from beacon.utils.feature_package import materialize_feature_package
 from beacon.utils.package_exec_tc import list_exec_tc_rows, run_package_exec_tcs
 
 
@@ -22,10 +22,15 @@ def test_list_exec_skips_rg_and_print0():
     assert "import beacon" in cmds
 
 
-def test_materialize_pre_floor_blocked(tmp_path: Path):
+def test_materialize_any_docs_version_writes_gold_shape(tmp_path: Path):
+    """Product docs lines (e.g. v0.0.x / v1.5.x) still get gold shape — dual-axis safe."""
+    (tmp_path / "docs/beacon/v1.5.2").mkdir(parents=True)
     out = materialize_feature_package(tmp_path, version="v1.5.2", feature="old")
-    assert out["blocked"] is True
-    assert out["reason_code"] == REASON_PACKAGE_SHAPE_UPGRADE
+    assert out.get("blocked") is not True
+    truth = (tmp_path / "docs/beacon/v1.5.2/features/old/truth.md").read_text(encoding="utf-8")
+    assert "## 人话" in truth or "## Plain language" in truth
+    assert "## Intent Coverage Matrix" in truth
+    assert "package_maturity: scaffold" in truth
 
 
 def test_run_exec_writes_evidence(tmp_path: Path):

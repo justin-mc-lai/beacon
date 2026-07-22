@@ -82,8 +82,10 @@ materials_status: current
 
 
 def test_truth_review_gate_supported():
+    # Dual-axis: product docs lines (v0.0.x / v1.6.9) still enable TRG once runtime ships gold shape.
     assert truth_review_gate_supported("v1.6.10") is True
-    assert truth_review_gate_supported("v1.6.9") is False
+    assert truth_review_gate_supported("v1.6.9") is True
+    assert truth_review_gate_supported("v0.0.13") is True
 
 
 def test_extract_matrix_and_fsm():

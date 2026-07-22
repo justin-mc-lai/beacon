@@ -43,7 +43,13 @@ def _semver_tuple(version: str | None) -> tuple[int, int, int]:
 
 
 def truth_review_gate_supported(version: str | None) -> bool:
-    return _semver_tuple(version) >= (1, 6, 10)
+    """Gold TRG is active for any product docs line once this runtime is installed.
+
+    Docs version (e.g. v0.0.13) must not disable Truth Review Gate; only package
+    *content* non-compliance blocks freeze/qa (global-boundaries §2.1).
+    """
+    _ = version
+    return True
 
 
 def _truthy(value: Any) -> bool:

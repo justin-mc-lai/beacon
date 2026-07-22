@@ -109,14 +109,6 @@ def run_package_exec_tcs(
     root = Path(project_root).expanduser().resolve()
     resolved = resolve_target_version(root, version)
     slug = feature_slug(feature)
-    if not truth_review_gate_supported(resolved) and _semver_tuple(resolved) < (1, 6, 10):
-        return {
-            "schema": SCHEMA,
-            "skipped": True,
-            "reason": "version_below_v1.6.10",
-            "pass": True,
-            "blocked": False,
-        }
 
     paths = package_paths(root, version=resolved, feature=slug)
     tests_md = paths["tests"].read_text(encoding="utf-8") if paths["tests"].is_file() else ""
