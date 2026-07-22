@@ -76,6 +76,16 @@ support research
   -> release
 ```
 
+
+## v1.6.10+ scaffold 只算 draft（强制 truth-review 填满再 freeze）
+
+1. `gen` / `materialize` 输出 **`package_maturity: scaffold`** + gold 结构骨架。
+2. **不得**把 scaffold 当 freeze 就绪；postwrite `recommend_freeze=false` 直至 Check D pass。
+3. 必填煮干：`Intent Coverage Matrix` must、业务 FSM（非 draft/in_review 元状态）、**用户旅程**、AC、illegal、Non-goals。
+4. 填满后设 `package_maturity: filled`（或去掉 scaffold 标记），再 `beacon truth review` → pass → freeze。
+5. Humanizer：A/B/C pass 后 **apply 写回 L0**（`preserve_machine_fields=true`）；全文从 oss-sync resolve。
+6. freeze 成功后 `tasks.md` 由 AC 派生；business domain 湖 tests 须含 ≥1 **exec-layer TC**。
+
 ## v1.6.10+ gen-truth HARD（写后强制 · 不得建议 freeze 直至通过）
 
 CLI / materialize 在写入 `truth.md`（及同包 tests）后必须执行 post-write gates：

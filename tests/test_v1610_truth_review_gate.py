@@ -25,10 +25,19 @@ version: v1.6.10
 status: draft
 language: zh
 domain_required: true
+package_maturity: filled
 parser_contract: beacon-feature-package-v2
 ---
 
 # Truth
+
+## 人话
+
+用户下单并支付；超时关单。
+
+- 能做：支付成功
+- 不能做：跳态
+- 怎样算完：paid 或 closed
 
 ## Intent Coverage Matrix
 
@@ -36,6 +45,10 @@ parser_contract: beacon-feature-package-v2
 |-----------|--------|----------|---------|--------|
 | INT-01 | prompt | must | AC-001 | covered |
 | INT-02 | prompt | should | Non-goal | deferred |
+
+## 用户旅程
+
+1. 创建订单 2. 发起支付 3. 成功或超时关单
 
 ## Acceptance Criteria
 
@@ -64,6 +77,7 @@ materials_status: current
 |-------|-----|---------|-----------|
 | TC-001 | AC-001 | `rg Pay truth.md` | exists |
 | TC-002 | AC-002 | `rg Timeout truth.md` | closes |
+| TC-E | AC-001 | `python3 -c 'print(0)'` | exit_code==0 |
 """
 
 

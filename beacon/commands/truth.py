@@ -375,7 +375,7 @@ def review_cmd(
     json_output: bool = typer.Option(False, "--json", help="JSON report"),
     write_report: bool = typer.Option(True, "--write-report/--no-write-report", help="Persist gate report under .machine"),
 ) -> None:
-    """Truth Review Gate: Check A/B/C before freeze (v1.6.10+)."""
+    """Truth Review Gate: Check A/B/C/D + Humanizer L0 apply before freeze (v1.6.10+)."""
     from beacon.utils.truth_review_gate import run_truth_review_gate
 
     project_root = _resolve_root(project)
@@ -386,6 +386,37 @@ def review_cmd(
         feature=feature,
         write_report=write_report,
     )
+    # A/B/C pass → Humanizer apply L0 (preserve machine fields); may re-run gate
+    try:
+        checks = payload.get("checks") if isinstance(payload.get("checks"), dict) else {}
+        abc = bool(payload.get("abc_pass"))
+        if not abc and checks:
+            abc = all(
+                bool((checks.get(k) or {}).get("pass"))
+                for k in ("A_intent_coverage", "B_fsm_audit", "C_testability")
+            )
+        if abc:
+            from beacon.utils.humanizer_config import apply_humanizer_l0_to_path, resolve_humanizer_profile
+
+            prof = resolve_humanizer_profile(project_root)
+            if prof.get("ok"):
+                applied = apply_humanizer_l0_to_path(
+                    project_root,
+                    version=resolved,
+                    feature=feature,
+                    profile=prof,
+                )
+                payload["humanizer_apply"] = applied
+                if applied.get("applied") and write_report:
+                    payload = run_truth_review_gate(
+                        project_root,
+                        version=resolved,
+                        feature=feature,
+                        write_report=True,
+                    )
+                    payload["humanizer_apply"] = applied
+    except Exception as _hum_exc:  # noqa: BLE001
+        payload["humanizer_apply"] = {"applied": False, "error": str(_hum_exc)}
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:

@@ -3,8 +3,10 @@
 Check A — Intent Coverage Matrix (must intents not missing)
 Check B — FSM five-tuple + hang audit + illegal list (domain_required)
 Check C — every AC has ≥1 TC with Command + Assertion
+Check D — fill depth: scaffold-only draft cannot freeze (Matrix/FSM/journey filled)
+Check C+ — domain lakes need ≥1 execution-layer TC (not docs-only rg)
 
-reason_code on fail: truth_review_gate_failed
+reason_code on fail: truth_review_gate_failed | truth_scaffold_not_filled
 """
 
 from __future__ import annotations
@@ -23,6 +25,8 @@ SCHEMA = "truth-review-gate.v1"
 REASON_FAILED = "truth_review_gate_failed"
 REASON_TRUTH_MISSING = "truth_missing"
 REASON_PACKAGE_INCOMPLETE = "feature_package_incomplete"
+REASON_SCAFFOLD = "truth_scaffold_not_filled"
+REASON_EXEC_TC = "domain_exec_tc_missing"
 
 _AC_ID_RE = re.compile(r"\b(AC-[A-Z0-9]+(?:-[A-Z0-9]+)*)\b", re.IGNORECASE)
 _TC_ID_RE = re.compile(r"\b(TC-[A-Z0-9]+(?:-[A-Z0-9]+)*)\b", re.IGNORECASE)
@@ -476,6 +480,206 @@ def check_c_testability(truth_md: str, tests_md: str) -> dict[str, Any]:
     }
 
 
+
+
+_SCAFFOLD_MARKERS = (
+    "scaffold: v1.6.10-gold-aligned",
+    "package_maturity: scaffold",
+    "v1.6.10-gold-aligned",
+)
+_META_FSM_STATES = {
+    "draft",
+    "in_review",
+    "frozen",
+    "humanize_pending",
+    "refreeze_review",
+    "in-review",
+}
+_JOURNEY_HEADING = re.compile(
+    r"(?im)^##\s+(用户旅程|user journey|用户旅程\s*/\s*故事|journey)\b"
+)
+
+
+def _is_docs_only_command(command: str) -> bool:
+    cmd = (command or "").strip().strip("`")
+    if not cmd:
+        return True
+    low = cmd.lower()
+    if low.startswith("rg ") or low.startswith("rg\t") or "rg -n" in low or low.startswith("rg -"):
+        return True
+    if low.startswith("test -f ") and ("docs/beacon" in low or "truth.md" in low):
+        return True
+    if low.startswith("grep "):
+        return True
+    return False
+
+
+def _domain_kind(frontmatter: dict[str, Any] | None, truth_md: str = "") -> str:
+    fm = frontmatter or {}
+    kind = str(fm.get("domain_kind") or fm.get("package_kind") or "").strip().lower()
+    if kind:
+        return kind
+    # heuristic: lifecycle/gate packages talk package status machines only
+    if "truth review gate" in truth_md.lower() and "domain_required: true" in truth_md.lower():
+        if re.search(r"(?i)lifecycle|package lifecycle|gate_a_b_c", truth_md):
+            return "lifecycle"
+    return "business" if _truthy((frontmatter or {}).get("domain_required")) else "general"
+
+
+def check_d_fill_depth(truth_md: str, *, domain_required: bool = False, frontmatter: dict[str, Any] | None = None) -> dict[str, Any]:
+    """Scaffold-only packages stay draft; Matrix/FSM/journey must be filled before freeze."""
+    fm = frontmatter or {}
+    findings: list[dict[str, str]] = []
+    maturity = str(fm.get("package_maturity") or "").strip().lower()
+    body_low = truth_md.lower()
+    kind = _domain_kind(fm, truth_md)
+    business_domain = domain_required and kind not in {"lifecycle", "gate", "platform", "meta"}
+
+    if maturity == "scaffold":
+        findings.append(
+            {
+                "kind": "scaffold_maturity",
+                "text": "package_maturity=scaffold — fill Matrix/FSM/旅程 then set package_maturity=filled (or remove scaffold)",
+            }
+        )
+    for marker in _SCAFFOLD_MARKERS:
+        if marker.lower() in body_low or marker in truth_md:
+            if marker == "package_maturity: scaffold" and maturity == "scaffold":
+                continue  # already reported
+            if "scaffold: v1.6.10-gold-aligned" in truth_md or "scaffold: v1.6.10-gold-aligned" in body_low:
+                findings.append(
+                    {
+                        "kind": "scaffold_snapshot",
+                        "text": "User Intent Snapshot still marks scaffold: v1.6.10-gold-aligned — replace with filled lake content",
+                    }
+                )
+                break
+            if marker == "v1.6.10-gold-aligned" and "scaffold:" in truth_md:
+                findings.append(
+                    {
+                        "kind": "scaffold_snapshot",
+                        "text": "scaffold gold-aligned marker still present — boil down before freeze",
+                    }
+                )
+                break
+
+    # Journey required for business domain lakes (not lifecycle/gate packages)
+    if business_domain and not _JOURNEY_HEADING.search(truth_md):
+        findings.append(
+            {
+                "kind": "journey_missing",
+                "text": "business domain lake missing ## 用户旅程 / ## User Journey section",
+            }
+        )
+
+    # Meta lifecycle FSM only is not a business domain fill
+    if business_domain:
+        fsm = extract_fsm_five_tuple(truth_md)
+        states = set()
+        for st in fsm.get("from_states") or []:
+            states.add(str(st).strip().lower())
+        for st in fsm.get("to_states") or []:
+            states.add(str(st).strip().lower())
+        # also parse To column via transitions if available
+        for tr in fsm.get("transitions") or []:
+            if isinstance(tr, dict):
+                for k in ("from", "to", "state", "State", "To"):
+                    if tr.get(k):
+                        states.add(str(tr.get(k)).strip().lower())
+        if states and states.issubset(_META_FSM_STATES):
+            findings.append(
+                {
+                    "kind": "scaffold_meta_fsm",
+                    "text": "FSM only models package lifecycle (draft/in_review/frozen) — fill real domain states before freeze",
+                }
+            )
+
+    # Placeholder 人话 / AC
+    if re.search(r"本湖让用户能完成\s*`[^`]+`\s*的核心结果", truth_md):
+        findings.append(
+            {
+                "kind": "scaffold_l0_placeholder",
+                "text": "L0 still uses generic scaffold wording — rewrite 人话 for this lake",
+            }
+        )
+
+    # de-dupe findings by kind
+    seen: set[str] = set()
+    uniq: list[dict[str, str]] = []
+    for f in findings:
+        k = f.get("kind") or ""
+        if k in seen:
+            continue
+        seen.add(k)
+        uniq.append(f)
+    ok = len(uniq) == 0
+    return {
+        "pass": ok,
+        "check": "D",
+        "name": "fill_depth",
+        "required": True,
+        "reason": REASON_SCAFFOLD if not ok else "",
+        "findings": uniq,
+        "package_maturity": maturity or "unspecified",
+        "domain_kind": kind,
+        "business_domain": business_domain,
+    }
+
+
+def check_c_domain_exec_layer(
+    truth_md: str,
+    tests_md: str,
+    *,
+    domain_required: bool,
+    frontmatter: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Business domain lakes: ≥1 execution-layer TC (not docs-only rg)."""
+    kind = _domain_kind(frontmatter, truth_md)
+    business_domain = domain_required and kind not in {"lifecycle", "gate", "platform", "meta"}
+    if not business_domain:
+        return {
+            "pass": True,
+            "check": "C_exec",
+            "name": "domain_exec_layer",
+            "required": False,
+            "skipped": True,
+            "reason": "",
+            "findings": [],
+            "exec_tc_count": 0,
+            "domain_kind": kind,
+        }
+    trows = extract_test_rows(tests_md)
+    exec_rows = []
+    for tr in trows:
+        cmd = (tr.get("command") or "").strip()
+        assertion = (tr.get("assertion") or "").strip()
+        if not cmd or not assertion:
+            continue
+        if not _is_docs_only_command(cmd):
+            exec_rows.append(tr.get("tc_id") or "anon")
+    findings: list[dict[str, str]] = []
+    ok = len(exec_rows) >= 1
+    if not ok:
+        findings.append(
+            {
+                "kind": "domain_exec_tc_missing",
+                "text": "business domain lake needs ≥1 execution-layer TC (pytest/cli/e2e), not only docs rg",
+            }
+        )
+    return {
+        "pass": ok,
+        "check": "C_exec",
+        "name": "domain_exec_layer",
+        "required": True,
+        "reason": REASON_EXEC_TC if not ok else "",
+        "findings": findings,
+        "exec_tc_count": len(exec_rows),
+        "exec_tc_ids": exec_rows[:20],
+        "domain_kind": kind,
+    }
+
+
+
 def evaluate_truth_review_gate(
     *,
     truth_md: str,
@@ -500,20 +704,33 @@ def evaluate_truth_review_gate(
     check_a = check_a_intent_matrix(truth_md, domain_required=domain_required, require_matrix=bool(require_matrix))
     check_b = check_b_fsm_audit(truth_md, domain_required=domain_required)
     check_c = check_c_testability(truth_md, tests_md)
+    check_c_exec = check_c_domain_exec_layer(truth_md, tests_md, domain_required=bool(domain_required), frontmatter=fm)
+    check_d = check_d_fill_depth(truth_md, domain_required=bool(domain_required), frontmatter=fm)
 
-    checks = [check_a, check_b, check_c]
+    checks = [check_a, check_b, check_c, check_c_exec, check_d]
     overall = all(bool(c.get("pass")) for c in checks)
+    abc_pass = all(bool(c.get("pass")) for c in (check_a, check_b, check_c))
     findings: list[dict[str, str]] = []
     for c in checks:
         for f in c.get("findings") or []:
             if isinstance(f, dict):
                 findings.append(f)
 
+    reason = ""
+    if not overall:
+        if not check_d.get("pass"):
+            reason = REASON_SCAFFOLD
+        elif not check_c_exec.get("pass"):
+            reason = REASON_EXEC_TC
+        else:
+            reason = REASON_FAILED
+
     humanizer_order = {
         "rule": "humanizer_only_after_abc_pass_before_freeze",
-        "abc_pass": overall,
-        "allowed_now": overall,
-        "note": "Polish L0/narrative only; preserve_machine_fields=true",
+        "abc_pass": abc_pass,
+        "allowed_now": abc_pass,
+        "fill_depth_pass": bool(check_d.get("pass")),
+        "note": "Polish L0/narrative only after A/B/C; preserve_machine_fields=true; freeze needs D+exec too",
     }
 
     return {
@@ -524,12 +741,15 @@ def evaluate_truth_review_gate(
         "pass": overall,
         "blocked": not overall,
         "review_gate_pass": overall,
-        "reason_code": "" if overall else REASON_FAILED,
+        "abc_pass": abc_pass,
+        "reason_code": reason,
         "domain_required": domain_required,
         "checks": {
             "A_intent_coverage": check_a,
             "B_fsm_audit": check_b,
             "C_testability": check_c,
+            "C_domain_exec_layer": check_c_exec,
+            "D_fill_depth": check_d,
         },
         "findings": findings,
         "humanizer": humanizer_order,

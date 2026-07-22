@@ -18,13 +18,16 @@ beacon truth review <feature> --project-root . --version <ver> [--json]
 ## Three-step pipeline
 
 ```text
-1. Plan / Draft Truth
+1. Plan / Draft Truth (scaffold = draft only)
 2. Truth Review Gate
    A Intent Coverage Matrix (must ≠ missing)
    B FSM State|Event|Guard|To|Action + hang + illegal (domain_required)
    C every AC ≥ 1 TC (Command + Assertion)
-   then Humanizer fulltext (after A/B/C pass only)
-3. Freeze
+   C_exec business domain: ≥1 execution-layer TC (not docs-only rg)
+   D fill depth: package_maturity≠scaffold; 旅程 filled; no meta-only FSM
+   then Humanizer **apply** L0 writeback (after A/B/C pass; preserve_machine_fields)
+3. Freeze only if review_gate_pass (A–D)
+4. Freeze post: tasks.md derived from AC
 ```
 
 ## Boundaries

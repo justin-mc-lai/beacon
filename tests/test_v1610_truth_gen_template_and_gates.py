@@ -41,6 +41,7 @@ version: {version}
 status: draft
 language: zh
 domain_required: true
+package_maturity: filled
 parser_contract: beacon-feature-package-v2
 materials_status: current
 ---
@@ -51,12 +52,20 @@ materials_status: current
 
 用户下单并支付；超时关单；重复回调幂等。
 
+- 能做：支付与超时关单
+- 不能做：跳态支付
+- 怎样算完：paid / closed / refunded
+
 ## Intent Coverage Matrix
 
 | intent_id | source | strength | landing | status |
 |-----------|--------|----------|---------|--------|
 | INT-01 | prompt | must | AC-001 | covered |
 | INT-02 | prompt | must | AC-002 | covered |
+
+## 用户旅程
+
+1. 创建订单 2. 支付 3. 成功或超时 4. 可选退款
 
 ## Acceptance Criteria
 
@@ -97,6 +106,7 @@ materials_status: current
 |-------|-------|---------|-----------|
 | TC-001 | AC-001 | `rg -n 'AC-001' docs/beacon/{version}/features/{slug}/truth.md` | present |
 | TC-002 | AC-002 | `rg -n 'AC-002' docs/beacon/{version}/features/{slug}/truth.md` | present |
+| TC-E | AC-001 | `python3 -c 'print(0)'` | exit_code==0 |
 """,
         encoding="utf-8",
     )

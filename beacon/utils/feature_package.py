@@ -412,6 +412,7 @@ def _render_truth_package_v1610(
         "ux_required: false",
         "parser_contract: beacon-feature-package-v2",
         "truth_source_model: feature_package_authoritative",
+        "package_maturity: scaffold",
         "materials_status: current",
         "canonical_refs:",
         f"  prd: docs/beacon/{version}/features/{slug}/truth.md",
@@ -474,6 +475,14 @@ def _render_truth_package_v1610(
     fm.extend(
         [
             "| INT-EDGE-optional | vision | should | Non-goal: deferred edge cases | deferred |",
+            "",
+            "## 用户旅程",
+            "",
+            "> scaffold：请改成真实旅程步骤后再 freeze（Check D）。",
+            "",
+            "1. 用户进入入口（待补）",
+            "2. 完成关键操作（待补）",
+            "3. 看到明确结果或失败原因（待补）",
             "",
             "## Acceptance Criteria",
             "",
@@ -564,7 +573,28 @@ def render_tests_package(project_root: Path, *, version: str, feature: str) -> s
             lines.append(
                 f"| TC-001 | AC-001 | `rg -n 'AC-001' docs/beacon/{version}/features/{slug}/truth.md` | scaffold AC |"
             )
-        lines.extend(["", "## Validation Note", "", "v1.6.10 TC layout for Truth Review Gate Check C.", ""])
+        # Ensure ≥1 execution-layer TC (domain Check C_exec / general readiness)
+        domain_required = False
+        try:
+            truth_path = package_paths(project_root, version=version, feature=feature)["truth"]
+            if truth_path.is_file():
+                fm, _, _ = _parse_frontmatter(truth_path.read_text(encoding="utf-8"))
+                domain_required = str(fm.get("domain_required") or "").lower() in {"true", "1", "yes", "y"}
+        except Exception:
+            domain_required = False
+        primary_ac = "AC-001"
+        if ac_from_truth:
+            primary_ac = ac_from_truth[0].get("ac_id") or primary_ac
+        elif rows:
+            primary_ac = rows[0].get("ac_id") or primary_ac
+        lines.append(
+            f"| TC-EXEC-001 | {primary_ac} | `python3 -c 'print(0)'` | exit_code==0 |"
+        )
+        if domain_required:
+            lines.append(
+                f"| TC-EXEC-002 | {primary_ac} | `python3 -m pytest -q -k {slug} --tb=no` | exit_code==0_or_no_tests |"
+            )
+        lines.extend(["", "## Validation Note", "", "v1.6.10 TC layout for Truth Review Gate Check C + domain exec layer.", ""])
         return "\n".join(lines)
 
     lines = [
@@ -597,26 +627,58 @@ def render_tests_package(project_root: Path, *, version: str, feature: str) -> s
 
 
 def render_tasks_package(project_root: Path, *, version: str, feature: str) -> str:
-    _ = project_root
-    _ = version
-    return "\n".join(
+    """Derive task ledger from package AC when available (v1.6.10+)."""
+    slug = _slug(feature)
+    ac_rows: list[dict[str, str]] = []
+    truth_path = package_paths(project_root, version=version, feature=feature)["truth"]
+    if truth_path.is_file():
+        ac_rows = _extract_ac_rows(truth_path.read_text(encoding="utf-8"))
+    if not ac_rows:
+        user_story_path = project_root / "docs" / "beacon" / version / "user-story" / f"{slug}.md"
+        if user_story_path.is_file():
+            ac_rows = _extract_ac_rows(user_story_path.read_text(encoding="utf-8"))
+    lines = [
+        "---",
+        f"slug: {slug}",
+        f"version: {version}",
+        "materials_status: current",
+        "task_source: acceptance_criteria",
+        "---",
+        "",
+        f"# Tasks: {feature}",
+        "",
+        "## Task Ledger",
+        "",
+    ]
+    if ac_rows and _semver_tuple(version) >= (1, 6, 10):
+        for idx, row in enumerate(ac_rows, start=1):
+            ac = row.get("ac_id") or f"AC-{idx:03d}"
+            desc = (row.get("description") or row.get("theme") or "implement").replace("\n", " ").strip()
+            if len(desc) > 80:
+                desc = desc[:77] + "..."
+            lines.append(f"- [ ] TASK-{idx:03d} Implement {ac}: {desc}")
+        lines.append(f"- [ ] TASK-{len(ac_rows)+1:03d} Validate package gates (truth review + freeze ack)")
+        lines.append(f"- [ ] TASK-{len(ac_rows)+2:03d} Run QA against AC↔TC matrix + exec-layer evidence")
+    else:
+        lines.extend(
+            [
+                "- [ ] TASK-001 Materialize feature package",
+                "- [ ] TASK-002 Validate frontmatter and acceptance criteria",
+                "- [ ] TASK-003 Validate checkbox ledger without gate bypass",
+                "- [ ] TASK-004 Validate evidence authority labels",
+                "- [ ] TASK-005 Run canonical implement and QA gates separately",
+            ]
+        )
+    lines.extend(
         [
-            f"# Tasks: {feature}",
-            "",
-            "## Task Ledger",
-            "",
-            "- [ ] TASK-001 Materialize feature package",
-            "- [ ] TASK-002 Validate frontmatter and acceptance criteria",
-            "- [ ] TASK-003 Validate checkbox ledger without gate bypass",
-            "- [ ] TASK-004 Validate evidence authority labels",
-            "- [ ] TASK-005 Run canonical implement and QA gates separately",
             "",
             "## Boundary",
             "",
-            "Checkboxes are readable task-ledger inputs only. They do not mark implement, QA, or release complete without existing gate validation.",
+            "Checkboxes are task-ledger inputs derived from AC. They do not mark implement/QA/release complete without gate evidence.",
             "",
         ]
     )
+    return "\n".join(lines)
 
 
 def render_evidence_package(project_root: Path, *, version: str, feature: str) -> str:
