@@ -673,3 +673,74 @@ def mark_package_materials_stale(
         path.write_text(f"---{fm2}\n---{body}", encoding="utf-8")
         updated.append(_rel(root, path))
     return {"updated": updated, "materials_status": "stale", "feature": feature_slug(feature), "version": resolved}
+
+
+def evaluate_release_truth_materials_gate(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+) -> dict[str, Any]:
+    """Fail-closed release helper: materials_status stale or missing TRG report (v1.6.10+)."""
+    root = Path(project_root).expanduser().resolve()
+    resolved = resolve_target_version(root, version)
+    slug = feature_slug(feature)
+    if not truth_review_gate_supported(resolved):
+        return {
+            "schema": "release-truth-materials-gate.v1",
+            "required": False,
+            "blocked": False,
+            "pass": True,
+            "reason_code": "",
+            "skipped": True,
+        }
+    paths = package_paths(root, version=resolved, feature=slug)
+    stale_surfaces: list[str] = []
+    for key in ("truth", "tests", "tasks"):
+        p = paths.get(key)
+        if not p or not p.is_file():
+            continue
+        body = p.read_text(encoding="utf-8")
+        if re.search(r"(?m)^materials_status:\s*stale\s*$", body):
+            stale_surfaces.append(key)
+    report = truth_review_report_path(root, version=resolved, feature=slug)
+    report_exists = report.is_file()
+    report_pass = False
+    if report_exists:
+        try:
+            import json
+
+            data = json.loads(report.read_text(encoding="utf-8"))
+            report_pass = bool(data.get("pass") or data.get("review_gate_pass"))
+        except Exception:  # noqa: BLE001
+            report_pass = False
+    # Live re-check if report missing
+    live = None
+    if not report_exists:
+        live = run_truth_review_gate(root, version=resolved, feature=slug, write_report=True)
+        report_exists = True
+        report_pass = bool(live.get("pass") or live.get("review_gate_pass"))
+        report = truth_review_report_path(root, version=resolved, feature=slug)
+
+    reason_codes: list[str] = []
+    if stale_surfaces:
+        reason_codes.append("materials_status_stale")
+    if not report_exists:
+        reason_codes.append("truth_review_report_missing")
+    elif not report_pass:
+        reason_codes.append("truth_review_gate_failed")
+    blocked = bool(reason_codes)
+    return {
+        "schema": "release-truth-materials-gate.v1",
+        "required": True,
+        "blocked": blocked,
+        "pass": not blocked,
+        "reason_code": reason_codes[0] if reason_codes else "",
+        "reason_codes": reason_codes,
+        "stale_surfaces": stale_surfaces,
+        "report_path": _rel(root, report) if report else "",
+        "report_pass": report_pass,
+        "feature": slug,
+        "version": resolved,
+        "live_review": live,
+    }

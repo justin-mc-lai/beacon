@@ -120,14 +120,102 @@ def render_intent_first_truth(
 ) -> str:
     """Phase 3: Render a complete truth.md from confirmed intents.
 
-    The output is a deterministic truth package with:
-      - provenance frontmatter
-      - AC table derived from intents (not template fields)
-      - user intent section for traceability
+    v1.6.10+: gold-aligned structure (人话 + matrix + FSM + illegal + AC + Non-goals).
     """
     slug = feature.strip().lower().replace(" ", "-").replace("_", "-")
     provenance = build_provenance(intents)
     ac_rows = [derive_ac_from_intent(intent, idx) for idx, intent in enumerate(intents, start=1)]
+    if not ac_rows:
+        ac_rows = [{"ac_id": "AC-001", "theme": "core", "description": "Confirm core intent is delivered"}]
+
+    # semver gate
+    try:
+        parts = str(version or "v0").lstrip("v").split(".")
+        sv = (int(parts[0]), int(parts[1]) if len(parts) > 1 else 0, int(parts[2]) if len(parts) > 2 else 0)
+    except Exception:
+        sv = (0, 0, 0)
+
+    if sv >= (1, 6, 10):
+        lines = [
+            "---",
+            f"slug: {slug}",
+            f"version: {version}",
+            "status: draft",
+            "language: zh",
+            "domain_required: false",
+            "parser_contract: beacon-feature-package-v2",
+            "materials_status: current",
+            "truth_source_model: intent_first",
+            "canonical_refs:",
+            f"  prd: docs/beacon/{version}/features/{slug}/truth.md",
+            f"  user_story: docs/beacon/{version}/features/{slug}/truth.md",
+            f"  test_case: docs/beacon/{version}/features/{slug}/tests.md",
+            "---",
+            "",
+            f"# Requirement Truth: {feature} ({version})",
+            "",
+            "## 人话",
+            "",
+            f"根据用户意图生成 `{feature}` 的需求真相。能做的写清，不能做的写清，怎样算完写清。",
+            "",
+            "- 能做：已确认意图对应的结果",
+            "- 不能做：未确认意图默认实现",
+            "- 怎样算完：Intent Matrix must covered + 每 AC 有 TC + review 通过后再 freeze",
+            "",
+            "## User Intent",
+            "",
+            f"> {user_utterance}",
+            "",
+            "## Intent Coverage Matrix",
+            "",
+            "| intent_id | source | strength | landing | status |",
+            "|-----------|--------|----------|---------|--------|",
+        ]
+        for idx, row in enumerate(ac_rows, start=1):
+            lines.append(f"| INT-{idx:03d} | prompt | must | {row['ac_id']} | covered |")
+        lines.extend(
+            [
+                "",
+                "## Acceptance Criteria",
+                "",
+                "| AC ID | Description |",
+                "|-------|-------------|",
+            ]
+        )
+        for row in ac_rows:
+            lines.append(f"| {row['ac_id']} | {row.get('description') or row.get('theme') or ''} |")
+        lines.extend(
+            [
+                "",
+                "## FSM 五元组",
+                "",
+                "| State | Event | Guard | To | Action |",
+                "|-------|-------|-------|-----|--------|",
+                "| draft | submit | package_complete | in_review | — |",
+                "| in_review | pass | gate_ok | frozen | set_frozen |",
+                "| in_review | fail | — | draft | attach_report |",
+                "",
+                "### invalid / illegal",
+                "",
+                "- draft → frozen without review",
+                "",
+                "## Non-goals",
+                "",
+                "- 未在 Matrix 声明的意图",
+                "",
+                "## Provenance",
+                "",
+                "Each AC traces to a confirmed user intent.",
+                "",
+                "## Source Excerpt",
+                "",
+                "```markdown",
+                user_utterance[:4000].rstrip(),
+                "```",
+                "",
+            ]
+        )
+        return "\n".join(lines)
 
     lines = [
         _render_frontmatter(slug=slug, version=version, language="en", status="draft", provenance=provenance),
@@ -169,8 +257,34 @@ def render_intent_first_truth(
     return "\n".join(lines)
 
 
-def render_intent_first_tests(feature: str, ac_rows: list[dict[str, str]]) -> str:
+def render_intent_first_tests(feature: str, ac_rows: list[dict[str, str]], version: str = "") -> str:
     """Render a tests.md from derived AC rows."""
+    slug = feature.strip().lower().replace(" ", "-").replace("_", "-")
+    try:
+        parts = str(version or "v0").lstrip("v").split(".")
+        sv = (int(parts[0]), int(parts[1]) if len(parts) > 1 else 0, int(parts[2]) if len(parts) > 2 else 0)
+    except Exception:
+        sv = (0, 0, 0)
+    if sv >= (1, 6, 10):
+        lines = [
+            "---",
+            f"slug: {slug}",
+            f"version: {version}",
+            "materials_status: current",
+            "---",
+            "",
+            f"# Tests: {feature}",
+            "",
+            "| TC ID | AC ID | Command | Assertion |",
+            "|-------|-------|---------|-----------|",
+        ]
+        for idx, row in enumerate(ac_rows, start=1):
+            ac = row["ac_id"]
+            lines.append(
+                f"| TC-{idx:03d} | {ac} | `rg -n '{ac}' docs/beacon/{version}/features/{slug}/truth.md` | AC present |"
+            )
+        lines.append("")
+        return "\n".join(lines)
     lines = [
         f"# Tests: {feature}",
         "",

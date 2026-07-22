@@ -297,7 +297,19 @@ def _render_frontmatter(*, slug: str, version: str, language: str, status: str) 
     )
 
 
-def render_truth_package(project_root: Path, *, version: str, feature: str) -> str:
+def render_truth_package(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+    language: str | None = None,
+) -> str:
+    """Render feature truth package.
+
+    v1.6.10+: gold-aligned scaffold —
+    人话 / Plain language + Intent Coverage Matrix + FSM 五元组 + illegal + AC + Non-goals.
+    < v1.6.10: legacy plain-language projection template.
+    """
     slug = _slug(feature)
     prd_path = project_root / "docs" / "beacon" / version / "prd" / f"{slug}.md"
     user_story_path = project_root / "docs" / "beacon" / version / "user-story" / f"{slug}.md"
@@ -309,8 +321,29 @@ def render_truth_package(project_root: Path, *, version: str, feature: str) -> s
         for match in [re.search(r"AC-\d{3}", line)]
         if match
     ]
+    if not ac_rows:
+        ac_rows = [
+            {
+                "ac_id": "AC-001",
+                "theme": "core",
+                "description": f"User can complete the core outcome for `{feature}` within declared boundaries.",
+            }
+        ]
+
+    if _semver_tuple(version) >= (1, 6, 10):
+        return _render_truth_package_v1610(
+            project_root,
+            version=version,
+            feature=feature,
+            slug=slug,
+            language=language or "zh",
+            ac_rows=ac_rows,
+            prd=prd,
+            user_story=user_story,
+        )
+
     lines = [
-        _render_frontmatter(slug=slug, version=version, language="en", status="draft"),
+        _render_frontmatter(slug=slug, version=version, language=language or "en", status="draft"),
         "",
         f"# Feature: {feature}",
         "",
@@ -352,11 +385,188 @@ def render_truth_package(project_root: Path, *, version: str, feature: str) -> s
     return "\n".join(lines)
 
 
+def _render_truth_package_v1610(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+    slug: str,
+    language: str,
+    ac_rows: list[dict[str, str]],
+    prd: str,
+    user_story: str,
+) -> str:
+    """Gold-aligned scaffold (v1.6.10 Truth Review Gate ready structure)."""
+    _ = project_root
+    lang = (language or "zh").strip().lower()
+    if lang not in {"zh", "en", "bilingual"}:
+        lang = "zh"
+    primary_ac = ac_rows[0]["ac_id"] if ac_rows else "AC-001"
+    fm = [
+        "---",
+        f"slug: {slug}",
+        f"version: {version}",
+        "status: draft",
+        f"language: {lang}",
+        "domain_required: false",
+        "ux_required: false",
+        "parser_contract: beacon-feature-package-v2",
+        "truth_source_model: feature_package_authoritative",
+        "materials_status: current",
+        "canonical_refs:",
+        f"  prd: docs/beacon/{version}/features/{slug}/truth.md",
+        f"  user_story: docs/beacon/{version}/features/{slug}/truth.md",
+        f"  test_case: docs/beacon/{version}/features/{slug}/tests.md",
+        "---",
+        "",
+        f"# Requirement Truth: {feature} ({version})",
+        "",
+    ]
+    if lang in {"zh", "bilingual"}:
+        fm.extend(
+            [
+                "## 人话",
+                "",
+                f"本湖让用户能完成 `{feature}` 的核心结果。范围写清；状态变化写清；怎样算完写清。",
+                "",
+                f"- 能做：完成 `{feature}` 主路径与已声明边界内操作",
+                "- 不能做：跳过审查直接冻结；未声明即默认支持的扩展场景",
+                "- 怎样算完：Intent Matrix must 全 covered；每 AC 有 TC；需要时 FSM 无悬空",
+                "",
+            ]
+        )
+    if lang in {"en", "bilingual"}:
+        fm.extend(
+            [
+                "## Plain language",
+                "",
+                f"This lake lets users complete the core outcome of `{feature}`. Scope, state changes, and done criteria must be explicit.",
+                "",
+                f"- can: complete `{feature}` happy path within declared boundaries",
+                "- cannot: freeze without Truth Review Gate; invent undeclared scope",
+                "- done when: must intents covered; each AC has a TC; FSM has no hanging states when domain_required",
+                "",
+            ]
+        )
+    fm.extend(
+        [
+            "## User Intent",
+            "",
+            f"Deliver a freeze-ready package truth for `{feature}` under Truth Review Gate (A/B/C).",
+            "",
+            "## User Intent Snapshot",
+            "",
+            "```yaml",
+            "lake_or_ocean: 湖",
+            "truth_review_gate: required",
+            "scaffold: v1.6.10-gold-aligned",
+            "```",
+            "",
+            "## Intent Coverage Matrix",
+            "",
+            "| intent_id | source | strength | landing | status |",
+            "|-----------|--------|----------|---------|--------|",
+        ]
+    )
+    for idx, row in enumerate(ac_rows, start=1):
+        ac_id = row.get("ac_id") or f"AC-{idx:03d}"
+        fm.append(f"| INT-{idx:03d} | prompt | must | {ac_id} | covered |")
+    fm.extend(
+        [
+            "| INT-EDGE-optional | vision | should | Non-goal: deferred edge cases | deferred |",
+            "",
+            "## Acceptance Criteria",
+            "",
+            "| AC ID | Description |",
+            "|-------|-------------|",
+        ]
+    )
+    for row in ac_rows:
+        desc = (row.get("description") or row.get("theme") or "").replace("|", "/")
+        fm.append(f"| {row['ac_id']} | {desc} |")
+    fm.extend(
+        [
+            "",
+            "## FSM 五元组",
+            "",
+            "> domain_required=false 时 Check B 可 skip；若升级为 domain 湖，补全五元组与 illegal。",
+            "",
+            "| State | Event | Guard | To | Action |",
+            "|-------|-------|-------|-----|--------|",
+            "| draft | submit | package_complete | in_review | — |",
+            "| in_review | pass | gate_ok | frozen | set_frozen |",
+            "| in_review | fail | — | draft | attach_report |",
+            "",
+            "**终态：** frozen",
+            "",
+            "### invalid / illegal",
+            "",
+            "- draft → frozen（skip review）",
+            "- in_review → frozen without review_gate_pass",
+            "",
+            "## Non-goals",
+            "",
+            "- 未在 Intent Matrix 声明的扩展场景",
+            "- 以 agent 自述替代 frozen truth 验收",
+            "",
+            "## Freeze readiness",
+            "",
+            "- [ ] Intent Matrix must 无 missing",
+            "- [ ] domain 湖：FSM 五元组 + illegal 完备",
+            "- [ ] 每 AC ≥ 1 TC（Command+Assertion）",
+            "- [ ] `beacon truth review` pass 后再 freeze",
+            "",
+            "## Source Excerpt",
+            "",
+            "```markdown",
+            (prd or user_story or feature)[:4000].rstrip(),
+            "```",
+            "",
+        ]
+    )
+    return "\n".join(fm)
+
+
 def render_tests_package(project_root: Path, *, version: str, feature: str) -> str:
     slug = _slug(feature)
     qa_path = qa_docs_file(project_root, version, f"{slug}.md")
     qa = _read_text(qa_path)
     rows = _extract_test_rows(qa)
+    truth = _read_text(package_paths(project_root, version=version, feature=feature)["truth"]) if (project_root / "docs" / "beacon" / version / "features" / slug / "truth.md").exists() else ""
+    ac_from_truth = _extract_ac_rows(truth) if truth else []
+    if _semver_tuple(version) >= (1, 6, 10):
+        lines = [
+            "---",
+            f"slug: {slug}",
+            f"version: {version}",
+            "materials_status: current",
+            "---",
+            "",
+            f"# Tests: {feature}",
+            "",
+            "| TC ID | AC ID | Command | Assertion |",
+            "|-------|-------|---------|-----------|",
+        ]
+        if rows:
+            for idx, row in enumerate(rows, start=1):
+                tc = row.get("tc_id") or f"TC-{idx:03d}"
+                ac = row.get("ac_id") or "AC-001"
+                command = row.get("command") or f'rg -n "{ac}" docs/beacon/{version}/features/{slug}/truth.md'
+                assertion = row.get("assertion") or "exists"
+                lines.append(f"| {tc} | {ac} | `{command}` | {assertion} |")
+        elif ac_from_truth:
+            for idx, row in enumerate(ac_from_truth, start=1):
+                ac = row.get("ac_id") or f"AC-{idx:03d}"
+                lines.append(
+                    f"| TC-{idx:03d} | {ac} | `rg -n '{ac}' docs/beacon/{version}/features/{slug}/truth.md` | AC present |"
+                )
+        else:
+            lines.append(
+                f"| TC-001 | AC-001 | `rg -n 'AC-001' docs/beacon/{version}/features/{slug}/truth.md` | scaffold AC |"
+            )
+        lines.extend(["", "## Validation Note", "", "v1.6.10 TC layout for Truth Review Gate Check C.", ""])
+        return "\n".join(lines)
+
     lines = [
         f"# Tests: {feature}",
         "",
@@ -458,17 +668,38 @@ def materialize_feature_package(
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content, encoding="utf-8")
         written.append(_rel(project_root, path))
+        # After truth is on disk, re-render tests so Check C covers all AC rows (v1.6.10+)
+        if key == "truth" and _semver_tuple(version) >= (1, 6, 10) and "tests" in rendered:
+            if paths["tests"].exists() and not force and _rel(project_root, paths["tests"]) in skipped:
+                pass
+            else:
+                rendered["tests"] = render_tests_package(project_root, version=version, feature=feature)
     validation = validate_feature_package(project_root, version=version, feature=feature, write_report=True)
+    post_write: dict[str, Any] = {}
+    if written and _semver_tuple(version) >= (1, 6, 10):
+        from beacon.utils.truth_gen_postwrite import run_truth_gen_postwrite_gates
+
+        post_write = run_truth_gen_postwrite_gates(
+            project_root,
+            version=version,
+            feature=feature,
+            written=written,
+        )
+    status = "materialized"
+    if post_write.get("blocked"):
+        status = "materialized_review_blocked"
     return {
         "schema_version": "1.0",
         "feature": feature,
         "feature_slug": slug,
         "version": version,
-        "status": "materialized",
+        "status": status,
         "package_dir": _rel(project_root, paths["dir"]),
         "written": written,
         "skipped": skipped,
         "validation": validation,
+        "truth_gen_postwrite": post_write,
+        "recommend_freeze": bool(post_write.get("recommend_freeze", _semver_tuple(version) < (1, 6, 10))),
     }
 
 

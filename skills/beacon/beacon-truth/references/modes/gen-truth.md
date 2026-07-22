@@ -76,6 +76,35 @@ support research
   -> release
 ```
 
+## v1.6.10+ gen-truth HARD（写后强制 · 不得建议 freeze 直至通过）
+
+CLI / materialize 在写入 `truth.md`（及同包 tests）后必须执行 post-write gates：
+
+1. **Humanizer fulltext（TASK-003）**  
+   - 调用 `resolve_humanizer_profile`（`beacon.utils.humanizer_config`）。  
+   - 默认 `zh` → oss-sync `core-skills/Humanizer-zh/SKILL.md` 全文；`en` → `core-skills/humanizer/SKILL.md`。  
+   - `require_on_truth_write: true` 时路径缺失 ⇒ `blocked`，**不得** `recommend_freeze`。  
+   - Humanizer 仅润色 L0（`## 人话` / `## Plain language`）；**不得**改 AC ID、FSM、Intent Matrix 等机器字段。
+
+2. **Truth Review Gate（A/B/C）**  
+   - 写后必跑 `beacon truth review` / `run_truth_review_gate`。  
+   - fail ⇒ CLI exit 2；消息明确 **do NOT freeze**；`recommend_freeze=false`。  
+   - pass 后才可进入人工 ack 的 freeze 路径。
+
+3. **默认 scaffold 结构（render_truth_package v1.6.10+）**  
+   - `## 人话`（或 en `## Plain language`）  
+   - `## Intent Coverage Matrix`  
+   - `## Acceptance Criteria`  
+   - `## FSM 五元组` + `### invalid / illegal`  
+   - `## Non-goals`  
+   - `tests.md` 表头：`TC ID | AC ID | Command | Assertion`
+
+4. **下游 fail-closed**  
+   - `qa run`：TRG fail → reason `truth_review_gate_failed`。  
+   - release scorecard：`materials_status: stale` 或 TRG report 缺失/失败 → 非 `release_ready`。
+
+实现入口：`beacon/utils/truth_gen_postwrite.py` → `run_truth_gen_postwrite_gates`。
+
 ## Truth Freeze Intent Loop（HARD GATE — freeze 前强制）
 
 Generator **不得**在单轮 `truth.coverage` 后直接建议 freeze。必须按轮次煮干用户意图；任一 Round 失败则回到对应 mode 重写，**不得**用占位 AC/TC 凑 closure 形状。

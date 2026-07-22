@@ -259,7 +259,7 @@ def gen_cmd(
         # Phase 3: Structured Truth Derivation
         ac_rows = [derive_ac_from_intent(intent, idx) for idx, intent in enumerate(intents, start=1)]
         truth_content = render_intent_first_truth(feature, resolved, intents, utterance)
-        tests_content = render_intent_first_tests(feature, ac_rows)
+        tests_content = render_intent_first_tests(feature, ac_rows, version=resolved)
         tasks_content = render_intent_first_tasks(feature, ac_rows)
         evidence_content = render_intent_first_evidence(feature)
     else:
@@ -302,6 +302,55 @@ def gen_cmd(
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content, encoding="utf-8")
         typer.echo(f"✓ Created {key}: {path}")
+
+    # v1.6.10+ HARD post-write: humanizer fulltext + truth review (no freeze recommend on fail)
+    from beacon.utils.versioning import normalize_version as _norm_v
+
+    def _sv(v: str) -> tuple[int, int, int]:
+        n = (_norm_v(v) or "v0.0.0").lstrip("v").split(".")
+        try:
+            return int(n[0]), int(n[1]), int(n[2] if len(n) > 2 else 0)
+        except Exception:
+            return 0, 0, 0
+
+    if _sv(resolved) >= (1, 6, 10):
+        from beacon.utils.truth_gen_postwrite import run_truth_gen_postwrite_gates
+
+        post = run_truth_gen_postwrite_gates(
+            project_root,
+            version=resolved,
+            feature=slug,
+            written=[str(p) for p in paths.values() if p.exists()],
+            language=lang,
+        )
+        hum = post.get("humanizer") if isinstance(post.get("humanizer"), dict) else {}
+        if hum.get("fulltext_loaded"):
+            typer.echo(
+                f"✓ Humanizer fulltext loaded: {hum.get('language')} chars={hum.get('skill_chars')} path={hum.get('skill_path')}"
+            )
+        elif hum.get("blocked"):
+            typer.echo(
+                f"✗ Humanizer blocked: {hum.get('reason_code')} path={hum.get('skill_path')}",
+                err=True,
+            )
+        trg = post.get("truth_review_gate") if isinstance(post.get("truth_review_gate"), dict) else {}
+        if trg.get("pass"):
+            typer.echo("✓ truth review pass — freeze may be recommended")
+            typer.echo("  next: beacon freeze (only after human ack)")
+        else:
+            typer.echo(
+                f"✗ truth review failed: {trg.get('reason_code') or 'truth_review_gate_failed'} — do NOT freeze",
+                err=True,
+            )
+            for f in trg.get("findings") or []:
+                if isinstance(f, dict):
+                    typer.echo(f"  - [{f.get('kind')}] {f.get('text')}", err=True)
+            typer.echo("  next: fix truth/tests then `beacon truth review`", err=True)
+            raise typer.Exit(2)
+        if post.get("blocked") and not trg.get("pass"):
+            raise typer.Exit(2)
+        if post.get("blocked") and hum.get("blocked"):
+            raise typer.Exit(2)
 
     # Phase 4: Determinism Verification (TIG-DC)
     if intent_first:

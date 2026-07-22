@@ -7,4 +7,4 @@ materials_status: current
 
 - [x] TASK-001 R2 引擎定位 + 契约保持
 - [x] TASK-002 implement resolve + config.example
-- [ ] TASK-003 gen-truth 强制读全文
+- [x] TASK-003 gen-truth 强制读全文
