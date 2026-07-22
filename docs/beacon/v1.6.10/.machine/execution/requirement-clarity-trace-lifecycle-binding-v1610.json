@@ -1,0 +1,620 @@
+{
+  "schema_version": "1.0",
+  "feature": "trace-lifecycle-binding-v1610",
+  "feature_slug": "trace-lifecycle-binding-v1610",
+  "version": "v1.6.10",
+  "runtime_version": "v1.6.10",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.6.10/.machine/execution/requirement-clarity-trace-lifecycle-binding-v1610.json",
+  "report_markdown_path": "docs/beacon/v1.6.10/execution/requirement-clarity-trace-lifecycle-binding-v1610.md",
+  "state_path": ".beacon/state/requirement-clarity-trace-lifecycle-binding-v1610.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.10",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-07-22T07:51:32.034249+00:00",
+    "feature": "trace-lifecycle-binding-v1610",
+    "feature_slug": "trace-lifecycle-binding-v1610",
+    "prd_ref": "docs/beacon/v1.6.10/prd/trace-lifecycle-binding-v1610.md",
+    "user_story_ref": "docs/beacon/v1.6.10/user-story/trace-lifecycle-binding-v1610.md"
+  },
+  "domain_fsm_gate": {
+    "schema_version": "1.0",
+    "feature": "trace-lifecycle-binding-v1610",
+    "feature_slug": "trace-lifecycle-binding-v1610",
+    "version": "v1.6.10",
+    "truth_path": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md",
+    "tests_path": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/tests.md",
+    "required": true,
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "findings": [],
+    "requirement": {
+      "required": true,
+      "reason": "explicit_domain_mark",
+      "explicit": true,
+      "partial": true,
+      "complexity": false,
+      "business_signal": false,
+      "version_supported": true
+    },
+    "projection": {
+      "schema_version": "1.0",
+      "domain_fsm_schema": "domain-fsm.v1",
+      "entity_precedence_schema": "entity-precedence.v1",
+      "frontmatter": {
+        "slug": "trace-lifecycle-binding-v1610",
+        "version": "v1.6.10",
+        "status": "draft",
+        "revision_id": "R1",
+        "language": "zh",
+        "domain_required": "true",
+        "ux_required": "false",
+        "parser_contract": "beacon-feature-package-v2",
+        "canonical_refs": {
+          "prd": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md",
+          "user_story": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md",
+          "test_case": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/tests.md"
+        },
+        "truth_source_model": "feature_package_authoritative",
+        "program_ref": "docs/beacon/v1.6.10/programs/beacon-truth-authority-humanizer-v1610/program-manifest.md",
+        "previous_revision": "null",
+        "change_reason": "R1: minimal lake — bind 1+6 lifecycle stages to agent_trace.v1 for replay/regression/score without process drift",
+        "parent_truth": "docs/beacon/v1.6.6/features/beacon-agent-structured-trace-v166/truth.md"
+      },
+      "frontmatter_errors": [],
+      "has_domain_model_section": true,
+      "has_domain_fsm_section": true,
+      "has_illegal_transition_section": true,
+      "entities": [
+        {
+          "entity": "LifecycleRun",
+          "key": "run_id",
+          "precedence": "root；优先复用 goal run_id",
+          "requires": "root；优先复用 goal run_id"
+        },
+        {
+          "entity": "TraceFile",
+          "key": "path",
+          "precedence": "requires LifecycleRun",
+          "requires": "requires LifecycleRun"
+        },
+        {
+          "entity": "TraceEvent",
+          "key": "(run_id, iteration, event_type, ts)",
+          "precedence": "requires TraceFile",
+          "requires": "requires TraceFile"
+        },
+        {
+          "entity": "StageBinding",
+          "key": "harness + feature_slug",
+          "precedence": "requires TraceEvent",
+          "requires": "requires TraceEvent"
+        }
+      ],
+      "entity_precedence": [
+        {
+          "entity": "LifecycleRun",
+          "key": "run_id",
+          "precedence": "root；优先复用 goal run_id",
+          "requires": "root；优先复用 goal run_id"
+        },
+        {
+          "entity": "TraceFile",
+          "key": "path",
+          "precedence": "requires LifecycleRun",
+          "requires": "requires LifecycleRun"
+        },
+        {
+          "entity": "TraceEvent",
+          "key": "(run_id, iteration, event_type, ts)",
+          "precedence": "requires TraceFile",
+          "requires": "requires TraceFile"
+        },
+        {
+          "entity": "StageBinding",
+          "key": "harness + feature_slug",
+          "precedence": "requires TraceEvent",
+          "requires": "requires TraceEvent"
+        }
+      ],
+      "aggregates": [
+        {
+          "name": "TraceLifecycle",
+          "states": [
+            "blocked_trace",
+            "coverage_pass",
+            "event_appending",
+            "idle",
+            "indexed",
+            "stage_entered",
+            "stage_exited"
+          ],
+          "transitions": [
+            {
+              "from": "",
+              "to": "idle",
+              "guard": "initial",
+              "initial": "true"
+            },
+            {
+              "from": "idle",
+              "to": "stage_entered",
+              "guard": "harness_known"
+            },
+            {
+              "from": "stage_exited",
+              "to": "stage_entered",
+              "guard": "harness_known"
+            },
+            {
+              "from": "stage_entered",
+              "to": "event_appending",
+              "guard": "run_id_resolved"
+            },
+            {
+              "from": "event_appending",
+              "to": "indexed",
+              "guard": "append_ok"
+            },
+            {
+              "from": "event_appending",
+              "to": "blocked_trace",
+              "guard": "append_failed"
+            },
+            {
+              "from": "indexed",
+              "to": "stage_exited",
+              "guard": "stage_complete"
+            },
+            {
+              "from": "stage_exited",
+              "to": "coverage_pass",
+              "guard": "≥1 valid jsonl run"
+            }
+          ]
+        }
+      ],
+      "illegal_transition_slots": [
+        {
+          "description": "stage_complete → coverage_pass without any valid event",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "append_failed → silent success (no reason_code)",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "event with full_chat body as sole evidence",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "invent public harness `trace` outside 1+6",
+          "aggregate": "",
+          "source": "truth"
+        }
+      ],
+      "acceptance_criteria": [
+        {
+          "ac_id": "AC-TRC-001",
+          "description": "提供 `record_lifecycle_stage_trace`（或等价）封装 `record_governed_iteration`，统一 stage/harness/feature/run_id 解析"
+        },
+        {
+          "ac_id": "AC-TRC-002",
+          "description": "`beacon truth review` 在写出报告后 append ≥1 条 `gate_verdict`（或 decision）事件，path 在 `.beacon/traces/`"
+        },
+        {
+          "ac_id": "AC-TRC-003",
+          "description": "`beacon freeze` 成功路径 append ≥1 条事件，payload 含 status/revision 摘要（非全文）"
+        },
+        {
+          "ac_id": "AC-TRC-004",
+          "description": "事件含 `harness`；feature 已知时含 `feature_slug`；schema 为 `agent_trace.v1`"
+        },
+        {
+          "ac_id": "AC-TRC-005",
+          "description": "goal driver turn 调用 trace 时不再 bare `except: pass`；失败写入 driver state 或返回 status≠ok"
+        },
+        {
+          "ac_id": "AC-TRC-006",
+          "description": "payload/汇总禁止 `full_chat` 作为权威；aggregate 继续 strip full_chat"
+        },
+        {
+          "ac_id": "AC-TRC-007",
+          "description": "`qa run` 结束时 append `gate_verdict`（final status 摘要）"
+        },
+        {
+          "ac_id": "AC-TRC-008",
+          "description": "模拟 lifecycle 后 `agent_trace_coverage` 不为 missing（至少 1 个 valid run）"
+        },
+        {
+          "ac_id": "AC-TRC-009",
+          "description": "本 package 金样 shape：人话 + Intent Matrix + FSM 五元组 + illegal + AC + Non-goals"
+        },
+        {
+          "ac_id": "AC-TRC-010",
+          "description": "每 AC 在 tests.md 有 ≥1 TC"
+        }
+      ],
+      "bound_ac_ids": [
+        "AC-TRC-003",
+        "AC-TRC-006",
+        "AC-TRC-009"
+      ],
+      "orphan_ac_ids": [],
+      "aggregates_missing_illegal_slots": [],
+      "raw_section_titles": [
+        "人话",
+        "User Intent",
+        "User Intent Snapshot",
+        "Intent Coverage Matrix（Check A）",
+        "First principles（域）",
+        "用户旅程 / 故事",
+        "Journey J-TRC-01 生命周期留痕",
+        "User Stories",
+        "Acceptance Criteria",
+        "Domain Model",
+        "Domain FSM TraceLifecycle",
+        "Illegal transitions",
+        "FSM 五元组",
+        "Non-goals",
+        "Downstream Routes"
+      ]
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "required": true,
+      "blocked": false,
+      "status": "pass",
+      "reason_code": "",
+      "findings": [],
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "trace-lifecycle-binding-v1610",
+          "version": "v1.6.10",
+          "status": "draft",
+          "revision_id": "R1",
+          "language": "zh",
+          "domain_required": "true",
+          "ux_required": "false",
+          "parser_contract": "beacon-feature-package-v2",
+          "canonical_refs": {
+            "prd": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md",
+            "user_story": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md",
+            "test_case": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/tests.md"
+          },
+          "truth_source_model": "feature_package_authoritative",
+          "program_ref": "docs/beacon/v1.6.10/programs/beacon-truth-authority-humanizer-v1610/program-manifest.md",
+          "previous_revision": "null",
+          "change_reason": "R1: minimal lake — bind 1+6 lifecycle stages to agent_trace.v1 for replay/regression/score without process drift",
+          "parent_truth": "docs/beacon/v1.6.6/features/beacon-agent-structured-trace-v166/truth.md"
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": true,
+        "has_domain_fsm_section": true,
+        "has_illegal_transition_section": true,
+        "entities": [
+          {
+            "entity": "LifecycleRun",
+            "key": "run_id",
+            "precedence": "root；优先复用 goal run_id",
+            "requires": "root；优先复用 goal run_id"
+          },
+          {
+            "entity": "TraceFile",
+            "key": "path",
+            "precedence": "requires LifecycleRun",
+            "requires": "requires LifecycleRun"
+          },
+          {
+            "entity": "TraceEvent",
+            "key": "(run_id, iteration, event_type, ts)",
+            "precedence": "requires TraceFile",
+            "requires": "requires TraceFile"
+          },
+          {
+            "entity": "StageBinding",
+            "key": "harness + feature_slug",
+            "precedence": "requires TraceEvent",
+            "requires": "requires TraceEvent"
+          }
+        ],
+        "entity_precedence": [
+          {
+            "entity": "LifecycleRun",
+            "key": "run_id",
+            "precedence": "root；优先复用 goal run_id",
+            "requires": "root；优先复用 goal run_id"
+          },
+          {
+            "entity": "TraceFile",
+            "key": "path",
+            "precedence": "requires LifecycleRun",
+            "requires": "requires LifecycleRun"
+          },
+          {
+            "entity": "TraceEvent",
+            "key": "(run_id, iteration, event_type, ts)",
+            "precedence": "requires TraceFile",
+            "requires": "requires TraceFile"
+          },
+          {
+            "entity": "StageBinding",
+            "key": "harness + feature_slug",
+            "precedence": "requires TraceEvent",
+            "requires": "requires TraceEvent"
+          }
+        ],
+        "aggregates": [
+          {
+            "name": "TraceLifecycle",
+            "states": [
+              "blocked_trace",
+              "coverage_pass",
+              "event_appending",
+              "idle",
+              "indexed",
+              "stage_entered",
+              "stage_exited"
+            ],
+            "transitions": [
+              {
+                "from": "",
+                "to": "idle",
+                "guard": "initial",
+                "initial": "true"
+              },
+              {
+                "from": "idle",
+                "to": "stage_entered",
+                "guard": "harness_known"
+              },
+              {
+                "from": "stage_exited",
+                "to": "stage_entered",
+                "guard": "harness_known"
+              },
+              {
+                "from": "stage_entered",
+                "to": "event_appending",
+                "guard": "run_id_resolved"
+              },
+              {
+                "from": "event_appending",
+                "to": "indexed",
+                "guard": "append_ok"
+              },
+              {
+                "from": "event_appending",
+                "to": "blocked_trace",
+                "guard": "append_failed"
+              },
+              {
+                "from": "indexed",
+                "to": "stage_exited",
+                "guard": "stage_complete"
+              },
+              {
+                "from": "stage_exited",
+                "to": "coverage_pass",
+                "guard": "≥1 valid jsonl run"
+              }
+            ]
+          }
+        ],
+        "illegal_transition_slots": [
+          {
+            "description": "stage_complete → coverage_pass without any valid event",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "append_failed → silent success (no reason_code)",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "event with full_chat body as sole evidence",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "invent public harness `trace` outside 1+6",
+            "aggregate": "",
+            "source": "truth"
+          }
+        ],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-TRC-001",
+            "description": "提供 `record_lifecycle_stage_trace`（或等价）封装 `record_governed_iteration`，统一 stage/harness/feature/run_id 解析"
+          },
+          {
+            "ac_id": "AC-TRC-002",
+            "description": "`beacon truth review` 在写出报告后 append ≥1 条 `gate_verdict`（或 decision）事件，path 在 `.beacon/traces/`"
+          },
+          {
+            "ac_id": "AC-TRC-003",
+            "description": "`beacon freeze` 成功路径 append ≥1 条事件，payload 含 status/revision 摘要（非全文）"
+          },
+          {
+            "ac_id": "AC-TRC-004",
+            "description": "事件含 `harness`；feature 已知时含 `feature_slug`；schema 为 `agent_trace.v1`"
+          },
+          {
+            "ac_id": "AC-TRC-005",
+            "description": "goal driver turn 调用 trace 时不再 bare `except: pass`；失败写入 driver state 或返回 status≠ok"
+          },
+          {
+            "ac_id": "AC-TRC-006",
+            "description": "payload/汇总禁止 `full_chat` 作为权威；aggregate 继续 strip full_chat"
+          },
+          {
+            "ac_id": "AC-TRC-007",
+            "description": "`qa run` 结束时 append `gate_verdict`（final status 摘要）"
+          },
+          {
+            "ac_id": "AC-TRC-008",
+            "description": "模拟 lifecycle 后 `agent_trace_coverage` 不为 missing（至少 1 个 valid run）"
+          },
+          {
+            "ac_id": "AC-TRC-009",
+            "description": "本 package 金样 shape：人话 + Intent Matrix + FSM 五元组 + illegal + AC + Non-goals"
+          },
+          {
+            "ac_id": "AC-TRC-010",
+            "description": "每 AC 在 tests.md 有 ≥1 TC"
+          }
+        ],
+        "bound_ac_ids": [
+          "AC-TRC-003",
+          "AC-TRC-006",
+          "AC-TRC-009"
+        ],
+        "orphan_ac_ids": [],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "人话",
+          "User Intent",
+          "User Intent Snapshot",
+          "Intent Coverage Matrix（Check A）",
+          "First principles（域）",
+          "用户旅程 / 故事",
+          "Journey J-TRC-01 生命周期留痕",
+          "User Stories",
+          "Acceptance Criteria",
+          "Domain Model",
+          "Domain FSM TraceLifecycle",
+          "Illegal transitions",
+          "FSM 五元组",
+          "Non-goals",
+          "Downstream Routes"
+        ]
+      },
+      "summary": {
+        "entity_count": 4,
+        "aggregate_count": 1,
+        "illegal_slot_count": 4,
+        "orphan_ac_count": 0,
+        "bound_ac_count": 3
+      }
+    },
+    "recommended_action": ""
+  },
+  "human_closure_contract": {
+    "required": false,
+    "research_path": "docs/beacon/v1.6.10/research/trace-lifecycle-binding-v1610.md",
+    "research_exists": false,
+    "source_architecture_path": "docs/beacon/v1.6.10/source-architecture/trace-lifecycle-binding-v1610.md",
+    "source_architecture_exists": false,
+    "required_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "missing_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "diagram_types": [],
+    "complexity_signals": []
+  },
+  "requirement_closure_contract": {
+    "required": true,
+    "chain_order": [
+      "research",
+      "prd",
+      "user_story",
+      "test_case",
+      "requirement_clarity",
+      "freeze"
+    ],
+    "human_closure_required": false,
+    "paths": {
+      "research": "docs/beacon/v1.6.10/research/trace-lifecycle-binding-v1610.md",
+      "prd": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md",
+      "user_story": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md",
+      "test_case": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/tests.md"
+    },
+    "exists": {
+      "research": false,
+      "prd": true,
+      "user_story": true,
+      "test_case": true
+    },
+    "required_research_sections": [],
+    "missing_research_sections": [],
+    "ac_projection": {
+      "prd_ac_ids": [],
+      "user_story_ac_ids": [],
+      "test_case_ac_ids": [],
+      "upstream_ac_ids": [],
+      "missing_test_case_ac_ids": []
+    }
+  },
+  "version_projection_truth_contract": {
+    "required": false,
+    "supported": true,
+    "projection_types": [],
+    "research_path": "docs/beacon/v1.6.10/research/trace-lifecycle-binding-v1610.md",
+    "research_exists": false,
+    "required_fields": [
+      "prd_refs",
+      "user_story_refs",
+      "test_case_refs",
+      "coverage_notes",
+      "out_of_scope_notes"
+    ],
+    "field_presence": {
+      "prd_refs": false,
+      "user_story_refs": false,
+      "test_case_refs": false,
+      "coverage_notes": false,
+      "out_of_scope_notes": false
+    },
+    "missing_fields": [],
+    "required_refs": {
+      "prd_refs": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md",
+      "user_story_refs": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md",
+      "test_case_refs": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/tests.md"
+    },
+    "missing_ref_targets": [],
+    "ready": false
+  },
+  "support_write_topology_contract": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "diagnostics": []
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md",
+    "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/tests.md",
+    "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/tasks.md",
+    "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/evidence.md"
+  ]
+}

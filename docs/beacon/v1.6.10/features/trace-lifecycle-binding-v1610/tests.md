@@ -19,3 +19,9 @@ materials_status: current
 | TC-TRC-010 | AC-TRC-009 | `rg -n "Intent Coverage Matrix|FSM 五元组|人话" docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md` | 金样 shape |
 | TC-TRC-011 | AC-TRC-010 | `rg -c "TC-TRC-" docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/tests.md` | TC≥10 |
 | TC-TRC-012 | AC-TRC-001 | `python -c "from beacon.utils.agent_trace import record_lifecycle_stage_trace"` | import ok |
+99:| AC-TRC-006 | payload/汇总禁止 `full_chat` 作为权威；aggregate 继续 strip full_chat |
+126:## Illegal transitions
+129:- append_failed → silent success (no reason_code)
+130:- event with full_chat body as sole evidence | illegal transitions covered |
+| TC-TRC-013 | AC-TRC-006 | 126:## Illegal transitions | illegal transitions section present |
+| TC-TRC-014 | AC-TRC-004 | 129:- append_failed → silent success (no reason_code) | illegal silent-success forbidden |

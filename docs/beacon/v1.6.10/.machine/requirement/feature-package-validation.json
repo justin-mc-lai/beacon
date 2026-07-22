@@ -1,45 +1,53 @@
 {
   "schema_version": "1.0",
-  "feature": "truth-gold-order-pay-v1610",
-  "feature_slug": "truth-gold-order-pay-v1610",
+  "feature": "trace-lifecycle-binding-v1610",
+  "feature_slug": "trace-lifecycle-binding-v1610",
   "version": "v1.6.10",
   "status": "pass",
   "blocked": false,
   "reason_code": "",
-  "generated_at": "2026-07-22T03:50:45.369191+00:00",
-  "package_dir": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610",
+  "generated_at": "2026-07-22T07:51:32.767000+00:00",
+  "package_dir": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610",
   "truth_frontmatter": {
-    "slug": "truth-gold-order-pay-v1610",
+    "slug": "trace-lifecycle-binding-v1610",
     "version": "v1.6.10",
     "status": "frozen",
-    "revision_id": "R3",
+    "revision_id": "R1",
     "language": "zh",
     "domain_required": "true",
     "ux_required": "false",
     "parser_contract": "beacon-feature-package-v2",
     "canonical_refs": {
-      "prd": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md",
-      "user_story": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md",
-      "test_case": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/tests.md"
+      "prd": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md",
+      "user_story": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md",
+      "test_case": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/tests.md"
     },
     "truth_source_model": "feature_package_authoritative",
     "program_ref": "docs/beacon/v1.6.10/programs/beacon-truth-authority-humanizer-v1610/program-manifest.md",
-    "previous_revision": "R2",
-    "change_reason": "R3: add Intent Coverage Matrix for Gold; demonstrate Truth Review Gate Check A",
-    "example_skill_path": "skills/beacon/beacon-truth/references/examples/gold-order-pay-package.md"
+    "previous_revision": "null",
+    "change_reason": "R1: minimal lake — bind 1+6 lifecycle stages to agent_trace.v1 for replay/regression/score without process drift",
+    "parent_truth": "docs/beacon/v1.6.6/features/beacon-agent-structured-trace-v166/truth.md"
   },
-  "ac_count": 18,
-  "test_count": 18,
-  "checkbox_count": 3,
-  "evidence_row_count": 6,
+  "ac_count": 10,
+  "test_count": 12,
+  "checkbox_count": 12,
+  "evidence_row_count": 8,
   "gate_authority": "canonical_surfaces_preserved",
   "checkbox_gate_bypass": false,
+  "task_evidence_gate": {
+    "pass": true,
+    "checked_ok": 0,
+    "checked_bad": 0,
+    "unbound": 0,
+    "findings": [],
+    "reason_code": ""
+  },
   "evidence_gate_truth": false,
   "diagnostics": [
     {
       "severity": "info",
       "code": "truth_human_l0_ok",
-      "path": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md",
+      "path": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md",
       "language": "zh",
       "l0_headings": [
         "## 人话"
@@ -54,16 +62,16 @@
   "truth_authority": "markdown_feature_package",
   "json_authority": false,
   "source_paths": {
-    "truth": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md",
-    "tests": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/tests.md",
-    "tasks": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/tasks.md",
-    "evidence": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/evidence.md"
+    "truth": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md",
+    "tests": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/tests.md",
+    "tasks": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/tasks.md",
+    "evidence": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/evidence.md"
   },
   "source_hashes": {
-    "truth": "3d3c7100eb7dbf6ec1f32153de71df50c89a74b153d69fab2c4d9585b0c8738e",
-    "tests": "ad1ba745d508886fc4a50598ec7a10617d0409a6059cc18812622c999d55e49a",
-    "tasks": "b061b1662e7f820b5c356c519ba963c2c9bc0de1109ae1e65a16fd0ef5fd307c",
-    "evidence": "ee49f750303040a386d8fd7495f548a3fd7856940b76ea29e1b8d9dd0a90e87d"
+    "truth": "50180d01f01142e8e8dcccaa264b380ba5d1961160e31a9646885b9642d31382",
+    "tests": "f380f2b1f2eb1ac506b44f1d744417b4b326658590b340178547a12ed39cf3ac",
+    "tasks": "a6484a08d1ad8ff4cba3a1d822b1090b3ae48b7920ee936245d3bf7b67e0ff91",
+    "evidence": "a009d26e921a29f3b029e19067832e830b5dfaafde66990255113de689bb0217"
   },
   "runtime_json_requires_markdown_twin": false
 }

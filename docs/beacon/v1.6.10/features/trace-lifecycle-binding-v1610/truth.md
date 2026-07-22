@@ -1,7 +1,7 @@
 ---
 slug: trace-lifecycle-binding-v1610
 version: v1.6.10
-status: draft
+status: frozen
 revision_id: R1
 language: zh
 domain_required: true

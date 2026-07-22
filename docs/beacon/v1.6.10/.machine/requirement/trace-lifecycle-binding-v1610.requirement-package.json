@@ -1,0 +1,302 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-22T07:51:33.026073+00:00",
+  "feature": "trace-lifecycle-binding-v1610",
+  "feature_slug": "trace-lifecycle-binding-v1610",
+  "version": "v1.6.10",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md",
+    "tests": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/tests.md",
+    "tasks": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/tasks.md",
+    "evidence": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "50180d01f01142e8e8dcccaa264b380ba5d1961160e31a9646885b9642d31382",
+    "tests": "f380f2b1f2eb1ac506b44f1d744417b4b326658590b340178547a12ed39cf3ac",
+    "tasks": "a6484a08d1ad8ff4cba3a1d822b1090b3ae48b7920ee936245d3bf7b67e0ff91",
+    "evidence": "a009d26e921a29f3b029e19067832e830b5dfaafde66990255113de689bb0217"
+  },
+  "truth_frontmatter": {
+    "slug": "trace-lifecycle-binding-v1610",
+    "version": "v1.6.10",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "domain_required": "true",
+    "ux_required": "false",
+    "parser_contract": "beacon-feature-package-v2",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md",
+      "user_story": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md",
+      "test_case": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/tests.md"
+    },
+    "truth_source_model": "feature_package_authoritative",
+    "program_ref": "docs/beacon/v1.6.10/programs/beacon-truth-authority-humanizer-v1610/program-manifest.md",
+    "previous_revision": "null",
+    "change_reason": "R1: minimal lake — bind 1+6 lifecycle stages to agent_trace.v1 for replay/regression/score without process drift",
+    "parent_truth": "docs/beacon/v1.6.6/features/beacon-agent-structured-trace-v166/truth.md"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-TRC-001",
+      "theme": "提供 `record_lifecycle_stage_trace`（或等价）封装 `record_governed_iteration`，统一 stage/harness/feature/run_id 解析",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-TRC-002",
+      "theme": "`beacon truth review` 在写出报告后 append ≥1 条 `gate_verdict`（或 decision）事件，path 在 `.beacon/traces/`",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-TRC-003",
+      "theme": "`beacon freeze` 成功路径 append ≥1 条事件，payload 含 status/revision 摘要（非全文）",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-TRC-004",
+      "theme": "事件含 `harness`；feature 已知时含 `feature_slug`；schema 为 `agent_trace.v1`",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-TRC-005",
+      "theme": "goal driver turn 调用 trace 时不再 bare `except: pass`；失败写入 driver state 或返回 status≠ok",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-TRC-006",
+      "theme": "payload/汇总禁止 `full_chat` 作为权威；aggregate 继续 strip full_chat",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-TRC-007",
+      "theme": "`qa run` 结束时 append `gate_verdict`（final status 摘要）",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-TRC-008",
+      "theme": "模拟 lifecycle 后 `agent_trace_coverage` 不为 missing（至少 1 个 valid run）",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-TRC-009",
+      "theme": "本 package 金样 shape：人话 + Intent Matrix + FSM 五元组 + illegal + AC + Non-goals",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-TRC-010",
+      "theme": "每 AC 在 tests.md 有 ≥1 TC",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-TRC-001",
+      "tc_id": "TC-TRC-001",
+      "layer": "",
+      "command": "`rg -n \"record_lifecycle_stage_trace\" beacon/utils/agent_trace.py`",
+      "assertion": "存在 helper",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-TRC-002",
+      "tc_id": "TC-TRC-002",
+      "layer": "",
+      "command": "`rg -n \"record_lifecycle_stage_trace\" beacon/commands/truth.py`",
+      "assertion": "truth review 挂钩",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-TRC-003",
+      "tc_id": "TC-TRC-003",
+      "layer": "",
+      "command": "`rg -n \"record_lifecycle_stage_trace\" beacon/commands/freeze.py`",
+      "assertion": "freeze 挂钩",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-TRC-004",
+      "tc_id": "TC-TRC-004",
+      "layer": "",
+      "command": "`rg -n \"feature_slug|harness\" beacon/utils/agent_trace.py`",
+      "assertion": "绑定字段",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-TRC-005",
+      "tc_id": "TC-TRC-005",
+      "layer": "",
+      "command": "`rg -n \"record_driver_turn_trace\" beacon/utils/goal_agent_driver.py`",
+      "assertion": "driver 调用",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-TRC-005",
+      "tc_id": "TC-TRC-006",
+      "layer": "",
+      "command": "`rg -n \"except Exception\" beacon/utils/goal_agent_driver.py -A3 \\|rg -n \"pass|driver_trace\"`",
+      "assertion": "非静默 pass-only",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-TRC-006",
+      "tc_id": "TC-TRC-007",
+      "layer": "",
+      "command": "`rg -n \"full_chat|assert_no_full_chat\" beacon/utils/loom_trace.py`",
+      "assertion": "禁全文权威",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-TRC-007",
+      "tc_id": "TC-TRC-008",
+      "layer": "",
+      "command": "`rg -n \"record_lifecycle_stage_trace\" beacon/commands/qa.py`",
+      "assertion": "qa 挂钩",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-TRC-008",
+      "tc_id": "TC-TRC-009",
+      "layer": "",
+      "command": "`python -m pytest tests/test_v1610_trace_lifecycle_binding.py -q`",
+      "assertion": "覆盖信号",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-TRC-009",
+      "tc_id": "TC-TRC-010",
+      "layer": "",
+      "command": "`rg -n \"Intent Coverage Matrix|FSM 五元组|人话\" docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md`",
+      "assertion": "金样 shape",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-TRC-010",
+      "tc_id": "TC-TRC-011",
+      "layer": "",
+      "command": "`rg -c \"TC-TRC-\" docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/tests.md`",
+      "assertion": "TC≥10",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-TRC-001",
+      "tc_id": "TC-TRC-012",
+      "layer": "",
+      "command": "`python -c \"from beacon.utils.agent_trace import record_lifecycle_stage_trace\"`",
+      "assertion": "import ok",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Implement AC-TRC-001: 提供 `record_lifecycle_stage_trace`（或等价）封装 `record_governed_iteration`，... · ac=AC-TRC-001 · evidence=`.beacon/evidence/implement/trace-lifecycle-binding-v1610/AC-TRC-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Implement AC-TRC-002: `beacon truth review` 在写出报告后 append ≥1 条 `gate_verdict`（或 decision）事件... · ac=AC-TRC-002 · evidence=`.beacon/evidence/implement/trace-lifecycle-binding-v1610/AC-TRC-002.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Implement AC-TRC-003: `beacon freeze` 成功路径 append ≥1 条事件，payload 含 status/revision 摘要（非全文） · ac=AC-TRC-003 · evidence=`.beacon/evidence/implement/trace-lifecycle-binding-v1610/AC-TRC-003.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Implement AC-TRC-004: 事件含 `harness`；feature 已知时含 `feature_slug`；schema 为 `agent_trace.v1` · ac=AC-TRC-004 · evidence=`.beacon/evidence/implement/trace-lifecycle-binding-v1610/AC-TRC-004.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Implement AC-TRC-005: goal driver turn 调用 trace 时不再 bare `except: pass`；失败写入 driver state 或... · ac=AC-TRC-005 · evidence=`.beacon/evidence/implement/trace-lifecycle-binding-v1610/AC-TRC-005.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Implement AC-TRC-006: payload/汇总禁止 `full_chat` 作为权威；aggregate 继续 strip full_chat · ac=AC-TRC-006 · evidence=`.beacon/evidence/implement/trace-lifecycle-binding-v1610/AC-TRC-006.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "Implement AC-TRC-007: `qa run` 结束时 append `gate_verdict`（final status 摘要） · ac=AC-TRC-007 · evidence=`.beacon/evidence/implement/trace-lifecycle-binding-v1610/AC-TRC-007.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-008",
+      "title": "Implement AC-TRC-008: 模拟 lifecycle 后 `agent_trace_coverage` 不为 missing（至少 1 个 valid run） · ac=AC-TRC-008 · evidence=`.beacon/evidence/implement/trace-lifecycle-binding-v1610/AC-TRC-008.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-009",
+      "title": "Implement AC-TRC-009: 本 package 金样 shape：人话 + Intent Matrix + FSM 五元组 + illegal + AC + Non-... · ac=AC-TRC-009 · evidence=`.beacon/evidence/implement/trace-lifecycle-binding-v1610/AC-TRC-009.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-010",
+      "title": "Implement AC-TRC-010: 每 AC 在 tests.md 有 ≥1 TC · ac=AC-TRC-010 · evidence=`.beacon/evidence/implement/trace-lifecycle-binding-v1610/AC-TRC-010.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-011",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/trace-lifecycle-binding-v1610/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-012",
+      "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/trace-lifecycle-binding-v1610/QA-MATRIX.json`",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "package",
+      "authority": "requirement_truth",
+      "path": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md"
+    },
+    {
+      "surface": "tests",
+      "authority": "test_truth",
+      "path": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/tests.md"
+    },
+    {
+      "surface": "parent",
+      "authority": "requirement_truth",
+      "path": "docs/beacon/v1.6.6/features/beacon-agent-structured-trace-v166/truth.md"
+    },
+    {
+      "surface": "util",
+      "authority": "support_advisory",
+      "path": "beacon/utils/agent_trace.py"
+    },
+    {
+      "surface": "hooks",
+      "authority": "support_advisory",
+      "path": "beacon/commands/truth.py"
+    },
+    {
+      "surface": "unit",
+      "authority": "qa_verdict",
+      "path": "tests/test_v1610_trace_lifecycle_binding.py"
+    },
+    {
+      "surface": "change",
+      "authority": "support_advisory",
+      "path": "docs/beacon/v1.6.10/change/trace-lifecycle-binding-v1610-r1.md"
+    },
+    {
+      "surface": "truth_review_gate",
+      "authority": "support_advisory",
+      "path": "docs/beacon/v1.6.10/.machine/execution/trace-lifecycle-binding-v1610.truth-review-gate.json"
+    }
+  ]
+}
