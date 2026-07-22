@@ -282,21 +282,15 @@ def evaluate_task_ac_evidence_bindings(
         ev = bind.get("evidence_path") or ""
         status = row.get("status") or "unchecked"
         task_id = row.get("id") or ""
-        # Enforce ac=/evidence= shape only for v1.6.10 ledgers that declare the contract
-        enforce_shape = (
-            _semver_tuple(version or "v0") >= (1, 6, 10)
-            and (
-                "task_source: acceptance_criteria" in tasks_md
-                or "evidence=" in tasks_md
-                or "evidence:" in tasks_md
-            )
-        )
+        # v1.6.10+: ALWAYS enforce ac=/evidence= (NO soft-compat for old ledgers).
+        # Non-compliant packages must replan + freeze new truth (global-boundaries §2.1).
+        enforce_shape = _semver_tuple(version or "v0") >= (1, 6, 10)
         if enforce_shape and (not ac_id or not ev):
             unbound += 1
             findings.append(
                 {
                     "kind": "task_binding_missing",
-                    "text": f"{task_id or title[:40]} missing ac= / evidence= binding",
+                    "text": f"{task_id or title[:40]} missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
                     "task_id": task_id,
                 }
             )

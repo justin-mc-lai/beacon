@@ -14,6 +14,7 @@ This file is Beacon-managed agent operation guidance.
 - Runtime target version: `v1.6.9`
 - Docs target version: `v1.6.9`
 - Use `docs/beacon/global-boundaries.md` as the canonical Beacon-wide global constraint source.
+- **v1.6.10+ package shape: no old-shape soft-compat** (§2.1). Non-compliant projects must replan and freeze new truth — do not lower gates for legacy ledgers.
 - Use `docs/beacon/<version>/` as the canonical delivery tree.
 - Read progressively in this order:
   1. `docs/beacon/global-boundaries.md`

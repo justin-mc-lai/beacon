@@ -32,6 +32,9 @@ beacon truth review <feature> --project-root . --version <ver> [--json]
 
 ## Boundaries
 
+- **No old-shape soft-compat (global-boundaries §2.1)**：v1.6.10+ 不合格包必须 replan+refreeze，不得降级 Check A–D / tasks evidence 形状。
+
+
 - `beacon-plan` / pln-review: draft + advisory only — **cannot** authorize freeze alone.
 - Humanizer: polish L0/narrative only; `preserve_machine_fields=true`.
 - refreeze: re-run Gate A/B/C; reopen marks tests/tasks `materials_status: stale`.

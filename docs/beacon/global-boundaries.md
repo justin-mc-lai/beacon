@@ -60,6 +60,36 @@ prd
 
 > Beacon 的完成定义来自 requirement truth，不来自 runtime 状态、局部完成信号或代理自述。
 
+## 2.1 需求包形状：不兼容旧形状（最高原则 · v1.6.10+）
+
+对 **active 交付面**（`docs/beacon/<version>/` 且 version ≥ 规范生效线，当前为 **v1.6.10+**）的 feature package：
+
+```text
+features/<slug>/{truth,tests,tasks,evidence}.md
+```
+
+**禁止**以「历史包 / 旧项目 / 软兼容」为由降低门控或保留平行旧形状。
+
+### 必须成立
+
+1. **单一现行形状**：以当前 docs/runtime 规范的 package 形状为准（含人话/L0、Intent Coverage Matrix、旅程、AC、FSM 五元组与 illegal（域湖）、tests 的 Command+Assertion、**exec-layer TC**、tasks 的 `ac=` + `evidence=` 绑定等）。
+2. **旧形状 = 不合格，不是可选方言**：缺字段、旧 ledger、无 evidence 绑定、仅 docs-only TC 冒充 exec 等，一律 **fail-closed**。
+3. **升级路径只有一条**：  
+   `plan（重拆意图）→ truth gen / change → Truth Review Gate → freeze（新 revision）`  
+   不得在旧 truth 上打补丁式“兼容读取”冒充合规。
+4. **引导话术**：旧项目不满足现行 package 规范时，系统与 skill 必须引导 **重新 plan 并冻结新 truth**，而不是静默沿用旧形状继续 implement/qa/release。
+5. **实现后果**：不得为旧形状堆积长期兼容分支；发现仅服务旧形状的代码路径应删除或改为 **显式 upgrade/replan 阻断**（reason_code 指向 plan/truth）。
+
+### 不是什么
+
+- 不是禁止 archive 历史版本只读查阅。
+- 不是禁止 `docs/beacon/archive/<version>/` 保留旧交付物。
+- 是禁止 **active 面** 与 **现行门控** 对旧形状网开一面。
+
+收敛原则：
+
+> **Truth 形状只向前兼容规范，不向后兼容旧包。旧包要上船，就重 plan、重冻 truth。**
+
 ## 3. 内部复杂度边界
 
 Beacon 必须默认把复杂度吸收到机器内部，而不是暴露为人类长期心智负担。

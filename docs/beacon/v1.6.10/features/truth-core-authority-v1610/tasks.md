@@ -1,17 +1,32 @@
 ---
 slug: truth-core-authority-v1610
 version: v1.6.10
-revision_id: R3
 materials_status: current
+task_source: acceptance_criteria
+package_shape: v1.6.10
 ---
 
-# Tasks R3
+# Tasks: truth-core-authority-v1610
 
-- [x] TASK-R3-001 Truth Review Gate 契约写入 truth
-- [x] TASK-R3-002 AC-TRG + tests 刷新
-- [x] TASK-R3-003 implement: `beacon truth review` + report JSON
-- [x] TASK-R3-004 implement: freeze precheck review_gate_pass
-- [x] TASK-R3-005 implement: doctor FSM hang + matrix missing
-- [x] TASK-R3-006 implement: humanize step wiring after gate pass
-- [x] TASK-R3-007 skill progressive mode truth-review / plan 边界
-- [x] TASK-R3-008 reopen/stale/release（R2 遗留）接线
+## Task Ledger
+
+> v1.6.10 shape: every task binds `ac=` + `evidence=`. `[x]` only with evidence file (global-boundaries §2.1).
+
+- [x] TASK-001 Implement AC-TCA-001 · ac=AC-TCA-001 · evidence=`.beacon/evidence/implement/truth-core-authority-v1610/AC-TCA-001.json`
+- [x] TASK-002 Implement AC-TCA-002 · ac=AC-TCA-002 · evidence=`.beacon/evidence/implement/truth-core-authority-v1610/AC-TCA-002.json`
+- [x] TASK-003 Implement AC-TCA-003 · ac=AC-TCA-003 · evidence=`.beacon/evidence/implement/truth-core-authority-v1610/AC-TCA-003.json`
+- [x] TASK-004 Implement AC-TCA-004 · ac=AC-TCA-004 · evidence=`.beacon/evidence/implement/truth-core-authority-v1610/AC-TCA-004.json`
+- [x] TASK-005 Implement AC-TCA-005 · ac=AC-TCA-005 · evidence=`.beacon/evidence/implement/truth-core-authority-v1610/AC-TCA-005.json`
+- [x] TASK-006 Implement AC-TCA-006 · ac=AC-TCA-006 · evidence=`.beacon/evidence/implement/truth-core-authority-v1610/AC-TCA-006.json`
+- [x] TASK-007 Implement AC-TCA-007 · ac=AC-TCA-007 · evidence=`.beacon/evidence/implement/truth-core-authority-v1610/AC-TCA-007.json`
+- [x] TASK-008 Implement AC-TCA-008 · ac=AC-TCA-008 · evidence=`.beacon/evidence/implement/truth-core-authority-v1610/AC-TCA-008.json`
+- [x] TASK-009 Implement AC-TCA-009 · ac=AC-TCA-009 · evidence=`.beacon/evidence/implement/truth-core-authority-v1610/AC-TCA-009.json`
+- [x] TASK-010 Implement AC-TCA-010 · ac=AC-TCA-010 · evidence=`.beacon/evidence/implement/truth-core-authority-v1610/AC-TCA-010.json`
+- [x] TASK-011 Implement AC-TCA-011 · ac=AC-TCA-011 · evidence=`.beacon/evidence/implement/truth-core-authority-v1610/AC-TCA-011.json`
+- [x] TASK-012 Implement AC-TCA-012 · ac=AC-TCA-012 · evidence=`.beacon/evidence/implement/truth-core-authority-v1610/AC-TCA-012.json`
+- [x] TASK-013 Validate package gates · ac=GATES · evidence=`.beacon/evidence/implement/truth-core-authority-v1610/GATES.json`
+- [x] TASK-014 Run QA matrix + exec-layer · ac=QA · evidence=`.beacon/evidence/implement/truth-core-authority-v1610/QA-MATRIX.json`
+
+## Boundary
+
+Completion requires evidence files — not checkbox self-tick.

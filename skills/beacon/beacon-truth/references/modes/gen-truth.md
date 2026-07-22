@@ -95,6 +95,14 @@ Agent 合同：truth-review / gen-truth 在 A/B/C pass 后必须 **Read skill �
 - domain tests 默认 `pytest` + `import beacon` / `beacon doctor` 契约，**禁止** `print(0)` 冒充 exec。
 - tasks：`ac=<AC> · evidence=\`.beacon/evidence/implement/<slug>/<AC>.json\``；`[x]` 仅当证据文件存在（implement 准入硬拦）。
 
+## 最高规范：旧包形状不兼容（global-boundaries §2.1）
+
+v1.6.10+ **active** feature package **不向后兼容**旧 truth/tests/tasks 形状。
+
+- 旧项目缺 Matrix/旅程/exec TC/`ac=`+`evidence=` 等 → **不要**降级门控。
+- 正确路径：`$beacon-plan` 重拆意图 → `$beacon-truth` gen/change → Truth Review Gate → **freeze 新 revision**。
+- 实现上禁止为旧形状保留长期 soft-compat 分支。
+
 ## v1.6.10+ scaffold 只算 draft（强制 truth-review 填满再 freeze）
 
 1. `gen` / `materialize` 输出 **`package_maturity: scaffold`** + gold 结构骨架。
