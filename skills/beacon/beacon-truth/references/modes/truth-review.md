@@ -25,7 +25,7 @@ beacon truth review <feature> --project-root . --version <ver> [--json]
    C every AC ≥ 1 TC (Command + Assertion)
    C_exec business domain: ≥1 execution-layer TC (not docs-only rg)
    D fill depth: package_maturity≠scaffold; 旅程 filled; no meta-only FSM
-   then Humanizer **apply** L0 writeback (after A/B/C pass; preserve_machine_fields)
+   then Humanizer: host agent reads skill fulltext + CLI rules safety-net (after A/B/C; preserve_machine_fields; **no API key**)
 3. Freeze only if review_gate_pass (A–D)
 4. Freeze post: tasks.md derived from AC
 ```

@@ -78,12 +78,17 @@ support research
 
 
 
-## Humanizer LLM（可选 · 规则引擎之上）
+## Humanizer（host skill 路径 · 默认不需要 API key）
 
-- 默认 `llm_mode: auto`：有 `BEACON_LLM_API_KEY` 时用 oss-sync/vendor skill **全文**走 chat completions 润色 L0，再跑规则引擎收口。
-- 无 key / `BEACON_HUMANIZER_LLM_MODE=rules`：仅规则引擎。
-- `vendor_into_beacon: true`：将 oss-sync skill 导入 `skills/beacon/references/truth-humanizer/vendor/`。
-- 环境：`BEACON_LLM_API_BASE` / `BEACON_LLM_MODEL` / `BEACON_LLM_TIMEOUT`（同 llm_loop）。
+**定位**：Beacon 是给宿主 Agent 用的 **host skill / CLI harness**，不是再包一层要用户配 key 的独立 LLM 产品。
+
+- **默认 `llm_mode: host`**：CLI 负责 resolve + vendor oss-sync skill 全文；**由当前宿主 Agent（Codex/Claude 等）读 skill 并润色 L0**。  
+  → **不需要** `BEACON_LLM_API_KEY`。
+- **规则引擎**：CLI 可做确定性去套话 / 结构补全，作安全网与 CI 辅助，**不能替代** Agent 按 Humanizer skill 全文的真实润色。
+- **`vendor_into_beacon: true`**：把 oss-sync skill 拷进 `skills/beacon/references/truth-humanizer/vendor/`，方便 Agent 在仓库内 Read。
+- **可选 provider-bridge**（`BEACON_HUMANIZER_LLM_MODE=llm` + key）：仅 headless/无宿主 Agent 时的退路，**非**日常 skill 路径。
+
+Agent 合同：truth-review / gen-truth 在 A/B/C pass 后必须 **Read skill 全文 → 只改 L0 → preserve_machine_fields**。
 
 ## Exec TC / implement 证据
 

@@ -65,7 +65,7 @@ def default_humanizer_block(project_root: Path) -> dict[str, Any]:
         "default_language": "zh",
         "require_on_truth_write": True,
         "preserve_machine_fields": True,
-        "llm_mode": "auto",  # rules | llm | auto (auto uses BEACON_LLM_API_KEY when set)
+        "llm_mode": "host",  # host | rules | llm | auto — host=agent reads skill; no API key required
         "vendor_into_beacon": True,
         "profiles": {
             "zh": {
@@ -447,6 +447,27 @@ def apply_humanizer_l0_to_path(
     original = truth_path.read_text(encoding="utf-8")
     result = apply_humanizer_l0(original, profile=prof, language=language or prof.get("language"))
     result["vendor"] = vendor_info
+    try:
+        from beacon.utils.humanizer_llm import build_host_agent_humanizer_brief, resolve_llm_mode, should_use_llm
+
+        result["host_agent_brief"] = build_host_agent_humanizer_brief(
+            language=str(language or prof.get("language") or "zh"),
+            skill_path=str(prof.get("skill_path") or ""),
+            skill_chars=int(prof.get("skill_chars") or 0),
+            l0_heading=str(prof.get("l0_heading") or ""),
+        )
+        result["llm_mode"] = resolve_llm_mode(cfg)
+        result["cli_provider_used"] = bool((result.get("llm") or {}).get("used"))
+        if not should_use_llm(cfg):
+            # Product path: rules may run as safety net; real voice polish is host agent
+            engines = list(result.get("engines") or ["rules"])
+            if "host" not in engines:
+                engines.append("host")
+            result["engines"] = engines
+            result["engine"] = "+".join(engines)
+            result.setdefault("llm", {"used": False, "reason": "host_agent_path_no_api_key_required"})
+    except Exception as _brief_exc:  # noqa: BLE001
+        result["host_agent_brief_error"] = str(_brief_exc)
     if result.get("applied") and result.get("truth_md"):
         truth_path.write_text(str(result["truth_md"]), encoding="utf-8")
     result["path"] = str(truth_path)

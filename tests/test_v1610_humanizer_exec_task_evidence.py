@@ -22,14 +22,18 @@ def test_rules_engine_expands_slop():
     assert "能做" in out
 
 
-def test_should_use_llm_auto_without_key(monkeypatch):
+def test_should_use_llm_host_first_no_key_required(monkeypatch):
     monkeypatch.delenv("BEACON_LLM_API_KEY", raising=False)
     monkeypatch.delenv("BEACON_HUMANIZER_LLM_MODE", raising=False)
-    monkeypatch.delenv("BEACON_LLM_MODE", raising=False)
-    assert should_use_llm({"llm_mode": "auto"}) is False
+    # default host path never needs API key
+    assert should_use_llm({"llm_mode": "host"}) is False
+    assert should_use_llm({}) is False
+    assert should_use_llm({"llm_mode": "rules"}) is False
+    # optional headless provider only when explicit llm/auto + key
     monkeypatch.setenv("BEACON_LLM_API_KEY", "sk-test")
     assert should_use_llm({"llm_mode": "auto"}) is True
-    assert should_use_llm({"llm_mode": "rules"}) is False
+    assert should_use_llm({"llm_mode": "llm"}) is True
+    assert should_use_llm({"llm_mode": "host"}) is False
 
 
 def test_apply_humanizer_records_rules_engine(monkeypatch):

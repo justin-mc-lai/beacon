@@ -1,7 +1,13 @@
-"""Optional LLM polish for Humanizer L0 (v1.6.10+).
+"""Humanizer L0 polish helpers (v1.6.10+).
 
-Uses BEACON_LLM_* env (same as llm_loop) and oss-sync / vendored skill fulltext.
-Falls back to rules when key missing or mode=rules.
+Beacon is a **host skill / CLI harness** for agents. Primary polish path:
+
+1. **host** (default): CLI resolves + vendors oss-sync skill fulltext; the **host agent LLM**
+   (Codex/Claude/…) reads the skill and rewrites L0. **No BEACON_LLM_API_KEY required.**
+2. **rules**: deterministic de-slop only (CI / offline).
+3. **llm / auto+key**: optional headless provider-bridge fallback (not the product default).
+
+Product default must not force users to configure an API key for normal agent runs.
 """
 
 from __future__ import annotations
@@ -20,23 +26,37 @@ VENDOR_REL_EN = Path("skills/beacon/references/truth-humanizer/vendor/humanizer/
 
 
 def resolve_llm_mode(config: dict[str, Any] | None = None) -> str:
-    """Return rules | llm | auto."""
-    env = str(os.environ.get("BEACON_HUMANIZER_LLM_MODE") or os.environ.get("BEACON_LLM_MODE") or "").strip().lower()
-    if env in {"real", "live", "api", "llm"}:
+    """Return host | rules | llm | auto.
+
+    host = host-agent polish (default product path; no API key).
+    rules = deterministic only.
+    llm = CLI provider-bridge (needs BEACON_LLM_API_KEY).
+    auto = llm if key present else host (still prefers host agent when invoked from skill).
+    """
+    env = str(os.environ.get("BEACON_HUMANIZER_LLM_MODE") or "").strip().lower()
+    # Do NOT treat global BEACON_LLM_MODE=real as forcing Humanizer CLI calls;
+    # that env is for other semantic bridges. Humanizer stays host-first.
+    if env in {"real", "live", "api", "llm", "provider"}:
         return "llm"
     if env in {"rules", "rule", "offline", "0", "false", "off"}:
         return "rules"
+    if env in {"host", "agent", "skill"}:
+        return "host"
     if env in {"auto"}:
         return "auto"
     cfg = config or {}
-    mode = str(cfg.get("llm_mode") or cfg.get("mode") or "auto").strip().lower()
-    if mode in {"real", "live", "api"}:
+    mode = str(cfg.get("llm_mode") or cfg.get("mode") or "host").strip().lower()
+    if mode in {"real", "live", "api", "provider"}:
         return "llm"
     if mode in {"rules", "rule", "offline"}:
         return "rules"
     if mode == "llm":
         return "llm"
-    return "auto"
+    if mode in {"host", "agent", "skill"}:
+        return "host"
+    if mode == "auto":
+        return "auto"
+    return "host"
 
 
 def llm_available() -> bool:
@@ -44,13 +64,52 @@ def llm_available() -> bool:
 
 
 def should_use_llm(config: dict[str, Any] | None = None) -> bool:
+    """Whether CLI should call a provider API for L0 polish.
+
+    Default host/rules → False (host agent does real polish via skill).
+    Only llm mode, or auto with explicit key, enables CLI provider-bridge.
+    """
     mode = resolve_llm_mode(config)
-    if mode == "rules":
+    if mode in {"host", "rules"}:
         return False
     if mode == "llm":
         return llm_available()
-    # auto
-    return llm_available()
+    if mode == "auto":
+        # headless fallback only — not the agent/skill product path
+        return llm_available()
+    return False
+
+
+
+def build_host_agent_humanizer_brief(
+    *,
+    language: str,
+    skill_path: str,
+    skill_chars: int,
+    l0_heading: str = "## 人话",
+) -> dict[str, Any]:
+    """Contract payload for host agents running $beacon-truth / truth-review.
+
+    The host agent MUST read skill fulltext and polish L0; CLI only prepares context.
+    """
+    lang = "zh" if str(language).startswith("zh") else "en"
+    return {
+        "schema": "humanizer-host-agent-brief.v1",
+        "engine": "host_agent",
+        "requires_api_key": False,
+        "language": lang,
+        "skill_path": skill_path,
+        "skill_chars": skill_chars,
+        "l0_heading": l0_heading or ("## 人话" if lang == "zh" else "## Plain language"),
+        "instructions": [
+            "Beacon is a host skill/CLI — you (the host agent LLM) perform Humanizer polish.",
+            "Read skill fulltext at skill_path (oss-sync or skills/beacon/references/truth-humanizer/vendor/).",
+            "Rewrite only L0 (人话 / Plain language); preserve AC IDs, FSM tables, Intent Matrix, frontmatter machine fields.",
+            "Do not require BEACON_LLM_API_KEY for this path.",
+            "CLI rules engine is a safety net / CI aid, not a substitute for host-agent polish when authoring truth.",
+        ],
+        "preserve_machine_fields": True,
+    }
 
 
 def vendor_humanizer_skills_into_beacon(
