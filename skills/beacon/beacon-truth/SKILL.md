@@ -67,7 +67,9 @@ Index: `references/modes/INDEX.md`
 ## Evals
 
 Smoke + contract prompts: `evals/evals.json`  
-Examples (when present): `references/examples/`
+Examples (when present): `references/examples/`  
+Gold (v1.6.10 订单支付完整包): `references/examples/gold-order-pay-package.md`  
+Docs twin: `docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/`
 
 ## Shared package refs
 

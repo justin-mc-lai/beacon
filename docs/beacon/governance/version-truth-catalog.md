@@ -18,6 +18,14 @@ event_type: "catalog-bootstrap"
 
 ## Active Delivery Versions
 
+### v1.6.10
+- validation_state: `active`
+- truth_root: `docs/beacon/v1.6.10`
+
+### v1.6.9
+- validation_state: `active`
+- truth_root: `docs/beacon/v1.6.9`
+
 ### v1.6.6
 - validation_state: `active`
 - truth_root: `docs/beacon/v1.6.6`

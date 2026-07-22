@@ -1,5 +1,7 @@
 # Requirement truth prose norms (English)
 
+> **角色**：速查摘要，**非**润色权威。权威全文见全局 humanizer 配置指向的 oss-sync SKILL（zh: Humanizer-zh / en: blader/humanizer）。v1.6.10: `truth-humanizer-runtime-v1610`.
+
 Distilled from [blader/humanizer](https://github.com/blader/humanizer) and [Humanizer-zh](https://github.com/op7418/Humanizer-zh).  
 **Scope**: L0 plain-language sections and narrative prose. Tables of ACs/FSMs are exempt from rhetoric rules.
 

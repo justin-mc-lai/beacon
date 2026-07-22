@@ -1,0 +1,30 @@
+{
+  "schema": "beacon-feature-graph-v1",
+  "program": "beacon-truth-authority-humanizer-v1610",
+  "version": "v1.6.10",
+  "nodes": [
+    {
+      "slug": "truth-core-authority-v1610",
+      "role": "foundation"
+    },
+    {
+      "slug": "truth-gold-order-pay-v1610",
+      "role": "example",
+      "depends_on": [
+        "truth-core-authority-v1610"
+      ]
+    },
+    {
+      "slug": "truth-humanizer-runtime-v1610",
+      "role": "runtime",
+      "depends_on": [
+        "truth-core-authority-v1610"
+      ]
+    }
+  ],
+  "topo": [
+    "truth-core-authority-v1610",
+    "truth-gold-order-pay-v1610",
+    "truth-humanizer-runtime-v1610"
+  ]
+}
