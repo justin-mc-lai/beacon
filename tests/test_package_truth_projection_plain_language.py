@@ -19,7 +19,7 @@ def _write(root: Path, rel: str, content: str) -> None:
     path.write_text(content, encoding="utf-8")
 
 
-def _seed_package(root: Path, *, version: str = "v0.0.12", slug: str = "sidepilot-package") -> None:
+def _seed_package(root: Path, *, version: str = "v1.6.10", slug: str = "sidepilot-package") -> None:
     _write(root, f"docs/beacon/{version}/SUMMARY.md", f"# {version}\n")
     _write(root, f"docs/beacon/{version}/prd/{slug}.md", "# PRD\n\n- AC-001: package works\n")
     _write(root, f"docs/beacon/{version}/user-story/{slug}.md", "# User Story\n\n| AC ID | Theme | Description |\n|-------|-------|-------------|\n| AC-001 | package | package works |\n")
@@ -67,22 +67,22 @@ def _seed_package(root: Path, *, version: str = "v0.0.12", slug: str = "sidepilo
 def test_package_ready_target_version_uses_package_paths(tmp_path: Path) -> None:
     _seed_package(tmp_path)
 
-    paths = compute_feature_paths(tmp_path, "v0.0.12", "sidepilot-package", prefer_package=True)
-    manifest = sync_manifest(tmp_path, "v0.0.12")
+    paths = compute_feature_paths(tmp_path, "v1.6.10", "sidepilot-package", prefer_package=True)
+    manifest = sync_manifest(tmp_path, "v1.6.10")
     entry = next(item for item in manifest["features"] if item["slug"] == "sidepilot-package")
 
-    assert paths["prd"] == "docs/beacon/v0.0.12/features/sidepilot-package/truth.md"
-    assert paths["user_story"] == "docs/beacon/v0.0.12/features/sidepilot-package/truth.md"
-    assert paths["test_case"] == "docs/beacon/v0.0.12/features/sidepilot-package/tests.md"
+    assert paths["prd"] == "docs/beacon/v1.6.10/features/sidepilot-package/truth.md"
+    assert paths["user_story"] == "docs/beacon/v1.6.10/features/sidepilot-package/truth.md"
+    assert paths["test_case"] == "docs/beacon/v1.6.10/features/sidepilot-package/tests.md"
     assert entry["truth_paths"] == {
-        "prd": "docs/beacon/v0.0.12/features/sidepilot-package/truth.md",
-        "user_story": "docs/beacon/v0.0.12/features/sidepilot-package/truth.md",
-        "test_case": "docs/beacon/v0.0.12/features/sidepilot-package/tests.md",
+        "prd": "docs/beacon/v1.6.10/features/sidepilot-package/truth.md",
+        "user_story": "docs/beacon/v1.6.10/features/sidepilot-package/truth.md",
+        "test_case": "docs/beacon/v1.6.10/features/sidepilot-package/tests.md",
     }
 
 
 def test_package_truth_presence_is_enough_for_default_paths(tmp_path: Path) -> None:
-    version = "v0.0.12"
+    version = "v1.6.10"
     slug = "truth-only-feature"
     _write(tmp_path, f"docs/beacon/{version}/SUMMARY.md", f"# {version}\n")
     _write(
@@ -134,7 +134,7 @@ def test_package_truth_presence_is_enough_for_default_paths(tmp_path: Path) -> N
 
 
 def test_prd_bootstrap_truth_only_package_apply_writes_missing_tests_not_legacy_split(tmp_path: Path) -> None:
-    version = "v0.0.12"
+    version = "v1.6.10"
     slug = "truth-only-apply-feature"
     truth = (
         "---\n"
@@ -196,9 +196,9 @@ def test_prd_bootstrap_truth_only_package_apply_writes_missing_tests_not_legacy_
 def test_prd_bootstrap_package_ready_does_not_generate_legacy_split_docs(tmp_path: Path) -> None:
     _seed_package(tmp_path, slug="new-package-feature")
     for rel in (
-        "docs/beacon/v0.0.12/prd/new-package-feature.md",
-        "docs/beacon/v0.0.12/user-story/new-package-feature.md",
-        "docs/beacon/v0.0.12/qa/test-cases/new-package-feature.md",
+        "docs/beacon/v1.6.10/prd/new-package-feature.md",
+        "docs/beacon/v1.6.10/user-story/new-package-feature.md",
+        "docs/beacon/v1.6.10/qa/test-cases/new-package-feature.md",
     ):
         (tmp_path / rel).unlink()
 
@@ -213,7 +213,7 @@ def test_prd_bootstrap_package_ready_does_not_generate_legacy_split_docs(tmp_pat
             "--project-root",
             str(tmp_path),
             "--version",
-            "v0.0.12",
+            "v1.6.10",
             "--skip-context-verify",
             "--apply",
             "--allow-overwrite",
@@ -224,20 +224,23 @@ def test_prd_bootstrap_package_ready_does_not_generate_legacy_split_docs(tmp_pat
     assert result.exit_code == 0, result.stdout
     payload = json.loads(result.stdout)
     assert payload["legacy_split"] is False
-    assert payload["targets"]["prd"] == "docs/beacon/v0.0.12/features/new-package-feature/truth.md"
-    assert payload["targets"]["user_story"] == "docs/beacon/v0.0.12/features/new-package-feature/truth.md"
-    assert payload["targets"]["test_case"] == "docs/beacon/v0.0.12/features/new-package-feature/tests.md"
-    assert not (tmp_path / "docs/beacon/v0.0.12/prd/new-package-feature.md").exists()
-    assert not (tmp_path / "docs/beacon/v0.0.12/user-story/new-package-feature.md").exists()
-    assert not (tmp_path / "docs/beacon/v0.0.12/qa/test-cases/new-package-feature.md").exists()
+    assert payload["targets"]["prd"] == "docs/beacon/v1.6.10/features/new-package-feature/truth.md"
+    assert payload["targets"]["user_story"] == "docs/beacon/v1.6.10/features/new-package-feature/truth.md"
+    assert payload["targets"]["test_case"] == "docs/beacon/v1.6.10/features/new-package-feature/tests.md"
+    assert not (tmp_path / "docs/beacon/v1.6.10/prd/new-package-feature.md").exists()
+    assert not (tmp_path / "docs/beacon/v1.6.10/user-story/new-package-feature.md").exists()
+    assert not (tmp_path / "docs/beacon/v1.6.10/qa/test-cases/new-package-feature.md").exists()
 
 
 def test_truth_package_includes_plain_language_layer(tmp_path: Path) -> None:
-    _seed_package(tmp_path, version="v1.5.0")
+    _seed_package(tmp_path, version="v1.6.10")
 
-    text = render_truth_package(tmp_path, version="v1.5.0", feature="sidepilot-package")
+    text = render_truth_package(tmp_path, version="v1.6.10", feature="sidepilot-package")
 
-    assert "## 大白话说明" in text
-    assert "## 用户流程" in text
-    assert "## 技术绑定" in text
-    assert "compatibility/read-model projections only when explicitly generated" in text
+    assert "## 人话" in text
+    assert "## 用户旅程" in text
+    assert "## First principles" in text
+    assert "## Domain Model" in text
+    assert "## Intent Coverage Matrix" in text
+    assert "## FSM 五元组" in text
+    assert "package_maturity: scaffold" in text

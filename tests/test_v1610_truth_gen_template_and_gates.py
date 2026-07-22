@@ -138,10 +138,15 @@ def test_render_truth_v1610_gold_sections(tmp_path: Path):
     assert "TC ID | AC ID | Command | Assertion" in tests
 
 
-def test_render_truth_legacy_plain_language(tmp_path: Path):
-    text = render_truth_package(tmp_path, version="v1.5.0", feature="legacy-feat")
-    assert "## 大白话说明" in text
-    assert "## 人话" not in text
+def test_render_truth_legacy_plain_language_removed(tmp_path: Path):
+    import pytest
+    from beacon.utils.feature_package import REASON_PACKAGE_SHAPE_UPGRADE, materialize_feature_package
+
+    with pytest.raises(ValueError, match=REASON_PACKAGE_SHAPE_UPGRADE):
+        render_truth_package(tmp_path, version="v1.5.0", feature="legacy-feat")
+    blocked = materialize_feature_package(tmp_path, version="v1.5.0", feature="legacy-feat")
+    assert blocked.get("blocked") is True
+    assert blocked.get("reason_code") == REASON_PACKAGE_SHAPE_UPGRADE
 
 
 def test_postwrite_recommend_freeze_on_pass(tmp_path: Path):

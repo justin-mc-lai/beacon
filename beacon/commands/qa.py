@@ -1316,6 +1316,60 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             return 2, blocked_payload
 
     if metadata_machine_path(project_root).exists():
+
+        # v1.6.10+: execute package exec-layer TCs (shape was checked by TRG; now run)
+        try:
+            from beacon.utils.package_exec_tc import run_package_exec_tcs
+            from beacon.utils.truth_review_gate import truth_review_gate_supported as _trg_sup
+
+            if _trg_sup(resolved_version):
+                exec_payload = run_package_exec_tcs(
+                    project_root,
+                    version=resolved_version,
+                    feature=feature,
+                    write_evidence=True,
+                )
+                if exec_payload.get("blocked") or (
+                    exec_payload.get("domain_required") and not exec_payload.get("pass")
+                ) or (
+                    not exec_payload.get("skipped") and exec_payload.get("pass") is False
+                ):
+                    blocked_payload = _with_qa_surface({
+                        "schema_version": "1.0",
+                        "feature": feature,
+                        "version": resolved_version,
+                        "status": "blocked",
+                        "reason_codes": [str(exec_payload.get("reason_code") or "package_exec_tc_failed")],
+                        "reason_code": str(exec_payload.get("reason_code") or "package_exec_tc_failed"),
+                        "layers": {
+                            "package_exec_tc": exec_payload,
+                        },
+                        "package_exec_tc": exec_payload,
+                        "recommended_command": (
+                            f"inspect .beacon/evidence/test-results/{feature}/ and fix failing EXEC TCs"
+                        ),
+                    }, blocked=True)
+                    if json_output:
+                        typer.echo(json.dumps(blocked_payload, ensure_ascii=False, indent=2))
+                    else:
+                        typer.echo("Beacon QA blocked: package exec-layer TC failed", err=True)
+                    return 2, blocked_payload
+        except Exception as _exec_exc:  # noqa: BLE001
+            blocked_payload = _with_qa_surface({
+                "schema_version": "1.0",
+                "feature": feature,
+                "version": resolved_version,
+                "status": "blocked",
+                "reason_codes": ["package_exec_tc_error"],
+                "reason_code": "package_exec_tc_error",
+                "message": str(_exec_exc),
+            }, blocked=True)
+            if json_output:
+                typer.echo(json.dumps(blocked_payload, ensure_ascii=False, indent=2))
+            else:
+                typer.echo(f"Beacon QA blocked: package exec error: {_exec_exc}", err=True)
+            return 2, blocked_payload
+
         metadata_verdict = verify_project_metadata(project_root, version=version if version != "auto" else "")
         if str(metadata_verdict.get("status") or "").lower() == "fail":
             blocked_payload = _with_qa_surface({

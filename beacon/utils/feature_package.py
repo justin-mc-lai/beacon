@@ -22,6 +22,8 @@ PARSER_CONTRACT = "beacon-feature-package-v1"
 # parser_contract versions the resolver may declare; validator accepts all of
 # these (single source of truth — resolver and validator must not disagree).
 ALLOWED_PARSER_CONTRACTS = ("beacon-feature-package-v1", "beacon-feature-package-v2")
+PACKAGE_SHAPE_FLOOR = (1, 6, 10)
+REASON_PACKAGE_SHAPE_UPGRADE = "package_shape_upgrade_required"
 ALLOWED_EVIDENCE_AUTHORITIES = {"support_advisory", "qa_verdict", "release_verdict"}
 EXTRA_VALID_EVIDENCE_AUTHORITIES = {"requirement_truth", "acceptance_truth", "test_truth"}
 FORBIDDEN_EVIDENCE_FIELDS = ("final_verdict", "gate_truth", "release_ready", "qa_passed", "source_of_truth")
@@ -40,6 +42,35 @@ def _semver_tuple(version: str | None) -> tuple[int, int, int]:
         return int(major), int(minor), int(patch)
     except Exception:  # noqa: BLE001
         return 0, 0, 0
+
+
+def package_shape_floor_ok(version: str | None) -> bool:
+    return _semver_tuple(version) >= PACKAGE_SHAPE_FLOOR
+
+
+def package_shape_upgrade_payload(*, version: str, feature: str, op: str) -> dict[str, Any]:
+    return {
+        "schema": "package-shape-upgrade.v1",
+        "blocked": True,
+        "pass": False,
+        "reason_code": REASON_PACKAGE_SHAPE_UPGRADE,
+        "version": version,
+        "feature": feature,
+        "op": op,
+        "floor": "v1.6.10",
+        "user_facing": (
+            f"version {version} is below package shape floor v1.6.10. "
+            "Replan and freeze new truth on v1.6.10+ (global-boundaries §2.1). "
+            "Legacy package templates are not soft-compatible."
+        ),
+        "recommended_next": [
+            "plan re-decompose intent",
+            "use docs version >= v1.6.10",
+            "truth gen / materialize",
+            "truth review then freeze",
+        ],
+    }
+
 
 
 def _canonical_ready_supported(version: str | None) -> bool:
@@ -419,59 +450,21 @@ def render_truth_package(
             }
         ]
 
-    if _semver_tuple(version) >= (1, 6, 10):
-        return _render_truth_package_v1610(
-            project_root,
-            version=version,
-            feature=feature,
-            slug=slug,
-            language=language or "zh",
-            ac_rows=ac_rows,
-            prd=prd,
-            user_story=user_story,
+    if not package_shape_floor_ok(version):
+        raise ValueError(
+            f"{REASON_PACKAGE_SHAPE_UPGRADE}: version={version} feature={feature} "
+            "floor=v1.6.10 — replan+freeze; legacy templates removed (global-boundaries §2.1)"
         )
-
-    lines = [
-        _render_frontmatter(slug=slug, version=version, language=language or "en", status="draft"),
-        "",
-        f"# Feature: {feature}",
-        "",
-        "## 大白话说明",
-        "",
-        f"- 这件事要解决的是：让用户能稳定完成 `{feature}` 对应的核心工作。",
-        "- 用户不用理解内部模块、矩阵或状态字段，也应该能看懂它为什么存在、怎么用、做到什么算完成。",
-        "- 技术绑定单独放在后面的章节；本节只说明人能直接理解的目标和流程。",
-        "",
-        "## 用户流程",
-        "",
-        "1. 用户进入相关功能入口。",
-        "2. 系统按已冻结的需求边界提供主要操作。",
-        "3. 用户完成操作后，可以看到明确结果、失败原因或下一步处理方式。",
-        "",
-        "## 技术绑定",
-        "",
-        "- 技术细节、AC、测试和证据仍以后续章节为准。",
-        "- 本节不得替代 acceptance criteria，也不得降低 gate 要求。",
-        "",
-        "## Overview",
-        "",
-        "This feature package is the package requirement truth surface. Legacy PRD, user-story, and test-case files are compatibility/read-model projections only when explicitly generated.",
-        "",
-        "## Projection References",
-        "",
-        f"- PRD: `docs/beacon/{version}/prd/{slug}.md`",
-        f"- User Story: `docs/beacon/{version}/user-story/{slug}.md`",
-        f"- Test Case: `docs/beacon/{version}/qa/test-cases/{slug}.md`",
-        "",
-        "## Acceptance Criteria",
-        "",
-        "| AC ID | Theme | Description |",
-        "|-------|-------|-------------|",
-    ]
-    for row in ac_rows:
-        lines.append(f"| {row['ac_id']} | {row.get('theme', '')} | {row.get('description', '')} |")
-    lines.extend(["", "## Source Excerpt", "", "```markdown", prd[:4000].rstrip(), "```", ""])
-    return "\n".join(lines)
+    return _render_truth_package_v1610(
+        project_root,
+        version=version,
+        feature=feature,
+        slug=slug,
+        language=language or "zh",
+        ac_rows=ac_rows,
+        prd=prd,
+        user_story=user_story,
+    )
 
 
 def _render_truth_package_v1610(
@@ -569,9 +562,26 @@ def _render_truth_package_v1610(
             "",
             "> scaffold：请改成真实旅程步骤后再 freeze（Check D）。",
             "",
-            "1. 用户进入入口（待补）",
-            "2. 完成关键操作（待补）",
-            "3. 看到明确结果或失败原因（待补）",
+            "1. 触发：用户进入入口（待补）",
+            "2. 关键操作：完成主路径动作（待补）",
+            "3. 结果：明确成功 / 失败原因 / 下一步（待补）",
+            "4. 异常：超时、重复、权限等边界（待补）",
+            "",
+            "## First principles",
+            "",
+            "> scaffold：写清不可变约束；域湖必须具体化。",
+            "",
+            f"- 系统边界：本湖只解决 `{feature}` 声明范围内的结果",
+            "- 不可变：未过 Truth Review Gate 不得 freeze；不得用 agent 自述替代 AC",
+            "- 可推翻假设：待用户确认的默认值写在 Intent Matrix should/deferred",
+            "",
+            "## Domain Model",
+            "",
+            "> scaffold：列出核心实体与字段；business domain 必填。",
+            "",
+            "| Entity | Key fields | Notes |",
+            "|--------|------------|-------|",
+            f"| {feature}Aggregate | id, status | 待补真实实体 |",
             "",
             "## Acceptance Criteria",
             "",
@@ -610,9 +620,19 @@ def _render_truth_package_v1610(
             "## Freeze readiness",
             "",
             "- [ ] Intent Matrix must 无 missing",
-            "- [ ] domain 湖：FSM 五元组 + illegal 完备",
-            "- [ ] 每 AC ≥ 1 TC（Command+Assertion）",
+            "- [ ] 用户旅程非「待补」占位",
+            "- [ ] First principles / Domain Model 已具体化（非 scaffold 套话）",
+            "- [ ] domain 湖：业务 FSM 五元组 + illegal（非 draft/in_review 元状态）",
+            "- [ ] 每 AC ≥ 1 TC（Command+Assertion）+ ≥1 exec-layer TC",
+            "- [ ] tasks 均有 ac= + evidence= 绑定",
+            "- [ ] package_maturity: filled（去掉 scaffold）",
             "- [ ] `beacon truth review` pass 后再 freeze",
+            "",
+            "### Gap vs gold (订单支付示例)",
+            "",
+            f"- 对照：`docs/beacon/{version}/features/truth-gold-order-pay-v1610/truth.md`",
+            "- 对照：`skills/beacon/beacon-truth/references/examples/gold-order-pay-package.md`",
+            "- 宿主 Agent 读 Humanizer vendor 全文润色 L0（无需 API key）",
             "",
             "## Source Excerpt",
             "",
@@ -627,12 +647,17 @@ def _render_truth_package_v1610(
 
 def render_tests_package(project_root: Path, *, version: str, feature: str) -> str:
     slug = _slug(feature)
+    if not package_shape_floor_ok(version):
+        raise ValueError(
+            f"{REASON_PACKAGE_SHAPE_UPGRADE}: version={version} feature={feature} "
+            "floor=v1.6.10 — replan+freeze for tests shape (global-boundaries §2.1)"
+        )
     qa_path = qa_docs_file(project_root, version, f"{slug}.md")
     qa = _read_text(qa_path)
     rows = _extract_test_rows(qa)
     truth = _read_text(package_paths(project_root, version=version, feature=feature)["truth"]) if (project_root / "docs" / "beacon" / version / "features" / slug / "truth.md").exists() else ""
     ac_from_truth = _extract_ac_rows(truth) if truth else []
-    if _semver_tuple(version) >= (1, 6, 10):
+    if True:  # package shape floor enforced above
         lines = [
             "---",
             f"slug: {slug}",
@@ -680,8 +705,9 @@ def render_tests_package(project_root: Path, *, version: str, feature: str) -> s
         lines.append(
             f"| TC-EXEC-CLI | {primary_ac} | `python3 -c 'import beacon; print(chr(111)+chr(107))'` | import_beacon_ok |"
         )
+        pytest_assertion = "exit_code==0" if domain_required else "exit_code_in_0_or_5"
         lines.append(
-            f"| TC-EXEC-PYTEST | {primary_ac} | `python3 -m pytest -q tests/ -k {slug} --tb=no` | exit_code_in_0_or_5 |"
+            f"| TC-EXEC-PYTEST | {primary_ac} | `python3 -m pytest -q tests/ -k {slug} --tb=no` | {pytest_assertion} |"
         )
         if domain_required:
             lines.append(
@@ -690,37 +716,14 @@ def render_tests_package(project_root: Path, *, version: str, feature: str) -> s
         lines.extend(["", "## Validation Note", "", "v1.6.10 TC layout for Truth Review Gate Check C + domain exec layer.", ""])
         return "\n".join(lines)
 
-    lines = [
-        f"# Tests: {feature}",
-        "",
-        "## Coverage Matrix",
-        "",
-        "| AC ID | TC ID | Layer | Command | Assertion | Evidence Path |",
-        "|-------|-------|-------|---------|-----------|---------------|",
-    ]
-    if rows:
-        for row in rows:
-            command = row.get("command") or "python3 -m pytest -q"
-            evidence_path = row.get("evidence_path") or f".beacon/evidence/test-results/{slug}/{row.get('tc_id', 'TC-001')}.json"
-            lines.append(
-                f"| {row['ac_id']} | {row.get('tc_id', '')} | {row.get('layer', '')} | `{command}` | {row.get('assertion', '') or 'pass'} | {evidence_path} |"
-            )
-    else:
-        lines.append(f"| AC-001 | TC-001 | unit | `python3 -m pytest -q` | {feature} package truth validates | .beacon/evidence/test-results/{slug}/TC-001.json |")
-    lines.extend(
-        [
-            "",
-            "## Validation Note",
-            "",
-            "This file is the package test truth surface. Legacy `qa/test-cases/` files are compatibility/read-model projections only when explicitly generated.",
-            "",
-        ]
-    )
-    return "\n".join(lines)
-
 
 def render_tasks_package(project_root: Path, *, version: str, feature: str) -> str:
-    """Derive task ledger from package AC when available (v1.6.10+)."""
+    """Derive AC-bound task ledger (v1.6.10+ only; no old-shape soft-compat)."""
+    if not package_shape_floor_ok(version):
+        raise ValueError(
+            f"{REASON_PACKAGE_SHAPE_UPGRADE}: version={version} feature={feature} "
+            "floor=v1.6.10 — replan+freeze for tasks shape (global-boundaries §2.1)"
+        )
     slug = _slug(feature)
     ac_rows: list[dict[str, str]] = []
     truth_path = package_paths(project_root, version=version, feature=feature)["truth"]
@@ -743,35 +746,25 @@ def render_tasks_package(project_root: Path, *, version: str, feature: str) -> s
         "## Task Ledger",
         "",
     ]
-    if ac_rows and _semver_tuple(version) >= (1, 6, 10):
-        for idx, row in enumerate(ac_rows, start=1):
-            ac = row.get("ac_id") or f"AC-{idx:03d}"
-            desc = (row.get("description") or row.get("theme") or "implement").replace("\n", " ").strip()
-            if len(desc) > 72:
-                desc = desc[:69] + "..."
-            evidence = f".beacon/evidence/implement/{slug}/{ac}.json"
-            # HARD bind: checked checkbox is invalid without this evidence path existing
-            lines.append(
-                f"- [ ] TASK-{idx:03d} Implement {ac}: {desc} · ac={ac} · evidence=`{evidence}`"
-            )
-        gate_ev = f".beacon/evidence/implement/{slug}/GATES.json"
-        qa_ev = f".beacon/evidence/implement/{slug}/QA-MATRIX.json"
+    if not ac_rows:
+        ac_rows = [{"ac_id": "AC-001", "description": "Fill Acceptance Criteria then re-materialize tasks"}]
+    for idx, row in enumerate(ac_rows, start=1):
+        ac = row.get("ac_id") or f"AC-{idx:03d}"
+        desc = (row.get("description") or row.get("theme") or "implement").replace("\n", " ").strip()
+        if len(desc) > 72:
+            desc = desc[:69] + "..."
+        evidence = f".beacon/evidence/implement/{slug}/{ac}.json"
         lines.append(
-            f"- [ ] TASK-{len(ac_rows)+1:03d} Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`{gate_ev}`"
+            f"- [ ] TASK-{idx:03d} Implement {ac}: {desc} · ac={ac} · evidence=`{evidence}`"
         )
-        lines.append(
-            f"- [ ] TASK-{len(ac_rows)+2:03d} Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`{qa_ev}`"
-        )
-    else:
-        lines.extend(
-            [
-                "- [ ] TASK-001 Materialize feature package",
-                "- [ ] TASK-002 Validate frontmatter and acceptance criteria",
-                "- [ ] TASK-003 Validate checkbox ledger without gate bypass",
-                "- [ ] TASK-004 Validate evidence authority labels",
-                "- [ ] TASK-005 Run canonical implement and QA gates separately",
-            ]
-        )
+    gate_ev = f".beacon/evidence/implement/{slug}/GATES.json"
+    qa_ev = f".beacon/evidence/implement/{slug}/QA-MATRIX.json"
+    lines.append(
+        f"- [ ] TASK-{len(ac_rows)+1:03d} Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`{gate_ev}`"
+    )
+    lines.append(
+        f"- [ ] TASK-{len(ac_rows)+2:03d} Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`{qa_ev}`"
+    )
     lines.extend(
         [
             "",
@@ -782,6 +775,7 @@ def render_tasks_package(project_root: Path, *, version: str, feature: str) -> s
         ]
     )
     return "\n".join(lines)
+
 
 
 def render_evidence_package(project_root: Path, *, version: str, feature: str) -> str:
@@ -815,6 +809,8 @@ def materialize_feature_package(
     force: bool = False,
 ) -> dict[str, Any]:
     slug = _slug(feature)
+    if not package_shape_floor_ok(version):
+        return package_shape_upgrade_payload(version=version, feature=feature, op="materialize")
     paths = package_paths(project_root, version=version, feature=feature)
     paths["dir"].mkdir(parents=True, exist_ok=True)
     rendered = {
@@ -864,7 +860,7 @@ def materialize_feature_package(
         "skipped": skipped,
         "validation": validation,
         "truth_gen_postwrite": post_write,
-        "recommend_freeze": bool(post_write.get("recommend_freeze", _semver_tuple(version) < (1, 6, 10))),
+        "recommend_freeze": bool(post_write.get("recommend_freeze", False)),
     }
 
 

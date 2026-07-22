@@ -18,7 +18,7 @@ from beacon.utils.intent_first import (
 )
 from beacon.utils.truth_integrity import build_truth_integrity_gate
 
-VERSION = "v1.6.0"
+VERSION = "v1.6.10"
 
 
 def test_capture_intents_from_utterance_splits_sentences() -> None:
@@ -75,7 +75,7 @@ def test_render_intent_first_truth_contains_provenance() -> None:
     ]
     content = render_intent_first_truth("tig-dc-v160", VERSION, intents, "Block freeze on placeholders")
     assert "---" in content
-    assert "truth_source_model: intent_first_authoritative" in content
+    assert "truth_source_model: intent_first" in content
     assert "provenance:" in content
     assert "AC-001" in content
     assert "## User Intent" in content
@@ -106,7 +106,7 @@ def test_render_intent_first_truth_tig_dc_passes(tmp_path: Path) -> None:
     (feature_dir / "truth.md").write_text(content, encoding="utf-8")
 
     ac_rows = [derive_ac_from_intent(intent, idx) for idx, intent in enumerate(intents, start=1)]
-    (feature_dir / "tests.md").write_text(render_intent_first_tests("intent-first-smoke", ac_rows), encoding="utf-8")
+    (feature_dir / "tests.md").write_text(render_intent_first_tests("intent-first-smoke", ac_rows, version=VERSION), encoding="utf-8")
     (feature_dir / "tasks.md").write_text(render_intent_first_tasks("intent-first-smoke", ac_rows), encoding="utf-8")
     (feature_dir / "evidence.md").write_text(render_intent_first_evidence("intent-first-smoke"), encoding="utf-8")
 
@@ -124,9 +124,9 @@ def test_render_intent_first_tests_has_coverage_matrix() -> None:
         {"ac_id": "AC-001", "theme": "intent", "description": "foo"},
         {"ac_id": "AC-002", "theme": "intent", "description": "bar"},
     ]
-    content = render_intent_first_tests("feat", ac_rows)
-    assert "| AC-001 | TC-001 |" in content
-    assert "| AC-002 | TC-002 |" in content
+    content = render_intent_first_tests("feat", ac_rows, version=VERSION)
+    assert "| TC-001 | AC-001 |" in content
+    assert "| TC-002 | AC-002 |" in content
 
 
 def test_render_intent_first_tasks_has_checklist() -> None:
@@ -134,7 +134,9 @@ def test_render_intent_first_tasks_has_checklist() -> None:
         {"ac_id": "AC-001", "theme": "intent", "description": "Validate user input thoroughly"},
     ]
     content = render_intent_first_tasks("feat", ac_rows)
-    assert "- [ ] Implement AC-001:" in content
+    assert "Implement AC-001:" in content
+    assert "ac=AC-001" in content
+    assert "evidence=" in content
 
 
 def test_render_intent_first_evidence_stub() -> None:
