@@ -19,6 +19,7 @@ from beacon.utils.revision_delta import materialize_revision_delta
 from beacon.utils.revision_state import freeze_revision_state
 from beacon.utils.story_state import freeze_story_state, feature_slug
 from beacon.utils.truth_integrity import build_truth_integrity_gate
+from beacon.utils.truth_review_gate import build_truth_review_gate_payload
 from beacon.utils.truth_map import feature_package_authoritative, feature_package_ready, rebuild_machine_json
 from beacon.utils.versioning import resolve_target_version
 
@@ -149,6 +150,36 @@ def _freeze_impl(feature: str, project: Optional[str], version: str, json_output
         else:
             typer.echo("Beacon freeze blocked: feature package validation failed")
         return 2
+
+    truth_review = build_truth_review_gate_payload(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        write_report=True,
+    )
+    if bool(truth_review.get("blocked")) or not bool(truth_review.get("review_gate_pass", True)):
+        payload = {
+            "schema_version": "1.0",
+            "feature": feature,
+            "version": resolved_version,
+            "status": "blocked",
+            "reason_code": str(truth_review.get("reason_code") or "truth_review_gate_failed"),
+            "truth_review_gate": truth_review,
+            "truth_integrity_gate": integrity_gate,
+            "feature_package_validation": post_validation,
+            "requirement_clarity_gate": clarity_gate,
+            "requirement_clarity_report": clarity_report,
+            "requirement_clarity_writeback": clarity_writeback,
+        }
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo("Beacon freeze blocked: truth review gate failed")
+            for f in (truth_review.get("findings") or [])[:12]:
+                if isinstance(f, dict):
+                    typer.echo(f"  - [{f.get('kind')}] {f.get('text')}")
+        return 2
+
     revision = freeze_revision_state(project_root, version=resolved_version, feature=feature)
     freeze_story_state(project_root, version=resolved_version, feature=feature)
     truth_frontmatter_sync = (
@@ -186,6 +217,7 @@ def _freeze_impl(feature: str, project: Optional[str], version: str, json_output
         "requirement_clarity_gate": clarity_gate,
         "requirement_clarity_report": clarity_report,
         "requirement_clarity_writeback": clarity_writeback,
+        "truth_review_gate": truth_review,
     }
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))

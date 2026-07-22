@@ -1,0 +1,220 @@
+{
+  "schema": "truth-review-gate.v1",
+  "schema_version": "1.0",
+  "feature": "truth-gold-order-pay-v1610",
+  "version": "v1.6.10",
+  "pass": true,
+  "blocked": false,
+  "review_gate_pass": true,
+  "reason_code": "",
+  "domain_required": true,
+  "checks": {
+    "A_intent_coverage": {
+      "pass": true,
+      "check": "A",
+      "name": "intent_coverage",
+      "required": true,
+      "matrix_rows": 13,
+      "missing_must": [],
+      "reason": "",
+      "findings": [],
+      "matrix": [
+        {
+          "intent_id": "INT-PAY-01",
+          "source": "prompt/gold",
+          "strength": "must",
+          "landing": "AC-PAY-001",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-PAY-02",
+          "source": "prompt/gold",
+          "strength": "must",
+          "landing": "AC-PAY-002",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-PAY-03",
+          "source": "prompt/gold",
+          "strength": "must",
+          "landing": "AC-PAY-003",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-PAY-04",
+          "source": "prompt/gold",
+          "strength": "must",
+          "landing": "AC-PAY-010",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-PAY-05",
+          "source": "review",
+          "strength": "must",
+          "landing": "AC-PAY-022",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-PAY-06",
+          "source": "review",
+          "strength": "must",
+          "landing": "AC-PAY-023",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-RF-01",
+          "source": "prompt/gold",
+          "strength": "must",
+          "landing": "AC-RF-001",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-RF-02",
+          "source": "prompt/gold",
+          "strength": "must",
+          "landing": "AC-RF-002",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-RF-03",
+          "source": "review",
+          "strength": "must",
+          "landing": "AC-RF-003",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-RF-04",
+          "source": "review",
+          "strength": "must",
+          "landing": "AC-RF-004",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-IDEM-01",
+          "source": "review",
+          "strength": "must",
+          "landing": "AC-PAY-003, AC-RF-002",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-EDGE-partial-refund",
+          "source": "vision optional",
+          "strength": "should",
+          "landing": "Non-goal: 部分退款另湖",
+          "status": "deferred"
+        },
+        {
+          "intent_id": "INT-EDGE-concurrent-cancel",
+          "source": "vision optional",
+          "strength": "should",
+          "landing": "Non-goal: 并发撤单另湖",
+          "status": "deferred"
+        }
+      ]
+    },
+    "B_fsm_audit": {
+      "pass": true,
+      "check": "B",
+      "name": "fsm_audit",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "fsm": {
+        "transition_count": 7,
+        "from_states": [
+          "created",
+          "paid",
+          "paying",
+          "refunding"
+        ],
+        "hanging_states": [],
+        "terminals": [
+          "closed",
+          "refunded"
+        ],
+        "illegal_present": true,
+        "five_tuple_present": true
+      }
+    },
+    "C_testability": {
+      "pass": true,
+      "check": "C",
+      "name": "testability",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "ac_count": 18,
+      "tc_count": 18,
+      "missing_ac": [],
+      "covered": {
+        "AC-PAY-001": [
+          "TC-PAY-001"
+        ],
+        "AC-PAY-002": [
+          "TC-PAY-002"
+        ],
+        "AC-PAY-003": [
+          "TC-PAY-003"
+        ],
+        "AC-PAY-010": [
+          "TC-PAY-010"
+        ],
+        "AC-PAY-011": [
+          "TC-PAY-011"
+        ],
+        "AC-PAY-020": [
+          "TC-PAY-020"
+        ],
+        "AC-PAY-021": [
+          "TC-PAY-021"
+        ],
+        "AC-PAY-022": [
+          "TC-PAY-022"
+        ],
+        "AC-PAY-023": [
+          "TC-PAY-023"
+        ],
+        "AC-RF-001": [
+          "TC-RF-001"
+        ],
+        "AC-RF-002": [
+          "TC-RF-002"
+        ],
+        "AC-RF-003": [
+          "TC-RF-003"
+        ],
+        "AC-RF-004": [
+          "TC-RF-004"
+        ],
+        "AC-PAY-030": [
+          "TC-PAY-030"
+        ],
+        "AC-PAY-031": [
+          "TC-PAY-031"
+        ],
+        "AC-PAY-032": [
+          "TC-PAY-032"
+        ],
+        "AC-PAY-033": [
+          "TC-PAY-033"
+        ],
+        "AC-PAY-034": [
+          "TC-PAY-034"
+        ]
+      }
+    }
+  },
+  "findings": [],
+  "humanizer": {
+    "rule": "humanizer_only_after_abc_pass_before_freeze",
+    "abc_pass": true,
+    "allowed_now": true,
+    "note": "Polish L0/narrative only; preserve_machine_fields=true"
+  },
+  "evaluated_at": "2026-07-22T03:34:33.115825+00:00",
+  "paths": {
+    "truth": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md",
+    "tests": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/tests.md",
+    "report": "docs/beacon/v1.6.10/.machine/execution/truth-gold-order-pay-v1610.truth-review-gate.json"
+  }
+}

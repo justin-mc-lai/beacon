@@ -317,6 +317,52 @@ def gen_cmd(
         typer.echo("✓ TIG-DC passed — truth is deterministic.")
 
 
+
+@app.command("review")
+def review_cmd(
+    feature: str = typer.Argument(..., help="Feature slug"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", "--project-root", help="Project root"),
+    json_output: bool = typer.Option(False, "--json", help="JSON report"),
+    write_report: bool = typer.Option(True, "--write-report/--no-write-report", help="Persist gate report under .machine"),
+) -> None:
+    """Truth Review Gate: Check A/B/C before freeze (v1.6.10+)."""
+    from beacon.utils.truth_review_gate import run_truth_review_gate
+
+    project_root = _resolve_root(project)
+    resolved = resolve_target_version(project_root, version)
+    payload = run_truth_review_gate(
+        project_root,
+        version=resolved,
+        feature=feature,
+        write_report=write_report,
+    )
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        ok = bool(payload.get("pass") or payload.get("review_gate_pass"))
+        if ok:
+            typer.echo(f"✓ truth review pass: {feature} ({resolved})")
+            checks = payload.get("checks") if isinstance(payload.get("checks"), dict) else {}
+            for key, val in checks.items():
+                if isinstance(val, dict):
+                    status = "pass" if val.get("pass") else ("skip" if val.get("skipped") else "fail")
+                    typer.echo(f"  - {key}: {status}")
+            if payload.get("report_path"):
+                typer.echo(f"  report: {payload.get('report_path')}")
+        else:
+            typer.echo(
+                f"✗ truth review failed: {payload.get('reason_code') or 'truth_review_gate_failed'} feature={feature}",
+                err=True,
+            )
+            for f in payload.get("findings") or []:
+                if isinstance(f, dict):
+                    typer.echo(f"  - [{f.get('kind')}] {f.get('text')}", err=True)
+            raise typer.Exit(2)
+    if not bool(payload.get("pass") or payload.get("review_gate_pass")):
+        raise typer.Exit(2)
+
+
 @app.command("prose-check")
 def prose_check_cmd(
     feature: str = typer.Option(..., "--feature", "-f", help="Feature slug"),
@@ -348,12 +394,21 @@ def prose_check_cmd(
             typer.echo(f"✗ truth missing: {truth_path}", err=True)
         raise typer.Exit(2)
     result = check_truth_file(truth_path, strict_four_q=strict)
+    from beacon.utils.humanizer_config import resolve_humanizer_profile
+    humanizer = resolve_humanizer_profile(project_root, language=str(result.get("language") or "zh"))
     payload = {
         "ok": bool(result.get("ok")),
         "blocked": not bool(result.get("ok")),
         "reason_code": result.get("reason_code") or "",
         "version": resolved,
         "feature": feature,
+        "humanizer": {
+            "language": humanizer.get("language"),
+            "skill_path": humanizer.get("skill_path"),
+            "skill_exists": humanizer.get("skill_exists"),
+            "ok": humanizer.get("ok"),
+            "reason_code": humanizer.get("reason_code") or "",
+        },
         "path": (
             str(truth_path.relative_to(project_root))
             if str(truth_path.resolve()).startswith(str(project_root.resolve()))

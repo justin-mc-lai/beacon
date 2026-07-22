@@ -165,6 +165,25 @@ beacon truth review <feature> --project-root . --version <ver> [--json]
 
 等价名允许，但 catalog 必须可发现「truth review」。
 
+
+## Intent Coverage Matrix（Check A · 本包）
+
+| intent_id | source | strength | landing | status |
+|-----------|--------|----------|---------|--------|
+| INT-TRG-mandatory-gate | prompt | must | AC-TRG-001 | covered |
+| INT-TRG-3step | prompt | must | AC-TRG-002 | covered |
+| INT-TRG-matrix | prompt | must | AC-TRG-003 | covered |
+| INT-TRG-fsm-hang | prompt | must | AC-TRG-004 | covered |
+| INT-TRG-ac-tc | prompt | must | AC-TRG-005 | covered |
+| INT-TRG-humanizer-order | prompt | must | AC-TRG-006 | covered |
+| INT-TRG-freeze-precheck | prompt | must | AC-TRG-007, AC-TRG-009 | covered |
+| INT-TRG-cli | prompt | must | AC-TRG-008 | covered |
+| INT-TRG-refreeze | prompt | must | AC-TRG-010 | covered |
+| INT-TRG-plan-boundary | prompt | must | AC-TRG-011 | covered |
+| INT-TRG-cascade-cost | prompt | must | AC-TRG-012 | covered |
+| INT-TCA-kernel | plan | must | AC-TCA-001..016 | covered |
+| INT-partial-optional | vision | should | Non-goal: 部分湖另包 | deferred |
+
 ## Acceptance Criteria
 
 | AC ID | Description |
