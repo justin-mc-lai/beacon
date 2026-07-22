@@ -45,7 +45,21 @@ def _semver_tuple(version: str | None) -> tuple[int, int, int]:
 
 
 def package_shape_floor_ok(version: str | None) -> bool:
-    return _semver_tuple(version) >= PACKAGE_SHAPE_FLOOR
+    """Return whether gold package shape is active.
+
+    Docs version and toolkit version are separate axes. Gold shape is the only
+    active template for all docs versions once this runtime is installed.
+    ``version`` is retained for call-site compatibility; it is not used to
+    soft-disable gold shape on product docs lines (e.g. v0.0.13).
+    """
+    _ = version
+    return True
+
+
+def package_shape_gates_enabled(version: str | None = None) -> bool:
+    """Hard gates (TRG sections, ac=/evidence=, exec TC) always on for active packages."""
+    _ = version
+    return True
 
 
 def package_shape_upgrade_payload(*, version: str, feature: str, op: str) -> dict[str, Any]:
@@ -57,17 +71,17 @@ def package_shape_upgrade_payload(*, version: str, feature: str, op: str) -> dic
         "version": version,
         "feature": feature,
         "op": op,
-        "floor": "v1.6.10",
+        "floor": "gold-v1.6.10-shape",
         "user_facing": (
-            f"version {version} is below package shape floor v1.6.10. "
-            "Replan and freeze new truth on v1.6.10+ (global-boundaries §2.1). "
-            "Legacy package templates are not soft-compatible."
+            f"feature package shape for {feature}@{version} is not gold-compliant. "
+            "Replan intent and freeze a new truth under the v1.6.10 package shape "
+            "(人话 + Intent Matrix + FSM + ac=/evidence= tasks + exec TC). "
+            "No old-shape soft-compat (global-boundaries §2.1)."
         ),
         "recommended_next": [
-            "plan re-decompose intent",
-            "use docs version >= v1.6.10",
-            "truth gen / materialize",
-            "truth review then freeze",
+            "plan re-decompose intent (program lakes)",
+            "truth gen / change → gold template (any product docs version)",
+            "truth review (TRG A–D) then freeze",
         ],
     }
 
@@ -313,9 +327,9 @@ def evaluate_task_ac_evidence_bindings(
         ev = bind.get("evidence_path") or ""
         status = row.get("status") or "unchecked"
         task_id = row.get("id") or ""
-        # v1.6.10+: ALWAYS enforce ac=/evidence= (NO soft-compat for old ledgers).
+        # ALWAYS enforce ac=/evidence= (NO soft-compat for old ledgers / product docs lines).
         # Non-compliant packages must replan + freeze new truth (global-boundaries §2.1).
-        enforce_shape = _semver_tuple(version or "v0") >= (1, 6, 10)
+        enforce_shape = package_shape_gates_enabled(version)
         if enforce_shape and (not ac_id or not ev):
             unbound += 1
             findings.append(
@@ -353,7 +367,7 @@ def evaluate_task_ac_evidence_bindings(
                 )
             else:
                 checked_ok += 1
-    ok = checked_bad == 0 and (unbound == 0 if _semver_tuple(version or "v0") >= (1, 6, 10) and rows else True)
+    ok = checked_bad == 0 and (unbound == 0 if package_shape_gates_enabled(version) and rows else True)
     # if no rows, not ok from other validators
     return {
         "pass": ok,
@@ -809,8 +823,7 @@ def materialize_feature_package(
     force: bool = False,
 ) -> dict[str, Any]:
     slug = _slug(feature)
-    if not package_shape_floor_ok(version):
-        return package_shape_upgrade_payload(version=version, feature=feature, op="materialize")
+    # Always materialize gold shape for any product docs version (dual-axis safe).
     paths = package_paths(project_root, version=version, feature=feature)
     paths["dir"].mkdir(parents=True, exist_ok=True)
     rendered = {
@@ -830,14 +843,14 @@ def materialize_feature_package(
         path.write_text(content, encoding="utf-8")
         written.append(_rel(project_root, path))
         # After truth is on disk, re-render tests so Check C covers all AC rows (v1.6.10+)
-        if key == "truth" and _semver_tuple(version) >= (1, 6, 10) and "tests" in rendered:
+        if key == "truth" and "tests" in rendered:
             if paths["tests"].exists() and not force and _rel(project_root, paths["tests"]) in skipped:
                 pass
             else:
                 rendered["tests"] = render_tests_package(project_root, version=version, feature=feature)
     validation = validate_feature_package(project_root, version=version, feature=feature, write_report=True)
     post_write: dict[str, Any] = {}
-    if written and _semver_tuple(version) >= (1, 6, 10):
+    if written:
         from beacon.utils.truth_gen_postwrite import run_truth_gen_postwrite_gates
 
         post_write = run_truth_gen_postwrite_gates(

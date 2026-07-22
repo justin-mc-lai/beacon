@@ -39,14 +39,6 @@ def run_truth_gen_postwrite_gates(
     root = Path(project_root).expanduser().resolve()
     resolved = resolve_target_version(root, version)
     slug = feature_slug(feature)
-    if not truth_review_gate_supported(resolved) and _semver_tuple(resolved) < (1, 6, 10):
-        return {
-            "schema": "truth-gen-postwrite.v1",
-            "skipped": True,
-            "reason": "version_below_v1.6.10",
-            "recommend_freeze": True,
-            "blocked": False,
-        }
 
     lang = language
     if not lang:

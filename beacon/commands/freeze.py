@@ -201,7 +201,7 @@ def _freeze_impl(feature: str, project: Optional[str], version: str, json_output
             n = (_nv(v) or "v0.0.0").lstrip("v").split(".")
             return int(n[0]), int(n[1]), int(n[2] if len(n) > 2 else 0)
 
-        if package_gate_enabled and _sv(resolved_version) >= (1, 6, 10):
+        if package_gate_enabled:
             from beacon.utils.feature_package import package_paths, render_tasks_package
 
             tpath = package_paths(project_root, version=resolved_version, feature=feature)["tasks"]
