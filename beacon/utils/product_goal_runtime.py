@@ -52,6 +52,10 @@ from beacon.utils.goal_implement_admission import (
     apply_admission_to_goal_payload,
     ensure_goal_implement_admission,
 )
+from beacon.utils.goal_stage_exit_gates import (
+    apply_stage_exit_block,
+    evaluate_stage_exit,
+)
 from beacon.utils.goal_agent_driver import (
     attach_longrun_to_goal_run,
     detect_longrun_intent,
@@ -857,9 +861,24 @@ def tick_goal_run(
             summary=f"tick record-only note={str(note)[:80]}",
         )
 
+    # Hard stage-exit gates (fill-then-pass). Do not mark done or advance when blocked.
+    exit_gate = evaluate_stage_exit(project_root, payload, stage=current)
+    append_execution_log(
+        project_root,
+        run_id,
+        stage=current or "unknown",
+        event="stage_exit_gate",
+        summary=f"allow={exit_gate.get('allow')} reason={exit_gate.get('reason_code')}"[:240],
+    )
+    if exit_gate.get("blocked") or not exit_gate.get("allow", True):
+        payload = apply_stage_exit_block(payload, exit_gate)
+        payload["stages"] = stages
+        return _save(project_root, payload)
+
     if idx < len(stages) and isinstance(stages[idx], dict):
         stages[idx]["status"] = "done"
         stages[idx]["loaded"] = True
+        stages[idx]["stage_exit_gate"] = exit_gate
         for skill in stages[idx].get("skills") or []:
             loaded = list(payload.get("progressive_loaded_skills") or [])
             if skill not in loaded:
@@ -868,7 +887,7 @@ def tick_goal_run(
     next_idx = idx + 1
     if next_idx < len(stages) and isinstance(stages[next_idx], dict):
         next_stage = str(stages[next_idx]["stage"])
-        # P1 soft plan→truth completeness hint (never hard-blocks tick)
+        # Retain plan→truth diagnostics (now hard-gated above via evaluate_stage_exit)
         hint_local: dict[str, Any] | None = None
         if current == "plan" and next_stage == "truth":
             art = payload.get("plan_artifact") if isinstance(payload.get("plan_artifact"), dict) else {}

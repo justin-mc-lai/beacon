@@ -34,6 +34,35 @@ def _seed_repo(root: Path, *, branch: str = "main") -> None:
     _git(["git", "commit", "-m", "init"], cwd=root)
 
 
+
+def _seed_frozen_truth(root: Path, *, feature: str = FEATURE, version: str = VERSION) -> None:
+    """Decision A: implement admission requires frozen feature package."""
+    d = root / "docs" / "beacon" / version / "features" / feature
+    d.mkdir(parents=True, exist_ok=True)
+    (d / "truth.md").write_text(
+        f"""---
+slug: {feature}
+version: {version}
+status: frozen
+revision_id: R1
+language: en
+parser_contract: beacon-feature-package-v2
+---
+
+# {feature}
+
+## Acceptance Criteria
+| AC | Desc |
+|----|------|
+| AC-001 | seeded frozen for GIA tests |
+""",
+        encoding="utf-8",
+    )
+    (d / "tests.md").write_text("# tests\n", encoding="utf-8")
+    (d / "tasks.md").write_text("# tasks\n", encoding="utf-8")
+    (d / "evidence.md").write_text("# evidence\n", encoding="utf-8")
+
+
 def _seed_governance(root: Path, *, require: bool = True, mode: str = "dedicated") -> None:
     payload = {
         "schema_version": "1.0",
@@ -96,6 +125,7 @@ def test_ac_gia_001_missing_feature_blocked(tmp_path: Path) -> None:
 def test_ac_gia_002_require_true_admit_pass(tmp_path: Path) -> None:
     _seed_repo(tmp_path)
     _seed_governance(tmp_path, require=True, mode="dedicated")
+    _seed_frozen_truth(tmp_path)
     gate = ensure_goal_implement_admission(
         tmp_path, {"version": VERSION, "feature": FEATURE}
     )
@@ -110,6 +140,7 @@ def test_ac_gia_002_require_true_admit_pass(tmp_path: Path) -> None:
 def test_ac_gia_003_require_false_force_worktree(tmp_path: Path) -> None:
     _seed_repo(tmp_path)
     _seed_governance(tmp_path, require=False, mode="branch-only")
+    _seed_frozen_truth(tmp_path)
     gate = ensure_goal_implement_admission(
         tmp_path, {"version": VERSION, "feature": FEATURE}
     )
@@ -121,6 +152,7 @@ def test_ac_gia_003_require_false_force_worktree(tmp_path: Path) -> None:
 def test_ac_gia_004_second_call_switches(tmp_path: Path) -> None:
     _seed_repo(tmp_path)
     _seed_governance(tmp_path, require=True, mode="dedicated")
+    _seed_frozen_truth(tmp_path)
     g1 = ensure_goal_implement_admission(tmp_path, {"version": VERSION, "feature": FEATURE})
     assert g1["allow_implement"] is True
     g2 = ensure_goal_implement_admission(tmp_path, {"version": VERSION, "feature": FEATURE})
@@ -150,6 +182,7 @@ def test_ac_gia_005_tick_execute_blocks_without_feature(tmp_path: Path) -> None:
 def test_ac_gia_005b_tick_execute_allows_with_feature(tmp_path: Path) -> None:
     _seed_repo(tmp_path)
     _seed_governance(tmp_path, require=True, mode="dedicated")
+    _seed_frozen_truth(tmp_path)
     (tmp_path / "docs" / "beacon" / VERSION).mkdir(parents=True, exist_ok=True)
     run = create_goal_run(
         tmp_path,
@@ -171,6 +204,7 @@ def test_ac_gia_005b_tick_execute_allows_with_feature(tmp_path: Path) -> None:
 def test_ac_gia_006_execution_log(tmp_path: Path) -> None:
     _seed_repo(tmp_path)
     _seed_governance(tmp_path, require=True)
+    _seed_frozen_truth(tmp_path)
     (tmp_path / "docs" / "beacon" / VERSION).mkdir(parents=True, exist_ok=True)
     run = create_goal_run(tmp_path, utterance="impl", version=VERSION, feature=FEATURE)
     state = tmp_path / ".beacon" / "state" / "product-goal" / f"{run['run_id']}.json"
@@ -207,6 +241,7 @@ def test_ac_gia_008_docs_registered() -> None:
 def test_merge_conflict_blocks(tmp_path: Path) -> None:
     _seed_repo(tmp_path)
     _seed_governance(tmp_path, require=True)
+    _seed_frozen_truth(tmp_path)
     with patch(
         "beacon.utils.workspace_admission._merge_main_into_feature_branch",
         return_value={"status": "conflict", "base_branch": "main", "stderr": "CONFLICT"},

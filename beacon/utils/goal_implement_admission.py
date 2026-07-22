@@ -17,12 +17,15 @@ from typing import Any
 
 from beacon.utils.runtime import now_iso
 from beacon.utils.story_state import feature_slug
+from beacon.utils.goal_stage_exit_gates import feature_package_frozen, resolve_features_from_payload
+from beacon.utils.goal_reason_codes import FREEZE_ACK_REQUIRED
 
 SCHEMA = "goal-implement-admission.v1"
 REASON_FEATURE_REQUIRED = "goal_implement_feature_required"
 REASON_ADMIT_BLOCKED = "goal_implement_admission_blocked"
 REASON_FORCE_WORKTREE_FAILED = "goal_implement_force_worktree_failed"
 REASON_ENF_ADMISSION = "goal_implement_admission_required"  # UD-ENF-003
+REASON_FREEZE_ACK = FREEZE_ACK_REQUIRED  # Decision A: fill ≠ self-sign
 REASON_MERGE_CONFLICT = "merge_main_conflict"
 
 
@@ -110,6 +113,32 @@ def ensure_goal_implement_admission(
 
     # Prefer real version string; if still auto, leave admit to resolve via governance
     admit_version = version if version and version != "auto" else str(payload.get("version") or "v1.6.9")
+
+    # Decision A: freeze ack before implement write path (fill ≠ self-sign)
+    features = resolve_features_from_payload(payload)
+    if not features and slug:
+        features = [slug]
+    unfrozen = []
+    for feat in features:
+        info = feature_package_frozen(root, version=admit_version, feature=feat)
+        if not info.get("frozen"):
+            unfrozen.append(info)
+    if unfrozen:
+        base["reason_code"] = REASON_FREEZE_ACK
+        base["reason_codes"] = [REASON_FREEZE_ACK]
+        base["user_facing"] = (
+            "implement blocked: truth not frozen / freeze ack missing "
+            "(fill materials then `beacon freeze` — fill ≠ self-sign)"
+        )
+        base["fill_harness"] = "truth"
+        base["resume_action"] = "await_freeze_ack"
+        base["freeze_check"] = {"unfrozen": unfrozen}
+        base["recommended_command"] = (
+            f"beacon freeze --project-root {root} --version {admit_version} --feature {features[0]}"
+            if features
+            else "beacon freeze --feature <slug>"
+        )
+        return base
 
     admit = run_workspace_admit(
         root,

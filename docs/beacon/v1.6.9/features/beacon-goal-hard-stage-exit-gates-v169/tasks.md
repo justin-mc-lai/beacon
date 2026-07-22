@@ -1,0 +1,5 @@
+- [x] TASK-001 goal_stage_exit_gates module
+- [x] TASK-002 tick_goal_run hard exit
+- [x] TASK-003 implement admission freeze check
+- [x] TASK-004 BUSINESS_PREFIXES consumer paths
+- [x] TASK-005 unit tests

@@ -16,6 +16,7 @@ from typing import Any, Iterable
 
 SCHEMA = "implement-lane-enforcement.v1"
 REASON_MAIN_IMPLEMENT = "main_implement_forbidden"
+REASON_MAIN_DOCS_POLICY = "main_docs_policy_forbidden"
 REASON_EXCEPTION_OK = "main_implement_exception_allowed"
 REASON_HOOK_MISSING = "git_hook_missing"
 REASON_HOOK_MISMATCH = "git_hook_mismatch"
@@ -26,18 +27,34 @@ CANONICAL_BRANCHES = frozenset({"main", "master"})
 BUSINESS_PREFIXES = (
     "beacon/",
     "packages/",
+    "apps/",
+    "plugins/",
+    "src/",
 )
 BUSINESS_FILE_GLOBS_PREFIX = (
     "tests/test_",
 )
 
-# Always allowed on main (truth/docs/skills authoring)
+# Always allowed on main (tight docs policy + skills/tooling authoring)
+# Docs on main: only Beacon requirement surfaces under docs/beacon/**
+# (not free-form docs/, marketing, or arbitrary long-form).
 ALLOW_PREFIXES = (
-    "docs/",
+    "docs/beacon/",
     "skills/",
     ".claude/",
     ".agents/",
     ".codex/",
+)
+
+# Within docs/beacon, these subtrees are the intended main-write surfaces.
+DOCS_BEACON_ALLOW_SUBTREES = (
+    "docs/beacon/",  # full tree under docs/beacon is OK for truth/freeze authoring
+)
+
+# Explicit docs paths that remain forbidden on main even under docs/
+# (reserved for future tightening; empty default)
+DOCS_MAIN_DENY_PREFIXES: tuple[str, ...] = (
+    # e.g. "docs/marketing/", "docs/website/"
 )
 
 EXCEPTION_ENV = "BEACON_ALLOW_MAIN_IMPLEMENT"
@@ -81,8 +98,25 @@ def normalize_rel(path: str) -> str:
     return text
 
 
+def is_docs_policy_violation(rel: str) -> bool:
+    """True when path is under docs/ but outside allowed main docs policy."""
+    rel = normalize_rel(rel)
+    if not rel.startswith("docs/"):
+        return False
+    for deny in DOCS_MAIN_DENY_PREFIXES:
+        if rel == deny.rstrip("/") or rel.startswith(deny):
+            return True
+    # allowed: docs/beacon/** only
+    if rel == "docs/beacon" or rel.startswith("docs/beacon/"):
+        return False
+    # docs/ alone or docs/other/** → violation (treat as forbidden main write)
+    return True
+
+
 def is_allowlisted(rel: str) -> bool:
     rel = normalize_rel(rel)
+    if is_docs_policy_violation(rel):
+        return False
     for p in ALLOW_PREFIXES:
         if rel == p.rstrip("/") or rel.startswith(p):
             return True
@@ -103,9 +137,14 @@ def is_allowlisted(rel: str) -> bool:
 
 
 def is_business_path(rel: str) -> bool:
+    """Paths that must not be committed on main without exception/worktree.
+
+    Includes product business code AND docs outside the tight docs/beacon policy.
+    """
     rel = normalize_rel(rel)
+    if is_docs_policy_violation(rel):
+        return True
     if is_allowlisted(rel):
-        # docs under docs/ ok; but docs is allow — never business
         return False
     for p in BUSINESS_PREFIXES:
         if rel == p.rstrip("/") or rel.startswith(p):
@@ -206,12 +245,22 @@ def check_main_implement_commit(
         return result
     result["status"] = "blocked"
     result["blocked"] = True
-    result["reason_code"] = REASON_MAIN_IMPLEMENT
-    result["message"] = (
-        "Refusing to commit business implement paths on main/master. "
-        "Use: beacon workspace admit -v <ver> --feature <slug> then implement in worktree_path. "
-        f"Emergency: {EXCEPTION_ENV}=1 and write {EXCEPTION_EVIDENCE_REL}."
+    docs_only = business and all(is_docs_policy_violation(p) for p in business)
+    result["reason_code"] = (
+        REASON_MAIN_DOCS_POLICY if docs_only else REASON_MAIN_IMPLEMENT
     )
+    if docs_only:
+        result["message"] = (
+            "Refusing docs commits on main outside docs/beacon/**. "
+            "Requirement truth/packages under docs/beacon/ are allowed; "
+            "other docs/ paths need a leaf branch or emergency exception."
+        )
+    else:
+        result["message"] = (
+            "Refusing to commit business implement paths on main/master. "
+            "Use: beacon workspace admit -v <ver> --feature <slug> then implement in worktree_path. "
+            f"Emergency: {EXCEPTION_ENV}=1 and write {EXCEPTION_EVIDENCE_REL}."
+        )
     result["repair"] = [
         "beacon workspace admit -p . -v <version> --feature <slug> --json",
         "cd <worktree_path>  # from admit cwd",
