@@ -1,0 +1,774 @@
+{
+  "schema_version": "1.0",
+  "feature": "unified-implement-admission-v1610",
+  "feature_slug": "unified-implement-admission-v1610",
+  "version": "v1.6.10",
+  "runtime_version": "v1.6.10",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.6.10/.machine/execution/requirement-clarity-unified-implement-admission-v1610.json",
+  "report_markdown_path": "docs/beacon/v1.6.10/execution/requirement-clarity-unified-implement-admission-v1610.md",
+  "state_path": ".beacon/state/requirement-clarity-unified-implement-admission-v1610.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.10",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-07-23T03:31:47.847879+00:00",
+    "feature": "unified-implement-admission-v1610",
+    "feature_slug": "unified-implement-admission-v1610",
+    "prd_ref": "docs/beacon/v1.6.10/prd/unified-implement-admission-v1610.md",
+    "user_story_ref": "docs/beacon/v1.6.10/user-story/unified-implement-admission-v1610.md"
+  },
+  "domain_fsm_gate": {
+    "schema_version": "1.0",
+    "feature": "unified-implement-admission-v1610",
+    "feature_slug": "unified-implement-admission-v1610",
+    "version": "v1.6.10",
+    "truth_path": "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md",
+    "tests_path": "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/tests.md",
+    "required": true,
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "findings": [],
+    "requirement": {
+      "required": true,
+      "reason": "explicit_domain_mark",
+      "explicit": true,
+      "partial": true,
+      "complexity": false,
+      "business_signal": false,
+      "version_supported": true
+    },
+    "projection": {
+      "schema_version": "1.0",
+      "domain_fsm_schema": "domain-fsm.v1",
+      "entity_precedence_schema": "entity-precedence.v1",
+      "frontmatter": {
+        "slug": "unified-implement-admission-v1610",
+        "version": "v1.6.10",
+        "status": "draft",
+        "revision_id": "R1",
+        "language": "zh",
+        "domain_required": "true",
+        "ux_required": "false",
+        "package_maturity": "filled",
+        "parser_contract": "beacon-feature-package-v2",
+        "git_canonical_branch": "main",
+        "participating_services": "[beacon]",
+        "materials_status": "current",
+        "canonical_refs": {
+          "prd": "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md",
+          "user_story": "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md",
+          "test_case": "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/tests.md"
+        },
+        "truth_source_model": "feature_package_authoritative",
+        "promotion_ref": "docs/beacon/v1.6.10/research/implement-worktree-admission-prewrite-review-20260723.md",
+        "change_reason": "R1: direct implement、goal、team、ralph 共用 fail-closed pre-write admission；single-repo 与 monorepo 只在真实 worktree 写入",
+        "humanizer_applied": "true"
+      },
+      "frontmatter_errors": [],
+      "has_domain_model_section": true,
+      "has_domain_fsm_section": true,
+      "has_illegal_transition_section": true,
+      "entities": [
+        {
+          "entity": "ImplementAdmission",
+          "key": "version + feature + execution_surface",
+          "precedence": "frozen truth + version governance",
+          "requires": "frozen truth + version governance"
+        },
+        {
+          "entity": "ParentTruthLane",
+          "key": "project_root",
+          "precedence": "truth canonical commit",
+          "requires": "truth canonical commit"
+        },
+        {
+          "entity": "ServiceScope",
+          "key": "service_key",
+          "precedence": "writable binding + governed branch",
+          "requires": "writable binding + governed branch"
+        },
+        {
+          "entity": "ServiceWorktree",
+          "key": "service_key + feature",
+          "precedence": "real child repo worktree",
+          "requires": "real child repo worktree"
+        },
+        {
+          "entity": "AdmissionArtifact",
+          "key": "version + feature",
+          "precedence": "verified parent/service facts",
+          "requires": "verified parent/service facts"
+        },
+        {
+          "entity": "WorkerDispatch",
+          "key": "run_id + execution_surface",
+          "precedence": "allow_implement=true",
+          "requires": "allow_implement=true"
+        }
+      ],
+      "entity_precedence": [
+        {
+          "entity": "ImplementAdmission",
+          "key": "version + feature + execution_surface",
+          "precedence": "frozen truth + version governance",
+          "requires": "frozen truth + version governance"
+        },
+        {
+          "entity": "ParentTruthLane",
+          "key": "project_root",
+          "precedence": "truth canonical commit",
+          "requires": "truth canonical commit"
+        },
+        {
+          "entity": "ServiceScope",
+          "key": "service_key",
+          "precedence": "writable binding + governed branch",
+          "requires": "writable binding + governed branch"
+        },
+        {
+          "entity": "ServiceWorktree",
+          "key": "service_key + feature",
+          "precedence": "real child repo worktree",
+          "requires": "real child repo worktree"
+        },
+        {
+          "entity": "AdmissionArtifact",
+          "key": "version + feature",
+          "precedence": "verified parent/service facts",
+          "requires": "verified parent/service facts"
+        },
+        {
+          "entity": "WorkerDispatch",
+          "key": "run_id + execution_surface",
+          "precedence": "allow_implement=true",
+          "requires": "allow_implement=true"
+        }
+      ],
+      "aggregates": [
+        {
+          "name": "ImplementAdmission",
+          "states": [
+            "AdmissionResolving",
+            "Admitted",
+            "BaselinesReconciling",
+            "Blocked",
+            "Implementing",
+            "ReadyForQA",
+            "TruthFrozen",
+            "WorktreesMaterializing"
+          ],
+          "transitions": [
+            {
+              "from": "",
+              "to": "TruthFrozen",
+              "guard": "canonical truth committed",
+              "initial": "true"
+            },
+            {
+              "from": "TruthFrozen",
+              "to": "AdmissionResolving",
+              "guard": "implement requested + governance resolved"
+            },
+            {
+              "from": "AdmissionResolving",
+              "to": "WorktreesMaterializing",
+              "guard": "topology and writable services complete"
+            },
+            {
+              "from": "WorktreesMaterializing",
+              "to": "BaselinesReconciling",
+              "guard": "all worktree paths are real git worktrees"
+            },
+            {
+              "from": "BaselinesReconciling",
+              "to": "Admitted",
+              "guard": "strict branch + cwd + HEAD + reconcile checks pass"
+            },
+            {
+              "from": "Admitted",
+              "to": "Implementing",
+              "guard": "allow_implement=true + worker cwd admitted"
+            },
+            {
+              "from": "Implementing",
+              "to": "ReadyForQA",
+              "guard": "tests pass + implementation evidence present"
+            },
+            {
+              "from": "AdmissionResolving",
+              "to": "Blocked",
+              "guard": "any fail-closed reason"
+            },
+            {
+              "from": "WorktreesMaterializing",
+              "to": "Blocked",
+              "guard": "any fail-closed reason"
+            },
+            {
+              "from": "BaselinesReconciling",
+              "to": "Blocked",
+              "guard": "any fail-closed reason"
+            }
+          ]
+        }
+      ],
+      "illegal_transition_slots": [
+        {
+          "description": "`ImplementAdmission.TruthFrozen -> Implementing` without shared admission.",
+          "aggregate": "ImplementAdmission",
+          "source": "truth"
+        },
+        {
+          "description": "`TruthFrozen -> Implementing` without shared admission.",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "`admission.skipped=true -> Implementing`.",
+          "aggregate": "admission",
+          "source": "truth"
+        },
+        {
+          "description": "`branch-only -> Implementing` without a materialized real worktree.",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "`parent_worktree_only -> Implementing` when writable child repos exist.",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "`mkdir-only path -> ServiceWorktree`.",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "`empty gitlink -> ServiceWorktree`.",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "`stale global seed -> governed implementation contract`.",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "`branch mismatch diagnostic -> allow_implement=true`.",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "`hook installed -> admission pass`.",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "`Admitted -> release complete` without QA evidence and human release confirmation.",
+          "aggregate": "",
+          "source": "truth"
+        }
+      ],
+      "acceptance_criteria": [
+        {
+          "ac_id": "AC-UIA-001",
+          "description": "提供唯一 shared `ensure_implement_admission`（或等价单一入口），direct implement、goal、team、ralph 都消费同一 `allow_implement`、reason codes、cwd 与 worktree map 合同"
+        },
+        {
+          "ac_id": "AC-UIA-002",
+          "description": "`require_workspace_admission=false`、`branch-only`、`skipped=true` 只能触发真实 worktree 物化或 blocked；不得直接返回 implementation write authorization"
+        },
+        {
+          "ac_id": "AC-UIA-003",
+          "description": "single-repo pass 必须绑定真实 leaf git worktree、governed feature branch、clean/expected cwd，并记录 canonical truth merge/reconcile 结果"
+        },
+        {
+          "ac_id": "AC-UIA-004",
+          "description": "monorepo pass 必须为每个 participating 且 writable service 生成完整 `service_worktree_map`，不能只 admission 父 superproject"
+        },
+        {
+          "ac_id": "AC-UIA-005",
+          "description": "每个 service worktree 必须由对应 child repo 的 `git worktree list` 证明，分支符合 per-service governance，路径内有有效 `.git` 元数据；mkdir-only、空 gitlink、父仓空目录均 blocked"
+        },
+        {
+          "ac_id": "AC-UIA-006",
+          "description": "version governance 是 branch/service/worktree facts 的最高项目权威；stale `beacon.config.yaml` 或 global seed 不得覆盖并返回 `materialized`"
+        },
+        {
+          "ac_id": "AC-UIA-007",
+          "description": "implement write path 强制 strict branch/cwd/HEAD mismatch；诊断型 soft mismatch 不得转换为 pass"
+        },
+        {
+          "ac_id": "AC-UIA-008",
+          "description": "admission 在 worker dispatch 和第一次 implementation write 前执行；pre-commit/pre-push hooks 只作 defense-in-depth"
+        },
+        {
+          "ac_id": "AC-UIA-009",
+          "description": "admission artifact 记录 parent truth reconcile、每个 child baseline reconcile、service branch、worktree path、git HEAD 和验证状态，可供 QA 重放"
+        },
+        {
+          "ac_id": "AC-UIA-010",
+          "description": "真实 Git 回归覆盖 single-repo、nested child repos monorepo、direct/goal/team/ralph parity、soft-skip、stale seed、mkdir-only 与 empty-gitlink negative paths"
+        }
+      ],
+      "bound_ac_ids": [
+        "AC-UIA-002",
+        "AC-UIA-005"
+      ],
+      "orphan_ac_ids": [
+        "AC-UIA-009"
+      ],
+      "aggregates_missing_illegal_slots": [],
+      "raw_section_titles": [
+        "人话",
+        "User Intent",
+        "User Intent Snapshot",
+        "Alignment Surface",
+        "Phased Backlog",
+        "Intent Coverage Matrix",
+        "用户旅程",
+        "旅程 A：single-repo",
+        "旅程 B：monorepo / nested service repos",
+        "旅程 C：team / ralph",
+        "Acceptance Criteria",
+        "Domain Model",
+        "Domain FSM ImplementAdmission",
+        "FSM 五元组",
+        "Illegal transitions",
+        "Deferral Ledger",
+        "Non-goals",
+        "Downstream Routes"
+      ]
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "required": true,
+      "blocked": false,
+      "status": "pass",
+      "reason_code": "",
+      "findings": [],
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "unified-implement-admission-v1610",
+          "version": "v1.6.10",
+          "status": "draft",
+          "revision_id": "R1",
+          "language": "zh",
+          "domain_required": "true",
+          "ux_required": "false",
+          "package_maturity": "filled",
+          "parser_contract": "beacon-feature-package-v2",
+          "git_canonical_branch": "main",
+          "participating_services": "[beacon]",
+          "materials_status": "current",
+          "canonical_refs": {
+            "prd": "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md",
+            "user_story": "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md",
+            "test_case": "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/tests.md"
+          },
+          "truth_source_model": "feature_package_authoritative",
+          "promotion_ref": "docs/beacon/v1.6.10/research/implement-worktree-admission-prewrite-review-20260723.md",
+          "change_reason": "R1: direct implement、goal、team、ralph 共用 fail-closed pre-write admission；single-repo 与 monorepo 只在真实 worktree 写入",
+          "humanizer_applied": "true"
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": true,
+        "has_domain_fsm_section": true,
+        "has_illegal_transition_section": true,
+        "entities": [
+          {
+            "entity": "ImplementAdmission",
+            "key": "version + feature + execution_surface",
+            "precedence": "frozen truth + version governance",
+            "requires": "frozen truth + version governance"
+          },
+          {
+            "entity": "ParentTruthLane",
+            "key": "project_root",
+            "precedence": "truth canonical commit",
+            "requires": "truth canonical commit"
+          },
+          {
+            "entity": "ServiceScope",
+            "key": "service_key",
+            "precedence": "writable binding + governed branch",
+            "requires": "writable binding + governed branch"
+          },
+          {
+            "entity": "ServiceWorktree",
+            "key": "service_key + feature",
+            "precedence": "real child repo worktree",
+            "requires": "real child repo worktree"
+          },
+          {
+            "entity": "AdmissionArtifact",
+            "key": "version + feature",
+            "precedence": "verified parent/service facts",
+            "requires": "verified parent/service facts"
+          },
+          {
+            "entity": "WorkerDispatch",
+            "key": "run_id + execution_surface",
+            "precedence": "allow_implement=true",
+            "requires": "allow_implement=true"
+          }
+        ],
+        "entity_precedence": [
+          {
+            "entity": "ImplementAdmission",
+            "key": "version + feature + execution_surface",
+            "precedence": "frozen truth + version governance",
+            "requires": "frozen truth + version governance"
+          },
+          {
+            "entity": "ParentTruthLane",
+            "key": "project_root",
+            "precedence": "truth canonical commit",
+            "requires": "truth canonical commit"
+          },
+          {
+            "entity": "ServiceScope",
+            "key": "service_key",
+            "precedence": "writable binding + governed branch",
+            "requires": "writable binding + governed branch"
+          },
+          {
+            "entity": "ServiceWorktree",
+            "key": "service_key + feature",
+            "precedence": "real child repo worktree",
+            "requires": "real child repo worktree"
+          },
+          {
+            "entity": "AdmissionArtifact",
+            "key": "version + feature",
+            "precedence": "verified parent/service facts",
+            "requires": "verified parent/service facts"
+          },
+          {
+            "entity": "WorkerDispatch",
+            "key": "run_id + execution_surface",
+            "precedence": "allow_implement=true",
+            "requires": "allow_implement=true"
+          }
+        ],
+        "aggregates": [
+          {
+            "name": "ImplementAdmission",
+            "states": [
+              "AdmissionResolving",
+              "Admitted",
+              "BaselinesReconciling",
+              "Blocked",
+              "Implementing",
+              "ReadyForQA",
+              "TruthFrozen",
+              "WorktreesMaterializing"
+            ],
+            "transitions": [
+              {
+                "from": "",
+                "to": "TruthFrozen",
+                "guard": "canonical truth committed",
+                "initial": "true"
+              },
+              {
+                "from": "TruthFrozen",
+                "to": "AdmissionResolving",
+                "guard": "implement requested + governance resolved"
+              },
+              {
+                "from": "AdmissionResolving",
+                "to": "WorktreesMaterializing",
+                "guard": "topology and writable services complete"
+              },
+              {
+                "from": "WorktreesMaterializing",
+                "to": "BaselinesReconciling",
+                "guard": "all worktree paths are real git worktrees"
+              },
+              {
+                "from": "BaselinesReconciling",
+                "to": "Admitted",
+                "guard": "strict branch + cwd + HEAD + reconcile checks pass"
+              },
+              {
+                "from": "Admitted",
+                "to": "Implementing",
+                "guard": "allow_implement=true + worker cwd admitted"
+              },
+              {
+                "from": "Implementing",
+                "to": "ReadyForQA",
+                "guard": "tests pass + implementation evidence present"
+              },
+              {
+                "from": "AdmissionResolving",
+                "to": "Blocked",
+                "guard": "any fail-closed reason"
+              },
+              {
+                "from": "WorktreesMaterializing",
+                "to": "Blocked",
+                "guard": "any fail-closed reason"
+              },
+              {
+                "from": "BaselinesReconciling",
+                "to": "Blocked",
+                "guard": "any fail-closed reason"
+              }
+            ]
+          }
+        ],
+        "illegal_transition_slots": [
+          {
+            "description": "`ImplementAdmission.TruthFrozen -> Implementing` without shared admission.",
+            "aggregate": "ImplementAdmission",
+            "source": "truth"
+          },
+          {
+            "description": "`TruthFrozen -> Implementing` without shared admission.",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "`admission.skipped=true -> Implementing`.",
+            "aggregate": "admission",
+            "source": "truth"
+          },
+          {
+            "description": "`branch-only -> Implementing` without a materialized real worktree.",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "`parent_worktree_only -> Implementing` when writable child repos exist.",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "`mkdir-only path -> ServiceWorktree`.",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "`empty gitlink -> ServiceWorktree`.",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "`stale global seed -> governed implementation contract`.",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "`branch mismatch diagnostic -> allow_implement=true`.",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "`hook installed -> admission pass`.",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "`Admitted -> release complete` without QA evidence and human release confirmation.",
+            "aggregate": "",
+            "source": "truth"
+          }
+        ],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-UIA-001",
+            "description": "提供唯一 shared `ensure_implement_admission`（或等价单一入口），direct implement、goal、team、ralph 都消费同一 `allow_implement`、reason codes、cwd 与 worktree map 合同"
+          },
+          {
+            "ac_id": "AC-UIA-002",
+            "description": "`require_workspace_admission=false`、`branch-only`、`skipped=true` 只能触发真实 worktree 物化或 blocked；不得直接返回 implementation write authorization"
+          },
+          {
+            "ac_id": "AC-UIA-003",
+            "description": "single-repo pass 必须绑定真实 leaf git worktree、governed feature branch、clean/expected cwd，并记录 canonical truth merge/reconcile 结果"
+          },
+          {
+            "ac_id": "AC-UIA-004",
+            "description": "monorepo pass 必须为每个 participating 且 writable service 生成完整 `service_worktree_map`，不能只 admission 父 superproject"
+          },
+          {
+            "ac_id": "AC-UIA-005",
+            "description": "每个 service worktree 必须由对应 child repo 的 `git worktree list` 证明，分支符合 per-service governance，路径内有有效 `.git` 元数据；mkdir-only、空 gitlink、父仓空目录均 blocked"
+          },
+          {
+            "ac_id": "AC-UIA-006",
+            "description": "version governance 是 branch/service/worktree facts 的最高项目权威；stale `beacon.config.yaml` 或 global seed 不得覆盖并返回 `materialized`"
+          },
+          {
+            "ac_id": "AC-UIA-007",
+            "description": "implement write path 强制 strict branch/cwd/HEAD mismatch；诊断型 soft mismatch 不得转换为 pass"
+          },
+          {
+            "ac_id": "AC-UIA-008",
+            "description": "admission 在 worker dispatch 和第一次 implementation write 前执行；pre-commit/pre-push hooks 只作 defense-in-depth"
+          },
+          {
+            "ac_id": "AC-UIA-009",
+            "description": "admission artifact 记录 parent truth reconcile、每个 child baseline reconcile、service branch、worktree path、git HEAD 和验证状态，可供 QA 重放"
+          },
+          {
+            "ac_id": "AC-UIA-010",
+            "description": "真实 Git 回归覆盖 single-repo、nested child repos monorepo、direct/goal/team/ralph parity、soft-skip、stale seed、mkdir-only 与 empty-gitlink negative paths"
+          }
+        ],
+        "bound_ac_ids": [
+          "AC-UIA-002",
+          "AC-UIA-005"
+        ],
+        "orphan_ac_ids": [
+          "AC-UIA-009"
+        ],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "人话",
+          "User Intent",
+          "User Intent Snapshot",
+          "Alignment Surface",
+          "Phased Backlog",
+          "Intent Coverage Matrix",
+          "用户旅程",
+          "旅程 A：single-repo",
+          "旅程 B：monorepo / nested service repos",
+          "旅程 C：team / ralph",
+          "Acceptance Criteria",
+          "Domain Model",
+          "Domain FSM ImplementAdmission",
+          "FSM 五元组",
+          "Illegal transitions",
+          "Deferral Ledger",
+          "Non-goals",
+          "Downstream Routes"
+        ]
+      },
+      "summary": {
+        "entity_count": 6,
+        "aggregate_count": 1,
+        "illegal_slot_count": 11,
+        "orphan_ac_count": 1,
+        "bound_ac_count": 2
+      }
+    },
+    "recommended_action": ""
+  },
+  "human_closure_contract": {
+    "required": false,
+    "research_path": "docs/beacon/v1.6.10/research/unified-implement-admission-v1610.md",
+    "research_exists": false,
+    "source_architecture_path": "docs/beacon/v1.6.10/source-architecture/index.md",
+    "source_architecture_exists": true,
+    "required_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "missing_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "diagram_types": [],
+    "complexity_signals": []
+  },
+  "requirement_closure_contract": {
+    "required": true,
+    "chain_order": [
+      "research",
+      "prd",
+      "user_story",
+      "test_case",
+      "requirement_clarity",
+      "freeze"
+    ],
+    "human_closure_required": false,
+    "paths": {
+      "research": "docs/beacon/v1.6.10/research/unified-implement-admission-v1610.md",
+      "prd": "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md",
+      "user_story": "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md",
+      "test_case": "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/tests.md"
+    },
+    "exists": {
+      "research": false,
+      "prd": true,
+      "user_story": true,
+      "test_case": true
+    },
+    "required_research_sections": [],
+    "missing_research_sections": [],
+    "ac_projection": {
+      "prd_ac_ids": [],
+      "user_story_ac_ids": [],
+      "test_case_ac_ids": [],
+      "upstream_ac_ids": [],
+      "missing_test_case_ac_ids": []
+    }
+  },
+  "version_projection_truth_contract": {
+    "required": false,
+    "supported": true,
+    "projection_types": [],
+    "research_path": "docs/beacon/v1.6.10/research/unified-implement-admission-v1610.md",
+    "research_exists": false,
+    "required_fields": [
+      "prd_refs",
+      "user_story_refs",
+      "test_case_refs",
+      "coverage_notes",
+      "out_of_scope_notes"
+    ],
+    "field_presence": {
+      "prd_refs": false,
+      "user_story_refs": false,
+      "test_case_refs": false,
+      "coverage_notes": false,
+      "out_of_scope_notes": false
+    },
+    "missing_fields": [],
+    "required_refs": {
+      "prd_refs": "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md",
+      "user_story_refs": "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md",
+      "test_case_refs": "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/tests.md"
+    },
+    "missing_ref_targets": [],
+    "ready": false
+  },
+  "support_write_topology_contract": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "diagnostics": []
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md",
+    "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/tests.md",
+    "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/tasks.md",
+    "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/evidence.md"
+  ]
+}

@@ -1,0 +1,284 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-23T03:31:48.767275+00:00",
+  "feature": "unified-implement-admission-v1610",
+  "feature_slug": "unified-implement-admission-v1610",
+  "version": "v1.6.10",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md",
+    "tests": "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/tests.md",
+    "tasks": "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/tasks.md",
+    "evidence": "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "e06124ea59f21d1b397e630ac42776a4d5a932d5e28d5998c29da9c564ea39fe",
+    "tests": "c6350da3ced95b89f8ca799f1dfcb1b6e809fa824f83025544a7a3b8db71d566",
+    "tasks": "c8bd0ac20ce19d7b528429796e3ccbf4775ee3cbb7a20cd47caea835f6b9bb2b",
+    "evidence": "bbea09cbc1c180edb7f732de3b7aa5c320c8fbb42dd0c4c447a331b22fbbe086"
+  },
+  "truth_frontmatter": {
+    "slug": "unified-implement-admission-v1610",
+    "version": "v1.6.10",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "domain_required": "true",
+    "ux_required": "false",
+    "package_maturity": "filled",
+    "parser_contract": "beacon-feature-package-v2",
+    "git_canonical_branch": "main",
+    "participating_services": "[beacon]",
+    "materials_status": "current",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md",
+      "user_story": "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md",
+      "test_case": "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/tests.md"
+    },
+    "truth_source_model": "feature_package_authoritative",
+    "promotion_ref": "docs/beacon/v1.6.10/research/implement-worktree-admission-prewrite-review-20260723.md",
+    "change_reason": "R1: direct implement、goal、team、ralph 共用 fail-closed pre-write admission；single-repo 与 monorepo 只在真实 worktree 写入",
+    "humanizer_applied": "true"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-UIA-001",
+      "theme": "提供唯一 shared `ensure_implement_admission`（或等价单一入口），direct implement、goal、team、ralph 都消费同一 `allow_implement`、reason codes、cwd 与 worktree map 合同",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-UIA-002",
+      "theme": "`require_workspace_admission=false`、`branch-only`、`skipped=true` 只能触发真实 worktree 物化或 blocked；不得直接返回 implementation write authorization",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-UIA-003",
+      "theme": "single-repo pass 必须绑定真实 leaf git worktree、governed feature branch、clean/expected cwd，并记录 canonical truth merge/reconcile 结果",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-UIA-004",
+      "theme": "monorepo pass 必须为每个 participating 且 writable service 生成完整 `service_worktree_map`，不能只 admission 父 superproject",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-UIA-005",
+      "theme": "每个 service worktree 必须由对应 child repo 的 `git worktree list` 证明，分支符合 per-service governance，路径内有有效 `.git` 元数据；mkdir-only、空 gitlink、父仓空目录均 blocked",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-UIA-006",
+      "theme": "version governance 是 branch/service/worktree facts 的最高项目权威；stale `beacon.config.yaml` 或 global seed 不得覆盖并返回 `materialized`",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-UIA-007",
+      "theme": "implement write path 强制 strict branch/cwd/HEAD mismatch；诊断型 soft mismatch 不得转换为 pass",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-UIA-008",
+      "theme": "admission 在 worker dispatch 和第一次 implementation write 前执行；pre-commit/pre-push hooks 只作 defense-in-depth",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-UIA-009",
+      "theme": "admission artifact 记录 parent truth reconcile、每个 child baseline reconcile、service branch、worktree path、git HEAD 和验证状态，可供 QA 重放",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-UIA-010",
+      "theme": "真实 Git 回归覆盖 single-repo、nested child repos monorepo、direct/goal/team/ralph parity、soft-skip、stale seed、mkdir-only 与 empty-gitlink negative paths",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-UIA-001",
+      "tc_id": "TC-UIA-001",
+      "layer": "",
+      "command": "`pytest -q tests/test_v1610_unified_implement_admission.py::test_direct_goal_team_ralph_share_admission_contract`",
+      "assertion": "四种 execution surface 返回同 schema、同 worktree/cwd 决策，blocked/pass 保持一致",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-UIA-002",
+      "tc_id": "TC-UIA-002",
+      "layer": "",
+      "command": "`pytest -q tests/test_v1610_unified_implement_admission.py::test_branch_only_soft_skip_never_authorizes_write`",
+      "assertion": "`branch-only`/optional 合同不会以 skipped pass 授权写入",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-UIA-003",
+      "tc_id": "TC-UIA-003",
+      "layer": "",
+      "command": "`pytest -q tests/test_v1610_unified_implement_admission.py::test_single_repo_materializes_real_leaf_worktree`",
+      "assertion": "路径出现在 `git worktree list --porcelain`，branch/cwd/reconcile 全部通过",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-UIA-004",
+      "tc_id": "TC-UIA-004",
+      "layer": "",
+      "command": "`pytest -q tests/test_v1610_unified_implement_admission.py::test_monorepo_materializes_every_writable_service_worktree`",
+      "assertion": "`service_worktree_map` 精确覆盖全部 writable services",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-UIA-005",
+      "tc_id": "TC-UIA-005",
+      "layer": "",
+      "command": "`pytest -q tests/test_v1610_unified_implement_admission.py::test_monorepo_rejects_mkdir_only_and_empty_gitlink_services`",
+      "assertion": "illegal worktree transitions：mkdir-only 与 empty gitlink 均 blocked，不能 dispatch",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-UIA-006",
+      "tc_id": "TC-UIA-006",
+      "layer": "",
+      "command": "`pytest -q tests/test_v1610_unified_implement_admission.py::test_governance_overrides_stale_global_seed`",
+      "assertion": "生成合同使用 version governance；stale seed 不得返回错误 materialized contract",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-UIA-007",
+      "tc_id": "TC-UIA-007",
+      "layer": "",
+      "command": "`pytest -q tests/test_v1610_unified_implement_admission.py::test_strict_branch_cwd_and_head_mismatch_block_before_write`",
+      "assertion": "任一 branch/cwd/HEAD mismatch 返回 blocked",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-UIA-008",
+      "tc_id": "TC-UIA-008",
+      "layer": "",
+      "command": "`pytest -q tests/test_v1610_unified_implement_admission.py::test_worker_dispatch_requires_prewrite_admission`",
+      "assertion": "direct/team/ralph 在 admission blocked 时均未调用写入 worker",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-UIA-009",
+      "tc_id": "TC-UIA-009",
+      "layer": "",
+      "command": "`pytest -q tests/test_v1610_unified_implement_admission.py::test_artifact_records_parent_and_service_reconcile_evidence`",
+      "assertion": "artifact 含 parent reconcile、每服务 branch/path/HEAD/reconcile/verified",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-UIA-010",
+      "tc_id": "TC-UIA-010",
+      "layer": "",
+      "command": "`pytest -q tests/test_v1610_unified_implement_admission.py`",
+      "assertion": "真实临时 Git 仓覆盖 single-repo、nested child repos 与全部 negative paths",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Implement AC-UIA-001: 提供唯一 shared `ensure_implement_admission`（或等价单一入口），direct implement、go... · ac=AC-UIA-001 · evidence=`.beacon/evidence/implement/unified-implement-admission-v1610/AC-UIA-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Implement AC-UIA-002: `require_workspace_admission=false`、`branch-only`、`skipped=true` 只能触发... · ac=AC-UIA-002 · evidence=`.beacon/evidence/implement/unified-implement-admission-v1610/AC-UIA-002.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Implement AC-UIA-003: single-repo pass 必须绑定真实 leaf git worktree、governed feature branch、cle... · ac=AC-UIA-003 · evidence=`.beacon/evidence/implement/unified-implement-admission-v1610/AC-UIA-003.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Implement AC-UIA-004: monorepo pass 必须为每个 participating 且 writable service 生成完整 `service_wo... · ac=AC-UIA-004 · evidence=`.beacon/evidence/implement/unified-implement-admission-v1610/AC-UIA-004.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Implement AC-UIA-005: 每个 service worktree 必须由对应 child repo 的 `git worktree list` 证明，分支符合 pe... · ac=AC-UIA-005 · evidence=`.beacon/evidence/implement/unified-implement-admission-v1610/AC-UIA-005.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Implement AC-UIA-006: version governance 是 branch/service/worktree facts 的最高项目权威；stale `bea... · ac=AC-UIA-006 · evidence=`.beacon/evidence/implement/unified-implement-admission-v1610/AC-UIA-006.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "Implement AC-UIA-007: implement write path 强制 strict branch/cwd/HEAD mismatch；诊断型 soft mism... · ac=AC-UIA-007 · evidence=`.beacon/evidence/implement/unified-implement-admission-v1610/AC-UIA-007.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-008",
+      "title": "Implement AC-UIA-008: admission 在 worker dispatch 和第一次 implementation write 前执行；pre-commit/... · ac=AC-UIA-008 · evidence=`.beacon/evidence/implement/unified-implement-admission-v1610/AC-UIA-008.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-009",
+      "title": "Implement AC-UIA-009: admission artifact 记录 parent truth reconcile、每个 child baseline reconc... · ac=AC-UIA-009 · evidence=`.beacon/evidence/implement/unified-implement-admission-v1610/AC-UIA-009.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-010",
+      "title": "Implement AC-UIA-010: 真实 Git 回归覆盖 single-repo、nested child repos monorepo、direct/goal/team/... · ac=AC-UIA-010 · evidence=`.beacon/evidence/implement/unified-implement-admission-v1610/AC-UIA-010.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-011",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/unified-implement-admission-v1610/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-012",
+      "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/unified-implement-admission-v1610/QA-MATRIX.json`",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "package",
+      "authority": "requirement_truth",
+      "path": "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md"
+    },
+    {
+      "surface": "tests",
+      "authority": "test_truth",
+      "path": "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/tests.md"
+    },
+    {
+      "surface": "planner_review",
+      "authority": "support_advisory",
+      "path": "docs/beacon/v1.6.10/research/implement-worktree-admission-prewrite-review-20260723.md"
+    },
+    {
+      "surface": "planner_runtime",
+      "authority": "support_advisory",
+      "path": ".beacon/state/planner-review/version-contract-auto-register-v1610/pln-review-20260723t023858z.json"
+    },
+    {
+      "surface": "implementation_ac",
+      "authority": "acceptance_truth",
+      "path": ".beacon/evidence/implement/unified-implement-admission-v1610/AC-UIA-001.json"
+    },
+    {
+      "surface": "implementation_gates",
+      "authority": "acceptance_truth",
+      "path": ".beacon/evidence/implement/unified-implement-admission-v1610/GATES.json"
+    },
+    {
+      "surface": "qa_matrix",
+      "authority": "qa_verdict",
+      "path": ".beacon/evidence/implement/unified-implement-admission-v1610/QA-MATRIX.json"
+    }
+  ]
+}

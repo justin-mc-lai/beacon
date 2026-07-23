@@ -22,6 +22,7 @@
 | truth-humanizer-runtime-v1610 | R2 | Humanizing Engine（R3 无行为变更，仅交叉引用 Gate 序） |
 | trace-lifecycle-binding-v1610 | **R1** | 1+6 lifecycle → agent_trace.v1 绑定 |
 | compat-debt-cut-v1610 | **R1** | 去 soft-compat：authoritative always-on + freeze 无 legacy_split skip |
+| unified-implement-admission-v1610 | **R1** | direct/goal/team/ralph 共享 pre-write admission；single-repo/monorepo 真实 worktree |
 
 ## Evolution
 
@@ -44,6 +45,7 @@
 - runtime / package / docs line: **v1.6.10** (current)
 - truth lakes: **frozen** — core R3 · gold R3 · humanizer R2 · **trace-lifecycle-binding R1**
 - implement / gates: **closed for v1.6.10 lakes** (TRG CLI · freeze precheck · humanizer resolve · lifecycle agent_trace hooks)
+- unified implement admission: **truth frozen, implementation pending** — release remains human-gated
 - residual: stage trace fail-closed optional/env; release missing-trace soft signal (hard gate deferred INT-TRC-08)
 
 ## Locked decisions

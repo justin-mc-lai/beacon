@@ -1,0 +1,198 @@
+{
+  "schema": "truth-review-gate.v1",
+  "schema_version": "1.0",
+  "feature": "unified-implement-admission-v1610",
+  "version": "v1.6.10",
+  "pass": true,
+  "blocked": false,
+  "review_gate_pass": true,
+  "abc_pass": true,
+  "reason_code": "",
+  "domain_required": true,
+  "checks": {
+    "A_intent_coverage": {
+      "pass": true,
+      "check": "A",
+      "name": "intent_coverage",
+      "required": true,
+      "matrix_rows": 8,
+      "missing_must": [],
+      "reason": "",
+      "findings": [],
+      "matrix": [
+        {
+          "intent_id": "INT-UIA-001",
+          "source": "user confirmed review",
+          "strength": "must",
+          "landing": "AC-UIA-001",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-UIA-002",
+          "source": "user: branch-only/soft-skip 不授权",
+          "strength": "must",
+          "landing": "AC-UIA-002",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-UIA-003",
+          "source": "original worktree design",
+          "strength": "must",
+          "landing": "AC-UIA-003",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-UIA-004",
+          "source": "monorepo service dispatch",
+          "strength": "must",
+          "landing": "AC-UIA-004, AC-UIA-005",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-UIA-005",
+          "source": "stale seed finding",
+          "strength": "must",
+          "landing": "AC-UIA-006",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-UIA-006",
+          "source": "branch mismatch finding",
+          "strength": "must",
+          "landing": "AC-UIA-007",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-UIA-007",
+          "source": "pre-write, not commit-time",
+          "strength": "must",
+          "landing": "AC-UIA-008",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-UIA-008",
+          "source": "single/monorepo deliverability",
+          "strength": "must",
+          "landing": "AC-UIA-009, AC-UIA-010",
+          "status": "covered"
+        }
+      ]
+    },
+    "B_fsm_audit": {
+      "pass": true,
+      "check": "B",
+      "name": "fsm_audit",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "fsm": {
+        "transition_count": 10,
+        "from_states": [
+          "AdmissionResolving",
+          "Admitted",
+          "BaselinesReconciling",
+          "Implementing",
+          "TruthFrozen",
+          "WorktreesMaterializing"
+        ],
+        "hanging_states": [],
+        "terminals": [
+          "Blocked",
+          "ReadyForQA"
+        ],
+        "illegal_present": true,
+        "five_tuple_present": true
+      }
+    },
+    "C_testability": {
+      "pass": true,
+      "check": "C",
+      "name": "testability",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "ac_count": 10,
+      "tc_count": 10,
+      "missing_ac": [],
+      "covered": {
+        "AC-UIA-001": [
+          "TC-UIA-001"
+        ],
+        "AC-UIA-002": [
+          "TC-UIA-002"
+        ],
+        "AC-UIA-003": [
+          "TC-UIA-003"
+        ],
+        "AC-UIA-004": [
+          "TC-UIA-004"
+        ],
+        "AC-UIA-005": [
+          "TC-UIA-005"
+        ],
+        "AC-UIA-006": [
+          "TC-UIA-006"
+        ],
+        "AC-UIA-007": [
+          "TC-UIA-007"
+        ],
+        "AC-UIA-008": [
+          "TC-UIA-008"
+        ],
+        "AC-UIA-009": [
+          "TC-UIA-009"
+        ],
+        "AC-UIA-010": [
+          "TC-UIA-010"
+        ]
+      }
+    },
+    "C_domain_exec_layer": {
+      "pass": true,
+      "check": "C_exec",
+      "name": "domain_exec_layer",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "exec_tc_count": 10,
+      "exec_tc_ids": [
+        "TC-UIA-001",
+        "TC-UIA-002",
+        "TC-UIA-003",
+        "TC-UIA-004",
+        "TC-UIA-005",
+        "TC-UIA-006",
+        "TC-UIA-007",
+        "TC-UIA-008",
+        "TC-UIA-009",
+        "TC-UIA-010"
+      ],
+      "domain_kind": "business"
+    },
+    "D_fill_depth": {
+      "pass": true,
+      "check": "D",
+      "name": "fill_depth",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "package_maturity": "filled",
+      "domain_kind": "business",
+      "business_domain": true
+    }
+  },
+  "findings": [],
+  "humanizer": {
+    "rule": "humanizer_only_after_abc_pass_before_freeze",
+    "abc_pass": true,
+    "allowed_now": true,
+    "fill_depth_pass": true,
+    "note": "Polish L0/narrative only after A/B/C; preserve_machine_fields=true; freeze needs D+exec too"
+  },
+  "evaluated_at": "2026-07-23T03:31:48.485874+00:00",
+  "paths": {
+    "truth": "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md",
+    "tests": "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/tests.md",
+    "report": "docs/beacon/v1.6.10/.machine/execution/unified-implement-admission-v1610.truth-review-gate.json"
+  }
+}
