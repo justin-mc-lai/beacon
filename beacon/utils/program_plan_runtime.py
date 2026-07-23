@@ -112,20 +112,35 @@ def governance_precheck(project_root: Path, version: str) -> dict[str, Any]:
             "recommendation": f"Add {version} to project-version-governance.md with truth_canonical: main",
         }
     truth_canonical = str(contract.get("truth_canonical") or "").strip()
+    defaulted_truth_canonical = False
     if not truth_canonical:
-        return {
-            "status": "blocked",
-            "blocked": True,
-            "reason_code": "governance_truth_canonical_missing",
-            "version": version,
-            "recommendation": f"Add truth_canonical: main to {version} governance entry",
-        }
+        # Backward-compatible default for contracts registered before truth_canonical
+        # was required. Registration is still mandatory; only the docs-authority
+        # branch defaults to main when participating services already exist.
+        participating = contract.get("participating_services") if isinstance(contract.get("participating_services"), list) else []
+        per_service = (
+            contract.get("per_service_canonical_branch")
+            if isinstance(contract.get("per_service_canonical_branch"), dict)
+            else {}
+        )
+        if participating or per_service:
+            truth_canonical = "main"
+            defaulted_truth_canonical = True
+        else:
+            return {
+                "status": "blocked",
+                "blocked": True,
+                "reason_code": "governance_truth_canonical_missing",
+                "version": version,
+                "recommendation": f"Add truth_canonical: main to {version} governance entry",
+            }
     return {
         "status": "pass",
         "blocked": False,
         "reason_code": "",
         "version": version,
         "truth_canonical": truth_canonical,
+        "truth_canonical_defaulted": defaulted_truth_canonical,
     }
 
 

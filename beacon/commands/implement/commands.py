@@ -2351,6 +2351,30 @@ def _branch_guard_inputs(project_root: Path, *, version: str, feature: str) -> d
     version_contract = metadata_view.get("version_contract") if isinstance(metadata_view.get("version_contract"), dict) else {}
     selected_service = str(metadata_view.get("selected_service") or "").strip()
     service_binding = metadata_view.get("selected_service_binding") if isinstance(metadata_view.get("selected_service_binding"), dict) else {}
+    participating_for_guard = (
+        version_contract.get("participating_services")
+        if isinstance(version_contract.get("participating_services"), list)
+        else []
+    )
+    per_service_for_guard = (
+        version_contract.get("per_service_canonical_branch")
+        if isinstance(version_contract.get("per_service_canonical_branch"), dict)
+        else {}
+    )
+    if governance_md_active and (not participating_for_guard or not per_service_for_guard):
+        payload["metadata_contract"] = {
+            "project_root": metadata_view.get("project_root", ""),
+            "topology_kind": metadata_view.get("topology_kind", ""),
+            "selected_service": selected_service,
+            "governance_md_path": metadata_view.get("paths", {}).get("governance_md", ""),
+            "authority": metadata_view.get("authority", "markdown_project_governance"),
+            "version_contract_registered": False,
+            "reason_code": "governance_version_not_registered",
+        }
+        payload["version_contract_registered"] = False
+        # Keep expected_branch empty so branch preflight cannot invent a lane.
+        payload["expected_branch"] = ""
+        return payload
     if governance_md_active and version_contract and selected_service and service_binding:
         per_service = version_contract.get("per_service_canonical_branch") if isinstance(version_contract.get("per_service_canonical_branch"), dict) else {}
         participating = version_contract.get("participating_services") if isinstance(version_contract.get("participating_services"), list) else []

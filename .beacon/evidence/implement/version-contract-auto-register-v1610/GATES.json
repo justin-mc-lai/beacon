@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "feature": "version-contract-auto-register-v1610",
+  "version": "v1.6.10",
+  "status": "pass",
+  "checks": [
+    {
+      "name": "freeze",
+      "pass": true,
+      "revision": "R1"
+    },
+    {
+      "name": "pytest_core",
+      "pass": true,
+      "command": "pytest tests/test_version_contract_auto_register.py ..."
+    },
+    {
+      "name": "version_contract_sync",
+      "pass": true,
+      "services": [
+        "beacon"
+      ],
+      "branch": "main"
+    }
+  ],
+  "generated_at": "2026-07-23T01:43:39.087011+00:00"
+}
