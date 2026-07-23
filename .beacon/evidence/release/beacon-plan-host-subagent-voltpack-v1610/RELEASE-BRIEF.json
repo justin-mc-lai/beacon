@@ -1,0 +1,26 @@
+{
+  "schema": "beacon-release-brief.v1",
+  "mode_id": "eval-release",
+  "public_id": "release",
+  "version": "v1.6.10",
+  "feature": "beacon-plan-host-subagent-voltpack-v1610",
+  "at": "2026-07-23T02:49:23.366886+00:00",
+  "feature_qa": "PASS (20/20 voltpack + doctor PASS)",
+  "version_release_check": {
+    "status": "blocked",
+    "reason_code": "requirement_package_contract_blocked",
+    "note": "missing docs/beacon/v1.6.10/execution/boundaries.md and related package materials; version-line GO not claimed"
+  },
+  "human_gate": "confirmed_via_user_request_release_hook_install",
+  "post_release_hook": {
+    "hook_id": "beacon-post-release-local-install",
+    "run_id": "run-20260723T024859Z-ca28",
+    "status": "passed",
+    "feature": "beacon-plan-host-subagent-voltpack-v1610"
+  },
+  "verdict": {
+    "feature_lake_ship_local_install": "GO",
+    "version_line_full_release": "NO-GO until package materials complete"
+  },
+  "recommended_next_harness": "stop"
+}
