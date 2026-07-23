@@ -376,6 +376,34 @@ def _default_git_workflow_contract(
         metadata_view=metadata_view,
         git_workflow=payload,
     )
+    version_contract = metadata_view.get("version_contract") if isinstance(metadata_view.get("version_contract"), dict) else {}
+    # Version governance outranks global project config seed (AC-UIA-006).
+    participating = version_contract.get("participating_services") if isinstance(version_contract.get("participating_services"), list) else []
+    per_service = (
+        version_contract.get("per_service_canonical_branch")
+        if isinstance(version_contract.get("per_service_canonical_branch"), dict)
+        else {}
+    )
+    if participating:
+        service_keys = [str(item).strip() for item in participating if str(item).strip()]
+        bindings = metadata_view.get("service_bindings") if isinstance(metadata_view.get("service_bindings"), list) else []
+        root_by_key = {
+            str(item.get("service_key") or "").strip(): str(item.get("repo_root_relative") or item.get("repo_root") or ".").strip() or "."
+            for item in bindings
+            if isinstance(item, dict) and str(item.get("service_key") or "").strip()
+        }
+        git_roots = [root_by_key.get(key, key) for key in service_keys]
+        payload["direct_delivery_services"] = service_keys
+        payload["service_directories"] = git_roots
+        payload["git_roots"] = git_roots
+        payload["mode"] = "workspace" if len(service_keys) > 1 or any(r not in {".", str(project_root)} for r in git_roots) else payload.get("mode")
+        payload["source"] = "version_governance"
+        if per_service:
+            payload["service_branch_map"] = {
+                str(k).strip(): str(v).strip()
+                for k, v in per_service.items()
+                if str(k).strip() and str(v).strip()
+            }
     if branch_governance.get("target_branch"):
         payload["expected_branch"] = str(branch_governance.get("target_branch") or "")
         if "/" in payload["expected_branch"]:
@@ -384,6 +412,12 @@ def _default_git_workflow_contract(
         payload["use_git_worktree"] = True
     if branch_governance.get("worktree_path"):
         payload["worktree_path"] = str(branch_governance.get("worktree_path") or "")
+    # If seed branch differs from governance and governance is present, prefer governance.
+    seed_branch = str(branch_guard_cfg.get("expected_branch") or "").strip()
+    gov_branch = str(payload.get("expected_branch") or "").strip()
+    if seed_branch and gov_branch and seed_branch != gov_branch and version_contract:
+        payload["source"] = "version_governance_overrides_seed"
+        payload["stale_seed_branch_ignored"] = seed_branch
     payload["branch_governance"] = branch_governance
     envelope = load_implementation_delivery_baseline(project_root, version=version, feature=feature)
     if not envelope and materialize_baseline:

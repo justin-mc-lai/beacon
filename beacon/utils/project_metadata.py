@@ -298,6 +298,7 @@ def _upsert_version_contract(
     evidence: dict[str, str] | None = None,
     worktree_mode: str = "",
     worktree_path: str = "",
+    require_workspace_admission: bool | None = None,
 ) -> dict[str, Any]:
     contract = version_map.get(version)
     if not isinstance(contract, dict):
@@ -334,6 +335,15 @@ def _upsert_version_contract(
         "worktree_mode": str(worktree_mode or current_governance.get("worktree_mode") or "").strip(),
         "worktree_path": str(worktree_path or current_governance.get("worktree_path") or "").strip(),
     }
+    resolved_require = (
+        bool(require_workspace_admission)
+        if require_workspace_admission is not None
+        else (
+            bool(contract.get("require_workspace_admission"))
+            if contract.get("require_workspace_admission") is not None
+            else None
+        )
+    )
     resolved_truth_canonical = str(
         truth_canonical or contract.get("truth_canonical") or ""
     ).strip()
@@ -357,6 +367,14 @@ def _upsert_version_contract(
         "evidence": normalized_governance.get("evidence", {}),
         "branch_governance": normalized_governance,
     }
+    if resolved_require is not None:
+        version_map[version]["require_workspace_admission"] = resolved_require
+        version_map[version]["branch_governance"]["require_workspace_admission"] = resolved_require
+    # promote worktree fields to contract root for markdown render
+    if normalized_governance.get("worktree_mode"):
+        version_map[version]["worktree_mode"] = normalized_governance["worktree_mode"]
+    if normalized_governance.get("worktree_path"):
+        version_map[version]["worktree_path"] = normalized_governance["worktree_path"]
     return version_map
 
 
@@ -386,6 +404,7 @@ def create_or_update_project_metadata(
     evidence: dict[str, str] | None = None,
     worktree_mode: str = "",
     worktree_path: str = "",
+    require_workspace_admission: bool | None = None,
     event_type: str = "update",
 ) -> dict[str, Any]:
     root = project_root.expanduser().resolve()
@@ -432,6 +451,7 @@ def create_or_update_project_metadata(
             evidence=evidence,
             worktree_mode=worktree_mode,
             worktree_path=worktree_path,
+            require_workspace_admission=require_workspace_admission,
         )
     payload["version_scoped_metadata"] = versions
     summary = _commit_payload(root, payload, event_type=event_type)
@@ -537,7 +557,13 @@ def ensure_version_contract_from_feature_package(
             branch_governance_template="standard-feature",
             merge_direction_policy=[f"master->{branch}", f"{branch}->uat"],
             forbidden_directions=[f"uat->{branch}", "uat_as_feature_base"],
-            worktree_mode="branch-only",
+            previous_version_baseline_branch="main",
+            next_version_feature_branch=(
+                f"feature/{version}" if topology == "monorepo" else f"beacon/{version}/<feature-slug>"
+            ),
+            worktree_mode="dedicated",
+            worktree_path=f".beacon/worktrees/{version}",
+            require_workspace_admission=True,
             event_type="freeze-version-contract",
         )
         summary["services"].append(service_key)

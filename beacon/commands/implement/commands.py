@@ -101,6 +101,7 @@ from beacon.utils.workspace_admission import (
     load_admission_contract,
     run_workspace_admit,
 )
+from beacon.utils.implement_admission import ensure_implement_admission
 from beacon.utils.skill_decision_surface import attach_skill_decision_surface
 from beacon.utils.subagent_readiness import (
     delegation_readiness_precheck,
@@ -2569,19 +2570,38 @@ def run_implement_stage(  # noqa: PLR0913
             ),
         }, blocked=True)
         return 2, payload
-    workspace_admission_block = gate_workspace_admission_or_block(
+    # Shared fail-closed pre-write admission (direct/team/ralph/goal parity).
+    # Soft-skip / branch-only contracts cannot authorize implementation writes.
+    mode_for_admission = _normalize_mode(mode) if mode else "single"
+    surface = "ralph" if mode_for_admission == "ralph" else ("team" if mode_for_admission == "team" else "direct")
+    shared_admission = ensure_implement_admission(
         project_root,
         version=resolved_version,
         feature=feature,
-        cwd=project_root,
+        execution_surface=surface,
+        dry_run=bool(dry_run),
     )
-    if workspace_admission_block:
+    if not shared_admission.get("allow_implement"):
         payload = _with_implement_surface({
-            **workspace_admission_block,
+            "schema_version": "1.0",
+            "status": "blocked",
+            "reason_code": str(shared_admission.get("reason_code") or "implement_admission_blocked"),
+            "reason_codes": list(shared_admission.get("reason_codes") or []),
             "feature": feature,
             "feature_slug": _slug(feature),
+            "version": resolved_version,
+            "implement_admission": shared_admission,
+            "workspace_admission": shared_admission.get("admission") or {},
+            "service_worktree_map": shared_admission.get("service_worktree_map") or {},
             "requirement_package_gate": requirement_package_gate,
             "closure_preflight": closure_preflight,
+            "recommended_command": str(
+                shared_admission.get("recommended_command")
+                or (
+                    f"beacon workspace admit --project-root {project_root} "
+                    f"--version {resolved_version} --feature {_slug(feature)} --json"
+                )
+            ),
         }, blocked=True)
         return 2, payload
     program_admission = evaluate_program_next_action_admission(
@@ -2662,6 +2682,15 @@ def run_implement_stage(  # noqa: PLR0913
         auto_qa_max_rounds = max(int(auto_qa_max_rounds or 0), 3)
         auto_review_quality = True
     branch_guard_inputs = _branch_guard_inputs(project_root, version=resolved_version, feature=feature)
+    if shared_admission.get("service_worktree_map"):
+        branch_guard_inputs = {
+            **branch_guard_inputs,
+            "service_worktree_map": dict(shared_admission.get("service_worktree_map") or {}),
+        }
+        if shared_admission.get("worktree_path"):
+            branch_guard_inputs["expected_worktree"] = str(shared_admission.get("worktree_path") or "")
+        if shared_admission.get("branch"):
+            branch_guard_inputs["expected_branch"] = str(shared_admission.get("branch") or branch_guard_inputs.get("expected_branch") or "")
     require_clean_worktree_for_switch = bool(branch_guard_inputs.get("require_clean_worktree_for_switch", True))
     expected_branch_override = str(branch_guard_inputs.get("expected_branch", "") or "").strip()
     branch_prefix_override = str(branch_guard_inputs.get("branch_prefix", "beacon/") or "beacon/").strip() or "beacon/"
