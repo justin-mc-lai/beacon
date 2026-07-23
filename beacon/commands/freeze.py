@@ -22,6 +22,7 @@ from beacon.utils.truth_integrity import build_truth_integrity_gate
 from beacon.utils.truth_review_gate import build_truth_review_gate_payload
 from beacon.utils.truth_map import rebuild_machine_json
 from beacon.utils.versioning import resolve_target_version
+from beacon.utils.project_metadata import ensure_version_contract_from_feature_package
 
 app = typer.Typer(name="freeze", help="Freeze current feature revision as implementation baseline", invoke_without_command=True, no_args_is_help=False)
 
@@ -259,10 +260,37 @@ def _freeze_impl(feature: str, project: Optional[str], version: str, json_output
                 typer.echo(f"Beacon freeze blocked: agent_trace fail-closed ({payload['reason_code']})")
             return 2
 
+    # Fail-open for contract registration errors but always attempt registration so
+    # monorepo branch contracts cannot stay missing after freeze.
+    try:
+        version_contract_sync = ensure_version_contract_from_feature_package(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+        )
+        payload["version_contract_sync"] = version_contract_sync
+    except Exception as exc:  # noqa: BLE001
+        payload["version_contract_sync"] = {
+            "status": "fail",
+            "reason_code": "version_contract_sync_error",
+            "error": str(exc),
+        }
+
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
         typer.echo(f"✓ Revision frozen: {payload['revision_id']} ({payload['baseline_hash']})")
+        sync = payload.get("version_contract_sync") if isinstance(payload.get("version_contract_sync"), dict) else {}
+        if str(sync.get("status") or "") == "ok":
+            typer.echo(
+                f"✓ Version contract registered: {resolved_version} "
+                f"services={','.join(sync.get('services') or [])} branch={sync.get('branch')}"
+            )
+        elif str(sync.get("status") or "") not in {"", "skipped"}:
+            typer.echo(
+                f"! Version contract sync: {sync.get('status')} ({sync.get('reason_code')})",
+                err=True,
+            )
     return 0
 
 

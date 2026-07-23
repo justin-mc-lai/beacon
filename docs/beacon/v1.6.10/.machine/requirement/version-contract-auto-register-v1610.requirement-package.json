@@ -1,0 +1,252 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-23T01:43:16.828795+00:00",
+  "feature": "version-contract-auto-register-v1610",
+  "feature_slug": "version-contract-auto-register-v1610",
+  "version": "v1.6.10",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.10/features/version-contract-auto-register-v1610/truth.md",
+    "tests": "docs/beacon/v1.6.10/features/version-contract-auto-register-v1610/tests.md",
+    "tasks": "docs/beacon/v1.6.10/features/version-contract-auto-register-v1610/tasks.md",
+    "evidence": "docs/beacon/v1.6.10/features/version-contract-auto-register-v1610/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "6929b4e3bc426a43df2ac007654a9b06bd6d040a7761c95c49f3560519df762d",
+    "tests": "88bb5a1f6d5b94668091e43e2d8aefcb4b06ad054f2ea42abb6aa4041a7980b4",
+    "tasks": "6923203bc87055f984955e0ec913291c88d55b786102f52dd0d117fd501e3e0c",
+    "evidence": "2f735b46a9a8dfd2c314f03ded0ecc25534440d8c0e13b943ff2f67ad1144aef"
+  },
+  "truth_frontmatter": {
+    "slug": "version-contract-auto-register-v1610",
+    "version": "v1.6.10",
+    "status": "frozen",
+    "revision_id": "R1",
+    "language": "zh",
+    "domain_required": "true",
+    "ux_required": "false",
+    "parser_contract": "beacon-feature-package-v2",
+    "git_canonical_branch": "main",
+    "participating_services": "[beacon]",
+    "materials_status": "current",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.10/features/version-contract-auto-register-v1610/truth.md",
+      "user_story": "docs/beacon/v1.6.10/features/version-contract-auto-register-v1610/truth.md",
+      "test_case": "docs/beacon/v1.6.10/features/version-contract-auto-register-v1610/tests.md"
+    },
+    "truth_source_model": "feature_package_authoritative",
+    "change_reason": "R1: monorepo freeze 后自动登记 project-version-governance 开发分支合同；implement 对空合同 fail-closed"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-VCA-001",
+      "theme": "monorepo package `git_canonical_branch=beacon/vX/slug` 登记为 `feature/vX` 到 per_service_canonical_branch",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-VCA-002",
+      "theme": "freeze 成功路径调用 ensure_version_contract_from_feature_package 并输出 version_contract_sync",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-VCA-003",
+      "theme": "create_or_update_project_metadata / doctor --truth-canonical 可持久化 truth_canonical",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-VCA-004",
+      "theme": "governance_md 权威且合同无 participating/branch map 时 implement preflight reason_code=governance_version_not_registered",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-VCA-005",
+      "theme": "已登记但缺 truth_canonical 的版本 governance_precheck 默认 main 且 pass（truth_canonical_defaulted）",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-VCA-006",
+      "theme": "回归套件 tests/test_version_contract_auto_register.py + test_v166_governance_precheck_sync_catalog 全绿",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-VCA-001",
+      "tc_id": "TC-VCA-001",
+      "layer": "",
+      "command": "`PYTHONPATH=. python3 -m pytest tests/test_version_contract_auto_register.py::test_ensure_version_contract_from_feature_package_registers_feature_branch -q`",
+      "assertion": "pass and branch=feature/v9.9.1",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-VCA-002",
+      "tc_id": "TC-VCA-002",
+      "layer": "",
+      "command": "`rg -n \"ensure_version_contract_from_feature_package|version_contract_sync\" beacon/commands/freeze.py`",
+      "assertion": "freeze hooks ensure + payload",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-VCA-003",
+      "tc_id": "TC-VCA-003",
+      "layer": "",
+      "command": "`rg -n \"truth_canonical\" beacon/utils/project_metadata.py beacon/commands/doctor.py`",
+      "assertion": "upsert + CLI flag present",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-VCA-004",
+      "tc_id": "TC-VCA-004",
+      "layer": "",
+      "command": "`PYTHONPATH=. python3 -m pytest tests/test_version_contract_auto_register.py::test_implement_preflight_blocks_unregistered_version_with_clear_reason -q`",
+      "assertion": "reason_code=governance_version_not_registered",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-VCA-005",
+      "tc_id": "TC-VCA-005",
+      "layer": "",
+      "command": "`PYTHONPATH=. python3 -m pytest tests/test_version_contract_auto_register.py::test_governance_precheck_defaults_truth_canonical_when_contract_exists -q`",
+      "assertion": "pass + defaulted",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-VCA-006",
+      "tc_id": "TC-VCA-006",
+      "layer": "",
+      "command": "`PYTHONPATH=. python3 -m pytest tests/test_version_contract_auto_register.py tests/test_v166_governance_precheck_sync_catalog.py -q`",
+      "assertion": "all pass",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-VCA-001",
+      "tc_id": "TC-VCA-007",
+      "layer": "",
+      "command": "`rg -n \"def _normalize_service_dev_branch|feature/\" beacon/utils/project_metadata.py`",
+      "assertion": "monorepo normalize helper",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-VCA-004",
+      "tc_id": "TC-VCA-008",
+      "layer": "",
+      "command": "`rg -n \"governance_version_not_registered\" beacon/utils/truth_map.py beacon/commands/implement/commands.py`",
+      "assertion": "fail-closed surfaces",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-VCA-006",
+      "tc_id": "TC-VCA-009",
+      "layer": "",
+      "command": "`PYTHONPATH=. python3 -m pytest tests/test_project_governance_projection_lifecycle.py -q`",
+      "assertion": "governance projection suite green",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-VCA-002",
+      "tc_id": "TC-VCA-010",
+      "layer": "",
+      "command": "`rg -n \"version_contract_sync\" beacon/commands/freeze.py`",
+      "assertion": "payload key present",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-VCA-004",
+      "tc_id": "TC-VCA-011",
+      "layer": "",
+      "command": "`rg -n \"Illegal transitions|VersionContractRegister.implement_start\" docs/beacon/v1.6.10/features/version-contract-auto-register-v1610/truth.md`",
+      "assertion": "illegal transition slots present",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-VCA-002",
+      "tc_id": "TC-VCA-012",
+      "layer": "",
+      "command": "`rg -n \"VersionContractRegister.freeze_ok|ensure_version_contract\" docs/beacon/v1.6.10/features/version-contract-auto-register-v1610/truth.md`",
+      "assertion": "freeze illegal path documented",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Implement AC-VCA-001: monorepo package `git_canonical_branch=beacon/vX/slug` 登记为 `feature/v... · ac=AC-VCA-001 · evidence=`.beacon/evidence/implement/version-contract-auto-register-v1610/AC-VCA-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Implement AC-VCA-002: freeze 成功路径调用 ensure_version_contract_from_feature_package 并输出 versio... · ac=AC-VCA-002 · evidence=`.beacon/evidence/implement/version-contract-auto-register-v1610/AC-VCA-002.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Implement AC-VCA-003: create_or_update_project_metadata / doctor --truth-canonical 可持久化 tru... · ac=AC-VCA-003 · evidence=`.beacon/evidence/implement/version-contract-auto-register-v1610/AC-VCA-003.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Implement AC-VCA-004: governance_md 权威且合同无 participating/branch map 时 implement preflight r... · ac=AC-VCA-004 · evidence=`.beacon/evidence/implement/version-contract-auto-register-v1610/AC-VCA-004.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Implement AC-VCA-005: 已登记但缺 truth_canonical 的版本 governance_precheck 默认 main 且 pass（truth_ca... · ac=AC-VCA-005 · evidence=`.beacon/evidence/implement/version-contract-auto-register-v1610/AC-VCA-005.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Implement AC-VCA-006: 回归套件 tests/test_version_contract_auto_register.py + test_v166_governa... · ac=AC-VCA-006 · evidence=`.beacon/evidence/implement/version-contract-auto-register-v1610/AC-VCA-006.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/version-contract-auto-register-v1610/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-008",
+      "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/version-contract-auto-register-v1610/QA-MATRIX.json`",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "package",
+      "authority": "requirement_truth",
+      "path": "docs/beacon/v1.6.10/features/version-contract-auto-register-v1610/truth.md"
+    },
+    {
+      "surface": "tests",
+      "authority": "test_truth",
+      "path": "docs/beacon/v1.6.10/features/version-contract-auto-register-v1610/tests.md"
+    },
+    {
+      "surface": "tasks",
+      "authority": "acceptance_truth",
+      "path": "docs/beacon/v1.6.10/features/version-contract-auto-register-v1610/tasks.md"
+    },
+    {
+      "surface": "unit",
+      "authority": "qa_verdict",
+      "path": "tests/test_version_contract_auto_register.py"
+    },
+    {
+      "surface": "source",
+      "authority": "support_advisory",
+      "path": "beacon/utils/project_metadata.py"
+    },
+    {
+      "surface": "freeze",
+      "authority": "support_advisory",
+      "path": "beacon/commands/freeze.py"
+    }
+  ]
+}

@@ -286,6 +286,7 @@ def _upsert_version_contract(
     branch: str,
     branch_guard_mode: str,
     validation_state: str,
+    truth_canonical: str = "",
     branch_governance_template: str = "",
     previous_version_baseline_branch: str = "",
     next_version_feature_branch: str = "",
@@ -333,12 +334,18 @@ def _upsert_version_contract(
         "worktree_mode": str(worktree_mode or current_governance.get("worktree_mode") or "").strip(),
         "worktree_path": str(worktree_path or current_governance.get("worktree_path") or "").strip(),
     }
+    resolved_truth_canonical = str(
+        truth_canonical or contract.get("truth_canonical") or ""
+    ).strip()
+    if not resolved_truth_canonical and (service_key or branch or not contract):
+        resolved_truth_canonical = "main"
     version_map[version] = {
         "version": version,
         "participating_services": services,
         "per_service_canonical_branch": per_service,
         "branch_guard_mode": str(branch_guard_mode or contract.get("branch_guard_mode") or "strict").strip() or "strict",
         "validation_state": str(validation_state or contract.get("validation_state") or "active").strip() or "active",
+        "truth_canonical": resolved_truth_canonical,
         "branch_governance_template": normalized_governance.get("template_name", ""),
         "previous_version_baseline_branch": normalized_governance.get("previous_version_baseline_branch", ""),
         "next_version_feature_branch": normalized_governance.get("next_version_feature_branch", ""),
@@ -367,6 +374,7 @@ def create_or_update_project_metadata(
     branch: str = "",
     branch_guard_mode: str = "strict",
     validation_state: str = "active",
+    truth_canonical: str = "",
     branch_governance_template: str = "",
     previous_version_baseline_branch: str = "",
     next_version_feature_branch: str = "",
@@ -412,6 +420,7 @@ def create_or_update_project_metadata(
             branch=branch,
             branch_guard_mode=branch_guard_mode,
             validation_state=validation_state,
+            truth_canonical=truth_canonical,
             branch_governance_template=branch_governance_template,
             previous_version_baseline_branch=previous_version_baseline_branch,
             next_version_feature_branch=next_version_feature_branch,
@@ -427,6 +436,117 @@ def create_or_update_project_metadata(
     payload["version_scoped_metadata"] = versions
     summary = _commit_payload(root, payload, event_type=event_type)
     return {"status": "ok", "payload": payload, "summary": summary}
+
+
+def _normalize_service_dev_branch(*, version: str, git_canonical_branch: str, topology_kind: str) -> str:
+    """Map feature-package git_canonical_branch to service development branch.
+
+    Monorepo product delivery commonly uses ``feature/<version>`` while package
+    frontmatter may still carry program docs branches ``beacon/<version>/<slug>``.
+    """
+    raw = str(git_canonical_branch or "").strip()
+    version_key = str(version or "").strip()
+    topology = str(topology_kind or "").strip().lower()
+    if raw.startswith("feature/"):
+        return raw
+    if topology == "monorepo" and version_key:
+        if raw.startswith("beacon/") or not raw:
+            return f"feature/{version_key}"
+    if raw:
+        return raw
+    if version_key:
+        return f"feature/{version_key}" if topology == "monorepo" else f"beacon/{version_key}"
+    return ""
+
+
+def ensure_version_contract_from_feature_package(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+) -> dict[str, Any]:
+    """Register/refresh version branch contract from feature package frontmatter.
+
+    Called by freeze so monorepo delivery cannot leave ``per_service_canonical_branch``
+    empty after a successful freeze. Existing contracts are upserted in place.
+    """
+    from beacon.utils.feature_package import _parse_frontmatter, feature_package_file
+    from beacon.utils.story_state import feature_slug
+
+    root = project_root.expanduser().resolve()
+    slug = feature_slug(feature)
+    truth_path = feature_package_file(root, version, slug, "truth.md")
+    if not truth_path.is_file():
+        return {
+            "status": "skipped",
+            "reason_code": "feature_truth_missing",
+            "version": version,
+            "feature": slug,
+            "path": str(truth_path),
+        }
+    frontmatter, _body, errors = _parse_frontmatter(truth_path.read_text(encoding="utf-8"))
+    if errors and not frontmatter:
+        return {
+            "status": "fail",
+            "reason_code": "feature_truth_frontmatter_invalid",
+            "version": version,
+            "feature": slug,
+            "errors": errors,
+        }
+    raw_services = frontmatter.get("participating_services")
+    services: list[str] = []
+    if isinstance(raw_services, list):
+        services = [str(item).strip() for item in raw_services if str(item).strip()]
+    elif isinstance(raw_services, str):
+        cleaned = raw_services.strip().strip("[]")
+        services = [item.strip().strip("'\"") for item in cleaned.split(",") if item.strip().strip("'\"")]
+    git_canonical = str(frontmatter.get("git_canonical_branch") or "").strip()
+    current = load_project_metadata(root)
+    global_meta = current.get("global_project_metadata") if isinstance(current.get("global_project_metadata"), dict) else {}
+    topology = str(global_meta.get("topology_kind") or "").strip()
+    branch = _normalize_service_dev_branch(
+        version=version,
+        git_canonical_branch=git_canonical,
+        topology_kind=topology,
+    )
+    if not services:
+        default_service = str(global_meta.get("default_execution_service") or "").strip()
+        if default_service:
+            services = [default_service]
+    if not services or not branch:
+        return {
+            "status": "skipped",
+            "reason_code": "insufficient_package_branch_fields",
+            "version": version,
+            "feature": slug,
+            "participating_services": services,
+            "branch": branch,
+            "git_canonical_branch": git_canonical,
+        }
+    summary: dict[str, Any] = {"services": [], "branch": branch, "truth_canonical": "main"}
+    last_result: dict[str, Any] = {}
+    for service_key in services:
+        last_result = create_or_update_project_metadata(
+            root,
+            version=version,
+            service_key=service_key,
+            branch=branch,
+            truth_canonical="main",
+            branch_guard_mode="strict",
+            validation_state="active",
+            branch_governance_template="standard-feature",
+            merge_direction_policy=[f"master->{branch}", f"{branch}->uat"],
+            forbidden_directions=[f"uat->{branch}", "uat_as_feature_base"],
+            worktree_mode="branch-only",
+            event_type="freeze-version-contract",
+        )
+        summary["services"].append(service_key)
+    summary["status"] = "ok"
+    summary["result"] = last_result
+    summary["version"] = version
+    summary["feature"] = slug
+    summary["git_canonical_branch"] = git_canonical
+    return summary
 
 
 def delete_project_metadata(

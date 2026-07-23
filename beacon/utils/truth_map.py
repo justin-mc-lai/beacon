@@ -849,6 +849,68 @@ def evaluate_implement_version_governance_preflight(
     diagnostics: list[dict[str, Any]] = []
     reason_code = ""
 
+    from beacon.utils.project_governance import governance_md_authoritative
+
+    version_contract = (
+        metadata_view.get("version_contract")
+        if isinstance(metadata_view.get("version_contract"), dict)
+        else {}
+    )
+    participating = (
+        version_contract.get("participating_services")
+        if isinstance(version_contract.get("participating_services"), list)
+        else []
+    )
+    per_service = (
+        version_contract.get("per_service_canonical_branch")
+        if isinstance(version_contract.get("per_service_canonical_branch"), dict)
+        else {}
+    )
+    if governance_md_authoritative(root) and (not participating or not per_service):
+        reason_code = "governance_version_not_registered"
+        diagnostics.append(
+            {
+                "severity": "error",
+                "code": reason_code,
+                "message": (
+                    "project-version-governance has no participating_services/"
+                    "per_service_canonical_branch for this version"
+                ),
+                "recommended_command": (
+                    f'beacon doctor metadata update --project-root {root} '
+                    f'--version {version} --service-key <service> --branch feature/{version} '
+                    f'--truth-canonical main --json'
+                ),
+            }
+        )
+        blocked = True
+        return {
+            "schema_version": "1.0",
+            "truth_map_contract": TRUTH_MAP_CONTRACT,
+            "truth_source_model": TRUTH_SOURCE_MODEL,
+            "resolver_mode": GOVERNANCE_RESOLVER_MODE,
+            "feature": feature,
+            "feature_slug": slug,
+            "version": version,
+            "status": "blocked",
+            "blocked": blocked,
+            "reason_code": reason_code,
+            "metadata_branch_contract": {
+                **metadata_contract,
+                "current_branch": current_branch,
+            },
+            "git_workflow_branch_contract": {
+                "expected_branch": workflow_expected_branch,
+                "source": str(workflow.get("source") or ""),
+                "path": str(workflow.get("path") or ""),
+            },
+            "version_governance": governance,
+            "project_metadata_verification": metadata_verdict,
+            "diagnostics": diagnostics,
+            "recommended_command": diagnostics[0]["recommended_command"],
+            "repair_commands": [diagnostics[0]["recommended_command"], *repair_commands],
+        }
+
     from beacon.utils.version_truth_catalog import evaluate_catalog_delivery_preflight
 
     catalog_preflight = evaluate_catalog_delivery_preflight(root, version=version)

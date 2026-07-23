@@ -1,0 +1,171 @@
+{
+  "schema": "truth-review-gate.v1",
+  "schema_version": "1.0",
+  "feature": "version-contract-auto-register-v1610",
+  "version": "v1.6.10",
+  "pass": true,
+  "blocked": false,
+  "review_gate_pass": true,
+  "abc_pass": true,
+  "reason_code": "",
+  "domain_required": true,
+  "checks": {
+    "A_intent_coverage": {
+      "pass": true,
+      "check": "A",
+      "name": "intent_coverage",
+      "required": true,
+      "matrix_rows": 6,
+      "missing_must": [],
+      "reason": "",
+      "findings": [],
+      "matrix": [
+        {
+          "intent_id": "INT-VCA-001",
+          "source": "rolo skip analysis",
+          "strength": "must",
+          "landing": "AC-VCA-001",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-VCA-002",
+          "source": "freeze gap",
+          "strength": "must",
+          "landing": "AC-VCA-002",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-VCA-003",
+          "source": "truth_canonical upsert",
+          "strength": "must",
+          "landing": "AC-VCA-003",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-VCA-004",
+          "source": "implement soft-skip",
+          "strength": "must",
+          "landing": "AC-VCA-004",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-VCA-005",
+          "source": "historical precheck",
+          "strength": "must",
+          "landing": "AC-VCA-005",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-VCA-006",
+          "source": "deliverability",
+          "strength": "must",
+          "landing": "AC-VCA-006",
+          "status": "covered"
+        }
+      ]
+    },
+    "B_fsm_audit": {
+      "pass": true,
+      "check": "B",
+      "name": "fsm_audit",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "fsm": {
+        "transition_count": 5,
+        "from_states": [
+          "registered",
+          "registering",
+          "unregistered"
+        ],
+        "hanging_states": [],
+        "terminals": [
+          "blocked_unregistered",
+          "pass",
+          "pass_defaulted"
+        ],
+        "illegal_present": true,
+        "five_tuple_present": true
+      }
+    },
+    "C_testability": {
+      "pass": true,
+      "check": "C",
+      "name": "testability",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "ac_count": 6,
+      "tc_count": 12,
+      "missing_ac": [],
+      "covered": {
+        "AC-VCA-001": [
+          "TC-VCA-001",
+          "TC-VCA-007"
+        ],
+        "AC-VCA-002": [
+          "TC-VCA-002",
+          "TC-VCA-010",
+          "TC-VCA-012"
+        ],
+        "AC-VCA-003": [
+          "TC-VCA-003"
+        ],
+        "AC-VCA-004": [
+          "TC-VCA-004",
+          "TC-VCA-008",
+          "TC-VCA-011"
+        ],
+        "AC-VCA-005": [
+          "TC-VCA-005"
+        ],
+        "AC-VCA-006": [
+          "TC-VCA-006",
+          "TC-VCA-009"
+        ]
+      }
+    },
+    "C_domain_exec_layer": {
+      "pass": true,
+      "check": "C_exec",
+      "name": "domain_exec_layer",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "exec_tc_count": 5,
+      "exec_tc_ids": [
+        "TC-VCA-001",
+        "TC-VCA-004",
+        "TC-VCA-005",
+        "TC-VCA-006",
+        "TC-VCA-009"
+      ],
+      "domain_kind": "business"
+    },
+    "D_fill_depth": {
+      "pass": true,
+      "check": "D",
+      "name": "fill_depth",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "package_maturity": "unspecified",
+      "domain_kind": "business",
+      "business_domain": true
+    }
+  },
+  "findings": [],
+  "humanizer": {
+    "rule": "humanizer_only_after_abc_pass_before_freeze",
+    "abc_pass": true,
+    "allowed_now": true,
+    "fill_depth_pass": true,
+    "note": "Polish L0/narrative only after A/B/C; preserve_machine_fields=true; freeze needs D+exec too"
+  },
+  "evaluated_at": "2026-07-23T01:43:16.529060+00:00",
+  "paths": {
+    "truth": "docs/beacon/v1.6.10/features/version-contract-auto-register-v1610/truth.md",
+    "tests": "docs/beacon/v1.6.10/features/version-contract-auto-register-v1610/tests.md",
+    "report": "docs/beacon/v1.6.10/.machine/execution/version-contract-auto-register-v1610.truth-review-gate.json"
+  }
+}

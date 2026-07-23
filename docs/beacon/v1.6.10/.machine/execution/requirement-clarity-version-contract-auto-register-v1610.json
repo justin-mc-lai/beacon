@@ -1,0 +1,602 @@
+{
+  "schema_version": "1.0",
+  "feature": "version-contract-auto-register-v1610",
+  "feature_slug": "version-contract-auto-register-v1610",
+  "version": "v1.6.10",
+  "runtime_version": "v1.6.10",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.6.10/.machine/execution/requirement-clarity-version-contract-auto-register-v1610.json",
+  "report_markdown_path": "docs/beacon/v1.6.10/execution/requirement-clarity-version-contract-auto-register-v1610.md",
+  "state_path": ".beacon/state/requirement-clarity-version-contract-auto-register-v1610.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.10",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-07-23T01:43:15.523160+00:00",
+    "feature": "version-contract-auto-register-v1610",
+    "feature_slug": "version-contract-auto-register-v1610",
+    "prd_ref": "docs/beacon/v1.6.10/prd/version-contract-auto-register-v1610.md",
+    "user_story_ref": "docs/beacon/v1.6.10/user-story/version-contract-auto-register-v1610.md"
+  },
+  "domain_fsm_gate": {
+    "schema_version": "1.0",
+    "feature": "version-contract-auto-register-v1610",
+    "feature_slug": "version-contract-auto-register-v1610",
+    "version": "v1.6.10",
+    "truth_path": "docs/beacon/v1.6.10/features/version-contract-auto-register-v1610/truth.md",
+    "tests_path": "docs/beacon/v1.6.10/features/version-contract-auto-register-v1610/tests.md",
+    "required": true,
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "findings": [],
+    "requirement": {
+      "required": true,
+      "reason": "explicit_domain_mark",
+      "explicit": true,
+      "partial": true,
+      "complexity": false,
+      "business_signal": true,
+      "version_supported": true
+    },
+    "projection": {
+      "schema_version": "1.0",
+      "domain_fsm_schema": "domain-fsm.v1",
+      "entity_precedence_schema": "entity-precedence.v1",
+      "frontmatter": {
+        "slug": "version-contract-auto-register-v1610",
+        "version": "v1.6.10",
+        "status": "draft",
+        "revision_id": "R1",
+        "language": "zh",
+        "domain_required": "true",
+        "ux_required": "false",
+        "parser_contract": "beacon-feature-package-v2",
+        "git_canonical_branch": "main",
+        "participating_services": "[beacon]",
+        "materials_status": "current",
+        "canonical_refs": {
+          "prd": "docs/beacon/v1.6.10/features/version-contract-auto-register-v1610/truth.md",
+          "user_story": "docs/beacon/v1.6.10/features/version-contract-auto-register-v1610/truth.md",
+          "test_case": "docs/beacon/v1.6.10/features/version-contract-auto-register-v1610/tests.md"
+        },
+        "truth_source_model": "feature_package_authoritative",
+        "change_reason": "R1: monorepo freeze 后自动登记 project-version-governance 开发分支合同；implement 对空合同 fail-closed"
+      },
+      "frontmatter_errors": [],
+      "has_domain_model_section": true,
+      "has_domain_fsm_section": true,
+      "has_illegal_transition_section": true,
+      "entities": [
+        {
+          "entity": "ProjectGovernance",
+          "key": "project_root",
+          "precedence": "root markdown authority",
+          "requires": "root markdown authority"
+        },
+        {
+          "entity": "VersionContract",
+          "key": "version",
+          "precedence": "requires ProjectGovernance",
+          "requires": "requires ProjectGovernance"
+        },
+        {
+          "entity": "ServiceBranchMap",
+          "key": "(version, service_key)",
+          "precedence": "requires VersionContract",
+          "requires": "requires VersionContract"
+        },
+        {
+          "entity": "FeaturePackage",
+          "key": "(version, slug)",
+          "precedence": "source of participating_services + git_canonical_branch",
+          "requires": "source of participating_services + git_canonical_branch"
+        },
+        {
+          "entity": "FreezeSync",
+          "key": "freeze_run_id",
+          "precedence": "requires FeaturePackage; writes VersionContract",
+          "requires": "requires FeaturePackage; writes VersionContract"
+        }
+      ],
+      "entity_precedence": [
+        {
+          "entity": "ProjectGovernance",
+          "key": "project_root",
+          "precedence": "root markdown authority",
+          "requires": "root markdown authority"
+        },
+        {
+          "entity": "VersionContract",
+          "key": "version",
+          "precedence": "requires ProjectGovernance",
+          "requires": "requires ProjectGovernance"
+        },
+        {
+          "entity": "ServiceBranchMap",
+          "key": "(version, service_key)",
+          "precedence": "requires VersionContract",
+          "requires": "requires VersionContract"
+        },
+        {
+          "entity": "FeaturePackage",
+          "key": "(version, slug)",
+          "precedence": "source of participating_services + git_canonical_branch",
+          "requires": "source of participating_services + git_canonical_branch"
+        },
+        {
+          "entity": "FreezeSync",
+          "key": "freeze_run_id",
+          "precedence": "requires FeaturePackage; writes VersionContract",
+          "requires": "requires FeaturePackage; writes VersionContract"
+        }
+      ],
+      "aggregates": [
+        {
+          "name": "VersionContractRegister",
+          "states": [
+            "blocked_unregistered",
+            "package_ready",
+            "pass_defaulted",
+            "registered",
+            "registering",
+            "unregistered"
+          ],
+          "transitions": [
+            {
+              "from": "",
+              "to": "unregistered",
+              "guard": "initial when version missing",
+              "initial": "true"
+            },
+            {
+              "from": "unregistered",
+              "to": "package_ready",
+              "guard": "package frontmatter has services"
+            },
+            {
+              "from": "package_ready",
+              "to": "registering",
+              "guard": "freeze_ok"
+            },
+            {
+              "from": "registering",
+              "to": "registered",
+              "guard": "upsert_ok"
+            },
+            {
+              "from": "unregistered",
+              "to": "blocked_unregistered",
+              "guard": "implement_start under governance_md"
+            },
+            {
+              "from": "registered",
+              "to": "pass_defaulted",
+              "guard": "plan_start missing truth_canonical but has services"
+            }
+          ]
+        }
+      ],
+      "illegal_transition_slots": [
+        {
+          "description": "VersionContractRegister.implement_start → pass when contract empty under governance_md",
+          "aggregate": "VersionContractRegister",
+          "source": "truth"
+        },
+        {
+          "description": "VersionContractRegister.freeze_ok → registered without ensure_version_contract attempt",
+          "aggregate": "VersionContractRegister",
+          "source": "truth"
+        },
+        {
+          "description": "VersionContractRegister.upsert success without truth_canonical default/write on new contracts",
+          "aggregate": "VersionContractRegister",
+          "source": "truth"
+        },
+        {
+          "description": "VersionContractRegister.plan_start hard-block only for missing truth_canonical when participating_services already present",
+          "aggregate": "VersionContractRegister",
+          "source": "truth"
+        },
+        {
+          "description": "VersionContractRegister.normalize inventing expected_branch when governance contract empty",
+          "aggregate": "VersionContractRegister",
+          "source": "truth"
+        },
+        {
+          "description": "VersionContractRegister.freeze without participating_services silently marking registered",
+          "aggregate": "VersionContractRegister",
+          "source": "truth"
+        }
+      ],
+      "acceptance_criteria": [
+        {
+          "ac_id": "AC-VCA-001",
+          "description": "monorepo package `git_canonical_branch=beacon/vX/slug` 登记为 `feature/vX` 到 per_service_canonical_branch"
+        },
+        {
+          "ac_id": "AC-VCA-002",
+          "description": "freeze 成功路径调用 ensure_version_contract_from_feature_package 并输出 version_contract_sync"
+        },
+        {
+          "ac_id": "AC-VCA-003",
+          "description": "create_or_update_project_metadata / doctor --truth-canonical 可持久化 truth_canonical"
+        },
+        {
+          "ac_id": "AC-VCA-004",
+          "description": "governance_md 权威且合同无 participating/branch map 时 implement preflight reason_code=governance_version_not_registered"
+        },
+        {
+          "ac_id": "AC-VCA-005",
+          "description": "已登记但缺 truth_canonical 的版本 governance_precheck 默认 main 且 pass（truth_canonical_defaulted）"
+        },
+        {
+          "ac_id": "AC-VCA-006",
+          "description": "回归套件 tests/test_version_contract_auto_register.py + test_v166_governance_precheck_sync_catalog 全绿"
+        }
+      ],
+      "bound_ac_ids": [
+        "AC-VCA-003",
+        "AC-VCA-004"
+      ],
+      "orphan_ac_ids": [],
+      "aggregates_missing_illegal_slots": [],
+      "raw_section_titles": [
+        "人话",
+        "User Intent",
+        "User Intent Snapshot",
+        "Intent Coverage Matrix",
+        "用户旅程",
+        "Acceptance Criteria",
+        "Domain Model",
+        "Domain FSM VersionContractRegister",
+        "Illegal transitions",
+        "FSM 五元组",
+        "Non-goals",
+        "Downstream Routes"
+      ]
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "required": true,
+      "blocked": false,
+      "status": "pass",
+      "reason_code": "",
+      "findings": [],
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "version-contract-auto-register-v1610",
+          "version": "v1.6.10",
+          "status": "draft",
+          "revision_id": "R1",
+          "language": "zh",
+          "domain_required": "true",
+          "ux_required": "false",
+          "parser_contract": "beacon-feature-package-v2",
+          "git_canonical_branch": "main",
+          "participating_services": "[beacon]",
+          "materials_status": "current",
+          "canonical_refs": {
+            "prd": "docs/beacon/v1.6.10/features/version-contract-auto-register-v1610/truth.md",
+            "user_story": "docs/beacon/v1.6.10/features/version-contract-auto-register-v1610/truth.md",
+            "test_case": "docs/beacon/v1.6.10/features/version-contract-auto-register-v1610/tests.md"
+          },
+          "truth_source_model": "feature_package_authoritative",
+          "change_reason": "R1: monorepo freeze 后自动登记 project-version-governance 开发分支合同；implement 对空合同 fail-closed"
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": true,
+        "has_domain_fsm_section": true,
+        "has_illegal_transition_section": true,
+        "entities": [
+          {
+            "entity": "ProjectGovernance",
+            "key": "project_root",
+            "precedence": "root markdown authority",
+            "requires": "root markdown authority"
+          },
+          {
+            "entity": "VersionContract",
+            "key": "version",
+            "precedence": "requires ProjectGovernance",
+            "requires": "requires ProjectGovernance"
+          },
+          {
+            "entity": "ServiceBranchMap",
+            "key": "(version, service_key)",
+            "precedence": "requires VersionContract",
+            "requires": "requires VersionContract"
+          },
+          {
+            "entity": "FeaturePackage",
+            "key": "(version, slug)",
+            "precedence": "source of participating_services + git_canonical_branch",
+            "requires": "source of participating_services + git_canonical_branch"
+          },
+          {
+            "entity": "FreezeSync",
+            "key": "freeze_run_id",
+            "precedence": "requires FeaturePackage; writes VersionContract",
+            "requires": "requires FeaturePackage; writes VersionContract"
+          }
+        ],
+        "entity_precedence": [
+          {
+            "entity": "ProjectGovernance",
+            "key": "project_root",
+            "precedence": "root markdown authority",
+            "requires": "root markdown authority"
+          },
+          {
+            "entity": "VersionContract",
+            "key": "version",
+            "precedence": "requires ProjectGovernance",
+            "requires": "requires ProjectGovernance"
+          },
+          {
+            "entity": "ServiceBranchMap",
+            "key": "(version, service_key)",
+            "precedence": "requires VersionContract",
+            "requires": "requires VersionContract"
+          },
+          {
+            "entity": "FeaturePackage",
+            "key": "(version, slug)",
+            "precedence": "source of participating_services + git_canonical_branch",
+            "requires": "source of participating_services + git_canonical_branch"
+          },
+          {
+            "entity": "FreezeSync",
+            "key": "freeze_run_id",
+            "precedence": "requires FeaturePackage; writes VersionContract",
+            "requires": "requires FeaturePackage; writes VersionContract"
+          }
+        ],
+        "aggregates": [
+          {
+            "name": "VersionContractRegister",
+            "states": [
+              "blocked_unregistered",
+              "package_ready",
+              "pass_defaulted",
+              "registered",
+              "registering",
+              "unregistered"
+            ],
+            "transitions": [
+              {
+                "from": "",
+                "to": "unregistered",
+                "guard": "initial when version missing",
+                "initial": "true"
+              },
+              {
+                "from": "unregistered",
+                "to": "package_ready",
+                "guard": "package frontmatter has services"
+              },
+              {
+                "from": "package_ready",
+                "to": "registering",
+                "guard": "freeze_ok"
+              },
+              {
+                "from": "registering",
+                "to": "registered",
+                "guard": "upsert_ok"
+              },
+              {
+                "from": "unregistered",
+                "to": "blocked_unregistered",
+                "guard": "implement_start under governance_md"
+              },
+              {
+                "from": "registered",
+                "to": "pass_defaulted",
+                "guard": "plan_start missing truth_canonical but has services"
+              }
+            ]
+          }
+        ],
+        "illegal_transition_slots": [
+          {
+            "description": "VersionContractRegister.implement_start → pass when contract empty under governance_md",
+            "aggregate": "VersionContractRegister",
+            "source": "truth"
+          },
+          {
+            "description": "VersionContractRegister.freeze_ok → registered without ensure_version_contract attempt",
+            "aggregate": "VersionContractRegister",
+            "source": "truth"
+          },
+          {
+            "description": "VersionContractRegister.upsert success without truth_canonical default/write on new contracts",
+            "aggregate": "VersionContractRegister",
+            "source": "truth"
+          },
+          {
+            "description": "VersionContractRegister.plan_start hard-block only for missing truth_canonical when participating_services already present",
+            "aggregate": "VersionContractRegister",
+            "source": "truth"
+          },
+          {
+            "description": "VersionContractRegister.normalize inventing expected_branch when governance contract empty",
+            "aggregate": "VersionContractRegister",
+            "source": "truth"
+          },
+          {
+            "description": "VersionContractRegister.freeze without participating_services silently marking registered",
+            "aggregate": "VersionContractRegister",
+            "source": "truth"
+          }
+        ],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-VCA-001",
+            "description": "monorepo package `git_canonical_branch=beacon/vX/slug` 登记为 `feature/vX` 到 per_service_canonical_branch"
+          },
+          {
+            "ac_id": "AC-VCA-002",
+            "description": "freeze 成功路径调用 ensure_version_contract_from_feature_package 并输出 version_contract_sync"
+          },
+          {
+            "ac_id": "AC-VCA-003",
+            "description": "create_or_update_project_metadata / doctor --truth-canonical 可持久化 truth_canonical"
+          },
+          {
+            "ac_id": "AC-VCA-004",
+            "description": "governance_md 权威且合同无 participating/branch map 时 implement preflight reason_code=governance_version_not_registered"
+          },
+          {
+            "ac_id": "AC-VCA-005",
+            "description": "已登记但缺 truth_canonical 的版本 governance_precheck 默认 main 且 pass（truth_canonical_defaulted）"
+          },
+          {
+            "ac_id": "AC-VCA-006",
+            "description": "回归套件 tests/test_version_contract_auto_register.py + test_v166_governance_precheck_sync_catalog 全绿"
+          }
+        ],
+        "bound_ac_ids": [
+          "AC-VCA-003",
+          "AC-VCA-004"
+        ],
+        "orphan_ac_ids": [],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "人话",
+          "User Intent",
+          "User Intent Snapshot",
+          "Intent Coverage Matrix",
+          "用户旅程",
+          "Acceptance Criteria",
+          "Domain Model",
+          "Domain FSM VersionContractRegister",
+          "Illegal transitions",
+          "FSM 五元组",
+          "Non-goals",
+          "Downstream Routes"
+        ]
+      },
+      "summary": {
+        "entity_count": 5,
+        "aggregate_count": 1,
+        "illegal_slot_count": 6,
+        "orphan_ac_count": 0,
+        "bound_ac_count": 2
+      }
+    },
+    "recommended_action": ""
+  },
+  "human_closure_contract": {
+    "required": false,
+    "research_path": "docs/beacon/v1.6.10/research/version-contract-auto-register-v1610.md",
+    "research_exists": false,
+    "source_architecture_path": "docs/beacon/v1.6.10/source-architecture/version-contract-auto-register-v1610.md",
+    "source_architecture_exists": false,
+    "required_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "missing_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "diagram_types": [],
+    "complexity_signals": []
+  },
+  "requirement_closure_contract": {
+    "required": true,
+    "chain_order": [
+      "research",
+      "prd",
+      "user_story",
+      "test_case",
+      "requirement_clarity",
+      "freeze"
+    ],
+    "human_closure_required": false,
+    "paths": {
+      "research": "docs/beacon/v1.6.10/research/version-contract-auto-register-v1610.md",
+      "prd": "docs/beacon/v1.6.10/features/version-contract-auto-register-v1610/truth.md",
+      "user_story": "docs/beacon/v1.6.10/features/version-contract-auto-register-v1610/truth.md",
+      "test_case": "docs/beacon/v1.6.10/features/version-contract-auto-register-v1610/tests.md"
+    },
+    "exists": {
+      "research": false,
+      "prd": true,
+      "user_story": true,
+      "test_case": true
+    },
+    "required_research_sections": [],
+    "missing_research_sections": [],
+    "ac_projection": {
+      "prd_ac_ids": [],
+      "user_story_ac_ids": [],
+      "test_case_ac_ids": [],
+      "upstream_ac_ids": [],
+      "missing_test_case_ac_ids": []
+    }
+  },
+  "version_projection_truth_contract": {
+    "required": false,
+    "supported": true,
+    "projection_types": [],
+    "research_path": "docs/beacon/v1.6.10/research/version-contract-auto-register-v1610.md",
+    "research_exists": false,
+    "required_fields": [
+      "prd_refs",
+      "user_story_refs",
+      "test_case_refs",
+      "coverage_notes",
+      "out_of_scope_notes"
+    ],
+    "field_presence": {
+      "prd_refs": false,
+      "user_story_refs": false,
+      "test_case_refs": false,
+      "coverage_notes": false,
+      "out_of_scope_notes": false
+    },
+    "missing_fields": [],
+    "required_refs": {
+      "prd_refs": "docs/beacon/v1.6.10/features/version-contract-auto-register-v1610/truth.md",
+      "user_story_refs": "docs/beacon/v1.6.10/features/version-contract-auto-register-v1610/truth.md",
+      "test_case_refs": "docs/beacon/v1.6.10/features/version-contract-auto-register-v1610/tests.md"
+    },
+    "missing_ref_targets": [],
+    "ready": false
+  },
+  "support_write_topology_contract": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "diagnostics": []
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.6.10/features/version-contract-auto-register-v1610/truth.md",
+    "docs/beacon/v1.6.10/features/version-contract-auto-register-v1610/tests.md",
+    "docs/beacon/v1.6.10/features/version-contract-auto-register-v1610/tasks.md",
+    "docs/beacon/v1.6.10/features/version-contract-auto-register-v1610/evidence.md"
+  ]
+}
