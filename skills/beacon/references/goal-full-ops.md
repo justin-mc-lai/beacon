@@ -234,6 +234,8 @@ beacon doctor verify-subagent-runtime -p . --host-runtime codex --require-agents
 beacon doctor install-subagent-pack -p . --host-runtime codex --pack plan-review
 beacon doctor install-subagent-pack -p . --host-runtime claude --pack plan-review
 ```
+Spawn budget: default `spawn_count=3` (architect-reviewer, code-reviewer, knowledge-synthesizer); catalog may still install 10. Raise via utterance `开N个子代理` / `subagent-count=N`, param `subagent_count=N`, or env `BEACON_SUBAGENT_MAX` as hard cap.
+
 Stage tokens for pack-review include: 架构 / 代码审查 / 全面分析 / pln-review (see host_subagent_gate).
 
 ```

@@ -14,7 +14,7 @@ beacon doctor verify-subagent-runtime -p . --host-runtime codex --require-agents
 
 预期：
 
-- `evaluate_host_subagent_gate` → `pack-review`，roles 含 core 4（coordinator / architect-reviewer / code-reviewer / knowledge-synthesizer）
+- `evaluate_host_subagent_gate` → `pack-review`，**默认 spawn_count=3**：`architect-reviewer` / `code-reviewer` / `knowledge-synthesizer`（catalog 仍 10；`开N个子代理` / `subagent-count=N` / `BEACON_SUBAGENT_MAX` 可调）
 - install 写入 **10** 角色到 `.codex/agents` 或 `.claude/agents`
 - 无 host spawn 时 planner-review 仍为 `single_process_multi_reviewer` + `fallback_reason`
 - 子代理不可 complete/release；Plan→Truth Gate 仍由 truth harness 负责 freeze
