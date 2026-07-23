@@ -1,197 +1,78 @@
 ---
 name: beacon
-description: Beacon v1.6.7 host-level router for harness-first planner/generator/evaluator/governor skills.
+description: >
+  Beacon package router (Scheme A 1+6). Host-visible public cores only:
+  beacon-goal, beacon-plan, beacon-truth, beacon-design, beacon-implement,
+  beacon-qa, beacon-release. Prefer $beacon-goal for long-run delivery.
 metadata:
   author: Beacon CLI
-  version: "v1.6.7"
+  version: "v1.6.10"
   organization: Beacon
-  date: June 2026
-  abstract: Harness-first Beacon meta-protocol. Route coarse user intent into planner, generator, evaluator, or governor skills without preserving old host-visible aliases.
+  scheme: "A-1plus6"
+  date: July 2026
+  abstract: Scheme A public surface — goal transversal + six harness cores. Internal gov packages use SUPPORT.md and are not host-discoverable.
 ---
 
-# Beacon Skill
+# Beacon Skill Package
 
-This package is the canonical `skills/beacon/` host-visible Beacon skill package for Codex and Claude.
+Canonical package root: `skills/beacon/`.
 
-v1.6.0 introduced a breaking skill-surface migration (still the taxonomy baseline through v1.6.7). Host-visible child skills use only:
+## Scheme A host-visible surface (only)
 
-- `beacon-pln-*`
-- `beacon-gen-*`
-- `beacon-eval-*`
-- `beacon-gov-*`
+| Public id | Skill dir | Role |
+|-----------|-----------|------|
+| goal | `beacon-goal` | Long-run facade (not counted in the six) |
+| plan | `beacon-plan` | Planner |
+| truth | `beacon-truth` | Freeze / change / refreeze |
+| design | `beacon-design` | UX / design routes |
+| implement | `beacon-implement` | Implementation |
+| qa | `beacon-qa` | Evidence / QA |
+| release | `beacon-release` | Release gate |
 
-Old host-visible aliases such as `using-beacon`, `beacon-prd`, `beacon-user-story`, `beacon-test-case`, `beacon-implement`, `beacon-qa`, `beacon-release`, and `beacon-brainstorm` are intentionally not present in this package. If CLI compatibility is needed, it belongs in CLI routing or migration tooling, not duplicate host-visible skill directories.
+Default pipeline:
 
+```text
+plan -> truth -> design? -> implement -> qa -> release
+```
 
-## 一句话交付入口（v1.6.7+）
-
-**日常项目只调这一个：**
+Daily entry:
 
 ```text
 $beacon-goal
 ```
 
-或 CLI：`beacon goal run "<目标>" --project . --version <v>`
+or CLI: `beacon goal run "<goal>" --project . --version <v>`
 
-- 自动拆需求 → 编排实现 → 验收（release 可人工确认）
-- **不要**先 `$beacon-loop-goal` 再 `$beacon-goal`
-- `$beacon-loop-goal` = support 发现/排队，高级/心跳用
+## Host discovery rules (anti-leak)
 
-30 秒用法：`skills/beacon/examples/goal-one-shot-30s.md`
+- **Host-discoverable** packages carry a top-level `SKILL.md`.
+- **Internal support** packages (former `beacon-gov-*`) carry `SUPPORT.md` only — not host-visible.
+- Archived pre-1+6 fine-grained skills live under `skills/_archive/` with `SKILL.md.archived` (not discoverable).
+- Default install whitelist: goal + six harness cores. `BEACON_INSTALL_ALL=1` / `INSTALL_ALL=1` is advanced opt-in only.
+- Project Cursor surface: `.cursor/skills/` via `beacon doctor setup-agent-surface --agent cursor`.
+- Never install package root `~/.cursor/skills/beacon` → `skills/beacon` (recursive discovery leak).
 
-## Meta-Protocol
+## Progressive / internal
 
-Always start with one routing question:
-
-> 当前请求应该由哪个 harness 负责：planner、generator、evaluator，还是 governor？
-
-Route by authority boundary, not by old stage names or tool familiarity.
-
-## Beacon v1.6.0 共享 Preamble
-
-1. 先判断湖还是海：湖要煮干；海要拆分、标超纲或延后。
-2. 先搜再造：推理前先读取 resolver 选中的 truth、source、evidence 和相关 memory。
-3. 用户主权：Beacon 推荐路由；是否接受范围或把 queue item 升级为 truth/change 由用户决定。
-4. 不假交付：placeholder implementation、docs-only completion、fake runner、zero assertions 或 placeholder evidence 不能算闭环。
-5. Harness 边界：planner 不实现；generator 不裁决自身完成；evaluator 不改写 truth；governor 不成为主生命周期阶段。
-
-## GIT_ADMISSION (mandatory — Tier A/B when version+feature known)
-
-Before ANY repo write or implement/qa/release route:
-1. `beacon workspace admit --project-root . --version <v> --feature <slug> --json`
-2. If status != pass → STOP; show reason_codes; do NOT edit files
-3. Set cwd to worktree_path from payload
-4. Do NOT git checkout elsewhere to "fix" branch
-
-## Harness Routing
-
-- `planner`: 拆分粗提示词，判断湖/海规模，读取 truth/source/evidence，并产出 research/planning artifact 或 route recommendation。
-- `generator`: 在 resolver-selected truth、用户已接受 scope 和本 skill authority 内写 truth、implementation、prototype、design 或 delivery artifact。
-- `evaluator`: 验证 evidence，识别 truth drift、fake delivery、missing coverage、placeholder evidence，并产出 verdict/finding/route/block。
-- `governor`: 维护 context、archive、memory、hooks、automation、metadata、status 和 diagnostic support。
-
-## Host-Visible Skills
-
-Planner:
-
-- `beacon-pln-brainstorm`
-- `beacon-pln-source`
-- `beacon-pln-review`
-- `beacon-pln-friction`
-
-Planner tools may still route to stable CLI commands. For example, `beacon-pln-friction` can recommend `beacon friction-intake run ...` while remaining a planner support surface.
-Former fine-grained planner surfaces such as founder, doubt, security, performance, context, simplify, ADR, design, and deep review are internal reviewers inside `beacon-pln-review`, not default host-visible routes.
-
-Generator:
-
-- `beacon-gen-truth`
-- `beacon-gen-truth-init`
-- `beacon-gen-change`
-- `beacon-gen-refreeze`
-- `beacon-gen-prototype`
-- `beacon-gen-implement`
-- `beacon-gen-design`
-- `beacon-gen-design-init`
-- `beacon-gen-design-explore`
-- `beacon-gen-design-system`
-- `beacon-gen-design-polish`
-
-Evaluator:
-
-- `beacon-eval-qa`
-- `beacon-eval-qa-deep`
-- `beacon-eval-release`
-- `beacon-eval-real-project`
-
-Governor:
-
-- `beacon-gov-library`
-- `beacon-gov-extract`
-- `beacon-gov-doctor`
-- `beacon-gov-debug`
-- `beacon-gov-status`
-- `beacon-gov-help`
-- `beacon-gov-archive`
-- `beacon-gov-learn`
-- `beacon-gov-hooks`
-- `beacon-gov-automation`
-- `beacon-gov-branch`
-- `beacon-gov-lighthouse`
-- `beacon-gov-metadata`
-- `beacon-gov-router`
-
-## Lifecycle
-
-The user-visible v1.6.0 lifecycle is:
+Fine-grained capability loads as modes under each public core:
 
 ```text
-plan -> truth -> generate -> evaluate -> release
+skills/beacon/beacon-<surface>/references/modes/
 ```
 
-Requirement authority still resolves through:
+Map: `skills/beacon/references/public-surface-progressive-map.v1.json`
 
-```text
-beacon truth-map resolve <feature> --project . --version <version> --json
-docs/beacon/<version>/features/<slug>/{truth,tests,tasks,evidence}.md
-```
+Internal denylist remains non-public: doctor, router, hooks, metadata, debug, archive, status, gov, library, lighthouse.
 
-`prd`, `user-story`, and `test-case` are legacy concepts. They may appear in migration docs or archives, but they are not v1.6.0 host-visible skill categories.
-
-## Research Contract
-
-Planner research lives at:
-
-```text
-docs/beacon/<version>/research/<feature-slug>.md
-```
-
-Its authority is `support_advisory`. It can support routing, risk analysis, lake/ocean classification, source anchoring, and gap discovery. It cannot become requirement truth, implementation closure, QA pass, or release readiness by itself.
-
-Research can enter the main chain only when:
-
-```text
-user_decision = accepted/promoted
-promotion_ref is present
-route = beacon-gen-change or beacon-gen-refreeze
-```
-
-## Hard Gates
-
-Every v1.6.0 child `SKILL.md` must include the shared preamble followed immediately by a harness-specific `HARD GATE`.
-
-The gate must prevent:
-
-- planner writing truth, code, `.machine/`, QA verdict, or release verdict
-- generator self-certifying completion or using fake delivery as closure
-- evaluator rewriting truth or repairing implementation inside the verdict action
-- governor becoming a truth, implementation, QA, or release stage
-
-Verify with:
+## Verify
 
 ```bash
-beacon skill package verify --project-root . --version v1.6.0 --package-root skills/beacon --json
-beacon doctor setup-agent-surface --project-root . --version v1.6.0 --agent codex --json
-beacon doctor verify-agent-surface --project-root . --version v1.6.0 --agent codex --strict --json
+beacon doctor verify-agent-surface --project-root . --agent cursor --strict
+beacon skill package verify --project-root . --version v1.6.10 --package-root skills/beacon --json
 ```
 
-## No-Fake-Delivery
+## Boundaries
 
-These signals cannot close implementation, QA, or release:
-
-- placeholder implementation
-- docs-only completion
-- fake runner evidence
-- zero assertions
-- placeholder evidence
-
-Use:
-
-```bash
-beacon skill package verify-closure --payload-json '{"implementation":"real code path exercised","assertions":"12 assertions"}' --json
-```
-
-## References
-
-- `docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md`
-- `docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md`
-- `docs/beacon/v1.6.0/execution/implementation-summary-beacon-skill-harness-taxonomy-v160.md`
+- Support surfaces explain/route/diagnose; they do not replace truth, implement, QA, or release.
+- No placeholder implementation, docs-only completion, or zero-assertion evidence as delivery.
+- Truth authority: `docs/beacon/global-boundaries.md` + `docs/beacon/<version>/`.

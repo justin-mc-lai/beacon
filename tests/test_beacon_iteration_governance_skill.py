@@ -82,7 +82,7 @@ project_skills:
 
 def test_iteration_governance_skill_package_should_exist():
     base = ROOT / "skills" / "beacon-iteration-governance"
-    assert (base / "SKILL.md").exists()
+    assert (base / "SUPPORT.md").exists()
     assert (base / "metadata.json").exists()
     assert (base / "references" / "workflow.md").exists()
     assert (base / "examples" / "profile-integration.md").exists()

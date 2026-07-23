@@ -7,7 +7,7 @@ from pathlib import Path
 from beacon import __toolkit_version__
 
 ROOT = Path(__file__).resolve().parents[1]
-CURRENT_SKILL_SURFACE = "v1.6.0"
+CURRENT_SKILL_SURFACE = "1.6.10"
 
 
 def test_standard_skill_package_should_exist():
@@ -27,15 +27,17 @@ def test_standard_skill_package_should_have_frontmatter_and_metadata():
     assert skill_text.startswith("---\n")
     assert "name: beacon" in skill_text
     assert "description:" in skill_text
-    assert "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md" in skill_text
-    assert "docs/beacon/v1.6.0/execution/implementation-summary-beacon-skill-harness-taxonomy-v160.md" in skill_text
-    assert "plan -> truth -> generate -> evaluate -> release" in skill_text
-    assert "beacon skill package verify --project-root . --version v1.6.0 --package-root skills/beacon --json" in skill_text
+    assert "Scheme A" in skill_text or "scheme_a" in skill_text.lower() or "A-1plus6" in skill_text
+    assert "beacon-goal" in skill_text
+    assert "SUPPORT.md" in skill_text
     assert "placeholder implementation" in skill_text
 
     metadata = json.loads((ROOT / "skills" / "beacon" / "metadata.json").read_text(encoding="utf-8"))
     assert metadata["name"] == "beacon"
     assert metadata["version"] == CURRENT_SKILL_SURFACE
+    assert metadata.get("source_kind") == "scheme_a_public_surface_1plus6"
+    assert metadata.get("expected_skill_count") == 7
+    assert "beacon-goal" in metadata.get("host_visible_skill_names", [])
 
 
 def test_standard_skill_wrapper_script_should_launch_beacon_version():

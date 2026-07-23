@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
   "name": "beacon",
-  "version": "1.6.9",
-  "product_runtime_version": "v1.6.9",
+  "version": "1.6.10",
+  "product_runtime_version": "v1.6.10",
   "source_kind": "scheme_a_public_surface_1plus6",
   "generated_at": "2026-07-20T13:06:09.501242+00:00",
   "expected_skill_count": 7,
@@ -17,5 +17,6 @@
   ],
   "authority": "public-surface-progressive-map.v1",
   "progressive_map": "skills/beacon/references/public-surface-progressive-map.v1.json",
-  "note": "Internal fine-grained skills remain under progressive_loads but are not host-visible by default."
+  "note": "Only packages with SKILL.md are host-discoverable. Internal gov packages use SUPPORT.md. Archived fine-grained skills use SKILL.md.archived.",
+  "internal_support_manifest": "SUPPORT.md"
 }
