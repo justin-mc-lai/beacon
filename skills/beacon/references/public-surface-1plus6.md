@@ -79,3 +79,11 @@ skills/beacon/beacon-<surface>/
 - Goal attaches `self_heal` pre/mid/post (gov auto; users do not memorize gov skill names).
 - Default install whitelist = host_visible_whitelist in the map (`INSTALL_ALL=1` still installs gov/*).
 - Legacy skill ids (`beacon-pln-review`, …) resolve via `legacy_skill_aliases` in the map → `{public_skill, mode}`.
+
+## Host discovery anti-leak (v1.6.10+)
+
+- Only packages with top-level `SKILL.md` are host-discoverable (Cursor / Claude / Codex slash menus).
+- Internal `beacon-gov-*` packages ship `SUPPORT.md` instead of `SKILL.md`.
+- Pre-1+6 archives use `SKILL.md.archived`; docs `.generated/skills` trees must not ship live `SKILL.md`.
+- Scanner: `beacon.utils.agent_surface.scan_monorepo_skill_discovery_leaks`.
+- Defense-in-depth: repo `.cursorignore` excludes archive/gov/generated skill trees.

@@ -613,6 +613,11 @@ def _copy_projected_skill(destination: Path, projection: SkillProjection) -> Non
         skill_content = inject_git_admission_into_skill_text(projection.id, skill_content)
     if projection.source_dir is not None:
         shutil.copytree(projection.source_dir, destination)
+        # Internal support packages ship SUPPORT.md; hosts only discover SKILL.md.
+        support = destination / INTERNAL_SUPPORT_MANIFEST
+        skill_md = destination / HOST_DISCOVERABLE_MANIFEST
+        if not skill_md.is_file() and support.is_file():
+            skill_md.write_text(support.read_text(encoding="utf-8"), encoding="utf-8")
         if skill_content is not None:
             (destination / "SKILL.md").write_text(skill_content, encoding="utf-8")
         for relative, file_content in (projection.files or {}).items():
@@ -628,15 +633,23 @@ def _copy_projected_skill(destination: Path, projection: SkillProjection) -> Non
 
 def _hash_projected_source_dir(source_dir: Path, *, skill_text: str) -> str:
     digest = hashlib.sha256()
-    files = sorted(node for node in source_dir.rglob("*") if node.is_file())
-    for file_path in files:
+    files: list[tuple[str, bytes]] = []
+    has_skill_manifest = False
+    for file_path in sorted(node for node in source_dir.rglob("*") if node.is_file()):
         relative = file_path.relative_to(source_dir).as_posix()
+        if relative == "SKILL.md":
+            has_skill_manifest = True
+            files.append((relative, skill_text.encode("utf-8")))
+        else:
+            files.append((relative, file_path.read_bytes()))
+
+    if not has_skill_manifest and (source_dir / INTERNAL_SUPPORT_MANIFEST).is_file():
+        files.append((HOST_DISCOVERABLE_MANIFEST, skill_text.encode("utf-8")))
+
+    for relative, content in sorted(files, key=lambda item: item[0]):
         digest.update(relative.encode("utf-8"))
         digest.update(b"\0")
-        if relative == "SKILL.md":
-            digest.update(skill_text.encode("utf-8"))
-        else:
-            digest.update(file_path.read_bytes())
+        digest.update(content)
         digest.update(b"\0")
     return digest.hexdigest()
 
@@ -753,8 +766,9 @@ def _v160_skill_projections() -> list[SkillProjection]:
     source_root = packaged_beacon_skill_root()
     for row in _v160_rows():
         source_skill = source_root / row["new"]
-        if (source_skill / "SKILL.md").exists():
-            normalized_content = normalize_v160_skill_content((source_skill / "SKILL.md").read_text(encoding="utf-8"))
+        manifest = skill_package_manifest(source_skill)
+        if manifest is not None:
+            normalized_content = normalize_v160_skill_content(manifest.read_text(encoding="utf-8"))
             normalized_content = inject_git_admission_into_skill_text(row["new"], normalized_content)
             projections.append(
                 SkillProjection(
@@ -799,9 +813,10 @@ def _append_v160_native_packaged_projections(
         if skill_id in existing_ids:
             continue
         source_skill = source_root / skill_id
-        if not (source_skill / "SKILL.md").exists():
+        manifest = skill_package_manifest(source_skill)
+        if manifest is None:
             continue
-        normalized_content = normalize_v160_skill_content((source_skill / "SKILL.md").read_text(encoding="utf-8"))
+        normalized_content = normalize_v160_skill_content(manifest.read_text(encoding="utf-8"))
         normalized_content = inject_git_admission_into_skill_text(skill_id, normalized_content)
         extra.append(
             SkillProjection(
@@ -1881,23 +1896,164 @@ def resolve_agent_surface_target(project_root: Path | str, agent: str) -> AgentS
     raise ValueError("agent must be one of: trae, claude, codex, cursor, windsurf")
 
 
+HOST_DISCOVERABLE_MANIFEST = "SKILL.md"
+INTERNAL_SUPPORT_MANIFEST = "SUPPORT.md"
+ARCHIVED_SKILL_MANIFEST = "SKILL.md.archived"
+
+
+def skill_package_manifest(skill_dir: Path) -> Path | None:
+    """Return the primary manifest for a packaged skill directory.
+
+    Host-discoverable packages use SKILL.md. Internal support packages (gov/*)
+    use SUPPORT.md so monorepo hosts that scan **/SKILL.md do not list them.
+    """
+    for name in (HOST_DISCOVERABLE_MANIFEST, INTERNAL_SUPPORT_MANIFEST):
+        candidate = skill_dir / name
+        if candidate.is_file():
+            return candidate
+    return None
+
+
+def is_host_discoverable_skill_dir(skill_dir: Path) -> bool:
+    return skill_dir.is_dir() and (skill_dir / HOST_DISCOVERABLE_MANIFEST).is_file()
+
+
 def list_host_visible_skills(skill_root: Path | None = None) -> list[Path]:
-    """List packaged host-visible skill directories (Scheme A 1+6 by default)."""
+    """List packaged host-visible skill directories (Scheme A 1+6 by default).
+
+    Default (Scheme A): only whitelist packages that still carry SKILL.md.
+    INSTALL_ALL / BEACON_INSTALL_ALL=1: include internal SUPPORT.md packages too
+    (materializers promote SUPPORT.md → SKILL.md on install destinations).
+    """
     base = (skill_root or packaged_beacon_skill_root()).resolve()
-    skills = [
-        child
-        for child in base.iterdir()
-        if child.is_dir() and (child / "SKILL.md").exists()
-    ]
-    brand = "loom" if base.name == "loom" or any(c.name.startswith("loom-") for c in skills[:3]) else "beacon"
-    # Detect loom root by path name
+    whitelist = None
+    brand = "beacon"
     if base.name == "loom" or base.as_posix().endswith("/skills/loom"):
         brand = "loom"
     whitelist = _scheme_a_host_visible_whitelist(brand)
-    if whitelist is not None:
-        allowed = set(whitelist)
-        skills = [child for child in skills if child.name in allowed]
+
+    skills: list[Path] = []
+    for child in base.iterdir():
+        if not child.is_dir() or child.name.startswith((".", "_")):
+            continue
+        if whitelist is None:
+            if skill_package_manifest(child) is not None:
+                skills.append(child)
+        elif child.name in set(whitelist) and is_host_discoverable_skill_dir(child):
+            skills.append(child)
     return sorted(skills, key=lambda item: item.name)
+
+
+def scan_monorepo_skill_discovery_leaks(repo_root: Path | str | None = None) -> dict[str, Any]:
+    """Detect monorepo SKILL.md paths that would re-expose non-1+6 skills to hosts.
+
+    Cursor and similar hosts often scan workspace trees for SKILL.md. Scheme A
+    requires only whitelist packages under skills/{beacon,loom}/ to remain
+    host-discoverable. Internal gov packages must use SUPPORT.md; archives and
+    docs generated skill trees must not ship live SKILL.md.
+    """
+    root = Path(repo_root or packaged_beacon_skill_root().parent.parent).resolve()
+    leaks: list[dict[str, str]] = []
+
+    for brand in ("beacon", "loom"):
+        package_root = root / "skills" / brand
+        if not package_root.is_dir():
+            continue
+        whitelist = set(_scheme_a_host_visible_whitelist(brand) or [])
+        # When INSTALL_ALL is on, whitelist is None — still treat leak policy as Scheme A.
+        if not whitelist:
+            whitelist = set(
+                [
+                    f"{brand}-goal",
+                    f"{brand}-plan",
+                    f"{brand}-truth",
+                    f"{brand}-design",
+                    f"{brand}-implement",
+                    f"{brand}-qa",
+                    f"{brand}-release",
+                ]
+            )
+        for child in sorted(package_root.iterdir()):
+            if not child.is_dir() or child.name.startswith((".", "_")):
+                continue
+            skill_md = child / HOST_DISCOVERABLE_MANIFEST
+            if skill_md.is_file() and child.name not in whitelist:
+                leaks.append(
+                    {
+                        "path": str(skill_md.relative_to(root)),
+                        "reason": "non_whitelist_skill_md_under_package",
+                        "skill": child.name,
+                }
+            )
+
+    skills_root = root / "skills"
+    if skills_root.is_dir():
+        top_level_allowed = {"beacon", "loom"}
+        for skill_md in sorted(skills_root.glob("*/SKILL.md")):
+            skill_dir = skill_md.parent
+            if skill_dir.name in top_level_allowed:
+                continue
+            if skill_dir.name.startswith(("beacon-", "loom-")):
+                leaks.append(
+                    {
+                        "path": str(skill_md.relative_to(root)),
+                        "reason": "live_skill_md_under_top_level_internal_skill",
+                        "skill": skill_dir.name,
+                    }
+                )
+
+    archive_root = root / "skills" / "_archive"
+    if archive_root.is_dir():
+        for skill_md in sorted(archive_root.rglob(HOST_DISCOVERABLE_MANIFEST)):
+            leaks.append(
+                {
+                    "path": str(skill_md.relative_to(root)),
+                    "reason": "live_skill_md_under_archive",
+                    "skill": skill_md.parent.name,
+                }
+            )
+
+    docs_root = root / "docs"
+    if docs_root.is_dir():
+        for skill_md in sorted(docs_root.rglob(HOST_DISCOVERABLE_MANIFEST)):
+            posix = skill_md.as_posix()
+            if "/.generated/skills/" in posix or "/generated/skills/" in posix:
+                leaks.append(
+                    {
+                        "path": str(skill_md.relative_to(root)),
+                        "reason": "live_skill_md_under_docs_generated",
+                        "skill": skill_md.parent.name,
+                    }
+                )
+
+    # Nested vendor/reference trees under public packages must not host-discover.
+    for brand in ("beacon", "loom"):
+        package_root = root / "skills" / brand
+        if not package_root.is_dir():
+            continue
+        for skill_md in sorted(package_root.rglob(HOST_DISCOVERABLE_MANIFEST)):
+            rel = skill_md.relative_to(package_root)
+            # allowed: <public-core>/SKILL.md and package-root SKILL.md
+            if len(rel.parts) == 1:
+                continue
+            if len(rel.parts) == 2 and rel.parts[1] == HOST_DISCOVERABLE_MANIFEST:
+                continue
+            leaks.append(
+                {
+                    "path": str(skill_md.relative_to(root)),
+                    "reason": "nested_skill_md_under_package",
+                    "skill": skill_md.parent.name,
+                }
+            )
+
+    return {
+        "schema_version": "1.0",
+        "ok": not leaks,
+        "repo_root": str(root),
+        "leak_count": len(leaks),
+        "leaks": leaks,
+        "policy": "scheme_a_host_discoverable_skill_md_only",
+    }
 
 
 def _hash_directory(path: Path) -> str:
@@ -2248,6 +2404,22 @@ def verify_agent_surface(
             "details": {"drifted": drifted},
         },
     ]
+
+    # Monorepo anti-leak: only when the project under verify IS the Beacon product repo.
+    repo_candidate = packaged_beacon_skill_root().parent.parent.resolve()
+    if root.resolve() == repo_candidate and (root / "skills" / "beacon").is_dir():
+        leak = scan_monorepo_skill_discovery_leaks(root)
+        checks.append(
+            {
+                "name": "monorepo_skill_discovery_leak",
+                "status": "pass" if leak["ok"] else "fail",
+                "details": {
+                    "leak_count": leak["leak_count"],
+                    "leaks": leak["leaks"][:20],
+                    "policy": leak["policy"],
+                },
+            }
+        )
 
     scheme_a = _scheme_a_public_surface_enabled(docs_version, runtime_version)
     if v160_taxonomy and not scheme_a:

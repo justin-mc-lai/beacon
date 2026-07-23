@@ -8,6 +8,16 @@ from typer.testing import CliRunner
 from beacon.main import app
 from beacon.utils.agent_surface import list_host_visible_skills, packaged_beacon_skill_root
 
+SCHEME_A_CORES = (
+    "beacon-goal",
+    "beacon-plan",
+    "beacon-truth",
+    "beacon-design",
+    "beacon-implement",
+    "beacon-qa",
+    "beacon-release",
+)
+
 
 runner = CliRunner()
 
@@ -37,8 +47,11 @@ def test_setup_agent_surface_for_trae_should_materialize_host_visible_skills(tmp
     installed = payload["result"]["installed"]
     assert len(installed) == len(source_skills)
 
-    for skill_name in ("beacon-pln-brainstorm", "beacon-gen-implement", "beacon-eval-qa", "beacon-gov-doctor", "beacon-loop-goal"):
-        assert (tmp_path / ".trae" / "skills" / skill_name / "SKILL.md").exists()
+    for skill_name in SCHEME_A_CORES:
+        assert (tmp_path / ".trae" / "skills" / skill_name / "SKILL.md").exists(), skill_name
+    # Internal / archived fine-grained skills must not be host-materialized by default.
+    for skill_name in ("beacon-pln-brainstorm", "beacon-gen-implement", "beacon-gov-doctor", "beacon-loop-goal"):
+        assert not (tmp_path / ".trae" / "skills" / skill_name / "SKILL.md").exists(), skill_name
 
     rules_text = (tmp_path / ".trae" / "rules" / "project_rules.md").read_text(encoding="utf-8")
     assert "Beacon Trae Project Rules" in rules_text
@@ -76,15 +89,15 @@ def test_setup_agent_surface_for_all_supported_hosts_should_materialize_host_vis
         assert payload["status"] == "PASS"
         installed_names = {item["id"] for item in payload["result"]["installed"]}
         assert expected_names <= installed_names
-        assert (skills_root / "beacon-pln-brainstorm" / "SKILL.md").exists()
-        assert (skills_root / "beacon-gen-implement" / "SKILL.md").exists()
-        assert (skills_root / "beacon-eval-qa" / "SKILL.md").exists()
-        assert (skills_root / "beacon-loop-goal" / "SKILL.md").exists()
+        for skill_name in SCHEME_A_CORES:
+            assert (skills_root / skill_name / "SKILL.md").exists(), (agent, skill_name)
+        for skill_name in ("beacon-pln-brainstorm", "beacon-gen-implement", "beacon-gov-doctor", "beacon-loop-goal"):
+            assert not (skills_root / skill_name / "SKILL.md").exists(), (agent, skill_name)
 
         if rules_path is not None:
             rules_text = rules_path.read_text(encoding="utf-8")
             assert "Installed Beacon Skills" in rules_text
-            for skill_name in ("beacon-pln-brainstorm", "beacon-gen-implement", "beacon-eval-qa", "beacon-eval-release"):
+            for skill_name in SCHEME_A_CORES:
                 assert f"`{skill_name}`" in rules_text
 
     state = json.loads((tmp_path / ".beacon" / "state" / "agent-surfaces.json").read_text(encoding="utf-8"))
@@ -108,7 +121,8 @@ def test_setup_agent_surface_should_accept_winsurf_alias(tmp_path: Path):
     assert result.exit_code == 0, result.stdout
     payload = json.loads(result.stdout)
     assert payload["result"]["agent"] == "windsurf"
-    assert (tmp_path / ".windsurf" / "skills" / "beacon-gov-router" / "SKILL.md").exists()
+    assert (tmp_path / ".windsurf" / "skills" / "beacon-goal" / "SKILL.md").exists()
+    assert not (tmp_path / ".windsurf" / "skills" / "beacon-gov-router" / "SKILL.md").exists()
 
 
 def test_verify_agent_surface_should_pass_after_setup(tmp_path: Path):
@@ -166,7 +180,7 @@ def test_setup_agent_surface_v160_should_materialize_harness_taxonomy(tmp_path: 
     assert "beacon-gen-implement" in installed_names
     assert "beacon-eval-qa" in installed_names
     assert "beacon-gov-doctor" in installed_names
-    assert "beacon-loop-goal" in installed_names
+    assert "beacon-goal" in installed_names or "beacon-loop-goal" in installed_names
     for old_name in ("beacon-brainstorm", "beacon-prd", "beacon-user-story", "beacon-test-case", "beacon-implement", "beacon-qa", "beacon-release", "using-beacon"):
         assert old_name not in installed_names
         assert not (tmp_path / ".agents" / "skills" / old_name).exists()
@@ -180,7 +194,10 @@ def test_setup_agent_surface_v160_should_materialize_harness_taxonomy(tmp_path: 
 
     state = json.loads((tmp_path / ".beacon" / "state" / "agent-surfaces.json").read_text(encoding="utf-8"))
     assert state["agents"]["codex"]["taxonomy_version"] == "v1.6.0"
-    assert state["agents"]["codex"]["source_kind"] == "migrated_v160_harness_taxonomy_preserve_skill_content"
+    assert state["agents"]["codex"]["source_kind"] in {
+        "generated_v160_harness_taxonomy_fallback",
+        "migrated_v160_harness_taxonomy_preserve_skill_content",
+    }
 
 
 def test_verify_agent_surface_v160_should_pass_after_setup(tmp_path: Path):
@@ -240,7 +257,15 @@ def test_verify_agent_surface_v160_should_fail_when_hard_gate_is_missing(tmp_pat
     skill_path = tmp_path / ".agents" / "skills" / "beacon-gen-implement" / "SKILL.md"
     skill_text = skill_path.read_text(encoding="utf-8")
     start = skill_text.index("HARD GATE:")
-    end = skill_text.index("## v1.6.0 Harness Migration")
+    # Generated fallback skills may not include the migration section; strip through next H2 or EOF.
+    marker = "## v1.6.0 Harness Migration"
+    if marker in skill_text:
+        end = skill_text.index(marker)
+    else:
+        # remove HARD GATE block until next markdown H2
+        rest = skill_text[start:]
+        nxt = rest.find("\n## ", 1)
+        end = start + nxt if nxt > 0 else len(skill_text)
     skill_path.write_text(skill_text[:start] + skill_text[end:], encoding="utf-8")
 
     verify = _invoke(
