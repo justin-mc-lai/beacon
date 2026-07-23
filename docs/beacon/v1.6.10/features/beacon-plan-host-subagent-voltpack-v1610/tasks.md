@@ -30,3 +30,8 @@ task_source: acceptance_criteria
 ## Boundary
 
 Checkboxes are AC-bound ledgers. `[x]` is valid only when the bound `evidence=` file exists (completion ≠ self-tick).
+
+- [x] TASK-016 Implement AC-VP-CNT-001: pack-review 默认 spawn_count=3 且 roles=core triangle · ac=AC-VP-CNT-001 · evidence=tests/test_v1610_plan_host_subagent_voltpack.py
+- [x] TASK-017 Implement AC-VP-CNT-002: 开N个子代理 / subagent_count 提升 spawn · ac=AC-VP-CNT-002 · evidence=tests/test_v1610_plan_host_subagent_voltpack.py
+- [x] TASK-018 Implement AC-VP-CNT-003: N>catalog 或 BEACON_SUBAGENT_MAX 时 clamp · ac=AC-VP-CNT-003 · evidence=tests/test_v1610_plan_host_subagent_voltpack.py
+

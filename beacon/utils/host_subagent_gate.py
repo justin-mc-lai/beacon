@@ -1,11 +1,18 @@
-"""Host subagent keyword gate (v1.6.8).
+"""Host subagent keyword gate (v1.6.8+ spawn budget).
 
 Default single-thread: no host agent spawn unless global keyword or --subagent.
 "并行" alone enables satellite fan-out (existing), NOT host agents (UD-SA-001).
+
+Spawn budget (v1.6.10 D-VA-CNT):
+- Catalog may install up to 10 plan-review roles.
+- Default spawn plan is 3 roles (architect / code-review / knowledge-synth).
+- User may raise count via utterance, explicit param, or CLI; hard-capped.
 """
 
 from __future__ import annotations
 
+import os
+import re
 from typing import Any
 
 REASON_DEFAULT_OFF = "subagent_default_off"
@@ -13,6 +20,11 @@ REASON_NEGATED = "subagent_negated"
 REASON_FLAG_OFF = "subagent_flag_off"
 REASON_GATE_ON = "subagent_gate_on"
 REASON_FLAG_ON = "subagent_flag_on"
+
+# Spawn budget
+DEFAULT_SPAWN_MAX = 3
+SPAWN_HARD_MAX = 10
+ENV_SUBAGENT_MAX = "BEACON_SUBAGENT_MAX"
 
 # Global ON — host agents allowed only after these (or --subagent)
 GLOBAL_ON = (
@@ -65,22 +77,35 @@ STAGE_PACKS: dict[str, tuple[str, ...]] = {
     "pack-qa": ("并行验收", "reviewer", "qa subagent", "correctness", "qa-expert", "验收子代理"),
 }
 
+# Default triangle when pack-review opens without a higher user count
+PLAN_REVIEW_CORE_ROLES = (
+    "architect-reviewer",
+    "code-reviewer",
+    "knowledge-synthesizer",
+)
+
+PLAN_REVIEW_CONDITIONAL_ROLES = (
+    "multi-agent-coordinator",
+    "security-auditor",
+    "performance-engineer",
+    "api-designer",
+    "qa-expert",
+    "docs-researcher",
+    "search-specialist",
+)
+
+PLAN_REVIEW_TEN_ROLES = PLAN_REVIEW_CORE_ROLES + PLAN_REVIEW_CONDITIONAL_ROLES
+
+# Global spawn priority: prefer triangle, then remaining catalog order
+SPAWN_PRIORITY = PLAN_REVIEW_TEN_ROLES + (
+    "backend-developer",
+)
+
 # Roles for pack-default when only global on
 DEFAULT_ROLES = ("search-specialist",)
 PACK_ROLES: dict[str, tuple[str, ...]] = {
     "pack-research": ("search-specialist", "docs-researcher"),
-    "pack-review": (
-        "multi-agent-coordinator",
-        "architect-reviewer",
-        "code-reviewer",
-        "knowledge-synthesizer",
-        "security-auditor",
-        "performance-engineer",
-        "api-designer",
-        "qa-expert",
-        "docs-researcher",
-        "search-specialist",
-    ),
+    "pack-review": PLAN_REVIEW_TEN_ROLES,
     "pack-implement": ("backend-developer",),
     "pack-qa": ("code-reviewer", "qa-expert"),
     "pack-default": DEFAULT_ROLES,
@@ -97,23 +122,17 @@ MINIMAL_SIX_ROLES = (
     "qa-expert",
 )
 
-PLAN_REVIEW_CORE_ROLES = (
-    "multi-agent-coordinator",
-    "architect-reviewer",
-    "code-reviewer",
-    "knowledge-synthesizer",
+_COUNT_PATTERNS = (
+    re.compile(r"subagent[_-]?count\s*[=:]\s*(\d+)", re.I),
+    re.compile(r"spawn[_-]?count\s*[=:]\s*(\d+)", re.I),
+    re.compile(r"max[_-]?subagents?\s*[=:]\s*(\d+)", re.I),
+    re.compile(r"--subagent-count\s*[=:]?\s*(\d+)", re.I),
+    re.compile(r"开\s*(\d+)\s*个子代理"),
+    re.compile(r"启动\s*(\d+)\s*个子代理"),
+    re.compile(r"(\d+)\s*个子代理"),
+    re.compile(r"(\d+)\s*subagents?\b", re.I),
+    re.compile(r"spawn\s+(\d+)\s+subagents?\b", re.I),
 )
-
-PLAN_REVIEW_CONDITIONAL_ROLES = (
-    "security-auditor",
-    "performance-engineer",
-    "api-designer",
-    "qa-expert",
-    "docs-researcher",
-    "search-specialist",
-)
-
-PLAN_REVIEW_TEN_ROLES = PLAN_REVIEW_CORE_ROLES + PLAN_REVIEW_CONDITIONAL_ROLES
 
 
 def _norm(text: str) -> str:
@@ -121,8 +140,6 @@ def _norm(text: str) -> str:
 
 
 def _find_tokens(text: str, tokens: tuple[str, ...]) -> list[str]:
-    hay = _norm(text)
-    # keep original for CJK match
     raw = str(text or "")
     raw_lower = raw.lower()
     found: list[str] = []
@@ -130,20 +147,122 @@ def _find_tokens(text: str, tokens: tuple[str, ...]) -> list[str]:
         t = str(tok)
         if not t:
             continue
-        # CJK / mixed: substring on original + lower
         if t.lower() in raw_lower or t in raw:
             found.append(t)
     return found
+
+
+def parse_subagent_count(utterance: str = "") -> int | None:
+    """Extract user-requested spawn count from utterance; None if not stated."""
+    text = str(utterance or "").strip()
+    if not text:
+        return None
+    for pattern in _COUNT_PATTERNS:
+        match = pattern.search(text)
+        if match:
+            try:
+                value = int(match.group(1))
+            except (TypeError, ValueError):
+                continue
+            if value > 0:
+                return value
+    return None
+
+
+def _env_spawn_cap() -> int | None:
+    raw = str(os.environ.get(ENV_SUBAGENT_MAX) or "").strip()
+    if not raw:
+        return None
+    try:
+        value = int(raw)
+    except ValueError:
+        return None
+    if value <= 0:
+        return None
+    return value
+
+
+def resolve_spawn_count(
+    *,
+    catalog_size: int,
+    utterance: str = "",
+    subagent_count: int | None = None,
+) -> dict[str, Any]:
+    """Resolve how many host roles to plan (not how many files to install).
+
+    Precedence: explicit param > utterance parse > DEFAULT_SPAWN_MAX(3).
+    Hard caps: min(catalog_size, SPAWN_HARD_MAX, BEACON_SUBAGENT_MAX env if set).
+    """
+    catalog_n = max(0, int(catalog_size or 0))
+    env_cap = _env_spawn_cap()
+    hard = SPAWN_HARD_MAX
+    if env_cap is not None:
+        hard = min(hard, env_cap)
+    if catalog_n > 0:
+        hard = min(hard, catalog_n)
+    else:
+        hard = 0
+
+    source = "default"
+    requested: int | None = None
+    if subagent_count is not None:
+        try:
+            requested = int(subagent_count)
+            source = "param"
+        except (TypeError, ValueError):
+            requested = None
+    if requested is None:
+        parsed = parse_subagent_count(utterance)
+        if parsed is not None:
+            requested = parsed
+            source = "utterance"
+    if requested is None:
+        requested = DEFAULT_SPAWN_MAX
+        source = "default"
+
+    if requested < 1:
+        requested = 1
+        source = f"{source}_clamped_min"
+    spawn_n = min(int(requested), hard) if hard > 0 else 0
+    if spawn_n != int(requested) and hard > 0:
+        source = f"{source}_clamped_max"
+
+    return {
+        "spawn_count": spawn_n,
+        "spawn_count_requested": int(requested),
+        "spawn_count_source": source,
+        "spawn_count_default": DEFAULT_SPAWN_MAX,
+        "spawn_count_hard_max": SPAWN_HARD_MAX,
+        "spawn_count_env_cap": env_cap,
+        "spawn_count_catalog_size": catalog_n,
+        "spawn_count_effective_cap": hard,
+    }
+
+
+def _order_roles(roles: list[str]) -> list[str]:
+    seen: set[str] = set()
+    ordered: list[str] = []
+    for name in SPAWN_PRIORITY:
+        if name in roles and name not in seen:
+            ordered.append(name)
+            seen.add(name)
+    for name in roles:
+        if name not in seen:
+            ordered.append(name)
+            seen.add(name)
+    return ordered
 
 
 def evaluate_host_subagent_gate(
     utterance: str = "",
     *,
     flag: bool | None = None,
+    subagent_count: int | None = None,
 ) -> dict[str, Any]:
     """Evaluate whether host agents may be planned.
 
     Priority: flag False / negate tokens > flag True / global ON > default off.
+    When on, roles_catalog holds full pack catalog; roles is budget-sliced spawn plan.
     """
     text = str(utterance or "")
     off_hits = _find_tokens(text, GLOBAL_OFF)
@@ -162,20 +281,28 @@ def evaluate_host_subagent_gate(
 
     packs: list[str] = []
     pack_tokens: dict[str, list[str]] = {}
-    roles: list[str] = []
+    catalog: list[str] = []
     for pack_id, tokens in STAGE_PACKS.items():
         hits = _find_tokens(text, tokens)
         if hits:
             packs.append(pack_id)
             pack_tokens[pack_id] = hits
             for role in PACK_ROLES.get(pack_id, ()):
-                if role not in roles:
-                    roles.append(role)
+                if role not in catalog:
+                    catalog.append(role)
 
     if not packs:
         packs = ["pack-default"]
-        roles = list(DEFAULT_ROLES)
+        catalog = list(DEFAULT_ROLES)
         pack_tokens["pack-default"] = on_hits or ["--subagent"]
+
+    roles_catalog = _order_roles(catalog)
+    budget = resolve_spawn_count(
+        catalog_size=len(roles_catalog),
+        utterance=text,
+        subagent_count=subagent_count,
+    )
+    roles = roles_catalog[: int(budget["spawn_count"])]
 
     reason = REASON_FLAG_ON if flag is True else REASON_GATE_ON
     return {
@@ -190,6 +317,15 @@ def evaluate_host_subagent_gate(
         "packs": packs,
         "pack_tokens": pack_tokens,
         "roles": roles,
+        "roles_catalog": roles_catalog,
+        "spawn_count": budget["spawn_count"],
+        "spawn_count_requested": budget["spawn_count_requested"],
+        "spawn_count_source": budget["spawn_count_source"],
+        "spawn_count_default": budget["spawn_count_default"],
+        "spawn_count_hard_max": budget["spawn_count_hard_max"],
+        "spawn_count_env_cap": budget["spawn_count_env_cap"],
+        "spawn_count_catalog_size": budget["spawn_count_catalog_size"],
+        "spawn_count_effective_cap": budget["spawn_count_effective_cap"],
         "cannot_complete_goal": True,
         "cannot_auto_release": True,
         "satellite_parallel_independent": True,
@@ -215,6 +351,15 @@ def _off_payload(
         "packs": [],
         "pack_tokens": {},
         "roles": [],
+        "roles_catalog": [],
+        "spawn_count": 0,
+        "spawn_count_requested": 0,
+        "spawn_count_source": "off",
+        "spawn_count_default": DEFAULT_SPAWN_MAX,
+        "spawn_count_hard_max": SPAWN_HARD_MAX,
+        "spawn_count_env_cap": _env_spawn_cap(),
+        "spawn_count_catalog_size": 0,
+        "spawn_count_effective_cap": 0,
         "cannot_complete_goal": True,
         "cannot_auto_release": True,
         "satellite_parallel_independent": True,
@@ -232,10 +377,11 @@ def detect_satellite_parallel_intent(utterance: str = "") -> bool:
 def score_overlay_dimensions() -> dict[str, float]:
     """L3 Agent Eval overlay weights (runtime_evidence_only; not formal QA)."""
     return {
-        "subagent_keyword_precision": 0.25,
-        "subagent_keyword_recall": 0.15,
-        "single_thread_preservation": 0.20,
-        "host_pack_readiness": 0.15,
-        "boundary_no_self_complete": 0.15,
+        "subagent_keyword_precision": 0.22,
+        "subagent_keyword_recall": 0.13,
+        "single_thread_preservation": 0.18,
+        "host_pack_readiness": 0.13,
+        "boundary_no_self_complete": 0.14,
         "fallback_honesty": 0.10,
+        "spawn_budget_control": 0.10,
     }

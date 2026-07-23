@@ -3,14 +3,17 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 import pytest
 
 from beacon.utils.host_subagent_gate import (
+    DEFAULT_SPAWN_MAX,
     PLAN_REVIEW_CORE_ROLES,
     PLAN_REVIEW_TEN_ROLES,
     evaluate_host_subagent_gate,
+    parse_subagent_count,
 )
 from beacon.utils.host_subagent_pack import install_subagent_pack, verify_subagent_agents
 from beacon.utils.planner_review_runtime import build_planner_review_runtime_artifact
@@ -23,15 +26,61 @@ def test_keyword_off_default():
     g = evaluate_host_subagent_gate("实现用户登录并验收")
     assert g["spawn"] is False
     assert g["reason_code"] == "subagent_default_off"
+    assert g["spawn_count"] == 0
 
 
 def test_architecture_code_review_hits_pack_review():
     g = evaluate_host_subagent_gate("启用子代理做架构设计与代码审查全面分析")
     assert g["spawn"] is True
     assert "pack-review" in g["packs"]
+    assert g["spawn_count"] == DEFAULT_SPAWN_MAX == 3
+    assert g["roles"] == list(PLAN_REVIEW_CORE_ROLES)
+    assert set(PLAN_REVIEW_CORE_ROLES) <= set(g["roles"])
     assert "architect-reviewer" in g["roles"]
     assert "code-reviewer" in g["roles"]
-    assert set(PLAN_REVIEW_CORE_ROLES) <= set(g["roles"])
+    assert "knowledge-synthesizer" in g["roles"]
+    assert len(g["roles_catalog"]) == 10
+    assert set(g["roles_catalog"]) == set(PLAN_REVIEW_TEN_ROLES)
+
+
+def test_spawn_count_from_utterance_five():
+    g = evaluate_host_subagent_gate("启用子代理做架构审查 开5个子代理")
+    assert g["spawn"] is True
+    assert g["spawn_count"] == 5
+    assert g["spawn_count_source"] == "utterance"
+    assert len(g["roles"]) == 5
+    assert g["roles"][:3] == list(PLAN_REVIEW_CORE_ROLES)
+
+
+def test_spawn_count_param_overrides_default():
+    g = evaluate_host_subagent_gate(
+        "启用子代理做架构设计与代码审查全面分析",
+        subagent_count=2,
+    )
+    assert g["spawn_count"] == 2
+    assert g["spawn_count_source"] == "param"
+    assert g["roles"] == list(PLAN_REVIEW_CORE_ROLES[:2])
+
+
+def test_spawn_count_clamps_above_catalog():
+    g = evaluate_host_subagent_gate("启用子代理 全面审查", subagent_count=99)
+    assert g["spawn_count"] == 10
+    assert "clamped_max" in g["spawn_count_source"]
+    assert len(g["roles"]) == 10
+
+
+def test_spawn_count_env_cap(monkeypatch):
+    monkeypatch.setenv("BEACON_SUBAGENT_MAX", "2")
+    g = evaluate_host_subagent_gate("启用子代理 全面审查 开5个子代理")
+    assert g["spawn_count"] == 2
+    assert g["spawn_count_env_cap"] == 2
+
+
+def test_parse_subagent_count_patterns():
+    assert parse_subagent_count("subagent-count=7") == 7
+    assert parse_subagent_count("开3个子代理") == 3
+    assert parse_subagent_count("启动 4 个子代理") == 4
+    assert parse_subagent_count("plain") is None
 
 
 def test_parallel_alone_does_not_open_host_agents():
@@ -49,6 +98,7 @@ def test_global_on_without_stage_is_default_pack():
     g = evaluate_host_subagent_gate("启用子代理")
     assert g["packs"] == ["pack-default"]
     assert g["roles"] == ["search-specialist"]
+    assert g["spawn_count"] == 1  # catalog size 1, not forced to 3
 
 
 def test_cannot_complete_goal_bound():
@@ -68,6 +118,11 @@ def test_plan_review_install_writes_ten_roles(tmp_path: Path):
         body = path.read_text(encoding="utf-8")
         assert "cannot_complete_goal" in body
         assert "cannot_write_truth" in body or "cannot_write_truth=true" in body
+        assert "\nmodel =" not in f"\n{body}"
+        assert "\nmodel_reasoning_effort =" not in f"\n{body}"
+
+    manifest = json.loads((agents / "beacon-pack-manifest.json").read_text(encoding="utf-8"))
+    assert manifest["model_policy"] == "inherit_parent"
 
 
 def test_hard_constraints_in_installed_files(tmp_path: Path):
@@ -76,6 +131,16 @@ def test_hard_constraints_in_installed_files(tmp_path: Path):
         body = (tmp_path / ".codex" / "agents" / f"{role}.toml").read_text(encoding="utf-8")
         assert "cannot_complete_goal" in body
         assert "cannot_write_truth" in body or "cannot_write_truth=true" in body
+
+
+def test_codex_pack_inherits_parent_model(tmp_path: Path):
+    install_subagent_pack(tmp_path, host_runtime="codex", pack="plan-review")
+    for role in PLAN_REVIEW_TEN_ROLES:
+        body = (tmp_path / ".codex" / "agents" / f"{role}.toml").read_text(encoding="utf-8")
+        assert not any(
+            line.strip().startswith(("model =", "model_reasoning_effort ="))
+            for line in body.splitlines()
+        )
 
 
 def test_minimal_pack_still_six(tmp_path: Path):
@@ -88,10 +153,9 @@ def test_minimal_pack_still_six(tmp_path: Path):
 
 def test_readiness_flat_skill_root_present():
     pre = runtime_readiness_precheck(ROOT, host_runtime="codex")
-    # On this machine flat beacon-goal should satisfy skill_root
     skill_check = next(c for c in pre["checks"] if c["name"] == "skill_root_present")
     assert skill_check["ok"] is True, skill_check
-    assert pre["status"] in {"pass", "blocked"}  # may still block on other items
+    assert pre["status"] in {"pass", "blocked"}
     if pre["status"] == "blocked":
         assert "skill_root_present" not in pre.get("blocked_checks", [])
 
@@ -124,4 +188,5 @@ def test_truth_defers_full_dump():
 
 def test_plan_review_roles_count():
     assert len(PLAN_REVIEW_TEN_ROLES) == 10
-    assert len(PLAN_REVIEW_CORE_ROLES) == 4
+    assert len(PLAN_REVIEW_CORE_ROLES) == 3
+    assert DEFAULT_SPAWN_MAX == 3

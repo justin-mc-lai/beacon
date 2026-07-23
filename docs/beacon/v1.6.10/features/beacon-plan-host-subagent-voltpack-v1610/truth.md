@@ -12,7 +12,7 @@ parser_contract: beacon-feature-package-v2
 truth_source_model: feature_package_authoritative
 truth_map_contract: beacon-truth-map-v1
 program_ref: docs/beacon/v1.6.10/programs/beacon-plan-host-subagent-voltpack-v1610/program-manifest.md
-change_reason: "UD lock D-VA: plan-review pack=10 from VoltAgent; gate tokens; readiness 1+6; default off"
+change_reason: "UD lock D-VA + D-VA-CNT: plan-review pack=10; default spawn 3; count param; gate tokens; readiness 1+6; default off"
 canonical_refs:
   truth: docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md
   tests: docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/tests.md
@@ -55,12 +55,13 @@ truth_write: forbidden_for_subagents
 | D-VA-001 | 全量 171/164 角色同步 **defer** |
 | D-VA-002 | plan-review pack **10** 角色 |
 | D-VA-003 | install **投影** oss-sync/VoltAgent 正文 + Beacon HARD；缺失则 curated fallback |
-| D-VA-004 | security/performance 等 **条件 lane**；core 4 默认并行规划 |
+| D-VA-004 | security/performance 等 **条件 lane**；默认 spawn **core 3**（architect-reviewer / code-reviewer / knowledge-synthesizer）；catalog 仍 10；`开N个子代理` / `subagent-count` / `BEACON_SUBAGENT_MAX` 可调，硬顶 10 |
 | D-VA-005 | 无 host spawn 时必须 `single_process_multi_reviewer` + `fallback_reason` |
 | UD-VP-001 | 继承 UD-SA-001：仅「并行」不开 host agents |
 | UD-VP-002 | 继承 UD-SA-006：子代理不可 complete GoalRun / auto-release |
 | UD-VP-003 | 唯一公共入口仍 `beacon-goal` / 1+6 plan；无第二公共 skill |
 | UD-VP-004 | Plan→Truth Gate 仍最高权威；host review 只是 support evidence |
+| D-VA-CNT | 默认 spawn_max=3；用户可传参；env BEACON_SUBAGENT_MAX 为硬顶；install 文件数与 spawn 数解耦 |
 
 ## Intent Coverage Matrix
 
@@ -74,6 +75,7 @@ truth_write: forbidden_for_subagents
 | INT-VP-06 | user | must | AC-VP-FB-001 | covered |
 | INT-VP-07 | plan | should | AC-VP-EX-001 | covered |
 | INT-VP-08 | user | must | AC-VP-DF-001 | covered |
+| INT-VP-CNT | user | must | AC-VP-CNT-001..003 | covered |
 
 ## First principles
 
@@ -88,7 +90,7 @@ truth_write: forbidden_for_subagents
 ## 用户旅程
 
 1. 用户只说「规划登录」→ 单线程 pln-review，不装不 spawn host agents。
-2. 用户说「启用子代理做架构与代码审查全面 plan 分析」→ gate_on + pack-review(10) 规划 core 4。
+2. 用户说「启用子代理做架构与代码审查全面 plan 分析」→ gate_on + pack-review catalog(10) 默认 spawn core 3；`开5个子代理` 可升到 5。
 3. 操作者 `install-subagent-pack --pack plan-review` → doctor verify（含 agents + 1+6 skill root）pass。
 4. 无 host runtime 时 planner-review 仍可跑，标 fallback，不宣称 parallel。
 5. findings 合成后路由 truth；仅 Truth Review Gate pass 后 freeze。

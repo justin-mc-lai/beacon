@@ -27,3 +27,8 @@ materials_status: current
 | TC-VP-016 | AC-VP-PK-001 | `python3 -m pytest tests/test_v1610_plan_host_subagent_voltpack.py -q` | suite green |
 
 Primary suite: `tests/test_v1610_plan_host_subagent_voltpack.py`
+
+| TC-VP-017 | AC-VP-CNT-001 | `python3 -c "from beacon.utils.host_subagent_gate import evaluate_host_subagent_gate as e, PLAN_REVIEW_CORE_ROLES; g=e('启用子代理 全面审查'); assert g['spawn_count']==3 and g['roles']==list(PLAN_REVIEW_CORE_ROLES)"` | default 3 |
+| TC-VP-018 | AC-VP-CNT-002 | `python3 -c "from beacon.utils.host_subagent_gate import evaluate_host_subagent_gate as e; g=e('启用子代理 全面审查 开5个子代理'); assert g['spawn_count']==5"` | count param |
+| TC-VP-019 | AC-VP-CNT-003 | `python3 -c "from beacon.utils.host_subagent_gate import evaluate_host_subagent_gate as e; g=e('启用子代理 全面审查', subagent_count=99); assert g['spawn_count']==10"` | clamp 10 |
+
