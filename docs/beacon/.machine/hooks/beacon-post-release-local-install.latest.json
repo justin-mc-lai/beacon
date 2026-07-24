@@ -1,10 +1,10 @@
 {
   "schema_version": "1.0",
   "action": "run",
-  "run_id": "run-20260723T024859Z-ca28",
+  "run_id": "run-20260724T050653Z-432b",
   "hook_id": "beacon-post-release-local-install",
   "version": "v1.6.10",
-  "feature": "beacon-plan-host-subagent-voltpack-v1610",
+  "feature": "workspace-clean-exit-gate-v1610",
   "dry_run": false,
   "confirmed": true,
   "status": "passed",
@@ -15,14 +15,14 @@
     "action": "plan",
     "hook_id": "beacon-post-release-local-install",
     "version": "v1.6.10",
-    "feature": "beacon-plan-host-subagent-voltpack-v1610",
+    "feature": "workspace-clean-exit-gate-v1610",
     "status": "planned",
     "blocked": false,
     "admission": {
       "schema_version": "1.0",
       "hook_id": "beacon-post-release-local-install",
       "hook_code": "post_release",
-      "feature": "beacon-plan-host-subagent-voltpack-v1610",
+      "feature": "workspace-clean-exit-gate-v1610",
       "path": "docs/beacon/hooks/beacon-post-release-local-install.md",
       "status": "pass",
       "blocked": false,
@@ -61,12 +61,12 @@
   "side_effect_executed": true,
   "runtime_evidence_only": true,
   "truth_authority": false,
-  "written_at": "2026-07-23T02:48:59.305370+00:00",
+  "written_at": "2026-07-24T05:06:53.736928+00:00",
   "post_release_followup": {
     "schema_version": "1.0",
     "hook_id": "beacon-post-release-local-install",
     "version": "v1.6.10",
-    "feature": "beacon-plan-host-subagent-voltpack-v1610",
+    "feature": "workspace-clean-exit-gate-v1610",
     "status": "pass",
     "blocked": false,
     "reason_codes": [],
@@ -81,7 +81,7 @@
       "recommended_command": ""
     },
     "legacy_skill_cleanup": {
-      "project_root": "/Users/apple/Developer/Personal/products/beacon",
+      "project_root": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree",
       "scope": "all",
       "agent": "all",
       "dry_run": false,
@@ -282,56 +282,56 @@
         "setup_status": "PASS",
         "verify_status": "PASS",
         "setup_result": {
-          "project_root": "/Users/apple/Developer/Personal/products/beacon",
+          "project_root": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree",
           "agent": "trae",
-          "surface_root": "/Users/apple/Developer/Personal/products/beacon/.trae/skills",
-          "rules_path": "/Users/apple/Developer/Personal/products/beacon/.trae/rules/project_rules.md",
+          "surface_root": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.trae/skills",
+          "rules_path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.trae/rules/project_rules.md",
           "installed": [
             {
               "id": "beacon-goal",
-              "path": "/Users/apple/Developer/Personal/products/beacon/.trae/skills/beacon-goal",
-              "action": "updated",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.trae/skills/beacon-goal",
+              "action": "created",
               "source_hash": "a9bb175cade700ddc19a51c08e3b9ed9a2412ce9ee1e464f02f8bc31141ad7a6",
               "source_kind": "scheme_a_public_surface"
             },
             {
               "id": "beacon-plan",
-              "path": "/Users/apple/Developer/Personal/products/beacon/.trae/skills/beacon-plan",
-              "action": "unchanged",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.trae/skills/beacon-plan",
+              "action": "updated",
               "source_hash": "3ac42f1d1264c8165dcacf5f39e184db42a72a76412c225a21d2f48666af2010",
               "source_kind": "scheme_a_public_surface"
             },
             {
               "id": "beacon-truth",
-              "path": "/Users/apple/Developer/Personal/products/beacon/.trae/skills/beacon-truth",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.trae/skills/beacon-truth",
               "action": "created",
               "source_hash": "1b9800d58970c66eabd3a79aafbd840e24cbca7280534b3ad8a4e159fd61c5e0",
               "source_kind": "scheme_a_public_surface"
             },
             {
               "id": "beacon-design",
-              "path": "/Users/apple/Developer/Personal/products/beacon/.trae/skills/beacon-design",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.trae/skills/beacon-design",
               "action": "created",
               "source_hash": "4a25ffaed3d4550f4f0200f61ae443f62839cc2ec0eedba4217cfc6308000396",
               "source_kind": "scheme_a_public_surface"
             },
             {
               "id": "beacon-implement",
-              "path": "/Users/apple/Developer/Personal/products/beacon/.trae/skills/beacon-implement",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.trae/skills/beacon-implement",
               "action": "created",
               "source_hash": "9c45465eb3b227eaa7ab9b6bf3311c1ee2f51b863e7c3f4d914597ba53f82f83",
               "source_kind": "scheme_a_public_surface"
             },
             {
               "id": "beacon-qa",
-              "path": "/Users/apple/Developer/Personal/products/beacon/.trae/skills/beacon-qa",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.trae/skills/beacon-qa",
               "action": "created",
               "source_hash": "d9b02a512a757d48c5c66077a04fac8400cafb0f2d127275fd0fb71ba12eab28",
               "source_kind": "scheme_a_public_surface"
             },
             {
               "id": "beacon-release",
-              "path": "/Users/apple/Developer/Personal/products/beacon/.trae/skills/beacon-release",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.trae/skills/beacon-release",
               "action": "created",
               "source_hash": "eab85d2c6c49b5ecef3de84fc2d4452a4fae0f97222801c75d4a9d8efb7bedfc",
               "source_kind": "scheme_a_public_surface"
@@ -339,29 +339,29 @@
           ],
           "skipped": [],
           "removed": [
-            "/Users/apple/Developer/Personal/products/beacon/.trae/skills/beacon-design",
-            "/Users/apple/Developer/Personal/products/beacon/.trae/skills/beacon-implement",
-            "/Users/apple/Developer/Personal/products/beacon/.trae/skills/beacon-qa",
-            "/Users/apple/Developer/Personal/products/beacon/.trae/skills/beacon-release",
-            "/Users/apple/Developer/Personal/products/beacon/.trae/skills/beacon-truth"
+            "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.trae/skills/beacon-design",
+            "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.trae/skills/beacon-implement",
+            "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.trae/skills/beacon-qa",
+            "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.trae/skills/beacon-release",
+            "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.trae/skills/beacon-truth"
           ],
           "warnings": [],
           "state": {
-            "path": "/Users/apple/Developer/Personal/products/beacon/.beacon/state/agent-surfaces.json",
+            "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.beacon/state/agent-surfaces.json",
             "action": "updated",
             "changed": true
           },
           "rules": {
-            "path": "/Users/apple/Developer/Personal/products/beacon/.trae/rules/project_rules.md",
+            "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.trae/rules/project_rules.md",
             "action": "updated",
             "merge_mode": "replaced",
             "changed": true
           }
         },
         "verify_result": {
-          "project_root": "/Users/apple/Developer/Personal/products/beacon",
+          "project_root": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree",
           "agent": "trae",
-          "surface_root": "/Users/apple/Developer/Personal/products/beacon/.trae/skills",
+          "surface_root": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.trae/skills",
           "runtime_version": "v1.6.10",
           "docs_version": "v1.6.10",
           "taxonomy_version": "v1.6.0",
@@ -380,7 +380,7 @@
               "name": "surface_root_present",
               "status": "pass",
               "details": {
-                "path": "/Users/apple/Developer/Personal/products/beacon/.trae/skills",
+                "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.trae/skills",
                 "exists": true
               }
             },
@@ -411,7 +411,7 @@
               "name": "agent_rules_managed_block",
               "status": "pass",
               "details": {
-                "path": "/Users/apple/Developer/Personal/products/beacon/.trae/rules/project_rules.md",
+                "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.trae/rules/project_rules.md",
                 "exists": true
               }
             },
@@ -419,7 +419,7 @@
               "name": "agent_surface_state_projection",
               "status": "pass",
               "details": {
-                "path": "/Users/apple/Developer/Personal/products/beacon/.beacon/state/agent-surfaces.json",
+                "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.beacon/state/agent-surfaces.json",
                 "exists": true
               }
             }
@@ -430,81 +430,75 @@
         "setup_status": "PASS",
         "verify_status": "PASS",
         "setup_result": {
-          "project_root": "/Users/apple/Developer/Personal/products/beacon",
+          "project_root": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree",
           "agent": "claude",
-          "surface_root": "/Users/apple/Developer/Personal/products/beacon/.claude/skills",
+          "surface_root": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.claude/skills",
           "rules_path": "",
           "installed": [
             {
               "id": "beacon-goal",
-              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-goal",
-              "action": "updated",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.claude/skills/beacon-goal",
+              "action": "created",
               "source_hash": "a9bb175cade700ddc19a51c08e3b9ed9a2412ce9ee1e464f02f8bc31141ad7a6",
               "source_kind": "scheme_a_public_surface"
             },
             {
               "id": "beacon-plan",
-              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-plan",
-              "action": "unchanged",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.claude/skills/beacon-plan",
+              "action": "created",
               "source_hash": "3ac42f1d1264c8165dcacf5f39e184db42a72a76412c225a21d2f48666af2010",
               "source_kind": "scheme_a_public_surface"
             },
             {
               "id": "beacon-truth",
-              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-truth",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.claude/skills/beacon-truth",
               "action": "created",
               "source_hash": "1b9800d58970c66eabd3a79aafbd840e24cbca7280534b3ad8a4e159fd61c5e0",
               "source_kind": "scheme_a_public_surface"
             },
             {
               "id": "beacon-design",
-              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-design",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.claude/skills/beacon-design",
               "action": "created",
               "source_hash": "4a25ffaed3d4550f4f0200f61ae443f62839cc2ec0eedba4217cfc6308000396",
               "source_kind": "scheme_a_public_surface"
             },
             {
               "id": "beacon-implement",
-              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-implement",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.claude/skills/beacon-implement",
               "action": "created",
               "source_hash": "9c45465eb3b227eaa7ab9b6bf3311c1ee2f51b863e7c3f4d914597ba53f82f83",
               "source_kind": "scheme_a_public_surface"
             },
             {
               "id": "beacon-qa",
-              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-qa",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.claude/skills/beacon-qa",
               "action": "created",
               "source_hash": "d9b02a512a757d48c5c66077a04fac8400cafb0f2d127275fd0fb71ba12eab28",
               "source_kind": "scheme_a_public_surface"
             },
             {
               "id": "beacon-release",
-              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-release",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.claude/skills/beacon-release",
               "action": "created",
               "source_hash": "eab85d2c6c49b5ecef3de84fc2d4452a4fae0f97222801c75d4a9d8efb7bedfc",
               "source_kind": "scheme_a_public_surface"
             }
           ],
           "skipped": [],
-          "removed": [
-            "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-design",
-            "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-implement",
-            "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-qa",
-            "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-release",
-            "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-truth"
-          ],
+          "removed": [],
           "warnings": [],
           "state": {
-            "path": "/Users/apple/Developer/Personal/products/beacon/.beacon/state/agent-surfaces.json",
+            "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.beacon/state/agent-surfaces.json",
             "action": "updated",
             "changed": true
           },
           "rules": null
         },
         "verify_result": {
-          "project_root": "/Users/apple/Developer/Personal/products/beacon",
+          "project_root": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree",
           "agent": "claude",
-          "surface_root": "/Users/apple/Developer/Personal/products/beacon/.claude/skills",
+          "surface_root": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.claude/skills",
           "runtime_version": "v1.6.10",
           "docs_version": "v1.6.10",
           "taxonomy_version": "v1.6.0",
@@ -523,7 +517,7 @@
               "name": "surface_root_present",
               "status": "pass",
               "details": {
-                "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills",
+                "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.claude/skills",
                 "exists": true
               }
             },
@@ -554,7 +548,7 @@
               "name": "agent_surface_state_projection",
               "status": "pass",
               "details": {
-                "path": "/Users/apple/Developer/Personal/products/beacon/.beacon/state/agent-surfaces.json",
+                "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.beacon/state/agent-surfaces.json",
                 "exists": true
               }
             }
@@ -565,56 +559,56 @@
         "setup_status": "PASS",
         "verify_status": "PASS",
         "setup_result": {
-          "project_root": "/Users/apple/Developer/Personal/products/beacon",
+          "project_root": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree",
           "agent": "codex",
-          "surface_root": "/Users/apple/Developer/Personal/products/beacon/.agents/skills",
+          "surface_root": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.agents/skills",
           "rules_path": "",
           "installed": [
             {
               "id": "beacon-goal",
-              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-goal",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.agents/skills/beacon-goal",
               "action": "unchanged",
               "source_hash": "a9bb175cade700ddc19a51c08e3b9ed9a2412ce9ee1e464f02f8bc31141ad7a6",
               "source_kind": "scheme_a_public_surface"
             },
             {
               "id": "beacon-plan",
-              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-plan",
-              "action": "unchanged",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.agents/skills/beacon-plan",
+              "action": "updated",
               "source_hash": "3ac42f1d1264c8165dcacf5f39e184db42a72a76412c225a21d2f48666af2010",
               "source_kind": "scheme_a_public_surface"
             },
             {
               "id": "beacon-truth",
-              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-truth",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.agents/skills/beacon-truth",
               "action": "created",
               "source_hash": "1b9800d58970c66eabd3a79aafbd840e24cbca7280534b3ad8a4e159fd61c5e0",
               "source_kind": "scheme_a_public_surface"
             },
             {
               "id": "beacon-design",
-              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-design",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.agents/skills/beacon-design",
               "action": "created",
               "source_hash": "4a25ffaed3d4550f4f0200f61ae443f62839cc2ec0eedba4217cfc6308000396",
               "source_kind": "scheme_a_public_surface"
             },
             {
               "id": "beacon-implement",
-              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-implement",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.agents/skills/beacon-implement",
               "action": "created",
               "source_hash": "9c45465eb3b227eaa7ab9b6bf3311c1ee2f51b863e7c3f4d914597ba53f82f83",
               "source_kind": "scheme_a_public_surface"
             },
             {
               "id": "beacon-qa",
-              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-qa",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.agents/skills/beacon-qa",
               "action": "created",
               "source_hash": "d9b02a512a757d48c5c66077a04fac8400cafb0f2d127275fd0fb71ba12eab28",
               "source_kind": "scheme_a_public_surface"
             },
             {
               "id": "beacon-release",
-              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-release",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.agents/skills/beacon-release",
               "action": "created",
               "source_hash": "eab85d2c6c49b5ecef3de84fc2d4452a4fae0f97222801c75d4a9d8efb7bedfc",
               "source_kind": "scheme_a_public_surface"
@@ -622,24 +616,24 @@
           ],
           "skipped": [],
           "removed": [
-            "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-design",
-            "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-implement",
-            "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-qa",
-            "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-release",
-            "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-truth"
+            "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.agents/skills/beacon-design",
+            "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.agents/skills/beacon-implement",
+            "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.agents/skills/beacon-qa",
+            "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.agents/skills/beacon-release",
+            "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.agents/skills/beacon-truth"
           ],
           "warnings": [],
           "state": {
-            "path": "/Users/apple/Developer/Personal/products/beacon/.beacon/state/agent-surfaces.json",
+            "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.beacon/state/agent-surfaces.json",
             "action": "updated",
             "changed": true
           },
           "rules": null
         },
         "verify_result": {
-          "project_root": "/Users/apple/Developer/Personal/products/beacon",
+          "project_root": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree",
           "agent": "codex",
-          "surface_root": "/Users/apple/Developer/Personal/products/beacon/.agents/skills",
+          "surface_root": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.agents/skills",
           "runtime_version": "v1.6.10",
           "docs_version": "v1.6.10",
           "taxonomy_version": "v1.6.0",
@@ -658,7 +652,7 @@
               "name": "surface_root_present",
               "status": "pass",
               "details": {
-                "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills",
+                "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.agents/skills",
                 "exists": true
               }
             },
@@ -689,7 +683,7 @@
               "name": "agent_surface_state_projection",
               "status": "pass",
               "details": {
-                "path": "/Users/apple/Developer/Personal/products/beacon/.beacon/state/agent-surfaces.json",
+                "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.beacon/state/agent-surfaces.json",
                 "exists": true
               }
             }
@@ -700,56 +694,56 @@
         "setup_status": "PASS",
         "verify_status": "PASS",
         "setup_result": {
-          "project_root": "/Users/apple/Developer/Personal/products/beacon",
+          "project_root": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree",
           "agent": "cursor",
-          "surface_root": "/Users/apple/Developer/Personal/products/beacon/.cursor/skills",
-          "rules_path": "/Users/apple/Developer/Personal/products/beacon/.cursor/rules/beacon-agent-surface.mdc",
+          "surface_root": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.cursor/skills",
+          "rules_path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.cursor/rules/beacon-agent-surface.mdc",
           "installed": [
             {
               "id": "beacon-goal",
-              "path": "/Users/apple/Developer/Personal/products/beacon/.cursor/skills/beacon-goal",
-              "action": "updated",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.cursor/skills/beacon-goal",
+              "action": "unchanged",
               "source_hash": "a9bb175cade700ddc19a51c08e3b9ed9a2412ce9ee1e464f02f8bc31141ad7a6",
               "source_kind": "scheme_a_public_surface"
             },
             {
               "id": "beacon-plan",
-              "path": "/Users/apple/Developer/Personal/products/beacon/.cursor/skills/beacon-plan",
-              "action": "unchanged",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.cursor/skills/beacon-plan",
+              "action": "updated",
               "source_hash": "3ac42f1d1264c8165dcacf5f39e184db42a72a76412c225a21d2f48666af2010",
               "source_kind": "scheme_a_public_surface"
             },
             {
               "id": "beacon-truth",
-              "path": "/Users/apple/Developer/Personal/products/beacon/.cursor/skills/beacon-truth",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.cursor/skills/beacon-truth",
               "action": "created",
               "source_hash": "1b9800d58970c66eabd3a79aafbd840e24cbca7280534b3ad8a4e159fd61c5e0",
               "source_kind": "scheme_a_public_surface"
             },
             {
               "id": "beacon-design",
-              "path": "/Users/apple/Developer/Personal/products/beacon/.cursor/skills/beacon-design",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.cursor/skills/beacon-design",
               "action": "created",
               "source_hash": "4a25ffaed3d4550f4f0200f61ae443f62839cc2ec0eedba4217cfc6308000396",
               "source_kind": "scheme_a_public_surface"
             },
             {
               "id": "beacon-implement",
-              "path": "/Users/apple/Developer/Personal/products/beacon/.cursor/skills/beacon-implement",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.cursor/skills/beacon-implement",
               "action": "created",
               "source_hash": "9c45465eb3b227eaa7ab9b6bf3311c1ee2f51b863e7c3f4d914597ba53f82f83",
               "source_kind": "scheme_a_public_surface"
             },
             {
               "id": "beacon-qa",
-              "path": "/Users/apple/Developer/Personal/products/beacon/.cursor/skills/beacon-qa",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.cursor/skills/beacon-qa",
               "action": "created",
               "source_hash": "d9b02a512a757d48c5c66077a04fac8400cafb0f2d127275fd0fb71ba12eab28",
               "source_kind": "scheme_a_public_surface"
             },
             {
               "id": "beacon-release",
-              "path": "/Users/apple/Developer/Personal/products/beacon/.cursor/skills/beacon-release",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.cursor/skills/beacon-release",
               "action": "created",
               "source_hash": "eab85d2c6c49b5ecef3de84fc2d4452a4fae0f97222801c75d4a9d8efb7bedfc",
               "source_kind": "scheme_a_public_surface"
@@ -757,29 +751,29 @@
           ],
           "skipped": [],
           "removed": [
-            "/Users/apple/Developer/Personal/products/beacon/.cursor/skills/beacon-design",
-            "/Users/apple/Developer/Personal/products/beacon/.cursor/skills/beacon-implement",
-            "/Users/apple/Developer/Personal/products/beacon/.cursor/skills/beacon-qa",
-            "/Users/apple/Developer/Personal/products/beacon/.cursor/skills/beacon-release",
-            "/Users/apple/Developer/Personal/products/beacon/.cursor/skills/beacon-truth"
+            "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.cursor/skills/beacon-design",
+            "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.cursor/skills/beacon-implement",
+            "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.cursor/skills/beacon-qa",
+            "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.cursor/skills/beacon-release",
+            "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.cursor/skills/beacon-truth"
           ],
           "warnings": [],
           "state": {
-            "path": "/Users/apple/Developer/Personal/products/beacon/.beacon/state/agent-surfaces.json",
+            "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.beacon/state/agent-surfaces.json",
             "action": "updated",
             "changed": true
           },
           "rules": {
-            "path": "/Users/apple/Developer/Personal/products/beacon/.cursor/rules/beacon-agent-surface.mdc",
+            "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.cursor/rules/beacon-agent-surface.mdc",
             "action": "updated",
             "merge_mode": "replaced",
             "changed": true
           }
         },
         "verify_result": {
-          "project_root": "/Users/apple/Developer/Personal/products/beacon",
+          "project_root": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree",
           "agent": "cursor",
-          "surface_root": "/Users/apple/Developer/Personal/products/beacon/.cursor/skills",
+          "surface_root": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.cursor/skills",
           "runtime_version": "v1.6.10",
           "docs_version": "v1.6.10",
           "taxonomy_version": "v1.6.0",
@@ -798,7 +792,7 @@
               "name": "surface_root_present",
               "status": "pass",
               "details": {
-                "path": "/Users/apple/Developer/Personal/products/beacon/.cursor/skills",
+                "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.cursor/skills",
                 "exists": true
               }
             },
@@ -829,7 +823,7 @@
               "name": "agent_rules_managed_block",
               "status": "pass",
               "details": {
-                "path": "/Users/apple/Developer/Personal/products/beacon/.cursor/rules/beacon-agent-surface.mdc",
+                "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.cursor/rules/beacon-agent-surface.mdc",
                 "exists": true
               }
             },
@@ -837,7 +831,7 @@
               "name": "agent_surface_state_projection",
               "status": "pass",
               "details": {
-                "path": "/Users/apple/Developer/Personal/products/beacon/.beacon/state/agent-surfaces.json",
+                "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.beacon/state/agent-surfaces.json",
                 "exists": true
               }
             },
@@ -845,7 +839,7 @@
               "name": "workspace_admission_hook",
               "status": "pass",
               "details": {
-                "script": "/Users/apple/Developer/Personal/products/beacon/.cursor/hooks/beacon-workspace-admission-gate.py",
+                "script": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.cursor/hooks/beacon-workspace-admission-gate.py",
                 "script_exists": true,
                 "registered_in_hooks_json": true
               }
@@ -857,56 +851,56 @@
         "setup_status": "PASS",
         "verify_status": "PASS",
         "setup_result": {
-          "project_root": "/Users/apple/Developer/Personal/products/beacon",
+          "project_root": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree",
           "agent": "windsurf",
-          "surface_root": "/Users/apple/Developer/Personal/products/beacon/.windsurf/skills",
-          "rules_path": "/Users/apple/Developer/Personal/products/beacon/.windsurf/workflows/beacon-agent-surface.md",
+          "surface_root": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.windsurf/skills",
+          "rules_path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.windsurf/workflows/beacon-agent-surface.md",
           "installed": [
             {
               "id": "beacon-goal",
-              "path": "/Users/apple/Developer/Personal/products/beacon/.windsurf/skills/beacon-goal",
-              "action": "updated",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.windsurf/skills/beacon-goal",
+              "action": "created",
               "source_hash": "a9bb175cade700ddc19a51c08e3b9ed9a2412ce9ee1e464f02f8bc31141ad7a6",
               "source_kind": "scheme_a_public_surface"
             },
             {
               "id": "beacon-plan",
-              "path": "/Users/apple/Developer/Personal/products/beacon/.windsurf/skills/beacon-plan",
-              "action": "unchanged",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.windsurf/skills/beacon-plan",
+              "action": "updated",
               "source_hash": "3ac42f1d1264c8165dcacf5f39e184db42a72a76412c225a21d2f48666af2010",
               "source_kind": "scheme_a_public_surface"
             },
             {
               "id": "beacon-truth",
-              "path": "/Users/apple/Developer/Personal/products/beacon/.windsurf/skills/beacon-truth",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.windsurf/skills/beacon-truth",
               "action": "created",
               "source_hash": "1b9800d58970c66eabd3a79aafbd840e24cbca7280534b3ad8a4e159fd61c5e0",
               "source_kind": "scheme_a_public_surface"
             },
             {
               "id": "beacon-design",
-              "path": "/Users/apple/Developer/Personal/products/beacon/.windsurf/skills/beacon-design",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.windsurf/skills/beacon-design",
               "action": "created",
               "source_hash": "4a25ffaed3d4550f4f0200f61ae443f62839cc2ec0eedba4217cfc6308000396",
               "source_kind": "scheme_a_public_surface"
             },
             {
               "id": "beacon-implement",
-              "path": "/Users/apple/Developer/Personal/products/beacon/.windsurf/skills/beacon-implement",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.windsurf/skills/beacon-implement",
               "action": "created",
               "source_hash": "9c45465eb3b227eaa7ab9b6bf3311c1ee2f51b863e7c3f4d914597ba53f82f83",
               "source_kind": "scheme_a_public_surface"
             },
             {
               "id": "beacon-qa",
-              "path": "/Users/apple/Developer/Personal/products/beacon/.windsurf/skills/beacon-qa",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.windsurf/skills/beacon-qa",
               "action": "created",
               "source_hash": "d9b02a512a757d48c5c66077a04fac8400cafb0f2d127275fd0fb71ba12eab28",
               "source_kind": "scheme_a_public_surface"
             },
             {
               "id": "beacon-release",
-              "path": "/Users/apple/Developer/Personal/products/beacon/.windsurf/skills/beacon-release",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.windsurf/skills/beacon-release",
               "action": "created",
               "source_hash": "eab85d2c6c49b5ecef3de84fc2d4452a4fae0f97222801c75d4a9d8efb7bedfc",
               "source_kind": "scheme_a_public_surface"
@@ -914,29 +908,29 @@
           ],
           "skipped": [],
           "removed": [
-            "/Users/apple/Developer/Personal/products/beacon/.windsurf/skills/beacon-design",
-            "/Users/apple/Developer/Personal/products/beacon/.windsurf/skills/beacon-implement",
-            "/Users/apple/Developer/Personal/products/beacon/.windsurf/skills/beacon-qa",
-            "/Users/apple/Developer/Personal/products/beacon/.windsurf/skills/beacon-release",
-            "/Users/apple/Developer/Personal/products/beacon/.windsurf/skills/beacon-truth"
+            "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.windsurf/skills/beacon-design",
+            "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.windsurf/skills/beacon-implement",
+            "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.windsurf/skills/beacon-qa",
+            "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.windsurf/skills/beacon-release",
+            "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.windsurf/skills/beacon-truth"
           ],
           "warnings": [],
           "state": {
-            "path": "/Users/apple/Developer/Personal/products/beacon/.beacon/state/agent-surfaces.json",
+            "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.beacon/state/agent-surfaces.json",
             "action": "updated",
             "changed": true
           },
           "rules": {
-            "path": "/Users/apple/Developer/Personal/products/beacon/.windsurf/workflows/beacon-agent-surface.md",
+            "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.windsurf/workflows/beacon-agent-surface.md",
             "action": "updated",
             "merge_mode": "replaced",
             "changed": true
           }
         },
         "verify_result": {
-          "project_root": "/Users/apple/Developer/Personal/products/beacon",
+          "project_root": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree",
           "agent": "windsurf",
-          "surface_root": "/Users/apple/Developer/Personal/products/beacon/.windsurf/skills",
+          "surface_root": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.windsurf/skills",
           "runtime_version": "v1.6.10",
           "docs_version": "v1.6.10",
           "taxonomy_version": "v1.6.0",
@@ -955,7 +949,7 @@
               "name": "surface_root_present",
               "status": "pass",
               "details": {
-                "path": "/Users/apple/Developer/Personal/products/beacon/.windsurf/skills",
+                "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.windsurf/skills",
                 "exists": true
               }
             },
@@ -986,7 +980,7 @@
               "name": "agent_rules_managed_block",
               "status": "pass",
               "details": {
-                "path": "/Users/apple/Developer/Personal/products/beacon/.windsurf/workflows/beacon-agent-surface.md",
+                "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.windsurf/workflows/beacon-agent-surface.md",
                 "exists": true
               }
             },
@@ -994,7 +988,7 @@
               "name": "agent_surface_state_projection",
               "status": "pass",
               "details": {
-                "path": "/Users/apple/Developer/Personal/products/beacon/.beacon/state/agent-surfaces.json",
+                "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.beacon/state/agent-surfaces.json",
                 "exists": true
               }
             }
@@ -1030,18 +1024,18 @@
         ],
         "runtime_truth_runtime_version": "v1.6.10",
         "runtime_truth_current_release_line": "v1.6.10",
-        "onboarding_docs_version": "v1.6.10",
-        "onboarding_runtime_version": "v1.6.10",
+        "onboarding_docs_version": "v1.6.4",
+        "onboarding_runtime_version": "v1.6.6",
         "context_versions": {
-          "AGENTS.md": "v1.6.10",
-          "CLAUDE.md": "v1.6.10"
+          "AGENTS.md": "v1.6.9",
+          "CLAUDE.md": "v1.6.9"
         },
         "context_docs_versions": {
-          "AGENTS.md": "v1.6.10",
-          "CLAUDE.md": "v1.6.10"
+          "AGENTS.md": "v1.6.9",
+          "CLAUDE.md": "v1.6.9"
         },
-        "context_managed_version": "v1.6.10",
-        "context_docs_version": "v1.6.10",
+        "context_managed_version": "v1.6.9",
+        "context_docs_version": "v1.6.9",
         "context_version_consistent": true,
         "context_docs_version_consistent": true,
         "available_docs_versions": [
@@ -1060,7 +1054,6 @@
           "v1.6.2",
           "v1.6.3",
           "v1.6.4",
-          "v1.6.5",
           "v1.6.6",
           "v1.6.7",
           "v1.6.8",
@@ -1145,9 +1138,6 @@
             "v1.6.4": {
               "status": "historical_release"
             },
-            "v1.6.5": {
-              "status": "historical_release"
-            },
             "v1.6.6": {
               "status": "historical_release"
             },
@@ -1167,6 +1157,9 @@
               "status": "planning_only"
             },
             "v1.5.0": {
+              "status": "historical_release"
+            },
+            "v1.6.5": {
               "status": "historical_release"
             },
             "v1.0.0": {
@@ -1360,17 +1353,17 @@
           "requested_version": "v1.6.10",
           "resolved_version": "v1.6.10",
           "docs_source": "explicit",
-          "status": "pass",
-          "reason_code": "",
-          "message": "",
-          "recommended_version": "v1.6.10",
+          "status": "blocked",
+          "reason_code": "context_version_mismatch",
+          "message": "requested version v1.6.10 conflicts with context-managed version v1.6.4. Use --version v1.6.4 or set BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 if the drift is intentional.",
+          "recommended_version": "v1.6.4",
           "signals": {
-            "context_marker": "v1.6.10",
-            "context_docs_marker": "v1.6.10",
-            "onboarding_docs": "v1.6.10",
+            "context_marker": "v1.6.9",
+            "context_docs_marker": "v1.6.9",
+            "onboarding_docs": "v1.6.4",
             "git_branch": ""
           },
-          "git_branch": "main",
+          "git_branch": "HEAD",
           "override_enabled": false,
           "override_env": "BEACON_ALLOW_CONTEXT_VERSION_DRIFT"
         }
@@ -1442,7 +1435,7 @@
         "source_kind": "canonical_file"
       },
       "result": {
-        "project_root": "/Users/apple/Developer/Personal/products/beacon",
+        "project_root": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree",
         "runtime_version": "v1.6.10",
         "docs_version": "v1.6.10",
         "dry_run": false,
@@ -1450,25 +1443,25 @@
         "actions": [
           {
             "file": "CLAUDE.md",
-            "path": "/Users/apple/Developer/Personal/products/beacon/CLAUDE.md",
+            "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/CLAUDE.md",
             "force": true,
             "merge_mode": "replaced",
             "action": "updated",
             "changed": true,
-            "backup_path": "/Users/apple/Developer/Personal/products/beacon/CLAUDE.md.bak-20260723024902"
+            "backup_path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/CLAUDE.md.bak-20260724050702"
           },
           {
             "file": "AGENTS.md",
-            "path": "/Users/apple/Developer/Personal/products/beacon/AGENTS.md",
+            "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/AGENTS.md",
             "force": true,
             "merge_mode": "replaced",
             "action": "updated",
             "changed": true,
-            "backup_path": "/Users/apple/Developer/Personal/products/beacon/AGENTS.md.bak-20260723024902"
+            "backup_path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/AGENTS.md.bak-20260724050702"
           },
           {
             "file": "global-boundaries.md",
-            "path": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/global-boundaries.md",
+            "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/docs/beacon/global-boundaries.md",
             "force": false,
             "merge_mode": "copied",
             "action": "unchanged",
@@ -1482,7 +1475,7 @@
             "merge_mode": "replaced",
             "action": "updated",
             "changed": true,
-            "backup_path": "/Users/apple/Developer/Personal/products/beacon/.gitignore.bak-20260723024902"
+            "backup_path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.gitignore.bak-20260724050702"
           },
           {
             "file": ".beacon/state/project-onboarding.json",
@@ -1553,7 +1546,6 @@
           "v1.6.2",
           "v1.6.3",
           "v1.6.4",
-          "v1.6.5",
           "v1.6.6",
           "v1.6.7",
           "v1.6.8",
@@ -1638,9 +1630,6 @@
             "v1.6.4": {
               "status": "historical_release"
             },
-            "v1.6.5": {
-              "status": "historical_release"
-            },
             "v1.6.6": {
               "status": "historical_release"
             },
@@ -1660,6 +1649,9 @@
               "status": "planning_only"
             },
             "v1.5.0": {
+              "status": "historical_release"
+            },
+            "v1.6.5": {
               "status": "historical_release"
             },
             "v1.0.0": {
@@ -1863,7 +1855,7 @@
             "onboarding_docs": "v1.6.10",
             "git_branch": ""
           },
-          "git_branch": "main",
+          "git_branch": "HEAD",
           "override_enabled": false,
           "override_env": "BEACON_ALLOW_CONTEXT_VERSION_DRIFT"
         }
@@ -1935,7 +1927,7 @@
         "source_kind": "canonical_file"
       },
       "result": {
-        "project_root": "/Users/apple/Developer/Personal/products/beacon",
+        "project_root": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree",
         "runtime_version": "v1.6.10",
         "strict": true,
         "status": "pass",
@@ -1967,7 +1959,7 @@
             "name": "global_boundaries_presence",
             "status": "pass",
             "details": {
-              "path": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/global-boundaries.md",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/docs/beacon/global-boundaries.md",
               "exists": true
             }
           },
@@ -1982,7 +1974,7 @@
             "name": "beacon_gitignore_policy",
             "status": "pass",
             "details": {
-              "path": "/Users/apple/Developer/Personal/products/beacon/.gitignore",
+              "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/.gitignore",
               "exists": true,
               "marker_integrity": "ok",
               "managed_version": "v1.6.10",
@@ -1994,7 +1986,7 @@
         ],
         "files": {
           "CLAUDE.md": {
-            "path": "/Users/apple/Developer/Personal/products/beacon/CLAUDE.md",
+            "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/CLAUDE.md",
             "exists": true,
             "marker_integrity": "ok",
             "managed_version": "v1.6.10",
@@ -2002,7 +1994,7 @@
             "version_drift": false
           },
           "AGENTS.md": {
-            "path": "/Users/apple/Developer/Personal/products/beacon/AGENTS.md",
+            "path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree/AGENTS.md",
             "exists": true,
             "marker_integrity": "ok",
             "managed_version": "v1.6.10",
@@ -2056,7 +2048,7 @@
     "agent_eval_release_hook": null,
     "commands_confirmed": [
       "python3 -m beacon.main doctor cleanup-legacy-beacon-skills --project-root . --version v1.6.10 --scope all --force --json",
-      "python3 -c \"from beacon.utils.agent_surface import install_global_agents_beacon_skills, verify_global_agents_beacon_skills, install_global_claude_beacon_skills, verify_global_claude_beacon_skills; install_global_agents_beacon_skills(beacon_root='.'); verify_global_agents_beacon_skills(); install_global_claude_beacon_skills(beacon_root='.'); verify_global_claude_beacon_skills()\"",
+      "python3 -c \"from beacon.utils.agent_surface import install_global_agents_beacon_skills, verify_global_agents_beacon_skills, install_global_claude_beacon_skills, verify_global_claude_beacon_skills; install_global_agents_beacon_skills(beacon_root='/Users/apple/Developer/Personal/products/beacon'); verify_global_agents_beacon_skills(); install_global_claude_beacon_skills(beacon_root='/Users/apple/Developer/Personal/products/beacon'); verify_global_claude_beacon_skills()\"",
       "python3 -m beacon.main doctor setup-agent-surface --project-root . --version v1.6.10 --agent codex --force --json",
       "python3 -m beacon.main doctor verify-agent-surface --project-root . --version v1.6.10 --agent codex --strict --json",
       "python3 -m beacon.main doctor setup-agent-surface --project-root . --version v1.6.10 --agent claude --force --json",
@@ -2067,10 +2059,49 @@
       "beacon --version",
       "beacon-cli --version",
       "beacon eval run --runner live --live-tier release_hook --split regression-core --version v1.6.10 --json"
-    ]
+    ],
+    "install_isolation": {
+      "mode": "temp_worktree",
+      "worktree_path": "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree",
+      "skill_source_root": "/Users/apple/Developer/Personal/products/beacon",
+      "worktree_add": {
+        "command": [
+          "git",
+          "worktree",
+          "add",
+          "--detach",
+          "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree",
+          "HEAD"
+        ],
+        "returncode": 0,
+        "stdout": "HEAD is now at 196b0a65 fix post-release global skill install to permanent root",
+        "stderr": "Preparing worktree (detached HEAD 196b0a65)\nUpdating files:  18% (5614/30685)\nUpdating files:  19% (5831/30685)\nUpdating files:  20% (6137/30685)\nUpdating files:  21% (6444/30685)\nUpdating files:  22% (6751/30685)\nUpdating files:  23% (7058/30685)\nUpdating files:  24% (7365/30685)\nUpdating files:  25% (7672/30685)\nUpdating files:  26% (7979/30685)\nUpdating files:  27% (8285/30685)\nUpdating files:  28% (8592/30685)\nUpdating files:  29% (8899/30685)\nUpdating files:  30% (9206/30685)\nUpdating files:  31% (9513/30685)\nUpdating files:  32% (9820/30685)\nUpdating files:  32% (10119/30685)\nUpdating files:  33% (10127/30685)\nUpdating files:  34% (10433/30685)\nUpdating files:  35% (10740/30685)\nUpdating files:  36% (11047/30685)\nUpdating files:  37% (11354/30685)\nUpdating files:  38% (11661/30685)\nUpdating files:  39% (11968/30685)\nUpdating files:  40% (12274/30685)\nUpdating files:  41% (12581/30685)\nUpdating files:  42% (12888/30685)\nUpdating files:  43% (13195/30685)\nUpdating files:  44% (13502/30685)\nUpdating files:  45% (13809/30685)\nUpdating files:  46% (14116/30685)\nUpdating files:  47% (14422/30685)\nUpdating files:  48% (14729/30685)\nUpdating files:  49% (15036/30685)\nUpdating files:  50% (15343/30685)\nUpdating files:  51% (15650/30685)\nUpdating files:  52% (15957/30685)\nUpdating files:  53% (16264/30685)\nUpdating files:  54% (16570/30685)\nUpdating files:  54% (16666/30685)\nUpdating files:  55% (16877/30685)\nUpdating files:  56% (17184/30685)\nUpdating files:  57% (17491/30685)\nUpdating files:  58% (17798/30685)\nUpdating files:  59% (18105/30685)\nUpdating files:  60% (18411/30685)\nUpdating files:  61% (18718/30685)\nUpdating files:  62% (19025/30685)\nUpdating files:  63% (19332/30685)\nUpdating files:  64% (19639/30685)\nUpdating files:  65% (19946/30685)\nUpdating files:  66% (20253/30685)\nUpdating files:  67% (20559/30685)\nUpdating files:  68% (20866/30685)\nUpdating files:  69% (21173/30685)\nUpdating files:  70% (21480/30685)\nUpdating files:  71% (21787/30685)\nUpdating files:  72% (22094/30685)\nUpdating files:  73% (22401/30685)\nUpdating files:  74% (22707/30685)\nUpdating files:  74% (22861/30685)\nUpdating files:  75% (23014/30685)\nUpdating files:  76% (23321/30685)\nUpdating files:  77% (23628/30685)\nUpdating files:  78% (23935/30685)\nUpdating files:  79% (24242/30685)\nUpdating files:  80% (24548/30685)\nUpdating files:  81% (24855/30685)\nUpdating files:  82% (25162/30685)\nUpdating files:  83% (25469/30685)\nUpdating files:  84% (25776/30685)\nUpdating files:  85% (26083/30685)\nUpdating files:  86% (26390/30685)\nUpdating files:  87% (26696/30685)\nUpdating files:  88% (27003/30685)\nUpdating files:  89% (27310/30685)\nUpdating files:  90% (27617/30685)\nUpdating files:  90% (27916/30685)\nUpdating files:  91% (27924/30685)\nUpdating files:  92% (28231/30685)\nUpdating files:  93% (28538/30685)\nUpdating files:  94% (28844/30685)\nUpdating files:  95% (29151/30685)\nUpdating files:  96% (29458/30685)\nUpdating files:  97% (29765/30685)\nUpdating files:  98% (30072/30685)\nUpdating files:  99% (30379/30685)\nUpdating files: 100% (30685/30685)\nUpdating files: 100% (30685/30685), done.",
+        "status": "pass"
+      },
+      "worktree_remove": {
+        "command": [
+          "git",
+          "worktree",
+          "remove",
+          "--force",
+          "/private/var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/beacon-post-release-local-install-rr3dbixq/worktree"
+        ],
+        "returncode": 0,
+        "stdout": "",
+        "stderr": "",
+        "status": "pass"
+      },
+      "original_root_snapshot_delta": {
+        "schema_version": "workspace-snapshot-delta.v1",
+        "tracked_dirty_added": [],
+        "tracked_dirty_removed": [],
+        "tracked_dirty_added_count": 0,
+        "tracked_dirty_removed_count": 0
+      }
+    }
   },
   "evidence_paths": {
-    "runtime": ".beacon/state/hooks/beacon-post-release-local-install/run-20260723T024859Z-ca28.json",
+    "runtime": ".beacon/state/hooks/beacon-post-release-local-install/run-20260724T050653Z-432b.json",
     "latest_read_model": "docs/beacon/.machine/hooks/beacon-post-release-local-install.latest.json"
   }
 }
