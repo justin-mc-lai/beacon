@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "feature": "workspace-clean-exit-gate-v1610",
+  "version": "v1.6.10",
+  "ac_id": "AC-WC-007",
+  "status": "pass",
+  "evidence_type": "implementation_evidence",
+  "evidence_refs": [
+    "beacon/utils/project_hooks.py",
+    "tests/test_v1610_workspace_clean_exit_gate.py::test_post_release_local_install_does_not_dirty_original_root"
+  ],
+  "commands": [
+    "python3 -m py_compile beacon/utils/workspace_clean.py beacon/utils/agent_trace.py beacon/utils/project_hooks.py beacon/commands/doctor.py beacon/commands/qa.py beacon/commands/release.py beacon/commands/truth.py tests/test_v1610_workspace_clean_exit_gate.py",
+    "python3 -m pytest -q tests/test_v1610_workspace_clean_exit_gate.py"
+  ],
+  "validated_at": "2026-07-24T03:05:25.278074+00:00",
+  "tracked_required": true
+}

@@ -1352,6 +1352,22 @@ def check(
             "support_evidence_only": True,
         }
     )
+    try:
+        from beacon.utils.workspace_clean import verify_clean_workspace
+
+        clean_workspace_gate = verify_clean_workspace(
+            project_root,
+            version=resolved_version,
+            feature="",
+            profile="release",
+            strict=False,
+        )
+    except Exception as _cw_exc:  # noqa: BLE001
+        clean_workspace_gate = {
+            "status": "blocked",
+            "reason_code": "clean_workspace_gate_error",
+            "error": str(_cw_exc),
+        }
     payload = _with_release_surface({
         "version": resolved_version,
         "runtime_version": resolved_runtime,
@@ -1366,6 +1382,7 @@ def check(
         "browser_release_blockers": browser_release_blockers,
         "recommended_command": recommended_command,
         "lifecycle_hook_advisory": lifecycle_hook_advisory,
+        "clean_workspace_gate": clean_workspace_gate,
     }, blocked=status == "blocked", recommended_command=recommended_command)
 
     if json_output:

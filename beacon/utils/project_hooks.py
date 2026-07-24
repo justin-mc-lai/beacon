@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
+import os
 import re
 import shlex
 import shutil
 import subprocess
+import tempfile
 from pathlib import Path
 from typing import Any
 
@@ -482,7 +484,7 @@ def _resolve_eval_version(project_root: Path, version: str) -> tuple[str, str | 
     return (resolved, None)
 
 
-def _run_beacon_post_release_local_install(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
+def _run_beacon_post_release_local_install_in_place(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
     from beacon.utils.agent_eval_kit import run_agent_eval
     from beacon.utils.doctor_orchestrator import (
         run_agent_surface_setup,
@@ -671,6 +673,74 @@ def _run_beacon_post_release_local_install(project_root: Path, *, version: str, 
             f"beacon eval run --runner live --live-tier release_hook --split regression-core --version {eval_version} --json",
         ],
     }
+
+
+def _git_command(project_root: Path, args: list[str]) -> dict[str, Any]:
+    completed = subprocess.run(["git", *args], cwd=project_root, text=True, capture_output=True, check=False)
+    return {
+        "command": ["git", *args],
+        "returncode": completed.returncode,
+        "stdout": completed.stdout.strip(),
+        "stderr": completed.stderr.strip(),
+        "status": "pass" if completed.returncode == 0 else "blocked",
+    }
+
+
+def _is_git_repository(project_root: Path) -> bool:
+    return _git_command(project_root, ["rev-parse", "--is-inside-work-tree"]).get("returncode") == 0
+
+
+def _run_beacon_post_release_local_install(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
+    from beacon.utils.workspace_clean import collect_workspace_snapshot, compare_snapshot_dirty_paths
+
+    before = collect_workspace_snapshot(project_root) if _is_git_repository(project_root) else {}
+    if not _is_git_repository(project_root) or str(os.environ.get("BEACON_POST_RELEASE_LOCAL_INSTALL_IN_PLACE", "")).lower() in {"1", "true", "yes"}:
+        result = _run_beacon_post_release_local_install_in_place(project_root, version=version, feature=feature)
+        after = collect_workspace_snapshot(project_root) if _is_git_repository(project_root) else {}
+        delta = compare_snapshot_dirty_paths(before, after) if before and after else {}
+        result["install_isolation"] = {
+            "mode": "in_place_non_git_or_explicit",
+            "original_root_snapshot_delta": delta,
+        }
+        if delta.get("tracked_dirty_added_count"):
+            result["status"] = "blocked"
+            result["blocked"] = True
+            result.setdefault("reason_codes", []).append("post_release_original_root_dirty")
+        return result
+
+    temp_parent = Path(tempfile.mkdtemp(prefix="beacon-post-release-local-install-")).resolve()
+    worktree_path = temp_parent / "worktree"
+    add = _git_command(project_root, ["worktree", "add", "--detach", str(worktree_path), "HEAD"])
+    if add.get("status") != "pass":
+        return {
+            "schema_version": "1.0",
+            "hook_id": BEACON_POST_RELEASE_LOCAL_INSTALL_HOOK_ID,
+            "version": version,
+            "feature": feature,
+            "status": "blocked",
+            "blocked": True,
+            "reason_codes": ["post_release_temp_worktree_failed"],
+            "install_isolation": {"mode": "temp_worktree", "worktree_path": str(worktree_path), "worktree_add": add},
+        }
+    try:
+        result = _run_beacon_post_release_local_install_in_place(worktree_path, version=version, feature=feature)
+    finally:
+        remove = _git_command(project_root, ["worktree", "remove", "--force", str(worktree_path)])
+        shutil.rmtree(temp_parent, ignore_errors=True)
+    after = collect_workspace_snapshot(project_root)
+    delta = compare_snapshot_dirty_paths(before, after)
+    result["install_isolation"] = {
+        "mode": "temp_worktree",
+        "worktree_path": str(worktree_path),
+        "worktree_add": add,
+        "worktree_remove": remove,
+        "original_root_snapshot_delta": delta,
+    }
+    if delta.get("tracked_dirty_added_count"):
+        result["status"] = "blocked"
+        result["blocked"] = True
+        result.setdefault("reason_codes", []).append("post_release_original_root_dirty")
+    return result
 
 
 def run_hook(

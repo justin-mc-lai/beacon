@@ -386,6 +386,22 @@ def review_cmd(
         feature=feature,
         write_report=write_report,
     )
+    try:
+        from beacon.utils.workspace_clean import verify_clean_workspace
+
+        payload["clean_workspace_gate"] = verify_clean_workspace(
+            project_root,
+            version=resolved,
+            feature=feature,
+            profile="truth",
+            strict=False,
+        )
+    except Exception as _cw_exc:  # noqa: BLE001
+        payload["clean_workspace_gate"] = {
+            "status": "blocked",
+            "reason_code": "clean_workspace_gate_error",
+            "error": str(_cw_exc),
+        }
     # A/B/C pass → Humanizer apply L0 (preserve machine fields); may re-run gate
     try:
         checks = payload.get("checks") if isinstance(payload.get("checks"), dict) else {}
@@ -414,6 +430,22 @@ def review_cmd(
                         feature=feature,
                         write_report=True,
                     )
+                    try:
+                        from beacon.utils.workspace_clean import verify_clean_workspace
+
+                        payload["clean_workspace_gate"] = verify_clean_workspace(
+                            project_root,
+                            version=resolved,
+                            feature=feature,
+                            profile="truth",
+                            strict=False,
+                        )
+                    except Exception as _cw_exc:  # noqa: BLE001
+                        payload["clean_workspace_gate"] = {
+                            "status": "blocked",
+                            "reason_code": "clean_workspace_gate_error",
+                            "error": str(_cw_exc),
+                        }
                     payload["humanizer_apply"] = applied
     except Exception as _hum_exc:  # noqa: BLE001
         payload["humanizer_apply"] = {"applied": False, "error": str(_hum_exc)}
@@ -549,4 +581,3 @@ def prose_check_cmd(
                 err=True,
             )
             raise typer.Exit(2)
-

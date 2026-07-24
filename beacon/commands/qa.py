@@ -2361,6 +2361,22 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         )
         payload["execution_surface"] = "qa-team"
         payload["context_isolation"] = payload["team_execution"].get("context_isolation", {})
+    try:
+        from beacon.utils.workspace_clean import verify_clean_workspace
+
+        payload["clean_workspace_gate"] = verify_clean_workspace(
+            project_root,
+            version=version,
+            feature=feature,
+            profile="qa",
+            strict=False,
+        )
+    except Exception as _cw_exc:  # noqa: BLE001
+        payload["clean_workspace_gate"] = {
+            "status": "blocked",
+            "reason_code": "clean_workspace_gate_error",
+            "error": str(_cw_exc),
+        }
     feature_status_file = write_feature_qa_status(project_root, feature=feature, payload=payload)
     manifest_refs.extend(
         [

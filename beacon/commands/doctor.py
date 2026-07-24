@@ -1629,6 +1629,41 @@ def quiet_worktree(
     raise typer.Exit(code=execution.exit_code)
 
 
+@app.command("verify-clean-workspace")
+def verify_clean_workspace_cmd(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("", "--version", "-v", help="Version context"),
+    feature: str = typer.Option("", "--feature", "-f", help="Feature context"),
+    profile: str = typer.Option("strict", "--profile", help="Gate profile: strict|qa|release|main-push"),
+    strict: bool = typer.Option(False, "--strict", help="Fail when any dirty entry remains, even if classified"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Verify full git status against the workspace clean-exit manifest."""
+    from beacon.utils.workspace_clean import verify_clean_workspace
+
+    root = Path(project_root) if project_root else Path.cwd()
+    payload = verify_clean_workspace(
+        root,
+        version=version,
+        feature=feature,
+        profile=profile,
+        strict=strict or profile == "strict",
+    )
+    output = {
+        "schema_version": "2.0",
+        "action": "verify-clean-workspace",
+        "status": "BLOCKED" if payload.get("blocked") else "PASS",
+        "result": payload,
+    }
+    if json_output:
+        typer.echo(json.dumps(output, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"Beacon Doctor Clean Workspace: {output['status']}")
+        typer.echo(f"reason_code: {payload.get('reason_code', '')}")
+        typer.echo(f"dirty_count: {payload.get('dirty_count', 0)}")
+    raise typer.Exit(code=2 if payload.get("blocked") else 0)
+
+
 if __name__ == "__main__":
     app()
 
@@ -2104,4 +2139,3 @@ def check_main_implement_commit_command(
         if payload.get("message"):
             typer.echo(payload["message"])
     raise typer.Exit(1 if payload.get("blocked") else 0)
-

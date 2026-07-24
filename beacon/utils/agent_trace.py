@@ -31,6 +31,26 @@ REASON_INVALID_LOOP_LAYER = "agent_trace_invalid_loop_layer"
 REASON_MISSING_REQUIRED_FIELD = "agent_trace_missing_required_field"
 REASON_MISSING = "agent_trace_missing"
 REASON_APPEND_FAILED = "agent_trace_append_failed"
+REASON_REDLINE_FIELD = "agent_trace_redline_field"
+
+FORBIDDEN_TRACE_FIELD_NAMES = frozenset(
+    {
+        "full_chat",
+        "messages",
+        "raw_messages",
+        "prompt",
+        "completion",
+        "token",
+        "tokens",
+        "access_token",
+        "api_key",
+        "cookie",
+        "cookies",
+        "env",
+        "private_key",
+        "secret",
+    }
+)
 
 
 def traces_dir(project_root: Path) -> Path:
@@ -122,9 +142,37 @@ def validate_event(event: dict[str, Any]) -> dict[str, Any]:
             }
     if not isinstance(event.get("payload"), dict):
         findings.append({"field": "payload", "message": "payload must be an object"})
+    else:
+        redline = redline_trace_payload(event.get("payload"))
+        if redline:
+            return {
+                "status": "fail",
+                "reason_code": REASON_REDLINE_FIELD,
+                "findings": redline,
+            }
     if findings:
         return {"status": "fail", "reason_code": REASON_MISSING_REQUIRED_FIELD, "findings": findings}
     return {"status": "pass", "reason_code": "", "findings": []}
+
+
+def redline_trace_payload(payload: Any, *, prefix: str = "payload") -> list[dict[str, Any]]:
+    findings: list[dict[str, Any]] = []
+    if isinstance(payload, dict):
+        for key, value in payload.items():
+            key_text = str(key)
+            key_lower = key_text.lower()
+            path = f"{prefix}.{key_text}"
+            if key_lower in FORBIDDEN_TRACE_FIELD_NAMES:
+                findings.append({"field": path, "message": "forbidden raw trace field"})
+                continue
+            if key_lower == "chat_body" and str(value or "").strip():
+                findings.append({"field": path, "message": "chat_body must be empty/null"})
+                continue
+            findings.extend(redline_trace_payload(value, prefix=path))
+    elif isinstance(payload, list):
+        for index, item in enumerate(payload):
+            findings.extend(redline_trace_payload(item, prefix=f"{prefix}[{index}]"))
+    return findings
 
 
 def normalize_event(event: dict[str, Any]) -> dict[str, Any]:
@@ -177,7 +225,7 @@ def read_trace_events(project_root: Path, run_id: str) -> list[dict[str, Any]]:
 def append_event(project_root: Path, event: dict[str, Any]) -> dict[str, Any]:
     validation = validate_event(event)
     if validation.get("status") != "pass":
-        return {"status": "blocked", **validation}
+        return {**validation, "status": "blocked"}
     run_id = str(event.get("run_id") or "")
     path = trace_path(project_root, run_id)
     try:
@@ -412,4 +460,3 @@ def record_lifecycle_stage_trace(
         out["status"] = "blocked"
         out.setdefault("reason_code", result.get("reason_code") or REASON_MISSING)
     return out
-

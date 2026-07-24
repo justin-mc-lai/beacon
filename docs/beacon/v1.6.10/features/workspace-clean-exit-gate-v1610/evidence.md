@@ -18,6 +18,20 @@ materials_status: current
 | code_governance_review | support_advisory | subagent: code-reviewer clean verifier patch set |
 | prior_incident | support_advisory | main dirty audit: 173 non-code dirty entries after source fixes |
 | truth_review_gate | support_advisory | docs/beacon/v1.6.10/.machine/execution/workspace-clean-exit-gate-v1610.truth-review-gate.json |
+| implement_AC-WC-001 | support_advisory | .beacon/evidence/implement/workspace-clean-exit-gate-v1610/AC-WC-001.json |
+| implement_AC-WC-002 | support_advisory | .beacon/evidence/implement/workspace-clean-exit-gate-v1610/AC-WC-002.json |
+| implement_AC-WC-003 | support_advisory | .beacon/evidence/implement/workspace-clean-exit-gate-v1610/AC-WC-003.json |
+| implement_AC-WC-004 | support_advisory | .beacon/evidence/implement/workspace-clean-exit-gate-v1610/AC-WC-004.json |
+| implement_AC-WC-005 | support_advisory | .beacon/evidence/implement/workspace-clean-exit-gate-v1610/AC-WC-005.json |
+| implement_AC-WC-006 | support_advisory | .beacon/evidence/implement/workspace-clean-exit-gate-v1610/AC-WC-006.json |
+| implement_AC-WC-007 | support_advisory | .beacon/evidence/implement/workspace-clean-exit-gate-v1610/AC-WC-007.json |
+| implement_AC-WC-008 | support_advisory | .beacon/evidence/implement/workspace-clean-exit-gate-v1610/AC-WC-008.json |
+| implement_AC-WC-009 | support_advisory | .beacon/evidence/implement/workspace-clean-exit-gate-v1610/AC-WC-009.json |
+| implement_AC-WC-010 | support_advisory | .beacon/evidence/implement/workspace-clean-exit-gate-v1610/AC-WC-010.json |
+| implement_AC-WC-011 | support_advisory | .beacon/evidence/implement/workspace-clean-exit-gate-v1610/AC-WC-011.json |
+| implement_AC-WC-012 | support_advisory | .beacon/evidence/implement/workspace-clean-exit-gate-v1610/AC-WC-012.json |
+| implement_GATES | support_advisory | .beacon/evidence/implement/workspace-clean-exit-gate-v1610/GATES.json |
+| implement_QA-MATRIX | support_advisory | .beacon/evidence/implement/workspace-clean-exit-gate-v1610/QA-MATRIX.json |
 
 ## Verifier boundary
 
