@@ -196,8 +196,8 @@ invalid: a→z
         "validate_feature_package",
         lambda *a, **k: {"status": "ok", "blocked": False, "reason_code": "", "diagnostics": []},
     )
-    monkeypatch.setattr(freeze_mod, "feature_package_authoritative", lambda *a, **k: True)
-    monkeypatch.setattr(freeze_mod, "feature_package_ready", lambda *a, **k: True)
+    # freeze.py no longer imports feature_package_authoritative/ready at module level
+    # (v1.6.10 always-on package authority + TRG precheck).
     monkeypatch.setattr(freeze_mod, "resolve_target_version", lambda root, v: version)
 
     code = freeze_mod._freeze_impl(slug, str(tmp_path), version, json_output=True)

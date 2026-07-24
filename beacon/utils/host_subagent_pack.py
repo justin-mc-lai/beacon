@@ -195,8 +195,11 @@ def _load_oss_body(role: str, host_runtime: str) -> str | None:
 
 def render_codex_toml(role: str, meta: dict[str, str], *, body_override: str | None = None) -> str:
     if body_override and body_override.strip().startswith("name"):
-        # Project VoltAgent toml: force read-only sandbox for plan roles + HARD block
+        # Project VoltAgent toml: inherit the parent Codex model, force read-only
+        # sandbox for plan roles, and append the Beacon HARD boundary.
         text = body_override
+        text = re.sub(r'(?m)^model\s*=\s*".*"\s*\n?', "", text)
+        text = re.sub(r'(?m)^model_reasoning_effort\s*=\s*".*"\s*\n?', "", text)
         text = re.sub(
             r'(?m)^sandbox_mode\s*=\s*".*"\s*$',
             'sandbox_mode = "read-only"',
@@ -224,8 +227,6 @@ def render_codex_toml(role: str, meta: dict[str, str], *, body_override: str | N
     return (
         f'name = "{role}"\n'
         f'description = "{desc}"\n'
-        f'model = "gpt-5.3-codex-spark"\n'
-        f'model_reasoning_effort = "medium"\n'
         f'sandbox_mode = "{sandbox}"\n'
         f"developer_instructions = \"\"\"\n"
         f"You are Beacon curated host subagent `{role}` (stage={meta.get('stage')}).\n"
@@ -326,6 +327,7 @@ def install_subagent_pack(
         "roles": selected,
         "written": written,
         "projected_from_oss": projected,
+        "model_policy": "inherit_parent",
         "cannot_complete_goal": True,
         "cannot_write_truth": True,
         "installed_at": now_iso(),
