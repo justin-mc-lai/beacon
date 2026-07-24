@@ -47,6 +47,7 @@ DIRTY_MANIFEST: dict[str, dict[str, Any]] = {
             ".beacon/gate-report.json",
             ".beacon/qa/status.json",
             ".beacon/release-gate-report.json",
+            ".beacon/transactions/**",
             ".beacon/evidence/implement/**",
             ".beacon/evidence/test-results/**",
             "docs/beacon/*/qa/**",

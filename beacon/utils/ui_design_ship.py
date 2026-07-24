@@ -145,8 +145,12 @@ def feature_requires_ux(
     if explicit_ux is not None:
         return bool(explicit_ux)
     fm = frontmatter if isinstance(frontmatter, dict) else {}
-    if any(_truthy(fm.get(k)) for k in ("ux_required", "ui_required", "design_required", "require_design")):
-        return True
+    # Honor explicit frontmatter false before scanning body tokens.
+    # Body scan uses short markers like "ui"/"ux" that match substrings in
+    # non-UI words such as "required" / "quiet".
+    for key in ("ux_required", "ui_required", "design_required", "require_design"):
+        if key in fm:
+            return _truthy(fm.get(key))
     if _truthy(fm.get("ux_deferred")) or str(fm.get("design_deferral") or "").strip():
         return False
     lowered = str(truth_markdown or "").lower()

@@ -10,6 +10,7 @@ from beacon.commands.qa import _formal_qa_evidence_refs
 from beacon.main import app
 from beacon.utils.agent_trace import append_event, build_event, record_lifecycle_stage_trace
 from beacon.utils.project_hooks import _run_beacon_post_release_local_install
+from beacon.utils.ui_design_ship import feature_requires_ux
 from beacon.utils.workspace_clean import (
     DIRTY_MANIFEST,
     artifact_role_for_path,
@@ -74,6 +75,7 @@ def test_dirty_manifest_roles_cover_required_classes() -> None:
     assert artifact_role_for_path(".beacon/gate-report.json") == "formal_evidence"
     assert artifact_role_for_path(".beacon/qa/status.json") == "formal_evidence"
     assert artifact_role_for_path(".beacon/release-gate-report.json") == "formal_evidence"
+    assert artifact_role_for_path(".beacon/transactions/qa-acceptance-feature.json") == "formal_evidence"
     assert artifact_role_for_path(".beacon/traces/run.jsonl") == "runtime_private"
 
 
@@ -252,6 +254,7 @@ def test_qa_acceptance_refs_exclude_runtime_private_paths() -> None:
         [
             ".beacon/qa/status.json",
             ".beacon/release-gate-report.json",
+            ".beacon/transactions/qa-acceptance-feature.json",
             ".beacon/raw-command-log.jsonl",
             ".beacon/memory/workflow-lifecycle.json",
             "docs/beacon/v1.6.10/.machine/execution/qa-acceptance-feature.json",
@@ -260,6 +263,14 @@ def test_qa_acceptance_refs_exclude_runtime_private_paths() -> None:
 
     assert ".beacon/qa/status.json" in refs
     assert ".beacon/release-gate-report.json" in refs
+    assert ".beacon/transactions/qa-acceptance-feature.json" in refs
     assert "docs/beacon/v1.6.10/.machine/execution/qa-acceptance-feature.json" in refs
     assert ".beacon/raw-command-log.jsonl" not in refs
     assert ".beacon/memory/workflow-lifecycle.json" not in refs
+
+
+def test_explicit_ux_required_false_not_overridden_by_body_tokens() -> None:
+    assert feature_requires_ux(
+        truth_markdown="---\nux_required: false\n---\n# Gate\nrequired quiet host projection\n",
+        frontmatter={"ux_required": "false"},
+    ) is False

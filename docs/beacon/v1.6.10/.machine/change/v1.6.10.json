@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0",
+  "version": "v1.6.10",
+  "status": "generated",
+  "artifact_role": "version_aggregate_projection",
+  "projection_role": {
+    "artifact_role": "version_aggregate_projection",
+    "truth_source": false,
+    "gate_source": false,
+    "lifecycle_stage": false,
+    "release_publish_action": false
+  },
+  "truth_authority": false,
+  "lifecycle_stage": false,
+  "release_publish_action": false,
+  "feature_count": 1,
+  "features": [
+    {
+      "feature": "workspace-clean-exit-gate-v1610",
+      "feature_slug": "workspace-clean-exit-gate-v1610",
+      "summary": "Maintains release-facing version aggregate projection guards so QA accepted features are included in version change scope before release check.",
+      "status": "completed"
+    }
+  ],
+  "implementation_order": {
+    "status": "analyzed",
+    "feature_count": 1,
+    "ordered_feature_slugs": [
+      "workspace-clean-exit-gate-v1610"
+    ],
+    "waves": [
+      {
+        "wave": 1,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "workspace-clean-exit-gate-v1610",
+            "feature_slug": "workspace-clean-exit-gate-v1610",
+            "depends_on_features": [],
+            "direct_delivery_services": [],
+            "writable_services": [],
+            "parallelizable": true,
+            "reason_code": "parallel_no_conflict"
+          }
+        ]
+      }
+    ]
+  },
+  "added": [
+    "[workspace-clean-exit-gate-v1610] Feature-level release projection input for QA accepted current feature",
+    "[workspace-clean-exit-gate-v1610] Version aggregate projection inclusion guard and repair metadata",
+    "[workspace-clean-exit-gate-v1610] Repair-only projection rebuild path for release preflight artifacts"
+  ],
+  "removed": [
+    "[workspace-clean-exit-gate-v1610] Manual-only version aggregate projection repair before release check"
+  ],
+  "fixed": [
+    "[workspace-clean-exit-gate-v1610] Release check can route missing current feature projection to an actionable repair path",
+    "[workspace-clean-exit-gate-v1610] Version aggregate projection remains a read model instead of requirement truth"
+  ],
+  "traceability_refs": [
+    "docs/beacon/v1.6.10/change/workspace-clean-exit-gate-v1610.md",
+    "docs/beacon/v1.6.10/prd/workspace-clean-exit-gate-v1610.md",
+    "docs/beacon/v1.6.10/user-story/workspace-clean-exit-gate-v1610.md",
+    "docs/beacon/v1.6.10/qa/test-cases/workspace-clean-exit-gate-v1610.md",
+    "docs/beacon/v1.6.10/.machine/execution/workspace-clean-exit-gate-v1610.revision.json",
+    "docs/beacon/v1.6.10/.machine/execution/qa-acceptance-workspace-clean-exit-gate-v1610.json",
+    "docs/beacon/v1.6.10/.machine/change/workspace-clean-exit-gate-v1610.json"
+  ],
+  "generated_at": "2026-07-24 11:55"
+}

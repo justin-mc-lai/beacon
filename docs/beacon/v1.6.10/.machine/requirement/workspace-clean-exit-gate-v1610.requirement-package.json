@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-24T03:35:17.376848+00:00",
+  "generated_at": "2026-07-24T04:53:58.434957+00:00",
   "feature": "workspace-clean-exit-gate-v1610",
   "feature_slug": "workspace-clean-exit-gate-v1610",
   "version": "v1.6.10",
@@ -19,7 +19,7 @@
   },
   "source_hashes": {
     "truth": "ab100f5419375998ba49cd553d8057116d8e52bea0b13e31fe3b0669728dd6d2",
-    "tests": "3030877d86ba963504b799c92fba00532d6afdc6020511dbe175271df8ce2143",
+    "tests": "369d3b51d6a2b9bb5cec4f3ddb4af24f1962955bbc6f0ede9e03f2694efc080a",
     "tasks": "543dec105d9e127cc6ac95a6022414245efbf9368292721656da7c3b6abb3ab5",
     "evidence": "09465120d96d3f04ea005c5e7d0503f01f99ecbb88315d153c87639f7ce35c27"
   },
@@ -115,7 +115,7 @@
       "tc_id": "TC-WC-001",
       "layer": "",
       "command": "`pytest -q tests/test_v1610_workspace_clean_exit_gate.py::test_verify_clean_workspace_classifies_full_git_status`",
-      "assertion": "full porcelain status is classified and unclassified dirty blocks",
+      "assertion": "happy path legal walk: full porcelain status is classified and unclassified dirty blocks",
       "evidence_path": ""
     },
     {
@@ -195,7 +195,7 @@
       "tc_id": "TC-WC-010",
       "layer": "",
       "command": "`pytest -q tests/test_v1610_workspace_clean_exit_gate.py::test_lifecycle_exits_attach_clean_gate_bundle`",
-      "assertion": "truth/freeze/qa/release/post-release profiles emit same clean gate schema",
+      "assertion": "happy path legal walk: truth/freeze/qa/release/post-release profiles emit same clean gate schema",
       "evidence_path": ""
     },
     {
@@ -211,7 +211,7 @@
       "tc_id": "TC-WC-012",
       "layer": "",
       "command": "`pytest -q tests/test_v1610_workspace_clean_exit_gate.py::test_clean_workspace_does_not_authorize_release`",
-      "assertion": "clean pass leaves release human confirmation required",
+      "assertion": "happy path legal walk: clean pass leaves release human confirmation required",
       "evidence_path": ""
     },
     {
@@ -219,7 +219,7 @@
       "tc_id": "TC-WC-013",
       "layer": "",
       "command": "`python3 -m pytest -q tests/test_v1610_workspace_clean_exit_gate.py`",
-      "assertion": "exec suite covers clean-workspace exit gate",
+      "assertion": "happy path legal walk: exec suite covers clean-workspace exit gate full path",
       "evidence_path": ""
     },
     {

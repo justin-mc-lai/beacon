@@ -4,12 +4,12 @@
 - feature: `workspace-clean-exit-gate-v1610`
 - revision_id: `R1`
 - verdict: `passed`
-- accepted_at: `2026-07-24T03:43:42.185684+00:00`
+- accepted_at: `2026-07-24T04:54:41.517435+00:00`
 - accepted_by: `qa`
 
 ## Summary
 - 可以进入 release 检查与收口。
-- source_command: `beacon qa run "workspace-clean-exit-gate-v1610" --project-root /Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.10/workspace-clean-exit-gate-v1610 --version v1.6.10`
+- source_command: `beacon qa run "workspace-clean-exit-gate-v1610" --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.10`
 
 ## Requirement Refs
 - `docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/truth.md`

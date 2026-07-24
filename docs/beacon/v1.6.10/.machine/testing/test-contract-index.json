@@ -1,0 +1,616 @@
+{
+  "schema_version": "1.0",
+  "contract_kind": "beacon_test_contract_index",
+  "version": "v1.6.10",
+  "runtime_line": "v1.6.10",
+  "runtime_release_line": "v1.6.10",
+  "docs_line": "v1.6.10",
+  "feature": "workspace-clean-exit-gate-v1610",
+  "feature_slug": "workspace-clean-exit-gate-v1610",
+  "feature_line_status": "current_runtime_release",
+  "truth_refs": {
+    "truth": "docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/truth.md",
+    "tests": "docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+    "tasks": "docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tasks.md",
+    "evidence": "docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/evidence.md",
+    "ac_matrix": "docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+    "story_state": "docs/beacon/v1.6.10/.machine/user-story/workspace-clean-exit-gate-v1610.json"
+  },
+  "source_hashes": {
+    "truth": "sha256:ab100f5419375998ba49cd553d8057116d8e52bea0b13e31fe3b0669728dd6d2",
+    "tests": "sha256:369d3b51d6a2b9bb5cec4f3ddb4af24f1962955bbc6f0ede9e03f2694efc080a",
+    "tasks": "sha256:543dec105d9e127cc6ac95a6022414245efbf9368292721656da7c3b6abb3ab5",
+    "evidence": "sha256:09465120d96d3f04ea005c5e7d0503f01f99ecbb88315d153c87639f7ce35c27",
+    "ac_matrix": "sha256:369d3b51d6a2b9bb5cec4f3ddb4af24f1962955bbc6f0ede9e03f2694efc080a",
+    "story_state": "sha256:97d5245a679634c806faf8ef79a954b32840d91c65f7450b1edaf07ec4c989ed"
+  },
+  "lanes": {
+    "feature_release_facing": [
+      {
+        "tc_id": "TC-WC-001",
+        "ac_id": "AC-WC-001",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "pytest -q tests/test_v1610_workspace_clean_exit_gate.py::test_verify_clean_workspace_classifies_full_git_status",
+        "assertion": "happy path legal walk: full porcelain status is classified and unclassified dirty blocks",
+        "evidence_path": ".beacon/evidence/qa-feature/workspace-clean-exit-gate-v1610/tc-wc-001/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-WC-002",
+        "ac_id": "AC-WC-002",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "pytest -q tests/test_v1610_workspace_clean_exit_gate.py::test_dirty_manifest_roles_cover_required_classes",
+        "assertion": "manifest exposes canonical_truth/formal_evidence/machine_projection/host_projection/runtime_private/forbidden",
+        "evidence_path": ".beacon/evidence/qa-feature/workspace-clean-exit-gate-v1610/tc-wc-002/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-WC-003",
+        "ac_id": "AC-WC-003",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "pytest -q tests/test_v1610_workspace_clean_exit_gate.py::test_formal_manifest_rejects_untracked_runtime_refs",
+        "assertion": "runtime hook evidence cannot satisfy formal release evidence",
+        "evidence_path": ".beacon/evidence/qa-feature/workspace-clean-exit-gate-v1610/tc-wc-003/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-WC-004",
+        "ac_id": "AC-WC-004",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "pytest -q tests/test_v1610_workspace_clean_exit_gate.py::test_task_evidence_promotion_gate",
+        "assertion": "checked task requires tracked evidence; unchecked existing evidence reports orphan_evidence_unpromoted",
+        "evidence_path": ".beacon/evidence/qa-feature/workspace-clean-exit-gate-v1610/tc-wc-004/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-WC-005",
+        "ac_id": "AC-WC-005",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "pytest -q tests/test_v1610_workspace_clean_exit_gate.py::test_agent_trace_redline_blocks_raw_chat_and_secrets",
+        "assertion": "forbidden trace fields return agent_trace_redline_field and no file is written",
+        "evidence_path": ".beacon/evidence/qa-feature/workspace-clean-exit-gate-v1610/tc-wc-005/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-WC-006",
+        "ac_id": "AC-WC-006",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "pytest -q tests/test_v1610_workspace_clean_exit_gate.py::test_trace_digest_is_release_safe_and_raw_trace_private",
+        "assertion": "raw trace is runtime_private; digest has redaction_status=pass and sha256",
+        "evidence_path": ".beacon/evidence/qa-feature/workspace-clean-exit-gate-v1610/tc-wc-006/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-WC-007",
+        "ac_id": "AC-WC-007",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "pytest -q tests/test_v1610_workspace_clean_exit_gate.py::test_post_release_local_install_does_not_dirty_original_root",
+        "assertion": "pre/post root snapshots match except ignored runtime state",
+        "evidence_path": ".beacon/evidence/qa-feature/workspace-clean-exit-gate-v1610/tc-wc-007/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-WC-008",
+        "ac_id": "AC-WC-008",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "pytest -q tests/test_v1610_workspace_clean_exit_gate.py::test_quiet_worktree_hidden_dirty_is_not_release_proof",
+        "assertion": "strict gate reports skip_worktree_hidden_dirty",
+        "evidence_path": ".beacon/evidence/qa-feature/workspace-clean-exit-gate-v1610/tc-wc-008/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-WC-017",
+        "ac_id": "AC-WC-008",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "pytest -q tests/test_v1610_workspace_clean_exit_gate.py::test_illegal_skip_worktree_transition_blocks_clean_proof",
+        "assertion": "illegal transition skip-worktree-hidden dirty → clean proof is blocked",
+        "evidence_path": ".beacon/evidence/qa-feature/workspace-clean-exit-gate-v1610/tc-wc-017/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-WC-009",
+        "ac_id": "AC-WC-009",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "pytest -q tests/test_v1610_workspace_clean_exit_gate.py::test_host_projection_requires_policy_or_surface_sync_commit",
+        "assertion": "host projection dirty blocks unless local-only or deterministic sync commit policy is satisfied",
+        "evidence_path": ".beacon/evidence/qa-feature/workspace-clean-exit-gate-v1610/tc-wc-009/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-WC-010",
+        "ac_id": "AC-WC-010",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "pytest -q tests/test_v1610_workspace_clean_exit_gate.py::test_lifecycle_exits_attach_clean_gate_bundle",
+        "assertion": "happy path legal walk: truth/freeze/qa/release/post-release profiles emit same clean gate schema",
+        "evidence_path": ".beacon/evidence/qa-feature/workspace-clean-exit-gate-v1610/tc-wc-010/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-WC-011",
+        "ac_id": "AC-WC-011",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "pytest -q tests/test_v1610_workspace_clean_exit_gate.py::test_main_push_profile_blocks_generator_dirty",
+        "assertion": "main-push blocks generator and unclassified dirty beyond staged business code",
+        "evidence_path": ".beacon/evidence/qa-feature/workspace-clean-exit-gate-v1610/tc-wc-011/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-WC-012",
+        "ac_id": "AC-WC-012",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "pytest -q tests/test_v1610_workspace_clean_exit_gate.py::test_clean_workspace_does_not_authorize_release",
+        "assertion": "happy path legal walk: clean pass leaves release human confirmation required",
+        "evidence_path": ".beacon/evidence/qa-feature/workspace-clean-exit-gate-v1610/tc-wc-012/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-WC-013",
+        "ac_id": "AC-WC-001..012",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest -q tests/test_v1610_workspace_clean_exit_gate.py",
+        "assertion": "happy path legal walk: exec suite covers clean-workspace exit gate full path",
+        "evidence_path": ".beacon/evidence/qa-feature/workspace-clean-exit-gate-v1610/tc-wc-013/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-WC-014",
+        "ac_id": "AC-WC-005, AC-WC-006",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "rg -n \"full_chat|agent_trace_redline_field|redaction_status\" beacon/utils/agent_trace.py beacon/utils/workspace_clean.py",
+        "assertion": "trace redline and digest contract present",
+        "evidence_path": ".beacon/evidence/qa-feature/workspace-clean-exit-gate-v1610/tc-wc-014/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-WC-015",
+        "ac_id": "AC-WC-007, AC-WC-010",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "rg -n \"verify_clean_workspace|snapshot\" beacon/utils/project_hooks.py beacon/commands/release.py beacon/commands/qa.py beacon/commands/truth.py",
+        "assertion": "lifecycle commands integrate clean gate",
+        "evidence_path": ".beacon/evidence/qa-feature/workspace-clean-exit-gate-v1610/tc-wc-015/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-WC-016",
+        "ac_id": "AC-WC-002, AC-WC-003",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "rg -n \"workspace-clean-manifest|formal_evidence|runtime_private\" docs/beacon/governance/workspace-clean-manifest.md beacon/utils/workspace_clean.py",
+        "assertion": "dirty manifest policy is codified",
+        "evidence_path": ".beacon/evidence/qa-feature/workspace-clean-exit-gate-v1610/tc-wc-016/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      }
+    ],
+    "current_runtime_contract": [],
+    "generated_surface_sync": [],
+    "compatibility_contract": [],
+    "legacy_snapshot": [],
+    "browser_runtime_admission": []
+  },
+  "lane_counts": {
+    "feature_release_facing": 17,
+    "current_runtime_contract": 0,
+    "generated_surface_sync": 0,
+    "compatibility_contract": 0,
+    "legacy_snapshot": 0,
+    "browser_runtime_admission": 0
+  },
+  "canonical_lanes": [
+    "feature_release_facing",
+    "current_runtime_contract",
+    "generated_surface_sync",
+    "compatibility_contract",
+    "legacy_snapshot",
+    "browser_runtime_admission"
+  ],
+  "test_refs": [
+    {
+      "tc_id": "TC-WC-001",
+      "ac_id": "AC-WC-001",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "pytest -q tests/test_v1610_workspace_clean_exit_gate.py::test_verify_clean_workspace_classifies_full_git_status",
+      "assertion": "happy path legal walk: full porcelain status is classified and unclassified dirty blocks",
+      "evidence_path": ".beacon/evidence/qa-feature/workspace-clean-exit-gate-v1610/tc-wc-001/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-WC-002",
+      "ac_id": "AC-WC-002",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "pytest -q tests/test_v1610_workspace_clean_exit_gate.py::test_dirty_manifest_roles_cover_required_classes",
+      "assertion": "manifest exposes canonical_truth/formal_evidence/machine_projection/host_projection/runtime_private/forbidden",
+      "evidence_path": ".beacon/evidence/qa-feature/workspace-clean-exit-gate-v1610/tc-wc-002/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-WC-003",
+      "ac_id": "AC-WC-003",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "pytest -q tests/test_v1610_workspace_clean_exit_gate.py::test_formal_manifest_rejects_untracked_runtime_refs",
+      "assertion": "runtime hook evidence cannot satisfy formal release evidence",
+      "evidence_path": ".beacon/evidence/qa-feature/workspace-clean-exit-gate-v1610/tc-wc-003/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-WC-004",
+      "ac_id": "AC-WC-004",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "pytest -q tests/test_v1610_workspace_clean_exit_gate.py::test_task_evidence_promotion_gate",
+      "assertion": "checked task requires tracked evidence; unchecked existing evidence reports orphan_evidence_unpromoted",
+      "evidence_path": ".beacon/evidence/qa-feature/workspace-clean-exit-gate-v1610/tc-wc-004/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-WC-005",
+      "ac_id": "AC-WC-005",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "pytest -q tests/test_v1610_workspace_clean_exit_gate.py::test_agent_trace_redline_blocks_raw_chat_and_secrets",
+      "assertion": "forbidden trace fields return agent_trace_redline_field and no file is written",
+      "evidence_path": ".beacon/evidence/qa-feature/workspace-clean-exit-gate-v1610/tc-wc-005/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-WC-006",
+      "ac_id": "AC-WC-006",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "pytest -q tests/test_v1610_workspace_clean_exit_gate.py::test_trace_digest_is_release_safe_and_raw_trace_private",
+      "assertion": "raw trace is runtime_private; digest has redaction_status=pass and sha256",
+      "evidence_path": ".beacon/evidence/qa-feature/workspace-clean-exit-gate-v1610/tc-wc-006/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-WC-007",
+      "ac_id": "AC-WC-007",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "pytest -q tests/test_v1610_workspace_clean_exit_gate.py::test_post_release_local_install_does_not_dirty_original_root",
+      "assertion": "pre/post root snapshots match except ignored runtime state",
+      "evidence_path": ".beacon/evidence/qa-feature/workspace-clean-exit-gate-v1610/tc-wc-007/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-WC-008",
+      "ac_id": "AC-WC-008",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "pytest -q tests/test_v1610_workspace_clean_exit_gate.py::test_quiet_worktree_hidden_dirty_is_not_release_proof",
+      "assertion": "strict gate reports skip_worktree_hidden_dirty",
+      "evidence_path": ".beacon/evidence/qa-feature/workspace-clean-exit-gate-v1610/tc-wc-008/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-WC-017",
+      "ac_id": "AC-WC-008",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "pytest -q tests/test_v1610_workspace_clean_exit_gate.py::test_illegal_skip_worktree_transition_blocks_clean_proof",
+      "assertion": "illegal transition skip-worktree-hidden dirty → clean proof is blocked",
+      "evidence_path": ".beacon/evidence/qa-feature/workspace-clean-exit-gate-v1610/tc-wc-017/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-WC-009",
+      "ac_id": "AC-WC-009",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "pytest -q tests/test_v1610_workspace_clean_exit_gate.py::test_host_projection_requires_policy_or_surface_sync_commit",
+      "assertion": "host projection dirty blocks unless local-only or deterministic sync commit policy is satisfied",
+      "evidence_path": ".beacon/evidence/qa-feature/workspace-clean-exit-gate-v1610/tc-wc-009/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-WC-010",
+      "ac_id": "AC-WC-010",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "pytest -q tests/test_v1610_workspace_clean_exit_gate.py::test_lifecycle_exits_attach_clean_gate_bundle",
+      "assertion": "happy path legal walk: truth/freeze/qa/release/post-release profiles emit same clean gate schema",
+      "evidence_path": ".beacon/evidence/qa-feature/workspace-clean-exit-gate-v1610/tc-wc-010/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-WC-011",
+      "ac_id": "AC-WC-011",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "pytest -q tests/test_v1610_workspace_clean_exit_gate.py::test_main_push_profile_blocks_generator_dirty",
+      "assertion": "main-push blocks generator and unclassified dirty beyond staged business code",
+      "evidence_path": ".beacon/evidence/qa-feature/workspace-clean-exit-gate-v1610/tc-wc-011/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-WC-012",
+      "ac_id": "AC-WC-012",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "pytest -q tests/test_v1610_workspace_clean_exit_gate.py::test_clean_workspace_does_not_authorize_release",
+      "assertion": "happy path legal walk: clean pass leaves release human confirmation required",
+      "evidence_path": ".beacon/evidence/qa-feature/workspace-clean-exit-gate-v1610/tc-wc-012/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-WC-013",
+      "ac_id": "AC-WC-001..012",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_v1610_workspace_clean_exit_gate.py",
+      "assertion": "happy path legal walk: exec suite covers clean-workspace exit gate full path",
+      "evidence_path": ".beacon/evidence/qa-feature/workspace-clean-exit-gate-v1610/tc-wc-013/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-WC-014",
+      "ac_id": "AC-WC-005, AC-WC-006",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "rg -n \"full_chat|agent_trace_redline_field|redaction_status\" beacon/utils/agent_trace.py beacon/utils/workspace_clean.py",
+      "assertion": "trace redline and digest contract present",
+      "evidence_path": ".beacon/evidence/qa-feature/workspace-clean-exit-gate-v1610/tc-wc-014/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-WC-015",
+      "ac_id": "AC-WC-007, AC-WC-010",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "rg -n \"verify_clean_workspace|snapshot\" beacon/utils/project_hooks.py beacon/commands/release.py beacon/commands/qa.py beacon/commands/truth.py",
+      "assertion": "lifecycle commands integrate clean gate",
+      "evidence_path": ".beacon/evidence/qa-feature/workspace-clean-exit-gate-v1610/tc-wc-015/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-WC-016",
+      "ac_id": "AC-WC-002, AC-WC-003",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "rg -n \"workspace-clean-manifest|formal_evidence|runtime_private\" docs/beacon/governance/workspace-clean-manifest.md beacon/utils/workspace_clean.py",
+      "assertion": "dirty manifest policy is codified",
+      "evidence_path": ".beacon/evidence/qa-feature/workspace-clean-exit-gate-v1610/tc-wc-016/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    }
+  ],
+  "ac_to_test_refs": {
+    "AC-WC-001": [
+      "TC-WC-001"
+    ],
+    "AC-WC-001..012": [
+      "TC-WC-013"
+    ],
+    "AC-WC-002": [
+      "TC-WC-002"
+    ],
+    "AC-WC-002, AC-WC-003": [
+      "TC-WC-016"
+    ],
+    "AC-WC-003": [
+      "TC-WC-003"
+    ],
+    "AC-WC-004": [
+      "TC-WC-004"
+    ],
+    "AC-WC-005": [
+      "TC-WC-005"
+    ],
+    "AC-WC-005, AC-WC-006": [
+      "TC-WC-014"
+    ],
+    "AC-WC-006": [
+      "TC-WC-006"
+    ],
+    "AC-WC-007": [
+      "TC-WC-007"
+    ],
+    "AC-WC-007, AC-WC-010": [
+      "TC-WC-015"
+    ],
+    "AC-WC-008": [
+      "TC-WC-008",
+      "TC-WC-017"
+    ],
+    "AC-WC-009": [
+      "TC-WC-009"
+    ],
+    "AC-WC-010": [
+      "TC-WC-010"
+    ],
+    "AC-WC-011": [
+      "TC-WC-011"
+    ],
+    "AC-WC-012": [
+      "TC-WC-012"
+    ]
+  },
+  "qa_order_contract": {
+    "sequence": [
+      "user_story_ac_order",
+      "scenario_divergence",
+      "current_round_execution",
+      "evidence_pack",
+      "coverage_current_gap",
+      "continue_decision",
+      "severe_blocker_stop_for_repair",
+      "repair_handoff",
+      "beacon_help_resume",
+      "next_qa_round_test_case_backfill",
+      "release_guidance"
+    ],
+    "source": "skills/beacon/references/usage-rules.md"
+  },
+  "deep_delta_policy": {
+    "owner": "deep",
+    "adoption_route": "test-case_or_supplemental_qa",
+    "executes_qa": false
+  },
+  "planning_line_safety": {
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "runtime_line": "v1.6.10",
+    "docs_default_line": "v1.6.10",
+    "current_runtime_release_line": "v1.6.10",
+    "feature_line_status": "current_runtime_release"
+  },
+  "status": "pass",
+  "blocked": false,
+  "reason_codes": [],
+  "generated_at": "2026-07-24T04:55:05.725285+00:00",
+  "index_path": "docs/beacon/v1.6.10/.machine/testing/test-contract-index.json"
+}
