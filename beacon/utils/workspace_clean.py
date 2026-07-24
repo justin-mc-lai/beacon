@@ -40,6 +40,13 @@ DIRTY_MANIFEST: dict[str, dict[str, Any]] = {
     "formal_evidence": {
         "allowed_actions": ["commit", "promote"],
         "patterns": [
+            ".beacon/auto-test-status.json",
+            ".beacon/coverage-summary.json",
+            ".beacon/evidence-manifest.json",
+            ".beacon/evidence-signature-chain.json",
+            ".beacon/gate-report.json",
+            ".beacon/qa/status.json",
+            ".beacon/release-gate-report.json",
             ".beacon/evidence/implement/**",
             ".beacon/evidence/test-results/**",
             "docs/beacon/*/qa/**",
@@ -73,8 +80,6 @@ DIRTY_MANIFEST: dict[str, dict[str, Any]] = {
             ".beacon/state/**",
             ".beacon/memory/**",
             ".beacon/tasks/**",
-            ".beacon/release-gate-report.json",
-            ".beacon/evidence-manifest.json",
             ".beacon/raw-command-log.jsonl",
         ],
     },

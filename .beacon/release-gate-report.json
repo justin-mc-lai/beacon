@@ -1,27 +1,21 @@
 {
   "stage": "release",
   "mode": "strict",
-  "profile": "release-global",
   "status": "Pass",
-  "issues": [],
-  "doc_impl_verdict": {
-    "enabled": true,
-    "version": "v1.6.9",
-    "status": "blocked",
-    "baseline_present": false,
-    "baseline_id": "",
-    "expected_spec_fingerprint": "",
-    "actual_spec_fingerprint": "f1c5ee956d315354f59c8f0caf58784d472b2a2a237af010fd4e3792294b8c9c",
-    "reason_codes": [
-      "baseline_snapshot_missing"
-    ]
-  },
-  "blocked_count": 0,
-  "force": false,
-  "dry_run": false,
-  "version": "v1.6.9",
-  "run_id": "run-20260720T202758451827",
-  "updated_at": "2026-07-21T06:32:41.483233+00:00",
-  "promoted_for": "v1.6.9",
-  "reason_codes": []
+  "issues": [
+    {
+      "reason_code": "design_baseline_missing",
+      "message": "design_baseline_missing",
+      "blocked": true
+    },
+    {
+      "reason_code": "domain_fsm_legal_walk_missing",
+      "message": "domain_fsm_legal_walk_missing",
+      "blocked": true
+    }
+  ],
+  "blocked_count": 2,
+  "run_id": "run-20260724T114321116527",
+  "version": "v1.6.10",
+  "updated_at": "2026-07-24T03:43:42.122498+00:00"
 }

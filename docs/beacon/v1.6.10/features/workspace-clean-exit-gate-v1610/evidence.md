@@ -35,4 +35,4 @@ materials_status: current
 
 ## Verifier boundary
 
-This evidence index records planning and review authority for truth freezing only. Implementation AC evidence under `.beacon/evidence/implement/workspace-clean-exit-gate-v1610/` remains missing until the implement harness runs; tasks therefore remain unchecked after freeze.
+This evidence index records planning, implementation, and QA authority for the frozen package. Implementation AC evidence under `.beacon/evidence/implement/workspace-clean-exit-gate-v1610/` is promoted and task-bound; QA verdicts must still come from `beacon qa run` evidence, not this index alone.

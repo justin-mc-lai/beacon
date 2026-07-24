@@ -6,6 +6,7 @@ from pathlib import Path
 
 from typer.testing import CliRunner
 
+from beacon.commands.qa import _formal_qa_evidence_refs
 from beacon.main import app
 from beacon.utils.agent_trace import append_event, build_event, record_lifecycle_stage_trace
 from beacon.utils.project_hooks import _run_beacon_post_release_local_install
@@ -66,6 +67,14 @@ def test_dirty_manifest_roles_cover_required_classes() -> None:
     for role in ("canonical_truth", "formal_evidence", "machine_projection", "host_projection", "runtime_private", "forbidden"):
         assert DIRTY_MANIFEST[role]["patterns"]
         assert DIRTY_MANIFEST[role]["allowed_actions"]
+    assert artifact_role_for_path(".beacon/auto-test-status.json") == "formal_evidence"
+    assert artifact_role_for_path(".beacon/coverage-summary.json") == "formal_evidence"
+    assert artifact_role_for_path(".beacon/evidence-manifest.json") == "formal_evidence"
+    assert artifact_role_for_path(".beacon/evidence-signature-chain.json") == "formal_evidence"
+    assert artifact_role_for_path(".beacon/gate-report.json") == "formal_evidence"
+    assert artifact_role_for_path(".beacon/qa/status.json") == "formal_evidence"
+    assert artifact_role_for_path(".beacon/release-gate-report.json") == "formal_evidence"
+    assert artifact_role_for_path(".beacon/traces/run.jsonl") == "runtime_private"
 
 
 def test_formal_manifest_rejects_untracked_runtime_refs(tmp_path: Path) -> None:
@@ -236,3 +245,21 @@ def test_clean_workspace_does_not_authorize_release(tmp_path: Path) -> None:
 
     assert payload["status"] == "pass"
     assert payload.get("release_ready") is not True
+
+
+def test_qa_acceptance_refs_exclude_runtime_private_paths() -> None:
+    refs = _formal_qa_evidence_refs(
+        [
+            ".beacon/qa/status.json",
+            ".beacon/release-gate-report.json",
+            ".beacon/raw-command-log.jsonl",
+            ".beacon/memory/workflow-lifecycle.json",
+            "docs/beacon/v1.6.10/.machine/execution/qa-acceptance-feature.json",
+        ]
+    )
+
+    assert ".beacon/qa/status.json" in refs
+    assert ".beacon/release-gate-report.json" in refs
+    assert "docs/beacon/v1.6.10/.machine/execution/qa-acceptance-feature.json" in refs
+    assert ".beacon/raw-command-log.jsonl" not in refs
+    assert ".beacon/memory/workflow-lifecycle.json" not in refs

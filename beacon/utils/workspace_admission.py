@@ -735,15 +735,15 @@ def gate_workspace_admission_or_block(
     feature: str,
     cwd: Path | str | None = None,
 ) -> dict[str, Any] | None:
-    contract = load_admission_contract(project_root, version=version)
+    root = resolve_workspace_project_root(project_root)
+    contract = load_admission_contract(root, version=version)
     validation = validate_workspace_admission(
-        project_root,
+        root,
         version=version,
         feature=feature,
-        cwd=cwd,
+        cwd=cwd if cwd is not None else project_root,
         contract=contract,
     )
-    root = project_root.expanduser().resolve()
     slug = feature_slug(feature)
     check_root = Path(cwd).expanduser().resolve() if cwd is not None else root
     current_branch = git_output(check_root, "branch", "--show-current")

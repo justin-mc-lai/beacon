@@ -67,6 +67,7 @@ from beacon.utils.qa_evo_deep import run_qa_evo_deep
 from beacon.utils.story_state import feature_slug
 from beacon.utils.versioning import resolve_runtime_version, resolve_target_version
 from beacon.utils.workspace_admission import gate_workspace_admission_or_block
+from beacon.utils.workspace_clean import artifact_role_for_path
 from beacon.utils.skill_decision_surface import attach_skill_decision_surface
 from beacon.utils.subagent_readiness import (
     delegation_readiness_precheck,
@@ -98,6 +99,16 @@ session_app = typer.Typer(name="session", help="QA login/session state helpers")
 audit_app = typer.Typer(name="audit", help="QA audit truth helpers")
 app.add_typer(session_app, name="session")
 app.add_typer(audit_app, name="audit")
+
+
+def _formal_qa_evidence_refs(refs: list[str]) -> list[str]:
+    formal_roles = {"canonical_truth", "formal_evidence", "machine_projection"}
+    return [
+        ref
+        for ref in refs
+        if str(ref or "").strip()
+        and artifact_role_for_path(str(ref).strip()) in formal_roles
+    ]
 
 
 @app.command("evo-deep")
@@ -2246,6 +2257,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
                 and str(item.get("source_tc_id") or item.get("tc_id") or "").strip()
             }
         )
+        formal_manifest_refs = _formal_qa_evidence_refs(manifest_refs)
         record_verification_writeback(
             project_root,
             version=version,
@@ -2253,7 +2265,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             run_id=str(qa_status.get("run_id") or plan.get("implementation_run_id") or "feature-qa"),
             verified_item_ids=[*accepted_ac_ids, *accepted_test_ids],
             failed_item_ids=[],
-            evidence_ref=manifest_refs,
+            evidence_ref=formal_manifest_refs,
         )
         try:
             acceptance_result = record_acceptance_writeback(
@@ -2263,7 +2275,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
                 accepted_by="qa",
                 verdict="passed",
                 run_id=str(qa_status.get("run_id") or plan.get("implementation_run_id") or "feature-qa"),
-                evidence_ref=manifest_refs,
+                evidence_ref=formal_manifest_refs,
                 source_command=f'beacon qa run "{feature}" --project-root {project_root} --version {version}',
                 accepted_ac_ids=accepted_ac_ids,
                 accepted_test_ids=accepted_test_ids,
