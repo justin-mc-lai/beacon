@@ -1,0 +1,208 @@
+{
+  "schema": "truth-review-gate.v1",
+  "schema_version": "1.0",
+  "feature": "workspace-clean-exit-gate-v1610",
+  "version": "v1.6.10",
+  "pass": true,
+  "blocked": false,
+  "review_gate_pass": true,
+  "abc_pass": true,
+  "reason_code": "",
+  "domain_required": true,
+  "checks": {
+    "A_intent_coverage": {
+      "pass": true,
+      "check": "A",
+      "name": "intent_coverage",
+      "required": true,
+      "matrix_rows": 9,
+      "missing_must": [],
+      "reason": "",
+      "findings": [],
+      "matrix": [
+        {
+          "intent_id": "INT-WC-001",
+          "source": "plan review synthesis",
+          "strength": "must",
+          "landing": "AC-WC-001",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-WC-002",
+          "source": "architecture reviewer",
+          "strength": "must",
+          "landing": "AC-WC-002",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-WC-003",
+          "source": "QA reviewer",
+          "strength": "must",
+          "landing": "AC-WC-003, AC-WC-004",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-WC-004",
+          "source": "security reviewer",
+          "strength": "must",
+          "landing": "AC-WC-005, AC-WC-006",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-WC-005",
+          "source": "code governance reviewer",
+          "strength": "must",
+          "landing": "AC-WC-007, AC-WC-008",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-WC-006",
+          "source": "current Beacon incident",
+          "strength": "must",
+          "landing": "AC-WC-009",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-WC-007",
+          "source": "user lifecycle requirement",
+          "strength": "must",
+          "landing": "AC-WC-010, AC-WC-011",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-WC-008",
+          "source": "release human gate boundary",
+          "strength": "must",
+          "landing": "AC-WC-012",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-WC-HIST-001",
+          "source": "future audit",
+          "strength": "should",
+          "landing": "Non-goal: historical evidence audit separate lake",
+          "status": "deferred"
+        }
+      ]
+    },
+    "B_fsm_audit": {
+      "pass": true,
+      "check": "B",
+      "name": "fsm_audit",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "fsm": {
+        "transition_count": 9,
+        "from_states": [
+          "artifacts_classifying",
+          "blocked_dirty",
+          "clean_baseline",
+          "clean_verified",
+          "lifecycle_writing",
+          "promotion_required",
+          "runtime_quarantined"
+        ],
+        "hanging_states": [],
+        "terminals": [
+          "next_stage_allowed"
+        ],
+        "illegal_present": true,
+        "five_tuple_present": true
+      }
+    },
+    "C_testability": {
+      "pass": true,
+      "check": "C",
+      "name": "testability",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "ac_count": 12,
+      "tc_count": 17,
+      "missing_ac": [],
+      "covered": {
+        "AC-WC-001": [
+          "TC-WC-001",
+          "TC-WC-013"
+        ],
+        "AC-WC-002": [
+          "TC-WC-002",
+          "TC-WC-016"
+        ],
+        "AC-WC-003": [
+          "TC-WC-003",
+          "TC-WC-016"
+        ],
+        "AC-WC-004": [
+          "TC-WC-004"
+        ],
+        "AC-WC-005": [
+          "TC-WC-005",
+          "TC-WC-014"
+        ],
+        "AC-WC-006": [
+          "TC-WC-006",
+          "TC-WC-014"
+        ],
+        "AC-WC-007": [
+          "TC-WC-007",
+          "TC-WC-015"
+        ],
+        "AC-WC-008": [
+          "TC-WC-008",
+          "TC-WC-017"
+        ],
+        "AC-WC-009": [
+          "TC-WC-009"
+        ],
+        "AC-WC-010": [
+          "TC-WC-010",
+          "TC-WC-015"
+        ],
+        "AC-WC-011": [
+          "TC-WC-011"
+        ],
+        "AC-WC-012": [
+          "TC-WC-012"
+        ]
+      }
+    },
+    "C_domain_exec_layer": {
+      "pass": true,
+      "check": "C_exec",
+      "name": "domain_exec_layer",
+      "required": false,
+      "skipped": true,
+      "reason": "",
+      "findings": [],
+      "exec_tc_count": 0,
+      "domain_kind": "lifecycle"
+    },
+    "D_fill_depth": {
+      "pass": true,
+      "check": "D",
+      "name": "fill_depth",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "package_maturity": "filled",
+      "domain_kind": "lifecycle",
+      "business_domain": false
+    }
+  },
+  "findings": [],
+  "humanizer": {
+    "rule": "humanizer_only_after_abc_pass_before_freeze",
+    "abc_pass": true,
+    "allowed_now": true,
+    "fill_depth_pass": true,
+    "note": "Polish L0/narrative only after A/B/C; preserve_machine_fields=true; freeze needs D+exec too"
+  },
+  "evaluated_at": "2026-07-24T02:42:23.770629+00:00",
+  "paths": {
+    "truth": "docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/truth.md",
+    "tests": "docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+    "report": "docs/beacon/v1.6.10/.machine/execution/workspace-clean-exit-gate-v1610.truth-review-gate.json"
+  }
+}

@@ -1,0 +1,838 @@
+{
+  "schema_version": "1.0",
+  "feature": "workspace-clean-exit-gate-v1610",
+  "feature_slug": "workspace-clean-exit-gate-v1610",
+  "version": "v1.6.10",
+  "runtime_version": "v1.6.10",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.6.10/.machine/execution/requirement-clarity-workspace-clean-exit-gate-v1610.json",
+  "report_markdown_path": "docs/beacon/v1.6.10/execution/requirement-clarity-workspace-clean-exit-gate-v1610.md",
+  "state_path": ".beacon/state/requirement-clarity-workspace-clean-exit-gate-v1610.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.10",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-07-24T02:42:22.182014+00:00",
+    "feature": "workspace-clean-exit-gate-v1610",
+    "feature_slug": "workspace-clean-exit-gate-v1610",
+    "prd_ref": "docs/beacon/v1.6.10/prd/workspace-clean-exit-gate-v1610.md",
+    "user_story_ref": "docs/beacon/v1.6.10/user-story/workspace-clean-exit-gate-v1610.md"
+  },
+  "domain_fsm_gate": {
+    "schema_version": "1.0",
+    "feature": "workspace-clean-exit-gate-v1610",
+    "feature_slug": "workspace-clean-exit-gate-v1610",
+    "version": "v1.6.10",
+    "truth_path": "docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/truth.md",
+    "tests_path": "docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+    "required": true,
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "findings": [],
+    "requirement": {
+      "required": true,
+      "reason": "explicit_domain_mark",
+      "explicit": true,
+      "partial": true,
+      "complexity": false,
+      "business_signal": false,
+      "version_supported": true
+    },
+    "projection": {
+      "schema_version": "1.0",
+      "domain_fsm_schema": "domain-fsm.v1",
+      "entity_precedence_schema": "entity-precedence.v1",
+      "frontmatter": {
+        "slug": "workspace-clean-exit-gate-v1610",
+        "version": "v1.6.10",
+        "status": "frozen",
+        "revision_id": "R1",
+        "language": "zh",
+        "domain_required": "true",
+        "ux_required": "false",
+        "package_maturity": "filled",
+        "parser_contract": "beacon-feature-package-v2",
+        "git_canonical_branch": "main",
+        "participating_services": "[beacon]",
+        "materials_status": "current",
+        "canonical_refs": {
+          "prd": "docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/truth.md",
+          "user_story": "docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/truth.md",
+          "test_case": "docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md"
+        },
+        "truth_source_model": "feature_package_authoritative",
+        "promotion_ref": "docs/beacon/v1.6.10/research/implement-worktree-admission-prewrite-review-20260723.md",
+        "change_reason": "R1: add lifecycle exit clean-workspace gate; split formal/runtime evidence; isolate post-release projections",
+        "humanizer_applied": "true"
+      },
+      "frontmatter_errors": [],
+      "has_domain_model_section": true,
+      "has_domain_fsm_section": true,
+      "has_illegal_transition_section": true,
+      "entities": [
+        {
+          "entity": "WorkspaceSnapshot",
+          "key": "project_root + git_head + timestamp",
+          "precedence": "git repository",
+          "requires": "git repository"
+        },
+        {
+          "entity": "DirtyEntry",
+          "key": "path + xy status",
+          "precedence": "WorkspaceSnapshot",
+          "requires": "WorkspaceSnapshot"
+        },
+        {
+          "entity": "ArtifactRole",
+          "key": "role id",
+          "precedence": "dirty manifest rule",
+          "requires": "dirty manifest rule"
+        },
+        {
+          "entity": "FormalEvidenceManifest",
+          "key": "version + feature",
+          "precedence": "tracked evidence refs",
+          "requires": "tracked evidence refs"
+        },
+        {
+          "entity": "RuntimeEvidenceManifest",
+          "key": "run_id",
+          "precedence": "local runtime refs",
+          "requires": "local runtime refs"
+        },
+        {
+          "entity": "TraceDigest",
+          "key": "feature_slug + run_id",
+          "precedence": "redacted trace source",
+          "requires": "redacted trace source"
+        },
+        {
+          "entity": "HostProjectionTxn",
+          "key": "agent + version + source_hash",
+          "precedence": "surface setup/verify",
+          "requires": "surface setup/verify"
+        },
+        {
+          "entity": "CleanWorkspaceGate",
+          "key": "profile + snapshot",
+          "precedence": "classification results",
+          "requires": "classification results"
+        }
+      ],
+      "entity_precedence": [
+        {
+          "entity": "WorkspaceSnapshot",
+          "key": "project_root + git_head + timestamp",
+          "precedence": "git repository",
+          "requires": "git repository"
+        },
+        {
+          "entity": "DirtyEntry",
+          "key": "path + xy status",
+          "precedence": "WorkspaceSnapshot",
+          "requires": "WorkspaceSnapshot"
+        },
+        {
+          "entity": "ArtifactRole",
+          "key": "role id",
+          "precedence": "dirty manifest rule",
+          "requires": "dirty manifest rule"
+        },
+        {
+          "entity": "FormalEvidenceManifest",
+          "key": "version + feature",
+          "precedence": "tracked evidence refs",
+          "requires": "tracked evidence refs"
+        },
+        {
+          "entity": "RuntimeEvidenceManifest",
+          "key": "run_id",
+          "precedence": "local runtime refs",
+          "requires": "local runtime refs"
+        },
+        {
+          "entity": "TraceDigest",
+          "key": "feature_slug + run_id",
+          "precedence": "redacted trace source",
+          "requires": "redacted trace source"
+        },
+        {
+          "entity": "HostProjectionTxn",
+          "key": "agent + version + source_hash",
+          "precedence": "surface setup/verify",
+          "requires": "surface setup/verify"
+        },
+        {
+          "entity": "CleanWorkspaceGate",
+          "key": "profile + snapshot",
+          "precedence": "classification results",
+          "requires": "classification results"
+        }
+      ],
+      "aggregates": [
+        {
+          "name": "CleanWorkspaceExit",
+          "states": [
+            "artifacts_classifying",
+            "blocked_dirty",
+            "clean_baseline",
+            "clean_verified",
+            "lifecycle_writing",
+            "next_stage_allowed",
+            "promotion_required",
+            "runtime_quarantined"
+          ],
+          "transitions": [
+            {
+              "from": "",
+              "to": "clean_baseline",
+              "guard": "git_status_empty_or_classified_baseline",
+              "initial": "true"
+            },
+            {
+              "from": "clean_baseline",
+              "to": "lifecycle_writing",
+              "guard": "harness_started"
+            },
+            {
+              "from": "lifecycle_writing",
+              "to": "artifacts_classifying",
+              "guard": "harness_finished"
+            },
+            {
+              "from": "artifacts_classifying",
+              "to": "promotion_required",
+              "guard": "formal_dirty_detected"
+            },
+            {
+              "from": "artifacts_classifying",
+              "to": "runtime_quarantined",
+              "guard": "runtime_private_detected"
+            },
+            {
+              "from": "artifacts_classifying",
+              "to": "blocked_dirty",
+              "guard": "unclassified_or_forbidden_or_unpromoted"
+            },
+            {
+              "from": "promotion_required",
+              "to": "blocked_dirty",
+              "guard": "unclassified_or_forbidden_or_unpromoted"
+            },
+            {
+              "from": "runtime_quarantined",
+              "to": "blocked_dirty",
+              "guard": "unclassified_or_forbidden_or_unpromoted"
+            },
+            {
+              "from": "artifacts_classifying",
+              "to": "clean_verified",
+              "guard": "all_dirty_resolved"
+            },
+            {
+              "from": "promotion_required",
+              "to": "clean_verified",
+              "guard": "all_dirty_resolved"
+            },
+            {
+              "from": "runtime_quarantined",
+              "to": "clean_verified",
+              "guard": "all_dirty_resolved"
+            },
+            {
+              "from": "clean_verified",
+              "to": "next_stage_allowed",
+              "guard": "gate_profile_pass"
+            }
+          ]
+        }
+      ],
+      "illegal_transition_slots": [
+        {
+          "description": "lifecycle_writing → next_stage_allowed without `verify_clean_workspace`",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "unclassified dirty → release_ready",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "raw trace → formal evidence without digest/redaction pass",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "local hook evidence → QA/release verdict authority",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "`[x] evidence=PATH` while PATH untracked or missing",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "`[ ] evidence=PATH` while PATH exists and is unclassified",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "post-release local install → original root dirty tracked files",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "skip-worktree-hidden dirty → clean proof",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "clean-workspace pass → automatic release pass",
+          "aggregate": "",
+          "source": "truth"
+        }
+      ],
+      "acceptance_criteria": [
+        {
+          "ac_id": "AC-WC-001",
+          "description": "提供 `verify_clean_workspace`（或等价）统一出口 gate，读取完整 `git status --porcelain=v1 -uall`，按 artifact_role 分类并对 unclassified dirty fail-closed"
+        },
+        {
+          "ac_id": "AC-WC-002",
+          "description": "dirty manifest 至少区分 `canonical_truth`、`formal_evidence`、`machine_projection`、`host_projection`、`runtime_private`、`forbidden`，并给出每类允许动作"
+        },
+        {
+          "ac_id": "AC-WC-003",
+          "description": "formal evidence manifest 仅可包含 tracked、branch-carried、hash-valid 的正式证据；local hook/runtime evidence 必须进入 runtime manifest 或 ignored state，不能支撑 QA/release verdict"
+        },
+        {
+          "ac_id": "AC-WC-004",
+          "description": "tasks.md 中 `[x] + evidence=PATH` 必须要求 evidence 文件存在、可解析、tracked/promoted、并被 evidence.md 或 formal manifest 索引；`[ ] + existing evidence` 必须作为 orphan evidence 阻断或要求清理"
+        },
+        {
+          "ac_id": "AC-WC-005",
+          "description": "agent_trace 写入前必须执行 redline/allowlist gate，禁止 `full_chat`、非空 `chat_body`、raw messages、prompt/completion、token/cookie/env/private key 等字段写入或 promotion"
+        },
+        {
+          "ac_id": "AC-WC-006",
+          "description": "raw `.beacon/traces/**` 默认分类为 `runtime_private`；正式证据只能使用脱敏 digest，digest 含 event_count、harness、feature_slug、reason_codes、sha256、`redaction_status=pass`"
+        },
+        {
+          "ac_id": "AC-WC-007",
+          "description": "`beacon-post-release-local-install` 默认在临时 git worktree 或等价隔离区执行 project-local agent/context projection；原 project_root 运行前后快照不得新增 tracked dirty"
+        },
+        {
+          "ac_id": "AC-WC-008",
+          "description": "`quiet-worktree`/skip-worktree 只能作为开发者降噪；`verify-clean-workspace --strict` 必须揭示 skip-worktree hidden dirty，且不允许 skip-worktree hidden dirty 进入 `clean_verified` 或被当作 clean proof"
+        },
+        {
+          "ac_id": "AC-WC-009",
+          "description": "host projection 必须二选一：local-only ignore/skip 策略，或 deterministic `surface-sync` commit；禁止 release 后留下未提交 `.agents/.codex/.cursor/.trae/.windsurf` 投影改动"
+        },
+        {
+          "ac_id": "AC-WC-010",
+          "description": "truth/freeze/qa/release/post-release 出口都必须调用 clean-workspace gate 或记录同 schema verification bundle；失败 reason_code 明确指向 commit、promote、ignore、clean 或 rerun route"
+        },
+        {
+          "ac_id": "AC-WC-011",
+          "description": "pre-push/main-push profile 必须阻断 generator dirty 与 unclassified dirty，不再只检查 staged business paths；business code main guard 仍保留为 defense-in-depth"
+        },
+        {
+          "ac_id": "AC-WC-012",
+          "description": "release human gate 保持最高边界；clean-workspace pass 不等于 release pass，post-release hook pass 也不等于 QA/release verdict"
+        }
+      ],
+      "bound_ac_ids": [
+        "AC-WC-005",
+        "AC-WC-008"
+      ],
+      "orphan_ac_ids": [],
+      "aggregates_missing_illegal_slots": [],
+      "raw_section_titles": [
+        "人话",
+        "User Intent",
+        "User Intent Snapshot",
+        "Alignment Surface",
+        "Phased Backlog",
+        "Intent Coverage Matrix",
+        "First principles（域）",
+        "用户旅程",
+        "Journey A：feature truth 冻结",
+        "Journey B：实现与 QA",
+        "Journey C：release/post-release",
+        "Acceptance Criteria",
+        "Domain Model",
+        "Domain FSM CleanWorkspaceExit",
+        "FSM 五元组",
+        "Illegal transitions",
+        "Deferral Ledger",
+        "Non-goals",
+        "Downstream Routes",
+        "Freeze readiness R1"
+      ]
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "required": true,
+      "blocked": false,
+      "status": "pass",
+      "reason_code": "",
+      "findings": [],
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "workspace-clean-exit-gate-v1610",
+          "version": "v1.6.10",
+          "status": "frozen",
+          "revision_id": "R1",
+          "language": "zh",
+          "domain_required": "true",
+          "ux_required": "false",
+          "package_maturity": "filled",
+          "parser_contract": "beacon-feature-package-v2",
+          "git_canonical_branch": "main",
+          "participating_services": "[beacon]",
+          "materials_status": "current",
+          "canonical_refs": {
+            "prd": "docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/truth.md",
+            "user_story": "docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/truth.md",
+            "test_case": "docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md"
+          },
+          "truth_source_model": "feature_package_authoritative",
+          "promotion_ref": "docs/beacon/v1.6.10/research/implement-worktree-admission-prewrite-review-20260723.md",
+          "change_reason": "R1: add lifecycle exit clean-workspace gate; split formal/runtime evidence; isolate post-release projections",
+          "humanizer_applied": "true"
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": true,
+        "has_domain_fsm_section": true,
+        "has_illegal_transition_section": true,
+        "entities": [
+          {
+            "entity": "WorkspaceSnapshot",
+            "key": "project_root + git_head + timestamp",
+            "precedence": "git repository",
+            "requires": "git repository"
+          },
+          {
+            "entity": "DirtyEntry",
+            "key": "path + xy status",
+            "precedence": "WorkspaceSnapshot",
+            "requires": "WorkspaceSnapshot"
+          },
+          {
+            "entity": "ArtifactRole",
+            "key": "role id",
+            "precedence": "dirty manifest rule",
+            "requires": "dirty manifest rule"
+          },
+          {
+            "entity": "FormalEvidenceManifest",
+            "key": "version + feature",
+            "precedence": "tracked evidence refs",
+            "requires": "tracked evidence refs"
+          },
+          {
+            "entity": "RuntimeEvidenceManifest",
+            "key": "run_id",
+            "precedence": "local runtime refs",
+            "requires": "local runtime refs"
+          },
+          {
+            "entity": "TraceDigest",
+            "key": "feature_slug + run_id",
+            "precedence": "redacted trace source",
+            "requires": "redacted trace source"
+          },
+          {
+            "entity": "HostProjectionTxn",
+            "key": "agent + version + source_hash",
+            "precedence": "surface setup/verify",
+            "requires": "surface setup/verify"
+          },
+          {
+            "entity": "CleanWorkspaceGate",
+            "key": "profile + snapshot",
+            "precedence": "classification results",
+            "requires": "classification results"
+          }
+        ],
+        "entity_precedence": [
+          {
+            "entity": "WorkspaceSnapshot",
+            "key": "project_root + git_head + timestamp",
+            "precedence": "git repository",
+            "requires": "git repository"
+          },
+          {
+            "entity": "DirtyEntry",
+            "key": "path + xy status",
+            "precedence": "WorkspaceSnapshot",
+            "requires": "WorkspaceSnapshot"
+          },
+          {
+            "entity": "ArtifactRole",
+            "key": "role id",
+            "precedence": "dirty manifest rule",
+            "requires": "dirty manifest rule"
+          },
+          {
+            "entity": "FormalEvidenceManifest",
+            "key": "version + feature",
+            "precedence": "tracked evidence refs",
+            "requires": "tracked evidence refs"
+          },
+          {
+            "entity": "RuntimeEvidenceManifest",
+            "key": "run_id",
+            "precedence": "local runtime refs",
+            "requires": "local runtime refs"
+          },
+          {
+            "entity": "TraceDigest",
+            "key": "feature_slug + run_id",
+            "precedence": "redacted trace source",
+            "requires": "redacted trace source"
+          },
+          {
+            "entity": "HostProjectionTxn",
+            "key": "agent + version + source_hash",
+            "precedence": "surface setup/verify",
+            "requires": "surface setup/verify"
+          },
+          {
+            "entity": "CleanWorkspaceGate",
+            "key": "profile + snapshot",
+            "precedence": "classification results",
+            "requires": "classification results"
+          }
+        ],
+        "aggregates": [
+          {
+            "name": "CleanWorkspaceExit",
+            "states": [
+              "artifacts_classifying",
+              "blocked_dirty",
+              "clean_baseline",
+              "clean_verified",
+              "lifecycle_writing",
+              "next_stage_allowed",
+              "promotion_required",
+              "runtime_quarantined"
+            ],
+            "transitions": [
+              {
+                "from": "",
+                "to": "clean_baseline",
+                "guard": "git_status_empty_or_classified_baseline",
+                "initial": "true"
+              },
+              {
+                "from": "clean_baseline",
+                "to": "lifecycle_writing",
+                "guard": "harness_started"
+              },
+              {
+                "from": "lifecycle_writing",
+                "to": "artifacts_classifying",
+                "guard": "harness_finished"
+              },
+              {
+                "from": "artifacts_classifying",
+                "to": "promotion_required",
+                "guard": "formal_dirty_detected"
+              },
+              {
+                "from": "artifacts_classifying",
+                "to": "runtime_quarantined",
+                "guard": "runtime_private_detected"
+              },
+              {
+                "from": "artifacts_classifying",
+                "to": "blocked_dirty",
+                "guard": "unclassified_or_forbidden_or_unpromoted"
+              },
+              {
+                "from": "promotion_required",
+                "to": "blocked_dirty",
+                "guard": "unclassified_or_forbidden_or_unpromoted"
+              },
+              {
+                "from": "runtime_quarantined",
+                "to": "blocked_dirty",
+                "guard": "unclassified_or_forbidden_or_unpromoted"
+              },
+              {
+                "from": "artifacts_classifying",
+                "to": "clean_verified",
+                "guard": "all_dirty_resolved"
+              },
+              {
+                "from": "promotion_required",
+                "to": "clean_verified",
+                "guard": "all_dirty_resolved"
+              },
+              {
+                "from": "runtime_quarantined",
+                "to": "clean_verified",
+                "guard": "all_dirty_resolved"
+              },
+              {
+                "from": "clean_verified",
+                "to": "next_stage_allowed",
+                "guard": "gate_profile_pass"
+              }
+            ]
+          }
+        ],
+        "illegal_transition_slots": [
+          {
+            "description": "lifecycle_writing → next_stage_allowed without `verify_clean_workspace`",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "unclassified dirty → release_ready",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "raw trace → formal evidence without digest/redaction pass",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "local hook evidence → QA/release verdict authority",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "`[x] evidence=PATH` while PATH untracked or missing",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "`[ ] evidence=PATH` while PATH exists and is unclassified",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "post-release local install → original root dirty tracked files",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "skip-worktree-hidden dirty → clean proof",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "clean-workspace pass → automatic release pass",
+            "aggregate": "",
+            "source": "truth"
+          }
+        ],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-WC-001",
+            "description": "提供 `verify_clean_workspace`（或等价）统一出口 gate，读取完整 `git status --porcelain=v1 -uall`，按 artifact_role 分类并对 unclassified dirty fail-closed"
+          },
+          {
+            "ac_id": "AC-WC-002",
+            "description": "dirty manifest 至少区分 `canonical_truth`、`formal_evidence`、`machine_projection`、`host_projection`、`runtime_private`、`forbidden`，并给出每类允许动作"
+          },
+          {
+            "ac_id": "AC-WC-003",
+            "description": "formal evidence manifest 仅可包含 tracked、branch-carried、hash-valid 的正式证据；local hook/runtime evidence 必须进入 runtime manifest 或 ignored state，不能支撑 QA/release verdict"
+          },
+          {
+            "ac_id": "AC-WC-004",
+            "description": "tasks.md 中 `[x] + evidence=PATH` 必须要求 evidence 文件存在、可解析、tracked/promoted、并被 evidence.md 或 formal manifest 索引；`[ ] + existing evidence` 必须作为 orphan evidence 阻断或要求清理"
+          },
+          {
+            "ac_id": "AC-WC-005",
+            "description": "agent_trace 写入前必须执行 redline/allowlist gate，禁止 `full_chat`、非空 `chat_body`、raw messages、prompt/completion、token/cookie/env/private key 等字段写入或 promotion"
+          },
+          {
+            "ac_id": "AC-WC-006",
+            "description": "raw `.beacon/traces/**` 默认分类为 `runtime_private`；正式证据只能使用脱敏 digest，digest 含 event_count、harness、feature_slug、reason_codes、sha256、`redaction_status=pass`"
+          },
+          {
+            "ac_id": "AC-WC-007",
+            "description": "`beacon-post-release-local-install` 默认在临时 git worktree 或等价隔离区执行 project-local agent/context projection；原 project_root 运行前后快照不得新增 tracked dirty"
+          },
+          {
+            "ac_id": "AC-WC-008",
+            "description": "`quiet-worktree`/skip-worktree 只能作为开发者降噪；`verify-clean-workspace --strict` 必须揭示 skip-worktree hidden dirty，且不允许 skip-worktree hidden dirty 进入 `clean_verified` 或被当作 clean proof"
+          },
+          {
+            "ac_id": "AC-WC-009",
+            "description": "host projection 必须二选一：local-only ignore/skip 策略，或 deterministic `surface-sync` commit；禁止 release 后留下未提交 `.agents/.codex/.cursor/.trae/.windsurf` 投影改动"
+          },
+          {
+            "ac_id": "AC-WC-010",
+            "description": "truth/freeze/qa/release/post-release 出口都必须调用 clean-workspace gate 或记录同 schema verification bundle；失败 reason_code 明确指向 commit、promote、ignore、clean 或 rerun route"
+          },
+          {
+            "ac_id": "AC-WC-011",
+            "description": "pre-push/main-push profile 必须阻断 generator dirty 与 unclassified dirty，不再只检查 staged business paths；business code main guard 仍保留为 defense-in-depth"
+          },
+          {
+            "ac_id": "AC-WC-012",
+            "description": "release human gate 保持最高边界；clean-workspace pass 不等于 release pass，post-release hook pass 也不等于 QA/release verdict"
+          }
+        ],
+        "bound_ac_ids": [
+          "AC-WC-005",
+          "AC-WC-008"
+        ],
+        "orphan_ac_ids": [],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "人话",
+          "User Intent",
+          "User Intent Snapshot",
+          "Alignment Surface",
+          "Phased Backlog",
+          "Intent Coverage Matrix",
+          "First principles（域）",
+          "用户旅程",
+          "Journey A：feature truth 冻结",
+          "Journey B：实现与 QA",
+          "Journey C：release/post-release",
+          "Acceptance Criteria",
+          "Domain Model",
+          "Domain FSM CleanWorkspaceExit",
+          "FSM 五元组",
+          "Illegal transitions",
+          "Deferral Ledger",
+          "Non-goals",
+          "Downstream Routes",
+          "Freeze readiness R1"
+        ]
+      },
+      "summary": {
+        "entity_count": 8,
+        "aggregate_count": 1,
+        "illegal_slot_count": 9,
+        "orphan_ac_count": 0,
+        "bound_ac_count": 2
+      }
+    },
+    "recommended_action": ""
+  },
+  "human_closure_contract": {
+    "required": false,
+    "research_path": "docs/beacon/v1.6.10/research/workspace-clean-exit-gate-v1610.md",
+    "research_exists": false,
+    "source_architecture_path": "docs/beacon/v1.6.10/source-architecture/index.md",
+    "source_architecture_exists": true,
+    "required_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "missing_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "diagram_types": [],
+    "complexity_signals": []
+  },
+  "requirement_closure_contract": {
+    "required": true,
+    "chain_order": [
+      "research",
+      "prd",
+      "user_story",
+      "test_case",
+      "requirement_clarity",
+      "freeze"
+    ],
+    "human_closure_required": false,
+    "paths": {
+      "research": "docs/beacon/v1.6.10/research/workspace-clean-exit-gate-v1610.md",
+      "prd": "docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/truth.md",
+      "user_story": "docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/truth.md",
+      "test_case": "docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md"
+    },
+    "exists": {
+      "research": false,
+      "prd": true,
+      "user_story": true,
+      "test_case": true
+    },
+    "required_research_sections": [],
+    "missing_research_sections": [],
+    "ac_projection": {
+      "prd_ac_ids": [],
+      "user_story_ac_ids": [],
+      "test_case_ac_ids": [],
+      "upstream_ac_ids": [],
+      "missing_test_case_ac_ids": []
+    }
+  },
+  "version_projection_truth_contract": {
+    "required": false,
+    "supported": true,
+    "projection_types": [],
+    "research_path": "docs/beacon/v1.6.10/research/workspace-clean-exit-gate-v1610.md",
+    "research_exists": false,
+    "required_fields": [
+      "prd_refs",
+      "user_story_refs",
+      "test_case_refs",
+      "coverage_notes",
+      "out_of_scope_notes"
+    ],
+    "field_presence": {
+      "prd_refs": false,
+      "user_story_refs": false,
+      "test_case_refs": false,
+      "coverage_notes": false,
+      "out_of_scope_notes": false
+    },
+    "missing_fields": [],
+    "required_refs": {
+      "prd_refs": "docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/truth.md",
+      "user_story_refs": "docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/truth.md",
+      "test_case_refs": "docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md"
+    },
+    "missing_ref_targets": [],
+    "ready": false
+  },
+  "support_write_topology_contract": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "diagnostics": []
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/truth.md",
+    "docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tests.md",
+    "docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/tasks.md",
+    "docs/beacon/v1.6.10/features/workspace-clean-exit-gate-v1610/evidence.md"
+  ]
+}
