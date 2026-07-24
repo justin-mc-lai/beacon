@@ -164,8 +164,11 @@ def test_trace_digest_is_release_safe_and_raw_trace_private(tmp_path: Path) -> N
 
 def test_post_release_local_install_does_not_dirty_original_root(tmp_path: Path, monkeypatch) -> None:
     _init_repo(tmp_path)
+    seen: dict[str, object] = {}
 
-    def fake_in_place(project_root: Path, *, version: str, feature: str) -> dict:
+    def fake_in_place(project_root: Path, *, version: str, feature: str, skill_source_root=None) -> dict:
+        seen["project_root"] = Path(project_root).resolve()
+        seen["skill_source_root"] = Path(skill_source_root).resolve() if skill_source_root is not None else None
         (project_root / "LOCAL_INSTALL_MARK").write_text(feature, encoding="utf-8")
         return {"schema_version": "1.0", "status": "pass", "blocked": False, "reason_codes": []}
 
@@ -175,9 +178,83 @@ def test_post_release_local_install_does_not_dirty_original_root(tmp_path: Path,
 
     assert payload["status"] == "pass"
     assert payload["install_isolation"]["mode"] == "temp_worktree"
+    assert payload["install_isolation"]["skill_source_root"] == str(tmp_path.resolve())
     assert payload["install_isolation"]["original_root_snapshot_delta"]["tracked_dirty_added_count"] == 0
+    assert seen["skill_source_root"] == tmp_path.resolve()
+    assert seen["project_root"] != tmp_path.resolve()
     assert not (tmp_path / "LOCAL_INSTALL_MARK").exists()
     assert _git(tmp_path, "status", "--porcelain=v1").stdout.strip() == ""
+
+
+def test_post_release_global_skills_use_permanent_skill_source(tmp_path: Path, monkeypatch) -> None:
+    """Global host symlinks must target permanent root, not discarded temp worktree."""
+    _init_repo(tmp_path)
+    captured: dict[str, object] = {}
+
+    def fake_agents(*, beacon_root=None, dry_run=False, home=None, brands=("beacon", "loom")):
+        captured["agents_root"] = Path(beacon_root).resolve() if beacon_root is not None else None
+        return {"status": "pass", "installed": [], "installed_count": 0}
+
+    def fake_claude(*, beacon_root=None, dry_run=False, home=None):
+        captured["claude_root"] = Path(beacon_root).resolve() if beacon_root is not None else None
+        return {"status": "pass", "installed": [], "installed_count": 0}
+
+    monkeypatch.setattr("beacon.utils.agent_surface.install_global_agents_beacon_skills", fake_agents)
+    monkeypatch.setattr("beacon.utils.agent_surface.install_global_claude_beacon_skills", fake_claude)
+    monkeypatch.setattr(
+        "beacon.utils.agent_surface.verify_global_agents_beacon_skills",
+        lambda **kwargs: {"status": "pass", "ok": True},
+    )
+    monkeypatch.setattr(
+        "beacon.utils.agent_surface.verify_global_claude_beacon_skills",
+        lambda **kwargs: {"status": "pass", "ok": True},
+    )
+    monkeypatch.setattr(
+        "beacon.utils.doctor_orchestrator.run_legacy_beacon_skills_cleanup",
+        lambda **kwargs: type("R", (), {"payload": {"result": {}}, "exit_code": 0})(),
+    )
+    monkeypatch.setattr(
+        "beacon.utils.doctor_orchestrator.run_agent_surface_setup",
+        lambda **kwargs: type("R", (), {"payload": {"status": "PASS", "result": {}}, "exit_code": 0})(),
+    )
+    monkeypatch.setattr(
+        "beacon.utils.doctor_orchestrator.run_agent_surface_verify",
+        lambda **kwargs: type("R", (), {"payload": {"status": "PASS", "result": {}}, "exit_code": 0})(),
+    )
+    monkeypatch.setattr(
+        "beacon.utils.doctor_orchestrator.run_context_setup",
+        lambda **kwargs: type("R", (), {"payload": {"status": "PASS"}, "exit_code": 0})(),
+    )
+    monkeypatch.setattr(
+        "beacon.utils.doctor_orchestrator.run_context_verify",
+        lambda **kwargs: type("R", (), {"payload": {"status": "PASS"}, "exit_code": 0})(),
+    )
+    monkeypatch.setattr(
+        "beacon.utils.doctor_orchestrator.run_launcher_setup",
+        lambda **kwargs: type("R", (), {"payload": {"status": "PASS"}, "exit_code": 0})(),
+    )
+    monkeypatch.setattr(
+        "beacon.utils.project_hooks._command_output",
+        lambda cmd: {"status": "pass", "stdout": "Beacon CLI v1.6.10", "stderr": ""},
+    )
+    monkeypatch.setattr("beacon.utils.project_hooks.is_live_runner_admitted", lambda *a, **k: False)
+    monkeypatch.setattr("beacon.utils.agent_surface.SUPPORTED_HOST_AGENTS", ("codex",))
+
+    from beacon.utils.project_hooks import _run_beacon_post_release_local_install_in_place
+
+    permanent = tmp_path / "permanent"
+    permanent.mkdir()
+    worktree = tmp_path / "worktree"
+    worktree.mkdir()
+    payload = _run_beacon_post_release_local_install_in_place(
+        worktree,
+        version=VERSION,
+        feature=FEATURE,
+        skill_source_root=permanent,
+    )
+    assert payload["status"] == "pass"
+    assert captured["agents_root"] == permanent.resolve()
+    assert captured["claude_root"] == permanent.resolve()
 
 
 def test_quiet_worktree_hidden_dirty_is_not_release_proof(tmp_path: Path) -> None:

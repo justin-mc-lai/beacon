@@ -76,6 +76,71 @@ support research
   -> release
 ```
 
+
+
+## Humanizer（host skill 路径 · 默认不需要 API key）
+
+**定位**：Beacon 是给宿主 Agent 用的 **host skill / CLI harness**，不是再包一层要用户配 key 的独立 LLM 产品。
+
+- **默认 `llm_mode: host`**：CLI 负责 resolve + vendor oss-sync skill 全文；**由当前宿主 Agent（Codex/Claude 等）读 skill 并润色 L0**。  
+  → **不需要** `BEACON_LLM_API_KEY`。
+- **规则引擎**：CLI 可做确定性去套话 / 结构补全，作安全网与 CI 辅助，**不能替代** Agent 按 Humanizer skill 全文的真实润色。
+- **`vendor_into_beacon: true`**：把 oss-sync skill 拷进 `skills/beacon/references/truth-humanizer/vendor/`，方便 Agent 在仓库内 Read。
+- **可选 provider-bridge**（`BEACON_HUMANIZER_LLM_MODE=llm` + key）：仅 headless/无宿主 Agent 时的退路，**非**日常 skill 路径。
+
+Agent 合同：truth-review / gen-truth 在 A/B/C pass 后必须 **Read skill 全文 → 只改 L0 → preserve_machine_fields**。
+
+## Exec TC / implement 证据
+
+- domain tests 默认 `pytest` + `import beacon` / `beacon doctor` 契约，**禁止** `print(0)` 冒充 exec。
+- tasks：`ac=<AC> · evidence=\`.beacon/evidence/implement/<slug>/<AC>.json\``；`[x]` 仅当证据文件存在（implement 准入硬拦）。
+
+## 最高规范：旧包形状不兼容（global-boundaries §2.1）
+
+v1.6.10+ **active** feature package **不向后兼容**旧 truth/tests/tasks 形状。
+
+- 旧项目缺 Matrix/旅程/exec TC/`ac=`+`evidence=` 等 → **不要**降级门控。
+- 正确路径：`$beacon-plan` 重拆意图 → `$beacon-truth` gen/change → Truth Review Gate → **freeze 新 revision**。
+- 实现上禁止为旧形状保留长期 soft-compat 分支。
+
+## v1.6.10+ scaffold 只算 draft（强制 truth-review 填满再 freeze）
+
+1. `gen` / `materialize` 输出 **`package_maturity: scaffold`** + gold 结构骨架。
+2. **不得**把 scaffold 当 freeze 就绪；postwrite `recommend_freeze=false` 直至 Check D pass。
+3. 必填煮干：`Intent Coverage Matrix` must、业务 FSM（非 draft/in_review 元状态）、**用户旅程**、AC、illegal、Non-goals。
+4. 填满后设 `package_maturity: filled`（或去掉 scaffold 标记），再 `beacon truth review` → pass → freeze。
+5. Humanizer：A/B/C pass 后 **apply 写回 L0**（`preserve_machine_fields=true`）；全文从 oss-sync resolve。
+6. freeze 成功后 `tasks.md` 由 AC 派生；business domain 湖 tests 须含 ≥1 **exec-layer TC**。
+
+## v1.6.10+ gen-truth HARD（写后强制 · 不得建议 freeze 直至通过）
+
+CLI / materialize 在写入 `truth.md`（及同包 tests）后必须执行 post-write gates：
+
+1. **Humanizer fulltext（TASK-003）**  
+   - 调用 `resolve_humanizer_profile`（`beacon.utils.humanizer_config`）。  
+   - 默认 `zh` → oss-sync `core-skills/Humanizer-zh/SKILL.md` 全文；`en` → `core-skills/humanizer/SKILL.md`。  
+   - `require_on_truth_write: true` 时路径缺失 ⇒ `blocked`，**不得** `recommend_freeze`。  
+   - Humanizer 仅润色 L0（`## 人话` / `## Plain language`）；**不得**改 AC ID、FSM、Intent Matrix 等机器字段。
+
+2. **Truth Review Gate（A/B/C）**  
+   - 写后必跑 `beacon truth review` / `run_truth_review_gate`。  
+   - fail ⇒ CLI exit 2；消息明确 **do NOT freeze**；`recommend_freeze=false`。  
+   - pass 后才可进入人工 ack 的 freeze 路径。
+
+3. **默认 scaffold 结构（render_truth_package v1.6.10+）**  
+   - `## 人话`（或 en `## Plain language`）  
+   - `## Intent Coverage Matrix`  
+   - `## Acceptance Criteria`  
+   - `## FSM 五元组` + `### invalid / illegal`  
+   - `## Non-goals`  
+   - `tests.md` 表头：`TC ID | AC ID | Command | Assertion`
+
+4. **下游 fail-closed**  
+   - `qa run`：TRG fail → reason `truth_review_gate_failed`。  
+   - release scorecard：`materials_status: stale` 或 TRG report 缺失/失败 → 非 `release_ready`。
+
+实现入口：`beacon/utils/truth_gen_postwrite.py` → `run_truth_gen_postwrite_gates`。
+
 ## Truth Freeze Intent Loop（HARD GATE — freeze 前强制）
 
 Generator **不得**在单轮 `truth.coverage` 后直接建议 freeze。必须按轮次煮干用户意图；任一 Round 失败则回到对应 mode 重写，**不得**用占位 AC/TC 凑 closure 形状。

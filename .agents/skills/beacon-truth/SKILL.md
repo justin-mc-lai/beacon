@@ -3,7 +3,7 @@ name: beacon-truth
 description: >
   Public truth harness (1+6 core). Freeze/init feature package truth, change, refreeze, user-story/prd/test-case materials. Triggers: 冻需求, freeze, truth, change, refreeze, 写 truth. Modes under references/modes/. No implement or QA self-pass.
 metadata:
-  version: "v1.6.9"
+  version: "v1.6.10"
   brand: Beacon
   public_surface: true
   public_id: "truth"
@@ -44,6 +44,7 @@ Shared preamble:
 | `gen-truth` | `references/modes/gen-truth.md` | authoritative truth package |
 | `gen-truth-init` | `references/modes/gen-truth-init.md` | init feature package |
 | `gen-change` | `references/modes/gen-change.md` | change log / delta |
+| `truth-review` | `references/modes/truth-review.md` | Plan→Truth Review Gate before freeze |
 | `gen-refreeze` | `references/modes/gen-refreeze.md` | refreeze after change |
 
 Index: `references/modes/INDEX.md`
@@ -67,7 +68,9 @@ Index: `references/modes/INDEX.md`
 ## Evals
 
 Smoke + contract prompts: `evals/evals.json`  
-Examples (when present): `references/examples/`
+Examples (when present): `references/examples/`  
+Gold (v1.6.10 订单支付完整包): `references/examples/gold-order-pay-package.md`  
+Docs twin: `docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/`
 
 ## Shared package refs
 

@@ -3,7 +3,7 @@ name: beacon-implement
 description: >
   Public implement harness (1+6 core). Code implementation after workspace admit and frozen truth. Modes: single/team/ralph under references/gen-implement/. Triggers: 实现, implement, 写代码, ralph. No QA self-certify or release pass.
 metadata:
-  version: "v1.6.9"
+  version: "v1.6.10"
   brand: Beacon
   public_surface: true
   public_id: "implement"

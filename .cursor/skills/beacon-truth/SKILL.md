@@ -1,65 +1,79 @@
 ---
 name: beacon-truth
 description: >
-  beacon public harness surface for `truth`.
-  Progressive-loads internal skills without dropping capability.
-  Dual-install; does not replace the other brand. Longrun only on goal.
+  Public truth harness (1+6 core). Freeze/init feature package truth, change, refreeze, user-story/prd/test-case materials. Triggers: 冻需求, freeze, truth, change, refreeze, 写 truth. Modes under references/modes/. No implement or QA self-pass.
 metadata:
-  version: "v1.6.9"
+  version: "v1.6.10"
   brand: Beacon
   public_surface: true
   public_id: "truth"
-  harness: "truth"
+  scheme: "A-1plus6-merged"
   progressive_map: skills/beacon/references/public-surface-progressive-map.v1.json
-  progressive_loads: ["beacon-gen-truth", "beacon-gen-truth-init", "beacon-gen-change", "beacon-gen-refreeze"]
   dual_install_with: loom-truth
   longrun: false
 ---
 
 # beacon-truth
 
-**公开面（Scheme A）**：`truth`  
-**渐进加载（能力不降级）**：`beacon-gen-truth`, `beacon-gen-truth-init`, `beacon-gen-change`, `beacon-gen-refreeze`
+**Public surface**: `truth` (Scheme A — only 1+6 host-visible cores)  
+**Brand**: beacon  
+**Capability home**: this package (`references/modes/` + nested refs). No separate fine-grained skill install required.
 
-本 skill **不**负责多小时 longrun；长程只用 `$beacon-goal` / `$loom-goal`。
+## HARD GATE
 
-## When to use
+May write/freeze package truth only after plan readiness. Forbidden: implement, fake freeze, QA self-pass.
 
-- 需要 **truth** 场景的稳定入口（host-visible 白名单内）
-- 细粒度旧名（如 gen-implement）仍可用作兼容，但默认安装不再暴露
+Shared preamble:
 
-## Progressive load
+1. Lake vs sea — boil lakes; split/defer seas.
+2. Search before invent — truth, source, evidence, memory first.
+3. User sovereignty on scope and freeze.
+4. No fake delivery (placeholder, docs-only, zero assertions).
+5. Harness boundaries — planner ≠ implement; generator ≠ self-certify; evaluator ≠ rewrite truth.
 
-按 `public-surface-progressive-map.v1.json` 加载内部 skill；**禁止**为了合并而跳过原有 HARD GATE。
+## Mandatory progressive load (do not skip)
 
-| Internal skill | Role |
-|----------------|------|
-| `beacon-gen-truth` | progressive |
-| `beacon-gen-truth-init` | progressive |
-| `beacon-gen-change` | progressive |
-| `beacon-gen-refreeze` | progressive |
+1. Select **exactly one** primary `mode_id` from the table (use subintent/runtime when available).
+2. **Read the mode file completely** before acting.
+3. Open nested `references/<mode>/…` only when the mode file links them.
+4. Emit the mode output contract + `mode_id` + `recommended_next_harness`.
+5. Stop at harness boundary; route to another public core instead of stretching this one.
 
-## Boundary
+| mode_id | Load file | Purpose |
+|---------|-----------|---------|
+| `gen-truth` | `references/modes/gen-truth.md` | authoritative truth package |
+| `gen-truth-init` | `references/modes/gen-truth-init.md` | init feature package |
+| `gen-change` | `references/modes/gen-change.md` | change log / delta |
+| `truth-review` | `references/modes/truth-review.md` | Plan→Truth Review Gate before freeze |
+| `gen-refreeze` | `references/modes/gen-refreeze.md` | refreeze after change |
 
-- 不成为第二公共 goal 流水线
-- harness HARD GATE 继承被加载的内部 skill
-- gov/doctor 不由用户背名；goal 自愈带自动调度
+Index: `references/modes/INDEX.md`
 
-## Examples
+## Workflow
 
-见 `skills/beacon/examples/surface-truth-30s.md`（若存在）与 `goal-one-shot-30s.md`。
+1. Classify request → primary mode.
+2. Read mode file + required nested references.
+3. Produce artifacts for that mode only.
+4. Recommend next public harness (`goal` pipeline order when long-run).
+5. Never claim completion of another harness's job.
 
-## Dual brand
+## Output contract (minimum)
 
-| Beacon | Loom |
-|--------|------|
-| `beacon-truth` | `loom-truth` |
+- `mode_id` (required)
+- `public_id`: `truth`
+- `evidence_refs` (paths/commands used)
+- `recommended_next_harness` one of: goal|plan|truth|design|implement|qa|release|stop
+- Mode-specific fields (plan_artifact, findings, truth package paths, QA scorecard, release brief, …) per mode file
 
-## Domain-FSM checklist (P2)
+## Evals
 
-Progressive load **must not** skip HARD GATE. Attach human checklist:
+Smoke + contract prompts: `evals/evals.json`  
+Examples (when present): `references/examples/`  
+Gold (v1.6.10 订单支付完整包): `references/examples/gold-order-pay-package.md`  
+Docs twin: `docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/`
 
-- `skills/beacon/references/domain-fsm-truth-checklist.md`
+## Shared package refs
 
-Goal `build_stage_plan` also lists this under stage `references` when stage matches.
-
+- `skills/beacon/references/public-surface-1plus6.md`
+- `skills/beacon/references/public-surface-progressive-map.v1.json`
+- `skills/beacon/references/git-worktree-execution-flow.md`

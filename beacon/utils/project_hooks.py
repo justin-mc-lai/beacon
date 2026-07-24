@@ -484,7 +484,13 @@ def _resolve_eval_version(project_root: Path, version: str) -> tuple[str, str | 
     return (resolved, None)
 
 
-def _run_beacon_post_release_local_install_in_place(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
+def _run_beacon_post_release_local_install_in_place(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+    skill_source_root: Path | None = None,
+) -> dict[str, Any]:
     from beacon.utils.agent_eval_kit import run_agent_eval
     from beacon.utils.doctor_orchestrator import (
         run_agent_surface_setup,
@@ -520,15 +526,20 @@ def _run_beacon_post_release_local_install_in_place(project_root: Path, *, versi
         verify_global_claude_beacon_skills,
     )
 
+    # Global host skills must always target a permanent skill source.
+    # Temp post-release worktrees are discarded; symlinking ~/.agents or
+    # ~/.claude into them leaves broken host discovery after cleanup.
+    skill_root = Path(skill_source_root or project_root).resolve()
+
     # Codex/agents: flat Scheme A 1+6 (never package-root leak)
     agents_global_install = install_global_agents_beacon_skills(
-        beacon_root=project_root,
+        beacon_root=skill_root,
         dry_run=False,
     )
     agents_global_verify = verify_global_agents_beacon_skills()
 
     claude_global_install = install_global_claude_beacon_skills(
-        beacon_root=project_root,
+        beacon_root=skill_root,
         dry_run=False,
     )
     claude_global_verify = verify_global_claude_beacon_skills()
@@ -660,7 +671,7 @@ def _run_beacon_post_release_local_install_in_place(project_root: Path, *, versi
         "agent_eval_release_hook": agent_eval_release_hook,
         "commands_confirmed": [
             f"python3 -m beacon.main doctor cleanup-legacy-beacon-skills --project-root . --version {version} --scope all --force --json",
-            f"python3 -c \"from beacon.utils.agent_surface import install_global_agents_beacon_skills, verify_global_agents_beacon_skills, install_global_claude_beacon_skills, verify_global_claude_beacon_skills; install_global_agents_beacon_skills(beacon_root='{project_root}'); verify_global_agents_beacon_skills(); install_global_claude_beacon_skills(beacon_root='{project_root}'); verify_global_claude_beacon_skills()\"",
+            f"python3 -c \"from beacon.utils.agent_surface import install_global_agents_beacon_skills, verify_global_agents_beacon_skills, install_global_claude_beacon_skills, verify_global_claude_beacon_skills; install_global_agents_beacon_skills(beacon_root='{skill_root}'); verify_global_agents_beacon_skills(); install_global_claude_beacon_skills(beacon_root='{skill_root}'); verify_global_claude_beacon_skills()\"",
             f"python3 -m beacon.main doctor setup-agent-surface --project-root . --version {version} --agent codex --force --json",
             f"python3 -m beacon.main doctor verify-agent-surface --project-root . --version {version} --agent codex --strict --json",
             f"python3 -m beacon.main doctor setup-agent-surface --project-root . --version {version} --agent claude --force --json",
@@ -723,7 +734,15 @@ def _run_beacon_post_release_local_install(project_root: Path, *, version: str, 
             "install_isolation": {"mode": "temp_worktree", "worktree_path": str(worktree_path), "worktree_add": add},
         }
     try:
-        result = _run_beacon_post_release_local_install_in_place(worktree_path, version=version, feature=feature)
+        # Project-local projections stay isolated in the temp worktree.
+        # Global skill install must use the permanent original root so host
+        # symlinks survive worktree cleanup and verify against packaged sources.
+        result = _run_beacon_post_release_local_install_in_place(
+            worktree_path,
+            version=version,
+            feature=feature,
+            skill_source_root=project_root,
+        )
     finally:
         remove = _git_command(project_root, ["worktree", "remove", "--force", str(worktree_path)])
         shutil.rmtree(temp_parent, ignore_errors=True)
@@ -732,6 +751,7 @@ def _run_beacon_post_release_local_install(project_root: Path, *, version: str, 
     result["install_isolation"] = {
         "mode": "temp_worktree",
         "worktree_path": str(worktree_path),
+        "skill_source_root": str(project_root.resolve()),
         "worktree_add": add,
         "worktree_remove": remove,
         "original_root_snapshot_delta": delta,

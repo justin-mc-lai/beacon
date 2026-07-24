@@ -66,6 +66,22 @@ Review artifact must include:
 - `findings`
 - `recommended_route`
 
+
+## Underspecified / block still emit (mandatory)
+
+If the user asks for multi-angle review / full parity / 完整复刻 but source OSS, target repo, feature, or version is missing:
+
+1. **Do not** only ask clarifying questions and stop.
+2. Still emit the full output contract with explicit placeholders and blockers:
+   - `mode_id: pln-review`
+   - `intent_snapshot` (from user utterance; mark unknown fields)
+   - `scope_mode: full_parity` when user said 做全/同等能力/不要 MVP (never silently downgrade to MVP)
+   - `parity_matrix` / `deferral_ledger` (may be empty tables + note "blocked: missing source")
+   - `findings` with at least one **P0** finding: missing source/target/scope
+   - `recommended_route` / `recommended_next_harness`: usually `stop` or `plan` until user supplies refs
+3. List the exact questions needed next, **after** the structured artifact.
+4. Never route silently to implement/QA/release while P0 blockers remain.
+
 ## References
 
 Read only the reference files needed for the current request:

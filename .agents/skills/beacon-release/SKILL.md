@@ -3,7 +3,7 @@ name: beacon-release
 description: >
   Public release harness (1+6 core). Release readiness, human gate, install/projection checks. Triggers: 发布, release, gate, readiness. Mode eval-release under references/modes/. Human gate required; no fake pass.
 metadata:
-  version: "v1.6.9"
+  version: "v1.6.10"
   brand: Beacon
   public_surface: true
   public_id: "release"
