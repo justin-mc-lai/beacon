@@ -1,27 +1,27 @@
 {
   "scope": "qa9",
-  "timestamp": "2026-07-27T21:57:03.998825",
-  "project": "/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11/contract-baseline-convergence-v1611",
+  "timestamp": "2026-07-27T21:54:38.762093",
+  "project": "/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11/convergence-verifier-v1611",
   "version": "v1.6.11",
-  "run_id": "run-20260727T215703998192",
-  "spec_fingerprint_hash": "3f0b41b0e0cbb12607754a0fac69c9ab8cd55cf321c1daca4a9a0fa8fac825cf",
+  "run_id": "run-20260727T215438761432",
+  "spec_fingerprint_hash": "ca802d1b6ab9991d42f1c5439ceb1068998134eb25b018b433f0ed710ab0d34e",
   "status": "passed",
   "selected_layers": [
     "contract"
   ],
   "execution": {
-    "run_id": "run-20260727T215703998192",
+    "run_id": "run-20260727T215438761432",
     "version": "v1.6.11",
-    "evidence_dir": ".beacon/evidence/auto-test/run-20260727T215703998192",
+    "evidence_dir": ".beacon/evidence/auto-test/run-20260727T215438761432",
     "spec_fingerprint": {
-      "fingerprint_hash": "3f0b41b0e0cbb12607754a0fac69c9ab8cd55cf321c1daca4a9a0fa8fac825cf",
+      "fingerprint_hash": "ca802d1b6ab9991d42f1c5439ceb1068998134eb25b018b433f0ed710ab0d34e",
       "version": "v1.6.11",
-      "generated_at": "2026-07-27T13:57:10.833088+00:00"
+      "generated_at": "2026-07-27T13:54:46.996518+00:00"
     },
     "layers": [
       {
         "layer": "contract",
-        "command": "beacon doctor verify-context --project-root . --strict --json",
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k closure_matrix --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "exit_code": 0,
         "status": "passed",
         "reason_code": "",
@@ -35,32 +35,32 @@
             "exit_code": 0
           }
         ],
-        "execution_fingerprint": "f69a331e560920151f0f4d66e31e55f9f9f73f3d983fb122f1ebe0f39bf34ac3",
-        "started_at": "2026-07-27T21:57:04.073297",
-        "ended_at": "2026-07-27T21:57:04.519497",
-        "junit_path": ".beacon/evidence/auto-test/run-20260727T215703998192/contract/junit.xml",
+        "execution_fingerprint": "ad5fe411241faa76048a48505d8bc47b586a24247432e8944eb5d109b9e3a616",
+        "started_at": "2026-07-27T21:54:38.855829",
+        "ended_at": "2026-07-27T21:54:39.522489",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T215438761432/contract/junit.xml",
         "junit_valid": true,
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260727T215703998192/contract/command.txt",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/contract/stdout.log",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/contract/stderr.log",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/contract/junit.xml",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/contract/result.json"
+          ".beacon/evidence/auto-test/run-20260727T215438761432/contract/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/contract/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/contract/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/contract/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/contract/result.json"
         ]
       }
     ],
     "ui_action_evidence": {},
     "matrix_report": {
       "status": "ok",
-      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11/contract-baseline-convergence-v1611/.beacon/qa/features/contract-baseline-convergence-v1611/matrix.qa9.json",
-      "evidence_generated": 10,
-      "entry_count": 10,
+      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11/convergence-verifier-v1611/.beacon/qa/features/convergence-verifier-v1611/matrix.qa9.json",
+      "evidence_generated": 11,
+      "entry_count": 11,
       "freshness_violations": []
     },
     "artifacts": [
-      ".beacon/evidence/auto-test/run-20260727T215703998192/qa9/tc-execution-map.json",
-      ".beacon/evidence/auto-test/run-20260727T215703998192/qa9/tc-results.json",
-      ".beacon/evidence/auto-test/run-20260727T215703998192/summary.json",
+      ".beacon/evidence/auto-test/run-20260727T215438761432/qa9/tc-execution-map.json",
+      ".beacon/evidence/auto-test/run-20260727T215438761432/qa9/tc-results.json",
+      ".beacon/evidence/auto-test/run-20260727T215438761432/summary.json",
       ".beacon/flaky-history.json",
       ".beacon/evidence-signature-chain.json"
     ],
@@ -77,7 +77,7 @@
     "qa_types": [
       "contract"
     ],
-    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11/contract-baseline-convergence-v1611/.beacon/qa/features/contract-baseline-convergence-v1611/matrix.qa9.json",
+    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11/convergence-verifier-v1611/.beacon/qa/features/convergence-verifier-v1611/matrix.qa9.json",
     "ui_runner": "playwright",
     "quality_requirements": {
       "require_junit": true,
@@ -90,23 +90,23 @@
       "executed_pairs": []
     },
     "summary": {
-      "cases_total": 10,
-      "passed": 10,
+      "cases_total": 11,
+      "passed": 11,
       "failed": 0,
       "blocked": 0,
       "pending": 0,
       "pass_rate": 1.0,
       "automation_rate": 1.0,
-      "auto_cases_total": 10,
-      "auto_cases_executed": 10,
+      "auto_cases_total": 11,
+      "auto_cases_executed": 11,
       "round_stop_triggered": false,
       "round_stop_reasons": []
     },
     "tc_results": [
       {
-        "tc_id": "TC-BAS-001",
-        "ac_id": "AC-BAS-001",
-        "source_tc_id": "TC-BAS-001",
+        "tc_id": "TC-CNV-001",
+        "ac_id": "AC-CNV-001",
+        "source_tc_id": "TC-CNV-001",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -116,20 +116,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "beacon doctor verify-context --project-root . --strict --json",
-        "run_id": "run-20260727T215703998192",
-        "evidence_path": ".beacon/evidence/qa-feature/contract-baseline-convergence-v1611/tc-bas-001/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k closure_matrix --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T215438761432",
+        "evidence_path": ".beacon/evidence/qa-feature/convergence-verifier-v1611/tc-cnv-001/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-001/command.txt",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-001/stdout.log",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-001/stderr.log",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-001/junit.xml",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-001/result.json"
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-001/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-001/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-001/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-001/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-001/result.json"
         ],
-        "execution_fingerprint": "fd3d73da55b3eed5f2aed7b7416ae5bcf459bf189c72e3c6945a909f8b7621cb",
-        "started_at": "2026-07-27T21:57:04.595603",
-        "ended_at": "2026-07-27T21:57:05.030775",
-        "junit_path": ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-001/junit.xml",
+        "execution_fingerprint": "1519389124b1a8b5b9ae3ad551c4e06bbda985fe59dd241c5d1c60841ef05cb7",
+        "started_at": "2026-07-27T21:54:39.597740",
+        "ended_at": "2026-07-27T21:54:40.158445",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-001/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -142,9 +142,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-BAS-002",
-        "ac_id": "AC-BAS-002",
-        "source_tc_id": "TC-BAS-002",
+        "tc_id": "TC-CNV-002",
+        "ac_id": "AC-CNV-002",
+        "source_tc_id": "TC-CNV-002",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -154,57 +154,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "git rev-parse HEAD",
-        "run_id": "run-20260727T215703998192",
-        "evidence_path": ".beacon/evidence/qa-feature/contract-baseline-convergence-v1611/tc-bas-002/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k goal_completion --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T215438761432",
+        "evidence_path": ".beacon/evidence/qa-feature/convergence-verifier-v1611/tc-cnv-002/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-002/command.txt",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-002/stdout.log",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-002/stderr.log",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-002/result.json"
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-002/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-002/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-002/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-002/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-002/result.json"
         ],
-        "execution_fingerprint": "153f64b28fb37d2fc64fa4b578941b546ca2a7e24ac64c44e99d9499aeaed3e0",
-        "started_at": "2026-07-27T21:57:05.103172",
-        "ended_at": "2026-07-27T21:57:05.123713",
-        "junit_path": "",
-        "junit_valid": false,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
-        "browser_runner_learning_ref": "",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-BAS-003",
-        "ac_id": "AC-BAS-003",
-        "source_tc_id": "TC-BAS-003",
-        "scenario_id": "",
-        "scenario_family": "",
-        "qa_type": "contract",
-        "layer": "contract",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 20,
-        "command": "python3 -m pytest -q tests/test_v1610_plan_host_subagent_voltpack.py --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260727T215703998192",
-        "evidence_path": ".beacon/evidence/qa-feature/contract-baseline-convergence-v1611/tc-bas-003/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-003/command.txt",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-003/stdout.log",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-003/stderr.log",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-003/junit.xml",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-003/result.json"
-        ],
-        "execution_fingerprint": "69ee949c97245d3d33d9ebafef0120ac7d8e1a3c874bdaa45cbe734045e5070e",
-        "started_at": "2026-07-27T21:57:05.192961",
-        "ended_at": "2026-07-27T21:57:05.926191",
-        "junit_path": ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-003/junit.xml",
+        "execution_fingerprint": "76156b16bae4ad83a304c47cad2965134cfeb2cf6cfab3d7e23853373a9e1e83",
+        "started_at": "2026-07-27T21:54:40.229697",
+        "ended_at": "2026-07-27T21:54:40.796757",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-002/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -217,9 +180,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-BAS-004",
-        "ac_id": "AC-BAS-004",
-        "source_tc_id": "TC-BAS-004",
+        "tc_id": "TC-CNV-003",
+        "ac_id": "AC-CNV-003",
+        "source_tc_id": "TC-CNV-003",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -229,20 +192,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1610_truth_gen_template_and_gates.py -k stale --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260727T215703998192",
-        "evidence_path": ".beacon/evidence/qa-feature/contract-baseline-convergence-v1611/tc-bas-004/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k stale_blocks --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T215438761432",
+        "evidence_path": ".beacon/evidence/qa-feature/convergence-verifier-v1611/tc-cnv-003/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-004/command.txt",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-004/stdout.log",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-004/stderr.log",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-004/junit.xml",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-004/result.json"
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-003/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-003/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-003/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-003/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-003/result.json"
         ],
-        "execution_fingerprint": "2cbca29c8da66ec9d568967f3969c34fabd0a0793b4fcf7da5a42b03f4ad0949",
-        "started_at": "2026-07-27T21:57:06.006696",
-        "ended_at": "2026-07-27T21:57:06.587618",
-        "junit_path": ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-004/junit.xml",
+        "execution_fingerprint": "2aaa7b9014593948ca9fa90fc596c8aec2d0bbfb124168ade0debf8490bf4e5e",
+        "started_at": "2026-07-27T21:54:40.870571",
+        "ended_at": "2026-07-27T21:54:41.442198",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-003/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -255,9 +218,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-BAS-005",
-        "ac_id": "AC-BAS-005",
-        "source_tc_id": "TC-BAS-005",
+        "tc_id": "TC-CNV-004",
+        "ac_id": "AC-CNV-004",
+        "source_tc_id": "TC-CNV-004",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -267,20 +230,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k package_shape_upgrade_required --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260727T215703998192",
-        "evidence_path": ".beacon/evidence/qa-feature/contract-baseline-convergence-v1611/tc-bas-005/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k goal_owner --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T215438761432",
+        "evidence_path": ".beacon/evidence/qa-feature/convergence-verifier-v1611/tc-cnv-004/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-005/command.txt",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-005/stdout.log",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-005/stderr.log",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-005/junit.xml",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-005/result.json"
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-004/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-004/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-004/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-004/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-004/result.json"
         ],
-        "execution_fingerprint": "382fad7b04b1687b51bd487c3daa3dba63d71ed31f67e162437afeb427f1eeec",
-        "started_at": "2026-07-27T21:57:06.661947",
-        "ended_at": "2026-07-27T21:57:07.228704",
-        "junit_path": ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-005/junit.xml",
+        "execution_fingerprint": "d78431c40cf3f9d09a1b204179852da9259b9128b261585ed66f16db7962d4a1",
+        "started_at": "2026-07-27T21:54:41.517094",
+        "ended_at": "2026-07-27T21:54:42.085451",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-004/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -293,9 +256,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-BAS-006",
-        "ac_id": "AC-BAS-006",
-        "source_tc_id": "TC-BAS-006",
+        "tc_id": "TC-CNV-005",
+        "ac_id": "AC-CNV-005",
+        "source_tc_id": "TC-CNV-005",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -305,20 +268,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k frozen_truth_lineage --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260727T215703998192",
-        "evidence_path": ".beacon/evidence/qa-feature/contract-baseline-convergence-v1611/tc-bas-006/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k minimal_gap_route --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T215438761432",
+        "evidence_path": ".beacon/evidence/qa-feature/convergence-verifier-v1611/tc-cnv-005/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-006/command.txt",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-006/stdout.log",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-006/stderr.log",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-006/junit.xml",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-006/result.json"
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-005/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-005/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-005/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-005/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-005/result.json"
         ],
-        "execution_fingerprint": "19fcc69a5dc0ac95251f1574a41e5a602263d178d459a5a7c7dd4349b68cd244",
-        "started_at": "2026-07-27T21:57:07.307432",
-        "ended_at": "2026-07-27T21:57:07.908146",
-        "junit_path": ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-006/junit.xml",
+        "execution_fingerprint": "c35e295ad2d9bdbb4fc2b103e9a0e4eb7575cf245cdb35247b5844d545e44bd3",
+        "started_at": "2026-07-27T21:54:42.161750",
+        "ended_at": "2026-07-27T21:54:42.736207",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-005/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -331,9 +294,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-BAS-007",
-        "ac_id": "AC-BAS-007",
-        "source_tc_id": "TC-BAS-007",
+        "tc_id": "TC-CNV-006",
+        "ac_id": "AC-CNV-006",
+        "source_tc_id": "TC-CNV-006",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -343,20 +306,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k deterministic_scaffold_not_filled --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260727T215703998192",
-        "evidence_path": ".beacon/evidence/qa-feature/contract-baseline-convergence-v1611/tc-bas-007/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k goal_run_required_refs --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T215438761432",
+        "evidence_path": ".beacon/evidence/qa-feature/convergence-verifier-v1611/tc-cnv-006/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-007/command.txt",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-007/stdout.log",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-007/stderr.log",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-007/junit.xml",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-007/result.json"
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-006/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-006/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-006/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-006/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-006/result.json"
         ],
-        "execution_fingerprint": "f3d27aa787e9dc2b9c5e4cb704353c559a4fd6f1c976a391df388fb4f3253895",
-        "started_at": "2026-07-27T21:57:07.984092",
-        "ended_at": "2026-07-27T21:57:08.607574",
-        "junit_path": ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-007/junit.xml",
+        "execution_fingerprint": "77c6f5a9266a50be37343a8ba59593a18151d34e41e49a725d0014e22e0507a1",
+        "started_at": "2026-07-27T21:54:42.808879",
+        "ended_at": "2026-07-27T21:54:43.383647",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-006/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -369,9 +332,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-BAS-008",
-        "ac_id": "AC-BAS-008",
-        "source_tc_id": "TC-BAS-008",
+        "tc_id": "TC-CNV-007",
+        "ac_id": "AC-CNV-007",
+        "source_tc_id": "TC-CNV-007",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -381,20 +344,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k semantic_compiler_feature_package_authority --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260727T215703998192",
-        "evidence_path": ".beacon/evidence/qa-feature/contract-baseline-convergence-v1611/tc-bas-008/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k public_lifecycle_boundary --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T215438761432",
+        "evidence_path": ".beacon/evidence/qa-feature/convergence-verifier-v1611/tc-cnv-007/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-008/command.txt",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-008/stdout.log",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-008/stderr.log",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-008/junit.xml",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-008/result.json"
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-007/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-007/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-007/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-007/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-007/result.json"
         ],
-        "execution_fingerprint": "be36d3de35c6f620681817a91dc225ec9875028b7e7520c0a0b647b5de69e4be",
-        "started_at": "2026-07-27T21:57:08.680621",
-        "ended_at": "2026-07-27T21:57:09.344510",
-        "junit_path": ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-008/junit.xml",
+        "execution_fingerprint": "36ebc266f15bd1ca26e8cfbb2fbd67b641066879be2865d25f41497907c85345",
+        "started_at": "2026-07-27T21:54:43.455399",
+        "ended_at": "2026-07-27T21:54:44.029033",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-007/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -407,9 +370,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-BAS-009",
-        "ac_id": "AC-BAS-009",
-        "source_tc_id": "TC-BAS-009",
+        "tc_id": "TC-CNV-008",
+        "ac_id": "AC-CNV-008",
+        "source_tc_id": "TC-CNV-008",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -419,20 +382,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k authenticated_freeze_receipt --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260727T215703998192",
-        "evidence_path": ".beacon/evidence/qa-feature/contract-baseline-convergence-v1611/tc-bas-009/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k pac_full_trace_matrix --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T215438761432",
+        "evidence_path": ".beacon/evidence/qa-feature/convergence-verifier-v1611/tc-cnv-008/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-009/command.txt",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-009/stdout.log",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-009/stderr.log",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-009/junit.xml",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-009/result.json"
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-008/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-008/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-008/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-008/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-008/result.json"
         ],
-        "execution_fingerprint": "ad1df751683b5e86cf55a7f7b77e6004099e65ecfd75e498dfbe12526bb1623c",
-        "started_at": "2026-07-27T21:57:09.418861",
-        "ended_at": "2026-07-27T21:57:09.998111",
-        "junit_path": ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-009/junit.xml",
+        "execution_fingerprint": "9cc19f676006d9c8e6dc90f30087d0af043b8ba93aab91caca4d726877fe8244",
+        "started_at": "2026-07-27T21:54:44.098615",
+        "ended_at": "2026-07-27T21:54:44.723032",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-008/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -445,9 +408,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-BAS-ILLEGAL",
-        "ac_id": "AC-BAS-005",
-        "source_tc_id": "TC-BAS-ILLEGAL",
+        "tc_id": "TC-CNV-009",
+        "ac_id": "AC-CNV-009",
+        "source_tc_id": "TC-CNV-009",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -457,20 +420,96 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k baseline_illegal_transition --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260727T215703998192",
-        "evidence_path": ".beacon/evidence/qa-feature/contract-baseline-convergence-v1611/tc-bas-illegal/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k authenticated_program_freeze --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T215438761432",
+        "evidence_path": ".beacon/evidence/qa-feature/convergence-verifier-v1611/tc-cnv-009/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-ILLEGAL/command.txt",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-ILLEGAL/stdout.log",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-ILLEGAL/stderr.log",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-ILLEGAL/junit.xml",
-          ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-ILLEGAL/result.json"
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-009/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-009/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-009/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-009/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-009/result.json"
         ],
-        "execution_fingerprint": "7de03adce5d2a058813e77e18bd6f94178ca5129627d88dafbe0e5527d95cf71",
-        "started_at": "2026-07-27T21:57:10.071448",
-        "ended_at": "2026-07-27T21:57:10.639607",
-        "junit_path": ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-ILLEGAL/junit.xml",
+        "execution_fingerprint": "cd213101de6243d342bca033a630d022ee40900e4cc3dc59f728afb4ade37429",
+        "started_at": "2026-07-27T21:54:44.810388",
+        "ended_at": "2026-07-27T21:54:45.483932",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-009/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-CNV-010",
+        "ac_id": "AC-CNV-010",
+        "source_tc_id": "TC-CNV-010",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k fill_chain_convergence --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T215438761432",
+        "evidence_path": ".beacon/evidence/qa-feature/convergence-verifier-v1611/tc-cnv-010/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-010/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-010/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-010/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-010/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-010/result.json"
+        ],
+        "execution_fingerprint": "5be0c55077f1986f8dbf5df6c0eacfeccfb0367c570960637a5a36a25b8cb5e4",
+        "started_at": "2026-07-27T21:54:45.556492",
+        "ended_at": "2026-07-27T21:54:46.127040",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-010/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-CNV-ILLEGAL",
+        "ac_id": "AC-CNV-007",
+        "source_tc_id": "TC-CNV-ILLEGAL",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k convergence_illegal_transition --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T215438761432",
+        "evidence_path": ".beacon/evidence/qa-feature/convergence-verifier-v1611/tc-cnv-illegal/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-ILLEGAL/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-ILLEGAL/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-ILLEGAL/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-ILLEGAL/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-ILLEGAL/result.json"
+        ],
+        "execution_fingerprint": "0a0cb2d4f46902c147e602a82dfd24688693a973069005a493c30ea9726a51e6",
+        "started_at": "2026-07-27T21:54:46.197919",
+        "ended_at": "2026-07-27T21:54:46.787065",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-ILLEGAL/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -486,9 +525,9 @@
   },
   "quality_issues": [],
   "schema_version": "1.0",
-  "updated_at": "2026-07-27T13:57:10.707433+00:00",
+  "updated_at": "2026-07-27T13:54:46.865130+00:00",
   "summary": {
-    "feature": "contract-baseline-convergence-v1611",
+    "feature": "convergence-verifier-v1611",
     "version": "v1.6.11",
     "status": "passed",
     "release_ready": true,
@@ -499,15 +538,15 @@
     "reconciliation_artifact_path": "",
     "reconciliation_reprojection_targets": [],
     "repair_action": "qa-repair",
-    "repair_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11/contract-baseline-convergence-v1611 --version v1.6.11 --feature \"contract-baseline-convergence-v1611\""
+    "repair_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11/convergence-verifier-v1611 --version v1.6.11 --feature \"convergence-verifier-v1611\""
   },
   "qa_status_source": "canonical",
   "governance_state_role": "generated_governance_state_not_truth",
   "truth_authority": false,
   "json_authority": false,
   "resolver_mode": "resolver_first",
-  "feature": "contract-baseline-convergence-v1611",
-  "feature_slug": "contract-baseline-convergence-v1611",
+  "feature": "convergence-verifier-v1611",
+  "feature_slug": "convergence-verifier-v1611",
   "implementation_done": true,
   "evidence_done": true,
   "story_sequence": [
@@ -522,35 +561,35 @@
   "targeted_rerun": {
     "required": true,
     "reason_codes": [
-      "previous_feature_qa_not_passed",
-      "implementation_run_changed",
-      "source_matrix_changed"
+      "implementation_run_changed"
     ],
     "targeted_layers": [
       "contract"
     ],
     "targeted_ac_ids": [
-      "AC-BAS-001",
-      "AC-BAS-002",
-      "AC-BAS-003",
-      "AC-BAS-004",
-      "AC-BAS-005",
-      "AC-BAS-006",
-      "AC-BAS-007",
-      "AC-BAS-008",
-      "AC-BAS-009"
+      "AC-CNV-001",
+      "AC-CNV-002",
+      "AC-CNV-003",
+      "AC-CNV-004",
+      "AC-CNV-005",
+      "AC-CNV-006",
+      "AC-CNV-007",
+      "AC-CNV-008",
+      "AC-CNV-009",
+      "AC-CNV-010"
     ],
     "targeted_tc_ids": [
-      "TC-BAS-001",
-      "TC-BAS-002",
-      "TC-BAS-003",
-      "TC-BAS-004",
-      "TC-BAS-005",
-      "TC-BAS-006",
-      "TC-BAS-007",
-      "TC-BAS-008",
-      "TC-BAS-009",
-      "TC-BAS-ILLEGAL"
+      "TC-CNV-001",
+      "TC-CNV-002",
+      "TC-CNV-003",
+      "TC-CNV-004",
+      "TC-CNV-005",
+      "TC-CNV-006",
+      "TC-CNV-007",
+      "TC-CNV-008",
+      "TC-CNV-009",
+      "TC-CNV-010",
+      "TC-CNV-ILLEGAL"
     ],
     "targeted_scenario_ids": [],
     "targeted_scenario_families": []
@@ -560,15 +599,15 @@
     "assumption_capture_required": true,
     "goal_driven_verification_required": true,
     "targeted_scope_only": true,
-    "verification_item_count": 10
+    "verification_item_count": 11
   },
-  "feature_matrix_path": ".beacon/qa/features/contract-baseline-convergence-v1611/matrix.qa9.json",
+  "feature_matrix_path": ".beacon/qa/features/convergence-verifier-v1611/matrix.qa9.json",
   "blocking_artifact_updates": [],
   "per_item_results": [
     {
-      "ac_id": "AC-BAS-001",
-      "tc_id": "TC-BAS-001",
-      "source_tc_id": "TC-BAS-001",
+      "ac_id": "AC-CNV-001",
+      "tc_id": "TC-CNV-001",
+      "source_tc_id": "TC-CNV-001",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-001",
@@ -581,17 +620,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-001/result.json"
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-001/result.json"
       ]
     },
     {
-      "ac_id": "AC-BAS-002",
-      "tc_id": "TC-BAS-002",
-      "source_tc_id": "TC-BAS-002",
+      "ac_id": "AC-CNV-002",
+      "tc_id": "TC-CNV-002",
+      "source_tc_id": "TC-CNV-002",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-002",
@@ -604,16 +643,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-002/command.txt",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-002/stdout.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-002/stderr.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-002/result.json"
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-002/result.json"
       ]
     },
     {
-      "ac_id": "AC-BAS-003",
-      "tc_id": "TC-BAS-003",
-      "source_tc_id": "TC-BAS-003",
+      "ac_id": "AC-CNV-003",
+      "tc_id": "TC-CNV-003",
+      "source_tc_id": "TC-CNV-003",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-003",
@@ -626,17 +666,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-003/command.txt",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-003/stdout.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-003/stderr.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-003/junit.xml",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-003/result.json"
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-003/result.json"
       ]
     },
     {
-      "ac_id": "AC-BAS-004",
-      "tc_id": "TC-BAS-004",
-      "source_tc_id": "TC-BAS-004",
+      "ac_id": "AC-CNV-004",
+      "tc_id": "TC-CNV-004",
+      "source_tc_id": "TC-CNV-004",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-004",
@@ -649,17 +689,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-004/command.txt",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-004/stdout.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-004/stderr.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-004/junit.xml",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-004/result.json"
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-004/result.json"
       ]
     },
     {
-      "ac_id": "AC-BAS-005",
-      "tc_id": "TC-BAS-005",
-      "source_tc_id": "TC-BAS-005",
+      "ac_id": "AC-CNV-005",
+      "tc_id": "TC-CNV-005",
+      "source_tc_id": "TC-CNV-005",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-005",
@@ -672,17 +712,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-005/command.txt",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-005/stdout.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-005/stderr.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-005/junit.xml",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-005/result.json"
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-005/result.json"
       ]
     },
     {
-      "ac_id": "AC-BAS-006",
-      "tc_id": "TC-BAS-006",
-      "source_tc_id": "TC-BAS-006",
+      "ac_id": "AC-CNV-006",
+      "tc_id": "TC-CNV-006",
+      "source_tc_id": "TC-CNV-006",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-006",
@@ -695,17 +735,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-006/command.txt",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-006/stdout.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-006/stderr.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-006/junit.xml",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-006/result.json"
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-006/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-006/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-006/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-006/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-006/result.json"
       ]
     },
     {
-      "ac_id": "AC-BAS-007",
-      "tc_id": "TC-BAS-007",
-      "source_tc_id": "TC-BAS-007",
+      "ac_id": "AC-CNV-007",
+      "tc_id": "TC-CNV-007",
+      "source_tc_id": "TC-CNV-007",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-007",
@@ -718,17 +758,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-007/command.txt",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-007/stdout.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-007/stderr.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-007/junit.xml",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-007/result.json"
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-007/result.json"
       ]
     },
     {
-      "ac_id": "AC-BAS-008",
-      "tc_id": "TC-BAS-008",
-      "source_tc_id": "TC-BAS-008",
+      "ac_id": "AC-CNV-008",
+      "tc_id": "TC-CNV-008",
+      "source_tc_id": "TC-CNV-008",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-008",
@@ -741,17 +781,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-008/command.txt",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-008/stdout.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-008/stderr.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-008/junit.xml",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-008/result.json"
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-008/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-008/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-008/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-008/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-008/result.json"
       ]
     },
     {
-      "ac_id": "AC-BAS-009",
-      "tc_id": "TC-BAS-009",
-      "source_tc_id": "TC-BAS-009",
+      "ac_id": "AC-CNV-009",
+      "tc_id": "TC-CNV-009",
+      "source_tc_id": "TC-CNV-009",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-009",
@@ -764,17 +804,40 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-009/command.txt",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-009/stdout.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-009/stderr.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-009/junit.xml",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-009/result.json"
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-009/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-009/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-009/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-009/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-009/result.json"
       ]
     },
     {
-      "ac_id": "AC-BAS-005",
-      "tc_id": "TC-BAS-ILLEGAL",
-      "source_tc_id": "TC-BAS-ILLEGAL",
+      "ac_id": "AC-CNV-010",
+      "tc_id": "TC-CNV-010",
+      "source_tc_id": "TC-CNV-010",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-010",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-010/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-010/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-010/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-010/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-010/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-CNV-007",
+      "tc_id": "TC-CNV-ILLEGAL",
+      "source_tc_id": "TC-CNV-ILLEGAL",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "",
@@ -787,11 +850,11 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-ILLEGAL/command.txt",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-ILLEGAL/stdout.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-ILLEGAL/stderr.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-ILLEGAL/junit.xml",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-ILLEGAL/result.json"
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-ILLEGAL/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-ILLEGAL/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-ILLEGAL/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-ILLEGAL/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-ILLEGAL/result.json"
       ]
     }
   ],
@@ -825,17 +888,17 @@
     "blocked": false,
     "reason_code": "requirement_completeness_projection_missing",
     "target_stage": "qa",
-    "feature": "contract-baseline-convergence-v1611",
+    "feature": "convergence-verifier-v1611",
     "version": "v1.6.11",
     "stage_ready": true,
     "paths": {
-      "envelope": "docs/beacon/v1.6.11/.machine/requirement/contract-baseline-convergence-v1611.envelope.json",
-      "candidate_ledger": "docs/beacon/v1.6.11/.machine/requirement/contract-baseline-convergence-v1611.candidate-ledger.json",
-      "decision_log": "docs/beacon/v1.6.11/.machine/requirement/contract-baseline-convergence-v1611.supplement-decision-log.json",
-      "freeze_contract": "docs/beacon/v1.6.11/.machine/requirement/contract-baseline-convergence-v1611.freeze-contract.json",
-      "completeness": "docs/beacon/v1.6.11/.machine/requirement/contract-baseline-convergence-v1611.completeness.json",
-      "supplement_task": "docs/beacon/v1.6.11/.machine/requirement/contract-baseline-convergence-v1611.supplement-task.json",
-      "re_freeze_transaction": "docs/beacon/v1.6.11/.machine/requirement/contract-baseline-convergence-v1611.re-freeze-transaction.json"
+      "envelope": "docs/beacon/v1.6.11/.machine/requirement/convergence-verifier-v1611.envelope.json",
+      "candidate_ledger": "docs/beacon/v1.6.11/.machine/requirement/convergence-verifier-v1611.candidate-ledger.json",
+      "decision_log": "docs/beacon/v1.6.11/.machine/requirement/convergence-verifier-v1611.supplement-decision-log.json",
+      "freeze_contract": "docs/beacon/v1.6.11/.machine/requirement/convergence-verifier-v1611.freeze-contract.json",
+      "completeness": "docs/beacon/v1.6.11/.machine/requirement/convergence-verifier-v1611.completeness.json",
+      "supplement_task": "docs/beacon/v1.6.11/.machine/requirement/convergence-verifier-v1611.supplement-task.json",
+      "re_freeze_transaction": "docs/beacon/v1.6.11/.machine/requirement/convergence-verifier-v1611.re-freeze-transaction.json"
     },
     "projection_status": "package_authoritative",
     "recommended_command": "",
@@ -848,13 +911,13 @@
         "summary": "machine completeness projection is missing, but v1.5.2 package truth and coverage are valid authority",
         "details": {
           "paths": {
-            "envelope": "docs/beacon/v1.6.11/.machine/requirement/contract-baseline-convergence-v1611.envelope.json",
-            "candidate_ledger": "docs/beacon/v1.6.11/.machine/requirement/contract-baseline-convergence-v1611.candidate-ledger.json",
-            "decision_log": "docs/beacon/v1.6.11/.machine/requirement/contract-baseline-convergence-v1611.supplement-decision-log.json",
-            "freeze_contract": "docs/beacon/v1.6.11/.machine/requirement/contract-baseline-convergence-v1611.freeze-contract.json",
-            "completeness": "docs/beacon/v1.6.11/.machine/requirement/contract-baseline-convergence-v1611.completeness.json",
-            "supplement_task": "docs/beacon/v1.6.11/.machine/requirement/contract-baseline-convergence-v1611.supplement-task.json",
-            "re_freeze_transaction": "docs/beacon/v1.6.11/.machine/requirement/contract-baseline-convergence-v1611.re-freeze-transaction.json"
+            "envelope": "docs/beacon/v1.6.11/.machine/requirement/convergence-verifier-v1611.envelope.json",
+            "candidate_ledger": "docs/beacon/v1.6.11/.machine/requirement/convergence-verifier-v1611.candidate-ledger.json",
+            "decision_log": "docs/beacon/v1.6.11/.machine/requirement/convergence-verifier-v1611.supplement-decision-log.json",
+            "freeze_contract": "docs/beacon/v1.6.11/.machine/requirement/convergence-verifier-v1611.freeze-contract.json",
+            "completeness": "docs/beacon/v1.6.11/.machine/requirement/convergence-verifier-v1611.completeness.json",
+            "supplement_task": "docs/beacon/v1.6.11/.machine/requirement/convergence-verifier-v1611.supplement-task.json",
+            "re_freeze_transaction": "docs/beacon/v1.6.11/.machine/requirement/convergence-verifier-v1611.re-freeze-transaction.json"
           },
           "projection_status": "package_authoritative"
         }
@@ -872,8 +935,8 @@
         "reason_code": "",
         "summary": "acceptance coverage is parseable from package tests",
         "details": {
-          "ac_count": 9,
-          "test_count": 10
+          "ac_count": 10,
+          "test_count": 11
         }
       },
       "downgrade_control": {
@@ -905,22 +968,22 @@
       "status": "pass",
       "validation": {
         "schema_version": "1.0",
-        "feature": "contract-baseline-convergence-v1611",
-        "feature_slug": "contract-baseline-convergence-v1611",
+        "feature": "convergence-verifier-v1611",
+        "feature_slug": "convergence-verifier-v1611",
         "version": "v1.6.11",
         "status": "pass",
         "blocked": false,
         "reason_code": "",
-        "generated_at": "2026-07-27T13:57:02.807546+00:00",
-        "package_dir": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611",
+        "generated_at": "2026-07-27T13:54:36.603338+00:00",
+        "package_dir": "docs/beacon/v1.6.11/features/convergence-verifier-v1611",
         "truth_frontmatter": {
-          "slug": "contract-baseline-convergence-v1611",
+          "slug": "convergence-verifier-v1611",
           "version": "v1.6.11",
           "status": "frozen",
           "revision_id": "R2",
           "language": "zh",
           "domain_required": "true",
-          "domain_kind": "platform",
+          "domain_kind": "gate",
           "ux_required": "false",
           "ux_deferred": "true",
           "package_maturity": "filled",
@@ -928,23 +991,22 @@
           "parser_contract": "beacon-feature-package-v2",
           "truth_source_model": "feature_package_authoritative",
           "program_ref": "docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/program-manifest.md",
-          "baseline_commit": "30b9adffc8ec5442a7691a88faf64a251d97b98f",
           "truth_map_contract": "beacon-truth-map-v1",
           "participating_services": "beacon",
           "git_canonical_branch": "main",
           "previous_revision": "R1",
-          "change_reason": "D3: CLI deterministic scaffold plus Host Agent (skill-authored fill) full-package fill under feature-package authority",
-          "parent_truth": "docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
-          "inherited_contracts": "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
+          "change_reason": "D3: authenticated PAC trace and full-package fill convergence",
+          "parent_truth": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/truth.md",
+          "inherited_contracts": "docs/beacon/v1.6.11/features/task-progress-ledger-v1611/truth.md; docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md; docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
           "canonical_refs": {
-            "prd": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/truth.md",
-            "user_story": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/truth.md",
-            "test_case": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/tests.md"
+            "prd": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/truth.md",
+            "user_story": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/truth.md",
+            "test_case": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/tests.md"
           }
         },
-        "ac_count": 9,
-        "test_count": 10,
-        "checkbox_count": 11,
+        "ac_count": 10,
+        "test_count": 11,
+        "checkbox_count": 12,
         "evidence_row_count": 10,
         "gate_authority": "canonical_surfaces_preserved",
         "checkbox_gate_bypass": false,
@@ -961,7 +1023,7 @@
           {
             "severity": "info",
             "code": "truth_human_l0_ok",
-            "path": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/truth.md",
+            "path": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/truth.md",
             "language": "zh",
             "l0_headings": [
               "## 人话"
@@ -976,16 +1038,16 @@
         "truth_authority": "markdown_feature_package",
         "json_authority": false,
         "source_paths": {
-          "truth": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/truth.md",
-          "tests": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/tests.md",
-          "tasks": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/tasks.md",
-          "evidence": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/evidence.md"
+          "truth": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/truth.md",
+          "tests": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/tests.md",
+          "tasks": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/tasks.md",
+          "evidence": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/evidence.md"
         },
         "source_hashes": {
-          "truth": "3953067df14bc27ac8204f01b8f2827d64ef9849c29fd7f639563efc0bf286ac",
-          "tests": "9aac7a3e8badb59dfbff9daaef17186bd4357af6cf55bf13c92df89c708cbe17",
-          "tasks": "eabee2fed1b239fa7c419ae1441e428c6eaf1207235ddea3358e2975f7d98448",
-          "evidence": "dfe6c6df36c4a2d13b5e25284f9fbc4e82dbc5006e3741d2baa500e8606f4615"
+          "truth": "8613884968a0fac09acb7d63811411e46717f42141cb61ca3a48e4be6d2f74c3",
+          "tests": "fbeca916a44774c3ccd2294a8c073681a7df3d689220ad49bfd97b8c6b3f4dd9",
+          "tasks": "6d181b5ce529b2e38c96474148a1b673ab9b3bee92b28d448bac5616378a4784",
+          "evidence": "0af11db3b1c341eec4ac36997d44791b731547ecc76c593bfe614981ce8c0065"
         },
         "runtime_json_requires_markdown_twin": false
       }
@@ -994,15 +1056,15 @@
     "freeze_contract": {}
   },
   "requirement_completeness_verdict": "pass",
-  "requirement_completeness_ref": "docs/beacon/v1.6.11/.machine/requirement/contract-baseline-convergence-v1611.completeness.json",
+  "requirement_completeness_ref": "docs/beacon/v1.6.11/.machine/requirement/convergence-verifier-v1611.completeness.json",
   "exhaustiveness": {
     "schema_version": "1.0",
-    "feature": "contract-baseline-convergence-v1611",
-    "feature_slug": "contract-baseline-convergence-v1611",
-    "run_id": "run-20260727T215703998192",
-    "generated_at": "2026-07-27T13:57:10.765887+00:00",
+    "feature": "convergence-verifier-v1611",
+    "feature_slug": "convergence-verifier-v1611",
+    "run_id": "run-20260727T215438761432",
+    "generated_at": "2026-07-27T13:54:46.927939+00:00",
     "execution_mode": "feature-aware",
-    "scenario_count": 10,
+    "scenario_count": 11,
     "browser_scenario_count": 0,
     "required_families": [],
     "passed_families": [],
@@ -1022,11 +1084,11 @@
   },
   "scenario_results_v2": [
     {
-      "scenario_id": "TC-BAS-001",
-      "tc_id": "TC-BAS-001",
-      "source_tc_id": "TC-BAS-001",
-      "ac_id": "AC-BAS-001",
-      "feature_slug": "contract-baseline-convergence-v1611",
+      "scenario_id": "TC-CNV-001",
+      "tc_id": "TC-CNV-001",
+      "source_tc_id": "TC-CNV-001",
+      "ac_id": "AC-CNV-001",
+      "feature_slug": "convergence-verifier-v1611",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1050,19 +1112,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-001/result.json"
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-001/result.json"
       ]
     },
     {
-      "scenario_id": "TC-BAS-002",
-      "tc_id": "TC-BAS-002",
-      "source_tc_id": "TC-BAS-002",
-      "ac_id": "AC-BAS-002",
-      "feature_slug": "contract-baseline-convergence-v1611",
+      "scenario_id": "TC-CNV-002",
+      "tc_id": "TC-CNV-002",
+      "source_tc_id": "TC-CNV-002",
+      "ac_id": "AC-CNV-002",
+      "feature_slug": "convergence-verifier-v1611",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1086,18 +1148,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-002/command.txt",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-002/stdout.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-002/stderr.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-002/result.json"
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-002/result.json"
       ]
     },
     {
-      "scenario_id": "TC-BAS-003",
-      "tc_id": "TC-BAS-003",
-      "source_tc_id": "TC-BAS-003",
-      "ac_id": "AC-BAS-003",
-      "feature_slug": "contract-baseline-convergence-v1611",
+      "scenario_id": "TC-CNV-003",
+      "tc_id": "TC-CNV-003",
+      "source_tc_id": "TC-CNV-003",
+      "ac_id": "AC-CNV-003",
+      "feature_slug": "convergence-verifier-v1611",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1121,19 +1184,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-003/command.txt",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-003/stdout.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-003/stderr.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-003/junit.xml",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-003/result.json"
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-003/result.json"
       ]
     },
     {
-      "scenario_id": "TC-BAS-004",
-      "tc_id": "TC-BAS-004",
-      "source_tc_id": "TC-BAS-004",
-      "ac_id": "AC-BAS-004",
-      "feature_slug": "contract-baseline-convergence-v1611",
+      "scenario_id": "TC-CNV-004",
+      "tc_id": "TC-CNV-004",
+      "source_tc_id": "TC-CNV-004",
+      "ac_id": "AC-CNV-004",
+      "feature_slug": "convergence-verifier-v1611",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1157,19 +1220,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-004/command.txt",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-004/stdout.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-004/stderr.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-004/junit.xml",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-004/result.json"
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-004/result.json"
       ]
     },
     {
-      "scenario_id": "TC-BAS-005",
-      "tc_id": "TC-BAS-005",
-      "source_tc_id": "TC-BAS-005",
-      "ac_id": "AC-BAS-005",
-      "feature_slug": "contract-baseline-convergence-v1611",
+      "scenario_id": "TC-CNV-005",
+      "tc_id": "TC-CNV-005",
+      "source_tc_id": "TC-CNV-005",
+      "ac_id": "AC-CNV-005",
+      "feature_slug": "convergence-verifier-v1611",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1193,19 +1256,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-005/command.txt",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-005/stdout.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-005/stderr.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-005/junit.xml",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-005/result.json"
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-005/result.json"
       ]
     },
     {
-      "scenario_id": "TC-BAS-006",
-      "tc_id": "TC-BAS-006",
-      "source_tc_id": "TC-BAS-006",
-      "ac_id": "AC-BAS-006",
-      "feature_slug": "contract-baseline-convergence-v1611",
+      "scenario_id": "TC-CNV-006",
+      "tc_id": "TC-CNV-006",
+      "source_tc_id": "TC-CNV-006",
+      "ac_id": "AC-CNV-006",
+      "feature_slug": "convergence-verifier-v1611",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1229,19 +1292,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-006/command.txt",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-006/stdout.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-006/stderr.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-006/junit.xml",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-006/result.json"
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-006/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-006/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-006/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-006/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-006/result.json"
       ]
     },
     {
-      "scenario_id": "TC-BAS-007",
-      "tc_id": "TC-BAS-007",
-      "source_tc_id": "TC-BAS-007",
-      "ac_id": "AC-BAS-007",
-      "feature_slug": "contract-baseline-convergence-v1611",
+      "scenario_id": "TC-CNV-007",
+      "tc_id": "TC-CNV-007",
+      "source_tc_id": "TC-CNV-007",
+      "ac_id": "AC-CNV-007",
+      "feature_slug": "convergence-verifier-v1611",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1265,19 +1328,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-007/command.txt",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-007/stdout.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-007/stderr.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-007/junit.xml",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-007/result.json"
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-007/result.json"
       ]
     },
     {
-      "scenario_id": "TC-BAS-008",
-      "tc_id": "TC-BAS-008",
-      "source_tc_id": "TC-BAS-008",
-      "ac_id": "AC-BAS-008",
-      "feature_slug": "contract-baseline-convergence-v1611",
+      "scenario_id": "TC-CNV-008",
+      "tc_id": "TC-CNV-008",
+      "source_tc_id": "TC-CNV-008",
+      "ac_id": "AC-CNV-008",
+      "feature_slug": "convergence-verifier-v1611",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1301,19 +1364,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-008/command.txt",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-008/stdout.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-008/stderr.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-008/junit.xml",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-008/result.json"
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-008/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-008/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-008/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-008/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-008/result.json"
       ]
     },
     {
-      "scenario_id": "TC-BAS-009",
-      "tc_id": "TC-BAS-009",
-      "source_tc_id": "TC-BAS-009",
-      "ac_id": "AC-BAS-009",
-      "feature_slug": "contract-baseline-convergence-v1611",
+      "scenario_id": "TC-CNV-009",
+      "tc_id": "TC-CNV-009",
+      "source_tc_id": "TC-CNV-009",
+      "ac_id": "AC-CNV-009",
+      "feature_slug": "convergence-verifier-v1611",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1337,19 +1400,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-009/command.txt",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-009/stdout.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-009/stderr.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-009/junit.xml",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-009/result.json"
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-009/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-009/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-009/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-009/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-009/result.json"
       ]
     },
     {
-      "scenario_id": "TC-BAS-ILLEGAL",
-      "tc_id": "TC-BAS-ILLEGAL",
-      "source_tc_id": "TC-BAS-ILLEGAL",
-      "ac_id": "AC-BAS-005",
-      "feature_slug": "contract-baseline-convergence-v1611",
+      "scenario_id": "TC-CNV-010",
+      "tc_id": "TC-CNV-010",
+      "source_tc_id": "TC-CNV-010",
+      "ac_id": "AC-CNV-010",
+      "feature_slug": "convergence-verifier-v1611",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1373,25 +1436,61 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-ILLEGAL/command.txt",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-ILLEGAL/stdout.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-ILLEGAL/stderr.log",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-ILLEGAL/junit.xml",
-        ".beacon/evidence/auto-test/run-20260727T215703998192/qa9-tc/TC-BAS-ILLEGAL/result.json"
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-010/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-010/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-010/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-010/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-010/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-CNV-ILLEGAL",
+      "tc_id": "TC-CNV-ILLEGAL",
+      "source_tc_id": "TC-CNV-ILLEGAL",
+      "ac_id": "AC-CNV-007",
+      "feature_slug": "convergence-verifier-v1611",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-ILLEGAL/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-ILLEGAL/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-ILLEGAL/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-ILLEGAL/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215438761432/qa9-tc/TC-CNV-ILLEGAL/result.json"
       ]
     }
   ],
-  "ac_closure_path": ".beacon/qa/features/contract-baseline-convergence-v1611/ac-closure.json",
-  "feature_scorecard_path": ".beacon/qa/features/contract-baseline-convergence-v1611/scorecard.json",
+  "ac_closure_path": ".beacon/qa/features/convergence-verifier-v1611/ac-closure.json",
+  "feature_scorecard_path": ".beacon/qa/features/convergence-verifier-v1611/scorecard.json",
   "feature_scorecard": {
     "schema_version": "1.0",
-    "feature": "contract-baseline-convergence-v1611",
-    "feature_slug": "contract-baseline-convergence-v1611",
-    "run_id": "run-20260727T215703998192",
-    "ac_total": 9,
-    "ac_accepted": 9,
-    "scenario_total": 10,
-    "scenario_passed": 10,
+    "feature": "convergence-verifier-v1611",
+    "feature_slug": "convergence-verifier-v1611",
+    "run_id": "run-20260727T215438761432",
+    "ac_total": 10,
+    "ac_accepted": 10,
+    "scenario_total": 11,
+    "scenario_passed": 11,
     "release_confidence_min": 1.0,
     "release_confidence_avg": 1.0,
     "review_required_count": 0,
@@ -1401,8 +1500,8 @@
     "project_profile_gate_status": "not_configured",
     "project_profile_id": "",
     "coverage_current": {
-      "required_scenarios": 10,
-      "executed_scenarios": 10,
+      "required_scenarios": 11,
+      "executed_scenarios": 11,
       "coverage_rate": 1.0,
       "required_scenario_families": [
         "boundary",
@@ -1411,7 +1510,9 @@
         "negative",
         "recovery"
       ],
-      "covered_scenario_families": [],
+      "covered_scenario_families": [
+        "primary"
+      ],
       "missing_scenario_families": [],
       "missing_test_case_ids": []
     },
@@ -1427,7 +1528,7 @@
       "boundary_principles": [],
       "assumption_capture_required": true,
       "goal_driven_verification_required": true,
-      "verification_item_count": 10,
+      "verification_item_count": 11,
       "targeted_scope_only": true
     },
     "design_truth_verdict": {
@@ -1839,11 +1940,11 @@
     "continue_decision": "ready_for_release",
     "stop_reasons": [],
     "test_case_backfill_required": false,
-    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11/contract-baseline-convergence-v1611 --version v1.6.11 --feature \"contract-baseline-convergence-v1611\"",
+    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11/convergence-verifier-v1611 --version v1.6.11 --feature \"convergence-verifier-v1611\"",
     "repair_handoff": {
       "action": "qa-repair",
       "reason": "qa_round_incomplete",
-      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11/contract-baseline-convergence-v1611 --version v1.6.11 --feature \"contract-baseline-convergence-v1611\""
+      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11/convergence-verifier-v1611 --version v1.6.11 --feature \"convergence-verifier-v1611\""
     },
     "release_ready": true,
     "domain_fsm_coverage": {
@@ -1861,98 +1962,116 @@
         "covered": 1,
         "rows": [
           {
-            "ac_id": "TC-BAS-001",
-            "tc_id": "AC-BAS-001",
-            "path_type": "`beacon doctor verify-context --project-root . --strict --json`",
-            "raw": "TC-BAS-001 | AC-BAS-001 | `beacon doctor verify-context --project-root . --strict --json` | status=pass (legal walk / happy path)"
+            "ac_id": "TC-CNV-001",
+            "tc_id": "AC-CNV-001",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k closure_matrix --tb=no`",
+            "raw": "TC-CNV-001 | AC-CNV-001 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k closure_matrix --tb=no` | six layers are bidirectionally traceable (legal walk / happy path)"
           }
         ]
       },
       "illegal": {
-        "required": 1,
-        "present": 1,
-        "covered": 1,
+        "required": 3,
+        "present": 3,
+        "covered": 3,
         "rows": [
           {
-            "ac_id": "TC-BAS-ILLEGAL",
-            "tc_id": "AC-BAS-005",
-            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k baseline_illegal_transition --tb=no`",
-            "raw": "TC-BAS-ILLEGAL | AC-BAS-005 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k baseline_illegal_transition --tb=no` | illegal old-shape or stale-evidence transition is rejected"
+            "ac_id": "TC-CNV-004",
+            "tc_id": "AC-CNV-004",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k goal_owner --tb=no`",
+            "raw": "TC-CNV-004 | AC-CNV-004 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k goal_owner --tb=no` | subagent completion rejected"
+          },
+          {
+            "ac_id": "TC-CNV-009",
+            "tc_id": "AC-CNV-009",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k authenticated_program_freeze --tb=no`",
+            "raw": "TC-CNV-009 | AC-CNV-009 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k authenticated_program_freeze --tb=no` | status-only promotion is rejected; all nine current hashes, gates, ack and receipts are checked"
+          },
+          {
+            "ac_id": "TC-CNV-ILLEGAL",
+            "tc_id": "AC-CNV-007",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k convergence_illegal_transition --tb=no`",
+            "raw": "TC-CNV-ILLEGAL | AC-CNV-007 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k convergence_illegal_transition --tb=no` | illegal completion by child, stale verdict or new public harness is rejected"
           }
         ]
       },
       "matrix": {
         "legal_walk_rows": [
           {
-            "ac_id": "TC-BAS-001",
-            "tc_id": "AC-BAS-001",
-            "path_type": "`beacon doctor verify-context --project-root . --strict --json`",
-            "raw": "TC-BAS-001 | AC-BAS-001 | `beacon doctor verify-context --project-root . --strict --json` | status=pass (legal walk / happy path)"
+            "ac_id": "TC-CNV-001",
+            "tc_id": "AC-CNV-001",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k closure_matrix --tb=no`",
+            "raw": "TC-CNV-001 | AC-CNV-001 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k closure_matrix --tb=no` | six layers are bidirectionally traceable (legal walk / happy path)"
           }
         ],
         "illegal_rows": [
           {
-            "ac_id": "TC-BAS-ILLEGAL",
-            "tc_id": "AC-BAS-005",
-            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k baseline_illegal_transition --tb=no`",
-            "raw": "TC-BAS-ILLEGAL | AC-BAS-005 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k baseline_illegal_transition --tb=no` | illegal old-shape or stale-evidence transition is rejected"
+            "ac_id": "TC-CNV-004",
+            "tc_id": "AC-CNV-004",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k goal_owner --tb=no`",
+            "raw": "TC-CNV-004 | AC-CNV-004 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k goal_owner --tb=no` | subagent completion rejected"
+          },
+          {
+            "ac_id": "TC-CNV-009",
+            "tc_id": "AC-CNV-009",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k authenticated_program_freeze --tb=no`",
+            "raw": "TC-CNV-009 | AC-CNV-009 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k authenticated_program_freeze --tb=no` | status-only promotion is rejected; all nine current hashes, gates, ack and receipts are checked"
+          },
+          {
+            "ac_id": "TC-CNV-ILLEGAL",
+            "tc_id": "AC-CNV-007",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k convergence_illegal_transition --tb=no`",
+            "raw": "TC-CNV-ILLEGAL | AC-CNV-007 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k convergence_illegal_transition --tb=no` | illegal completion by child, stale verdict or new public harness is rejected"
           }
         ],
         "other_rows": [
           {
-            "ac_id": "TC-BAS-002",
-            "tc_id": "AC-BAS-002",
-            "path_type": "`git rev-parse HEAD`",
-            "raw": "TC-BAS-002 | AC-BAS-002 | `git rev-parse HEAD` | equals bound baseline commit during review"
+            "ac_id": "TC-CNV-002",
+            "tc_id": "AC-CNV-002",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k goal_completion --tb=no`",
+            "raw": "TC-CNV-002 | AC-CNV-002 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k goal_completion --tb=no` | any open required layer blocks pass"
           },
           {
-            "ac_id": "TC-BAS-003",
-            "tc_id": "AC-BAS-003",
-            "path_type": "`python3 -m pytest -q tests/test_v1610_plan_host_subagent_voltpack.py --tb=no`",
-            "raw": "TC-BAS-003 | AC-BAS-003 | `python3 -m pytest -q tests/test_v1610_plan_host_subagent_voltpack.py --tb=no` | host/plan baseline suite result is captured; failures (if any) require disposition before release"
+            "ac_id": "TC-CNV-003",
+            "tc_id": "AC-CNV-003",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k stale_blocks --tb=no`",
+            "raw": "TC-CNV-003 | AC-CNV-003 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k stale_blocks --tb=no` | stale truth/graph/material/evidence blocks"
           },
           {
-            "ac_id": "TC-BAS-004",
-            "tc_id": "AC-BAS-004",
-            "path_type": "`python3 -m pytest -q tests/test_v1610_truth_gen_template_and_gates.py -k stale --tb=no`",
-            "raw": "TC-BAS-004 | AC-BAS-004 | `python3 -m pytest -q tests/test_v1610_truth_gen_template_and_gates.py -k stale --tb=no` | stale cascade contract passes"
+            "ac_id": "TC-CNV-005",
+            "tc_id": "AC-CNV-005",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k minimal_gap_route --tb=no`",
+            "raw": "TC-CNV-005 | AC-CNV-005 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k minimal_gap_route --tb=no` | fail reports minimal gaps and routes"
           },
           {
-            "ac_id": "TC-BAS-005",
-            "tc_id": "AC-BAS-005",
-            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k package_shape_upgrade_required --tb=no`",
-            "raw": "TC-BAS-005 | AC-BAS-005 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k package_shape_upgrade_required --tb=no` | old package/ledger shapes fail closed without compatibility bypass"
+            "ac_id": "TC-CNV-006",
+            "tc_id": "AC-CNV-006",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k goal_run_required_refs --tb=no`",
+            "raw": "TC-CNV-006 | AC-CNV-006 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k goal_run_required_refs --tb=no` | missing or stale program/graph/truth/ready/decision/admission/trace/verifier refs block complete"
           },
           {
-            "ac_id": "TC-BAS-006",
-            "tc_id": "AC-BAS-006",
-            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k frozen_truth_lineage --tb=no`",
-            "raw": "TC-BAS-006 | AC-BAS-006 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k frozen_truth_lineage --tb=no` | old frozen truth stays immutable and inherited semantics require a new frozen revision"
+            "ac_id": "TC-CNV-007",
+            "tc_id": "AC-CNV-007",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k public_lifecycle_boundary --tb=no`",
+            "raw": "TC-CNV-007 | AC-CNV-007 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k public_lifecycle_boundary --tb=no` | no new public harness appears and only Goal owner completes after verifier pass"
           },
           {
-            "ac_id": "TC-BAS-007",
-            "tc_id": "AC-BAS-007",
-            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k deterministic_scaffold_not_filled --tb=no`",
-            "raw": "TC-BAS-007 | AC-BAS-007 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k deterministic_scaffold_not_filled --tb=no` | CLI scaffold creates exactly four current-shape files but remains draft/unfilled before Host Agent (skill-authored fill)"
+            "ac_id": "TC-CNV-008",
+            "tc_id": "AC-CNV-008",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k pac_full_trace_matrix --tb=no`",
+            "raw": "TC-CNV-008 | AC-CNV-008 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k pac_full_trace_matrix --tb=no` | every PAC reaches lake, AC, TC, task/evidence, R2 and final hash"
           },
           {
-            "ac_id": "TC-BAS-008",
-            "tc_id": "AC-BAS-008",
-            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k semantic_compiler_feature_package_authority --tb=no`",
-            "raw": "TC-BAS-008 | AC-BAS-008 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k semantic_compiler_feature_package_authority --tb=no` | legacy PRD/User Story semantic capability is reusable input while feature package remains sole canonical truth"
-          },
-          {
-            "ac_id": "TC-BAS-009",
-            "tc_id": "AC-BAS-009",
-            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k authenticated_freeze_receipt --tb=no`",
-            "raw": "TC-BAS-009 | AC-BAS-009 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k authenticated_freeze_receipt --tb=no` | final hashes, validation, review, human ack and promotion receipt are all bound and checked"
+            "ac_id": "TC-CNV-010",
+            "tc_id": "AC-CNV-010",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k fill_chain_convergence --tb=no`",
+            "raw": "TC-CNV-010 | AC-CNV-010 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k fill_chain_convergence --tb=no` | full fill transaction plus L5 progress and L7 recovery refs must close before freeze"
           }
         ],
         "has_legal_walk": true,
         "has_illegal": true
       },
       "aggregates": [
-        "BaselineConvergence"
+        "GoalConvergence"
       ],
       "state_machine_coverage": {},
       "deep_route_recommended": false
@@ -1987,7 +2106,7 @@
   "release_ready": true,
   "delivery_contract": {
     "schema_version": "1.0",
-    "feature": "contract-baseline-convergence-v1611",
+    "feature": "convergence-verifier-v1611",
     "version": "v1.6.11",
     "requested_mode": "feature-aware",
     "effective_mode": "feature-aware",
@@ -2008,13 +2127,13 @@
     "subagent_prechecks": {},
     "requirement_binding": {
       "source_of_truth_root": "docs/beacon/v1.6.11",
-      "feature_matrix_path": ".beacon/qa/features/contract-baseline-convergence-v1611/matrix.qa9.json",
+      "feature_matrix_path": ".beacon/qa/features/convergence-verifier-v1611/matrix.qa9.json",
       "canonical_matrix_path": ""
     },
     "traceability_refs": [
-      ".beacon/qa/features/contract-baseline-convergence-v1611/matrix.qa9.json",
-      ".beacon/qa/features/contract-baseline-convergence-v1611/ac-closure.json",
-      ".beacon/qa/features/contract-baseline-convergence-v1611/scorecard.json",
+      ".beacon/qa/features/convergence-verifier-v1611/matrix.qa9.json",
+      ".beacon/qa/features/convergence-verifier-v1611/ac-closure.json",
+      ".beacon/qa/features/convergence-verifier-v1611/scorecard.json",
       ".beacon/release-gate-report.json"
     ],
     "runner": "",
@@ -2028,7 +2147,7 @@
   },
   "host_native_delivery": {
     "schema_version": "1.0",
-    "feature": "contract-baseline-convergence-v1611",
+    "feature": "convergence-verifier-v1611",
     "version": "v1.6.11",
     "requested_mode": "feature-aware",
     "effective_mode": "feature-aware",
@@ -2049,13 +2168,13 @@
     "subagent_prechecks": {},
     "requirement_binding": {
       "source_of_truth_root": "docs/beacon/v1.6.11",
-      "feature_matrix_path": ".beacon/qa/features/contract-baseline-convergence-v1611/matrix.qa9.json",
+      "feature_matrix_path": ".beacon/qa/features/convergence-verifier-v1611/matrix.qa9.json",
       "canonical_matrix_path": ""
     },
     "traceability_refs": [
-      ".beacon/qa/features/contract-baseline-convergence-v1611/matrix.qa9.json",
-      ".beacon/qa/features/contract-baseline-convergence-v1611/ac-closure.json",
-      ".beacon/qa/features/contract-baseline-convergence-v1611/scorecard.json",
+      ".beacon/qa/features/convergence-verifier-v1611/matrix.qa9.json",
+      ".beacon/qa/features/convergence-verifier-v1611/ac-closure.json",
+      ".beacon/qa/features/convergence-verifier-v1611/scorecard.json",
       ".beacon/release-gate-report.json"
     ],
     "runner": "",
@@ -2067,5 +2186,5 @@
     "release_ready": true,
     "risk_flags": []
   },
-  "current_spec_fingerprint_hash": "3f0b41b0e0cbb12607754a0fac69c9ab8cd55cf321c1daca4a9a0fa8fac825cf"
+  "current_spec_fingerprint_hash": "ca802d1b6ab9991d42f1c5439ceb1068998134eb25b018b433f0ed710ab0d34e"
 }
