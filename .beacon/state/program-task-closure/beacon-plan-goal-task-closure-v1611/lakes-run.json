@@ -1,0 +1,400 @@
+{
+  "schema": "program-lakes-task-closure.v1",
+  "program_slug": "beacon-plan-goal-task-closure-v1611",
+  "version": "v1.6.11",
+  "status": "blocked",
+  "blocked": true,
+  "pass": false,
+  "reason_code": "program_lakes_findings",
+  "lake_order": [
+    "contract-baseline-convergence-v1611",
+    "brownfield-context-resolver-v1611",
+    "intent-completeness-engine-v1611",
+    "change-impact-state-diff-v1611",
+    "atomic-task-graph-compiler-v1611",
+    "task-progress-ledger-v1611",
+    "drift-padding-review-gate-v1611",
+    "cancel-replan-next-ready-v1611",
+    "convergence-verifier-v1611"
+  ],
+  "lakes": [
+    {
+      "lake": "contract-baseline-convergence-v1611",
+      "surface": "package_shape",
+      "result": {
+        "status": "pass",
+        "blocked": false,
+        "pass": true,
+        "reason_code": "",
+        "generated_at": "2026-07-27T09:39:46.208146+00:00",
+        "shape": "feature_package_authoritative"
+      }
+    },
+    {
+      "lake": "brownfield-context-resolver-v1611",
+      "surface": "context_fill_request",
+      "result": {
+        "status": "pass",
+        "blocked": false,
+        "pass": true,
+        "reason_code": "",
+        "generated_at": "2026-07-27T09:39:46.208492+00:00",
+        "request": {
+          "schema": "truth-fill-request.v1",
+          "utterance": "Continue v1.6.11 host-bridge and nine-lake wiring",
+          "version": "v1.6.11",
+          "revision_id": "R2",
+          "source_hashes": {
+            "truth": "seed-truth",
+            "tests": "seed-tests",
+            "tasks": "seed-tasks",
+            "evidence": "seed-evidence"
+          },
+          "context_fingerprint": "sha256:6c833d2fd712952e59877891f86b5ea424a87f13208104139dcc12ffb09d0c1a",
+          "semantic_compiler_refs": [
+            "beacon/utils/intent_first.py"
+          ],
+          "host_transport": {
+            "capability": "host-response",
+            "precedence": [
+              "host-response",
+              "command-bridge",
+              "cli-semantic-compile"
+            ]
+          },
+          "humanizer_profile": {
+            "language": "zh",
+            "preserve_machine_fields": true
+          },
+          "program_refs": {
+            "manifest": "docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/program-manifest.md"
+          },
+          "pac_refs": [
+            "PAC-001",
+            "PAC-002",
+            "PAC-003",
+            "PAC-004",
+            "PAC-005",
+            "PAC-006",
+            "PAC-007",
+            "PAC-008",
+            "PAC-009",
+            "PAC-010",
+            "PAC-011",
+            "PAC-012",
+            "PAC-013",
+            "PAC-014",
+            "PAC-015",
+            "PAC-016",
+            "PAC-017",
+            "PAC-018",
+            "PAC-019",
+            "PAC-020",
+            "PAC-021"
+          ],
+          "request_hash": "sha256:71d15b2de03ed19b18d778c65e1061b2e1208d5463f13d58439bfcd084a542bb"
+        },
+        "request_hash": "sha256:71d15b2de03ed19b18d778c65e1061b2e1208d5463f13d58439bfcd084a542bb"
+      }
+    },
+    {
+      "lake": "intent-completeness-engine-v1611",
+      "surface": "intent_full_package_fill",
+      "result": {
+        "fill": {
+          "status": "pass",
+          "blocked": false,
+          "pass": true,
+          "reason_code": "",
+          "generated_at": "2026-07-27T09:39:46.208937+00:00",
+          "response_hash": "sha256:ebdbf68c382c10c84753277f0ea1ab4cbbabc566c48d872838b5f11f7ff08f0c"
+        },
+        "false_completeness": {
+          "status": "pass",
+          "blocked": false,
+          "pass": true,
+          "reason_code": "",
+          "generated_at": "2026-07-27T09:39:46.208947+00:00"
+        }
+      }
+    },
+    {
+      "lake": "change-impact-state-diff-v1611",
+      "surface": "structured_fill_transaction",
+      "result": {
+        "status": "pass",
+        "blocked": false,
+        "pass": true,
+        "reason_code": "",
+        "generated_at": "2026-07-27T09:39:46.216696+00:00",
+        "transaction": {
+          "schema": "truth-fill-transaction.v1",
+          "transaction_id": "b6e5b001493d2e53",
+          "request_hash": "sha256:71d15b2de03ed19b18d778c65e1061b2e1208d5463f13d58439bfcd084a542bb",
+          "response_hash": "sha256:ebdbf68c382c10c84753277f0ea1ab4cbbabc566c48d872838b5f11f7ff08f0c",
+          "base_revision": "R2",
+          "allowed_paths": [
+            "docs/beacon/v1.6.11/features/program-fill-demo/evidence.md",
+            "docs/beacon/v1.6.11/features/program-fill-demo/tasks.md",
+            "docs/beacon/v1.6.11/features/program-fill-demo/tests.md",
+            "docs/beacon/v1.6.11/features/program-fill-demo/truth.md"
+          ],
+          "projection_hashes": {
+            "truth": "33e49cfbd74abfc749177acb65b858d0aa1b2a82ac21bf056b27cf96d567875d",
+            "tests": "b1d8471f1cc47c346beba58f4e143385e780f924da7239e364728e8915b55846",
+            "tasks": "5b5264f1a01a20c36159f4f3785358f91c5d70fc3cb47df1a30e9c8a305b418e",
+            "evidence": "d5967d8bb58abee9ff00ae526da56836512daa3c196c541fb13723e9e1c8ccfc"
+          },
+          "step_sequence": [
+            "scaffold",
+            "request",
+            "response",
+            "schema",
+            "patch",
+            "projection"
+          ],
+          "status": "projected"
+        },
+        "projection_hashes": {
+          "truth": "33e49cfbd74abfc749177acb65b858d0aa1b2a82ac21bf056b27cf96d567875d",
+          "tests": "b1d8471f1cc47c346beba58f4e143385e780f924da7239e364728e8915b55846",
+          "tasks": "5b5264f1a01a20c36159f4f3785358f91c5d70fc3cb47df1a30e9c8a305b418e",
+          "evidence": "d5967d8bb58abee9ff00ae526da56836512daa3c196c541fb13723e9e1c8ccfc"
+        }
+      }
+    },
+    {
+      "lake": "atomic-task-graph-compiler-v1611",
+      "surface": "atomic_task_graph",
+      "result": {
+        "compile": {
+          "status": "pass",
+          "blocked": false,
+          "pass": true,
+          "reason_code": "",
+          "generated_at": "2026-07-27T09:39:46.216729+00:00",
+          "nodes": [
+            {
+              "id": "T001",
+              "intent_id": "INT-001",
+              "journey_id": "J-main",
+              "ac_id": "AC-001",
+              "code_scope": "beacon/utils/plan_goal_task_closure.py",
+              "dependencies": [],
+              "verification": "pytest",
+              "evidence": "e1",
+              "status": "ready",
+              "is_root": true
+            },
+            {
+              "id": "T002",
+              "intent_id": "INT-002",
+              "journey_id": "J-main",
+              "ac_id": "AC-002",
+              "code_scope": "beacon/utils/plan_goal_task_closure.py",
+              "dependencies": [
+                "T001"
+              ],
+              "verification": "pytest",
+              "evidence": "e2",
+              "status": "proposed",
+              "is_root": false
+            }
+          ],
+          "count": 2
+        },
+        "ready": {
+          "status": "pass",
+          "blocked": false,
+          "pass": true,
+          "reason_code": "",
+          "generated_at": "2026-07-27T09:39:46.216744+00:00",
+          "ready_set": [
+            "T001"
+          ]
+        }
+      }
+    },
+    {
+      "lake": "task-progress-ledger-v1611",
+      "surface": "progress_ledger",
+      "result": {
+        "progress": {
+          "status": "pass",
+          "blocked": false,
+          "pass": true,
+          "reason_code": "",
+          "generated_at": "2026-07-27T09:39:46.216752+00:00",
+          "path_progress": {
+            "completed": 0,
+            "blocked": 0,
+            "cancelled": 0,
+            "replacement": 0,
+            "remaining": 2
+          },
+          "total_open_or_terminal": 2
+        },
+        "replay": {
+          "status": "pass",
+          "blocked": false,
+          "pass": true,
+          "reason_code": "",
+          "generated_at": "2026-07-27T09:39:46.216765+00:00",
+          "steps": [
+            {
+              "sequence": 1,
+              "name": "scaffold",
+              "hash": "h0",
+              "status": "ok",
+              "feedback": ""
+            },
+            {
+              "sequence": 2,
+              "name": "request",
+              "hash": "h1",
+              "status": "ok",
+              "feedback": ""
+            },
+            {
+              "sequence": 3,
+              "name": "response",
+              "hash": "h2",
+              "status": "ok",
+              "feedback": ""
+            },
+            {
+              "sequence": 4,
+              "name": "schema",
+              "hash": "h3",
+              "status": "ok",
+              "feedback": ""
+            },
+            {
+              "sequence": 5,
+              "name": "patch",
+              "hash": "h4",
+              "status": "ok",
+              "feedback": ""
+            },
+            {
+              "sequence": 6,
+              "name": "projection",
+              "hash": "h5",
+              "status": "ok",
+              "feedback": ""
+            },
+            {
+              "sequence": 7,
+              "name": "validation",
+              "hash": "h6",
+              "status": "ok",
+              "feedback": ""
+            },
+            {
+              "sequence": 8,
+              "name": "review",
+              "hash": "h7",
+              "status": "ok",
+              "feedback": ""
+            },
+            {
+              "sequence": 9,
+              "name": "human_ack",
+              "hash": "h8",
+              "status": "ok",
+              "feedback": ""
+            },
+            {
+              "sequence": 10,
+              "name": "freeze",
+              "hash": "h9",
+              "status": "ok",
+              "feedback": ""
+            }
+          ],
+          "replayable": true
+        }
+      }
+    },
+    {
+      "lake": "drift-padding-review-gate-v1611",
+      "surface": "drift_padding_review",
+      "result": {
+        "status": "awaiting_human",
+        "blocked": true,
+        "pass": false,
+        "reason_code": "hollow_fill_review_gate",
+        "choices": [
+          "continue",
+          "rewrite",
+          "split",
+          "replace",
+          "cancel"
+        ]
+      }
+    },
+    {
+      "lake": "cancel-replan-next-ready-v1611",
+      "surface": "cancel_replan",
+      "result": {
+        "ready_recompute": {
+          "status": "pass",
+          "blocked": [],
+          "pass": true,
+          "reason_code": "",
+          "generated_at": "2026-07-27T09:39:46.216779+00:00",
+          "ready_set": [
+            "T001"
+          ],
+          "atomic": true
+        },
+        "closure_ready": {
+          "status": "pass",
+          "blocked": false,
+          "pass": true,
+          "reason_code": "",
+          "generated_at": "2026-07-27T09:39:46.216781+00:00",
+          "closure_ready": true,
+          "reason": "no_open_work"
+        }
+      }
+    },
+    {
+      "lake": "convergence-verifier-v1611",
+      "surface": "convergence",
+      "result": {
+        "auth_freeze": {
+          "status": "pass",
+          "blocked": false,
+          "pass": true,
+          "reason_code": "",
+          "generated_at": "2026-07-27T09:39:46.264557+00:00",
+          "program_slug": "beacon-plan-goal-task-closure-v1611",
+          "lakes": 9
+        },
+        "pac": {
+          "status": "pass",
+          "blocked": false,
+          "pass": true,
+          "reason_code": "",
+          "generated_at": "2026-07-27T09:39:46.264587+00:00",
+          "count": 9
+        },
+        "fill_chain": {
+          "status": "pass",
+          "blocked": false,
+          "pass": true,
+          "reason_code": "",
+          "generated_at": "2026-07-27T09:39:46.264592+00:00"
+        }
+      }
+    }
+  ],
+  "findings": [
+    {
+      "lake": "drift-padding-review-gate-v1611",
+      "code": "hollow_fill_review_gate"
+    }
+  ],
+  "generated_at": "2026-07-27T09:39:46.264602+00:00"
+}

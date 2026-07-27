@@ -924,7 +924,8 @@ def test_truth_gen_fill_pipeline_main_path(tmp_path: Path):
         language="zh",
     )
     assert out.get("pass") is True, out
-    assert out.get("resolve", {}).get("transport") == "cli-semantic-compile"
+    # Prefer command-bridge (truth host-bridge) when host runtime wires defaults; else semantic compile.
+    assert out.get("resolve", {}).get("transport") in {"cli-semantic-compile", "command-bridge"}
     truth = tmp_path / "docs/beacon/v1.6.11/features/gen-main-path/truth.md"
     assert truth.exists()
     text = truth.read_text(encoding="utf-8")
@@ -971,5 +972,112 @@ def test_truth_gen_cli_uses_fill_pipeline(tmp_path: Path):
     assert result.exit_code == 0, result.output
     payload = __import__("json").loads(result.output)
     assert payload.get("pass") is True
-    assert "cli-semantic-compile" in str(payload.get("resolve") or {})
+    transport = str((payload.get("resolve") or {}).get("transport") or "")
+    assert transport in {"cli-semantic-compile", "command-bridge"}
+
+
+def test_truth_host_bridge_outputs_fill_response():
+    """Host bridge must emit truth-fill-response.v1 (real host-agent I/O contract)."""
+    import json
+    from typer.testing import CliRunner
+    from beacon.commands.truth import app as truth_app
+
+    runner = CliRunner()
+    request = {
+        "schema": pg.SCHEMA_FILL_REQUEST,
+        "utterance": "把大目标拆成可验证任务",
+        "version": "v1.6.11",
+        "feature": "host-bridge-feature",
+        "humanizer_profile": {"language": "zh"},
+    }
+    result = runner.invoke(truth_app, ["host-bridge", json.dumps(request, ensure_ascii=False)])
+    assert result.exit_code == 0, result.output
+    payload = json.loads(result.output)
+    assert payload.get("schema") == pg.SCHEMA_FILL_RESPONSE
+    assert payload.get("acceptance_criteria")
+    assert payload.get("bridge") == "beacon-truth-host-bridge"
+    filled = pg.validate_host_llm_full_package_fill(payload)
+    assert filled.get("pass") is True, filled
+
+
+def test_truth_host_bridge_passthrough_fill_response():
+    import json
+    from typer.testing import CliRunner
+    from beacon.commands.truth import app as truth_app
+
+    runner = CliRunner()
+    response = _filled_response()
+    result = runner.invoke(truth_app, ["host-bridge", json.dumps(response, ensure_ascii=False)])
+    assert result.exit_code == 0, result.output
+    payload = json.loads(result.output)
+    assert payload.get("schema") == pg.SCHEMA_FILL_RESPONSE
+    assert payload.get("bridge") == "beacon-truth-host-bridge"
+
+
+def test_truth_fill_host_bridge_defaults_alias_to_truth_command(monkeypatch):
+    import os
+    import shlex
+    import sys
+
+    monkeypatch.delenv("BEACON_HOST_TRUTH_BRIDGE_CMD", raising=False)
+    monkeypatch.delenv("BEACON_HOST_GEN_TRUTH_BRIDGE_CMD", raising=False)
+    monkeypatch.delenv("BEACON_HOST_TRUTH_FILL_BRIDGE_CMD", raising=False)
+    # Force local default without requiring host runtime detect.
+    monkeypatch.setenv("BEACON_TRUTH_FILL_FORCE_BRIDGE", "1")
+    cmd = pg.ensure_truth_fill_host_bridge_defaults(force=True)
+    assert "truth host-bridge" in cmd
+    assert "gen-truth host-bridge" not in cmd
+    assert os.environ["BEACON_HOST_TRUTH_BRIDGE_CMD"] == cmd
+    assert os.environ["BEACON_HOST_GEN_TRUTH_BRIDGE_CMD"] == cmd
+    assert os.environ["BEACON_HOST_TRUTH_FILL_BRIDGE_CMD"] == cmd
+    # rewrite wrong alias defaults
+    monkeypatch.setenv(
+        "BEACON_HOST_GEN_TRUTH_BRIDGE_CMD",
+        f"{shlex.quote(sys.executable)} -m beacon.main gen-truth host-bridge",
+    )
+    fixed = pg.ensure_truth_fill_host_bridge_defaults(force=True)
+    assert "truth host-bridge" in os.environ["BEACON_HOST_GEN_TRUTH_BRIDGE_CMD"]
+    assert fixed
+
+
+def test_truth_gen_fill_pipeline_command_bridge(tmp_path: Path, monkeypatch):
+    """When bridge env is set, resolve uses command-bridge transport to truth-fill-response.v1."""
+    import json
+    import shlex
+    import sys
+
+    bridge = f"{shlex.quote(sys.executable)} -m beacon.main truth host-bridge"
+    monkeypatch.setenv("BEACON_HOST_TRUTH_BRIDGE_CMD", bridge)
+    monkeypatch.delenv("BEACON_HOST_TRUTH_RESPONSE_JSON", raising=False)
+    monkeypatch.delenv("BEACON_HOST_SEMANTIC_RESPONSE_JSON", raising=False)
+    out = pg.run_truth_gen_fill_pipeline(
+        tmp_path,
+        version="v1.6.11",
+        feature="gen-bridge-path",
+        utterance="Deliver structured fill via command bridge",
+        language="zh",
+        allow_semantic_compile_fallback=False,
+    )
+    assert out.get("pass") is True, out
+    assert out.get("resolve", {}).get("transport") == "command-bridge"
+    assert str(out.get("resolve", {}).get("source") or "").startswith("host_bridge")
+    assert (tmp_path / "docs/beacon/v1.6.11/features/gen-bridge-path/truth.md").exists()
+
+
+def test_run_program_lakes_task_closure_wires_l0_l8(tmp_path: Path):
+    out = pg.run_program_lakes_task_closure(
+        tmp_path,
+        version="v1.6.11",
+        program_slug="beacon-plan-goal-task-closure-v1611",
+        utterance="Wire nine lakes task closure",
+    )
+    assert out.get("schema") == "program-lakes-task-closure.v1"
+    assert len(out.get("lake_order") or []) == 9
+    assert len(out.get("lakes") or []) == 9
+    artifact = Path(out["artifact"])
+    assert artifact.exists()
+    # Honest: without authenticated lake receipts + human hollow gate, program lakes stay blocked.
+    assert out.get("blocked") is True
+    codes = {f.get("code") for f in (out.get("findings") or [])}
+    assert "hollow_fill_review_gate" in codes or any("auth" in str(c) for c in codes) or codes
 

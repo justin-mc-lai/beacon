@@ -1,0 +1,31 @@
+{
+  "schema": "release-brief.v1",
+  "version": "v1.6.11",
+  "feature": "contract-baseline-convergence-v1611",
+  "run_id": "pgr-35ca10598c49",
+  "generated_at": "2026-07-27T09:40:25.131563+00:00",
+  "decision": "NO-GO",
+  "decision_class": "human_gate_required",
+  "summary": "Host bridge 已接到 truth-fill-response.v1 主路径，九湖 runner 与 97 合约测试通过，但 hollow review / authenticated freeze / 真实 longrun 证明未闭合，禁止自动 release。",
+  "go_criteria_met": [
+    "truth gen fill pipeline authoritative path exists",
+    "host-bridge real I/O contract + alias defaults",
+    "no direct markdown overwrite",
+    "contract suite 97 passed"
+  ],
+  "open_gates": [
+    "hollow_fill_review_gate awaiting_human",
+    "authenticated program freeze on real lake receipts",
+    "PAC full-trace matrix on production package",
+    "runtime version still not v1.6.11",
+    "human release ack"
+  ],
+  "recommended_actions": [
+    "Continue implement only for remaining lake product depth if needed",
+    "Attach real lake promotion receipts before program freeze",
+    "Human review hollow/drift findings before any freeze",
+    "Do not auto-release; wait for explicit human GO"
+  ],
+  "release_ready": false,
+  "auto_release": false
+}

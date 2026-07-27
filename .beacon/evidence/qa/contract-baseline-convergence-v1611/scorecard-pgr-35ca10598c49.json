@@ -5,25 +5,39 @@
   "feature": "contract-baseline-convergence-v1611",
   "version": "v1.6.11",
   "run_id": "pgr-35ca10598c49",
-  "generated_at": "2026-07-27T09:00:02.945164+00:00",
+  "generated_at": "2026-07-27T09:40:25.131563+00:00",
   "verdict": "pass_partial",
   "layers": {
     "skill_contract": {
       "status": "pass",
       "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py --tb=no",
-      "result": "83 passed in 0.59s"
+      "result": "97 passed in 2.07s",
+      "delta": "was 92 / 83 earlier; +host-bridge +lakes runner +alias defaults"
+    },
+    "host_bridge_contract": {
+      "status": "pass",
+      "note": "truth host-bridge emits truth-fill-response.v1; gen path defaults bridge aliases to truth host-bridge; pass-through stamps bridge metadata"
+    },
+    "fill_pipeline_main_path": {
+      "status": "pass",
+      "note": "scaffold → fill-request → host-response/command-bridge/semantic → transaction apply; no direct markdown overwrite"
+    },
+    "nine_lake_wiring": {
+      "status": "pass_partial",
+      "artifact": ".beacon/state/program-task-closure/beacon-plan-goal-task-closure-v1611/lakes-run.json",
+      "note": "L0-L8 surfaces exercised; hollow_fill_review_gate remains awaiting_human (by design)"
     },
     "scenario_suite": {
       "status": "pass_partial",
-      "note": "Shared L0-L8 contract suite + CLI wiring covered; full product journeys not live-exercised"
+      "note": "Shared L0-L8 contract suite + CLI host-bridge/gen/fill wiring covered; full product longrun journeys not live-exercised"
     },
     "trace_scorecard": {
       "status": "pass_partial",
-      "note": "agent_trace/lifecycle binding covered by unit contracts; no longrun production trace"
+      "note": "agent_trace/lifecycle binding covered by unit contracts; no longrun production trace attached this turn"
     },
     "real_project_proof": {
       "status": "deferred",
-      "note": "planning-only line v1.6.11; runtime still v1.6.10"
+      "note": "planning-only line v1.6.11; runtime still v1.6.9/v1.6.10 per AGENTS"
     }
   },
   "adversarial_review": [
@@ -46,17 +60,37 @@
     {
       "risk": "child/subagent completes goal",
       "proof": "test_goal_owner + test_task_delegation_contract"
+    },
+    {
+      "risk": "wrong bridge subcommand gen-truth/truth-fill",
+      "proof": "test_truth_fill_host_bridge_defaults_alias_to_truth_command"
+    },
+    {
+      "risk": "host bridge non-contract output",
+      "proof": "test_truth_host_bridge_outputs_fill_response + validate_host_llm_full_package_fill"
     }
   ],
   "findings": [
     {
       "severity": "P1",
+      "kind": "human_gate",
+      "text": "Nine-lake runner correctly holds hollow_fill_review_gate as awaiting_human; do not auto-clear",
+      "route": "human_decision_then_continue"
+    },
+    {
+      "severity": "P1",
       "kind": "program_breadth",
-      "text": "Shared contract runtime is green; remaining product integration depth for each lake still advisory",
-      "route": "implement_or_continue_qa_deep"
+      "text": "Contract suite green (97). Remaining: real lake promotion receipts + PAC matrix on production docs + longrun goal trace",
+      "route": "continue_implement_or_qa_deep"
+    },
+    {
+      "severity": "P2",
+      "kind": "release_gate",
+      "text": "Release remains human-gated; Goal facade qa/release stage is not product complete",
+      "route": "release_human_ack_only"
     }
   ],
-  "recommended_next_harness": "implement",
+  "recommended_next_harness": "qa",
   "release_ready": false,
-  "reason_code": "qa_partial_program_contracts_green"
+  "reason_code": "qa_partial_host_bridge_and_lakes_wired_human_gates_open"
 }

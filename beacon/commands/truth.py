@@ -284,6 +284,11 @@ def gen_cmd(
         run_truth_gen_fill_pipeline = None  # type: ignore
 
     if version_requires_task_closure and version_requires_task_closure(resolved, slug):
+        try:
+            from beacon.utils.plan_goal_task_closure import ensure_truth_fill_host_bridge_defaults
+            ensure_truth_fill_host_bridge_defaults()
+        except Exception:
+            pass
         if not utterance and not response_json:
             # allow env host response without utterance only if require_host not set... still need utterance for compile fallback
             if require_host_response:
@@ -672,6 +677,110 @@ def prose_check_cmd(
             )
             raise typer.Exit(2)
 
+
+
+
+
+@app.command("host-bridge", hidden=True)
+def host_bridge(
+    payload_json: str = typer.Argument("", help="Optional bridge request JSON; default reads stdin"),
+) -> None:
+    """Hidden host-native bridge for truth-fill-response.v1 (real host agent contract).
+
+    Request (stdin/arg): truth-fill-request.v1 or gen pipeline wrapper
+    Response (stdout JSON): truth-fill-response.v1
+    """
+    import sys
+    from beacon.utils.plan_goal_task_closure import (
+        SCHEMA_FILL_REQUEST,
+        SCHEMA_FILL_RESPONSE,
+        compile_intent_semantics_to_fill_response,
+        normalize_host_fill_response,
+    )
+
+    raw = (payload_json or "").strip()
+    if not raw:
+        raw = sys.stdin.read()
+    try:
+        payload = json.loads(raw) if raw else {}
+    except Exception as exc:  # noqa: BLE001
+        typer.echo(f"invalid host-bridge json: {exc}", err=True)
+        raise typer.Exit(2) from exc
+    if not isinstance(payload, dict):
+        typer.echo("host-bridge payload must be object", err=True)
+        raise typer.Exit(2)
+
+    # unwrap common wrappers from pipeline / host agent / fill-request CLI
+    request = payload
+    if isinstance(payload.get("fill_request"), dict):
+        fr = payload["fill_request"]
+        request = fr.get("request") if isinstance(fr.get("request"), dict) else fr
+    elif isinstance(payload.get("request"), dict):
+        request = payload["request"]
+
+    def _stamp_bridge(resp: dict) -> dict:
+        out = dict(resp)
+        out["model"] = out.get("model") or "host-agent-pass-through"
+        out["bridge"] = "beacon-truth-host-bridge"
+        out.setdefault("request_schema", SCHEMA_FILL_REQUEST)
+        out.setdefault("response_schema", SCHEMA_FILL_RESPONSE)
+        out.setdefault(
+            "host_agent_contract",
+            {
+                "input": "truth-fill-request.v1",
+                "output": "truth-fill-response.v1",
+                "forbidden": ["direct_markdown_overwrite", "legacy_prd_canonical_write"],
+            },
+        )
+        return out
+
+    # Pass-through: payload already is truth-fill-response.v1 (or host-agent equivalent).
+    maybe = normalize_host_fill_response(payload)
+    if maybe.get("schema") == SCHEMA_FILL_RESPONSE and (
+        maybe.get("acceptance_criteria") or maybe.get("plain_language_l0")
+    ):
+        typer.echo(json.dumps(_stamp_bridge(maybe), ensure_ascii=False))
+        return
+
+    utterance = str(
+        request.get("utterance")
+        or payload.get("utterance")
+        or (request.get("context") or {}).get("utterance")
+        or ""
+    ).strip()
+    version = str(request.get("version") or payload.get("version") or "v1.6.11").strip()
+    feature = str(
+        payload.get("feature")
+        or request.get("feature")
+        or (request.get("program_refs") or {}).get("feature")
+        or "feature"
+    ).strip()
+    language = "zh"
+    hum = request.get("humanizer_profile") if isinstance(request.get("humanizer_profile"), dict) else {}
+    if hum.get("language") in {"zh", "en", "bilingual"}:
+        language = str(hum.get("language"))
+
+    if not utterance:
+        typer.echo("host-bridge requires utterance in request", err=True)
+        raise typer.Exit(2)
+
+    response = compile_intent_semantics_to_fill_response(
+        utterance=utterance,
+        feature=feature,
+        version=version,
+        language=language,
+    )
+    response["model"] = "beacon-truth-host-bridge"
+    response["bridge"] = "beacon-truth-host-bridge"
+    response["request_schema"] = SCHEMA_FILL_REQUEST
+    response["response_schema"] = SCHEMA_FILL_RESPONSE
+    # Host agent contract echo for debugging
+    response["host_agent_contract"] = {
+        "input": "truth-fill-request.v1",
+        "output": "truth-fill-response.v1",
+        "forbidden": ["direct_markdown_overwrite", "legacy_prd_canonical_write"],
+    }
+    typer.echo(json.dumps(response, ensure_ascii=False))
 
 
 @app.command("fill-request")
