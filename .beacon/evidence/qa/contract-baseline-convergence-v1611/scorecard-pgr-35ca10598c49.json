@@ -1,0 +1,48 @@
+{
+  "schema": "qa-scorecard.v1",
+  "mode_id": "eval-qa",
+  "public_id": "qa",
+  "feature": "contract-baseline-convergence-v1611",
+  "version": "v1.6.11",
+  "run_id": "pgr-35ca10598c49",
+  "generated_at": "2026-07-27T10:21:26.198440+00:00",
+  "verdict": "pass_partial",
+  "layers": {
+    "skill_contract": {
+      "status": "pass",
+      "result": "104 passed"
+    },
+    "pac_real_ids": {
+      "status": "pass",
+      "rows": 96,
+      "note": "PAC-001..021 expanded to real AC/TC/TASK; single sha256 prefix"
+    },
+    "hollow_package_scan": {
+      "status": "pass",
+      "note": "scan_feature_package_hollow_drift on live packages; clean -> hollow_fill_clear"
+    },
+    "receipt_history": {
+      "status": "pass",
+      "note": "previous_receipt_hash/previous_baseline_hash pointers"
+    },
+    "program_freeze_pac": {
+      "status": "pass",
+      "gate": "frozen",
+      "pac_rows": 96
+    },
+    "demo_pollution": {
+      "status": "pass",
+      "note": "program-fill-demo removed from docs/features; L3 sandbox only"
+    },
+    "host_bridge_honesty": {
+      "status": "pass",
+      "note": "fill_source=local_semantic_compile_fallback stamped"
+    },
+    "release_gate": {
+      "status": "open",
+      "note": "still human GO; not auto-release"
+    }
+  },
+  "release_ready": false,
+  "reason_code": "drift_fixes_landed_release_human_gate_open"
+}

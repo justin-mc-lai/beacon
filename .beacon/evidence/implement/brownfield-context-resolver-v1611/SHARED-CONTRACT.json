@@ -1,0 +1,21 @@
+{
+  "schema": "implement-evidence.v1",
+  "feature": "brownfield-context-resolver-v1611",
+  "version": "v1.6.11",
+  "status": "recorded",
+  "generated_at": "2026-07-27T08:58:57.592405+00:00",
+  "ac": "SHARED-CONTRACT-SUITE",
+  "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k 'context_envelope or truth_fill_request_context or host_fill_fail_closed' --tb=no",
+  "assertion": "shared L0-L8 contract + CLI wiring green on feature worktree",
+  "keywords": [
+    "context_envelope",
+    "truth_fill_request_context",
+    "host_fill_fail_closed"
+  ],
+  "artifacts": [
+    "beacon/utils/plan_goal_task_closure.py",
+    "beacon/commands/truth.py",
+    "beacon/commands/program.py",
+    "tests/test_v1611_plan_goal_task_closure.py"
+  ]
+}

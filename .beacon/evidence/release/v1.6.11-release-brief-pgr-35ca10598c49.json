@@ -1,0 +1,29 @@
+{
+  "schema": "release-brief.v1",
+  "version": "v1.6.11",
+  "feature": "contract-baseline-convergence-v1611",
+  "run_id": "pgr-35ca10598c49",
+  "generated_at": "2026-07-27T10:02:10.779485+00:00",
+  "decision": "CONDITIONAL-GO",
+  "decision_class": "human_gate_required",
+  "summary": "Hollow/drift 已人工 continue；九湖 authenticated receipts 与 Program freeze+PAC(21) 通过。仍禁止自动 release，需人工 GO 与 runtime 晋级。",
+  "go_criteria_met": [
+    "hollow/drift human decision recorded",
+    "9 authenticated lake receipts materialized",
+    "program freeze authenticated frozen",
+    "PAC full-trace matrix 21 rows pass",
+    "contract suite 99 passed"
+  ],
+  "open_gates": [
+    "explicit human release GO",
+    "runtime version promotion off planning-only line",
+    "optional longrun production goal trace"
+  ],
+  "recommended_actions": [
+    "Review freeze/PAC artifacts",
+    "If accepted, issue human release GO (no auto-release)",
+    "Keep planning-only boundary until runtime cutover"
+  ],
+  "release_ready": false,
+  "auto_release": false
+}

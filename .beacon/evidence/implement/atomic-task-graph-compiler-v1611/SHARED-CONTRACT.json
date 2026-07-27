@@ -1,0 +1,21 @@
+{
+  "schema": "implement-evidence.v1",
+  "feature": "atomic-task-graph-compiler-v1611",
+  "version": "v1.6.11",
+  "status": "recorded",
+  "generated_at": "2026-07-27T08:58:57.593635+00:00",
+  "ac": "SHARED-CONTRACT-SUITE",
+  "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k 'atomic_compile or task_trace_bindings or dag_ready_set' --tb=no",
+  "assertion": "shared L0-L8 contract + CLI wiring green on feature worktree",
+  "keywords": [
+    "atomic_compile",
+    "task_trace_bindings",
+    "dag_ready_set"
+  ],
+  "artifacts": [
+    "beacon/utils/plan_goal_task_closure.py",
+    "beacon/commands/truth.py",
+    "beacon/commands/program.py",
+    "tests/test_v1611_plan_goal_task_closure.py"
+  ]
+}

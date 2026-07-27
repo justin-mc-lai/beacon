@@ -1,0 +1,512 @@
+{
+  "schema": "program-lakes-task-closure.v1",
+  "program_slug": "beacon-plan-goal-task-closure-v1611",
+  "version": "v1.6.11",
+  "status": "pass",
+  "blocked": false,
+  "pass": true,
+  "reason_code": "program_lakes_wired",
+  "lake_order": [
+    "contract-baseline-convergence-v1611",
+    "brownfield-context-resolver-v1611",
+    "intent-completeness-engine-v1611",
+    "change-impact-state-diff-v1611",
+    "atomic-task-graph-compiler-v1611",
+    "task-progress-ledger-v1611",
+    "drift-padding-review-gate-v1611",
+    "cancel-replan-next-ready-v1611",
+    "convergence-verifier-v1611"
+  ],
+  "lakes": [
+    {
+      "lake": "contract-baseline-convergence-v1611",
+      "surface": "package_shape",
+      "result": {
+        "status": "pass",
+        "blocked": false,
+        "pass": true,
+        "reason_code": "",
+        "generated_at": "2026-07-27T10:20:56.042985+00:00",
+        "shape": "feature_package_authoritative"
+      }
+    },
+    {
+      "lake": "brownfield-context-resolver-v1611",
+      "surface": "context_fill_request",
+      "result": {
+        "status": "pass",
+        "blocked": false,
+        "pass": true,
+        "reason_code": "",
+        "generated_at": "2026-07-27T10:20:56.043058+00:00",
+        "request": {
+          "schema": "truth-fill-request.v1",
+          "utterance": "recheck after detector tighten",
+          "version": "v1.6.11",
+          "revision_id": "R2",
+          "source_hashes": {
+            "truth": "seed-truth",
+            "tests": "seed-tests",
+            "tasks": "seed-tasks",
+            "evidence": "seed-evidence"
+          },
+          "context_fingerprint": "sha256:79952144c84c76f24735fde1f0b358fa6973e2a920da30a84d2ac15b5901bbf9",
+          "semantic_compiler_refs": [
+            "beacon/utils/intent_first.py"
+          ],
+          "host_transport": {
+            "capability": "host-response",
+            "precedence": [
+              "host-response",
+              "command-bridge",
+              "cli-semantic-compile"
+            ]
+          },
+          "humanizer_profile": {
+            "language": "zh",
+            "preserve_machine_fields": true
+          },
+          "program_refs": {
+            "manifest": "docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/program-manifest.md"
+          },
+          "pac_refs": [
+            "PAC-001",
+            "PAC-002",
+            "PAC-003",
+            "PAC-004",
+            "PAC-005",
+            "PAC-006",
+            "PAC-007",
+            "PAC-008",
+            "PAC-009",
+            "PAC-010",
+            "PAC-011",
+            "PAC-012",
+            "PAC-013",
+            "PAC-014",
+            "PAC-015",
+            "PAC-016",
+            "PAC-017",
+            "PAC-018",
+            "PAC-019",
+            "PAC-020",
+            "PAC-021"
+          ],
+          "request_hash": "sha256:0094da8f17b3a01880e74e8e8ee8fda4c15aa030380aae14d00c1765cfea00df"
+        },
+        "request_hash": "sha256:0094da8f17b3a01880e74e8e8ee8fda4c15aa030380aae14d00c1765cfea00df"
+      }
+    },
+    {
+      "lake": "intent-completeness-engine-v1611",
+      "surface": "intent_full_package_fill",
+      "result": {
+        "fill": {
+          "status": "pass",
+          "blocked": false,
+          "pass": true,
+          "reason_code": "",
+          "generated_at": "2026-07-27T10:20:56.043475+00:00",
+          "response_hash": "sha256:874745c7123036be3ee7f68bd2e9754e0ca210f94d308cfa5113e1e16e2ea603"
+        },
+        "false_completeness": {
+          "status": "pass",
+          "blocked": false,
+          "pass": true,
+          "reason_code": "",
+          "generated_at": "2026-07-27T10:20:56.043484+00:00"
+        }
+      }
+    },
+    {
+      "lake": "change-impact-state-diff-v1611",
+      "surface": "structured_fill_transaction",
+      "result": {
+        "status": "pass",
+        "blocked": false,
+        "pass": true,
+        "reason_code": "",
+        "generated_at": "2026-07-27T10:20:56.044966+00:00",
+        "transaction": {
+          "schema": "truth-fill-transaction.v1",
+          "transaction_id": "2d6a2a7261cd6ce6",
+          "request_hash": "sha256:0094da8f17b3a01880e74e8e8ee8fda4c15aa030380aae14d00c1765cfea00df",
+          "response_hash": "sha256:874745c7123036be3ee7f68bd2e9754e0ca210f94d308cfa5113e1e16e2ea603",
+          "base_revision": "R2",
+          "allowed_paths": [
+            "docs/beacon/v1.6.11/features/program-fill-demo/evidence.md",
+            "docs/beacon/v1.6.11/features/program-fill-demo/tasks.md",
+            "docs/beacon/v1.6.11/features/program-fill-demo/tests.md",
+            "docs/beacon/v1.6.11/features/program-fill-demo/truth.md"
+          ],
+          "projection_hashes": {
+            "truth": "437e102afd65b7ec85085a0f3a5f1f508947917d647d7a0a01e90ae3fe2bfe47",
+            "tests": "850c427fb5fa09db75b6a7ecd132f54423cb38eb55e56d40c6c50dcd4aa10cbf",
+            "tasks": "e0e82dc6811103579a65e43422f9f7a60c079c5f5cb79a3a49aae62d3c0d74a7",
+            "evidence": "d5967d8bb58abee9ff00ae526da56836512daa3c196c541fb13723e9e1c8ccfc"
+          },
+          "step_sequence": [
+            "scaffold",
+            "request",
+            "response",
+            "schema",
+            "patch",
+            "projection"
+          ],
+          "status": "projected"
+        },
+        "projection_hashes": {
+          "truth": "437e102afd65b7ec85085a0f3a5f1f508947917d647d7a0a01e90ae3fe2bfe47",
+          "tests": "850c427fb5fa09db75b6a7ecd132f54423cb38eb55e56d40c6c50dcd4aa10cbf",
+          "tasks": "e0e82dc6811103579a65e43422f9f7a60c079c5f5cb79a3a49aae62d3c0d74a7",
+          "evidence": "d5967d8bb58abee9ff00ae526da56836512daa3c196c541fb13723e9e1c8ccfc"
+        }
+      }
+    },
+    {
+      "lake": "atomic-task-graph-compiler-v1611",
+      "surface": "atomic_task_graph",
+      "result": {
+        "compile": {
+          "status": "pass",
+          "blocked": false,
+          "pass": true,
+          "reason_code": "",
+          "generated_at": "2026-07-27T10:20:56.044978+00:00",
+          "nodes": [
+            {
+              "id": "T001",
+              "intent_id": "I1",
+              "journey_id": "J1",
+              "ac_id": "AC-001",
+              "code_scope": "x",
+              "dependencies": [],
+              "verification": "pytest",
+              "evidence": "e1",
+              "status": "done",
+              "is_root": true
+            },
+            {
+              "id": "T002",
+              "intent_id": "I1",
+              "journey_id": "J1",
+              "ac_id": "AC-001",
+              "code_scope": "x",
+              "dependencies": [
+                "T001"
+              ],
+              "verification": "pytest",
+              "evidence": "e2",
+              "status": "ready"
+            }
+          ],
+          "count": 2
+        },
+        "ready": {
+          "status": "pass",
+          "blocked": false,
+          "pass": true,
+          "reason_code": "",
+          "generated_at": "2026-07-27T10:20:56.044988+00:00",
+          "ready_set": [
+            "T002"
+          ]
+        }
+      }
+    },
+    {
+      "lake": "task-progress-ledger-v1611",
+      "surface": "progress_ledger",
+      "result": {
+        "progress": {
+          "status": "pass",
+          "blocked": false,
+          "pass": true,
+          "reason_code": "",
+          "generated_at": "2026-07-27T10:20:56.044995+00:00",
+          "path_progress": {
+            "completed": 1,
+            "blocked": 0,
+            "cancelled": 0,
+            "replacement": 0,
+            "remaining": 1
+          },
+          "total_open_or_terminal": 2
+        },
+        "replay": {
+          "status": "pass",
+          "blocked": false,
+          "pass": true,
+          "reason_code": "",
+          "generated_at": "2026-07-27T10:20:56.045004+00:00",
+          "steps": [
+            {
+              "sequence": 1,
+              "name": "scaffold",
+              "hash": "h0",
+              "status": "ok",
+              "feedback": ""
+            },
+            {
+              "sequence": 2,
+              "name": "request",
+              "hash": "h1",
+              "status": "ok",
+              "feedback": ""
+            },
+            {
+              "sequence": 3,
+              "name": "response",
+              "hash": "h2",
+              "status": "ok",
+              "feedback": ""
+            },
+            {
+              "sequence": 4,
+              "name": "schema",
+              "hash": "h3",
+              "status": "ok",
+              "feedback": ""
+            },
+            {
+              "sequence": 5,
+              "name": "patch",
+              "hash": "h4",
+              "status": "ok",
+              "feedback": ""
+            },
+            {
+              "sequence": 6,
+              "name": "projection",
+              "hash": "h5",
+              "status": "ok",
+              "feedback": ""
+            },
+            {
+              "sequence": 7,
+              "name": "validation",
+              "hash": "h6",
+              "status": "ok",
+              "feedback": ""
+            },
+            {
+              "sequence": 8,
+              "name": "review",
+              "hash": "h7",
+              "status": "ok",
+              "feedback": ""
+            },
+            {
+              "sequence": 9,
+              "name": "human_ack",
+              "hash": "h8",
+              "status": "ok",
+              "feedback": ""
+            },
+            {
+              "sequence": 10,
+              "name": "freeze",
+              "hash": "h9",
+              "status": "ok",
+              "feedback": ""
+            }
+          ],
+          "replayable": true
+        }
+      }
+    },
+    {
+      "lake": "drift-padding-review-gate-v1611",
+      "surface": "drift_padding_review",
+      "result": {
+        "gate": {
+          "status": "clear",
+          "blocked": false,
+          "pass": true,
+          "reason_code": "hollow_fill_clear",
+          "generated_at": "2026-07-27T10:20:56.093774+00:00",
+          "findings": [
+            {
+              "kind": "placeholder",
+              "hit": false,
+              "severity": "info",
+              "detail": "clean",
+              "feature": "contract-baseline-convergence-v1611"
+            },
+            {
+              "kind": "hollow_domain",
+              "hit": false,
+              "severity": "info",
+              "detail": "domain present",
+              "feature": "contract-baseline-convergence-v1611"
+            },
+            {
+              "kind": "orphan",
+              "hit": false,
+              "severity": "info",
+              "detail": "ac/tc present",
+              "feature": "contract-baseline-convergence-v1611"
+            },
+            {
+              "kind": "hanging_fsm",
+              "hit": false,
+              "severity": "info",
+              "detail": "fsm ok_or_absent",
+              "feature": "contract-baseline-convergence-v1611"
+            },
+            {
+              "kind": "padding",
+              "hit": false,
+              "severity": "info",
+              "detail": "task volume ok",
+              "feature": "contract-baseline-convergence-v1611"
+            },
+            {
+              "kind": "evidence_hash_drift",
+              "hit": false,
+              "severity": "info",
+              "detail": "evidence ok",
+              "feature": "contract-baseline-convergence-v1611"
+            }
+          ]
+        },
+        "human_close": {
+          "status": "resumed",
+          "blocked": false,
+          "pass": true,
+          "reason_code": "",
+          "generated_at": "2026-07-27T10:20:56.093808+00:00",
+          "choice": "continue",
+          "decision_ref": "human-decision:pgr-35ca10598c49:hollow-drift:continue:2026-07-27",
+          "prior_gate": {
+            "status": "clear",
+            "blocked": false,
+            "pass": true,
+            "reason_code": "hollow_fill_clear",
+            "generated_at": "2026-07-27T10:20:56.093790+00:00",
+            "findings": [
+              {
+                "kind": "placeholder",
+                "hit": false,
+                "severity": "info",
+                "detail": "clean",
+                "feature": "contract-baseline-convergence-v1611"
+              },
+              {
+                "kind": "hollow_domain",
+                "hit": false,
+                "severity": "info",
+                "detail": "domain present",
+                "feature": "contract-baseline-convergence-v1611"
+              },
+              {
+                "kind": "orphan",
+                "hit": false,
+                "severity": "info",
+                "detail": "ac/tc present",
+                "feature": "contract-baseline-convergence-v1611"
+              },
+              {
+                "kind": "hanging_fsm",
+                "hit": false,
+                "severity": "info",
+                "detail": "fsm ok_or_absent",
+                "feature": "contract-baseline-convergence-v1611"
+              },
+              {
+                "kind": "padding",
+                "hit": false,
+                "severity": "info",
+                "detail": "task volume ok",
+                "feature": "contract-baseline-convergence-v1611"
+              },
+              {
+                "kind": "evidence_hash_drift",
+                "hit": false,
+                "severity": "info",
+                "detail": "evidence ok",
+                "feature": "contract-baseline-convergence-v1611"
+              }
+            ]
+          },
+          "disposition": {
+            "status": "pass",
+            "blocked": false,
+            "pass": true,
+            "reason_code": "",
+            "generated_at": "2026-07-27T10:20:56.093806+00:00",
+            "task": {
+              "id": "hollow-drift-gate",
+              "status": "active",
+              "disposition": "active",
+              "choice": "continue"
+            }
+          },
+          "schema": "drift-padding-review.v1"
+        }
+      }
+    },
+    {
+      "lake": "cancel-replan-next-ready-v1611",
+      "surface": "cancel_replan",
+      "result": {
+        "ready_recompute": {
+          "status": "pass",
+          "blocked": [],
+          "pass": true,
+          "reason_code": "",
+          "generated_at": "2026-07-27T10:20:56.094466+00:00",
+          "ready_set": [
+            "T002"
+          ],
+          "atomic": true
+        },
+        "closure_ready": {
+          "status": "pass",
+          "blocked": false,
+          "pass": true,
+          "reason_code": "",
+          "generated_at": "2026-07-27T10:20:56.094473+00:00",
+          "closure_ready": true,
+          "reason": "no_open_work"
+        }
+      }
+    },
+    {
+      "lake": "convergence-verifier-v1611",
+      "surface": "convergence",
+      "result": {
+        "auth_freeze": {
+          "status": "pass",
+          "blocked": false,
+          "pass": true,
+          "reason_code": "",
+          "generated_at": "2026-07-27T10:20:56.137579+00:00",
+          "program_slug": "beacon-plan-goal-task-closure-v1611",
+          "lakes": 9
+        },
+        "pac": {
+          "status": "pass",
+          "blocked": false,
+          "pass": true,
+          "reason_code": "",
+          "generated_at": "2026-07-27T10:20:56.179018+00:00",
+          "count": 96
+        },
+        "fill_chain": {
+          "status": "pass",
+          "blocked": false,
+          "pass": true,
+          "reason_code": "",
+          "generated_at": "2026-07-27T10:20:56.179036+00:00"
+        },
+        "receipt_count": 9,
+        "pac_row_count": 96
+      }
+    }
+  ],
+  "findings": [],
+  "human_choice": "continue",
+  "decision_ref": "human-decision:pgr-35ca10598c49:hollow-drift:continue:2026-07-27",
+  "generated_at": "2026-07-27T10:20:56.179040+00:00"
+}

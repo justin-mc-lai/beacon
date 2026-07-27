@@ -8,7 +8,11 @@ from typing import Optional
 
 import typer
 
-from beacon.utils.program_freeze_gate import build_program_freeze_gate, write_program_freeze_gate
+from beacon.utils.program_freeze_gate import (
+    build_program_freeze_gate,
+    validate_program_freeze_authenticated,
+    write_program_freeze_gate,
+)
 from beacon.utils.program_graph import feature_graph_path, load_feature_graph
 from beacon.utils.versioning import resolve_target_version
 
@@ -84,18 +88,69 @@ def freeze_cmd(
     version: str = typer.Option("auto", "--version", "-v", help="Docs version"),
     lake_or_ocean: str = typer.Option("海", "--lake-or-ocean", help="海 or 湖"),
     feature_graph_ack: bool = typer.Option(True, "--feature-graph-ack/--no-feature-graph-ack", help="P4 ack"),
+    authenticated: bool = typer.Option(
+        True,
+        "--authenticated/--status-only",
+        help="Require hash-authenticated promotion receipts (default true; status-only is fail-closed for v1.6.11+)",
+    ),
     json_output: bool = typer.Option(False, "--json", help="Emit JSON payload"),
 ) -> None:
     """Run program freeze gate and write program-truth-freeze.json."""
     project_root = Path(project).resolve() if project else Path.cwd()
     resolved_version = resolve_target_version(project_root, version)
-    gate = build_program_freeze_gate(
-        project_root,
-        version=resolved_version,
-        program_slug=program,
-        lake_or_ocean=lake_or_ocean,
-        feature_graph_ack=feature_graph_ack,
-    )
+    if authenticated:
+        gate = validate_program_freeze_authenticated(
+            project_root,
+            version=resolved_version,
+            program_slug=program,
+        )
+        # still honor sea graph ack / parity from base builder fields
+        base = build_program_freeze_gate(
+            project_root,
+            version=resolved_version,
+            program_slug=program,
+            lake_or_ocean=lake_or_ocean,
+            feature_graph_ack=feature_graph_ack,
+        )
+        findings = list(gate.get("findings") or []) + [
+            f for f in (base.get("findings") or []) if f not in (gate.get("findings") or [])
+        ]
+        blocked = bool(findings) or bool(gate.get("blocked")) or bool(base.get("blocked"))
+        gate = {
+            **gate,
+            **{k: base.get(k) for k in ("lakes", "program_slug", "version") if k in base},
+            "findings": findings,
+            "blocked": blocked,
+            "status": "blocked" if blocked else "frozen",
+            "lake_or_ocean": lake_or_ocean,
+            "feature_graph_ack": feature_graph_ack,
+            "authenticated_mode": True,
+        }
+    else:
+        gate = build_program_freeze_gate(
+            project_root,
+            version=resolved_version,
+            program_slug=program,
+            lake_or_ocean=lake_or_ocean,
+            feature_graph_ack=feature_graph_ack,
+        )
+        gate["authenticated_mode"] = False
+        gate["reason_code"] = gate.get("reason_code") or "status_only_program_freeze"
+        # v1.6.11+ refuse status-only soft path
+        try:
+            major, minor, patch = resolved_version.lstrip("v").split(".")
+            ver_tuple = (int(major), int(minor), int(patch))
+        except Exception:  # noqa: BLE001
+            ver_tuple = (0, 0, 0)
+        if ver_tuple >= (1, 6, 11):
+            gate = {
+                **gate,
+                "blocked": True,
+                "status": "blocked",
+                "reason_code": "status_only_program_freeze_forbidden",
+                "findings": list(gate.get("findings") or [])
+                + [{"kind": "authenticated_freeze", "code": "status_only_program_freeze_forbidden"}],
+            }
     out_path = write_program_freeze_gate(project_root, gate)
     gate["path"] = str(out_path.relative_to(project_root))
     if json_output:

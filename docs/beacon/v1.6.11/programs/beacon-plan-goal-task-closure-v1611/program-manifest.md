@@ -102,7 +102,7 @@ program_intent_captured
 | 生命周期继承 | 内部状态映射回 1+6，并绑定 `agent_trace.v1` | user-confirmation-2026-07-27 |
 | no-compat | 旧 shape fail-closed，只允许重新 plan/change/review/freeze | user-confirmation-2026-07-27 |
 | CLI scaffold | CLI 只确定性创建当前四文件骨架与协议元数据，不负责虚构领域语义 | user-confirmation-2026-07-27 |
-| Host LLM full fill | Host LLM 必须填充完整 package 领域对象，不能只润色 L0 或一句一 AC | user-confirmation-2026-07-27 |
+| Host Agent (skill-authored fill) full fill | Host Agent（skill-authored fill）必须填充完整 package 领域对象，不能只润色 L0 或一句一 AC | user-confirmation-2026-07-27 |
 | write authority | LLM 返回结构化 response；CLI 校验后事务化 patch 与确定性投影 | user-confirmation-2026-07-27 |
 | semantic compile migration | 复用旧 PRD/User Story host-response/bridge 语义能力，但不恢复旧 shape canonical 写入 | user-confirmation-2026-07-27 |
 
@@ -117,7 +117,7 @@ program_intent_captured
 | Phase | Scope | Decision |
 |-------|-------|----------|
 | R1 | L0–L8 初版 requirement truth、继承合同、状态机和 planned TC | superseded by D3/R2 |
-| R2 | CLI scaffold + Host LLM full-package fill、结构化事务、恢复 FSM、authenticated Program freeze | accepted |
+| R2 | CLI scaffold + Host Agent (skill-authored fill) full-package fill、结构化事务、恢复 FSM、authenticated Program freeze | accepted |
 | Implement | runtime compiler/ledger/gate/scheduler/verifier 与已有 Goal/admission/trace 集成 | downstream implement |
 | QA | 真实 Git worktree、subagent fallback、no-compat、取消重排、Goal closure E2E | downstream qa |
 | Release | runtime promotion 与 catalog active-window 收敛 | deferred to release |
@@ -137,7 +137,7 @@ program_intent_captured
 GoalUtteranceCaptured
 → VersionAndContextResolved
 → DeterministicScaffoldMaterialized
-→ HostLLMFillRequested
+→ HostAgentFillRequested
 → StructuredFillProduced
 → FillPatchSchemaValidated
 → CanonicalTruthPatched
@@ -153,7 +153,7 @@ GoalUtteranceCaptured
 | Contract | Authority rule |
 |----------|----------------|
 | `truth-fill-request.v1` | CLI 绑定 utterance、版本、ContextEnvelope、R2/base hashes、semantic compiler/host transport/Humanizer/PAC refs |
-| `truth-fill-response.v1` | Host LLM 返回结构化领域对象和 projection inputs，不返回可自由覆盖的 canonical Markdown |
+| `truth-fill-response.v1` | Host Agent（skill-authored fill）返回结构化领域对象和 projection inputs，不返回可自由覆盖的 canonical Markdown |
 | `truth-fill-transaction.v1` | CLI 校验 schema、hash、引用和 allowed paths，原子 patch 后再生成 tests/tasks/evidence |
 | `truth-human-ack.v1` | 人工确认 finding disposition 与最终 R2 hash set，freeze 不得自行代签 |
 

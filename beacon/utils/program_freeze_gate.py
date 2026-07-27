@@ -12,6 +12,7 @@ from beacon.utils.program_graph import (
     load_feature_graph,
 )
 from beacon.utils.runtime import now_iso
+from beacon.utils.plan_goal_task_closure import validate_authenticated_program_freeze
 
 
 def _parity_matrix_has_pending_defer(project_root: Path, version: str, program_slug: str) -> bool:
@@ -111,3 +112,46 @@ def write_program_freeze_gate(project_root: Path, gate: dict[str, Any]) -> Path:
                 graph_payload=graph_payload,
             )
     return out_path
+
+
+def validate_program_freeze_authenticated(
+    project_root: Path,
+    *,
+    version: str,
+    program_slug: str,
+    lake_receipts: list[dict[str, Any]] | None = None,
+) -> dict[str, Any]:
+    """Strong Program freeze gate: status-only promotion is insufficient."""
+    base = build_program_freeze_gate(project_root, version=version, program_slug=program_slug)
+    receipts = list(lake_receipts or [])
+    if not receipts:
+        # load lake promotion files when present
+        lakes_dir = project_root / "docs" / "beacon" / version / "programs" / program_slug / "lakes"
+        if lakes_dir.exists():
+            for lake_dir in sorted(p for p in lakes_dir.iterdir() if p.is_dir()):
+                promo = lake_dir / "truth-promotion.json"
+                if promo.exists():
+                    try:
+                        receipts.append(json.loads(promo.read_text(encoding="utf-8")))
+                    except json.JSONDecodeError:
+                        receipts.append({"status": "complete", "feature": lake_dir.name})
+    auth = validate_authenticated_program_freeze(
+        project_root,
+        version=version,
+        program_slug=program_slug,
+        lake_receipts=receipts,
+    )
+    findings = list(base.get("findings") or [])
+    if auth.get("blocked"):
+        findings.append({"kind": "authenticated_freeze", "code": str(auth.get("reason_code") or "authenticated_program_freeze_failed")})
+        for item in auth.get("findings") or []:
+            findings.append({"kind": "authenticated_freeze", "code": str(item.get("code") or item)})
+    blocked = bool(findings) or bool(auth.get("blocked"))
+    return {
+        **base,
+        "status": "blocked" if blocked else "frozen",
+        "blocked": blocked,
+        "findings": findings,
+        "authenticated": auth,
+        "gate_mode": "authenticated_pac_receipts",
+    }

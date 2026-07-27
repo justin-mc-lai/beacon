@@ -78,11 +78,32 @@ def init_cmd(
                 err=True,
             )
             raise typer.Exit(2)
-        payload = materialize_feature_package(project_root, version=resolved, feature=feature, force=force)
-        for path in payload.get("written", []):
-            typer.echo(f"✓ Created package truth: {path}")
-        for path in payload.get("skipped", []):
-            typer.echo(f"- Preserved package truth: {path}")
+        from beacon.utils.plan_goal_task_closure import materialize_deterministic_scaffold
+
+        payload = materialize_deterministic_scaffold(
+            project_root,
+            version=resolved,
+            feature=feature,
+            force=force,
+        )
+        materialize = payload.get("materialize") or {}
+        for written in materialize.get("written", []):
+            typer.echo(f"✓ Created package truth: {written}")
+        for skipped in materialize.get("skipped", []):
+            typer.echo(f"- Preserved package truth: {skipped}")
+        if payload.get("pass"):
+            typer.echo(
+                "✓ Deterministic scaffold ready (package_maturity=scaffold; Host Agent skill-authored fill required before freeze)"
+            )
+        else:
+            typer.echo(
+                f"⚠ Scaffold gate: {payload.get('reason_code') or 'deterministic_scaffold_not_filled'}",
+                err=True,
+            )
+        # always return scaffold payload path via optional env-free print for hosts
+        if payload.get("recommend_freeze"):
+            typer.echo("✗ Scaffold must not recommend freeze", err=True)
+            raise typer.Exit(2)
         return
 
     base = project_root / "docs" / "beacon" / resolved
@@ -235,11 +256,85 @@ def gen_cmd(
     force: bool = typer.Option(False, "--force", help="Overwrite existing files"),
     lang: str = typer.Option("en", "--lang", "-l", help="Language: en|zh"),
     dry_run: bool = typer.Option(False, "--dry-run", help="Preview output without writing files"),
+    response_json: Optional[Path] = typer.Option(
+        None,
+        "--response-json",
+        help="Optional truth-fill-response.v1 JSON from Host Agent (skill-authored fill). Overrides env host-response.",
+    ),
+    require_host_response: bool = typer.Option(
+        False,
+        "--require-host-response",
+        help="Fail if host-response/bridge missing (no CLI semantic compile fallback)",
+    ),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON pipeline result"),
 ) -> None:
     """Generate truth package. Use --intent-first to drive generation from user intent."""
     project_root = _resolve_root(project)
     resolved = resolve_target_version(project_root, version)
     slug = feature.strip().lower().replace(" ", "-").replace("_", "-")
+
+    # v1.6.11+: authoritative path = scaffold + fill-request + host/semantic response + transaction apply
+    try:
+        from beacon.utils.plan_goal_task_closure import (
+            run_truth_gen_fill_pipeline,
+            version_requires_task_closure,
+        )
+    except Exception:  # noqa: BLE001
+        version_requires_task_closure = None  # type: ignore
+        run_truth_gen_fill_pipeline = None  # type: ignore
+
+    if version_requires_task_closure and version_requires_task_closure(resolved, slug):
+        try:
+            from beacon.utils.plan_goal_task_closure import ensure_truth_fill_host_bridge_defaults
+            ensure_truth_fill_host_bridge_defaults()
+        except Exception:
+            pass
+        if not utterance and not response_json:
+            # allow env host response without utterance only if require_host not set... still need utterance for compile fallback
+            if require_host_response:
+                pass
+            else:
+                typer.echo("v1.6.11+ truth gen recommends --utterance (or provide host-response / --response-json).", err=True)
+        explicit = None
+        if response_json is not None:
+            explicit = json.loads(Path(response_json).read_text(encoding="utf-8"))
+        result = run_truth_gen_fill_pipeline(
+            project_root,
+            version=resolved,
+            feature=slug,
+            utterance=utterance or f"Generate package truth for {slug}",
+            language=lang if lang in {"zh", "en", "bilingual"} else "zh",
+            force_scaffold=True,
+            explicit_response=explicit,
+            allow_semantic_compile_fallback=not require_host_response,
+            dry_run=dry_run,
+        )
+        if json_output:
+            typer.echo(json.dumps(result, ensure_ascii=False, indent=2))
+        else:
+            steps = result.get("steps") or []
+            for step in steps:
+                if isinstance(step, dict):
+                    typer.echo(f"- {step.get('name')}: {step.get('status')} {step.get('source') or step.get('detail') or ''}".rstrip())
+            if result.get("pass"):
+                for key, rel in (result.get("package_paths") or {}).items():
+                    typer.echo(f"✓ {key}: {rel}")
+                src = ((result.get("resolve") or {}).get("source") or "")
+                transport = ((result.get("resolve") or {}).get("transport") or "")
+                typer.echo(f"✓ fill transport: {transport} source={src}")
+                if result.get("recommend_freeze"):
+                    typer.echo("✓ truth review pass — freeze may be recommended after human ack")
+                else:
+                    typer.echo("⚠ filled via transaction; review/freeze still gated")
+            else:
+                typer.echo(
+                    f"✗ truth fill pipeline blocked: {result.get('reason_code')}",
+                    err=True,
+                )
+                raise typer.Exit(2)
+        if result.get("blocked"):
+            raise typer.Exit(2)
+        return
 
     if intent_first:
         if not utterance:
@@ -581,3 +676,307 @@ def prose_check_cmd(
                 err=True,
             )
             raise typer.Exit(2)
+
+
+
+
+
+@app.command("host-bridge", hidden=True)
+def host_bridge(
+    payload_json: str = typer.Argument("", help="Optional bridge request JSON; default reads stdin"),
+) -> None:
+    """Hidden host-native bridge for truth-fill-response.v1 (real host agent contract).
+
+    Request (stdin/arg): truth-fill-request.v1 or gen pipeline wrapper
+    Response (stdout JSON): truth-fill-response.v1
+    """
+    import sys
+    from beacon.utils.plan_goal_task_closure import (
+        SCHEMA_FILL_REQUEST,
+        SCHEMA_FILL_RESPONSE,
+        compile_intent_semantics_to_fill_response,
+        normalize_host_fill_response,
+    )
+
+    raw = (payload_json or "").strip()
+    if not raw:
+        raw = sys.stdin.read()
+    try:
+        payload = json.loads(raw) if raw else {}
+    except Exception as exc:  # noqa: BLE001
+        typer.echo(f"invalid host-bridge json: {exc}", err=True)
+        raise typer.Exit(2) from exc
+    if not isinstance(payload, dict):
+        typer.echo("host-bridge payload must be object", err=True)
+        raise typer.Exit(2)
+
+    # unwrap common wrappers from pipeline / host agent / fill-request CLI
+    request = payload
+    if isinstance(payload.get("fill_request"), dict):
+        fr = payload["fill_request"]
+        request = fr.get("request") if isinstance(fr.get("request"), dict) else fr
+    elif isinstance(payload.get("request"), dict):
+        request = payload["request"]
+
+    def _stamp_bridge(resp: dict) -> dict:
+        out = dict(resp)
+        out["model"] = out.get("model") or "host-agent-pass-through"
+        out["bridge"] = "beacon-truth-host-bridge"
+        out.setdefault("fill_authority", "host_agent_skill_authored")
+        out.setdefault("is_fallback", False)
+        out.setdefault("request_schema", SCHEMA_FILL_REQUEST)
+        out.setdefault("response_schema", SCHEMA_FILL_RESPONSE)
+        out.setdefault(
+            "host_agent_contract",
+            {
+                "input": "truth-fill-request.v1",
+                "output": "truth-fill-response.v1",
+                "forbidden": ["direct_markdown_overwrite", "legacy_prd_canonical_write"],
+            },
+        )
+        return out
+
+    # Pass-through: payload already is truth-fill-response.v1 (or host-agent equivalent).
+    maybe = normalize_host_fill_response(payload)
+    if maybe.get("schema") == SCHEMA_FILL_RESPONSE and (
+        maybe.get("acceptance_criteria") or maybe.get("plain_language_l0")
+    ):
+        typer.echo(json.dumps(_stamp_bridge(maybe), ensure_ascii=False))
+        return
+
+    utterance = str(
+        request.get("utterance")
+        or payload.get("utterance")
+        or (request.get("context") or {}).get("utterance")
+        or ""
+    ).strip()
+    version = str(request.get("version") or payload.get("version") or "v1.6.11").strip()
+    feature = str(
+        payload.get("feature")
+        or request.get("feature")
+        or (request.get("program_refs") or {}).get("feature")
+        or "feature"
+    ).strip()
+    language = "zh"
+    hum = request.get("humanizer_profile") if isinstance(request.get("humanizer_profile"), dict) else {}
+    if hum.get("language") in {"zh", "en", "bilingual"}:
+        language = str(hum.get("language"))
+
+    if not utterance:
+        typer.echo("host-bridge requires utterance in request", err=True)
+        raise typer.Exit(2)
+
+    response = compile_intent_semantics_to_fill_response(
+        utterance=utterance,
+        feature=feature,
+        version=version,
+        language=language,
+    )
+    response["model"] = "beacon-truth-host-bridge"
+    response["bridge"] = "beacon-truth-host-bridge"
+    response["fill_source"] = "local_semantic_compile_fallback"
+    response["fill_authority"] = "fallback_not_host_agent"
+    response["is_fallback"] = True
+    response["request_schema"] = SCHEMA_FILL_REQUEST
+    response["response_schema"] = SCHEMA_FILL_RESPONSE
+    # Host Agent contract echo — local bridge compile is FALLBACK, not skill-authored production fill.
+    response["host_agent_contract"] = {
+        "input": "truth-fill-request.v1",
+        "output": "truth-fill-response.v1",
+        "mode": "local_bridge_default",
+        "fill_source": "local_semantic_compile_fallback",
+        "forbidden": ["direct_markdown_overwrite", "legacy_prd_canonical_write", "overclaim_external_host_llm", "overclaim_host_agent_fill"],
+    }
+    typer.echo(json.dumps(response, ensure_ascii=False))
+
+
+@app.command("fill-request")
+def fill_request_cmd(
+    feature: str = typer.Option(..., "--feature", "-f", help="Feature slug"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version"),
+    utterance: str = typer.Option(..., "--utterance", "-u", help="Goal/change utterance"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", "--project-root", help="Project root"),
+    revision_id: str = typer.Option("R2", "--revision-id", help="Target revision id"),
+    program: str = typer.Option("", "--program", help="Optional program slug for PAC/program refs"),
+    json_output: bool = typer.Option(True, "--json/--no-json", help="Emit JSON (default true)"),
+) -> None:
+    """Build truth-fill-request.v1 from ContextEnvelope (CLI scaffold side)."""
+    from beacon.utils.feature_package import package_paths
+    from beacon.utils.plan_goal_task_closure import (
+        build_context_envelope,
+        build_truth_fill_request,
+    )
+    from beacon.utils.truth_map import FEATURE_SURFACES, _sha256
+
+    project_root = _resolve_root(project)
+    resolved = resolve_target_version(project_root, version)
+    paths = package_paths(project_root, version=resolved, feature=feature)
+    source_hashes = {
+        surface: (_sha256(paths[surface]) if paths[surface].exists() else "")
+        for surface in FEATURE_SURFACES
+    }
+    if not all(source_hashes.values()):
+        # ensure scaffold exists first
+        from beacon.utils.plan_goal_task_closure import materialize_deterministic_scaffold
+
+        materialize_deterministic_scaffold(project_root, version=resolved, feature=feature, force=False)
+        source_hashes = {
+            surface: (_sha256(paths[surface]) if paths[surface].exists() else "")
+            for surface in FEATURE_SURFACES
+        }
+    program_slug = program.strip() or ""
+    program_refs = {}
+    pac_refs = ["PAC-016", "PAC-017", "PAC-018", "PAC-019", "PAC-021"]
+    if program_slug:
+        program_refs = {
+            "manifest": f"docs/beacon/{resolved}/programs/{program_slug}/program-manifest.md",
+            "feature_graph": f"docs/beacon/{resolved}/programs/{program_slug}/feature-graph.json",
+        }
+    envelope = build_context_envelope(
+        utterance=utterance,
+        version=resolved,
+        baseline_commit=_git_head(project_root),
+        truth_refs={
+            "truth": f"docs/beacon/{resolved}/features/{feature}/truth.md",
+            "tests": f"docs/beacon/{resolved}/features/{feature}/tests.md",
+            "tasks": f"docs/beacon/{resolved}/features/{feature}/tasks.md",
+            "evidence": f"docs/beacon/{resolved}/features/{feature}/evidence.md",
+        },
+        code_entries=["beacon/utils/plan_goal_task_closure.py", "beacon/commands/truth.py"],
+        test_entries=["tests/test_v1611_plan_goal_task_closure.py"],
+        change_history=[f"docs/beacon/{resolved}/change"],
+        inherited_contracts=[
+            "docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
+            "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md",
+        ],
+        execution_authorities={
+            "subagent_runtime": "host_or_fallback",
+            "truth_canonical": "main",
+            "worktree_governance": "workspace_admit",
+            "trace_authority": "agent_trace.v1",
+        },
+        source_hashes=source_hashes,
+        revision_id=revision_id,
+        semantic_compiler_refs=[
+            "beacon/utils/intent_first.py",
+            "beacon/commands/user_story.py",
+            "beacon/commands/prd.py",
+        ],
+        host_transport={"capability": "host-response", "precedence": ["host", "cli"]},
+        humanizer_profile={"language": "zh", "preserve_machine_fields": True},
+        program_refs=program_refs,
+        pac_refs=pac_refs,
+    )
+    request = build_truth_fill_request(envelope)
+    payload = {
+        "schema_version": "1.0",
+        "version": resolved,
+        "feature": feature,
+        "envelope": envelope,
+        "fill_request": request,
+        "status": "pass" if request.get("pass") else "blocked",
+        "blocked": bool(request.get("blocked")),
+        "reason_code": request.get("reason_code") or "",
+    }
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(json.dumps({"status": payload["status"], "reason_code": payload["reason_code"]}, ensure_ascii=False))
+    if payload["blocked"]:
+        raise typer.Exit(2)
+
+
+@app.command("fill-apply")
+def fill_apply_cmd(
+    feature: str = typer.Option(..., "--feature", "-f", help="Feature slug"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version"),
+    request_json: Path = typer.Option(..., "--request-json", help="truth-fill-request.v1 JSON file"),
+    response_json: Path = typer.Option(..., "--response-json", help="truth-fill-response.v1 JSON file"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", "--project-root", help="Project root"),
+    base_revision: str = typer.Option("R2", "--base-revision", help="Base revision"),
+    json_output: bool = typer.Option(True, "--json/--no-json", help="Emit JSON"),
+) -> None:
+    """Apply Host Agent (skill-authored fill) via truth-fill-transaction.v1 (no free Markdown overwrite)."""
+    from beacon.utils.plan_goal_task_closure import apply_structured_fill_transaction
+
+    project_root = _resolve_root(project)
+    resolved = resolve_target_version(project_root, version)
+    request = json.loads(Path(request_json).read_text(encoding="utf-8"))
+    response = json.loads(Path(response_json).read_text(encoding="utf-8"))
+    # allow nested request payload from fill-request command output
+    if request.get("fill_request") and isinstance(request.get("fill_request"), dict):
+        nested = request["fill_request"]
+        request = nested.get("request") if isinstance(nested.get("request"), dict) else nested
+    if response.get("response") and isinstance(response.get("response"), dict):
+        response = response["response"]
+    result = apply_structured_fill_transaction(
+        project_root,
+        version=resolved,
+        feature=feature,
+        request=request,
+        response=response,
+        base_revision=base_revision,
+    )
+    payload = {
+        "schema_version": "1.0",
+        "version": resolved,
+        "feature": feature,
+        "result": result,
+        "status": "pass" if result.get("pass") else "blocked",
+        "blocked": bool(result.get("blocked")),
+        "reason_code": result.get("reason_code") or "",
+    }
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(json.dumps({"status": payload["status"], "reason_code": payload["reason_code"]}, ensure_ascii=False))
+    if payload["blocked"]:
+        raise typer.Exit(2)
+
+
+@app.command("fill-validate-response")
+def fill_validate_response_cmd(
+    response_json: Path = typer.Argument(..., help="truth-fill-response.v1 JSON file"),
+    json_output: bool = typer.Option(True, "--json/--no-json", help="Emit JSON"),
+) -> None:
+    """Validate Host Agent skill-authored truth-fill-response.v1 without writing files."""
+    from beacon.utils.plan_goal_task_closure import (
+        reject_false_completeness,
+        validate_host_agent_full_package_fill,
+    )
+
+    response = json.loads(Path(response_json).read_text(encoding="utf-8"))
+    if response.get("response") and isinstance(response.get("response"), dict):
+        response = response["response"]
+    filled = validate_host_agent_full_package_fill(response)
+    false_c = reject_false_completeness(response)
+    blocked = bool(filled.get("blocked") or false_c.get("blocked"))
+    payload = {
+        "schema_version": "1.0",
+        "status": "blocked" if blocked else "pass",
+        "blocked": blocked,
+        "fill_validation": filled,
+        "false_completeness": false_c,
+        "reason_code": filled.get("reason_code") or false_c.get("reason_code") or "",
+    }
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(json.dumps({"status": payload["status"]}, ensure_ascii=False))
+    if blocked:
+        raise typer.Exit(2)
+
+
+def _git_head(project_root: Path) -> str:
+    import subprocess
+
+    try:
+        out = subprocess.check_output(
+            ["git", "-C", str(project_root), "rev-parse", "HEAD"],
+            text=True,
+            stderr=subprocess.DEVNULL,
+        )
+        return out.strip()
+    except Exception:  # noqa: BLE001
+        return "unknown"
+

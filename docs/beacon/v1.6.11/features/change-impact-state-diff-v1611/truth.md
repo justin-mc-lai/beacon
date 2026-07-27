@@ -95,8 +95,8 @@ scope_ack_ref: user-confirmation-2026-07-27
 | AC-DIF-003 | 每条 diff 绑定 source intent、affected code scope 与 planned TC |
 | AC-DIF-004 | 删除、破坏兼容或高风险状态变更必须进入 state_diff_review 人工确认 |
 | AC-DIF-005 | Change diff 必须覆盖 public 1+6 lifecycle 映射、subagent delegation/诚实 fallback、shared worktree admission、Goal run_id/`agent_trace.v1`、Goal completion owner 与 no-compat migration；任一 inherited surface 缺失即阻断 review |
-| AC-DIF-006 | Host LLM 只能返回 `truth-fill-response.v1` 结构化领域对象/patch；CLI 依据 `truth-fill-transaction.v1` 校验 request hash、base revision、schema、AC/TC/FSM 引用和 allowed paths 后，才可原子地投影四文件，禁止 LLM 自由覆盖 Markdown |
-| AC-DIF-007 | 正式 ChangePlan 必须覆盖 `GoalUtteranceCaptured → VersionAndContextResolved → DeterministicScaffoldMaterialized → HostLLMFillRequested → StructuredFillProduced → FillPatchSchemaValidated → CanonicalTruthPatched → TestsTasksEvidenceRegenerated → PackageValidationPassed → TruthReviewPassed → AwaitingHumanAck → Frozen`，并为 schema reject、semantic rewrite、human reject/cancel、timeout 与 retry exhaustion 提供回边或阻断终态 |
+| AC-DIF-006 | Host Agent（skill-authored fill）只能返回 `truth-fill-response.v1` 结构化领域对象/patch；CLI 依据 `truth-fill-transaction.v1` 校验 request hash、base revision、schema、AC/TC/FSM 引用和 allowed paths 后，才可原子地投影四文件，禁止 LLM 自由覆盖 Markdown |
+| AC-DIF-007 | 正式 ChangePlan 必须覆盖 `GoalUtteranceCaptured → VersionAndContextResolved → DeterministicScaffoldMaterialized → HostAgentFillRequested → StructuredFillProduced → FillPatchSchemaValidated → CanonicalTruthPatched → TestsTasksEvidenceRegenerated → PackageValidationPassed → TruthReviewPassed → AwaitingHumanAck → Frozen`，并为 schema reject、semantic rewrite、human reject/cancel、timeout 与 retry exhaustion 提供回边或阻断终态 |
 
 ## Domain FSM ChangeImpactDiff
 
@@ -140,7 +140,7 @@ scope_ack_ref: user-confirmation-2026-07-27
 - `mapping → review` with missing surface
 - `review → approved` without human_ack
 - inherited lifecycle/delegation/admission/trace/no-compat surface omitted
-- Host LLM 直接写四文件或 patch 越过 allowed paths
+- Host Agent（skill-authored fill）直接写四文件或 patch 越过 allowed paths
 - schema/hash 校验失败后仍投影 canonical truth
 - `awaiting_human` 无 decision_ref 返回自动执行
 

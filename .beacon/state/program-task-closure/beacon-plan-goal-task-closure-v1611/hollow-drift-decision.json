@@ -1,0 +1,82 @@
+{
+  "schema": "hollow-drift-decision.v1",
+  "program_slug": "beacon-plan-goal-task-closure-v1611",
+  "version": "v1.6.11",
+  "choice": "continue",
+  "decision_ref": "human-decision:pgr-35ca10598c49:hollow-drift:continue:2026-07-27",
+  "result": {
+    "status": "resumed",
+    "blocked": false,
+    "pass": true,
+    "reason_code": "",
+    "generated_at": "2026-07-27T10:20:56.093808+00:00",
+    "choice": "continue",
+    "decision_ref": "human-decision:pgr-35ca10598c49:hollow-drift:continue:2026-07-27",
+    "prior_gate": {
+      "status": "clear",
+      "blocked": false,
+      "pass": true,
+      "reason_code": "hollow_fill_clear",
+      "generated_at": "2026-07-27T10:20:56.093790+00:00",
+      "findings": [
+        {
+          "kind": "placeholder",
+          "hit": false,
+          "severity": "info",
+          "detail": "clean",
+          "feature": "contract-baseline-convergence-v1611"
+        },
+        {
+          "kind": "hollow_domain",
+          "hit": false,
+          "severity": "info",
+          "detail": "domain present",
+          "feature": "contract-baseline-convergence-v1611"
+        },
+        {
+          "kind": "orphan",
+          "hit": false,
+          "severity": "info",
+          "detail": "ac/tc present",
+          "feature": "contract-baseline-convergence-v1611"
+        },
+        {
+          "kind": "hanging_fsm",
+          "hit": false,
+          "severity": "info",
+          "detail": "fsm ok_or_absent",
+          "feature": "contract-baseline-convergence-v1611"
+        },
+        {
+          "kind": "padding",
+          "hit": false,
+          "severity": "info",
+          "detail": "task volume ok",
+          "feature": "contract-baseline-convergence-v1611"
+        },
+        {
+          "kind": "evidence_hash_drift",
+          "hit": false,
+          "severity": "info",
+          "detail": "evidence ok",
+          "feature": "contract-baseline-convergence-v1611"
+        }
+      ]
+    },
+    "disposition": {
+      "status": "pass",
+      "blocked": false,
+      "pass": true,
+      "reason_code": "",
+      "generated_at": "2026-07-27T10:20:56.093806+00:00",
+      "task": {
+        "id": "hollow-drift-gate",
+        "status": "active",
+        "disposition": "active",
+        "choice": "continue"
+      }
+    },
+    "schema": "drift-padding-review.v1"
+  },
+  "generated_at": "2026-07-27T10:20:56.093811+00:00"
+}

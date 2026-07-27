@@ -604,7 +604,24 @@ def create_goal_run(
         "created_at": now_iso(),
         "updated_at": now_iso(),
         "history": [{"event": "created", "at": now_iso()}],
+        "completion_actor": "parent_goal",
+        "open_closure_layers": [],
     }
+    try:
+        from beacon.utils.plan_goal_task_closure import (
+            build_goal_task_closure_binding,
+            version_requires_task_closure,
+        )
+
+        if version_requires_task_closure(resolved_version, feature):
+            payload["task_closure"] = build_goal_task_closure_binding(
+                run_id=run_id,
+                version=resolved_version,
+                feature=feature_slug(feature) if feature else "",
+                lakes=[feature_slug(x) for x in (lakes or []) if str(x).strip()],
+            )
+    except Exception:  # noqa: BLE001
+        pass
 
     # P0: delivery/implement intent → admit preflight at create (do not wait only for tick→ralph)
     try:
@@ -907,6 +924,72 @@ def tick_goal_run(
                 event="plan_to_truth_hint",
                 summary=str((hint_local or {}).get("reason_code") or "")[:240],
             )
+            # v1.6.11: attach truth-fill readiness advisory when leaving plan
+            try:
+                from beacon.utils.plan_goal_task_closure import version_requires_task_closure
+
+                ver = str(payload.get("version") or "")
+                feat = str(payload.get("feature") or "")
+                if version_requires_task_closure(ver, feat):
+                    from beacon.utils.plan_goal_task_closure import (
+                        build_context_envelope,
+                        build_truth_fill_request,
+                    )
+                    from beacon.utils.feature_package import package_paths
+                    from beacon.utils.truth_map import FEATURE_SURFACES, _sha256
+
+                    resolved = ver
+                    paths = package_paths(project_root, version=resolved, feature=feat) if feat else None
+                    source_hashes = {}
+                    if paths:
+                        source_hashes = {
+                            s: (_sha256(paths[s]) if paths[s].exists() else "pending")
+                            for s in FEATURE_SURFACES
+                        }
+                    else:
+                        source_hashes = {s: "pending" for s in FEATURE_SURFACES}
+                    # pending hashes are placeholders until scaffold exists
+                    if all(v != "pending" for v in source_hashes.values()):
+                        env = build_context_envelope(
+                            utterance=str(payload.get("utterance") or ""),
+                            version=resolved,
+                            baseline_commit=str((payload.get("version_resolve") or {}).get("requested") or "main"),
+                            truth_refs={"truth": f"docs/beacon/{resolved}/features/{feat}/truth.md"} if feat else {"truth": "pending"},
+                            code_entries=["beacon/utils/plan_goal_task_closure.py"],
+                            test_entries=["tests/test_v1611_plan_goal_task_closure.py"],
+                            change_history=[f"docs/beacon/{resolved}/change"],
+                            inherited_contracts=["truth-core-authority-v1610"],
+                            execution_authorities={
+                                "subagent_runtime": "host_or_fallback",
+                                "truth_canonical": "main",
+                                "worktree_governance": "workspace_admit",
+                                "trace_authority": "agent_trace.v1",
+                            },
+                            source_hashes=source_hashes,
+                            semantic_compiler_refs=["beacon/utils/intent_first.py"],
+                            host_transport={"capability": "host-response", "precedence": ["host", "cli"]},
+                            program_refs={"program": "beacon-plan-goal-task-closure-v1611"},
+                            pac_refs=["PAC-016", "PAC-017", "PAC-021"],
+                        )
+                        req = build_truth_fill_request(env)
+                        payload["truth_fill_readiness"] = {
+                            "schema": "truth-fill-readiness.v1",
+                            "envelope": env,
+                            "fill_request": req,
+                            "next": "beacon truth fill-request" if req.get("pass") else "beacon truth init + fill-request",
+                        }
+                    else:
+                        payload["truth_fill_readiness"] = {
+                            "schema": "truth-fill-readiness.v1",
+                            "status": "scaffold_pending",
+                            "next": "beacon truth init -f <feature> -v v1.6.11 && beacon truth fill-request ...",
+                        }
+            except Exception as exc:  # noqa: BLE001
+                payload["truth_fill_readiness"] = {
+                    "schema": "truth-fill-readiness.v1",
+                    "status": "error",
+                    "error": str(exc)[:200],
+                }
         # stage_trace per-stage refs (before skill load so we can re-apply after)
         st = payload.get("stage_trace") if isinstance(payload.get("stage_trace"), dict) else {}
         if not st:
@@ -948,6 +1031,23 @@ def tick_goal_run(
         existing["log_relpath"] = log_rel
         payload["stage_trace"] = existing
         if next_stage == "implement":
+            # v1.6.11: seed path progress ledger snapshot (empty open set until tasks compile)
+            try:
+                from beacon.utils.plan_goal_task_closure import (
+                    aggregate_path_progress,
+                    version_requires_task_closure,
+                )
+
+                if version_requires_task_closure(str(payload.get("version") or ""), str(payload.get("feature") or "")):
+                    nodes = list((payload.get("task_graph") or {}).get("nodes") or [])
+                    payload["task_progress"] = aggregate_path_progress(nodes)
+                    payload["task_progress"]["schema"] = "task-progress-ledger.v1"
+                    payload["task_progress"]["revision"] = str(
+                        ((payload.get("task_closure") or {}).get("revision_id") if isinstance(payload.get("task_closure"), dict) else "")
+                        or "R2"
+                    )
+            except Exception:  # noqa: BLE001
+                pass
             # Pre-warm implement admission (fail-closed only blocks write dispatch; record attempt)
             pre = ensure_goal_implement_admission(project_root, payload)
             payload = apply_admission_to_goal_payload(payload, pre)
@@ -1115,6 +1215,15 @@ def attach_verifier(
     hist = list(payload.get("history") or [])
     hist.append({"event": "verifier_attached", "refs": clean_refs, "source": source, "at": now_iso()})
     payload["history"] = hist
+    # keep task_closure verifier binding current
+    try:
+        tc = payload.get("task_closure") if isinstance(payload.get("task_closure"), dict) else None
+        if tc is not None:
+            tc = dict(tc)
+            tc["verifier_ref"] = f".beacon/state/product-goal/{run_id}.json#verifier"
+            payload["task_closure"] = tc
+    except Exception:  # noqa: BLE001
+        pass
     return _save(project_root, payload)
 
 
@@ -1132,6 +1241,35 @@ def complete_goal_run(project_root: Path, run_id: str, *, force: bool = False) -
         hist.append({"event": "complete_rejected", "reason_code": REASON_VERIFIER_REQUIRED, "at": now_iso()})
         payload["history"] = hist
         return _save(project_root, payload)
+    # v1.6.11+: task-closure / parent-only / lifecycle gate (still not auto-release)
+    if not force:
+        try:
+            from beacon.utils.plan_goal_task_closure import evaluate_goal_run_closure_gate
+
+            closure = evaluate_goal_run_closure_gate(payload)
+            payload["task_closure_gate"] = closure
+            if closure.get("blocked"):
+                payload["status"] = "blocked"
+                payload["blocked"] = True
+                payload["reason_code"] = str(closure.get("reason_code") or "goal_run_closure_blocked")
+                hist = list(payload.get("history") or [])
+                hist.append(
+                    {
+                        "event": "complete_rejected",
+                        "reason_code": payload["reason_code"],
+                        "at": now_iso(),
+                        "gate": "task_closure",
+                    }
+                )
+                payload["history"] = hist
+                return _save(project_root, payload)
+        except Exception as exc:  # noqa: BLE001
+            payload["task_closure_gate"] = {
+                "status": "error",
+                "blocked": False,
+                "reason_code": "task_closure_gate_error",
+                "error": str(exc)[:240],
+            }
     payload["status"] = "completed"
     payload["blocked"] = False
     payload["reason_code"] = ""

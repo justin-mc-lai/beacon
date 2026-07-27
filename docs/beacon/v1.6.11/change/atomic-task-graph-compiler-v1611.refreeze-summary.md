@@ -1,7 +1,7 @@
 # Change Refreeze Summary: atomic-task-graph-compiler-v1611
 
 - version: `v1.6.11`
-- change_reason: `D3: CLI deterministic scaffold plus Host LLM full-package fill under feature-package authority`
+- change_reason: `D3: CLI deterministic scaffold plus Host Agent (skill-authored fill) full-package fill under feature-package authority`
 - refreeze_status: `complete`
 - blocked_reason: ``
 - next_route: `beacon-gen-implement`

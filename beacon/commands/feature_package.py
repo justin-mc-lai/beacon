@@ -9,6 +9,7 @@ from typing import Optional
 import typer
 
 from beacon.utils.feature_package import materialize_feature_package, validate_feature_package
+from beacon.utils.plan_goal_task_closure import materialize_deterministic_scaffold, version_requires_task_closure
 from beacon.utils.versioning import resolve_target_version
 
 
@@ -23,7 +24,12 @@ def materialize_feature_package_entry(
 
     project_root = Path(project) if project else Path.cwd()
     resolved_version = resolve_target_version(project_root, version)
-    payload = materialize_feature_package(project_root, version=resolved_version, feature=feature, force=force)
+    if version_requires_task_closure(resolved_version, feature):
+        payload = materialize_deterministic_scaffold(
+            project_root, version=resolved_version, feature=feature, force=force
+        )
+    else:
+        payload = materialize_feature_package(project_root, version=resolved_version, feature=feature, force=force)
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         return

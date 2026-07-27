@@ -212,6 +212,36 @@ def evaluate_stage_exit(
         if not features:
             base["details"] = {"note": "no_feature_bound_skip_package_freeze_check"}
             return base
+        # v1.6.11+: scaffold/unfilled package cannot exit truth stage
+        try:
+            from beacon.utils.plan_goal_task_closure import (
+                detect_scaffold_truth_block,
+                version_requires_task_closure,
+            )
+
+            if version_requires_task_closure(version, features[0] if features else ""):
+                scaffold_hits: list[dict[str, Any]] = []
+                for feat in features:
+                    tpath = _truth_path(root, resolve_target_version(root, version), feat)
+                    if tpath.is_file():
+                        chk = detect_scaffold_truth_block(tpath.read_text(encoding="utf-8"))
+                        if chk.get("blocked"):
+                            scaffold_hits.append({"feature": feat, **chk})
+                if scaffold_hits:
+                    base.update(
+                        {
+                            "allow": False,
+                            "blocked": True,
+                            "reason_code": "truth_scaffold_not_filled",
+                            "fill_harness": "truth",
+                            "fill_mode": "gen-truth",
+                            "resume_action": RESUME_LOAD_NEXT,
+                            "details": {"scaffold_hits": scaffold_hits},
+                        }
+                    )
+                    return base
+        except Exception:  # noqa: BLE001
+            pass
         unfrozen: list[dict[str, Any]] = []
         for feat in features:
             info = feature_package_frozen(root, version=version, feature=feat)
