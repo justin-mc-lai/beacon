@@ -650,3 +650,118 @@ def test_program_freeze_gate_authenticated_helper():
     # pure helper import surface
     assert callable(validate_program_freeze_authenticated)
     assert callable(build_program_freeze_gate)
+
+
+# ---- CLI wiring ----
+
+def test_cli_truth_scaffold_and_fill_request(tmp_path: Path):
+    from typer.testing import CliRunner
+    from beacon.commands.truth import app as truth_app
+    import subprocess
+    import json as _json
+
+    runner = CliRunner()
+    subprocess.check_call(["git", "init"], cwd=tmp_path)
+    subprocess.check_call(["git", "config", "user.email", "t@example.com"], cwd=tmp_path)
+    subprocess.check_call(["git", "config", "user.name", "t"], cwd=tmp_path)
+    (tmp_path / "README").write_text("x\n", encoding="utf-8")
+    subprocess.check_call(["git", "add", "README"], cwd=tmp_path)
+    subprocess.check_call(["git", "commit", "-m", "init"], cwd=tmp_path)
+
+    init = runner.invoke(
+        truth_app,
+        ["init", "all", "-f", "demo-fill", "-v", "v1.6.11", "-p", str(tmp_path), "--force"],
+    )
+    assert init.exit_code == 0, init.output
+
+    req = runner.invoke(
+        truth_app,
+        [
+            "fill-request",
+            "-f",
+            "demo-fill",
+            "-v",
+            "v1.6.11",
+            "-p",
+            str(tmp_path),
+            "-u",
+            "deliver demo fill",
+            "--program",
+            "demo-program",
+            "--json",
+        ],
+    )
+    assert req.exit_code == 0, req.output
+    payload = _json.loads(req.output)
+    assert payload["status"] == "pass"
+    assert payload["fill_request"]["request"]["schema"] == "truth-fill-request.v1"
+
+
+def test_cli_fill_apply_and_validate(tmp_path: Path):
+    from typer.testing import CliRunner
+    from beacon.commands.truth import app as truth_app
+    import json as _json
+
+    runner = CliRunner()
+    pg.materialize_deterministic_scaffold(tmp_path, version="v1.6.11", feature="apply-demo", force=True)
+    request = _request()
+    response = _filled_response()
+    req_path = tmp_path / "req.json"
+    resp_path = tmp_path / "resp.json"
+    req_path.write_text(_json.dumps(request), encoding="utf-8")
+    resp_path.write_text(_json.dumps(response), encoding="utf-8")
+
+    val = runner.invoke(truth_app, ["fill-validate-response", str(resp_path), "--json"])
+    assert val.exit_code == 0, val.output
+
+    applied = runner.invoke(
+        truth_app,
+        [
+            "fill-apply",
+            "-f",
+            "apply-demo",
+            "-v",
+            "v1.6.11",
+            "-p",
+            str(tmp_path),
+            "--request-json",
+            str(req_path),
+            "--response-json",
+            str(resp_path),
+            "--json",
+        ],
+    )
+    assert applied.exit_code == 0, applied.output
+    out = _json.loads(applied.output)
+    assert out["status"] == "pass"
+    truth = (tmp_path / "docs/beacon/v1.6.11/features/apply-demo/truth.md").read_text(encoding="utf-8")
+    assert "package_maturity: filled" in truth
+
+
+def test_cli_program_freeze_authenticated_default(tmp_path: Path):
+    from typer.testing import CliRunner
+    from beacon.commands.program import app as program_app
+    import json as _json
+
+    prog = tmp_path / "docs/beacon/v1.6.11/programs/demo-prog"
+    (prog / "lakes" / "lake-a").mkdir(parents=True)
+    graph = {
+        "schema_version": "1.0",
+        "program_slug": "demo-prog",
+        "version": "v1.6.11",
+        "lakes": [{"slug": "lake-a", "status": "frozen"}],
+    }
+    (prog / "feature-graph.json").write_text(_json.dumps(graph), encoding="utf-8")
+    (prog / "lakes/lake-a/truth-promotion.json").write_text(
+        _json.dumps({"status": "complete", "feature": "lake-a"}),
+        encoding="utf-8",
+    )
+    runner = CliRunner()
+    result = runner.invoke(
+        program_app,
+        ["freeze", "demo-prog", "-p", str(tmp_path), "-v", "v1.6.11", "--json"],
+    )
+    assert result.exit_code == 2, result.output
+    payload = _json.loads(result.output)
+    assert payload["blocked"] is True
+

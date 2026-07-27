@@ -78,11 +78,32 @@ def init_cmd(
                 err=True,
             )
             raise typer.Exit(2)
-        payload = materialize_feature_package(project_root, version=resolved, feature=feature, force=force)
-        for path in payload.get("written", []):
-            typer.echo(f"✓ Created package truth: {path}")
-        for path in payload.get("skipped", []):
-            typer.echo(f"- Preserved package truth: {path}")
+        from beacon.utils.plan_goal_task_closure import materialize_deterministic_scaffold
+
+        payload = materialize_deterministic_scaffold(
+            project_root,
+            version=resolved,
+            feature=feature,
+            force=force,
+        )
+        materialize = payload.get("materialize") or {}
+        for written in materialize.get("written", []):
+            typer.echo(f"✓ Created package truth: {written}")
+        for skipped in materialize.get("skipped", []):
+            typer.echo(f"- Preserved package truth: {skipped}")
+        if payload.get("pass"):
+            typer.echo(
+                "✓ Deterministic scaffold ready (package_maturity=scaffold; Host LLM fill required before freeze)"
+            )
+        else:
+            typer.echo(
+                f"⚠ Scaffold gate: {payload.get('reason_code') or 'deterministic_scaffold_not_filled'}",
+                err=True,
+            )
+        # always return scaffold payload path via optional env-free print for hosts
+        if payload.get("recommend_freeze"):
+            typer.echo("✗ Scaffold must not recommend freeze", err=True)
+            raise typer.Exit(2)
         return
 
     base = project_root / "docs" / "beacon" / resolved
@@ -581,3 +602,196 @@ def prose_check_cmd(
                 err=True,
             )
             raise typer.Exit(2)
+
+
+
+@app.command("fill-request")
+def fill_request_cmd(
+    feature: str = typer.Option(..., "--feature", "-f", help="Feature slug"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version"),
+    utterance: str = typer.Option(..., "--utterance", "-u", help="Goal/change utterance"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", "--project-root", help="Project root"),
+    revision_id: str = typer.Option("R2", "--revision-id", help="Target revision id"),
+    program: str = typer.Option("", "--program", help="Optional program slug for PAC/program refs"),
+    json_output: bool = typer.Option(True, "--json/--no-json", help="Emit JSON (default true)"),
+) -> None:
+    """Build truth-fill-request.v1 from ContextEnvelope (CLI scaffold side)."""
+    from beacon.utils.feature_package import package_paths
+    from beacon.utils.plan_goal_task_closure import (
+        build_context_envelope,
+        build_truth_fill_request,
+    )
+    from beacon.utils.truth_map import FEATURE_SURFACES, _sha256
+
+    project_root = _resolve_root(project)
+    resolved = resolve_target_version(project_root, version)
+    paths = package_paths(project_root, version=resolved, feature=feature)
+    source_hashes = {
+        surface: (_sha256(paths[surface]) if paths[surface].exists() else "")
+        for surface in FEATURE_SURFACES
+    }
+    if not all(source_hashes.values()):
+        # ensure scaffold exists first
+        from beacon.utils.plan_goal_task_closure import materialize_deterministic_scaffold
+
+        materialize_deterministic_scaffold(project_root, version=resolved, feature=feature, force=False)
+        source_hashes = {
+            surface: (_sha256(paths[surface]) if paths[surface].exists() else "")
+            for surface in FEATURE_SURFACES
+        }
+    program_slug = program.strip() or ""
+    program_refs = {}
+    pac_refs = ["PAC-016", "PAC-017", "PAC-018", "PAC-019", "PAC-021"]
+    if program_slug:
+        program_refs = {
+            "manifest": f"docs/beacon/{resolved}/programs/{program_slug}/program-manifest.md",
+            "feature_graph": f"docs/beacon/{resolved}/programs/{program_slug}/feature-graph.json",
+        }
+    envelope = build_context_envelope(
+        utterance=utterance,
+        version=resolved,
+        baseline_commit=_git_head(project_root),
+        truth_refs={
+            "truth": f"docs/beacon/{resolved}/features/{feature}/truth.md",
+            "tests": f"docs/beacon/{resolved}/features/{feature}/tests.md",
+            "tasks": f"docs/beacon/{resolved}/features/{feature}/tasks.md",
+            "evidence": f"docs/beacon/{resolved}/features/{feature}/evidence.md",
+        },
+        code_entries=["beacon/utils/plan_goal_task_closure.py", "beacon/commands/truth.py"],
+        test_entries=["tests/test_v1611_plan_goal_task_closure.py"],
+        change_history=[f"docs/beacon/{resolved}/change"],
+        inherited_contracts=[
+            "docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
+            "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md",
+        ],
+        execution_authorities={
+            "subagent_runtime": "host_or_fallback",
+            "truth_canonical": "main",
+            "worktree_governance": "workspace_admit",
+            "trace_authority": "agent_trace.v1",
+        },
+        source_hashes=source_hashes,
+        revision_id=revision_id,
+        semantic_compiler_refs=[
+            "beacon/utils/intent_first.py",
+            "beacon/commands/user_story.py",
+            "beacon/commands/prd.py",
+        ],
+        host_transport={"capability": "host-response", "precedence": ["host", "cli"]},
+        humanizer_profile={"language": "zh", "preserve_machine_fields": True},
+        program_refs=program_refs,
+        pac_refs=pac_refs,
+    )
+    request = build_truth_fill_request(envelope)
+    payload = {
+        "schema_version": "1.0",
+        "version": resolved,
+        "feature": feature,
+        "envelope": envelope,
+        "fill_request": request,
+        "status": "pass" if request.get("pass") else "blocked",
+        "blocked": bool(request.get("blocked")),
+        "reason_code": request.get("reason_code") or "",
+    }
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(json.dumps({"status": payload["status"], "reason_code": payload["reason_code"]}, ensure_ascii=False))
+    if payload["blocked"]:
+        raise typer.Exit(2)
+
+
+@app.command("fill-apply")
+def fill_apply_cmd(
+    feature: str = typer.Option(..., "--feature", "-f", help="Feature slug"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version"),
+    request_json: Path = typer.Option(..., "--request-json", help="truth-fill-request.v1 JSON file"),
+    response_json: Path = typer.Option(..., "--response-json", help="truth-fill-response.v1 JSON file"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", "--project-root", help="Project root"),
+    base_revision: str = typer.Option("R2", "--base-revision", help="Base revision"),
+    json_output: bool = typer.Option(True, "--json/--no-json", help="Emit JSON"),
+) -> None:
+    """Apply Host LLM structured fill via truth-fill-transaction.v1 (no free Markdown overwrite)."""
+    from beacon.utils.plan_goal_task_closure import apply_structured_fill_transaction
+
+    project_root = _resolve_root(project)
+    resolved = resolve_target_version(project_root, version)
+    request = json.loads(Path(request_json).read_text(encoding="utf-8"))
+    response = json.loads(Path(response_json).read_text(encoding="utf-8"))
+    # allow nested request payload from fill-request command output
+    if request.get("fill_request") and isinstance(request.get("fill_request"), dict):
+        nested = request["fill_request"]
+        request = nested.get("request") if isinstance(nested.get("request"), dict) else nested
+    if response.get("response") and isinstance(response.get("response"), dict):
+        response = response["response"]
+    result = apply_structured_fill_transaction(
+        project_root,
+        version=resolved,
+        feature=feature,
+        request=request,
+        response=response,
+        base_revision=base_revision,
+    )
+    payload = {
+        "schema_version": "1.0",
+        "version": resolved,
+        "feature": feature,
+        "result": result,
+        "status": "pass" if result.get("pass") else "blocked",
+        "blocked": bool(result.get("blocked")),
+        "reason_code": result.get("reason_code") or "",
+    }
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(json.dumps({"status": payload["status"], "reason_code": payload["reason_code"]}, ensure_ascii=False))
+    if payload["blocked"]:
+        raise typer.Exit(2)
+
+
+@app.command("fill-validate-response")
+def fill_validate_response_cmd(
+    response_json: Path = typer.Argument(..., help="truth-fill-response.v1 JSON file"),
+    json_output: bool = typer.Option(True, "--json/--no-json", help="Emit JSON"),
+) -> None:
+    """Validate Host LLM truth-fill-response.v1 without writing files."""
+    from beacon.utils.plan_goal_task_closure import (
+        reject_false_completeness,
+        validate_host_llm_full_package_fill,
+    )
+
+    response = json.loads(Path(response_json).read_text(encoding="utf-8"))
+    if response.get("response") and isinstance(response.get("response"), dict):
+        response = response["response"]
+    filled = validate_host_llm_full_package_fill(response)
+    false_c = reject_false_completeness(response)
+    blocked = bool(filled.get("blocked") or false_c.get("blocked"))
+    payload = {
+        "schema_version": "1.0",
+        "status": "blocked" if blocked else "pass",
+        "blocked": blocked,
+        "fill_validation": filled,
+        "false_completeness": false_c,
+        "reason_code": filled.get("reason_code") or false_c.get("reason_code") or "",
+    }
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(json.dumps({"status": payload["status"]}, ensure_ascii=False))
+    if blocked:
+        raise typer.Exit(2)
+
+
+def _git_head(project_root: Path) -> str:
+    import subprocess
+
+    try:
+        out = subprocess.check_output(
+            ["git", "-C", str(project_root), "rev-parse", "HEAD"],
+            text=True,
+            stderr=subprocess.DEVNULL,
+        )
+        return out.strip()
+    except Exception:  # noqa: BLE001
+        return "unknown"
+

@@ -1,0 +1,21 @@
+{
+  "schema": "implement-evidence.v1",
+  "feature": "drift-padding-review-gate-v1611",
+  "version": "v1.6.11",
+  "status": "recorded",
+  "generated_at": "2026-07-27T08:58:57.594015+00:00",
+  "ac": "SHARED-CONTRACT-SUITE",
+  "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k 'drift_kinds or hollow_fill_review_gate or decision_ref' --tb=no",
+  "assertion": "shared L0-L8 contract + CLI wiring green on feature worktree",
+  "keywords": [
+    "drift_kinds",
+    "hollow_fill_review_gate",
+    "decision_ref"
+  ],
+  "artifacts": [
+    "beacon/utils/plan_goal_task_closure.py",
+    "beacon/commands/truth.py",
+    "beacon/commands/program.py",
+    "tests/test_v1611_plan_goal_task_closure.py"
+  ]
+}
