@@ -1,0 +1,137 @@
+{
+  "schema_version": "1.0",
+  "program_slug": "beacon-plan-goal-task-closure-v1611",
+  "version": "v1.6.11",
+  "structure": {
+    "program_slug": "beacon-plan-goal-task-closure-v1611",
+    "version": "v1.6.11",
+    "scope_mode": "full_parity",
+    "lakes": [
+      {
+        "slug": "atomic-task-graph-compiler-v1611",
+        "depends_on": [
+          "change-impact-state-diff-v1611"
+        ],
+        "parity_subset": [
+          "deterministic-projection",
+          "semantic-forward-migration",
+          "task-dag",
+          "traceability",
+          "verification"
+        ]
+      },
+      {
+        "slug": "brownfield-context-resolver-v1611",
+        "depends_on": [
+          "contract-baseline-convergence-v1611"
+        ],
+        "parity_subset": [
+          "change",
+          "code",
+          "fill-context",
+          "git",
+          "host-transport",
+          "tests",
+          "truth"
+        ]
+      },
+      {
+        "slug": "cancel-replan-next-ready-v1611",
+        "depends_on": [
+          "drift-padding-review-gate-v1611"
+        ],
+        "parity_subset": [
+          "bounded-retry",
+          "cancel",
+          "closure-ready",
+          "ready-set",
+          "replacement",
+          "supersede"
+        ]
+      },
+      {
+        "slug": "change-impact-state-diff-v1611",
+        "depends_on": [
+          "intent-completeness-engine-v1611"
+        ],
+        "parity_subset": [
+          "data",
+          "fill-transaction",
+          "fsm",
+          "interface",
+          "promise",
+          "structured-patch",
+          "tests"
+        ]
+      },
+      {
+        "slug": "contract-baseline-convergence-v1611",
+        "depends_on": [],
+        "parity_subset": [
+          "authenticated-freeze",
+          "context",
+          "contract-tests",
+          "deterministic-scaffold",
+          "version-governance"
+        ]
+      },
+      {
+        "slug": "convergence-verifier-v1611",
+        "depends_on": [
+          "cancel-replan-next-ready-v1611",
+          "task-progress-ledger-v1611"
+        ],
+        "parity_subset": [
+          "authenticated-program-freeze",
+          "evidence-closure",
+          "fill-chain-convergence",
+          "intent-closure",
+          "pac-trace",
+          "path-closure"
+        ]
+      },
+      {
+        "slug": "drift-padding-review-gate-v1611",
+        "depends_on": [
+          "atomic-task-graph-compiler-v1611"
+        ],
+        "parity_subset": [
+          "drift",
+          "hollow-fill-review",
+          "human-decision",
+          "padding"
+        ]
+      },
+      {
+        "slug": "intent-completeness-engine-v1611",
+        "depends_on": [
+          "brownfield-context-resolver-v1611"
+        ],
+        "parity_subset": [
+          "anti-false-completeness",
+          "failure",
+          "full-package-fill",
+          "intent",
+          "journey",
+          "non-goal",
+          "state"
+        ]
+      },
+      {
+        "slug": "task-progress-ledger-v1611",
+        "depends_on": [
+          "atomic-task-graph-compiler-v1611"
+        ],
+        "parity_subset": [
+          "feedback",
+          "fill-transaction-progress",
+          "path-progress",
+          "task-progress"
+        ]
+      }
+    ]
+  },
+  "fingerprint": "sha256:9aa7a903ead2d8e9b03a818b42bc9163b75426d5e8b58149508e58f2e2ac843a",
+  "captured_at": "2026-07-27T08:29:26.984079+00:00",
+  "source": "program_freeze_gate"
+}

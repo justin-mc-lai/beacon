@@ -1,0 +1,108 @@
+{
+  "schema_version": "standard-execution-precheck.v1",
+  "produced_by": "beacon.status.standard-execution-precheck",
+  "cli_owned": true,
+  "generated_at": "2026-07-27T08:38:57.360370+00:00",
+  "version": "v1.6.11",
+  "feature": "contract-baseline-convergence-v1611",
+  "feature_slug": "contract-baseline-convergence-v1611",
+  "run_id": "pgr-35ca10598c49",
+  "verification_bundle_ref": ".beacon/state/loop-goal/pgr-35ca10598c49.verification-bundle.json",
+  "workspace_admission_ref": ".beacon/state/workspace-admission/v1.6.11/contract-baseline-convergence-v1611.json",
+  "topology_gate_ref": ".beacon/state/git-scope-graph/v1.6.11/contract-baseline-convergence-v1611.json",
+  "verification_bundle": {
+    "truth_map_verify": {
+      "status": "pass",
+      "details": {
+        "status": "pass",
+        "blocked": false
+      }
+    },
+    "verify_materials_strict": {
+      "status": "pass",
+      "details": {
+        "status": "pass",
+        "blocked": false,
+        "exit_code": 0
+      }
+    },
+    "git_diff_check": {
+      "status": "pass"
+    },
+    "branch_governance_verify": {
+      "status": "pass",
+      "details": {
+        "status": "pass"
+      }
+    },
+    "workspace_admission": {
+      "status": "fail",
+      "reason_code": "workspace_admission_cwd_mismatch",
+      "details": {
+        "valid": false,
+        "status": "blocked",
+        "reason_code": "workspace_admission_cwd_mismatch",
+        "reason_codes": [
+          "workspace_admission_cwd_mismatch"
+        ],
+        "artifact_path": ".beacon/state/workspace-admission/v1.6.11/contract-baseline-convergence-v1611.json",
+        "artifact": {
+          "schema_version": "workspace-admission-v1",
+          "version": "v1.6.11",
+          "feature_slug": "contract-baseline-convergence-v1611",
+          "project_root": "/Users/apple/Developer/Personal/products/beacon",
+          "branch": "beacon/v1.6.11/contract-baseline-convergence-v1611",
+          "worktree_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11/contract-baseline-convergence-v1611",
+          "base_branch": "main",
+          "issued_at": "2026-07-27T08:38:42.279018+00:00",
+          "git_head": "01078e5e9372e29b44c9e7e09dfd37d5becf65f1",
+          "status": "pass",
+          "service_worktree_map": {
+            "beacon": "/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11/contract-baseline-convergence-v1611"
+          },
+          "service_reconcile": {
+            "beacon": {
+              "status": "pass",
+              "branch": "beacon/v1.6.11/contract-baseline-convergence-v1611",
+              "worktree_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11/contract-baseline-convergence-v1611",
+              "git_head": "01078e5e9372e29b44c9e7e09dfd37d5becf65f1",
+              "shared_parent": true
+            }
+          },
+          "parent_reconcile": {
+            "status": "up_to_date",
+            "base_branch": "main",
+            "stdout": "Already up to date.",
+            "stderr": ""
+          },
+          "execution_surface": "goal",
+          "forced_worktree": false,
+          "updated_at": "2026-07-27T08:38:42.654912+00:00"
+        },
+        "worktree_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11/contract-baseline-convergence-v1611",
+        "admission_invalidation": "dirty_only"
+      }
+    },
+    "topology_gate": {
+      "status": "fail",
+      "reason_code": "workspace_admission_cwd_mismatch",
+      "details": {
+        "project_topology": "single_repo",
+        "scope_count": 1
+      }
+    }
+  },
+  "truth_canonical": "main",
+  "truth_baseline_commit": "01078e5e9372e29b44c9e7e09dfd37d5becf65f1",
+  "canonical_refreeze_committed": true,
+  "truth_baseline_merged": true,
+  "feature_worktree_reconciled": true,
+  "stale_feature_refreeze_detected": false,
+  "stale_feature_refreeze_quarantine_ref": "",
+  "status": "blocked",
+  "reason_code": "verification_bundle_incomplete",
+  "failed_checks": [
+    "workspace_admission",
+    "topology_gate"
+  ]
+}
