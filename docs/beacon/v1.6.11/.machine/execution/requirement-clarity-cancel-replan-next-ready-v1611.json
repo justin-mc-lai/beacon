@@ -1,0 +1,596 @@
+{
+  "schema_version": "1.0",
+  "feature": "cancel-replan-next-ready-v1611",
+  "feature_slug": "cancel-replan-next-ready-v1611",
+  "version": "v1.6.11",
+  "runtime_version": "v1.6.10",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.6.11/.machine/execution/requirement-clarity-cancel-replan-next-ready-v1611.json",
+  "report_markdown_path": "docs/beacon/v1.6.11/execution/requirement-clarity-cancel-replan-next-ready-v1611.md",
+  "state_path": ".beacon/state/requirement-clarity-cancel-replan-next-ready-v1611.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.11",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-07-27T07:28:09.272064+00:00",
+    "feature": "cancel-replan-next-ready-v1611",
+    "feature_slug": "cancel-replan-next-ready-v1611",
+    "prd_ref": "docs/beacon/v1.6.11/prd/cancel-replan-next-ready-v1611.md",
+    "user_story_ref": "docs/beacon/v1.6.11/user-story/cancel-replan-next-ready-v1611.md"
+  },
+  "domain_fsm_gate": {
+    "schema_version": "1.0",
+    "feature": "cancel-replan-next-ready-v1611",
+    "feature_slug": "cancel-replan-next-ready-v1611",
+    "version": "v1.6.11",
+    "truth_path": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/truth.md",
+    "tests_path": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/tests.md",
+    "required": true,
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "findings": [],
+    "requirement": {
+      "required": true,
+      "reason": "explicit_domain_mark",
+      "explicit": true,
+      "partial": true,
+      "complexity": false,
+      "business_signal": false,
+      "version_supported": true
+    },
+    "projection": {
+      "schema_version": "1.0",
+      "domain_fsm_schema": "domain-fsm.v1",
+      "entity_precedence_schema": "entity-precedence.v1",
+      "frontmatter": {
+        "slug": "cancel-replan-next-ready-v1611",
+        "version": "v1.6.11",
+        "status": "draft",
+        "revision_id": "D2",
+        "language": "zh",
+        "domain_required": "true",
+        "domain_kind": "platform",
+        "package_maturity": "filled",
+        "materials_status": "current",
+        "parser_contract": "beacon-feature-package-v2",
+        "truth_source_model": "feature_package_authoritative",
+        "program_ref": "docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/program-manifest.md",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "participating_services": "beacon",
+        "git_canonical_branch": "main",
+        "previous_draft": "D1",
+        "change_reason": "D2: Goal scheduler uses shared admission and refreeze invalidation",
+        "parent_truth": "docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611/truth.md",
+        "inherited_contracts": "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md; docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md",
+        "canonical_refs": {
+          "prd": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/truth.md",
+          "user_story": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/truth.md",
+          "test_case": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/tests.md"
+        }
+      },
+      "frontmatter_errors": [],
+      "has_domain_model_section": true,
+      "has_domain_fsm_section": true,
+      "has_illegal_transition_section": true,
+      "entities": [
+        {
+          "entity": "ReplacementLink",
+          "key": "old_task, new_tasks, decision_ref",
+          "precedence": "替代关系",
+          "requires": "替代关系"
+        },
+        {
+          "entity": "ReadySetRevision",
+          "key": "graph_revision, cause, task_ids",
+          "precedence": "重算结果",
+          "requires": "重算结果"
+        },
+        {
+          "entity": "DependencyImpact",
+          "key": "downstream, disposition, reason",
+          "precedence": "取消传播",
+          "requires": "取消传播"
+        }
+      ],
+      "entity_precedence": [
+        {
+          "entity": "ReplacementLink",
+          "key": "old_task, new_tasks, decision_ref",
+          "precedence": "替代关系",
+          "requires": "替代关系"
+        },
+        {
+          "entity": "ReadySetRevision",
+          "key": "graph_revision, cause, task_ids",
+          "precedence": "重算结果",
+          "requires": "重算结果"
+        },
+        {
+          "entity": "DependencyImpact",
+          "key": "downstream, disposition, reason",
+          "precedence": "取消传播",
+          "requires": "取消传播"
+        }
+      ],
+      "aggregates": [
+        {
+          "name": "CancelReplan",
+          "states": [
+            "blocked",
+            "complete",
+            "decision_received",
+            "dispatchable",
+            "recomputing",
+            "rewriting_graph"
+          ],
+          "transitions": [
+            {
+              "from": "",
+              "to": "decision_received",
+              "guard": "human choice valid",
+              "initial": "true"
+            },
+            {
+              "from": "decision_received",
+              "to": "rewriting_graph",
+              "guard": "choice applied or replacement supplied"
+            },
+            {
+              "from": "blocked",
+              "to": "rewriting_graph",
+              "guard": "choice applied or replacement supplied"
+            },
+            {
+              "from": "rewriting_graph",
+              "to": "recomputing",
+              "guard": "required replacement edges satisfied"
+            },
+            {
+              "from": "recomputing",
+              "to": "dispatchable",
+              "guard": "current ready candidates exist"
+            },
+            {
+              "from": "rewriting_graph",
+              "to": "blocked",
+              "guard": "dependency gap or no ready candidate"
+            },
+            {
+              "from": "recomputing",
+              "to": "blocked",
+              "guard": "dependency gap or no ready candidate"
+            },
+            {
+              "from": "dispatchable",
+              "to": "complete",
+              "guard": "shared admission pass and next task handed off"
+            }
+          ]
+        }
+      ],
+      "illegal_transition_slots": [
+        {
+          "description": "cancelled task → done",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "required dependency cancellation with downstream ready",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "graph revision change without ready-set recompute",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "Goal scheduler bypassing shared worktree admission",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "refreeze 后复用旧 ready set 或 admission ref",
+          "aggregate": "",
+          "source": "truth"
+        }
+      ],
+      "acceptance_criteria": [
+        {
+          "ac_id": "AC-RPL-001",
+          "description": "rewrite/split/replace/cancel 分别产生 proposed replacement、superseded children、cancelled link 或纯取消"
+        },
+        {
+          "ac_id": "AC-RPL-002",
+          "description": "required dependency 取消后必须存在 replacement，否则下游 path=blocked"
+        },
+        {
+          "ac_id": "AC-RPL-003",
+          "description": "每次图变更原子地重算 ready set，只调度依赖满足且 admission pass 的任务"
+        },
+        {
+          "ac_id": "AC-RPL-004",
+          "description": "已 verified/done 任务的有效证据在语义未失效时保留；受 refreeze 影响则标 stale"
+        },
+        {
+          "ac_id": "AC-RPL-005",
+          "description": "cancelled/superseded/blocked 不得转换为 done，Goal 聚合必须区分统计"
+        },
+        {
+          "ac_id": "AC-RPL-006",
+          "description": "Goal scheduler 只能 dispatch 当前 ready set 中且 shared admission pass 的 implementation TaskNode；每次 dispatch 记录 admission/worktree/cwd/HEAD refs，direct/goal/team/ralph 不得分叉准入语义"
+        },
+        {
+          "ac_id": "AC-RPL-007",
+          "description": "Truth refreeze 或 main reconcile 变化必须原子地使旧 graph revision、ready set 与 admission refs stale；重新编译并在真实 worktree reconcile 新 frozen revision 后才能继续 dispatch"
+        }
+      ],
+      "bound_ac_ids": [
+        "AC-RPL-001",
+        "AC-RPL-002",
+        "AC-RPL-005"
+      ],
+      "orphan_ac_ids": [
+        "AC-RPL-003",
+        "AC-RPL-006",
+        "AC-RPL-007"
+      ],
+      "aggregates_missing_illegal_slots": [],
+      "raw_section_titles": [
+        "人话",
+        "User Intent",
+        "User Intent Snapshot",
+        "用户旅程",
+        "First principles",
+        "Domain Model",
+        "Intent Coverage Matrix",
+        "Acceptance Criteria",
+        "Domain FSM CancelReplan",
+        "FSM 五元组",
+        "Illegal transitions",
+        "Non-goals",
+        "Freeze readiness"
+      ]
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "required": true,
+      "blocked": false,
+      "status": "pass",
+      "reason_code": "",
+      "findings": [],
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "cancel-replan-next-ready-v1611",
+          "version": "v1.6.11",
+          "status": "draft",
+          "revision_id": "D2",
+          "language": "zh",
+          "domain_required": "true",
+          "domain_kind": "platform",
+          "package_maturity": "filled",
+          "materials_status": "current",
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "program_ref": "docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/program-manifest.md",
+          "truth_map_contract": "beacon-truth-map-v1",
+          "participating_services": "beacon",
+          "git_canonical_branch": "main",
+          "previous_draft": "D1",
+          "change_reason": "D2: Goal scheduler uses shared admission and refreeze invalidation",
+          "parent_truth": "docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611/truth.md",
+          "inherited_contracts": "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md; docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md",
+          "canonical_refs": {
+            "prd": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/truth.md",
+            "user_story": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/truth.md",
+            "test_case": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/tests.md"
+          }
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": true,
+        "has_domain_fsm_section": true,
+        "has_illegal_transition_section": true,
+        "entities": [
+          {
+            "entity": "ReplacementLink",
+            "key": "old_task, new_tasks, decision_ref",
+            "precedence": "替代关系",
+            "requires": "替代关系"
+          },
+          {
+            "entity": "ReadySetRevision",
+            "key": "graph_revision, cause, task_ids",
+            "precedence": "重算结果",
+            "requires": "重算结果"
+          },
+          {
+            "entity": "DependencyImpact",
+            "key": "downstream, disposition, reason",
+            "precedence": "取消传播",
+            "requires": "取消传播"
+          }
+        ],
+        "entity_precedence": [
+          {
+            "entity": "ReplacementLink",
+            "key": "old_task, new_tasks, decision_ref",
+            "precedence": "替代关系",
+            "requires": "替代关系"
+          },
+          {
+            "entity": "ReadySetRevision",
+            "key": "graph_revision, cause, task_ids",
+            "precedence": "重算结果",
+            "requires": "重算结果"
+          },
+          {
+            "entity": "DependencyImpact",
+            "key": "downstream, disposition, reason",
+            "precedence": "取消传播",
+            "requires": "取消传播"
+          }
+        ],
+        "aggregates": [
+          {
+            "name": "CancelReplan",
+            "states": [
+              "blocked",
+              "complete",
+              "decision_received",
+              "dispatchable",
+              "recomputing",
+              "rewriting_graph"
+            ],
+            "transitions": [
+              {
+                "from": "",
+                "to": "decision_received",
+                "guard": "human choice valid",
+                "initial": "true"
+              },
+              {
+                "from": "decision_received",
+                "to": "rewriting_graph",
+                "guard": "choice applied or replacement supplied"
+              },
+              {
+                "from": "blocked",
+                "to": "rewriting_graph",
+                "guard": "choice applied or replacement supplied"
+              },
+              {
+                "from": "rewriting_graph",
+                "to": "recomputing",
+                "guard": "required replacement edges satisfied"
+              },
+              {
+                "from": "recomputing",
+                "to": "dispatchable",
+                "guard": "current ready candidates exist"
+              },
+              {
+                "from": "rewriting_graph",
+                "to": "blocked",
+                "guard": "dependency gap or no ready candidate"
+              },
+              {
+                "from": "recomputing",
+                "to": "blocked",
+                "guard": "dependency gap or no ready candidate"
+              },
+              {
+                "from": "dispatchable",
+                "to": "complete",
+                "guard": "shared admission pass and next task handed off"
+              }
+            ]
+          }
+        ],
+        "illegal_transition_slots": [
+          {
+            "description": "cancelled task → done",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "required dependency cancellation with downstream ready",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "graph revision change without ready-set recompute",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "Goal scheduler bypassing shared worktree admission",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "refreeze 后复用旧 ready set 或 admission ref",
+            "aggregate": "",
+            "source": "truth"
+          }
+        ],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-RPL-001",
+            "description": "rewrite/split/replace/cancel 分别产生 proposed replacement、superseded children、cancelled link 或纯取消"
+          },
+          {
+            "ac_id": "AC-RPL-002",
+            "description": "required dependency 取消后必须存在 replacement，否则下游 path=blocked"
+          },
+          {
+            "ac_id": "AC-RPL-003",
+            "description": "每次图变更原子地重算 ready set，只调度依赖满足且 admission pass 的任务"
+          },
+          {
+            "ac_id": "AC-RPL-004",
+            "description": "已 verified/done 任务的有效证据在语义未失效时保留；受 refreeze 影响则标 stale"
+          },
+          {
+            "ac_id": "AC-RPL-005",
+            "description": "cancelled/superseded/blocked 不得转换为 done，Goal 聚合必须区分统计"
+          },
+          {
+            "ac_id": "AC-RPL-006",
+            "description": "Goal scheduler 只能 dispatch 当前 ready set 中且 shared admission pass 的 implementation TaskNode；每次 dispatch 记录 admission/worktree/cwd/HEAD refs，direct/goal/team/ralph 不得分叉准入语义"
+          },
+          {
+            "ac_id": "AC-RPL-007",
+            "description": "Truth refreeze 或 main reconcile 变化必须原子地使旧 graph revision、ready set 与 admission refs stale；重新编译并在真实 worktree reconcile 新 frozen revision 后才能继续 dispatch"
+          }
+        ],
+        "bound_ac_ids": [
+          "AC-RPL-001",
+          "AC-RPL-002",
+          "AC-RPL-005"
+        ],
+        "orphan_ac_ids": [
+          "AC-RPL-003",
+          "AC-RPL-006",
+          "AC-RPL-007"
+        ],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "人话",
+          "User Intent",
+          "User Intent Snapshot",
+          "用户旅程",
+          "First principles",
+          "Domain Model",
+          "Intent Coverage Matrix",
+          "Acceptance Criteria",
+          "Domain FSM CancelReplan",
+          "FSM 五元组",
+          "Illegal transitions",
+          "Non-goals",
+          "Freeze readiness"
+        ]
+      },
+      "summary": {
+        "entity_count": 3,
+        "aggregate_count": 1,
+        "illegal_slot_count": 5,
+        "orphan_ac_count": 3,
+        "bound_ac_count": 3
+      }
+    },
+    "recommended_action": ""
+  },
+  "human_closure_contract": {
+    "required": false,
+    "research_path": "docs/beacon/v1.6.11/research/cancel-replan-next-ready-v1611.md",
+    "research_exists": false,
+    "source_architecture_path": "docs/beacon/v1.6.11/source-architecture/index.md",
+    "source_architecture_exists": true,
+    "required_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "missing_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "diagram_types": [],
+    "complexity_signals": []
+  },
+  "requirement_closure_contract": {
+    "required": true,
+    "chain_order": [
+      "research",
+      "prd",
+      "user_story",
+      "test_case",
+      "requirement_clarity",
+      "freeze"
+    ],
+    "human_closure_required": false,
+    "paths": {
+      "research": "docs/beacon/v1.6.11/research/cancel-replan-next-ready-v1611.md",
+      "prd": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/truth.md",
+      "user_story": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/truth.md",
+      "test_case": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/tests.md"
+    },
+    "exists": {
+      "research": false,
+      "prd": true,
+      "user_story": true,
+      "test_case": true
+    },
+    "required_research_sections": [],
+    "missing_research_sections": [],
+    "ac_projection": {
+      "prd_ac_ids": [],
+      "user_story_ac_ids": [],
+      "test_case_ac_ids": [],
+      "upstream_ac_ids": [],
+      "missing_test_case_ac_ids": []
+    }
+  },
+  "version_projection_truth_contract": {
+    "required": false,
+    "supported": true,
+    "projection_types": [],
+    "research_path": "docs/beacon/v1.6.11/research/cancel-replan-next-ready-v1611.md",
+    "research_exists": false,
+    "required_fields": [
+      "prd_refs",
+      "user_story_refs",
+      "test_case_refs",
+      "coverage_notes",
+      "out_of_scope_notes"
+    ],
+    "field_presence": {
+      "prd_refs": false,
+      "user_story_refs": false,
+      "test_case_refs": false,
+      "coverage_notes": false,
+      "out_of_scope_notes": false
+    },
+    "missing_fields": [],
+    "required_refs": {
+      "prd_refs": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/truth.md",
+      "user_story_refs": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/truth.md",
+      "test_case_refs": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/tests.md"
+    },
+    "missing_ref_targets": [],
+    "ready": false
+  },
+  "support_write_topology_contract": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "diagnostics": []
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/truth.md",
+    "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/tests.md",
+    "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/tasks.md",
+    "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/evidence.md"
+  ]
+}

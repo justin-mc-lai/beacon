@@ -1,0 +1,245 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-27T07:28:00.726548+00:00",
+  "feature": "brownfield-context-resolver-v1611",
+  "feature_slug": "brownfield-context-resolver-v1611",
+  "version": "v1.6.11",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.11/features/brownfield-context-resolver-v1611/truth.md",
+    "tests": "docs/beacon/v1.6.11/features/brownfield-context-resolver-v1611/tests.md",
+    "tasks": "docs/beacon/v1.6.11/features/brownfield-context-resolver-v1611/tasks.md",
+    "evidence": "docs/beacon/v1.6.11/features/brownfield-context-resolver-v1611/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "5109e62650162fa0255ffd92b717b4fcb2229e72186b6c08f9b9bedc5969e91c",
+    "tests": "10c1ba5d8655a006b7293990a982ea48e142ddfa8a74f0ab7d3b2ae2a27b1310",
+    "tasks": "d364693bf72039914217936923281a023db8e0db30e16b4636d738c6e7e51878",
+    "evidence": "3a264cc52c9971afc479ce661f02ea08de5e925b1ca822edd402f7cf13381e34"
+  },
+  "truth_frontmatter": {
+    "slug": "brownfield-context-resolver-v1611",
+    "version": "v1.6.11",
+    "status": "frozen",
+    "revision_id": "D2",
+    "language": "zh",
+    "domain_required": "true",
+    "domain_kind": "platform",
+    "package_maturity": "filled",
+    "materials_status": "current",
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "program_ref": "docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/program-manifest.md",
+    "baseline_commit": "30b9adffc8ec5442a7691a88faf64a251d97b98f",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "participating_services": "beacon",
+    "git_canonical_branch": "main",
+    "previous_draft": "D1",
+    "change_reason": "D2: inherit frozen Truth, subagent, worktree admission and lifecycle trace authorities",
+    "parent_truth": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/truth.md",
+    "inherited_contracts": "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md; docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md; docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md; docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.11/features/brownfield-context-resolver-v1611/truth.md",
+      "user_story": "docs/beacon/v1.6.11/features/brownfield-context-resolver-v1611/truth.md",
+      "test_case": "docs/beacon/v1.6.11/features/brownfield-context-resolver-v1611/tests.md"
+    }
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-CTX-001",
+      "theme": "ContextEnvelope 同时绑定 commit、Truth revision、代码入口、测试基线、历史 Change",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-CTX-002",
+      "theme": "resolver 从用户目标反向定位相关 service/module/test，而非要求用户手工列全",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-CTX-003",
+      "theme": "Truth、代码、测试语义冲突时进入 awaiting_human，并列出候选权威与影响",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-CTX-004",
+      "theme": "任一基线引用变化都会使下游 intent/diff/task graph 标记 stale",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-CTX-005",
+      "theme": "ContextEnvelope 必须解析 `parent_truth` 与 `inherited_contracts`，并把既有 Goal/Plan、subagent、worktree admission、lifecycle trace、Truth authority 的 frozen revision 作为不可静默丢失的输入",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-CTX-006",
+      "theme": "resolver 必须返回 host subagent runtime 可用性、truth canonical、implementation worktree governance、1+6 lifecycle/`agent_trace.v1` 权威；缺失或冲突时 fail-closed，不得猜默认值",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-CTX-001",
+      "tc_id": "TC-CTX-001",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k context_envelope --tb=no`",
+      "assertion": "envelope contains five baseline surfaces",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-CTX-002",
+      "tc_id": "TC-CTX-002",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k context_reverse_lookup --tb=no`",
+      "assertion": "goal resolves code and test entries",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-CTX-003",
+      "tc_id": "TC-CTX-003",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k context_conflict --tb=no`",
+      "assertion": "conflict enters awaiting_human",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-CTX-004",
+      "tc_id": "TC-CTX-004",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k context_stale --tb=no`",
+      "assertion": "changed fingerprint invalidates downstream",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-CTX-005",
+      "tc_id": "TC-CTX-005",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k inherited_truth_contracts --tb=no`",
+      "assertion": "all frozen parent contracts are resolved into the envelope and cannot disappear silently",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-CTX-006",
+      "tc_id": "TC-CTX-006",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k execution_authorities --tb=no`",
+      "assertion": "subagent runtime, truth canonical, worktree governance and trace authority resolve or fail closed",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-CTX-003",
+      "tc_id": "TC-CTX-ILLEGAL",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k context_illegal_transition --tb=no`",
+      "assertion": "illegal resolution without scan or decision_ref is rejected",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Implement AC-CTX-001: ContextEnvelope 同时绑定 commit、Truth revision、代码入口、测试基线、历史 Change · ac=AC-CTX-001 · evidence=`.beacon/evidence/implement/brownfield-context-resolver-v1611/AC-CTX-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Implement AC-CTX-002: resolver 从用户目标反向定位相关 service/module/test，而非要求用户手工列全 · ac=AC-CTX-002 · evidence=`.beacon/evidence/implement/brownfield-context-resolver-v1611/AC-CTX-002.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Implement AC-CTX-003: Truth、代码、测试语义冲突时进入 awaiting_human，并列出候选权威与影响 · ac=AC-CTX-003 · evidence=`.beacon/evidence/implement/brownfield-context-resolver-v1611/AC-CTX-003.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Implement AC-CTX-004: 任一基线引用变化都会使下游 intent/diff/task graph 标记 stale · ac=AC-CTX-004 · evidence=`.beacon/evidence/implement/brownfield-context-resolver-v1611/AC-CTX-004.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Implement AC-CTX-005: ContextEnvelope 必须解析 `parent_truth` 与 `inherited_contracts`，并把既有 Goal... · ac=AC-CTX-005 · evidence=`.beacon/evidence/implement/brownfield-context-resolver-v1611/AC-CTX-005.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Implement AC-CTX-006: resolver 必须返回 host subagent runtime 可用性、truth canonical、implementatio... · ac=AC-CTX-006 · evidence=`.beacon/evidence/implement/brownfield-context-resolver-v1611/AC-CTX-006.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/brownfield-context-resolver-v1611/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-008",
+      "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/brownfield-context-resolver-v1611/QA-MATRIX.json`",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "requirement",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.11/features/brownfield-context-resolver-v1611/truth.md",
+      "status": "draft",
+      "route": "truth"
+    },
+    {
+      "surface": "acceptance",
+      "authority": "acceptance_truth",
+      "canonical_artifact": "docs/beacon/v1.6.11/features/brownfield-context-resolver-v1611/tests.md",
+      "status": "planned",
+      "route": "qa"
+    },
+    {
+      "surface": "source",
+      "authority": "support_advisory",
+      "canonical_artifact": "beacon/utils/intent_decomposition.py",
+      "status": "inspected",
+      "route": "implement"
+    },
+    {
+      "surface": "source",
+      "authority": "support_advisory",
+      "canonical_artifact": "beacon/utils/product_goal_runtime.py",
+      "status": "inspected",
+      "route": "implement"
+    },
+    {
+      "surface": "inherited-truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md",
+      "status": "bound",
+      "route": "truth"
+    },
+    {
+      "surface": "inherited-truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md",
+      "status": "bound",
+      "route": "truth"
+    },
+    {
+      "surface": "inherited-truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md",
+      "status": "bound",
+      "route": "truth"
+    },
+    {
+      "surface": "inherited-truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
+      "status": "bound",
+      "route": "truth"
+    }
+  ]
+}

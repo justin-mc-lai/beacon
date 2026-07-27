@@ -1,0 +1,230 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-27T07:28:08.767318+00:00",
+  "feature": "drift-padding-review-gate-v1611",
+  "feature_slug": "drift-padding-review-gate-v1611",
+  "version": "v1.6.11",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611/truth.md",
+    "tests": "docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611/tests.md",
+    "tasks": "docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611/tasks.md",
+    "evidence": "docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "d5250cc178372135bcbcf21403bde438d6b0ad2684d423669abee2a0cef838aa",
+    "tests": "6a349da4e1319b9c17bf6f4a4b7aee5767394fd10bff532200db030cb1d1b04f",
+    "tasks": "85ad713658be540ea9cb36f68e05210038d41e58c18b8592a448fb192b2676fe",
+    "evidence": "7c6b5c86363a4fb52329ebd03a6edd8eaac890b6222f6eda79ade0315211d404"
+  },
+  "truth_frontmatter": {
+    "slug": "drift-padding-review-gate-v1611",
+    "version": "v1.6.11",
+    "status": "frozen",
+    "revision_id": "D2",
+    "language": "zh",
+    "domain_required": "true",
+    "domain_kind": "gate",
+    "package_maturity": "filled",
+    "materials_status": "current",
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "program_ref": "docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/program-manifest.md",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "participating_services": "beacon",
+    "git_canonical_branch": "main",
+    "previous_draft": "D1",
+    "change_reason": "D2: subagent findings remain advisory; Beacon owns the human gate",
+    "parent_truth": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/truth.md",
+    "inherited_contracts": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611/truth.md",
+      "user_story": "docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611/truth.md",
+      "test_case": "docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611/tests.md"
+    }
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-REV-001",
+      "theme": "detector 至少覆盖 intent drift、scope drift、orphan、duplicate、padding、evidence mismatch",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-REV-002",
+      "theme": "任一 mandatory finding 使任务进入 drift_suspected→awaiting_human，停止自动执行",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-REV-003",
+      "theme": "人工选择限定为 continue/rewrite/split/replace/cancel，并保留 rationale/actor/time",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-REV-004",
+      "theme": "无 decision_ref 时不得从 awaiting_human 返回 running/proposed 或进入 cancelled",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-REV-005",
+      "theme": "host hook、context monitor 与 subagent finding 只能提供 advisory signal，不能自行暂停、放行、取消任务或关闭 Goal",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-REV-006",
+      "theme": "强门与五类人工选择必须由 Beacon canonical policy 持久化并校验 decision_ref；只有 parent/Goal scheduler 可消费决定并转换任务图",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-REV-001",
+      "tc_id": "TC-REV-001",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k drift_kinds --tb=no`",
+      "assertion": "all required finding kinds detected",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-REV-002",
+      "tc_id": "TC-REV-002",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k drift_pause --tb=no`",
+      "assertion": "mandatory finding pauses execution",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-REV-003",
+      "tc_id": "TC-REV-003",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k human_choices --tb=no`",
+      "assertion": "only five choices accepted",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-REV-004",
+      "tc_id": "TC-REV-004",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k decision_ref --tb=no`",
+      "assertion": "transition without decision_ref rejected",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-REV-005",
+      "tc_id": "TC-REV-005",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k advisory_finding_sources --tb=no`",
+      "assertion": "hook and subagent findings cannot directly change canonical task or Goal state",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-REV-006",
+      "tc_id": "TC-REV-006",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k canonical_human_gate_owner --tb=no`",
+      "assertion": "Beacon policy persists the decision and only parent scheduler applies it",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-REV-006",
+      "tc_id": "TC-REV-ILLEGAL",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k review_gate_illegal_transition --tb=no`",
+      "assertion": "illegal resume, cancel or clear without canonical decision_ref is rejected",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Implement AC-REV-001: detector 至少覆盖 intent drift、scope drift、orphan、duplicate、padding、evide... · ac=AC-REV-001 · evidence=`.beacon/evidence/implement/drift-padding-review-gate-v1611/AC-REV-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Implement AC-REV-002: 任一 mandatory finding 使任务进入 drift_suspected→awaiting_human，停止自动执行 · ac=AC-REV-002 · evidence=`.beacon/evidence/implement/drift-padding-review-gate-v1611/AC-REV-002.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Implement AC-REV-003: 人工选择限定为 continue/rewrite/split/replace/cancel，并保留 rationale/actor/time · ac=AC-REV-003 · evidence=`.beacon/evidence/implement/drift-padding-review-gate-v1611/AC-REV-003.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Implement AC-REV-004: 无 decision_ref 时不得从 awaiting_human 返回 running/proposed 或进入 cancelled · ac=AC-REV-004 · evidence=`.beacon/evidence/implement/drift-padding-review-gate-v1611/AC-REV-004.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Implement AC-REV-005: host hook、context monitor 与 subagent finding 只能提供 advisory signal，不能自... · ac=AC-REV-005 · evidence=`.beacon/evidence/implement/drift-padding-review-gate-v1611/AC-REV-005.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Implement AC-REV-006: 强门与五类人工选择必须由 Beacon canonical policy 持久化并校验 decision_ref；只有 parent/Go... · ac=AC-REV-006 · evidence=`.beacon/evidence/implement/drift-padding-review-gate-v1611/AC-REV-006.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/drift-padding-review-gate-v1611/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-008",
+      "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/drift-padding-review-gate-v1611/QA-MATRIX.json`",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "requirement",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611/truth.md",
+      "status": "draft",
+      "route": "truth"
+    },
+    {
+      "surface": "acceptance",
+      "authority": "acceptance_truth",
+      "canonical_artifact": "docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611/tests.md",
+      "status": "planned",
+      "route": "qa"
+    },
+    {
+      "surface": "source",
+      "authority": "support_advisory",
+      "canonical_artifact": "beacon/utils/planner_review_runtime.py",
+      "status": "inspected",
+      "route": "implement"
+    },
+    {
+      "surface": "competitor",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/research/beacon-competitor-registry.md",
+      "status": "linked",
+      "route": "plan"
+    },
+    {
+      "surface": "subagent-truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md",
+      "status": "inherited",
+      "route": "truth"
+    },
+    {
+      "surface": "decision-owner",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/program-manifest.md",
+      "status": "accepted",
+      "route": "truth"
+    }
+  ]
+}

@@ -1,0 +1,158 @@
+{
+  "schema": "truth-review-gate.v1",
+  "schema_version": "1.0",
+  "feature": "contract-baseline-convergence-v1611",
+  "version": "v1.6.11",
+  "pass": true,
+  "blocked": false,
+  "review_gate_pass": true,
+  "abc_pass": true,
+  "reason_code": "",
+  "domain_required": true,
+  "checks": {
+    "A_intent_coverage": {
+      "pass": true,
+      "check": "A",
+      "name": "intent_coverage",
+      "required": true,
+      "matrix_rows": 6,
+      "missing_must": [],
+      "reason": "",
+      "findings": [],
+      "matrix": [
+        {
+          "intent_id": "INT-BAS-01",
+          "source": "user",
+          "strength": "must",
+          "landing": "AC-BAS-001",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-BAS-02",
+          "source": "audit",
+          "strength": "must",
+          "landing": "AC-BAS-002",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-BAS-03",
+          "source": "boundaries",
+          "strength": "must",
+          "landing": "AC-BAS-003",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-BAS-04",
+          "source": "delivery",
+          "strength": "must",
+          "landing": "AC-BAS-004",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-BAS-05",
+          "source": "no-compat",
+          "strength": "must",
+          "landing": "AC-BAS-005",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-BAS-06",
+          "source": "lineage",
+          "strength": "must",
+          "landing": "AC-BAS-006",
+          "status": "covered"
+        }
+      ]
+    },
+    "B_fsm_audit": {
+      "pass": true,
+      "check": "B",
+      "name": "fsm_audit",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "fsm": {
+        "transition_count": 6,
+        "from_states": [
+          "blocked",
+          "current",
+          "resolving",
+          "stale",
+          "unbound"
+        ],
+        "hanging_states": [],
+        "terminals": [],
+        "illegal_present": true,
+        "five_tuple_present": true
+      }
+    },
+    "C_testability": {
+      "pass": true,
+      "check": "C",
+      "name": "testability",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "ac_count": 6,
+      "tc_count": 7,
+      "missing_ac": [],
+      "covered": {
+        "AC-BAS-001": [
+          "TC-BAS-001"
+        ],
+        "AC-BAS-002": [
+          "TC-BAS-002"
+        ],
+        "AC-BAS-003": [
+          "TC-BAS-003"
+        ],
+        "AC-BAS-004": [
+          "TC-BAS-004"
+        ],
+        "AC-BAS-005": [
+          "TC-BAS-005",
+          "TC-BAS-ILLEGAL"
+        ],
+        "AC-BAS-006": [
+          "TC-BAS-006"
+        ]
+      }
+    },
+    "C_domain_exec_layer": {
+      "pass": true,
+      "check": "C_exec",
+      "name": "domain_exec_layer",
+      "required": false,
+      "skipped": true,
+      "reason": "",
+      "findings": [],
+      "exec_tc_count": 0,
+      "domain_kind": "platform"
+    },
+    "D_fill_depth": {
+      "pass": true,
+      "check": "D",
+      "name": "fill_depth",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "package_maturity": "filled",
+      "domain_kind": "platform",
+      "business_domain": false
+    }
+  },
+  "findings": [],
+  "humanizer": {
+    "rule": "humanizer_only_after_abc_pass_before_freeze",
+    "abc_pass": true,
+    "allowed_now": true,
+    "fill_depth_pass": true,
+    "note": "Polish L0/narrative only after A/B/C; preserve_machine_fields=true; freeze needs D+exec too"
+  },
+  "evaluated_at": "2026-07-27T07:27:50.406866+00:00",
+  "paths": {
+    "truth": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/truth.md",
+    "tests": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/tests.md",
+    "report": "docs/beacon/v1.6.11/.machine/execution/contract-baseline-convergence-v1611.truth-review-gate.json"
+  }
+}

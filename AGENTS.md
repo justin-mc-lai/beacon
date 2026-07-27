@@ -1,6 +1,6 @@
 <!-- BEACON:START -->
-<!-- BEACON:VERSION:v1.6.9 -->
-<!-- BEACON:DOCS_VERSION:v1.6.9 -->
+<!-- BEACON:VERSION:v1.6.10 -->
+<!-- BEACON:DOCS_VERSION:v1.6.11 -->
 # AGENTS.md
 
 This file is Beacon-managed agent operation guidance.
@@ -11,8 +11,8 @@ This file is Beacon-managed agent operation guidance.
 - Preserve user-authored sections outside Beacon managed blocks.
 
 ## Beacon requirement-material usage
-- Runtime target version: `v1.6.9`
-- Docs target version: `v1.6.9`
+- Runtime target version: `v1.6.10`
+- Docs target version: `v1.6.11`
 - Use `docs/beacon/global-boundaries.md` as the canonical Beacon-wide global constraint source.
 - **v1.6.10+ package shape: no old-shape soft-compat** (§2.1). Non-compliant projects must replan and freeze new truth — do not lower gates for legacy ledgers.
 - Use `docs/beacon/<version>/` as the canonical delivery tree.

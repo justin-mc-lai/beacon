@@ -1,0 +1,238 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-27T07:27:50.723024+00:00",
+  "feature": "contract-baseline-convergence-v1611",
+  "feature_slug": "contract-baseline-convergence-v1611",
+  "version": "v1.6.11",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/truth.md",
+    "tests": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/tests.md",
+    "tasks": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/tasks.md",
+    "evidence": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "6d020855dbed09b3eff9325e1d6b233ca9cfa0bae78e3af0fb9b1d4d6c4ff408",
+    "tests": "ae931348e0d6945beda28e0059936b12b281bbc56ffa3f716fdcc0953d73acc7",
+    "tasks": "00bb0fa797a95ae5c709ebf69de3f3ec9f144e3ee920c224b56d345a54f966c2",
+    "evidence": "c1816c3400236a64d2dcaf0a8bc5c97acb1ce2086029590e5d16ce98a4b60020"
+  },
+  "truth_frontmatter": {
+    "slug": "contract-baseline-convergence-v1611",
+    "version": "v1.6.11",
+    "status": "frozen",
+    "revision_id": "D2",
+    "language": "zh",
+    "domain_required": "true",
+    "domain_kind": "platform",
+    "package_maturity": "filled",
+    "materials_status": "current",
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "program_ref": "docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/program-manifest.md",
+    "baseline_commit": "30b9adffc8ec5442a7691a88faf64a251d97b98f",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "participating_services": "beacon",
+    "git_canonical_branch": "main",
+    "previous_draft": "D1",
+    "change_reason": "D2: Beacon-native execution inheritance and no-compat forward migration",
+    "parent_truth": "docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
+    "inherited_contracts": "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/truth.md",
+      "user_story": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/truth.md",
+      "test_case": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/tests.md"
+    }
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-BAS-001",
+      "theme": "版本上下文明确记录 runtime=v1.6.10、docs=v1.6.11 planning-only，且严格校验通过",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-BAS-002",
+      "theme": "基线固定 main commit、Plan/Goal/Truth 关键入口与历史真相引用",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-BAS-003",
+      "theme": "合同测试基线记录命令、通过数、失败数与逐项 disposition；不得用降低 gate 消除失败",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-BAS-004",
+      "theme": "Truth refreeze 时旧 tests/tasks/evidence 被标 stale，禁止跨 revision 复用",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-BAS-005",
+      "theme": "旧 package、旧 Goal ledger、缺 Matrix/exec TC/`ac=`/`evidence=` 的 active shape 必须 fail-closed，并返回 `package_shape_upgrade_required` 或等价 reason code；不得加入 legacy reader、soft skip 或 compatibility adapter",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-BAS-006",
+      "theme": "旧冻结 Truth 保持只读 lineage；仍有效的语义只能通过 `parent_truth`/`inherited_contracts` 进入当前 shape，并经 plan → truth/change → Truth Review → freeze new revision 向前迁移",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-BAS-001",
+      "tc_id": "TC-BAS-001",
+      "layer": "",
+      "command": "`beacon doctor verify-context --project-root . --strict --json`",
+      "assertion": "status=pass",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-BAS-002",
+      "tc_id": "TC-BAS-002",
+      "layer": "",
+      "command": "`git rev-parse HEAD`",
+      "assertion": "equals bound baseline commit during review",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-BAS-003",
+      "tc_id": "TC-BAS-003",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1610_plan_host_subagent_voltpack.py tests/test_v166_loop_goal.py --tb=no`",
+      "assertion": "result is captured and every failure has disposition",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-BAS-004",
+      "tc_id": "TC-BAS-004",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1610_truth_gen_template_and_gates.py -k stale --tb=no`",
+      "assertion": "stale cascade contract passes",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-BAS-005",
+      "tc_id": "TC-BAS-005",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k package_shape_upgrade_required --tb=no`",
+      "assertion": "old package/ledger shapes fail closed without compatibility bypass",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-BAS-006",
+      "tc_id": "TC-BAS-006",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k frozen_truth_lineage --tb=no`",
+      "assertion": "old frozen truth stays immutable and inherited semantics require a new frozen revision",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-BAS-005",
+      "tc_id": "TC-BAS-ILLEGAL",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k baseline_illegal_transition --tb=no`",
+      "assertion": "illegal old-shape or stale-evidence transition is rejected",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Implement AC-BAS-001: 版本上下文明确记录 runtime=v1.6.10、docs=v1.6.11 planning-only，且严格校验通过 · ac=AC-BAS-001 · evidence=`.beacon/evidence/implement/contract-baseline-convergence-v1611/AC-BAS-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Implement AC-BAS-002: 基线固定 main commit、Plan/Goal/Truth 关键入口与历史真相引用 · ac=AC-BAS-002 · evidence=`.beacon/evidence/implement/contract-baseline-convergence-v1611/AC-BAS-002.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Implement AC-BAS-003: 合同测试基线记录命令、通过数、失败数与逐项 disposition；不得用降低 gate 消除失败 · ac=AC-BAS-003 · evidence=`.beacon/evidence/implement/contract-baseline-convergence-v1611/AC-BAS-003.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Implement AC-BAS-004: Truth refreeze 时旧 tests/tasks/evidence 被标 stale，禁止跨 revision 复用 · ac=AC-BAS-004 · evidence=`.beacon/evidence/implement/contract-baseline-convergence-v1611/AC-BAS-004.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Implement AC-BAS-005: 旧 package、旧 Goal ledger、缺 Matrix/exec TC/`ac=`/`evidence=` 的 active s... · ac=AC-BAS-005 · evidence=`.beacon/evidence/implement/contract-baseline-convergence-v1611/AC-BAS-005.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Implement AC-BAS-006: 旧冻结 Truth 保持只读 lineage；仍有效的语义只能通过 `parent_truth`/`inherited_contracts... · ac=AC-BAS-006 · evidence=`.beacon/evidence/implement/contract-baseline-convergence-v1611/AC-BAS-006.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/contract-baseline-convergence-v1611/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-008",
+      "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/contract-baseline-convergence-v1611/QA-MATRIX.json`",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "requirement",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/truth.md",
+      "status": "draft",
+      "route": "truth"
+    },
+    {
+      "surface": "acceptance",
+      "authority": "acceptance_truth",
+      "canonical_artifact": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/tests.md",
+      "status": "planned",
+      "route": "qa"
+    },
+    {
+      "surface": "source",
+      "authority": "support_advisory",
+      "canonical_artifact": "beacon/version-truth.json",
+      "status": "bound",
+      "route": "truth"
+    },
+    {
+      "surface": "baseline",
+      "authority": "support_advisory",
+      "canonical_artifact": "commit:30b9adffc8ec5442a7691a88faf64a251d97b98f",
+      "status": "bound",
+      "route": "plan"
+    },
+    {
+      "surface": "global-boundary",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/global-boundaries.md",
+      "status": "bound",
+      "route": "truth"
+    },
+    {
+      "surface": "parent-truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
+      "status": "inherited",
+      "route": "truth"
+    },
+    {
+      "surface": "no-compat-change",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.11/change/beacon-plan-goal-task-closure-v1611.md",
+      "status": "accepted",
+      "route": "truth"
+    }
+  ]
+}

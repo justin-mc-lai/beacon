@@ -2,10 +2,10 @@
 schema_version: "1.0"
 parser_contract: "beacon-version-truth-catalog-v1"
 active_delivery_window: "3"
-transaction_id: "tx-catalog-20260716t133116z"
-committed_at: "2026-07-16T13:31:16.390671+00:00"
-source_hash: "fd2687588796f1c56caaae11dca077e62bc36f3a3f12ee110446e5624aaf6088"
-event_type: "catalog-bootstrap"
+transaction_id: "tx-catalog-20260727t041012z"
+committed_at: "2026-07-27T04:10:12.413821+00:00"
+source_hash: "4a665c34e34078092bc390446804f97b8e52dcf57c37de165902d4291cad9182"
+event_type: "catalog-sync"
 ---
 
 # Version Truth Catalog
@@ -18,14 +18,6 @@ event_type: "catalog-bootstrap"
 
 ## Active Delivery Versions
 
-### v1.6.10
-- validation_state: `active`
-- truth_root: `docs/beacon/v1.6.10`
-
-### v1.6.9
-- validation_state: `active`
-- truth_root: `docs/beacon/v1.6.9`
-
 ### v1.6.6
 - validation_state: `active`
 - truth_root: `docs/beacon/v1.6.6`
@@ -37,6 +29,18 @@ event_type: "catalog-bootstrap"
 ### v1.6.8
 - validation_state: `active`
 - truth_root: `docs/beacon/v1.6.8`
+
+### v1.6.9
+- validation_state: `active`
+- truth_root: `docs/beacon/v1.6.9`
+
+### v1.6.10
+- validation_state: `active`
+- truth_root: `docs/beacon/v1.6.10`
+
+### v1.6.11
+- validation_state: `active`
+- truth_root: `docs/beacon/v1.6.11`
 
 ### v2.0.0
 - validation_state: `active`

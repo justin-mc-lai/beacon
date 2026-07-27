@@ -1,0 +1,179 @@
+{
+  "schema": "truth-review-gate.v1",
+  "schema_version": "1.0",
+  "feature": "atomic-task-graph-compiler-v1611",
+  "version": "v1.6.11",
+  "pass": true,
+  "blocked": false,
+  "review_gate_pass": true,
+  "abc_pass": true,
+  "reason_code": "",
+  "domain_required": true,
+  "checks": {
+    "A_intent_coverage": {
+      "pass": true,
+      "check": "A",
+      "name": "intent_coverage",
+      "required": true,
+      "matrix_rows": 8,
+      "missing_must": [],
+      "reason": "",
+      "findings": [],
+      "matrix": [
+        {
+          "intent_id": "INT-DAG-01",
+          "source": "user",
+          "strength": "must",
+          "landing": "AC-DAG-001",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-DAG-02",
+          "source": "trace",
+          "strength": "must",
+          "landing": "AC-DAG-002",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-DAG-03",
+          "source": "dependency",
+          "strength": "must",
+          "landing": "AC-DAG-003",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-DAG-04",
+          "source": "anti-padding",
+          "strength": "must",
+          "landing": "AC-DAG-004",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-DAG-05",
+          "source": "scale",
+          "strength": "must",
+          "landing": "AC-DAG-005",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-DAG-06",
+          "source": "delegation",
+          "strength": "must",
+          "landing": "AC-DAG-006",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-DAG-07",
+          "source": "honest-runtime",
+          "strength": "must",
+          "landing": "AC-DAG-007",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-DAG-08",
+          "source": "worktree",
+          "strength": "must",
+          "landing": "AC-DAG-008",
+          "status": "covered"
+        }
+      ]
+    },
+    "B_fsm_audit": {
+      "pass": true,
+      "check": "B",
+      "name": "fsm_audit",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "fsm": {
+        "transition_count": 7,
+        "from_states": [
+          "blocked",
+          "compiling",
+          "input_ready",
+          "ready",
+          "stale",
+          "validating"
+        ],
+        "hanging_states": [],
+        "terminals": [],
+        "illegal_present": true,
+        "five_tuple_present": true
+      }
+    },
+    "C_testability": {
+      "pass": true,
+      "check": "C",
+      "name": "testability",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "ac_count": 8,
+      "tc_count": 9,
+      "missing_ac": [],
+      "covered": {
+        "AC-DAG-001": [
+          "TC-DAG-001"
+        ],
+        "AC-DAG-002": [
+          "TC-DAG-002"
+        ],
+        "AC-DAG-003": [
+          "TC-DAG-003"
+        ],
+        "AC-DAG-004": [
+          "TC-DAG-004"
+        ],
+        "AC-DAG-005": [
+          "TC-DAG-005"
+        ],
+        "AC-DAG-006": [
+          "TC-DAG-006"
+        ],
+        "AC-DAG-007": [
+          "TC-DAG-007"
+        ],
+        "AC-DAG-008": [
+          "TC-DAG-008",
+          "TC-DAG-ILLEGAL"
+        ]
+      }
+    },
+    "C_domain_exec_layer": {
+      "pass": true,
+      "check": "C_exec",
+      "name": "domain_exec_layer",
+      "required": false,
+      "skipped": true,
+      "reason": "",
+      "findings": [],
+      "exec_tc_count": 0,
+      "domain_kind": "platform"
+    },
+    "D_fill_depth": {
+      "pass": true,
+      "check": "D",
+      "name": "fill_depth",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "package_maturity": "filled",
+      "domain_kind": "platform",
+      "business_domain": false
+    }
+  },
+  "findings": [],
+  "humanizer": {
+    "rule": "humanizer_only_after_abc_pass_before_freeze",
+    "abc_pass": true,
+    "allowed_now": true,
+    "fill_depth_pass": true,
+    "note": "Polish L0/narrative only after A/B/C; preserve_machine_fields=true; freeze needs D+exec too"
+  },
+  "evaluated_at": "2026-07-27T07:28:05.784409+00:00",
+  "paths": {
+    "truth": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/truth.md",
+    "tests": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/tests.md",
+    "report": "docs/beacon/v1.6.11/.machine/execution/atomic-task-graph-compiler-v1611.truth-review-gate.json"
+  }
+}

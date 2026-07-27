@@ -1,0 +1,542 @@
+{
+  "schema_version": "1.0",
+  "feature": "contract-baseline-convergence-v1611",
+  "feature_slug": "contract-baseline-convergence-v1611",
+  "version": "v1.6.11",
+  "runtime_version": "v1.6.10",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.6.11/.machine/execution/requirement-clarity-contract-baseline-convergence-v1611.json",
+  "report_markdown_path": "docs/beacon/v1.6.11/execution/requirement-clarity-contract-baseline-convergence-v1611.md",
+  "state_path": ".beacon/state/requirement-clarity-contract-baseline-convergence-v1611.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.11",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-07-27T07:27:49.624027+00:00",
+    "feature": "contract-baseline-convergence-v1611",
+    "feature_slug": "contract-baseline-convergence-v1611",
+    "prd_ref": "docs/beacon/v1.6.11/prd/contract-baseline-convergence-v1611.md",
+    "user_story_ref": "docs/beacon/v1.6.11/user-story/contract-baseline-convergence-v1611.md"
+  },
+  "domain_fsm_gate": {
+    "schema_version": "1.0",
+    "feature": "contract-baseline-convergence-v1611",
+    "feature_slug": "contract-baseline-convergence-v1611",
+    "version": "v1.6.11",
+    "truth_path": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/truth.md",
+    "tests_path": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/tests.md",
+    "required": true,
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "findings": [],
+    "requirement": {
+      "required": true,
+      "reason": "explicit_domain_mark",
+      "explicit": true,
+      "partial": true,
+      "complexity": false,
+      "business_signal": false,
+      "version_supported": true
+    },
+    "projection": {
+      "schema_version": "1.0",
+      "domain_fsm_schema": "domain-fsm.v1",
+      "entity_precedence_schema": "entity-precedence.v1",
+      "frontmatter": {
+        "slug": "contract-baseline-convergence-v1611",
+        "version": "v1.6.11",
+        "status": "draft",
+        "revision_id": "D2",
+        "language": "zh",
+        "domain_required": "true",
+        "domain_kind": "platform",
+        "package_maturity": "filled",
+        "materials_status": "current",
+        "parser_contract": "beacon-feature-package-v2",
+        "truth_source_model": "feature_package_authoritative",
+        "program_ref": "docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/program-manifest.md",
+        "baseline_commit": "30b9adffc8ec5442a7691a88faf64a251d97b98f",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "participating_services": "beacon",
+        "git_canonical_branch": "main",
+        "previous_draft": "D1",
+        "change_reason": "D2: Beacon-native execution inheritance and no-compat forward migration",
+        "parent_truth": "docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
+        "inherited_contracts": "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
+        "canonical_refs": {
+          "prd": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/truth.md",
+          "user_story": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/truth.md",
+          "test_case": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/tests.md"
+        }
+      },
+      "frontmatter_errors": [],
+      "has_domain_model_section": true,
+      "has_domain_fsm_section": true,
+      "has_illegal_transition_section": true,
+      "entities": [
+        {
+          "entity": "BaselineSnapshot",
+          "key": "commit, runtime, docs_version, test_command",
+          "precedence": "一次不可变基线",
+          "requires": "一次不可变基线"
+        },
+        {
+          "entity": "ContractFinding",
+          "key": "test_id, reason, owner, disposition",
+          "precedence": "可追踪失败",
+          "requires": "可追踪失败"
+        }
+      ],
+      "entity_precedence": [
+        {
+          "entity": "BaselineSnapshot",
+          "key": "commit, runtime, docs_version, test_command",
+          "precedence": "一次不可变基线",
+          "requires": "一次不可变基线"
+        },
+        {
+          "entity": "ContractFinding",
+          "key": "test_id, reason, owner, disposition",
+          "precedence": "可追踪失败",
+          "requires": "可追踪失败"
+        }
+      ],
+      "aggregates": [
+        {
+          "name": "BaselineConvergence",
+          "states": [
+            "blocked",
+            "current",
+            "resolving",
+            "stale",
+            "unbound"
+          ],
+          "transitions": [
+            {
+              "from": "",
+              "to": "unbound",
+              "guard": "version not captured",
+              "initial": "true"
+            },
+            {
+              "from": "unbound",
+              "to": "resolving",
+              "guard": "version declared or authority repaired"
+            },
+            {
+              "from": "blocked",
+              "to": "resolving",
+              "guard": "version declared or authority repaired"
+            },
+            {
+              "from": "resolving",
+              "to": "current",
+              "guard": "all refs consistent and new refs bound"
+            },
+            {
+              "from": "stale",
+              "to": "current",
+              "guard": "all refs consistent and new refs bound"
+            },
+            {
+              "from": "resolving",
+              "to": "blocked",
+              "guard": "authority mismatch or old shape detected"
+            },
+            {
+              "from": "current",
+              "to": "stale",
+              "guard": "truth revision changed"
+            }
+          ]
+        }
+      ],
+      "illegal_transition_slots": [
+        {
+          "description": "`unbound → current`",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "`blocked → current` without rerun",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "`stale → current` while old evidence remains current",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "old-shape package 通过降低 gate 进入 current",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "新 revision 直接覆盖或改写旧 frozen Truth",
+          "aggregate": "",
+          "source": "truth"
+        }
+      ],
+      "acceptance_criteria": [
+        {
+          "ac_id": "AC-BAS-001",
+          "description": "版本上下文明确记录 runtime=v1.6.10、docs=v1.6.11 planning-only，且严格校验通过"
+        },
+        {
+          "ac_id": "AC-BAS-002",
+          "description": "基线固定 main commit、Plan/Goal/Truth 关键入口与历史真相引用"
+        },
+        {
+          "ac_id": "AC-BAS-003",
+          "description": "合同测试基线记录命令、通过数、失败数与逐项 disposition；不得用降低 gate 消除失败"
+        },
+        {
+          "ac_id": "AC-BAS-004",
+          "description": "Truth refreeze 时旧 tests/tasks/evidence 被标 stale，禁止跨 revision 复用"
+        },
+        {
+          "ac_id": "AC-BAS-005",
+          "description": "旧 package、旧 Goal ledger、缺 Matrix/exec TC/`ac=`/`evidence=` 的 active shape 必须 fail-closed，并返回 `package_shape_upgrade_required` 或等价 reason code；不得加入 legacy reader、soft skip 或 compatibility adapter"
+        },
+        {
+          "ac_id": "AC-BAS-006",
+          "description": "旧冻结 Truth 保持只读 lineage；仍有效的语义只能通过 `parent_truth`/`inherited_contracts` 进入当前 shape，并经 plan → truth/change → Truth Review → freeze new revision 向前迁移"
+        }
+      ],
+      "bound_ac_ids": [
+        "AC-BAS-004"
+      ],
+      "orphan_ac_ids": [],
+      "aggregates_missing_illegal_slots": [],
+      "raw_section_titles": [
+        "人话",
+        "User Intent",
+        "User Intent Snapshot",
+        "用户旅程",
+        "First principles",
+        "Domain Model",
+        "Intent Coverage Matrix",
+        "Acceptance Criteria",
+        "Domain FSM BaselineConvergence",
+        "FSM 五元组",
+        "Illegal transitions",
+        "Non-goals",
+        "Freeze readiness"
+      ]
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "required": true,
+      "blocked": false,
+      "status": "pass",
+      "reason_code": "",
+      "findings": [],
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "contract-baseline-convergence-v1611",
+          "version": "v1.6.11",
+          "status": "draft",
+          "revision_id": "D2",
+          "language": "zh",
+          "domain_required": "true",
+          "domain_kind": "platform",
+          "package_maturity": "filled",
+          "materials_status": "current",
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "program_ref": "docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/program-manifest.md",
+          "baseline_commit": "30b9adffc8ec5442a7691a88faf64a251d97b98f",
+          "truth_map_contract": "beacon-truth-map-v1",
+          "participating_services": "beacon",
+          "git_canonical_branch": "main",
+          "previous_draft": "D1",
+          "change_reason": "D2: Beacon-native execution inheritance and no-compat forward migration",
+          "parent_truth": "docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
+          "inherited_contracts": "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
+          "canonical_refs": {
+            "prd": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/truth.md",
+            "user_story": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/truth.md",
+            "test_case": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/tests.md"
+          }
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": true,
+        "has_domain_fsm_section": true,
+        "has_illegal_transition_section": true,
+        "entities": [
+          {
+            "entity": "BaselineSnapshot",
+            "key": "commit, runtime, docs_version, test_command",
+            "precedence": "一次不可变基线",
+            "requires": "一次不可变基线"
+          },
+          {
+            "entity": "ContractFinding",
+            "key": "test_id, reason, owner, disposition",
+            "precedence": "可追踪失败",
+            "requires": "可追踪失败"
+          }
+        ],
+        "entity_precedence": [
+          {
+            "entity": "BaselineSnapshot",
+            "key": "commit, runtime, docs_version, test_command",
+            "precedence": "一次不可变基线",
+            "requires": "一次不可变基线"
+          },
+          {
+            "entity": "ContractFinding",
+            "key": "test_id, reason, owner, disposition",
+            "precedence": "可追踪失败",
+            "requires": "可追踪失败"
+          }
+        ],
+        "aggregates": [
+          {
+            "name": "BaselineConvergence",
+            "states": [
+              "blocked",
+              "current",
+              "resolving",
+              "stale",
+              "unbound"
+            ],
+            "transitions": [
+              {
+                "from": "",
+                "to": "unbound",
+                "guard": "version not captured",
+                "initial": "true"
+              },
+              {
+                "from": "unbound",
+                "to": "resolving",
+                "guard": "version declared or authority repaired"
+              },
+              {
+                "from": "blocked",
+                "to": "resolving",
+                "guard": "version declared or authority repaired"
+              },
+              {
+                "from": "resolving",
+                "to": "current",
+                "guard": "all refs consistent and new refs bound"
+              },
+              {
+                "from": "stale",
+                "to": "current",
+                "guard": "all refs consistent and new refs bound"
+              },
+              {
+                "from": "resolving",
+                "to": "blocked",
+                "guard": "authority mismatch or old shape detected"
+              },
+              {
+                "from": "current",
+                "to": "stale",
+                "guard": "truth revision changed"
+              }
+            ]
+          }
+        ],
+        "illegal_transition_slots": [
+          {
+            "description": "`unbound → current`",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "`blocked → current` without rerun",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "`stale → current` while old evidence remains current",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "old-shape package 通过降低 gate 进入 current",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "新 revision 直接覆盖或改写旧 frozen Truth",
+            "aggregate": "",
+            "source": "truth"
+          }
+        ],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-BAS-001",
+            "description": "版本上下文明确记录 runtime=v1.6.10、docs=v1.6.11 planning-only，且严格校验通过"
+          },
+          {
+            "ac_id": "AC-BAS-002",
+            "description": "基线固定 main commit、Plan/Goal/Truth 关键入口与历史真相引用"
+          },
+          {
+            "ac_id": "AC-BAS-003",
+            "description": "合同测试基线记录命令、通过数、失败数与逐项 disposition；不得用降低 gate 消除失败"
+          },
+          {
+            "ac_id": "AC-BAS-004",
+            "description": "Truth refreeze 时旧 tests/tasks/evidence 被标 stale，禁止跨 revision 复用"
+          },
+          {
+            "ac_id": "AC-BAS-005",
+            "description": "旧 package、旧 Goal ledger、缺 Matrix/exec TC/`ac=`/`evidence=` 的 active shape 必须 fail-closed，并返回 `package_shape_upgrade_required` 或等价 reason code；不得加入 legacy reader、soft skip 或 compatibility adapter"
+          },
+          {
+            "ac_id": "AC-BAS-006",
+            "description": "旧冻结 Truth 保持只读 lineage；仍有效的语义只能通过 `parent_truth`/`inherited_contracts` 进入当前 shape，并经 plan → truth/change → Truth Review → freeze new revision 向前迁移"
+          }
+        ],
+        "bound_ac_ids": [
+          "AC-BAS-004"
+        ],
+        "orphan_ac_ids": [],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "人话",
+          "User Intent",
+          "User Intent Snapshot",
+          "用户旅程",
+          "First principles",
+          "Domain Model",
+          "Intent Coverage Matrix",
+          "Acceptance Criteria",
+          "Domain FSM BaselineConvergence",
+          "FSM 五元组",
+          "Illegal transitions",
+          "Non-goals",
+          "Freeze readiness"
+        ]
+      },
+      "summary": {
+        "entity_count": 2,
+        "aggregate_count": 1,
+        "illegal_slot_count": 5,
+        "orphan_ac_count": 0,
+        "bound_ac_count": 1
+      }
+    },
+    "recommended_action": ""
+  },
+  "human_closure_contract": {
+    "required": false,
+    "research_path": "docs/beacon/v1.6.11/research/contract-baseline-convergence-v1611.md",
+    "research_exists": false,
+    "source_architecture_path": "docs/beacon/v1.6.11/source-architecture/index.md",
+    "source_architecture_exists": true,
+    "required_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "missing_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "diagram_types": [],
+    "complexity_signals": []
+  },
+  "requirement_closure_contract": {
+    "required": true,
+    "chain_order": [
+      "research",
+      "prd",
+      "user_story",
+      "test_case",
+      "requirement_clarity",
+      "freeze"
+    ],
+    "human_closure_required": false,
+    "paths": {
+      "research": "docs/beacon/v1.6.11/research/contract-baseline-convergence-v1611.md",
+      "prd": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/truth.md",
+      "user_story": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/truth.md",
+      "test_case": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/tests.md"
+    },
+    "exists": {
+      "research": false,
+      "prd": true,
+      "user_story": true,
+      "test_case": true
+    },
+    "required_research_sections": [],
+    "missing_research_sections": [],
+    "ac_projection": {
+      "prd_ac_ids": [],
+      "user_story_ac_ids": [],
+      "test_case_ac_ids": [],
+      "upstream_ac_ids": [],
+      "missing_test_case_ac_ids": []
+    }
+  },
+  "version_projection_truth_contract": {
+    "required": false,
+    "supported": true,
+    "projection_types": [],
+    "research_path": "docs/beacon/v1.6.11/research/contract-baseline-convergence-v1611.md",
+    "research_exists": false,
+    "required_fields": [
+      "prd_refs",
+      "user_story_refs",
+      "test_case_refs",
+      "coverage_notes",
+      "out_of_scope_notes"
+    ],
+    "field_presence": {
+      "prd_refs": false,
+      "user_story_refs": false,
+      "test_case_refs": false,
+      "coverage_notes": false,
+      "out_of_scope_notes": false
+    },
+    "missing_fields": [],
+    "required_refs": {
+      "prd_refs": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/truth.md",
+      "user_story_refs": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/truth.md",
+      "test_case_refs": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/tests.md"
+    },
+    "missing_ref_targets": [],
+    "ready": false
+  },
+  "support_write_topology_contract": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "diagnostics": []
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/truth.md",
+    "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/tests.md",
+    "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/tasks.md",
+    "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/evidence.md"
+  ]
+}

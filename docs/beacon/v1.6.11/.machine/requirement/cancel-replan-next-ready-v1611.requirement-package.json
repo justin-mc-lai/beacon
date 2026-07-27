@@ -1,0 +1,248 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-27T07:28:10.157521+00:00",
+  "feature": "cancel-replan-next-ready-v1611",
+  "feature_slug": "cancel-replan-next-ready-v1611",
+  "version": "v1.6.11",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/truth.md",
+    "tests": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/tests.md",
+    "tasks": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/tasks.md",
+    "evidence": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "0159e465c5eff64f4d8655ce3b5692fce20551da3d738f12b59791180e63ff68",
+    "tests": "bf485d2b91933635be395b52e232cb02fcd63d51e0707abb4bf79ce8831b2477",
+    "tasks": "de8cc45382686bbdf5d9507c30f5a87dfaf948fa0b52ba32167031d1a72c69b6",
+    "evidence": "99c34beea9ec1bac83dfb98266c98016e1ff708284f05d2e363d4b625ef3639f"
+  },
+  "truth_frontmatter": {
+    "slug": "cancel-replan-next-ready-v1611",
+    "version": "v1.6.11",
+    "status": "frozen",
+    "revision_id": "D2",
+    "language": "zh",
+    "domain_required": "true",
+    "domain_kind": "platform",
+    "package_maturity": "filled",
+    "materials_status": "current",
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "program_ref": "docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/program-manifest.md",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "participating_services": "beacon",
+    "git_canonical_branch": "main",
+    "previous_draft": "D1",
+    "change_reason": "D2: Goal scheduler uses shared admission and refreeze invalidation",
+    "parent_truth": "docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611/truth.md",
+    "inherited_contracts": "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md; docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/truth.md",
+      "user_story": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/truth.md",
+      "test_case": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/tests.md"
+    }
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-RPL-001",
+      "theme": "rewrite/split/replace/cancel 分别产生 proposed replacement、superseded children、cancelled link 或纯取消",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-RPL-002",
+      "theme": "required dependency 取消后必须存在 replacement，否则下游 path=blocked",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-RPL-003",
+      "theme": "每次图变更原子地重算 ready set，只调度依赖满足且 admission pass 的任务",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-RPL-004",
+      "theme": "已 verified/done 任务的有效证据在语义未失效时保留；受 refreeze 影响则标 stale",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-RPL-005",
+      "theme": "cancelled/superseded/blocked 不得转换为 done，Goal 聚合必须区分统计",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-RPL-006",
+      "theme": "Goal scheduler 只能 dispatch 当前 ready set 中且 shared admission pass 的 implementation TaskNode；每次 dispatch 记录 admission/worktree/cwd/HEAD refs，direct/goal/team/ralph 不得分叉准入语义",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-RPL-007",
+      "theme": "Truth refreeze 或 main reconcile 变化必须原子地使旧 graph revision、ready set 与 admission refs stale；重新编译并在真实 worktree reconcile 新 frozen revision 后才能继续 dispatch",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-RPL-001",
+      "tc_id": "TC-RPL-001",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k replan_choices --tb=no`",
+      "assertion": "each choice emits correct disposition",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-RPL-002",
+      "tc_id": "TC-RPL-002",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k required_cancel --tb=no`",
+      "assertion": "missing replacement blocks downstream",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-RPL-003",
+      "tc_id": "TC-RPL-003",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k ready_recompute --tb=no`",
+      "assertion": "ready set recomputed atomically",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-RPL-004",
+      "tc_id": "TC-RPL-004",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k evidence_reuse --tb=no`",
+      "assertion": "evidence retained or staled correctly",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-RPL-005",
+      "tc_id": "TC-RPL-005",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k illegal_terminal_transition --tb=no`",
+      "assertion": "cancelled/superseded/blocked cannot become done",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-RPL-006",
+      "tc_id": "TC-RPL-006",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k goal_scheduler_shared_admission --tb=no`",
+      "assertion": "Goal scheduler dispatch records shared admission and real-worktree bindings across all implement routes",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-RPL-007",
+      "tc_id": "TC-RPL-007",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k refreeze_invalidates_dispatch --tb=no`",
+      "assertion": "refreeze stales graph, ready set and admission until main reconciliation",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-RPL-007",
+      "tc_id": "TC-RPL-ILLEGAL",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k replan_illegal_transition --tb=no`",
+      "assertion": "illegal done/ready/dispatch after cancel or refreeze is rejected",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Implement AC-RPL-001: rewrite/split/replace/cancel 分别产生 proposed replacement、superseded chi... · ac=AC-RPL-001 · evidence=`.beacon/evidence/implement/cancel-replan-next-ready-v1611/AC-RPL-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Implement AC-RPL-002: required dependency 取消后必须存在 replacement，否则下游 path=blocked · ac=AC-RPL-002 · evidence=`.beacon/evidence/implement/cancel-replan-next-ready-v1611/AC-RPL-002.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Implement AC-RPL-003: 每次图变更原子地重算 ready set，只调度依赖满足且 admission pass 的任务 · ac=AC-RPL-003 · evidence=`.beacon/evidence/implement/cancel-replan-next-ready-v1611/AC-RPL-003.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Implement AC-RPL-004: 已 verified/done 任务的有效证据在语义未失效时保留；受 refreeze 影响则标 stale · ac=AC-RPL-004 · evidence=`.beacon/evidence/implement/cancel-replan-next-ready-v1611/AC-RPL-004.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Implement AC-RPL-005: cancelled/superseded/blocked 不得转换为 done，Goal 聚合必须区分统计 · ac=AC-RPL-005 · evidence=`.beacon/evidence/implement/cancel-replan-next-ready-v1611/AC-RPL-005.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Implement AC-RPL-006: Goal scheduler 只能 dispatch 当前 ready set 中且 shared admission pass 的 im... · ac=AC-RPL-006 · evidence=`.beacon/evidence/implement/cancel-replan-next-ready-v1611/AC-RPL-006.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "Implement AC-RPL-007: Truth refreeze 或 main reconcile 变化必须原子地使旧 graph revision、ready set 与 ... · ac=AC-RPL-007 · evidence=`.beacon/evidence/implement/cancel-replan-next-ready-v1611/AC-RPL-007.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-008",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/cancel-replan-next-ready-v1611/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-009",
+      "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/cancel-replan-next-ready-v1611/QA-MATRIX.json`",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "requirement",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/truth.md",
+      "status": "draft",
+      "route": "truth"
+    },
+    {
+      "surface": "acceptance",
+      "authority": "acceptance_truth",
+      "canonical_artifact": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/tests.md",
+      "status": "planned",
+      "route": "qa"
+    },
+    {
+      "surface": "source",
+      "authority": "support_advisory",
+      "canonical_artifact": "beacon/utils/product_goal_runtime.py",
+      "status": "inspected",
+      "route": "implement"
+    },
+    {
+      "surface": "change",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.11/change/beacon-plan-goal-task-closure-v1611.md",
+      "status": "draft",
+      "route": "truth"
+    },
+    {
+      "surface": "admission-truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md",
+      "status": "inherited",
+      "route": "truth"
+    },
+    {
+      "surface": "truth-authority",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
+      "status": "inherited",
+      "route": "truth"
+    }
+  ]
+}

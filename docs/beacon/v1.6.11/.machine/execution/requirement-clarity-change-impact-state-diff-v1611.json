@@ -1,0 +1,548 @@
+{
+  "schema_version": "1.0",
+  "feature": "change-impact-state-diff-v1611",
+  "feature_slug": "change-impact-state-diff-v1611",
+  "version": "v1.6.11",
+  "runtime_version": "v1.6.10",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.6.11/.machine/execution/requirement-clarity-change-impact-state-diff-v1611.json",
+  "report_markdown_path": "docs/beacon/v1.6.11/execution/requirement-clarity-change-impact-state-diff-v1611.md",
+  "state_path": ".beacon/state/requirement-clarity-change-impact-state-diff-v1611.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.11",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-07-27T07:28:03.561434+00:00",
+    "feature": "change-impact-state-diff-v1611",
+    "feature_slug": "change-impact-state-diff-v1611",
+    "prd_ref": "docs/beacon/v1.6.11/prd/change-impact-state-diff-v1611.md",
+    "user_story_ref": "docs/beacon/v1.6.11/user-story/change-impact-state-diff-v1611.md"
+  },
+  "domain_fsm_gate": {
+    "schema_version": "1.0",
+    "feature": "change-impact-state-diff-v1611",
+    "feature_slug": "change-impact-state-diff-v1611",
+    "version": "v1.6.11",
+    "truth_path": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/truth.md",
+    "tests_path": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/tests.md",
+    "required": true,
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "findings": [],
+    "requirement": {
+      "required": true,
+      "reason": "explicit_domain_mark",
+      "explicit": true,
+      "partial": true,
+      "complexity": false,
+      "business_signal": false,
+      "version_supported": true
+    },
+    "projection": {
+      "schema_version": "1.0",
+      "domain_fsm_schema": "domain-fsm.v1",
+      "entity_precedence_schema": "entity-precedence.v1",
+      "frontmatter": {
+        "slug": "change-impact-state-diff-v1611",
+        "version": "v1.6.11",
+        "status": "draft",
+        "revision_id": "D2",
+        "language": "zh",
+        "domain_required": "true",
+        "domain_kind": "platform",
+        "package_maturity": "filled",
+        "materials_status": "current",
+        "parser_contract": "beacon-feature-package-v2",
+        "truth_source_model": "feature_package_authoritative",
+        "program_ref": "docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/program-manifest.md",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "participating_services": "beacon",
+        "git_canonical_branch": "main",
+        "previous_draft": "D1",
+        "change_reason": "D2: diff lifecycle, delegation, admission, trace and no-compat surfaces",
+        "parent_truth": "docs/beacon/v1.6.11/features/intent-completeness-engine-v1611/truth.md",
+        "inherited_contracts": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md; docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md; docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
+        "canonical_refs": {
+          "prd": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/truth.md",
+          "user_story": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/truth.md",
+          "test_case": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/tests.md"
+        }
+      },
+      "frontmatter_errors": [],
+      "has_domain_model_section": true,
+      "has_domain_fsm_section": true,
+      "has_illegal_transition_section": true,
+      "entities": [
+        {
+          "entity": "ImpactDiff",
+          "key": "surface, before, after, source_intent",
+          "precedence": "单项差异",
+          "requires": "单项差异"
+        },
+        {
+          "entity": "StateDiff",
+          "key": "added_states, removed_states, added_edges, illegal_edges",
+          "precedence": "状态机差异",
+          "requires": "状态机差异"
+        }
+      ],
+      "entity_precedence": [
+        {
+          "entity": "ImpactDiff",
+          "key": "surface, before, after, source_intent",
+          "precedence": "单项差异",
+          "requires": "单项差异"
+        },
+        {
+          "entity": "StateDiff",
+          "key": "added_states, removed_states, added_edges, illegal_edges",
+          "precedence": "状态机差异",
+          "requires": "状态机差异"
+        }
+      ],
+      "aggregates": [
+        {
+          "name": "ChangeImpactDiff",
+          "states": [
+            "approved",
+            "blocked",
+            "mapping",
+            "queued",
+            "review",
+            "stale"
+          ],
+          "transitions": [
+            {
+              "from": "",
+              "to": "queued",
+              "guard": "intent tree complete",
+              "initial": "true"
+            },
+            {
+              "from": "queued",
+              "to": "mapping",
+              "guard": "inputs current or findings repaired"
+            },
+            {
+              "from": "blocked",
+              "to": "mapping",
+              "guard": "inputs current or findings repaired"
+            },
+            {
+              "from": "review",
+              "to": "mapping",
+              "guard": "inputs current or findings repaired"
+            },
+            {
+              "from": "stale",
+              "to": "mapping",
+              "guard": "inputs current or findings repaired"
+            },
+            {
+              "from": "mapping",
+              "to": "review",
+              "guard": "all required surfaces present"
+            },
+            {
+              "from": "review",
+              "to": "approved",
+              "guard": "human acknowledgement recorded"
+            },
+            {
+              "from": "mapping",
+              "to": "blocked",
+              "guard": "required surface missing"
+            },
+            {
+              "from": "approved",
+              "to": "stale",
+              "guard": "upstream revision changed"
+            }
+          ]
+        }
+      ],
+      "illegal_transition_slots": [
+        {
+          "description": "`queued → approved`",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "`mapping → review` with missing surface",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "`review → approved` without human_ack",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "inherited lifecycle/delegation/admission/trace/no-compat surface omitted",
+          "aggregate": "",
+          "source": "truth"
+        }
+      ],
+      "acceptance_criteria": [
+        {
+          "ac_id": "AC-DIF-001",
+          "description": "Change 输出 promise/interface/data/FSM/test 五表面 Before→After"
+        },
+        {
+          "ac_id": "AC-DIF-002",
+          "description": "FSM diff 明确 old/new states、合法边、illegal 边、超时/失败/取消恢复边"
+        },
+        {
+          "ac_id": "AC-DIF-003",
+          "description": "每条 diff 绑定 source intent、affected code scope 与 planned TC"
+        },
+        {
+          "ac_id": "AC-DIF-004",
+          "description": "删除、破坏兼容或高风险状态变更必须进入 state_diff_review 人工确认"
+        },
+        {
+          "ac_id": "AC-DIF-005",
+          "description": "Change diff 必须覆盖 public 1+6 lifecycle 映射、subagent delegation/诚实 fallback、shared worktree admission、Goal run_id/`agent_trace.v1`、Goal completion owner 与 no-compat migration；任一 inherited surface 缺失即阻断 review"
+        }
+      ],
+      "bound_ac_ids": [
+        "AC-DIF-002",
+        "AC-DIF-004",
+        "AC-DIF-005"
+      ],
+      "orphan_ac_ids": [],
+      "aggregates_missing_illegal_slots": [],
+      "raw_section_titles": [
+        "人话",
+        "User Intent",
+        "User Intent Snapshot",
+        "用户旅程",
+        "First principles",
+        "Domain Model",
+        "Intent Coverage Matrix",
+        "Acceptance Criteria",
+        "Domain FSM ChangeImpactDiff",
+        "FSM 五元组",
+        "Illegal transitions",
+        "Non-goals",
+        "Freeze readiness"
+      ]
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "required": true,
+      "blocked": false,
+      "status": "pass",
+      "reason_code": "",
+      "findings": [],
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "change-impact-state-diff-v1611",
+          "version": "v1.6.11",
+          "status": "draft",
+          "revision_id": "D2",
+          "language": "zh",
+          "domain_required": "true",
+          "domain_kind": "platform",
+          "package_maturity": "filled",
+          "materials_status": "current",
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "program_ref": "docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/program-manifest.md",
+          "truth_map_contract": "beacon-truth-map-v1",
+          "participating_services": "beacon",
+          "git_canonical_branch": "main",
+          "previous_draft": "D1",
+          "change_reason": "D2: diff lifecycle, delegation, admission, trace and no-compat surfaces",
+          "parent_truth": "docs/beacon/v1.6.11/features/intent-completeness-engine-v1611/truth.md",
+          "inherited_contracts": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md; docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md; docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
+          "canonical_refs": {
+            "prd": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/truth.md",
+            "user_story": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/truth.md",
+            "test_case": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/tests.md"
+          }
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": true,
+        "has_domain_fsm_section": true,
+        "has_illegal_transition_section": true,
+        "entities": [
+          {
+            "entity": "ImpactDiff",
+            "key": "surface, before, after, source_intent",
+            "precedence": "单项差异",
+            "requires": "单项差异"
+          },
+          {
+            "entity": "StateDiff",
+            "key": "added_states, removed_states, added_edges, illegal_edges",
+            "precedence": "状态机差异",
+            "requires": "状态机差异"
+          }
+        ],
+        "entity_precedence": [
+          {
+            "entity": "ImpactDiff",
+            "key": "surface, before, after, source_intent",
+            "precedence": "单项差异",
+            "requires": "单项差异"
+          },
+          {
+            "entity": "StateDiff",
+            "key": "added_states, removed_states, added_edges, illegal_edges",
+            "precedence": "状态机差异",
+            "requires": "状态机差异"
+          }
+        ],
+        "aggregates": [
+          {
+            "name": "ChangeImpactDiff",
+            "states": [
+              "approved",
+              "blocked",
+              "mapping",
+              "queued",
+              "review",
+              "stale"
+            ],
+            "transitions": [
+              {
+                "from": "",
+                "to": "queued",
+                "guard": "intent tree complete",
+                "initial": "true"
+              },
+              {
+                "from": "queued",
+                "to": "mapping",
+                "guard": "inputs current or findings repaired"
+              },
+              {
+                "from": "blocked",
+                "to": "mapping",
+                "guard": "inputs current or findings repaired"
+              },
+              {
+                "from": "review",
+                "to": "mapping",
+                "guard": "inputs current or findings repaired"
+              },
+              {
+                "from": "stale",
+                "to": "mapping",
+                "guard": "inputs current or findings repaired"
+              },
+              {
+                "from": "mapping",
+                "to": "review",
+                "guard": "all required surfaces present"
+              },
+              {
+                "from": "review",
+                "to": "approved",
+                "guard": "human acknowledgement recorded"
+              },
+              {
+                "from": "mapping",
+                "to": "blocked",
+                "guard": "required surface missing"
+              },
+              {
+                "from": "approved",
+                "to": "stale",
+                "guard": "upstream revision changed"
+              }
+            ]
+          }
+        ],
+        "illegal_transition_slots": [
+          {
+            "description": "`queued → approved`",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "`mapping → review` with missing surface",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "`review → approved` without human_ack",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "inherited lifecycle/delegation/admission/trace/no-compat surface omitted",
+            "aggregate": "",
+            "source": "truth"
+          }
+        ],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-DIF-001",
+            "description": "Change 输出 promise/interface/data/FSM/test 五表面 Before→After"
+          },
+          {
+            "ac_id": "AC-DIF-002",
+            "description": "FSM diff 明确 old/new states、合法边、illegal 边、超时/失败/取消恢复边"
+          },
+          {
+            "ac_id": "AC-DIF-003",
+            "description": "每条 diff 绑定 source intent、affected code scope 与 planned TC"
+          },
+          {
+            "ac_id": "AC-DIF-004",
+            "description": "删除、破坏兼容或高风险状态变更必须进入 state_diff_review 人工确认"
+          },
+          {
+            "ac_id": "AC-DIF-005",
+            "description": "Change diff 必须覆盖 public 1+6 lifecycle 映射、subagent delegation/诚实 fallback、shared worktree admission、Goal run_id/`agent_trace.v1`、Goal completion owner 与 no-compat migration；任一 inherited surface 缺失即阻断 review"
+          }
+        ],
+        "bound_ac_ids": [
+          "AC-DIF-002",
+          "AC-DIF-004",
+          "AC-DIF-005"
+        ],
+        "orphan_ac_ids": [],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "人话",
+          "User Intent",
+          "User Intent Snapshot",
+          "用户旅程",
+          "First principles",
+          "Domain Model",
+          "Intent Coverage Matrix",
+          "Acceptance Criteria",
+          "Domain FSM ChangeImpactDiff",
+          "FSM 五元组",
+          "Illegal transitions",
+          "Non-goals",
+          "Freeze readiness"
+        ]
+      },
+      "summary": {
+        "entity_count": 2,
+        "aggregate_count": 1,
+        "illegal_slot_count": 4,
+        "orphan_ac_count": 0,
+        "bound_ac_count": 3
+      }
+    },
+    "recommended_action": ""
+  },
+  "human_closure_contract": {
+    "required": false,
+    "research_path": "docs/beacon/v1.6.11/research/change-impact-state-diff-v1611.md",
+    "research_exists": false,
+    "source_architecture_path": "docs/beacon/v1.6.11/source-architecture/index.md",
+    "source_architecture_exists": true,
+    "required_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "missing_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "diagram_types": [],
+    "complexity_signals": []
+  },
+  "requirement_closure_contract": {
+    "required": true,
+    "chain_order": [
+      "research",
+      "prd",
+      "user_story",
+      "test_case",
+      "requirement_clarity",
+      "freeze"
+    ],
+    "human_closure_required": false,
+    "paths": {
+      "research": "docs/beacon/v1.6.11/research/change-impact-state-diff-v1611.md",
+      "prd": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/truth.md",
+      "user_story": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/truth.md",
+      "test_case": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/tests.md"
+    },
+    "exists": {
+      "research": false,
+      "prd": true,
+      "user_story": true,
+      "test_case": true
+    },
+    "required_research_sections": [],
+    "missing_research_sections": [],
+    "ac_projection": {
+      "prd_ac_ids": [],
+      "user_story_ac_ids": [],
+      "test_case_ac_ids": [],
+      "upstream_ac_ids": [],
+      "missing_test_case_ac_ids": []
+    }
+  },
+  "version_projection_truth_contract": {
+    "required": false,
+    "supported": true,
+    "projection_types": [],
+    "research_path": "docs/beacon/v1.6.11/research/change-impact-state-diff-v1611.md",
+    "research_exists": false,
+    "required_fields": [
+      "prd_refs",
+      "user_story_refs",
+      "test_case_refs",
+      "coverage_notes",
+      "out_of_scope_notes"
+    ],
+    "field_presence": {
+      "prd_refs": false,
+      "user_story_refs": false,
+      "test_case_refs": false,
+      "coverage_notes": false,
+      "out_of_scope_notes": false
+    },
+    "missing_fields": [],
+    "required_refs": {
+      "prd_refs": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/truth.md",
+      "user_story_refs": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/truth.md",
+      "test_case_refs": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/tests.md"
+    },
+    "missing_ref_targets": [],
+    "ready": false
+  },
+  "support_write_topology_contract": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "diagnostics": []
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/truth.md",
+    "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/tests.md",
+    "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/tasks.md",
+    "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/evidence.md"
+  ]
+}

@@ -1,6 +1,6 @@
 <!-- BEACON:START -->
-<!-- BEACON:VERSION:v1.6.9 -->
-<!-- BEACON:DOCS_VERSION:v1.6.9 -->
+<!-- BEACON:VERSION:v1.6.10 -->
+<!-- BEACON:DOCS_VERSION:v1.6.11 -->
 # CLAUDE.md
 
 This file is Beacon-managed runtime guidance.
@@ -23,9 +23,10 @@ This file is Beacon-managed runtime guidance.
 - `beacon status --verbose`
 
 ## Requirement materials and docs paths
-- Runtime target version: `v1.6.9`
-- Docs target version: `v1.6.9`
+- Runtime target version: `v1.6.10`
+- Docs target version: `v1.6.11`
 - `docs/beacon/global-boundaries.md` is the canonical cross-version global constraint source.
+- v1.6.10+ active packages do not retain old-shape soft compatibility; replan and freeze a new revision instead of lowering gates.
 - `docs/beacon/<version>/` is the canonical source of truth.
 - `docs/beacon/<version>/SUMMARY.md`
 - `docs/beacon/<version>/prd/`

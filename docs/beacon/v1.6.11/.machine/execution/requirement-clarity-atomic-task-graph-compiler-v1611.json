@@ -1,0 +1,610 @@
+{
+  "schema_version": "1.0",
+  "feature": "atomic-task-graph-compiler-v1611",
+  "feature_slug": "atomic-task-graph-compiler-v1611",
+  "version": "v1.6.11",
+  "runtime_version": "v1.6.10",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.6.11/.machine/execution/requirement-clarity-atomic-task-graph-compiler-v1611.json",
+  "report_markdown_path": "docs/beacon/v1.6.11/execution/requirement-clarity-atomic-task-graph-compiler-v1611.md",
+  "state_path": ".beacon/state/requirement-clarity-atomic-task-graph-compiler-v1611.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.11",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-07-27T07:28:05.207833+00:00",
+    "feature": "atomic-task-graph-compiler-v1611",
+    "feature_slug": "atomic-task-graph-compiler-v1611",
+    "prd_ref": "docs/beacon/v1.6.11/prd/atomic-task-graph-compiler-v1611.md",
+    "user_story_ref": "docs/beacon/v1.6.11/user-story/atomic-task-graph-compiler-v1611.md"
+  },
+  "domain_fsm_gate": {
+    "schema_version": "1.0",
+    "feature": "atomic-task-graph-compiler-v1611",
+    "feature_slug": "atomic-task-graph-compiler-v1611",
+    "version": "v1.6.11",
+    "truth_path": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/truth.md",
+    "tests_path": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/tests.md",
+    "required": true,
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "findings": [],
+    "requirement": {
+      "required": true,
+      "reason": "explicit_domain_mark",
+      "explicit": true,
+      "partial": true,
+      "complexity": false,
+      "business_signal": false,
+      "version_supported": true
+    },
+    "projection": {
+      "schema_version": "1.0",
+      "domain_fsm_schema": "domain-fsm.v1",
+      "entity_precedence_schema": "entity-precedence.v1",
+      "frontmatter": {
+        "slug": "atomic-task-graph-compiler-v1611",
+        "version": "v1.6.11",
+        "status": "draft",
+        "revision_id": "D2",
+        "language": "zh",
+        "domain_required": "true",
+        "domain_kind": "platform",
+        "package_maturity": "filled",
+        "materials_status": "current",
+        "parser_contract": "beacon-feature-package-v2",
+        "truth_source_model": "feature_package_authoritative",
+        "program_ref": "docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/program-manifest.md",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "participating_services": "beacon",
+        "git_canonical_branch": "main",
+        "previous_draft": "D1",
+        "change_reason": "D2: TaskNode delegation and real-worktree admission bindings",
+        "parent_truth": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/truth.md",
+        "inherited_contracts": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md; docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md",
+        "canonical_refs": {
+          "prd": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/truth.md",
+          "user_story": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/truth.md",
+          "test_case": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/tests.md"
+        }
+      },
+      "frontmatter_errors": [],
+      "has_domain_model_section": true,
+      "has_domain_fsm_section": true,
+      "has_illegal_transition_section": true,
+      "entities": [
+        {
+          "entity": "TaskNode",
+          "key": "id, intent_ref, journey_ref, ac_ref, code_scope, verify, evidence, execution_mode, required_role, delegation_reason, service, worktree_ref, admission_ref, cwd_ref, head_ref",
+          "precedence": "原子任务",
+          "requires": "原子任务"
+        },
+        {
+          "entity": "DependencyEdge",
+          "key": "from, to, required, replacement_policy",
+          "precedence": "DAG 边",
+          "requires": "DAG 边"
+        },
+        {
+          "entity": "ReadySet",
+          "key": "graph_revision, task_ids",
+          "precedence": "当前可调度任务",
+          "requires": "当前可调度任务"
+        }
+      ],
+      "entity_precedence": [
+        {
+          "entity": "TaskNode",
+          "key": "id, intent_ref, journey_ref, ac_ref, code_scope, verify, evidence, execution_mode, required_role, delegation_reason, service, worktree_ref, admission_ref, cwd_ref, head_ref",
+          "precedence": "原子任务",
+          "requires": "原子任务"
+        },
+        {
+          "entity": "DependencyEdge",
+          "key": "from, to, required, replacement_policy",
+          "precedence": "DAG 边",
+          "requires": "DAG 边"
+        },
+        {
+          "entity": "ReadySet",
+          "key": "graph_revision, task_ids",
+          "precedence": "当前可调度任务",
+          "requires": "当前可调度任务"
+        }
+      ],
+      "aggregates": [
+        {
+          "name": "AtomicTaskGraph",
+          "states": [
+            "blocked",
+            "compiling",
+            "input_ready",
+            "ready",
+            "stale",
+            "validating"
+          ],
+          "transitions": [
+            {
+              "from": "",
+              "to": "input_ready",
+              "guard": "approved Change current",
+              "initial": "true"
+            },
+            {
+              "from": "input_ready",
+              "to": "compiling",
+              "guard": "compile or rebuild requested"
+            },
+            {
+              "from": "blocked",
+              "to": "compiling",
+              "guard": "compile or rebuild requested"
+            },
+            {
+              "from": "stale",
+              "to": "compiling",
+              "guard": "compile or rebuild requested"
+            },
+            {
+              "from": "compiling",
+              "to": "validating",
+              "guard": "nodes emitted"
+            },
+            {
+              "from": "validating",
+              "to": "ready",
+              "guard": "DAG, bindings and admission requirements valid"
+            },
+            {
+              "from": "validating",
+              "to": "blocked",
+              "guard": "cycle, orphan, padding or unbound execution contract"
+            },
+            {
+              "from": "ready",
+              "to": "stale",
+              "guard": "upstream revision changed"
+            }
+          ]
+        }
+      ],
+      "illegal_transition_slots": [
+        {
+          "description": "`input_ready → ready`",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "`validating → ready` with cycle/orphan/unbound task",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "stale graph dispatching tasks",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "implementation TaskNode dispatched without real-worktree admission",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "unavailable host runtime reported as parallel subagent execution",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "child executor closing GoalRun or freezing Truth",
+          "aggregate": "",
+          "source": "truth"
+        }
+      ],
+      "acceptance_criteria": [
+        {
+          "ac_id": "AC-DAG-001",
+          "description": "Journey/AC/FSM diff 编译为最小可独立验证的 TaskNode"
+        },
+        {
+          "ac_id": "AC-DAG-002",
+          "description": "每 TaskNode 绑定 intent、journey、AC、code scope、verification command、evidence path"
+        },
+        {
+          "ac_id": "AC-DAG-003",
+          "description": "图必须无环；依赖未满足时任务不能进入 ready"
+        },
+        {
+          "ac_id": "AC-DAG-004",
+          "description": "无需求落点、重复语义或只为增加数量的任务标记 orphan/padding 并阻断"
+        },
+        {
+          "ac_id": "AC-DAG-005",
+          "description": "图与查询/聚合接口可承载 100+ 节点，不设最低任务数"
+        },
+        {
+          "ac_id": "AC-DAG-006",
+          "description": "每个可委派 TaskNode 声明 `execution_mode`、`required_role`、`delegation_reason`、输入合同和输出 evidence contract；子代理只能返回 finding/patch/evidence，不能转换 Goal、Truth、QA 或 release 终态"
+        },
+        {
+          "ac_id": "AC-DAG-007",
+          "description": "仅显式 intent-on 才规划 host subagent；host runtime 不可用时必须记录 `single_process_multi_reviewer` 与 `fallback_reason`，不得宣称 parallel"
+        },
+        {
+          "ac_id": "AC-DAG-008",
+          "description": "每个 implementation TaskNode 必须在 dispatch 前绑定 service、shared admission ref、真实 git worktree、cwd 与 HEAD；branch-only、soft skip、mkdir-only、empty gitlink、hook-installed 均不能进入 running"
+        }
+      ],
+      "bound_ac_ids": [
+        "AC-DAG-001",
+        "AC-DAG-002",
+        "AC-DAG-003",
+        "AC-DAG-006",
+        "AC-DAG-008"
+      ],
+      "orphan_ac_ids": [],
+      "aggregates_missing_illegal_slots": [],
+      "raw_section_titles": [
+        "人话",
+        "User Intent",
+        "User Intent Snapshot",
+        "用户旅程",
+        "First principles",
+        "Domain Model",
+        "Intent Coverage Matrix",
+        "Acceptance Criteria",
+        "Domain FSM AtomicTaskGraph",
+        "FSM 五元组",
+        "Illegal transitions",
+        "Non-goals",
+        "Freeze readiness"
+      ]
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "required": true,
+      "blocked": false,
+      "status": "pass",
+      "reason_code": "",
+      "findings": [],
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "atomic-task-graph-compiler-v1611",
+          "version": "v1.6.11",
+          "status": "draft",
+          "revision_id": "D2",
+          "language": "zh",
+          "domain_required": "true",
+          "domain_kind": "platform",
+          "package_maturity": "filled",
+          "materials_status": "current",
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "program_ref": "docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/program-manifest.md",
+          "truth_map_contract": "beacon-truth-map-v1",
+          "participating_services": "beacon",
+          "git_canonical_branch": "main",
+          "previous_draft": "D1",
+          "change_reason": "D2: TaskNode delegation and real-worktree admission bindings",
+          "parent_truth": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/truth.md",
+          "inherited_contracts": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md; docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md",
+          "canonical_refs": {
+            "prd": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/truth.md",
+            "user_story": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/truth.md",
+            "test_case": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/tests.md"
+          }
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": true,
+        "has_domain_fsm_section": true,
+        "has_illegal_transition_section": true,
+        "entities": [
+          {
+            "entity": "TaskNode",
+            "key": "id, intent_ref, journey_ref, ac_ref, code_scope, verify, evidence, execution_mode, required_role, delegation_reason, service, worktree_ref, admission_ref, cwd_ref, head_ref",
+            "precedence": "原子任务",
+            "requires": "原子任务"
+          },
+          {
+            "entity": "DependencyEdge",
+            "key": "from, to, required, replacement_policy",
+            "precedence": "DAG 边",
+            "requires": "DAG 边"
+          },
+          {
+            "entity": "ReadySet",
+            "key": "graph_revision, task_ids",
+            "precedence": "当前可调度任务",
+            "requires": "当前可调度任务"
+          }
+        ],
+        "entity_precedence": [
+          {
+            "entity": "TaskNode",
+            "key": "id, intent_ref, journey_ref, ac_ref, code_scope, verify, evidence, execution_mode, required_role, delegation_reason, service, worktree_ref, admission_ref, cwd_ref, head_ref",
+            "precedence": "原子任务",
+            "requires": "原子任务"
+          },
+          {
+            "entity": "DependencyEdge",
+            "key": "from, to, required, replacement_policy",
+            "precedence": "DAG 边",
+            "requires": "DAG 边"
+          },
+          {
+            "entity": "ReadySet",
+            "key": "graph_revision, task_ids",
+            "precedence": "当前可调度任务",
+            "requires": "当前可调度任务"
+          }
+        ],
+        "aggregates": [
+          {
+            "name": "AtomicTaskGraph",
+            "states": [
+              "blocked",
+              "compiling",
+              "input_ready",
+              "ready",
+              "stale",
+              "validating"
+            ],
+            "transitions": [
+              {
+                "from": "",
+                "to": "input_ready",
+                "guard": "approved Change current",
+                "initial": "true"
+              },
+              {
+                "from": "input_ready",
+                "to": "compiling",
+                "guard": "compile or rebuild requested"
+              },
+              {
+                "from": "blocked",
+                "to": "compiling",
+                "guard": "compile or rebuild requested"
+              },
+              {
+                "from": "stale",
+                "to": "compiling",
+                "guard": "compile or rebuild requested"
+              },
+              {
+                "from": "compiling",
+                "to": "validating",
+                "guard": "nodes emitted"
+              },
+              {
+                "from": "validating",
+                "to": "ready",
+                "guard": "DAG, bindings and admission requirements valid"
+              },
+              {
+                "from": "validating",
+                "to": "blocked",
+                "guard": "cycle, orphan, padding or unbound execution contract"
+              },
+              {
+                "from": "ready",
+                "to": "stale",
+                "guard": "upstream revision changed"
+              }
+            ]
+          }
+        ],
+        "illegal_transition_slots": [
+          {
+            "description": "`input_ready → ready`",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "`validating → ready` with cycle/orphan/unbound task",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "stale graph dispatching tasks",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "implementation TaskNode dispatched without real-worktree admission",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "unavailable host runtime reported as parallel subagent execution",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "child executor closing GoalRun or freezing Truth",
+            "aggregate": "",
+            "source": "truth"
+          }
+        ],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-DAG-001",
+            "description": "Journey/AC/FSM diff 编译为最小可独立验证的 TaskNode"
+          },
+          {
+            "ac_id": "AC-DAG-002",
+            "description": "每 TaskNode 绑定 intent、journey、AC、code scope、verification command、evidence path"
+          },
+          {
+            "ac_id": "AC-DAG-003",
+            "description": "图必须无环；依赖未满足时任务不能进入 ready"
+          },
+          {
+            "ac_id": "AC-DAG-004",
+            "description": "无需求落点、重复语义或只为增加数量的任务标记 orphan/padding 并阻断"
+          },
+          {
+            "ac_id": "AC-DAG-005",
+            "description": "图与查询/聚合接口可承载 100+ 节点，不设最低任务数"
+          },
+          {
+            "ac_id": "AC-DAG-006",
+            "description": "每个可委派 TaskNode 声明 `execution_mode`、`required_role`、`delegation_reason`、输入合同和输出 evidence contract；子代理只能返回 finding/patch/evidence，不能转换 Goal、Truth、QA 或 release 终态"
+          },
+          {
+            "ac_id": "AC-DAG-007",
+            "description": "仅显式 intent-on 才规划 host subagent；host runtime 不可用时必须记录 `single_process_multi_reviewer` 与 `fallback_reason`，不得宣称 parallel"
+          },
+          {
+            "ac_id": "AC-DAG-008",
+            "description": "每个 implementation TaskNode 必须在 dispatch 前绑定 service、shared admission ref、真实 git worktree、cwd 与 HEAD；branch-only、soft skip、mkdir-only、empty gitlink、hook-installed 均不能进入 running"
+          }
+        ],
+        "bound_ac_ids": [
+          "AC-DAG-001",
+          "AC-DAG-002",
+          "AC-DAG-003",
+          "AC-DAG-006",
+          "AC-DAG-008"
+        ],
+        "orphan_ac_ids": [],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "人话",
+          "User Intent",
+          "User Intent Snapshot",
+          "用户旅程",
+          "First principles",
+          "Domain Model",
+          "Intent Coverage Matrix",
+          "Acceptance Criteria",
+          "Domain FSM AtomicTaskGraph",
+          "FSM 五元组",
+          "Illegal transitions",
+          "Non-goals",
+          "Freeze readiness"
+        ]
+      },
+      "summary": {
+        "entity_count": 3,
+        "aggregate_count": 1,
+        "illegal_slot_count": 6,
+        "orphan_ac_count": 0,
+        "bound_ac_count": 5
+      }
+    },
+    "recommended_action": ""
+  },
+  "human_closure_contract": {
+    "required": false,
+    "research_path": "docs/beacon/v1.6.11/research/atomic-task-graph-compiler-v1611.md",
+    "research_exists": false,
+    "source_architecture_path": "docs/beacon/v1.6.11/source-architecture/index.md",
+    "source_architecture_exists": true,
+    "required_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "missing_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "diagram_types": [],
+    "complexity_signals": []
+  },
+  "requirement_closure_contract": {
+    "required": true,
+    "chain_order": [
+      "research",
+      "prd",
+      "user_story",
+      "test_case",
+      "requirement_clarity",
+      "freeze"
+    ],
+    "human_closure_required": false,
+    "paths": {
+      "research": "docs/beacon/v1.6.11/research/atomic-task-graph-compiler-v1611.md",
+      "prd": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/truth.md",
+      "user_story": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/truth.md",
+      "test_case": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/tests.md"
+    },
+    "exists": {
+      "research": false,
+      "prd": true,
+      "user_story": true,
+      "test_case": true
+    },
+    "required_research_sections": [],
+    "missing_research_sections": [],
+    "ac_projection": {
+      "prd_ac_ids": [],
+      "user_story_ac_ids": [],
+      "test_case_ac_ids": [],
+      "upstream_ac_ids": [],
+      "missing_test_case_ac_ids": []
+    }
+  },
+  "version_projection_truth_contract": {
+    "required": false,
+    "supported": true,
+    "projection_types": [],
+    "research_path": "docs/beacon/v1.6.11/research/atomic-task-graph-compiler-v1611.md",
+    "research_exists": false,
+    "required_fields": [
+      "prd_refs",
+      "user_story_refs",
+      "test_case_refs",
+      "coverage_notes",
+      "out_of_scope_notes"
+    ],
+    "field_presence": {
+      "prd_refs": false,
+      "user_story_refs": false,
+      "test_case_refs": false,
+      "coverage_notes": false,
+      "out_of_scope_notes": false
+    },
+    "missing_fields": [],
+    "required_refs": {
+      "prd_refs": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/truth.md",
+      "user_story_refs": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/truth.md",
+      "test_case_refs": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/tests.md"
+    },
+    "missing_ref_targets": [],
+    "ready": false
+  },
+  "support_write_topology_contract": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "diagnostics": []
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/truth.md",
+    "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/tests.md",
+    "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/tasks.md",
+    "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/evidence.md"
+  ]
+}

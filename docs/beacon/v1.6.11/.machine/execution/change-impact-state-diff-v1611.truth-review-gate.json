@@ -1,0 +1,149 @@
+{
+  "schema": "truth-review-gate.v1",
+  "schema_version": "1.0",
+  "feature": "change-impact-state-diff-v1611",
+  "version": "v1.6.11",
+  "pass": true,
+  "blocked": false,
+  "review_gate_pass": true,
+  "abc_pass": true,
+  "reason_code": "",
+  "domain_required": true,
+  "checks": {
+    "A_intent_coverage": {
+      "pass": true,
+      "check": "A",
+      "name": "intent_coverage",
+      "required": true,
+      "matrix_rows": 5,
+      "missing_must": [],
+      "reason": "",
+      "findings": [],
+      "matrix": [
+        {
+          "intent_id": "INT-DIF-01",
+          "source": "user",
+          "strength": "must",
+          "landing": "AC-DIF-001",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-DIF-02",
+          "source": "fsm",
+          "strength": "must",
+          "landing": "AC-DIF-002",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-DIF-03",
+          "source": "trace",
+          "strength": "must",
+          "landing": "AC-DIF-003",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-DIF-04",
+          "source": "review",
+          "strength": "must",
+          "landing": "AC-DIF-004",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-DIF-05",
+          "source": "inherited-surfaces",
+          "strength": "must",
+          "landing": "AC-DIF-005",
+          "status": "covered"
+        }
+      ]
+    },
+    "B_fsm_audit": {
+      "pass": true,
+      "check": "B",
+      "name": "fsm_audit",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "fsm": {
+        "transition_count": 8,
+        "from_states": [
+          "approved",
+          "blocked",
+          "mapping",
+          "queued",
+          "review",
+          "stale"
+        ],
+        "hanging_states": [],
+        "terminals": [],
+        "illegal_present": true,
+        "five_tuple_present": true
+      }
+    },
+    "C_testability": {
+      "pass": true,
+      "check": "C",
+      "name": "testability",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "ac_count": 5,
+      "tc_count": 6,
+      "missing_ac": [],
+      "covered": {
+        "AC-DIF-001": [
+          "TC-DIF-001"
+        ],
+        "AC-DIF-002": [
+          "TC-DIF-002"
+        ],
+        "AC-DIF-003": [
+          "TC-DIF-003"
+        ],
+        "AC-DIF-004": [
+          "TC-DIF-004",
+          "TC-DIF-ILLEGAL"
+        ],
+        "AC-DIF-005": [
+          "TC-DIF-005"
+        ]
+      }
+    },
+    "C_domain_exec_layer": {
+      "pass": true,
+      "check": "C_exec",
+      "name": "domain_exec_layer",
+      "required": false,
+      "skipped": true,
+      "reason": "",
+      "findings": [],
+      "exec_tc_count": 0,
+      "domain_kind": "platform"
+    },
+    "D_fill_depth": {
+      "pass": true,
+      "check": "D",
+      "name": "fill_depth",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "package_maturity": "filled",
+      "domain_kind": "platform",
+      "business_domain": false
+    }
+  },
+  "findings": [],
+  "humanizer": {
+    "rule": "humanizer_only_after_abc_pass_before_freeze",
+    "abc_pass": true,
+    "allowed_now": true,
+    "fill_depth_pass": true,
+    "note": "Polish L0/narrative only after A/B/C; preserve_machine_fields=true; freeze needs D+exec too"
+  },
+  "evaluated_at": "2026-07-27T07:28:04.403790+00:00",
+  "paths": {
+    "truth": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/truth.md",
+    "tests": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/tests.md",
+    "report": "docs/beacon/v1.6.11/.machine/execution/change-impact-state-diff-v1611.truth-review-gate.json"
+  }
+}

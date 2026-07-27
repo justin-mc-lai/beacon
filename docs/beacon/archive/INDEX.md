@@ -3,7 +3,7 @@
 > Generated from version-truth-catalog.md — do not edit by hand.
 
 - active_window: 3
-- active: v1.6.6, v1.6.7, v2.0.0
+- active: v1.6.6, v1.6.7, v1.6.8, v1.6.9, v1.6.10, v1.6.11, v2.0.0
 - archived_count: 55
 
 ## Active (delivery plane)
@@ -11,8 +11,12 @@
 | Version | Path | Features (count) |
 |---------|------|------------------|
 | v1.6.6 | docs/beacon/v1.6.6 | 4 |
-| v1.6.7 | docs/beacon/v1.6.7 | 2 |
-| v2.0.0 | docs/beacon/v2.0.0 | 1 |
+| v1.6.7 | docs/beacon/v1.6.7 | 14 |
+| v1.6.8 | docs/beacon/v1.6.8 | 12 |
+| v1.6.9 | docs/beacon/v1.6.9 | 12 |
+| v1.6.10 | docs/beacon/v1.6.10 | 9 |
+| v1.6.11 | docs/beacon/v1.6.11 | 9 |
+| v2.0.0 | docs/beacon/v2.0.0 | 35 |
 
 ## Archived (inspect / lineage)
 

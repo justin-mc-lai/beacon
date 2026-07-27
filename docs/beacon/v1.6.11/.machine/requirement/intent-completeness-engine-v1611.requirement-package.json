@@ -1,0 +1,212 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-27T07:28:02.506888+00:00",
+  "feature": "intent-completeness-engine-v1611",
+  "feature_slug": "intent-completeness-engine-v1611",
+  "version": "v1.6.11",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.11/features/intent-completeness-engine-v1611/truth.md",
+    "tests": "docs/beacon/v1.6.11/features/intent-completeness-engine-v1611/tests.md",
+    "tasks": "docs/beacon/v1.6.11/features/intent-completeness-engine-v1611/tasks.md",
+    "evidence": "docs/beacon/v1.6.11/features/intent-completeness-engine-v1611/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "cf748538217f19de3abdc0fb9489d18618fd3c510ec9df08a1d9134b8b863b4a",
+    "tests": "a07388462a151875fa9e7a0696933373d89f6416710bce741aa99628989f6a4b",
+    "tasks": "1e6376c58b221f069e59a5cb697a7f4a28f6deeb80a4af24c760cd906a58a816",
+    "evidence": "c9d977c354a43b4fe8cc00dd069fe20f7027a2febb09fa9681d67903f1280bd5"
+  },
+  "truth_frontmatter": {
+    "slug": "intent-completeness-engine-v1611",
+    "version": "v1.6.11",
+    "status": "frozen",
+    "revision_id": "D2",
+    "language": "zh",
+    "domain_required": "true",
+    "domain_kind": "platform",
+    "package_maturity": "filled",
+    "materials_status": "current",
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "program_ref": "docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/program-manifest.md",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "participating_services": "beacon",
+    "git_canonical_branch": "main",
+    "previous_draft": "D1",
+    "change_reason": "D2: inherited frozen capabilities become must intents",
+    "parent_truth": "docs/beacon/v1.6.11/features/brownfield-context-resolver-v1611/truth.md",
+    "inherited_contracts": "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md; docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md; docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md; docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.11/features/intent-completeness-engine-v1611/truth.md",
+      "user_story": "docs/beacon/v1.6.11/features/intent-completeness-engine-v1611/truth.md",
+      "test_case": "docs/beacon/v1.6.11/features/intent-completeness-engine-v1611/tests.md"
+    }
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-INT-001",
+      "theme": "引擎递归展开 actor、goal、journey、failure、state、constraint、non-goal 七类节点",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-INT-002",
+      "theme": "每条 must 意图必须落到 Journey/AC/Non-goal/approved Deferral，missing 阻断 Change",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-INT-003",
+      "theme": "递归停止依据是语义闭合、重复或用户批准延期，不得以达到任务数量停止",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-INT-004",
+      "theme": "歧义、冲突或高影响默认值必须进入人工确认，并保留 decision_ref",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-INT-005",
+      "theme": "ContextEnvelope 中继承的 Goal owner、intent-on subagent、真实 worktree admission、1+6 trace 与 no-compat refreeze 能力必须提升为 must IntentNode 并有 Journey/AC 落点；任何一项不得在拆解中静默消失或降级为 should",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-INT-001",
+      "tc_id": "TC-INT-001",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k intent_dimensions --tb=no`",
+      "assertion": "seven dimensions are represented",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-INT-002",
+      "tc_id": "TC-INT-002",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k missing_must --tb=no`",
+      "assertion": "missing must blocks",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-INT-003",
+      "tc_id": "TC-INT-003",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k semantic_stop --tb=no`",
+      "assertion": "count target cannot close recursion",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-INT-004",
+      "tc_id": "TC-INT-004",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k intent_human_decision --tb=no`",
+      "assertion": "high-impact ambiguity requires decision_ref",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-INT-005",
+      "tc_id": "TC-INT-005",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k inherited_must_intents --tb=no`",
+      "assertion": "inherited Goal/subagent/worktree/trace/no-compat capabilities remain must and have landings",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-INT-004",
+      "tc_id": "TC-INT-ILLEGAL",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k intent_illegal_transition --tb=no`",
+      "assertion": "illegal completion with missing must or missing decision_ref is rejected",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Implement AC-INT-001: 引擎递归展开 actor、goal、journey、failure、state、constraint、non-goal 七类节点 · ac=AC-INT-001 · evidence=`.beacon/evidence/implement/intent-completeness-engine-v1611/AC-INT-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Implement AC-INT-002: 每条 must 意图必须落到 Journey/AC/Non-goal/approved Deferral，missing 阻断 Change · ac=AC-INT-002 · evidence=`.beacon/evidence/implement/intent-completeness-engine-v1611/AC-INT-002.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Implement AC-INT-003: 递归停止依据是语义闭合、重复或用户批准延期，不得以达到任务数量停止 · ac=AC-INT-003 · evidence=`.beacon/evidence/implement/intent-completeness-engine-v1611/AC-INT-003.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Implement AC-INT-004: 歧义、冲突或高影响默认值必须进入人工确认，并保留 decision_ref · ac=AC-INT-004 · evidence=`.beacon/evidence/implement/intent-completeness-engine-v1611/AC-INT-004.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Implement AC-INT-005: ContextEnvelope 中继承的 Goal owner、intent-on subagent、真实 worktree admiss... · ac=AC-INT-005 · evidence=`.beacon/evidence/implement/intent-completeness-engine-v1611/AC-INT-005.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/intent-completeness-engine-v1611/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/intent-completeness-engine-v1611/QA-MATRIX.json`",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "requirement",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.11/features/intent-completeness-engine-v1611/truth.md",
+      "status": "draft",
+      "route": "truth"
+    },
+    {
+      "surface": "acceptance",
+      "authority": "acceptance_truth",
+      "canonical_artifact": "docs/beacon/v1.6.11/features/intent-completeness-engine-v1611/tests.md",
+      "status": "planned",
+      "route": "qa"
+    },
+    {
+      "surface": "source",
+      "authority": "support_advisory",
+      "canonical_artifact": "beacon/utils/intent_decomposition.py",
+      "status": "inspected",
+      "route": "implement"
+    },
+    {
+      "surface": "research",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/research/beacon-competitor-registry.md",
+      "status": "linked",
+      "route": "plan"
+    },
+    {
+      "surface": "parent-context",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.11/features/brownfield-context-resolver-v1611/truth.md",
+      "status": "bound",
+      "route": "truth"
+    },
+    {
+      "surface": "program-decisions",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/program-manifest.md",
+      "status": "accepted",
+      "route": "truth"
+    }
+  ]
+}

@@ -1,0 +1,255 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-27T07:28:11.592164+00:00",
+  "feature": "convergence-verifier-v1611",
+  "feature_slug": "convergence-verifier-v1611",
+  "version": "v1.6.11",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/truth.md",
+    "tests": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/tests.md",
+    "tasks": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/tasks.md",
+    "evidence": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "545865bbc8fe061da9dbd0caa6b091d3c1401414edf10e75a103a26f6c3869b2",
+    "tests": "fd4b1370dd9e1beb6b00f2d9214bf2e00c8dd2fe58a0d49be7cd8a8d7b05ec80",
+    "tasks": "811274263a940b96303a9723fc31513b27ba42f40bdec176c2d5bf8123713943",
+    "evidence": "a487450ae0989515f3971d5e605518d77ff7c98bde9f0185c1be02e747b5f53c"
+  },
+  "truth_frontmatter": {
+    "slug": "convergence-verifier-v1611",
+    "version": "v1.6.11",
+    "status": "frozen",
+    "revision_id": "D2",
+    "language": "zh",
+    "domain_required": "true",
+    "domain_kind": "gate",
+    "package_maturity": "filled",
+    "materials_status": "current",
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "program_ref": "docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/program-manifest.md",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "participating_services": "beacon",
+    "git_canonical_branch": "main",
+    "previous_draft": "D1",
+    "change_reason": "D2: formal GoalRun ownership, refs and public lifecycle boundary",
+    "parent_truth": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/truth.md",
+    "inherited_contracts": "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md; docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/truth.md",
+      "user_story": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/truth.md",
+      "test_case": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/tests.md"
+    }
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-CNV-001",
+      "theme": "ClosureMatrix 覆盖 intent/path/AC/state/task/evidence 六层并可双向追溯",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-CNV-002",
+      "theme": "Goal pass 要求 must intents covered、required paths closed、AC verified、状态合法、任务终态一致、证据有效",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-CNV-003",
+      "theme": "任一 Truth/graph/material/evidence stale 均阻断完成并给出重建 route",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-CNV-004",
+      "theme": "subagent/task executor 不能直接完成 GoalRun；只有 Goal owner 在 verifier pass 后转换 complete",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-CNV-005",
+      "theme": "fail verdict 必须列出最小未闭环集合及 recommended next-ready/replan/truth/qa route",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-CNV-006",
+      "theme": "GoalRun 必须持有 `run_id`、program slug、graph revision、truth revision set、current ready set、human decision refs、admission/worktree refs、`agent_trace.v1` refs 与 verifier refs；任一 required ref 缺失或 stale 均阻断 complete",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-CNV-007",
+      "theme": "L0–L8 只能映射到既有 goal→plan→truth→design?→implement→qa→release；不得新增 public harness，且 verifier pass 只产生裁决，最终 complete 仍由 Goal owner 执行",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-CNV-001",
+      "tc_id": "TC-CNV-001",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k closure_matrix --tb=no`",
+      "assertion": "six layers are bidirectionally traceable",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-CNV-002",
+      "tc_id": "TC-CNV-002",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k goal_completion --tb=no`",
+      "assertion": "any open required layer blocks pass",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-CNV-003",
+      "tc_id": "TC-CNV-003",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k stale_blocks --tb=no`",
+      "assertion": "stale truth/graph/material/evidence blocks",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-CNV-004",
+      "tc_id": "TC-CNV-004",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k goal_owner --tb=no`",
+      "assertion": "subagent completion rejected",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-CNV-005",
+      "tc_id": "TC-CNV-005",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k minimal_gap_route --tb=no`",
+      "assertion": "fail reports minimal gaps and routes",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-CNV-006",
+      "tc_id": "TC-CNV-006",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k goal_run_required_refs --tb=no`",
+      "assertion": "missing or stale program/graph/truth/ready/decision/admission/trace/verifier refs block complete",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-CNV-007",
+      "tc_id": "TC-CNV-007",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k public_lifecycle_boundary --tb=no`",
+      "assertion": "no new public harness appears and only Goal owner completes after verifier pass",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-CNV-007",
+      "tc_id": "TC-CNV-ILLEGAL",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k convergence_illegal_transition --tb=no`",
+      "assertion": "illegal completion by child, stale verdict or new public harness is rejected",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Implement AC-CNV-001: ClosureMatrix 覆盖 intent/path/AC/state/task/evidence 六层并可双向追溯 · ac=AC-CNV-001 · evidence=`.beacon/evidence/implement/convergence-verifier-v1611/AC-CNV-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Implement AC-CNV-002: Goal pass 要求 must intents covered、required paths closed、AC verified、状... · ac=AC-CNV-002 · evidence=`.beacon/evidence/implement/convergence-verifier-v1611/AC-CNV-002.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Implement AC-CNV-003: 任一 Truth/graph/material/evidence stale 均阻断完成并给出重建 route · ac=AC-CNV-003 · evidence=`.beacon/evidence/implement/convergence-verifier-v1611/AC-CNV-003.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Implement AC-CNV-004: subagent/task executor 不能直接完成 GoalRun；只有 Goal owner 在 verifier pass 后... · ac=AC-CNV-004 · evidence=`.beacon/evidence/implement/convergence-verifier-v1611/AC-CNV-004.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Implement AC-CNV-005: fail verdict 必须列出最小未闭环集合及 recommended next-ready/replan/truth/qa route · ac=AC-CNV-005 · evidence=`.beacon/evidence/implement/convergence-verifier-v1611/AC-CNV-005.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Implement AC-CNV-006: GoalRun 必须持有 `run_id`、program slug、graph revision、truth revision set、... · ac=AC-CNV-006 · evidence=`.beacon/evidence/implement/convergence-verifier-v1611/AC-CNV-006.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "Implement AC-CNV-007: L0–L8 只能映射到既有 goal→plan→truth→design?→implement→qa→release；不得新增 publi... · ac=AC-CNV-007 · evidence=`.beacon/evidence/implement/convergence-verifier-v1611/AC-CNV-007.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-008",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/convergence-verifier-v1611/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-009",
+      "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/convergence-verifier-v1611/QA-MATRIX.json`",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "requirement",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/truth.md",
+      "status": "draft",
+      "route": "truth"
+    },
+    {
+      "surface": "acceptance",
+      "authority": "acceptance_truth",
+      "canonical_artifact": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/tests.md",
+      "status": "planned",
+      "route": "qa"
+    },
+    {
+      "surface": "source",
+      "authority": "support_advisory",
+      "canonical_artifact": "beacon/utils/product_goal_runtime.py",
+      "status": "inspected",
+      "route": "implement"
+    },
+    {
+      "surface": "source",
+      "authority": "support_advisory",
+      "canonical_artifact": "beacon/utils/program_plan_state.py",
+      "status": "inspected",
+      "route": "implement"
+    },
+    {
+      "surface": "goal-truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md",
+      "status": "inherited",
+      "route": "truth"
+    },
+    {
+      "surface": "trace-truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md",
+      "status": "inherited",
+      "route": "truth"
+    },
+    {
+      "surface": "program-truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/program-manifest.md",
+      "status": "accepted",
+      "route": "truth"
+    }
+  ]
+}

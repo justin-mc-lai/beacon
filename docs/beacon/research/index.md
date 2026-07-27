@@ -186,3 +186,7 @@ When adding a new research note:
 3. add a one-line entry here if it is cross-version
 4. if it materially changes a version line, also update that version's `SUMMARY.md` or execution index as needed
 5. if it cites an external open-source project, also update [Beacon Open-Source Reference Source Map](./beacon-open-source-reference-source-map.md)
+
+13. [Beacon Competitor & Open-Source Benchmark Registry](./beacon-competitor-registry.md)
+   - Why it matters:
+     registers and analyzes key open-source benchmarks (`spec-kit`, `mattpocock-skills`, `everything-claude-code`) for spec-driven workflows, task breakdown, drift/padding interception, and dynamic context updates.

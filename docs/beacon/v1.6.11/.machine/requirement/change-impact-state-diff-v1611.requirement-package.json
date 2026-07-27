@@ -1,0 +1,219 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-07-27T07:28:04.700707+00:00",
+  "feature": "change-impact-state-diff-v1611",
+  "feature_slug": "change-impact-state-diff-v1611",
+  "version": "v1.6.11",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/truth.md",
+    "tests": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/tests.md",
+    "tasks": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/tasks.md",
+    "evidence": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "98d9375c93190a3b9ce60f5d325212aa9ee7f91bc3422bbc3fe1a1d4b614d868",
+    "tests": "72a75497c6a12452734f35369e93384e43f2cca5e9a8ff5a9e17b81ebf1b21b4",
+    "tasks": "77a3c82bf639ce4cece98cdda067775c8b2489f4e6d3b0c50dbe7fc4c20c30fb",
+    "evidence": "1b01512dbb475a24446b741f98b09ffbf95cc8b7adac13a435957fff35fc184e"
+  },
+  "truth_frontmatter": {
+    "slug": "change-impact-state-diff-v1611",
+    "version": "v1.6.11",
+    "status": "frozen",
+    "revision_id": "D2",
+    "language": "zh",
+    "domain_required": "true",
+    "domain_kind": "platform",
+    "package_maturity": "filled",
+    "materials_status": "current",
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "program_ref": "docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/program-manifest.md",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "participating_services": "beacon",
+    "git_canonical_branch": "main",
+    "previous_draft": "D1",
+    "change_reason": "D2: diff lifecycle, delegation, admission, trace and no-compat surfaces",
+    "parent_truth": "docs/beacon/v1.6.11/features/intent-completeness-engine-v1611/truth.md",
+    "inherited_contracts": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md; docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md; docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/truth.md",
+      "user_story": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/truth.md",
+      "test_case": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/tests.md"
+    }
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-DIF-001",
+      "theme": "Change 输出 promise/interface/data/FSM/test 五表面 Before→After",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-DIF-002",
+      "theme": "FSM diff 明确 old/new states、合法边、illegal 边、超时/失败/取消恢复边",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-DIF-003",
+      "theme": "每条 diff 绑定 source intent、affected code scope 与 planned TC",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-DIF-004",
+      "theme": "删除、破坏兼容或高风险状态变更必须进入 state_diff_review 人工确认",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-DIF-005",
+      "theme": "Change diff 必须覆盖 public 1+6 lifecycle 映射、subagent delegation/诚实 fallback、shared worktree admission、Goal run_id/`agent_trace.v1`、Goal completion owner 与 no-compat migration；任一 inherited surface 缺失即阻断 review",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-DIF-001",
+      "tc_id": "TC-DIF-001",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k five_surface_diff --tb=no`",
+      "assertion": "all five surfaces emitted",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-DIF-002",
+      "tc_id": "TC-DIF-002",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k fsm_diff --tb=no`",
+      "assertion": "state and edge delta complete",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-DIF-003",
+      "tc_id": "TC-DIF-003",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k diff_traceability --tb=no`",
+      "assertion": "intent/code/TC bindings present",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-DIF-004",
+      "tc_id": "TC-DIF-004",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k destructive_diff_review --tb=no`",
+      "assertion": "high-risk diff requires human ack",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-DIF-005",
+      "tc_id": "TC-DIF-005",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k inherited_surface_diff --tb=no`",
+      "assertion": "lifecycle, delegation, admission, trace, Goal ownership and no-compat surfaces are present",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-DIF-004",
+      "tc_id": "TC-DIF-ILLEGAL",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k diff_illegal_transition --tb=no`",
+      "assertion": "illegal approval with missing surface or human ack is rejected",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Implement AC-DIF-001: Change 输出 promise/interface/data/FSM/test 五表面 Before→After · ac=AC-DIF-001 · evidence=`.beacon/evidence/implement/change-impact-state-diff-v1611/AC-DIF-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Implement AC-DIF-002: FSM diff 明确 old/new states、合法边、illegal 边、超时/失败/取消恢复边 · ac=AC-DIF-002 · evidence=`.beacon/evidence/implement/change-impact-state-diff-v1611/AC-DIF-002.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Implement AC-DIF-003: 每条 diff 绑定 source intent、affected code scope 与 planned TC · ac=AC-DIF-003 · evidence=`.beacon/evidence/implement/change-impact-state-diff-v1611/AC-DIF-003.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Implement AC-DIF-004: 删除、破坏兼容或高风险状态变更必须进入 state_diff_review 人工确认 · ac=AC-DIF-004 · evidence=`.beacon/evidence/implement/change-impact-state-diff-v1611/AC-DIF-004.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Implement AC-DIF-005: Change diff 必须覆盖 public 1+6 lifecycle 映射、subagent delegation/诚实 fallb... · ac=AC-DIF-005 · evidence=`.beacon/evidence/implement/change-impact-state-diff-v1611/AC-DIF-005.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/change-impact-state-diff-v1611/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/change-impact-state-diff-v1611/QA-MATRIX.json`",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "requirement",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/truth.md",
+      "status": "draft",
+      "route": "truth"
+    },
+    {
+      "surface": "acceptance",
+      "authority": "acceptance_truth",
+      "canonical_artifact": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/tests.md",
+      "status": "planned",
+      "route": "qa"
+    },
+    {
+      "surface": "change",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.11/change/beacon-plan-goal-task-closure-v1611.md",
+      "status": "draft",
+      "route": "truth"
+    },
+    {
+      "surface": "source",
+      "authority": "support_advisory",
+      "canonical_artifact": "beacon/utils/plan_artifact.py",
+      "status": "inspected",
+      "route": "implement"
+    },
+    {
+      "surface": "delegation-truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md",
+      "status": "inherited",
+      "route": "truth"
+    },
+    {
+      "surface": "admission-truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md",
+      "status": "inherited",
+      "route": "truth"
+    },
+    {
+      "surface": "trace-truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md",
+      "status": "inherited",
+      "route": "truth"
+    }
+  ]
+}

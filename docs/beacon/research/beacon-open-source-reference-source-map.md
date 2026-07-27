@@ -351,3 +351,7 @@ Notes:
    - 如果没有 mirror，写出推荐 canonical path
 
 这样后续版本演进阅读研究文档时，才能真正做到“从研究结论直接落到本地源码目录”。
+
+| `spec-kit` | `canonical` | `pm/pm/spec-kit` | `https://github.com/github/spec-kit.git` | `docs/beacon/research/beacon-competitor-registry.md` |
+| `mattpocock-skills` | `canonical` | `core-skills/mattpocock-skills` | `https://github.com/mattpocock/skills.git` | `docs/beacon/research/beacon-competitor-registry.md` |
+| `everything-claude-code` | `canonical` | `agents/agent-skills/everything-claude-code` | `https://github.com/affaan-m/ECC.git` | `docs/beacon/research/beacon-competitor-registry.md` |

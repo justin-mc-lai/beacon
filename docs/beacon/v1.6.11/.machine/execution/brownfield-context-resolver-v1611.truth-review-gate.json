@@ -1,0 +1,158 @@
+{
+  "schema": "truth-review-gate.v1",
+  "schema_version": "1.0",
+  "feature": "brownfield-context-resolver-v1611",
+  "version": "v1.6.11",
+  "pass": true,
+  "blocked": false,
+  "review_gate_pass": true,
+  "abc_pass": true,
+  "reason_code": "",
+  "domain_required": true,
+  "checks": {
+    "A_intent_coverage": {
+      "pass": true,
+      "check": "A",
+      "name": "intent_coverage",
+      "required": true,
+      "matrix_rows": 6,
+      "missing_must": [],
+      "reason": "",
+      "findings": [],
+      "matrix": [
+        {
+          "intent_id": "INT-CTX-01",
+          "source": "user",
+          "strength": "must",
+          "landing": "AC-CTX-001",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-CTX-02",
+          "source": "brownfield",
+          "strength": "must",
+          "landing": "AC-CTX-002",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-CTX-03",
+          "source": "governance",
+          "strength": "must",
+          "landing": "AC-CTX-003",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-CTX-04",
+          "source": "audit",
+          "strength": "must",
+          "landing": "AC-CTX-004",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-CTX-05",
+          "source": "inheritance",
+          "strength": "must",
+          "landing": "AC-CTX-005",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-CTX-06",
+          "source": "execution-context",
+          "strength": "must",
+          "landing": "AC-CTX-006",
+          "status": "covered"
+        }
+      ]
+    },
+    "B_fsm_audit": {
+      "pass": true,
+      "check": "B",
+      "name": "fsm_audit",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "fsm": {
+        "transition_count": 6,
+        "from_states": [
+          "awaiting_human",
+          "requested",
+          "resolved",
+          "resolving",
+          "stale"
+        ],
+        "hanging_states": [],
+        "terminals": [],
+        "illegal_present": true,
+        "five_tuple_present": true
+      }
+    },
+    "C_testability": {
+      "pass": true,
+      "check": "C",
+      "name": "testability",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "ac_count": 6,
+      "tc_count": 7,
+      "missing_ac": [],
+      "covered": {
+        "AC-CTX-001": [
+          "TC-CTX-001"
+        ],
+        "AC-CTX-002": [
+          "TC-CTX-002"
+        ],
+        "AC-CTX-003": [
+          "TC-CTX-003",
+          "TC-CTX-ILLEGAL"
+        ],
+        "AC-CTX-004": [
+          "TC-CTX-004"
+        ],
+        "AC-CTX-005": [
+          "TC-CTX-005"
+        ],
+        "AC-CTX-006": [
+          "TC-CTX-006"
+        ]
+      }
+    },
+    "C_domain_exec_layer": {
+      "pass": true,
+      "check": "C_exec",
+      "name": "domain_exec_layer",
+      "required": false,
+      "skipped": true,
+      "reason": "",
+      "findings": [],
+      "exec_tc_count": 0,
+      "domain_kind": "platform"
+    },
+    "D_fill_depth": {
+      "pass": true,
+      "check": "D",
+      "name": "fill_depth",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "package_maturity": "filled",
+      "domain_kind": "platform",
+      "business_domain": false
+    }
+  },
+  "findings": [],
+  "humanizer": {
+    "rule": "humanizer_only_after_abc_pass_before_freeze",
+    "abc_pass": true,
+    "allowed_now": true,
+    "fill_depth_pass": true,
+    "note": "Polish L0/narrative only after A/B/C; preserve_machine_fields=true; freeze needs D+exec too"
+  },
+  "evaluated_at": "2026-07-27T07:28:00.415707+00:00",
+  "paths": {
+    "truth": "docs/beacon/v1.6.11/features/brownfield-context-resolver-v1611/truth.md",
+    "tests": "docs/beacon/v1.6.11/features/brownfield-context-resolver-v1611/tests.md",
+    "report": "docs/beacon/v1.6.11/.machine/execution/brownfield-context-resolver-v1611.truth-review-gate.json"
+  }
+}

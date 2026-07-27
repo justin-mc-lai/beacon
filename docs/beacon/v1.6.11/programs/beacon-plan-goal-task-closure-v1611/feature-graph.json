@@ -1,0 +1,70 @@
+{
+  "schema": "beacon-feature-graph-v1",
+  "program_slug": "beacon-plan-goal-task-closure-v1611",
+  "version": "v1.6.11",
+  "scope_mode": "full_parity",
+  "scope_ack_ref": "user-confirmation-2026-07-27",
+  "external_dependencies": [
+    "beacon-plan-goal-deep-integration-v169@R1",
+    "beacon-plan-host-subagent-voltpack-v1610@R1",
+    "unified-implement-admission-v1610@R1",
+    "trace-lifecycle-binding-v1610@R1",
+    "truth-core-authority-v1610@R3"
+  ],
+  "lakes": [
+    {
+      "slug": "contract-baseline-convergence-v1611",
+      "depends_on": [],
+      "parity_subset": ["context", "contract-tests", "version-governance"],
+      "status": "frozen"
+    },
+    {
+      "slug": "brownfield-context-resolver-v1611",
+      "depends_on": ["contract-baseline-convergence-v1611"],
+      "parity_subset": ["git", "truth", "code", "tests", "change"],
+      "status": "frozen"
+    },
+    {
+      "slug": "intent-completeness-engine-v1611",
+      "depends_on": ["brownfield-context-resolver-v1611"],
+      "parity_subset": ["intent", "journey", "failure", "state", "non-goal"],
+      "status": "frozen"
+    },
+    {
+      "slug": "change-impact-state-diff-v1611",
+      "depends_on": ["intent-completeness-engine-v1611"],
+      "parity_subset": ["promise", "interface", "data", "fsm", "tests"],
+      "status": "frozen"
+    },
+    {
+      "slug": "atomic-task-graph-compiler-v1611",
+      "depends_on": ["change-impact-state-diff-v1611"],
+      "parity_subset": ["task-dag", "traceability", "verification"],
+      "status": "frozen"
+    },
+    {
+      "slug": "task-progress-ledger-v1611",
+      "depends_on": ["atomic-task-graph-compiler-v1611"],
+      "parity_subset": ["task-progress", "path-progress", "feedback"],
+      "status": "frozen"
+    },
+    {
+      "slug": "drift-padding-review-gate-v1611",
+      "depends_on": ["atomic-task-graph-compiler-v1611"],
+      "parity_subset": ["drift", "padding", "human-decision"],
+      "status": "frozen"
+    },
+    {
+      "slug": "cancel-replan-next-ready-v1611",
+      "depends_on": ["drift-padding-review-gate-v1611"],
+      "parity_subset": ["cancel", "supersede", "replacement", "ready-set"],
+      "status": "frozen"
+    },
+    {
+      "slug": "convergence-verifier-v1611",
+      "depends_on": ["task-progress-ledger-v1611", "cancel-replan-next-ready-v1611"],
+      "parity_subset": ["intent-closure", "path-closure", "evidence-closure"],
+      "status": "frozen"
+    }
+  ]
+}

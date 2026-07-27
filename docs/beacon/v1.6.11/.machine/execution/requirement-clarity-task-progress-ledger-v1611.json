@@ -1,0 +1,582 @@
+{
+  "schema_version": "1.0",
+  "feature": "task-progress-ledger-v1611",
+  "feature_slug": "task-progress-ledger-v1611",
+  "version": "v1.6.11",
+  "runtime_version": "v1.6.10",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.6.11/.machine/execution/requirement-clarity-task-progress-ledger-v1611.json",
+  "report_markdown_path": "docs/beacon/v1.6.11/execution/requirement-clarity-task-progress-ledger-v1611.md",
+  "state_path": ".beacon/state/requirement-clarity-task-progress-ledger-v1611.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.11",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-07-27T07:28:06.583157+00:00",
+    "feature": "task-progress-ledger-v1611",
+    "feature_slug": "task-progress-ledger-v1611",
+    "prd_ref": "docs/beacon/v1.6.11/prd/task-progress-ledger-v1611.md",
+    "user_story_ref": "docs/beacon/v1.6.11/user-story/task-progress-ledger-v1611.md"
+  },
+  "domain_fsm_gate": {
+    "schema_version": "1.0",
+    "feature": "task-progress-ledger-v1611",
+    "feature_slug": "task-progress-ledger-v1611",
+    "version": "v1.6.11",
+    "truth_path": "docs/beacon/v1.6.11/features/task-progress-ledger-v1611/truth.md",
+    "tests_path": "docs/beacon/v1.6.11/features/task-progress-ledger-v1611/tests.md",
+    "required": true,
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "findings": [],
+    "requirement": {
+      "required": true,
+      "reason": "explicit_domain_mark",
+      "explicit": true,
+      "partial": true,
+      "complexity": false,
+      "business_signal": false,
+      "version_supported": true
+    },
+    "projection": {
+      "schema_version": "1.0",
+      "domain_fsm_schema": "domain-fsm.v1",
+      "entity_precedence_schema": "entity-precedence.v1",
+      "frontmatter": {
+        "slug": "task-progress-ledger-v1611",
+        "version": "v1.6.11",
+        "status": "draft",
+        "revision_id": "D2",
+        "language": "zh",
+        "domain_required": "true",
+        "domain_kind": "platform",
+        "package_maturity": "filled",
+        "materials_status": "current",
+        "parser_contract": "beacon-feature-package-v2",
+        "truth_source_model": "feature_package_authoritative",
+        "program_ref": "docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/program-manifest.md",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "participating_services": "beacon",
+        "git_canonical_branch": "main",
+        "previous_draft": "D1",
+        "change_reason": "D2: bind Goal run, public lifecycle and agent_trace.v1",
+        "parent_truth": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/truth.md",
+        "inherited_contracts": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md; docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md",
+        "canonical_refs": {
+          "prd": "docs/beacon/v1.6.11/features/task-progress-ledger-v1611/truth.md",
+          "user_story": "docs/beacon/v1.6.11/features/task-progress-ledger-v1611/truth.md",
+          "test_case": "docs/beacon/v1.6.11/features/task-progress-ledger-v1611/tests.md"
+        }
+      },
+      "frontmatter_errors": [],
+      "has_domain_model_section": true,
+      "has_domain_fsm_section": true,
+      "has_illegal_transition_section": true,
+      "entities": [
+        {
+          "entity": "TaskAttempt",
+          "key": "run_id, task_id, attempt, state, feedback, evidence_refs, lifecycle_stage, trace_refs",
+          "precedence": "单次执行",
+          "requires": "单次执行"
+        },
+        {
+          "entity": "PathProgress",
+          "key": "totals, completed, blocked, cancelled, replaced, remaining",
+          "precedence": "路径聚合",
+          "requires": "路径聚合"
+        },
+        {
+          "entity": "ProgressSnapshot",
+          "key": "graph_revision, sequence, generated_at",
+          "precedence": "可重放快照",
+          "requires": "可重放快照"
+        }
+      ],
+      "entity_precedence": [
+        {
+          "entity": "TaskAttempt",
+          "key": "run_id, task_id, attempt, state, feedback, evidence_refs, lifecycle_stage, trace_refs",
+          "precedence": "单次执行",
+          "requires": "单次执行"
+        },
+        {
+          "entity": "PathProgress",
+          "key": "totals, completed, blocked, cancelled, replaced, remaining",
+          "precedence": "路径聚合",
+          "requires": "路径聚合"
+        },
+        {
+          "entity": "ProgressSnapshot",
+          "key": "graph_revision, sequence, generated_at",
+          "precedence": "可重放快照",
+          "requires": "可重放快照"
+        }
+      ],
+      "aggregates": [
+        {
+          "name": "TaskProgressLedger",
+          "states": [
+            "blocked",
+            "current",
+            "empty",
+            "recording",
+            "stale"
+          ],
+          "transitions": [
+            {
+              "from": "",
+              "to": "empty",
+              "guard": "no task event recorded",
+              "initial": "true"
+            },
+            {
+              "from": "empty",
+              "to": "recording",
+              "guard": "valid event or correction available"
+            },
+            {
+              "from": "blocked",
+              "to": "recording",
+              "guard": "valid event or correction available"
+            },
+            {
+              "from": "current",
+              "to": "recording",
+              "guard": "valid event or correction available"
+            },
+            {
+              "from": "stale",
+              "to": "recording",
+              "guard": "valid event or correction available"
+            },
+            {
+              "from": "recording",
+              "to": "current",
+              "guard": "event sequence and trace append valid"
+            },
+            {
+              "from": "recording",
+              "to": "blocked",
+              "guard": "malformed event or trace append failure"
+            },
+            {
+              "from": "current",
+              "to": "stale",
+              "guard": "graph revision changed"
+            }
+          ]
+        }
+      ],
+      "illegal_transition_slots": [
+        {
+          "description": "`empty → current` without events",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "`recording → current` with sequence gap",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "stale snapshot used as current progress",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "state transition acknowledged while `agent_trace.v1` append failed silently",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "internal L0–L8 state exposed as a new public harness",
+          "aggregate": "",
+          "source": "truth"
+        }
+      ],
+      "acceptance_criteria": [
+        {
+          "ac_id": "AC-LED-001",
+          "description": "每个任务记录 state、attempt、started/updated 时间、executor、verification 与 evidence refs"
+        },
+        {
+          "ac_id": "AC-LED-002",
+          "description": "每次失败、偏差、人工决定与重试都追加 feedback event，不覆盖历史"
+        },
+        {
+          "ac_id": "AC-LED-003",
+          "description": "每条 path 聚合 total/completed/blocked/cancelled/superseded/replacement/remaining"
+        },
+        {
+          "ac_id": "AC-LED-004",
+          "description": "聚合绑定 graph revision；图变化后旧 snapshot 标 stale 并重新计算"
+        },
+        {
+          "ac_id": "AC-LED-005",
+          "description": "每个 task/path event 绑定 Goal `run_id`、内部 L0–L8 状态、对应 Beacon 1+6 harness/stage 与 `agent_trace.v1` ref；内部账本不得新增公共 lifecycle stage"
+        },
+        {
+          "ac_id": "AC-LED-006",
+          "description": "lifecycle trace append 失败时 task/path 状态转换不得静默成功；必须进入 blocked 或显式 degraded finding，并保留可重放失败原因"
+        }
+      ],
+      "bound_ac_ids": [
+        "AC-LED-003",
+        "AC-LED-004",
+        "AC-LED-006"
+      ],
+      "orphan_ac_ids": [
+        "AC-LED-005"
+      ],
+      "aggregates_missing_illegal_slots": [],
+      "raw_section_titles": [
+        "人话",
+        "User Intent",
+        "User Intent Snapshot",
+        "用户旅程",
+        "First principles",
+        "Domain Model",
+        "Intent Coverage Matrix",
+        "Acceptance Criteria",
+        "Domain FSM TaskProgressLedger",
+        "FSM 五元组",
+        "Illegal transitions",
+        "Non-goals",
+        "Freeze readiness"
+      ]
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "required": true,
+      "blocked": false,
+      "status": "pass",
+      "reason_code": "",
+      "findings": [],
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "task-progress-ledger-v1611",
+          "version": "v1.6.11",
+          "status": "draft",
+          "revision_id": "D2",
+          "language": "zh",
+          "domain_required": "true",
+          "domain_kind": "platform",
+          "package_maturity": "filled",
+          "materials_status": "current",
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "program_ref": "docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/program-manifest.md",
+          "truth_map_contract": "beacon-truth-map-v1",
+          "participating_services": "beacon",
+          "git_canonical_branch": "main",
+          "previous_draft": "D1",
+          "change_reason": "D2: bind Goal run, public lifecycle and agent_trace.v1",
+          "parent_truth": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/truth.md",
+          "inherited_contracts": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md; docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md",
+          "canonical_refs": {
+            "prd": "docs/beacon/v1.6.11/features/task-progress-ledger-v1611/truth.md",
+            "user_story": "docs/beacon/v1.6.11/features/task-progress-ledger-v1611/truth.md",
+            "test_case": "docs/beacon/v1.6.11/features/task-progress-ledger-v1611/tests.md"
+          }
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": true,
+        "has_domain_fsm_section": true,
+        "has_illegal_transition_section": true,
+        "entities": [
+          {
+            "entity": "TaskAttempt",
+            "key": "run_id, task_id, attempt, state, feedback, evidence_refs, lifecycle_stage, trace_refs",
+            "precedence": "单次执行",
+            "requires": "单次执行"
+          },
+          {
+            "entity": "PathProgress",
+            "key": "totals, completed, blocked, cancelled, replaced, remaining",
+            "precedence": "路径聚合",
+            "requires": "路径聚合"
+          },
+          {
+            "entity": "ProgressSnapshot",
+            "key": "graph_revision, sequence, generated_at",
+            "precedence": "可重放快照",
+            "requires": "可重放快照"
+          }
+        ],
+        "entity_precedence": [
+          {
+            "entity": "TaskAttempt",
+            "key": "run_id, task_id, attempt, state, feedback, evidence_refs, lifecycle_stage, trace_refs",
+            "precedence": "单次执行",
+            "requires": "单次执行"
+          },
+          {
+            "entity": "PathProgress",
+            "key": "totals, completed, blocked, cancelled, replaced, remaining",
+            "precedence": "路径聚合",
+            "requires": "路径聚合"
+          },
+          {
+            "entity": "ProgressSnapshot",
+            "key": "graph_revision, sequence, generated_at",
+            "precedence": "可重放快照",
+            "requires": "可重放快照"
+          }
+        ],
+        "aggregates": [
+          {
+            "name": "TaskProgressLedger",
+            "states": [
+              "blocked",
+              "current",
+              "empty",
+              "recording",
+              "stale"
+            ],
+            "transitions": [
+              {
+                "from": "",
+                "to": "empty",
+                "guard": "no task event recorded",
+                "initial": "true"
+              },
+              {
+                "from": "empty",
+                "to": "recording",
+                "guard": "valid event or correction available"
+              },
+              {
+                "from": "blocked",
+                "to": "recording",
+                "guard": "valid event or correction available"
+              },
+              {
+                "from": "current",
+                "to": "recording",
+                "guard": "valid event or correction available"
+              },
+              {
+                "from": "stale",
+                "to": "recording",
+                "guard": "valid event or correction available"
+              },
+              {
+                "from": "recording",
+                "to": "current",
+                "guard": "event sequence and trace append valid"
+              },
+              {
+                "from": "recording",
+                "to": "blocked",
+                "guard": "malformed event or trace append failure"
+              },
+              {
+                "from": "current",
+                "to": "stale",
+                "guard": "graph revision changed"
+              }
+            ]
+          }
+        ],
+        "illegal_transition_slots": [
+          {
+            "description": "`empty → current` without events",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "`recording → current` with sequence gap",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "stale snapshot used as current progress",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "state transition acknowledged while `agent_trace.v1` append failed silently",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "internal L0–L8 state exposed as a new public harness",
+            "aggregate": "",
+            "source": "truth"
+          }
+        ],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-LED-001",
+            "description": "每个任务记录 state、attempt、started/updated 时间、executor、verification 与 evidence refs"
+          },
+          {
+            "ac_id": "AC-LED-002",
+            "description": "每次失败、偏差、人工决定与重试都追加 feedback event，不覆盖历史"
+          },
+          {
+            "ac_id": "AC-LED-003",
+            "description": "每条 path 聚合 total/completed/blocked/cancelled/superseded/replacement/remaining"
+          },
+          {
+            "ac_id": "AC-LED-004",
+            "description": "聚合绑定 graph revision；图变化后旧 snapshot 标 stale 并重新计算"
+          },
+          {
+            "ac_id": "AC-LED-005",
+            "description": "每个 task/path event 绑定 Goal `run_id`、内部 L0–L8 状态、对应 Beacon 1+6 harness/stage 与 `agent_trace.v1` ref；内部账本不得新增公共 lifecycle stage"
+          },
+          {
+            "ac_id": "AC-LED-006",
+            "description": "lifecycle trace append 失败时 task/path 状态转换不得静默成功；必须进入 blocked 或显式 degraded finding，并保留可重放失败原因"
+          }
+        ],
+        "bound_ac_ids": [
+          "AC-LED-003",
+          "AC-LED-004",
+          "AC-LED-006"
+        ],
+        "orphan_ac_ids": [
+          "AC-LED-005"
+        ],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "人话",
+          "User Intent",
+          "User Intent Snapshot",
+          "用户旅程",
+          "First principles",
+          "Domain Model",
+          "Intent Coverage Matrix",
+          "Acceptance Criteria",
+          "Domain FSM TaskProgressLedger",
+          "FSM 五元组",
+          "Illegal transitions",
+          "Non-goals",
+          "Freeze readiness"
+        ]
+      },
+      "summary": {
+        "entity_count": 3,
+        "aggregate_count": 1,
+        "illegal_slot_count": 5,
+        "orphan_ac_count": 1,
+        "bound_ac_count": 3
+      }
+    },
+    "recommended_action": ""
+  },
+  "human_closure_contract": {
+    "required": false,
+    "research_path": "docs/beacon/v1.6.11/research/task-progress-ledger-v1611.md",
+    "research_exists": false,
+    "source_architecture_path": "docs/beacon/v1.6.11/source-architecture/index.md",
+    "source_architecture_exists": true,
+    "required_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "missing_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "diagram_types": [],
+    "complexity_signals": []
+  },
+  "requirement_closure_contract": {
+    "required": true,
+    "chain_order": [
+      "research",
+      "prd",
+      "user_story",
+      "test_case",
+      "requirement_clarity",
+      "freeze"
+    ],
+    "human_closure_required": false,
+    "paths": {
+      "research": "docs/beacon/v1.6.11/research/task-progress-ledger-v1611.md",
+      "prd": "docs/beacon/v1.6.11/features/task-progress-ledger-v1611/truth.md",
+      "user_story": "docs/beacon/v1.6.11/features/task-progress-ledger-v1611/truth.md",
+      "test_case": "docs/beacon/v1.6.11/features/task-progress-ledger-v1611/tests.md"
+    },
+    "exists": {
+      "research": false,
+      "prd": true,
+      "user_story": true,
+      "test_case": true
+    },
+    "required_research_sections": [],
+    "missing_research_sections": [],
+    "ac_projection": {
+      "prd_ac_ids": [],
+      "user_story_ac_ids": [],
+      "test_case_ac_ids": [],
+      "upstream_ac_ids": [],
+      "missing_test_case_ac_ids": []
+    }
+  },
+  "version_projection_truth_contract": {
+    "required": false,
+    "supported": true,
+    "projection_types": [],
+    "research_path": "docs/beacon/v1.6.11/research/task-progress-ledger-v1611.md",
+    "research_exists": false,
+    "required_fields": [
+      "prd_refs",
+      "user_story_refs",
+      "test_case_refs",
+      "coverage_notes",
+      "out_of_scope_notes"
+    ],
+    "field_presence": {
+      "prd_refs": false,
+      "user_story_refs": false,
+      "test_case_refs": false,
+      "coverage_notes": false,
+      "out_of_scope_notes": false
+    },
+    "missing_fields": [],
+    "required_refs": {
+      "prd_refs": "docs/beacon/v1.6.11/features/task-progress-ledger-v1611/truth.md",
+      "user_story_refs": "docs/beacon/v1.6.11/features/task-progress-ledger-v1611/truth.md",
+      "test_case_refs": "docs/beacon/v1.6.11/features/task-progress-ledger-v1611/tests.md"
+    },
+    "missing_ref_targets": [],
+    "ready": false
+  },
+  "support_write_topology_contract": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "diagnostics": []
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.6.11/features/task-progress-ledger-v1611/truth.md",
+    "docs/beacon/v1.6.11/features/task-progress-ledger-v1611/tests.md",
+    "docs/beacon/v1.6.11/features/task-progress-ledger-v1611/tasks.md",
+    "docs/beacon/v1.6.11/features/task-progress-ledger-v1611/evidence.md"
+  ]
+}
