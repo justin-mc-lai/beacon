@@ -1,32 +1,32 @@
 {
-  "scope": "contract",
-  "timestamp": "2026-07-27T21:22:14.596964",
-  "project": ".",
+  "scope": "qa9",
+  "timestamp": "2026-07-27T21:47:35.273626",
+  "project": "/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11/drift-padding-review-gate-v1611",
   "version": "v1.6.11",
-  "run_id": "run-20260727T212214586416",
-  "spec_fingerprint_hash": "a8a98d8168a1a5cfa1e95ab2785dac63ffaeb9aa77cb8d5ed323761959aaec89",
+  "run_id": "run-20260727T214735264621",
+  "spec_fingerprint_hash": "ca802d1b6ab9991d42f1c5439ceb1068998134eb25b018b433f0ed710ab0d34e",
   "status": "passed",
   "selected_layers": [
     "contract"
   ],
   "execution": {
-    "run_id": "run-20260727T212214586416",
+    "run_id": "run-20260727T214735264621",
     "version": "v1.6.11",
-    "evidence_dir": ".beacon/evidence/auto-test/run-20260727T212214586416",
+    "evidence_dir": ".beacon/evidence/auto-test/run-20260727T214735264621",
     "spec_fingerprint": {
-      "fingerprint_hash": "a8a98d8168a1a5cfa1e95ab2785dac63ffaeb9aa77cb8d5ed323761959aaec89",
+      "fingerprint_hash": "ca802d1b6ab9991d42f1c5439ceb1068998134eb25b018b433f0ed710ab0d34e",
       "version": "v1.6.11",
-      "generated_at": "2026-07-27T13:22:14.596013+00:00"
+      "generated_at": "2026-07-27T13:47:41.459503+00:00"
     },
     "layers": [
       {
         "layer": "contract",
-        "command": "pytest -q tests/test_v1611_plan_goal_task_closure.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k drift_kinds --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "exit_code": 0,
         "status": "passed",
         "reason_code": "",
         "timeout_seconds": 300,
-        "assertion_count": 104,
+        "assertion_count": 1,
         "was_flaky": false,
         "attempt_count": 1,
         "attempts": [
@@ -35,48 +35,1833 @@
             "exit_code": 0
           }
         ],
-        "execution_fingerprint": "e27df1a6d275327feb54f2e70c17d689c926d1b1e51bc30f7fad7681f025b207",
-        "started_at": "2026-07-27T21:22:14.671937",
-        "ended_at": "2026-07-27T21:22:17.380899",
-        "junit_path": ".beacon/evidence/auto-test/run-20260727T212214586416/contract/junit.xml",
+        "execution_fingerprint": "c1537d0d1753cfc2a361008cec523428ec3a5ed2495ce5ac6006577cc17b8127",
+        "started_at": "2026-07-27T21:47:35.347228",
+        "ended_at": "2026-07-27T21:47:36.131754",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T214735264621/contract/junit.xml",
         "junit_valid": true,
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260727T212214586416/contract/command.txt",
-          ".beacon/evidence/auto-test/run-20260727T212214586416/contract/stdout.log",
-          ".beacon/evidence/auto-test/run-20260727T212214586416/contract/stderr.log",
-          ".beacon/evidence/auto-test/run-20260727T212214586416/contract/junit.xml",
-          ".beacon/evidence/auto-test/run-20260727T212214586416/contract/result.json"
+          ".beacon/evidence/auto-test/run-20260727T214735264621/contract/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/contract/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/contract/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/contract/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/contract/result.json"
         ]
       }
     ],
     "ui_action_evidence": {},
+    "matrix_report": {
+      "status": "ok",
+      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11/drift-padding-review-gate-v1611/.beacon/qa/features/drift-padding-review-gate-v1611/matrix.qa9.json",
+      "evidence_generated": 8,
+      "entry_count": 8,
+      "freshness_violations": []
+    },
+    "artifacts": [
+      ".beacon/evidence/auto-test/run-20260727T214735264621/qa9/tc-execution-map.json",
+      ".beacon/evidence/auto-test/run-20260727T214735264621/qa9/tc-results.json",
+      ".beacon/evidence/auto-test/run-20260727T214735264621/summary.json",
+      ".beacon/flaky-history.json",
+      ".beacon/evidence-signature-chain.json"
+    ],
+    "qa9_matrix_schema_version": "1.0",
     "flaky": {
       "pass_count": 1,
       "flaky_pass_count": 0,
       "flaky_rate": 0.0,
       "max_flaky_rate": 0.02
+    }
+  },
+  "qa9": {
+    "qa_profile": "web-full",
+    "qa_types": [
+      "contract"
+    ],
+    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11/drift-padding-review-gate-v1611/.beacon/qa/features/drift-padding-review-gate-v1611/matrix.qa9.json",
+    "ui_runner": "playwright",
+    "quality_requirements": {
+      "require_junit": true,
+      "require_assertion_count": true
     },
-    "artifacts": [
-      ".beacon/evidence/auto-test/run-20260727T212214586416/summary.json",
-      ".beacon/flaky-history.json",
-      ".beacon/evidence-signature-chain.json"
+    "compatibility": {
+      "browsers": [],
+      "devices": [],
+      "required_pairs": [],
+      "executed_pairs": []
+    },
+    "summary": {
+      "cases_total": 8,
+      "passed": 8,
+      "failed": 0,
+      "blocked": 0,
+      "pending": 0,
+      "pass_rate": 1.0,
+      "automation_rate": 1.0,
+      "auto_cases_total": 8,
+      "auto_cases_executed": 8,
+      "round_stop_triggered": false,
+      "round_stop_reasons": []
+    },
+    "tc_results": [
+      {
+        "tc_id": "TC-REV-001",
+        "ac_id": "AC-REV-001",
+        "source_tc_id": "TC-REV-001",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k drift_kinds --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T214735264621",
+        "evidence_path": ".beacon/evidence/qa-feature/drift-padding-review-gate-v1611/tc-rev-001/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-001/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-001/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-001/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-001/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-001/result.json"
+        ],
+        "execution_fingerprint": "92320cb470fd8e946dae985a02f6d033e6cf9125a89249ade5067166c7a1695f",
+        "started_at": "2026-07-27T21:47:36.206156",
+        "ended_at": "2026-07-27T21:47:36.768322",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-001/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-REV-002",
+        "ac_id": "AC-REV-002",
+        "source_tc_id": "TC-REV-002",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k drift_pause --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T214735264621",
+        "evidence_path": ".beacon/evidence/qa-feature/drift-padding-review-gate-v1611/tc-rev-002/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-002/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-002/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-002/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-002/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-002/result.json"
+        ],
+        "execution_fingerprint": "d5f2caf415b0e0b68142c24c324163d38154dcdc66dc99d81cca30526d1ba856",
+        "started_at": "2026-07-27T21:47:36.839186",
+        "ended_at": "2026-07-27T21:47:37.396353",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-002/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-REV-003",
+        "ac_id": "AC-REV-003",
+        "source_tc_id": "TC-REV-003",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k human_choices --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T214735264621",
+        "evidence_path": ".beacon/evidence/qa-feature/drift-padding-review-gate-v1611/tc-rev-003/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-003/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-003/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-003/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-003/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-003/result.json"
+        ],
+        "execution_fingerprint": "ae381090c4b2d802c65a29ea7980bc7e2a6acd4b6aa511def770406f979dfca3",
+        "started_at": "2026-07-27T21:47:37.469686",
+        "ended_at": "2026-07-27T21:47:38.030722",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-003/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-REV-004",
+        "ac_id": "AC-REV-004",
+        "source_tc_id": "TC-REV-004",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 2,
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k decision_ref --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T214735264621",
+        "evidence_path": ".beacon/evidence/qa-feature/drift-padding-review-gate-v1611/tc-rev-004/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-004/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-004/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-004/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-004/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-004/result.json"
+        ],
+        "execution_fingerprint": "1c8dc5e0729ce79e3033f8404107a7fb3f290e3dc94124adb36f60cdea7d4b84",
+        "started_at": "2026-07-27T21:47:38.103395",
+        "ended_at": "2026-07-27T21:47:38.710255",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-004/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-REV-005",
+        "ac_id": "AC-REV-005",
+        "source_tc_id": "TC-REV-005",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k advisory_finding_sources --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T214735264621",
+        "evidence_path": ".beacon/evidence/qa-feature/drift-padding-review-gate-v1611/tc-rev-005/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-005/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-005/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-005/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-005/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-005/result.json"
+        ],
+        "execution_fingerprint": "0fb504935e6af2017b8c6a317efd5351887f52a163847752ddd91f7c65bc11da",
+        "started_at": "2026-07-27T21:47:38.791786",
+        "ended_at": "2026-07-27T21:47:39.369708",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-005/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-REV-006",
+        "ac_id": "AC-REV-006",
+        "source_tc_id": "TC-REV-006",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k canonical_human_gate_owner --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T214735264621",
+        "evidence_path": ".beacon/evidence/qa-feature/drift-padding-review-gate-v1611/tc-rev-006/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-006/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-006/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-006/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-006/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-006/result.json"
+        ],
+        "execution_fingerprint": "511d03a5c912b556e60f8572b291317018feba9a6633d7fb5e2b0187f1ed9655",
+        "started_at": "2026-07-27T21:47:39.445099",
+        "ended_at": "2026-07-27T21:47:40.006606",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-006/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-REV-007",
+        "ac_id": "AC-REV-007",
+        "source_tc_id": "TC-REV-007",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k hollow_fill_review_gate --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T214735264621",
+        "evidence_path": ".beacon/evidence/qa-feature/drift-padding-review-gate-v1611/tc-rev-007/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-007/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-007/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-007/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-007/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-007/result.json"
+        ],
+        "execution_fingerprint": "86a4c78956e13fc1cdde20232dfe1c242d1945dc26b573c25a2b6afc9ca9651e",
+        "started_at": "2026-07-27T21:47:40.081328",
+        "ended_at": "2026-07-27T21:47:40.653848",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-007/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-REV-ILLEGAL",
+        "ac_id": "AC-REV-006",
+        "source_tc_id": "TC-REV-ILLEGAL",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k review_gate_illegal_transition --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T214735264621",
+        "evidence_path": ".beacon/evidence/qa-feature/drift-padding-review-gate-v1611/tc-rev-illegal/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-ILLEGAL/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-ILLEGAL/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-ILLEGAL/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-ILLEGAL/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-ILLEGAL/result.json"
+        ],
+        "execution_fingerprint": "bf50935b70d686b9056beda0ba5b6318242c2c2e21bceccff457f643173d389b",
+        "started_at": "2026-07-27T21:47:40.725128",
+        "ended_at": "2026-07-27T21:47:41.283252",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-ILLEGAL/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      }
     ]
   },
   "quality_issues": [],
   "schema_version": "1.0",
-  "updated_at": "2026-07-27T13:22:17.456029+00:00",
+  "updated_at": "2026-07-27T13:47:41.338120+00:00",
   "summary": {
-    "feature": "",
+    "feature": "drift-padding-review-gate-v1611",
     "version": "v1.6.11",
     "status": "passed",
-    "release_ready": false,
-    "continue_decision": "",
+    "release_ready": true,
+    "continue_decision": "ready_for_release",
     "stop_reasons": [],
     "reconciliation_required": false,
     "reconciliation_reason_code": "",
     "reconciliation_artifact_path": "",
     "reconciliation_reprojection_targets": [],
-    "repair_action": "",
-    "repair_command": ""
-  }
+    "repair_action": "qa-repair",
+    "repair_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11/drift-padding-review-gate-v1611 --version v1.6.11 --feature \"drift-padding-review-gate-v1611\""
+  },
+  "qa_status_source": "canonical",
+  "governance_state_role": "generated_governance_state_not_truth",
+  "truth_authority": false,
+  "json_authority": false,
+  "resolver_mode": "resolver_first",
+  "feature": "drift-padding-review-gate-v1611",
+  "feature_slug": "drift-padding-review-gate-v1611",
+  "implementation_done": true,
+  "evidence_done": true,
+  "story_sequence": [
+    {
+      "ac_id": "AC-001",
+      "theme": "general",
+      "text": "Acceptance criteria TBD",
+      "tc_ids": [],
+      "qa_types": []
+    }
+  ],
+  "targeted_rerun": {
+    "required": true,
+    "reason_codes": [
+      "no_prior_feature_qa"
+    ],
+    "targeted_layers": [
+      "contract"
+    ],
+    "targeted_ac_ids": [
+      "AC-REV-001",
+      "AC-REV-002",
+      "AC-REV-003",
+      "AC-REV-004",
+      "AC-REV-005",
+      "AC-REV-006",
+      "AC-REV-007"
+    ],
+    "targeted_tc_ids": [
+      "TC-REV-001",
+      "TC-REV-002",
+      "TC-REV-003",
+      "TC-REV-004",
+      "TC-REV-005",
+      "TC-REV-006",
+      "TC-REV-007",
+      "TC-REV-ILLEGAL"
+    ],
+    "targeted_scenario_ids": [],
+    "targeted_scenario_families": []
+  },
+  "boundary_evidence": {
+    "boundary_principles": [],
+    "assumption_capture_required": true,
+    "goal_driven_verification_required": true,
+    "targeted_scope_only": true,
+    "verification_item_count": 8
+  },
+  "feature_matrix_path": ".beacon/qa/features/drift-padding-review-gate-v1611/matrix.qa9.json",
+  "blocking_artifact_updates": [],
+  "per_item_results": [
+    {
+      "ac_id": "AC-REV-001",
+      "tc_id": "TC-REV-001",
+      "source_tc_id": "TC-REV-001",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-001",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-001/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-REV-002",
+      "tc_id": "TC-REV-002",
+      "source_tc_id": "TC-REV-002",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-002",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-002/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-REV-003",
+      "tc_id": "TC-REV-003",
+      "source_tc_id": "TC-REV-003",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-003",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-003/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-REV-004",
+      "tc_id": "TC-REV-004",
+      "source_tc_id": "TC-REV-004",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-004",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-004/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-REV-005",
+      "tc_id": "TC-REV-005",
+      "source_tc_id": "TC-REV-005",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-005",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-005/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-REV-006",
+      "tc_id": "TC-REV-006",
+      "source_tc_id": "TC-REV-006",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-006",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-006/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-006/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-006/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-006/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-006/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-REV-007",
+      "tc_id": "TC-REV-007",
+      "source_tc_id": "TC-REV-007",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-007",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-007/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-REV-006",
+      "tc_id": "TC-REV-ILLEGAL",
+      "source_tc_id": "TC-REV-ILLEGAL",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-ILLEGAL/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-ILLEGAL/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-ILLEGAL/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-ILLEGAL/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-ILLEGAL/result.json"
+      ]
+    }
+  ],
+  "execution_mode": "feature-aware",
+  "project_profile": {},
+  "project_profile_gate": {
+    "status": "not_configured",
+    "profile_id": "",
+    "issues": [],
+    "required_evidence": [],
+    "required_cases": [],
+    "contract_drifts": []
+  },
+  "project_orchestration": {},
+  "current_session_id": "",
+  "design_truth_verdict": {
+    "schema_version": "1.0",
+    "status": "not_applicable",
+    "blocked": false,
+    "reason_codes": [],
+    "source_surface": "implement-to-qa-handoff",
+    "verification_surface": "qa",
+    "docs_version": "v1.6.11",
+    "runtime_version": "v1.6.11",
+    "findings": []
+  },
+  "requirement_completeness_gate": {
+    "schema_version": "1.0",
+    "enabled": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "requirement_completeness_projection_missing",
+    "target_stage": "qa",
+    "feature": "drift-padding-review-gate-v1611",
+    "version": "v1.6.11",
+    "stage_ready": true,
+    "paths": {
+      "envelope": "docs/beacon/v1.6.11/.machine/requirement/drift-padding-review-gate-v1611.envelope.json",
+      "candidate_ledger": "docs/beacon/v1.6.11/.machine/requirement/drift-padding-review-gate-v1611.candidate-ledger.json",
+      "decision_log": "docs/beacon/v1.6.11/.machine/requirement/drift-padding-review-gate-v1611.supplement-decision-log.json",
+      "freeze_contract": "docs/beacon/v1.6.11/.machine/requirement/drift-padding-review-gate-v1611.freeze-contract.json",
+      "completeness": "docs/beacon/v1.6.11/.machine/requirement/drift-padding-review-gate-v1611.completeness.json",
+      "supplement_task": "docs/beacon/v1.6.11/.machine/requirement/drift-padding-review-gate-v1611.supplement-task.json",
+      "re_freeze_transaction": "docs/beacon/v1.6.11/.machine/requirement/drift-padding-review-gate-v1611.re-freeze-transaction.json"
+    },
+    "projection_status": "package_authoritative",
+    "recommended_command": "",
+    "next_action": "qa",
+    "stage_gates": {
+      "artifact_read_model": {
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "requirement_completeness_projection_missing",
+        "summary": "machine completeness projection is missing, but v1.5.2 package truth and coverage are valid authority",
+        "details": {
+          "paths": {
+            "envelope": "docs/beacon/v1.6.11/.machine/requirement/drift-padding-review-gate-v1611.envelope.json",
+            "candidate_ledger": "docs/beacon/v1.6.11/.machine/requirement/drift-padding-review-gate-v1611.candidate-ledger.json",
+            "decision_log": "docs/beacon/v1.6.11/.machine/requirement/drift-padding-review-gate-v1611.supplement-decision-log.json",
+            "freeze_contract": "docs/beacon/v1.6.11/.machine/requirement/drift-padding-review-gate-v1611.freeze-contract.json",
+            "completeness": "docs/beacon/v1.6.11/.machine/requirement/drift-padding-review-gate-v1611.completeness.json",
+            "supplement_task": "docs/beacon/v1.6.11/.machine/requirement/drift-padding-review-gate-v1611.supplement-task.json",
+            "re_freeze_transaction": "docs/beacon/v1.6.11/.machine/requirement/drift-padding-review-gate-v1611.re-freeze-transaction.json"
+          },
+          "projection_status": "package_authoritative"
+        }
+      },
+      "decision_traceability": {
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "summary": "human requirement truth is carried by the authoritative feature package",
+        "details": {}
+      },
+      "coverage_closure": {
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "summary": "acceptance coverage is parseable from package tests",
+        "details": {
+          "ac_count": 7,
+          "test_count": 8
+        }
+      },
+      "downgrade_control": {
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "summary": "legacy completeness projection absence does not downgrade package authority",
+        "details": {}
+      },
+      "stage_admission": {
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "summary": "qa admission uses authoritative package truth",
+        "details": {
+          "target_stage": "qa",
+          "stage_ready": true,
+          "stage_key": "package_authoritative_truth"
+        }
+      }
+    },
+    "human_loop_handoff": {
+      "action": "qa",
+      "reason": "package_authoritative_truth_pass",
+      "recommended_command": "",
+      "focus_areas": []
+    },
+    "package_authoritative_truth": {
+      "status": "pass",
+      "validation": {
+        "schema_version": "1.0",
+        "feature": "drift-padding-review-gate-v1611",
+        "feature_slug": "drift-padding-review-gate-v1611",
+        "version": "v1.6.11",
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "generated_at": "2026-07-27T13:47:34.227395+00:00",
+        "package_dir": "docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611",
+        "truth_frontmatter": {
+          "slug": "drift-padding-review-gate-v1611",
+          "version": "v1.6.11",
+          "status": "frozen",
+          "revision_id": "R2",
+          "language": "zh",
+          "domain_required": "true",
+          "domain_kind": "gate",
+          "ux_required": "false",
+          "ux_deferred": "true",
+          "package_maturity": "filled",
+          "materials_status": "current",
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "program_ref": "docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/program-manifest.md",
+          "truth_map_contract": "beacon-truth-map-v1",
+          "participating_services": "beacon",
+          "git_canonical_branch": "main",
+          "previous_revision": "R1",
+          "change_reason": "D3: reject hollow full-package fill and require governed human decisions",
+          "parent_truth": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/truth.md",
+          "inherited_contracts": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
+          "canonical_refs": {
+            "prd": "docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611/truth.md",
+            "user_story": "docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611/truth.md",
+            "test_case": "docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611/tests.md"
+          }
+        },
+        "ac_count": 7,
+        "test_count": 8,
+        "checkbox_count": 9,
+        "evidence_row_count": 9,
+        "gate_authority": "canonical_surfaces_preserved",
+        "checkbox_gate_bypass": false,
+        "task_evidence_gate": {
+          "pass": true,
+          "checked_ok": 0,
+          "checked_bad": 0,
+          "unbound": 0,
+          "findings": [],
+          "reason_code": ""
+        },
+        "evidence_gate_truth": false,
+        "diagnostics": [
+          {
+            "severity": "info",
+            "code": "truth_human_l0_ok",
+            "path": "docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611/truth.md",
+            "language": "zh",
+            "l0_headings": [
+              "## 人话"
+            ]
+          }
+        ],
+        "truth_map_contract": "beacon-truth-map-v1",
+        "truth_source_model": "feature_package_authoritative",
+        "truth_package_contract": "beacon-feature-package-v2",
+        "machine_json_role": "generated_state_not_truth",
+        "generated_by": "beacon.truth_map.resolver",
+        "truth_authority": "markdown_feature_package",
+        "json_authority": false,
+        "source_paths": {
+          "truth": "docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611/truth.md",
+          "tests": "docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611/tests.md",
+          "tasks": "docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611/tasks.md",
+          "evidence": "docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611/evidence.md"
+        },
+        "source_hashes": {
+          "truth": "578a6c85ca4433697f2b7eb03301ce85cc9f498c57f82448d0e97cf7185723ee",
+          "tests": "60dee164d43a004a827dc3670bbfff582afa1127add99cfe0370e2395a88c7ff",
+          "tasks": "f29ba299cc223ba43c1e0ec858c3ccefaca172cd512aae46d612d8709bc34e84",
+          "evidence": "e044c14545d0bbd1e1f31b029f81a5359d13113d97132a0a9a74b3124c224f43"
+        },
+        "runtime_json_requires_markdown_twin": false
+      }
+    },
+    "completeness": {},
+    "freeze_contract": {}
+  },
+  "requirement_completeness_verdict": "pass",
+  "requirement_completeness_ref": "docs/beacon/v1.6.11/.machine/requirement/drift-padding-review-gate-v1611.completeness.json",
+  "exhaustiveness": {
+    "schema_version": "1.0",
+    "feature": "drift-padding-review-gate-v1611",
+    "feature_slug": "drift-padding-review-gate-v1611",
+    "run_id": "run-20260727T214735264621",
+    "generated_at": "2026-07-27T13:47:41.395140+00:00",
+    "execution_mode": "feature-aware",
+    "scenario_count": 8,
+    "browser_scenario_count": 0,
+    "required_families": [],
+    "passed_families": [],
+    "missing_axes": [],
+    "missing_replay_scenarios": [],
+    "missing_browser_evidence_scenarios": [],
+    "scenario_pass_rate": 1.0,
+    "family_coverage_rate": 1.0,
+    "replay_coverage_rate": 1.0,
+    "browser_evidence_rate": 1.0,
+    "score": 1.0,
+    "threshold": 0.6,
+    "status": "passed",
+    "required_next_action": "continue_current_plan",
+    "failure_streak": 0,
+    "escalation_level": "E0"
+  },
+  "scenario_results_v2": [
+    {
+      "scenario_id": "TC-REV-001",
+      "tc_id": "TC-REV-001",
+      "source_tc_id": "TC-REV-001",
+      "ac_id": "AC-REV-001",
+      "feature_slug": "drift-padding-review-gate-v1611",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-001/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-REV-002",
+      "tc_id": "TC-REV-002",
+      "source_tc_id": "TC-REV-002",
+      "ac_id": "AC-REV-002",
+      "feature_slug": "drift-padding-review-gate-v1611",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-002/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-REV-003",
+      "tc_id": "TC-REV-003",
+      "source_tc_id": "TC-REV-003",
+      "ac_id": "AC-REV-003",
+      "feature_slug": "drift-padding-review-gate-v1611",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-003/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-REV-004",
+      "tc_id": "TC-REV-004",
+      "source_tc_id": "TC-REV-004",
+      "ac_id": "AC-REV-004",
+      "feature_slug": "drift-padding-review-gate-v1611",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-004/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-REV-005",
+      "tc_id": "TC-REV-005",
+      "source_tc_id": "TC-REV-005",
+      "ac_id": "AC-REV-005",
+      "feature_slug": "drift-padding-review-gate-v1611",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-005/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-REV-006",
+      "tc_id": "TC-REV-006",
+      "source_tc_id": "TC-REV-006",
+      "ac_id": "AC-REV-006",
+      "feature_slug": "drift-padding-review-gate-v1611",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-006/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-006/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-006/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-006/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-006/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-REV-007",
+      "tc_id": "TC-REV-007",
+      "source_tc_id": "TC-REV-007",
+      "ac_id": "AC-REV-007",
+      "feature_slug": "drift-padding-review-gate-v1611",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-007/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-REV-ILLEGAL",
+      "tc_id": "TC-REV-ILLEGAL",
+      "source_tc_id": "TC-REV-ILLEGAL",
+      "ac_id": "AC-REV-006",
+      "feature_slug": "drift-padding-review-gate-v1611",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-ILLEGAL/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-ILLEGAL/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-ILLEGAL/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-ILLEGAL/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214735264621/qa9-tc/TC-REV-ILLEGAL/result.json"
+      ]
+    }
+  ],
+  "ac_closure_path": ".beacon/qa/features/drift-padding-review-gate-v1611/ac-closure.json",
+  "feature_scorecard_path": ".beacon/qa/features/drift-padding-review-gate-v1611/scorecard.json",
+  "feature_scorecard": {
+    "schema_version": "1.0",
+    "feature": "drift-padding-review-gate-v1611",
+    "feature_slug": "drift-padding-review-gate-v1611",
+    "run_id": "run-20260727T214735264621",
+    "ac_total": 7,
+    "ac_accepted": 7,
+    "scenario_total": 8,
+    "scenario_passed": 8,
+    "release_confidence_min": 1.0,
+    "release_confidence_avg": 1.0,
+    "review_required_count": 0,
+    "needs_replay_count": 0,
+    "false_complete_risk": 0.0,
+    "unresolved_closure_outcomes": [],
+    "project_profile_gate_status": "not_configured",
+    "project_profile_id": "",
+    "coverage_current": {
+      "required_scenarios": 8,
+      "executed_scenarios": 8,
+      "coverage_rate": 1.0,
+      "required_scenario_families": [
+        "boundary",
+        "compatibility",
+        "happy",
+        "negative",
+        "recovery"
+      ],
+      "covered_scenario_families": [],
+      "missing_scenario_families": [],
+      "missing_test_case_ids": []
+    },
+    "coverage_gap": {
+      "missing_axes": [],
+      "missing_replay_scenarios": [],
+      "missing_browser_evidence_scenarios": [],
+      "missing_scenario_families": [],
+      "missing_test_case_ids": [],
+      "open_closure_outcomes": []
+    },
+    "boundary_evidence": {
+      "boundary_principles": [],
+      "assumption_capture_required": true,
+      "goal_driven_verification_required": true,
+      "verification_item_count": 8,
+      "targeted_scope_only": true
+    },
+    "design_truth_verdict": {
+      "schema_version": "1.0",
+      "status": "not_applicable",
+      "blocked": false,
+      "reason_codes": [],
+      "source_surface": "implement-to-qa-handoff",
+      "verification_surface": "qa",
+      "docs_version": "v1.6.11",
+      "runtime_version": "v1.6.11",
+      "findings": []
+    },
+    "qa_outcome_taxonomy": {
+      "status": "not_applicable",
+      "failure_classes": [],
+      "primary_class": "",
+      "stable_taxonomy": [
+        "product_failed",
+        "test_failed",
+        "runner_admission_blocked",
+        "environment_blocked",
+        "auth_session_blocked",
+        "evidence_binding_missing",
+        "coverage_gap",
+        "truth_projection_gap"
+      ]
+    },
+    "qa_attribution": {
+      "schema_version": "1.0",
+      "status": "not_applicable",
+      "support_evidence_only": true,
+      "runtime_evidence_only": true,
+      "truth_authority": false,
+      "verdict_authority": false,
+      "release_pass_evidence": false,
+      "attribution_count": 0,
+      "accepted_count": 0,
+      "blocked_count": 0,
+      "release_blocking_count": 0,
+      "proposal_count": 0,
+      "family_counts": {
+        "implementation_gap": 0,
+        "truth_drift": 0,
+        "coverage_gap": 0,
+        "execution_lapse": 0,
+        "skill_defect": 0,
+        "runner_admission_blocker": 0,
+        "evidence_insufficient": 0
+      },
+      "route_counts": {},
+      "attributions": []
+    },
+    "qa_acceptance_capability": {
+      "schema_version": "1.0",
+      "status": "blocked",
+      "blocked": true,
+      "taxonomy": {
+        "schema_version": "1.0",
+        "status": "pass",
+        "blocked": false,
+        "full_layers": [
+          "unit",
+          "interface",
+          "contract",
+          "integration",
+          "smoke",
+          "functional",
+          "regression",
+          "exception",
+          "compatibility",
+          "browser_e2e"
+        ],
+        "non_browser_layers": [
+          "unit",
+          "interface",
+          "contract",
+          "integration",
+          "smoke",
+          "functional",
+          "regression",
+          "exception",
+          "compatibility"
+        ],
+        "browser_layer": "browser_e2e",
+        "qa9_layers": [
+          "unit",
+          "interface",
+          "contract",
+          "integration",
+          "smoke",
+          "functional",
+          "regression",
+          "exception",
+          "compatibility"
+        ],
+        "requested_layers": [
+          "contract"
+        ],
+        "unknown_layers": []
+      },
+      "profile_completeness": {
+        "schema_version": "1.0",
+        "profile": "feature-matrix",
+        "browser_required": false,
+        "required_layers": [
+          "contract"
+        ],
+        "executed_layers": [
+          "contract"
+        ],
+        "skipped_layers": [],
+        "blocked_layers": [],
+        "not_applicable_layers": [],
+        "not_applicable_reasons": {},
+        "missing_layers": [],
+        "confidence_chain": {
+          "schema_version": "1.0",
+          "layers": [
+            {
+              "layer": "unit",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit"
+              ]
+            },
+            {
+              "layer": "interface",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface"
+              ]
+            },
+            {
+              "layer": "contract",
+              "status": "executed",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface"
+              ]
+            },
+            {
+              "layer": "integration",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface",
+                "contract"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface",
+                "integration"
+              ]
+            },
+            {
+              "layer": "smoke",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface",
+                "contract",
+                "integration"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface",
+                "integration",
+                "smoke"
+              ]
+            },
+            {
+              "layer": "functional",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface",
+                "contract",
+                "integration",
+                "smoke"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface",
+                "integration",
+                "smoke",
+                "functional"
+              ]
+            },
+            {
+              "layer": "regression",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface",
+                "contract",
+                "integration",
+                "smoke",
+                "functional"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface",
+                "integration",
+                "smoke",
+                "functional",
+                "regression"
+              ]
+            },
+            {
+              "layer": "exception",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface",
+                "contract",
+                "integration",
+                "smoke",
+                "functional",
+                "regression"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface",
+                "integration",
+                "smoke",
+                "functional",
+                "regression",
+                "exception"
+              ]
+            },
+            {
+              "layer": "compatibility",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface",
+                "contract",
+                "integration",
+                "smoke",
+                "functional",
+                "regression",
+                "exception"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface",
+                "integration",
+                "smoke",
+                "functional",
+                "regression",
+                "exception",
+                "compatibility"
+              ]
+            },
+            {
+              "layer": "browser_e2e",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface",
+                "contract",
+                "integration",
+                "smoke",
+                "functional",
+                "regression",
+                "exception",
+                "compatibility"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface",
+                "integration",
+                "smoke",
+                "functional",
+                "regression",
+                "exception",
+                "compatibility",
+                "browser_e2e"
+              ]
+            }
+          ],
+          "chain_direction": "unit_to_browser_e2e",
+          "terminal_layer": "browser_e2e",
+          "chain_broken": true,
+          "downstream_gap_layers": [
+            "browser_e2e",
+            "compatibility",
+            "exception",
+            "functional",
+            "integration",
+            "interface",
+            "regression",
+            "smoke",
+            "unit"
+          ]
+        },
+        "state_machine_coverage": {},
+        "is_complete": false,
+        "partial": true,
+        "status": "partial"
+      },
+      "browser_evidence_contract": {
+        "status": "not_required",
+        "blocked": false
+      },
+      "browser_runner_registry": [
+        "playwright",
+        "playwright-extension",
+        "playwright-cli",
+        "playwright-cdp",
+        "browser-use",
+        "agent-browser",
+        "attached-browser",
+        "web-access",
+        "obscura-cdp"
+      ],
+      "non_acceptance_evidence_kinds": [
+        "listing",
+        "placeholder",
+        "documentation_only",
+        "dry_run"
+      ],
+      "failure_attribution_routes": {
+        "product_bug": "beacon-implement",
+        "implementation_gap": "beacon-implement",
+        "test_script_bug": "beacon-test-case",
+        "environment_blocker": "beacon-qa",
+        "auth_session_blocker": "beacon-qa",
+        "runner_admission_blocker": "blocked",
+        "coverage_gap": "beacon-test-case",
+        "truth_drift": "beacon-change",
+        "evidence_insufficient": "beacon-qa"
+      },
+      "truth_authority": false,
+      "release_pass_evidence": false
+    },
+    "reconciliation": {
+      "required": false,
+      "reason_code": "",
+      "artifact_path": "",
+      "artifact": {}
+    },
+    "deep_absorption": {
+      "schema_version": "1.0",
+      "status": "not_applicable",
+      "eligible_for_release_supplement": false,
+      "findings": [],
+      "absorbed_count": 0,
+      "deferred_count": 0,
+      "blocked_count": 0,
+      "not_applicable_count": 0
+    },
+    "release_supplement_input": {
+      "deep_findings_absorbed": false,
+      "absorbed_finding_count": 0,
+      "advisory_or_blocked_finding_count": 0,
+      "policy": "absorbed_deep_findings_only"
+    },
+    "continue_decision": "ready_for_release",
+    "stop_reasons": [],
+    "test_case_backfill_required": false,
+    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11/drift-padding-review-gate-v1611 --version v1.6.11 --feature \"drift-padding-review-gate-v1611\"",
+    "repair_handoff": {
+      "action": "qa-repair",
+      "reason": "qa_round_incomplete",
+      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11/drift-padding-review-gate-v1611 --version v1.6.11 --feature \"drift-padding-review-gate-v1611\""
+    },
+    "release_ready": true,
+    "domain_fsm_coverage": {
+      "schema_version": "1.0",
+      "required": true,
+      "blocked": false,
+      "status": "pass",
+      "reason_code": "",
+      "findings": [],
+      "threshold": 1.0,
+      "coverage_ratio": 1.0,
+      "legal_walk": {
+        "required": 1,
+        "present": 1,
+        "covered": 1,
+        "rows": [
+          {
+            "ac_id": "TC-REV-001",
+            "tc_id": "AC-REV-001",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k drift_kinds --tb=no`",
+            "raw": "TC-REV-001 | AC-REV-001 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k drift_kinds --tb=no` | all required finding kinds detected (legal walk / happy path)"
+          }
+        ]
+      },
+      "illegal": {
+        "required": 2,
+        "present": 2,
+        "covered": 2,
+        "rows": [
+          {
+            "ac_id": "TC-REV-004",
+            "tc_id": "AC-REV-004",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k decision_ref --tb=no`",
+            "raw": "TC-REV-004 | AC-REV-004 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k decision_ref --tb=no` | transition without decision_ref rejected"
+          },
+          {
+            "ac_id": "TC-REV-ILLEGAL",
+            "tc_id": "AC-REV-006",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k review_gate_illegal_transition --tb=no`",
+            "raw": "TC-REV-ILLEGAL | AC-REV-006 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k review_gate_illegal_transition --tb=no` | illegal resume, cancel or clear without canonical decision_ref is rejected"
+          }
+        ]
+      },
+      "matrix": {
+        "legal_walk_rows": [
+          {
+            "ac_id": "TC-REV-001",
+            "tc_id": "AC-REV-001",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k drift_kinds --tb=no`",
+            "raw": "TC-REV-001 | AC-REV-001 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k drift_kinds --tb=no` | all required finding kinds detected (legal walk / happy path)"
+          }
+        ],
+        "illegal_rows": [
+          {
+            "ac_id": "TC-REV-004",
+            "tc_id": "AC-REV-004",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k decision_ref --tb=no`",
+            "raw": "TC-REV-004 | AC-REV-004 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k decision_ref --tb=no` | transition without decision_ref rejected"
+          },
+          {
+            "ac_id": "TC-REV-ILLEGAL",
+            "tc_id": "AC-REV-006",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k review_gate_illegal_transition --tb=no`",
+            "raw": "TC-REV-ILLEGAL | AC-REV-006 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k review_gate_illegal_transition --tb=no` | illegal resume, cancel or clear without canonical decision_ref is rejected"
+          }
+        ],
+        "other_rows": [
+          {
+            "ac_id": "TC-REV-002",
+            "tc_id": "AC-REV-002",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k drift_pause --tb=no`",
+            "raw": "TC-REV-002 | AC-REV-002 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k drift_pause --tb=no` | mandatory finding pauses execution"
+          },
+          {
+            "ac_id": "TC-REV-003",
+            "tc_id": "AC-REV-003",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k human_choices --tb=no`",
+            "raw": "TC-REV-003 | AC-REV-003 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k human_choices --tb=no` | only five choices accepted"
+          },
+          {
+            "ac_id": "TC-REV-005",
+            "tc_id": "AC-REV-005",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k advisory_finding_sources --tb=no`",
+            "raw": "TC-REV-005 | AC-REV-005 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k advisory_finding_sources --tb=no` | hook and subagent findings cannot directly change canonical task or Goal state"
+          },
+          {
+            "ac_id": "TC-REV-006",
+            "tc_id": "AC-REV-006",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k canonical_human_gate_owner --tb=no`",
+            "raw": "TC-REV-006 | AC-REV-006 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k canonical_human_gate_owner --tb=no` | Beacon policy persists the decision and only parent scheduler applies it"
+          },
+          {
+            "ac_id": "TC-REV-007",
+            "tc_id": "AC-REV-007",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k hollow_fill_review_gate --tb=no`",
+            "raw": "TC-REV-007 | AC-REV-007 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k hollow_fill_review_gate --tb=no` | placeholder, hollow domain, orphan, hanging FSM, padding, evidence/hash drift force governed human choice"
+          }
+        ],
+        "has_legal_walk": true,
+        "has_illegal": true
+      },
+      "aggregates": [
+        "DriftReviewGate"
+      ],
+      "state_machine_coverage": {},
+      "deep_route_recommended": false
+    },
+    "domain_fsm_qa_blocked": false,
+    "domain_fsm_qa_reason_code": "",
+    "design_alignment": {
+      "required": false,
+      "has_baseline": false,
+      "paths": [],
+      "deferred": true,
+      "status": "pass"
+    },
+    "design_md_lint": {
+      "required": false,
+      "status": "not_required",
+      "blocked": false,
+      "reason_code": "",
+      "evidence_path": "",
+      "summary": {}
+    },
+    "ui_state_matrix": {
+      "schema": "ui-state-matrix.v1",
+      "required": false,
+      "status": "not_required",
+      "blocked": false,
+      "reason_code": "",
+      "findings": []
+    },
+    "ui_design_ship_blocked": false
+  },
+  "release_ready": true,
+  "delivery_contract": {
+    "schema_version": "1.0",
+    "feature": "drift-padding-review-gate-v1611",
+    "version": "v1.6.11",
+    "requested_mode": "feature-aware",
+    "effective_mode": "feature-aware",
+    "generator_mode": "feature-aware",
+    "execution_mode": "feature-aware",
+    "runner_mode": "qa",
+    "host_runtime": "codex",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "host_runtime": "codex",
+      "subagent_required": false,
+      "subagent_runtime_status": "",
+      "subagent_delegation_status": "",
+      "host_semantic_ready": false,
+      "provider_available": false
+    },
+    "subagent_prechecks": {},
+    "requirement_binding": {
+      "source_of_truth_root": "docs/beacon/v1.6.11",
+      "feature_matrix_path": ".beacon/qa/features/drift-padding-review-gate-v1611/matrix.qa9.json",
+      "canonical_matrix_path": ""
+    },
+    "traceability_refs": [
+      ".beacon/qa/features/drift-padding-review-gate-v1611/matrix.qa9.json",
+      ".beacon/qa/features/drift-padding-review-gate-v1611/ac-closure.json",
+      ".beacon/qa/features/drift-padding-review-gate-v1611/scorecard.json",
+      ".beacon/release-gate-report.json"
+    ],
+    "runner": "",
+    "adapter_type": "",
+    "execution_surface": "qa",
+    "team_mode": false,
+    "qa_status": "passed",
+    "gate_status": "",
+    "release_ready": true,
+    "risk_flags": []
+  },
+  "host_native_delivery": {
+    "schema_version": "1.0",
+    "feature": "drift-padding-review-gate-v1611",
+    "version": "v1.6.11",
+    "requested_mode": "feature-aware",
+    "effective_mode": "feature-aware",
+    "generator_mode": "feature-aware",
+    "execution_mode": "feature-aware",
+    "runner_mode": "qa",
+    "host_runtime": "codex",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "host_runtime": "codex",
+      "subagent_required": false,
+      "subagent_runtime_status": "",
+      "subagent_delegation_status": "",
+      "host_semantic_ready": false,
+      "provider_available": false
+    },
+    "subagent_prechecks": {},
+    "requirement_binding": {
+      "source_of_truth_root": "docs/beacon/v1.6.11",
+      "feature_matrix_path": ".beacon/qa/features/drift-padding-review-gate-v1611/matrix.qa9.json",
+      "canonical_matrix_path": ""
+    },
+    "traceability_refs": [
+      ".beacon/qa/features/drift-padding-review-gate-v1611/matrix.qa9.json",
+      ".beacon/qa/features/drift-padding-review-gate-v1611/ac-closure.json",
+      ".beacon/qa/features/drift-padding-review-gate-v1611/scorecard.json",
+      ".beacon/release-gate-report.json"
+    ],
+    "runner": "",
+    "adapter_type": "",
+    "execution_surface": "qa",
+    "team_mode": false,
+    "qa_status": "passed",
+    "gate_status": "",
+    "release_ready": true,
+    "risk_flags": []
+  },
+  "current_spec_fingerprint_hash": "ca802d1b6ab9991d42f1c5439ceb1068998134eb25b018b433f0ed710ab0d34e"
 }
