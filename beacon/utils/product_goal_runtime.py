@@ -604,7 +604,24 @@ def create_goal_run(
         "created_at": now_iso(),
         "updated_at": now_iso(),
         "history": [{"event": "created", "at": now_iso()}],
+        "completion_actor": "parent_goal",
+        "open_closure_layers": [],
     }
+    try:
+        from beacon.utils.plan_goal_task_closure import (
+            build_goal_task_closure_binding,
+            version_requires_task_closure,
+        )
+
+        if version_requires_task_closure(resolved_version, feature):
+            payload["task_closure"] = build_goal_task_closure_binding(
+                run_id=run_id,
+                version=resolved_version,
+                feature=feature_slug(feature) if feature else "",
+                lakes=[feature_slug(x) for x in (lakes or []) if str(x).strip()],
+            )
+    except Exception:  # noqa: BLE001
+        pass
 
     # P0: delivery/implement intent → admit preflight at create (do not wait only for tick→ralph)
     try:
@@ -1132,6 +1149,35 @@ def complete_goal_run(project_root: Path, run_id: str, *, force: bool = False) -
         hist.append({"event": "complete_rejected", "reason_code": REASON_VERIFIER_REQUIRED, "at": now_iso()})
         payload["history"] = hist
         return _save(project_root, payload)
+    # v1.6.11+: task-closure / parent-only / lifecycle gate (still not auto-release)
+    if not force:
+        try:
+            from beacon.utils.plan_goal_task_closure import evaluate_goal_run_closure_gate
+
+            closure = evaluate_goal_run_closure_gate(payload)
+            payload["task_closure_gate"] = closure
+            if closure.get("blocked"):
+                payload["status"] = "blocked"
+                payload["blocked"] = True
+                payload["reason_code"] = str(closure.get("reason_code") or "goal_run_closure_blocked")
+                hist = list(payload.get("history") or [])
+                hist.append(
+                    {
+                        "event": "complete_rejected",
+                        "reason_code": payload["reason_code"],
+                        "at": now_iso(),
+                        "gate": "task_closure",
+                    }
+                )
+                payload["history"] = hist
+                return _save(project_root, payload)
+        except Exception as exc:  # noqa: BLE001
+            payload["task_closure_gate"] = {
+                "status": "error",
+                "blocked": False,
+                "reason_code": "task_closure_gate_error",
+                "error": str(exc)[:240],
+            }
     payload["status"] = "completed"
     payload["blocked"] = False
     payload["reason_code"] = ""

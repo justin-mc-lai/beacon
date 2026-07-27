@@ -765,3 +765,95 @@ def test_cli_program_freeze_authenticated_default(tmp_path: Path):
     payload = _json.loads(result.output)
     assert payload["blocked"] is True
 
+
+# ---- Goal/Truth runtime wiring ----
+
+def test_version_requires_task_closure():
+    assert pg.version_requires_task_closure("v1.6.11", "x") is True
+    assert pg.version_requires_task_closure("v1.6.10", "x") is False
+    assert pg.version_requires_task_closure("v1.6.10", "contract-baseline-convergence-v1611") is True
+
+
+def test_goal_run_closure_gate_parent_only():
+    payload = {
+        "version": "v1.6.11",
+        "feature": "contract-baseline-convergence-v1611",
+        "run_id": "pgr-test",
+        "completion_actor": "subagent",
+        "stages": [{"stage": "plan"}, {"stage": "truth"}, {"stage": "implement"}, {"stage": "qa"}, {"stage": "release"}],
+        "verifier": {"present": True, "refs": ["e"]},
+        "task_closure": pg.build_goal_task_closure_binding(
+            run_id="pgr-test",
+            version="v1.6.11",
+            feature="contract-baseline-convergence-v1611",
+        ),
+        "open_closure_layers": [],
+    }
+    bad = pg.evaluate_goal_run_closure_gate(payload)
+    assert bad["blocked"] is True
+    payload["completion_actor"] = "parent_goal"
+    ok = pg.evaluate_goal_run_closure_gate(payload)
+    assert ok["pass"] is True
+
+
+def test_complete_goal_run_uses_task_closure_gate(tmp_path: Path):
+    from beacon.utils.product_goal_runtime import create_goal_run, attach_verifier, complete_goal_run
+
+    # minimal project metadata so version resolve works
+    (tmp_path / "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611").mkdir(parents=True)
+    (tmp_path / "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/truth.md").write_text(
+        "---\nstatus: frozen\npackage_maturity: filled\n---\n# t\n",
+        encoding="utf-8",
+    )
+    # version truth for resolve
+    import json as _json
+    (tmp_path / "beacon").mkdir()
+    (tmp_path / "beacon/version-truth.json").write_text(
+        _json.dumps(
+            {
+                "schema_version": "1.0",
+                "package_version": "1.6.10",
+                "runtime_version": "v1.6.10",
+                "docs_default_line": "v1.6.10",
+                "planning_lines": ["v1.6.11"],
+                "lines": {"v1.6.10": {"status": "current_runtime_release"}, "v1.6.11": {"status": "planning_only"}},
+            }
+        ),
+        encoding="utf-8",
+    )
+    run = create_goal_run(
+        tmp_path,
+        utterance="deliver task closure",
+        version="v1.6.11",
+        feature="contract-baseline-convergence-v1611",
+    )
+    assert run.get("task_closure")
+    # without verifier blocked
+    rejected = complete_goal_run(tmp_path, run["run_id"])
+    assert rejected.get("status") != "completed"
+    attach_verifier(tmp_path, run["run_id"], refs=[".beacon/evidence/qa/x.json"], source="beacon-eval-qa")
+    done = complete_goal_run(tmp_path, run["run_id"])
+    assert done.get("status") == "completed", done
+    assert done.get("task_closure_gate", {}).get("pass") is True
+
+
+def test_truth_stage_blocks_scaffold_package(tmp_path: Path):
+    from beacon.utils.goal_stage_exit_gates import evaluate_stage_exit
+
+    feat = "scaffold-lake-v1611"
+    d = tmp_path / "docs/beacon/v1.6.11/features" / feat
+    d.mkdir(parents=True)
+    (d / "truth.md").write_text(
+        "---\nstatus: draft\npackage_maturity: scaffold\n---\n# scaffold\n",
+        encoding="utf-8",
+    )
+    payload = {
+        "version": "v1.6.11",
+        "feature": feat,
+        "stages": [{"stage": "truth", "status": "active"}],
+        "current_stage": "truth",
+    }
+    gate = evaluate_stage_exit(tmp_path, payload, stage="truth")
+    assert gate["blocked"] is True
+    assert gate["reason_code"] == "truth_scaffold_not_filled"
+

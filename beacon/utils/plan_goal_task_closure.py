@@ -1306,3 +1306,145 @@ def transition_change_plan(state: str, event: str, *, decision_ref: str | None =
     if not matches:
         return _reject("change_plan_transition_unknown", state=state, event=event)
     return _ok(from_state=state, event=event, to_state=matches[0], decision_ref=decision_ref or "")
+
+
+def version_requires_task_closure(version: str | None, feature: str | None = None) -> bool:
+    """v1.6.11+ docs lines and v1611 feature slugs require task-closure gates."""
+    ver = str(version or "").strip()
+    feat = str(feature or "").strip().lower()
+    if "v1611" in feat or feat.endswith("-v1.6.11"):
+        return True
+    try:
+        major, minor, patch = ver.lstrip("v").split(".")[:3]
+        return (int(major), int(minor), int(patch)) >= (1, 6, 11)
+    except Exception:  # noqa: BLE001
+        return False
+
+
+def build_goal_task_closure_binding(
+    *,
+    run_id: str,
+    version: str,
+    feature: str = "",
+    lakes: list[str] | None = None,
+    program_slug: str = "",
+) -> dict[str, Any]:
+    """Seed GoalRun refs for PAC-014 / AC-CNV-006 style closure."""
+    lakes = list(lakes or [])
+    program = program_slug or (
+        "beacon-plan-goal-task-closure-v1611" if version_requires_task_closure(version, feature) else ""
+    )
+    return {
+        "schema": "goal-task-closure-binding.v1",
+        "run_id": run_id,
+        "version": version,
+        "feature": feature,
+        "lakes": lakes,
+        "program_ref": (
+            f"docs/beacon/{version}/programs/{program}/program-manifest.md" if program else ""
+        ),
+        "graph_ref": (
+            f"docs/beacon/{version}/programs/{program}/feature-graph.json" if program else ""
+        ),
+        "truth_ref": (
+            f"docs/beacon/{version}/features/{feature}/truth.md" if feature else ""
+        ),
+        "ready_ref": f".beacon/state/product-goal/{run_id}/ready-set.json",
+        "decision_ref": f".beacon/state/product-goal/{run_id}/human-decisions.json",
+        "admission_ref": (
+            f".beacon/state/workspace-admission/{version}/{feature}.json" if feature else ""
+        ),
+        "trace_ref": f".beacon/state/product-goal/{run_id}/execution.jsonl",
+        "verifier_ref": f".beacon/state/product-goal/{run_id}.json#verifier",
+        "public_lifecycle": list(PUBLIC_LIFECYCLE),
+        "parent_only_completion": True,
+    }
+
+
+def evaluate_goal_run_closure_gate(payload: dict[str, Any] | None) -> dict[str, Any]:
+    """Hard complete gate for v1.6.11+ Goal runs (does not auto-release)."""
+    payload = payload if isinstance(payload, dict) else {}
+    version = str(payload.get("version") or "")
+    feature = str(payload.get("feature") or "")
+    if not version_requires_task_closure(version, feature):
+        return _ok(skipped=True, reason_code="task_closure_gate_not_applicable")
+
+    actor = str(payload.get("completion_actor") or "parent_goal")
+    owner = reject_goal_owner_subagent_complete(actor=actor)
+    if owner.get("blocked"):
+        return owner
+
+    stages = []
+    for s in payload.get("stages") or []:
+        if isinstance(s, dict) and s.get("stage"):
+            stages.append(str(s.get("stage")))
+    stages.append("goal")
+    lifecycle = enforce_public_lifecycle_boundary(stages)
+    if lifecycle.get("blocked"):
+        return lifecycle
+
+    binding = payload.get("task_closure") if isinstance(payload.get("task_closure"), dict) else {}
+    if not binding:
+        binding = build_goal_task_closure_binding(
+            run_id=str(payload.get("run_id") or ""),
+            version=version,
+            feature=feature,
+            lakes=list(payload.get("lakes") or []),
+        )
+    refs_check = require_goal_run_refs(
+        {
+            "program_ref": binding.get("program_ref"),
+            "graph_ref": binding.get("graph_ref"),
+            "truth_ref": binding.get("truth_ref") or (f"docs/beacon/{version}/features/{feature}/truth.md" if feature else "n/a"),
+            "ready_ref": binding.get("ready_ref"),
+            "decision_ref": binding.get("decision_ref"),
+            "admission_ref": binding.get("admission_ref") or "workspace-admission",
+            "trace_ref": binding.get("trace_ref"),
+            "verifier_ref": binding.get("verifier_ref"),
+        }
+    )
+    # truth_ref may be empty when multi-lake only; allow lakes
+    if refs_check.get("blocked") and (payload.get("lakes") or feature):
+        missing = list(refs_check.get("missing") or [])
+        # tolerate empty truth_ref only when lakes present and program_ref exists
+        if missing == ["truth_ref"] and payload.get("lakes") and binding.get("program_ref"):
+            refs_check = _ok(refs=binding, tolerated_missing=["truth_ref"])
+    if refs_check.get("blocked"):
+        return refs_check
+
+    open_layers = list(payload.get("open_closure_layers") or [])
+    completion = evaluate_goal_completion(open_layers)
+    if completion.get("blocked"):
+        return completion
+
+    # optional scorecard: fail hard only on explicit fail verdict
+    verifier = payload.get("verifier") if isinstance(payload.get("verifier"), dict) else {}
+    if not (verifier.get("present") and list(verifier.get("refs") or [])):
+        return _reject("goal_verifier_required_for_closure")
+
+    return _ok(
+        task_closure=binding,
+        actor=actor,
+        lifecycle=lifecycle,
+        completion=completion,
+        reason_code="goal_run_closure_ok",
+    )
+
+
+def detect_scaffold_truth_block(truth_md: str) -> dict[str, Any]:
+    """Block treating scaffold/unfilled package as freeze-exit ready."""
+    text = truth_md or ""
+    maturity_scaffold = "package_maturity: scaffold" in text
+    status_frozen = bool(re.search(r"^status:\s*frozen", text, re.M))
+    if maturity_scaffold and status_frozen:
+        return _reject(
+            "truth_scaffold_not_filled",
+            user_facing="scaffold package cannot exit truth as frozen without Host LLM fill",
+        )
+    if maturity_scaffold and not status_frozen:
+        return _reject(
+            "truth_scaffold_not_filled",
+            user_facing="scaffold remains unfilled; run truth fill-request/fill-apply before freeze",
+        )
+    return _ok()
+
