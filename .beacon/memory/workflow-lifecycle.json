@@ -2588,7 +2588,40 @@
       },
       "attempt_id": "qa@attempt-1",
       "attempt_seq": 1
+    },
+    {
+      "event_id": "c84070db-8bab-4c9e-96e6-204bb2300fc4",
+      "run_id": "release:v1.6.11",
+      "stage": "release",
+      "event": "release_decision_recorded",
+      "source": "release.check",
+      "source_session_id": "release:v1.6.11",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.11/.machine/change/v1.6.11.json",
+        "docs/beacon/v1.6.11/change/v1.6.11.md"
+      ],
+      "ts": "2026-07-27T13:14:08.241397+00:00",
+      "details": {
+        "action": "check",
+        "version": "v1.6.11",
+        "status": "blocked",
+        "failed_checks": [
+          "auto-test version matches release version",
+          "gate report version matches release version",
+          "coverage summary version matches release version",
+          "acceptance projection transaction contract",
+          "release scorecard ready",
+          "version surface governance pass",
+          "implement prompt boundary verdict pass"
+        ]
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
     }
   ],
-  "updated_at": "2026-07-16T07:00:26.061440+00:00"
+  "updated_at": "2026-07-27T13:14:08.241409+00:00"
 }
