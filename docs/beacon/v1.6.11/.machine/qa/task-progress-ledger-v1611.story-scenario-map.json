@@ -1,0 +1,481 @@
+{
+  "schema_version": "1.0",
+  "feature": "task-progress-ledger-v1611",
+  "feature_slug": "task-progress-ledger-v1611",
+  "version": "v1.6.11",
+  "generated_at": "2026-07-27T13:48:07.945934+00:00",
+  "expansion_profile": "pua-web",
+  "scenario_depth": "standard",
+  "families_required": [
+    "happy",
+    "negative",
+    "boundary",
+    "recovery",
+    "compatibility"
+  ],
+  "stories": [
+    {
+      "ac_id": "AC-001",
+      "theme": "general",
+      "text": "Acceptance criteria TBD",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-LED-001",
+      "theme": "",
+      "text": "task attempts contain required fields (legal walk / happy path)",
+      "scenario_ids": [
+        "SC-AUTO-TC-LED-001"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-LED-001",
+          "source_tc_id": "TC-LED-001",
+          "tc_id": "TC-LED-001-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-LED-002",
+      "theme": "",
+      "text": "feedback history is append-only",
+      "scenario_ids": [
+        "SC-AUTO-TC-LED-002"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-LED-002",
+          "source_tc_id": "TC-LED-002",
+          "tc_id": "TC-LED-002-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-LED-003",
+      "theme": "",
+      "text": "all path counters reconcile",
+      "scenario_ids": [
+        "SC-AUTO-TC-LED-003"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-LED-003",
+          "source_tc_id": "TC-LED-003",
+          "tc_id": "TC-LED-003-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-LED-004",
+      "theme": "",
+      "text": "graph change stales old snapshot",
+      "scenario_ids": [
+        "SC-AUTO-TC-LED-004"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-LED-004",
+          "source_tc_id": "TC-LED-004",
+          "tc_id": "TC-LED-004-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-LED-005",
+      "theme": "",
+      "text": "events bind run_id, internal state, public 1+6 stage and agent_trace.v1 refs",
+      "scenario_ids": [
+        "SC-AUTO-TC-LED-005"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-LED-005",
+          "source_tc_id": "TC-LED-005",
+          "tc_id": "TC-LED-005-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-LED-006",
+      "theme": "",
+      "text": "trace append failure cannot silently commit the state transition",
+      "scenario_ids": [
+        "SC-AUTO-TC-LED-006",
+        "SC-AUTO-TC-LED-ILLEGAL"
+      ],
+      "scenario_families": [
+        "primary",
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-LED-006",
+          "source_tc_id": "TC-LED-006",
+          "tc_id": "TC-LED-006-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-AUTO-TC-LED-ILLEGAL",
+          "source_tc_id": "TC-LED-ILLEGAL",
+          "tc_id": "TC-LED-ILLEGAL-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-LED-007",
+      "theme": "",
+      "text": "all fill-chain steps append sequence/hash/status/feedback and retries remain replayable",
+      "scenario_ids": [
+        "SC-AUTO-TC-LED-007"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-LED-007",
+          "source_tc_id": "TC-LED-007",
+          "tc_id": "TC-LED-007-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "SC-AUTO-TC-LED-001",
+      "source_tc_id": "TC-LED-001",
+      "tc_id": "TC-LED-001-PRIMARY",
+      "ac_id": "AC-LED-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "task attempts contain required fields (legal walk / happy path)",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k task_attempt_fields --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "task attempts contain required fields (legal walk / happy path)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/task-progress-ledger-v1611/tc-led-001/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-LED-002",
+      "source_tc_id": "TC-LED-002",
+      "tc_id": "TC-LED-002-PRIMARY",
+      "ac_id": "AC-LED-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "feedback history is append-only",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k feedback_append_only --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "feedback history is append-only",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/task-progress-ledger-v1611/tc-led-002/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-LED-003",
+      "source_tc_id": "TC-LED-003",
+      "tc_id": "TC-LED-003-PRIMARY",
+      "ac_id": "AC-LED-003",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "all path counters reconcile",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k path_progress --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "all path counters reconcile",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/task-progress-ledger-v1611/tc-led-003/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-LED-004",
+      "source_tc_id": "TC-LED-004",
+      "tc_id": "TC-LED-004-PRIMARY",
+      "ac_id": "AC-LED-004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "graph change stales old snapshot",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k progress_revision --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "graph change stales old snapshot",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/task-progress-ledger-v1611/tc-led-004/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-LED-005",
+      "source_tc_id": "TC-LED-005",
+      "tc_id": "TC-LED-005-PRIMARY",
+      "ac_id": "AC-LED-005",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "events bind run_id, internal state, public 1+6 stage and agent_trace.v1 refs",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k goal_run_lifecycle_trace --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "events bind run_id, internal state, public 1+6 stage and agent_trace.v1 refs",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/task-progress-ledger-v1611/tc-led-005/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-LED-006",
+      "source_tc_id": "TC-LED-006",
+      "tc_id": "TC-LED-006-PRIMARY",
+      "ac_id": "AC-LED-006",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "trace append failure cannot silently commit the state transition",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k trace_append_fail_closed --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "trace append failure cannot silently commit the state transition",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/task-progress-ledger-v1611/tc-led-006/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-LED-007",
+      "source_tc_id": "TC-LED-007",
+      "tc_id": "TC-LED-007-PRIMARY",
+      "ac_id": "AC-LED-007",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "all fill-chain steps append sequence/hash/status/feedback and retries remain replayable",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k fill_transaction_progress_replay --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "all fill-chain steps append sequence/hash/status/feedback and retries remain replayable",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/task-progress-ledger-v1611/tc-led-007/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-LED-ILLEGAL",
+      "source_tc_id": "TC-LED-ILLEGAL",
+      "tc_id": "TC-LED-ILLEGAL-PRIMARY",
+      "ac_id": "AC-LED-006",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "illegal current state with sequence gap, stale snapshot or failed trace append is rejected",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k ledger_illegal_transition --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "illegal current state with sequence gap, stale snapshot or failed trace append is rejected",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/task-progress-ledger-v1611/tc-led-illegal/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
+}
