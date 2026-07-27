@@ -2,7 +2,7 @@
 slug: contract-baseline-convergence-v1611
 version: v1.6.11
 status: frozen
-revision_id: D2
+revision_id: R2
 language: zh
 domain_required: true
 domain_kind: platform
@@ -15,8 +15,8 @@ baseline_commit: 30b9adffc8ec5442a7691a88faf64a251d97b98f
 truth_map_contract: beacon-truth-map-v1
 participating_services: beacon
 git_canonical_branch: main
-previous_draft: D1
-change_reason: "D2: Beacon-native execution inheritance and no-compat forward migration"
+previous_revision: R1
+change_reason: "D3: CLI deterministic scaffold plus Host LLM full-package fill under feature-package authority"
 parent_truth: docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md
 inherited_contracts: "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md"
 canonical_refs:
@@ -79,6 +79,9 @@ scope_ack_ref: user-confirmation-2026-07-27
 | INT-BAS-04 | delivery | must | AC-BAS-004 | covered |
 | INT-BAS-05 | no-compat | must | AC-BAS-005 | covered |
 | INT-BAS-06 | lineage | must | AC-BAS-006 | covered |
+| INT-BAS-07 | scaffold-authority | must | AC-BAS-007 | covered |
+| INT-BAS-08 | semantic-authority | must | AC-BAS-008 | covered |
+| INT-BAS-09 | authenticated-freeze | must | AC-BAS-009 | covered |
 
 ## Acceptance Criteria
 
@@ -90,6 +93,9 @@ scope_ack_ref: user-confirmation-2026-07-27
 | AC-BAS-004 | Truth refreeze 时旧 tests/tasks/evidence 被标 stale，禁止跨 revision 复用 |
 | AC-BAS-005 | 旧 package、旧 Goal ledger、缺 Matrix/exec TC/`ac=`/`evidence=` 的 active shape 必须 fail-closed，并返回 `package_shape_upgrade_required` 或等价 reason code；不得加入 legacy reader、soft skip 或 compatibility adapter |
 | AC-BAS-006 | 旧冻结 Truth 保持只读 lineage；仍有效的语义只能通过 `parent_truth`/`inherited_contracts` 进入当前 shape，并经 plan → truth/change → Truth Review → freeze new revision 向前迁移 |
+| AC-BAS-007 | `beacon truth init`/等价 CLI 只负责确定性创建 `features/<slug>/{truth,tests,tasks,evidence}.md` scaffold、协议版本与占位状态；scaffold 未经 Host LLM 全包填充与 review 不得被标记 `package_maturity=filled` 或推荐 freeze |
+| AC-BAS-008 | 旧 PRD/User Story semantic compiler、host-response/command-bridge/provider transport 作为受治理的语义输入能力被复用，但当前 `feature_package_authoritative` 四文件仍是唯一 requirement truth；不得恢复平行 `prd/`、`user-story/`、`qa/test-cases/` canonical 写入 |
+| AC-BAS-009 | 每个 R2 freeze 必须绑定最终四文件 baseline hash、package-validation report/hash、Truth Review report/hash、human scope ack 与 promotion receipt；任一 hash 漂移或 receipt 仅声明 `status=complete` 时 Program freeze 必须阻断 |
 
 ## Domain FSM BaselineConvergence
 
@@ -121,6 +127,9 @@ scope_ack_ref: user-confirmation-2026-07-27
 - `stale → current` while old evidence remains current
 - old-shape package 通过降低 gate 进入 current
 - 新 revision 直接覆盖或改写旧 frozen Truth
+- scaffold 未填充即进入 freeze
+- 旧 PRD/User Story 文档重新成为 active canonical truth
+- promotion receipt 未绑定最终四文件 hash、validation 与 review 证据却被聚合为完成
 
 ## Non-goals
 

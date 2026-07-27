@@ -27,7 +27,7 @@
     "review_gates": [],
     "qa_coverage_hints": [],
     "evidence_lines": {},
-    "generated_at": "2026-07-27T07:28:07.938007+00:00",
+    "generated_at": "2026-07-27T08:26:04.274063+00:00",
     "feature": "drift-padding-review-gate-v1611",
     "feature_slug": "drift-padding-review-gate-v1611",
     "prd_ref": "docs/beacon/v1.6.11/prd/drift-padding-review-gate-v1611.md",
@@ -61,8 +61,8 @@
       "frontmatter": {
         "slug": "drift-padding-review-gate-v1611",
         "version": "v1.6.11",
-        "status": "draft",
-        "revision_id": "D2",
+        "status": "frozen",
+        "revision_id": "R2",
         "language": "zh",
         "domain_required": "true",
         "domain_kind": "gate",
@@ -74,8 +74,8 @@
         "truth_map_contract": "beacon-truth-map-v1",
         "participating_services": "beacon",
         "git_canonical_branch": "main",
-        "previous_draft": "D1",
-        "change_reason": "D2: subagent findings remain advisory; Beacon owns the human gate",
+        "previous_revision": "R1",
+        "change_reason": "D3: reject hollow full-package fill and require governed human decisions",
         "parent_truth": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/truth.md",
         "inherited_contracts": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
         "canonical_refs": {
@@ -210,6 +210,11 @@
           "description": "child executor applying a human decision to the canonical graph",
           "aggregate": "",
           "source": "truth"
+        },
+        {
+          "description": "hollow fill 或 source-hash drift 未经 human decision 仍写入 canonical package",
+          "aggregate": "",
+          "source": "truth"
         }
       ],
       "acceptance_criteria": [
@@ -236,12 +241,17 @@
         {
           "ac_id": "AC-REV-006",
           "description": "强门与五类人工选择必须由 Beacon canonical policy 持久化并校验 decision_ref；只有 parent/Goal scheduler 可消费决定并转换任务图"
+        },
+        {
+          "ac_id": "AC-REV-007",
+          "description": "full-package fill 必须检测 placeholder、空域模型、句子级假拆解、AC/TC orphan、FSM hanging state、重复/注水 task、evidence mismatch 与 source-hash drift；命中 mandatory finding 后进入人工 `continue/rewrite/split/replace/cancel`，未经决定不得 patch/freeze"
         }
       ],
       "bound_ac_ids": [
         "AC-REV-002",
         "AC-REV-003",
-        "AC-REV-004"
+        "AC-REV-004",
+        "AC-REV-007"
       ],
       "orphan_ac_ids": [
         "AC-REV-006"
@@ -277,8 +287,8 @@
         "frontmatter": {
           "slug": "drift-padding-review-gate-v1611",
           "version": "v1.6.11",
-          "status": "draft",
-          "revision_id": "D2",
+          "status": "frozen",
+          "revision_id": "R2",
           "language": "zh",
           "domain_required": "true",
           "domain_kind": "gate",
@@ -290,8 +300,8 @@
           "truth_map_contract": "beacon-truth-map-v1",
           "participating_services": "beacon",
           "git_canonical_branch": "main",
-          "previous_draft": "D1",
-          "change_reason": "D2: subagent findings remain advisory; Beacon owns the human gate",
+          "previous_revision": "R1",
+          "change_reason": "D3: reject hollow full-package fill and require governed human decisions",
           "parent_truth": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/truth.md",
           "inherited_contracts": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
           "canonical_refs": {
@@ -426,6 +436,11 @@
             "description": "child executor applying a human decision to the canonical graph",
             "aggregate": "",
             "source": "truth"
+          },
+          {
+            "description": "hollow fill 或 source-hash drift 未经 human decision 仍写入 canonical package",
+            "aggregate": "",
+            "source": "truth"
           }
         ],
         "acceptance_criteria": [
@@ -452,12 +467,17 @@
           {
             "ac_id": "AC-REV-006",
             "description": "强门与五类人工选择必须由 Beacon canonical policy 持久化并校验 decision_ref；只有 parent/Goal scheduler 可消费决定并转换任务图"
+          },
+          {
+            "ac_id": "AC-REV-007",
+            "description": "full-package fill 必须检测 placeholder、空域模型、句子级假拆解、AC/TC orphan、FSM hanging state、重复/注水 task、evidence mismatch 与 source-hash drift；命中 mandatory finding 后进入人工 `continue/rewrite/split/replace/cancel`，未经决定不得 patch/freeze"
           }
         ],
         "bound_ac_ids": [
           "AC-REV-002",
           "AC-REV-003",
-          "AC-REV-004"
+          "AC-REV-004",
+          "AC-REV-007"
         ],
         "orphan_ac_ids": [
           "AC-REV-006"
@@ -482,9 +502,9 @@
       "summary": {
         "entity_count": 3,
         "aggregate_count": 1,
-        "illegal_slot_count": 5,
+        "illegal_slot_count": 6,
         "orphan_ac_count": 1,
-        "bound_ac_count": 3
+        "bound_ac_count": 4
       }
     },
     "recommended_action": ""

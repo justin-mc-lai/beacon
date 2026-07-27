@@ -15,7 +15,7 @@
       "check": "A",
       "name": "intent_coverage",
       "required": true,
-      "matrix_rows": 8,
+      "matrix_rows": 10,
       "missing_must": [],
       "reason": "",
       "findings": [],
@@ -75,6 +75,20 @@
           "strength": "must",
           "landing": "AC-DAG-008",
           "status": "covered"
+        },
+        {
+          "intent_id": "INT-DAG-09",
+          "source": "deterministic-projection",
+          "strength": "must",
+          "landing": "AC-DAG-009",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-DAG-10",
+          "source": "semantic-compile-migration",
+          "strength": "must",
+          "landing": "AC-DAG-010",
+          "status": "covered"
         }
       ]
     },
@@ -108,8 +122,8 @@
       "required": true,
       "reason": "",
       "findings": [],
-      "ac_count": 8,
-      "tc_count": 9,
+      "ac_count": 10,
+      "tc_count": 11,
       "missing_ac": [],
       "covered": {
         "AC-DAG-001": [
@@ -136,6 +150,12 @@
         "AC-DAG-008": [
           "TC-DAG-008",
           "TC-DAG-ILLEGAL"
+        ],
+        "AC-DAG-009": [
+          "TC-DAG-009"
+        ],
+        "AC-DAG-010": [
+          "TC-DAG-010"
         ]
       }
     },
@@ -170,7 +190,7 @@
     "fill_depth_pass": true,
     "note": "Polish L0/narrative only after A/B/C; preserve_machine_fields=true; freeze needs D+exec too"
   },
-  "evaluated_at": "2026-07-27T07:28:05.784409+00:00",
+  "evaluated_at": "2026-07-27T08:26:01.891156+00:00",
   "paths": {
     "truth": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/truth.md",
     "tests": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/tests.md",

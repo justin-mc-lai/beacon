@@ -34,7 +34,7 @@
       "slug": "drift-padding-review-gate-v1611",
       "version": "v1.6.11",
       "status": "frozen",
-      "revision_id": "D2",
+      "revision_id": "R2",
       "language": "zh",
       "domain_required": "true",
       "domain_kind": "gate",
@@ -46,8 +46,8 @@
       "truth_map_contract": "beacon-truth-map-v1",
       "participating_services": "beacon",
       "git_canonical_branch": "main",
-      "previous_draft": "D1",
-      "change_reason": "D2: subagent findings remain advisory; Beacon owns the human gate",
+      "previous_revision": "R1",
+      "change_reason": "D3: reject hollow full-package fill and require governed human decisions",
       "parent_truth": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/truth.md",
       "inherited_contracts": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
       "canonical_refs": {
@@ -69,10 +69,10 @@
       "evidence": "docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611/evidence.md"
     },
     "source_hashes": {
-      "truth": "d5250cc178372135bcbcf21403bde438d6b0ad2684d423669abee2a0cef838aa",
-      "tests": "6a349da4e1319b9c17bf6f4a4b7aee5767394fd10bff532200db030cb1d1b04f",
-      "tasks": "85ad713658be540ea9cb36f68e05210038d41e58c18b8592a448fb192b2676fe",
-      "evidence": "7c6b5c86363a4fb52329ebd03a6edd8eaac890b6222f6eda79ade0315211d404"
+      "truth": "4465d6ae058292472c952c7de6b983891f655834bf0c4dab9302cd7416d21571",
+      "tests": "46c745cb55c32749927db495198e68886a9bc63b5bb34b98bca2439461e376e6",
+      "tasks": "f29ba299cc223ba43c1e0ec858c3ccefaca172cd512aae46d612d8709bc34e84",
+      "evidence": "e044c14545d0bbd1e1f31b029f81a5359d13113d97132a0a9a74b3124c224f43"
     },
     "surfaces": {
       "truth": {
@@ -87,7 +87,7 @@
         "filename": "truth.md",
         "path": "docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611/truth.md",
         "exists": true,
-        "source_hash": "d5250cc178372135bcbcf21403bde438d6b0ad2684d423669abee2a0cef838aa",
+        "source_hash": "4465d6ae058292472c952c7de6b983891f655834bf0c4dab9302cd7416d21571",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -103,7 +103,7 @@
         "filename": "tests.md",
         "path": "docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611/tests.md",
         "exists": true,
-        "source_hash": "6a349da4e1319b9c17bf6f4a4b7aee5767394fd10bff532200db030cb1d1b04f",
+        "source_hash": "46c745cb55c32749927db495198e68886a9bc63b5bb34b98bca2439461e376e6",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -119,7 +119,7 @@
         "filename": "tasks.md",
         "path": "docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611/tasks.md",
         "exists": true,
-        "source_hash": "85ad713658be540ea9cb36f68e05210038d41e58c18b8592a448fb192b2676fe",
+        "source_hash": "f29ba299cc223ba43c1e0ec858c3ccefaca172cd512aae46d612d8709bc34e84",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -135,7 +135,7 @@
         "filename": "evidence.md",
         "path": "docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611/evidence.md",
         "exists": true,
-        "source_hash": "7c6b5c86363a4fb52329ebd03a6edd8eaac890b6222f6eda79ade0315211d404",
+        "source_hash": "e044c14545d0bbd1e1f31b029f81a5359d13113d97132a0a9a74b3124c224f43",
         "authority": "markdown_feature_package",
         "json_authority": false
       }
@@ -223,7 +223,7 @@
         "truth_authority": true,
         "json_authority": false,
         "generated_governance_state": false,
-        "source_hash": "d68ea5641d9c05afc4a10728bf67eb92186dbfaaa67b98ae8b084abdc1954595"
+        "source_hash": "fdb6969492591ae8748023861073fc21ecd62a304e78549a8b40dad49d9d17dc"
       },
       "global_boundaries": {
         "schema_version": "1.0",
@@ -257,7 +257,7 @@
         "truth_authority": true,
         "json_authority": false,
         "generated_governance_state": false,
-        "source_hash": "651f1bbc289551036f4627621ffe9f98ee8bf4e609191524b0073f2ade1a76ea"
+        "source_hash": "6ffa6da103d004e8ead8c67a6ade59b3609c1d13cc8342ce11e4c3e2c7161b51"
       },
       "execution_boundaries": {
         "schema_version": "1.0",
@@ -325,7 +325,7 @@
         "truth_authority": true,
         "json_authority": false,
         "generated_governance_state": false,
-        "source_hash": "5bfc7603f95d68a843ed0f633d1dfaec895adaa28545ba6cf23ff8dde816019b"
+        "source_hash": "8929c6afa9962abdecd086478ea4684dbc7c33208976281e8914e795b9641c73"
       }
     },
     "generated_state_surfaces": {
@@ -344,7 +344,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "ed87d4945a116a4808170a7a5a9a38f16853a74a96dfc8f70ed254fcbb1db1a2"
+        "source_hash": "a8db86d80904e8f5fc06ef37e9dca7f47dea425675fe062b463baf322e4fb716"
       },
       "project_version_metadata": {
         "schema_version": "1.0",
@@ -378,7 +378,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "6352053798e233bdc87e53ca8dd5819066ceab2ce9a64ddcf89bd26703f885d2"
+        "source_hash": "a063411ee3d0f483ebca9a06665a79f60ace73966c57f0ce59c3e21714faf0f6"
       },
       "evidence_manifest": {
         "schema_version": "1.0",
@@ -395,7 +395,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "b1159a88cf8318393207beed479e68276d6208abc4381407b387a403d7825c55"
+        "source_hash": "502d8e0e3e535b83d375b615c36a665583c56186c3a1179442b2d75ec3bdd547"
       },
       "qa_status": {
         "schema_version": "1.0",
@@ -621,7 +621,7 @@
     "diagnostics": []
   },
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-27T07:28:08.754613+00:00",
+  "generated_at": "2026-07-27T08:26:05.179291+00:00",
   "truth_authority": false,
   "source_paths": {
     "truth": "docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611/truth.md",
@@ -630,9 +630,9 @@
     "evidence": "docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611/evidence.md"
   },
   "source_hashes": {
-    "truth": "d5250cc178372135bcbcf21403bde438d6b0ad2684d423669abee2a0cef838aa",
-    "tests": "6a349da4e1319b9c17bf6f4a4b7aee5767394fd10bff532200db030cb1d1b04f",
-    "tasks": "85ad713658be540ea9cb36f68e05210038d41e58c18b8592a448fb192b2676fe",
-    "evidence": "7c6b5c86363a4fb52329ebd03a6edd8eaac890b6222f6eda79ade0315211d404"
+    "truth": "4465d6ae058292472c952c7de6b983891f655834bf0c4dab9302cd7416d21571",
+    "tests": "46c745cb55c32749927db495198e68886a9bc63b5bb34b98bca2439461e376e6",
+    "tasks": "f29ba299cc223ba43c1e0ec858c3ccefaca172cd512aae46d612d8709bc34e84",
+    "evidence": "e044c14545d0bbd1e1f31b029f81a5359d13113d97132a0a9a74b3124c224f43"
   }
 }

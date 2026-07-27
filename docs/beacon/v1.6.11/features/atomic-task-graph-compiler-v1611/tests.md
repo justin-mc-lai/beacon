@@ -1,7 +1,7 @@
 ---
 slug: atomic-task-graph-compiler-v1611
 version: v1.6.11
-revision_id: D2
+revision_id: R2
 materials_status: current
 ---
 
@@ -17,4 +17,6 @@ materials_status: current
 | TC-DAG-006 | AC-DAG-006 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k task_delegation_contract --tb=no` | delegated nodes declare mode, role, reason and evidence while child completion authority is rejected |
 | TC-DAG-007 | AC-DAG-007 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k honest_subagent_fallback --tb=no` | intent gate controls host lanes and unavailable runtime records honest fallback |
 | TC-DAG-008 | AC-DAG-008 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k implementation_worktree_admission --tb=no` | implementation dispatch requires service/admission/real-worktree/cwd/HEAD bindings |
+| TC-DAG-009 | AC-DAG-009 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k deterministic_package_projection --tb=no` | every AC has Command+Assertion TC, ac/evidence task bindings and transaction/revision/hash evidence |
+| TC-DAG-010 | AC-DAG-010 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k semantic_compile_forward_migration --tb=no` | legacy PRD/User Story semantics compile into the new feature package graph without old-shape execution inputs |
 | TC-DAG-ILLEGAL | AC-DAG-008 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k task_graph_illegal_transition --tb=no` | illegal dispatch with cycle, orphan, stale graph or missing worktree admission is rejected |

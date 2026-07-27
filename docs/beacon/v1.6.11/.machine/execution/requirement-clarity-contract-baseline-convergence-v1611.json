@@ -27,7 +27,7 @@
     "review_gates": [],
     "qa_coverage_hints": [],
     "evidence_lines": {},
-    "generated_at": "2026-07-27T07:27:49.624027+00:00",
+    "generated_at": "2026-07-27T08:25:55.528006+00:00",
     "feature": "contract-baseline-convergence-v1611",
     "feature_slug": "contract-baseline-convergence-v1611",
     "prd_ref": "docs/beacon/v1.6.11/prd/contract-baseline-convergence-v1611.md",
@@ -61,8 +61,8 @@
       "frontmatter": {
         "slug": "contract-baseline-convergence-v1611",
         "version": "v1.6.11",
-        "status": "draft",
-        "revision_id": "D2",
+        "status": "frozen",
+        "revision_id": "R2",
         "language": "zh",
         "domain_required": "true",
         "domain_kind": "platform",
@@ -75,8 +75,8 @@
         "truth_map_contract": "beacon-truth-map-v1",
         "participating_services": "beacon",
         "git_canonical_branch": "main",
-        "previous_draft": "D1",
-        "change_reason": "D2: Beacon-native execution inheritance and no-compat forward migration",
+        "previous_revision": "R1",
+        "change_reason": "D3: CLI deterministic scaffold plus Host LLM full-package fill under feature-package authority",
         "parent_truth": "docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
         "inherited_contracts": "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
         "canonical_refs": {
@@ -192,6 +192,21 @@
           "description": "新 revision 直接覆盖或改写旧 frozen Truth",
           "aggregate": "",
           "source": "truth"
+        },
+        {
+          "description": "scaffold 未填充即进入 freeze",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "旧 PRD/User Story 文档重新成为 active canonical truth",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "promotion receipt 未绑定最终四文件 hash、validation 与 review 证据却被聚合为完成",
+          "aggregate": "",
+          "source": "truth"
         }
       ],
       "acceptance_criteria": [
@@ -218,10 +233,23 @@
         {
           "ac_id": "AC-BAS-006",
           "description": "旧冻结 Truth 保持只读 lineage；仍有效的语义只能通过 `parent_truth`/`inherited_contracts` 进入当前 shape，并经 plan → truth/change → Truth Review → freeze new revision 向前迁移"
+        },
+        {
+          "ac_id": "AC-BAS-007",
+          "description": "`beacon truth init`/等价 CLI 只负责确定性创建 `features/<slug>/{truth,tests,tasks,evidence}.md` scaffold、协议版本与占位状态；scaffold 未经 Host LLM 全包填充与 review 不得被标记 `package_maturity=filled` 或推荐 freeze"
+        },
+        {
+          "ac_id": "AC-BAS-008",
+          "description": "旧 PRD/User Story semantic compiler、host-response/command-bridge/provider transport 作为受治理的语义输入能力被复用，但当前 `feature_package_authoritative` 四文件仍是唯一 requirement truth；不得恢复平行 `prd/`、`user-story/`、`qa/test-cases/` canonical 写入"
+        },
+        {
+          "ac_id": "AC-BAS-009",
+          "description": "每个 R2 freeze 必须绑定最终四文件 baseline hash、package-validation report/hash、Truth Review report/hash、human scope ack 与 promotion receipt；任一 hash 漂移或 receipt 仅声明 `status=complete` 时 Program freeze 必须阻断"
         }
       ],
       "bound_ac_ids": [
-        "AC-BAS-004"
+        "AC-BAS-004",
+        "AC-BAS-007"
       ],
       "orphan_ac_ids": [],
       "aggregates_missing_illegal_slots": [],
@@ -255,8 +283,8 @@
         "frontmatter": {
           "slug": "contract-baseline-convergence-v1611",
           "version": "v1.6.11",
-          "status": "draft",
-          "revision_id": "D2",
+          "status": "frozen",
+          "revision_id": "R2",
           "language": "zh",
           "domain_required": "true",
           "domain_kind": "platform",
@@ -269,8 +297,8 @@
           "truth_map_contract": "beacon-truth-map-v1",
           "participating_services": "beacon",
           "git_canonical_branch": "main",
-          "previous_draft": "D1",
-          "change_reason": "D2: Beacon-native execution inheritance and no-compat forward migration",
+          "previous_revision": "R1",
+          "change_reason": "D3: CLI deterministic scaffold plus Host LLM full-package fill under feature-package authority",
           "parent_truth": "docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
           "inherited_contracts": "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
           "canonical_refs": {
@@ -386,6 +414,21 @@
             "description": "新 revision 直接覆盖或改写旧 frozen Truth",
             "aggregate": "",
             "source": "truth"
+          },
+          {
+            "description": "scaffold 未填充即进入 freeze",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "旧 PRD/User Story 文档重新成为 active canonical truth",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "promotion receipt 未绑定最终四文件 hash、validation 与 review 证据却被聚合为完成",
+            "aggregate": "",
+            "source": "truth"
           }
         ],
         "acceptance_criteria": [
@@ -412,10 +455,23 @@
           {
             "ac_id": "AC-BAS-006",
             "description": "旧冻结 Truth 保持只读 lineage；仍有效的语义只能通过 `parent_truth`/`inherited_contracts` 进入当前 shape，并经 plan → truth/change → Truth Review → freeze new revision 向前迁移"
+          },
+          {
+            "ac_id": "AC-BAS-007",
+            "description": "`beacon truth init`/等价 CLI 只负责确定性创建 `features/<slug>/{truth,tests,tasks,evidence}.md` scaffold、协议版本与占位状态；scaffold 未经 Host LLM 全包填充与 review 不得被标记 `package_maturity=filled` 或推荐 freeze"
+          },
+          {
+            "ac_id": "AC-BAS-008",
+            "description": "旧 PRD/User Story semantic compiler、host-response/command-bridge/provider transport 作为受治理的语义输入能力被复用，但当前 `feature_package_authoritative` 四文件仍是唯一 requirement truth；不得恢复平行 `prd/`、`user-story/`、`qa/test-cases/` canonical 写入"
+          },
+          {
+            "ac_id": "AC-BAS-009",
+            "description": "每个 R2 freeze 必须绑定最终四文件 baseline hash、package-validation report/hash、Truth Review report/hash、human scope ack 与 promotion receipt；任一 hash 漂移或 receipt 仅声明 `status=complete` 时 Program freeze 必须阻断"
           }
         ],
         "bound_ac_ids": [
-          "AC-BAS-004"
+          "AC-BAS-004",
+          "AC-BAS-007"
         ],
         "orphan_ac_ids": [],
         "aggregates_missing_illegal_slots": [],
@@ -438,9 +494,9 @@
       "summary": {
         "entity_count": 2,
         "aggregate_count": 1,
-        "illegal_slot_count": 5,
+        "illegal_slot_count": 8,
         "orphan_ac_count": 0,
-        "bound_ac_count": 1
+        "bound_ac_count": 2
       }
     },
     "recommended_action": ""

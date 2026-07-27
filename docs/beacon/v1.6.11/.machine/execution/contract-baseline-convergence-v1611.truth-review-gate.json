@@ -15,7 +15,7 @@
       "check": "A",
       "name": "intent_coverage",
       "required": true,
-      "matrix_rows": 6,
+      "matrix_rows": 9,
       "missing_must": [],
       "reason": "",
       "findings": [],
@@ -61,6 +61,27 @@
           "strength": "must",
           "landing": "AC-BAS-006",
           "status": "covered"
+        },
+        {
+          "intent_id": "INT-BAS-07",
+          "source": "scaffold-authority",
+          "strength": "must",
+          "landing": "AC-BAS-007",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-BAS-08",
+          "source": "semantic-authority",
+          "strength": "must",
+          "landing": "AC-BAS-008",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-BAS-09",
+          "source": "authenticated-freeze",
+          "strength": "must",
+          "landing": "AC-BAS-009",
+          "status": "covered"
         }
       ]
     },
@@ -93,8 +114,8 @@
       "required": true,
       "reason": "",
       "findings": [],
-      "ac_count": 6,
-      "tc_count": 7,
+      "ac_count": 9,
+      "tc_count": 10,
       "missing_ac": [],
       "covered": {
         "AC-BAS-001": [
@@ -115,6 +136,15 @@
         ],
         "AC-BAS-006": [
           "TC-BAS-006"
+        ],
+        "AC-BAS-007": [
+          "TC-BAS-007"
+        ],
+        "AC-BAS-008": [
+          "TC-BAS-008"
+        ],
+        "AC-BAS-009": [
+          "TC-BAS-009"
         ]
       }
     },
@@ -149,7 +179,7 @@
     "fill_depth_pass": true,
     "note": "Polish L0/narrative only after A/B/C; preserve_machine_fields=true; freeze needs D+exec too"
   },
-  "evaluated_at": "2026-07-27T07:27:50.406866+00:00",
+  "evaluated_at": "2026-07-27T08:25:56.190740+00:00",
   "paths": {
     "truth": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/truth.md",
     "tests": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/tests.md",

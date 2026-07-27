@@ -2,7 +2,7 @@
 slug: drift-padding-review-gate-v1611
 version: v1.6.11
 status: frozen
-revision_id: D2
+revision_id: R2
 language: zh
 domain_required: true
 domain_kind: gate
@@ -14,8 +14,8 @@ program_ref: docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/pr
 truth_map_contract: beacon-truth-map-v1
 participating_services: beacon
 git_canonical_branch: main
-previous_draft: D1
-change_reason: "D2: subagent findings remain advisory; Beacon owns the human gate"
+previous_revision: R1
+change_reason: "D3: reject hollow full-package fill and require governed human decisions"
 parent_truth: docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/truth.md
 inherited_contracts: "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md"
 canonical_refs:
@@ -80,6 +80,7 @@ scope_ack_ref: user-confirmation-2026-07-27
 | INT-REV-04 | audit | must | AC-REV-004 | covered |
 | INT-REV-05 | boundary | must | AC-REV-005 | covered |
 | INT-REV-06 | ownership | must | AC-REV-006 | covered |
+| INT-REV-07 | fill-quality | must | AC-REV-007 | covered |
 
 ## Acceptance Criteria
 
@@ -91,6 +92,7 @@ scope_ack_ref: user-confirmation-2026-07-27
 | AC-REV-004 | 无 decision_ref 时不得从 awaiting_human 返回 running/proposed 或进入 cancelled |
 | AC-REV-005 | host hook、context monitor 与 subagent finding 只能提供 advisory signal，不能自行暂停、放行、取消任务或关闭 Goal |
 | AC-REV-006 | 强门与五类人工选择必须由 Beacon canonical policy 持久化并校验 decision_ref；只有 parent/Goal scheduler 可消费决定并转换任务图 |
+| AC-REV-007 | full-package fill 必须检测 placeholder、空域模型、句子级假拆解、AC/TC orphan、FSM hanging state、重复/注水 task、evidence mismatch 与 source-hash drift；命中 mandatory finding 后进入人工 `continue/rewrite/split/replace/cancel`，未经决定不得 patch/freeze |
 
 ## Domain FSM DriftReviewGate
 
@@ -127,6 +129,7 @@ scope_ack_ref: user-confirmation-2026-07-27
 - mandatory finding 存在时继续自动 dispatch
 - subagent finding directly cancelling or clearing a task
 - child executor applying a human decision to the canonical graph
+- hollow fill 或 source-hash drift 未经 human decision 仍写入 canonical package
 
 ## Non-goals
 

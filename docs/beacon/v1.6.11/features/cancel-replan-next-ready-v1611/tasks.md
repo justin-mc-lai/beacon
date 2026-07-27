@@ -16,8 +16,10 @@ task_source: acceptance_criteria
 - [ ] TASK-005 Implement AC-RPL-005: cancelled/superseded/blocked 不得转换为 done，Goal 聚合必须区分统计 · ac=AC-RPL-005 · evidence=`.beacon/evidence/implement/cancel-replan-next-ready-v1611/AC-RPL-005.json`
 - [ ] TASK-006 Implement AC-RPL-006: Goal scheduler 只能 dispatch 当前 ready set 中且 shared admission pass 的 im... · ac=AC-RPL-006 · evidence=`.beacon/evidence/implement/cancel-replan-next-ready-v1611/AC-RPL-006.json`
 - [ ] TASK-007 Implement AC-RPL-007: Truth refreeze 或 main reconcile 变化必须原子地使旧 graph revision、ready set 与 ... · ac=AC-RPL-007 · evidence=`.beacon/evidence/implement/cancel-replan-next-ready-v1611/AC-RPL-007.json`
-- [ ] TASK-008 Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/cancel-replan-next-ready-v1611/GATES.json`
-- [ ] TASK-009 Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/cancel-replan-next-ready-v1611/QA-MATRIX.json`
+- [ ] TASK-008 Implement AC-RPL-008: Host fill/schema validation/TaskRun 遇到 timeout、retryable failure、non-... · ac=AC-RPL-008 · evidence=`.beacon/evidence/implement/cancel-replan-next-ready-v1611/AC-RPL-008.json`
+- [ ] TASK-009 Implement AC-RPL-009: ready set 为空时必须区分 `open_work_exists` 与 `no_open_work`：前者 blocked 并列出阻... · ac=AC-RPL-009 · evidence=`.beacon/evidence/implement/cancel-replan-next-ready-v1611/AC-RPL-009.json`
+- [ ] TASK-010 Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/cancel-replan-next-ready-v1611/GATES.json`
+- [ ] TASK-011 Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/cancel-replan-next-ready-v1611/QA-MATRIX.json`
 
 ## Boundary
 

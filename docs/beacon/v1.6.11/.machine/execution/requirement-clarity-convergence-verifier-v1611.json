@@ -27,7 +27,7 @@
     "review_gates": [],
     "qa_coverage_hints": [],
     "evidence_lines": {},
-    "generated_at": "2026-07-27T07:28:10.711150+00:00",
+    "generated_at": "2026-07-27T08:26:07.159695+00:00",
     "feature": "convergence-verifier-v1611",
     "feature_slug": "convergence-verifier-v1611",
     "prd_ref": "docs/beacon/v1.6.11/prd/convergence-verifier-v1611.md",
@@ -61,8 +61,8 @@
       "frontmatter": {
         "slug": "convergence-verifier-v1611",
         "version": "v1.6.11",
-        "status": "draft",
-        "revision_id": "D2",
+        "status": "frozen",
+        "revision_id": "R2",
         "language": "zh",
         "domain_required": "true",
         "domain_kind": "gate",
@@ -74,10 +74,10 @@
         "truth_map_contract": "beacon-truth-map-v1",
         "participating_services": "beacon",
         "git_canonical_branch": "main",
-        "previous_draft": "D1",
-        "change_reason": "D2: formal GoalRun ownership, refs and public lifecycle boundary",
+        "previous_revision": "R1",
+        "change_reason": "D3: authenticated PAC trace and full-package fill convergence",
         "parent_truth": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/truth.md",
-        "inherited_contracts": "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md; docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
+        "inherited_contracts": "docs/beacon/v1.6.11/features/task-progress-ledger-v1611/truth.md; docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md; docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
         "canonical_refs": {
           "prd": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/truth.md",
           "user_story": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/truth.md",
@@ -214,6 +214,21 @@
           "description": "internal L0–L8 stage exposed as a new public harness",
           "aggregate": "",
           "source": "truth"
+        },
+        {
+          "description": "PAC 只映射湖名而未落到 AC/TC/task/evidence/revision/hash",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "Program freeze 仅依据 promotion status string",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "fill transaction 任一步缺失、hash 漂移或 recovery 未闭环",
+          "aggregate": "",
+          "source": "truth"
         }
       ],
       "acceptance_criteria": [
@@ -243,7 +258,19 @@
         },
         {
           "ac_id": "AC-CNV-007",
-          "description": "L0–L8 只能映射到既有 goal→plan→truth→design?→implement→qa→release；不得新增 public harness，且 verifier pass 只产生裁决，最终 complete 仍由 Goal owner 执行"
+          "description": "L0–L8 只能映射到既有 goal→plan→truth→可选 design→implement→qa→release；不得新增 public harness，且 verifier pass 只产生裁决，最终 complete 仍由 Goal owner 执行"
+        },
+        {
+          "ac_id": "AC-CNV-008",
+          "description": "Program trace matrix 必须实现 `PAC → lake slug → AC IDs → TC IDs → task/evidence refs → R2/final baseline hash` 全链；任一 PAC 只映射湖名、无 TC、无 evidence 或 hash stale 都阻断 Program freeze"
+        },
+        {
+          "ac_id": "AC-CNV-009",
+          "description": "Program freeze 必须逐湖重新执行并验证 package validation pass、Truth Review pass、human ack、R2 revision 与当前四文件 hash 一致、promotion receipt hash-authenticated；不得仅信任 promotion JSON 的 `status=complete`"
+        },
+        {
+          "ac_id": "AC-CNV-010",
+          "description": "`truth-fill-transaction.v1` 的 scaffold/request/response/schema/patch/projection/validation/review/human-ack/freeze 步骤必须全部闭合，且 L5 progress 与 L7 recovery refs 可追溯，才可把 package 与 Program 判定 frozen"
         }
       ],
       "bound_ac_ids": [
@@ -251,7 +278,8 @@
         "AC-CNV-002",
         "AC-CNV-004",
         "AC-CNV-006",
-        "AC-CNV-007"
+        "AC-CNV-007",
+        "AC-CNV-009"
       ],
       "orphan_ac_ids": [
         "AC-CNV-005"
@@ -287,8 +315,8 @@
         "frontmatter": {
           "slug": "convergence-verifier-v1611",
           "version": "v1.6.11",
-          "status": "draft",
-          "revision_id": "D2",
+          "status": "frozen",
+          "revision_id": "R2",
           "language": "zh",
           "domain_required": "true",
           "domain_kind": "gate",
@@ -300,10 +328,10 @@
           "truth_map_contract": "beacon-truth-map-v1",
           "participating_services": "beacon",
           "git_canonical_branch": "main",
-          "previous_draft": "D1",
-          "change_reason": "D2: formal GoalRun ownership, refs and public lifecycle boundary",
+          "previous_revision": "R1",
+          "change_reason": "D3: authenticated PAC trace and full-package fill convergence",
           "parent_truth": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/truth.md",
-          "inherited_contracts": "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md; docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
+          "inherited_contracts": "docs/beacon/v1.6.11/features/task-progress-ledger-v1611/truth.md; docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md; docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
           "canonical_refs": {
             "prd": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/truth.md",
             "user_story": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/truth.md",
@@ -440,6 +468,21 @@
             "description": "internal L0–L8 stage exposed as a new public harness",
             "aggregate": "",
             "source": "truth"
+          },
+          {
+            "description": "PAC 只映射湖名而未落到 AC/TC/task/evidence/revision/hash",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "Program freeze 仅依据 promotion status string",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "fill transaction 任一步缺失、hash 漂移或 recovery 未闭环",
+            "aggregate": "",
+            "source": "truth"
           }
         ],
         "acceptance_criteria": [
@@ -469,7 +512,19 @@
           },
           {
             "ac_id": "AC-CNV-007",
-            "description": "L0–L8 只能映射到既有 goal→plan→truth→design?→implement→qa→release；不得新增 public harness，且 verifier pass 只产生裁决，最终 complete 仍由 Goal owner 执行"
+            "description": "L0–L8 只能映射到既有 goal→plan→truth→可选 design→implement→qa→release；不得新增 public harness，且 verifier pass 只产生裁决，最终 complete 仍由 Goal owner 执行"
+          },
+          {
+            "ac_id": "AC-CNV-008",
+            "description": "Program trace matrix 必须实现 `PAC → lake slug → AC IDs → TC IDs → task/evidence refs → R2/final baseline hash` 全链；任一 PAC 只映射湖名、无 TC、无 evidence 或 hash stale 都阻断 Program freeze"
+          },
+          {
+            "ac_id": "AC-CNV-009",
+            "description": "Program freeze 必须逐湖重新执行并验证 package validation pass、Truth Review pass、human ack、R2 revision 与当前四文件 hash 一致、promotion receipt hash-authenticated；不得仅信任 promotion JSON 的 `status=complete`"
+          },
+          {
+            "ac_id": "AC-CNV-010",
+            "description": "`truth-fill-transaction.v1` 的 scaffold/request/response/schema/patch/projection/validation/review/human-ack/freeze 步骤必须全部闭合，且 L5 progress 与 L7 recovery refs 可追溯，才可把 package 与 Program 判定 frozen"
           }
         ],
         "bound_ac_ids": [
@@ -477,7 +532,8 @@
           "AC-CNV-002",
           "AC-CNV-004",
           "AC-CNV-006",
-          "AC-CNV-007"
+          "AC-CNV-007",
+          "AC-CNV-009"
         ],
         "orphan_ac_ids": [
           "AC-CNV-005"
@@ -502,9 +558,9 @@
       "summary": {
         "entity_count": 4,
         "aggregate_count": 1,
-        "illegal_slot_count": 6,
+        "illegal_slot_count": 9,
         "orphan_ac_count": 1,
-        "bound_ac_count": 5
+        "bound_ac_count": 6
       }
     },
     "recommended_action": ""

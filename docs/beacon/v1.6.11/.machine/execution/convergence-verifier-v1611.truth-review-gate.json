@@ -15,7 +15,7 @@
       "check": "A",
       "name": "intent_coverage",
       "required": true,
-      "matrix_rows": 7,
+      "matrix_rows": 10,
       "missing_must": [],
       "reason": "",
       "findings": [],
@@ -68,6 +68,27 @@
           "strength": "must",
           "landing": "AC-CNV-007",
           "status": "covered"
+        },
+        {
+          "intent_id": "INT-CNV-08",
+          "source": "pac-trace",
+          "strength": "must",
+          "landing": "AC-CNV-008",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-CNV-09",
+          "source": "authenticated-program-freeze",
+          "strength": "must",
+          "landing": "AC-CNV-009",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-CNV-10",
+          "source": "fill-chain-convergence",
+          "strength": "must",
+          "landing": "AC-CNV-010",
+          "status": "covered"
         }
       ]
     },
@@ -101,8 +122,8 @@
       "required": true,
       "reason": "",
       "findings": [],
-      "ac_count": 7,
-      "tc_count": 8,
+      "ac_count": 10,
+      "tc_count": 11,
       "missing_ac": [],
       "covered": {
         "AC-CNV-001": [
@@ -126,6 +147,15 @@
         "AC-CNV-007": [
           "TC-CNV-007",
           "TC-CNV-ILLEGAL"
+        ],
+        "AC-CNV-008": [
+          "TC-CNV-008"
+        ],
+        "AC-CNV-009": [
+          "TC-CNV-009"
+        ],
+        "AC-CNV-010": [
+          "TC-CNV-010"
         ]
       }
     },
@@ -160,7 +190,7 @@
     "fill_depth_pass": true,
     "note": "Polish L0/narrative only after A/B/C; preserve_machine_fields=true; freeze needs D+exec too"
   },
-  "evaluated_at": "2026-07-27T07:28:11.303734+00:00",
+  "evaluated_at": "2026-07-27T08:26:07.774006+00:00",
   "paths": {
     "truth": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/truth.md",
     "tests": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/tests.md",

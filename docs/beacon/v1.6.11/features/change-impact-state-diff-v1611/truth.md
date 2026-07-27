@@ -2,7 +2,7 @@
 slug: change-impact-state-diff-v1611
 version: v1.6.11
 status: frozen
-revision_id: D2
+revision_id: R2
 language: zh
 domain_required: true
 domain_kind: platform
@@ -14,8 +14,8 @@ program_ref: docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/pr
 truth_map_contract: beacon-truth-map-v1
 participating_services: beacon
 git_canonical_branch: main
-previous_draft: D1
-change_reason: "D2: diff lifecycle, delegation, admission, trace and no-compat surfaces"
+previous_revision: R1
+change_reason: "D3: structured fill patch transaction and complete ChangePlan recovery FSM"
 parent_truth: docs/beacon/v1.6.11/features/intent-completeness-engine-v1611/truth.md
 inherited_contracts: "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md; docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md; docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md"
 canonical_refs:
@@ -83,6 +83,8 @@ scope_ack_ref: user-confirmation-2026-07-27
 | INT-DIF-03 | trace | must | AC-DIF-003 | covered |
 | INT-DIF-04 | review | must | AC-DIF-004 | covered |
 | INT-DIF-05 | inherited-surfaces | must | AC-DIF-005 | covered |
+| INT-DIF-06 | structured-patch | must | AC-DIF-006 | covered |
+| INT-DIF-07 | fill-transaction-fsm | must | AC-DIF-007 | covered |
 
 ## Acceptance Criteria
 
@@ -93,6 +95,8 @@ scope_ack_ref: user-confirmation-2026-07-27
 | AC-DIF-003 | 每条 diff 绑定 source intent、affected code scope 与 planned TC |
 | AC-DIF-004 | 删除、破坏兼容或高风险状态变更必须进入 state_diff_review 人工确认 |
 | AC-DIF-005 | Change diff 必须覆盖 public 1+6 lifecycle 映射、subagent delegation/诚实 fallback、shared worktree admission、Goal run_id/`agent_trace.v1`、Goal completion owner 与 no-compat migration；任一 inherited surface 缺失即阻断 review |
+| AC-DIF-006 | Host LLM 只能返回 `truth-fill-response.v1` 结构化领域对象/patch；CLI 依据 `truth-fill-transaction.v1` 校验 request hash、base revision、schema、AC/TC/FSM 引用和 allowed paths 后，才可原子地投影四文件，禁止 LLM 自由覆盖 Markdown |
+| AC-DIF-007 | 正式 ChangePlan 必须覆盖 `GoalUtteranceCaptured → VersionAndContextResolved → DeterministicScaffoldMaterialized → HostLLMFillRequested → StructuredFillProduced → FillPatchSchemaValidated → CanonicalTruthPatched → TestsTasksEvidenceRegenerated → PackageValidationPassed → TruthReviewPassed → AwaitingHumanAck → Frozen`，并为 schema reject、semantic rewrite、human reject/cancel、timeout 与 retry exhaustion 提供回边或阻断终态 |
 
 ## Domain FSM ChangeImpactDiff
 
@@ -104,6 +108,9 @@ scope_ack_ref: user-confirmation-2026-07-27
 | approved | review | human acknowledgement recorded |
 | blocked | mapping | required surface missing |
 | stale | approved | upstream revision changed |
+| fill_requested | mapping | scaffold and request hashes current |
+| fill_validating | fill_requested | structured response produced |
+| awaiting_human | review, fill_validating | conflict, reject or high-risk diff |
 
 ## FSM 五元组
 
@@ -111,10 +118,17 @@ scope_ack_ref: user-confirmation-2026-07-27
 |-------|-------|-------|-----|--------|
 | queued | map | intent_tree_complete | mapping | compare surfaces |
 | mapping | diff_ready | five_surfaces_present | review | publish diff |
+| mapping | request_fill | scaffold_current | fill_requested | emit truth-fill-request.v1 |
+| fill_requested | response_received | response_nonempty | fill_validating | bind response hash |
+| fill_validating | schema_pass | refs_and_paths_valid | mapping | apply transaction and regenerate projections |
+| fill_validating | schema_fail | findings_present | awaiting_human | publish reject/rewrite/cancel choices |
 | mapping | gap | surface_missing | blocked | attach gap |
 | blocked | supplement | intent_or_context_fixed | mapping | recompute |
 | review | approve | human_ack | approved | seal change |
 | review | reject | findings_present | mapping | revise diff |
+| awaiting_human | rewrite | decision_ref | fill_requested | request corrected structured fill |
+| awaiting_human | retry | decision_ref_and_retryable | fill_requested | retry host transport |
+| awaiting_human | cancel | decision_ref | blocked | abort current fill transaction |
 | approved | upstream_stale | revision_changed | stale | invalidate diff |
 | stale | remap | inputs_current | mapping | rebuild |
 
@@ -126,6 +140,9 @@ scope_ack_ref: user-confirmation-2026-07-27
 - `mapping → review` with missing surface
 - `review → approved` without human_ack
 - inherited lifecycle/delegation/admission/trace/no-compat surface omitted
+- Host LLM 直接写四文件或 patch 越过 allowed paths
+- schema/hash 校验失败后仍投影 canonical truth
+- `awaiting_human` 无 decision_ref 返回自动执行
 
 ## Non-goals
 

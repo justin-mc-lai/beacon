@@ -2,7 +2,7 @@
 slug: atomic-task-graph-compiler-v1611
 version: v1.6.11
 status: frozen
-revision_id: D2
+revision_id: R2
 language: zh
 domain_required: true
 domain_kind: platform
@@ -14,8 +14,8 @@ program_ref: docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/pr
 truth_map_contract: beacon-truth-map-v1
 participating_services: beacon
 git_canonical_branch: main
-previous_draft: D1
-change_reason: "D2: TaskNode delegation and real-worktree admission bindings"
+previous_revision: R1
+change_reason: "D3: deterministic tests/tasks/evidence projection from accepted full-package truth"
 parent_truth: docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/truth.md
 inherited_contracts: "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md; docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md"
 canonical_refs:
@@ -81,6 +81,8 @@ scope_ack_ref: user-confirmation-2026-07-27
 | INT-DAG-06 | delegation | must | AC-DAG-006 | covered |
 | INT-DAG-07 | honest-runtime | must | AC-DAG-007 | covered |
 | INT-DAG-08 | worktree | must | AC-DAG-008 | covered |
+| INT-DAG-09 | deterministic-projection | must | AC-DAG-009 | covered |
+| INT-DAG-10 | semantic-compile-migration | must | AC-DAG-010 | covered |
 
 ## Acceptance Criteria
 
@@ -94,6 +96,8 @@ scope_ack_ref: user-confirmation-2026-07-27
 | AC-DAG-006 | 每个可委派 TaskNode 声明 `execution_mode`、`required_role`、`delegation_reason`、输入合同和输出 evidence contract；子代理只能返回 finding/patch/evidence，不能转换 Goal、Truth、QA 或 release 终态 |
 | AC-DAG-007 | 仅显式 intent-on 才规划 host subagent；host runtime 不可用时必须记录 `single_process_multi_reviewer` 与 `fallback_reason`，不得宣称 parallel |
 | AC-DAG-008 | 每个 implementation TaskNode 必须在 dispatch 前绑定 service、shared admission ref、真实 git worktree、cwd 与 HEAD；branch-only、soft skip、mkdir-only、empty gitlink、hook-installed 均不能进入 running |
+| AC-DAG-009 | CLI 必须从已校验的 canonical truth 结构确定性再生成 `tests.md`、`tasks.md`、`evidence.md`；每个 AC 至少映射一个 Command+Assertion TC，每个 task 包含 `ac=` 与 `evidence=`，每个 evidence ref 可回到 transaction/revision/source hash |
+| AC-DAG-010 | 旧 PRD/User Story semantic compile 的角色、故事、验收与测试语义必须迁移为当前 package 的 Intent/Journey/AC/TC/Task/Evidence 图，不得生成或依赖平行旧 shape 作为执行输入 |
 
 ## Domain FSM AtomicTaskGraph
 
@@ -128,6 +132,8 @@ scope_ack_ref: user-confirmation-2026-07-27
 - implementation TaskNode dispatched without real-worktree admission
 - unavailable host runtime reported as parallel subagent execution
 - child executor closing GoalRun or freezing Truth
+- 手工独立编辑 tests/tasks/evidence 造成 canonical truth 反向漂移
+- semantic compiler 只生成旧 PRD/User Story 文件而未进入当前 task graph
 
 ## Non-goals
 

@@ -2,7 +2,7 @@
 slug: brownfield-context-resolver-v1611
 version: v1.6.11
 status: frozen
-revision_id: D2
+revision_id: R2
 language: zh
 domain_required: true
 domain_kind: platform
@@ -15,8 +15,8 @@ baseline_commit: 30b9adffc8ec5442a7691a88faf64a251d97b98f
 truth_map_contract: beacon-truth-map-v1
 participating_services: beacon
 git_canonical_branch: main
-previous_draft: D1
-change_reason: "D2: inherit frozen Truth, subagent, worktree admission and lifecycle trace authorities"
+previous_revision: R1
+change_reason: "D3: resolve full-package fill inputs, host transport and semantic source hashes"
 parent_truth: docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/truth.md
 inherited_contracts: "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md; docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md; docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md; docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md"
 canonical_refs:
@@ -80,6 +80,8 @@ scope_ack_ref: user-confirmation-2026-07-27
 | INT-CTX-04 | audit | must | AC-CTX-004 | covered |
 | INT-CTX-05 | inheritance | must | AC-CTX-005 | covered |
 | INT-CTX-06 | execution-context | must | AC-CTX-006 | covered |
+| INT-CTX-07 | fill-context | must | AC-CTX-007 | covered |
+| INT-CTX-08 | host-fail-closed | must | AC-CTX-008 | covered |
 
 ## Acceptance Criteria
 
@@ -91,6 +93,8 @@ scope_ack_ref: user-confirmation-2026-07-27
 | AC-CTX-004 | 任一基线引用变化都会使下游 intent/diff/task graph 标记 stale |
 | AC-CTX-005 | ContextEnvelope 必须解析 `parent_truth` 与 `inherited_contracts`，并把既有 Goal/Plan、subagent、worktree admission、lifecycle trace、Truth authority 的 frozen revision 作为不可静默丢失的输入 |
 | AC-CTX-006 | resolver 必须返回 host subagent runtime 可用性、truth canonical、implementation worktree governance、1+6 lifecycle/`agent_trace.v1` 权威；缺失或冲突时 fail-closed，不得猜默认值 |
+| AC-CTX-007 | ContextEnvelope 必须包含原始 Goal utterance、目标版本、当前四文件路径与 source hashes、R2 revision、旧 PRD/User Story semantic compiler refs、host transport capability/precedence、Humanizer profile、Program/PAC refs；这些字段共同构成 `truth-fill-request.v1` 输入 |
+| AC-CTX-008 | Host semantic transport 不可用、response 为空、source hash 变化或输入权威冲突时必须进入 `awaiting_human`/blocked；不得退化为规则模板、一句一 AC 或空占位后冒充 Host LLM 全包填充 |
 
 ## Domain FSM ContextResolver
 
@@ -122,6 +126,8 @@ scope_ack_ref: user-confirmation-2026-07-27
 - `stale → resolved` while downstream remains current
 - inherited frozen contract missing while envelope reports resolved
 - worktree or trace authority unresolved while implementation planning continues
+- fill request 缺原始 utterance、四文件 hash、semantic compiler 或 host transport 仍进入 generation
+- 空 host response 被规则模板替代并标记 full-package filled
 
 ## Non-goals
 

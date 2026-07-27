@@ -27,7 +27,7 @@
     "review_gates": [],
     "qa_coverage_hints": [],
     "evidence_lines": {},
-    "generated_at": "2026-07-27T07:28:06.583157+00:00",
+    "generated_at": "2026-07-27T08:26:02.739178+00:00",
     "feature": "task-progress-ledger-v1611",
     "feature_slug": "task-progress-ledger-v1611",
     "prd_ref": "docs/beacon/v1.6.11/prd/task-progress-ledger-v1611.md",
@@ -61,8 +61,8 @@
       "frontmatter": {
         "slug": "task-progress-ledger-v1611",
         "version": "v1.6.11",
-        "status": "draft",
-        "revision_id": "D2",
+        "status": "frozen",
+        "revision_id": "R2",
         "language": "zh",
         "domain_required": "true",
         "domain_kind": "platform",
@@ -74,8 +74,8 @@
         "truth_map_contract": "beacon-truth-map-v1",
         "participating_services": "beacon",
         "git_canonical_branch": "main",
-        "previous_draft": "D1",
-        "change_reason": "D2: bind Goal run, public lifecycle and agent_trace.v1",
+        "previous_revision": "R1",
+        "change_reason": "D3: append-only full-package fill transaction and projection progress",
         "parent_truth": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/truth.md",
         "inherited_contracts": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md; docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md",
         "canonical_refs": {
@@ -208,6 +208,11 @@
           "description": "internal L0–L8 state exposed as a new public harness",
           "aggregate": "",
           "source": "truth"
+        },
+        {
+          "description": "fill transaction 跨步骤无 sequence/hash 或重试覆盖旧失败记录",
+          "aggregate": "",
+          "source": "truth"
         }
       ],
       "acceptance_criteria": [
@@ -234,6 +239,10 @@
         {
           "ac_id": "AC-LED-006",
           "description": "lifecycle trace append 失败时 task/path 状态转换不得静默成功；必须进入 blocked 或显式 degraded finding，并保留可重放失败原因"
+        },
+        {
+          "ac_id": "AC-LED-007",
+          "description": "scaffold、fill request/response、schema validation、canonical patch、三投影再生成、package validation、Truth Review、human ack、freeze 的每个事务步骤都追加 transaction_id、sequence、input/output hash、status、feedback 与 reason_code；重试可回放且不得覆盖旧尝试"
         }
       ],
       "bound_ac_ids": [
@@ -275,8 +284,8 @@
         "frontmatter": {
           "slug": "task-progress-ledger-v1611",
           "version": "v1.6.11",
-          "status": "draft",
-          "revision_id": "D2",
+          "status": "frozen",
+          "revision_id": "R2",
           "language": "zh",
           "domain_required": "true",
           "domain_kind": "platform",
@@ -288,8 +297,8 @@
           "truth_map_contract": "beacon-truth-map-v1",
           "participating_services": "beacon",
           "git_canonical_branch": "main",
-          "previous_draft": "D1",
-          "change_reason": "D2: bind Goal run, public lifecycle and agent_trace.v1",
+          "previous_revision": "R1",
+          "change_reason": "D3: append-only full-package fill transaction and projection progress",
           "parent_truth": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/truth.md",
           "inherited_contracts": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md; docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md",
           "canonical_refs": {
@@ -422,6 +431,11 @@
             "description": "internal L0–L8 state exposed as a new public harness",
             "aggregate": "",
             "source": "truth"
+          },
+          {
+            "description": "fill transaction 跨步骤无 sequence/hash 或重试覆盖旧失败记录",
+            "aggregate": "",
+            "source": "truth"
           }
         ],
         "acceptance_criteria": [
@@ -448,6 +462,10 @@
           {
             "ac_id": "AC-LED-006",
             "description": "lifecycle trace append 失败时 task/path 状态转换不得静默成功；必须进入 blocked 或显式 degraded finding，并保留可重放失败原因"
+          },
+          {
+            "ac_id": "AC-LED-007",
+            "description": "scaffold、fill request/response、schema validation、canonical patch、三投影再生成、package validation、Truth Review、human ack、freeze 的每个事务步骤都追加 transaction_id、sequence、input/output hash、status、feedback 与 reason_code；重试可回放且不得覆盖旧尝试"
           }
         ],
         "bound_ac_ids": [
@@ -478,7 +496,7 @@
       "summary": {
         "entity_count": 3,
         "aggregate_count": 1,
-        "illegal_slot_count": 5,
+        "illegal_slot_count": 6,
         "orphan_ac_count": 1,
         "bound_ac_count": 3
       }

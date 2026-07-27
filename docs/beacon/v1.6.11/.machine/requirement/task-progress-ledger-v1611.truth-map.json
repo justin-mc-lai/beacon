@@ -34,7 +34,7 @@
       "slug": "task-progress-ledger-v1611",
       "version": "v1.6.11",
       "status": "frozen",
-      "revision_id": "D2",
+      "revision_id": "R2",
       "language": "zh",
       "domain_required": "true",
       "domain_kind": "platform",
@@ -46,8 +46,8 @@
       "truth_map_contract": "beacon-truth-map-v1",
       "participating_services": "beacon",
       "git_canonical_branch": "main",
-      "previous_draft": "D1",
-      "change_reason": "D2: bind Goal run, public lifecycle and agent_trace.v1",
+      "previous_revision": "R1",
+      "change_reason": "D3: append-only full-package fill transaction and projection progress",
       "parent_truth": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/truth.md",
       "inherited_contracts": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md; docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md",
       "canonical_refs": {
@@ -69,10 +69,10 @@
       "evidence": "docs/beacon/v1.6.11/features/task-progress-ledger-v1611/evidence.md"
     },
     "source_hashes": {
-      "truth": "e17ec260dada99c91acfae5290ebf5e5b8834913a3ab0c7d152bc31e0bb75631",
-      "tests": "0003f0501eccd7a291c5a3eba4aec04c4a4d917aa6074978a2daefae89a66ec2",
-      "tasks": "2718dc5a8740ed7be08cb8c176dfc10fcb6353066c374d459ca21a444a675b0e",
-      "evidence": "8b0107aa19ba842f298d55621f505421c0320f3587b64b0da6a8265f19395861"
+      "truth": "c3b77761ae7e2575cf380a8c8e5f5f1f896137a55e1e9bb4a8c46c7f2dac73d2",
+      "tests": "92121d83f8a723c85c0af9e77ffab60a7c0126a643479b44276680fecbfe059c",
+      "tasks": "09f2b71b74aba93704e2c5e7f23b1b1db6fc32ea14b50b5e087d3dc1071e2cc7",
+      "evidence": "0c17e3f9399172a13194cb0400db8423226f6f4232b14607857a36dc426f27d8"
     },
     "surfaces": {
       "truth": {
@@ -87,7 +87,7 @@
         "filename": "truth.md",
         "path": "docs/beacon/v1.6.11/features/task-progress-ledger-v1611/truth.md",
         "exists": true,
-        "source_hash": "e17ec260dada99c91acfae5290ebf5e5b8834913a3ab0c7d152bc31e0bb75631",
+        "source_hash": "c3b77761ae7e2575cf380a8c8e5f5f1f896137a55e1e9bb4a8c46c7f2dac73d2",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -103,7 +103,7 @@
         "filename": "tests.md",
         "path": "docs/beacon/v1.6.11/features/task-progress-ledger-v1611/tests.md",
         "exists": true,
-        "source_hash": "0003f0501eccd7a291c5a3eba4aec04c4a4d917aa6074978a2daefae89a66ec2",
+        "source_hash": "92121d83f8a723c85c0af9e77ffab60a7c0126a643479b44276680fecbfe059c",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -119,7 +119,7 @@
         "filename": "tasks.md",
         "path": "docs/beacon/v1.6.11/features/task-progress-ledger-v1611/tasks.md",
         "exists": true,
-        "source_hash": "2718dc5a8740ed7be08cb8c176dfc10fcb6353066c374d459ca21a444a675b0e",
+        "source_hash": "09f2b71b74aba93704e2c5e7f23b1b1db6fc32ea14b50b5e087d3dc1071e2cc7",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -135,7 +135,7 @@
         "filename": "evidence.md",
         "path": "docs/beacon/v1.6.11/features/task-progress-ledger-v1611/evidence.md",
         "exists": true,
-        "source_hash": "8b0107aa19ba842f298d55621f505421c0320f3587b64b0da6a8265f19395861",
+        "source_hash": "0c17e3f9399172a13194cb0400db8423226f6f4232b14607857a36dc426f27d8",
         "authority": "markdown_feature_package",
         "json_authority": false
       }
@@ -223,7 +223,7 @@
         "truth_authority": true,
         "json_authority": false,
         "generated_governance_state": false,
-        "source_hash": "20aef4c21388c08dc0a2b7e98d3f2f3bdefbf0d9a9d20df661471b36795591d8"
+        "source_hash": "5bc277315117f0c87e50f21a8b8c39d24678d4356e69bcb7f744e95a6173b10f"
       },
       "global_boundaries": {
         "schema_version": "1.0",
@@ -257,7 +257,7 @@
         "truth_authority": true,
         "json_authority": false,
         "generated_governance_state": false,
-        "source_hash": "651f1bbc289551036f4627621ffe9f98ee8bf4e609191524b0073f2ade1a76ea"
+        "source_hash": "6ffa6da103d004e8ead8c67a6ade59b3609c1d13cc8342ce11e4c3e2c7161b51"
       },
       "execution_boundaries": {
         "schema_version": "1.0",
@@ -325,7 +325,7 @@
         "truth_authority": true,
         "json_authority": false,
         "generated_governance_state": false,
-        "source_hash": "5bfc7603f95d68a843ed0f633d1dfaec895adaa28545ba6cf23ff8dde816019b"
+        "source_hash": "8929c6afa9962abdecd086478ea4684dbc7c33208976281e8914e795b9641c73"
       }
     },
     "generated_state_surfaces": {
@@ -344,7 +344,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "ed87d4945a116a4808170a7a5a9a38f16853a74a96dfc8f70ed254fcbb1db1a2"
+        "source_hash": "a8db86d80904e8f5fc06ef37e9dca7f47dea425675fe062b463baf322e4fb716"
       },
       "project_version_metadata": {
         "schema_version": "1.0",
@@ -378,7 +378,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "8e9e58d194db497c0425c63ff59021ca27491dcc3b20b159d5a833943a397e54"
+        "source_hash": "f19587e86eb919e2a2a26f3e245726a55759610cb528c9812cd2fb05aef5a1b9"
       },
       "evidence_manifest": {
         "schema_version": "1.0",
@@ -395,7 +395,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "42c9f135a62e285ee1395fb969c52d33d779f8e15f4a63511d25fdfce26ebefb"
+        "source_hash": "a07a4e95bfc293429ae372346f0d37707621eed958ca9bd7e9f1e862728d01aa"
       },
       "qa_status": {
         "schema_version": "1.0",
@@ -621,7 +621,7 @@
     "diagnostics": []
   },
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-27T07:28:07.422811+00:00",
+  "generated_at": "2026-07-27T08:26:03.679560+00:00",
   "truth_authority": false,
   "source_paths": {
     "truth": "docs/beacon/v1.6.11/features/task-progress-ledger-v1611/truth.md",
@@ -630,9 +630,9 @@
     "evidence": "docs/beacon/v1.6.11/features/task-progress-ledger-v1611/evidence.md"
   },
   "source_hashes": {
-    "truth": "e17ec260dada99c91acfae5290ebf5e5b8834913a3ab0c7d152bc31e0bb75631",
-    "tests": "0003f0501eccd7a291c5a3eba4aec04c4a4d917aa6074978a2daefae89a66ec2",
-    "tasks": "2718dc5a8740ed7be08cb8c176dfc10fcb6353066c374d459ca21a444a675b0e",
-    "evidence": "8b0107aa19ba842f298d55621f505421c0320f3587b64b0da6a8265f19395861"
+    "truth": "c3b77761ae7e2575cf380a8c8e5f5f1f896137a55e1e9bb4a8c46c7f2dac73d2",
+    "tests": "92121d83f8a723c85c0af9e77ffab60a7c0126a643479b44276680fecbfe059c",
+    "tasks": "09f2b71b74aba93704e2c5e7f23b1b1db6fc32ea14b50b5e087d3dc1071e2cc7",
+    "evidence": "0c17e3f9399172a13194cb0400db8423226f6f4232b14607857a36dc426f27d8"
   }
 }

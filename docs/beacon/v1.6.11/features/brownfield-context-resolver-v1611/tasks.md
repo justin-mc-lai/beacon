@@ -15,8 +15,10 @@ task_source: acceptance_criteria
 - [ ] TASK-004 Implement AC-CTX-004: 任一基线引用变化都会使下游 intent/diff/task graph 标记 stale · ac=AC-CTX-004 · evidence=`.beacon/evidence/implement/brownfield-context-resolver-v1611/AC-CTX-004.json`
 - [ ] TASK-005 Implement AC-CTX-005: ContextEnvelope 必须解析 `parent_truth` 与 `inherited_contracts`，并把既有 Goal... · ac=AC-CTX-005 · evidence=`.beacon/evidence/implement/brownfield-context-resolver-v1611/AC-CTX-005.json`
 - [ ] TASK-006 Implement AC-CTX-006: resolver 必须返回 host subagent runtime 可用性、truth canonical、implementatio... · ac=AC-CTX-006 · evidence=`.beacon/evidence/implement/brownfield-context-resolver-v1611/AC-CTX-006.json`
-- [ ] TASK-007 Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/brownfield-context-resolver-v1611/GATES.json`
-- [ ] TASK-008 Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/brownfield-context-resolver-v1611/QA-MATRIX.json`
+- [ ] TASK-007 Implement AC-CTX-007: ContextEnvelope 必须包含原始 Goal utterance、目标版本、当前四文件路径与 source hashes、R2 ... · ac=AC-CTX-007 · evidence=`.beacon/evidence/implement/brownfield-context-resolver-v1611/AC-CTX-007.json`
+- [ ] TASK-008 Implement AC-CTX-008: Host semantic transport 不可用、response 为空、source hash 变化或输入权威冲突时必须进入 `a... · ac=AC-CTX-008 · evidence=`.beacon/evidence/implement/brownfield-context-resolver-v1611/AC-CTX-008.json`
+- [ ] TASK-009 Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/brownfield-context-resolver-v1611/GATES.json`
+- [ ] TASK-010 Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/brownfield-context-resolver-v1611/QA-MATRIX.json`
 
 ## Boundary
 

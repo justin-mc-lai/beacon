@@ -27,7 +27,7 @@
     "review_gates": [],
     "qa_coverage_hints": [],
     "evidence_lines": {},
-    "generated_at": "2026-07-27T07:27:59.620812+00:00",
+    "generated_at": "2026-07-27T08:25:56.987052+00:00",
     "feature": "brownfield-context-resolver-v1611",
     "feature_slug": "brownfield-context-resolver-v1611",
     "prd_ref": "docs/beacon/v1.6.11/prd/brownfield-context-resolver-v1611.md",
@@ -61,8 +61,8 @@
       "frontmatter": {
         "slug": "brownfield-context-resolver-v1611",
         "version": "v1.6.11",
-        "status": "draft",
-        "revision_id": "D2",
+        "status": "frozen",
+        "revision_id": "R2",
         "language": "zh",
         "domain_required": "true",
         "domain_kind": "platform",
@@ -75,8 +75,8 @@
         "truth_map_contract": "beacon-truth-map-v1",
         "participating_services": "beacon",
         "git_canonical_branch": "main",
-        "previous_draft": "D1",
-        "change_reason": "D2: inherit frozen Truth, subagent, worktree admission and lifecycle trace authorities",
+        "previous_revision": "R1",
+        "change_reason": "D3: resolve full-package fill inputs, host transport and semantic source hashes",
         "parent_truth": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/truth.md",
         "inherited_contracts": "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md; docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md; docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md; docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
         "canonical_refs": {
@@ -192,6 +192,16 @@
           "description": "worktree or trace authority unresolved while implementation planning continues",
           "aggregate": "",
           "source": "truth"
+        },
+        {
+          "description": "fill request 缺原始 utterance、四文件 hash、semantic compiler 或 host transport 仍进入 generation",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "空 host response 被规则模板替代并标记 full-package filled",
+          "aggregate": "",
+          "source": "truth"
         }
       ],
       "acceptance_criteria": [
@@ -218,13 +228,23 @@
         {
           "ac_id": "AC-CTX-006",
           "description": "resolver 必须返回 host subagent runtime 可用性、truth canonical、implementation worktree governance、1+6 lifecycle/`agent_trace.v1` 权威；缺失或冲突时 fail-closed，不得猜默认值"
+        },
+        {
+          "ac_id": "AC-CTX-007",
+          "description": "ContextEnvelope 必须包含原始 Goal utterance、目标版本、当前四文件路径与 source hashes、R2 revision、旧 PRD/User Story semantic compiler refs、host transport capability/precedence、Humanizer profile、Program/PAC refs；这些字段共同构成 `truth-fill-request.v1` 输入"
+        },
+        {
+          "ac_id": "AC-CTX-008",
+          "description": "Host semantic transport 不可用、response 为空、source hash 变化或输入权威冲突时必须进入 `awaiting_human`/blocked；不得退化为规则模板、一句一 AC 或空占位后冒充 Host LLM 全包填充"
         }
       ],
       "bound_ac_ids": [
         "AC-CTX-001",
         "AC-CTX-003",
         "AC-CTX-004",
-        "AC-CTX-005"
+        "AC-CTX-005",
+        "AC-CTX-007",
+        "AC-CTX-008"
       ],
       "orphan_ac_ids": [],
       "aggregates_missing_illegal_slots": [],
@@ -258,8 +278,8 @@
         "frontmatter": {
           "slug": "brownfield-context-resolver-v1611",
           "version": "v1.6.11",
-          "status": "draft",
-          "revision_id": "D2",
+          "status": "frozen",
+          "revision_id": "R2",
           "language": "zh",
           "domain_required": "true",
           "domain_kind": "platform",
@@ -272,8 +292,8 @@
           "truth_map_contract": "beacon-truth-map-v1",
           "participating_services": "beacon",
           "git_canonical_branch": "main",
-          "previous_draft": "D1",
-          "change_reason": "D2: inherit frozen Truth, subagent, worktree admission and lifecycle trace authorities",
+          "previous_revision": "R1",
+          "change_reason": "D3: resolve full-package fill inputs, host transport and semantic source hashes",
           "parent_truth": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/truth.md",
           "inherited_contracts": "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md; docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md; docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md; docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
           "canonical_refs": {
@@ -389,6 +409,16 @@
             "description": "worktree or trace authority unresolved while implementation planning continues",
             "aggregate": "",
             "source": "truth"
+          },
+          {
+            "description": "fill request 缺原始 utterance、四文件 hash、semantic compiler 或 host transport 仍进入 generation",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "空 host response 被规则模板替代并标记 full-package filled",
+            "aggregate": "",
+            "source": "truth"
           }
         ],
         "acceptance_criteria": [
@@ -415,13 +445,23 @@
           {
             "ac_id": "AC-CTX-006",
             "description": "resolver 必须返回 host subagent runtime 可用性、truth canonical、implementation worktree governance、1+6 lifecycle/`agent_trace.v1` 权威；缺失或冲突时 fail-closed，不得猜默认值"
+          },
+          {
+            "ac_id": "AC-CTX-007",
+            "description": "ContextEnvelope 必须包含原始 Goal utterance、目标版本、当前四文件路径与 source hashes、R2 revision、旧 PRD/User Story semantic compiler refs、host transport capability/precedence、Humanizer profile、Program/PAC refs；这些字段共同构成 `truth-fill-request.v1` 输入"
+          },
+          {
+            "ac_id": "AC-CTX-008",
+            "description": "Host semantic transport 不可用、response 为空、source hash 变化或输入权威冲突时必须进入 `awaiting_human`/blocked；不得退化为规则模板、一句一 AC 或空占位后冒充 Host LLM 全包填充"
           }
         ],
         "bound_ac_ids": [
           "AC-CTX-001",
           "AC-CTX-003",
           "AC-CTX-004",
-          "AC-CTX-005"
+          "AC-CTX-005",
+          "AC-CTX-007",
+          "AC-CTX-008"
         ],
         "orphan_ac_ids": [],
         "aggregates_missing_illegal_slots": [],
@@ -444,9 +484,9 @@
       "summary": {
         "entity_count": 2,
         "aggregate_count": 1,
-        "illegal_slot_count": 5,
+        "illegal_slot_count": 7,
         "orphan_ac_count": 0,
-        "bound_ac_count": 4
+        "bound_ac_count": 6
       }
     },
     "recommended_action": ""

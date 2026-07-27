@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-27T07:28:10.157521+00:00",
+  "generated_at": "2026-07-27T08:26:06.648375+00:00",
   "feature": "cancel-replan-next-ready-v1611",
   "feature_slug": "cancel-replan-next-ready-v1611",
   "version": "v1.6.11",
@@ -18,16 +18,16 @@
     "evidence": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/evidence.md"
   },
   "source_hashes": {
-    "truth": "0159e465c5eff64f4d8655ce3b5692fce20551da3d738f12b59791180e63ff68",
-    "tests": "bf485d2b91933635be395b52e232cb02fcd63d51e0707abb4bf79ce8831b2477",
-    "tasks": "de8cc45382686bbdf5d9507c30f5a87dfaf948fa0b52ba32167031d1a72c69b6",
-    "evidence": "99c34beea9ec1bac83dfb98266c98016e1ff708284f05d2e363d4b625ef3639f"
+    "truth": "b7184528423a255e47753ec350b04d50d46cc87247a6aad92ff9087b6dedeaef",
+    "tests": "a29f821ecdc18a0583bbcef03dae94b9518375d66c95bb73ba9acb103452be59",
+    "tasks": "11f168aae07c142bfe880c57f1efb516c8200162ce40765f25a640e5dce431f5",
+    "evidence": "e73abad15f80041d399e545a25e2d5ef7e54c99c529aca7ab8802789833a19ed"
   },
   "truth_frontmatter": {
     "slug": "cancel-replan-next-ready-v1611",
     "version": "v1.6.11",
     "status": "frozen",
-    "revision_id": "D2",
+    "revision_id": "R2",
     "language": "zh",
     "domain_required": "true",
     "domain_kind": "platform",
@@ -39,8 +39,8 @@
     "truth_map_contract": "beacon-truth-map-v1",
     "participating_services": "beacon",
     "git_canonical_branch": "main",
-    "previous_draft": "D1",
-    "change_reason": "D2: Goal scheduler uses shared admission and refreeze invalidation",
+    "previous_revision": "R1",
+    "change_reason": "D3: fill reject recovery, timeout/failure handling and closure-ready branch",
     "parent_truth": "docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611/truth.md",
     "inherited_contracts": "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md; docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md",
     "canonical_refs": {
@@ -84,6 +84,16 @@
     {
       "ac_id": "AC-RPL-007",
       "theme": "Truth refreeze 或 main reconcile 变化必须原子地使旧 graph revision、ready set 与 admission refs stale；重新编译并在真实 worktree reconcile 新 frozen revision 后才能继续 dispatch",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-RPL-008",
+      "theme": "Host fill/schema validation/TaskRun 遇到 timeout、retryable failure、non-retryable failure 或 human reject 时，必须分别进入 retry_wait、blocked 或 cancelled/replacement 路径；重试耗尽后不得自旋，必须发布 reason_code 与 next-ready/rewrite route",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-RPL-009",
+      "theme": "ready set 为空时必须区分 `open_work_exists` 与 `no_open_work`：前者 blocked 并列出阻断项，后者进入 `closure_ready` 交给 L8 verifier；不得把“无可运行任务”统一当成死循环或完成",
       "description": ""
     }
   ],
@@ -145,6 +155,22 @@
       "evidence_path": ""
     },
     {
+      "ac_id": "AC-RPL-008",
+      "tc_id": "TC-RPL-008",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k fill_task_failure_recovery --tb=no`",
+      "assertion": "timeout/retryable/non-retryable/human-reject paths stop self-spinning and emit governed routes",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-RPL-009",
+      "tc_id": "TC-RPL-009",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k no_open_work_closure_ready --tb=no`",
+      "assertion": "empty ready set distinguishes blocked open work from closure-ready no-open-work",
+      "evidence_path": ""
+    },
+    {
       "ac_id": "AC-RPL-007",
       "tc_id": "TC-RPL-ILLEGAL",
       "layer": "",
@@ -191,11 +217,21 @@
     },
     {
       "id": "TASK-008",
-      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/cancel-replan-next-ready-v1611/GATES.json`",
+      "title": "Implement AC-RPL-008: Host fill/schema validation/TaskRun 遇到 timeout、retryable failure、non-... · ac=AC-RPL-008 · evidence=`.beacon/evidence/implement/cancel-replan-next-ready-v1611/AC-RPL-008.json`",
       "status": "unchecked"
     },
     {
       "id": "TASK-009",
+      "title": "Implement AC-RPL-009: ready set 为空时必须区分 `open_work_exists` 与 `no_open_work`：前者 blocked 并列出阻... · ac=AC-RPL-009 · evidence=`.beacon/evidence/implement/cancel-replan-next-ready-v1611/AC-RPL-009.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-010",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/cancel-replan-next-ready-v1611/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-011",
       "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/cancel-replan-next-ready-v1611/QA-MATRIX.json`",
       "status": "unchecked"
     }
@@ -206,7 +242,7 @@
       "surface": "requirement",
       "authority": "requirement_truth",
       "canonical_artifact": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/truth.md",
-      "status": "draft",
+      "status": "frozen",
       "route": "truth"
     },
     {
@@ -242,6 +278,20 @@
       "authority": "requirement_truth",
       "canonical_artifact": "docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
       "status": "inherited",
+      "route": "truth"
+    },
+    {
+      "surface": "recovery-fsm",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.11/change/beacon-plan-goal-task-closure-v1611.md",
+      "status": "D3-open",
+      "route": "truth"
+    },
+    {
+      "surface": "revision",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.11/.machine/execution/cancel-replan-next-ready-v1611.revision.json",
+      "status": "R2-frozen",
       "route": "truth"
     }
   ]

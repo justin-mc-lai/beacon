@@ -15,55 +15,55 @@
     {
       "slug": "contract-baseline-convergence-v1611",
       "depends_on": [],
-      "parity_subset": ["context", "contract-tests", "version-governance"],
+      "parity_subset": ["context", "contract-tests", "version-governance", "deterministic-scaffold", "authenticated-freeze"],
       "status": "frozen"
     },
     {
       "slug": "brownfield-context-resolver-v1611",
       "depends_on": ["contract-baseline-convergence-v1611"],
-      "parity_subset": ["git", "truth", "code", "tests", "change"],
+      "parity_subset": ["git", "truth", "code", "tests", "change", "fill-context", "host-transport"],
       "status": "frozen"
     },
     {
       "slug": "intent-completeness-engine-v1611",
       "depends_on": ["brownfield-context-resolver-v1611"],
-      "parity_subset": ["intent", "journey", "failure", "state", "non-goal"],
+      "parity_subset": ["intent", "journey", "failure", "state", "non-goal", "full-package-fill", "anti-false-completeness"],
       "status": "frozen"
     },
     {
       "slug": "change-impact-state-diff-v1611",
       "depends_on": ["intent-completeness-engine-v1611"],
-      "parity_subset": ["promise", "interface", "data", "fsm", "tests"],
+      "parity_subset": ["promise", "interface", "data", "fsm", "tests", "structured-patch", "fill-transaction"],
       "status": "frozen"
     },
     {
       "slug": "atomic-task-graph-compiler-v1611",
       "depends_on": ["change-impact-state-diff-v1611"],
-      "parity_subset": ["task-dag", "traceability", "verification"],
+      "parity_subset": ["task-dag", "traceability", "verification", "deterministic-projection", "semantic-forward-migration"],
       "status": "frozen"
     },
     {
       "slug": "task-progress-ledger-v1611",
       "depends_on": ["atomic-task-graph-compiler-v1611"],
-      "parity_subset": ["task-progress", "path-progress", "feedback"],
+      "parity_subset": ["task-progress", "path-progress", "feedback", "fill-transaction-progress"],
       "status": "frozen"
     },
     {
       "slug": "drift-padding-review-gate-v1611",
       "depends_on": ["atomic-task-graph-compiler-v1611"],
-      "parity_subset": ["drift", "padding", "human-decision"],
+      "parity_subset": ["drift", "padding", "human-decision", "hollow-fill-review"],
       "status": "frozen"
     },
     {
       "slug": "cancel-replan-next-ready-v1611",
       "depends_on": ["drift-padding-review-gate-v1611"],
-      "parity_subset": ["cancel", "supersede", "replacement", "ready-set"],
+      "parity_subset": ["cancel", "supersede", "replacement", "ready-set", "bounded-retry", "closure-ready"],
       "status": "frozen"
     },
     {
       "slug": "convergence-verifier-v1611",
       "depends_on": ["task-progress-ledger-v1611", "cancel-replan-next-ready-v1611"],
-      "parity_subset": ["intent-closure", "path-closure", "evidence-closure"],
+      "parity_subset": ["intent-closure", "path-closure", "evidence-closure", "pac-trace", "authenticated-program-freeze", "fill-chain-convergence"],
       "status": "frozen"
     }
   ]

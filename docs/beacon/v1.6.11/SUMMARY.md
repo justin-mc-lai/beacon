@@ -7,11 +7,12 @@
 ## Program
 
 - slug: `beacon-plan-goal-task-closure-v1611`
-- status: `program_frozen`
+- status: `program_frozen`（D3/R2 requirement truth）
 - baseline commit: `30b9adffc8ec5442a7691a88faf64a251d97b98f`
 - truth canonical: `main`
 - lakes: L0–L8
-- freeze result: 九个湖均通过 Truth Review Gate 并冻结为 `R1`；Program freeze gate 已通过
+- previous freeze: 九个湖曾冻结为 `R1`
+- current freeze: 九湖已重新冻结为 `R2`，加入 CLI scaffold + Host LLM full-package fill 与 authenticated Program freeze requirement
 
 ## 核心结果
 
@@ -26,6 +27,9 @@
 9. Truth 只在 `main` 冻结；direct/goal/team/ralph 的实现任务统一经过真实 git worktree admission。
 10. 内部任务、偏差和重排状态不扩张 1+6 公共生命周期，关键出口统一写 `agent_trace.v1`。
 11. 旧 package/ledger 不兼容读取；保留旧冻结真相作为 lineage，并通过新 revision 重新冻结向前迁移。
+12. CLI 只确定性创建当前四文件 scaffold；Host LLM 通过结构化 response 完整填充需求，不允许直接覆盖 Markdown。
+13. 旧 PRD/User Story semantic compile 的 host transport 与语义抽取能力前向迁移到新 feature package，不恢复旧 shape。
+14. Program freeze 必须校验 PAC→AC→TC→task/evidence→R2/hash、双门报告、human ack 与 promotion receipt，不能只看状态字符串。
 
 ## 入口
 

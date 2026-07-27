@@ -27,7 +27,7 @@
     "review_gates": [],
     "qa_coverage_hints": [],
     "evidence_lines": {},
-    "generated_at": "2026-07-27T07:28:09.272064+00:00",
+    "generated_at": "2026-07-27T08:26:05.707743+00:00",
     "feature": "cancel-replan-next-ready-v1611",
     "feature_slug": "cancel-replan-next-ready-v1611",
     "prd_ref": "docs/beacon/v1.6.11/prd/cancel-replan-next-ready-v1611.md",
@@ -61,8 +61,8 @@
       "frontmatter": {
         "slug": "cancel-replan-next-ready-v1611",
         "version": "v1.6.11",
-        "status": "draft",
-        "revision_id": "D2",
+        "status": "frozen",
+        "revision_id": "R2",
         "language": "zh",
         "domain_required": "true",
         "domain_kind": "platform",
@@ -74,8 +74,8 @@
         "truth_map_contract": "beacon-truth-map-v1",
         "participating_services": "beacon",
         "git_canonical_branch": "main",
-        "previous_draft": "D1",
-        "change_reason": "D2: Goal scheduler uses shared admission and refreeze invalidation",
+        "previous_revision": "R1",
+        "change_reason": "D3: fill reject recovery, timeout/failure handling and closure-ready branch",
         "parent_truth": "docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611/truth.md",
         "inherited_contracts": "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md; docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md",
         "canonical_refs": {
@@ -133,10 +133,12 @@
           "name": "CancelReplan",
           "states": [
             "blocked",
+            "closure_ready",
             "complete",
             "decision_received",
             "dispatchable",
             "recomputing",
+            "retry_wait",
             "rewriting_graph"
           ],
           "transitions": [
@@ -180,6 +182,21 @@
               "from": "dispatchable",
               "to": "complete",
               "guard": "shared admission pass and next task handed off"
+            },
+            {
+              "from": "decision_received",
+              "to": "retry_wait",
+              "guard": "retryable host/task failure"
+            },
+            {
+              "from": "rewriting_graph",
+              "to": "retry_wait",
+              "guard": "retryable host/task failure"
+            },
+            {
+              "from": "recomputing",
+              "to": "closure_ready",
+              "guard": "no open work remains"
             }
           ]
         }
@@ -207,6 +224,16 @@
         },
         {
           "description": "refreeze 后复用旧 ready set 或 admission ref",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "timeout/non-retryable failure 在无预算或无人工决定时自动重试",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "`no_open_work` 被错误归类为 blocked 死循环或直接 Goal complete",
           "aggregate": "",
           "source": "truth"
         }
@@ -239,12 +266,22 @@
         {
           "ac_id": "AC-RPL-007",
           "description": "Truth refreeze 或 main reconcile 变化必须原子地使旧 graph revision、ready set 与 admission refs stale；重新编译并在真实 worktree reconcile 新 frozen revision 后才能继续 dispatch"
+        },
+        {
+          "ac_id": "AC-RPL-008",
+          "description": "Host fill/schema validation/TaskRun 遇到 timeout、retryable failure、non-retryable failure 或 human reject 时，必须分别进入 retry_wait、blocked 或 cancelled/replacement 路径；重试耗尽后不得自旋，必须发布 reason_code 与 next-ready/rewrite route"
+        },
+        {
+          "ac_id": "AC-RPL-009",
+          "description": "ready set 为空时必须区分 `open_work_exists` 与 `no_open_work`：前者 blocked 并列出阻断项，后者进入 `closure_ready` 交给 L8 verifier；不得把“无可运行任务”统一当成死循环或完成"
         }
       ],
       "bound_ac_ids": [
         "AC-RPL-001",
         "AC-RPL-002",
-        "AC-RPL-005"
+        "AC-RPL-005",
+        "AC-RPL-008",
+        "AC-RPL-009"
       ],
       "orphan_ac_ids": [
         "AC-RPL-003",
@@ -282,8 +319,8 @@
         "frontmatter": {
           "slug": "cancel-replan-next-ready-v1611",
           "version": "v1.6.11",
-          "status": "draft",
-          "revision_id": "D2",
+          "status": "frozen",
+          "revision_id": "R2",
           "language": "zh",
           "domain_required": "true",
           "domain_kind": "platform",
@@ -295,8 +332,8 @@
           "truth_map_contract": "beacon-truth-map-v1",
           "participating_services": "beacon",
           "git_canonical_branch": "main",
-          "previous_draft": "D1",
-          "change_reason": "D2: Goal scheduler uses shared admission and refreeze invalidation",
+          "previous_revision": "R1",
+          "change_reason": "D3: fill reject recovery, timeout/failure handling and closure-ready branch",
           "parent_truth": "docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611/truth.md",
           "inherited_contracts": "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md; docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md",
           "canonical_refs": {
@@ -354,10 +391,12 @@
             "name": "CancelReplan",
             "states": [
               "blocked",
+              "closure_ready",
               "complete",
               "decision_received",
               "dispatchable",
               "recomputing",
+              "retry_wait",
               "rewriting_graph"
             ],
             "transitions": [
@@ -401,6 +440,21 @@
                 "from": "dispatchable",
                 "to": "complete",
                 "guard": "shared admission pass and next task handed off"
+              },
+              {
+                "from": "decision_received",
+                "to": "retry_wait",
+                "guard": "retryable host/task failure"
+              },
+              {
+                "from": "rewriting_graph",
+                "to": "retry_wait",
+                "guard": "retryable host/task failure"
+              },
+              {
+                "from": "recomputing",
+                "to": "closure_ready",
+                "guard": "no open work remains"
               }
             ]
           }
@@ -428,6 +482,16 @@
           },
           {
             "description": "refreeze 后复用旧 ready set 或 admission ref",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "timeout/non-retryable failure 在无预算或无人工决定时自动重试",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "`no_open_work` 被错误归类为 blocked 死循环或直接 Goal complete",
             "aggregate": "",
             "source": "truth"
           }
@@ -460,12 +524,22 @@
           {
             "ac_id": "AC-RPL-007",
             "description": "Truth refreeze 或 main reconcile 变化必须原子地使旧 graph revision、ready set 与 admission refs stale；重新编译并在真实 worktree reconcile 新 frozen revision 后才能继续 dispatch"
+          },
+          {
+            "ac_id": "AC-RPL-008",
+            "description": "Host fill/schema validation/TaskRun 遇到 timeout、retryable failure、non-retryable failure 或 human reject 时，必须分别进入 retry_wait、blocked 或 cancelled/replacement 路径；重试耗尽后不得自旋，必须发布 reason_code 与 next-ready/rewrite route"
+          },
+          {
+            "ac_id": "AC-RPL-009",
+            "description": "ready set 为空时必须区分 `open_work_exists` 与 `no_open_work`：前者 blocked 并列出阻断项，后者进入 `closure_ready` 交给 L8 verifier；不得把“无可运行任务”统一当成死循环或完成"
           }
         ],
         "bound_ac_ids": [
           "AC-RPL-001",
           "AC-RPL-002",
-          "AC-RPL-005"
+          "AC-RPL-005",
+          "AC-RPL-008",
+          "AC-RPL-009"
         ],
         "orphan_ac_ids": [
           "AC-RPL-003",
@@ -492,9 +566,9 @@
       "summary": {
         "entity_count": 3,
         "aggregate_count": 1,
-        "illegal_slot_count": 5,
+        "illegal_slot_count": 7,
         "orphan_ac_count": 3,
-        "bound_ac_count": 3
+        "bound_ac_count": 5
       }
     },
     "recommended_action": ""

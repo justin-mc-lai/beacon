@@ -15,7 +15,7 @@
       "check": "A",
       "name": "intent_coverage",
       "required": true,
-      "matrix_rows": 7,
+      "matrix_rows": 9,
       "missing_must": [],
       "reason": "",
       "findings": [],
@@ -68,6 +68,20 @@
           "strength": "must",
           "landing": "AC-RPL-007",
           "status": "covered"
+        },
+        {
+          "intent_id": "INT-RPL-08",
+          "source": "fill-recovery",
+          "strength": "must",
+          "landing": "AC-RPL-008",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-RPL-09",
+          "source": "closure-ready",
+          "strength": "must",
+          "landing": "AC-RPL-009",
+          "status": "covered"
         }
       ]
     },
@@ -79,16 +93,18 @@
       "reason": "",
       "findings": [],
       "fsm": {
-        "transition_count": 7,
+        "transition_count": 12,
         "from_states": [
           "blocked",
           "decision_received",
           "dispatchable",
           "recomputing",
+          "retry_wait",
           "rewriting_graph"
         ],
         "hanging_states": [],
         "terminals": [
+          "closure_ready",
           "complete"
         ],
         "illegal_present": true,
@@ -102,8 +118,8 @@
       "required": true,
       "reason": "",
       "findings": [],
-      "ac_count": 7,
-      "tc_count": 8,
+      "ac_count": 9,
+      "tc_count": 10,
       "missing_ac": [],
       "covered": {
         "AC-RPL-001": [
@@ -127,6 +143,12 @@
         "AC-RPL-007": [
           "TC-RPL-007",
           "TC-RPL-ILLEGAL"
+        ],
+        "AC-RPL-008": [
+          "TC-RPL-008"
+        ],
+        "AC-RPL-009": [
+          "TC-RPL-009"
         ]
       }
     },
@@ -161,7 +183,7 @@
     "fill_depth_pass": true,
     "note": "Polish L0/narrative only after A/B/C; preserve_machine_fields=true; freeze needs D+exec too"
   },
-  "evaluated_at": "2026-07-27T07:28:09.877992+00:00",
+  "evaluated_at": "2026-07-27T08:26:06.362427+00:00",
   "paths": {
     "truth": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/truth.md",
     "tests": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/tests.md",

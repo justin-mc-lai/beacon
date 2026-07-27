@@ -34,7 +34,7 @@
       "slug": "convergence-verifier-v1611",
       "version": "v1.6.11",
       "status": "frozen",
-      "revision_id": "D2",
+      "revision_id": "R2",
       "language": "zh",
       "domain_required": "true",
       "domain_kind": "gate",
@@ -46,10 +46,10 @@
       "truth_map_contract": "beacon-truth-map-v1",
       "participating_services": "beacon",
       "git_canonical_branch": "main",
-      "previous_draft": "D1",
-      "change_reason": "D2: formal GoalRun ownership, refs and public lifecycle boundary",
+      "previous_revision": "R1",
+      "change_reason": "D3: authenticated PAC trace and full-package fill convergence",
       "parent_truth": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/truth.md",
-      "inherited_contracts": "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md; docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
+      "inherited_contracts": "docs/beacon/v1.6.11/features/task-progress-ledger-v1611/truth.md; docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md; docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
       "canonical_refs": {
         "prd": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/truth.md",
         "user_story": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/truth.md",
@@ -69,10 +69,10 @@
       "evidence": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/evidence.md"
     },
     "source_hashes": {
-      "truth": "545865bbc8fe061da9dbd0caa6b091d3c1401414edf10e75a103a26f6c3869b2",
-      "tests": "fd4b1370dd9e1beb6b00f2d9214bf2e00c8dd2fe58a0d49be7cd8a8d7b05ec80",
-      "tasks": "811274263a940b96303a9723fc31513b27ba42f40bdec176c2d5bf8123713943",
-      "evidence": "a487450ae0989515f3971d5e605518d77ff7c98bde9f0185c1be02e747b5f53c"
+      "truth": "fcc698b4b5483ff1f898bc74c88e916e7b20005889c8547f966065e72481ff57",
+      "tests": "196136f903295aad08c315f4210568becbc10a96d0001e855c80e1ab38158954",
+      "tasks": "6d181b5ce529b2e38c96474148a1b673ab9b3bee92b28d448bac5616378a4784",
+      "evidence": "0af11db3b1c341eec4ac36997d44791b731547ecc76c593bfe614981ce8c0065"
     },
     "surfaces": {
       "truth": {
@@ -87,7 +87,7 @@
         "filename": "truth.md",
         "path": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/truth.md",
         "exists": true,
-        "source_hash": "545865bbc8fe061da9dbd0caa6b091d3c1401414edf10e75a103a26f6c3869b2",
+        "source_hash": "fcc698b4b5483ff1f898bc74c88e916e7b20005889c8547f966065e72481ff57",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -103,7 +103,7 @@
         "filename": "tests.md",
         "path": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/tests.md",
         "exists": true,
-        "source_hash": "fd4b1370dd9e1beb6b00f2d9214bf2e00c8dd2fe58a0d49be7cd8a8d7b05ec80",
+        "source_hash": "196136f903295aad08c315f4210568becbc10a96d0001e855c80e1ab38158954",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -119,7 +119,7 @@
         "filename": "tasks.md",
         "path": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/tasks.md",
         "exists": true,
-        "source_hash": "811274263a940b96303a9723fc31513b27ba42f40bdec176c2d5bf8123713943",
+        "source_hash": "6d181b5ce529b2e38c96474148a1b673ab9b3bee92b28d448bac5616378a4784",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -135,7 +135,7 @@
         "filename": "evidence.md",
         "path": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/evidence.md",
         "exists": true,
-        "source_hash": "a487450ae0989515f3971d5e605518d77ff7c98bde9f0185c1be02e747b5f53c",
+        "source_hash": "0af11db3b1c341eec4ac36997d44791b731547ecc76c593bfe614981ce8c0065",
         "authority": "markdown_feature_package",
         "json_authority": false
       }
@@ -223,7 +223,7 @@
         "truth_authority": true,
         "json_authority": false,
         "generated_governance_state": false,
-        "source_hash": "2d870ba34e538157ae622e85c952d8f9ff9dbb86fbf9e0a67e552d50c643a7a9"
+        "source_hash": "12fb5d59b75df8fc8529fc59b70281c346fb81b0cc160090baed3cc5c81b15a7"
       },
       "global_boundaries": {
         "schema_version": "1.0",
@@ -257,7 +257,7 @@
         "truth_authority": true,
         "json_authority": false,
         "generated_governance_state": false,
-        "source_hash": "651f1bbc289551036f4627621ffe9f98ee8bf4e609191524b0073f2ade1a76ea"
+        "source_hash": "6ffa6da103d004e8ead8c67a6ade59b3609c1d13cc8342ce11e4c3e2c7161b51"
       },
       "execution_boundaries": {
         "schema_version": "1.0",
@@ -325,7 +325,7 @@
         "truth_authority": true,
         "json_authority": false,
         "generated_governance_state": false,
-        "source_hash": "5bfc7603f95d68a843ed0f633d1dfaec895adaa28545ba6cf23ff8dde816019b"
+        "source_hash": "8929c6afa9962abdecd086478ea4684dbc7c33208976281e8914e795b9641c73"
       }
     },
     "generated_state_surfaces": {
@@ -344,7 +344,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "ed87d4945a116a4808170a7a5a9a38f16853a74a96dfc8f70ed254fcbb1db1a2"
+        "source_hash": "a8db86d80904e8f5fc06ef37e9dca7f47dea425675fe062b463baf322e4fb716"
       },
       "project_version_metadata": {
         "schema_version": "1.0",
@@ -378,7 +378,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "f7a9411a21efd43fc05e728d2231dbfc6ee2e79ddc7b882f0f1afc502b82c697"
+        "source_hash": "39b8b424e1665653b3825aaee9b00c69ff02a42775fa3c9cc101609e5245f5dc"
       },
       "evidence_manifest": {
         "schema_version": "1.0",
@@ -395,7 +395,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "476b632448ff7a68a957fc6be157998ffd1d6af9ca92fbd1b54c94532e5c982d"
+        "source_hash": "164edb00ec3eaea168152982b33b45a29a58a1a797cf0c996f783dd1a1078159"
       },
       "qa_status": {
         "schema_version": "1.0",
@@ -621,7 +621,7 @@
     "diagnostics": []
   },
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-27T07:28:11.578629+00:00",
+  "generated_at": "2026-07-27T08:26:08.045777+00:00",
   "truth_authority": false,
   "source_paths": {
     "truth": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/truth.md",
@@ -630,9 +630,9 @@
     "evidence": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/evidence.md"
   },
   "source_hashes": {
-    "truth": "545865bbc8fe061da9dbd0caa6b091d3c1401414edf10e75a103a26f6c3869b2",
-    "tests": "fd4b1370dd9e1beb6b00f2d9214bf2e00c8dd2fe58a0d49be7cd8a8d7b05ec80",
-    "tasks": "811274263a940b96303a9723fc31513b27ba42f40bdec176c2d5bf8123713943",
-    "evidence": "a487450ae0989515f3971d5e605518d77ff7c98bde9f0185c1be02e747b5f53c"
+    "truth": "fcc698b4b5483ff1f898bc74c88e916e7b20005889c8547f966065e72481ff57",
+    "tests": "196136f903295aad08c315f4210568becbc10a96d0001e855c80e1ab38158954",
+    "tasks": "6d181b5ce529b2e38c96474148a1b673ab9b3bee92b28d448bac5616378a4784",
+    "evidence": "0af11db3b1c341eec4ac36997d44791b731547ecc76c593bfe614981ce8c0065"
   }
 }

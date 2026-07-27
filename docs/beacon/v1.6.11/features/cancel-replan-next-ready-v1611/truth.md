@@ -2,7 +2,7 @@
 slug: cancel-replan-next-ready-v1611
 version: v1.6.11
 status: frozen
-revision_id: D2
+revision_id: R2
 language: zh
 domain_required: true
 domain_kind: platform
@@ -14,8 +14,8 @@ program_ref: docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/pr
 truth_map_contract: beacon-truth-map-v1
 participating_services: beacon
 git_canonical_branch: main
-previous_draft: D1
-change_reason: "D2: Goal scheduler uses shared admission and refreeze invalidation"
+previous_revision: R1
+change_reason: "D3: fill reject recovery, timeout/failure handling and closure-ready branch"
 parent_truth: docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611/truth.md
 inherited_contracts: "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md; docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md"
 canonical_refs:
@@ -79,6 +79,8 @@ scope_ack_ref: user-confirmation-2026-07-27
 | INT-RPL-05 | safety | must | AC-RPL-005 | covered |
 | INT-RPL-06 | admission | must | AC-RPL-006 | covered |
 | INT-RPL-07 | refreeze | must | AC-RPL-007 | covered |
+| INT-RPL-08 | fill-recovery | must | AC-RPL-008 | covered |
+| INT-RPL-09 | closure-ready | must | AC-RPL-009 | covered |
 
 ## Acceptance Criteria
 
@@ -91,6 +93,8 @@ scope_ack_ref: user-confirmation-2026-07-27
 | AC-RPL-005 | cancelled/superseded/blocked 不得转换为 done，Goal 聚合必须区分统计 |
 | AC-RPL-006 | Goal scheduler 只能 dispatch 当前 ready set 中且 shared admission pass 的 implementation TaskNode；每次 dispatch 记录 admission/worktree/cwd/HEAD refs，direct/goal/team/ralph 不得分叉准入语义 |
 | AC-RPL-007 | Truth refreeze 或 main reconcile 变化必须原子地使旧 graph revision、ready set 与 admission refs stale；重新编译并在真实 worktree reconcile 新 frozen revision 后才能继续 dispatch |
+| AC-RPL-008 | Host fill/schema validation/TaskRun 遇到 timeout、retryable failure、non-retryable failure 或 human reject 时，必须分别进入 retry_wait、blocked 或 cancelled/replacement 路径；重试耗尽后不得自旋，必须发布 reason_code 与 next-ready/rewrite route |
+| AC-RPL-009 | ready set 为空时必须区分 `open_work_exists` 与 `no_open_work`：前者 blocked 并列出阻断项，后者进入 `closure_ready` 交给 L8 verifier；不得把“无可运行任务”统一当成死循环或完成 |
 
 ## Domain FSM CancelReplan
 
@@ -102,6 +106,8 @@ scope_ack_ref: user-confirmation-2026-07-27
 | dispatchable | recomputing | current ready candidates exist |
 | blocked | rewriting_graph, recomputing | dependency gap or no ready candidate |
 | complete | dispatchable | shared admission pass and next task handed off |
+| retry_wait | decision_received, rewriting_graph | retryable host/task failure |
+| closure_ready | recomputing | no open work remains |
 
 ## FSM 五元组
 
@@ -113,9 +119,14 @@ scope_ack_ref: user-confirmation-2026-07-27
 | blocked | provide_replacement | replacement_valid | rewriting_graph | link replacement |
 | recomputing | ready_found | candidates_present | dispatchable | publish ready set |
 | recomputing | none_ready | open_work_exists | blocked | publish blockers |
+| recomputing | none_ready | no_open_work | closure_ready | hand off convergence verification |
 | dispatchable | dispatch | admission_pass | complete | hand off next task |
+| decision_received | retryable_failure | retry_budget_remaining | retry_wait | record timeout/failure |
+| retry_wait | retry_due | inputs_current | rewriting_graph | retry fill or task |
+| retry_wait | retry_exhausted | limit_hit | blocked | publish rewrite/cancel/next-ready route |
+| decision_received | non_retryable_failure | reason_present | blocked | require rewrite/replace/cancel |
 
-终态：`complete`；`blocked` 需新 replacement 或外部解除。
+终态：`complete`、`closure_ready`；`blocked` 需新 replacement、rewrite 或外部解除。
 
 ## Illegal transitions
 
@@ -124,6 +135,8 @@ scope_ack_ref: user-confirmation-2026-07-27
 - graph revision change without ready-set recompute
 - Goal scheduler bypassing shared worktree admission
 - refreeze 后复用旧 ready set 或 admission ref
+- timeout/non-retryable failure 在无预算或无人工决定时自动重试
+- `no_open_work` 被错误归类为 blocked 死循环或直接 Goal complete
 
 ## Non-goals
 

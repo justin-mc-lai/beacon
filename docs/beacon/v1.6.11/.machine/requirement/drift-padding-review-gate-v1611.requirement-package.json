@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-27T07:28:08.767318+00:00",
+  "generated_at": "2026-07-27T08:26:05.192952+00:00",
   "feature": "drift-padding-review-gate-v1611",
   "feature_slug": "drift-padding-review-gate-v1611",
   "version": "v1.6.11",
@@ -18,16 +18,16 @@
     "evidence": "docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611/evidence.md"
   },
   "source_hashes": {
-    "truth": "d5250cc178372135bcbcf21403bde438d6b0ad2684d423669abee2a0cef838aa",
-    "tests": "6a349da4e1319b9c17bf6f4a4b7aee5767394fd10bff532200db030cb1d1b04f",
-    "tasks": "85ad713658be540ea9cb36f68e05210038d41e58c18b8592a448fb192b2676fe",
-    "evidence": "7c6b5c86363a4fb52329ebd03a6edd8eaac890b6222f6eda79ade0315211d404"
+    "truth": "4465d6ae058292472c952c7de6b983891f655834bf0c4dab9302cd7416d21571",
+    "tests": "46c745cb55c32749927db495198e68886a9bc63b5bb34b98bca2439461e376e6",
+    "tasks": "f29ba299cc223ba43c1e0ec858c3ccefaca172cd512aae46d612d8709bc34e84",
+    "evidence": "e044c14545d0bbd1e1f31b029f81a5359d13113d97132a0a9a74b3124c224f43"
   },
   "truth_frontmatter": {
     "slug": "drift-padding-review-gate-v1611",
     "version": "v1.6.11",
     "status": "frozen",
-    "revision_id": "D2",
+    "revision_id": "R2",
     "language": "zh",
     "domain_required": "true",
     "domain_kind": "gate",
@@ -39,8 +39,8 @@
     "truth_map_contract": "beacon-truth-map-v1",
     "participating_services": "beacon",
     "git_canonical_branch": "main",
-    "previous_draft": "D1",
-    "change_reason": "D2: subagent findings remain advisory; Beacon owns the human gate",
+    "previous_revision": "R1",
+    "change_reason": "D3: reject hollow full-package fill and require governed human decisions",
     "parent_truth": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/truth.md",
     "inherited_contracts": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
     "canonical_refs": {
@@ -79,6 +79,11 @@
     {
       "ac_id": "AC-REV-006",
       "theme": "强门与五类人工选择必须由 Beacon canonical policy 持久化并校验 decision_ref；只有 parent/Goal scheduler 可消费决定并转换任务图",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-REV-007",
+      "theme": "full-package fill 必须检测 placeholder、空域模型、句子级假拆解、AC/TC orphan、FSM hanging state、重复/注水 task、evidence mismatch 与 source-hash drift；命中 mandatory finding 后进入人工 `continue/rewrite/split/replace/cancel`，未经决定不得 patch/freeze",
       "description": ""
     }
   ],
@@ -132,6 +137,14 @@
       "evidence_path": ""
     },
     {
+      "ac_id": "AC-REV-007",
+      "tc_id": "TC-REV-007",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k hollow_fill_review_gate --tb=no`",
+      "assertion": "placeholder, hollow domain, orphan, hanging FSM, padding, evidence/hash drift force governed human choice",
+      "evidence_path": ""
+    },
+    {
       "ac_id": "AC-REV-006",
       "tc_id": "TC-REV-ILLEGAL",
       "layer": "",
@@ -173,11 +186,16 @@
     },
     {
       "id": "TASK-007",
-      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/drift-padding-review-gate-v1611/GATES.json`",
+      "title": "Implement AC-REV-007: full-package fill 必须检测 placeholder、空域模型、句子级假拆解、AC/TC orphan、FSM hangi... · ac=AC-REV-007 · evidence=`.beacon/evidence/implement/drift-padding-review-gate-v1611/AC-REV-007.json`",
       "status": "unchecked"
     },
     {
       "id": "TASK-008",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/drift-padding-review-gate-v1611/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-009",
       "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/drift-padding-review-gate-v1611/QA-MATRIX.json`",
       "status": "unchecked"
     }
@@ -188,7 +206,7 @@
       "surface": "requirement",
       "authority": "requirement_truth",
       "canonical_artifact": "docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611/truth.md",
-      "status": "draft",
+      "status": "frozen",
       "route": "truth"
     },
     {
@@ -224,6 +242,27 @@
       "authority": "requirement_truth",
       "canonical_artifact": "docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/program-manifest.md",
       "status": "accepted",
+      "route": "truth"
+    },
+    {
+      "surface": "humanizer-source",
+      "authority": "support_advisory",
+      "canonical_artifact": "beacon/utils/truth_gen_postwrite.py; beacon/utils/humanizer_llm.py",
+      "status": "inspected",
+      "route": "implement"
+    },
+    {
+      "surface": "fill-quality-contract",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.11/features/intent-completeness-engine-v1611/truth.md",
+      "status": "bound",
+      "route": "truth"
+    },
+    {
+      "surface": "revision",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.11/.machine/execution/drift-padding-review-gate-v1611.revision.json",
+      "status": "R2-frozen",
       "route": "truth"
     }
   ]

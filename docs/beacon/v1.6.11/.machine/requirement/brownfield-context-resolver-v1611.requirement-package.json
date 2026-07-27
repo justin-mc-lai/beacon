@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-27T07:28:00.726548+00:00",
+  "generated_at": "2026-07-27T08:25:57.911453+00:00",
   "feature": "brownfield-context-resolver-v1611",
   "feature_slug": "brownfield-context-resolver-v1611",
   "version": "v1.6.11",
@@ -18,16 +18,16 @@
     "evidence": "docs/beacon/v1.6.11/features/brownfield-context-resolver-v1611/evidence.md"
   },
   "source_hashes": {
-    "truth": "5109e62650162fa0255ffd92b717b4fcb2229e72186b6c08f9b9bedc5969e91c",
-    "tests": "10c1ba5d8655a006b7293990a982ea48e142ddfa8a74f0ab7d3b2ae2a27b1310",
-    "tasks": "d364693bf72039914217936923281a023db8e0db30e16b4636d738c6e7e51878",
-    "evidence": "3a264cc52c9971afc479ce661f02ea08de5e925b1ca822edd402f7cf13381e34"
+    "truth": "3a0eb0e5526edbc65b87f6c1f62b61eebdd5dae3d72c850f8f7a4b0320a68b2f",
+    "tests": "baefd6091472b6a9814079807bc2a7b588f5e121ed53c7a3a596dd4517822885",
+    "tasks": "ca8d87ea41c7dcdb5a2a8b365cedc989867a0b05b2250f6777b54b3aec4fac54",
+    "evidence": "449982357b1dec493ec4a6e25e0f2da9ad0f76ee66572cac3a6277eae3f0cd57"
   },
   "truth_frontmatter": {
     "slug": "brownfield-context-resolver-v1611",
     "version": "v1.6.11",
     "status": "frozen",
-    "revision_id": "D2",
+    "revision_id": "R2",
     "language": "zh",
     "domain_required": "true",
     "domain_kind": "platform",
@@ -40,8 +40,8 @@
     "truth_map_contract": "beacon-truth-map-v1",
     "participating_services": "beacon",
     "git_canonical_branch": "main",
-    "previous_draft": "D1",
-    "change_reason": "D2: inherit frozen Truth, subagent, worktree admission and lifecycle trace authorities",
+    "previous_revision": "R1",
+    "change_reason": "D3: resolve full-package fill inputs, host transport and semantic source hashes",
     "parent_truth": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/truth.md",
     "inherited_contracts": "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md; docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md; docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md; docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
     "canonical_refs": {
@@ -80,6 +80,16 @@
     {
       "ac_id": "AC-CTX-006",
       "theme": "resolver 必须返回 host subagent runtime 可用性、truth canonical、implementation worktree governance、1+6 lifecycle/`agent_trace.v1` 权威；缺失或冲突时 fail-closed，不得猜默认值",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-CTX-007",
+      "theme": "ContextEnvelope 必须包含原始 Goal utterance、目标版本、当前四文件路径与 source hashes、R2 revision、旧 PRD/User Story semantic compiler refs、host transport capability/precedence、Humanizer profile、Program/PAC refs；这些字段共同构成 `truth-fill-request.v1` 输入",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-CTX-008",
+      "theme": "Host semantic transport 不可用、response 为空、source hash 变化或输入权威冲突时必须进入 `awaiting_human`/blocked；不得退化为规则模板、一句一 AC 或空占位后冒充 Host LLM 全包填充",
       "description": ""
     }
   ],
@@ -133,6 +143,22 @@
       "evidence_path": ""
     },
     {
+      "ac_id": "AC-CTX-007",
+      "tc_id": "TC-CTX-007",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k truth_fill_request_context --tb=no`",
+      "assertion": "truth-fill-request.v1 binds utterance, version, four source hashes, R2, semantic compiler, host transport, Humanizer and PAC refs",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-CTX-008",
+      "tc_id": "TC-CTX-008",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k host_fill_fail_closed --tb=no`",
+      "assertion": "missing/empty/conflicting host semantic input blocks instead of falling back to hollow templates",
+      "evidence_path": ""
+    },
+    {
       "ac_id": "AC-CTX-003",
       "tc_id": "TC-CTX-ILLEGAL",
       "layer": "",
@@ -174,11 +200,21 @@
     },
     {
       "id": "TASK-007",
-      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/brownfield-context-resolver-v1611/GATES.json`",
+      "title": "Implement AC-CTX-007: ContextEnvelope 必须包含原始 Goal utterance、目标版本、当前四文件路径与 source hashes、R2 ... · ac=AC-CTX-007 · evidence=`.beacon/evidence/implement/brownfield-context-resolver-v1611/AC-CTX-007.json`",
       "status": "unchecked"
     },
     {
       "id": "TASK-008",
+      "title": "Implement AC-CTX-008: Host semantic transport 不可用、response 为空、source hash 变化或输入权威冲突时必须进入 `a... · ac=AC-CTX-008 · evidence=`.beacon/evidence/implement/brownfield-context-resolver-v1611/AC-CTX-008.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-009",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/brownfield-context-resolver-v1611/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-010",
       "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/brownfield-context-resolver-v1611/QA-MATRIX.json`",
       "status": "unchecked"
     }
@@ -189,7 +225,7 @@
       "surface": "requirement",
       "authority": "requirement_truth",
       "canonical_artifact": "docs/beacon/v1.6.11/features/brownfield-context-resolver-v1611/truth.md",
-      "status": "draft",
+      "status": "frozen",
       "route": "truth"
     },
     {
@@ -239,6 +275,27 @@
       "authority": "requirement_truth",
       "canonical_artifact": "docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
       "status": "bound",
+      "route": "truth"
+    },
+    {
+      "surface": "host-transport",
+      "authority": "support_advisory",
+      "canonical_artifact": "beacon/utils/semantic_runtime.py",
+      "status": "inspected",
+      "route": "implement"
+    },
+    {
+      "surface": "fill-request-contract",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/program-manifest.md",
+      "status": "accepted",
+      "route": "truth"
+    },
+    {
+      "surface": "revision",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.11/.machine/execution/brownfield-context-resolver-v1611.revision.json",
+      "status": "R2-frozen",
       "route": "truth"
     }
   ]

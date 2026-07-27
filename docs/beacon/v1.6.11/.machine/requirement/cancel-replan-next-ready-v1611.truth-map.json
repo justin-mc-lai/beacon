@@ -34,7 +34,7 @@
       "slug": "cancel-replan-next-ready-v1611",
       "version": "v1.6.11",
       "status": "frozen",
-      "revision_id": "D2",
+      "revision_id": "R2",
       "language": "zh",
       "domain_required": "true",
       "domain_kind": "platform",
@@ -46,8 +46,8 @@
       "truth_map_contract": "beacon-truth-map-v1",
       "participating_services": "beacon",
       "git_canonical_branch": "main",
-      "previous_draft": "D1",
-      "change_reason": "D2: Goal scheduler uses shared admission and refreeze invalidation",
+      "previous_revision": "R1",
+      "change_reason": "D3: fill reject recovery, timeout/failure handling and closure-ready branch",
       "parent_truth": "docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611/truth.md",
       "inherited_contracts": "docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md; docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md",
       "canonical_refs": {
@@ -69,10 +69,10 @@
       "evidence": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/evidence.md"
     },
     "source_hashes": {
-      "truth": "0159e465c5eff64f4d8655ce3b5692fce20551da3d738f12b59791180e63ff68",
-      "tests": "bf485d2b91933635be395b52e232cb02fcd63d51e0707abb4bf79ce8831b2477",
-      "tasks": "de8cc45382686bbdf5d9507c30f5a87dfaf948fa0b52ba32167031d1a72c69b6",
-      "evidence": "99c34beea9ec1bac83dfb98266c98016e1ff708284f05d2e363d4b625ef3639f"
+      "truth": "b7184528423a255e47753ec350b04d50d46cc87247a6aad92ff9087b6dedeaef",
+      "tests": "a29f821ecdc18a0583bbcef03dae94b9518375d66c95bb73ba9acb103452be59",
+      "tasks": "11f168aae07c142bfe880c57f1efb516c8200162ce40765f25a640e5dce431f5",
+      "evidence": "e73abad15f80041d399e545a25e2d5ef7e54c99c529aca7ab8802789833a19ed"
     },
     "surfaces": {
       "truth": {
@@ -87,7 +87,7 @@
         "filename": "truth.md",
         "path": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/truth.md",
         "exists": true,
-        "source_hash": "0159e465c5eff64f4d8655ce3b5692fce20551da3d738f12b59791180e63ff68",
+        "source_hash": "b7184528423a255e47753ec350b04d50d46cc87247a6aad92ff9087b6dedeaef",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -103,7 +103,7 @@
         "filename": "tests.md",
         "path": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/tests.md",
         "exists": true,
-        "source_hash": "bf485d2b91933635be395b52e232cb02fcd63d51e0707abb4bf79ce8831b2477",
+        "source_hash": "a29f821ecdc18a0583bbcef03dae94b9518375d66c95bb73ba9acb103452be59",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -119,7 +119,7 @@
         "filename": "tasks.md",
         "path": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/tasks.md",
         "exists": true,
-        "source_hash": "de8cc45382686bbdf5d9507c30f5a87dfaf948fa0b52ba32167031d1a72c69b6",
+        "source_hash": "11f168aae07c142bfe880c57f1efb516c8200162ce40765f25a640e5dce431f5",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -135,7 +135,7 @@
         "filename": "evidence.md",
         "path": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/evidence.md",
         "exists": true,
-        "source_hash": "99c34beea9ec1bac83dfb98266c98016e1ff708284f05d2e363d4b625ef3639f",
+        "source_hash": "e73abad15f80041d399e545a25e2d5ef7e54c99c529aca7ab8802789833a19ed",
         "authority": "markdown_feature_package",
         "json_authority": false
       }
@@ -223,7 +223,7 @@
         "truth_authority": true,
         "json_authority": false,
         "generated_governance_state": false,
-        "source_hash": "36ba6e96be9cd172d6eb3a09a147212877fdecbd37e0fd6ca3cfd988ebecbac1"
+        "source_hash": "b0e4cb615165020d2d046e9b5e7bab4426dd080dd7cb5b9be925452cc15c1fb1"
       },
       "global_boundaries": {
         "schema_version": "1.0",
@@ -257,7 +257,7 @@
         "truth_authority": true,
         "json_authority": false,
         "generated_governance_state": false,
-        "source_hash": "651f1bbc289551036f4627621ffe9f98ee8bf4e609191524b0073f2ade1a76ea"
+        "source_hash": "6ffa6da103d004e8ead8c67a6ade59b3609c1d13cc8342ce11e4c3e2c7161b51"
       },
       "execution_boundaries": {
         "schema_version": "1.0",
@@ -325,7 +325,7 @@
         "truth_authority": true,
         "json_authority": false,
         "generated_governance_state": false,
-        "source_hash": "5bfc7603f95d68a843ed0f633d1dfaec895adaa28545ba6cf23ff8dde816019b"
+        "source_hash": "8929c6afa9962abdecd086478ea4684dbc7c33208976281e8914e795b9641c73"
       }
     },
     "generated_state_surfaces": {
@@ -344,7 +344,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "ed87d4945a116a4808170a7a5a9a38f16853a74a96dfc8f70ed254fcbb1db1a2"
+        "source_hash": "a8db86d80904e8f5fc06ef37e9dca7f47dea425675fe062b463baf322e4fb716"
       },
       "project_version_metadata": {
         "schema_version": "1.0",
@@ -378,7 +378,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "322f46ecdf91919b4ef89800723bef88c078711e60180f79e68fa4c7fc189f1b"
+        "source_hash": "10c72ad3c40cd1a3633bbb73a6e28538b76e9271aa8c44e0a13b012fe357ce1d"
       },
       "evidence_manifest": {
         "schema_version": "1.0",
@@ -395,7 +395,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "e43ac2481c4b15b6c6cafc6f5efc1b63d2b37c13b6e3a1a1ee4138af5fb55b03"
+        "source_hash": "726eb26f9f1f06f5a87a52afe40f1c9655570880119c42986719a43a9baac5ae"
       },
       "qa_status": {
         "schema_version": "1.0",
@@ -621,7 +621,7 @@
     "diagnostics": []
   },
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-27T07:28:10.143305+00:00",
+  "generated_at": "2026-07-27T08:26:06.634667+00:00",
   "truth_authority": false,
   "source_paths": {
     "truth": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/truth.md",
@@ -630,9 +630,9 @@
     "evidence": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/evidence.md"
   },
   "source_hashes": {
-    "truth": "0159e465c5eff64f4d8655ce3b5692fce20551da3d738f12b59791180e63ff68",
-    "tests": "bf485d2b91933635be395b52e232cb02fcd63d51e0707abb4bf79ce8831b2477",
-    "tasks": "de8cc45382686bbdf5d9507c30f5a87dfaf948fa0b52ba32167031d1a72c69b6",
-    "evidence": "99c34beea9ec1bac83dfb98266c98016e1ff708284f05d2e363d4b625ef3639f"
+    "truth": "b7184528423a255e47753ec350b04d50d46cc87247a6aad92ff9087b6dedeaef",
+    "tests": "a29f821ecdc18a0583bbcef03dae94b9518375d66c95bb73ba9acb103452be59",
+    "tasks": "11f168aae07c142bfe880c57f1efb516c8200162ce40765f25a640e5dce431f5",
+    "evidence": "e73abad15f80041d399e545a25e2d5ef7e54c99c529aca7ab8802789833a19ed"
   }
 }

@@ -3,21 +3,35 @@
   "feature": "intent-completeness-engine-v1611",
   "feature_slug": "intent-completeness-engine-v1611",
   "version": "v1.6.11",
-  "current_revision_id": "R1",
+  "current_revision_id": "R2",
   "lifecycle_status": "frozen",
-  "updated_at": "2026-07-27T07:28:02.042569+00:00",
+  "updated_at": "2026-07-27T08:25:58.959197+00:00",
   "revisions": [
     {
       "revision_id": "R1",
       "feature_slug": "intent-completeness-engine-v1611",
       "source_revision_id": null,
       "reason": "draft",
-      "doc_status": "frozen",
-      "delivery_status": "idle",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
       "baseline_hash": "sha256:e4bb72d42831c5c30232259642ec6ae17f2a902e64d76d1a59cd143e791ff1ba",
-      "superseded_by": null,
+      "superseded_by": "R2",
       "created_at": "2026-07-27T07:28:02.035880+00:00",
       "frozen_at": "2026-07-27T07:28:02.133680+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R2",
+      "feature_slug": "intent-completeness-engine-v1611",
+      "source_revision_id": "R1",
+      "reason": "D3: CLI deterministic scaffold plus Host LLM full-package fill under feature-package authority",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:c50aaf23f26f1ccc9d1c13f5e3accc112d797b92c6bb55823f3bf96923468a3b",
+      "superseded_by": null,
+      "created_at": "2026-07-27T08:11:05.648747+00:00",
+      "frozen_at": "2026-07-27T08:25:59.052785+00:00",
       "accepted_at": null,
       "accepted_by": null
     }
@@ -28,7 +42,7 @@
       "revision_id": "R1",
       "title": "intent-completeness-engine-v1611",
       "priority": "medium",
-      "status": "frozen",
+      "status": "superseded",
       "items": [
         {
           "id": "AC-001",
@@ -66,6 +80,67 @@
           "verified_by_run_id": null,
           "accepted_at": null,
           "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "fallback"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "intent-completeness-engine-v1611",
+        "version": "v1.6.11",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.11/research/intent-completeness-engine-v1611.md",
+        "present": false,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      }
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R2",
+      "title": "intent-completeness-engine-v1611",
+      "priority": "medium",
+      "status": "frozen",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "general",
+          "text": "Acceptance criteria TBD",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "fallback"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Acceptance criteria TBD",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
           "covers": [
             "AC-001"
           ],

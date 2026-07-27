@@ -17,8 +17,10 @@ task_source: acceptance_criteria
 - [ ] TASK-006 Implement AC-DAG-006: 每个可委派 TaskNode 声明 `execution_mode`、`required_role`、`delegation_reason... · ac=AC-DAG-006 · evidence=`.beacon/evidence/implement/atomic-task-graph-compiler-v1611/AC-DAG-006.json`
 - [ ] TASK-007 Implement AC-DAG-007: 仅显式 intent-on 才规划 host subagent；host runtime 不可用时必须记录 `single_process... · ac=AC-DAG-007 · evidence=`.beacon/evidence/implement/atomic-task-graph-compiler-v1611/AC-DAG-007.json`
 - [ ] TASK-008 Implement AC-DAG-008: 每个 implementation TaskNode 必须在 dispatch 前绑定 service、shared admission ... · ac=AC-DAG-008 · evidence=`.beacon/evidence/implement/atomic-task-graph-compiler-v1611/AC-DAG-008.json`
-- [ ] TASK-009 Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/atomic-task-graph-compiler-v1611/GATES.json`
-- [ ] TASK-010 Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/atomic-task-graph-compiler-v1611/QA-MATRIX.json`
+- [ ] TASK-009 Implement AC-DAG-009: CLI 必须从已校验的 canonical truth 结构确定性再生成 `tests.md`、`tasks.md`、`evidence.... · ac=AC-DAG-009 · evidence=`.beacon/evidence/implement/atomic-task-graph-compiler-v1611/AC-DAG-009.json`
+- [ ] TASK-010 Implement AC-DAG-010: 旧 PRD/User Story semantic compile 的角色、故事、验收与测试语义必须迁移为当前 package 的 Int... · ac=AC-DAG-010 · evidence=`.beacon/evidence/implement/atomic-task-graph-compiler-v1611/AC-DAG-010.json`
+- [ ] TASK-011 Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/atomic-task-graph-compiler-v1611/GATES.json`
+- [ ] TASK-012 Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/atomic-task-graph-compiler-v1611/QA-MATRIX.json`
 
 ## Boundary
 

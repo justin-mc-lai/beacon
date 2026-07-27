@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-27T07:28:06.068269+00:00",
+  "generated_at": "2026-07-27T08:26:02.217938+00:00",
   "feature": "atomic-task-graph-compiler-v1611",
   "feature_slug": "atomic-task-graph-compiler-v1611",
   "version": "v1.6.11",
@@ -18,16 +18,16 @@
     "evidence": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/evidence.md"
   },
   "source_hashes": {
-    "truth": "e44e9eed5e9c47e17c50e78e19b0d5c5a0d9e79cf63d40f33f8aab9db29f17df",
-    "tests": "c425b1bd6043fe416566ed577647be3a39a21c15c8c220bd25011552fafa94df",
-    "tasks": "b70f3f7749996149c38500798ee8c04f1f3a040668b3185c3c3c34ab152060a9",
-    "evidence": "4e5fc114c37d7ce9e6a3e062f5e45a21128accec893b846c53157bd659fb6100"
+    "truth": "02358989ff6d6425bc3bebfca23944be3c5cd8ca2e715bdc74ea340322c10d05",
+    "tests": "227835c89cf9234e14f54e736390ebc920136c87dabaad49a8a0b30889180aa3",
+    "tasks": "c82a4b68c57ef5d638a6e7896c3c37102a681c5804d1c5515f95598f0a8273b9",
+    "evidence": "bebff847063c9c1053765423e390ec72da7c143288658d45ba01f0504c2fba5e"
   },
   "truth_frontmatter": {
     "slug": "atomic-task-graph-compiler-v1611",
     "version": "v1.6.11",
     "status": "frozen",
-    "revision_id": "D2",
+    "revision_id": "R2",
     "language": "zh",
     "domain_required": "true",
     "domain_kind": "platform",
@@ -39,8 +39,8 @@
     "truth_map_contract": "beacon-truth-map-v1",
     "participating_services": "beacon",
     "git_canonical_branch": "main",
-    "previous_draft": "D1",
-    "change_reason": "D2: TaskNode delegation and real-worktree admission bindings",
+    "previous_revision": "R1",
+    "change_reason": "D3: deterministic tests/tasks/evidence projection from accepted full-package truth",
     "parent_truth": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/truth.md",
     "inherited_contracts": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md; docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md",
     "canonical_refs": {
@@ -89,6 +89,16 @@
     {
       "ac_id": "AC-DAG-008",
       "theme": "每个 implementation TaskNode 必须在 dispatch 前绑定 service、shared admission ref、真实 git worktree、cwd 与 HEAD；branch-only、soft skip、mkdir-only、empty gitlink、hook-installed 均不能进入 running",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-DAG-009",
+      "theme": "CLI 必须从已校验的 canonical truth 结构确定性再生成 `tests.md`、`tasks.md`、`evidence.md`；每个 AC 至少映射一个 Command+Assertion TC，每个 task 包含 `ac=` 与 `evidence=`，每个 evidence ref 可回到 transaction/revision/source hash",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-DAG-010",
+      "theme": "旧 PRD/User Story semantic compile 的角色、故事、验收与测试语义必须迁移为当前 package 的 Intent/Journey/AC/TC/Task/Evidence 图，不得生成或依赖平行旧 shape 作为执行输入",
       "description": ""
     }
   ],
@@ -158,6 +168,22 @@
       "evidence_path": ""
     },
     {
+      "ac_id": "AC-DAG-009",
+      "tc_id": "TC-DAG-009",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k deterministic_package_projection --tb=no`",
+      "assertion": "every AC has Command+Assertion TC, ac/evidence task bindings and transaction/revision/hash evidence",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-DAG-010",
+      "tc_id": "TC-DAG-010",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k semantic_compile_forward_migration --tb=no`",
+      "assertion": "legacy PRD/User Story semantics compile into the new feature package graph without old-shape execution inputs",
+      "evidence_path": ""
+    },
+    {
       "ac_id": "AC-DAG-008",
       "tc_id": "TC-DAG-ILLEGAL",
       "layer": "",
@@ -209,11 +235,21 @@
     },
     {
       "id": "TASK-009",
-      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/atomic-task-graph-compiler-v1611/GATES.json`",
+      "title": "Implement AC-DAG-009: CLI 必须从已校验的 canonical truth 结构确定性再生成 `tests.md`、`tasks.md`、`evidence.... · ac=AC-DAG-009 · evidence=`.beacon/evidence/implement/atomic-task-graph-compiler-v1611/AC-DAG-009.json`",
       "status": "unchecked"
     },
     {
       "id": "TASK-010",
+      "title": "Implement AC-DAG-010: 旧 PRD/User Story semantic compile 的角色、故事、验收与测试语义必须迁移为当前 package 的 Int... · ac=AC-DAG-010 · evidence=`.beacon/evidence/implement/atomic-task-graph-compiler-v1611/AC-DAG-010.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-011",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/atomic-task-graph-compiler-v1611/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-012",
       "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/atomic-task-graph-compiler-v1611/QA-MATRIX.json`",
       "status": "unchecked"
     }
@@ -224,7 +260,7 @@
       "surface": "requirement",
       "authority": "requirement_truth",
       "canonical_artifact": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/truth.md",
-      "status": "draft",
+      "status": "frozen",
       "route": "truth"
     },
     {
@@ -267,6 +303,27 @@
       "authority": "requirement_truth",
       "canonical_artifact": "docs/beacon/v1.6.11/change/beacon-plan-goal-task-closure-v1611.md",
       "status": "accepted",
+      "route": "truth"
+    },
+    {
+      "surface": "projection-source",
+      "authority": "support_advisory",
+      "canonical_artifact": "beacon/utils/feature_package.py",
+      "status": "inspected",
+      "route": "implement"
+    },
+    {
+      "surface": "semantic-compiler-source",
+      "authority": "support_advisory",
+      "canonical_artifact": "beacon/commands/prd.py; beacon/commands/user_story.py",
+      "status": "inspected",
+      "route": "implement"
+    },
+    {
+      "surface": "revision",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.11/.machine/execution/atomic-task-graph-compiler-v1611.revision.json",
+      "status": "R2-frozen",
       "route": "truth"
     }
   ]

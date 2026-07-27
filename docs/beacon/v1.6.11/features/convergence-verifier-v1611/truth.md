@@ -2,7 +2,7 @@
 slug: convergence-verifier-v1611
 version: v1.6.11
 status: frozen
-revision_id: D2
+revision_id: R2
 language: zh
 domain_required: true
 domain_kind: gate
@@ -14,10 +14,10 @@ program_ref: docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/pr
 truth_map_contract: beacon-truth-map-v1
 participating_services: beacon
 git_canonical_branch: main
-previous_draft: D1
-change_reason: "D2: formal GoalRun ownership, refs and public lifecycle boundary"
+previous_revision: R1
+change_reason: "D3: authenticated PAC trace and full-package fill convergence"
 parent_truth: docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/truth.md
-inherited_contracts: "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md; docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md"
+inherited_contracts: "docs/beacon/v1.6.11/features/task-progress-ledger-v1611/truth.md; docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md; docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md"
 canonical_refs:
   prd: docs/beacon/v1.6.11/features/convergence-verifier-v1611/truth.md
   user_story: docs/beacon/v1.6.11/features/convergence-verifier-v1611/truth.md
@@ -80,6 +80,9 @@ scope_ack_ref: user-confirmation-2026-07-27
 | INT-CNV-05 | recovery | must | AC-CNV-005 | covered |
 | INT-CNV-06 | goal-context | must | AC-CNV-006 | covered |
 | INT-CNV-07 | lifecycle-boundary | must | AC-CNV-007 | covered |
+| INT-CNV-08 | pac-trace | must | AC-CNV-008 | covered |
+| INT-CNV-09 | authenticated-program-freeze | must | AC-CNV-009 | covered |
+| INT-CNV-10 | fill-chain-convergence | must | AC-CNV-010 | covered |
 
 ## Acceptance Criteria
 
@@ -91,7 +94,10 @@ scope_ack_ref: user-confirmation-2026-07-27
 | AC-CNV-004 | subagent/task executor 不能直接完成 GoalRun；只有 Goal owner 在 verifier pass 后转换 complete |
 | AC-CNV-005 | fail verdict 必须列出最小未闭环集合及 recommended next-ready/replan/truth/qa route |
 | AC-CNV-006 | GoalRun 必须持有 `run_id`、program slug、graph revision、truth revision set、current ready set、human decision refs、admission/worktree refs、`agent_trace.v1` refs 与 verifier refs；任一 required ref 缺失或 stale 均阻断 complete |
-| AC-CNV-007 | L0–L8 只能映射到既有 goal→plan→truth→design?→implement→qa→release；不得新增 public harness，且 verifier pass 只产生裁决，最终 complete 仍由 Goal owner 执行 |
+| AC-CNV-007 | L0–L8 只能映射到既有 goal→plan→truth→可选 design→implement→qa→release；不得新增 public harness，且 verifier pass 只产生裁决，最终 complete 仍由 Goal owner 执行 |
+| AC-CNV-008 | Program trace matrix 必须实现 `PAC → lake slug → AC IDs → TC IDs → task/evidence refs → R2/final baseline hash` 全链；任一 PAC 只映射湖名、无 TC、无 evidence 或 hash stale 都阻断 Program freeze |
+| AC-CNV-009 | Program freeze 必须逐湖重新执行并验证 package validation pass、Truth Review pass、human ack、R2 revision 与当前四文件 hash 一致、promotion receipt hash-authenticated；不得仅信任 promotion JSON 的 `status=complete` |
+| AC-CNV-010 | `truth-fill-transaction.v1` 的 scaffold/request/response/schema/patch/projection/validation/review/human-ack/freeze 步骤必须全部闭合，且 L5 progress 与 L7 recovery refs 可追溯，才可把 package 与 Program 判定 frozen |
 
 ## Domain FSM GoalConvergence
 
@@ -124,6 +130,9 @@ scope_ack_ref: user-confirmation-2026-07-27
 - revoked verdict remaining complete
 - GoalRun complete with missing admission/trace/human-decision refs
 - internal L0–L8 stage exposed as a new public harness
+- PAC 只映射湖名而未落到 AC/TC/task/evidence/revision/hash
+- Program freeze 仅依据 promotion status string
+- fill transaction 任一步缺失、hash 漂移或 recovery 未闭环
 
 ## Non-goals
 

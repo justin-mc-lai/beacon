@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-27T07:28:04.700707+00:00",
+  "generated_at": "2026-07-27T08:26:00.793460+00:00",
   "feature": "change-impact-state-diff-v1611",
   "feature_slug": "change-impact-state-diff-v1611",
   "version": "v1.6.11",
@@ -18,16 +18,16 @@
     "evidence": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/evidence.md"
   },
   "source_hashes": {
-    "truth": "98d9375c93190a3b9ce60f5d325212aa9ee7f91bc3422bbc3fe1a1d4b614d868",
-    "tests": "72a75497c6a12452734f35369e93384e43f2cca5e9a8ff5a9e17b81ebf1b21b4",
-    "tasks": "77a3c82bf639ce4cece98cdda067775c8b2489f4e6d3b0c50dbe7fc4c20c30fb",
-    "evidence": "1b01512dbb475a24446b741f98b09ffbf95cc8b7adac13a435957fff35fc184e"
+    "truth": "ff8457f39e45edce75d67ef7b73db6d0860132d352bc98a8da6fe60fc9f807bd",
+    "tests": "aacae1c5ec03b88edea2c42ba28cd1d48e68c04f7dd2a366d857824d17eb14e1",
+    "tasks": "326218cdb8932e92976ce5f676cfb28d91600e284dab8baf2e40d3d350656a19",
+    "evidence": "b0728b7b390adfa456091177f5dec06bd7ac6c2c7c649c55da240f0e54c1ea16"
   },
   "truth_frontmatter": {
     "slug": "change-impact-state-diff-v1611",
     "version": "v1.6.11",
     "status": "frozen",
-    "revision_id": "D2",
+    "revision_id": "R2",
     "language": "zh",
     "domain_required": "true",
     "domain_kind": "platform",
@@ -39,8 +39,8 @@
     "truth_map_contract": "beacon-truth-map-v1",
     "participating_services": "beacon",
     "git_canonical_branch": "main",
-    "previous_draft": "D1",
-    "change_reason": "D2: diff lifecycle, delegation, admission, trace and no-compat surfaces",
+    "previous_revision": "R1",
+    "change_reason": "D3: structured fill patch transaction and complete ChangePlan recovery FSM",
     "parent_truth": "docs/beacon/v1.6.11/features/intent-completeness-engine-v1611/truth.md",
     "inherited_contracts": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md; docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md; docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
     "canonical_refs": {
@@ -74,6 +74,16 @@
     {
       "ac_id": "AC-DIF-005",
       "theme": "Change diff 必须覆盖 public 1+6 lifecycle 映射、subagent delegation/诚实 fallback、shared worktree admission、Goal run_id/`agent_trace.v1`、Goal completion owner 与 no-compat migration；任一 inherited surface 缺失即阻断 review",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-DIF-006",
+      "theme": "Host LLM 只能返回 `truth-fill-response.v1` 结构化领域对象/patch；CLI 依据 `truth-fill-transaction.v1` 校验 request hash、base revision、schema、AC/TC/FSM 引用和 allowed paths 后，才可原子地投影四文件，禁止 LLM 自由覆盖 Markdown",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-DIF-007",
+      "theme": "正式 ChangePlan 必须覆盖 `GoalUtteranceCaptured → VersionAndContextResolved → DeterministicScaffoldMaterialized → HostLLMFillRequested → StructuredFillProduced → FillPatchSchemaValidated → CanonicalTruthPatched → TestsTasksEvidenceRegenerated → PackageValidationPassed → TruthReviewPassed → AwaitingHumanAck → Frozen`，并为 schema reject、semantic rewrite、human reject/cancel、timeout 与 retry exhaustion 提供回边或阻断终态",
       "description": ""
     }
   ],
@@ -119,6 +129,22 @@
       "evidence_path": ""
     },
     {
+      "ac_id": "AC-DIF-006",
+      "tc_id": "TC-DIF-006",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k structured_fill_patch_transaction --tb=no`",
+      "assertion": "only schema/hash/path-valid truth-fill-response.v1 is atomically projected; direct Markdown overwrite is rejected",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-DIF-007",
+      "tc_id": "TC-DIF-007",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k full_fill_changeplan_fsm --tb=no`",
+      "assertion": "complete scaffold-to-freeze chain and reject/rewrite/cancel/timeout/retry recovery edges are present",
+      "evidence_path": ""
+    },
+    {
       "ac_id": "AC-DIF-004",
       "tc_id": "TC-DIF-ILLEGAL",
       "layer": "",
@@ -155,11 +181,21 @@
     },
     {
       "id": "TASK-006",
-      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/change-impact-state-diff-v1611/GATES.json`",
+      "title": "Implement AC-DIF-006: Host LLM 只能返回 `truth-fill-response.v1` 结构化领域对象/patch；CLI 依据 `truth-fi... · ac=AC-DIF-006 · evidence=`.beacon/evidence/implement/change-impact-state-diff-v1611/AC-DIF-006.json`",
       "status": "unchecked"
     },
     {
       "id": "TASK-007",
+      "title": "Implement AC-DIF-007: 正式 ChangePlan 必须覆盖 `GoalUtteranceCaptured → VersionAndContextResolved... · ac=AC-DIF-007 · evidence=`.beacon/evidence/implement/change-impact-state-diff-v1611/AC-DIF-007.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-008",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/change-impact-state-diff-v1611/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-009",
       "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/change-impact-state-diff-v1611/QA-MATRIX.json`",
       "status": "unchecked"
     }
@@ -170,7 +206,7 @@
       "surface": "requirement",
       "authority": "requirement_truth",
       "canonical_artifact": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/truth.md",
-      "status": "draft",
+      "status": "frozen",
       "route": "truth"
     },
     {
@@ -213,6 +249,27 @@
       "authority": "requirement_truth",
       "canonical_artifact": "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md",
       "status": "inherited",
+      "route": "truth"
+    },
+    {
+      "surface": "fill-transaction-contract",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/program-manifest.md",
+      "status": "accepted",
+      "route": "truth"
+    },
+    {
+      "surface": "change-fsm",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.11/change/beacon-plan-goal-task-closure-v1611.md",
+      "status": "D3-open",
+      "route": "truth"
+    },
+    {
+      "surface": "revision",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.11/.machine/execution/change-impact-state-diff-v1611.revision.json",
+      "status": "R2-frozen",
       "route": "truth"
     }
   ]

@@ -1,7 +1,7 @@
 ---
 slug: cancel-replan-next-ready-v1611
 version: v1.6.11
-revision_id: D2
+revision_id: R2
 materials_status: current
 ---
 
@@ -16,4 +16,6 @@ materials_status: current
 | TC-RPL-005 | AC-RPL-005 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k illegal_terminal_transition --tb=no` | cancelled/superseded/blocked cannot become done |
 | TC-RPL-006 | AC-RPL-006 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k goal_scheduler_shared_admission --tb=no` | Goal scheduler dispatch records shared admission and real-worktree bindings across all implement routes |
 | TC-RPL-007 | AC-RPL-007 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k refreeze_invalidates_dispatch --tb=no` | refreeze stales graph, ready set and admission until main reconciliation |
+| TC-RPL-008 | AC-RPL-008 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k fill_task_failure_recovery --tb=no` | timeout/retryable/non-retryable/human-reject paths stop self-spinning and emit governed routes |
+| TC-RPL-009 | AC-RPL-009 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k no_open_work_closure_ready --tb=no` | empty ready set distinguishes blocked open work from closure-ready no-open-work |
 | TC-RPL-ILLEGAL | AC-RPL-007 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k replan_illegal_transition --tb=no` | illegal done/ready/dispatch after cancel or refreeze is rejected |

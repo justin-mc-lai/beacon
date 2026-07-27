@@ -15,7 +15,7 @@
       "check": "A",
       "name": "intent_coverage",
       "required": true,
-      "matrix_rows": 6,
+      "matrix_rows": 8,
       "missing_must": [],
       "reason": "",
       "findings": [],
@@ -61,6 +61,20 @@
           "strength": "must",
           "landing": "AC-CTX-006",
           "status": "covered"
+        },
+        {
+          "intent_id": "INT-CTX-07",
+          "source": "fill-context",
+          "strength": "must",
+          "landing": "AC-CTX-007",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-CTX-08",
+          "source": "host-fail-closed",
+          "strength": "must",
+          "landing": "AC-CTX-008",
+          "status": "covered"
         }
       ]
     },
@@ -93,8 +107,8 @@
       "required": true,
       "reason": "",
       "findings": [],
-      "ac_count": 6,
-      "tc_count": 7,
+      "ac_count": 8,
+      "tc_count": 9,
       "missing_ac": [],
       "covered": {
         "AC-CTX-001": [
@@ -115,6 +129,12 @@
         ],
         "AC-CTX-006": [
           "TC-CTX-006"
+        ],
+        "AC-CTX-007": [
+          "TC-CTX-007"
+        ],
+        "AC-CTX-008": [
+          "TC-CTX-008"
         ]
       }
     },
@@ -149,7 +169,7 @@
     "fill_depth_pass": true,
     "note": "Polish L0/narrative only after A/B/C; preserve_machine_fields=true; freeze needs D+exec too"
   },
-  "evaluated_at": "2026-07-27T07:28:00.415707+00:00",
+  "evaluated_at": "2026-07-27T08:25:57.630326+00:00",
   "paths": {
     "truth": "docs/beacon/v1.6.11/features/brownfield-context-resolver-v1611/truth.md",
     "tests": "docs/beacon/v1.6.11/features/brownfield-context-resolver-v1611/tests.md",

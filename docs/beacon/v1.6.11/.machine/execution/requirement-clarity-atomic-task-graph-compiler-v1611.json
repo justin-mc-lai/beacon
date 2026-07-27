@@ -27,7 +27,7 @@
     "review_gates": [],
     "qa_coverage_hints": [],
     "evidence_lines": {},
-    "generated_at": "2026-07-27T07:28:05.207833+00:00",
+    "generated_at": "2026-07-27T08:26:01.311655+00:00",
     "feature": "atomic-task-graph-compiler-v1611",
     "feature_slug": "atomic-task-graph-compiler-v1611",
     "prd_ref": "docs/beacon/v1.6.11/prd/atomic-task-graph-compiler-v1611.md",
@@ -61,8 +61,8 @@
       "frontmatter": {
         "slug": "atomic-task-graph-compiler-v1611",
         "version": "v1.6.11",
-        "status": "draft",
-        "revision_id": "D2",
+        "status": "frozen",
+        "revision_id": "R2",
         "language": "zh",
         "domain_required": "true",
         "domain_kind": "platform",
@@ -74,8 +74,8 @@
         "truth_map_contract": "beacon-truth-map-v1",
         "participating_services": "beacon",
         "git_canonical_branch": "main",
-        "previous_draft": "D1",
-        "change_reason": "D2: TaskNode delegation and real-worktree admission bindings",
+        "previous_revision": "R1",
+        "change_reason": "D3: deterministic tests/tasks/evidence projection from accepted full-package truth",
         "parent_truth": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/truth.md",
         "inherited_contracts": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md; docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md",
         "canonical_refs": {
@@ -214,6 +214,16 @@
           "description": "child executor closing GoalRun or freezing Truth",
           "aggregate": "",
           "source": "truth"
+        },
+        {
+          "description": "手工独立编辑 tests/tasks/evidence 造成 canonical truth 反向漂移",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "semantic compiler 只生成旧 PRD/User Story 文件而未进入当前 task graph",
+          "aggregate": "",
+          "source": "truth"
         }
       ],
       "acceptance_criteria": [
@@ -248,6 +258,14 @@
         {
           "ac_id": "AC-DAG-008",
           "description": "每个 implementation TaskNode 必须在 dispatch 前绑定 service、shared admission ref、真实 git worktree、cwd 与 HEAD；branch-only、soft skip、mkdir-only、empty gitlink、hook-installed 均不能进入 running"
+        },
+        {
+          "ac_id": "AC-DAG-009",
+          "description": "CLI 必须从已校验的 canonical truth 结构确定性再生成 `tests.md`、`tasks.md`、`evidence.md`；每个 AC 至少映射一个 Command+Assertion TC，每个 task 包含 `ac=` 与 `evidence=`，每个 evidence ref 可回到 transaction/revision/source hash"
+        },
+        {
+          "ac_id": "AC-DAG-010",
+          "description": "旧 PRD/User Story semantic compile 的角色、故事、验收与测试语义必须迁移为当前 package 的 Intent/Journey/AC/TC/Task/Evidence 图，不得生成或依赖平行旧 shape 作为执行输入"
         }
       ],
       "bound_ac_ids": [
@@ -289,8 +307,8 @@
         "frontmatter": {
           "slug": "atomic-task-graph-compiler-v1611",
           "version": "v1.6.11",
-          "status": "draft",
-          "revision_id": "D2",
+          "status": "frozen",
+          "revision_id": "R2",
           "language": "zh",
           "domain_required": "true",
           "domain_kind": "platform",
@@ -302,8 +320,8 @@
           "truth_map_contract": "beacon-truth-map-v1",
           "participating_services": "beacon",
           "git_canonical_branch": "main",
-          "previous_draft": "D1",
-          "change_reason": "D2: TaskNode delegation and real-worktree admission bindings",
+          "previous_revision": "R1",
+          "change_reason": "D3: deterministic tests/tasks/evidence projection from accepted full-package truth",
           "parent_truth": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/truth.md",
           "inherited_contracts": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md; docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md",
           "canonical_refs": {
@@ -442,6 +460,16 @@
             "description": "child executor closing GoalRun or freezing Truth",
             "aggregate": "",
             "source": "truth"
+          },
+          {
+            "description": "手工独立编辑 tests/tasks/evidence 造成 canonical truth 反向漂移",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "semantic compiler 只生成旧 PRD/User Story 文件而未进入当前 task graph",
+            "aggregate": "",
+            "source": "truth"
           }
         ],
         "acceptance_criteria": [
@@ -476,6 +504,14 @@
           {
             "ac_id": "AC-DAG-008",
             "description": "每个 implementation TaskNode 必须在 dispatch 前绑定 service、shared admission ref、真实 git worktree、cwd 与 HEAD；branch-only、soft skip、mkdir-only、empty gitlink、hook-installed 均不能进入 running"
+          },
+          {
+            "ac_id": "AC-DAG-009",
+            "description": "CLI 必须从已校验的 canonical truth 结构确定性再生成 `tests.md`、`tasks.md`、`evidence.md`；每个 AC 至少映射一个 Command+Assertion TC，每个 task 包含 `ac=` 与 `evidence=`，每个 evidence ref 可回到 transaction/revision/source hash"
+          },
+          {
+            "ac_id": "AC-DAG-010",
+            "description": "旧 PRD/User Story semantic compile 的角色、故事、验收与测试语义必须迁移为当前 package 的 Intent/Journey/AC/TC/Task/Evidence 图，不得生成或依赖平行旧 shape 作为执行输入"
           }
         ],
         "bound_ac_ids": [
@@ -506,7 +542,7 @@
       "summary": {
         "entity_count": 3,
         "aggregate_count": 1,
-        "illegal_slot_count": 6,
+        "illegal_slot_count": 8,
         "orphan_ac_count": 0,
         "bound_ac_count": 5
       }

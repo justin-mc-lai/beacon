@@ -1,7 +1,7 @@
 ---
 slug: change-impact-state-diff-v1611
 version: v1.6.11
-revision_id: D2
+revision_id: R2
 materials_status: current
 ---
 
@@ -14,4 +14,6 @@ materials_status: current
 | TC-DIF-003 | AC-DIF-003 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k diff_traceability --tb=no` | intent/code/TC bindings present |
 | TC-DIF-004 | AC-DIF-004 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k destructive_diff_review --tb=no` | high-risk diff requires human ack |
 | TC-DIF-005 | AC-DIF-005 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k inherited_surface_diff --tb=no` | lifecycle, delegation, admission, trace, Goal ownership and no-compat surfaces are present |
+| TC-DIF-006 | AC-DIF-006 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k structured_fill_patch_transaction --tb=no` | only schema/hash/path-valid truth-fill-response.v1 is atomically projected; direct Markdown overwrite is rejected |
+| TC-DIF-007 | AC-DIF-007 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k full_fill_changeplan_fsm --tb=no` | complete scaffold-to-freeze chain and reject/rewrite/cancel/timeout/retry recovery edges are present |
 | TC-DIF-ILLEGAL | AC-DIF-004 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k diff_illegal_transition --tb=no` | illegal approval with missing surface or human ack is rejected |

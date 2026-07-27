@@ -34,7 +34,7 @@
       "slug": "atomic-task-graph-compiler-v1611",
       "version": "v1.6.11",
       "status": "frozen",
-      "revision_id": "D2",
+      "revision_id": "R2",
       "language": "zh",
       "domain_required": "true",
       "domain_kind": "platform",
@@ -46,8 +46,8 @@
       "truth_map_contract": "beacon-truth-map-v1",
       "participating_services": "beacon",
       "git_canonical_branch": "main",
-      "previous_draft": "D1",
-      "change_reason": "D2: TaskNode delegation and real-worktree admission bindings",
+      "previous_revision": "R1",
+      "change_reason": "D3: deterministic tests/tasks/evidence projection from accepted full-package truth",
       "parent_truth": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/truth.md",
       "inherited_contracts": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md; docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md",
       "canonical_refs": {
@@ -69,10 +69,10 @@
       "evidence": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/evidence.md"
     },
     "source_hashes": {
-      "truth": "e44e9eed5e9c47e17c50e78e19b0d5c5a0d9e79cf63d40f33f8aab9db29f17df",
-      "tests": "c425b1bd6043fe416566ed577647be3a39a21c15c8c220bd25011552fafa94df",
-      "tasks": "b70f3f7749996149c38500798ee8c04f1f3a040668b3185c3c3c34ab152060a9",
-      "evidence": "4e5fc114c37d7ce9e6a3e062f5e45a21128accec893b846c53157bd659fb6100"
+      "truth": "02358989ff6d6425bc3bebfca23944be3c5cd8ca2e715bdc74ea340322c10d05",
+      "tests": "227835c89cf9234e14f54e736390ebc920136c87dabaad49a8a0b30889180aa3",
+      "tasks": "c82a4b68c57ef5d638a6e7896c3c37102a681c5804d1c5515f95598f0a8273b9",
+      "evidence": "bebff847063c9c1053765423e390ec72da7c143288658d45ba01f0504c2fba5e"
     },
     "surfaces": {
       "truth": {
@@ -87,7 +87,7 @@
         "filename": "truth.md",
         "path": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/truth.md",
         "exists": true,
-        "source_hash": "e44e9eed5e9c47e17c50e78e19b0d5c5a0d9e79cf63d40f33f8aab9db29f17df",
+        "source_hash": "02358989ff6d6425bc3bebfca23944be3c5cd8ca2e715bdc74ea340322c10d05",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -103,7 +103,7 @@
         "filename": "tests.md",
         "path": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/tests.md",
         "exists": true,
-        "source_hash": "c425b1bd6043fe416566ed577647be3a39a21c15c8c220bd25011552fafa94df",
+        "source_hash": "227835c89cf9234e14f54e736390ebc920136c87dabaad49a8a0b30889180aa3",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -119,7 +119,7 @@
         "filename": "tasks.md",
         "path": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/tasks.md",
         "exists": true,
-        "source_hash": "b70f3f7749996149c38500798ee8c04f1f3a040668b3185c3c3c34ab152060a9",
+        "source_hash": "c82a4b68c57ef5d638a6e7896c3c37102a681c5804d1c5515f95598f0a8273b9",
         "authority": "markdown_feature_package",
         "json_authority": false
       },
@@ -135,7 +135,7 @@
         "filename": "evidence.md",
         "path": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/evidence.md",
         "exists": true,
-        "source_hash": "4e5fc114c37d7ce9e6a3e062f5e45a21128accec893b846c53157bd659fb6100",
+        "source_hash": "bebff847063c9c1053765423e390ec72da7c143288658d45ba01f0504c2fba5e",
         "authority": "markdown_feature_package",
         "json_authority": false
       }
@@ -223,7 +223,7 @@
         "truth_authority": true,
         "json_authority": false,
         "generated_governance_state": false,
-        "source_hash": "9dc64d9dfbe3221773322da3439aceee7757c1edc57b25c4e93cd3d32798ae5a"
+        "source_hash": "4252acd71756b9677b704566e48723ad929b8f1c6490d9dad664bbf07d946ba8"
       },
       "global_boundaries": {
         "schema_version": "1.0",
@@ -257,7 +257,7 @@
         "truth_authority": true,
         "json_authority": false,
         "generated_governance_state": false,
-        "source_hash": "651f1bbc289551036f4627621ffe9f98ee8bf4e609191524b0073f2ade1a76ea"
+        "source_hash": "6ffa6da103d004e8ead8c67a6ade59b3609c1d13cc8342ce11e4c3e2c7161b51"
       },
       "execution_boundaries": {
         "schema_version": "1.0",
@@ -325,7 +325,7 @@
         "truth_authority": true,
         "json_authority": false,
         "generated_governance_state": false,
-        "source_hash": "5bfc7603f95d68a843ed0f633d1dfaec895adaa28545ba6cf23ff8dde816019b"
+        "source_hash": "8929c6afa9962abdecd086478ea4684dbc7c33208976281e8914e795b9641c73"
       }
     },
     "generated_state_surfaces": {
@@ -344,7 +344,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "ed87d4945a116a4808170a7a5a9a38f16853a74a96dfc8f70ed254fcbb1db1a2"
+        "source_hash": "a8db86d80904e8f5fc06ef37e9dca7f47dea425675fe062b463baf322e4fb716"
       },
       "project_version_metadata": {
         "schema_version": "1.0",
@@ -378,7 +378,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "38c6c98d57ddba49617dc90d91e1e7849362b2816d81ac586c00abd75fd6302a"
+        "source_hash": "14c257d49fb816fdfc09c0d911cc18fad5321459f300d2f531238cdee707e20b"
       },
       "evidence_manifest": {
         "schema_version": "1.0",
@@ -395,7 +395,7 @@
         "truth_authority": false,
         "json_authority": false,
         "generated_governance_state": true,
-        "source_hash": "2f97f10c4c5d1f6701092fcc922e8704abdd760f99b78bac2fe6a3c116484468"
+        "source_hash": "66050f0dbeb1095afdef73f0bcdfcb9e7ed62649065bf48ff7bb19734bedd1a4"
       },
       "qa_status": {
         "schema_version": "1.0",
@@ -621,7 +621,7 @@
     "diagnostics": []
   },
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-27T07:28:06.054426+00:00",
+  "generated_at": "2026-07-27T08:26:02.200961+00:00",
   "truth_authority": false,
   "source_paths": {
     "truth": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/truth.md",
@@ -630,9 +630,9 @@
     "evidence": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/evidence.md"
   },
   "source_hashes": {
-    "truth": "e44e9eed5e9c47e17c50e78e19b0d5c5a0d9e79cf63d40f33f8aab9db29f17df",
-    "tests": "c425b1bd6043fe416566ed577647be3a39a21c15c8c220bd25011552fafa94df",
-    "tasks": "b70f3f7749996149c38500798ee8c04f1f3a040668b3185c3c3c34ab152060a9",
-    "evidence": "4e5fc114c37d7ce9e6a3e062f5e45a21128accec893b846c53157bd659fb6100"
+    "truth": "02358989ff6d6425bc3bebfca23944be3c5cd8ca2e715bdc74ea340322c10d05",
+    "tests": "227835c89cf9234e14f54e736390ebc920136c87dabaad49a8a0b30889180aa3",
+    "tasks": "c82a4b68c57ef5d638a6e7896c3c37102a681c5804d1c5515f95598f0a8273b9",
+    "evidence": "bebff847063c9c1053765423e390ec72da7c143288658d45ba01f0504c2fba5e"
   }
 }

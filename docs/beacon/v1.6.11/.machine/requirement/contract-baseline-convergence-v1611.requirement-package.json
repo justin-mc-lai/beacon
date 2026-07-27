@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-27T07:27:50.723024+00:00",
+  "generated_at": "2026-07-27T08:25:56.468963+00:00",
   "feature": "contract-baseline-convergence-v1611",
   "feature_slug": "contract-baseline-convergence-v1611",
   "version": "v1.6.11",
@@ -18,16 +18,16 @@
     "evidence": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/evidence.md"
   },
   "source_hashes": {
-    "truth": "6d020855dbed09b3eff9325e1d6b233ca9cfa0bae78e3af0fb9b1d4d6c4ff408",
-    "tests": "ae931348e0d6945beda28e0059936b12b281bbc56ffa3f716fdcc0953d73acc7",
-    "tasks": "00bb0fa797a95ae5c709ebf69de3f3ec9f144e3ee920c224b56d345a54f966c2",
-    "evidence": "c1816c3400236a64d2dcaf0a8bc5c97acb1ce2086029590e5d16ce98a4b60020"
+    "truth": "95a5767f39f5c663000bc61446ed594a0c71c3a328f2c9e03e984111bdc7eb46",
+    "tests": "ab89f496a5d5efc358e5f5e120099396415b587cf51d8e85ebe998f8a16c5bcf",
+    "tasks": "eabee2fed1b239fa7c419ae1441e428c6eaf1207235ddea3358e2975f7d98448",
+    "evidence": "dfe6c6df36c4a2d13b5e25284f9fbc4e82dbc5006e3741d2baa500e8606f4615"
   },
   "truth_frontmatter": {
     "slug": "contract-baseline-convergence-v1611",
     "version": "v1.6.11",
     "status": "frozen",
-    "revision_id": "D2",
+    "revision_id": "R2",
     "language": "zh",
     "domain_required": "true",
     "domain_kind": "platform",
@@ -40,8 +40,8 @@
     "truth_map_contract": "beacon-truth-map-v1",
     "participating_services": "beacon",
     "git_canonical_branch": "main",
-    "previous_draft": "D1",
-    "change_reason": "D2: Beacon-native execution inheritance and no-compat forward migration",
+    "previous_revision": "R1",
+    "change_reason": "D3: CLI deterministic scaffold plus Host LLM full-package fill under feature-package authority",
     "parent_truth": "docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
     "inherited_contracts": "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
     "canonical_refs": {
@@ -80,6 +80,21 @@
     {
       "ac_id": "AC-BAS-006",
       "theme": "旧冻结 Truth 保持只读 lineage；仍有效的语义只能通过 `parent_truth`/`inherited_contracts` 进入当前 shape，并经 plan → truth/change → Truth Review → freeze new revision 向前迁移",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-BAS-007",
+      "theme": "`beacon truth init`/等价 CLI 只负责确定性创建 `features/<slug>/{truth,tests,tasks,evidence}.md` scaffold、协议版本与占位状态；scaffold 未经 Host LLM 全包填充与 review 不得被标记 `package_maturity=filled` 或推荐 freeze",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-BAS-008",
+      "theme": "旧 PRD/User Story semantic compiler、host-response/command-bridge/provider transport 作为受治理的语义输入能力被复用，但当前 `feature_package_authoritative` 四文件仍是唯一 requirement truth；不得恢复平行 `prd/`、`user-story/`、`qa/test-cases/` canonical 写入",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-BAS-009",
+      "theme": "每个 R2 freeze 必须绑定最终四文件 baseline hash、package-validation report/hash、Truth Review report/hash、human scope ack 与 promotion receipt；任一 hash 漂移或 receipt 仅声明 `status=complete` 时 Program freeze 必须阻断",
       "description": ""
     }
   ],
@@ -133,6 +148,30 @@
       "evidence_path": ""
     },
     {
+      "ac_id": "AC-BAS-007",
+      "tc_id": "TC-BAS-007",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k deterministic_scaffold_not_filled --tb=no`",
+      "assertion": "CLI scaffold creates exactly four current-shape files but remains draft/unfilled before Host LLM fill",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-BAS-008",
+      "tc_id": "TC-BAS-008",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k semantic_compiler_feature_package_authority --tb=no`",
+      "assertion": "legacy PRD/User Story semantic capability is reusable input while feature package remains sole canonical truth",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-BAS-009",
+      "tc_id": "TC-BAS-009",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k authenticated_freeze_receipt --tb=no`",
+      "assertion": "final hashes, validation, review, human ack and promotion receipt are all bound and checked",
+      "evidence_path": ""
+    },
+    {
       "ac_id": "AC-BAS-005",
       "tc_id": "TC-BAS-ILLEGAL",
       "layer": "",
@@ -174,11 +213,26 @@
     },
     {
       "id": "TASK-007",
-      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/contract-baseline-convergence-v1611/GATES.json`",
+      "title": "Implement AC-BAS-007: `beacon truth init`/等价 CLI 只负责确定性创建 `features/<slug>/{truth,tests,tas... · ac=AC-BAS-007 · evidence=`.beacon/evidence/implement/contract-baseline-convergence-v1611/AC-BAS-007.json`",
       "status": "unchecked"
     },
     {
       "id": "TASK-008",
+      "title": "Implement AC-BAS-008: 旧 PRD/User Story semantic compiler、host-response/command-bridge/provi... · ac=AC-BAS-008 · evidence=`.beacon/evidence/implement/contract-baseline-convergence-v1611/AC-BAS-008.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-009",
+      "title": "Implement AC-BAS-009: 每个 R2 freeze 必须绑定最终四文件 baseline hash、package-validation report/hash、T... · ac=AC-BAS-009 · evidence=`.beacon/evidence/implement/contract-baseline-convergence-v1611/AC-BAS-009.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-010",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/contract-baseline-convergence-v1611/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-011",
       "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/contract-baseline-convergence-v1611/QA-MATRIX.json`",
       "status": "unchecked"
     }
@@ -189,7 +243,7 @@
       "surface": "requirement",
       "authority": "requirement_truth",
       "canonical_artifact": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/truth.md",
-      "status": "draft",
+      "status": "frozen",
       "route": "truth"
     },
     {
@@ -232,6 +286,27 @@
       "authority": "requirement_truth",
       "canonical_artifact": "docs/beacon/v1.6.11/change/beacon-plan-goal-task-closure-v1611.md",
       "status": "accepted",
+      "route": "truth"
+    },
+    {
+      "surface": "scaffold-source",
+      "authority": "support_advisory",
+      "canonical_artifact": "beacon/utils/feature_package.py",
+      "status": "inspected",
+      "route": "implement"
+    },
+    {
+      "surface": "semantic-source",
+      "authority": "support_advisory",
+      "canonical_artifact": "beacon/commands/prd.py; beacon/commands/user_story.py; beacon/utils/semantic_runtime.py",
+      "status": "inspected",
+      "route": "implement"
+    },
+    {
+      "surface": "revision",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.11/.machine/execution/contract-baseline-convergence-v1611.revision.json",
+      "status": "R2-frozen",
       "route": "truth"
     }
   ]

@@ -15,9 +15,12 @@ task_source: acceptance_criteria
 - [ ] TASK-004 Implement AC-CNV-004: subagent/task executor 不能直接完成 GoalRun；只有 Goal owner 在 verifier pass 后... · ac=AC-CNV-004 · evidence=`.beacon/evidence/implement/convergence-verifier-v1611/AC-CNV-004.json`
 - [ ] TASK-005 Implement AC-CNV-005: fail verdict 必须列出最小未闭环集合及 recommended next-ready/replan/truth/qa route · ac=AC-CNV-005 · evidence=`.beacon/evidence/implement/convergence-verifier-v1611/AC-CNV-005.json`
 - [ ] TASK-006 Implement AC-CNV-006: GoalRun 必须持有 `run_id`、program slug、graph revision、truth revision set、... · ac=AC-CNV-006 · evidence=`.beacon/evidence/implement/convergence-verifier-v1611/AC-CNV-006.json`
-- [ ] TASK-007 Implement AC-CNV-007: L0–L8 只能映射到既有 goal→plan→truth→design?→implement→qa→release；不得新增 publi... · ac=AC-CNV-007 · evidence=`.beacon/evidence/implement/convergence-verifier-v1611/AC-CNV-007.json`
-- [ ] TASK-008 Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/convergence-verifier-v1611/GATES.json`
-- [ ] TASK-009 Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/convergence-verifier-v1611/QA-MATRIX.json`
+- [ ] TASK-007 Implement AC-CNV-007: L0–L8 只能映射到既有 goal→plan→truth→可选 design→implement→qa→release；不得新增 pub... · ac=AC-CNV-007 · evidence=`.beacon/evidence/implement/convergence-verifier-v1611/AC-CNV-007.json`
+- [ ] TASK-008 Implement AC-CNV-008: Program trace matrix 必须实现 `PAC → lake slug → AC IDs → TC IDs → task/e... · ac=AC-CNV-008 · evidence=`.beacon/evidence/implement/convergence-verifier-v1611/AC-CNV-008.json`
+- [ ] TASK-009 Implement AC-CNV-009: Program freeze 必须逐湖重新执行并验证 package validation pass、Truth Review pass、... · ac=AC-CNV-009 · evidence=`.beacon/evidence/implement/convergence-verifier-v1611/AC-CNV-009.json`
+- [ ] TASK-010 Implement AC-CNV-010: `truth-fill-transaction.v1` 的 scaffold/request/response/schema/patch/... · ac=AC-CNV-010 · evidence=`.beacon/evidence/implement/convergence-verifier-v1611/AC-CNV-010.json`
+- [ ] TASK-011 Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/convergence-verifier-v1611/GATES.json`
+- [ ] TASK-012 Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/convergence-verifier-v1611/QA-MATRIX.json`
 
 ## Boundary
 

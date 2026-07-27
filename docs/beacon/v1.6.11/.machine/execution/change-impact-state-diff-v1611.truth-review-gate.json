@@ -15,7 +15,7 @@
       "check": "A",
       "name": "intent_coverage",
       "required": true,
-      "matrix_rows": 5,
+      "matrix_rows": 7,
       "missing_must": [],
       "reason": "",
       "findings": [],
@@ -54,6 +54,20 @@
           "strength": "must",
           "landing": "AC-DIF-005",
           "status": "covered"
+        },
+        {
+          "intent_id": "INT-DIF-06",
+          "source": "structured-patch",
+          "strength": "must",
+          "landing": "AC-DIF-006",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-DIF-07",
+          "source": "fill-transaction-fsm",
+          "strength": "must",
+          "landing": "AC-DIF-007",
+          "status": "covered"
         }
       ]
     },
@@ -65,10 +79,13 @@
       "reason": "",
       "findings": [],
       "fsm": {
-        "transition_count": 8,
+        "transition_count": 15,
         "from_states": [
           "approved",
+          "awaiting_human",
           "blocked",
+          "fill_requested",
+          "fill_validating",
           "mapping",
           "queued",
           "review",
@@ -87,8 +104,8 @@
       "required": true,
       "reason": "",
       "findings": [],
-      "ac_count": 5,
-      "tc_count": 6,
+      "ac_count": 7,
+      "tc_count": 8,
       "missing_ac": [],
       "covered": {
         "AC-DIF-001": [
@@ -106,6 +123,12 @@
         ],
         "AC-DIF-005": [
           "TC-DIF-005"
+        ],
+        "AC-DIF-006": [
+          "TC-DIF-006"
+        ],
+        "AC-DIF-007": [
+          "TC-DIF-007"
         ]
       }
     },
@@ -140,7 +163,7 @@
     "fill_depth_pass": true,
     "note": "Polish L0/narrative only after A/B/C; preserve_machine_fields=true; freeze needs D+exec too"
   },
-  "evaluated_at": "2026-07-27T07:28:04.403790+00:00",
+  "evaluated_at": "2026-07-27T08:26:00.464519+00:00",
   "paths": {
     "truth": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/truth.md",
     "tests": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/tests.md",

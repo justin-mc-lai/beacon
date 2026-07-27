@@ -3,7 +3,9 @@ schema: beacon-program-manifest-v1
 program_slug: beacon-plan-goal-task-closure-v1611
 version: v1.6.11
 status: program_frozen
-revision_id: D2
+change_round: D3
+revision_id: R2
+previous_revision: R1
 language: zh
 scope_mode: full_parity
 lake_or_ocean: 海
@@ -63,7 +65,7 @@ L0 → L1 → L2 → L3 → L4
 
 ## Program 状态
 
-当前：`program_frozen`。
+当前：`program_frozen`（D3/R2 requirement truth）。
 
 合法主链：
 
@@ -85,6 +87,7 @@ program_intent_captured
 - feature graph 结构有效且用户确认 scope。
 - 不存在 must missing、悬空状态、无 TC 的 AC、无 evidence 绑定的 task。
 - 用户已确认范围与跨能力继承；只有九湖全部通过机器门并冻结后，才允许 Program freeze。
+- Program freeze 必须验证当前四文件 hash、package-validation、Truth Review、human ack、promotion receipt 与 PAC trace，不能只信 status 字符串。
 
 ## 已确认决策
 
@@ -98,6 +101,10 @@ program_intent_captured
 | worktree 继承 | direct/goal/team/ralph 共享真实 worktree admission | user-confirmation-2026-07-27 |
 | 生命周期继承 | 内部状态映射回 1+6，并绑定 `agent_trace.v1` | user-confirmation-2026-07-27 |
 | no-compat | 旧 shape fail-closed，只允许重新 plan/change/review/freeze | user-confirmation-2026-07-27 |
+| CLI scaffold | CLI 只确定性创建当前四文件骨架与协议元数据，不负责虚构领域语义 | user-confirmation-2026-07-27 |
+| Host LLM full fill | Host LLM 必须填充完整 package 领域对象，不能只润色 L0 或一句一 AC | user-confirmation-2026-07-27 |
+| write authority | LLM 返回结构化 response；CLI 校验后事务化 patch 与确定性投影 | user-confirmation-2026-07-27 |
+| semantic compile migration | 复用旧 PRD/User Story host-response/bridge 语义能力，但不恢复旧 shape canonical 写入 | user-confirmation-2026-07-27 |
 
 ## Alignment Surface
 
@@ -109,7 +116,8 @@ program_intent_captured
 
 | Phase | Scope | Decision |
 |-------|-------|----------|
-| R1 | L0–L8 全部 requirement truth、继承合同、状态机和 planned TC | accepted |
+| R1 | L0–L8 初版 requirement truth、继承合同、状态机和 planned TC | superseded by D3/R2 |
+| R2 | CLI scaffold + Host LLM full-package fill、结构化事务、恢复 FSM、authenticated Program freeze | accepted |
 | Implement | runtime compiler/ledger/gate/scheduler/verifier 与已有 Goal/admission/trace 集成 | downstream implement |
 | QA | 真实 Git worktree、subagent fallback、no-compat、取消重排、Goal closure E2E | downstream qa |
 | Release | runtime promotion 与 catalog active-window 收敛 | deferred to release |
@@ -120,6 +128,64 @@ program_intent_captured
 |-------------|------------|---------------|--------|
 | D-PGTC-001 | v1.6.11 runtime/package version promotion | accepted defer | truth 可冻结，不能声称 runtime 已发布 |
 | D-PGTC-002 | catalog 默认 active window=3 的历史治理债 | accepted defer to release | freeze 前目录册必须一致；release 前收敛政策 |
+
+> D-PGTC-002 不能作为伪冻结豁免；若 catalog active plane 在 Program freeze 时仍漂移，Program 保持 blocked，等待独立治理决定。
+
+## D3 Full-Package Fill 主链
+
+```text
+GoalUtteranceCaptured
+→ VersionAndContextResolved
+→ DeterministicScaffoldMaterialized
+→ HostLLMFillRequested
+→ StructuredFillProduced
+→ FillPatchSchemaValidated
+→ CanonicalTruthPatched
+→ TestsTasksEvidenceRegenerated
+→ PackageValidationPassed
+→ TruthReviewPassed
+→ AwaitingHumanAck
+→ Frozen
+```
+
+### 合同与 authority
+
+| Contract | Authority rule |
+|----------|----------------|
+| `truth-fill-request.v1` | CLI 绑定 utterance、版本、ContextEnvelope、R2/base hashes、semantic compiler/host transport/Humanizer/PAC refs |
+| `truth-fill-response.v1` | Host LLM 返回结构化领域对象和 projection inputs，不返回可自由覆盖的 canonical Markdown |
+| `truth-fill-transaction.v1` | CLI 校验 schema、hash、引用和 allowed paths，原子 patch 后再生成 tests/tasks/evidence |
+| `truth-human-ack.v1` | 人工确认 finding disposition 与最终 R2 hash set，freeze 不得自行代签 |
+
+旧 `prd`/`user-story` semantic compiler 的 host-response、command-bridge 与 provider transport 是可复用输入；当前唯一 requirement authority 仍为：
+
+```text
+features/<slug>/{truth,tests,tasks,evidence}.md
+```
+
+禁止恢复平行旧 shape，禁止 LLM 直接写四文件，禁止 scaffold/规则模板冒充 full fill。
+
+## Program PAC Trace Matrix
+
+| PAC | Lake | AC | TC | Task/Evidence | Revision proof |
+|-----|------|----|----|---------------|----------------|
+| PAC-001 | L0/L1 | AC-BAS-002, AC-CTX-001 | TC-BAS-002, TC-CTX-001 | generated R2 tasks/evidence | R2 + final hash |
+| PAC-002 | L2 | AC-INT-001..007 | TC-INT-001..007 | generated R2 tasks/evidence | R2 + final hash |
+| PAC-003 | L3 | AC-DIF-001..007 | TC-DIF-001..007 | generated R2 tasks/evidence | R2 + final hash |
+| PAC-004/005 | L4/L6 | AC-DAG-001..010, AC-REV-001/007 | TC-DAG-001..010, TC-REV-001/007 | generated R2 tasks/evidence | R2 + final hash |
+| PAC-006 | L5 | AC-LED-001..007 | TC-LED-001..007 | generated R2 tasks/evidence | R2 + final hash |
+| PAC-007 | L6 | AC-REV-001..007 | TC-REV-001..007 | generated R2 tasks/evidence | R2 + final hash |
+| PAC-008 | L7 | AC-RPL-001..009 | TC-RPL-001..009 | generated R2 tasks/evidence | R2 + final hash |
+| PAC-009/010 | L0/L8 | AC-BAS-004/009, AC-CNV-001..010 | TC-BAS-004/009, TC-CNV-001..010 | generated R2 tasks/evidence | R2 + final hash |
+| PAC-011/012 | L4/L7 | AC-DAG-006..008, AC-RPL-006/007 | TC-DAG-006..008, TC-RPL-006/007 | generated R2 tasks/evidence | R2 + final hash |
+| PAC-013/014 | L5/L8 | AC-LED-005..007, AC-CNV-004/006/007 | mapped TC rows | generated R2 tasks/evidence | R2 + final hash |
+| PAC-015 | L0/L1 | AC-BAS-005/006/008, AC-CTX-005 | mapped TC rows | generated R2 tasks/evidence | R2 + final hash |
+| PAC-016 | L0 | AC-BAS-007 | TC-BAS-007 | generated R2 tasks/evidence | R2 + final hash |
+| PAC-017 | L1/L2 | AC-CTX-007/008, AC-INT-006/007 | mapped TC rows | generated R2 tasks/evidence | R2 + final hash |
+| PAC-018 | L0/L1/L4 | AC-BAS-008, AC-CTX-007, AC-DAG-010 | mapped TC rows | generated R2 tasks/evidence | R2 + final hash |
+| PAC-019 | L3/L4 | AC-DIF-006/007, AC-DAG-009 | mapped TC rows | generated R2 tasks/evidence | R2 + final hash |
+| PAC-020 | L5/L6/L7 | AC-LED-007, AC-REV-007, AC-RPL-008/009 | mapped TC rows | generated R2 tasks/evidence | R2 + final hash |
+| PAC-021 | L8 | AC-CNV-008/009/010 | TC-CNV-008/009/010 | generated R2 tasks/evidence | R2 + final hash |
 
 ## Beacon 原生能力继承合同
 

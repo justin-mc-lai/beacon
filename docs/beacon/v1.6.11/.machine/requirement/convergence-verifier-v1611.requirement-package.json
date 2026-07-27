@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-27T07:28:11.592164+00:00",
+  "generated_at": "2026-07-27T08:26:08.060375+00:00",
   "feature": "convergence-verifier-v1611",
   "feature_slug": "convergence-verifier-v1611",
   "version": "v1.6.11",
@@ -18,16 +18,16 @@
     "evidence": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/evidence.md"
   },
   "source_hashes": {
-    "truth": "545865bbc8fe061da9dbd0caa6b091d3c1401414edf10e75a103a26f6c3869b2",
-    "tests": "fd4b1370dd9e1beb6b00f2d9214bf2e00c8dd2fe58a0d49be7cd8a8d7b05ec80",
-    "tasks": "811274263a940b96303a9723fc31513b27ba42f40bdec176c2d5bf8123713943",
-    "evidence": "a487450ae0989515f3971d5e605518d77ff7c98bde9f0185c1be02e747b5f53c"
+    "truth": "fcc698b4b5483ff1f898bc74c88e916e7b20005889c8547f966065e72481ff57",
+    "tests": "196136f903295aad08c315f4210568becbc10a96d0001e855c80e1ab38158954",
+    "tasks": "6d181b5ce529b2e38c96474148a1b673ab9b3bee92b28d448bac5616378a4784",
+    "evidence": "0af11db3b1c341eec4ac36997d44791b731547ecc76c593bfe614981ce8c0065"
   },
   "truth_frontmatter": {
     "slug": "convergence-verifier-v1611",
     "version": "v1.6.11",
     "status": "frozen",
-    "revision_id": "D2",
+    "revision_id": "R2",
     "language": "zh",
     "domain_required": "true",
     "domain_kind": "gate",
@@ -39,10 +39,10 @@
     "truth_map_contract": "beacon-truth-map-v1",
     "participating_services": "beacon",
     "git_canonical_branch": "main",
-    "previous_draft": "D1",
-    "change_reason": "D2: formal GoalRun ownership, refs and public lifecycle boundary",
+    "previous_revision": "R1",
+    "change_reason": "D3: authenticated PAC trace and full-package fill convergence",
     "parent_truth": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/truth.md",
-    "inherited_contracts": "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md; docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
+    "inherited_contracts": "docs/beacon/v1.6.11/features/task-progress-ledger-v1611/truth.md; docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md; docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
     "canonical_refs": {
       "prd": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/truth.md",
       "user_story": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/truth.md",
@@ -83,7 +83,22 @@
     },
     {
       "ac_id": "AC-CNV-007",
-      "theme": "L0–L8 只能映射到既有 goal→plan→truth→design?→implement→qa→release；不得新增 public harness，且 verifier pass 只产生裁决，最终 complete 仍由 Goal owner 执行",
+      "theme": "L0–L8 只能映射到既有 goal→plan→truth→可选 design→implement→qa→release；不得新增 public harness，且 verifier pass 只产生裁决，最终 complete 仍由 Goal owner 执行",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-CNV-008",
+      "theme": "Program trace matrix 必须实现 `PAC → lake slug → AC IDs → TC IDs → task/evidence refs → R2/final baseline hash` 全链；任一 PAC 只映射湖名、无 TC、无 evidence 或 hash stale 都阻断 Program freeze",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-CNV-009",
+      "theme": "Program freeze 必须逐湖重新执行并验证 package validation pass、Truth Review pass、human ack、R2 revision 与当前四文件 hash 一致、promotion receipt hash-authenticated；不得仅信任 promotion JSON 的 `status=complete`",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-CNV-010",
+      "theme": "`truth-fill-transaction.v1` 的 scaffold/request/response/schema/patch/projection/validation/review/human-ack/freeze 步骤必须全部闭合，且 L5 progress 与 L7 recovery refs 可追溯，才可把 package 与 Program 判定 frozen",
       "description": ""
     }
   ],
@@ -145,6 +160,30 @@
       "evidence_path": ""
     },
     {
+      "ac_id": "AC-CNV-008",
+      "tc_id": "TC-CNV-008",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k pac_full_trace_matrix --tb=no`",
+      "assertion": "every PAC reaches lake, AC, TC, task/evidence, R2 and final hash",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-CNV-009",
+      "tc_id": "TC-CNV-009",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k authenticated_program_freeze --tb=no`",
+      "assertion": "status-only promotion is rejected; all nine current hashes, gates, ack and receipts are checked",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-CNV-010",
+      "tc_id": "TC-CNV-010",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k fill_chain_convergence --tb=no`",
+      "assertion": "full fill transaction plus L5 progress and L7 recovery refs must close before freeze",
+      "evidence_path": ""
+    },
+    {
       "ac_id": "AC-CNV-007",
       "tc_id": "TC-CNV-ILLEGAL",
       "layer": "",
@@ -186,16 +225,31 @@
     },
     {
       "id": "TASK-007",
-      "title": "Implement AC-CNV-007: L0–L8 只能映射到既有 goal→plan→truth→design?→implement→qa→release；不得新增 publi... · ac=AC-CNV-007 · evidence=`.beacon/evidence/implement/convergence-verifier-v1611/AC-CNV-007.json`",
+      "title": "Implement AC-CNV-007: L0–L8 只能映射到既有 goal→plan→truth→可选 design→implement→qa→release；不得新增 pub... · ac=AC-CNV-007 · evidence=`.beacon/evidence/implement/convergence-verifier-v1611/AC-CNV-007.json`",
       "status": "unchecked"
     },
     {
       "id": "TASK-008",
-      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/convergence-verifier-v1611/GATES.json`",
+      "title": "Implement AC-CNV-008: Program trace matrix 必须实现 `PAC → lake slug → AC IDs → TC IDs → task/e... · ac=AC-CNV-008 · evidence=`.beacon/evidence/implement/convergence-verifier-v1611/AC-CNV-008.json`",
       "status": "unchecked"
     },
     {
       "id": "TASK-009",
+      "title": "Implement AC-CNV-009: Program freeze 必须逐湖重新执行并验证 package validation pass、Truth Review pass、... · ac=AC-CNV-009 · evidence=`.beacon/evidence/implement/convergence-verifier-v1611/AC-CNV-009.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-010",
+      "title": "Implement AC-CNV-010: `truth-fill-transaction.v1` 的 scaffold/request/response/schema/patch/... · ac=AC-CNV-010 · evidence=`.beacon/evidence/implement/convergence-verifier-v1611/AC-CNV-010.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-011",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/convergence-verifier-v1611/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-012",
       "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/convergence-verifier-v1611/QA-MATRIX.json`",
       "status": "unchecked"
     }
@@ -206,7 +260,7 @@
       "surface": "requirement",
       "authority": "requirement_truth",
       "canonical_artifact": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/truth.md",
-      "status": "draft",
+      "status": "frozen",
       "route": "truth"
     },
     {
@@ -249,6 +303,27 @@
       "authority": "requirement_truth",
       "canonical_artifact": "docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/program-manifest.md",
       "status": "accepted",
+      "route": "truth"
+    },
+    {
+      "surface": "progress-truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.11/features/task-progress-ledger-v1611/truth.md",
+      "status": "inherited",
+      "route": "truth"
+    },
+    {
+      "surface": "program-freeze-source",
+      "authority": "support_advisory",
+      "canonical_artifact": "beacon/utils/program_freeze_gate.py",
+      "status": "inspected-gap",
+      "route": "implement"
+    },
+    {
+      "surface": "revision",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.11/.machine/execution/convergence-verifier-v1611.revision.json",
+      "status": "R2-frozen",
       "route": "truth"
     }
   ]

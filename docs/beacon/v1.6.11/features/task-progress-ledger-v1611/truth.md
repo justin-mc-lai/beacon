@@ -2,7 +2,7 @@
 slug: task-progress-ledger-v1611
 version: v1.6.11
 status: frozen
-revision_id: D2
+revision_id: R2
 language: zh
 domain_required: true
 domain_kind: platform
@@ -14,8 +14,8 @@ program_ref: docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/pr
 truth_map_contract: beacon-truth-map-v1
 participating_services: beacon
 git_canonical_branch: main
-previous_draft: D1
-change_reason: "D2: bind Goal run, public lifecycle and agent_trace.v1"
+previous_revision: R1
+change_reason: "D3: append-only full-package fill transaction and projection progress"
 parent_truth: docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/truth.md
 inherited_contracts: "docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md; docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md"
 canonical_refs:
@@ -79,6 +79,7 @@ scope_ack_ref: user-confirmation-2026-07-27
 | INT-LED-04 | audit | must | AC-LED-004 | covered |
 | INT-LED-05 | lifecycle-trace | must | AC-LED-005 | covered |
 | INT-LED-06 | fail-closed-trace | must | AC-LED-006 | covered |
+| INT-LED-07 | fill-progress | must | AC-LED-007 | covered |
 
 ## Acceptance Criteria
 
@@ -90,6 +91,7 @@ scope_ack_ref: user-confirmation-2026-07-27
 | AC-LED-004 | 聚合绑定 graph revision；图变化后旧 snapshot 标 stale 并重新计算 |
 | AC-LED-005 | 每个 task/path event 绑定 Goal `run_id`、内部 L0–L8 状态、对应 Beacon 1+6 harness/stage 与 `agent_trace.v1` ref；内部账本不得新增公共 lifecycle stage |
 | AC-LED-006 | lifecycle trace append 失败时 task/path 状态转换不得静默成功；必须进入 blocked 或显式 degraded finding，并保留可重放失败原因 |
+| AC-LED-007 | scaffold、fill request/response、schema validation、canonical patch、三投影再生成、package validation、Truth Review、human ack、freeze 的每个事务步骤都追加 transaction_id、sequence、input/output hash、status、feedback 与 reason_code；重试可回放且不得覆盖旧尝试 |
 
 ## Domain FSM TaskProgressLedger
 
@@ -122,6 +124,7 @@ scope_ack_ref: user-confirmation-2026-07-27
 - stale snapshot used as current progress
 - state transition acknowledged while `agent_trace.v1` append failed silently
 - internal L0–L8 state exposed as a new public harness
+- fill transaction 跨步骤无 sequence/hash 或重试覆盖旧失败记录
 
 ## Non-goals
 

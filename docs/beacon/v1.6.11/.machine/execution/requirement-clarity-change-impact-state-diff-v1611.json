@@ -27,7 +27,7 @@
     "review_gates": [],
     "qa_coverage_hints": [],
     "evidence_lines": {},
-    "generated_at": "2026-07-27T07:28:03.561434+00:00",
+    "generated_at": "2026-07-27T08:25:59.882057+00:00",
     "feature": "change-impact-state-diff-v1611",
     "feature_slug": "change-impact-state-diff-v1611",
     "prd_ref": "docs/beacon/v1.6.11/prd/change-impact-state-diff-v1611.md",
@@ -61,8 +61,8 @@
       "frontmatter": {
         "slug": "change-impact-state-diff-v1611",
         "version": "v1.6.11",
-        "status": "draft",
-        "revision_id": "D2",
+        "status": "frozen",
+        "revision_id": "R2",
         "language": "zh",
         "domain_required": "true",
         "domain_kind": "platform",
@@ -74,8 +74,8 @@
         "truth_map_contract": "beacon-truth-map-v1",
         "participating_services": "beacon",
         "git_canonical_branch": "main",
-        "previous_draft": "D1",
-        "change_reason": "D2: diff lifecycle, delegation, admission, trace and no-compat surfaces",
+        "previous_revision": "R1",
+        "change_reason": "D3: structured fill patch transaction and complete ChangePlan recovery FSM",
         "parent_truth": "docs/beacon/v1.6.11/features/intent-completeness-engine-v1611/truth.md",
         "inherited_contracts": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md; docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md; docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
         "canonical_refs": {
@@ -121,7 +121,10 @@
           "name": "ChangeImpactDiff",
           "states": [
             "approved",
+            "awaiting_human",
             "blocked",
+            "fill_requested",
+            "fill_validating",
             "mapping",
             "queued",
             "review",
@@ -173,6 +176,26 @@
               "from": "approved",
               "to": "stale",
               "guard": "upstream revision changed"
+            },
+            {
+              "from": "mapping",
+              "to": "fill_requested",
+              "guard": "scaffold and request hashes current"
+            },
+            {
+              "from": "fill_requested",
+              "to": "fill_validating",
+              "guard": "structured response produced"
+            },
+            {
+              "from": "review",
+              "to": "awaiting_human",
+              "guard": "conflict, reject or high-risk diff"
+            },
+            {
+              "from": "fill_validating",
+              "to": "awaiting_human",
+              "guard": "conflict, reject or high-risk diff"
             }
           ]
         }
@@ -197,6 +220,21 @@
           "description": "inherited lifecycle/delegation/admission/trace/no-compat surface omitted",
           "aggregate": "",
           "source": "truth"
+        },
+        {
+          "description": "Host LLM 直接写四文件或 patch 越过 allowed paths",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "schema/hash 校验失败后仍投影 canonical truth",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "`awaiting_human` 无 decision_ref 返回自动执行",
+          "aggregate": "",
+          "source": "truth"
         }
       ],
       "acceptance_criteria": [
@@ -219,12 +257,21 @@
         {
           "ac_id": "AC-DIF-005",
           "description": "Change diff 必须覆盖 public 1+6 lifecycle 映射、subagent delegation/诚实 fallback、shared worktree admission、Goal run_id/`agent_trace.v1`、Goal completion owner 与 no-compat migration；任一 inherited surface 缺失即阻断 review"
+        },
+        {
+          "ac_id": "AC-DIF-006",
+          "description": "Host LLM 只能返回 `truth-fill-response.v1` 结构化领域对象/patch；CLI 依据 `truth-fill-transaction.v1` 校验 request hash、base revision、schema、AC/TC/FSM 引用和 allowed paths 后，才可原子地投影四文件，禁止 LLM 自由覆盖 Markdown"
+        },
+        {
+          "ac_id": "AC-DIF-007",
+          "description": "正式 ChangePlan 必须覆盖 `GoalUtteranceCaptured → VersionAndContextResolved → DeterministicScaffoldMaterialized → HostLLMFillRequested → StructuredFillProduced → FillPatchSchemaValidated → CanonicalTruthPatched → TestsTasksEvidenceRegenerated → PackageValidationPassed → TruthReviewPassed → AwaitingHumanAck → Frozen`，并为 schema reject、semantic rewrite、human reject/cancel、timeout 与 retry exhaustion 提供回边或阻断终态"
         }
       ],
       "bound_ac_ids": [
         "AC-DIF-002",
         "AC-DIF-004",
-        "AC-DIF-005"
+        "AC-DIF-005",
+        "AC-DIF-007"
       ],
       "orphan_ac_ids": [],
       "aggregates_missing_illegal_slots": [],
@@ -258,8 +305,8 @@
         "frontmatter": {
           "slug": "change-impact-state-diff-v1611",
           "version": "v1.6.11",
-          "status": "draft",
-          "revision_id": "D2",
+          "status": "frozen",
+          "revision_id": "R2",
           "language": "zh",
           "domain_required": "true",
           "domain_kind": "platform",
@@ -271,8 +318,8 @@
           "truth_map_contract": "beacon-truth-map-v1",
           "participating_services": "beacon",
           "git_canonical_branch": "main",
-          "previous_draft": "D1",
-          "change_reason": "D2: diff lifecycle, delegation, admission, trace and no-compat surfaces",
+          "previous_revision": "R1",
+          "change_reason": "D3: structured fill patch transaction and complete ChangePlan recovery FSM",
           "parent_truth": "docs/beacon/v1.6.11/features/intent-completeness-engine-v1611/truth.md",
           "inherited_contracts": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md; docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md; docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
           "canonical_refs": {
@@ -318,7 +365,10 @@
             "name": "ChangeImpactDiff",
             "states": [
               "approved",
+              "awaiting_human",
               "blocked",
+              "fill_requested",
+              "fill_validating",
               "mapping",
               "queued",
               "review",
@@ -370,6 +420,26 @@
                 "from": "approved",
                 "to": "stale",
                 "guard": "upstream revision changed"
+              },
+              {
+                "from": "mapping",
+                "to": "fill_requested",
+                "guard": "scaffold and request hashes current"
+              },
+              {
+                "from": "fill_requested",
+                "to": "fill_validating",
+                "guard": "structured response produced"
+              },
+              {
+                "from": "review",
+                "to": "awaiting_human",
+                "guard": "conflict, reject or high-risk diff"
+              },
+              {
+                "from": "fill_validating",
+                "to": "awaiting_human",
+                "guard": "conflict, reject or high-risk diff"
               }
             ]
           }
@@ -394,6 +464,21 @@
             "description": "inherited lifecycle/delegation/admission/trace/no-compat surface omitted",
             "aggregate": "",
             "source": "truth"
+          },
+          {
+            "description": "Host LLM 直接写四文件或 patch 越过 allowed paths",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "schema/hash 校验失败后仍投影 canonical truth",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "`awaiting_human` 无 decision_ref 返回自动执行",
+            "aggregate": "",
+            "source": "truth"
           }
         ],
         "acceptance_criteria": [
@@ -416,12 +501,21 @@
           {
             "ac_id": "AC-DIF-005",
             "description": "Change diff 必须覆盖 public 1+6 lifecycle 映射、subagent delegation/诚实 fallback、shared worktree admission、Goal run_id/`agent_trace.v1`、Goal completion owner 与 no-compat migration；任一 inherited surface 缺失即阻断 review"
+          },
+          {
+            "ac_id": "AC-DIF-006",
+            "description": "Host LLM 只能返回 `truth-fill-response.v1` 结构化领域对象/patch；CLI 依据 `truth-fill-transaction.v1` 校验 request hash、base revision、schema、AC/TC/FSM 引用和 allowed paths 后，才可原子地投影四文件，禁止 LLM 自由覆盖 Markdown"
+          },
+          {
+            "ac_id": "AC-DIF-007",
+            "description": "正式 ChangePlan 必须覆盖 `GoalUtteranceCaptured → VersionAndContextResolved → DeterministicScaffoldMaterialized → HostLLMFillRequested → StructuredFillProduced → FillPatchSchemaValidated → CanonicalTruthPatched → TestsTasksEvidenceRegenerated → PackageValidationPassed → TruthReviewPassed → AwaitingHumanAck → Frozen`，并为 schema reject、semantic rewrite、human reject/cancel、timeout 与 retry exhaustion 提供回边或阻断终态"
           }
         ],
         "bound_ac_ids": [
           "AC-DIF-002",
           "AC-DIF-004",
-          "AC-DIF-005"
+          "AC-DIF-005",
+          "AC-DIF-007"
         ],
         "orphan_ac_ids": [],
         "aggregates_missing_illegal_slots": [],
@@ -444,9 +538,9 @@
       "summary": {
         "entity_count": 2,
         "aggregate_count": 1,
-        "illegal_slot_count": 4,
+        "illegal_slot_count": 7,
         "orphan_ac_count": 0,
-        "bound_ac_count": 3
+        "bound_ac_count": 4
       }
     },
     "recommended_action": ""
