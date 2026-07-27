@@ -1,21 +1,21 @@
 {
   "schema_version": "1.0",
-  "feature": "convergence-verifier-v1611",
-  "feature_slug": "convergence-verifier-v1611",
+  "feature": "intent-completeness-engine-v1611",
+  "feature_slug": "intent-completeness-engine-v1611",
   "version": "v1.6.11",
   "status": "pass",
   "blocked": false,
   "reason_code": "",
-  "generated_at": "2026-07-27T13:49:49.373555+00:00",
-  "package_dir": "docs/beacon/v1.6.11/features/convergence-verifier-v1611",
+  "generated_at": "2026-07-27T13:50:03.815681+00:00",
+  "package_dir": "docs/beacon/v1.6.11/features/intent-completeness-engine-v1611",
   "truth_frontmatter": {
-    "slug": "convergence-verifier-v1611",
+    "slug": "intent-completeness-engine-v1611",
     "version": "v1.6.11",
     "status": "frozen",
     "revision_id": "R2",
     "language": "zh",
     "domain_required": "true",
-    "domain_kind": "gate",
+    "domain_kind": "platform",
     "ux_required": "false",
     "ux_deferred": "true",
     "package_maturity": "filled",
@@ -27,19 +27,19 @@
     "participating_services": "beacon",
     "git_canonical_branch": "main",
     "previous_revision": "R1",
-    "change_reason": "D3: authenticated PAC trace and full-package fill convergence",
-    "parent_truth": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/truth.md",
-    "inherited_contracts": "docs/beacon/v1.6.11/features/task-progress-ledger-v1611/truth.md; docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md; docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
+    "change_reason": "D3: Host Agent (skill-authored fill) recursively fills complete feature-package semantics",
+    "parent_truth": "docs/beacon/v1.6.11/features/brownfield-context-resolver-v1611/truth.md",
+    "inherited_contracts": "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md; docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md; docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md; docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md",
     "canonical_refs": {
-      "prd": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/truth.md",
-      "user_story": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/truth.md",
-      "test_case": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/tests.md"
+      "prd": "docs/beacon/v1.6.11/features/intent-completeness-engine-v1611/truth.md",
+      "user_story": "docs/beacon/v1.6.11/features/intent-completeness-engine-v1611/truth.md",
+      "test_case": "docs/beacon/v1.6.11/features/intent-completeness-engine-v1611/tests.md"
     }
   },
-  "ac_count": 10,
-  "test_count": 11,
-  "checkbox_count": 12,
-  "evidence_row_count": 10,
+  "ac_count": 7,
+  "test_count": 8,
+  "checkbox_count": 9,
+  "evidence_row_count": 9,
   "gate_authority": "canonical_surfaces_preserved",
   "checkbox_gate_bypass": false,
   "task_evidence_gate": {
@@ -55,7 +55,7 @@
     {
       "severity": "info",
       "code": "truth_human_l0_ok",
-      "path": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/truth.md",
+      "path": "docs/beacon/v1.6.11/features/intent-completeness-engine-v1611/truth.md",
       "language": "zh",
       "l0_headings": [
         "## 人话"
@@ -70,16 +70,16 @@
   "truth_authority": "markdown_feature_package",
   "json_authority": false,
   "source_paths": {
-    "truth": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/truth.md",
-    "tests": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/tests.md",
-    "tasks": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/tasks.md",
-    "evidence": "docs/beacon/v1.6.11/features/convergence-verifier-v1611/evidence.md"
+    "truth": "docs/beacon/v1.6.11/features/intent-completeness-engine-v1611/truth.md",
+    "tests": "docs/beacon/v1.6.11/features/intent-completeness-engine-v1611/tests.md",
+    "tasks": "docs/beacon/v1.6.11/features/intent-completeness-engine-v1611/tasks.md",
+    "evidence": "docs/beacon/v1.6.11/features/intent-completeness-engine-v1611/evidence.md"
   },
   "source_hashes": {
-    "truth": "8613884968a0fac09acb7d63811411e46717f42141cb61ca3a48e4be6d2f74c3",
-    "tests": "fbeca916a44774c3ccd2294a8c073681a7df3d689220ad49bfd97b8c6b3f4dd9",
-    "tasks": "6d181b5ce529b2e38c96474148a1b673ab9b3bee92b28d448bac5616378a4784",
-    "evidence": "0af11db3b1c341eec4ac36997d44791b731547ecc76c593bfe614981ce8c0065"
+    "truth": "c596969b2e0218e2198a26a2279f81669603c93c2c317965caec195241b793f2",
+    "tests": "950793eed7565ba8ff9d7514f93a67933e80c80124e6fd6231d25053f12f0696",
+    "tasks": "9cab05abde3d9cd2d1b18da15cce523c1e4108527b015757b3ea63551198df4a",
+    "evidence": "785f74da3f3f368f2dd2ef066cfbe58ddcc1885f753c36b4d440483189d1bdd4"
   },
   "runtime_json_requires_markdown_twin": false
 }
