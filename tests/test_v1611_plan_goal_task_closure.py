@@ -1081,3 +1081,94 @@ def test_run_program_lakes_task_closure_wires_l0_l8(tmp_path: Path):
     codes = {f.get("code") for f in (out.get("findings") or [])}
     assert "hollow_fill_review_gate" in codes or any("auth" in str(c) for c in codes) or codes
 
+
+def test_hollow_drift_human_gate_requires_decision_ref():
+    bad = pg.resolve_hollow_drift_human_gate(choice="continue", decision_ref="")
+    assert bad.get("blocked") is True
+    ok = pg.resolve_hollow_drift_human_gate(
+        choice="continue",
+        decision_ref="human-decision:test:hollow-drift:continue",
+    )
+    assert ok.get("pass") is True
+    assert ok.get("status") == "resumed"
+
+
+def test_materialize_and_freeze_program_with_human_close(tmp_path: Path):
+    import json as _json
+    from beacon.utils.feature_package import package_paths
+    from beacon.utils.truth_map import FEATURE_SURFACES
+
+    version = "v1.6.11"
+    program = "beacon-plan-goal-task-closure-v1611"
+    decision_ref = "human-decision:test:hollow-drift:continue"
+    # materialize minimal lake packages + machine reports for all nine lakes
+    for lake in pg.LAKE_ORDER_V1611:
+        paths = package_paths(tmp_path, version=version, feature=lake)
+        paths["dir"].mkdir(parents=True, exist_ok=True)
+        for surface in FEATURE_SURFACES:
+            paths[surface].write_text(f"# {lake}/{surface}\ncontent\n", encoding="utf-8")
+        req = tmp_path / f"docs/beacon/{version}/.machine/requirement/{lake}.requirement-package.json"
+        rev = tmp_path / f"docs/beacon/{version}/.machine/execution/{lake}.truth-review-gate.json"
+        req.parent.mkdir(parents=True, exist_ok=True)
+        rev.parent.mkdir(parents=True, exist_ok=True)
+        req.write_text(_json.dumps({"status": "pass", "feature": lake}), encoding="utf-8")
+        rev.write_text(_json.dumps({"status": "pass", "feature": lake}), encoding="utf-8")
+    # feature graph for freeze gate
+    prog = tmp_path / f"docs/beacon/{version}/programs/{program}"
+    prog.mkdir(parents=True, exist_ok=True)
+    lakes = []
+    for i, lake in enumerate(pg.LAKE_ORDER_V1611):
+        lakes.append(
+            {
+                "slug": lake,
+                "status": "frozen",
+                "depends_on": [] if i == 0 else [pg.LAKE_ORDER_V1611[i - 1]],
+                "parity_subset": ["contract-tests", "truth", "tasks"],
+            }
+        )
+    graph = {
+        "schema": "beacon-feature-graph-v1",
+        "schema_version": "1.0",
+        "program_slug": program,
+        "version": version,
+        "scope_mode": "full_parity",
+        "scope_ack_ref": "user-confirmation:test",
+        "lakes": lakes,
+    }
+    (prog / "feature-graph.json").write_text(_json.dumps(graph), encoding="utf-8")
+    (prog / "program-parity-matrix.md").write_text("| Intent | Status |\n|---|---|\n| x | covered |\n", encoding="utf-8")
+
+    receipts = pg.materialize_program_lake_receipts(
+        tmp_path,
+        version=version,
+        program_slug=program,
+        human_ack_ref="truth-human-ack:test",
+        scope_ack_ref="user-confirmation:test",
+        decision_ref=decision_ref,
+        write=True,
+    )
+    assert receipts.get("pass") is True, receipts
+    assert receipts.get("count") == 9
+
+    lakes = pg.run_program_lakes_task_closure(
+        tmp_path,
+        version=version,
+        program_slug=program,
+        utterance="close hollow and freeze",
+        human_choice="continue",
+        decision_ref=decision_ref,
+    )
+    assert lakes.get("pass") is True, lakes
+
+    freeze_pac = pg.run_program_freeze_and_pac(
+        tmp_path,
+        version=version,
+        program_slug=program,
+        write_freeze=True,
+    )
+    assert freeze_pac.get("pass") is True, freeze_pac
+    assert (tmp_path / f"docs/beacon/{version}/programs/{program}/program-truth-freeze.json").exists()
+    assert (tmp_path / ".beacon/state/program-task-closure" / program / "pac-full-trace-matrix.json").exists()
+    assert freeze_pac.get("receipt_count") == 9
+    assert (freeze_pac.get("pac") or {}).get("count") == 21
+
