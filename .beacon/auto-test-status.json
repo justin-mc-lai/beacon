@@ -1,32 +1,32 @@
 {
-  "scope": "contract",
-  "timestamp": "2026-07-27T21:22:14.596964",
-  "project": ".",
+  "scope": "qa9",
+  "timestamp": "2026-07-27T21:50:07.687024",
+  "project": "/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11/intent-completeness-engine-v1611",
   "version": "v1.6.11",
-  "run_id": "run-20260727T212214586416",
-  "spec_fingerprint_hash": "a8a98d8168a1a5cfa1e95ab2785dac63ffaeb9aa77cb8d5ed323761959aaec89",
+  "run_id": "run-20260727T215007686209",
+  "spec_fingerprint_hash": "ca802d1b6ab9991d42f1c5439ceb1068998134eb25b018b433f0ed710ab0d34e",
   "status": "passed",
   "selected_layers": [
     "contract"
   ],
   "execution": {
-    "run_id": "run-20260727T212214586416",
+    "run_id": "run-20260727T215007686209",
     "version": "v1.6.11",
-    "evidence_dir": ".beacon/evidence/auto-test/run-20260727T212214586416",
+    "evidence_dir": ".beacon/evidence/auto-test/run-20260727T215007686209",
     "spec_fingerprint": {
-      "fingerprint_hash": "a8a98d8168a1a5cfa1e95ab2785dac63ffaeb9aa77cb8d5ed323761959aaec89",
+      "fingerprint_hash": "ca802d1b6ab9991d42f1c5439ceb1068998134eb25b018b433f0ed710ab0d34e",
       "version": "v1.6.11",
-      "generated_at": "2026-07-27T13:22:14.596013+00:00"
+      "generated_at": "2026-07-27T13:50:13.848345+00:00"
     },
     "layers": [
       {
         "layer": "contract",
-        "command": "pytest -q tests/test_v1611_plan_goal_task_closure.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k intent_dimensions --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "exit_code": 0,
         "status": "passed",
         "reason_code": "",
         "timeout_seconds": 300,
-        "assertion_count": 104,
+        "assertion_count": 1,
         "was_flaky": false,
         "attempt_count": 1,
         "attempts": [
@@ -35,48 +35,1835 @@
             "exit_code": 0
           }
         ],
-        "execution_fingerprint": "e27df1a6d275327feb54f2e70c17d689c926d1b1e51bc30f7fad7681f025b207",
-        "started_at": "2026-07-27T21:22:14.671937",
-        "ended_at": "2026-07-27T21:22:17.380899",
-        "junit_path": ".beacon/evidence/auto-test/run-20260727T212214586416/contract/junit.xml",
+        "execution_fingerprint": "b66690e0c99db7d5d3fe6733c95297f2a2395498bcae4593db0157da51153a4c",
+        "started_at": "2026-07-27T21:50:07.763875",
+        "ended_at": "2026-07-27T21:50:08.447846",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T215007686209/contract/junit.xml",
         "junit_valid": true,
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260727T212214586416/contract/command.txt",
-          ".beacon/evidence/auto-test/run-20260727T212214586416/contract/stdout.log",
-          ".beacon/evidence/auto-test/run-20260727T212214586416/contract/stderr.log",
-          ".beacon/evidence/auto-test/run-20260727T212214586416/contract/junit.xml",
-          ".beacon/evidence/auto-test/run-20260727T212214586416/contract/result.json"
+          ".beacon/evidence/auto-test/run-20260727T215007686209/contract/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/contract/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/contract/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/contract/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/contract/result.json"
         ]
       }
     ],
     "ui_action_evidence": {},
+    "matrix_report": {
+      "status": "ok",
+      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11/intent-completeness-engine-v1611/.beacon/qa/features/intent-completeness-engine-v1611/matrix.qa9.json",
+      "evidence_generated": 8,
+      "entry_count": 8,
+      "freshness_violations": []
+    },
+    "artifacts": [
+      ".beacon/evidence/auto-test/run-20260727T215007686209/qa9/tc-execution-map.json",
+      ".beacon/evidence/auto-test/run-20260727T215007686209/qa9/tc-results.json",
+      ".beacon/evidence/auto-test/run-20260727T215007686209/summary.json",
+      ".beacon/flaky-history.json",
+      ".beacon/evidence-signature-chain.json"
+    ],
+    "qa9_matrix_schema_version": "1.0",
     "flaky": {
       "pass_count": 1,
       "flaky_pass_count": 0,
       "flaky_rate": 0.0,
       "max_flaky_rate": 0.02
+    }
+  },
+  "qa9": {
+    "qa_profile": "web-full",
+    "qa_types": [
+      "contract"
+    ],
+    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11/intent-completeness-engine-v1611/.beacon/qa/features/intent-completeness-engine-v1611/matrix.qa9.json",
+    "ui_runner": "playwright",
+    "quality_requirements": {
+      "require_junit": true,
+      "require_assertion_count": true
     },
-    "artifacts": [
-      ".beacon/evidence/auto-test/run-20260727T212214586416/summary.json",
-      ".beacon/flaky-history.json",
-      ".beacon/evidence-signature-chain.json"
+    "compatibility": {
+      "browsers": [],
+      "devices": [],
+      "required_pairs": [],
+      "executed_pairs": []
+    },
+    "summary": {
+      "cases_total": 8,
+      "passed": 8,
+      "failed": 0,
+      "blocked": 0,
+      "pending": 0,
+      "pass_rate": 1.0,
+      "automation_rate": 1.0,
+      "auto_cases_total": 8,
+      "auto_cases_executed": 8,
+      "round_stop_triggered": false,
+      "round_stop_reasons": []
+    },
+    "tc_results": [
+      {
+        "tc_id": "TC-INT-001",
+        "ac_id": "AC-INT-001",
+        "source_tc_id": "TC-INT-001",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k intent_dimensions --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T215007686209",
+        "evidence_path": ".beacon/evidence/qa-feature/intent-completeness-engine-v1611/tc-int-001/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-001/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-001/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-001/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-001/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-001/result.json"
+        ],
+        "execution_fingerprint": "58e6ffabf7a076fd85353c9f00d41396d6b6ec423a0d9d457fb5f1b6c407c391",
+        "started_at": "2026-07-27T21:50:08.536356",
+        "ended_at": "2026-07-27T21:50:09.122475",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-001/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-INT-002",
+        "ac_id": "AC-INT-002",
+        "source_tc_id": "TC-INT-002",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k missing_must --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T215007686209",
+        "evidence_path": ".beacon/evidence/qa-feature/intent-completeness-engine-v1611/tc-int-002/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-002/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-002/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-002/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-002/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-002/result.json"
+        ],
+        "execution_fingerprint": "5b777882f383191390feca677884bf176e6f8d64d2ea4ddc27bcdc5d2e192970",
+        "started_at": "2026-07-27T21:50:09.196083",
+        "ended_at": "2026-07-27T21:50:09.771437",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-002/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-INT-003",
+        "ac_id": "AC-INT-003",
+        "source_tc_id": "TC-INT-003",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k semantic_stop --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T215007686209",
+        "evidence_path": ".beacon/evidence/qa-feature/intent-completeness-engine-v1611/tc-int-003/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-003/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-003/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-003/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-003/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-003/result.json"
+        ],
+        "execution_fingerprint": "26e8901091333cb868530ee259ad061f50b25e3050018be743ade7747c5c6791",
+        "started_at": "2026-07-27T21:50:09.848082",
+        "ended_at": "2026-07-27T21:50:10.450387",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-003/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-INT-004",
+        "ac_id": "AC-INT-004",
+        "source_tc_id": "TC-INT-004",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k intent_human_decision --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T215007686209",
+        "evidence_path": ".beacon/evidence/qa-feature/intent-completeness-engine-v1611/tc-int-004/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-004/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-004/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-004/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-004/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-004/result.json"
+        ],
+        "execution_fingerprint": "660b456dc2e9b837d9da9cccb66ecd57e4374bd2608876b6885a3745b0078bfc",
+        "started_at": "2026-07-27T21:50:10.527130",
+        "ended_at": "2026-07-27T21:50:11.114199",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-004/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-INT-005",
+        "ac_id": "AC-INT-005",
+        "source_tc_id": "TC-INT-005",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k inherited_must_intents --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T215007686209",
+        "evidence_path": ".beacon/evidence/qa-feature/intent-completeness-engine-v1611/tc-int-005/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-005/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-005/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-005/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-005/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-005/result.json"
+        ],
+        "execution_fingerprint": "f6867525bf6fc959b3abe1b408ac90c3ef555ed1678c088ea39ba01db0731714",
+        "started_at": "2026-07-27T21:50:11.188661",
+        "ended_at": "2026-07-27T21:50:11.761734",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-005/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-INT-006",
+        "ac_id": "AC-INT-006",
+        "source_tc_id": "TC-INT-006",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k host_llm_full_package_fill --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T215007686209",
+        "evidence_path": ".beacon/evidence/qa-feature/intent-completeness-engine-v1611/tc-int-006/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-006/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-006/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-006/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-006/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-006/result.json"
+        ],
+        "execution_fingerprint": "2004b4d179e6a2d80f55de9a3a9f591865169275f744fc94d5d2cc93a568206a",
+        "started_at": "2026-07-27T21:50:11.832412",
+        "ended_at": "2026-07-27T21:50:12.395973",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-006/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-INT-007",
+        "ac_id": "AC-INT-007",
+        "source_tc_id": "TC-INT-007",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k false_completeness_blocked --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T215007686209",
+        "evidence_path": ".beacon/evidence/qa-feature/intent-completeness-engine-v1611/tc-int-007/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-007/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-007/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-007/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-007/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-007/result.json"
+        ],
+        "execution_fingerprint": "bd53a14a3ca637e61d9d38998ff236018cf980ada2956ef4160dc1b6016fa75a",
+        "started_at": "2026-07-27T21:50:12.466637",
+        "ended_at": "2026-07-27T21:50:13.044814",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-007/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-INT-ILLEGAL",
+        "ac_id": "AC-INT-004",
+        "source_tc_id": "TC-INT-ILLEGAL",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k intent_illegal_transition --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T215007686209",
+        "evidence_path": ".beacon/evidence/qa-feature/intent-completeness-engine-v1611/tc-int-illegal/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-ILLEGAL/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-ILLEGAL/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-ILLEGAL/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-ILLEGAL/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-ILLEGAL/result.json"
+        ],
+        "execution_fingerprint": "14d6d99b5a66f4c87b5b81365bbfba72b06c33b42ca58a5bd921fcea80af6193",
+        "started_at": "2026-07-27T21:50:13.116429",
+        "ended_at": "2026-07-27T21:50:13.674734",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-ILLEGAL/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      }
     ]
   },
   "quality_issues": [],
   "schema_version": "1.0",
-  "updated_at": "2026-07-27T13:22:17.456029+00:00",
+  "updated_at": "2026-07-27T13:50:13.720126+00:00",
   "summary": {
-    "feature": "",
+    "feature": "intent-completeness-engine-v1611",
     "version": "v1.6.11",
     "status": "passed",
-    "release_ready": false,
-    "continue_decision": "",
+    "release_ready": true,
+    "continue_decision": "ready_for_release",
     "stop_reasons": [],
     "reconciliation_required": false,
     "reconciliation_reason_code": "",
     "reconciliation_artifact_path": "",
     "reconciliation_reprojection_targets": [],
-    "repair_action": "",
-    "repair_command": ""
-  }
+    "repair_action": "qa-repair",
+    "repair_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11/intent-completeness-engine-v1611 --version v1.6.11 --feature \"intent-completeness-engine-v1611\""
+  },
+  "qa_status_source": "canonical",
+  "governance_state_role": "generated_governance_state_not_truth",
+  "truth_authority": false,
+  "json_authority": false,
+  "resolver_mode": "resolver_first",
+  "feature": "intent-completeness-engine-v1611",
+  "feature_slug": "intent-completeness-engine-v1611",
+  "implementation_done": true,
+  "evidence_done": true,
+  "story_sequence": [
+    {
+      "ac_id": "AC-001",
+      "theme": "general",
+      "text": "Acceptance criteria TBD",
+      "tc_ids": [],
+      "qa_types": []
+    }
+  ],
+  "targeted_rerun": {
+    "required": true,
+    "reason_codes": [
+      "implementation_run_changed"
+    ],
+    "targeted_layers": [
+      "contract"
+    ],
+    "targeted_ac_ids": [
+      "AC-INT-001",
+      "AC-INT-002",
+      "AC-INT-003",
+      "AC-INT-004",
+      "AC-INT-005",
+      "AC-INT-006",
+      "AC-INT-007"
+    ],
+    "targeted_tc_ids": [
+      "TC-INT-001",
+      "TC-INT-002",
+      "TC-INT-003",
+      "TC-INT-004",
+      "TC-INT-005",
+      "TC-INT-006",
+      "TC-INT-007",
+      "TC-INT-ILLEGAL"
+    ],
+    "targeted_scenario_ids": [],
+    "targeted_scenario_families": []
+  },
+  "boundary_evidence": {
+    "boundary_principles": [],
+    "assumption_capture_required": true,
+    "goal_driven_verification_required": true,
+    "targeted_scope_only": true,
+    "verification_item_count": 8
+  },
+  "feature_matrix_path": ".beacon/qa/features/intent-completeness-engine-v1611/matrix.qa9.json",
+  "blocking_artifact_updates": [],
+  "per_item_results": [
+    {
+      "ac_id": "AC-INT-001",
+      "tc_id": "TC-INT-001",
+      "source_tc_id": "TC-INT-001",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-001",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-001/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-INT-002",
+      "tc_id": "TC-INT-002",
+      "source_tc_id": "TC-INT-002",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-002",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-002/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-INT-003",
+      "tc_id": "TC-INT-003",
+      "source_tc_id": "TC-INT-003",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-003",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-003/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-INT-004",
+      "tc_id": "TC-INT-004",
+      "source_tc_id": "TC-INT-004",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-004",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-004/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-INT-005",
+      "tc_id": "TC-INT-005",
+      "source_tc_id": "TC-INT-005",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-005",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-005/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-INT-006",
+      "tc_id": "TC-INT-006",
+      "source_tc_id": "TC-INT-006",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-006",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-006/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-006/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-006/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-006/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-006/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-INT-007",
+      "tc_id": "TC-INT-007",
+      "source_tc_id": "TC-INT-007",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-007",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-007/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-INT-004",
+      "tc_id": "TC-INT-ILLEGAL",
+      "source_tc_id": "TC-INT-ILLEGAL",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-ILLEGAL/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-ILLEGAL/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-ILLEGAL/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-ILLEGAL/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-ILLEGAL/result.json"
+      ]
+    }
+  ],
+  "execution_mode": "feature-aware",
+  "project_profile": {},
+  "project_profile_gate": {
+    "status": "not_configured",
+    "profile_id": "",
+    "issues": [],
+    "required_evidence": [],
+    "required_cases": [],
+    "contract_drifts": []
+  },
+  "project_orchestration": {},
+  "current_session_id": "",
+  "design_truth_verdict": {
+    "schema_version": "1.0",
+    "status": "not_applicable",
+    "blocked": false,
+    "reason_codes": [],
+    "source_surface": "implement-to-qa-handoff",
+    "verification_surface": "qa",
+    "docs_version": "v1.6.11",
+    "runtime_version": "v1.6.11",
+    "findings": []
+  },
+  "requirement_completeness_gate": {
+    "schema_version": "1.0",
+    "enabled": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "requirement_completeness_projection_missing",
+    "target_stage": "qa",
+    "feature": "intent-completeness-engine-v1611",
+    "version": "v1.6.11",
+    "stage_ready": true,
+    "paths": {
+      "envelope": "docs/beacon/v1.6.11/.machine/requirement/intent-completeness-engine-v1611.envelope.json",
+      "candidate_ledger": "docs/beacon/v1.6.11/.machine/requirement/intent-completeness-engine-v1611.candidate-ledger.json",
+      "decision_log": "docs/beacon/v1.6.11/.machine/requirement/intent-completeness-engine-v1611.supplement-decision-log.json",
+      "freeze_contract": "docs/beacon/v1.6.11/.machine/requirement/intent-completeness-engine-v1611.freeze-contract.json",
+      "completeness": "docs/beacon/v1.6.11/.machine/requirement/intent-completeness-engine-v1611.completeness.json",
+      "supplement_task": "docs/beacon/v1.6.11/.machine/requirement/intent-completeness-engine-v1611.supplement-task.json",
+      "re_freeze_transaction": "docs/beacon/v1.6.11/.machine/requirement/intent-completeness-engine-v1611.re-freeze-transaction.json"
+    },
+    "projection_status": "package_authoritative",
+    "recommended_command": "",
+    "next_action": "qa",
+    "stage_gates": {
+      "artifact_read_model": {
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "requirement_completeness_projection_missing",
+        "summary": "machine completeness projection is missing, but v1.5.2 package truth and coverage are valid authority",
+        "details": {
+          "paths": {
+            "envelope": "docs/beacon/v1.6.11/.machine/requirement/intent-completeness-engine-v1611.envelope.json",
+            "candidate_ledger": "docs/beacon/v1.6.11/.machine/requirement/intent-completeness-engine-v1611.candidate-ledger.json",
+            "decision_log": "docs/beacon/v1.6.11/.machine/requirement/intent-completeness-engine-v1611.supplement-decision-log.json",
+            "freeze_contract": "docs/beacon/v1.6.11/.machine/requirement/intent-completeness-engine-v1611.freeze-contract.json",
+            "completeness": "docs/beacon/v1.6.11/.machine/requirement/intent-completeness-engine-v1611.completeness.json",
+            "supplement_task": "docs/beacon/v1.6.11/.machine/requirement/intent-completeness-engine-v1611.supplement-task.json",
+            "re_freeze_transaction": "docs/beacon/v1.6.11/.machine/requirement/intent-completeness-engine-v1611.re-freeze-transaction.json"
+          },
+          "projection_status": "package_authoritative"
+        }
+      },
+      "decision_traceability": {
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "summary": "human requirement truth is carried by the authoritative feature package",
+        "details": {}
+      },
+      "coverage_closure": {
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "summary": "acceptance coverage is parseable from package tests",
+        "details": {
+          "ac_count": 7,
+          "test_count": 8
+        }
+      },
+      "downgrade_control": {
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "summary": "legacy completeness projection absence does not downgrade package authority",
+        "details": {}
+      },
+      "stage_admission": {
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "summary": "qa admission uses authoritative package truth",
+        "details": {
+          "target_stage": "qa",
+          "stage_ready": true,
+          "stage_key": "package_authoritative_truth"
+        }
+      }
+    },
+    "human_loop_handoff": {
+      "action": "qa",
+      "reason": "package_authoritative_truth_pass",
+      "recommended_command": "",
+      "focus_areas": []
+    },
+    "package_authoritative_truth": {
+      "status": "pass",
+      "validation": {
+        "schema_version": "1.0",
+        "feature": "intent-completeness-engine-v1611",
+        "feature_slug": "intent-completeness-engine-v1611",
+        "version": "v1.6.11",
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "generated_at": "2026-07-27T13:50:06.676789+00:00",
+        "package_dir": "docs/beacon/v1.6.11/features/intent-completeness-engine-v1611",
+        "truth_frontmatter": {
+          "slug": "intent-completeness-engine-v1611",
+          "version": "v1.6.11",
+          "status": "frozen",
+          "revision_id": "R2",
+          "language": "zh",
+          "domain_required": "true",
+          "domain_kind": "platform",
+          "ux_required": "false",
+          "ux_deferred": "true",
+          "package_maturity": "filled",
+          "materials_status": "current",
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "program_ref": "docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/program-manifest.md",
+          "truth_map_contract": "beacon-truth-map-v1",
+          "participating_services": "beacon",
+          "git_canonical_branch": "main",
+          "previous_revision": "R1",
+          "change_reason": "D3: Host Agent (skill-authored fill) recursively fills complete feature-package semantics",
+          "parent_truth": "docs/beacon/v1.6.11/features/brownfield-context-resolver-v1611/truth.md",
+          "inherited_contracts": "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md; docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md; docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md; docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md",
+          "canonical_refs": {
+            "prd": "docs/beacon/v1.6.11/features/intent-completeness-engine-v1611/truth.md",
+            "user_story": "docs/beacon/v1.6.11/features/intent-completeness-engine-v1611/truth.md",
+            "test_case": "docs/beacon/v1.6.11/features/intent-completeness-engine-v1611/tests.md"
+          }
+        },
+        "ac_count": 7,
+        "test_count": 8,
+        "checkbox_count": 9,
+        "evidence_row_count": 9,
+        "gate_authority": "canonical_surfaces_preserved",
+        "checkbox_gate_bypass": false,
+        "task_evidence_gate": {
+          "pass": true,
+          "checked_ok": 0,
+          "checked_bad": 0,
+          "unbound": 0,
+          "findings": [],
+          "reason_code": ""
+        },
+        "evidence_gate_truth": false,
+        "diagnostics": [
+          {
+            "severity": "info",
+            "code": "truth_human_l0_ok",
+            "path": "docs/beacon/v1.6.11/features/intent-completeness-engine-v1611/truth.md",
+            "language": "zh",
+            "l0_headings": [
+              "## 人话"
+            ]
+          }
+        ],
+        "truth_map_contract": "beacon-truth-map-v1",
+        "truth_source_model": "feature_package_authoritative",
+        "truth_package_contract": "beacon-feature-package-v2",
+        "machine_json_role": "generated_state_not_truth",
+        "generated_by": "beacon.truth_map.resolver",
+        "truth_authority": "markdown_feature_package",
+        "json_authority": false,
+        "source_paths": {
+          "truth": "docs/beacon/v1.6.11/features/intent-completeness-engine-v1611/truth.md",
+          "tests": "docs/beacon/v1.6.11/features/intent-completeness-engine-v1611/tests.md",
+          "tasks": "docs/beacon/v1.6.11/features/intent-completeness-engine-v1611/tasks.md",
+          "evidence": "docs/beacon/v1.6.11/features/intent-completeness-engine-v1611/evidence.md"
+        },
+        "source_hashes": {
+          "truth": "c596969b2e0218e2198a26a2279f81669603c93c2c317965caec195241b793f2",
+          "tests": "950793eed7565ba8ff9d7514f93a67933e80c80124e6fd6231d25053f12f0696",
+          "tasks": "9cab05abde3d9cd2d1b18da15cce523c1e4108527b015757b3ea63551198df4a",
+          "evidence": "785f74da3f3f368f2dd2ef066cfbe58ddcc1885f753c36b4d440483189d1bdd4"
+        },
+        "runtime_json_requires_markdown_twin": false
+      }
+    },
+    "completeness": {},
+    "freeze_contract": {}
+  },
+  "requirement_completeness_verdict": "pass",
+  "requirement_completeness_ref": "docs/beacon/v1.6.11/.machine/requirement/intent-completeness-engine-v1611.completeness.json",
+  "exhaustiveness": {
+    "schema_version": "1.0",
+    "feature": "intent-completeness-engine-v1611",
+    "feature_slug": "intent-completeness-engine-v1611",
+    "run_id": "run-20260727T215007686209",
+    "generated_at": "2026-07-27T13:50:13.783300+00:00",
+    "execution_mode": "feature-aware",
+    "scenario_count": 8,
+    "browser_scenario_count": 0,
+    "required_families": [],
+    "passed_families": [],
+    "missing_axes": [],
+    "missing_replay_scenarios": [],
+    "missing_browser_evidence_scenarios": [],
+    "scenario_pass_rate": 1.0,
+    "family_coverage_rate": 1.0,
+    "replay_coverage_rate": 1.0,
+    "browser_evidence_rate": 1.0,
+    "score": 1.0,
+    "threshold": 0.6,
+    "status": "passed",
+    "required_next_action": "continue_current_plan",
+    "failure_streak": 0,
+    "escalation_level": "E0"
+  },
+  "scenario_results_v2": [
+    {
+      "scenario_id": "TC-INT-001",
+      "tc_id": "TC-INT-001",
+      "source_tc_id": "TC-INT-001",
+      "ac_id": "AC-INT-001",
+      "feature_slug": "intent-completeness-engine-v1611",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-001/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-INT-002",
+      "tc_id": "TC-INT-002",
+      "source_tc_id": "TC-INT-002",
+      "ac_id": "AC-INT-002",
+      "feature_slug": "intent-completeness-engine-v1611",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-002/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-INT-003",
+      "tc_id": "TC-INT-003",
+      "source_tc_id": "TC-INT-003",
+      "ac_id": "AC-INT-003",
+      "feature_slug": "intent-completeness-engine-v1611",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-003/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-INT-004",
+      "tc_id": "TC-INT-004",
+      "source_tc_id": "TC-INT-004",
+      "ac_id": "AC-INT-004",
+      "feature_slug": "intent-completeness-engine-v1611",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-004/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-INT-005",
+      "tc_id": "TC-INT-005",
+      "source_tc_id": "TC-INT-005",
+      "ac_id": "AC-INT-005",
+      "feature_slug": "intent-completeness-engine-v1611",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-005/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-INT-006",
+      "tc_id": "TC-INT-006",
+      "source_tc_id": "TC-INT-006",
+      "ac_id": "AC-INT-006",
+      "feature_slug": "intent-completeness-engine-v1611",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-006/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-006/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-006/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-006/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-006/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-INT-007",
+      "tc_id": "TC-INT-007",
+      "source_tc_id": "TC-INT-007",
+      "ac_id": "AC-INT-007",
+      "feature_slug": "intent-completeness-engine-v1611",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-007/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-INT-ILLEGAL",
+      "tc_id": "TC-INT-ILLEGAL",
+      "source_tc_id": "TC-INT-ILLEGAL",
+      "ac_id": "AC-INT-004",
+      "feature_slug": "intent-completeness-engine-v1611",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-ILLEGAL/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-ILLEGAL/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-ILLEGAL/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-ILLEGAL/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T215007686209/qa9-tc/TC-INT-ILLEGAL/result.json"
+      ]
+    }
+  ],
+  "ac_closure_path": ".beacon/qa/features/intent-completeness-engine-v1611/ac-closure.json",
+  "feature_scorecard_path": ".beacon/qa/features/intent-completeness-engine-v1611/scorecard.json",
+  "feature_scorecard": {
+    "schema_version": "1.0",
+    "feature": "intent-completeness-engine-v1611",
+    "feature_slug": "intent-completeness-engine-v1611",
+    "run_id": "run-20260727T215007686209",
+    "ac_total": 7,
+    "ac_accepted": 7,
+    "scenario_total": 8,
+    "scenario_passed": 8,
+    "release_confidence_min": 1.0,
+    "release_confidence_avg": 1.0,
+    "review_required_count": 0,
+    "needs_replay_count": 0,
+    "false_complete_risk": 0.0,
+    "unresolved_closure_outcomes": [],
+    "project_profile_gate_status": "not_configured",
+    "project_profile_id": "",
+    "coverage_current": {
+      "required_scenarios": 8,
+      "executed_scenarios": 8,
+      "coverage_rate": 1.0,
+      "required_scenario_families": [
+        "boundary",
+        "compatibility",
+        "happy",
+        "negative",
+        "recovery"
+      ],
+      "covered_scenario_families": [
+        "primary"
+      ],
+      "missing_scenario_families": [],
+      "missing_test_case_ids": []
+    },
+    "coverage_gap": {
+      "missing_axes": [],
+      "missing_replay_scenarios": [],
+      "missing_browser_evidence_scenarios": [],
+      "missing_scenario_families": [],
+      "missing_test_case_ids": [],
+      "open_closure_outcomes": []
+    },
+    "boundary_evidence": {
+      "boundary_principles": [],
+      "assumption_capture_required": true,
+      "goal_driven_verification_required": true,
+      "verification_item_count": 8,
+      "targeted_scope_only": true
+    },
+    "design_truth_verdict": {
+      "schema_version": "1.0",
+      "status": "not_applicable",
+      "blocked": false,
+      "reason_codes": [],
+      "source_surface": "implement-to-qa-handoff",
+      "verification_surface": "qa",
+      "docs_version": "v1.6.11",
+      "runtime_version": "v1.6.11",
+      "findings": []
+    },
+    "qa_outcome_taxonomy": {
+      "status": "not_applicable",
+      "failure_classes": [],
+      "primary_class": "",
+      "stable_taxonomy": [
+        "product_failed",
+        "test_failed",
+        "runner_admission_blocked",
+        "environment_blocked",
+        "auth_session_blocked",
+        "evidence_binding_missing",
+        "coverage_gap",
+        "truth_projection_gap"
+      ]
+    },
+    "qa_attribution": {
+      "schema_version": "1.0",
+      "status": "not_applicable",
+      "support_evidence_only": true,
+      "runtime_evidence_only": true,
+      "truth_authority": false,
+      "verdict_authority": false,
+      "release_pass_evidence": false,
+      "attribution_count": 0,
+      "accepted_count": 0,
+      "blocked_count": 0,
+      "release_blocking_count": 0,
+      "proposal_count": 0,
+      "family_counts": {
+        "implementation_gap": 0,
+        "truth_drift": 0,
+        "coverage_gap": 0,
+        "execution_lapse": 0,
+        "skill_defect": 0,
+        "runner_admission_blocker": 0,
+        "evidence_insufficient": 0
+      },
+      "route_counts": {},
+      "attributions": []
+    },
+    "qa_acceptance_capability": {
+      "schema_version": "1.0",
+      "status": "blocked",
+      "blocked": true,
+      "taxonomy": {
+        "schema_version": "1.0",
+        "status": "pass",
+        "blocked": false,
+        "full_layers": [
+          "unit",
+          "interface",
+          "contract",
+          "integration",
+          "smoke",
+          "functional",
+          "regression",
+          "exception",
+          "compatibility",
+          "browser_e2e"
+        ],
+        "non_browser_layers": [
+          "unit",
+          "interface",
+          "contract",
+          "integration",
+          "smoke",
+          "functional",
+          "regression",
+          "exception",
+          "compatibility"
+        ],
+        "browser_layer": "browser_e2e",
+        "qa9_layers": [
+          "unit",
+          "interface",
+          "contract",
+          "integration",
+          "smoke",
+          "functional",
+          "regression",
+          "exception",
+          "compatibility"
+        ],
+        "requested_layers": [
+          "contract"
+        ],
+        "unknown_layers": []
+      },
+      "profile_completeness": {
+        "schema_version": "1.0",
+        "profile": "feature-matrix",
+        "browser_required": false,
+        "required_layers": [
+          "contract"
+        ],
+        "executed_layers": [
+          "contract"
+        ],
+        "skipped_layers": [],
+        "blocked_layers": [],
+        "not_applicable_layers": [],
+        "not_applicable_reasons": {},
+        "missing_layers": [],
+        "confidence_chain": {
+          "schema_version": "1.0",
+          "layers": [
+            {
+              "layer": "unit",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit"
+              ]
+            },
+            {
+              "layer": "interface",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface"
+              ]
+            },
+            {
+              "layer": "contract",
+              "status": "executed",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface"
+              ]
+            },
+            {
+              "layer": "integration",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface",
+                "contract"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface",
+                "integration"
+              ]
+            },
+            {
+              "layer": "smoke",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface",
+                "contract",
+                "integration"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface",
+                "integration",
+                "smoke"
+              ]
+            },
+            {
+              "layer": "functional",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface",
+                "contract",
+                "integration",
+                "smoke"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface",
+                "integration",
+                "smoke",
+                "functional"
+              ]
+            },
+            {
+              "layer": "regression",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface",
+                "contract",
+                "integration",
+                "smoke",
+                "functional"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface",
+                "integration",
+                "smoke",
+                "functional",
+                "regression"
+              ]
+            },
+            {
+              "layer": "exception",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface",
+                "contract",
+                "integration",
+                "smoke",
+                "functional",
+                "regression"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface",
+                "integration",
+                "smoke",
+                "functional",
+                "regression",
+                "exception"
+              ]
+            },
+            {
+              "layer": "compatibility",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface",
+                "contract",
+                "integration",
+                "smoke",
+                "functional",
+                "regression",
+                "exception"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface",
+                "integration",
+                "smoke",
+                "functional",
+                "regression",
+                "exception",
+                "compatibility"
+              ]
+            },
+            {
+              "layer": "browser_e2e",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface",
+                "contract",
+                "integration",
+                "smoke",
+                "functional",
+                "regression",
+                "exception",
+                "compatibility"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface",
+                "integration",
+                "smoke",
+                "functional",
+                "regression",
+                "exception",
+                "compatibility",
+                "browser_e2e"
+              ]
+            }
+          ],
+          "chain_direction": "unit_to_browser_e2e",
+          "terminal_layer": "browser_e2e",
+          "chain_broken": true,
+          "downstream_gap_layers": [
+            "browser_e2e",
+            "compatibility",
+            "exception",
+            "functional",
+            "integration",
+            "interface",
+            "regression",
+            "smoke",
+            "unit"
+          ]
+        },
+        "state_machine_coverage": {},
+        "is_complete": false,
+        "partial": true,
+        "status": "partial"
+      },
+      "browser_evidence_contract": {
+        "status": "not_required",
+        "blocked": false
+      },
+      "browser_runner_registry": [
+        "playwright",
+        "playwright-extension",
+        "playwright-cli",
+        "playwright-cdp",
+        "browser-use",
+        "agent-browser",
+        "attached-browser",
+        "web-access",
+        "obscura-cdp"
+      ],
+      "non_acceptance_evidence_kinds": [
+        "listing",
+        "placeholder",
+        "documentation_only",
+        "dry_run"
+      ],
+      "failure_attribution_routes": {
+        "product_bug": "beacon-implement",
+        "implementation_gap": "beacon-implement",
+        "test_script_bug": "beacon-test-case",
+        "environment_blocker": "beacon-qa",
+        "auth_session_blocker": "beacon-qa",
+        "runner_admission_blocker": "blocked",
+        "coverage_gap": "beacon-test-case",
+        "truth_drift": "beacon-change",
+        "evidence_insufficient": "beacon-qa"
+      },
+      "truth_authority": false,
+      "release_pass_evidence": false
+    },
+    "reconciliation": {
+      "required": false,
+      "reason_code": "",
+      "artifact_path": "",
+      "artifact": {}
+    },
+    "deep_absorption": {
+      "schema_version": "1.0",
+      "status": "not_applicable",
+      "eligible_for_release_supplement": false,
+      "findings": [],
+      "absorbed_count": 0,
+      "deferred_count": 0,
+      "blocked_count": 0,
+      "not_applicable_count": 0
+    },
+    "release_supplement_input": {
+      "deep_findings_absorbed": false,
+      "absorbed_finding_count": 0,
+      "advisory_or_blocked_finding_count": 0,
+      "policy": "absorbed_deep_findings_only"
+    },
+    "continue_decision": "ready_for_release",
+    "stop_reasons": [],
+    "test_case_backfill_required": false,
+    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11/intent-completeness-engine-v1611 --version v1.6.11 --feature \"intent-completeness-engine-v1611\"",
+    "repair_handoff": {
+      "action": "qa-repair",
+      "reason": "qa_round_incomplete",
+      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11/intent-completeness-engine-v1611 --version v1.6.11 --feature \"intent-completeness-engine-v1611\""
+    },
+    "release_ready": true,
+    "domain_fsm_coverage": {
+      "schema_version": "1.0",
+      "required": true,
+      "blocked": false,
+      "status": "pass",
+      "reason_code": "",
+      "findings": [],
+      "threshold": 1.0,
+      "coverage_ratio": 1.0,
+      "legal_walk": {
+        "required": 1,
+        "present": 1,
+        "covered": 1,
+        "rows": [
+          {
+            "ac_id": "TC-INT-001",
+            "tc_id": "AC-INT-001",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k intent_dimensions --tb=no`",
+            "raw": "TC-INT-001 | AC-INT-001 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k intent_dimensions --tb=no` | seven dimensions are represented (legal walk / happy path)"
+          }
+        ]
+      },
+      "illegal": {
+        "required": 2,
+        "present": 2,
+        "covered": 2,
+        "rows": [
+          {
+            "ac_id": "TC-INT-006",
+            "tc_id": "AC-INT-006",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k host_llm_full_package_fill --tb=no`",
+            "raw": "TC-INT-006 | AC-INT-006 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k host_llm_full_package_fill --tb=no` | structured response covers L0, journeys, matrix, AC, model, FSM, illegal and projection inputs"
+          },
+          {
+            "ac_id": "TC-INT-ILLEGAL",
+            "tc_id": "AC-INT-004",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k intent_illegal_transition --tb=no`",
+            "raw": "TC-INT-ILLEGAL | AC-INT-004 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k intent_illegal_transition --tb=no` | illegal completion with missing must or missing decision_ref is rejected"
+          }
+        ]
+      },
+      "matrix": {
+        "legal_walk_rows": [
+          {
+            "ac_id": "TC-INT-001",
+            "tc_id": "AC-INT-001",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k intent_dimensions --tb=no`",
+            "raw": "TC-INT-001 | AC-INT-001 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k intent_dimensions --tb=no` | seven dimensions are represented (legal walk / happy path)"
+          }
+        ],
+        "illegal_rows": [
+          {
+            "ac_id": "TC-INT-006",
+            "tc_id": "AC-INT-006",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k host_llm_full_package_fill --tb=no`",
+            "raw": "TC-INT-006 | AC-INT-006 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k host_llm_full_package_fill --tb=no` | structured response covers L0, journeys, matrix, AC, model, FSM, illegal and projection inputs"
+          },
+          {
+            "ac_id": "TC-INT-ILLEGAL",
+            "tc_id": "AC-INT-004",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k intent_illegal_transition --tb=no`",
+            "raw": "TC-INT-ILLEGAL | AC-INT-004 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k intent_illegal_transition --tb=no` | illegal completion with missing must or missing decision_ref is rejected"
+          }
+        ],
+        "other_rows": [
+          {
+            "ac_id": "TC-INT-002",
+            "tc_id": "AC-INT-002",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k missing_must --tb=no`",
+            "raw": "TC-INT-002 | AC-INT-002 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k missing_must --tb=no` | missing must blocks"
+          },
+          {
+            "ac_id": "TC-INT-003",
+            "tc_id": "AC-INT-003",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k semantic_stop --tb=no`",
+            "raw": "TC-INT-003 | AC-INT-003 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k semantic_stop --tb=no` | count target cannot close recursion"
+          },
+          {
+            "ac_id": "TC-INT-004",
+            "tc_id": "AC-INT-004",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k intent_human_decision --tb=no`",
+            "raw": "TC-INT-004 | AC-INT-004 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k intent_human_decision --tb=no` | high-impact ambiguity requires decision_ref"
+          },
+          {
+            "ac_id": "TC-INT-005",
+            "tc_id": "AC-INT-005",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k inherited_must_intents --tb=no`",
+            "raw": "TC-INT-005 | AC-INT-005 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k inherited_must_intents --tb=no` | inherited Goal/subagent/worktree/trace/no-compat capabilities remain must and have landings"
+          },
+          {
+            "ac_id": "TC-INT-007",
+            "tc_id": "AC-INT-007",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k false_completeness_blocked --tb=no`",
+            "raw": "TC-INT-007 | AC-INT-007 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k false_completeness_blocked --tb=no` | sentence splitting, domain skip, duplicates and missing exec-test inputs cannot pass completeness"
+          }
+        ],
+        "has_legal_walk": true,
+        "has_illegal": true
+      },
+      "aggregates": [
+        "IntentCompleteness"
+      ],
+      "state_machine_coverage": {},
+      "deep_route_recommended": false
+    },
+    "domain_fsm_qa_blocked": false,
+    "domain_fsm_qa_reason_code": "",
+    "design_alignment": {
+      "required": false,
+      "has_baseline": false,
+      "paths": [],
+      "deferred": true,
+      "status": "pass"
+    },
+    "design_md_lint": {
+      "required": false,
+      "status": "not_required",
+      "blocked": false,
+      "reason_code": "",
+      "evidence_path": "",
+      "summary": {}
+    },
+    "ui_state_matrix": {
+      "schema": "ui-state-matrix.v1",
+      "required": false,
+      "status": "not_required",
+      "blocked": false,
+      "reason_code": "",
+      "findings": []
+    },
+    "ui_design_ship_blocked": false
+  },
+  "release_ready": true,
+  "delivery_contract": {
+    "schema_version": "1.0",
+    "feature": "intent-completeness-engine-v1611",
+    "version": "v1.6.11",
+    "requested_mode": "feature-aware",
+    "effective_mode": "feature-aware",
+    "generator_mode": "feature-aware",
+    "execution_mode": "feature-aware",
+    "runner_mode": "qa",
+    "host_runtime": "codex",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "host_runtime": "codex",
+      "subagent_required": false,
+      "subagent_runtime_status": "",
+      "subagent_delegation_status": "",
+      "host_semantic_ready": false,
+      "provider_available": false
+    },
+    "subagent_prechecks": {},
+    "requirement_binding": {
+      "source_of_truth_root": "docs/beacon/v1.6.11",
+      "feature_matrix_path": ".beacon/qa/features/intent-completeness-engine-v1611/matrix.qa9.json",
+      "canonical_matrix_path": ""
+    },
+    "traceability_refs": [
+      ".beacon/qa/features/intent-completeness-engine-v1611/matrix.qa9.json",
+      ".beacon/qa/features/intent-completeness-engine-v1611/ac-closure.json",
+      ".beacon/qa/features/intent-completeness-engine-v1611/scorecard.json",
+      ".beacon/release-gate-report.json"
+    ],
+    "runner": "",
+    "adapter_type": "",
+    "execution_surface": "qa",
+    "team_mode": false,
+    "qa_status": "passed",
+    "gate_status": "",
+    "release_ready": true,
+    "risk_flags": []
+  },
+  "host_native_delivery": {
+    "schema_version": "1.0",
+    "feature": "intent-completeness-engine-v1611",
+    "version": "v1.6.11",
+    "requested_mode": "feature-aware",
+    "effective_mode": "feature-aware",
+    "generator_mode": "feature-aware",
+    "execution_mode": "feature-aware",
+    "runner_mode": "qa",
+    "host_runtime": "codex",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "host_runtime": "codex",
+      "subagent_required": false,
+      "subagent_runtime_status": "",
+      "subagent_delegation_status": "",
+      "host_semantic_ready": false,
+      "provider_available": false
+    },
+    "subagent_prechecks": {},
+    "requirement_binding": {
+      "source_of_truth_root": "docs/beacon/v1.6.11",
+      "feature_matrix_path": ".beacon/qa/features/intent-completeness-engine-v1611/matrix.qa9.json",
+      "canonical_matrix_path": ""
+    },
+    "traceability_refs": [
+      ".beacon/qa/features/intent-completeness-engine-v1611/matrix.qa9.json",
+      ".beacon/qa/features/intent-completeness-engine-v1611/ac-closure.json",
+      ".beacon/qa/features/intent-completeness-engine-v1611/scorecard.json",
+      ".beacon/release-gate-report.json"
+    ],
+    "runner": "",
+    "adapter_type": "",
+    "execution_surface": "qa",
+    "team_mode": false,
+    "qa_status": "passed",
+    "gate_status": "",
+    "release_ready": true,
+    "risk_flags": []
+  },
+  "current_spec_fingerprint_hash": "ca802d1b6ab9991d42f1c5439ceb1068998134eb25b018b433f0ed710ab0d34e"
 }
