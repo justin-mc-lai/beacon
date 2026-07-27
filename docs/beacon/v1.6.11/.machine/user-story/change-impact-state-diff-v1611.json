@@ -5,7 +5,7 @@
   "version": "v1.6.11",
   "current_revision_id": "R2",
   "lifecycle_status": "frozen",
-  "updated_at": "2026-07-27T13:41:12.413314+00:00",
+  "updated_at": "2026-07-27T13:47:10.864201+00:00",
   "revisions": [
     {
       "revision_id": "R1",
@@ -103,7 +103,7 @@
       "revision_id": "R2",
       "title": "change-impact-state-diff-v1611",
       "priority": "medium",
-      "status": "frozen",
+      "status": "accepted",
       "items": [
         {
           "id": "AC-001",
@@ -111,8 +111,8 @@
           "theme": "general",
           "text": "Acceptance criteria TBD",
           "required": true,
-          "status": "draft",
-          "implemented_by_run_id": null,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260727T134702Z-64ca",
           "verified_by_run_id": null,
           "accepted_at": null,
           "changed_in_revision": "R2",
@@ -125,10 +125,10 @@
           "kind": "task",
           "text": "Implement current frozen revision",
           "required": true,
-          "status": "draft",
-          "implemented_by_run_id": null,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260727T134702Z-64ca",
           "verified_by_run_id": null,
-          "accepted_at": null,
+          "accepted_at": "2026-07-27T13:47:10.841145+00:00",
           "changed_in_revision": "R2"
         },
         {
@@ -136,9 +136,9 @@
           "kind": "test",
           "text": "Verify AC-001 — Acceptance criteria TBD",
           "required": true,
-          "status": "draft",
-          "implemented_by_run_id": null,
-          "verified_by_run_id": null,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260727T134702Z-64ca",
+          "verified_by_run_id": "run-20260727T214704542576",
           "accepted_at": null,
           "changed_in_revision": "R2",
           "covers": [
@@ -157,7 +157,22 @@
         "section_count": 0,
         "sections": {},
         "derived_items": []
-      }
+      },
+      "feature": "change-impact-state-diff-v1611",
+      "feature_slug": "change-impact-state-diff-v1611",
+      "version": "v1.6.11",
+      "last_changed_files": [
+        "beacon/utils/plan_goal_task_closure.py",
+        "tests/test_v1611_plan_goal_task_closure.py"
+      ],
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "accepted_at": "2026-07-27T13:47:10.841145+00:00",
+      "accepted_by": "qa"
     }
   ]
 }
