@@ -1,32 +1,32 @@
 {
-  "scope": "contract",
-  "timestamp": "2026-07-27T21:22:14.596964",
-  "project": ".",
+  "scope": "qa9",
+  "timestamp": "2026-07-27T21:46:11.348877",
+  "project": "/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11/atomic-task-graph-compiler-v1611",
   "version": "v1.6.11",
-  "run_id": "run-20260727T212214586416",
-  "spec_fingerprint_hash": "a8a98d8168a1a5cfa1e95ab2785dac63ffaeb9aa77cb8d5ed323761959aaec89",
+  "run_id": "run-20260727T214611340816",
+  "spec_fingerprint_hash": "ca802d1b6ab9991d42f1c5439ceb1068998134eb25b018b433f0ed710ab0d34e",
   "status": "passed",
   "selected_layers": [
     "contract"
   ],
   "execution": {
-    "run_id": "run-20260727T212214586416",
+    "run_id": "run-20260727T214611340816",
     "version": "v1.6.11",
-    "evidence_dir": ".beacon/evidence/auto-test/run-20260727T212214586416",
+    "evidence_dir": ".beacon/evidence/auto-test/run-20260727T214611340816",
     "spec_fingerprint": {
-      "fingerprint_hash": "a8a98d8168a1a5cfa1e95ab2785dac63ffaeb9aa77cb8d5ed323761959aaec89",
+      "fingerprint_hash": "ca802d1b6ab9991d42f1c5439ceb1068998134eb25b018b433f0ed710ab0d34e",
       "version": "v1.6.11",
-      "generated_at": "2026-07-27T13:22:14.596013+00:00"
+      "generated_at": "2026-07-27T13:46:19.467209+00:00"
     },
     "layers": [
       {
         "layer": "contract",
-        "command": "pytest -q tests/test_v1611_plan_goal_task_closure.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k atomic_compile --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "exit_code": 0,
         "status": "passed",
         "reason_code": "",
         "timeout_seconds": 300,
-        "assertion_count": 104,
+        "assertion_count": 1,
         "was_flaky": false,
         "attempt_count": 1,
         "attempts": [
@@ -35,48 +35,2148 @@
             "exit_code": 0
           }
         ],
-        "execution_fingerprint": "e27df1a6d275327feb54f2e70c17d689c926d1b1e51bc30f7fad7681f025b207",
-        "started_at": "2026-07-27T21:22:14.671937",
-        "ended_at": "2026-07-27T21:22:17.380899",
-        "junit_path": ".beacon/evidence/auto-test/run-20260727T212214586416/contract/junit.xml",
+        "execution_fingerprint": "387c0ea167f641ba947cefc9935732862d01907ad97154fa880264cdd4cdb612",
+        "started_at": "2026-07-27T21:46:11.420823",
+        "ended_at": "2026-07-27T21:46:12.230822",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T214611340816/contract/junit.xml",
         "junit_valid": true,
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260727T212214586416/contract/command.txt",
-          ".beacon/evidence/auto-test/run-20260727T212214586416/contract/stdout.log",
-          ".beacon/evidence/auto-test/run-20260727T212214586416/contract/stderr.log",
-          ".beacon/evidence/auto-test/run-20260727T212214586416/contract/junit.xml",
-          ".beacon/evidence/auto-test/run-20260727T212214586416/contract/result.json"
+          ".beacon/evidence/auto-test/run-20260727T214611340816/contract/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/contract/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/contract/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/contract/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/contract/result.json"
         ]
       }
     ],
     "ui_action_evidence": {},
+    "matrix_report": {
+      "status": "ok",
+      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11/atomic-task-graph-compiler-v1611/.beacon/qa/features/atomic-task-graph-compiler-v1611/matrix.qa9.json",
+      "evidence_generated": 11,
+      "entry_count": 11,
+      "freshness_violations": []
+    },
+    "artifacts": [
+      ".beacon/evidence/auto-test/run-20260727T214611340816/qa9/tc-execution-map.json",
+      ".beacon/evidence/auto-test/run-20260727T214611340816/qa9/tc-results.json",
+      ".beacon/evidence/auto-test/run-20260727T214611340816/summary.json",
+      ".beacon/flaky-history.json",
+      ".beacon/evidence-signature-chain.json"
+    ],
+    "qa9_matrix_schema_version": "1.0",
     "flaky": {
       "pass_count": 1,
       "flaky_pass_count": 0,
       "flaky_rate": 0.0,
       "max_flaky_rate": 0.02
+    }
+  },
+  "qa9": {
+    "qa_profile": "web-full",
+    "qa_types": [
+      "contract"
+    ],
+    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11/atomic-task-graph-compiler-v1611/.beacon/qa/features/atomic-task-graph-compiler-v1611/matrix.qa9.json",
+    "ui_runner": "playwright",
+    "quality_requirements": {
+      "require_junit": true,
+      "require_assertion_count": true
     },
-    "artifacts": [
-      ".beacon/evidence/auto-test/run-20260727T212214586416/summary.json",
-      ".beacon/flaky-history.json",
-      ".beacon/evidence-signature-chain.json"
+    "compatibility": {
+      "browsers": [],
+      "devices": [],
+      "required_pairs": [],
+      "executed_pairs": []
+    },
+    "summary": {
+      "cases_total": 11,
+      "passed": 11,
+      "failed": 0,
+      "blocked": 0,
+      "pending": 0,
+      "pass_rate": 1.0,
+      "automation_rate": 1.0,
+      "auto_cases_total": 11,
+      "auto_cases_executed": 11,
+      "round_stop_triggered": false,
+      "round_stop_reasons": []
+    },
+    "tc_results": [
+      {
+        "tc_id": "TC-DAG-001",
+        "ac_id": "AC-DAG-001",
+        "source_tc_id": "TC-DAG-001",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k atomic_compile --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T214611340816",
+        "evidence_path": ".beacon/evidence/qa-feature/atomic-task-graph-compiler-v1611/tc-dag-001/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-001/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-001/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-001/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-001/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-001/result.json"
+        ],
+        "execution_fingerprint": "6be6dc97e259dbbb3924d0f55331942f300731aabf4afcd5956b81a8cb104798",
+        "started_at": "2026-07-27T21:46:12.306610",
+        "ended_at": "2026-07-27T21:46:12.871990",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-001/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-DAG-002",
+        "ac_id": "AC-DAG-002",
+        "source_tc_id": "TC-DAG-002",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k task_trace_bindings --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T214611340816",
+        "evidence_path": ".beacon/evidence/qa-feature/atomic-task-graph-compiler-v1611/tc-dag-002/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-002/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-002/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-002/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-002/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-002/result.json"
+        ],
+        "execution_fingerprint": "594d267a06ca601b16cde11bd1299feeb71f26bf9b9414ebe7d8e081e8d35afc",
+        "started_at": "2026-07-27T21:46:12.942879",
+        "ended_at": "2026-07-27T21:46:13.508161",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-002/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-DAG-003",
+        "ac_id": "AC-DAG-003",
+        "source_tc_id": "TC-DAG-003",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k dag_ready_set --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T214611340816",
+        "evidence_path": ".beacon/evidence/qa-feature/atomic-task-graph-compiler-v1611/tc-dag-003/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-003/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-003/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-003/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-003/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-003/result.json"
+        ],
+        "execution_fingerprint": "f4be9a7170d3d5abafe15037d1380006e32adbbbd5b84dd5a14e22fc40071ce7",
+        "started_at": "2026-07-27T21:46:13.577261",
+        "ended_at": "2026-07-27T21:46:14.134712",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-003/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-DAG-004",
+        "ac_id": "AC-DAG-004",
+        "source_tc_id": "TC-DAG-004",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k orphan_padding --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T214611340816",
+        "evidence_path": ".beacon/evidence/qa-feature/atomic-task-graph-compiler-v1611/tc-dag-004/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-004/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-004/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-004/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-004/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-004/result.json"
+        ],
+        "execution_fingerprint": "f5420914d057c8bd903ce4967c1e3ddf1ad024722af05d8e959ba086f21b5f9e",
+        "started_at": "2026-07-27T21:46:14.206821",
+        "ended_at": "2026-07-27T21:46:14.840021",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-004/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-DAG-005",
+        "ac_id": "AC-DAG-005",
+        "source_tc_id": "TC-DAG-005",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k graph_scale --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T214611340816",
+        "evidence_path": ".beacon/evidence/qa-feature/atomic-task-graph-compiler-v1611/tc-dag-005/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-005/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-005/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-005/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-005/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-005/result.json"
+        ],
+        "execution_fingerprint": "fdf9101c49960cecbbb595530c3902bc249e8f9acd8fda81d14c4b2bb8eef907",
+        "started_at": "2026-07-27T21:46:14.911645",
+        "ended_at": "2026-07-27T21:46:15.482174",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-005/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-DAG-006",
+        "ac_id": "AC-DAG-006",
+        "source_tc_id": "TC-DAG-006",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k task_delegation_contract --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T214611340816",
+        "evidence_path": ".beacon/evidence/qa-feature/atomic-task-graph-compiler-v1611/tc-dag-006/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-006/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-006/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-006/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-006/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-006/result.json"
+        ],
+        "execution_fingerprint": "1551a74c689c82aef1370dc6b75874f429879443934aea2ef8af56307d5c806f",
+        "started_at": "2026-07-27T21:46:15.557739",
+        "ended_at": "2026-07-27T21:46:16.122531",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-006/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-DAG-007",
+        "ac_id": "AC-DAG-007",
+        "source_tc_id": "TC-DAG-007",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k honest_subagent_fallback --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T214611340816",
+        "evidence_path": ".beacon/evidence/qa-feature/atomic-task-graph-compiler-v1611/tc-dag-007/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-007/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-007/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-007/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-007/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-007/result.json"
+        ],
+        "execution_fingerprint": "64c1931a14b5bba2d62d035062a69dc10c530fa0e06debd2dfe3f3ca20cb619f",
+        "started_at": "2026-07-27T21:46:16.193979",
+        "ended_at": "2026-07-27T21:46:16.746937",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-007/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-DAG-008",
+        "ac_id": "AC-DAG-008",
+        "source_tc_id": "TC-DAG-008",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k implementation_worktree_admission --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T214611340816",
+        "evidence_path": ".beacon/evidence/qa-feature/atomic-task-graph-compiler-v1611/tc-dag-008/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-008/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-008/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-008/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-008/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-008/result.json"
+        ],
+        "execution_fingerprint": "5b8784d2271fc6e9f5f1285c0fc9267de9e51a652a1badd9f95debe049fb8c74",
+        "started_at": "2026-07-27T21:46:16.817044",
+        "ended_at": "2026-07-27T21:46:17.381645",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-008/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-DAG-009",
+        "ac_id": "AC-DAG-009",
+        "source_tc_id": "TC-DAG-009",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k deterministic_package_projection --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T214611340816",
+        "evidence_path": ".beacon/evidence/qa-feature/atomic-task-graph-compiler-v1611/tc-dag-009/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-009/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-009/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-009/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-009/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-009/result.json"
+        ],
+        "execution_fingerprint": "b959cf5f0b493ade10e20dad527692273ddf891d3946b15094907ada51af53c5",
+        "started_at": "2026-07-27T21:46:17.455270",
+        "ended_at": "2026-07-27T21:46:18.028319",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-009/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-DAG-010",
+        "ac_id": "AC-DAG-010",
+        "source_tc_id": "TC-DAG-010",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k semantic_compile_forward_migration --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T214611340816",
+        "evidence_path": ".beacon/evidence/qa-feature/atomic-task-graph-compiler-v1611/tc-dag-010/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-010/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-010/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-010/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-010/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-010/result.json"
+        ],
+        "execution_fingerprint": "ea25f26fb93320b113162f7ea8efa18f7a5c3142ebcec00359ddf56187785fd8",
+        "started_at": "2026-07-27T21:46:18.099046",
+        "ended_at": "2026-07-27T21:46:18.649187",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-010/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-DAG-ILLEGAL",
+        "ac_id": "AC-DAG-008",
+        "source_tc_id": "TC-DAG-ILLEGAL",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k task_graph_illegal_transition --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260727T214611340816",
+        "evidence_path": ".beacon/evidence/qa-feature/atomic-task-graph-compiler-v1611/tc-dag-illegal/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-ILLEGAL/command.txt",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-ILLEGAL/stdout.log",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-ILLEGAL/stderr.log",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-ILLEGAL/junit.xml",
+          ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-ILLEGAL/result.json"
+        ],
+        "execution_fingerprint": "0d7607e4ce7f8d527a738e3b70291f42f77ff67dd63901cb3a5180bb119a5de8",
+        "started_at": "2026-07-27T21:46:18.719457",
+        "ended_at": "2026-07-27T21:46:19.265384",
+        "junit_path": ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-ILLEGAL/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      }
     ]
   },
   "quality_issues": [],
   "schema_version": "1.0",
-  "updated_at": "2026-07-27T13:22:17.456029+00:00",
+  "updated_at": "2026-07-27T13:46:19.338201+00:00",
   "summary": {
-    "feature": "",
+    "feature": "atomic-task-graph-compiler-v1611",
     "version": "v1.6.11",
     "status": "passed",
-    "release_ready": false,
-    "continue_decision": "",
+    "release_ready": true,
+    "continue_decision": "ready_for_release",
     "stop_reasons": [],
     "reconciliation_required": false,
     "reconciliation_reason_code": "",
     "reconciliation_artifact_path": "",
     "reconciliation_reprojection_targets": [],
-    "repair_action": "",
-    "repair_command": ""
-  }
+    "repair_action": "qa-repair",
+    "repair_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11/atomic-task-graph-compiler-v1611 --version v1.6.11 --feature \"atomic-task-graph-compiler-v1611\""
+  },
+  "qa_status_source": "canonical",
+  "governance_state_role": "generated_governance_state_not_truth",
+  "truth_authority": false,
+  "json_authority": false,
+  "resolver_mode": "resolver_first",
+  "feature": "atomic-task-graph-compiler-v1611",
+  "feature_slug": "atomic-task-graph-compiler-v1611",
+  "implementation_done": true,
+  "evidence_done": true,
+  "story_sequence": [
+    {
+      "ac_id": "AC-001",
+      "theme": "general",
+      "text": "Acceptance criteria TBD",
+      "tc_ids": [],
+      "qa_types": []
+    }
+  ],
+  "targeted_rerun": {
+    "required": true,
+    "reason_codes": [
+      "no_prior_feature_qa"
+    ],
+    "targeted_layers": [
+      "contract"
+    ],
+    "targeted_ac_ids": [
+      "AC-DAG-001",
+      "AC-DAG-002",
+      "AC-DAG-003",
+      "AC-DAG-004",
+      "AC-DAG-005",
+      "AC-DAG-006",
+      "AC-DAG-007",
+      "AC-DAG-008",
+      "AC-DAG-009",
+      "AC-DAG-010"
+    ],
+    "targeted_tc_ids": [
+      "TC-DAG-001",
+      "TC-DAG-002",
+      "TC-DAG-003",
+      "TC-DAG-004",
+      "TC-DAG-005",
+      "TC-DAG-006",
+      "TC-DAG-007",
+      "TC-DAG-008",
+      "TC-DAG-009",
+      "TC-DAG-010",
+      "TC-DAG-ILLEGAL"
+    ],
+    "targeted_scenario_ids": [],
+    "targeted_scenario_families": []
+  },
+  "boundary_evidence": {
+    "boundary_principles": [],
+    "assumption_capture_required": true,
+    "goal_driven_verification_required": true,
+    "targeted_scope_only": true,
+    "verification_item_count": 11
+  },
+  "feature_matrix_path": ".beacon/qa/features/atomic-task-graph-compiler-v1611/matrix.qa9.json",
+  "blocking_artifact_updates": [],
+  "per_item_results": [
+    {
+      "ac_id": "AC-DAG-001",
+      "tc_id": "TC-DAG-001",
+      "source_tc_id": "TC-DAG-001",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-001",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-001/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-DAG-002",
+      "tc_id": "TC-DAG-002",
+      "source_tc_id": "TC-DAG-002",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-002",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-002/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-DAG-003",
+      "tc_id": "TC-DAG-003",
+      "source_tc_id": "TC-DAG-003",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-003",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-003/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-DAG-004",
+      "tc_id": "TC-DAG-004",
+      "source_tc_id": "TC-DAG-004",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-004",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-004/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-DAG-005",
+      "tc_id": "TC-DAG-005",
+      "source_tc_id": "TC-DAG-005",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-005",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-005/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-DAG-006",
+      "tc_id": "TC-DAG-006",
+      "source_tc_id": "TC-DAG-006",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-006",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-006/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-006/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-006/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-006/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-006/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-DAG-007",
+      "tc_id": "TC-DAG-007",
+      "source_tc_id": "TC-DAG-007",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-007",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-007/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-DAG-008",
+      "tc_id": "TC-DAG-008",
+      "source_tc_id": "TC-DAG-008",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-008",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-008/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-008/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-008/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-008/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-008/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-DAG-009",
+      "tc_id": "TC-DAG-009",
+      "source_tc_id": "TC-DAG-009",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-009",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-009/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-009/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-009/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-009/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-009/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-DAG-010",
+      "tc_id": "TC-DAG-010",
+      "source_tc_id": "TC-DAG-010",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-010",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-010/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-010/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-010/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-010/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-010/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-DAG-008",
+      "tc_id": "TC-DAG-ILLEGAL",
+      "source_tc_id": "TC-DAG-ILLEGAL",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-ILLEGAL/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-ILLEGAL/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-ILLEGAL/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-ILLEGAL/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-ILLEGAL/result.json"
+      ]
+    }
+  ],
+  "execution_mode": "feature-aware",
+  "project_profile": {},
+  "project_profile_gate": {
+    "status": "not_configured",
+    "profile_id": "",
+    "issues": [],
+    "required_evidence": [],
+    "required_cases": [],
+    "contract_drifts": []
+  },
+  "project_orchestration": {},
+  "current_session_id": "",
+  "design_truth_verdict": {
+    "schema_version": "1.0",
+    "status": "not_applicable",
+    "blocked": false,
+    "reason_codes": [],
+    "source_surface": "implement-to-qa-handoff",
+    "verification_surface": "qa",
+    "docs_version": "v1.6.11",
+    "runtime_version": "v1.6.11",
+    "findings": []
+  },
+  "requirement_completeness_gate": {
+    "schema_version": "1.0",
+    "enabled": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "requirement_completeness_projection_missing",
+    "target_stage": "qa",
+    "feature": "atomic-task-graph-compiler-v1611",
+    "version": "v1.6.11",
+    "stage_ready": true,
+    "paths": {
+      "envelope": "docs/beacon/v1.6.11/.machine/requirement/atomic-task-graph-compiler-v1611.envelope.json",
+      "candidate_ledger": "docs/beacon/v1.6.11/.machine/requirement/atomic-task-graph-compiler-v1611.candidate-ledger.json",
+      "decision_log": "docs/beacon/v1.6.11/.machine/requirement/atomic-task-graph-compiler-v1611.supplement-decision-log.json",
+      "freeze_contract": "docs/beacon/v1.6.11/.machine/requirement/atomic-task-graph-compiler-v1611.freeze-contract.json",
+      "completeness": "docs/beacon/v1.6.11/.machine/requirement/atomic-task-graph-compiler-v1611.completeness.json",
+      "supplement_task": "docs/beacon/v1.6.11/.machine/requirement/atomic-task-graph-compiler-v1611.supplement-task.json",
+      "re_freeze_transaction": "docs/beacon/v1.6.11/.machine/requirement/atomic-task-graph-compiler-v1611.re-freeze-transaction.json"
+    },
+    "projection_status": "package_authoritative",
+    "recommended_command": "",
+    "next_action": "qa",
+    "stage_gates": {
+      "artifact_read_model": {
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "requirement_completeness_projection_missing",
+        "summary": "machine completeness projection is missing, but v1.5.2 package truth and coverage are valid authority",
+        "details": {
+          "paths": {
+            "envelope": "docs/beacon/v1.6.11/.machine/requirement/atomic-task-graph-compiler-v1611.envelope.json",
+            "candidate_ledger": "docs/beacon/v1.6.11/.machine/requirement/atomic-task-graph-compiler-v1611.candidate-ledger.json",
+            "decision_log": "docs/beacon/v1.6.11/.machine/requirement/atomic-task-graph-compiler-v1611.supplement-decision-log.json",
+            "freeze_contract": "docs/beacon/v1.6.11/.machine/requirement/atomic-task-graph-compiler-v1611.freeze-contract.json",
+            "completeness": "docs/beacon/v1.6.11/.machine/requirement/atomic-task-graph-compiler-v1611.completeness.json",
+            "supplement_task": "docs/beacon/v1.6.11/.machine/requirement/atomic-task-graph-compiler-v1611.supplement-task.json",
+            "re_freeze_transaction": "docs/beacon/v1.6.11/.machine/requirement/atomic-task-graph-compiler-v1611.re-freeze-transaction.json"
+          },
+          "projection_status": "package_authoritative"
+        }
+      },
+      "decision_traceability": {
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "summary": "human requirement truth is carried by the authoritative feature package",
+        "details": {}
+      },
+      "coverage_closure": {
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "summary": "acceptance coverage is parseable from package tests",
+        "details": {
+          "ac_count": 10,
+          "test_count": 11
+        }
+      },
+      "downgrade_control": {
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "summary": "legacy completeness projection absence does not downgrade package authority",
+        "details": {}
+      },
+      "stage_admission": {
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "summary": "qa admission uses authoritative package truth",
+        "details": {
+          "target_stage": "qa",
+          "stage_ready": true,
+          "stage_key": "package_authoritative_truth"
+        }
+      }
+    },
+    "human_loop_handoff": {
+      "action": "qa",
+      "reason": "package_authoritative_truth_pass",
+      "recommended_command": "",
+      "focus_areas": []
+    },
+    "package_authoritative_truth": {
+      "status": "pass",
+      "validation": {
+        "schema_version": "1.0",
+        "feature": "atomic-task-graph-compiler-v1611",
+        "feature_slug": "atomic-task-graph-compiler-v1611",
+        "version": "v1.6.11",
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "generated_at": "2026-07-27T13:46:10.130675+00:00",
+        "package_dir": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611",
+        "truth_frontmatter": {
+          "slug": "atomic-task-graph-compiler-v1611",
+          "version": "v1.6.11",
+          "status": "frozen",
+          "revision_id": "R2",
+          "language": "zh",
+          "domain_required": "true",
+          "domain_kind": "platform",
+          "ux_required": "false",
+          "ux_deferred": "true",
+          "package_maturity": "filled",
+          "materials_status": "current",
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "program_ref": "docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/program-manifest.md",
+          "truth_map_contract": "beacon-truth-map-v1",
+          "participating_services": "beacon",
+          "git_canonical_branch": "main",
+          "previous_revision": "R1",
+          "change_reason": "D3: deterministic tests/tasks/evidence projection from accepted full-package truth",
+          "parent_truth": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/truth.md",
+          "inherited_contracts": "docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md; docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md",
+          "canonical_refs": {
+            "prd": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/truth.md",
+            "user_story": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/truth.md",
+            "test_case": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/tests.md"
+          }
+        },
+        "ac_count": 10,
+        "test_count": 11,
+        "checkbox_count": 12,
+        "evidence_row_count": 10,
+        "gate_authority": "canonical_surfaces_preserved",
+        "checkbox_gate_bypass": false,
+        "task_evidence_gate": {
+          "pass": true,
+          "checked_ok": 0,
+          "checked_bad": 0,
+          "unbound": 0,
+          "findings": [],
+          "reason_code": ""
+        },
+        "evidence_gate_truth": false,
+        "diagnostics": [
+          {
+            "severity": "info",
+            "code": "truth_human_l0_ok",
+            "path": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/truth.md",
+            "language": "zh",
+            "l0_headings": [
+              "## 人话"
+            ]
+          }
+        ],
+        "truth_map_contract": "beacon-truth-map-v1",
+        "truth_source_model": "feature_package_authoritative",
+        "truth_package_contract": "beacon-feature-package-v2",
+        "machine_json_role": "generated_state_not_truth",
+        "generated_by": "beacon.truth_map.resolver",
+        "truth_authority": "markdown_feature_package",
+        "json_authority": false,
+        "source_paths": {
+          "truth": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/truth.md",
+          "tests": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/tests.md",
+          "tasks": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/tasks.md",
+          "evidence": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/evidence.md"
+        },
+        "source_hashes": {
+          "truth": "b4845ab000985126ddd4730c53e04e7eaaafcc4d78bf7b8b2ac608c5b5cd0b3a",
+          "tests": "f76bc1ca245343536c2bf3626250f01686a496c8922968b7fbe51b675b3b744f",
+          "tasks": "c82a4b68c57ef5d638a6e7896c3c37102a681c5804d1c5515f95598f0a8273b9",
+          "evidence": "bebff847063c9c1053765423e390ec72da7c143288658d45ba01f0504c2fba5e"
+        },
+        "runtime_json_requires_markdown_twin": false
+      }
+    },
+    "completeness": {},
+    "freeze_contract": {}
+  },
+  "requirement_completeness_verdict": "pass",
+  "requirement_completeness_ref": "docs/beacon/v1.6.11/.machine/requirement/atomic-task-graph-compiler-v1611.completeness.json",
+  "exhaustiveness": {
+    "schema_version": "1.0",
+    "feature": "atomic-task-graph-compiler-v1611",
+    "feature_slug": "atomic-task-graph-compiler-v1611",
+    "run_id": "run-20260727T214611340816",
+    "generated_at": "2026-07-27T13:46:19.396699+00:00",
+    "execution_mode": "feature-aware",
+    "scenario_count": 11,
+    "browser_scenario_count": 0,
+    "required_families": [],
+    "passed_families": [],
+    "missing_axes": [],
+    "missing_replay_scenarios": [],
+    "missing_browser_evidence_scenarios": [],
+    "scenario_pass_rate": 1.0,
+    "family_coverage_rate": 1.0,
+    "replay_coverage_rate": 1.0,
+    "browser_evidence_rate": 1.0,
+    "score": 1.0,
+    "threshold": 0.6,
+    "status": "passed",
+    "required_next_action": "continue_current_plan",
+    "failure_streak": 0,
+    "escalation_level": "E0"
+  },
+  "scenario_results_v2": [
+    {
+      "scenario_id": "TC-DAG-001",
+      "tc_id": "TC-DAG-001",
+      "source_tc_id": "TC-DAG-001",
+      "ac_id": "AC-DAG-001",
+      "feature_slug": "atomic-task-graph-compiler-v1611",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-001/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-DAG-002",
+      "tc_id": "TC-DAG-002",
+      "source_tc_id": "TC-DAG-002",
+      "ac_id": "AC-DAG-002",
+      "feature_slug": "atomic-task-graph-compiler-v1611",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-002/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-DAG-003",
+      "tc_id": "TC-DAG-003",
+      "source_tc_id": "TC-DAG-003",
+      "ac_id": "AC-DAG-003",
+      "feature_slug": "atomic-task-graph-compiler-v1611",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-003/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-DAG-004",
+      "tc_id": "TC-DAG-004",
+      "source_tc_id": "TC-DAG-004",
+      "ac_id": "AC-DAG-004",
+      "feature_slug": "atomic-task-graph-compiler-v1611",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-004/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-DAG-005",
+      "tc_id": "TC-DAG-005",
+      "source_tc_id": "TC-DAG-005",
+      "ac_id": "AC-DAG-005",
+      "feature_slug": "atomic-task-graph-compiler-v1611",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-005/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-DAG-006",
+      "tc_id": "TC-DAG-006",
+      "source_tc_id": "TC-DAG-006",
+      "ac_id": "AC-DAG-006",
+      "feature_slug": "atomic-task-graph-compiler-v1611",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-006/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-006/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-006/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-006/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-006/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-DAG-007",
+      "tc_id": "TC-DAG-007",
+      "source_tc_id": "TC-DAG-007",
+      "ac_id": "AC-DAG-007",
+      "feature_slug": "atomic-task-graph-compiler-v1611",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-007/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-DAG-008",
+      "tc_id": "TC-DAG-008",
+      "source_tc_id": "TC-DAG-008",
+      "ac_id": "AC-DAG-008",
+      "feature_slug": "atomic-task-graph-compiler-v1611",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-008/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-008/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-008/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-008/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-008/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-DAG-009",
+      "tc_id": "TC-DAG-009",
+      "source_tc_id": "TC-DAG-009",
+      "ac_id": "AC-DAG-009",
+      "feature_slug": "atomic-task-graph-compiler-v1611",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-009/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-009/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-009/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-009/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-009/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-DAG-010",
+      "tc_id": "TC-DAG-010",
+      "source_tc_id": "TC-DAG-010",
+      "ac_id": "AC-DAG-010",
+      "feature_slug": "atomic-task-graph-compiler-v1611",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-010/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-010/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-010/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-010/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-010/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-DAG-ILLEGAL",
+      "tc_id": "TC-DAG-ILLEGAL",
+      "source_tc_id": "TC-DAG-ILLEGAL",
+      "ac_id": "AC-DAG-008",
+      "feature_slug": "atomic-task-graph-compiler-v1611",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-ILLEGAL/command.txt",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-ILLEGAL/stdout.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-ILLEGAL/stderr.log",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-ILLEGAL/junit.xml",
+        ".beacon/evidence/auto-test/run-20260727T214611340816/qa9-tc/TC-DAG-ILLEGAL/result.json"
+      ]
+    }
+  ],
+  "ac_closure_path": ".beacon/qa/features/atomic-task-graph-compiler-v1611/ac-closure.json",
+  "feature_scorecard_path": ".beacon/qa/features/atomic-task-graph-compiler-v1611/scorecard.json",
+  "feature_scorecard": {
+    "schema_version": "1.0",
+    "feature": "atomic-task-graph-compiler-v1611",
+    "feature_slug": "atomic-task-graph-compiler-v1611",
+    "run_id": "run-20260727T214611340816",
+    "ac_total": 10,
+    "ac_accepted": 10,
+    "scenario_total": 11,
+    "scenario_passed": 11,
+    "release_confidence_min": 1.0,
+    "release_confidence_avg": 1.0,
+    "review_required_count": 0,
+    "needs_replay_count": 0,
+    "false_complete_risk": 0.0,
+    "unresolved_closure_outcomes": [],
+    "project_profile_gate_status": "not_configured",
+    "project_profile_id": "",
+    "coverage_current": {
+      "required_scenarios": 11,
+      "executed_scenarios": 11,
+      "coverage_rate": 1.0,
+      "required_scenario_families": [
+        "boundary",
+        "compatibility",
+        "happy",
+        "negative",
+        "recovery"
+      ],
+      "covered_scenario_families": [],
+      "missing_scenario_families": [],
+      "missing_test_case_ids": []
+    },
+    "coverage_gap": {
+      "missing_axes": [],
+      "missing_replay_scenarios": [],
+      "missing_browser_evidence_scenarios": [],
+      "missing_scenario_families": [],
+      "missing_test_case_ids": [],
+      "open_closure_outcomes": []
+    },
+    "boundary_evidence": {
+      "boundary_principles": [],
+      "assumption_capture_required": true,
+      "goal_driven_verification_required": true,
+      "verification_item_count": 11,
+      "targeted_scope_only": true
+    },
+    "design_truth_verdict": {
+      "schema_version": "1.0",
+      "status": "not_applicable",
+      "blocked": false,
+      "reason_codes": [],
+      "source_surface": "implement-to-qa-handoff",
+      "verification_surface": "qa",
+      "docs_version": "v1.6.11",
+      "runtime_version": "v1.6.11",
+      "findings": []
+    },
+    "qa_outcome_taxonomy": {
+      "status": "not_applicable",
+      "failure_classes": [],
+      "primary_class": "",
+      "stable_taxonomy": [
+        "product_failed",
+        "test_failed",
+        "runner_admission_blocked",
+        "environment_blocked",
+        "auth_session_blocked",
+        "evidence_binding_missing",
+        "coverage_gap",
+        "truth_projection_gap"
+      ]
+    },
+    "qa_attribution": {
+      "schema_version": "1.0",
+      "status": "not_applicable",
+      "support_evidence_only": true,
+      "runtime_evidence_only": true,
+      "truth_authority": false,
+      "verdict_authority": false,
+      "release_pass_evidence": false,
+      "attribution_count": 0,
+      "accepted_count": 0,
+      "blocked_count": 0,
+      "release_blocking_count": 0,
+      "proposal_count": 0,
+      "family_counts": {
+        "implementation_gap": 0,
+        "truth_drift": 0,
+        "coverage_gap": 0,
+        "execution_lapse": 0,
+        "skill_defect": 0,
+        "runner_admission_blocker": 0,
+        "evidence_insufficient": 0
+      },
+      "route_counts": {},
+      "attributions": []
+    },
+    "qa_acceptance_capability": {
+      "schema_version": "1.0",
+      "status": "blocked",
+      "blocked": true,
+      "taxonomy": {
+        "schema_version": "1.0",
+        "status": "pass",
+        "blocked": false,
+        "full_layers": [
+          "unit",
+          "interface",
+          "contract",
+          "integration",
+          "smoke",
+          "functional",
+          "regression",
+          "exception",
+          "compatibility",
+          "browser_e2e"
+        ],
+        "non_browser_layers": [
+          "unit",
+          "interface",
+          "contract",
+          "integration",
+          "smoke",
+          "functional",
+          "regression",
+          "exception",
+          "compatibility"
+        ],
+        "browser_layer": "browser_e2e",
+        "qa9_layers": [
+          "unit",
+          "interface",
+          "contract",
+          "integration",
+          "smoke",
+          "functional",
+          "regression",
+          "exception",
+          "compatibility"
+        ],
+        "requested_layers": [
+          "contract"
+        ],
+        "unknown_layers": []
+      },
+      "profile_completeness": {
+        "schema_version": "1.0",
+        "profile": "feature-matrix",
+        "browser_required": false,
+        "required_layers": [
+          "contract"
+        ],
+        "executed_layers": [
+          "contract"
+        ],
+        "skipped_layers": [],
+        "blocked_layers": [],
+        "not_applicable_layers": [],
+        "not_applicable_reasons": {},
+        "missing_layers": [],
+        "confidence_chain": {
+          "schema_version": "1.0",
+          "layers": [
+            {
+              "layer": "unit",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit"
+              ]
+            },
+            {
+              "layer": "interface",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface"
+              ]
+            },
+            {
+              "layer": "contract",
+              "status": "executed",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface"
+              ]
+            },
+            {
+              "layer": "integration",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface",
+                "contract"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface",
+                "integration"
+              ]
+            },
+            {
+              "layer": "smoke",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface",
+                "contract",
+                "integration"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface",
+                "integration",
+                "smoke"
+              ]
+            },
+            {
+              "layer": "functional",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface",
+                "contract",
+                "integration",
+                "smoke"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface",
+                "integration",
+                "smoke",
+                "functional"
+              ]
+            },
+            {
+              "layer": "regression",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface",
+                "contract",
+                "integration",
+                "smoke",
+                "functional"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface",
+                "integration",
+                "smoke",
+                "functional",
+                "regression"
+              ]
+            },
+            {
+              "layer": "exception",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface",
+                "contract",
+                "integration",
+                "smoke",
+                "functional",
+                "regression"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface",
+                "integration",
+                "smoke",
+                "functional",
+                "regression",
+                "exception"
+              ]
+            },
+            {
+              "layer": "compatibility",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface",
+                "contract",
+                "integration",
+                "smoke",
+                "functional",
+                "regression",
+                "exception"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface",
+                "integration",
+                "smoke",
+                "functional",
+                "regression",
+                "exception",
+                "compatibility"
+              ]
+            },
+            {
+              "layer": "browser_e2e",
+              "status": "missing",
+              "confidence": 0.0,
+              "depends_on": [
+                "unit",
+                "interface",
+                "contract",
+                "integration",
+                "smoke",
+                "functional",
+                "regression",
+                "exception",
+                "compatibility"
+              ],
+              "gap_markers": [
+                "downstream_gap"
+              ],
+              "downstream_gap_sources": [
+                "unit",
+                "interface",
+                "integration",
+                "smoke",
+                "functional",
+                "regression",
+                "exception",
+                "compatibility",
+                "browser_e2e"
+              ]
+            }
+          ],
+          "chain_direction": "unit_to_browser_e2e",
+          "terminal_layer": "browser_e2e",
+          "chain_broken": true,
+          "downstream_gap_layers": [
+            "browser_e2e",
+            "compatibility",
+            "exception",
+            "functional",
+            "integration",
+            "interface",
+            "regression",
+            "smoke",
+            "unit"
+          ]
+        },
+        "state_machine_coverage": {},
+        "is_complete": false,
+        "partial": true,
+        "status": "partial"
+      },
+      "browser_evidence_contract": {
+        "status": "not_required",
+        "blocked": false
+      },
+      "browser_runner_registry": [
+        "playwright",
+        "playwright-extension",
+        "playwright-cli",
+        "playwright-cdp",
+        "browser-use",
+        "agent-browser",
+        "attached-browser",
+        "web-access",
+        "obscura-cdp"
+      ],
+      "non_acceptance_evidence_kinds": [
+        "listing",
+        "placeholder",
+        "documentation_only",
+        "dry_run"
+      ],
+      "failure_attribution_routes": {
+        "product_bug": "beacon-implement",
+        "implementation_gap": "beacon-implement",
+        "test_script_bug": "beacon-test-case",
+        "environment_blocker": "beacon-qa",
+        "auth_session_blocker": "beacon-qa",
+        "runner_admission_blocker": "blocked",
+        "coverage_gap": "beacon-test-case",
+        "truth_drift": "beacon-change",
+        "evidence_insufficient": "beacon-qa"
+      },
+      "truth_authority": false,
+      "release_pass_evidence": false
+    },
+    "reconciliation": {
+      "required": false,
+      "reason_code": "",
+      "artifact_path": "",
+      "artifact": {}
+    },
+    "deep_absorption": {
+      "schema_version": "1.0",
+      "status": "not_applicable",
+      "eligible_for_release_supplement": false,
+      "findings": [],
+      "absorbed_count": 0,
+      "deferred_count": 0,
+      "blocked_count": 0,
+      "not_applicable_count": 0
+    },
+    "release_supplement_input": {
+      "deep_findings_absorbed": false,
+      "absorbed_finding_count": 0,
+      "advisory_or_blocked_finding_count": 0,
+      "policy": "absorbed_deep_findings_only"
+    },
+    "continue_decision": "ready_for_release",
+    "stop_reasons": [],
+    "test_case_backfill_required": false,
+    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11/atomic-task-graph-compiler-v1611 --version v1.6.11 --feature \"atomic-task-graph-compiler-v1611\"",
+    "repair_handoff": {
+      "action": "qa-repair",
+      "reason": "qa_round_incomplete",
+      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11/atomic-task-graph-compiler-v1611 --version v1.6.11 --feature \"atomic-task-graph-compiler-v1611\""
+    },
+    "release_ready": true,
+    "domain_fsm_coverage": {
+      "schema_version": "1.0",
+      "required": true,
+      "blocked": false,
+      "status": "pass",
+      "reason_code": "",
+      "findings": [],
+      "threshold": 1.0,
+      "coverage_ratio": 1.0,
+      "legal_walk": {
+        "required": 1,
+        "present": 1,
+        "covered": 1,
+        "rows": [
+          {
+            "ac_id": "TC-DAG-001",
+            "tc_id": "AC-DAG-001",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k atomic_compile --tb=no`",
+            "raw": "TC-DAG-001 | AC-DAG-001 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k atomic_compile --tb=no` | each node is independently verifiable (legal walk / happy path)"
+          }
+        ]
+      },
+      "illegal": {
+        "required": 2,
+        "present": 2,
+        "covered": 2,
+        "rows": [
+          {
+            "ac_id": "TC-DAG-006",
+            "tc_id": "AC-DAG-006",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k task_delegation_contract --tb=no`",
+            "raw": "TC-DAG-006 | AC-DAG-006 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k task_delegation_contract --tb=no` | delegated nodes declare mode, role, reason and evidence while child completion authority is rejected"
+          },
+          {
+            "ac_id": "TC-DAG-ILLEGAL",
+            "tc_id": "AC-DAG-008",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k task_graph_illegal_transition --tb=no`",
+            "raw": "TC-DAG-ILLEGAL | AC-DAG-008 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k task_graph_illegal_transition --tb=no` | illegal dispatch with cycle, orphan, stale graph or missing worktree admission is rejected"
+          }
+        ]
+      },
+      "matrix": {
+        "legal_walk_rows": [
+          {
+            "ac_id": "TC-DAG-001",
+            "tc_id": "AC-DAG-001",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k atomic_compile --tb=no`",
+            "raw": "TC-DAG-001 | AC-DAG-001 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k atomic_compile --tb=no` | each node is independently verifiable (legal walk / happy path)"
+          }
+        ],
+        "illegal_rows": [
+          {
+            "ac_id": "TC-DAG-006",
+            "tc_id": "AC-DAG-006",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k task_delegation_contract --tb=no`",
+            "raw": "TC-DAG-006 | AC-DAG-006 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k task_delegation_contract --tb=no` | delegated nodes declare mode, role, reason and evidence while child completion authority is rejected"
+          },
+          {
+            "ac_id": "TC-DAG-ILLEGAL",
+            "tc_id": "AC-DAG-008",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k task_graph_illegal_transition --tb=no`",
+            "raw": "TC-DAG-ILLEGAL | AC-DAG-008 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k task_graph_illegal_transition --tb=no` | illegal dispatch with cycle, orphan, stale graph or missing worktree admission is rejected"
+          }
+        ],
+        "other_rows": [
+          {
+            "ac_id": "TC-DAG-002",
+            "tc_id": "AC-DAG-002",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k task_trace_bindings --tb=no`",
+            "raw": "TC-DAG-002 | AC-DAG-002 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k task_trace_bindings --tb=no` | all seven bindings present"
+          },
+          {
+            "ac_id": "TC-DAG-003",
+            "tc_id": "AC-DAG-003",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k dag_ready_set --tb=no`",
+            "raw": "TC-DAG-003 | AC-DAG-003 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k dag_ready_set --tb=no` | cycle and unmet dependency fail closed"
+          },
+          {
+            "ac_id": "TC-DAG-004",
+            "tc_id": "AC-DAG-004",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k orphan_padding --tb=no`",
+            "raw": "TC-DAG-004 | AC-DAG-004 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k orphan_padding --tb=no` | orphan/padding blocks graph"
+          },
+          {
+            "ac_id": "TC-DAG-005",
+            "tc_id": "AC-DAG-005",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k graph_scale --tb=no`",
+            "raw": "TC-DAG-005 | AC-DAG-005 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k graph_scale --tb=no` | 100+ nodes supported without count KPI"
+          },
+          {
+            "ac_id": "TC-DAG-007",
+            "tc_id": "AC-DAG-007",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k honest_subagent_fallback --tb=no`",
+            "raw": "TC-DAG-007 | AC-DAG-007 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k honest_subagent_fallback --tb=no` | intent gate controls host lanes and unavailable runtime records honest fallback"
+          },
+          {
+            "ac_id": "TC-DAG-008",
+            "tc_id": "AC-DAG-008",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k implementation_worktree_admission --tb=no`",
+            "raw": "TC-DAG-008 | AC-DAG-008 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k implementation_worktree_admission --tb=no` | implementation dispatch requires service/admission/real-worktree/cwd/HEAD bindings"
+          },
+          {
+            "ac_id": "TC-DAG-009",
+            "tc_id": "AC-DAG-009",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k deterministic_package_projection --tb=no`",
+            "raw": "TC-DAG-009 | AC-DAG-009 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k deterministic_package_projection --tb=no` | every AC has Command+Assertion TC, ac/evidence task bindings and transaction/revision/hash evidence"
+          },
+          {
+            "ac_id": "TC-DAG-010",
+            "tc_id": "AC-DAG-010",
+            "path_type": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k semantic_compile_forward_migration --tb=no`",
+            "raw": "TC-DAG-010 | AC-DAG-010 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k semantic_compile_forward_migration --tb=no` | legacy PRD/User Story semantics compile into the new feature package graph without old-shape execution inputs"
+          }
+        ],
+        "has_legal_walk": true,
+        "has_illegal": true
+      },
+      "aggregates": [
+        "AtomicTaskGraph"
+      ],
+      "state_machine_coverage": {},
+      "deep_route_recommended": false
+    },
+    "domain_fsm_qa_blocked": false,
+    "domain_fsm_qa_reason_code": "",
+    "design_alignment": {
+      "required": false,
+      "has_baseline": false,
+      "paths": [],
+      "deferred": true,
+      "status": "pass"
+    },
+    "design_md_lint": {
+      "required": false,
+      "status": "not_required",
+      "blocked": false,
+      "reason_code": "",
+      "evidence_path": "",
+      "summary": {}
+    },
+    "ui_state_matrix": {
+      "schema": "ui-state-matrix.v1",
+      "required": false,
+      "status": "not_required",
+      "blocked": false,
+      "reason_code": "",
+      "findings": []
+    },
+    "ui_design_ship_blocked": false
+  },
+  "release_ready": true,
+  "delivery_contract": {
+    "schema_version": "1.0",
+    "feature": "atomic-task-graph-compiler-v1611",
+    "version": "v1.6.11",
+    "requested_mode": "feature-aware",
+    "effective_mode": "feature-aware",
+    "generator_mode": "feature-aware",
+    "execution_mode": "feature-aware",
+    "runner_mode": "qa",
+    "host_runtime": "codex",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "host_runtime": "codex",
+      "subagent_required": false,
+      "subagent_runtime_status": "",
+      "subagent_delegation_status": "",
+      "host_semantic_ready": false,
+      "provider_available": false
+    },
+    "subagent_prechecks": {},
+    "requirement_binding": {
+      "source_of_truth_root": "docs/beacon/v1.6.11",
+      "feature_matrix_path": ".beacon/qa/features/atomic-task-graph-compiler-v1611/matrix.qa9.json",
+      "canonical_matrix_path": ""
+    },
+    "traceability_refs": [
+      ".beacon/qa/features/atomic-task-graph-compiler-v1611/matrix.qa9.json",
+      ".beacon/qa/features/atomic-task-graph-compiler-v1611/ac-closure.json",
+      ".beacon/qa/features/atomic-task-graph-compiler-v1611/scorecard.json",
+      ".beacon/release-gate-report.json"
+    ],
+    "runner": "",
+    "adapter_type": "",
+    "execution_surface": "qa",
+    "team_mode": false,
+    "qa_status": "passed",
+    "gate_status": "",
+    "release_ready": true,
+    "risk_flags": []
+  },
+  "host_native_delivery": {
+    "schema_version": "1.0",
+    "feature": "atomic-task-graph-compiler-v1611",
+    "version": "v1.6.11",
+    "requested_mode": "feature-aware",
+    "effective_mode": "feature-aware",
+    "generator_mode": "feature-aware",
+    "execution_mode": "feature-aware",
+    "runner_mode": "qa",
+    "host_runtime": "codex",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "host_runtime": "codex",
+      "subagent_required": false,
+      "subagent_runtime_status": "",
+      "subagent_delegation_status": "",
+      "host_semantic_ready": false,
+      "provider_available": false
+    },
+    "subagent_prechecks": {},
+    "requirement_binding": {
+      "source_of_truth_root": "docs/beacon/v1.6.11",
+      "feature_matrix_path": ".beacon/qa/features/atomic-task-graph-compiler-v1611/matrix.qa9.json",
+      "canonical_matrix_path": ""
+    },
+    "traceability_refs": [
+      ".beacon/qa/features/atomic-task-graph-compiler-v1611/matrix.qa9.json",
+      ".beacon/qa/features/atomic-task-graph-compiler-v1611/ac-closure.json",
+      ".beacon/qa/features/atomic-task-graph-compiler-v1611/scorecard.json",
+      ".beacon/release-gate-report.json"
+    ],
+    "runner": "",
+    "adapter_type": "",
+    "execution_surface": "qa",
+    "team_mode": false,
+    "qa_status": "passed",
+    "gate_status": "",
+    "release_ready": true,
+    "risk_flags": []
+  },
+  "current_spec_fingerprint_hash": "ca802d1b6ab9991d42f1c5439ceb1068998134eb25b018b433f0ed710ab0d34e"
 }
