@@ -342,7 +342,7 @@ def decompose_product_intent(
     if _has_any(text, ("支付", "auth", "安全", "状态机", "parity", "完整复刻")):
         methodology_secondary.append("review")
 
-    return {
+    result = {
         "schema": SCHEMA,
         "generated_at": now_iso(),
         "surface_ask": text,
@@ -390,6 +390,69 @@ def decompose_product_intent(
         ],
         "status": "ok",
     }
+    try:
+        from beacon.utils.plan_goal_task_closure import (
+            INTENT_DIMENSIONS,
+            INHERITED_MUST_INTENTS,
+            evaluate_intent_dimensions,
+            evaluate_inherited_must_intents,
+            evaluate_missing_must,
+            version_requires_task_closure,
+        )
+
+        wants_closure = (
+            "v1.6.11" in text
+            or "task closure" in text.lower()
+            or "任务闭环" in text
+            or "大目标" in text
+            or any("v1611" in str(x).lower() for x in lake_list)
+            or version_requires_task_closure("v1.6.11", lake_list[0] if lake_list else "")
+        )
+        if wants_closure:
+            dim_intents = []
+            for n, i in enumerate(intents, 1):
+                dim_intents.append(
+                    {
+                        "id": i.get("id") or f"I{n:02d}",
+                        "text": i.get("text") or text,
+                        "strength": "must",
+                        "landing": "AC-pending",
+                        "dimensions": list(INTENT_DIMENSIONS),
+                    }
+                )
+            if not dim_intents:
+                dim_intents = [
+                    {
+                        "id": "I01",
+                        "text": text or "task closure",
+                        "strength": "must",
+                        "landing": "AC-pending",
+                        "dimensions": list(INTENT_DIMENSIONS),
+                    }
+                ]
+            landings = {k: f"AC-INH-{n:02d}" for n, k in enumerate(INHERITED_MUST_INTENTS, 1)}
+            result["task_closure_intent"] = {
+                "schema": "task-closure-intent-advisory.v1",
+                "intent_dimensions": evaluate_intent_dimensions(dim_intents),
+                "missing_must": evaluate_missing_must(dim_intents),
+                "inherited_must_intents": evaluate_inherited_must_intents(landings),
+                "recommended_fill": [
+                    "beacon truth init -f <lake> -v v1.6.11",
+                    "beacon truth fill-request -f <lake> -v v1.6.11 -u <utterance> --json",
+                    "beacon truth fill-apply -f <lake> -v v1.6.11 --request-json <req> --response-json <resp> --json",
+                ],
+            }
+            # surface fill requirement into truth readiness advisory
+            tr = dict(result.get("truth_readiness") or {})
+            miss = list(tr.get("missing") or [])
+            if "host_llm_full_package_fill_pending" not in miss:
+                miss.append("host_llm_full_package_fill_pending")
+            tr["missing"] = miss
+            tr["task_closure"] = True
+            result["truth_readiness"] = tr
+    except Exception:  # noqa: BLE001
+        pass
+    return result
 
 
 def mark_journeys_frozen(

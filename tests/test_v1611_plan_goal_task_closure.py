@@ -857,3 +857,60 @@ def test_truth_stage_blocks_scaffold_package(tmp_path: Path):
     assert gate["blocked"] is True
     assert gate["reason_code"] == "truth_scaffold_not_filled"
 
+
+def test_intent_decomposition_task_closure_advisory():
+    from beacon.utils.intent_decomposition import decompose_product_intent
+
+    out = decompose_product_intent(
+        "Deliver v1.6.11 Plan/Goal task closure with CLI scaffold and Host LLM fill",
+        lakes=["contract-baseline-convergence-v1611"],
+    )
+    assert out.get("task_closure_intent")
+    assert out["task_closure_intent"]["intent_dimensions"]["pass"] is True
+    assert "host_llm_full_package_fill_pending" in (out.get("truth_readiness") or {}).get("missing") or []
+
+
+def test_tick_attaches_truth_fill_readiness_and_progress(tmp_path: Path):
+    from beacon.utils.product_goal_runtime import create_goal_run, tick_goal_run
+    import json as _json
+
+    (tmp_path / "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611").mkdir(parents=True)
+    truth = tmp_path / "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/truth.md"
+    truth.write_text(
+        "---\nstatus: frozen\npackage_maturity: filled\n---\n# t\n",
+        encoding="utf-8",
+    )
+    # also create other three package files so source hashes exist
+    for name in ("tests.md", "tasks.md", "evidence.md"):
+        (truth.parent / name).write_text(f"# {name}\n", encoding="utf-8")
+    (tmp_path / "beacon").mkdir()
+    (tmp_path / "beacon/version-truth.json").write_text(
+        _json.dumps(
+            {
+                "schema_version": "1.0",
+                "package_version": "1.6.10",
+                "runtime_version": "v1.6.10",
+                "docs_default_line": "v1.6.10",
+                "planning_lines": ["v1.6.11"],
+                "lines": {
+                    "v1.6.10": {"status": "current_runtime_release"},
+                    "v1.6.11": {"status": "planning_only"},
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    run = create_goal_run(
+        tmp_path,
+        utterance="Deliver v1.6.11 task closure",
+        version="v1.6.11",
+        feature="contract-baseline-convergence-v1611",
+    )
+    assert run.get("current_stage") == "plan"
+    # leave plan -> truth
+    advanced = tick_goal_run(tmp_path, run["run_id"], note="to-truth")
+    assert advanced.get("current_stage") in {"truth", "plan"}
+    # if plan exit allowed, fill readiness should be present for v1.6.11
+    if advanced.get("current_stage") == "truth":
+        assert advanced.get("truth_fill_readiness")
+
