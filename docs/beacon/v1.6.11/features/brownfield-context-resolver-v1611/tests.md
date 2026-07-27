@@ -9,7 +9,7 @@ materials_status: current
 
 | TC ID | AC ID | Command | Assertion |
 |-------|-------|---------|-----------|
-| TC-CTX-001 | AC-CTX-001 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k context_envelope --tb=no` | envelope contains five baseline surfaces |
+| TC-CTX-001 | AC-CTX-001 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k context_envelope --tb=no` | envelope contains five baseline surfaces (legal walk / happy path) |
 | TC-CTX-002 | AC-CTX-002 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k context_reverse_lookup --tb=no` | goal resolves code and test entries |
 | TC-CTX-003 | AC-CTX-003 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k context_conflict --tb=no` | conflict enters awaiting_human |
 | TC-CTX-004 | AC-CTX-004 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k context_stale --tb=no` | changed fingerprint invalidates downstream |

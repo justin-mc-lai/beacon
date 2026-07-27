@@ -9,7 +9,7 @@ materials_status: current
 
 | TC ID | AC ID | Command | Assertion |
 |-------|-------|---------|-----------|
-| TC-DAG-001 | AC-DAG-001 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k atomic_compile --tb=no` | each node is independently verifiable |
+| TC-DAG-001 | AC-DAG-001 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k atomic_compile --tb=no` | each node is independently verifiable (legal walk / happy path) |
 | TC-DAG-002 | AC-DAG-002 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k task_trace_bindings --tb=no` | all seven bindings present |
 | TC-DAG-003 | AC-DAG-003 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k dag_ready_set --tb=no` | cycle and unmet dependency fail closed |
 | TC-DAG-004 | AC-DAG-004 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k orphan_padding --tb=no` | orphan/padding blocks graph |

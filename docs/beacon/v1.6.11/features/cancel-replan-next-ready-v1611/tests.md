@@ -9,7 +9,7 @@ materials_status: current
 
 | TC ID | AC ID | Command | Assertion |
 |-------|-------|---------|-----------|
-| TC-RPL-001 | AC-RPL-001 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k replan_choices --tb=no` | each choice emits correct disposition |
+| TC-RPL-001 | AC-RPL-001 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k replan_choices --tb=no` | each choice emits correct disposition (legal walk / happy path) |
 | TC-RPL-002 | AC-RPL-002 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k required_cancel --tb=no` | missing replacement blocks downstream |
 | TC-RPL-003 | AC-RPL-003 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k ready_recompute --tb=no` | ready set recomputed atomically |
 | TC-RPL-004 | AC-RPL-004 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k evidence_reuse --tb=no` | evidence retained or staled correctly |

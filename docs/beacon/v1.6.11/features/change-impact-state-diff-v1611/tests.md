@@ -9,7 +9,7 @@ materials_status: current
 
 | TC ID | AC ID | Command | Assertion |
 |-------|-------|---------|-----------|
-| TC-DIF-001 | AC-DIF-001 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k five_surface_diff --tb=no` | all five surfaces emitted |
+| TC-DIF-001 | AC-DIF-001 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k five_surface_diff --tb=no` | all five surfaces emitted (legal walk / happy path) |
 | TC-DIF-002 | AC-DIF-002 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k fsm_diff --tb=no` | state and edge delta complete |
 | TC-DIF-003 | AC-DIF-003 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k diff_traceability --tb=no` | intent/code/TC bindings present |
 | TC-DIF-004 | AC-DIF-004 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k destructive_diff_review --tb=no` | high-risk diff requires human ack |
