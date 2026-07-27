@@ -256,11 +256,80 @@ def gen_cmd(
     force: bool = typer.Option(False, "--force", help="Overwrite existing files"),
     lang: str = typer.Option("en", "--lang", "-l", help="Language: en|zh"),
     dry_run: bool = typer.Option(False, "--dry-run", help="Preview output without writing files"),
+    response_json: Optional[Path] = typer.Option(
+        None,
+        "--response-json",
+        help="Optional truth-fill-response.v1 JSON (Host LLM). Overrides env host-response.",
+    ),
+    require_host_response: bool = typer.Option(
+        False,
+        "--require-host-response",
+        help="Fail if host-response/bridge missing (no CLI semantic compile fallback)",
+    ),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON pipeline result"),
 ) -> None:
     """Generate truth package. Use --intent-first to drive generation from user intent."""
     project_root = _resolve_root(project)
     resolved = resolve_target_version(project_root, version)
     slug = feature.strip().lower().replace(" ", "-").replace("_", "-")
+
+    # v1.6.11+: authoritative path = scaffold + fill-request + host/semantic response + transaction apply
+    try:
+        from beacon.utils.plan_goal_task_closure import (
+            run_truth_gen_fill_pipeline,
+            version_requires_task_closure,
+        )
+    except Exception:  # noqa: BLE001
+        version_requires_task_closure = None  # type: ignore
+        run_truth_gen_fill_pipeline = None  # type: ignore
+
+    if version_requires_task_closure and version_requires_task_closure(resolved, slug):
+        if not utterance and not response_json:
+            # allow env host response without utterance only if require_host not set... still need utterance for compile fallback
+            if require_host_response:
+                pass
+            else:
+                typer.echo("v1.6.11+ truth gen recommends --utterance (or provide host-response / --response-json).", err=True)
+        explicit = None
+        if response_json is not None:
+            explicit = json.loads(Path(response_json).read_text(encoding="utf-8"))
+        result = run_truth_gen_fill_pipeline(
+            project_root,
+            version=resolved,
+            feature=slug,
+            utterance=utterance or f"Generate package truth for {slug}",
+            language=lang if lang in {"zh", "en", "bilingual"} else "zh",
+            force_scaffold=True,
+            explicit_response=explicit,
+            allow_semantic_compile_fallback=not require_host_response,
+            dry_run=dry_run,
+        )
+        if json_output:
+            typer.echo(json.dumps(result, ensure_ascii=False, indent=2))
+        else:
+            steps = result.get("steps") or []
+            for step in steps:
+                if isinstance(step, dict):
+                    typer.echo(f"- {step.get('name')}: {step.get('status')} {step.get('source') or step.get('detail') or ''}".rstrip())
+            if result.get("pass"):
+                for key, rel in (result.get("package_paths") or {}).items():
+                    typer.echo(f"✓ {key}: {rel}")
+                src = ((result.get("resolve") or {}).get("source") or "")
+                transport = ((result.get("resolve") or {}).get("transport") or "")
+                typer.echo(f"✓ fill transport: {transport} source={src}")
+                if result.get("recommend_freeze"):
+                    typer.echo("✓ truth review pass — freeze may be recommended after human ack")
+                else:
+                    typer.echo("⚠ filled via transaction; review/freeze still gated")
+            else:
+                typer.echo(
+                    f"✗ truth fill pipeline blocked: {result.get('reason_code')}",
+                    err=True,
+                )
+                raise typer.Exit(2)
+        if result.get("blocked"):
+            raise typer.Exit(2)
+        return
 
     if intent_first:
         if not utterance:

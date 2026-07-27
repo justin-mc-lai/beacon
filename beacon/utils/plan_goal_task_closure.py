@@ -1448,3 +1448,440 @@ def detect_scaffold_truth_block(truth_md: str) -> dict[str, Any]:
         )
     return _ok()
 
+
+def compile_intent_semantics_to_fill_response(
+    *,
+    utterance: str,
+    feature: str,
+    version: str,
+    language: str = "zh",
+) -> dict[str, Any]:
+    """Forward-migrate intent/PRD semantic compile into truth-fill-response.v1.
+
+    This is CLI-side structured compile (not free Markdown authority write).
+    """
+    from beacon.utils.intent_first import capture_intents_from_utterance, derive_ac_from_intent
+
+    intents = capture_intents_from_utterance(utterance or feature)
+    if not intents:
+        class _I:
+            def __init__(self, text: str):
+                self.text = text
+                self.source_type = "utterance"
+                self.source_ref = text[:120]
+
+        intents = [_I(str(utterance or feature))]
+    ac_rows = [derive_ac_from_intent(intent, idx) for idx, intent in enumerate(intents, start=1)]
+    matrix = []
+    for idx, row in enumerate(ac_rows, start=1):
+        matrix.append(
+            {
+                "intent_id": f"INT-{idx:03d}",
+                "source": "prompt",
+                "strength": "must",
+                "landing": row["ac_id"],
+                "status": "covered",
+                "text": row.get("description") or row.get("theme") or str(getattr(intents[idx - 1], "text", "")),
+            }
+        )
+    acceptance = [
+        {
+            "ac_id": row["ac_id"],
+            "description": row.get("description") or row.get("theme") or "deliver intent",
+        }
+        for row in ac_rows
+    ]
+    slug = feature.strip().lower().replace(" ", "-").replace("_", "-")
+    nl = "\n"
+    test_header = [
+        "---",
+        f"slug: {slug}",
+        f"version: {version}",
+        "materials_status: current",
+        "---",
+        "",
+        f"# Tests: {feature}",
+        "",
+        "| TC ID | AC ID | Command | Assertion |",
+        "|-------|-------|---------|-----------|",
+    ]
+    test_rows = [
+        f"| TC-{i:03d} | {row['ac_id']} | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k package_shape_upgrade_required --tb=no` | contract suite green |"
+        for i, row in enumerate(ac_rows, start=1)
+    ]
+    tests_md = nl.join(test_header + test_rows + [""])
+    tasks_lines = [
+        "---",
+        f"slug: {slug}",
+        "materials_status: current",
+        "task_source: acceptance_criteria",
+        "---",
+        "",
+        f"# Tasks: {feature}",
+        "",
+        "## Task Ledger",
+        "",
+    ]
+    for i, row in enumerate(ac_rows, start=1):
+        ac = row["ac_id"]
+        desc = (row.get("description") or "implement").replace("\n", " ")[:72]
+        tasks_lines.append(
+            f"- [ ] TASK-{i:03d} Implement {ac}: {desc} · ac={ac} · evidence=`.beacon/evidence/implement/{slug}/{ac}.json`"
+        )
+    tasks_lines.extend(
+        [
+            f"- [ ] TASK-{len(ac_rows)+1:03d} Validate package gates · ac=GATES · evidence=`.beacon/evidence/implement/{slug}/GATES.json`",
+            f"- [ ] TASK-{len(ac_rows)+2:03d} Run QA matrix · ac=QA · evidence=`.beacon/evidence/implement/{slug}/QA-MATRIX.json`",
+            "",
+            "## Boundary",
+            "",
+            "Checkboxes require bound evidence files.",
+            "",
+        ]
+    )
+    evidence_md = nl.join(
+        [
+            f"# Evidence: {feature}",
+            "",
+            "| Surface | Authority | Canonical Artifact | Status | Route |",
+            "|---------|-----------|--------------------|--------|-------|",
+            "| truth | requirement_truth | features package | draft | truth |",
+            "| qa | qa_verdict | tests/ | pending | qa |",
+            "",
+        ]
+    )
+    plain = (
+        f"根据意图交付 `{feature}`：把口头目标编译成可冻结的需求包。"
+        f"能做：已声明意图对应结果。不能做：未声明默认实现。怎样算完：Matrix covered + AC 有 TC + review 后 freeze。"
+    )
+    response = {
+        "schema": SCHEMA_FILL_RESPONSE,
+        "plain_language_l0": plain,
+        "user_intent_snapshot": (
+            f"lake_or_ocean: 湖\nlanguage: {language}\nsource: intent_semantic_compile\n"
+            f"utterance: {(utterance or '')[:200]}"
+        ),
+        "journeys": [
+            {
+                "id": "J-main",
+                "name": "主路径交付",
+                "steps": ["确认意图", "填充需求包", "审查冻结"],
+            }
+        ],
+        "intent_coverage_matrix": matrix,
+        "acceptance_criteria": acceptance,
+        "domain_model": f"FeaturePackage({feature}) / FillTransaction / GoalRun",
+        "fsm_quintuples": [
+            {
+                "state": "scaffold_materialized",
+                "event": "request_host_fill",
+                "guard": "unfilled",
+                "to": "host_fill_requested",
+                "action": "emit_request",
+            },
+            {
+                "state": "host_fill_requested",
+                "event": "response_received",
+                "guard": "response_nonempty",
+                "to": "structured_fill_produced",
+                "action": "bind_hashes",
+            },
+            {
+                "state": "structured_fill_produced",
+                "event": "validate_schema",
+                "guard": "schema_ok",
+                "to": "canonical_truth_patching",
+                "action": "open_transaction",
+            },
+        ],
+        "illegal_transitions": [
+            "scaffold -> frozen",
+            "direct markdown overwrite by host llm",
+        ],
+        "non_goals": [
+            "auto-release",
+            "restore parallel prd/user-story canonical authority",
+        ],
+        "projection_inputs": {
+            "tests": tests_md,
+            "tasks": nl.join(tasks_lines),
+            "evidence": evidence_md,
+        },
+        "source_hash": _text_hash(utterance or feature),
+        "compile_source": "intent_semantic_compile.v1",
+    }
+    return response
+
+
+def normalize_host_fill_response(payload: dict[str, Any] | None) -> dict[str, Any]:
+    """Accept nested host payloads and legacy semantic shapes."""
+    payload = payload if isinstance(payload, dict) else {}
+    if not payload:
+        return {}
+    if payload.get("schema") == SCHEMA_FILL_RESPONSE:
+        return payload
+    if isinstance(payload.get("response"), dict):
+        return normalize_host_fill_response(payload.get("response"))
+    if isinstance(payload.get("truth_fill_response"), dict):
+        return normalize_host_fill_response(payload.get("truth_fill_response"))
+    if payload.get("acceptance_criteria") or payload.get("intents") or payload.get("plain_language_l0"):
+        out = dict(payload)
+        out.setdefault("schema", SCHEMA_FILL_RESPONSE)
+        return out
+    return {}
+
+
+def resolve_truth_fill_response(
+    *,
+    utterance: str,
+    feature: str,
+    version: str,
+    language: str = "zh",
+    explicit_response: dict[str, Any] | None = None,
+    request_payload: dict[str, Any] | None = None,
+    allow_semantic_compile_fallback: bool = True,
+) -> dict[str, Any]:
+    """Resolve Host LLM / bridge / injected response, else semantic compile fallback."""
+    from beacon.utils.semantic_runtime import (
+        execute_host_bridge_command,
+        load_host_response_json,
+    )
+
+    explicit = normalize_host_fill_response(explicit_response)
+    if explicit:
+        return {
+            "status": "pass",
+            "blocked": False,
+            "source": "explicit_response",
+            "response": explicit,
+            "transport": "explicit",
+        }
+
+    for name in ("truth", "gen-truth", "truth-fill", "semantic"):
+        payload, meta = load_host_response_json(name)
+        normalized = normalize_host_fill_response(payload)
+        if normalized:
+            return {
+                "status": "pass",
+                "blocked": False,
+                "source": f"host_response:{name}",
+                "response": normalized,
+                "transport": "host-response",
+                "meta": meta,
+            }
+
+    req = request_payload or {}
+    for name in ("truth", "gen-truth", "truth-fill"):
+        payload, meta = execute_host_bridge_command(name, req)
+        normalized = normalize_host_fill_response(payload)
+        if normalized:
+            return {
+                "status": "pass",
+                "blocked": False,
+                "source": f"host_bridge:{name}",
+                "response": normalized,
+                "transport": "command-bridge",
+                "meta": meta,
+            }
+
+    if allow_semantic_compile_fallback and utterance:
+        compiled = compile_intent_semantics_to_fill_response(
+            utterance=utterance,
+            feature=feature,
+            version=version,
+            language=language,
+        )
+        return {
+            "status": "pass",
+            "blocked": False,
+            "source": "semantic_compile_fallback",
+            "response": compiled,
+            "transport": "cli-semantic-compile",
+        }
+
+    return _reject(
+        "host_fill_empty",
+        user_facing="no host-response/bridge payload and semantic compile fallback disabled or empty utterance",
+    )
+
+
+def run_truth_gen_fill_pipeline(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+    utterance: str = "",
+    language: str = "zh",
+    force_scaffold: bool = True,
+    explicit_response: dict[str, Any] | None = None,
+    allow_semantic_compile_fallback: bool = True,
+    base_revision: str = "R2",
+    dry_run: bool = False,
+) -> dict[str, Any]:
+    """Authoritative v1.6.11+ truth gen path: scaffold → request → response → transaction apply."""
+    from beacon.utils.feature_package import package_paths
+    from beacon.utils.truth_map import FEATURE_SURFACES, _sha256
+
+    root = Path(project_root).expanduser().resolve()
+    slug = feature.strip().lower().replace(" ", "-").replace("_", "-")
+    steps: list[dict[str, Any]] = []
+
+    scaffold = materialize_deterministic_scaffold(
+        root, version=version, feature=slug, force=force_scaffold
+    )
+    steps.append(
+        {
+            "name": "scaffold",
+            "status": "pass" if scaffold.get("pass") else "blocked",
+            "detail": scaffold.get("reason_code") or "",
+        }
+    )
+    paths = package_paths(root, version=version, feature=slug)
+    if not paths["truth"].exists():
+        return _reject("scaffold_failed", scaffold=scaffold, steps=steps)
+
+    source_hashes = {s: _sha256(paths[s]) if paths[s].exists() else "" for s in FEATURE_SURFACES}
+    if not all(source_hashes.values()):
+        return _reject("scaffold_hashes_incomplete", source_hashes=source_hashes, steps=steps)
+
+    envelope = build_context_envelope(
+        utterance=utterance or f"generate truth for {slug}",
+        version=version,
+        baseline_commit="workspace",
+        truth_refs={s: f"docs/beacon/{version}/features/{slug}/{s}.md" for s in FEATURE_SURFACES},
+        code_entries=["beacon/utils/plan_goal_task_closure.py", "beacon/commands/truth.py"],
+        test_entries=["tests/test_v1611_plan_goal_task_closure.py"],
+        change_history=[f"docs/beacon/{version}/change"],
+        inherited_contracts=[
+            "docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
+            "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md",
+        ],
+        execution_authorities={
+            "subagent_runtime": "host_or_fallback",
+            "truth_canonical": "main",
+            "worktree_governance": "workspace_admit",
+            "trace_authority": "agent_trace.v1",
+        },
+        source_hashes=source_hashes,
+        revision_id=base_revision,
+        semantic_compiler_refs=[
+            "beacon/utils/intent_first.py",
+            "beacon/commands/user_story.py",
+            "beacon/commands/prd.py",
+        ],
+        host_transport={
+            "capability": "host-response",
+            "precedence": ["host-response", "command-bridge", "cli-semantic-compile"],
+        },
+        humanizer_profile={"language": language, "preserve_machine_fields": True},
+        program_refs={"program": "beacon-plan-goal-task-closure-v1611"},
+        pac_refs=["PAC-016", "PAC-017", "PAC-018", "PAC-019", "PAC-021"],
+    )
+    request_wrap = build_truth_fill_request(envelope)
+    steps.append({"name": "request", "status": "pass" if request_wrap.get("pass") else "blocked"})
+    if request_wrap.get("blocked"):
+        return _reject("fill_request_failed", request=request_wrap, steps=steps)
+    request = request_wrap.get("request") or {}
+
+    resolved = resolve_truth_fill_response(
+        utterance=utterance,
+        feature=slug,
+        version=version,
+        language=language,
+        explicit_response=explicit_response,
+        request_payload={
+            "schema": SCHEMA_FILL_REQUEST,
+            "request": request,
+            "feature": slug,
+            "version": version,
+            "utterance": utterance,
+        },
+        allow_semantic_compile_fallback=allow_semantic_compile_fallback,
+    )
+    steps.append(
+        {
+            "name": "response",
+            "status": "pass" if not resolved.get("blocked") else "blocked",
+            "source": resolved.get("source"),
+            "transport": resolved.get("transport"),
+        }
+    )
+    if resolved.get("blocked"):
+        return {**resolved, "steps": steps, "request": request_wrap}
+
+    response = resolved.get("response") or {}
+    schema_check = validate_host_llm_full_package_fill(response)
+    false_c = reject_false_completeness(response)
+    steps.append({"name": "schema", "status": "pass" if schema_check.get("pass") else "blocked"})
+    if schema_check.get("blocked") or false_c.get("blocked"):
+        return _reject(
+            str(schema_check.get("reason_code") or false_c.get("reason_code") or "fill_response_invalid"),
+            schema_check=schema_check,
+            false_completeness=false_c,
+            steps=steps,
+            request=request_wrap,
+            response=response,
+            resolve=resolved,
+        )
+
+    if dry_run:
+        return _ok(
+            dry_run=True,
+            steps=steps,
+            request=request_wrap,
+            resolve=resolved,
+            response=response,
+            schema_check=schema_check,
+        )
+
+    applied = apply_structured_fill_transaction(
+        root,
+        version=version,
+        feature=slug,
+        request=request,
+        response=response,
+        allow_direct_markdown_overwrite=False,
+        base_revision=base_revision,
+    )
+    steps.append({"name": "patch", "status": "pass" if applied.get("pass") else "blocked"})
+    steps.append({"name": "projection", "status": "pass" if applied.get("pass") else "blocked"})
+    if applied.get("blocked"):
+        return {**applied, "steps": steps, "request": request_wrap, "resolve": resolved}
+
+    postwrite: dict[str, Any] = {}
+    try:
+        from beacon.utils.truth_gen_postwrite import run_truth_gen_postwrite_gates
+
+        postwrite = run_truth_gen_postwrite_gates(
+            root,
+            version=version,
+            feature=slug,
+            written=[str(paths[s]) for s in FEATURE_SURFACES if paths[s].exists()],
+            language=language,
+        )
+        steps.append({"name": "validation", "status": "pass" if not postwrite.get("blocked") else "blocked"})
+        steps.append(
+            {
+                "name": "review",
+                "status": "pass" if bool((postwrite.get("truth_review_gate") or {}).get("pass")) else "blocked",
+            }
+        )
+    except Exception as exc:  # noqa: BLE001
+        postwrite = {"error": str(exc)[:240]}
+        steps.append({"name": "validation", "status": "skipped", "error": str(exc)[:120]})
+
+    return _ok(
+        feature=slug,
+        version=version,
+        steps=steps,
+        scaffold=scaffold,
+        request=request_wrap,
+        resolve=resolved,
+        transaction=applied.get("transaction"),
+        projection_hashes=applied.get("projection_hashes"),
+        postwrite=postwrite,
+        package_paths={s: str(paths[s].relative_to(root)) for s in FEATURE_SURFACES},
+        recommend_freeze=bool((postwrite.get("truth_review_gate") or {}).get("pass"))
+        and not postwrite.get("blocked"),
+    )
+

@@ -914,3 +914,62 @@ def test_tick_attaches_truth_fill_readiness_and_progress(tmp_path: Path):
     if advanced.get("current_stage") == "truth":
         assert advanced.get("truth_fill_readiness")
 
+
+def test_truth_gen_fill_pipeline_main_path(tmp_path: Path):
+    out = pg.run_truth_gen_fill_pipeline(
+        tmp_path,
+        version="v1.6.11",
+        feature="gen-main-path",
+        utterance="Deliver structured fill for gen main path",
+        language="zh",
+    )
+    assert out.get("pass") is True, out
+    assert out.get("resolve", {}).get("transport") == "cli-semantic-compile"
+    truth = tmp_path / "docs/beacon/v1.6.11/features/gen-main-path/truth.md"
+    assert truth.exists()
+    text = truth.read_text(encoding="utf-8")
+    assert "package_maturity: filled" in text
+    assert "feature_package_authoritative" in text
+
+
+def test_truth_gen_fill_pipeline_host_response(tmp_path: Path, monkeypatch):
+    response = _filled_response()
+    monkeypatch.setenv("BEACON_HOST_TRUTH_RESPONSE_JSON", __import__("json").dumps(response))
+    out = pg.run_truth_gen_fill_pipeline(
+        tmp_path,
+        version="v1.6.11",
+        feature="gen-host-path",
+        utterance="ignored because host response present",
+        language="zh",
+        allow_semantic_compile_fallback=False,
+    )
+    assert out.get("pass") is True, out
+    assert str(out.get("resolve", {}).get("source") or "").startswith("host_response")
+    assert (tmp_path / "docs/beacon/v1.6.11/features/gen-host-path/truth.md").exists()
+
+
+def test_truth_gen_cli_uses_fill_pipeline(tmp_path: Path):
+    from typer.testing import CliRunner
+    from beacon.commands.truth import app as truth_app
+
+    runner = CliRunner()
+    result = runner.invoke(
+        truth_app,
+        [
+            "gen",
+            "-f",
+            "cli-gen-fill",
+            "-v",
+            "v1.6.11",
+            "-p",
+            str(tmp_path),
+            "-u",
+            "Deliver cli gen fill path",
+            "--json",
+        ],
+    )
+    assert result.exit_code == 0, result.output
+    payload = __import__("json").loads(result.output)
+    assert payload.get("pass") is True
+    assert "cli-semantic-compile" in str(payload.get("resolve") or {})
+
