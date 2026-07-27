@@ -1,14 +1,20 @@
 {
   "schema_version": "1.0",
-  "allowed": true,
-  "reason": "release_hygiene_agent_surface_leak_fix",
-  "version": "v1.6.11",
-  "feature": "contract-baseline-convergence-v1611",
-  "paths": [
-    "beacon/utils/humanizer_config.py",
-    "beacon/utils/humanizer_llm.py",
-    "tests/test_v1610_humanizer_exec_task_evidence.py"
+  "reason": "v1.6.10 kernel: cut soft-compat package authority always-on; freeze no legacy_split skip",
+  "feature": "compat-debt-cut-v1610",
+  "version": "v1.6.10",
+  "approved_by": "operator-goal-closure",
+  "scope": [
+    "beacon/commands/freeze.py",
+    "beacon/utils/truth_integrity.py",
+    "beacon/utils/truth_map.py",
+    "tests/test_v1610_compat_debt_cut.py",
+    "tests/test_truth_integrity.py",
+    "tests/test_v152_package_authoritative.py",
+    "tests/test_v163_ecosystem_discovery_sync_drift.py",
+    "docs/beacon/v1.6.10/features/compat-debt-cut-v1610/*",
+    "docs/beacon/v1.6.10/SUMMARY.md",
+    ".beacon/evidence/implement/compat-debt-cut-v1610/*"
   ],
-  "approved_by": "operator",
-  "note": "Remove nested discoverable vendor SKILL.md leak blocking agent-surface/QA cutover; prefer SKILL.md.internal fulltext."
+  "note": "Beacon kernel change on main; workspace admit path deferred for toolkit lake"
 }

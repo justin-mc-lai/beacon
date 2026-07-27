@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.0",
+  "version": "v1.6.11",
+  "feature": "beacon-qa-methodology-contract-v164",
+  "run_id": "repair-v1.6.11-20260702T061554326574Z0000",
+  "generated_at": "2026-07-27T14:03:37.790427+00:00",
+  "baseline_run_id": "repair-v1.6.11-20260702T061554326574Z0000",
+  "affected_projects": [
+    "beacon"
+  ],
+  "doc_chain_update_required": false,
+  "changed_layers": [
+    "research",
+    "user-story",
+    "prd",
+    "test-case",
+    "execution"
+  ],
+  "tasks": [
+    {
+      "task": "publish-config-draft",
+      "status": "completed",
+      "owner": "beacon",
+      "evidence": "docs/beacon/v1.6.11/.machine/execution/config.json"
+    },
+    {
+      "task": "publish-source-draft",
+      "status": "completed",
+      "owner": "beacon",
+      "evidence": "docs/beacon/v1.6.11/.machine/execution/source.json"
+    },
+    {
+      "task": "publish-git-alignment-draft",
+      "status": "completed",
+      "owner": "beacon",
+      "evidence": "docs/beacon/v1.6.11/.machine/execution/git-alignment.json"
+    }
+  ],
+  "research_converged": false,
+  "main_chain_converged": false,
+  "delivery_manifest_ready": true,
+  "full_delivery_closed": true,
+  "pending_blockers": [],
+  "notes": [
+    "Change impact is derived from baseline snapshots and enriched with delivery draft tasks.",
+    "Full closure still depends on implementation / verify / gate completion."
+  ],
+  "features": [
+    "atomic-task-graph-compiler-v1611",
+    "brownfield-context-resolver-v1611",
+    "cancel-replan-next-ready-v1611",
+    "change-impact-state-diff-v1611",
+    "contract-baseline-convergence-v1611",
+    "convergence-verifier-v1611",
+    "drift-padding-review-gate-v1611",
+    "intent-completeness-engine-v1611",
+    "task-progress-ledger-v1611"
+  ],
+  "impact_summary": "Nine lakes Plan/Goal task-closure program with Host Agent skill-authored fill.",
+  "breaking_changes": [
+    "no_old_shape_soft_compat"
+  ],
+  "migration_notes": [
+    "refreeze R2 packages with ux_required false and legal-walk markers"
+  ]
+}

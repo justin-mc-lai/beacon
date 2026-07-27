@@ -1,0 +1,1766 @@
+{
+  "version": "v1.6.11",
+  "runtime_version": "v1.6.11",
+  "project_root": "/Users/apple/Developer/Personal/products/beacon",
+  "status": "pass",
+  "release_ready": true,
+  "release_profile": {
+    "ok": true,
+    "blocked": false,
+    "profile": "full",
+    "gates": [
+      "full_suite"
+    ],
+    "reason_code": ""
+  },
+  "failed_checks": [],
+  "warning_checks": [],
+  "checks": [
+    {
+      "name": "legacy cutover preflight",
+      "status": "pass",
+      "passed": true,
+      "detail": "reason=-; profile=full"
+    },
+    {
+      "name": "auto-test status passed",
+      "status": "pass",
+      "passed": true,
+      "detail": "status=passed; profile=full"
+    },
+    {
+      "name": "auto-test version matches release version",
+      "status": "pass",
+      "passed": true,
+      "detail": "artifact_version=v1.6.11, expected=v1.6.11; profile=full"
+    },
+    {
+      "name": "auto-test run_id present",
+      "status": "pass",
+      "passed": true,
+      "detail": "run_id=run-20260727T215019744016; profile=full"
+    },
+    {
+      "name": "gate report pass",
+      "status": "pass",
+      "passed": true,
+      "detail": "status=Pass; profile=full"
+    },
+    {
+      "name": "gate report version matches release version",
+      "status": "pass",
+      "passed": true,
+      "detail": "artifact_version=v1.6.11, expected=v1.6.11; profile=full"
+    },
+    {
+      "name": "gate report run_id matches auto-test",
+      "status": "pass",
+      "passed": true,
+      "detail": "gate_run_id=run-20260727T215019744016, auto_test_run_id=run-20260727T215019744016, authoritative_release_scorecard=true; profile=full"
+    },
+    {
+      "name": "evidence manifest present",
+      "status": "pass",
+      "passed": true,
+      "detail": "entries=429; profile=full"
+    },
+    {
+      "name": "evidence manifest version matches release version",
+      "status": "pass",
+      "passed": true,
+      "detail": "artifact_version=v1.6.11, expected=v1.6.11; profile=full"
+    },
+    {
+      "name": "evidence manifest run_id matches test artifacts",
+      "status": "pass",
+      "passed": true,
+      "detail": "manifest_run_id=run-20260727T215019744016, expected=run-20260727T215019744016, authoritative_release_scorecard=true; profile=full"
+    },
+    {
+      "name": "coverage artifact ready",
+      "status": "pass",
+      "passed": true,
+      "detail": "coverage_rate=1.0000; profile=full"
+    },
+    {
+      "name": "coverage summary version matches release version",
+      "status": "pass",
+      "passed": true,
+      "detail": "artifact_version=v1.6.11, expected=v1.6.11; profile=full"
+    },
+    {
+      "name": "coverage summary run_id matches test artifacts",
+      "status": "pass",
+      "passed": true,
+      "detail": "coverage_run_id=run-20260727T215019744016, expected=run-20260727T215019744016, authoritative_release_scorecard=true; profile=full"
+    },
+    {
+      "name": "runtime projection transaction contract",
+      "status": "pass",
+      "passed": true,
+      "detail": "status=warn, reason=runtime_projection_transaction_context_missing; profile=full"
+    },
+    {
+      "name": "acceptance projection transaction contract",
+      "status": "pass",
+      "passed": true,
+      "detail": "status=pass, reason=acceptance_projection_transaction_ok; profile=full"
+    },
+    {
+      "name": "version change markdown exists",
+      "status": "pass",
+      "passed": true,
+      "detail": "path=docs/beacon/v1.6.11/change/v1.6.11.md; profile=full"
+    },
+    {
+      "name": "version change payload exists",
+      "status": "pass",
+      "passed": true,
+      "detail": "path=docs/beacon/v1.6.11/.machine/change/v1.6.11.json; profile=full"
+    },
+    {
+      "name": "version change payload matches release version",
+      "status": "pass",
+      "passed": true,
+      "detail": "feature_count=9; profile=full"
+    },
+    {
+      "name": "version change document includes current feature",
+      "status": "pass",
+      "passed": true,
+      "detail": "current_feature=contract-baseline-convergence-v1611, reason=-, repair=beacon doctor repair-version-aggregate-projection \"contract-baseline-convergence-v1611\" --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.11 --json; profile=full"
+    },
+    {
+      "name": "release scorecard ready",
+      "status": "pass",
+      "passed": true,
+      "detail": "feature=contract-baseline-convergence-v1611, semantic_reason=-; profile=full"
+    },
+    {
+      "name": "version surface governance pass",
+      "status": "pass",
+      "passed": true,
+      "detail": "status=pass, reason=-, manifest_path=/Users/apple/Developer/Personal/products/beacon/beacon/version-truth.json, repair=beacon doctor sync-version-surfaces --project-root /Users/apple/Developer/Personal/products/beacon, verify=beacon doctor verify-version-surfaces --project-root /Users/apple/Developer/Personal/products/beacon --strict; profile=full"
+    },
+    {
+      "name": "implement prompt boundary verdict pass",
+      "status": "pass",
+      "passed": true,
+      "detail": "status=pass, classification=in_scope_implementation, surface=import-evidence, reason=-; profile=full"
+    }
+  ],
+  "legacy_cutover_preflight": {
+    "schema_version": "1.0",
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "version": "v1.6.11",
+    "feature": "contract-baseline-convergence-v1611",
+    "feature_slug": "contract-baseline-convergence-v1611",
+    "resume_intent": "release",
+    "legacy_cutover": {
+      "schema_version": "1.0",
+      "feature": "contract-baseline-convergence-v1611",
+      "feature_slug": "contract-baseline-convergence-v1611",
+      "version": "v1.6.11",
+      "status": "pass",
+      "blocked": false,
+      "reason_code": "",
+      "supported": true,
+      "dry_run": true,
+      "apply": false,
+      "agent": "codex",
+      "legacy_truth_present": false,
+      "generated_at": "2026-07-27T14:20:26.713358+00:00",
+      "phases": {
+        "inventory": {
+          "status": "pass",
+          "blocked": false,
+          "reason_code": "",
+          "next_command": "",
+          "legacy_refs": []
+        },
+        "package": {
+          "status": "pass",
+          "blocked": false,
+          "reason_code": "",
+          "next_command": "beacon truth-map verify contract-baseline-convergence-v1611 --project . --version v1.6.11 --json",
+          "missing_surfaces": [],
+          "paths": {
+            "truth": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/truth.md",
+            "tests": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/tests.md",
+            "tasks": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/tasks.md",
+            "evidence": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/evidence.md"
+          },
+          "validation": {
+            "schema_version": "1.0",
+            "feature": "contract-baseline-convergence-v1611",
+            "feature_slug": "contract-baseline-convergence-v1611",
+            "version": "v1.6.11",
+            "status": "pass",
+            "blocked": false,
+            "reason_code": "",
+            "generated_at": "2026-07-27T14:20:26.251226+00:00",
+            "package_dir": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611",
+            "truth_frontmatter": {
+              "slug": "contract-baseline-convergence-v1611",
+              "version": "v1.6.11",
+              "status": "frozen",
+              "revision_id": "R2",
+              "language": "zh",
+              "domain_required": "true",
+              "domain_kind": "platform",
+              "ux_required": "false",
+              "ux_deferred": "true",
+              "package_maturity": "filled",
+              "materials_status": "current",
+              "parser_contract": "beacon-feature-package-v2",
+              "truth_source_model": "feature_package_authoritative",
+              "program_ref": "docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/program-manifest.md",
+              "baseline_commit": "30b9adffc8ec5442a7691a88faf64a251d97b98f",
+              "truth_map_contract": "beacon-truth-map-v1",
+              "participating_services": "beacon",
+              "git_canonical_branch": "main",
+              "previous_revision": "R1",
+              "change_reason": "D3: CLI deterministic scaffold plus Host Agent (skill-authored fill) full-package fill under feature-package authority",
+              "parent_truth": "docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
+              "inherited_contracts": "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md",
+              "canonical_refs": {
+                "prd": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/truth.md",
+                "user_story": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/truth.md",
+                "test_case": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/tests.md"
+              }
+            },
+            "ac_count": 9,
+            "test_count": 10,
+            "checkbox_count": 11,
+            "evidence_row_count": 10,
+            "gate_authority": "canonical_surfaces_preserved",
+            "checkbox_gate_bypass": false,
+            "task_evidence_gate": {
+              "pass": true,
+              "checked_ok": 0,
+              "checked_bad": 0,
+              "unbound": 0,
+              "findings": [],
+              "reason_code": ""
+            },
+            "evidence_gate_truth": false,
+            "diagnostics": [
+              {
+                "severity": "info",
+                "code": "truth_human_l0_ok",
+                "path": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/truth.md",
+                "language": "zh",
+                "l0_headings": [
+                  "## 人话"
+                ]
+              }
+            ],
+            "truth_map_contract": "beacon-truth-map-v1",
+            "truth_source_model": "feature_package_authoritative",
+            "truth_package_contract": "beacon-feature-package-v2",
+            "machine_json_role": "generated_state_not_truth",
+            "generated_by": "beacon.truth_map.resolver",
+            "truth_authority": "markdown_feature_package",
+            "json_authority": false,
+            "source_paths": {
+              "truth": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/truth.md",
+              "tests": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/tests.md",
+              "tasks": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/tasks.md",
+              "evidence": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/evidence.md"
+            },
+            "source_hashes": {
+              "truth": "3953067df14bc27ac8204f01b8f2827d64ef9849c29fd7f639563efc0bf286ac",
+              "tests": "9aac7a3e8badb59dfbff9daaef17186bd4357af6cf55bf13c92df89c708cbe17",
+              "tasks": "eabee2fed1b239fa7c419ae1441e428c6eaf1207235ddea3358e2975f7d98448",
+              "evidence": "dfe6c6df36c4a2d13b5e25284f9fbc4e82dbc5006e3741d2baa500e8606f4615"
+            },
+            "runtime_json_requires_markdown_twin": false
+          },
+          "truth_map_verify": {
+            "schema_version": "1.0",
+            "truth_map_contract": "beacon-truth-map-v1",
+            "truth_source_model": "feature_package_authoritative",
+            "truth_package_contract": "beacon-feature-package-v2",
+            "machine_json_role": "generated_state_not_truth",
+            "feature": "contract-baseline-convergence-v1611",
+            "feature_slug": "contract-baseline-convergence-v1611",
+            "version": "v1.6.11",
+            "status": "pass",
+            "blocked": false,
+            "truth_authority": "markdown_feature_package",
+            "json_authority": false,
+            "source_paths": {
+              "truth": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/truth.md",
+              "tests": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/tests.md",
+              "tasks": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/tasks.md",
+              "evidence": "docs/beacon/v1.6.11/features/contract-baseline-convergence-v1611/evidence.md"
+            },
+            "source_hashes": {
+              "truth": "3953067df14bc27ac8204f01b8f2827d64ef9849c29fd7f639563efc0bf286ac",
+              "tests": "9aac7a3e8badb59dfbff9daaef17186bd4357af6cf55bf13c92df89c708cbe17",
+              "tasks": "eabee2fed1b239fa7c419ae1441e428c6eaf1207235ddea3358e2975f7d98448",
+              "evidence": "dfe6c6df36c4a2d13b5e25284f9fbc4e82dbc5006e3741d2baa500e8606f4615"
+            },
+            "checked_machine_json": [
+              "docs/beacon/v1.6.11/.machine/requirement/contract-baseline-convergence-v1611.truth-map.json",
+              "docs/beacon/v1.6.11/.machine/requirement/contract-baseline-convergence-v1611.requirement-package.json",
+              "docs/beacon/v1.6.11/.machine/requirement/feature-package-validation.json"
+            ],
+            "runtime_json_exemption": {
+              "role": "runtime_process_record_not_requirement_truth",
+              "applies_to": [
+                ".beacon/runs/**",
+                ".beacon/qa/**",
+                "runtime/process execution records"
+              ],
+              "requires_markdown_twin": false,
+              "requirement_authority": false
+            },
+            "validation_status": "pass",
+            "diagnostics": []
+          },
+          "materialized": {},
+          "machine_rebuild": {}
+        },
+        "governance": {
+          "status": "pass",
+          "blocked": false,
+          "reason_code": "",
+          "next_command": "beacon doctor metadata verify --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.11 --json",
+          "verify": {
+            "status": "pass",
+            "project_root": "/Users/apple/Developer/Personal/products/beacon",
+            "version": "v1.6.11",
+            "resolved_metadata_view": {
+              "project_root": "/Users/apple/Developer/Personal/products/beacon",
+              "topology_kind": "single_repo",
+              "default_execution_service": "beacon",
+              "service_bindings": [
+                {
+                  "service_key": "beacon",
+                  "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+                  "repo_root_relative": "",
+                  "role": "service",
+                  "writable": true,
+                  "worktree_path_policy": "follow-repo-root"
+                }
+              ],
+              "service_bindings_by_key": {
+                "beacon": {
+                  "service_key": "beacon",
+                  "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+                  "repo_root_relative": "",
+                  "role": "service",
+                  "writable": true,
+                  "worktree_path_policy": "follow-repo-root"
+                }
+              },
+              "version": "v1.6.11",
+              "version_contract": {
+                "version": "v1.6.11",
+                "participating_services": [
+                  "beacon"
+                ],
+                "per_service_canonical_branch": {
+                  "beacon": "main"
+                },
+                "branch_guard_mode": "strict",
+                "validation_state": "active",
+                "branch_governance": {
+                  "template_name": "standard-feature",
+                  "previous_version_baseline_branch": "main",
+                  "next_version_feature_branch": "beacon/v1.6.11/<feature-slug>",
+                  "hotfix_branch_naming_rule": "",
+                  "allow_worktree_when_feature_dirty": false,
+                  "merge_direction_policy": [
+                    "master->main",
+                    "main->uat"
+                  ],
+                  "forbidden_directions": [
+                    "uat->main",
+                    "uat_as_feature_base"
+                  ],
+                  "evidence_contract": [],
+                  "evidence": {},
+                  "worktree_mode": "dedicated",
+                  "worktree_path": ".beacon/worktrees/v1.6.11"
+                },
+                "truth_canonical": "main",
+                "branch_governance_template": "standard-feature",
+                "previous_version_baseline_branch": "main",
+                "next_version_feature_branch": "beacon/v1.6.11/<feature-slug>",
+                "worktree_mode": "dedicated",
+                "worktree_path": ".beacon/worktrees/v1.6.11",
+                "require_workspace_admission": true,
+                "merge_direction_policy": [
+                  "master->main",
+                  "main->uat"
+                ],
+                "forbidden_directions": [
+                  "uat->main",
+                  "uat_as_feature_base"
+                ]
+              },
+              "selected_service": "beacon",
+              "selected_service_binding": {
+                "service_key": "beacon",
+                "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+                "repo_root_relative": "",
+                "role": "service",
+                "writable": true,
+                "worktree_path_policy": "follow-repo-root"
+              },
+              "selected_branch": "main",
+              "paths": {
+                "machine": "",
+                "human": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/governance/project-version-governance.md",
+                "state": "",
+                "governance_md": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/governance/project-version-governance.md"
+              },
+              "transaction": {
+                "transaction_id": "tx-project-governance-d5ddfac8521e45fe",
+                "committed_at": "2026-07-27T13:49:34.131848+00:00",
+                "source_hash": "d5ddfac8521e45fe3fd544178fd21fc026dbfc14988876b4822d2d11096b7f67",
+                "event_type": "freeze-version-contract"
+              },
+              "branch_governance": {
+                "schema_version": "1.0",
+                "tool_name": "beacon-toolkit-branch-governance",
+                "feature": "",
+                "version": "v1.6.11",
+                "template_name": "standard-feature",
+                "template_source": "project_metadata",
+                "service_key": "beacon",
+                "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+                "base_branch": "main",
+                "current_branch": "main",
+                "target_branch": "beacon/v1.6.11/atomic-task-graph-compiler-v1611",
+                "worktree_mode": "dedicated",
+                "worktree_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11",
+                "current_worktree_path": "/Users/apple/Developer/Personal/products/beacon",
+                "previous_version_baseline_branch": "main",
+                "next_version_feature_branch": "beacon/v1.6.11/<feature-slug>",
+                "hotfix_branch_naming_rule": "",
+                "allow_worktree_when_feature_dirty": false,
+                "merge_direction_policy": [
+                  "master->main",
+                  "main->uat"
+                ],
+                "forbidden_directions": [
+                  "uat->main",
+                  "uat_as_feature_base"
+                ],
+                "evidence_contract": [],
+                "evidence": {},
+                "status": "pass",
+                "blocked": false,
+                "reason_codes": [
+                  "branch_governance_branch_mismatch"
+                ],
+                "blocked_reason": "",
+                "recommended_action": "",
+                "missing_evidence_fields": [],
+                "evidence_contract_status": "pass",
+                "human_markdown": "## Branch Governance\n\n- toolkit: `beacon-toolkit-branch-governance`\n- template_name: `standard-feature`\n- template_source: `project_metadata`\n- service_key: `beacon`\n- repo_root: `/Users/apple/Developer/Personal/products/beacon`\n- base_branch: `main`\n- current_branch: `main`\n- target_branch: `beacon/v1.6.11/atomic-task-graph-compiler-v1611`\n- worktree_mode: `dedicated`\n- worktree_path: `/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.11`\n- evidence_contract_status: `pass`\n- blocked_reason: ``\n- recommended_action: ``\n\n### Flow Diagram\n```text\nmain [current]\n    -> beacon/v1.6.11/atomic-task-graph-compiler-v1611\n    -> uat\n```\n\n### Allowed Paths\n- `master->main`\n- `main->uat`\n\n### Forbidden Paths\n- `uat->main`\n- `uat_as_feature_base`\n\n### Evidence Contract\n- none\n"
+              },
+              "authority": "markdown_project_governance",
+              "parser_contract": "beacon-project-governance-v1"
+            },
+            "checks": [
+              {
+                "status": "pass",
+                "name": "governance_json_forbidden",
+                "details": {
+                  "status": "pass",
+                  "blocked": false,
+                  "reason_code": ""
+                }
+              },
+              {
+                "status": "pass",
+                "name": "governance_projection_drift",
+                "details": {
+                  "status": "pass",
+                  "blocked": false,
+                  "reason_code": "",
+                  "details": {
+                    "source_hash": "d5ddfac8521e45fe3fd544178fd21fc026dbfc14988876b4822d2d11096b7f67"
+                  }
+                }
+              },
+              {
+                "status": "pass",
+                "name": "topology_kind",
+                "details": {
+                  "value": "single_repo"
+                }
+              },
+              {
+                "status": "pass",
+                "name": "default_execution_service",
+                "details": {
+                  "value": "beacon"
+                }
+              },
+              {
+                "status": "pass",
+                "name": "version_contract",
+                "details": {
+                  "version": "v1.6.11",
+                  "services": [
+                    "beacon"
+                  ]
+                }
+              },
+              {
+                "status": "pass",
+                "name": "branch_contract:beacon",
+                "details": {
+                  "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+                  "expected_branch": "main",
+                  "truth_canonical": "main",
+                  "accepted_branches": [
+                    "main",
+                    "main"
+                  ],
+                  "current_branch": "main"
+                }
+              },
+              {
+                "status": "pass",
+                "name": "branch_governance",
+                "details": {
+                  "template_name": "standard-feature",
+                  "blocked_reason": "",
+                  "reason_codes": [
+                    "branch_governance_branch_mismatch"
+                  ]
+                }
+              }
+            ]
+          },
+          "projection_sync": {}
+        },
+        "agent_surface": {
+          "status": "pass",
+          "blocked": false,
+          "reason_code": "",
+          "next_command": "beacon doctor setup-agent-surface --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.11 --agent codex --force --json",
+          "verify": {
+            "project_root": "/Users/apple/Developer/Personal/products/beacon",
+            "agent": "codex",
+            "surface_root": "/Users/apple/Developer/Personal/products/beacon/.agents/skills",
+            "runtime_version": "v1.6.11",
+            "docs_version": "v1.6.11",
+            "taxonomy_version": "v1.6.0",
+            "strict": true,
+            "status": "pass",
+            "ok": true,
+            "checks": [
+              {
+                "name": "agent_supported",
+                "status": "pass",
+                "details": {
+                  "agent": "codex"
+                }
+              },
+              {
+                "name": "surface_root_present",
+                "status": "pass",
+                "details": {
+                  "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills",
+                  "exists": true
+                }
+              },
+              {
+                "name": "host_visible_skills_present",
+                "status": "pass",
+                "details": {
+                  "expected": [
+                    "beacon-goal",
+                    "beacon-plan",
+                    "beacon-truth",
+                    "beacon-design",
+                    "beacon-implement",
+                    "beacon-qa",
+                    "beacon-release"
+                  ],
+                  "missing": []
+                }
+              },
+              {
+                "name": "host_visible_skills_drift",
+                "status": "pass",
+                "details": {
+                  "drifted": []
+                }
+              },
+              {
+                "name": "monorepo_skill_discovery_leak",
+                "status": "pass",
+                "details": {
+                  "leak_count": 0,
+                  "leaks": [],
+                  "policy": "scheme_a_host_discoverable_skill_md_only"
+                }
+              },
+              {
+                "name": "agent_surface_state_projection",
+                "status": "pass",
+                "details": {
+                  "path": "/Users/apple/Developer/Personal/products/beacon/.beacon/state/agent-surfaces.json",
+                  "exists": true
+                }
+              }
+            ]
+          }
+        }
+      },
+      "resume": {
+        "intent": "release",
+        "next_command": "beacon release \"contract-baseline-convergence-v1611\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.11",
+        "blocked_until_cutover_passes": false
+      }
+    },
+    "next_route": {}
+  },
+  "browser_release_blockers": [],
+  "recommended_command": "",
+  "lifecycle_hook_advisory": {
+    "schema_version": "1.0",
+    "status": "ready",
+    "blocked": false,
+    "hook_code": "post_release",
+    "boundary_stage": "release",
+    "version": "v1.6.11",
+    "feature": "contract-baseline-convergence-v1611",
+    "project_root": "/Users/apple/Developer/Personal/products/beacon",
+    "hook_count": 1,
+    "hooks": [
+      {
+        "hook_id": "beacon-post-release-local-install",
+        "hook_code": "post_release",
+        "boundary_stage": "release",
+        "trigger_policy": "manual_confirmed",
+        "plan_status": "planned",
+        "blocked": false,
+        "reason_codes": [],
+        "evidence_paths": {
+          "runtime_root": ".beacon/state/hooks/beacon-post-release-local-install",
+          "latest_read_model": "docs/beacon/.machine/hooks/beacon-post-release-local-install.latest.json"
+        },
+        "dry_run": {
+          "attempted": false,
+          "status": "",
+          "blocked": false,
+          "reason_code": "",
+          "evidence_paths": {},
+          "side_effect_executed": false
+        },
+        "dry_run_command": "beacon hooks run beacon-post-release-local-install --project . --version v1.6.11 --feature contract-baseline-convergence-v1611 --hook-code post_release --dry-run",
+        "recommended_command": "beacon hooks run beacon-post-release-local-install --project . --version v1.6.11 --feature contract-baseline-convergence-v1611 --hook-code post_release --confirm",
+        "manual_confirmation_required": true,
+        "side_effect_executed": false,
+        "truth_authority": false,
+        "runtime_evidence_only": true,
+        "admission": {
+          "schema_version": "1.0",
+          "hook_id": "beacon-post-release-local-install",
+          "hook_code": "post_release",
+          "feature": "contract-baseline-convergence-v1611",
+          "path": "docs/beacon/hooks/beacon-post-release-local-install.md",
+          "status": "pass",
+          "blocked": false,
+          "reason_codes": [],
+          "diagnostics": [],
+          "contract": {
+            "hook_id": "beacon-post-release-local-install",
+            "hook_code": "post_release",
+            "enabled": true,
+            "trigger_policy": "manual_confirmed",
+            "skill": "beacon-project-hooks",
+            "command_template": "beacon hooks run beacon-post-release-local-install --project . --version {version} --feature {feature} --confirm",
+            "produces_evidence": [
+              "legacy_beacon_skill_cleanup",
+              "claude_global_beacon_subskills_install",
+              "claude_global_beacon_subskills_verify",
+              "codex_agent_surface_setup",
+              "codex_agent_surface_verify",
+              "claude_agent_surface_setup",
+              "claude_agent_surface_verify",
+              "global_beacon_cli_version",
+              "global_beacon_cli_launcher_path",
+              "macmini_hermes_beacon_sync_default",
+              "macmini_hermes_beacon_sync_finance"
+            ],
+            "failure_route": "release"
+          }
+        }
+      }
+    ],
+    "discovery": {
+      "schema_version": "1.0",
+      "project_root": "/Users/apple/Developer/Personal/products/beacon",
+      "hook_code": "post_release",
+      "feature": "contract-baseline-convergence-v1611",
+      "status": "ready",
+      "hook_count": 1,
+      "hooks": [
+        {
+          "hook_id": "beacon-post-release-local-install",
+          "hook_code": "post_release",
+          "path": "docs/beacon/hooks/beacon-post-release-local-install.md",
+          "status": "ready",
+          "blocked": false,
+          "reason_codes": [],
+          "trigger_policy": "manual_confirmed",
+          "failure_route": "release",
+          "admission": {
+            "schema_version": "1.0",
+            "hook_id": "beacon-post-release-local-install",
+            "hook_code": "post_release",
+            "feature": "contract-baseline-convergence-v1611",
+            "path": "docs/beacon/hooks/beacon-post-release-local-install.md",
+            "status": "pass",
+            "blocked": false,
+            "reason_codes": [],
+            "diagnostics": [],
+            "contract": {
+              "hook_id": "beacon-post-release-local-install",
+              "hook_code": "post_release",
+              "enabled": true,
+              "trigger_policy": "manual_confirmed",
+              "skill": "beacon-project-hooks",
+              "command_template": "beacon hooks run beacon-post-release-local-install --project . --version {version} --feature {feature} --confirm",
+              "produces_evidence": [
+                "legacy_beacon_skill_cleanup",
+                "claude_global_beacon_subskills_install",
+                "claude_global_beacon_subskills_verify",
+                "codex_agent_surface_setup",
+                "codex_agent_surface_verify",
+                "claude_agent_surface_setup",
+                "claude_agent_surface_verify",
+                "global_beacon_cli_version",
+                "global_beacon_cli_launcher_path",
+                "macmini_hermes_beacon_sync_default",
+                "macmini_hermes_beacon_sync_finance"
+              ],
+              "failure_route": "release"
+            }
+          }
+        }
+      ],
+      "truth_root": "docs/beacon/hooks",
+      "truth_authority": false,
+      "runtime_evidence_only": true
+    },
+    "recommended_command": "beacon hooks run beacon-post-release-local-install --project . --version v1.6.11 --feature contract-baseline-convergence-v1611 --hook-code post_release --confirm",
+    "side_effect_executed": false,
+    "truth_authority": false,
+    "runtime_evidence_only": true,
+    "verdict_authority": "none",
+    "support_evidence_only": true
+  },
+  "clean_workspace_gate": {
+    "schema_version": "workspace-clean-exit-gate.v1",
+    "status": "blocked",
+    "blocked": true,
+    "reason_code": "workspace_dirty_unclassified",
+    "project_root": "/Users/apple/Developer/Personal/products/beacon",
+    "version": "v1.6.11",
+    "feature": "",
+    "profile": "release",
+    "strict": false,
+    "snapshot": {
+      "schema_version": "workspace-snapshot.v1",
+      "project_root": "/Users/apple/Developer/Personal/products/beacon",
+      "git_head": "274c3260",
+      "branch": "main",
+      "dirty_entries": [
+        {
+          "path": ".beacon/auto-test-status.json",
+          "xy": " M",
+          "artifact_role": "formal_evidence",
+          "allowed_actions": [
+            "commit",
+            "promote"
+          ]
+        },
+        {
+          "path": ".beacon/evidence-manifest.json",
+          "xy": " M",
+          "artifact_role": "formal_evidence",
+          "allowed_actions": [
+            "commit",
+            "promote"
+          ]
+        },
+        {
+          "path": ".beacon/evidence/main-implement-exception.json",
+          "xy": " M",
+          "artifact_role": "unclassified",
+          "allowed_actions": []
+        },
+        {
+          "path": ".beacon/memory/memory-v1.json",
+          "xy": " M",
+          "artifact_role": "runtime_private",
+          "allowed_actions": [
+            "ignore",
+            "quarantine",
+            "promote redacted digest"
+          ]
+        },
+        {
+          "path": ".beacon/memory/workflow-lifecycle.index.json",
+          "xy": " M",
+          "artifact_role": "runtime_private",
+          "allowed_actions": [
+            "ignore",
+            "quarantine",
+            "promote redacted digest"
+          ]
+        },
+        {
+          "path": ".beacon/memory/workflow-lifecycle.json",
+          "xy": " M",
+          "artifact_role": "runtime_private",
+          "allowed_actions": [
+            "ignore",
+            "quarantine",
+            "promote redacted digest"
+          ]
+        },
+        {
+          "path": ".beacon/qa/status.json",
+          "xy": " M",
+          "artifact_role": "formal_evidence",
+          "allowed_actions": [
+            "commit",
+            "promote"
+          ]
+        },
+        {
+          "path": ".beacon/release-gate-report.json",
+          "xy": " M",
+          "artifact_role": "formal_evidence",
+          "allowed_actions": [
+            "commit",
+            "promote"
+          ]
+        },
+        {
+          "path": ".beacon/traces/lifecycle-project.jsonl",
+          "xy": " M",
+          "artifact_role": "runtime_private",
+          "allowed_actions": [
+            "ignore",
+            "quarantine",
+            "promote redacted digest"
+          ]
+        },
+        {
+          "path": "docs/beacon/v1.6.11/.machine/testing/test-contract-index.json",
+          "xy": " M",
+          "artifact_role": "machine_projection",
+          "allowed_actions": [
+            "commit",
+            "regenerate"
+          ]
+        },
+        {
+          "path": "docs/beacon/v1.6.11/.machine/execution/change-impact.json",
+          "xy": "??",
+          "artifact_role": "machine_projection",
+          "allowed_actions": [
+            "commit",
+            "regenerate"
+          ]
+        },
+        {
+          "path": "docs/beacon/v1.6.11/.machine/execution/config.json",
+          "xy": "??",
+          "artifact_role": "machine_projection",
+          "allowed_actions": [
+            "commit",
+            "regenerate"
+          ]
+        },
+        {
+          "path": "docs/beacon/v1.6.11/.machine/execution/delivery-manifest.json",
+          "xy": "??",
+          "artifact_role": "machine_projection",
+          "allowed_actions": [
+            "commit",
+            "regenerate"
+          ]
+        },
+        {
+          "path": "docs/beacon/v1.6.11/.machine/execution/git-alignment.json",
+          "xy": "??",
+          "artifact_role": "machine_projection",
+          "allowed_actions": [
+            "commit",
+            "regenerate"
+          ]
+        },
+        {
+          "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-atomic-task-graph-compiler-v1611.json",
+          "xy": "??",
+          "artifact_role": "machine_projection",
+          "allowed_actions": [
+            "commit",
+            "regenerate"
+          ]
+        },
+        {
+          "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-atomic-task-graph-compiler-v1611.progress.json",
+          "xy": "??",
+          "artifact_role": "machine_projection",
+          "allowed_actions": [
+            "commit",
+            "regenerate"
+          ]
+        },
+        {
+          "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-brownfield-context-resolver-v1611.json",
+          "xy": "??",
+          "artifact_role": "machine_projection",
+          "allowed_actions": [
+            "commit",
+            "regenerate"
+          ]
+        },
+        {
+          "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-brownfield-context-resolver-v1611.progress.json",
+          "xy": "??",
+          "artifact_role": "machine_projection",
+          "allowed_actions": [
+            "commit",
+            "regenerate"
+          ]
+        },
+        {
+          "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-cancel-replan-next-ready-v1611.json",
+          "xy": "??",
+          "artifact_role": "machine_projection",
+          "allowed_actions": [
+            "commit",
+            "regenerate"
+          ]
+        },
+        {
+          "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-cancel-replan-next-ready-v1611.progress.json",
+          "xy": "??",
+          "artifact_role": "machine_projection",
+          "allowed_actions": [
+            "commit",
+            "regenerate"
+          ]
+        },
+        {
+          "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-change-impact-state-diff-v1611.json",
+          "xy": "??",
+          "artifact_role": "machine_projection",
+          "allowed_actions": [
+            "commit",
+            "regenerate"
+          ]
+        },
+        {
+          "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-change-impact-state-diff-v1611.progress.json",
+          "xy": "??",
+          "artifact_role": "machine_projection",
+          "allowed_actions": [
+            "commit",
+            "regenerate"
+          ]
+        },
+        {
+          "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-contract-baseline-convergence-v1611.json",
+          "xy": "??",
+          "artifact_role": "machine_projection",
+          "allowed_actions": [
+            "commit",
+            "regenerate"
+          ]
+        },
+        {
+          "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-contract-baseline-convergence-v1611.progress.json",
+          "xy": "??",
+          "artifact_role": "machine_projection",
+          "allowed_actions": [
+            "commit",
+            "regenerate"
+          ]
+        },
+        {
+          "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-convergence-verifier-v1611.json",
+          "xy": "??",
+          "artifact_role": "machine_projection",
+          "allowed_actions": [
+            "commit",
+            "regenerate"
+          ]
+        },
+        {
+          "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-convergence-verifier-v1611.progress.json",
+          "xy": "??",
+          "artifact_role": "machine_projection",
+          "allowed_actions": [
+            "commit",
+            "regenerate"
+          ]
+        },
+        {
+          "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-drift-padding-review-gate-v1611.json",
+          "xy": "??",
+          "artifact_role": "machine_projection",
+          "allowed_actions": [
+            "commit",
+            "regenerate"
+          ]
+        },
+        {
+          "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-drift-padding-review-gate-v1611.progress.json",
+          "xy": "??",
+          "artifact_role": "machine_projection",
+          "allowed_actions": [
+            "commit",
+            "regenerate"
+          ]
+        },
+        {
+          "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-intent-completeness-engine-v1611.json",
+          "xy": "??",
+          "artifact_role": "machine_projection",
+          "allowed_actions": [
+            "commit",
+            "regenerate"
+          ]
+        },
+        {
+          "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-intent-completeness-engine-v1611.progress.json",
+          "xy": "??",
+          "artifact_role": "machine_projection",
+          "allowed_actions": [
+            "commit",
+            "regenerate"
+          ]
+        },
+        {
+          "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-task-progress-ledger-v1611.json",
+          "xy": "??",
+          "artifact_role": "machine_projection",
+          "allowed_actions": [
+            "commit",
+            "regenerate"
+          ]
+        },
+        {
+          "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-task-progress-ledger-v1611.progress.json",
+          "xy": "??",
+          "artifact_role": "machine_projection",
+          "allowed_actions": [
+            "commit",
+            "regenerate"
+          ]
+        },
+        {
+          "path": "docs/beacon/v1.6.11/.machine/execution/source.json",
+          "xy": "??",
+          "artifact_role": "machine_projection",
+          "allowed_actions": [
+            "commit",
+            "regenerate"
+          ]
+        },
+        {
+          "path": "docs/beacon/v1.6.11/.machine/execution/terminal.json",
+          "xy": "??",
+          "artifact_role": "machine_projection",
+          "allowed_actions": [
+            "commit",
+            "regenerate"
+          ]
+        },
+        {
+          "path": "docs/beacon/v1.6.11/execution/index.md",
+          "xy": "??",
+          "artifact_role": "machine_projection",
+          "allowed_actions": [
+            "commit",
+            "regenerate"
+          ]
+        },
+        {
+          "path": "docs/beacon/v1.6.11/execution/tasks-atomic-task-graph-compiler-v1611.md",
+          "xy": "??",
+          "artifact_role": "machine_projection",
+          "allowed_actions": [
+            "commit",
+            "regenerate"
+          ]
+        },
+        {
+          "path": "docs/beacon/v1.6.11/execution/tasks-brownfield-context-resolver-v1611.md",
+          "xy": "??",
+          "artifact_role": "machine_projection",
+          "allowed_actions": [
+            "commit",
+            "regenerate"
+          ]
+        },
+        {
+          "path": "docs/beacon/v1.6.11/execution/tasks-cancel-replan-next-ready-v1611.md",
+          "xy": "??",
+          "artifact_role": "machine_projection",
+          "allowed_actions": [
+            "commit",
+            "regenerate"
+          ]
+        },
+        {
+          "path": "docs/beacon/v1.6.11/execution/tasks-change-impact-state-diff-v1611.md",
+          "xy": "??",
+          "artifact_role": "machine_projection",
+          "allowed_actions": [
+            "commit",
+            "regenerate"
+          ]
+        },
+        {
+          "path": "docs/beacon/v1.6.11/execution/tasks-contract-baseline-convergence-v1611.md",
+          "xy": "??",
+          "artifact_role": "machine_projection",
+          "allowed_actions": [
+            "commit",
+            "regenerate"
+          ]
+        },
+        {
+          "path": "docs/beacon/v1.6.11/execution/tasks-convergence-verifier-v1611.md",
+          "xy": "??",
+          "artifact_role": "machine_projection",
+          "allowed_actions": [
+            "commit",
+            "regenerate"
+          ]
+        },
+        {
+          "path": "docs/beacon/v1.6.11/execution/tasks-drift-padding-review-gate-v1611.md",
+          "xy": "??",
+          "artifact_role": "machine_projection",
+          "allowed_actions": [
+            "commit",
+            "regenerate"
+          ]
+        },
+        {
+          "path": "docs/beacon/v1.6.11/execution/tasks-intent-completeness-engine-v1611.md",
+          "xy": "??",
+          "artifact_role": "machine_projection",
+          "allowed_actions": [
+            "commit",
+            "regenerate"
+          ]
+        },
+        {
+          "path": "docs/beacon/v1.6.11/execution/tasks-task-progress-ledger-v1611.md",
+          "xy": "??",
+          "artifact_role": "machine_projection",
+          "allowed_actions": [
+            "commit",
+            "regenerate"
+          ]
+        }
+      ],
+      "dirty_paths": [
+        ".beacon/auto-test-status.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence/main-implement-exception.json",
+        ".beacon/memory/memory-v1.json",
+        ".beacon/memory/workflow-lifecycle.index.json",
+        ".beacon/memory/workflow-lifecycle.json",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/traces/lifecycle-project.jsonl",
+        "docs/beacon/v1.6.11/.machine/testing/test-contract-index.json",
+        "docs/beacon/v1.6.11/.machine/execution/change-impact.json",
+        "docs/beacon/v1.6.11/.machine/execution/config.json",
+        "docs/beacon/v1.6.11/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.6.11/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.6.11/.machine/execution/implementation-plan-atomic-task-graph-compiler-v1611.json",
+        "docs/beacon/v1.6.11/.machine/execution/implementation-plan-atomic-task-graph-compiler-v1611.progress.json",
+        "docs/beacon/v1.6.11/.machine/execution/implementation-plan-brownfield-context-resolver-v1611.json",
+        "docs/beacon/v1.6.11/.machine/execution/implementation-plan-brownfield-context-resolver-v1611.progress.json",
+        "docs/beacon/v1.6.11/.machine/execution/implementation-plan-cancel-replan-next-ready-v1611.json",
+        "docs/beacon/v1.6.11/.machine/execution/implementation-plan-cancel-replan-next-ready-v1611.progress.json",
+        "docs/beacon/v1.6.11/.machine/execution/implementation-plan-change-impact-state-diff-v1611.json",
+        "docs/beacon/v1.6.11/.machine/execution/implementation-plan-change-impact-state-diff-v1611.progress.json",
+        "docs/beacon/v1.6.11/.machine/execution/implementation-plan-contract-baseline-convergence-v1611.json",
+        "docs/beacon/v1.6.11/.machine/execution/implementation-plan-contract-baseline-convergence-v1611.progress.json",
+        "docs/beacon/v1.6.11/.machine/execution/implementation-plan-convergence-verifier-v1611.json",
+        "docs/beacon/v1.6.11/.machine/execution/implementation-plan-convergence-verifier-v1611.progress.json",
+        "docs/beacon/v1.6.11/.machine/execution/implementation-plan-drift-padding-review-gate-v1611.json",
+        "docs/beacon/v1.6.11/.machine/execution/implementation-plan-drift-padding-review-gate-v1611.progress.json",
+        "docs/beacon/v1.6.11/.machine/execution/implementation-plan-intent-completeness-engine-v1611.json",
+        "docs/beacon/v1.6.11/.machine/execution/implementation-plan-intent-completeness-engine-v1611.progress.json",
+        "docs/beacon/v1.6.11/.machine/execution/implementation-plan-task-progress-ledger-v1611.json",
+        "docs/beacon/v1.6.11/.machine/execution/implementation-plan-task-progress-ledger-v1611.progress.json",
+        "docs/beacon/v1.6.11/.machine/execution/source.json",
+        "docs/beacon/v1.6.11/.machine/execution/terminal.json",
+        "docs/beacon/v1.6.11/execution/index.md",
+        "docs/beacon/v1.6.11/execution/tasks-atomic-task-graph-compiler-v1611.md",
+        "docs/beacon/v1.6.11/execution/tasks-brownfield-context-resolver-v1611.md",
+        "docs/beacon/v1.6.11/execution/tasks-cancel-replan-next-ready-v1611.md",
+        "docs/beacon/v1.6.11/execution/tasks-change-impact-state-diff-v1611.md",
+        "docs/beacon/v1.6.11/execution/tasks-contract-baseline-convergence-v1611.md",
+        "docs/beacon/v1.6.11/execution/tasks-convergence-verifier-v1611.md",
+        "docs/beacon/v1.6.11/execution/tasks-drift-padding-review-gate-v1611.md",
+        "docs/beacon/v1.6.11/execution/tasks-intent-completeness-engine-v1611.md",
+        "docs/beacon/v1.6.11/execution/tasks-task-progress-ledger-v1611.md"
+      ],
+      "dirty_count": 44,
+      "captured_at": "2026-07-27T14:20:30.041445+00:00"
+    },
+    "dirty_entries": [
+      {
+        "path": ".beacon/auto-test-status.json",
+        "xy": " M",
+        "artifact_role": "formal_evidence",
+        "allowed_actions": [
+          "commit",
+          "promote"
+        ]
+      },
+      {
+        "path": ".beacon/evidence-manifest.json",
+        "xy": " M",
+        "artifact_role": "formal_evidence",
+        "allowed_actions": [
+          "commit",
+          "promote"
+        ]
+      },
+      {
+        "path": ".beacon/evidence/main-implement-exception.json",
+        "xy": " M",
+        "artifact_role": "unclassified",
+        "allowed_actions": []
+      },
+      {
+        "path": ".beacon/memory/memory-v1.json",
+        "xy": " M",
+        "artifact_role": "runtime_private",
+        "allowed_actions": [
+          "ignore",
+          "quarantine",
+          "promote redacted digest"
+        ]
+      },
+      {
+        "path": ".beacon/memory/workflow-lifecycle.index.json",
+        "xy": " M",
+        "artifact_role": "runtime_private",
+        "allowed_actions": [
+          "ignore",
+          "quarantine",
+          "promote redacted digest"
+        ]
+      },
+      {
+        "path": ".beacon/memory/workflow-lifecycle.json",
+        "xy": " M",
+        "artifact_role": "runtime_private",
+        "allowed_actions": [
+          "ignore",
+          "quarantine",
+          "promote redacted digest"
+        ]
+      },
+      {
+        "path": ".beacon/qa/status.json",
+        "xy": " M",
+        "artifact_role": "formal_evidence",
+        "allowed_actions": [
+          "commit",
+          "promote"
+        ]
+      },
+      {
+        "path": ".beacon/release-gate-report.json",
+        "xy": " M",
+        "artifact_role": "formal_evidence",
+        "allowed_actions": [
+          "commit",
+          "promote"
+        ]
+      },
+      {
+        "path": ".beacon/traces/lifecycle-project.jsonl",
+        "xy": " M",
+        "artifact_role": "runtime_private",
+        "allowed_actions": [
+          "ignore",
+          "quarantine",
+          "promote redacted digest"
+        ]
+      },
+      {
+        "path": "docs/beacon/v1.6.11/.machine/testing/test-contract-index.json",
+        "xy": " M",
+        "artifact_role": "machine_projection",
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ]
+      },
+      {
+        "path": "docs/beacon/v1.6.11/.machine/execution/change-impact.json",
+        "xy": "??",
+        "artifact_role": "machine_projection",
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ]
+      },
+      {
+        "path": "docs/beacon/v1.6.11/.machine/execution/config.json",
+        "xy": "??",
+        "artifact_role": "machine_projection",
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ]
+      },
+      {
+        "path": "docs/beacon/v1.6.11/.machine/execution/delivery-manifest.json",
+        "xy": "??",
+        "artifact_role": "machine_projection",
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ]
+      },
+      {
+        "path": "docs/beacon/v1.6.11/.machine/execution/git-alignment.json",
+        "xy": "??",
+        "artifact_role": "machine_projection",
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ]
+      },
+      {
+        "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-atomic-task-graph-compiler-v1611.json",
+        "xy": "??",
+        "artifact_role": "machine_projection",
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ]
+      },
+      {
+        "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-atomic-task-graph-compiler-v1611.progress.json",
+        "xy": "??",
+        "artifact_role": "machine_projection",
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ]
+      },
+      {
+        "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-brownfield-context-resolver-v1611.json",
+        "xy": "??",
+        "artifact_role": "machine_projection",
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ]
+      },
+      {
+        "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-brownfield-context-resolver-v1611.progress.json",
+        "xy": "??",
+        "artifact_role": "machine_projection",
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ]
+      },
+      {
+        "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-cancel-replan-next-ready-v1611.json",
+        "xy": "??",
+        "artifact_role": "machine_projection",
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ]
+      },
+      {
+        "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-cancel-replan-next-ready-v1611.progress.json",
+        "xy": "??",
+        "artifact_role": "machine_projection",
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ]
+      },
+      {
+        "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-change-impact-state-diff-v1611.json",
+        "xy": "??",
+        "artifact_role": "machine_projection",
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ]
+      },
+      {
+        "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-change-impact-state-diff-v1611.progress.json",
+        "xy": "??",
+        "artifact_role": "machine_projection",
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ]
+      },
+      {
+        "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-contract-baseline-convergence-v1611.json",
+        "xy": "??",
+        "artifact_role": "machine_projection",
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ]
+      },
+      {
+        "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-contract-baseline-convergence-v1611.progress.json",
+        "xy": "??",
+        "artifact_role": "machine_projection",
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ]
+      },
+      {
+        "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-convergence-verifier-v1611.json",
+        "xy": "??",
+        "artifact_role": "machine_projection",
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ]
+      },
+      {
+        "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-convergence-verifier-v1611.progress.json",
+        "xy": "??",
+        "artifact_role": "machine_projection",
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ]
+      },
+      {
+        "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-drift-padding-review-gate-v1611.json",
+        "xy": "??",
+        "artifact_role": "machine_projection",
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ]
+      },
+      {
+        "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-drift-padding-review-gate-v1611.progress.json",
+        "xy": "??",
+        "artifact_role": "machine_projection",
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ]
+      },
+      {
+        "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-intent-completeness-engine-v1611.json",
+        "xy": "??",
+        "artifact_role": "machine_projection",
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ]
+      },
+      {
+        "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-intent-completeness-engine-v1611.progress.json",
+        "xy": "??",
+        "artifact_role": "machine_projection",
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ]
+      },
+      {
+        "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-task-progress-ledger-v1611.json",
+        "xy": "??",
+        "artifact_role": "machine_projection",
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ]
+      },
+      {
+        "path": "docs/beacon/v1.6.11/.machine/execution/implementation-plan-task-progress-ledger-v1611.progress.json",
+        "xy": "??",
+        "artifact_role": "machine_projection",
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ]
+      },
+      {
+        "path": "docs/beacon/v1.6.11/.machine/execution/source.json",
+        "xy": "??",
+        "artifact_role": "machine_projection",
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ]
+      },
+      {
+        "path": "docs/beacon/v1.6.11/.machine/execution/terminal.json",
+        "xy": "??",
+        "artifact_role": "machine_projection",
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ]
+      },
+      {
+        "path": "docs/beacon/v1.6.11/execution/index.md",
+        "xy": "??",
+        "artifact_role": "machine_projection",
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ]
+      },
+      {
+        "path": "docs/beacon/v1.6.11/execution/tasks-atomic-task-graph-compiler-v1611.md",
+        "xy": "??",
+        "artifact_role": "machine_projection",
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ]
+      },
+      {
+        "path": "docs/beacon/v1.6.11/execution/tasks-brownfield-context-resolver-v1611.md",
+        "xy": "??",
+        "artifact_role": "machine_projection",
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ]
+      },
+      {
+        "path": "docs/beacon/v1.6.11/execution/tasks-cancel-replan-next-ready-v1611.md",
+        "xy": "??",
+        "artifact_role": "machine_projection",
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ]
+      },
+      {
+        "path": "docs/beacon/v1.6.11/execution/tasks-change-impact-state-diff-v1611.md",
+        "xy": "??",
+        "artifact_role": "machine_projection",
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ]
+      },
+      {
+        "path": "docs/beacon/v1.6.11/execution/tasks-contract-baseline-convergence-v1611.md",
+        "xy": "??",
+        "artifact_role": "machine_projection",
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ]
+      },
+      {
+        "path": "docs/beacon/v1.6.11/execution/tasks-convergence-verifier-v1611.md",
+        "xy": "??",
+        "artifact_role": "machine_projection",
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ]
+      },
+      {
+        "path": "docs/beacon/v1.6.11/execution/tasks-drift-padding-review-gate-v1611.md",
+        "xy": "??",
+        "artifact_role": "machine_projection",
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ]
+      },
+      {
+        "path": "docs/beacon/v1.6.11/execution/tasks-intent-completeness-engine-v1611.md",
+        "xy": "??",
+        "artifact_role": "machine_projection",
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ]
+      },
+      {
+        "path": "docs/beacon/v1.6.11/execution/tasks-task-progress-ledger-v1611.md",
+        "xy": "??",
+        "artifact_role": "machine_projection",
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ]
+      }
+    ],
+    "dirty_count": 44,
+    "role_counts": {
+      "formal_evidence": 4,
+      "unclassified": 1,
+      "runtime_private": 4,
+      "machine_projection": 35
+    },
+    "dirty_manifest": {
+      "canonical_truth": {
+        "allowed_actions": [
+          "commit"
+        ],
+        "patterns": [
+          "docs/beacon/*/features/*/truth.md",
+          "docs/beacon/*/features/*/tests.md",
+          "docs/beacon/*/features/*/tasks.md",
+          "docs/beacon/*/features/*/evidence.md"
+        ]
+      },
+      "formal_evidence": {
+        "allowed_actions": [
+          "commit",
+          "promote"
+        ],
+        "patterns": [
+          ".beacon/auto-test-status.json",
+          ".beacon/coverage-summary.json",
+          ".beacon/evidence-manifest.json",
+          ".beacon/evidence-signature-chain.json",
+          ".beacon/gate-report.json",
+          ".beacon/qa/status.json",
+          ".beacon/release-gate-report.json",
+          ".beacon/transactions/**",
+          ".beacon/evidence/implement/**",
+          ".beacon/evidence/test-results/**",
+          "docs/beacon/*/qa/**"
+        ]
+      },
+      "machine_projection": {
+        "allowed_actions": [
+          "commit",
+          "regenerate"
+        ],
+        "patterns": [
+          "docs/beacon/*/.machine/**",
+          "docs/beacon/*/execution/**",
+          "docs/beacon/.machine/**",
+          "beacon.egg-info/**"
+        ]
+      },
+      "host_projection": {
+        "allowed_actions": [
+          "ignore",
+          "skip-worktree",
+          "surface-sync commit"
+        ],
+        "patterns": [
+          ".agents/**",
+          ".codex/**",
+          ".cursor/**",
+          ".trae/**",
+          ".windsurf/**",
+          "AGENTS.md",
+          "CLAUDE.md"
+        ]
+      },
+      "runtime_private": {
+        "allowed_actions": [
+          "ignore",
+          "quarantine",
+          "promote redacted digest"
+        ],
+        "patterns": [
+          ".beacon/traces/**",
+          ".beacon/state/**",
+          ".beacon/memory/**",
+          ".beacon/tasks/**",
+          ".beacon/raw-command-log.jsonl"
+        ]
+      },
+      "forbidden": {
+        "allowed_actions": [
+          "remove",
+          "rotate-secret"
+        ],
+        "patterns": [
+          ".env",
+          ".env.*",
+          "**/*.pem",
+          "**/*.key",
+          "**/id_rsa"
+        ]
+      }
+    },
+    "skip_worktree_hidden_dirty": [],
+    "formal_evidence_gate": {
+      "status": "pass",
+      "blocked": false,
+      "entry_count": 429,
+      "manifest_role": "legacy_mixed",
+      "skipped": true,
+      "issues": []
+    },
+    "task_evidence_gate": {
+      "status": "skipped",
+      "blocked": false,
+      "issues": []
+    },
+    "issues": [
+      {
+        "reason_code": "workspace_dirty_unclassified",
+        "path": ".beacon/evidence/main-implement-exception.json",
+        "blocked": true
+      }
+    ],
+    "generated_at": "2026-07-27T14:20:30.119739+00:00"
+  },
+  "decision_surface": {
+    "stage": "release",
+    "skill_ref": "skills/beacon/beacon-release/SKILL.md",
+    "inputs_contract": [],
+    "decision_protocol": [],
+    "anti_inertia_notes": [],
+    "learning_notes": [],
+    "backstop_cli": [],
+    "primary_reason": "",
+    "recommended_command": "",
+    "reason_code": ""
+  },
+  "guardrail_contract": {
+    "stage": "release",
+    "decision_owner": "skill_surface",
+    "enforcement_owner": "python_guardrail",
+    "blocked": false,
+    "reason_code": "",
+    "dual_read_required_before_cutover": true,
+    "fail_closed": true
+  }
+}
