@@ -772,13 +772,16 @@ def host_bridge(
     )
     response["model"] = "beacon-truth-host-bridge"
     response["bridge"] = "beacon-truth-host-bridge"
+    response["fill_source"] = "local_semantic_compile_fallback"
     response["request_schema"] = SCHEMA_FILL_REQUEST
     response["response_schema"] = SCHEMA_FILL_RESPONSE
-    # Host agent contract echo for debugging
+    # Host agent contract echo for debugging — local bridge is NOT external Host LLM production fill.
     response["host_agent_contract"] = {
         "input": "truth-fill-request.v1",
         "output": "truth-fill-response.v1",
-        "forbidden": ["direct_markdown_overwrite", "legacy_prd_canonical_write"],
+        "mode": "local_bridge_default",
+        "fill_source": "local_semantic_compile_fallback",
+        "forbidden": ["direct_markdown_overwrite", "legacy_prd_canonical_write", "overclaim_external_host_llm"],
     }
     typer.echo(json.dumps(response, ensure_ascii=False))
 

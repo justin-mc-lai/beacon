@@ -1170,5 +1170,119 @@ def test_materialize_and_freeze_program_with_human_close(tmp_path: Path):
     assert (tmp_path / f"docs/beacon/{version}/programs/{program}/program-truth-freeze.json").exists()
     assert (tmp_path / ".beacon/state/program-task-closure" / program / "pac-full-trace-matrix.json").exists()
     assert freeze_pac.get("receipt_count") == 9
-    assert (freeze_pac.get("pac") or {}).get("count") == 21
+    pac_count = (freeze_pac.get("pac") or {}).get("count") or 0
+    assert pac_count >= 21  # expanded real AC/TC rows (not synthetic 21)
+    # unique PAC ids still cover PAC-001..021
+    import json as _json
+    pac_path = tmp_path / ".beacon/state/program-task-closure" / program / "pac-full-trace-matrix.json"
+    rows = _json.loads(pac_path.read_text(encoding="utf-8")).get("rows") or []
+    pac_ids = {r.get("pac_id") for r in rows}
+    assert {f"PAC-{i:03d}" for i in range(1, 22)}.issubset(pac_ids)
+    assert all(str(r.get("final_hash") or "").count("sha256:") == 1 for r in rows)
+    assert all(str(r.get("ac_id") or "").startswith("AC-") and not str(r.get("ac_id")).startswith("AC-00") for r in rows)
+
+def test_normalize_hash_no_double_prefix():
+    assert pg._normalize_hash("abc") == "sha256:abc"
+    assert pg._normalize_hash("sha256:abc") == "sha256:abc"
+    assert pg._stable_hash({"x": 1}).startswith("sha256:")
+    assert pg._stable_hash({"x": 1}).count("sha256:") == 1
+
+
+def test_expand_pac_id_expressions():
+    assert pg._expand_id_expr("AC-INT-001..003") == ["AC-INT-001", "AC-INT-002", "AC-INT-003"]
+    assert pg._expand_id_expr("AC-REV-001/007") == ["AC-REV-001", "AC-REV-007"]
+
+
+def test_build_program_pac_rows_use_real_ac_tc(tmp_path: Path):
+    from beacon.utils.feature_package import package_paths
+    from beacon.utils.truth_map import FEATURE_SURFACES
+    version = "v1.6.11"
+    program = "beacon-plan-goal-task-closure-v1611"
+    # materialize minimal packages with real IDs for all lakes
+    for i, lake in enumerate(pg.LAKE_ORDER_V1611):
+        paths = package_paths(tmp_path, version=version, feature=lake)
+        paths["dir"].mkdir(parents=True, exist_ok=True)
+        family = ["BAS","CTX","INT","DIF","DAG","LED","REV","RPL","CNV"][i]
+        paths["truth"].write_text(
+            f"# t\n| AC-{family}-001 | x |\n| AC-{family}-002 | y |\n## Domain Model\nEntity\n",
+            encoding="utf-8",
+        )
+        paths["tests"].write_text(f"| TC-{family}-001 | AC-{family}-001 |\n| TC-{family}-002 | AC-{family}-002 |\n", encoding="utf-8")
+        paths["tasks"].write_text("- [ ] TASK-001 do\n- [ ] TASK-002 do\n", encoding="utf-8")
+        paths["evidence"].write_text("| e | ok |\n", encoding="utf-8")
+    rows = pg.build_program_pac_full_trace_rows(tmp_path, version=version, program_slug=program, receipts=[])
+    assert rows
+    assert all(str(r["ac_id"]).startswith("AC-") for r in rows)
+    assert all(not str(r["ac_id"]).startswith("AC-00") for r in rows)
+    assert all(str(r["final_hash"]).startswith("sha256:") for r in rows)
+    assert all(str(r["final_hash"]).count("sha256:") == 1 for r in rows)
+    # PAC-016 must bind real AC-BAS-007 when expanded from manifest (even if package only has 001/002, ac_id remains truth id)
+    pac16 = [r for r in rows if r["pac_id"] == "PAC-016"]
+    assert pac16 and pac16[0]["ac_id"] == "AC-BAS-007"
+    pac21 = [r for r in rows if r["pac_id"] == "PAC-021"]
+    assert {r["ac_id"] for r in pac21} >= {"AC-CNV-008", "AC-CNV-009", "AC-CNV-010"}
+
+
+def test_scan_feature_package_hollow_drift_clean_and_dirty(tmp_path: Path):
+    from beacon.utils.feature_package import package_paths
+    paths = package_paths(tmp_path, version="v1.6.11", feature="clean-lake")
+    paths["dir"].mkdir(parents=True, exist_ok=True)
+    paths["truth"].write_text("# t\n| AC-BAS-001 | ok |\n## Domain Model\nGoalRun / TaskNode\n| s | e | g | t | a |\n| a | b | c | d | e |\n", encoding="utf-8")
+    paths["tests"].write_text("| TC-BAS-001 | AC-BAS-001 |\n", encoding="utf-8")
+    paths["tasks"].write_text("- [ ] TASK-001 do\n", encoding="utf-8")
+    paths["evidence"].write_text("| e | ok |\n", encoding="utf-8")
+    clean = pg.scan_feature_package_hollow_drift(tmp_path, version="v1.6.11", feature="clean-lake")
+    assert {f["kind"] for f in clean} >= {"placeholder", "hollow_domain", "orphan", "hanging_fsm", "padding", "evidence_hash_drift"}
+    assert all(f.get("hit") is False for f in clean)
+    gate = pg.hollow_fill_review_gate(clean)
+    assert gate.get("pass") is True
+
+    paths2 = package_paths(tmp_path, version="v1.6.11", feature="dirty-lake")
+    paths2["dir"].mkdir(parents=True, exist_ok=True)
+    paths2["truth"].write_text("# t\nTODO placeholder\n## Domain Model\n\n", encoding="utf-8")
+    paths2["tests"].write_text("", encoding="utf-8")
+    paths2["tasks"].write_text("- [ ] TASK-001 evidence=e1\n", encoding="utf-8")
+    paths2["evidence"].write_text("", encoding="utf-8")
+    dirty = pg.scan_feature_package_hollow_drift(tmp_path, version="v1.6.11", feature="dirty-lake")
+    assert any(f.get("hit") for f in dirty)
+    assert pg.hollow_fill_review_gate(dirty).get("blocked") is True
+
+
+def test_materialize_receipt_keeps_previous_hash_pointer(tmp_path: Path):
+    from beacon.utils.feature_package import package_paths
+    from beacon.utils.truth_map import FEATURE_SURFACES
+    version = "v1.6.11"
+    program = "p"
+    lake = "contract-baseline-convergence-v1611"
+    paths = package_paths(tmp_path, version=version, feature=lake)
+    paths["dir"].mkdir(parents=True, exist_ok=True)
+    for s in FEATURE_SURFACES:
+        paths[s].write_text(f"{s}-v1\n", encoding="utf-8")
+    first = pg.materialize_authenticated_lake_receipt(
+        tmp_path,
+        version=version,
+        program_slug=program,
+        feature=lake,
+        human_ack_ref="ack1",
+        scope_ack_ref="scope1",
+        decision_ref="d1",
+        write=True,
+    )
+    assert first.get("pass") is True
+    assert str(first["receipt"]["baseline_hash"]).count("sha256:") == 1
+    for s in FEATURE_SURFACES:
+        paths[s].write_text(f"{s}-v2\n", encoding="utf-8")
+    second = pg.materialize_authenticated_lake_receipt(
+        tmp_path,
+        version=version,
+        program_slug=program,
+        feature=lake,
+        human_ack_ref="ack2",
+        scope_ack_ref="scope2",
+        decision_ref="d2",
+        write=True,
+    )
+    assert second.get("pass") is True
+    assert second["receipt"].get("previous_receipt_hash")
+    assert second["receipt"].get("previous_baseline_hash") == first["receipt"]["baseline_hash"]
 
