@@ -15,7 +15,7 @@ truth_map_contract: beacon-truth-map-v1
 participating_services: beacon
 git_canonical_branch: main
 previous_revision: R1
-change_reason: "D3: Host LLM recursively fills complete feature-package semantics"
+change_reason: "D3: Host Agent (skill-authored fill) recursively fills complete feature-package semantics"
 parent_truth: docs/beacon/v1.6.11/features/brownfield-context-resolver-v1611/truth.md
 inherited_contracts: "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md; docs/beacon/v1.6.10/features/beacon-plan-host-subagent-voltpack-v1610/truth.md; docs/beacon/v1.6.10/features/unified-implement-admission-v1610/truth.md; docs/beacon/v1.6.10/features/trace-lifecycle-binding-v1610/truth.md"
 canonical_refs:
@@ -92,7 +92,7 @@ scope_ack_ref: user-confirmation-2026-07-27
 | AC-INT-003 | 递归停止依据是语义闭合、重复或用户批准延期，不得以达到任务数量停止 |
 | AC-INT-004 | 歧义、冲突或高影响默认值必须进入人工确认，并保留 decision_ref |
 | AC-INT-005 | ContextEnvelope 中继承的 Goal owner、intent-on subagent、真实 worktree admission、1+6 trace 与 no-compat refreeze 能力必须提升为 must IntentNode 并有 Journey/AC 落点；任何一项不得在拆解中静默消失或降级为 should |
-| AC-INT-006 | Host LLM 必须一次生成可校验的完整领域对象：人话 L0、User Intent Snapshot、角色/旅程/失败路径、Intent Coverage Matrix、AC、Domain Model、FSM 五元组、illegal transitions、Non-goals，以及 tests/tasks/evidence 的投影输入；输出合同为 `truth-fill-response.v1` |
+| AC-INT-006 | Host Agent（skill-authored fill）必须一次生成可校验的完整领域对象：人话 L0、User Intent Snapshot、角色/旅程/失败路径、Intent Coverage Matrix、AC、Domain Model、FSM 五元组、illegal transitions、Non-goals，以及 tests/tasks/evidence 的投影输入；输出合同为 `truth-fill-response.v1` |
 | AC-INT-007 | “按句拆分→一句一 AC”、`domain_required=false`、固定数量扩写、重复改写或未产生 Journey/FSM/exec-layer TC 输入的结果必须标记 `semantic_incomplete`/`padding_suspected` 并阻断 full-package filled |
 
 ## Domain FSM IntentCompleteness

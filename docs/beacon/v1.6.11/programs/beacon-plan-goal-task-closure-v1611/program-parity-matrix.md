@@ -13,7 +13,7 @@
 | no old-shape compatibility | L0/L1 | accepted | covered |
 | old frozen truth forward migration | Program lineage + L0 | accepted | covered |
 | deterministic current-shape scaffold | L0 | accepted | covered |
-| Host LLM structured full-package fill | L1/L2 | accepted | covered |
+| Host Agent (skill-authored fill) structured full-package fill | L1/L2 | accepted | covered |
 | old PRD/User Story semantic compile forward migration | L0/L1/L4 | accepted | covered |
 | schema/hash/path-valid atomic patch + deterministic projections | L3/L4 | accepted | covered |
 | fill progress, hollow review and bounded recovery | L5/L6/L7 | accepted | covered |

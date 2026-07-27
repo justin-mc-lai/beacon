@@ -78,12 +78,12 @@
     },
     {
       "ac_id": "AC-DIF-006",
-      "theme": "Host LLM 只能返回 `truth-fill-response.v1` 结构化领域对象/patch；CLI 依据 `truth-fill-transaction.v1` 校验 request hash、base revision、schema、AC/TC/FSM 引用和 allowed paths 后，才可原子地投影四文件，禁止 LLM 自由覆盖 Markdown",
+      "theme": "Host Agent（skill-authored fill）只能返回 `truth-fill-response.v1` 结构化领域对象/patch；CLI 依据 `truth-fill-transaction.v1` 校验 request hash、base revision、schema、AC/TC/FSM 引用和 allowed paths 后，才可原子地投影四文件，禁止 LLM 自由覆盖 Markdown",
       "description": ""
     },
     {
       "ac_id": "AC-DIF-007",
-      "theme": "正式 ChangePlan 必须覆盖 `GoalUtteranceCaptured → VersionAndContextResolved → DeterministicScaffoldMaterialized → HostLLMFillRequested → StructuredFillProduced → FillPatchSchemaValidated → CanonicalTruthPatched → TestsTasksEvidenceRegenerated → PackageValidationPassed → TruthReviewPassed → AwaitingHumanAck → Frozen`，并为 schema reject、semantic rewrite、human reject/cancel、timeout 与 retry exhaustion 提供回边或阻断终态",
+      "theme": "正式 ChangePlan 必须覆盖 `GoalUtteranceCaptured → VersionAndContextResolved → DeterministicScaffoldMaterialized → HostAgentFillRequested → StructuredFillProduced → FillPatchSchemaValidated → CanonicalTruthPatched → TestsTasksEvidenceRegenerated → PackageValidationPassed → TruthReviewPassed → AwaitingHumanAck → Frozen`，并为 schema reject、semantic rewrite、human reject/cancel、timeout 与 retry exhaustion 提供回边或阻断终态",
       "description": ""
     }
   ],
@@ -181,7 +181,7 @@
     },
     {
       "id": "TASK-006",
-      "title": "Implement AC-DIF-006: Host LLM 只能返回 `truth-fill-response.v1` 结构化领域对象/patch；CLI 依据 `truth-fi... · ac=AC-DIF-006 · evidence=`.beacon/evidence/implement/change-impact-state-diff-v1611/AC-DIF-006.json`",
+      "title": "Implement AC-DIF-006: Host Agent（skill-authored fill）只能返回 `truth-fill-response.v1` 结构化领域对象/patch；CLI 依据 `truth-fi... · ac=AC-DIF-006 · evidence=`.beacon/evidence/implement/change-impact-state-diff-v1611/AC-DIF-006.json`",
       "status": "unchecked"
     },
     {

@@ -251,10 +251,10 @@ def test_inherited_must_intents():
 
 
 def test_host_llm_full_package_fill():
-    assert pg.validate_host_llm_full_package_fill(_filled_response())["pass"]
+    assert pg.validate_host_agent_full_package_fill(_filled_response())["pass"]
     bad = dict(_filled_response())
     bad.pop("fsm_quintuples")
-    assert pg.validate_host_llm_full_package_fill(bad)["blocked"]
+    assert pg.validate_host_agent_full_package_fill(bad)["blocked"]
 
 
 def test_false_completeness_blocked():
@@ -862,7 +862,7 @@ def test_intent_decomposition_task_closure_advisory():
     from beacon.utils.intent_decomposition import decompose_product_intent
 
     out = decompose_product_intent(
-        "Deliver v1.6.11 Plan/Goal task closure with CLI scaffold and Host LLM fill",
+        "Deliver v1.6.11 Plan/Goal task closure with CLI scaffold and Host Agent (skill-authored fill)",
         lakes=["contract-baseline-convergence-v1611"],
     )
     assert out.get("task_closure_intent")
@@ -996,7 +996,7 @@ def test_truth_host_bridge_outputs_fill_response():
     assert payload.get("schema") == pg.SCHEMA_FILL_RESPONSE
     assert payload.get("acceptance_criteria")
     assert payload.get("bridge") == "beacon-truth-host-bridge"
-    filled = pg.validate_host_llm_full_package_fill(payload)
+    filled = pg.validate_host_agent_full_package_fill(payload)
     assert filled.get("pass") is True, filled
 
 

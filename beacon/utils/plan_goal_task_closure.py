@@ -1,7 +1,7 @@
 """v1.6.11 Plan/Goal task-closure runtime contracts (L0–L8).
 
 Implements D3/R2 commitments:
-- CLI deterministic scaffold + Host LLM structured fill (no direct Markdown overwrite)
+- CLI deterministic scaffold + Host Agent (skill-authored fill) structured fill (no direct Markdown overwrite)
 - Context envelope / intent completeness / change-plan fill FSM
 - Atomic task DAG, progress ledger, drift human gate, cancel/replan
 - Authenticated freeze receipts + Program freeze PAC checks
@@ -496,7 +496,8 @@ def evaluate_inherited_must_intents(landings: dict[str, str]) -> dict[str, Any]:
     return _ok(landings=landings)
 
 
-def validate_host_llm_full_package_fill(response: dict[str, Any] | None) -> dict[str, Any]:
+def validate_host_agent_full_package_fill(response: dict[str, Any] | None) -> dict[str, Any]:
+    """Validate Host Agent skill-authored truth-fill-response.v1 (legacy alias: validate_host_llm_full_package_fill)."""
     response = response or {}
     if response.get("schema") != SCHEMA_FILL_RESPONSE:
         return _reject("host_llm_full_package_fill_schema", expected=SCHEMA_FILL_RESPONSE)
@@ -521,6 +522,11 @@ def validate_host_llm_full_package_fill(response: dict[str, Any] | None) -> dict
         if key not in proj:
             return _reject("host_llm_full_package_fill_incomplete", missing=[f"projection_inputs.{key}"])
     return _ok(response_hash=_stable_hash(response))
+
+
+
+# Legacy alias — do not use in new user-facing copy; keep for stable imports/tests.
+validate_host_llm_full_package_fill = validate_host_agent_full_package_fill  # noqa: F811
 
 
 def reject_false_completeness(response: dict[str, Any] | None) -> dict[str, Any]:
@@ -633,7 +639,7 @@ def apply_structured_fill_transaction(
 ) -> dict[str, Any]:
     if allow_direct_markdown_overwrite:
         return _reject("direct_markdown_overwrite_forbidden")
-    req_check = validate_host_llm_full_package_fill(response)
+    req_check = validate_host_agent_full_package_fill(response)
     if req_check.get("blocked"):
         return req_check
     if request.get("schema") != SCHEMA_FILL_REQUEST:
@@ -1457,7 +1463,7 @@ def detect_scaffold_truth_block(truth_md: str) -> dict[str, Any]:
     if maturity_scaffold and status_frozen:
         return _reject(
             "truth_scaffold_not_filled",
-            user_facing="scaffold package cannot exit truth as frozen without Host LLM fill",
+            user_facing="scaffold package cannot exit truth as frozen without Host Agent (skill-authored fill)",
         )
     if maturity_scaffold and not status_frozen:
         return _reject(
@@ -1653,7 +1659,7 @@ def normalize_host_fill_response(payload: dict[str, Any] | None) -> dict[str, An
 def ensure_truth_fill_host_bridge_defaults(*, force: bool = False) -> str:
     """Default fill-related bridge env names to `beacon truth host-bridge`.
 
-    Real host-agent contract:
+    Primary Host Agent (skill-authored fill) contract:
       stdin/request  -> truth-fill-request.v1 (or pipeline wrapper)
       stdout/response -> truth-fill-response.v1
 
@@ -1715,7 +1721,7 @@ def resolve_truth_fill_response(
     request_payload: dict[str, Any] | None = None,
     allow_semantic_compile_fallback: bool = True,
 ) -> dict[str, Any]:
-    """Resolve Host LLM / bridge / injected response, else semantic compile fallback."""
+    """Resolve Host Agent skill-authored fill / bridge / injected response; local compile is hard-fallback only."""
     from beacon.utils.semantic_runtime import (
         execute_host_bridge_command,
         load_host_response_json,
@@ -1769,12 +1775,28 @@ def resolve_truth_fill_response(
             version=version,
             language=language,
         )
+        compiled = dict(compiled)
+        compiled["fill_source"] = "local_semantic_compile_fallback"
+        compiled["fill_authority"] = "fallback_not_host_agent"
+        compiled["is_fallback"] = True
+        compiled["host_agent_contract"] = {
+            "mode": "fallback",
+            "authority": "Host Agent (skill-authored fill) is primary; this local compile is not production authority",
+            "forbidden": [
+                "overclaim_host_agent_fill",
+                "overclaim_external_provider_llm",
+                "direct_markdown_overwrite",
+            ],
+        }
         return {
             "status": "pass",
             "blocked": False,
             "source": "semantic_compile_fallback",
             "response": compiled,
             "transport": "cli-semantic-compile",
+            "is_fallback": True,
+            "fill_authority": "fallback_not_host_agent",
+            "user_facing": "FALLBACK ONLY: local semantic compile is not Host Agent skill-authored fill",
         }
 
     return _reject(
@@ -1888,7 +1910,7 @@ def run_truth_gen_fill_pipeline(
         return {**resolved, "steps": steps, "request": request_wrap}
 
     response = resolved.get("response") or {}
-    schema_check = validate_host_llm_full_package_fill(response)
+    schema_check = validate_host_agent_full_package_fill(response)
     false_c = reject_false_completeness(response)
     steps.append({"name": "schema", "status": "pass" if schema_check.get("pass") else "blocked"})
     if schema_check.get("blocked") or false_c.get("blocked"):
@@ -2594,7 +2616,7 @@ def run_program_lakes_task_closure(
     compiled = compile_intent_semantics_to_fill_response(
         utterance=utt, feature=LAKE_ORDER_V1611[2], version=version, language=language
     )
-    fill_ok = validate_host_llm_full_package_fill(compiled)
+    fill_ok = validate_host_agent_full_package_fill(compiled)
     false_c = reject_false_completeness(compiled)
     lake_results.append(
         {

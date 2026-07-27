@@ -222,7 +222,7 @@
           "source": "truth"
         },
         {
-          "description": "Host LLM 直接写四文件或 patch 越过 allowed paths",
+          "description": "Host Agent（skill-authored fill）直接写四文件或 patch 越过 allowed paths",
           "aggregate": "",
           "source": "truth"
         },
@@ -260,11 +260,11 @@
         },
         {
           "ac_id": "AC-DIF-006",
-          "description": "Host LLM 只能返回 `truth-fill-response.v1` 结构化领域对象/patch；CLI 依据 `truth-fill-transaction.v1` 校验 request hash、base revision、schema、AC/TC/FSM 引用和 allowed paths 后，才可原子地投影四文件，禁止 LLM 自由覆盖 Markdown"
+          "description": "Host Agent（skill-authored fill）只能返回 `truth-fill-response.v1` 结构化领域对象/patch；CLI 依据 `truth-fill-transaction.v1` 校验 request hash、base revision、schema、AC/TC/FSM 引用和 allowed paths 后，才可原子地投影四文件，禁止 LLM 自由覆盖 Markdown"
         },
         {
           "ac_id": "AC-DIF-007",
-          "description": "正式 ChangePlan 必须覆盖 `GoalUtteranceCaptured → VersionAndContextResolved → DeterministicScaffoldMaterialized → HostLLMFillRequested → StructuredFillProduced → FillPatchSchemaValidated → CanonicalTruthPatched → TestsTasksEvidenceRegenerated → PackageValidationPassed → TruthReviewPassed → AwaitingHumanAck → Frozen`，并为 schema reject、semantic rewrite、human reject/cancel、timeout 与 retry exhaustion 提供回边或阻断终态"
+          "description": "正式 ChangePlan 必须覆盖 `GoalUtteranceCaptured → VersionAndContextResolved → DeterministicScaffoldMaterialized → HostAgentFillRequested → StructuredFillProduced → FillPatchSchemaValidated → CanonicalTruthPatched → TestsTasksEvidenceRegenerated → PackageValidationPassed → TruthReviewPassed → AwaitingHumanAck → Frozen`，并为 schema reject、semantic rewrite、human reject/cancel、timeout 与 retry exhaustion 提供回边或阻断终态"
         }
       ],
       "bound_ac_ids": [
@@ -466,7 +466,7 @@
             "source": "truth"
           },
           {
-            "description": "Host LLM 直接写四文件或 patch 越过 allowed paths",
+            "description": "Host Agent（skill-authored fill）直接写四文件或 patch 越过 allowed paths",
             "aggregate": "",
             "source": "truth"
           },
@@ -504,11 +504,11 @@
           },
           {
             "ac_id": "AC-DIF-006",
-            "description": "Host LLM 只能返回 `truth-fill-response.v1` 结构化领域对象/patch；CLI 依据 `truth-fill-transaction.v1` 校验 request hash、base revision、schema、AC/TC/FSM 引用和 allowed paths 后，才可原子地投影四文件，禁止 LLM 自由覆盖 Markdown"
+            "description": "Host Agent（skill-authored fill）只能返回 `truth-fill-response.v1` 结构化领域对象/patch；CLI 依据 `truth-fill-transaction.v1` 校验 request hash、base revision、schema、AC/TC/FSM 引用和 allowed paths 后，才可原子地投影四文件，禁止 LLM 自由覆盖 Markdown"
           },
           {
             "ac_id": "AC-DIF-007",
-            "description": "正式 ChangePlan 必须覆盖 `GoalUtteranceCaptured → VersionAndContextResolved → DeterministicScaffoldMaterialized → HostLLMFillRequested → StructuredFillProduced → FillPatchSchemaValidated → CanonicalTruthPatched → TestsTasksEvidenceRegenerated → PackageValidationPassed → TruthReviewPassed → AwaitingHumanAck → Frozen`，并为 schema reject、semantic rewrite、human reject/cancel、timeout 与 retry exhaustion 提供回边或阻断终态"
+            "description": "正式 ChangePlan 必须覆盖 `GoalUtteranceCaptured → VersionAndContextResolved → DeterministicScaffoldMaterialized → HostAgentFillRequested → StructuredFillProduced → FillPatchSchemaValidated → CanonicalTruthPatched → TestsTasksEvidenceRegenerated → PackageValidationPassed → TruthReviewPassed → AwaitingHumanAck → Frozen`，并为 schema reject、semantic rewrite、human reject/cancel、timeout 与 retry exhaustion 提供回边或阻断终态"
           }
         ],
         "bound_ac_ids": [

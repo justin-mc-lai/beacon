@@ -8,7 +8,7 @@ truth_canonical_branch: main
 change_round: D3
 target_revision: R2
 previous_revision: R1
-change_reason: "D3: formalize CLI deterministic scaffold plus Host LLM full-package fill, migrate semantic compile into current feature-package authority, and close authenticated freeze/recovery gaps"
+change_reason: "D3: formalize CLI deterministic scaffold plus Host Agent (skill-authored fill) full-package fill, migrate semantic compile into current feature-package authority, and close authenticated freeze/recovery gaps"
 scope_ack_ref: user-confirmation-2026-07-27
 ---
 
@@ -34,7 +34,7 @@ scope_ack_ref: user-confirmation-2026-07-27
 | worktree | 旧 unified admission 已冻结但未进入新任务图 | 所有 implementation TaskNode 统一绑定 service/worktree/admission/cwd/HEAD |
 | lifecycle | 旧 agent_trace 已覆盖 stage，但新 L0–L8 未映射 | 内部状态映射回 1+6，复用 Goal run_id 与 `agent_trace.v1` |
 | compatibility | 旧 shape 可能被误认为历史方言 | fail-closed，唯一升级路径为重新 plan/change/review/freeze |
-| generation | CLI scaffold 或 intent-first 可被误认为真实需求已填充 | CLI 只确定性建四文件骨架；Host LLM 通过结构化合同填充完整领域语义 |
+| generation | CLI scaffold 或 intent-first 可被误认为真实需求已填充 | CLI 只确定性建四文件骨架；Host Agent（skill-authored fill）通过结构化合同填充完整领域语义 |
 | semantic compile | 旧 PRD/User Story 有 host-response/bridge 能力，但输出仍偏旧 shape | 复用其语义抽取与 host transport，统一编译为当前 feature package |
 | write authority | Host/LLM 可返回自由 Markdown，难以保证多文件一致 | LLM 只返回 `truth-fill-response.v1`；CLI 校验后通过事务确定性投影四文件 |
 | freeze proof | promotion 只看 complete 字符串，hash/gate 证据可漂移 | receipt 必须绑定 R2、最终四文件 hash、validation、Truth Review、human ack 与 PAC trace |
@@ -43,8 +43,8 @@ scope_ack_ref: user-confirmation-2026-07-27
 
 | Contract | Producer | Consumer | Required fields |
 |----------|----------|----------|-----------------|
-| `truth-fill-request.v1` | CLI | Host LLM | utterance、version、R2/base hashes、ContextEnvelope、semantic compiler refs、host transport、Humanizer、Program/PAC refs |
-| `truth-fill-response.v1` | Host LLM | CLI validator | L0、Intent/Journey、Matrix、AC、Domain Model、FSM/illegal、Non-goals、TC/task/evidence projection inputs、source hash |
+| `truth-fill-request.v1` | CLI | Host Agent (skill-authored fill) | utterance、version、R2/base hashes、ContextEnvelope、semantic compiler refs、host transport、Humanizer、Program/PAC refs |
+| `truth-fill-response.v1` | Host Agent (skill-authored fill) | CLI validator | L0、Intent/Journey、Matrix、AC、Domain Model、FSM/illegal、Non-goals、TC/task/evidence projection inputs、source hash |
 | `truth-fill-transaction.v1` | CLI | truth/projection/freeze gates | transaction_id、request/response hash、base revision、allowed paths、patch result、projection hashes、step sequence/reason codes |
 | `truth-human-ack.v1` | human gate | freeze/program gate | scope、finding dispositions、actor、time、accepted R2 hash set |
 
@@ -83,7 +83,7 @@ LLM 不得直接覆盖 Markdown。`features/<slug>/{truth,tests,tasks,evidence}.
 
 - `goal_utterance_captured → host_fill_requested` without version/context/scaffold
 - scaffold 占位包直接标记 filled/frozen
-- Host LLM 直接覆盖四文件或 patch 越过 allowed paths
+- Host Agent（skill-authored fill）直接覆盖四文件或 patch 越过 allowed paths
 - `fill_patch_validating → canonical_truth_patching` with stale request/base hash
 - `truth_review → awaiting_human_ack` while any package/semantic check fails
 - `awaiting_human → host_fill_requested` without decision_ref
@@ -146,7 +146,7 @@ LLM 不得直接覆盖 Markdown。`features/<slug>/{truth,tests,tasks,evidence}.
 | PAC-014 | GoalRun 持有 program/graph/truth/ready/human/admission/trace/verifier refs | L8 |
 | PAC-015 | 旧 package/ledger fail-closed，不建兼容 reader，只经新 revision 重新冻结 | L0/L1 |
 | PAC-016 | CLI 确定性创建当前四文件 scaffold，未填充不得冒充 complete | L0 |
-| PAC-017 | Host LLM 通过结构化合同完整填充 L0/Intent/Journey/AC/Domain/FSM/illegal 与投影输入 | L1/L2 |
+| PAC-017 | Host Agent（skill-authored fill）通过结构化合同完整填充 L0/Intent/Journey/AC/Domain/FSM/illegal 与投影输入 | L1/L2 |
 | PAC-018 | 旧 PRD/User Story semantic compile 与 host transport 前向迁移到 feature package，不恢复平行旧 shape | L0/L1/L4 |
 | PAC-019 | CLI 校验 response schema/base hash/allowed paths 后原子 patch，并确定性再生成 tests/tasks/evidence | L3/L4 |
 | PAC-020 | fill 进度、hollow/padding review、timeout/reject/retry/cancel 与 no-open-work closure-ready 全部可回放 | L5/L6/L7 |
@@ -193,7 +193,7 @@ old package / old ledger detected
 
 - D3 是 Change 轮次，不是 revision ID；九湖由机器治理入口从 R1 reopen 为 R2。
 - R2 复用旧 PRD/User Story 的 semantic compile 能力，但只把语义编译进新 feature-package 规范。
-- CLI scaffold 与 Host LLM fill 是两段职责：前者可重复、确定性、无语义自作主张；后者完整填充但无直接写 authority。
+- CLI scaffold 与 Host Agent (skill-authored fill) 是两段职责：前者可重复、确定性、无语义自作主张；后者完整填充但无直接写 authority。
 - 本 Change 只有在九湖 R2 当前 hash、package validation、Truth Review、human ack、promotion receipt 与 PAC trace 全部一致后才能回到 `frozen`。
 
 ## 非目标

@@ -16,7 +16,7 @@ truth_map_contract: beacon-truth-map-v1
 participating_services: beacon
 git_canonical_branch: main
 previous_revision: R1
-change_reason: "D3: CLI deterministic scaffold plus Host LLM full-package fill under feature-package authority"
+change_reason: "D3: CLI deterministic scaffold plus Host Agent (skill-authored fill) full-package fill under feature-package authority"
 parent_truth: docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md
 inherited_contracts: "docs/beacon/v1.6.9/features/beacon-plan-goal-deep-integration-v169/truth.md; docs/beacon/v1.6.10/features/truth-core-authority-v1610/truth.md"
 canonical_refs:
@@ -93,7 +93,7 @@ scope_ack_ref: user-confirmation-2026-07-27
 | AC-BAS-004 | Truth refreeze 时旧 tests/tasks/evidence 被标 stale，禁止跨 revision 复用 |
 | AC-BAS-005 | 旧 package、旧 Goal ledger、缺 Matrix/exec TC/`ac=`/`evidence=` 的 active shape 必须 fail-closed，并返回 `package_shape_upgrade_required` 或等价 reason code；不得加入 legacy reader、soft skip 或 compatibility adapter |
 | AC-BAS-006 | 旧冻结 Truth 保持只读 lineage；仍有效的语义只能通过 `parent_truth`/`inherited_contracts` 进入当前 shape，并经 plan → truth/change → Truth Review → freeze new revision 向前迁移 |
-| AC-BAS-007 | `beacon truth init`/等价 CLI 只负责确定性创建 `features/<slug>/{truth,tests,tasks,evidence}.md` scaffold、协议版本与占位状态；scaffold 未经 Host LLM 全包填充与 review 不得被标记 `package_maturity=filled` 或推荐 freeze |
+| AC-BAS-007 | `beacon truth init`/等价 CLI 只负责确定性创建 `features/<slug>/{truth,tests,tasks,evidence}.md` scaffold、协议版本与占位状态；scaffold 未经 Host Agent（skill-authored fill）全包填充与 review 不得被标记 `package_maturity=filled` 或推荐 freeze |
 | AC-BAS-008 | 旧 PRD/User Story semantic compiler、host-response/command-bridge/provider transport 作为受治理的语义输入能力被复用，但当前 `feature_package_authoritative` 四文件仍是唯一 requirement truth；不得恢复平行 `prd/`、`user-story/`、`qa/test-cases/` canonical 写入 |
 | AC-BAS-009 | 每个 R2 freeze 必须绑定最终四文件 baseline hash、package-validation report/hash、Truth Review report/hash、human scope ack 与 promotion receipt；任一 hash 漂移或 receipt 仅声明 `status=complete` 时 Program freeze 必须阻断 |
 

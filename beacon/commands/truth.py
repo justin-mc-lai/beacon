@@ -93,7 +93,7 @@ def init_cmd(
             typer.echo(f"- Preserved package truth: {skipped}")
         if payload.get("pass"):
             typer.echo(
-                "✓ Deterministic scaffold ready (package_maturity=scaffold; Host LLM fill required before freeze)"
+                "✓ Deterministic scaffold ready (package_maturity=scaffold; Host Agent skill-authored fill required before freeze)"
             )
         else:
             typer.echo(
@@ -259,7 +259,7 @@ def gen_cmd(
     response_json: Optional[Path] = typer.Option(
         None,
         "--response-json",
-        help="Optional truth-fill-response.v1 JSON (Host LLM). Overrides env host-response.",
+        help="Optional truth-fill-response.v1 JSON from Host Agent (skill-authored fill). Overrides env host-response.",
     ),
     require_host_response: bool = typer.Option(
         False,
@@ -722,6 +722,8 @@ def host_bridge(
         out = dict(resp)
         out["model"] = out.get("model") or "host-agent-pass-through"
         out["bridge"] = "beacon-truth-host-bridge"
+        out.setdefault("fill_authority", "host_agent_skill_authored")
+        out.setdefault("is_fallback", False)
         out.setdefault("request_schema", SCHEMA_FILL_REQUEST)
         out.setdefault("response_schema", SCHEMA_FILL_RESPONSE)
         out.setdefault(
@@ -773,15 +775,17 @@ def host_bridge(
     response["model"] = "beacon-truth-host-bridge"
     response["bridge"] = "beacon-truth-host-bridge"
     response["fill_source"] = "local_semantic_compile_fallback"
+    response["fill_authority"] = "fallback_not_host_agent"
+    response["is_fallback"] = True
     response["request_schema"] = SCHEMA_FILL_REQUEST
     response["response_schema"] = SCHEMA_FILL_RESPONSE
-    # Host agent contract echo for debugging — local bridge is NOT external Host LLM production fill.
+    # Host Agent contract echo — local bridge compile is FALLBACK, not skill-authored production fill.
     response["host_agent_contract"] = {
         "input": "truth-fill-request.v1",
         "output": "truth-fill-response.v1",
         "mode": "local_bridge_default",
         "fill_source": "local_semantic_compile_fallback",
-        "forbidden": ["direct_markdown_overwrite", "legacy_prd_canonical_write", "overclaim_external_host_llm"],
+        "forbidden": ["direct_markdown_overwrite", "legacy_prd_canonical_write", "overclaim_external_host_llm", "overclaim_host_agent_fill"],
     }
     typer.echo(json.dumps(response, ensure_ascii=False))
 
@@ -892,7 +896,7 @@ def fill_apply_cmd(
     base_revision: str = typer.Option("R2", "--base-revision", help="Base revision"),
     json_output: bool = typer.Option(True, "--json/--no-json", help="Emit JSON"),
 ) -> None:
-    """Apply Host LLM structured fill via truth-fill-transaction.v1 (no free Markdown overwrite)."""
+    """Apply Host Agent (skill-authored fill) via truth-fill-transaction.v1 (no free Markdown overwrite)."""
     from beacon.utils.plan_goal_task_closure import apply_structured_fill_transaction
 
     project_root = _resolve_root(project)
@@ -935,16 +939,16 @@ def fill_validate_response_cmd(
     response_json: Path = typer.Argument(..., help="truth-fill-response.v1 JSON file"),
     json_output: bool = typer.Option(True, "--json/--no-json", help="Emit JSON"),
 ) -> None:
-    """Validate Host LLM truth-fill-response.v1 without writing files."""
+    """Validate Host Agent skill-authored truth-fill-response.v1 without writing files."""
     from beacon.utils.plan_goal_task_closure import (
         reject_false_completeness,
-        validate_host_llm_full_package_fill,
+        validate_host_agent_full_package_fill,
     )
 
     response = json.loads(Path(response_json).read_text(encoding="utf-8"))
     if response.get("response") and isinstance(response.get("response"), dict):
         response = response["response"]
-    filled = validate_host_llm_full_package_fill(response)
+    filled = validate_host_agent_full_package_fill(response)
     false_c = reject_false_completeness(response)
     blocked = bool(filled.get("blocked") or false_c.get("blocked"))
     payload = {

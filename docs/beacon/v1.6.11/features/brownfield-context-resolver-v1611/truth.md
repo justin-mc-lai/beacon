@@ -94,7 +94,7 @@ scope_ack_ref: user-confirmation-2026-07-27
 | AC-CTX-005 | ContextEnvelope 必须解析 `parent_truth` 与 `inherited_contracts`，并把既有 Goal/Plan、subagent、worktree admission、lifecycle trace、Truth authority 的 frozen revision 作为不可静默丢失的输入 |
 | AC-CTX-006 | resolver 必须返回 host subagent runtime 可用性、truth canonical、implementation worktree governance、1+6 lifecycle/`agent_trace.v1` 权威；缺失或冲突时 fail-closed，不得猜默认值 |
 | AC-CTX-007 | ContextEnvelope 必须包含原始 Goal utterance、目标版本、当前四文件路径与 source hashes、R2 revision、旧 PRD/User Story semantic compiler refs、host transport capability/precedence、Humanizer profile、Program/PAC refs；这些字段共同构成 `truth-fill-request.v1` 输入 |
-| AC-CTX-008 | Host semantic transport 不可用、response 为空、source hash 变化或输入权威冲突时必须进入 `awaiting_human`/blocked；不得退化为规则模板、一句一 AC 或空占位后冒充 Host LLM 全包填充 |
+| AC-CTX-008 | Host semantic transport 不可用、response 为空、source hash 变化或输入权威冲突时必须进入 `awaiting_human`/blocked；不得退化为规则模板、一句一 AC 或空占位后冒充 Host Agent（skill-authored fill）全包填充 |
 
 ## Domain FSM ContextResolver
 

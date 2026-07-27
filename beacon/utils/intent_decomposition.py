@@ -447,6 +447,8 @@ def decompose_product_intent(
             miss = list(tr.get("missing") or [])
             if "host_llm_full_package_fill_pending" not in miss:
                 miss.append("host_llm_full_package_fill_pending")
+            if "host_agent_skill_authored_fill_pending" not in miss:
+                miss.append("host_agent_skill_authored_fill_pending")
             tr["missing"] = miss
             tr["task_closure"] = True
             result["truth_readiness"] = tr
