@@ -1,0 +1,62 @@
+{
+  "schema": "qa-scorecard.v1",
+  "mode_id": "eval-qa",
+  "public_id": "qa",
+  "feature": "contract-baseline-convergence-v1611",
+  "version": "v1.6.11",
+  "run_id": "pgr-35ca10598c49",
+  "generated_at": "2026-07-27T09:00:02.945164+00:00",
+  "verdict": "pass_partial",
+  "layers": {
+    "skill_contract": {
+      "status": "pass",
+      "command": "python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py --tb=no",
+      "result": "83 passed in 0.59s"
+    },
+    "scenario_suite": {
+      "status": "pass_partial",
+      "note": "Shared L0-L8 contract suite + CLI wiring covered; full product journeys not live-exercised"
+    },
+    "trace_scorecard": {
+      "status": "pass_partial",
+      "note": "agent_trace/lifecycle binding covered by unit contracts; no longrun production trace"
+    },
+    "real_project_proof": {
+      "status": "deferred",
+      "note": "planning-only line v1.6.11; runtime still v1.6.10"
+    }
+  },
+  "adversarial_review": [
+    {
+      "risk": "scaffold marked filled without host fill",
+      "proof": "test_deterministic_scaffold_not_filled + truth init scaffold gate"
+    },
+    {
+      "risk": "status-only program freeze",
+      "proof": "test_cli_program_freeze_authenticated_default + authenticated receipts"
+    },
+    {
+      "risk": "LLM direct markdown overwrite",
+      "proof": "test_structured_fill_patch_transaction rejects direct overwrite"
+    },
+    {
+      "risk": "count KPI fake completeness",
+      "proof": "test_semantic_stop + test_false_completeness_blocked"
+    },
+    {
+      "risk": "child/subagent completes goal",
+      "proof": "test_goal_owner + test_task_delegation_contract"
+    }
+  ],
+  "findings": [
+    {
+      "severity": "P1",
+      "kind": "program_breadth",
+      "text": "Shared contract runtime is green; remaining product integration depth for each lake still advisory",
+      "route": "implement_or_continue_qa_deep"
+    }
+  ],
+  "recommended_next_harness": "implement",
+  "release_ready": false,
+  "reason_code": "qa_partial_program_contracts_green"
+}
