@@ -14,7 +14,7 @@ task_source: acceptance_criteria
 - [ ] TASK-003 Implement AC-INT-003: 递归停止依据是语义闭合、重复或用户批准延期，不得以达到任务数量停止 · ac=AC-INT-003 · evidence=`.beacon/evidence/implement/intent-completeness-engine-v1611/AC-INT-003.json`
 - [ ] TASK-004 Implement AC-INT-004: 歧义、冲突或高影响默认值必须进入人工确认，并保留 decision_ref · ac=AC-INT-004 · evidence=`.beacon/evidence/implement/intent-completeness-engine-v1611/AC-INT-004.json`
 - [ ] TASK-005 Implement AC-INT-005: ContextEnvelope 中继承的 Goal owner、intent-on subagent、真实 worktree admiss... · ac=AC-INT-005 · evidence=`.beacon/evidence/implement/intent-completeness-engine-v1611/AC-INT-005.json`
-- [ ] TASK-006 Implement AC-INT-006: Host Agent（skill-authored fill）必须一次生成可校验的完整领域对象：人话 L0、User Intent Snapshot、角色/旅程/失败路径、Inten... · ac=AC-INT-006 · evidence=`.beacon/evidence/implement/intent-completeness-engine-v1611/AC-INT-006.json`
+- [ ] TASK-006 Implement AC-INT-006: Host Agent（skill-authored fill）必须一次生成可校验的完整领域对象：人话 L0、User Intent Sna... · ac=AC-INT-006 · evidence=`.beacon/evidence/implement/intent-completeness-engine-v1611/AC-INT-006.json`
 - [ ] TASK-007 Implement AC-INT-007: “按句拆分→一句一 AC”、`domain_required=false`、固定数量扩写、重复改写或未产生 Journey/FSM/exe... · ac=AC-INT-007 · evidence=`.beacon/evidence/implement/intent-completeness-engine-v1611/AC-INT-007.json`
 - [ ] TASK-008 Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/intent-completeness-engine-v1611/GATES.json`
 - [ ] TASK-009 Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/intent-completeness-engine-v1611/QA-MATRIX.json`

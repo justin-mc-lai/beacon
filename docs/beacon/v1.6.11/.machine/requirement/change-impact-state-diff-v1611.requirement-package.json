@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-27T08:26:00.793460+00:00",
+  "generated_at": "2026-07-27T13:41:12.785337+00:00",
   "feature": "change-impact-state-diff-v1611",
   "feature_slug": "change-impact-state-diff-v1611",
   "version": "v1.6.11",
@@ -18,9 +18,9 @@
     "evidence": "docs/beacon/v1.6.11/features/change-impact-state-diff-v1611/evidence.md"
   },
   "source_hashes": {
-    "truth": "ff8457f39e45edce75d67ef7b73db6d0860132d352bc98a8da6fe60fc9f807bd",
-    "tests": "aacae1c5ec03b88edea2c42ba28cd1d48e68c04f7dd2a366d857824d17eb14e1",
-    "tasks": "326218cdb8932e92976ce5f676cfb28d91600e284dab8baf2e40d3d350656a19",
+    "truth": "74e0103468ab7e9866cf7a0b96e34014af6c70935d4c94b84fac13e845f182f8",
+    "tests": "8add5e6bd5d06c1e89e4d9f2b0f9cce90e9fba1aeb64dc658240eff9b18b6e7d",
+    "tasks": "59072073cd38a656425fdcf7139af52f826f61f04d9730afc94cd46f0f935b24",
     "evidence": "b0728b7b390adfa456091177f5dec06bd7ac6c2c7c649c55da240f0e54c1ea16"
   },
   "truth_frontmatter": {
@@ -31,6 +31,8 @@
     "language": "zh",
     "domain_required": "true",
     "domain_kind": "platform",
+    "ux_required": "false",
+    "ux_deferred": "true",
     "package_maturity": "filled",
     "materials_status": "current",
     "parser_contract": "beacon-feature-package-v2",
@@ -93,7 +95,7 @@
       "tc_id": "TC-DIF-001",
       "layer": "",
       "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k five_surface_diff --tb=no`",
-      "assertion": "all five surfaces emitted",
+      "assertion": "all five surfaces emitted (legal walk / happy path)",
       "evidence_path": ""
     },
     {
@@ -181,7 +183,7 @@
     },
     {
       "id": "TASK-006",
-      "title": "Implement AC-DIF-006: Host Agent（skill-authored fill）只能返回 `truth-fill-response.v1` 结构化领域对象/patch；CLI 依据 `truth-fi... · ac=AC-DIF-006 · evidence=`.beacon/evidence/implement/change-impact-state-diff-v1611/AC-DIF-006.json`",
+      "title": "Implement AC-DIF-006: Host Agent（skill-authored fill）只能返回 `truth-fill-response.v1` 结构化领域对象/... · ac=AC-DIF-006 · evidence=`.beacon/evidence/implement/change-impact-state-diff-v1611/AC-DIF-006.json`",
       "status": "unchecked"
     },
     {

@@ -9,7 +9,7 @@ materials_status: current
 
 | TC ID | AC ID | Command | Assertion |
 |-------|-------|---------|-----------|
-| TC-CNV-001 | AC-CNV-001 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k closure_matrix --tb=no` | six layers are bidirectionally traceable |
+| TC-CNV-001 | AC-CNV-001 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k closure_matrix --tb=no` | six layers are bidirectionally traceable (legal walk / happy path) |
 | TC-CNV-002 | AC-CNV-002 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k goal_completion --tb=no` | any open required layer blocks pass |
 | TC-CNV-003 | AC-CNV-003 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k stale_blocks --tb=no` | stale truth/graph/material/evidence blocks |
 | TC-CNV-004 | AC-CNV-004 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k goal_owner --tb=no` | subagent completion rejected |

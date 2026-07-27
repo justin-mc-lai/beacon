@@ -9,7 +9,7 @@ materials_status: current
 
 | TC ID | AC ID | Command | Assertion |
 |-------|-------|---------|-----------|
-| TC-REV-001 | AC-REV-001 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k drift_kinds --tb=no` | all required finding kinds detected |
+| TC-REV-001 | AC-REV-001 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k drift_kinds --tb=no` | all required finding kinds detected (legal walk / happy path) |
 | TC-REV-002 | AC-REV-002 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k drift_pause --tb=no` | mandatory finding pauses execution |
 | TC-REV-003 | AC-REV-003 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k human_choices --tb=no` | only five choices accepted |
 | TC-REV-004 | AC-REV-004 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k decision_ref --tb=no` | transition without decision_ref rejected |

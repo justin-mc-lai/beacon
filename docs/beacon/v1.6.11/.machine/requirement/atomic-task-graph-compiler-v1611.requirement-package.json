@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-27T08:26:02.217938+00:00",
+  "generated_at": "2026-07-27T13:41:08.490696+00:00",
   "feature": "atomic-task-graph-compiler-v1611",
   "feature_slug": "atomic-task-graph-compiler-v1611",
   "version": "v1.6.11",
@@ -18,8 +18,8 @@
     "evidence": "docs/beacon/v1.6.11/features/atomic-task-graph-compiler-v1611/evidence.md"
   },
   "source_hashes": {
-    "truth": "02358989ff6d6425bc3bebfca23944be3c5cd8ca2e715bdc74ea340322c10d05",
-    "tests": "227835c89cf9234e14f54e736390ebc920136c87dabaad49a8a0b30889180aa3",
+    "truth": "b4845ab000985126ddd4730c53e04e7eaaafcc4d78bf7b8b2ac608c5b5cd0b3a",
+    "tests": "f76bc1ca245343536c2bf3626250f01686a496c8922968b7fbe51b675b3b744f",
     "tasks": "c82a4b68c57ef5d638a6e7896c3c37102a681c5804d1c5515f95598f0a8273b9",
     "evidence": "bebff847063c9c1053765423e390ec72da7c143288658d45ba01f0504c2fba5e"
   },
@@ -31,6 +31,8 @@
     "language": "zh",
     "domain_required": "true",
     "domain_kind": "platform",
+    "ux_required": "false",
+    "ux_deferred": "true",
     "package_maturity": "filled",
     "materials_status": "current",
     "parser_contract": "beacon-feature-package-v2",
@@ -108,7 +110,7 @@
       "tc_id": "TC-DAG-001",
       "layer": "",
       "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k atomic_compile --tb=no`",
-      "assertion": "each node is independently verifiable",
+      "assertion": "each node is independently verifiable (legal walk / happy path)",
       "evidence_path": ""
     },
     {

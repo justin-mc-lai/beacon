@@ -9,7 +9,7 @@ materials_status: current
 
 | TC ID | AC ID | Command | Assertion |
 |-------|-------|---------|-----------|
-| TC-INT-001 | AC-INT-001 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k intent_dimensions --tb=no` | seven dimensions are represented |
+| TC-INT-001 | AC-INT-001 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k intent_dimensions --tb=no` | seven dimensions are represented (legal walk / happy path) |
 | TC-INT-002 | AC-INT-002 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k missing_must --tb=no` | missing must blocks |
 | TC-INT-003 | AC-INT-003 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k semantic_stop --tb=no` | count target cannot close recursion |
 | TC-INT-004 | AC-INT-004 | `python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k intent_human_decision --tb=no` | high-impact ambiguity requires decision_ref |

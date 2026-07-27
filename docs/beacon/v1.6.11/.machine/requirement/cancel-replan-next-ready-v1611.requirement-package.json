@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-27T08:26:06.648375+00:00",
+  "generated_at": "2026-07-27T13:41:11.398370+00:00",
   "feature": "cancel-replan-next-ready-v1611",
   "feature_slug": "cancel-replan-next-ready-v1611",
   "version": "v1.6.11",
@@ -18,8 +18,8 @@
     "evidence": "docs/beacon/v1.6.11/features/cancel-replan-next-ready-v1611/evidence.md"
   },
   "source_hashes": {
-    "truth": "b7184528423a255e47753ec350b04d50d46cc87247a6aad92ff9087b6dedeaef",
-    "tests": "a29f821ecdc18a0583bbcef03dae94b9518375d66c95bb73ba9acb103452be59",
+    "truth": "ea7e299c55bb1fa9fd4c4ea38a5d899c6fa5f1ff4b3bcc5baaf5149b06e05039",
+    "tests": "d5615d84b7f9ebf4b50222d86f40506a785abe3376e2e4318a9c24f2096bc872",
     "tasks": "11f168aae07c142bfe880c57f1efb516c8200162ce40765f25a640e5dce431f5",
     "evidence": "e73abad15f80041d399e545a25e2d5ef7e54c99c529aca7ab8802789833a19ed"
   },
@@ -31,6 +31,8 @@
     "language": "zh",
     "domain_required": "true",
     "domain_kind": "platform",
+    "ux_required": "false",
+    "ux_deferred": "true",
     "package_maturity": "filled",
     "materials_status": "current",
     "parser_contract": "beacon-feature-package-v2",
@@ -103,7 +105,7 @@
       "tc_id": "TC-RPL-001",
       "layer": "",
       "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k replan_choices --tb=no`",
-      "assertion": "each choice emits correct disposition",
+      "assertion": "each choice emits correct disposition (legal walk / happy path)",
       "evidence_path": ""
     },
     {

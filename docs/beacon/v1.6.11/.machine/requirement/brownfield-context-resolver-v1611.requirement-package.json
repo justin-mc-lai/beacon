@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-27T08:25:57.911453+00:00",
+  "generated_at": "2026-07-27T13:41:09.997357+00:00",
   "feature": "brownfield-context-resolver-v1611",
   "feature_slug": "brownfield-context-resolver-v1611",
   "version": "v1.6.11",
@@ -18,8 +18,8 @@
     "evidence": "docs/beacon/v1.6.11/features/brownfield-context-resolver-v1611/evidence.md"
   },
   "source_hashes": {
-    "truth": "3a0eb0e5526edbc65b87f6c1f62b61eebdd5dae3d72c850f8f7a4b0320a68b2f",
-    "tests": "baefd6091472b6a9814079807bc2a7b588f5e121ed53c7a3a596dd4517822885",
+    "truth": "1b7896f810ecd0a025f5189949793b8654fe20eaaf21e95522a7aa5079fc4d24",
+    "tests": "a35d9da0567bd317c780c6a296b7604072e960ce0f4a83e8f60eef578db61e42",
     "tasks": "ca8d87ea41c7dcdb5a2a8b365cedc989867a0b05b2250f6777b54b3aec4fac54",
     "evidence": "449982357b1dec493ec4a6e25e0f2da9ad0f76ee66572cac3a6277eae3f0cd57"
   },
@@ -31,6 +31,8 @@
     "language": "zh",
     "domain_required": "true",
     "domain_kind": "platform",
+    "ux_required": "false",
+    "ux_deferred": "true",
     "package_maturity": "filled",
     "materials_status": "current",
     "parser_contract": "beacon-feature-package-v2",
@@ -99,7 +101,7 @@
       "tc_id": "TC-CTX-001",
       "layer": "",
       "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k context_envelope --tb=no`",
-      "assertion": "envelope contains five baseline surfaces",
+      "assertion": "envelope contains five baseline surfaces (legal walk / happy path)",
       "evidence_path": ""
     },
     {

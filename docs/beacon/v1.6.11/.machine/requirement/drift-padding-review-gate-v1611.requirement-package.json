@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-27T08:26:05.192952+00:00",
+  "generated_at": "2026-07-27T13:41:49.940541+00:00",
   "feature": "drift-padding-review-gate-v1611",
   "feature_slug": "drift-padding-review-gate-v1611",
   "version": "v1.6.11",
@@ -18,8 +18,8 @@
     "evidence": "docs/beacon/v1.6.11/features/drift-padding-review-gate-v1611/evidence.md"
   },
   "source_hashes": {
-    "truth": "4465d6ae058292472c952c7de6b983891f655834bf0c4dab9302cd7416d21571",
-    "tests": "46c745cb55c32749927db495198e68886a9bc63b5bb34b98bca2439461e376e6",
+    "truth": "578a6c85ca4433697f2b7eb03301ce85cc9f498c57f82448d0e97cf7185723ee",
+    "tests": "60dee164d43a004a827dc3670bbfff582afa1127add99cfe0370e2395a88c7ff",
     "tasks": "f29ba299cc223ba43c1e0ec858c3ccefaca172cd512aae46d612d8709bc34e84",
     "evidence": "e044c14545d0bbd1e1f31b029f81a5359d13113d97132a0a9a74b3124c224f43"
   },
@@ -31,6 +31,8 @@
     "language": "zh",
     "domain_required": "true",
     "domain_kind": "gate",
+    "ux_required": "false",
+    "ux_deferred": "true",
     "package_maturity": "filled",
     "materials_status": "current",
     "parser_contract": "beacon-feature-package-v2",
@@ -93,7 +95,7 @@
       "tc_id": "TC-REV-001",
       "layer": "",
       "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k drift_kinds --tb=no`",
-      "assertion": "all required finding kinds detected",
+      "assertion": "all required finding kinds detected (legal walk / happy path)",
       "evidence_path": ""
     },
     {

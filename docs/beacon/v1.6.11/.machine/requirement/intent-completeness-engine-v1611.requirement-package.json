@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-27T08:25:59.363795+00:00",
+  "generated_at": "2026-07-27T13:41:51.433955+00:00",
   "feature": "intent-completeness-engine-v1611",
   "feature_slug": "intent-completeness-engine-v1611",
   "version": "v1.6.11",
@@ -18,9 +18,9 @@
     "evidence": "docs/beacon/v1.6.11/features/intent-completeness-engine-v1611/evidence.md"
   },
   "source_hashes": {
-    "truth": "ef58a64e074f1e4827ed0d5b7173b4f39604b51260b456998ee4bb11e562b152",
-    "tests": "7cc07c148275f6388e7d8d3c0f34c4970048490cefb73abaa564aa15818150cb",
-    "tasks": "e23530e3f0d78fa51a6d97e422d7493af80d4affca6b01aab0751ec99ac40f99",
+    "truth": "c596969b2e0218e2198a26a2279f81669603c93c2c317965caec195241b793f2",
+    "tests": "950793eed7565ba8ff9d7514f93a67933e80c80124e6fd6231d25053f12f0696",
+    "tasks": "9cab05abde3d9cd2d1b18da15cce523c1e4108527b015757b3ea63551198df4a",
     "evidence": "785f74da3f3f368f2dd2ef066cfbe58ddcc1885f753c36b4d440483189d1bdd4"
   },
   "truth_frontmatter": {
@@ -31,6 +31,8 @@
     "language": "zh",
     "domain_required": "true",
     "domain_kind": "platform",
+    "ux_required": "false",
+    "ux_deferred": "true",
     "package_maturity": "filled",
     "materials_status": "current",
     "parser_contract": "beacon-feature-package-v2",
@@ -93,7 +95,7 @@
       "tc_id": "TC-INT-001",
       "layer": "",
       "command": "`python3 -m pytest -q tests/test_v1611_plan_goal_task_closure.py -k intent_dimensions --tb=no`",
-      "assertion": "seven dimensions are represented",
+      "assertion": "seven dimensions are represented (legal walk / happy path)",
       "evidence_path": ""
     },
     {
@@ -181,7 +183,7 @@
     },
     {
       "id": "TASK-006",
-      "title": "Implement AC-INT-006: Host Agent（skill-authored fill）必须一次生成可校验的完整领域对象：人话 L0、User Intent Snapshot、角色/旅程/失败路径、Inten... · ac=AC-INT-006 · evidence=`.beacon/evidence/implement/intent-completeness-engine-v1611/AC-INT-006.json`",
+      "title": "Implement AC-INT-006: Host Agent（skill-authored fill）必须一次生成可校验的完整领域对象：人话 L0、User Intent Sna... · ac=AC-INT-006 · evidence=`.beacon/evidence/implement/intent-completeness-engine-v1611/AC-INT-006.json`",
       "status": "unchecked"
     },
     {
