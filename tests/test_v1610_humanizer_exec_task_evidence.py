@@ -65,7 +65,7 @@ def test_vendor_skill_into_beacon(tmp_path: Path):
     (tmp_path / "skills/beacon/references/truth-humanizer").mkdir(parents=True)
     out = vendor_humanizer_skills_into_beacon(tmp_path, zh_source=src, en_source=None)
     assert out["written"]
-    vendored = tmp_path / "skills/beacon/references/truth-humanizer/vendor/Humanizer-zh/SKILL.md"
+    vendored = tmp_path / "skills/beacon/references/truth-humanizer/vendor/Humanizer-zh/SKILL.md.internal"
     assert vendored.is_file()
     assert "fulltext" in vendored.read_text(encoding="utf-8")
 

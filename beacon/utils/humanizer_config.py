@@ -18,8 +18,8 @@ from beacon.utils.implement_adapters import load_beacon_config
 REASON_HUMANIZER_PATH_MISSING = "humanizer_skill_path_missing"
 REASON_HUMANIZER_PROFILE_MISSING = "humanizer_profile_missing"
 
-DEFAULT_REL_ZH = "core-skills/Humanizer-zh/SKILL.md"
-DEFAULT_REL_EN = "core-skills/humanizer/SKILL.md"
+DEFAULT_REL_ZH = "core-skills/Humanizer-zh/SKILL.md.internal"
+DEFAULT_REL_EN = "core-skills/humanizer/SKILL.md.internal"
 
 
 def _candidate_oss_sync_roots(project_root: Path) -> list[Path]:
@@ -48,8 +48,8 @@ def _candidate_oss_sync_roots(project_root: Path) -> list[Path]:
 def default_humanizer_block(project_root: Path) -> dict[str, Any]:
     root = Path(project_root).expanduser().resolve()
     # Prefer in-repo vendor (committed open-source skill fulltext)
-    vendor_zh = root / "skills/beacon/references/truth-humanizer/vendor/Humanizer-zh/SKILL.md"
-    vendor_en = root / "skills/beacon/references/truth-humanizer/vendor/humanizer/SKILL.md"
+    vendor_zh = root / "skills/beacon/references/truth-humanizer/vendor/Humanizer-zh/SKILL.md.internal"
+    vendor_en = root / "skills/beacon/references/truth-humanizer/vendor/humanizer/SKILL.md.internal"
     zh_path = str(vendor_zh.resolve()) if vendor_zh.is_file() else ""
     en_path = str(vendor_en.resolve()) if vendor_en.is_file() else ""
     for oss_root in _candidate_oss_sync_roots(root):

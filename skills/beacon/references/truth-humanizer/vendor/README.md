@@ -4,8 +4,8 @@ Host-agent polish reads these fulltexts. **No API key required.**
 
 | Lang | Path | Upstream |
 |------|------|----------|
-| zh | `Humanizer-zh/SKILL.md` | https://github.com/op7418/Humanizer-zh |
-| en | `humanizer/SKILL.md` | https://github.com/blader/humanizer |
+| zh | `Humanizer-zh/SKILL.md.internal` | https://github.com/op7418/Humanizer-zh |
+| en | `humanizer/SKILL.md.internal` | https://github.com/blader/humanizer |
 
 Source of truth for install: local `oss-sync/core-skills/...` via `manage-oss-sync` / `vendor_humanizer_skills_into_beacon`.
 

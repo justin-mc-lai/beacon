@@ -21,8 +21,8 @@ from typing import Any
 from urllib import request
 
 
-VENDOR_REL_ZH = Path("skills/beacon/references/truth-humanizer/vendor/Humanizer-zh/SKILL.md")
-VENDOR_REL_EN = Path("skills/beacon/references/truth-humanizer/vendor/humanizer/SKILL.md")
+VENDOR_REL_ZH = Path("skills/beacon/references/truth-humanizer/vendor/Humanizer-zh/SKILL.md.internal")
+VENDOR_REL_EN = Path("skills/beacon/references/truth-humanizer/vendor/humanizer/SKILL.md.internal")
 
 
 def resolve_llm_mode(config: dict[str, Any] | None = None) -> str:
