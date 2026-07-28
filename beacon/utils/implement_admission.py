@@ -150,6 +150,123 @@ def _service_branch_map(project_root: Path, *, version: str, feature: str, defau
     return mapping
 
 
+def _service_baseline_map(project_root: Path, *, version: str, default_baseline: str) -> dict[str, str]:
+    from beacon.utils.project_metadata import resolve_project_metadata_view
+
+    view = resolve_project_metadata_view(project_root, version=version)
+    version_contract = view.get("version_contract") if isinstance(view.get("version_contract"), dict) else {}
+    per_service = (
+        version_contract.get("per_service_baseline_branch")
+        if isinstance(version_contract.get("per_service_baseline_branch"), dict)
+        else {}
+    )
+    mapping: dict[str, str] = {}
+    for key, value in per_service.items():
+        k = str(key).strip()
+        v = str(value).strip()
+        if k and v:
+            mapping[k] = v
+    if not mapping and default_baseline:
+        for binding in _writable_service_bindings(project_root, version=version):
+            mapping[str(binding["service_key"])] = default_baseline
+    return mapping
+
+
+def resolve_service_worktree_path(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+    service_key: str,
+    path_pattern: str = "",
+) -> Path:
+    root = project_root.expanduser().resolve()
+    slug = feature_slug(feature)
+    pattern = str(path_pattern or "").strip()
+    if not pattern:
+        from beacon.utils.project_metadata import resolve_project_metadata_view
+
+        view = resolve_project_metadata_view(root, version=version)
+        version_contract = view.get("version_contract") if isinstance(view.get("version_contract"), dict) else {}
+        pattern = str(version_contract.get("service_worktree_path_pattern") or "").strip()
+    if not pattern:
+        pattern = ".beacon/worktrees/<version>/<feature_slug>/services/<service_key>"
+    rendered = (
+        pattern.replace("<version>", version)
+        .replace("<feature_slug>", slug)
+        .replace("<feature>", slug)
+        .replace("<service_key>", service_key)
+    )
+    path = Path(rendered)
+    if not path.is_absolute():
+        path = (root / path).resolve()
+    return path
+
+
+REASON_PARENT_ONLY_SERVICE_WRITE = "parent_only_service_write_forbidden"
+
+
+def assert_service_write_authorized(
+    *,
+    target_path: Path | str,
+    service_worktree_map: dict[str, Any] | None,
+    parent_worktree: Path | str | None = None,
+    require_service_map: bool = False,
+) -> dict[str, Any]:
+    """Block parent-only writes when a multi-service map exists (AC-SSP-005)."""
+    target = Path(target_path).expanduser().resolve()
+    mapping = {
+        str(k): str(v)
+        for k, v in (service_worktree_map or {}).items()
+        if str(k).strip() and str(v).strip()
+    }
+    if not mapping:
+        if require_service_map:
+            return {
+                "status": "blocked",
+                "blocked": True,
+                "reason_code": "service_worktree_map_missing",
+                "authorized_service": "",
+            }
+        return {"status": "pass", "blocked": False, "reason_code": "", "authorized_service": ""}
+
+    for key, wt in mapping.items():
+        try:
+            target.relative_to(Path(wt).expanduser().resolve())
+            return {
+                "status": "pass",
+                "blocked": False,
+                "reason_code": "",
+                "authorized_service": key,
+                "service_worktree": wt,
+            }
+        except ValueError:
+            continue
+
+    parent = Path(parent_worktree).expanduser().resolve() if parent_worktree else None
+    if parent is not None:
+        try:
+            target.relative_to(parent)
+            # Target is inside parent but not inside any service worktree.
+            distinct_services = [p for p in mapping.values() if Path(p).resolve() != parent]
+            if distinct_services:
+                return {
+                    "status": "blocked",
+                    "blocked": True,
+                    "reason_code": REASON_PARENT_ONLY_SERVICE_WRITE,
+                    "authorized_service": "",
+                    "parent_worktree": str(parent),
+                }
+        except ValueError:
+            pass
+    return {
+        "status": "blocked",
+        "blocked": True,
+        "reason_code": "write_target_outside_service_worktree",
+        "authorized_service": "",
+    }
+
+
 def _force_leaf_worktree(
     root: Path,
     *,
@@ -300,14 +417,19 @@ def _materialize_service_worktrees(
     """Materialize/verify real worktrees for every writable service."""
     from beacon.utils.git_alignment import ensure_expected_worktree_lane, git_output
     from beacon.utils.project_metadata import resolve_project_metadata_view
+    from beacon.utils.workspace_admission import upsert_service_pool_leases
 
     root = project_root.expanduser().resolve()
     view = resolve_project_metadata_view(root, version=version)
     topology = str(view.get("topology_kind") or "").strip().lower()
+    version_contract = view.get("version_contract") if isinstance(view.get("version_contract"), dict) else {}
+    path_pattern = str(version_contract.get("service_worktree_path_pattern") or "").strip()
     bindings = _writable_service_bindings(root, version=version)
     branch_map = _service_branch_map(root, version=version, feature=feature, default_branch=parent_branch)
+    baseline_map = _service_baseline_map(root, version=version, default_baseline=base_branch)
     service_worktree_map: dict[str, str] = {}
     service_reconcile: dict[str, Any] = {}
+    service_leases: dict[str, dict[str, Any]] = {}
     reason_codes: list[str] = []
 
     multi_roots = len({str(item.get("resolved_git_root") or "") for item in bindings}) > 1
@@ -317,6 +439,7 @@ def _materialize_service_worktrees(
         key = str(binding.get("service_key") or "").strip()
         git_root = Path(str(binding.get("resolved_git_root") or root)).resolve()
         service_branch = str(branch_map.get(key) or parent_branch).strip() or parent_branch
+        service_baseline = str(baseline_map.get(key) or base_branch).strip() or base_branch
 
         if git_root == root or not monorepo_like:
             # single-repo / service at superproject root: share parent worktree
@@ -329,16 +452,26 @@ def _materialize_service_worktrees(
                 }
                 continue
             service_worktree_map[key] = str(parent_worktree)
+            head = git_output(parent_worktree, "rev-parse", "HEAD")
             service_reconcile[key] = {
                 "status": "pass",
                 "branch": parent_branch,
                 "worktree_path": str(parent_worktree),
-                "git_head": git_output(parent_worktree, "rev-parse", "HEAD"),
+                "git_head": head,
                 "shared_parent": True,
+                "base_branch": service_baseline,
+            }
+            service_leases[key] = {
+                "repo_root": str(git_root),
+                "branch": parent_branch,
+                "base_branch": service_baseline,
+                "worktree_path": str(parent_worktree),
+                "git_head": head,
+                "state": "leased",
             }
             continue
 
-        # nested child repository: require real child git checkout, not empty gitlink
+        # nested / external child repository: require real child git checkout, not empty gitlink
         if not is_real_git_worktree(git_root):
             reason_codes.append(f"service_worktree_invalid:{key}")
             service_reconcile[key] = {
@@ -348,20 +481,18 @@ def _materialize_service_worktrees(
             }
             continue
 
-        service_wt = (
-            root
-            / ".beacon"
-            / "worktrees"
-            / version
-            / feature_slug(feature)
-            / "services"
-            / key
+        service_wt = resolve_service_worktree_path(
+            root,
+            version=version,
+            feature=feature,
+            service_key=key,
+            path_pattern=path_pattern,
         )
         attempt = ensure_expected_worktree_lane(
             git_root,
             service_branch,
             worktree_path=str(service_wt),
-            base_branch=base_branch,
+            base_branch=service_baseline,
         )
         if attempt.get("status") not in {"created", "switched", "already"}:
             reason_codes.append(f"service_worktree_invalid:{key}")
@@ -392,9 +523,9 @@ def _materialize_service_worktrees(
                 "path": str(lane),
             }
             continue
-        # child baseline reconcile: merge base when possible
+        # child baseline reconcile: merge per-service baseline when possible
         merge = subprocess.run(
-            ["git", "merge", base_branch, "--no-edit", "--ff"],
+            ["git", "merge", service_baseline, "--no-edit", "--ff"],
             cwd=str(lane),
             capture_output=True,
             text=True,
@@ -408,17 +539,28 @@ def _materialize_service_worktrees(
                 "status": "blocked",
                 "reason_code": REASON_MERGE_CONFLICT,
                 "path": str(lane),
+                "base_branch": service_baseline,
                 "stderr": str(merge.stderr or "").strip(),
             }
             continue
+        head = git_output(lane, "rev-parse", "HEAD")
         service_worktree_map[key] = str(lane)
         service_reconcile[key] = {
             "status": "pass",
             "branch": current_branch or service_branch,
             "worktree_path": str(lane),
-            "git_head": git_output(lane, "rev-parse", "HEAD"),
+            "git_head": head,
+            "base_branch": service_baseline,
             "baseline_reconcile": "merged" if "Already up to date" not in str(merge.stdout or "") else "up_to_date",
             "shared_parent": False,
+        }
+        service_leases[key] = {
+            "repo_root": str(git_root),
+            "branch": current_branch or service_branch,
+            "base_branch": service_baseline,
+            "worktree_path": str(lane),
+            "git_head": head,
+            "state": "leased",
         }
 
     blocked = bool(reason_codes) or (
@@ -431,6 +573,18 @@ def _materialize_service_worktrees(
                 blocked = True
                 reason_codes.append(f"service_worktree_missing:{key}")
 
+    pool_update: dict[str, Any] = {}
+    if not blocked and service_leases:
+        pool_update = upsert_service_pool_leases(
+            root,
+            version=version,
+            feature=feature,
+            service_leases=service_leases,
+        )
+        if pool_update.get("blocked"):
+            blocked = True
+            reason_codes.append(str(pool_update.get("reason_code") or "workspace_pool_state_corrupt"))
+
     return {
         "status": "blocked" if blocked else "pass",
         "blocked": blocked,
@@ -440,6 +594,7 @@ def _materialize_service_worktrees(
         "service_reconcile": service_reconcile,
         "topology_kind": topology or ("multi_git_workspace" if multi_roots else "single_repo"),
         "writable_services": [str(item.get("service_key") or "") for item in bindings],
+        "pool_update": pool_update,
     }
 
 
@@ -653,6 +808,22 @@ def ensure_implement_admission(
         base["reason_codes"] = list(services.get("reason_codes") or [base["reason_code"]])
         base["user_facing"] = "implement blocked: writable service worktrees incomplete or invalid"
         return base
+
+    if check_cwd is not None and base.get("service_worktree_map"):
+        write_gate = assert_service_write_authorized(
+            target_path=check_cwd,
+            service_worktree_map=base["service_worktree_map"],
+            parent_worktree=worktree_path,
+        )
+        base["write_authorization"] = write_gate
+        if write_gate.get("blocked"):
+            base["reason_code"] = str(write_gate.get("reason_code") or REASON_PARENT_ONLY_SERVICE_WRITE)
+            base["reason_codes"] = [base["reason_code"]]
+            base["user_facing"] = "implement blocked: write target is not inside an admitted service worktree"
+            base["status"] = "blocked"
+            base["blocked"] = True
+            base["allow_implement"] = False
+            return base
 
     # Enrich admission artifact with service map for QA replay
     try:

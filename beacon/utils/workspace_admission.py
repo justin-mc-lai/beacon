@@ -238,22 +238,35 @@ def _lease_holder() -> str:
 
 def _load_pool_state(path: Path) -> tuple[dict[str, Any] | None, dict[str, Any] | None]:
     if not path.is_file():
-        return {"schema_version": "workspace-pool-v1", "entries": {}}, None
+        return {"schema_version": "workspace-pool-v2", "entries": {}}, None
     try:
         payload = json.loads(path.read_text(encoding="utf-8"))
     except (json.JSONDecodeError, OSError) as exc:
         return None, {"reason_code": "workspace_pool_state_corrupt", "message": str(exc)}
     if not isinstance(payload, dict) or not isinstance(payload.get("entries"), dict):
         return None, {"reason_code": "workspace_pool_state_corrupt", "message": "pool state must contain entries mapping"}
+    schema = str(payload.get("schema_version") or "workspace-pool-v1").strip()
+    if schema not in {"workspace-pool-v1", "workspace-pool-v2"}:
+        return None, {"reason_code": "workspace_pool_state_corrupt", "message": f"unsupported pool schema: {schema}"}
+    # Promote in-memory to v2 while preserving v1 parent entries.
+    if schema == "workspace-pool-v1":
+        payload = {**payload, "schema_version": "workspace-pool-v2"}
+        for key, entry in list(payload.get("entries", {}).items()):
+            if isinstance(entry, dict) and "services" not in entry:
+                entry = {**entry, "services": {}}
+                payload["entries"][key] = entry
     return payload, None
 
 
 def _write_pool_state(path: Path, payload: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
+    if str(payload.get("schema_version") or "").startswith("workspace-pool-v1"):
+        payload = {**payload, "schema_version": "workspace-pool-v2"}
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
 def _pool_entry_from_payload(payload: dict[str, Any], *, state: str, holder: str, released_at: str = "") -> dict[str, Any]:
+    services = payload.get("services") if isinstance(payload.get("services"), dict) else {}
     return {
         "state": state,
         "feature_slug": str(payload.get("feature_slug") or ""),
@@ -263,6 +276,103 @@ def _pool_entry_from_payload(payload: dict[str, Any], *, state: str, holder: str
         "leased_at": now_iso() if state == "leased" else str(payload.get("leased_at") or ""),
         "released_at": released_at,
         "git_head": str(payload.get("git_head") or ""),
+        "services": dict(services),
+    }
+
+
+def _service_pool_entry(
+    *,
+    service_key: str,
+    repo_root: str,
+    branch: str,
+    base_branch: str,
+    worktree_path: str,
+    git_head: str,
+    state: str,
+    holder: str,
+    leased_at: str = "",
+    released_at: str = "",
+) -> dict[str, Any]:
+    return {
+        "service_key": service_key,
+        "repo_root": repo_root,
+        "branch": branch,
+        "base_branch": base_branch,
+        "worktree_path": worktree_path,
+        "state": state,
+        "lease_holder": holder,
+        "leased_at": leased_at or (now_iso() if state == "leased" else ""),
+        "released_at": released_at,
+        "git_head": git_head,
+    }
+
+
+def upsert_service_pool_leases(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+    service_leases: dict[str, dict[str, Any]],
+    holder: str = "",
+) -> dict[str, Any]:
+    """Attach/update service leases under a feature parent pool entry (workspace-pool-v2)."""
+    root = resolve_workspace_project_root(project_root)
+    slug = feature_slug(feature)
+    path = pool_state_path(root, version=version)
+    state, error = _load_pool_state(path)
+    if error:
+        return {"status": "blocked", "blocked": True, **error, "version": version, "feature_slug": slug}
+    assert state is not None
+    entries = state.setdefault("entries", {})
+    entry = entries.get(slug)
+    if not isinstance(entry, dict):
+        entry = {
+            "state": "leased",
+            "feature_slug": slug,
+            "branch": "",
+            "worktree_path": "",
+            "lease_holder": holder or _lease_holder(),
+            "leased_at": now_iso(),
+            "released_at": "",
+            "git_head": "",
+            "services": {},
+        }
+    services = entry.setdefault("services", {})
+    if not isinstance(services, dict):
+        services = {}
+        entry["services"] = services
+    effective_holder = holder or _lease_holder()
+    for key, lease in service_leases.items():
+        if not isinstance(lease, dict):
+            continue
+        services[str(key)] = _service_pool_entry(
+            service_key=str(key),
+            repo_root=str(lease.get("repo_root") or ""),
+            branch=str(lease.get("branch") or ""),
+            base_branch=str(lease.get("base_branch") or ""),
+            worktree_path=str(lease.get("worktree_path") or ""),
+            git_head=str(lease.get("git_head") or ""),
+            state=str(lease.get("state") or "leased"),
+            holder=effective_holder,
+            leased_at=str(lease.get("leased_at") or ""),
+            released_at=str(lease.get("released_at") or ""),
+        )
+    entry["services"] = services
+    if entry.get("state") != "leased":
+        entry["state"] = "leased"
+        entry["lease_holder"] = effective_holder
+        entry["leased_at"] = now_iso()
+        entry["released_at"] = ""
+    entries[slug] = entry
+    state["schema_version"] = "workspace-pool-v2"
+    _write_pool_state(path, state)
+    return {
+        "status": "pass",
+        "blocked": False,
+        "version": version,
+        "feature_slug": slug,
+        "pool_entry": entry,
+        "pool_state_path": str(path),
     }
 
 
@@ -296,13 +406,30 @@ def release_workspace_lease(
     effective_holder = holder or _lease_holder()
     if entry.get("state") == "leased" and entry.get("lease_holder") not in {"", effective_holder}:
         return {"schema_version": "1.0", "status": "blocked", "blocked": True, "reason_code": "workspace_pool_lease_in_use", "version": version, "feature_slug": slug}
+    released_at = now_iso()
     entry["state"] = "released"
     entry["lease_holder"] = effective_holder
-    entry["released_at"] = now_iso()
+    entry["released_at"] = released_at
+    services = entry.get("services") if isinstance(entry.get("services"), dict) else {}
+    for key, service_entry in list(services.items()):
+        if not isinstance(service_entry, dict):
+            continue
+        service_entry = {**service_entry, "state": "released", "lease_holder": effective_holder, "released_at": released_at}
+        services[key] = service_entry
+    entry["services"] = services
     entries[slug] = entry
+    state["schema_version"] = "workspace-pool-v2"
     _write_pool_state(path, state)
-    return {"schema_version": "1.0", "status": "pass", "blocked": False, "version": version, "feature_slug": slug, "pool_entry": entry, "pool_state_path": str(path)}
-
+    return {
+        "schema_version": "1.0",
+        "status": "pass",
+        "blocked": False,
+        "version": version,
+        "feature_slug": slug,
+        "pool_entry": entry,
+        "pool_state_path": str(path),
+        "worktree_deleted": False,
+    }
 
 def write_admission_artifact(path: Path, payload: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -648,8 +775,10 @@ def run_workspace_admit(
             "leased_at": now_iso(),
             "released_at": "",
             "git_head": git_head,
+            "services": {},
         }
         pool_state.setdefault("entries", {})[slug] = entry
+        pool_state["schema_version"] = "workspace-pool-v2"
         _write_pool_state(pool_path, pool_state)
         payload["pool_entry"] = entry
         payload["pool_state_path"] = str(pool_path)

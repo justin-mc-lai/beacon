@@ -97,6 +97,51 @@ def _parse_service_bindings(body: str) -> list[dict[str, Any]]:
     return bindings
 
 
+FEATURE_WORKTREE_BINDING_MARKERS = (".worktrees/feature-", "/.worktrees/feature-")
+
+
+def is_feature_worktree_binding_path(repo_root: str) -> bool:
+    """True when a global service binding points at a version feature worktree (not a stable repo root)."""
+    text = str(repo_root or "").replace("\\", "/").strip()
+    if not text:
+        return False
+    return any(marker in text for marker in FEATURE_WORKTREE_BINDING_MARKERS)
+
+
+def resolve_primary_binding(bindings: list[Any]) -> dict[str, Any] | None:
+    """Order-independent primary: explicit role=primary wins; never first-service fallback."""
+    items = [item for item in bindings if isinstance(item, dict)]
+    for item in items:
+        if str(item.get("role") or "").strip() == "primary":
+            return item
+    return None
+
+
+def migrate_feature_worktree_service_bindings(bindings: list[Any]) -> dict[str, Any]:
+    """Report service bindings whose repo_root points at `.worktrees/feature-*` for migration."""
+    findings: list[dict[str, Any]] = []
+    for item in bindings:
+        if not isinstance(item, dict):
+            continue
+        repo_root = str(item.get("repo_root") or item.get("repo_root_relative") or "").strip()
+        if not is_feature_worktree_binding_path(repo_root):
+            continue
+        findings.append(
+            {
+                "service_key": str(item.get("service_key") or "").strip(),
+                "repo_root": repo_root,
+                "reason_code": "service_binding_points_at_feature_worktree",
+                "migration": "point repo_root at the stable service git root; keep feature worktrees in pool/admission only",
+            }
+        )
+    return {
+        "status": "pass" if not findings else "action_required",
+        "reason_code": "" if not findings else "service_binding_points_at_feature_worktree",
+        "findings": findings,
+        "count": len(findings),
+    }
+
+
 def _assign_version_kv(contract: dict[str, Any], key: str, value: str) -> None:
     if key == "participating_services":
         contract["participating_services"] = [item.strip() for item in value.split(",") if item.strip()]
@@ -118,6 +163,7 @@ def _assign_version_kv(contract: dict[str, Any], key: str, value: str) -> None:
         "admission_invalidation",
         "truth_canonical",
         "runtime_mirror",
+        "service_worktree_path_pattern",
     }:
         contract[key] = value
         return
@@ -145,6 +191,7 @@ def _parse_version_contracts(body: str) -> dict[str, Any]:
     current: dict[str, Any] = {}
     in_versions = False
     in_branch_map = False
+    branch_map_key = ""
     for line in body.splitlines():
         if line.strip() == "## Version Contracts":
             in_versions = True
@@ -160,26 +207,36 @@ def _parse_version_contracts(body: str) -> dict[str, Any]:
                 "version": current_version,
                 "participating_services": [],
                 "per_service_canonical_branch": {},
+                "per_service_baseline_branch": {},
+                "service_worktree_path_pattern": "",
                 "branch_guard_mode": "strict",
                 "validation_state": "active",
                 "branch_governance": {},
             }
             in_branch_map = False
+            branch_map_key = ""
             continue
         if not current_version:
             continue
         if line.strip().startswith("## "):
             break
-        if line.strip().lower() == "- per_service_canonical_branch:":
+        lower = line.strip().lower()
+        if lower in {"- per_service_canonical_branch:", "- per_service_baseline_branch:"}:
             in_branch_map = True
+            branch_map_key = (
+                "per_service_canonical_branch"
+                if "canonical" in lower
+                else "per_service_baseline_branch"
+            )
             continue
         if in_branch_map:
             branch_match = _BRANCH_MAP_RE.match(line)
-            if branch_match:
-                current.setdefault("per_service_canonical_branch", {})[branch_match.group(1)] = branch_match.group(2)
+            if branch_match and branch_map_key:
+                current.setdefault(branch_map_key, {})[branch_match.group(1)] = branch_match.group(2)
                 continue
             if line.strip() and not line.startswith("  "):
                 in_branch_map = False
+                branch_map_key = ""
         kv = _KV_BULLET_RE.match(line)
         if kv:
             key = kv.group(1).strip().lower().replace(" ", "_")
@@ -307,6 +364,15 @@ def render_governance_markdown(payload: dict[str, Any]) -> str:
             lines.append("- per_service_canonical_branch:")
             for service_key, branch in sorted(per_service.items()):
                 lines.append(f"  - `{service_key}`: `{branch}`")
+        per_service_baseline = (
+            contract.get("per_service_baseline_branch")
+            if isinstance(contract.get("per_service_baseline_branch"), dict)
+            else {}
+        )
+        if per_service_baseline:
+            lines.append("- per_service_baseline_branch:")
+            for service_key, branch in sorted(per_service_baseline.items()):
+                lines.append(f"  - `{service_key}`: `{branch}`")
         truth_canonical = str(contract.get("truth_canonical") or "").strip()
         if truth_canonical:
             lines.append(f"- truth_canonical: `{truth_canonical}`")
@@ -350,10 +416,13 @@ def render_governance_markdown(payload: dict[str, Any]) -> str:
             lines.append("- allow_worktree_when_feature_dirty: `true`")
         worktree_mode = str(contract.get("worktree_mode") or governance.get("worktree_mode") or "").strip()
         worktree_path = str(contract.get("worktree_path") or governance.get("worktree_path") or "").strip()
+        service_path_pattern = str(contract.get("service_worktree_path_pattern") or "").strip()
         if worktree_mode:
             lines.append(f"- worktree_mode: `{worktree_mode}`")
         if worktree_path:
             lines.append(f"- worktree_path: `{worktree_path}`")
+        if service_path_pattern:
+            lines.append(f"- service_worktree_path_pattern: `{service_path_pattern}`")
         if contract.get("require_workspace_admission") is not None:
             lines.append(
                 f"- require_workspace_admission: `{str(bool(contract.get('require_workspace_admission'))).lower()}`"

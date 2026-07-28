@@ -737,12 +737,48 @@ def verify_project_metadata(project_root: Path, *, version: str = "") -> dict[st
     topology_kind = str(view.get("topology_kind") or "").strip()
     checks.append(
         {
-            "status": "pass" if topology_kind in {"single_repo", "monorepo"} else "fail",
+            "status": "pass" if topology_kind in {"single_repo", "monorepo", "multi_git_workspace"} else "fail",
             "name": "topology_kind",
             "details": {"value": topology_kind},
         }
     )
     bindings = view.get("service_bindings") if isinstance(view.get("service_bindings"), list) else []
+    from beacon.utils.project_governance import (
+        migrate_feature_worktree_service_bindings,
+        resolve_primary_binding,
+    )
+
+    primary = resolve_primary_binding(bindings)
+    if topology_kind == "multi_git_workspace":
+        checks.append(
+            {
+                "status": "pass" if primary is not None else "fail",
+                "name": "explicit_primary_binding",
+                "details": {
+                    "primary_service_key": str((primary or {}).get("service_key") or ""),
+                    "reason_code": "" if primary is not None else "multi_git_primary_missing",
+                },
+            }
+        )
+    else:
+        checks.append(
+            {
+                "status": "pass",
+                "name": "explicit_primary_binding",
+                "details": {
+                    "primary_service_key": str((primary or {}).get("service_key") or ""),
+                    "optional": True,
+                },
+            }
+        )
+    migration = migrate_feature_worktree_service_bindings(bindings)
+    checks.append(
+        {
+            "status": "pass" if migration.get("status") == "pass" else "fail",
+            "name": "stable_service_repo_roots",
+            "details": migration,
+        }
+    )
     default_service = str(view.get("default_execution_service") or "").strip()
     checks.append(
         {
