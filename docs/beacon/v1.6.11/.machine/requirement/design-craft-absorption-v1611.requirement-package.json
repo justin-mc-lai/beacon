@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-28T03:05:42.818579+00:00",
+  "generated_at": "2026-07-28T03:35:19.497704+00:00",
   "feature": "design-craft-absorption-v1611",
   "feature_slug": "design-craft-absorption-v1611",
   "version": "v1.6.11",
@@ -18,16 +18,16 @@
     "evidence": "docs/beacon/v1.6.11/features/design-craft-absorption-v1611/evidence.md"
   },
   "source_hashes": {
-    "truth": "960a54ed11ee8d914c873da75bbf3678b2557ba48654cfce8e34bacc0282ace6",
-    "tests": "5db9a0de47e3841174e381c1e903345de76f3c45c267188d9eaccffd5d6263fc",
-    "tasks": "d3d1a07628ca725bb9c10a6aba606fd89b15f98b9b97f5c4a347b3443878637f",
-    "evidence": "a7c9fe2ffc63c70878f4a8704dba7df8edd9386595728f98051fc490c548f750"
+    "truth": "4b1b0f23a5bd422a3e0b9b3236ed16edf23a741fd385292d005b572039bffad0",
+    "tests": "e10210e6cdae1460dd6c9536cf91f79dd995da37d54254111ba8341de44d620a",
+    "tasks": "b493fa54b64c4858b8ce7809fc674700147d1c3a0340c017b33a8600c56ba6ff",
+    "evidence": "08db4e17b283cc97da70899ffe74e8b851464a4108b92c4f75c37647b00d2d63"
   },
   "truth_frontmatter": {
     "slug": "design-craft-absorption-v1611",
     "version": "v1.6.11",
     "status": "frozen",
-    "revision_id": "R1",
+    "revision_id": "R2",
     "language": "zh",
     "domain_required": "true",
     "domain_kind": "platform",
@@ -42,8 +42,8 @@
     "truth_map_contract": "beacon-truth-map-v1",
     "participating_services": "beacon",
     "git_canonical_branch": "main",
-    "previous_revision": "",
-    "change_reason": "Absorb ui-skills craft modules into beacon-design as support-only capabilities without expanding 1+6 lifecycle",
+    "previous_revision": "R1",
+    "change_reason": "repair stale freeze-readiness prose after R1 freeze",
     "parent_truth": "docs/beacon/v1.6.11/SUMMARY.md",
     "inherited_contracts": "skills/beacon/beacon-design/SKILL.md; docs/beacon/global-boundaries.md",
     "canonical_refs": {
@@ -60,49 +60,49 @@
   "frontmatter_errors": [],
   "acceptance_criteria": [
     {
-      "ac_id": "AC-CRAFT-001",
-      "theme": "Beacon 仅通过 `beacon-design` public harness 暴露 craft；不新增 1+6 public skill，不新增主生命周期 stage。",
-      "description": ""
+      "ac_id": "AC-001",
+      "theme": "public-surface",
+      "description": "Beacon 仅通过 `beacon-design` public harness 暴露 craft；不新增 1+6 public skill，不新增主生命周期 stage。"
     },
     {
-      "ac_id": "AC-CRAFT-002",
-      "theme": "四个 module（baseline/a11y/motion/improve）均有 Beacon-owned progressive reference，并可被 design craft router 选中。",
-      "description": ""
+      "ac_id": "AC-002",
+      "theme": "craft-refs",
+      "description": "四个 module（baseline/a11y/motion/improve）均有 Beacon-owned progressive reference，并可被 design craft router 选中。"
     },
     {
-      "ac_id": "AC-CRAFT-003",
-      "theme": "craft 输出必须标记 `support_only=true` 且 `truth_source=false`；缺省或伪造权限字段时路由/校验失败。",
-      "description": ""
+      "ac_id": "AC-003",
+      "theme": "authority-schema",
+      "description": "craft 输出必须标记 `support_only=true` 且 `truth_source=false`；缺省或伪造权限字段时路由/校验失败。"
     },
     {
-      "ac_id": "AC-CRAFT-004",
-      "theme": "improve 在产品源上只读；计划只写入受控 craft plan 根目录；试图改产品源必须被拒绝。",
-      "description": ""
+      "ac_id": "AC-004",
+      "theme": "write-guard",
+      "description": "improve 在产品源上只读；计划只写入受控 craft plan 根目录；试图改产品源必须被拒绝。"
     },
     {
-      "ac_id": "AC-CRAFT-005",
-      "theme": "improve finding 必须同时具备 contract/runtime/correction 三门证明，否则不得进入 plan。",
-      "description": ""
+      "ac_id": "AC-005",
+      "theme": "proof-gate",
+      "description": "improve finding 必须同时具备 contract/runtime/correction 三门证明，否则不得进入 plan。"
     },
     {
-      "ac_id": "AC-CRAFT-006",
-      "theme": "craft finding 若改变产品承诺/AC/状态，只能推荐 `prototype_adapt` 或 `change_refreeze`，不能直接升格 truth。",
-      "description": ""
+      "ac_id": "AC-006",
+      "theme": "binding-route",
+      "description": "craft finding 若改变产品承诺/AC/状态，只能推荐 `prototype_adapt` 或 `change_refreeze`，不能直接升格 truth。"
     },
     {
-      "ac_id": "AC-CRAFT-007",
-      "theme": "router 默认选择 ≤2 个 module；无 utterance/feature 上下文时不得静默全开 4 个 craft。",
-      "description": ""
+      "ac_id": "AC-007",
+      "theme": "router-scope",
+      "description": "router 默认选择 ≤2 个 module；无 utterance/feature 上下文时不得静默全开 4 个 craft。"
     },
     {
-      "ac_id": "AC-CRAFT-008",
-      "theme": "SEO/metadata 与 ui-skills 其余 registry skill **明确 defer**，本包不实现、不假装覆盖。",
-      "description": ""
+      "ac_id": "AC-008",
+      "theme": "deferred-scope",
+      "description": "SEO/metadata 与 ui-skills 其余 registry skill **明确 defer**，本包不实现、不假装覆盖。"
     }
   ],
   "test_rows": [
     {
-      "ac_id": "AC-CRAFT-001",
+      "ac_id": "AC-001",
       "tc_id": "TC-CRAFT-001",
       "layer": "",
       "command": "`python3 -m pytest -q tests/test_design_craft_absorption_v1611.py -k public_surface_no_new_lifecycle --tb=no`",
@@ -110,7 +110,7 @@
       "evidence_path": ""
     },
     {
-      "ac_id": "AC-CRAFT-002",
+      "ac_id": "AC-002",
       "tc_id": "TC-CRAFT-002",
       "layer": "",
       "command": "`python3 -m pytest -q tests/test_design_craft_absorption_v1611.py -k craft_refs_selectable --tb=no`",
@@ -118,7 +118,7 @@
       "evidence_path": ""
     },
     {
-      "ac_id": "AC-CRAFT-003",
+      "ac_id": "AC-003",
       "tc_id": "TC-CRAFT-003",
       "layer": "",
       "command": "`python3 -m pytest -q tests/test_design_craft_absorption_v1611.py -k support_only_schema --tb=no`",
@@ -126,7 +126,7 @@
       "evidence_path": ""
     },
     {
-      "ac_id": "AC-CRAFT-004",
+      "ac_id": "AC-004",
       "tc_id": "TC-CRAFT-004",
       "layer": "",
       "command": "`python3 -m pytest -q tests/test_design_craft_absorption_v1611.py -k improve_write_guard --tb=no`",
@@ -134,7 +134,7 @@
       "evidence_path": ""
     },
     {
-      "ac_id": "AC-CRAFT-005",
+      "ac_id": "AC-005",
       "tc_id": "TC-CRAFT-005",
       "layer": "",
       "command": "`python3 -m pytest -q tests/test_design_craft_absorption_v1611.py -k improve_proof_gate --tb=no`",
@@ -142,7 +142,7 @@
       "evidence_path": ""
     },
     {
-      "ac_id": "AC-CRAFT-006",
+      "ac_id": "AC-006",
       "tc_id": "TC-CRAFT-006",
       "layer": "",
       "command": "`python3 -m pytest -q tests/test_design_craft_absorption_v1611.py -k binding_routes --tb=no`",
@@ -150,7 +150,7 @@
       "evidence_path": ""
     },
     {
-      "ac_id": "AC-CRAFT-007",
+      "ac_id": "AC-007",
       "tc_id": "TC-CRAFT-007",
       "layer": "",
       "command": "`python3 -m pytest -q tests/test_design_craft_absorption_v1611.py -k router_max_modules --tb=no`",
@@ -158,7 +158,7 @@
       "evidence_path": ""
     },
     {
-      "ac_id": "AC-CRAFT-008",
+      "ac_id": "AC-008",
       "tc_id": "TC-CRAFT-008",
       "layer": "",
       "command": "`python3 -m pytest -q tests/test_design_craft_absorption_v1611.py -k metadata_deferred --tb=no`",
@@ -166,7 +166,7 @@
       "evidence_path": ""
     },
     {
-      "ac_id": "AC-CRAFT-001",
+      "ac_id": "AC-001",
       "tc_id": "TC-CRAFT-ILLEGAL",
       "layer": "",
       "command": "`python3 -m pytest -q tests/test_design_craft_absorption_v1611.py -k craft_illegal_transition --tb=no`",
@@ -177,42 +177,42 @@
   "task_rows": [
     {
       "id": "TASK-001",
-      "title": "Implement AC-CRAFT-001: Beacon 仅通过 `beacon-design` public harness 暴露 craft；不新增 1+6 public ski... · ac=AC-CRAFT-001 · evidence=`.beacon/evidence/implement/design-craft-absorption-v1611/AC-CRAFT-001.json`",
+      "title": "Implement AC-001: Beacon 仅通过 `beacon-design` public harness 暴露 craft；不新增 1+6 public ski... · ac=AC-001 · evidence=`.beacon/evidence/implement/design-craft-absorption-v1611/AC-001.json`",
       "status": "unchecked"
     },
     {
       "id": "TASK-002",
-      "title": "Implement AC-CRAFT-002: 四个 module（baseline/a11y/motion/improve）均有 Beacon-owned progressive re... · ac=AC-CRAFT-002 · evidence=`.beacon/evidence/implement/design-craft-absorption-v1611/AC-CRAFT-002.json`",
+      "title": "Implement AC-002: 四个 module（baseline/a11y/motion/improve）均有 Beacon-owned progressive re... · ac=AC-002 · evidence=`.beacon/evidence/implement/design-craft-absorption-v1611/AC-002.json`",
       "status": "unchecked"
     },
     {
       "id": "TASK-003",
-      "title": "Implement AC-CRAFT-003: craft 输出必须标记 `support_only=true` 且 `truth_source=false`；缺省或伪造权限字段时路由/... · ac=AC-CRAFT-003 · evidence=`.beacon/evidence/implement/design-craft-absorption-v1611/AC-CRAFT-003.json`",
+      "title": "Implement AC-003: craft 输出必须标记 `support_only=true` 且 `truth_source=false`；缺省或伪造权限字段时路由/... · ac=AC-003 · evidence=`.beacon/evidence/implement/design-craft-absorption-v1611/AC-003.json`",
       "status": "unchecked"
     },
     {
       "id": "TASK-004",
-      "title": "Implement AC-CRAFT-004: improve 在产品源上只读；计划只写入受控 craft plan 根目录；试图改产品源必须被拒绝。 · ac=AC-CRAFT-004 · evidence=`.beacon/evidence/implement/design-craft-absorption-v1611/AC-CRAFT-004.json`",
+      "title": "Implement AC-004: improve 在产品源上只读；计划只写入受控 craft plan 根目录；试图改产品源必须被拒绝。 · ac=AC-004 · evidence=`.beacon/evidence/implement/design-craft-absorption-v1611/AC-004.json`",
       "status": "unchecked"
     },
     {
       "id": "TASK-005",
-      "title": "Implement AC-CRAFT-005: improve finding 必须同时具备 contract/runtime/correction 三门证明，否则不得进入 plan。 · ac=AC-CRAFT-005 · evidence=`.beacon/evidence/implement/design-craft-absorption-v1611/AC-CRAFT-005.json`",
+      "title": "Implement AC-005: improve finding 必须同时具备 contract/runtime/correction 三门证明，否则不得进入 plan。 · ac=AC-005 · evidence=`.beacon/evidence/implement/design-craft-absorption-v1611/AC-005.json`",
       "status": "unchecked"
     },
     {
       "id": "TASK-006",
-      "title": "Implement AC-CRAFT-006: craft finding 若改变产品承诺/AC/状态，只能推荐 `prototype_adapt` 或 `change_refreeze... · ac=AC-CRAFT-006 · evidence=`.beacon/evidence/implement/design-craft-absorption-v1611/AC-CRAFT-006.json`",
+      "title": "Implement AC-006: craft finding 若改变产品承诺/AC/状态，只能推荐 `prototype_adapt` 或 `change_refreeze... · ac=AC-006 · evidence=`.beacon/evidence/implement/design-craft-absorption-v1611/AC-006.json`",
       "status": "unchecked"
     },
     {
       "id": "TASK-007",
-      "title": "Implement AC-CRAFT-007: router 默认选择 ≤2 个 module；无 utterance/feature 上下文时不得静默全开 4 个 craft。 · ac=AC-CRAFT-007 · evidence=`.beacon/evidence/implement/design-craft-absorption-v1611/AC-CRAFT-007.json`",
+      "title": "Implement AC-007: router 默认选择 ≤2 个 module；无 utterance/feature 上下文时不得静默全开 4 个 craft。 · ac=AC-007 · evidence=`.beacon/evidence/implement/design-craft-absorption-v1611/AC-007.json`",
       "status": "unchecked"
     },
     {
       "id": "TASK-008",
-      "title": "Implement AC-CRAFT-008: SEO/metadata 与 ui-skills 其余 registry skill **明确 defer**，本包不实现、不假装覆盖。 · ac=AC-CRAFT-008 · evidence=`.beacon/evidence/implement/design-craft-absorption-v1611/AC-CRAFT-008.json`",
+      "title": "Implement AC-008: SEO/metadata 与 ui-skills 其余 registry skill **明确 defer**，本包不实现、不假装覆盖。 · ac=AC-008 · evidence=`.beacon/evidence/implement/design-craft-absorption-v1611/AC-008.json`",
       "status": "unchecked"
     },
     {
@@ -232,7 +232,7 @@
       "surface": "requirement",
       "authority": "requirement_truth",
       "canonical_artifact": "docs/beacon/v1.6.11/features/design-craft-absorption-v1611/truth.md",
-      "status": "draft-filled",
+      "status": "frozen R2",
       "route": "truth"
     },
     {
@@ -288,7 +288,7 @@
       "surface": "change",
       "authority": "support_advisory",
       "canonical_artifact": "docs/beacon/v1.6.11/change/design-craft-absorption-v1611.md",
-      "status": "drafted",
+      "status": "refrozen R2",
       "route": "truth"
     },
     {

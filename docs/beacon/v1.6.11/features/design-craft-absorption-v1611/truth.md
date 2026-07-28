@@ -2,7 +2,7 @@
 slug: design-craft-absorption-v1611
 version: v1.6.11
 status: frozen
-revision_id: R1
+revision_id: R2
 language: zh
 domain_required: true
 domain_kind: platform
@@ -17,8 +17,8 @@ baseline_commit: ce8b1be75ba3ef06c38b69de226150702739f3e8
 truth_map_contract: beacon-truth-map-v1
 participating_services: beacon
 git_canonical_branch: main
-previous_revision: ""
-change_reason: "Absorb ui-skills craft modules into beacon-design as support-only capabilities without expanding 1+6 lifecycle"
+previous_revision: R1
+change_reason: "repair stale freeze-readiness prose after R1 freeze"
 parent_truth: docs/beacon/v1.6.11/SUMMARY.md
 inherited_contracts: "skills/beacon/beacon-design/SKILL.md; docs/beacon/global-boundaries.md"
 canonical_refs:
@@ -45,7 +45,7 @@ Beacon design 已经会管设计、绑真相、拦住实现乱发挥；缺的是
 
 ## User Intent
 
-为 v1.6.11 冻结“design craft absorption”需求真相草案：  
+为 v1.6.11 冻结“design craft absorption”需求真相包：  
 `baseline-ui + a11y + motion + improve-ui` → Beacon design support craft layer。
 
 ## User Intent Snapshot
@@ -105,7 +105,7 @@ scope_ack_ref: user-request-2026-07-28-design-craft-absorption
 | DesignCraftRun | run_id, feature, version, modules[], status, support_only | 一次 craft 运行记录 |
 | BindingRoute | none \| prototype_adapt \| change_refreeze \| implement_advisory | finding 如何进入后续 harness |
 
-### Frozen module map（本草案冻结的进入方式）
+### Frozen module map（本包冻结的进入方式）
 
 | module_id | upstream skill | design entry | primary output | may touch product source? | binding |
 |-----------|----------------|--------------|----------------|---------------------------|---------|
@@ -172,31 +172,31 @@ evidence_refs: []
 6. 无 proof 三门的 improve finding 进入 plan
 7. craft 输出缺 `support_only=true` 却被 implement 当硬门
 
+## Acceptance Criteria
+
+| AC ID | Theme | Description |
+|-------|-------|-------------|
+| AC-001 | public-surface | Beacon 仅通过 `beacon-design` public harness 暴露 craft；不新增 1+6 public skill，不新增主生命周期 stage。 |
+| AC-002 | craft-refs | 四个 module（baseline/a11y/motion/improve）均有 Beacon-owned progressive reference，并可被 design craft router 选中。 |
+| AC-003 | authority-schema | craft 输出必须标记 `support_only=true` 且 `truth_source=false`；缺省或伪造权限字段时路由/校验失败。 |
+| AC-004 | write-guard | improve 在产品源上只读；计划只写入受控 craft plan 根目录；试图改产品源必须被拒绝。 |
+| AC-005 | proof-gate | improve finding 必须同时具备 contract/runtime/correction 三门证明，否则不得进入 plan。 |
+| AC-006 | binding-route | craft finding 若改变产品承诺/AC/状态，只能推荐 `prototype_adapt` 或 `change_refreeze`，不能直接升格 truth。 |
+| AC-007 | router-scope | router 默认选择 ≤2 个 module；无 utterance/feature 上下文时不得静默全开 4 个 craft。 |
+| AC-008 | deferred-scope | SEO/metadata 与 ui-skills 其余 registry skill **明确 defer**，本包不实现、不假装覆盖。 |
+
 ## Intent Coverage Matrix
 
 | intent_id | source | strength | landing | status |
 |-----------|--------|----------|---------|--------|
-| INT-CRAFT-01 | user | must | AC-CRAFT-001 | covered |
-| INT-CRAFT-02 | user | must | AC-CRAFT-002 | covered |
-| INT-CRAFT-03 | analysis | must | AC-CRAFT-003 | covered |
-| INT-CRAFT-04 | analysis | must | AC-CRAFT-004 | covered |
-| INT-CRAFT-05 | boundaries | must | AC-CRAFT-005 | covered |
-| INT-CRAFT-06 | boundaries | must | AC-CRAFT-006 | covered |
-| INT-CRAFT-07 | user | must | AC-CRAFT-007 | covered |
-| INT-CRAFT-08 | defer | should | AC-CRAFT-008 | deferred-metadata |
-
-## Acceptance Criteria
-
-| AC ID | Statement |
-|-------|-----------|
-| AC-CRAFT-001 | Beacon 仅通过 `beacon-design` public harness 暴露 craft；不新增 1+6 public skill，不新增主生命周期 stage。 |
-| AC-CRAFT-002 | 四个 module（baseline/a11y/motion/improve）均有 Beacon-owned progressive reference，并可被 design craft router 选中。 |
-| AC-CRAFT-003 | craft 输出必须标记 `support_only=true` 且 `truth_source=false`；缺省或伪造权限字段时路由/校验失败。 |
-| AC-CRAFT-004 | improve 在产品源上只读；计划只写入受控 craft plan 根目录；试图改产品源必须被拒绝。 |
-| AC-CRAFT-005 | improve finding 必须同时具备 contract/runtime/correction 三门证明，否则不得进入 plan。 |
-| AC-CRAFT-006 | craft finding 若改变产品承诺/AC/状态，只能推荐 `prototype_adapt` 或 `change_refreeze`，不能直接升格 truth。 |
-| AC-CRAFT-007 | router 默认选择 ≤2 个 module；无 utterance/feature 上下文时不得静默全开 4 个 craft。 |
-| AC-CRAFT-008 | SEO/metadata 与 ui-skills 其余 registry skill **明确 defer**，本包不实现、不假装覆盖。 |
+| INT-CRAFT-01 | user | must | AC-001 | covered |
+| INT-CRAFT-02 | user | must | AC-002 | covered |
+| INT-CRAFT-03 | analysis | must | AC-003 | covered |
+| INT-CRAFT-04 | analysis | must | AC-004 | covered |
+| INT-CRAFT-05 | boundaries | must | AC-005 | covered |
+| INT-CRAFT-06 | boundaries | must | AC-006 | covered |
+| INT-CRAFT-07 | user | must | AC-007 | covered |
+| INT-CRAFT-08 | defer | should | AC-008 | deferred-metadata |
 
 ## Non-goals
 
@@ -204,7 +204,7 @@ evidence_refs: []
 - 把 impeccable / ui-ux-pro-max 替换掉（可并存；craft 是补充）
 - 安装或运行时依赖 `npx ui-skills` 作为硬门
 - 把 design craft 变成 implement 的替代
-- 在 v1.6.11 本草案阶段直接编码落地（本包先真相草案）
+- 在 design harness 内直接编码落地；实现仍归 implement harness 与 admitted worktree
 
 ## Domain FSM DesignCraftRun
 
@@ -247,12 +247,16 @@ evidence_refs: []
 
 ## Risks / Open Questions
 
-1. `gen-design-craft` 作为新 mode 文件，还是挂在 `gen-design-polish` 子路由？**草案默认：独立 mode 文件 + `design route craft`，避免污染 polish 语义。**
-2. craft plan 根目录：`design-plans/`（ui-skills 风格）还是 `docs/beacon/<v>/design/craft-plans/<feature>/`？**草案默认后者**，便于版本审计。
-3. 是否允许 implement 阶段自动召回 craft？**草案默认否**；需 design/goal 显式进入。
+1. `gen-design-craft` 作为新 mode 文件，还是挂在 `gen-design-polish` 子路由？**R2 冻结：独立 mode 文件 + `design route craft`，避免污染 polish 语义。**
+2. craft plan 根目录：`design-plans/`（ui-skills 风格）还是 `docs/beacon/<v>/design/craft-plans/<feature>/`？**R2 冻结：使用后者**，便于版本审计。
+3. 是否允许 implement 阶段自动召回 craft？**R2 冻结：不允许**；需 design/goal 显式进入。
 
-## Freeze readiness
+## Freeze scope
 
-本文件 `status: draft`（R0）。  
-“冻结”的是 **4 craft 如何进入 beacon-design 的结构与权限合同**，不是正式 requirement freeze gate。  
-正式冻结需 `$beacon-truth` review + freeze ack。
+本包冻结的是 **4 个 craft 如何进入 `beacon-design` 的结构与权限合同**：
+
+- `baseline-ui` / `a11y` / `motion` / `improve-ui` 只能作为 design support craft
+- 不新增 public lifecycle stage，不改 1+6 主生命周期
+- craft 只能产出 finding / candidate / plan；不能改写 truth、自证 QA/release，不能替代 implement
+
+冻结不等于实现完成；后续实现必须按 TASK/TC 进入 implement → QA → release。

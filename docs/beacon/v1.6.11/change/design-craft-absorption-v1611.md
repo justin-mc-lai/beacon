@@ -32,4 +32,4 @@
 
 ## Status
 
-draft requirement package R0 — not formally frozen
+R2 refreeze repair: stale freeze-readiness wording removed; frozen scope remains “4 craft modules as beacon-design support capability, no lifecycle expansion”.

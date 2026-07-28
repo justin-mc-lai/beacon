@@ -27,7 +27,7 @@
     "review_gates": [],
     "qa_coverage_hints": [],
     "evidence_lines": {},
-    "generated_at": "2026-07-28T03:05:41.333014+00:00",
+    "generated_at": "2026-07-28T03:35:18.195199+00:00",
     "feature": "design-craft-absorption-v1611",
     "feature_slug": "design-craft-absorption-v1611",
     "prd_ref": "docs/beacon/v1.6.11/prd/design-craft-absorption-v1611.md",
@@ -61,8 +61,8 @@
       "frontmatter": {
         "slug": "design-craft-absorption-v1611",
         "version": "v1.6.11",
-        "status": "draft",
-        "revision_id": "R1",
+        "status": "frozen",
+        "revision_id": "R2",
         "language": "zh",
         "domain_required": "true",
         "domain_kind": "platform",
@@ -77,8 +77,8 @@
         "truth_map_contract": "beacon-truth-map-v1",
         "participating_services": "beacon",
         "git_canonical_branch": "main",
-        "previous_revision": "",
-        "change_reason": "Absorb ui-skills craft modules into beacon-design as support-only capabilities without expanding 1+6 lifecycle",
+        "previous_revision": "R1",
+        "change_reason": "repair stale freeze-readiness prose after R1 freeze",
         "parent_truth": "docs/beacon/v1.6.11/SUMMARY.md",
         "inherited_contracts": "skills/beacon/beacon-design/SKILL.md; docs/beacon/global-boundaries.md",
         "canonical_refs": {
@@ -267,43 +267,43 @@
       ],
       "acceptance_criteria": [
         {
-          "ac_id": "AC-CRAFT-001",
+          "ac_id": "AC-001",
           "description": "Beacon 仅通过 `beacon-design` public harness 暴露 craft；不新增 1+6 public skill，不新增主生命周期 stage。"
         },
         {
-          "ac_id": "AC-CRAFT-002",
+          "ac_id": "AC-002",
           "description": "四个 module（baseline/a11y/motion/improve）均有 Beacon-owned progressive reference，并可被 design craft router 选中。"
         },
         {
-          "ac_id": "AC-CRAFT-003",
+          "ac_id": "AC-003",
           "description": "craft 输出必须标记 `support_only=true` 且 `truth_source=false`；缺省或伪造权限字段时路由/校验失败。"
         },
         {
-          "ac_id": "AC-CRAFT-004",
+          "ac_id": "AC-004",
           "description": "improve 在产品源上只读；计划只写入受控 craft plan 根目录；试图改产品源必须被拒绝。"
         },
         {
-          "ac_id": "AC-CRAFT-005",
+          "ac_id": "AC-005",
           "description": "improve finding 必须同时具备 contract/runtime/correction 三门证明，否则不得进入 plan。"
         },
         {
-          "ac_id": "AC-CRAFT-006",
+          "ac_id": "AC-006",
           "description": "craft finding 若改变产品承诺/AC/状态，只能推荐 `prototype_adapt` 或 `change_refreeze`，不能直接升格 truth。"
         },
         {
-          "ac_id": "AC-CRAFT-007",
+          "ac_id": "AC-007",
           "description": "router 默认选择 ≤2 个 module；无 utterance/feature 上下文时不得静默全开 4 个 craft。"
         },
         {
-          "ac_id": "AC-CRAFT-008",
+          "ac_id": "AC-008",
           "description": "SEO/metadata 与 ui-skills 其余 registry skill **明确 defer**，本包不实现、不假装覆盖。"
         }
       ],
       "bound_ac_ids": [
-        "AC-CRAFT-004"
+        "AC-004"
       ],
       "orphan_ac_ids": [
-        "AC-CRAFT-006"
+        "AC-006"
       ],
       "aggregates_missing_illegal_slots": [],
       "raw_section_titles": [
@@ -313,18 +313,18 @@
         "用户旅程",
         "First principles",
         "Domain Model",
-        "Frozen module map（本草案冻结的进入方式）",
+        "Frozen module map（本包冻结的进入方式）",
         "进入 beacon-design 的结构冻结",
         "输出合同冻结",
         "非法转换（必须拒绝）",
-        "Intent Coverage Matrix",
         "Acceptance Criteria",
+        "Intent Coverage Matrix",
         "Non-goals",
         "Domain FSM DesignCraftRun",
         "FSM 五元组",
         "Illegal transitions",
         "Risks / Open Questions",
-        "Freeze readiness"
+        "Freeze scope"
       ]
     },
     "validation": {
@@ -341,8 +341,8 @@
         "frontmatter": {
           "slug": "design-craft-absorption-v1611",
           "version": "v1.6.11",
-          "status": "draft",
-          "revision_id": "R1",
+          "status": "frozen",
+          "revision_id": "R2",
           "language": "zh",
           "domain_required": "true",
           "domain_kind": "platform",
@@ -357,8 +357,8 @@
           "truth_map_contract": "beacon-truth-map-v1",
           "participating_services": "beacon",
           "git_canonical_branch": "main",
-          "previous_revision": "",
-          "change_reason": "Absorb ui-skills craft modules into beacon-design as support-only capabilities without expanding 1+6 lifecycle",
+          "previous_revision": "R1",
+          "change_reason": "repair stale freeze-readiness prose after R1 freeze",
           "parent_truth": "docs/beacon/v1.6.11/SUMMARY.md",
           "inherited_contracts": "skills/beacon/beacon-design/SKILL.md; docs/beacon/global-boundaries.md",
           "canonical_refs": {
@@ -547,43 +547,43 @@
         ],
         "acceptance_criteria": [
           {
-            "ac_id": "AC-CRAFT-001",
+            "ac_id": "AC-001",
             "description": "Beacon 仅通过 `beacon-design` public harness 暴露 craft；不新增 1+6 public skill，不新增主生命周期 stage。"
           },
           {
-            "ac_id": "AC-CRAFT-002",
+            "ac_id": "AC-002",
             "description": "四个 module（baseline/a11y/motion/improve）均有 Beacon-owned progressive reference，并可被 design craft router 选中。"
           },
           {
-            "ac_id": "AC-CRAFT-003",
+            "ac_id": "AC-003",
             "description": "craft 输出必须标记 `support_only=true` 且 `truth_source=false`；缺省或伪造权限字段时路由/校验失败。"
           },
           {
-            "ac_id": "AC-CRAFT-004",
+            "ac_id": "AC-004",
             "description": "improve 在产品源上只读；计划只写入受控 craft plan 根目录；试图改产品源必须被拒绝。"
           },
           {
-            "ac_id": "AC-CRAFT-005",
+            "ac_id": "AC-005",
             "description": "improve finding 必须同时具备 contract/runtime/correction 三门证明，否则不得进入 plan。"
           },
           {
-            "ac_id": "AC-CRAFT-006",
+            "ac_id": "AC-006",
             "description": "craft finding 若改变产品承诺/AC/状态，只能推荐 `prototype_adapt` 或 `change_refreeze`，不能直接升格 truth。"
           },
           {
-            "ac_id": "AC-CRAFT-007",
+            "ac_id": "AC-007",
             "description": "router 默认选择 ≤2 个 module；无 utterance/feature 上下文时不得静默全开 4 个 craft。"
           },
           {
-            "ac_id": "AC-CRAFT-008",
+            "ac_id": "AC-008",
             "description": "SEO/metadata 与 ui-skills 其余 registry skill **明确 defer**，本包不实现、不假装覆盖。"
           }
         ],
         "bound_ac_ids": [
-          "AC-CRAFT-004"
+          "AC-004"
         ],
         "orphan_ac_ids": [
-          "AC-CRAFT-006"
+          "AC-006"
         ],
         "aggregates_missing_illegal_slots": [],
         "raw_section_titles": [
@@ -593,18 +593,18 @@
           "用户旅程",
           "First principles",
           "Domain Model",
-          "Frozen module map（本草案冻结的进入方式）",
+          "Frozen module map（本包冻结的进入方式）",
           "进入 beacon-design 的结构冻结",
           "输出合同冻结",
           "非法转换（必须拒绝）",
-          "Intent Coverage Matrix",
           "Acceptance Criteria",
+          "Intent Coverage Matrix",
           "Non-goals",
           "Domain FSM DesignCraftRun",
           "FSM 五元组",
           "Illegal transitions",
           "Risks / Open Questions",
-          "Freeze readiness"
+          "Freeze scope"
         ]
       },
       "summary": {
@@ -660,10 +660,46 @@
     "required_research_sections": [],
     "missing_research_sections": [],
     "ac_projection": {
-      "prd_ac_ids": [],
-      "user_story_ac_ids": [],
-      "test_case_ac_ids": [],
-      "upstream_ac_ids": [],
+      "prd_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "user_story_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "test_case_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "upstream_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
       "missing_test_case_ac_ids": []
     }
   },
