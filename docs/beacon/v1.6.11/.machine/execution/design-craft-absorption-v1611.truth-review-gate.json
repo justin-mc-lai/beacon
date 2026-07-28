@@ -1,0 +1,180 @@
+{
+  "schema": "truth-review-gate.v1",
+  "schema_version": "1.0",
+  "feature": "design-craft-absorption-v1611",
+  "version": "v1.6.11",
+  "pass": true,
+  "blocked": false,
+  "review_gate_pass": true,
+  "abc_pass": true,
+  "reason_code": "",
+  "domain_required": true,
+  "checks": {
+    "A_intent_coverage": {
+      "pass": true,
+      "check": "A",
+      "name": "intent_coverage",
+      "required": true,
+      "matrix_rows": 8,
+      "missing_must": [],
+      "reason": "",
+      "findings": [],
+      "matrix": [
+        {
+          "intent_id": "INT-CRAFT-01",
+          "source": "user",
+          "strength": "must",
+          "landing": "AC-CRAFT-001",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-CRAFT-02",
+          "source": "user",
+          "strength": "must",
+          "landing": "AC-CRAFT-002",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-CRAFT-03",
+          "source": "analysis",
+          "strength": "must",
+          "landing": "AC-CRAFT-003",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-CRAFT-04",
+          "source": "analysis",
+          "strength": "must",
+          "landing": "AC-CRAFT-004",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-CRAFT-05",
+          "source": "boundaries",
+          "strength": "must",
+          "landing": "AC-CRAFT-005",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-CRAFT-06",
+          "source": "boundaries",
+          "strength": "must",
+          "landing": "AC-CRAFT-006",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-CRAFT-07",
+          "source": "user",
+          "strength": "must",
+          "landing": "AC-CRAFT-007",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-CRAFT-08",
+          "source": "defer",
+          "strength": "should",
+          "landing": "AC-CRAFT-008",
+          "status": "deferred-metadata"
+        }
+      ]
+    },
+    "B_fsm_audit": {
+      "pass": true,
+      "check": "B",
+      "name": "fsm_audit",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "fsm": {
+        "transition_count": 10,
+        "from_states": [
+          "blocked",
+          "craft_bind_decide",
+          "craft_execute",
+          "craft_route",
+          "idle"
+        ],
+        "hanging_states": [],
+        "terminals": [
+          "done"
+        ],
+        "illegal_present": true,
+        "five_tuple_present": true
+      }
+    },
+    "C_testability": {
+      "pass": true,
+      "check": "C",
+      "name": "testability",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "ac_count": 8,
+      "tc_count": 9,
+      "missing_ac": [],
+      "covered": {
+        "AC-CRAFT-001": [
+          "TC-CRAFT-001",
+          "TC-CRAFT-ILLEGAL"
+        ],
+        "AC-CRAFT-002": [
+          "TC-CRAFT-002"
+        ],
+        "AC-CRAFT-003": [
+          "TC-CRAFT-003"
+        ],
+        "AC-CRAFT-004": [
+          "TC-CRAFT-004"
+        ],
+        "AC-CRAFT-005": [
+          "TC-CRAFT-005"
+        ],
+        "AC-CRAFT-006": [
+          "TC-CRAFT-006"
+        ],
+        "AC-CRAFT-007": [
+          "TC-CRAFT-007"
+        ],
+        "AC-CRAFT-008": [
+          "TC-CRAFT-008"
+        ]
+      }
+    },
+    "C_domain_exec_layer": {
+      "pass": true,
+      "check": "C_exec",
+      "name": "domain_exec_layer",
+      "required": false,
+      "skipped": true,
+      "reason": "",
+      "findings": [],
+      "exec_tc_count": 0,
+      "domain_kind": "platform"
+    },
+    "D_fill_depth": {
+      "pass": true,
+      "check": "D",
+      "name": "fill_depth",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "package_maturity": "filled",
+      "domain_kind": "platform",
+      "business_domain": false
+    }
+  },
+  "findings": [],
+  "humanizer": {
+    "rule": "humanizer_only_after_abc_pass_before_freeze",
+    "abc_pass": true,
+    "allowed_now": true,
+    "fill_depth_pass": true,
+    "note": "Polish L0/narrative only after A/B/C; preserve_machine_fields=true; freeze needs D+exec too"
+  },
+  "evaluated_at": "2026-07-28T03:02:06.119515+00:00",
+  "paths": {
+    "truth": "docs/beacon/v1.6.11/features/design-craft-absorption-v1611/truth.md",
+    "tests": "docs/beacon/v1.6.11/features/design-craft-absorption-v1611/tests.md",
+    "report": "docs/beacon/v1.6.11/.machine/execution/design-craft-absorption-v1611.truth-review-gate.json"
+  }
+}

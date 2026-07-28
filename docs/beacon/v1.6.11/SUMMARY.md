@@ -36,3 +36,10 @@
 - Program manifest: `docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/program-manifest.md`
 - Feature graph: `docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/feature-graph.json`
 - Change: `docs/beacon/v1.6.11/change/beacon-plan-goal-task-closure-v1611.md`
+
+## Draft add-on (not program lakes)
+
+- Feature draft: `docs/beacon/v1.6.11/features/design-craft-absorption-v1611/truth.md`
+- Scope: absorb baseline/a11y/motion/improve craft into `beacon-design` support layer only
+- Status: `draft` / R0 — does not change L0–L8 program freeze
+
