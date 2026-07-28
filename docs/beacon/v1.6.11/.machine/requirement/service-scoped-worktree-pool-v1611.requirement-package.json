@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-28T10:30:26.440592+00:00",
+  "generated_at": "2026-07-28T11:52:59.428202+00:00",
   "feature": "service-scoped-worktree-pool-v1611",
   "feature_slug": "service-scoped-worktree-pool-v1611",
   "version": "v1.6.11",
@@ -19,7 +19,7 @@
   },
   "source_hashes": {
     "truth": "fea401e44ceaf16fdbede91ac486306d404bccad694a467abd74116678645aa4",
-    "tests": "15bbeb1c6ea51ab6c4d84275a3ba430d26653cdf67316b22fe16ba106d45d4e4",
+    "tests": "4c7fa936eff29b193d7e05482710ec2db5b0e941b7254e9a84255c2bed3b11a6",
     "tasks": "3733cd6403a62f60791a49df3ee6e197da5c38bbfbb00432549a2ee90c1b9e24",
     "evidence": "3a258e020dc6f24cf86f674ab3b586738062dc93213fa8b6805db99b86c1ac52"
   },
@@ -112,7 +112,7 @@
       "tc_id": "TC-SSP-003",
       "layer": "",
       "command": "`python3 -m pytest -q tests/test_v1611_service_scoped_worktree_pool.py::test_workspace_pool_v2_parent_and_service_lease_lifecycle --tb=no`",
-      "assertion": "admit writes parent + services lease entries, release marks all leases released without deleting directories, and corrupt state fails closed",
+      "assertion": "admit writes parent + services lease entries, release marks all leases released without deleting directories, and corrupt state fails closed (legal walk / happy path: governance_current → parent_leased → services_leasing → services_admitted → released)",
       "evidence_path": ""
     },
     {
