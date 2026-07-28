@@ -1,0 +1,481 @@
+{
+  "schema_version": "1.0",
+  "feature": "service-scoped-worktree-pool-v1611",
+  "feature_slug": "service-scoped-worktree-pool-v1611",
+  "version": "v1.6.11",
+  "generated_at": "2026-07-28T10:30:34.992171+00:00",
+  "expansion_profile": "pua-web",
+  "scenario_depth": "standard",
+  "families_required": [
+    "happy",
+    "negative",
+    "boundary",
+    "recovery",
+    "compatibility"
+  ],
+  "stories": [
+    {
+      "ac_id": "AC-001",
+      "theme": "general",
+      "text": "Acceptance criteria TBD",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-SSP-001",
+      "theme": "",
+      "text": "multi-git governance contains explicit primary root, service repo roots are stable, and any `.worktrees/feature-*` service binding is reported as migration input rather than accepted as global truth",
+      "scenario_ids": [
+        "SC-AUTO-TC-SSP-001"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-SSP-001",
+          "source_tc_id": "TC-SSP-001",
+          "tc_id": "TC-SSP-001-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-SSP-002",
+      "theme": "",
+      "text": "parser/render/doctor preserve role=primary, accept `multi_git_workspace`, and do not derive primary from the first service binding",
+      "scenario_ids": [
+        "SC-AUTO-TC-SSP-002"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-SSP-002",
+          "source_tc_id": "TC-SSP-002",
+          "tc_id": "TC-SSP-002-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-SSP-003",
+      "theme": "",
+      "text": "admit writes parent + services lease entries, release marks all leases released without deleting directories, and corrupt state fails closed",
+      "scenario_ids": [
+        "SC-AUTO-TC-SSP-003"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-SSP-003",
+          "source_tc_id": "TC-SSP-003",
+          "tc_id": "TC-SSP-003-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-SSP-004",
+      "theme": "",
+      "text": "multi-git implement admission creates real service worktrees for all participating writable services using per-service branch, per-service baseline and governed path pattern",
+      "scenario_ids": [
+        "SC-AUTO-TC-SSP-004"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-SSP-004",
+          "source_tc_id": "TC-SSP-004",
+          "tc_id": "TC-SSP-004-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-SSP-005",
+      "theme": "",
+      "text": "GitScopeGraph records explicit primary + service scopes, write guard blocks parent-only service writes, and branch/cwd/head/baseline mismatch blocks dispatch",
+      "scenario_ids": [
+        "SC-AUTO-TC-SSP-005",
+        "SC-AUTO-TC-SSP-ILLEGAL"
+      ],
+      "scenario_families": [
+        "primary",
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-SSP-005",
+          "source_tc_id": "TC-SSP-005",
+          "tc_id": "TC-SSP-005-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-AUTO-TC-SSP-ILLEGAL",
+          "source_tc_id": "TC-SSP-ILLEGAL",
+          "tc_id": "TC-SSP-ILLEGAL-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-SSP-006",
+      "theme": "",
+      "text": "Rolo fixture resolves v2.3.3/v2.3.4 with root primary, exact participating service map, and no first-service `workspace_admission_cwd_mismatch`",
+      "scenario_ids": [
+        "SC-AUTO-TC-SSP-006"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-SSP-006",
+          "source_tc_id": "TC-SSP-006",
+          "tc_id": "TC-SSP-006-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-SSP-007",
+      "theme": "",
+      "text": "existing single_repo, dedicated-worktree, feature-level pooled lease, GitScopeGraph and unified implement admission regressions remain green",
+      "scenario_ids": [
+        "SC-AUTO-TC-SSP-007"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-SSP-007",
+          "source_tc_id": "TC-SSP-007",
+          "tc_id": "TC-SSP-007-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "SC-AUTO-TC-SSP-001",
+      "source_tc_id": "TC-SSP-001",
+      "tc_id": "TC-SSP-001-PRIMARY",
+      "ac_id": "AC-SSP-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "multi-git governance contains explicit primary root, service repo roots are stable, and any `.worktrees/feature-*` service binding is reported as migration input rather than accepted as global truth",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1611_service_scoped_worktree_pool.py::test_governance_uses_explicit_primary_and_stable_service_roots --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "multi-git governance contains explicit primary root, service repo roots are stable, and any `.worktrees/feature-*` service binding is reported as migration input rather than accepted as global truth",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/service-scoped-worktree-pool-v1611/tc-ssp-001/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-SSP-002",
+      "source_tc_id": "TC-SSP-002",
+      "tc_id": "TC-SSP-002-PRIMARY",
+      "ac_id": "AC-SSP-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "parser/render/doctor preserve role=primary, accept `multi_git_workspace`, and do not derive primary from the first service binding",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1611_service_scoped_worktree_pool.py::test_metadata_verify_accepts_multi_git_workspace_and_primary_role --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "parser/render/doctor preserve role=primary, accept `multi_git_workspace`, and do not derive primary from the first service binding",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/service-scoped-worktree-pool-v1611/tc-ssp-002/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-SSP-003",
+      "source_tc_id": "TC-SSP-003",
+      "tc_id": "TC-SSP-003-PRIMARY",
+      "ac_id": "AC-SSP-003",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "admit writes parent + services lease entries, release marks all leases released without deleting directories, and corrupt state fails closed",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1611_service_scoped_worktree_pool.py::test_workspace_pool_v2_parent_and_service_lease_lifecycle --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "admit writes parent + services lease entries, release marks all leases released without deleting directories, and corrupt state fails closed",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/service-scoped-worktree-pool-v1611/tc-ssp-003/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-SSP-004",
+      "source_tc_id": "TC-SSP-004",
+      "tc_id": "TC-SSP-004-PRIMARY",
+      "ac_id": "AC-SSP-004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "multi-git implement admission creates real service worktrees for all participating writable services using per-service branch, per-service baseline and governed path pattern",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1611_service_scoped_worktree_pool.py::test_implement_admission_materializes_every_participating_service_worktree --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "multi-git implement admission creates real service worktrees for all participating writable services using per-service branch, per-service baseline and governed path pattern",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/service-scoped-worktree-pool-v1611/tc-ssp-004/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-SSP-005",
+      "source_tc_id": "TC-SSP-005",
+      "tc_id": "TC-SSP-005-PRIMARY",
+      "ac_id": "AC-SSP-005",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "GitScopeGraph records explicit primary + service scopes, write guard blocks parent-only service writes, and branch/cwd/head/baseline mismatch blocks dispatch",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1611_service_scoped_worktree_pool.py::test_topology_gate_and_write_guard_reject_parent_only_service_write --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "GitScopeGraph records explicit primary + service scopes, write guard blocks parent-only service writes, and branch/cwd/head/baseline mismatch blocks dispatch",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/service-scoped-worktree-pool-v1611/tc-ssp-005/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-SSP-006",
+      "source_tc_id": "TC-SSP-006",
+      "tc_id": "TC-SSP-006-PRIMARY",
+      "ac_id": "AC-SSP-006",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "Rolo fixture resolves v2.3.3/v2.3.4 with root primary, exact participating service map, and no first-service `workspace_admission_cwd_mismatch`",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1611_service_scoped_worktree_pool.py::test_rolo_v233_v234_fixture_topology_resolve --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Rolo fixture resolves v2.3.3/v2.3.4 with root primary, exact participating service map, and no first-service `workspace_admission_cwd_mismatch`",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/service-scoped-worktree-pool-v1611/tc-ssp-006/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-SSP-007",
+      "source_tc_id": "TC-SSP-007",
+      "tc_id": "TC-SSP-007-PRIMARY",
+      "ac_id": "AC-SSP-007",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "existing single_repo, dedicated-worktree, feature-level pooled lease, GitScopeGraph and unified implement admission regressions remain green",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v165_workspace_pool_lease.py tests/test_v167_git_scope_graph.py tests/test_v1610_unified_implement_admission.py --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "existing single_repo, dedicated-worktree, feature-level pooled lease, GitScopeGraph and unified implement admission regressions remain green",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/service-scoped-worktree-pool-v1611/tc-ssp-007/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-SSP-ILLEGAL",
+      "source_tc_id": "TC-SSP-ILLEGAL",
+      "tc_id": "TC-SSP-ILLEGAL-PRIMARY",
+      "ac_id": "AC-SSP-005",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "skipped admission, mkdir-only service path, empty gitlink, parent-only write, bad baseline and old-shape compatibility attempts are rejected with reason codes",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1611_service_scoped_worktree_pool.py::test_illegal_service_pool_transitions_fail_closed --tb=no --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "skipped admission, mkdir-only service path, empty gitlink, parent-only write, bad baseline and old-shape compatibility attempts are rejected with reason codes",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/service-scoped-worktree-pool-v1611/tc-ssp-illegal/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
+}

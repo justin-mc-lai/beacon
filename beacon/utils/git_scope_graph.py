@@ -120,18 +120,34 @@ def _scope_from_binding(
     status = "pass"
     reason_codes: list[str] = []
     if git_root == root or scope_id == "primary":
-        from beacon.utils.workspace_admission import load_admission_contract
+        from beacon.utils.workspace_admission import load_admission_contract, read_admission_artifact
 
-        validation = validate_workspace_admission(root, version=version, feature=feature, cwd=root)
+        # Topology gate validates artifact integrity, not the operator's current cwd.
+        # Prefer admitted worktree as cwd so dedicated feature lanes do not false-fail.
+        artifact_file = admission_artifact_path(root, version=version, feature=feature)
+        artifact = read_admission_artifact(artifact_file)
+        admitted_wt = ""
+        if isinstance(artifact, dict):
+            admitted_wt = str(artifact.get("worktree_path") or "").strip()
+        validation_cwd: Path | None = Path(admitted_wt).expanduser().resolve() if admitted_wt else None
+        validation = validate_workspace_admission(
+            root,
+            version=version,
+            feature=feature,
+            cwd=validation_cwd,
+        )
         contract = load_admission_contract(root, version=version)
         admission_required = bool(contract.get("require_workspace_admission"))
         if validation.get("valid"):
-            path = admission_artifact_path(root, version=version, feature=feature)
+            path = artifact_file
             if path.exists():
                 try:
                     admission_ref = str(path.relative_to(root))
                 except ValueError:
                     admission_ref = str(path)
+            if admitted_wt:
+                # Prefer admitted feature worktree over bare git_root for primary scope.
+                binding = {**binding, "worktree_path": admitted_wt}
         elif admission_required:
             status = "blocked"
             reason_codes.append(str(validation.get("reason_code") or "workspace_admission_blocked"))
@@ -196,7 +212,8 @@ def build_scope_list(
         if not git_root.is_absolute():
             git_root = (root / rel).resolve()
         role = str(binding.get("role") or "service").strip()
-        if git_root == root or role == "primary" or index == 0:
+        # Explicit role=primary or project-root binding; never first-service (index==0) fallback.
+        if role == "primary" or git_root == root:
             scope_id = "primary"
             scope_role = "primary"
         else:
@@ -219,6 +236,23 @@ def build_scope_list(
                     scope["status"] = "blocked"
                     scope.setdefault("reason_codes", []).append(f"monorepo_service_dirty:{service_key}")
         scopes.append(scope)
+    if project_topology == TOPOLOGY_MULTI and not any(str(s.get("role") or "") == "primary" for s in scopes):
+        # Fail closed when multi-git has no explicit primary / root primary scope.
+        scopes.append(
+            {
+                "scope_id": "primary",
+                "git_root": str(root),
+                "role": "primary",
+                "branch_resolution_mode": "per-feature",
+                "target_branch": "",
+                "worktree_path": str(root),
+                "admission_artifact_ref": "",
+                "dirty_policy": "fail_closed",
+                "status": "blocked",
+                "reason_codes": ["multi_git_primary_missing"],
+                "dirty": False,
+            }
+        )
     if not scopes:
         scopes.append(
             _scope_from_binding(
@@ -257,6 +291,46 @@ def build_git_scope_graph(
     resolved_version = resolve_target_version(root, version)
     project_topology = resolve_project_topology(root)
     scopes = build_scope_list(root, version=resolved_version, feature=feature, project_topology=project_topology)
+    # Overlay admitted service worktree paths onto matching scopes when present.
+    artifact_file = admission_artifact_path(root, version=resolved_version, feature=feature)
+    from beacon.utils.workspace_admission import read_admission_artifact
+
+    admission = read_admission_artifact(artifact_file)
+    service_map = {}
+    if isinstance(admission, dict):
+        raw_map = admission.get("service_worktree_map")
+        if isinstance(raw_map, dict):
+            service_map = {str(k): str(v) for k, v in raw_map.items() if str(k).strip() and str(v).strip()}
+    if service_map:
+        for scope in scopes:
+            key = str(scope.get("scope_id") or "")
+            if key in service_map:
+                scope["worktree_path"] = service_map[key]
+            # Keep primary worktree as admitted parent when available.
+            if str(scope.get("role") or "") == "primary" and isinstance(admission, dict):
+                parent_wt = str(admission.get("worktree_path") or "").strip()
+                if parent_wt:
+                    scope["worktree_path"] = parent_wt
+        # Ensure every service map entry appears as a scope for multi-git write guards.
+        existing_ids = {str(s.get("scope_id") or "") for s in scopes}
+        for key, wt in service_map.items():
+            if key in existing_ids or key == "primary":
+                continue
+            scopes.append(
+                {
+                    "scope_id": key,
+                    "git_root": wt,
+                    "role": "satellite" if project_topology == TOPOLOGY_MULTI else "service",
+                    "branch_resolution_mode": "per-feature",
+                    "target_branch": "",
+                    "worktree_path": wt,
+                    "admission_artifact_ref": "",
+                    "dirty_policy": "fail_closed",
+                    "status": "pass",
+                    "reason_codes": [],
+                    "dirty": False,
+                }
+            )
     topology_gate_status, reason_codes = aggregate_topology_gate(scopes)
     ref_path = artifact_path(root, version=resolved_version, feature=feature)
     try:
@@ -275,6 +349,7 @@ def build_git_scope_graph(
         "topology_gate_status": topology_gate_status,
         "reason_codes": reason_codes,
         "topology_gate_ref": artifact_ref,
+        "service_worktree_map": service_map,
     }
 
 

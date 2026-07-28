@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-07-28T09:16:32.550212+00:00",
+  "generated_at": "2026-07-28T10:30:26.440592+00:00",
   "feature": "service-scoped-worktree-pool-v1611",
   "feature_slug": "service-scoped-worktree-pool-v1611",
   "version": "v1.6.11",
@@ -20,8 +20,8 @@
   "source_hashes": {
     "truth": "fea401e44ceaf16fdbede91ac486306d404bccad694a467abd74116678645aa4",
     "tests": "15bbeb1c6ea51ab6c4d84275a3ba430d26653cdf67316b22fe16ba106d45d4e4",
-    "tasks": "7a712039902cd829e59afcb6e43e945b834a2380ddb2aa10d6af8572cc3edd03",
-    "evidence": "cd68614c1333afd15a2b5bceacb34a89a5fc42371293edc3f756ac964c3b1c00"
+    "tasks": "3733cd6403a62f60791a49df3ee6e197da5c38bbfbb00432549a2ee90c1b9e24",
+    "evidence": "3a258e020dc6f24cf86f674ab3b586738062dc93213fa8b6805db99b86c1ac52"
   },
   "truth_frontmatter": {
     "slug": "service-scoped-worktree-pool-v1611",
@@ -160,47 +160,47 @@
     {
       "id": "TASK-001",
       "title": "Implement AC-SSP-001: Rolo/multi-git governance 必须支持显式 `role=primary` root；global service b... · ac=AC-SSP-001 · evidence=`.beacon/evidence/implement/service-scoped-worktree-pool-v1611/AC-SSP-001.json`",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-002",
       "title": "Implement AC-SSP-002: Governance parser/render/doctor 必须保留 primary binding 顺序无关语义，metadata ... · ac=AC-SSP-002 · evidence=`.beacon/evidence/implement/service-scoped-worktree-pool-v1611/AC-SSP-002.json`",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-003",
       "title": "Implement AC-SSP-003: Workspace pool 必须支持 `workspace-pool-v2` 或等价 schema：一个 feature parent ... · ac=AC-SSP-003 · evidence=`.beacon/evidence/implement/service-scoped-worktree-pool-v1611/AC-SSP-003.json`",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-004",
       "title": "Implement AC-SSP-004: Implement admission 对 multi-git/nested child repo 必须为每个 participating... · ac=AC-SSP-004 · evidence=`.beacon/evidence/implement/service-scoped-worktree-pool-v1611/AC-SSP-004.json`",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-005",
       "title": "Implement AC-SSP-005: GitScopeGraph/topology gate/write guard 必须以 explicit primary + servic... · ac=AC-SSP-005 · evidence=`.beacon/evidence/implement/service-scoped-worktree-pool-v1611/AC-SSP-005.json`",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-006",
       "title": "Implement AC-SSP-006: Rolo v2.3.3/v2.3.4 fixture 必须验证：primary 是 `/Users/apple/Developer/Com... · ac=AC-SSP-006 · evidence=`.beacon/evidence/implement/service-scoped-worktree-pool-v1611/AC-SSP-006.json`",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-007",
       "title": "Implement AC-SSP-007: Existing single_repo、dedicated-worktree、pooled feature-level lease 行为... · ac=AC-SSP-007 · evidence=`.beacon/evidence/implement/service-scoped-worktree-pool-v1611/AC-SSP-007.json`",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-008",
       "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/service-scoped-worktree-pool-v1611/GATES.json`",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-009",
       "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/service-scoped-worktree-pool-v1611/QA-MATRIX.json`",
-      "status": "unchecked"
+      "status": "checked"
     }
   ],
   "checkbox_errors": [],
@@ -209,7 +209,7 @@
       "surface": "requirement",
       "authority": "requirement_truth",
       "canonical_artifact": "docs/beacon/v1.6.11/features/service-scoped-worktree-pool-v1611/truth.md",
-      "status": "draft",
+      "status": "frozen",
       "route": "truth"
     },
     {
@@ -301,6 +301,83 @@
       "authority": "support_advisory",
       "canonical_artifact": "beacon/utils/project_governance.py; beacon/utils/project_metadata.py",
       "status": "inspected",
+      "route": "implement"
+    },
+    {
+      "surface": "implement_AC-SSP-001",
+      "authority": "support_advisory",
+      "canonical_artifact": ".beacon/evidence/implement/service-scoped-worktree-pool-v1611/AC-SSP-001.json",
+      "status": "pass",
+      "route": "implement"
+    },
+    {
+      "surface": "implement_AC-SSP-002",
+      "authority": "support_advisory",
+      "canonical_artifact": ".beacon/evidence/implement/service-scoped-worktree-pool-v1611/AC-SSP-002.json",
+      "status": "pass",
+      "route": "implement"
+    },
+    {
+      "surface": "implement_AC-SSP-003",
+      "authority": "support_advisory",
+      "canonical_artifact": ".beacon/evidence/implement/service-scoped-worktree-pool-v1611/AC-SSP-003.json",
+      "status": "pass",
+      "route": "implement"
+    },
+    {
+      "surface": "implement_AC-SSP-004",
+      "authority": "support_advisory",
+      "canonical_artifact": ".beacon/evidence/implement/service-scoped-worktree-pool-v1611/AC-SSP-004.json",
+      "status": "pass",
+      "route": "implement"
+    },
+    {
+      "surface": "implement_AC-SSP-005",
+      "authority": "support_advisory",
+      "canonical_artifact": ".beacon/evidence/implement/service-scoped-worktree-pool-v1611/AC-SSP-005.json",
+      "status": "pass",
+      "route": "implement"
+    },
+    {
+      "surface": "implement_AC-SSP-006",
+      "authority": "support_advisory",
+      "canonical_artifact": ".beacon/evidence/implement/service-scoped-worktree-pool-v1611/AC-SSP-006.json",
+      "status": "pass",
+      "route": "implement"
+    },
+    {
+      "surface": "implement_AC-SSP-007",
+      "authority": "support_advisory",
+      "canonical_artifact": ".beacon/evidence/implement/service-scoped-worktree-pool-v1611/AC-SSP-007.json",
+      "status": "pass",
+      "route": "implement"
+    },
+    {
+      "surface": "implement_AC-SSP-ILLEGAL",
+      "authority": "support_advisory",
+      "canonical_artifact": ".beacon/evidence/implement/service-scoped-worktree-pool-v1611/AC-SSP-ILLEGAL.json",
+      "status": "pass",
+      "route": "implement"
+    },
+    {
+      "surface": "implement_GATES",
+      "authority": "support_advisory",
+      "canonical_artifact": ".beacon/evidence/implement/service-scoped-worktree-pool-v1611/GATES.json",
+      "status": "pass",
+      "route": "implement"
+    },
+    {
+      "surface": "implement_QA-MATRIX",
+      "authority": "support_advisory",
+      "canonical_artifact": ".beacon/evidence/implement/service-scoped-worktree-pool-v1611/QA-MATRIX.json",
+      "status": "pass",
+      "route": "implement"
+    },
+    {
+      "surface": "tests",
+      "authority": "test_truth",
+      "canonical_artifact": "tests/test_v1611_service_scoped_worktree_pool.py",
+      "status": "pass",
       "route": "implement"
     }
   ]
