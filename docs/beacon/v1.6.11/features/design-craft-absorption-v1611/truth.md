@@ -35,12 +35,13 @@ source_refs:
 
 ## 人话
 
-Beacon 的 design 已经会“管设计、绑真相、卡住实现乱发挥”，但还不够会“亲手把 UI 修漂亮、修可访问、修动效性能”。  
-本需求只做一件事：把 `ui-skills` 里最有用的 4 把 craft 手术刀，装进现有 `beacon-design` 作为 **support craft 能力**，**不新开生命周期，不重做 design 主链路**。
+Beacon design 已经会管设计、绑真相、拦住实现乱发挥；缺的是把界面修漂亮、修可访问、修动效性能的手艺。
 
-- 能做：在 design harness 内路由/执行 4 个 craft；产出 finding/plan/candidate；保留 support-only 边界
-- 不能做：新增 public stage、让 craft 直接改 requirement truth、把 ui-skills 当 Beacon 真相源、整包吞 185 个 registry skill
-- 怎样算完：4 craft 有明确入口、输出合同、绑定路径与非法转换拒绝；主生命周期 1+6 不变
+本包只做一件事：把 `ui-skills` 里最有用的 4 把 craft 手术刀，装进现有 `beacon-design` 当 support 能力。不新开生命周期，不重做 design 主链路。
+
+- 能做：在 design 里路由并跑 baseline / a11y / motion / improve；只产出 finding、plan、candidate
+- 不能做：新增 public stage；craft 直接改需求真相；把 ui-skills 当 Beacon 真相；吞掉 185 个 registry skill
+- 怎样算完：四件 craft 入口清楚、输出合同固定、绑定路径明确、非法跳转被拒；1+6 主生命周期保持原样
 
 ## User Intent
 
