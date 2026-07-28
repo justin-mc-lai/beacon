@@ -1,7 +1,7 @@
 ---
 slug: design-craft-absorption-v1611
 version: v1.6.11
-status: draft
+status: frozen
 revision_id: R1
 language: zh
 domain_required: true

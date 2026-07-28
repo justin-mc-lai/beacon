@@ -1,0 +1,715 @@
+{
+  "schema_version": "1.0",
+  "feature": "design-craft-absorption-v1611",
+  "feature_slug": "design-craft-absorption-v1611",
+  "version": "v1.6.11",
+  "runtime_version": "v1.6.11",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.6.11/.machine/execution/requirement-clarity-design-craft-absorption-v1611.json",
+  "report_markdown_path": "docs/beacon/v1.6.11/execution/requirement-clarity-design-craft-absorption-v1611.md",
+  "state_path": ".beacon/state/requirement-clarity-design-craft-absorption-v1611.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.11",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-07-28T03:05:41.333014+00:00",
+    "feature": "design-craft-absorption-v1611",
+    "feature_slug": "design-craft-absorption-v1611",
+    "prd_ref": "docs/beacon/v1.6.11/prd/design-craft-absorption-v1611.md",
+    "user_story_ref": "docs/beacon/v1.6.11/user-story/design-craft-absorption-v1611.md"
+  },
+  "domain_fsm_gate": {
+    "schema_version": "1.0",
+    "feature": "design-craft-absorption-v1611",
+    "feature_slug": "design-craft-absorption-v1611",
+    "version": "v1.6.11",
+    "truth_path": "docs/beacon/v1.6.11/features/design-craft-absorption-v1611/truth.md",
+    "tests_path": "docs/beacon/v1.6.11/features/design-craft-absorption-v1611/tests.md",
+    "required": true,
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "findings": [],
+    "requirement": {
+      "required": true,
+      "reason": "explicit_domain_mark",
+      "explicit": true,
+      "partial": true,
+      "complexity": false,
+      "business_signal": true,
+      "version_supported": true
+    },
+    "projection": {
+      "schema_version": "1.0",
+      "domain_fsm_schema": "domain-fsm.v1",
+      "entity_precedence_schema": "entity-precedence.v1",
+      "frontmatter": {
+        "slug": "design-craft-absorption-v1611",
+        "version": "v1.6.11",
+        "status": "draft",
+        "revision_id": "R1",
+        "language": "zh",
+        "domain_required": "true",
+        "domain_kind": "platform",
+        "ux_required": "false",
+        "ux_deferred": "true",
+        "package_maturity": "filled",
+        "materials_status": "current",
+        "parser_contract": "beacon-feature-package-v2",
+        "truth_source_model": "feature_package_authoritative",
+        "program_ref": "docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/program-manifest.md",
+        "baseline_commit": "ce8b1be75ba3ef06c38b69de226150702739f3e8",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "participating_services": "beacon",
+        "git_canonical_branch": "main",
+        "previous_revision": "",
+        "change_reason": "Absorb ui-skills craft modules into beacon-design as support-only capabilities without expanding 1+6 lifecycle",
+        "parent_truth": "docs/beacon/v1.6.11/SUMMARY.md",
+        "inherited_contracts": "skills/beacon/beacon-design/SKILL.md; docs/beacon/global-boundaries.md",
+        "canonical_refs": {
+          "prd": "docs/beacon/v1.6.11/features/design-craft-absorption-v1611/truth.md",
+          "user_story": "docs/beacon/v1.6.11/features/design-craft-absorption-v1611/truth.md",
+          "test_case": "docs/beacon/v1.6.11/features/design-craft-absorption-v1611/tests.md"
+        },
+        "source_refs": {
+          "ui_skills_mirror": "/Users/apple/Developer/Personal/oss-sync/design/skills/ui-skills",
+          "ui_skills_upstream": "https://github.com/ibelick/ui-skills",
+          "analysis": "/Users/apple/Developer/Personal/oss-sync/index/analysis/ibelick-ui-skills.md"
+        }
+      },
+      "frontmatter_errors": [],
+      "has_domain_model_section": true,
+      "has_domain_fsm_section": true,
+      "has_illegal_transition_section": true,
+      "entities": [
+        {
+          "entity": "DesignCraftModule",
+          "key": "id, source_skill, intent, authority, io_contract",
+          "precedence": "一个可路由的 craft 能力",
+          "requires": "一个可路由的 craft 能力"
+        },
+        {
+          "entity": "DesignCraftRouterDecision",
+          "key": "utterance, selected_modules[], reason, max_modules",
+          "precedence": "最小集合路由结果",
+          "requires": "最小集合路由结果"
+        },
+        {
+          "entity": "DesignCraftFinding",
+          "key": "module_id, severity, evidence_refs, proof{contract,runtime,correction}, candidate_fix",
+          "precedence": "单条可审计发现",
+          "requires": "单条可审计发现"
+        },
+        {
+          "entity": "DesignCraftPlan",
+          "key": "plan_id, surface, findings[], executor_notes, paths under design craft plan root",
+          "precedence": "improve 产出的可转交计划",
+          "requires": "improve 产出的可转交计划"
+        },
+        {
+          "entity": "DesignCraftRun",
+          "key": "run_id, feature, version, modules[], status, support_only",
+          "precedence": "一次 craft 运行记录",
+          "requires": "一次 craft 运行记录"
+        },
+        {
+          "entity": "BindingRoute",
+          "key": "none \\",
+          "precedence": "prototype_adapt \\",
+          "requires": "prototype_adapt \\"
+        }
+      ],
+      "entity_precedence": [
+        {
+          "entity": "DesignCraftModule",
+          "key": "id, source_skill, intent, authority, io_contract",
+          "precedence": "一个可路由的 craft 能力",
+          "requires": "一个可路由的 craft 能力"
+        },
+        {
+          "entity": "DesignCraftRouterDecision",
+          "key": "utterance, selected_modules[], reason, max_modules",
+          "precedence": "最小集合路由结果",
+          "requires": "最小集合路由结果"
+        },
+        {
+          "entity": "DesignCraftFinding",
+          "key": "module_id, severity, evidence_refs, proof{contract,runtime,correction}, candidate_fix",
+          "precedence": "单条可审计发现",
+          "requires": "单条可审计发现"
+        },
+        {
+          "entity": "DesignCraftPlan",
+          "key": "plan_id, surface, findings[], executor_notes, paths under design craft plan root",
+          "precedence": "improve 产出的可转交计划",
+          "requires": "improve 产出的可转交计划"
+        },
+        {
+          "entity": "DesignCraftRun",
+          "key": "run_id, feature, version, modules[], status, support_only",
+          "precedence": "一次 craft 运行记录",
+          "requires": "一次 craft 运行记录"
+        },
+        {
+          "entity": "BindingRoute",
+          "key": "none \\",
+          "precedence": "prototype_adapt \\",
+          "requires": "prototype_adapt \\"
+        }
+      ],
+      "aggregates": [
+        {
+          "name": "DesignCraftRun",
+          "states": [
+            "blocked",
+            "craft_bind_decide",
+            "craft_execute",
+            "craft_route",
+            "done",
+            "idle"
+          ],
+          "transitions": [
+            {
+              "from": "",
+              "to": "idle",
+              "guard": "no craft run",
+              "initial": "true"
+            },
+            {
+              "from": "idle",
+              "to": "craft_route",
+              "guard": "design craft intent accepted"
+            },
+            {
+              "from": "craft_route",
+              "to": "craft_execute",
+              "guard": "modules selected (1–2 default)"
+            },
+            {
+              "from": "craft_execute",
+              "to": "craft_bind_decide",
+              "guard": "findings/plans produced"
+            },
+            {
+              "from": "craft_bind_decide",
+              "to": "done",
+              "guard": "binding_route decided"
+            },
+            {
+              "from": "craft_route",
+              "to": "blocked",
+              "guard": "schema/permission/write-guard fail"
+            },
+            {
+              "from": "craft_execute",
+              "to": "blocked",
+              "guard": "schema/permission/write-guard fail"
+            }
+          ]
+        }
+      ],
+      "illegal_transition_slots": [
+        {
+          "description": "`idle → done`",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "`craft_execute → truth_freeze`",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "`craft_execute → release_go`",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "`craft_route → craft_execute` while selecting all four modules silently",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "`improve → write_product_source`",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "craft output with `truth_source=true` or missing `support_only=true`",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "creating a new public lifecycle stage named `craft`",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "treating ui-skills registry remote skill as Beacon requirement truth",
+          "aggregate": "",
+          "source": "truth"
+        }
+      ],
+      "acceptance_criteria": [
+        {
+          "ac_id": "AC-CRAFT-001",
+          "description": "Beacon 仅通过 `beacon-design` public harness 暴露 craft；不新增 1+6 public skill，不新增主生命周期 stage。"
+        },
+        {
+          "ac_id": "AC-CRAFT-002",
+          "description": "四个 module（baseline/a11y/motion/improve）均有 Beacon-owned progressive reference，并可被 design craft router 选中。"
+        },
+        {
+          "ac_id": "AC-CRAFT-003",
+          "description": "craft 输出必须标记 `support_only=true` 且 `truth_source=false`；缺省或伪造权限字段时路由/校验失败。"
+        },
+        {
+          "ac_id": "AC-CRAFT-004",
+          "description": "improve 在产品源上只读；计划只写入受控 craft plan 根目录；试图改产品源必须被拒绝。"
+        },
+        {
+          "ac_id": "AC-CRAFT-005",
+          "description": "improve finding 必须同时具备 contract/runtime/correction 三门证明，否则不得进入 plan。"
+        },
+        {
+          "ac_id": "AC-CRAFT-006",
+          "description": "craft finding 若改变产品承诺/AC/状态，只能推荐 `prototype_adapt` 或 `change_refreeze`，不能直接升格 truth。"
+        },
+        {
+          "ac_id": "AC-CRAFT-007",
+          "description": "router 默认选择 ≤2 个 module；无 utterance/feature 上下文时不得静默全开 4 个 craft。"
+        },
+        {
+          "ac_id": "AC-CRAFT-008",
+          "description": "SEO/metadata 与 ui-skills 其余 registry skill **明确 defer**，本包不实现、不假装覆盖。"
+        }
+      ],
+      "bound_ac_ids": [
+        "AC-CRAFT-004"
+      ],
+      "orphan_ac_ids": [
+        "AC-CRAFT-006"
+      ],
+      "aggregates_missing_illegal_slots": [],
+      "raw_section_titles": [
+        "人话",
+        "User Intent",
+        "User Intent Snapshot",
+        "用户旅程",
+        "First principles",
+        "Domain Model",
+        "Frozen module map（本草案冻结的进入方式）",
+        "进入 beacon-design 的结构冻结",
+        "输出合同冻结",
+        "非法转换（必须拒绝）",
+        "Intent Coverage Matrix",
+        "Acceptance Criteria",
+        "Non-goals",
+        "Domain FSM DesignCraftRun",
+        "FSM 五元组",
+        "Illegal transitions",
+        "Risks / Open Questions",
+        "Freeze readiness"
+      ]
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "required": true,
+      "blocked": false,
+      "status": "pass",
+      "reason_code": "",
+      "findings": [],
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "design-craft-absorption-v1611",
+          "version": "v1.6.11",
+          "status": "draft",
+          "revision_id": "R1",
+          "language": "zh",
+          "domain_required": "true",
+          "domain_kind": "platform",
+          "ux_required": "false",
+          "ux_deferred": "true",
+          "package_maturity": "filled",
+          "materials_status": "current",
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "program_ref": "docs/beacon/v1.6.11/programs/beacon-plan-goal-task-closure-v1611/program-manifest.md",
+          "baseline_commit": "ce8b1be75ba3ef06c38b69de226150702739f3e8",
+          "truth_map_contract": "beacon-truth-map-v1",
+          "participating_services": "beacon",
+          "git_canonical_branch": "main",
+          "previous_revision": "",
+          "change_reason": "Absorb ui-skills craft modules into beacon-design as support-only capabilities without expanding 1+6 lifecycle",
+          "parent_truth": "docs/beacon/v1.6.11/SUMMARY.md",
+          "inherited_contracts": "skills/beacon/beacon-design/SKILL.md; docs/beacon/global-boundaries.md",
+          "canonical_refs": {
+            "prd": "docs/beacon/v1.6.11/features/design-craft-absorption-v1611/truth.md",
+            "user_story": "docs/beacon/v1.6.11/features/design-craft-absorption-v1611/truth.md",
+            "test_case": "docs/beacon/v1.6.11/features/design-craft-absorption-v1611/tests.md"
+          },
+          "source_refs": {
+            "ui_skills_mirror": "/Users/apple/Developer/Personal/oss-sync/design/skills/ui-skills",
+            "ui_skills_upstream": "https://github.com/ibelick/ui-skills",
+            "analysis": "/Users/apple/Developer/Personal/oss-sync/index/analysis/ibelick-ui-skills.md"
+          }
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": true,
+        "has_domain_fsm_section": true,
+        "has_illegal_transition_section": true,
+        "entities": [
+          {
+            "entity": "DesignCraftModule",
+            "key": "id, source_skill, intent, authority, io_contract",
+            "precedence": "一个可路由的 craft 能力",
+            "requires": "一个可路由的 craft 能力"
+          },
+          {
+            "entity": "DesignCraftRouterDecision",
+            "key": "utterance, selected_modules[], reason, max_modules",
+            "precedence": "最小集合路由结果",
+            "requires": "最小集合路由结果"
+          },
+          {
+            "entity": "DesignCraftFinding",
+            "key": "module_id, severity, evidence_refs, proof{contract,runtime,correction}, candidate_fix",
+            "precedence": "单条可审计发现",
+            "requires": "单条可审计发现"
+          },
+          {
+            "entity": "DesignCraftPlan",
+            "key": "plan_id, surface, findings[], executor_notes, paths under design craft plan root",
+            "precedence": "improve 产出的可转交计划",
+            "requires": "improve 产出的可转交计划"
+          },
+          {
+            "entity": "DesignCraftRun",
+            "key": "run_id, feature, version, modules[], status, support_only",
+            "precedence": "一次 craft 运行记录",
+            "requires": "一次 craft 运行记录"
+          },
+          {
+            "entity": "BindingRoute",
+            "key": "none \\",
+            "precedence": "prototype_adapt \\",
+            "requires": "prototype_adapt \\"
+          }
+        ],
+        "entity_precedence": [
+          {
+            "entity": "DesignCraftModule",
+            "key": "id, source_skill, intent, authority, io_contract",
+            "precedence": "一个可路由的 craft 能力",
+            "requires": "一个可路由的 craft 能力"
+          },
+          {
+            "entity": "DesignCraftRouterDecision",
+            "key": "utterance, selected_modules[], reason, max_modules",
+            "precedence": "最小集合路由结果",
+            "requires": "最小集合路由结果"
+          },
+          {
+            "entity": "DesignCraftFinding",
+            "key": "module_id, severity, evidence_refs, proof{contract,runtime,correction}, candidate_fix",
+            "precedence": "单条可审计发现",
+            "requires": "单条可审计发现"
+          },
+          {
+            "entity": "DesignCraftPlan",
+            "key": "plan_id, surface, findings[], executor_notes, paths under design craft plan root",
+            "precedence": "improve 产出的可转交计划",
+            "requires": "improve 产出的可转交计划"
+          },
+          {
+            "entity": "DesignCraftRun",
+            "key": "run_id, feature, version, modules[], status, support_only",
+            "precedence": "一次 craft 运行记录",
+            "requires": "一次 craft 运行记录"
+          },
+          {
+            "entity": "BindingRoute",
+            "key": "none \\",
+            "precedence": "prototype_adapt \\",
+            "requires": "prototype_adapt \\"
+          }
+        ],
+        "aggregates": [
+          {
+            "name": "DesignCraftRun",
+            "states": [
+              "blocked",
+              "craft_bind_decide",
+              "craft_execute",
+              "craft_route",
+              "done",
+              "idle"
+            ],
+            "transitions": [
+              {
+                "from": "",
+                "to": "idle",
+                "guard": "no craft run",
+                "initial": "true"
+              },
+              {
+                "from": "idle",
+                "to": "craft_route",
+                "guard": "design craft intent accepted"
+              },
+              {
+                "from": "craft_route",
+                "to": "craft_execute",
+                "guard": "modules selected (1–2 default)"
+              },
+              {
+                "from": "craft_execute",
+                "to": "craft_bind_decide",
+                "guard": "findings/plans produced"
+              },
+              {
+                "from": "craft_bind_decide",
+                "to": "done",
+                "guard": "binding_route decided"
+              },
+              {
+                "from": "craft_route",
+                "to": "blocked",
+                "guard": "schema/permission/write-guard fail"
+              },
+              {
+                "from": "craft_execute",
+                "to": "blocked",
+                "guard": "schema/permission/write-guard fail"
+              }
+            ]
+          }
+        ],
+        "illegal_transition_slots": [
+          {
+            "description": "`idle → done`",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "`craft_execute → truth_freeze`",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "`craft_execute → release_go`",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "`craft_route → craft_execute` while selecting all four modules silently",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "`improve → write_product_source`",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "craft output with `truth_source=true` or missing `support_only=true`",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "creating a new public lifecycle stage named `craft`",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "treating ui-skills registry remote skill as Beacon requirement truth",
+            "aggregate": "",
+            "source": "truth"
+          }
+        ],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-CRAFT-001",
+            "description": "Beacon 仅通过 `beacon-design` public harness 暴露 craft；不新增 1+6 public skill，不新增主生命周期 stage。"
+          },
+          {
+            "ac_id": "AC-CRAFT-002",
+            "description": "四个 module（baseline/a11y/motion/improve）均有 Beacon-owned progressive reference，并可被 design craft router 选中。"
+          },
+          {
+            "ac_id": "AC-CRAFT-003",
+            "description": "craft 输出必须标记 `support_only=true` 且 `truth_source=false`；缺省或伪造权限字段时路由/校验失败。"
+          },
+          {
+            "ac_id": "AC-CRAFT-004",
+            "description": "improve 在产品源上只读；计划只写入受控 craft plan 根目录；试图改产品源必须被拒绝。"
+          },
+          {
+            "ac_id": "AC-CRAFT-005",
+            "description": "improve finding 必须同时具备 contract/runtime/correction 三门证明，否则不得进入 plan。"
+          },
+          {
+            "ac_id": "AC-CRAFT-006",
+            "description": "craft finding 若改变产品承诺/AC/状态，只能推荐 `prototype_adapt` 或 `change_refreeze`，不能直接升格 truth。"
+          },
+          {
+            "ac_id": "AC-CRAFT-007",
+            "description": "router 默认选择 ≤2 个 module；无 utterance/feature 上下文时不得静默全开 4 个 craft。"
+          },
+          {
+            "ac_id": "AC-CRAFT-008",
+            "description": "SEO/metadata 与 ui-skills 其余 registry skill **明确 defer**，本包不实现、不假装覆盖。"
+          }
+        ],
+        "bound_ac_ids": [
+          "AC-CRAFT-004"
+        ],
+        "orphan_ac_ids": [
+          "AC-CRAFT-006"
+        ],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "人话",
+          "User Intent",
+          "User Intent Snapshot",
+          "用户旅程",
+          "First principles",
+          "Domain Model",
+          "Frozen module map（本草案冻结的进入方式）",
+          "进入 beacon-design 的结构冻结",
+          "输出合同冻结",
+          "非法转换（必须拒绝）",
+          "Intent Coverage Matrix",
+          "Acceptance Criteria",
+          "Non-goals",
+          "Domain FSM DesignCraftRun",
+          "FSM 五元组",
+          "Illegal transitions",
+          "Risks / Open Questions",
+          "Freeze readiness"
+        ]
+      },
+      "summary": {
+        "entity_count": 6,
+        "aggregate_count": 1,
+        "illegal_slot_count": 8,
+        "orphan_ac_count": 1,
+        "bound_ac_count": 1
+      }
+    },
+    "recommended_action": ""
+  },
+  "human_closure_contract": {
+    "required": false,
+    "research_path": "docs/beacon/v1.6.11/research/design-craft-absorption-v1611.md",
+    "research_exists": true,
+    "source_architecture_path": "docs/beacon/v1.6.11/source-architecture/index.md",
+    "source_architecture_exists": true,
+    "required_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "missing_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "diagram_types": [],
+    "complexity_signals": []
+  },
+  "requirement_closure_contract": {
+    "required": true,
+    "chain_order": [
+      "research",
+      "prd",
+      "user_story",
+      "test_case",
+      "requirement_clarity",
+      "freeze"
+    ],
+    "human_closure_required": false,
+    "paths": {
+      "research": "docs/beacon/v1.6.11/research/design-craft-absorption-v1611.md",
+      "prd": "docs/beacon/v1.6.11/features/design-craft-absorption-v1611/truth.md",
+      "user_story": "docs/beacon/v1.6.11/features/design-craft-absorption-v1611/truth.md",
+      "test_case": "docs/beacon/v1.6.11/features/design-craft-absorption-v1611/tests.md"
+    },
+    "exists": {
+      "research": true,
+      "prd": true,
+      "user_story": true,
+      "test_case": true
+    },
+    "required_research_sections": [],
+    "missing_research_sections": [],
+    "ac_projection": {
+      "prd_ac_ids": [],
+      "user_story_ac_ids": [],
+      "test_case_ac_ids": [],
+      "upstream_ac_ids": [],
+      "missing_test_case_ac_ids": []
+    }
+  },
+  "version_projection_truth_contract": {
+    "required": false,
+    "supported": true,
+    "projection_types": [],
+    "research_path": "docs/beacon/v1.6.11/research/design-craft-absorption-v1611.md",
+    "research_exists": true,
+    "required_fields": [
+      "prd_refs",
+      "user_story_refs",
+      "test_case_refs",
+      "coverage_notes",
+      "out_of_scope_notes"
+    ],
+    "field_presence": {
+      "prd_refs": false,
+      "user_story_refs": false,
+      "test_case_refs": false,
+      "coverage_notes": false,
+      "out_of_scope_notes": false
+    },
+    "missing_fields": [],
+    "required_refs": {
+      "prd_refs": "docs/beacon/v1.6.11/features/design-craft-absorption-v1611/truth.md",
+      "user_story_refs": "docs/beacon/v1.6.11/features/design-craft-absorption-v1611/truth.md",
+      "test_case_refs": "docs/beacon/v1.6.11/features/design-craft-absorption-v1611/tests.md"
+    },
+    "missing_ref_targets": [],
+    "ready": false
+  },
+  "support_write_topology_contract": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "diagnostics": []
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.6.11/features/design-craft-absorption-v1611/truth.md",
+    "docs/beacon/v1.6.11/features/design-craft-absorption-v1611/tests.md",
+    "docs/beacon/v1.6.11/features/design-craft-absorption-v1611/tasks.md",
+    "docs/beacon/v1.6.11/features/design-craft-absorption-v1611/evidence.md",
+    "docs/beacon/v1.6.11/research/design-craft-absorption-v1611.md"
+  ]
+}
