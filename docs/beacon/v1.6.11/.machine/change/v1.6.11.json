@@ -94,7 +94,7 @@
     "waves": [
       {
         "wave": 1,
-        "parallelizable": true,
+        "parallelizable": false,
         "features": [
           {
             "feature": "convergence-verifier-v1611",
@@ -106,15 +106,6 @@
             "writable_services": [
               "."
             ],
-            "parallelizable": true,
-            "reason_code": "parallel_no_conflict"
-          },
-          {
-            "feature": "service-scoped-worktree-pool-v1611",
-            "feature_slug": "service-scoped-worktree-pool-v1611",
-            "depends_on_features": [],
-            "direct_delivery_services": [],
-            "writable_services": [],
             "parallelizable": true,
             "reason_code": "parallel_no_conflict"
           }
@@ -287,6 +278,27 @@
             "reason_code": "shared_delivery_service_conflict"
           }
         ]
+      },
+      {
+        "wave": 10,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "service-scoped-worktree-pool-v1611",
+            "feature_slug": "service-scoped-worktree-pool-v1611",
+            "depends_on_features": [
+              "contract-baseline-convergence-v1611"
+            ],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": false,
+            "reason_code": "shared_delivery_service_conflict"
+          }
+        ]
       }
     ]
   },
@@ -419,5 +431,5 @@
     "docs/beacon/v1.6.11/.machine/execution/task-progress-ledger-v1611.revision.json",
     "docs/beacon/v1.6.11/.machine/change/task-progress-ledger-v1611.json"
   ],
-  "generated_at": "2026-07-28 19:54"
+  "generated_at": "2026-07-28 20:09"
 }

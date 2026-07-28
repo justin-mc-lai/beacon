@@ -536,26 +536,6 @@
 - gates must block if projection metadata or service/branch/worktree fields drift.
 <!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:intent-completeness-engine-v1611:END -->
 
-<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:START -->
-## Implementation Delivery Host
-
-- version: `v1.6.11`
-- feature_count: `9`
-- transaction_id: `tx-40f9ecfa2d1ce075d`
-- source_hash: `sha256:316eabc1c9ecdd7e086857671505c203c1311c5a4944b52be75413dcc90631e6`
-
-### Registered Feature Baselines
-- `atomic-task-graph-compiler-v1611` | revision=`R2` | branch=`beacon/v1.6.11/atomic-task-graph-compiler-v1611` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.11/.machine/execution/implementation-delivery-baseline-atomic-task-graph-compiler-v1611.json`
-- `brownfield-context-resolver-v1611` | revision=`R2` | branch=`beacon/v1.6.11/brownfield-context-resolver-v1611` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.11/.machine/execution/implementation-delivery-baseline-brownfield-context-resolver-v1611.json`
-- `cancel-replan-next-ready-v1611` | revision=`R2` | branch=`beacon/v1.6.11/cancel-replan-next-ready-v1611` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.11/.machine/execution/implementation-delivery-baseline-cancel-replan-next-ready-v1611.json`
-- `change-impact-state-diff-v1611` | revision=`R2` | branch=`beacon/v1.6.11/change-impact-state-diff-v1611` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.11/.machine/execution/implementation-delivery-baseline-change-impact-state-diff-v1611.json`
-- `contract-baseline-convergence-v1611` | revision=`R2` | branch=`beacon/v1.6.11/contract-baseline-convergence-v1611` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.11/.machine/execution/implementation-delivery-baseline-contract-baseline-convergence-v1611.json`
-- `convergence-verifier-v1611` | revision=`R2` | branch=`beacon/v1.6.11/convergence-verifier-v1611` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.11/.machine/execution/implementation-delivery-baseline-convergence-verifier-v1611.json`
-- `drift-padding-review-gate-v1611` | revision=`R2` | branch=`beacon/v1.6.11/drift-padding-review-gate-v1611` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.11/.machine/execution/implementation-delivery-baseline-drift-padding-review-gate-v1611.json`
-- `intent-completeness-engine-v1611` | revision=`R2` | branch=`beacon/v1.6.11/intent-completeness-engine-v1611` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.11/.machine/execution/implementation-delivery-baseline-intent-completeness-engine-v1611.json`
-- `task-progress-ledger-v1611` | revision=`R2` | branch=`beacon/v1.6.11/task-progress-ledger-v1611` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.11/.machine/execution/implementation-delivery-baseline-task-progress-ledger-v1611.json`
-<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:END -->
-
 <!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:task-progress-ledger-v1611:START -->
 ## Technical Delta Blueprint
 
@@ -622,3 +602,91 @@
 - deterministic implementation contract, git workflow contract, and implementation plan are projections.
 - gates must block if projection metadata or service/branch/worktree fields drift.
 <!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:task-progress-ledger-v1611:END -->
+
+<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:START -->
+## Implementation Delivery Host
+
+- version: `v1.6.11`
+- feature_count: `10`
+- transaction_id: `tx-7c7dd91a35285b844`
+- source_hash: `sha256:7a038d625a08fc21af8fe0d664c2b9c7ec0973a022e71dbbfb63f7ffc0efbc3f`
+
+### Registered Feature Baselines
+- `atomic-task-graph-compiler-v1611` | revision=`R2` | branch=`beacon/v1.6.11/atomic-task-graph-compiler-v1611` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.11/.machine/execution/implementation-delivery-baseline-atomic-task-graph-compiler-v1611.json`
+- `brownfield-context-resolver-v1611` | revision=`R2` | branch=`beacon/v1.6.11/brownfield-context-resolver-v1611` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.11/.machine/execution/implementation-delivery-baseline-brownfield-context-resolver-v1611.json`
+- `cancel-replan-next-ready-v1611` | revision=`R2` | branch=`beacon/v1.6.11/cancel-replan-next-ready-v1611` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.11/.machine/execution/implementation-delivery-baseline-cancel-replan-next-ready-v1611.json`
+- `change-impact-state-diff-v1611` | revision=`R2` | branch=`beacon/v1.6.11/change-impact-state-diff-v1611` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.11/.machine/execution/implementation-delivery-baseline-change-impact-state-diff-v1611.json`
+- `contract-baseline-convergence-v1611` | revision=`R2` | branch=`beacon/v1.6.11/contract-baseline-convergence-v1611` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.11/.machine/execution/implementation-delivery-baseline-contract-baseline-convergence-v1611.json`
+- `convergence-verifier-v1611` | revision=`R2` | branch=`beacon/v1.6.11/convergence-verifier-v1611` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.11/.machine/execution/implementation-delivery-baseline-convergence-verifier-v1611.json`
+- `drift-padding-review-gate-v1611` | revision=`R2` | branch=`beacon/v1.6.11/drift-padding-review-gate-v1611` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.11/.machine/execution/implementation-delivery-baseline-drift-padding-review-gate-v1611.json`
+- `intent-completeness-engine-v1611` | revision=`R2` | branch=`beacon/v1.6.11/intent-completeness-engine-v1611` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.11/.machine/execution/implementation-delivery-baseline-intent-completeness-engine-v1611.json`
+- `service-scoped-worktree-pool-v1611` | revision=`R1` | branch=`beacon/v1.6.11/service-scoped-worktree-pool-v1611` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.11/.machine/execution/implementation-delivery-baseline-service-scoped-worktree-pool-v1611.json`
+- `task-progress-ledger-v1611` | revision=`R2` | branch=`beacon/v1.6.11/task-progress-ledger-v1611` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.11/.machine/execution/implementation-delivery-baseline-task-progress-ledger-v1611.json`
+<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:END -->
+
+<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:service-scoped-worktree-pool-v1611:START -->
+## Technical Delta Blueprint
+
+- project_mode: `greenfield`
+- feature: `service-scoped-worktree-pool-v1611`
+- version: `v1.6.11`
+
+### Source Refs
+- none
+
+### Delivery Change Surface
+- none
+### Available Entry Surfaces
+- none
+### Current Service Facts
+- none
+
+### Must Change
+- none
+
+### Can Reuse
+- none
+
+### No-Expand Guardrails
+- none
+
+### Compatibility Rules
+- none
+
+### Delivery Constraints
+- none
+
+### Implement Handoff
+- none
+<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:service-scoped-worktree-pool-v1611:END -->
+
+<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:service-scoped-worktree-pool-v1611:START -->
+## Implementation Delivery Baseline
+
+- baseline_id: `impl-delivery-baseline-v1.6.11-service-scoped-worktree-pool-v1611-R1`
+- transaction_id: `tx-940e00a4b13da6376`
+- source_hash: `sha256:a37ab411a0e6a88f5b21b840110813d0e5a7048b28c61faaeb81ddaa5f1da007`
+- projection_seq: `1`
+- version: `v1.6.11`
+- feature: `service-scoped-worktree-pool-v1611`
+- lifecycle_role: `pre-implement delivery blueprint projection`
+- projection_refresh_trigger: `implement plan against the active frozen revision`
+- branch_strategy: `single-branch`
+- base_branch: `main`
+- default_target_branch: `beacon/v1.6.11/service-scoped-worktree-pool-v1611`
+- branch_prefix: `beacon/`
+- use_git_worktree: `False`
+- worktree_root: `/Users/apple/Developer/Personal/products/beacon`
+- workspace_root: `/Users/apple/Developer/Personal/products/beacon`
+
+### Delivery Service Scope
+- direct_delivery_services: .
+- writable_services: .
+- reference_only_services: docs
+- depends_on_features: -
+
+### Plan-Time Gate Contract
+- canonical envelope is the only delivery baseline source.
+- deterministic implementation contract, git workflow contract, and implementation plan are projections.
+- gates must block if projection metadata or service/branch/worktree fields drift.
+<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:service-scoped-worktree-pool-v1611:END -->
