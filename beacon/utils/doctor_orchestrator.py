@@ -174,6 +174,51 @@ def _delivery_payload(action: str, result: dict[str, Any], *, strict: bool) -> D
     return DoctorExecutionResult(payload=payload, exit_code=exit_code)
 
 
+def _dual_axis_blocked_payload(
+    action: str,
+    version_context: dict[str, Any],
+    runtime_version: str,
+    message: str,
+) -> DoctorExecutionResult:
+    """Build a fail-closed payload when an external project collapses docs onto runtime."""
+    return DoctorExecutionResult(
+        payload={
+            "schema_version": "2.0",
+            "action": action,
+            "status": "BLOCKED",
+            "reason_code": "dual_axis_collapse_external",
+            "message": message,
+            "docs_version": version_context.get("docs_version", ""),
+            "runtime_version": runtime_version,
+            "version_context": version_context,
+            "result": {"actions": []},
+        },
+        exit_code=2,
+    )
+
+
+def _guard_doctor_external_docs_axis(
+    ctx: DoctorExecutionContext,
+    *,
+    command_name: str,
+) -> tuple[str | None, dict[str, Any]]:
+    """Return (error_message_or_None, version_context) for external dual-axis collapse."""
+    from beacon.utils.version_defaults import guard_external_docs_axis
+
+    version_context = ctx.version_context or {}
+    docs_version = str(version_context.get("docs_version") or "")
+    try:
+        guard_external_docs_axis(
+            ctx.project_root,
+            docs_version,
+            runtime_version=ctx.runtime_version,
+            command_name=command_name,
+        )
+    except ValueError as exc:
+        return str(exc), version_context
+    return None, version_context
+
+
 def run_doctor_diagnose(
     *,
     project_root: str,
@@ -227,11 +272,17 @@ def run_context_setup(
     """Run the context setup orchestration."""
     ctx = build_doctor_execution_context(project_root, version=version or None, dry_run=dry_run)
     version_context = ctx.version_context or {}
+    axis_error, version_context = _guard_doctor_external_docs_axis(
+        ctx,
+        command_name="beacon doctor setup-context",
+    )
+    if axis_error:
+        return _dual_axis_blocked_payload("setup-context", version_context, ctx.runtime_version, axis_error)
     result = run_doctor_handler(
         "context.setup.managed-files",
         project_root=ctx.project_root,
         runtime_version=ctx.runtime_version,
-        docs_version=str(version_context.get("docs_version", "") or ctx.runtime_version),
+        docs_version=str(version_context.get("docs_version", "") or ""),
         dry_run=dry_run,
         force=force,
         with_claude=with_claude,
@@ -320,6 +371,18 @@ def run_context_verify(
         strict=strict,
     )
     checks = result.get("checks") if isinstance(result.get("checks"), list) else []
+    if bool(version_context.get("dual_axis_collapse_external")):
+        checks.append(
+            {
+                "name": "dual_axis_external_collapse",
+                "status": "fail",
+                "detail": (
+                    f"external {version_context.get('project_kind', 'project')} has "
+                    f"docs_version {version_context.get('docs_version', '')} equal to "
+                    f"runtime_version {ctx.runtime_version}"
+                ),
+            }
+        )
     if with_gitignore:
         checks.append(
             run_doctor_handler(
@@ -328,8 +391,8 @@ def run_context_verify(
                 runtime_version=ctx.runtime_version,
             )
         )
-        result["checks"] = checks
-        result["status"] = merge_check_statuses(checks, strict=False)
+    result["checks"] = checks
+    result["status"] = merge_check_statuses(checks, strict=False)
     status_map = {"pass": "PASS", "warn": "WARN", "fail": "BLOCKED"}
     payload = {
         "schema_version": "2.0",
@@ -402,6 +465,12 @@ def run_materials_sync(
 ) -> DoctorExecutionResult:
     """Run the material sync handler through the doctor registry."""
     ctx = build_doctor_execution_context(project_root, version=version, dry_run=dry_run)
+    axis_error, version_context = _guard_doctor_external_docs_axis(
+        ctx,
+        command_name="beacon doctor sync-materials",
+    )
+    if axis_error:
+        return _dual_axis_blocked_payload("sync-materials", version_context, ctx.runtime_version, axis_error)
     result = run_doctor_handler(
         "materials.sync.requirement-materials",
         project_root=ctx.project_root,
@@ -454,6 +523,17 @@ def run_requirement_clarity_sync(
 ) -> DoctorExecutionResult:
     """Materialize requirement clarity report and writeback state."""
     ctx = build_doctor_execution_context(project_root, version=version)
+    axis_error, version_context = _guard_doctor_external_docs_axis(
+        ctx,
+        command_name="beacon doctor sync-requirement-clarity",
+    )
+    if axis_error:
+        return _dual_axis_blocked_payload(
+            "sync-requirement-clarity",
+            version_context,
+            ctx.runtime_version,
+            axis_error,
+        )
     result = run_doctor_handler(
         "materials.sync.requirement-clarity",
         project_root=ctx.project_root,
@@ -481,6 +561,17 @@ def run_truth_integrity_verify(
     from beacon.utils.truth_integrity import build_truth_integrity_gate
 
     ctx = build_doctor_execution_context(project_root, version=version)
+    axis_error, version_context = _guard_doctor_external_docs_axis(
+        ctx,
+        command_name="beacon doctor verify-truth-integrity",
+    )
+    if axis_error:
+        return _dual_axis_blocked_payload(
+            "verify-truth-integrity",
+            version_context,
+            ctx.runtime_version,
+            axis_error,
+        )
     gate_mode = "audit" if str(mode).strip().lower() == "audit" else "block"
     gate = build_truth_integrity_gate(
         ctx.project_root,

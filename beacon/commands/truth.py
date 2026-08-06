@@ -43,6 +43,19 @@ def _resolve_root(project: Optional[str]) -> Path:
     return Path(project).resolve() if project else Path.cwd()
 
 
+def _resolve_target_version(project_root: Path, version: str) -> str:
+    """Resolve target version and refuse dual-axis collapse on external projects."""
+    from beacon.utils.version_defaults import guard_external_docs_axis
+
+    try:
+        resolved = resolve_target_version(project_root, version)
+        guard_external_docs_axis(project_root, resolved, command_name="beacon truth")
+        return resolved
+    except ValueError as exc:
+        typer.echo(str(exc), err=True)
+        raise typer.Exit(2) from exc
+
+
 def _write_truth_file(path: Path, content: str, *, force: bool = False) -> Path:
     """Write truth content to file, creating parent dirs as needed."""
     if path.exists() and not force:
@@ -64,7 +77,7 @@ def init_cmd(
 ) -> None:
     """Initialize truth files."""
     project_root = _resolve_root(project)
-    resolved = resolve_target_version(project_root, version)
+    resolved = _resolve_target_version(project_root, version)
     slug = feature.strip().lower().replace(" ", "-").replace("_", "-")
 
     if lang not in ("en", "zh"):
@@ -146,7 +159,7 @@ def verify_cmd(
 ) -> None:
     """Verify truth format compliance."""
     project_root = _resolve_root(project)
-    resolved = resolve_target_version(project_root, version)
+    resolved = _resolve_target_version(project_root, version)
     slug = feature.strip().lower().replace(" ", "-").replace("_", "-")
     base = project_root / "docs" / "beacon" / resolved
 
@@ -270,7 +283,7 @@ def gen_cmd(
 ) -> None:
     """Generate truth package. Use --intent-first to drive generation from user intent."""
     project_root = _resolve_root(project)
-    resolved = resolve_target_version(project_root, version)
+    resolved = _resolve_target_version(project_root, version)
     slug = feature.strip().lower().replace(" ", "-").replace("_", "-")
 
     # v1.6.11+: authoritative path = scaffold + fill-request + host/semantic response + transaction apply
@@ -474,7 +487,7 @@ def review_cmd(
     from beacon.utils.truth_review_gate import run_truth_review_gate
 
     project_root = _resolve_root(project)
-    resolved = resolve_target_version(project_root, version)
+    resolved = _resolve_target_version(project_root, version)
     payload = run_truth_review_gate(
         project_root,
         version=resolved,
@@ -623,7 +636,7 @@ def prose_check_cmd(
     from beacon.utils.truth_human_readable import check_truth_file
 
     project_root = _resolve_root(project)
-    resolved = resolve_target_version(project_root, version)
+    resolved = _resolve_target_version(project_root, version)
     paths = package_paths(project_root, version=resolved, feature=feature)
     truth_path = paths["truth"]
     if not truth_path.exists():
@@ -809,7 +822,7 @@ def fill_request_cmd(
     from beacon.utils.truth_map import FEATURE_SURFACES, _sha256
 
     project_root = _resolve_root(project)
-    resolved = resolve_target_version(project_root, version)
+    resolved = _resolve_target_version(project_root, version)
     paths = package_paths(project_root, version=resolved, feature=feature)
     source_hashes = {
         surface: (_sha256(paths[surface]) if paths[surface].exists() else "")
@@ -900,7 +913,7 @@ def fill_apply_cmd(
     from beacon.utils.plan_goal_task_closure import apply_structured_fill_transaction
 
     project_root = _resolve_root(project)
-    resolved = resolve_target_version(project_root, version)
+    resolved = _resolve_target_version(project_root, version)
     request = json.loads(Path(request_json).read_text(encoding="utf-8"))
     response = json.loads(Path(response_json).read_text(encoding="utf-8"))
     # allow nested request payload from fill-request command output

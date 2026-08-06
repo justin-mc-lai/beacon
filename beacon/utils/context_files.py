@@ -273,7 +273,13 @@ def setup_context_files(
     actions: list[dict[str, object]] = []
     from beacon.utils.global_boundaries import GLOBAL_BOUNDARIES_RELATIVE_PATH, sync_project_global_boundaries
 
-    docs_target = docs_version or runtime_version
+    docs_target = docs_version
+    if not docs_target:
+        # Dual-axis default: never silently collapse project docs onto the
+        # toolkit runtime for external projects.
+        from beacon.utils.version_defaults import project_docs_baseline
+
+        docs_target = project_docs_baseline(root)
     targets: list[tuple[str, Path, str]] = []
     if with_claude:
         targets.append(("CLAUDE.md", root / "CLAUDE.md", build_default_claude_managed_block(runtime_version, docs_target)))

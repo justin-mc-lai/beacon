@@ -588,6 +588,7 @@ def _collect_docs_runtime_separation_integrity(
 ) -> tuple[str, list[str]]:
     docs_version = str(version_context.get("docs_version", "") or "")
     runtime_version = str(version_context.get("runtime_version", "") or "")
+    project_kind = str(version_context.get("project_kind", "") or "")
     onboarding_docs = str(version_context.get("onboarding_docs_version", "") or "")
     onboarding_runtime = str(version_context.get("onboarding_runtime_version", "") or "")
     context_versions = version_context.get("context_versions", {})
@@ -597,6 +598,7 @@ def _collect_docs_runtime_separation_integrity(
     evidence = [
         f"docs_version={docs_version or 'missing'}",
         f"runtime_version={runtime_version or 'missing'}",
+        f"project_kind={project_kind or 'unknown'}",
         f"docs_version_source={version_context.get('docs_version_source', '')}",
         f"runtime_version_source={version_context.get('runtime_version_source', '')}",
         f"onboarding_docs_version={onboarding_docs or 'missing'}",
@@ -617,6 +619,10 @@ def _collect_docs_runtime_separation_integrity(
         issues_fail.append("resolved docs_version missing")
     if not runtime_version:
         issues_fail.append("resolved runtime_version missing")
+    if project_kind.startswith("external") and docs_version and runtime_version and docs_version == runtime_version:
+        issues_fail.append(
+            f"dual-axis collapse: external {project_kind} docs_version equals runtime_version"
+        )
     if onboarding_runtime and context_versions:
         drifted_files = sorted(
             name for name, managed_version in context_versions.items() if str(managed_version or "") != onboarding_runtime
@@ -643,11 +649,20 @@ def _collect_suspicious_runtime_named_docs_root(
 ) -> tuple[str, list[str]]:
     docs_version = str(version_context.get("docs_version", "") or "")
     runtime_version = str(version_context.get("runtime_version", "") or "")
+    project_kind = str(version_context.get("project_kind", "") or "")
+    external = project_kind.startswith("external")
     evidence = [
         f"docs_version={docs_version or 'missing'}",
         f"runtime_version={runtime_version or 'missing'}",
+        f"project_kind={project_kind or 'unknown'}",
     ]
-    if not docs_version or not runtime_version or docs_version == runtime_version:
+    if not docs_version or not runtime_version:
+        return ("PASS", evidence)
+    if docs_version == runtime_version:
+        if external:
+            evidence.append("fail=dual-axis collapse on external project")
+            return ("FAIL", evidence)
+        evidence.append("pass=docs version equals runtime (beacon self lane)")
         return ("PASS", evidence)
 
     runtime_root = project_root / "docs" / "beacon" / runtime_version
@@ -659,6 +674,12 @@ def _collect_suspicious_runtime_named_docs_root(
     evidence.append(f"runtime_named_root={runtime_root}")
     evidence.append(f"runtime_named_root_has_workflow_materials={has_workflow_materials}")
 
+    if external:
+        if has_workflow_materials:
+            evidence.append("fail=runtime-named docs root with workflow materials on external project")
+            return ("FAIL", evidence)
+        evidence.append("warn=runtime-named docs root exists on external project")
+        return ("WARN", evidence)
     if has_workflow_materials:
         return ("PASS", evidence)
 
@@ -901,9 +922,9 @@ def collect_compatibility_checks(
         "suspicious_runtime_named_docs_root": {
             "status": suspicious_runtime_root_status,
             "severity": "medium",
-            "summary": "A runtime-named docs root without workflow materials may indicate an accidental init into Beacon runtime version.",
+            "summary": "External projects must not carry a runtime-named docs root; a collapsed docs/runtime axis is a fail-closed violation.",
             "evidence": suspicious_runtime_root_evidence,
-            "impact": "Even with onboarding protection, stray runtime-named docs roots confuse operators and future audits.",
+            "impact": "A runtime-named docs root on an external project shadows the real product docs line and cascades wrong version defaults.",
             "repair": [
                 "Inspect the runtime-named docs root and remove it if it was created accidentally.",
                 "Keep only the project docs line under `docs/beacon/<docs_version>/` and let managed context track runtime separately.",

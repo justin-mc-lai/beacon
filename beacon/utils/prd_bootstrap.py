@@ -1029,6 +1029,9 @@ def run_prd_bootstrap(
         raise ValueError("--apply cannot be combined with --dry-run")
 
     resolved_version = resolve_target_version(project_root, version)
+    from beacon.utils.version_defaults import guard_external_docs_axis
+
+    guard_external_docs_axis(project_root, resolved_version, command_name="prd-bootstrap")
     run_id = f"prd-bootstrap-{utc_compact_ts()}"
     orchestration = _build_orchestrated_documents(
         project_root,

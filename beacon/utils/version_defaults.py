@@ -11,6 +11,7 @@ Project docs = workpiece serial (product delivery line under docs/beacon/<ver>/)
 
 from __future__ import annotations
 
+import os
 import re
 from pathlib import Path
 from typing import Any, Literal
@@ -26,6 +27,7 @@ from beacon.utils.versioning import (
 ProjectKind = Literal["beacon_self", "external_greenfield", "external_existing"]
 
 GREENFIELD_DEFAULT = "v0.0.1"
+ALLOW_RUNTIME_AS_DOCS_ENV = "BEACON_ALLOW_RUNTIME_AS_DOCS_VERSION"
 
 
 def _version_key(version: str) -> tuple[int, ...]:
@@ -55,12 +57,92 @@ def bump_patch(version: str) -> str:
 
 
 def _toolkit_runtime(project_root: Path) -> str:
-    runtime = current_runtime_release_version(project_root)
-    if runtime:
-        return runtime
-    return normalize_version(str(resolve_runtime_version(project_root, "auto") or "")) or "v0.0.0"
+    root = Path(project_root).expanduser().resolve()
+    # The runtime axis is the Beacon toolkit itself. Only the toolkit monorepo
+    # may resolve it from its own version-truth; external projects must never
+    # infer runtime from their product docs line under docs/beacon/<ver>/.
+    if (root / "beacon" / "version-truth.json").is_file():
+        runtime = current_runtime_release_version(root)
+        if runtime:
+            return runtime
+    return normalize_version(str(resolve_runtime_version(root, "auto") or "")) or "v0.0.0"
 
 
+def runtime_docs_override_enabled() -> bool:
+    """True when the user explicitly forces runtime==docs on an external project."""
+    return str(os.environ.get(ALLOW_RUNTIME_AS_DOCS_ENV, "")).strip().lower() in {"1", "true", "yes", "on"}
+
+
+def project_docs_baseline(project_root: Path | str) -> str:
+    """Dual-axis docs default when the caller omits -v.
+
+    - external greenfield -> v0.0.1
+    - external existing -> project delivery baseline (onboarding or largest docs line)
+    - beacon_self -> toolkit runtime line (self docs lane tracks the runtime release)
+    """
+    root = Path(project_root).expanduser().resolve()
+    info = classify_project(root)
+    kind = str(info.get("project_kind") or "external_greenfield")
+    if kind == "external_greenfield":
+        return GREENFIELD_DEFAULT
+    if kind == "external_existing":
+        return _project_release_baseline(
+            root,
+            docs_versions=list(info.get("project_docs_versions") or []),
+            onboarding_docs=str(info.get("onboarding_docs_version") or ""),
+        )
+    return _toolkit_runtime(root)
+
+
+def external_dual_axis_violation(
+    project_root: Path | str,
+    docs_version: str | None,
+    *,
+    runtime_version: str | None = None,
+) -> dict[str, Any]:
+    """Describe whether an external project collapses docs_version onto the runtime axis."""
+    root = Path(project_root).expanduser().resolve()
+    info = classify_project(root)
+    kind = str(info.get("project_kind") or "external_greenfield")
+    docs = normalize_version(docs_version) or str(docs_version or "").strip()
+    runtime = normalize_version(runtime_version) or _toolkit_runtime(root)
+    violated = bool(kind.startswith("external") and docs and docs == runtime)
+    override = runtime_docs_override_enabled()
+    message = ""
+    if violated and not override:
+        message = (
+            f"dual-axis collapse refused for {kind}: docs_version ({docs}) equals "
+            f"Beacon runtime ({runtime}). Project docs must live on the product delivery "
+            f"line (e.g. v0.0.1); set {ALLOW_RUNTIME_AS_DOCS_ENV}=1 to force."
+        )
+    return {
+        "violated": violated,
+        "blocked": violated and not override,
+        "override_enabled": override,
+        "project_kind": kind,
+        "docs_version": docs,
+        "runtime_version": runtime,
+        "message": message,
+        "override_env": ALLOW_RUNTIME_AS_DOCS_ENV,
+    }
+
+
+def guard_external_docs_axis(
+    project_root: Path | str,
+    docs_version: str | None,
+    *,
+    runtime_version: str | None = None,
+    command_name: str = "",
+) -> None:
+    """Refuse external projects that resolve docs_version == Beacon runtime.
+
+    beacon_self is exempt (self docs lane tracks the runtime release). The
+    documented override is ALLOW_RUNTIME_AS_DOCS_ENV=1.
+    """
+    violation = external_dual_axis_violation(project_root, docs_version, runtime_version=runtime_version)
+    if violation["blocked"]:
+        prefix = f"{command_name}: " if command_name else ""
+        raise ValueError(prefix + str(violation["message"]))
 def classify_project(project_root: Path | str) -> dict[str, Any]:
     """Classify cwd project for version default policy."""
     root = Path(project_root).expanduser().resolve()

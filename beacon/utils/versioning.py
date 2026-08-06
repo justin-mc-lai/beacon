@@ -663,6 +663,9 @@ def resolve_operational_docs_version(
     if str(guard.get("status", "") or "") == "blocked":
         prefix = f"{command_name}: " if command_name else ""
         raise ValueError(prefix + str(guard.get("message", "context version mismatch")))
+    from beacon.utils.version_defaults import guard_external_docs_axis
+
+    guard_external_docs_axis(project_root, resolved, command_name=command_name)
     return str(resolved)
 
 
@@ -876,30 +879,38 @@ def resolve_docs_version(
         resolved = largest_version(project_root, fallback=fallback)
         source = "docs_scan"
     elif raw in {"", "auto", "latest"}:
-        onboarding = onboarding_docs_version(project_root)
-        if onboarding:
-            resolved = onboarding
-            source = "onboarding_state"
+        from beacon.utils.version_defaults import GREENFIELD_DEFAULT, classify_project
+
+        if classify_project(project_root).get("project_kind") == "external_greenfield":
+            # Dual-axis hard default: external greenfield starts at v0.0.1,
+            # never at the toolkit runtime line or generic fallback semver.
+            resolved = GREENFIELD_DEFAULT
+            source = "external_greenfield_default"
         else:
-            project_contract_version = _single_active_project_contract_version(project_root)
-            if project_contract_version:
-                resolved = project_contract_version
-                source = "project_governance"
+            onboarding = onboarding_docs_version(project_root)
+            if onboarding:
+                resolved = onboarding
+                source = "onboarding_state"
             else:
-                version_truth = load_version_truth(project_root)
-                docs_default = normalize_version(
-                    str(
-                        version_truth.get("docs_default_line", "")
-                        or version_truth.get("current_runtime_release_line", "")
-                        or ""
-                    )
-                )
-                if docs_default:
-                    resolved = docs_default
-                    source = "version_truth"
+                project_contract_version = _single_active_project_contract_version(project_root)
+                if project_contract_version:
+                    resolved = project_contract_version
+                    source = "project_governance"
                 else:
-                    resolved = largest_version(project_root, fallback=fallback)
-                    source = "docs_scan"
+                    version_truth = load_version_truth(project_root)
+                    docs_default = normalize_version(
+                        str(
+                            version_truth.get("docs_default_line", "")
+                            or version_truth.get("current_runtime_release_line", "")
+                            or ""
+                        )
+                    )
+                    if docs_default:
+                        resolved = docs_default
+                        source = "version_truth"
+                    else:
+                        resolved = largest_version(project_root, fallback=fallback)
+                        source = "docs_scan"
     else:
         normalized = normalize_version(requested)
         if not normalized:
@@ -961,8 +972,11 @@ def describe_project_version_context(
     docs_version: str | None = None,
     runtime_version: str | None = None,
 ) -> dict[str, Any]:
+    from beacon.utils.version_defaults import classify_project
+
     resolved_docs, docs_source = resolve_docs_version(project_root, docs_version, return_source=True)
     resolved_runtime, runtime_source = resolve_runtime_version(project_root, runtime_version, return_source=True)
+    project_kind = str(classify_project(project_root).get("project_kind") or "")
     context_versions = context_managed_versions(project_root)
     context_docs_versions = context_managed_docs_versions(project_root)
     unique_context = sorted({value for value in context_versions.values() if value})
@@ -981,6 +995,13 @@ def describe_project_version_context(
         "docs_version_source": docs_source,
         "runtime_version": resolved_runtime,
         "runtime_version_source": runtime_source,
+        "project_kind": project_kind,
+        "dual_axis_collapse_external": bool(
+            project_kind.startswith("external")
+            and resolved_docs
+            and resolved_runtime
+            and resolved_docs == resolved_runtime
+        ),
         "runtime_capability_lines": runtime_capability_lines(),
         "runtime_truth_runtime_version": str(runtime_truth.get("runtime_version", "") or ""),
         "runtime_truth_current_release_line": str(runtime_truth.get("current_runtime_release_line", "") or ""),

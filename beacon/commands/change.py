@@ -61,7 +61,14 @@ def _change_impl(
     json_output: bool,
 ) -> int:
     project_root = (Path(project) if project else Path.cwd()).expanduser().resolve()
-    resolved_version = resolve_target_version(project_root, version)
+    try:
+        resolved_version = resolve_target_version(project_root, version)
+        from beacon.utils.version_defaults import guard_external_docs_axis
+
+        guard_external_docs_axis(project_root, resolved_version, command_name="beacon change")
+    except ValueError as exc:
+        typer.echo(str(exc), err=True)
+        return 2
     change_intent_log: dict[str, str] = {}
     if program:
         log_path = append_change_intent_log(

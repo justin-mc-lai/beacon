@@ -57,6 +57,35 @@ def _init_impl(
     if project_mode not in {"greenfield", "takeover"}:
         typer.echo(json.dumps({"status": "failed", "reason_code": "invalid_project_mode", "project_mode": project_mode}, ensure_ascii=False, indent=2))
         return 2
+    from beacon.utils.version_defaults import guard_external_docs_axis
+
+    try:
+        guard_external_docs_axis(
+            root,
+            docs_version,
+            runtime_version=effective_runtime_version,
+            command_name="beacon init",
+        )
+    except ValueError as exc:
+        typer.echo(
+            json.dumps(
+                {
+                    "schema_version": "1.0",
+                    "command": "beacon init",
+                    "status": "failed",
+                    "reason_code": "dual_axis_collapse_external",
+                    "message": str(exc),
+                    "docs_version": docs_version,
+                    "runtime_version": effective_runtime_version,
+                    "project_root": str(root),
+                    "actions": [],
+                    "conflicts": [],
+                },
+                ensure_ascii=False,
+                indent=2,
+            )
+        )
+        return 2
     actions: list[dict[str, str]] = []
 
     docs_paths = [
@@ -87,6 +116,7 @@ def _init_impl(
             force=force,
             with_claude=with_claude,
             with_agents=with_agents,
+            docs_version=docs_version,
         )
         for entry in context_setup.get("actions", []):
             action = dict(entry)

@@ -128,7 +128,9 @@ def test_setup_context_files_should_create_both_files_with_markers(tmp_path: Pat
         assert MANAGED_BLOCK_START in content
         assert MANAGED_BLOCK_END in content
         assert "BEACON:VERSION:v1.2.3" in content
-        assert "BEACON:DOCS_VERSION:v1.2.3" in content
+        # External greenfield default must stay on the product line (v0.0.1),
+        # never collapse onto the runtime axis (v1.2.3).
+        assert "BEACON:DOCS_VERSION:v0.0.1" in content
     assert "docs/beacon/<version>/` is the canonical source of truth" in claude
     assert "Use `docs/beacon/<version>/` as the canonical delivery tree." in agents
     assert "跨版本全局约束" in global_boundaries

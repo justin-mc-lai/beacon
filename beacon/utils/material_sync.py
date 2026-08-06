@@ -61,6 +61,9 @@ def sync_feature_requirement_materials(
     ui_runner: str = "",
 ) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
+    from beacon.utils.version_defaults import guard_external_docs_axis
+
+    guard_external_docs_axis(project_root, resolved_version, command_name="material-sync")
     slug = str(feature or "").strip().lower().replace(" ", "-")
     if dry_run:
         return {
@@ -133,6 +136,9 @@ def sync_project_requirement_materials(
     ui_runner: str = "",
 ) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
+    from beacon.utils.version_defaults import guard_external_docs_axis
+
+    guard_external_docs_axis(project_root, resolved_version, command_name="material-sync")
     features = [feature] if str(feature or "").strip() and not all_features else _discover_features(project_root, resolved_version)
     results: list[dict[str, Any]] = []
     # Package-authoritative features rebuild machine json so source hashes stay

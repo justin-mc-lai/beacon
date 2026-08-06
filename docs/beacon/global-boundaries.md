@@ -325,4 +325,11 @@ Beacon 默认必须同时满足两条：
 - Using toolkit runtime patch as the product version of an external greenfield project
 - Silent major/minor bump without explicit user intent
 
+### External project hard rule (enforced)
+
+- `init` / `setup-context` / material-writing commands refuse `docs_version == runtime_version` on external (`external_greenfield` / `external_existing`) projects.
+- Omitting `-v` must default external docs to `v0.0.1` (greenfield) or the project delivery baseline (existing), never the toolkit runtime semver.
+- Doctor diagnostics/verify fail closed when an external project collapses the two axes or carries a runtime-named docs root.
+- The only explicit force is the documented override `BEACON_ALLOW_RUNTIME_AS_DOCS_VERSION=1`; there is no silent fallback.
+
 Runtime module: `beacon.utils.version_defaults` (`classify_project`, `default_target_version`, `default_hotfix_baseline`).
