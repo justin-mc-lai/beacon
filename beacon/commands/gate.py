@@ -64,7 +64,8 @@ from beacon.utils.technical_review_contract import (
     load_technical_review_state,
 )
 from beacon.utils.semantic_runtime import evaluate_semantic_contract
-from beacon.utils.versioning import project_runtime_feature_enabled, resolve_runtime_version, resolve_target_version
+from beacon.utils.cli_version_guard import resolve_target_version_guarded
+from beacon.utils.versioning import project_runtime_feature_enabled, resolve_runtime_version
 from beacon.utils.v110_baseline import (
     load_latest_baseline_snapshot,
     load_latest_spec_fingerprint,
@@ -499,7 +500,7 @@ def _resolved_gate_version(project_root: Path, requested_version: Optional[str] 
     requested = str(requested_version or "").strip()
     if not requested:
         requested = str(os.environ.get("BEACON_VERSION", "") or "").strip()
-    return resolve_target_version(project_root, requested or None)
+    return resolve_target_version_guarded(project_root, requested or None, command_name="beacon gate")
 
 
 def _resolve_existing_execution_file(project_root: Path, version: str, filename: str) -> Path:
@@ -1442,7 +1443,7 @@ def check_prototype_contract(
     """Check prototype lifecycle artifacts for UI-visualization workflows."""
     if stage not in {"prototype", "release"}:
         return []
-    resolved_version = resolve_target_version(project_root, version)
+    resolved_version = _resolved_gate_version(project_root, version)
     if not version_requires_prototype(project_root, resolved_version):
         return []
 
@@ -1845,7 +1846,7 @@ def check_runtime_projection_transaction_contract(
         return []
     if mode not in {GateMode.STRICT, GateMode.DEBUG}:
         return []
-    resolved_version = resolve_target_version(project_root, version)
+    resolved_version = _resolved_gate_version(project_root, version)
     if _parse_semver_tuple(resolved_version) < (1, 3, 5):
         return []
     try:
@@ -1890,7 +1891,7 @@ def check_acceptance_projection_transaction_contract(
         return []
     if mode not in {GateMode.STRICT, GateMode.DEBUG}:
         return []
-    resolved_version = resolve_target_version(project_root, version)
+    resolved_version = _resolved_gate_version(project_root, version)
     if _parse_semver_tuple(resolved_version) < (1, 3, 9):
         return []
     release_scorecard = build_release_scorecard(project_root, version=resolved_version)
@@ -1928,7 +1929,7 @@ def check_semantic_contract(
 ) -> List[Dict[str, Any]]:
     if stage not in {"prototype", "qa", "release"}:
         return []
-    resolved_version = resolve_target_version(project_root, version)
+    resolved_version = _resolved_gate_version(project_root, version)
     if _parse_semver_tuple(resolved_version) < (1, 3, 6):
         return []
     if not version_requires_prototype(project_root, resolved_version):

@@ -29,11 +29,11 @@ from beacon.utils.technical_review_contract import load_technical_review_contrac
 from beacon.utils.version_surface import version_surface_repair_commands
 from beacon.utils.writeback import acceptance_projection_transaction_contract
 from beacon.utils.skill_decision_surface import attach_skill_decision_surface
+from beacon.utils.cli_version_guard import resolve_target_version_guarded
 from beacon.utils.versioning import (
     project_release_feature_enabled,
     project_runtime_feature_enabled,
     resolve_runtime_version,
-    resolve_target_version,
 )
 from beacon.utils.workflow_memory import append_lifecycle_event
 
@@ -612,7 +612,7 @@ def create(
 ):
     """Create release checklist"""
     project_root = (Path(project) if project else Path.cwd()).resolve()
-    resolved_version = resolve_target_version(project_root, version)
+    resolved_version = resolve_target_version_guarded(project_root, version, command_name="beacon release")
     version_change_payload = _build_version_change_payload(project_root, version=resolved_version)
     version_change_payload = _stabilize_version_change_payload(
         project_root,
@@ -728,7 +728,7 @@ def check(
 ):
     """Check release conditions"""
     project_root = (Path(project) if project else Path.cwd()).expanduser().resolve()
-    resolved_version = resolve_target_version(project_root, version)
+    resolved_version = resolve_target_version_guarded(project_root, version, command_name="beacon release")
     resolved_runtime = resolve_runtime_version(project_root, "auto")
     from beacon.utils.prod_ops_v168 import select_release_profile, load_goal_ops_config
 

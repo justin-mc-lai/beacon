@@ -704,6 +704,17 @@ def run_version_aggregate_projection_repair(
     overwrite_feature_projection: bool,
 ) -> DoctorExecutionResult:
     ctx = build_doctor_execution_context(project_root, version=version)
+    axis_error, version_context = _guard_doctor_external_docs_axis(
+        ctx,
+        command_name="beacon doctor repair-version-aggregate-projection",
+    )
+    if axis_error:
+        return _dual_axis_blocked_payload(
+            "repair-version-aggregate-projection",
+            version_context,
+            ctx.runtime_version,
+            axis_error,
+        )
     resolved_version = resolve_target_version(ctx.project_root, version)
     feature_projection = write_feature_change_projection(
         ctx.project_root,
@@ -1022,13 +1033,29 @@ def run_package_upgrade(
 ) -> DoctorExecutionResult:
     """Upgrade an older Beacon version package cumulatively."""
     ctx = build_doctor_execution_context(project_root, version=version, dry_run=dry_run, include_version_context=False)
+    resolved_version = resolve_target_version(ctx.project_root, version)
+    from beacon.utils.version_defaults import guard_external_docs_axis
+
+    try:
+        guard_external_docs_axis(
+            ctx.project_root,
+            resolved_version,
+            runtime_version=ctx.runtime_version,
+            command_name="beacon doctor upgrade-package",
+        )
+    except ValueError as exc:
+        return _dual_axis_blocked_payload(
+            "upgrade-package",
+            {"docs_version": resolved_version},
+            ctx.runtime_version,
+            str(exc),
+        )
     result = run_doctor_handler(
         "package.upgrade.version-package",
         project_root=ctx.project_root,
         version=version,
         apply=not dry_run,
     )
-    resolved_version = resolve_target_version(ctx.project_root, version)
     source_arch_status = run_doctor_handler(
         "package.verify.source-architecture-status",
         project_root=ctx.project_root,

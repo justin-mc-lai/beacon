@@ -12,7 +12,8 @@ import typer
 
 from beacon.utils.coverage import compute_coverage_metrics
 from beacon.utils.runtime import now_iso, write_json
-from beacon.utils.versioning import discover_versions, normalize_version, resolve_target_version
+from beacon.utils.cli_version_guard import resolve_target_version_guarded
+from beacon.utils.versioning import discover_versions, normalize_version
 from beacon.utils.workflow_memory import compute_memory_metrics, load_lifecycle_events
 
 app = typer.Typer(name="evolution-summary", help="Version evolution summary")
@@ -300,7 +301,11 @@ def create(
 ):
     """Create a version evolution summary document from real run/memory/evidence data."""
     project_root = Path(project) if project else Path.cwd()
-    resolved_version = resolve_target_version(project_root, version)
+    resolved_version = resolve_target_version_guarded(
+        project_root,
+        version,
+        command_name="beacon evolution-summary",
+    )
     previous_version = (
         normalize_version(previous) if previous else _infer_previous_version(project_root, resolved_version)
     ) or "N/A"

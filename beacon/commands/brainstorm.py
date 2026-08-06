@@ -6,7 +6,7 @@ from pathlib import Path
 
 from beacon.utils.brainstorm import MODES, run_beacon_brainstorm
 from beacon.utils.brainstorm import compact_brainstorm_slug
-from beacon.utils.versioning import resolve_target_version
+from beacon.utils.cli_version_guard import resolve_target_version_guarded
 
 app = typer.Typer(name="brainstorm", help="Divergent thinking exploration")
 
@@ -53,7 +53,7 @@ def create(
 ):
     """Create a brainstorming document"""
     project_root = (Path(project) if project else Path.cwd()).expanduser().resolve()
-    resolved_version = resolve_target_version(project_root, None)
+    resolved_version = resolve_target_version_guarded(project_root, None, command_name="beacon brainstorm")
 
     md_content = f"""# 发散思维: {topic}
 
@@ -202,7 +202,7 @@ def list(
 ):
     """List all brainstorming documents"""
     project_root = (Path(project) if project else Path.cwd()).expanduser().resolve()
-    resolved_version = resolve_target_version(project_root, None)
+    resolved_version = resolve_target_version_guarded(project_root, None, command_name="beacon brainstorm")
     brainstorm_dir = project_root / "docs" / "beacon" / resolved_version / "research"
 
     if not brainstorm_dir.exists():

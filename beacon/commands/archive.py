@@ -24,7 +24,7 @@ from beacon.utils.version_truth_catalog import (
     catalog_supported,
     load_catalog_status,
 )
-from beacon.utils.versioning import resolve_target_version
+from beacon.utils.cli_version_guard import resolve_target_version_guarded
 
 
 catalog_app = typer.Typer(name="catalog", help="Version truth catalog plan/apply/bootstrap/status")
@@ -44,7 +44,7 @@ def plan(
 ):
     """Preview archive governance outputs without mutating state."""
     root = Path(project_root) if project_root else Path.cwd()
-    resolved_version = resolve_target_version(root, version)
+    resolved_version = resolve_target_version_guarded(root, version, command_name="beacon archive")
     if not archive_governance_supported(resolved_version):
         payload = {
             "schema_version": "1.0",
@@ -90,7 +90,7 @@ def apply(
 ):
     """Write archive governance materials."""
     root = Path(project_root) if project_root else Path.cwd()
-    resolved_version = resolve_target_version(root, version)
+    resolved_version = resolve_target_version_guarded(root, version, command_name="beacon archive")
     if not archive_governance_supported(resolved_version):
         payload = {
             "schema_version": "1.0",
@@ -155,7 +155,7 @@ def explain(
 ):
     """Explain Beacon archive semantics."""
     root = Path(project_root) if project_root else Path.cwd()
-    resolved_version = resolve_target_version(root, version)
+    resolved_version = resolve_target_version_guarded(root, version, command_name="beacon archive")
     payload = {
         "schema_version": "1.0",
         "version": resolved_version,
@@ -197,7 +197,7 @@ def catalog_plan(
 ):
     """Preview version-truth-catalog changes without mutating disk."""
     root = Path(project_root) if project_root else Path.cwd()
-    resolved_version = resolve_target_version(root, version)
+    resolved_version = resolve_target_version_guarded(root, version, command_name="beacon archive")
     if not catalog_supported(resolved_version):
         raise typer.Exit(2)
     active_versions = [item.strip() for item in active.split(",") if item.strip()] if active else None
@@ -224,7 +224,7 @@ def catalog_apply(
 ):
     """Commit version-truth-catalog MD and optionally relocate version trees."""
     root = Path(project_root) if project_root else Path.cwd()
-    resolved_version = resolve_target_version(root, version)
+    resolved_version = resolve_target_version_guarded(root, version, command_name="beacon archive")
     active_versions = [item.strip() for item in active.split(",") if item.strip()] if active else None
     plan = build_catalog_plan(root, active_versions=active_versions, target_version=resolved_version)
     payload = apply_catalog_plan(root, plan, confirm=confirm)

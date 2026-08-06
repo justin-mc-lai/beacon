@@ -21,7 +21,7 @@ from beacon.utils.story_state import freeze_story_state, feature_slug
 from beacon.utils.truth_integrity import build_truth_integrity_gate
 from beacon.utils.truth_review_gate import build_truth_review_gate_payload
 from beacon.utils.truth_map import rebuild_machine_json
-from beacon.utils.versioning import resolve_target_version
+from beacon.utils.cli_version_guard import resolve_target_version_guarded
 from beacon.utils.project_metadata import ensure_version_contract_from_feature_package
 
 app = typer.Typer(name="freeze", help="Freeze current feature revision as implementation baseline", invoke_without_command=True, no_args_is_help=False)
@@ -29,7 +29,7 @@ app = typer.Typer(name="freeze", help="Freeze current feature revision as implem
 
 def _freeze_impl(feature: str, project: Optional[str], version: str, json_output: bool) -> int:
     project_root = (Path(project) if project else Path.cwd()).expanduser().resolve()
-    resolved_version = resolve_target_version(project_root, version)
+    resolved_version = resolve_target_version_guarded(project_root, version, command_name="beacon freeze")
     branch_guard = check_truth_authoring_branch(
         project_root,
         version=resolved_version,

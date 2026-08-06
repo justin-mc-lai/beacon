@@ -112,9 +112,27 @@ def goal_run(
         raise typer.Exit(2)
     hotfix_plan = None
     goal_version = version
+    from beacon.utils.version_defaults import guard_external_docs_axis, resolve_goal_version
+
+    try:
+        gv = resolve_goal_version(root, version, goal_mode=mode_norm)
+        guard_external_docs_axis(root, str(gv.get("version") or ""), command_name="beacon goal")
+    except ValueError as exc:
+        _emit(
+            {
+                "status": "blocked",
+                "blocked": True,
+                "reason_code": "dual_axis_collapse_external",
+                "message": str(exc),
+                "version": version,
+                "goal_mode": mode_norm,
+            },
+            json_output,
+        )
+        raise typer.Exit(2)
+    resolved_goal_version = str(gv.get("version") or "")
     if mode_norm == "hotfix":
         from beacon.utils.prod_ops_v168 import build_hotfix_plan
-        from beacon.utils.version_defaults import resolve_goal_version
 
         hotfix_plan = build_hotfix_plan(
             utterance=utterance,
@@ -127,8 +145,7 @@ def goal_run(
             auto_defaults=True,
         )
         # Pin goal docs/work version to production baseline (no patch bump)
-        gv = resolve_goal_version(root, version, goal_mode="hotfix")
-        goal_version = str(gv.get("version") or hotfix_plan.get("baseline_ref") or version)
+        goal_version = resolved_goal_version or hotfix_plan.get("baseline_ref") or version
     if no_longrun:
         lr = False
     elif longrun:
@@ -541,4 +558,3 @@ def multi_version_plan_cmd(
         for tr in payload.get("tracks") or []:
             typer.echo(f"- {tr.get('version')} ({tr.get('track_label')}): lakes={tr.get('lakes')}")
     raise typer.Exit(0)
-

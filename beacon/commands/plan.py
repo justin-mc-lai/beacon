@@ -9,7 +9,7 @@ from typing import Optional
 import typer
 
 from beacon.utils.program_plan_runtime import build_plan_start_payload, emit_plan_start_json
-from beacon.utils.versioning import resolve_target_version
+from beacon.utils.cli_version_guard import resolve_target_version_guarded
 
 app = typer.Typer(
     name="plan",
@@ -30,7 +30,7 @@ def start_cmd(
 ) -> None:
     """Bootstrap program artifacts and classify plan_mode (does not write package truth)."""
     project_root = Path(project).resolve() if project else Path.cwd()
-    resolved_version = resolve_target_version(project_root, version)
+    resolved_version = resolve_target_version_guarded(project_root, version, command_name="beacon plan")
     payload = build_plan_start_payload(
         project_root,
         version=resolved_version,

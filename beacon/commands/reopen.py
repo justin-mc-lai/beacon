@@ -13,7 +13,7 @@ from beacon.utils.git_alignment import check_truth_authoring_branch
 from beacon.utils.revision_state import reopen_revision_state
 from beacon.utils.truth_review_gate import mark_package_materials_stale
 from beacon.utils.story_state import reopen_story_state
-from beacon.utils.versioning import resolve_target_version
+from beacon.utils.cli_version_guard import resolve_target_version_guarded
 
 app = typer.Typer(name="reopen", help="Create a new active revision for a feature", invoke_without_command=True, no_args_is_help=False)
 
@@ -21,7 +21,7 @@ app = typer.Typer(name="reopen", help="Create a new active revision for a featur
 def _reopen_impl(feature: str, project: Optional[str], version: str, reason: str, json_output: bool) -> int:
     project_root = Path(project) if project else Path.cwd()
     project_root = project_root.expanduser().resolve()
-    resolved_version = resolve_target_version(project_root, version)
+    resolved_version = resolve_target_version_guarded(project_root, version, command_name="beacon reopen")
     branch_guard = check_truth_authoring_branch(
         project_root,
         version=resolved_version,
