@@ -13,6 +13,10 @@
 | **`spec-kit`** | [github/spec-kit](https://github.com/github/spec-kit) | `pm/pm/spec-kit` | Spec-Driven Development (SDD) 工具链与规范模板 | 规范驱动开发 (SDD)、需求到任务图的结构化推导 |
 | **`mattpocock-skills`** | [mattpocock/skills](https://github.com/mattpocock/skills) | `core-skills/mattpocock-skills` | TypeScript/前端高效 Agent Skill 规范集 | 渐进式 Context 注入、轻量化规则决策树与 Validation Checklist |
 | **`everything-claude-code (ECC)`** | [affaan-m/ECC](https://github.com/affaan-m/ECC) | `agents/agent-skills/everything-claude-code` | 全景 Agent 生产力库 (Rules/Skills/Agents/Dashboard/Hooks) | 任务进度实时回显、Runtime Hooks 拦截、动态 Context 状态管理与注水/偏离纠正 |
+| **`loopx`** | [huangruiteng/loopx](https://github.com/huangruiteng/loopx) | `automation/autoresearch/loopx` | Loop 工程状态内核 / agent-agnostic 本地控制平面 | quota-aware 唤醒、claims/leases 所有权、evidence 回写、typed handoff 交接契约 |
+| **`oh-my-pi`** | [can1357/oh-my-pi](https://github.com/can1357/oh-my-pi) | `agents/agent-systems/oh-my-pi` | Pi (badlogic/pi-mono) 的 coding-first fork，终端 AI coding agent | hashline 行锚定编辑防 diff 漂移、snapcompact 位图帧上下文压缩、agentLoop 显式状态/事件流 |
+| **`kun`** | [KunAgent/Kun](https://github.com/KunAgent/Kun) | `agents/agent-systems/kun` | 本地优先 AI Agent 工作台（GUI+TUI），需求先行 coding 闭环 | cache-first agent loop、成本分层模型组合（长流程跑得起的预算前提）、追加式 JSONL 事件日志 |
+| **`simple-long-horizon-agent`** | [simple-agent-lab/simple-long-horizon-agent](https://github.com/simple-agent-lab/simple-long-horizon-agent) | `automation/autoresearch/simple-long-horizon-agent` | Simple by design 的长程任务 agent（Python） | Δ vs Baseline 评测口径（分离 agent 价值与模型能力）、cost/task 度量 |
 
 ---
 
@@ -59,6 +63,13 @@
 * **Beacon 对照与借鉴**：
   - **契合点**：Beacon 的 `GoalRun` 阶段机、`durable-supervisor` 和 `execution.jsonl` 日志。
   - **借鉴点（高价值）**：ECC 的 **Runtime Hooks + WORKING-CONTEXT 任务看板** 为 Beacon 补充「注水检测、任务进度实时回显、取消当前偏差任务并自适应调度下一个」提供了极佳的落地方案。
+
+### 2.4 Agent Loop 项目族（2026-08-03 新增，详见 [长程任务稳定性分析](./beacon-longrun-stability-analysis-2026-08.md)）
+
+- **`loopx`**：与 Beacon GoalRun / DurableSupervisor 最同构——不替换 executor，只保状态。**quota-aware 唤醒**（S4 预算缺口）、**claims/leases 所有权**（S7 并发缺口）是 Beacon 直接可借鉴的两项。
+- **`oh-my-pi`**：运行时稳定性——hashline 编辑锚定（变更应用层稳定）、snapcompact 压缩评测（S6 升级路径）。
+- **`kun`**：长流程成本稳定性——cache-first loop + 模型成本分层，与 Beacon 需求先行/refreeze 思想同构。
+- **`simple-long-horizon-agent`**：Δ vs Baseline 评测口径——给 Beacon 稳定性机制提供量化验收方法。
 
 ---
 

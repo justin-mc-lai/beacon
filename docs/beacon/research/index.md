@@ -190,3 +190,15 @@ When adding a new research note:
 13. [Beacon Competitor & Open-Source Benchmark Registry](./beacon-competitor-registry.md)
    - Why it matters:
      registers and analyzes key open-source benchmarks (`spec-kit`, `mattpocock-skills`, `everything-claude-code`) for spec-driven workflows, task breakdown, drift/padding interception, and dynamic context updates.
+14. [Beacon long-run stability analysis (2026-08-03)](./beacon-longrun-stability-analysis-2026-08.md)
+   - Why it matters:
+     audits Beacon's long-running task stability across 8 dimensions against four new loop projects (`loopx`, `oh-my-pi`, `kun`, `simple-long-horizon-agent`); identifies the real gaps as S4 quota control and S7 concurrent ownership, with loopx's quota-aware wake and claims/leases as directly adoptable references, plus a Δ-vs-baseline evaluation standard.
+15. [Beacon long-run stability mechanisms + pi agent evolution (2026-08-03)](./beacon-longrun-pi-agent-evolution-2026-08.md)
+   - Why it matters:
+     deep-dives kun's goal-as-thread-object dual-coordinator loop and loopx's deterministic no-LLM control plane (quota slots, should_run gate chain, hard leases, event-sourced state) at source level, produces a 10-item Beacon stability backlog (P0 quota/spend-after-validated-writeback/Δ-eval), and designs the architecture for Beacon truth delivery powered by the pi agent (oh-my-pi) for long-run delivery, creative tasks, and scheduled tasks — with the explicit boundary that truth/state-machine/gates stay in Beacon while execution lives in pi.
+16. [Beacon loop capability next steps (2026-08-05)](./beacon-loop-capability-next-2026-08.md)
+   - Why it matters:
+     re-assesses loop capability after v0.0.4 vision-flywheel shipped and the first heartbeat (search-boundary-curate) went live; the six insights prioritize closing the feedback loop (metrics → analyze → brain-writeback), turning single heartbeat into a heartbeat network (produce-queue + evidence_threshold triggers + hard lease), upgrading should-run to state-aware gates (terminal_no_followup / replan obligation / workspace guard), adding no-progress backoff, event-sourcing the ledger, and adopting a Δ-vs-baseline evaluation standard — with the autonomy ladder L0→L4 as the organizing narrative (triggers and convergence shift to the system, human gates never revoked).
+17. [Beacon × ADB role division (2026-08-05)](./beacon-adb-role-division-2026-08.md)
+   - Why it matters:
+     freezes the division of labor between Beacon (defines correctness, judges completion — truth/FSM/gates/verifier) and agent-delivery-bus (schedules and governs — approvals/idempotent dispatch/heartbeat quota/evidence reconciliation); documents the concrete coupling points (truth_gate adapter = beacon, worker binding embeds beacon skills, dual gates never substitute), the one-line boundary rule (standards/judgment → Beacon; dispatch/approval/quota/ledger → ADB; execution/creation → hermes/pi), and the future allocation of loop improvements across the two projects.

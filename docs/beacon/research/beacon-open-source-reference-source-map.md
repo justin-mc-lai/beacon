@@ -355,3 +355,7 @@ Notes:
 | `spec-kit` | `canonical` | `pm/pm/spec-kit` | `https://github.com/github/spec-kit.git` | `docs/beacon/research/beacon-competitor-registry.md` |
 | `mattpocock-skills` | `canonical` | `core-skills/mattpocock-skills` | `https://github.com/mattpocock/skills.git` | `docs/beacon/research/beacon-competitor-registry.md` |
 | `everything-claude-code` | `canonical` | `agents/agent-skills/everything-claude-code` | `https://github.com/affaan-m/ECC.git` | `docs/beacon/research/beacon-competitor-registry.md` |
+| `loopx` | `canonical` | `automation/autoresearch/loopx` | `https://github.com/huangruiteng/loopx.git` | `docs/beacon/research/beacon-longrun-stability-analysis-2026-08.md` |
+| `oh-my-pi` | `canonical` | `agents/agent-systems/oh-my-pi` | `https://github.com/can1357/oh-my-pi.git` | `docs/beacon/research/beacon-longrun-stability-analysis-2026-08.md` |
+| `kun` | `canonical` | `agents/agent-systems/kun` | `https://github.com/KunAgent/Kun.git` | `docs/beacon/research/beacon-longrun-stability-analysis-2026-08.md` |
+| `simple-long-horizon-agent` | `canonical` | `automation/autoresearch/simple-long-horizon-agent` | `https://github.com/simple-agent-lab/simple-long-horizon-agent.git` | `docs/beacon/research/beacon-longrun-stability-analysis-2026-08.md` |
