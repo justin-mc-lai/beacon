@@ -3,10 +3,10 @@ schema_version: "1.0"
 project_root: "/Users/apple/Developer/Personal/products/beacon"
 topology_kind: "single_repo"
 default_execution_service: "beacon"
-transaction_id: "tx-project-governance-48d245a1ea5be308"
-committed_at: "2026-07-28T11:59:53.496123+00:00"
-source_hash: "48d245a1ea5be30894dbf9eb8562e8f809280cb9a5c9ecea599b1066e5d580ec"
-event_type: "update"
+transaction_id: "tx-project-governance-ce8356bbb76821e8"
+committed_at: "2026-08-07T15:59:42.215792+00:00"
+source_hash: "ce8356bbb76821e83a7676e1b55ea6a75e4936c07325e63b4cdc9e0a40c1bfd9"
+event_type: "freeze-version-contract"
 parser_contract: "beacon-project-governance-v1"
 ---
 
@@ -90,6 +90,24 @@ parser_contract: "beacon-project-governance-v1"
 - merge_direction_policy: `master->main`
 - merge_direction_policy: `main->uat`
 - forbidden_directions: `uat->main`
+- forbidden_directions: `uat_as_feature_base`
+
+### v1.6.12
+- participating_services: `beacon`
+- branch_guard_mode: `strict`
+- validation_state: `active`
+- per_service_canonical_branch:
+  - `beacon`: `beacon/v1.6.12`
+- truth_canonical: `main`
+- branch_governance_template: `standard-feature`
+- previous_version_baseline_branch: `main`
+- next_version_feature_branch: `beacon/v1.6.12/<feature-slug>`
+- worktree_mode: `dedicated`
+- worktree_path: `.beacon/worktrees/v1.6.12`
+- require_workspace_admission: `true`
+- merge_direction_policy: `master->beacon/v1.6.12`
+- merge_direction_policy: `beacon/v1.6.12->uat`
+- forbidden_directions: `uat->beacon/v1.6.12`
 - forbidden_directions: `uat_as_feature_base`
 
 ### v1.6.2

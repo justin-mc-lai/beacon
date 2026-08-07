@@ -1,0 +1,646 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-test-modernization-v1612",
+  "feature_slug": "beacon-test-modernization-v1612",
+  "version": "v1.6.12",
+  "runtime_version": "v1.6.11",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.6.12/.machine/execution/requirement-clarity-beacon-test-modernization-v1612.json",
+  "report_markdown_path": "docs/beacon/v1.6.12/execution/requirement-clarity-beacon-test-modernization-v1612.md",
+  "state_path": ".beacon/state/requirement-clarity-beacon-test-modernization-v1612.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.12",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-08-07T15:59:41.127297+00:00",
+    "feature": "beacon-test-modernization-v1612",
+    "feature_slug": "beacon-test-modernization-v1612",
+    "prd_ref": "docs/beacon/v1.6.12/prd/beacon-test-modernization-v1612.md",
+    "user_story_ref": "docs/beacon/v1.6.12/user-story/beacon-test-modernization-v1612.md"
+  },
+  "domain_fsm_gate": {
+    "schema_version": "1.0",
+    "feature": "beacon-test-modernization-v1612",
+    "feature_slug": "beacon-test-modernization-v1612",
+    "version": "v1.6.12",
+    "truth_path": "docs/beacon/v1.6.12/features/beacon-test-modernization-v1612/truth.md",
+    "tests_path": "docs/beacon/v1.6.12/features/beacon-test-modernization-v1612/tests.md",
+    "required": true,
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "findings": [],
+    "requirement": {
+      "required": true,
+      "reason": "domain_section_present",
+      "explicit": false,
+      "partial": true,
+      "complexity": false,
+      "business_signal": false,
+      "version_supported": true
+    },
+    "projection": {
+      "schema_version": "1.0",
+      "domain_fsm_schema": "domain-fsm.v1",
+      "entity_precedence_schema": "entity-precedence.v1",
+      "frontmatter": {
+        "slug": "beacon-test-modernization-v1612",
+        "version": "v1.6.12",
+        "status": "draft",
+        "language": "zh",
+        "package_maturity": "filled",
+        "parser_contract": "beacon-feature-package-v2",
+        "truth_source_model": "feature_package_authoritative",
+        "materials_status": "current",
+        "canonical_refs": {
+          "prd": "docs/beacon/v1.6.12/features/beacon-test-modernization-v1612/truth.md",
+          "user_story": "docs/beacon/v1.6.12/features/beacon-test-modernization-v1612/truth.md",
+          "test_case": "docs/beacon/v1.6.12/features/beacon-test-modernization-v1612/tests.md"
+        },
+        "humanizer_applied": "true"
+      },
+      "frontmatter_errors": [],
+      "has_domain_model_section": true,
+      "has_domain_fsm_section": true,
+      "has_illegal_transition_section": true,
+      "entities": [
+        {
+          "entity": "ClassificationRow",
+          "key": "nodeid, file, band, category, disposition, status",
+          "precedence": "失败清单中的一行，迁移批次的输入单位",
+          "requires": "失败清单中的一行，迁移批次的输入单位"
+        },
+        {
+          "entity": "TestDriftBatch",
+          "key": "disposition, rows, acceptance",
+          "precedence": "按 disposition 分组的迁移批次",
+          "requires": "按 disposition 分组的迁移批次"
+        },
+        {
+          "entity": "LegacyArchive",
+          "key": "version_band, test_files, archive_path",
+          "precedence": "v1.0–v1.5 历史线测试归档",
+          "requires": "v1.0–v1.5 历史线测试归档"
+        },
+        {
+          "entity": "CurrentLineCIGate",
+          "key": "default_suite_result, legacy_excluded",
+          "precedence": "现行线 CI 全绿判定",
+          "requires": "现行线 CI 全绿判定"
+        },
+        {
+          "entity": "FillBatchQueue",
+          "key": "batch_order, done, blocked",
+          "precedence": "批次推进队列",
+          "requires": "批次推进队列"
+        }
+      ],
+      "entity_precedence": [
+        {
+          "entity": "ClassificationRow",
+          "key": "nodeid, file, band, category, disposition, status",
+          "precedence": "失败清单中的一行，迁移批次的输入单位",
+          "requires": "失败清单中的一行，迁移批次的输入单位"
+        },
+        {
+          "entity": "TestDriftBatch",
+          "key": "disposition, rows, acceptance",
+          "precedence": "按 disposition 分组的迁移批次",
+          "requires": "按 disposition 分组的迁移批次"
+        },
+        {
+          "entity": "LegacyArchive",
+          "key": "version_band, test_files, archive_path",
+          "precedence": "v1.0–v1.5 历史线测试归档",
+          "requires": "v1.0–v1.5 历史线测试归档"
+        },
+        {
+          "entity": "CurrentLineCIGate",
+          "key": "default_suite_result, legacy_excluded",
+          "precedence": "现行线 CI 全绿判定",
+          "requires": "现行线 CI 全绿判定"
+        },
+        {
+          "entity": "FillBatchQueue",
+          "key": "batch_order, done, blocked",
+          "precedence": "批次推进队列",
+          "requires": "批次推进队列"
+        }
+      ],
+      "aggregates": [
+        {
+          "name": "TestModernization",
+          "states": [
+            "all_batches_done",
+            "any non-terminal",
+            "blocked",
+            "current_line_green",
+            "filled",
+            "frozen",
+            "implementing",
+            "next_batch",
+            "reviewed",
+            "scaffold_materialized"
+          ],
+          "transitions": [
+            {
+              "from": "",
+              "to": "scaffold_materialized",
+              "guard": "package unfilled",
+              "initial": "true"
+            },
+            {
+              "from": "scaffold_materialized",
+              "to": "filled",
+              "guard": "host fill applied"
+            },
+            {
+              "from": "filled",
+              "to": "reviewed",
+              "guard": "truth review gate pass"
+            },
+            {
+              "from": "reviewed",
+              "to": "frozen",
+              "guard": "truth verify pass + freeze revision"
+            },
+            {
+              "from": "frozen",
+              "to": "implementing",
+              "guard": "workspace admission pass"
+            },
+            {
+              "from": "implementing",
+              "to": "next_batch",
+              "guard": "batch tests pass"
+            },
+            {
+              "from": "next_batch",
+              "to": "current_line_green",
+              "guard": "default suite clean"
+            },
+            {
+              "from": "all_batches_done",
+              "to": "current_line_green",
+              "guard": "default suite clean"
+            },
+            {
+              "from": "any non-terminal",
+              "to": "blocked",
+              "guard": "missing gate/admission/legacy archive"
+            }
+          ]
+        }
+      ],
+      "illegal_transition_slots": [
+        {
+          "description": "TestModernization.scaffold_materialized → frozen（跳过 review/freeze 门禁）",
+          "aggregate": "TestModernization",
+          "source": "truth"
+        },
+        {
+          "description": "TestModernization.frozen → implementing 未经过 workspace admission",
+          "aggregate": "TestModernization",
+          "source": "truth"
+        },
+        {
+          "description": "TestModernization.legacy_archive 直接删除测试文件而不先归档",
+          "aggregate": "TestModernization",
+          "source": "truth"
+        },
+        {
+          "description": "TestModernization.current_line_green 在默认套件未全绿时声明完成",
+          "aggregate": "TestModernization",
+          "source": "truth"
+        }
+      ],
+      "acceptance_criteria": [
+        {
+          "ac_id": "AC-001",
+          "description": "分类清单中 20 个 fix_upstream_first 条目修复后，其所属测试文件不再出现级联失败，批次从 implementing 推进到 next_batch"
+        },
+        {
+          "ac_id": "AC-002",
+          "description": "466 个 migrate_assert 条目全部改为现行规范断言并随文件一起通过，批次进入 next_batch"
+        },
+        {
+          "ac_id": "AC-003",
+          "description": "206 个 fixture 条目按 TestDriftBatch 处置完成：迁移后通过，或显式归档（LegacyArchive）并更新清单状态"
+        },
+        {
+          "ac_id": "AC-004",
+          "description": "v1.0–v1.5 历史线测试移入 tests/legacy/（LegacyArchive），默认 pytest 收集不再包含"
+        },
+        {
+          "ac_id": "AC-005",
+          "description": "默认测试套件（不含 legacy）全量通过后进入 current_line_green，beacon doctor diagnose 无存量兼容失败"
+        },
+        {
+          "ac_id": "AC-006",
+          "description": "v2.x 4 个 defer 条目在 FillBatchQueue 记录 reason_code 与复核计划，不混入现行线验收"
+        }
+      ],
+      "bound_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006"
+      ],
+      "orphan_ac_ids": [],
+      "aggregates_missing_illegal_slots": [],
+      "raw_section_titles": [
+        "人话",
+        "User Intent Snapshot",
+        "用户旅程",
+        "Intent Coverage Matrix",
+        "Acceptance Criteria",
+        "Domain Model",
+        "Domain FSM TestModernization",
+        "FSM 五元组",
+        "invalid / illegal",
+        "Illegal transitions",
+        "Non-goals"
+      ]
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "required": true,
+      "blocked": false,
+      "status": "pass",
+      "reason_code": "",
+      "findings": [],
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "beacon-test-modernization-v1612",
+          "version": "v1.6.12",
+          "status": "draft",
+          "language": "zh",
+          "package_maturity": "filled",
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "materials_status": "current",
+          "canonical_refs": {
+            "prd": "docs/beacon/v1.6.12/features/beacon-test-modernization-v1612/truth.md",
+            "user_story": "docs/beacon/v1.6.12/features/beacon-test-modernization-v1612/truth.md",
+            "test_case": "docs/beacon/v1.6.12/features/beacon-test-modernization-v1612/tests.md"
+          },
+          "humanizer_applied": "true"
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": true,
+        "has_domain_fsm_section": true,
+        "has_illegal_transition_section": true,
+        "entities": [
+          {
+            "entity": "ClassificationRow",
+            "key": "nodeid, file, band, category, disposition, status",
+            "precedence": "失败清单中的一行，迁移批次的输入单位",
+            "requires": "失败清单中的一行，迁移批次的输入单位"
+          },
+          {
+            "entity": "TestDriftBatch",
+            "key": "disposition, rows, acceptance",
+            "precedence": "按 disposition 分组的迁移批次",
+            "requires": "按 disposition 分组的迁移批次"
+          },
+          {
+            "entity": "LegacyArchive",
+            "key": "version_band, test_files, archive_path",
+            "precedence": "v1.0–v1.5 历史线测试归档",
+            "requires": "v1.0–v1.5 历史线测试归档"
+          },
+          {
+            "entity": "CurrentLineCIGate",
+            "key": "default_suite_result, legacy_excluded",
+            "precedence": "现行线 CI 全绿判定",
+            "requires": "现行线 CI 全绿判定"
+          },
+          {
+            "entity": "FillBatchQueue",
+            "key": "batch_order, done, blocked",
+            "precedence": "批次推进队列",
+            "requires": "批次推进队列"
+          }
+        ],
+        "entity_precedence": [
+          {
+            "entity": "ClassificationRow",
+            "key": "nodeid, file, band, category, disposition, status",
+            "precedence": "失败清单中的一行，迁移批次的输入单位",
+            "requires": "失败清单中的一行，迁移批次的输入单位"
+          },
+          {
+            "entity": "TestDriftBatch",
+            "key": "disposition, rows, acceptance",
+            "precedence": "按 disposition 分组的迁移批次",
+            "requires": "按 disposition 分组的迁移批次"
+          },
+          {
+            "entity": "LegacyArchive",
+            "key": "version_band, test_files, archive_path",
+            "precedence": "v1.0–v1.5 历史线测试归档",
+            "requires": "v1.0–v1.5 历史线测试归档"
+          },
+          {
+            "entity": "CurrentLineCIGate",
+            "key": "default_suite_result, legacy_excluded",
+            "precedence": "现行线 CI 全绿判定",
+            "requires": "现行线 CI 全绿判定"
+          },
+          {
+            "entity": "FillBatchQueue",
+            "key": "batch_order, done, blocked",
+            "precedence": "批次推进队列",
+            "requires": "批次推进队列"
+          }
+        ],
+        "aggregates": [
+          {
+            "name": "TestModernization",
+            "states": [
+              "all_batches_done",
+              "any non-terminal",
+              "blocked",
+              "current_line_green",
+              "filled",
+              "frozen",
+              "implementing",
+              "next_batch",
+              "reviewed",
+              "scaffold_materialized"
+            ],
+            "transitions": [
+              {
+                "from": "",
+                "to": "scaffold_materialized",
+                "guard": "package unfilled",
+                "initial": "true"
+              },
+              {
+                "from": "scaffold_materialized",
+                "to": "filled",
+                "guard": "host fill applied"
+              },
+              {
+                "from": "filled",
+                "to": "reviewed",
+                "guard": "truth review gate pass"
+              },
+              {
+                "from": "reviewed",
+                "to": "frozen",
+                "guard": "truth verify pass + freeze revision"
+              },
+              {
+                "from": "frozen",
+                "to": "implementing",
+                "guard": "workspace admission pass"
+              },
+              {
+                "from": "implementing",
+                "to": "next_batch",
+                "guard": "batch tests pass"
+              },
+              {
+                "from": "next_batch",
+                "to": "current_line_green",
+                "guard": "default suite clean"
+              },
+              {
+                "from": "all_batches_done",
+                "to": "current_line_green",
+                "guard": "default suite clean"
+              },
+              {
+                "from": "any non-terminal",
+                "to": "blocked",
+                "guard": "missing gate/admission/legacy archive"
+              }
+            ]
+          }
+        ],
+        "illegal_transition_slots": [
+          {
+            "description": "TestModernization.scaffold_materialized → frozen（跳过 review/freeze 门禁）",
+            "aggregate": "TestModernization",
+            "source": "truth"
+          },
+          {
+            "description": "TestModernization.frozen → implementing 未经过 workspace admission",
+            "aggregate": "TestModernization",
+            "source": "truth"
+          },
+          {
+            "description": "TestModernization.legacy_archive 直接删除测试文件而不先归档",
+            "aggregate": "TestModernization",
+            "source": "truth"
+          },
+          {
+            "description": "TestModernization.current_line_green 在默认套件未全绿时声明完成",
+            "aggregate": "TestModernization",
+            "source": "truth"
+          }
+        ],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-001",
+            "description": "分类清单中 20 个 fix_upstream_first 条目修复后，其所属测试文件不再出现级联失败，批次从 implementing 推进到 next_batch"
+          },
+          {
+            "ac_id": "AC-002",
+            "description": "466 个 migrate_assert 条目全部改为现行规范断言并随文件一起通过，批次进入 next_batch"
+          },
+          {
+            "ac_id": "AC-003",
+            "description": "206 个 fixture 条目按 TestDriftBatch 处置完成：迁移后通过，或显式归档（LegacyArchive）并更新清单状态"
+          },
+          {
+            "ac_id": "AC-004",
+            "description": "v1.0–v1.5 历史线测试移入 tests/legacy/（LegacyArchive），默认 pytest 收集不再包含"
+          },
+          {
+            "ac_id": "AC-005",
+            "description": "默认测试套件（不含 legacy）全量通过后进入 current_line_green，beacon doctor diagnose 无存量兼容失败"
+          },
+          {
+            "ac_id": "AC-006",
+            "description": "v2.x 4 个 defer 条目在 FillBatchQueue 记录 reason_code 与复核计划，不混入现行线验收"
+          }
+        ],
+        "bound_ac_ids": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006"
+        ],
+        "orphan_ac_ids": [],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "人话",
+          "User Intent Snapshot",
+          "用户旅程",
+          "Intent Coverage Matrix",
+          "Acceptance Criteria",
+          "Domain Model",
+          "Domain FSM TestModernization",
+          "FSM 五元组",
+          "invalid / illegal",
+          "Illegal transitions",
+          "Non-goals"
+        ]
+      },
+      "summary": {
+        "entity_count": 5,
+        "aggregate_count": 1,
+        "illegal_slot_count": 4,
+        "orphan_ac_count": 0,
+        "bound_ac_count": 6
+      }
+    },
+    "recommended_action": ""
+  },
+  "human_closure_contract": {
+    "required": false,
+    "research_path": "docs/beacon/v1.6.12/research/beacon-test-modernization-v1612.md",
+    "research_exists": false,
+    "source_architecture_path": "docs/beacon/v1.6.12/source-architecture/beacon-test-modernization-v1612.md",
+    "source_architecture_exists": false,
+    "required_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "missing_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "diagram_types": [],
+    "complexity_signals": []
+  },
+  "requirement_closure_contract": {
+    "required": true,
+    "chain_order": [
+      "research",
+      "prd",
+      "user_story",
+      "test_case",
+      "requirement_clarity",
+      "freeze"
+    ],
+    "human_closure_required": false,
+    "paths": {
+      "research": "docs/beacon/v1.6.12/research/beacon-test-modernization-v1612.md",
+      "prd": "docs/beacon/v1.6.12/features/beacon-test-modernization-v1612/truth.md",
+      "user_story": "docs/beacon/v1.6.12/features/beacon-test-modernization-v1612/truth.md",
+      "test_case": "docs/beacon/v1.6.12/features/beacon-test-modernization-v1612/tests.md"
+    },
+    "exists": {
+      "research": false,
+      "prd": true,
+      "user_story": true,
+      "test_case": true
+    },
+    "required_research_sections": [],
+    "missing_research_sections": [],
+    "ac_projection": {
+      "prd_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006"
+      ],
+      "user_story_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006"
+      ],
+      "test_case_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006"
+      ],
+      "upstream_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006"
+      ],
+      "missing_test_case_ac_ids": []
+    }
+  },
+  "version_projection_truth_contract": {
+    "required": false,
+    "supported": true,
+    "projection_types": [],
+    "research_path": "docs/beacon/v1.6.12/research/beacon-test-modernization-v1612.md",
+    "research_exists": false,
+    "required_fields": [
+      "prd_refs",
+      "user_story_refs",
+      "test_case_refs",
+      "coverage_notes",
+      "out_of_scope_notes"
+    ],
+    "field_presence": {
+      "prd_refs": false,
+      "user_story_refs": false,
+      "test_case_refs": false,
+      "coverage_notes": false,
+      "out_of_scope_notes": false
+    },
+    "missing_fields": [],
+    "required_refs": {
+      "prd_refs": "docs/beacon/v1.6.12/features/beacon-test-modernization-v1612/truth.md",
+      "user_story_refs": "docs/beacon/v1.6.12/features/beacon-test-modernization-v1612/truth.md",
+      "test_case_refs": "docs/beacon/v1.6.12/features/beacon-test-modernization-v1612/tests.md"
+    },
+    "missing_ref_targets": [],
+    "ready": false
+  },
+  "support_write_topology_contract": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "diagnostics": []
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.6.12/features/beacon-test-modernization-v1612/truth.md",
+    "docs/beacon/v1.6.12/features/beacon-test-modernization-v1612/tests.md",
+    "docs/beacon/v1.6.12/features/beacon-test-modernization-v1612/tasks.md",
+    "docs/beacon/v1.6.12/features/beacon-test-modernization-v1612/evidence.md"
+  ]
+}

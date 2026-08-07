@@ -1,0 +1,190 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-08-07T15:59:42.191055+00:00",
+  "feature": "beacon-test-modernization-v1612",
+  "feature_slug": "beacon-test-modernization-v1612",
+  "version": "v1.6.12",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.12/features/beacon-test-modernization-v1612/truth.md",
+    "tests": "docs/beacon/v1.6.12/features/beacon-test-modernization-v1612/tests.md",
+    "tasks": "docs/beacon/v1.6.12/features/beacon-test-modernization-v1612/tasks.md",
+    "evidence": "docs/beacon/v1.6.12/features/beacon-test-modernization-v1612/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "c8fb9d90356381cae33a7e26f37e969d2d4449fc369d7f4b9a108f5292c5f38a",
+    "tests": "1e5325d5fec034799f21f12547c6a4600150f8cf100f2cf808a9147c64a5f281",
+    "tasks": "a27b8d4bcbedbaba3ee531168a6a3e15162706c0e5dc08c3b6db609d83ba6692",
+    "evidence": "187ec6bd66367e4010e759eb8d06f6e0f020ddf788f183d49087c050670b79ff"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-test-modernization-v1612",
+    "version": "v1.6.12",
+    "status": "frozen",
+    "language": "zh",
+    "package_maturity": "filled",
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "materials_status": "current",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.12/features/beacon-test-modernization-v1612/truth.md",
+      "user_story": "docs/beacon/v1.6.12/features/beacon-test-modernization-v1612/truth.md",
+      "test_case": "docs/beacon/v1.6.12/features/beacon-test-modernization-v1612/tests.md"
+    },
+    "humanizer_applied": "true"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "分类清单中 20 个 fix_upstream_first 条目修复后，其所属测试文件不再出现级联失败，批次从 implementing 推进到 next_batch",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "466 个 migrate_assert 条目全部改为现行规范断言并随文件一起通过，批次进入 next_batch",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "206 个 fixture 条目按 TestDriftBatch 处置完成：迁移后通过，或显式归档（LegacyArchive）并更新清单状态",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "v1.0–v1.5 历史线测试移入 tests/legacy/（LegacyArchive），默认 pytest 收集不再包含",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "默认测试套件（不含 legacy）全量通过后进入 current_line_green，beacon doctor diagnose 无存量兼容失败",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "v2.x 4 个 defer 条目在 FillBatchQueue 记录 reason_code 与复核计划，不混入现行线验收",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v130_material_sync.py tests/test_v140_prd_bootstrap_unified_closure.py -k 'fix_upstream' --tb=no`",
+      "assertion": "exit 0",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests --ignore=tests/legacy -m 'not legacy' --tb=no -x`",
+      "assertion": "exit 0",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests --ignore=tests/legacy -m 'not legacy' --tb=no -x`",
+      "assertion": "exit 0",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "",
+      "command": "`python3 -m pytest --co -q tests -p no:cacheprovider \\|rg 'tests/legacy'`",
+      "assertion": "无输出（legacy 不在默认收集）",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-005",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests --ignore=tests/legacy -m 'not legacy' --tb=no`",
+      "assertion": "0 failed",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-006",
+      "layer": "",
+      "command": "`python3 -c \"import json; d=json.load(open('docs/beacon/research/beacon-test-drift-classification-2026-08-06.json')); assert all(r['disposition']!='defer_or_recheck_planning' or r['status'] for r in d if r['band']=='v2.x')\"`",
+      "assertion": "exit 0",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-007",
+      "layer": "",
+      "command": "`beacon freeze beacon-test-modernization-v1612 -v v1.6.12 -p . --json`",
+      "assertion": "未过 review/verify 的 illegal transition 被拒绝（blocked）",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Implement AC-001: 分类清单中 20 个 fix_upstream_first 条目修复后，其所属测试文件不再出现级联失败，批次从 implementing ... · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-test-modernization-v1612/AC-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Implement AC-002: 466 个 migrate_assert 条目全部改为现行规范断言并随文件一起通过，批次进入 next_batch · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-test-modernization-v1612/AC-002.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Implement AC-003: 206 个 fixture 条目按 TestDriftBatch 处置完成：迁移后通过，或显式归档（LegacyArchive）并更新清单状态 · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-test-modernization-v1612/AC-003.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Implement AC-004: v1.0–v1.5 历史线测试移入 tests/legacy/（LegacyArchive），默认 pytest 收集不再包含 · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-test-modernization-v1612/AC-004.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Implement AC-005: 默认测试套件（不含 legacy）全量通过后进入 current_line_green，beacon doctor diagnose 无存... · ac=AC-005 · evidence=`.beacon/evidence/implement/beacon-test-modernization-v1612/AC-005.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Implement AC-006: v2.x 4 个 defer 条目在 FillBatchQueue 记录 reason_code 与复核计划，不混入现行线验收 · ac=AC-006 · evidence=`.beacon/evidence/implement/beacon-test-modernization-v1612/AC-006.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-test-modernization-v1612/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-008",
+      "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-test-modernization-v1612/QA-MATRIX.json`",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "tests",
+      "authority": "acceptance_truth"
+    },
+    {
+      "surface": "tasks",
+      "authority": "requirement_truth"
+    },
+    {
+      "surface": "evidence",
+      "authority": "test_truth"
+    }
+  ]
+}
