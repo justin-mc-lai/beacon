@@ -14,7 +14,8 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_artifact_language_markdown_mirror_should_match_json_policy():
     policy = load_artifact_language_policy(ROOT)
     rendered = render_artifact_language_policy_markdown(policy, version="v1.3.0")
-    mirror_path = ROOT / "docs" / "beacon" / "v1.3.0" / "execution" / "artifact-language-contract.md"
+    # v1.3.0 is archived lineage; its mirror lives under docs/beacon/archive/.
+    mirror_path = ROOT / "docs" / "beacon" / "archive" / "v1.3.0" / "execution" / "artifact-language-contract.md"
     assert mirror_path.read_text(encoding="utf-8") == rendered
 
 

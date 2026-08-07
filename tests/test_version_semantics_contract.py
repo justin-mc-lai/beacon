@@ -11,7 +11,8 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_version_semantics_markdown_mirror_should_match_json_contract():
     semantics = load_version_semantics(ROOT)
     rendered = render_version_semantics_markdown(semantics, version="v1.3.0")
-    mirror_path = ROOT / "docs" / "beacon" / "v1.3.0" / "execution" / "version-semantics-contract.md"
+    # v1.3.0 is archived lineage; its mirror lives under docs/beacon/archive/.
+    mirror_path = ROOT / "docs" / "beacon" / "archive" / "v1.3.0" / "execution" / "version-semantics-contract.md"
     assert mirror_path.read_text(encoding="utf-8") == rendered
 
 

@@ -9,6 +9,31 @@ from beacon.utils.feature_package import REASON_PACKAGE_SHAPE_UPGRADE, package_p
 from beacon.utils.program_freeze_gate import build_program_freeze_gate, validate_program_freeze_authenticated
 
 
+def _make_self_like_project(root: Path) -> None:
+    """Mark a tmp project as beacon_self so docs v1.6.11 is the toolkit's own lane."""
+    import json as _json
+
+    (root / "beacon").mkdir(exist_ok=True)
+    (root / "beacon/version-truth.json").write_text(
+        _json.dumps(
+            {
+                "schema_version": "1.0",
+                "package_version": "1.6.11",
+                "runtime_version": "v1.6.11",
+                "docs_default_line": "v1.6.11",
+                "current_runtime_release_line": "v1.6.11",
+                "planning_lines": [],
+                "lines": {"v1.6.11": {"status": "current_runtime_release"}},
+            }
+        ),
+        encoding="utf-8",
+    )
+    (root / "pyproject.toml").write_text(
+        '[project]\nname = "beacon"\nversion = "1.6.11"\n',
+        encoding="utf-8",
+    )
+
+
 def _filled_response() -> dict:
     return {
         "schema": pg.SCHEMA_FILL_RESPONSE,
@@ -667,6 +692,7 @@ def test_cli_truth_scaffold_and_fill_request(tmp_path: Path):
     (tmp_path / "README").write_text("x\n", encoding="utf-8")
     subprocess.check_call(["git", "add", "README"], cwd=tmp_path)
     subprocess.check_call(["git", "commit", "-m", "init"], cwd=tmp_path)
+    _make_self_like_project(tmp_path)
 
     init = runner.invoke(
         truth_app,
@@ -703,6 +729,7 @@ def test_cli_fill_apply_and_validate(tmp_path: Path):
     import json as _json
 
     runner = CliRunner()
+    _make_self_like_project(tmp_path)
     pg.materialize_deterministic_scaffold(tmp_path, version="v1.6.11", feature="apply-demo", force=True)
     request = _request()
     response = _filled_response()
@@ -954,6 +981,7 @@ def test_truth_gen_cli_uses_fill_pipeline(tmp_path: Path):
     from beacon.commands.truth import app as truth_app
 
     runner = CliRunner()
+    _make_self_like_project(tmp_path)
     result = runner.invoke(
         truth_app,
         [
@@ -1285,4 +1313,3 @@ def test_materialize_receipt_keeps_previous_hash_pointer(tmp_path: Path):
     assert second.get("pass") is True
     assert second["receipt"].get("previous_receipt_hash")
     assert second["receipt"].get("previous_baseline_hash") == first["receipt"]["baseline_hash"]
-

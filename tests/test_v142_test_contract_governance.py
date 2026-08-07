@@ -24,7 +24,7 @@ from beacon.utils.test_contract_governance import (
     build_test_contract_gate_payload,
     build_test_contract_index,
     load_test_contract_index,
-    test_contract_index_path as contract_index_path,
+    contract_index_path,
 )
 
 runner = CliRunner()

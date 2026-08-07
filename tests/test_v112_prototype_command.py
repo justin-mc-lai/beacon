@@ -108,12 +108,14 @@ def test_prototype_review_freeze_and_status_gate_ready(tmp_path: Path):
 def test_prototype_create_requires_test_case_truth(tmp_path: Path):
     version = "v1.1.2"
     slug = "missing-feature"
-    us_dir = tmp_path / "docs" / "beacon" / version / "user-story"
-    prd_dir = tmp_path / "docs" / "beacon" / version / "prd"
-    us_dir.mkdir(parents=True, exist_ok=True)
-    prd_dir.mkdir(parents=True, exist_ok=True)
-    (us_dir / f"{slug}.md").write_text("# User Story\nui_visualization_required: true\n", encoding="utf-8")
-    (prd_dir / f"{slug}.md").write_text("# PRD\nui_visualization_required: true\n", encoding="utf-8")
+    feat_dir = tmp_path / "docs" / "beacon" / version / "features" / slug
+    feat_dir.mkdir(parents=True, exist_ok=True)
+    # Package-authoritative truth: user-story/prd live in truth.md; test-case
+    # lives in tests.md. Keep tests.md missing to exercise the gate.
+    (feat_dir / "truth.md").write_text(
+        "# Truth\nui_visualization_required: true\n",
+        encoding="utf-8",
+    )
     result = _invoke(["prototype", "create", "Missing Feature", "--project", str(tmp_path), "--version", version])
     assert result.exit_code == 2
-    assert "missing: test-case" in result.stdout or "missing: test-case" in result.stderr
+    assert "missing: test-case" in result.output

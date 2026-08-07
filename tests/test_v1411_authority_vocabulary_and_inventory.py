@@ -67,7 +67,7 @@ def test_forbidden_machine_truth_wording_is_rejected():
     current_facing_paths = [
         ROOT / "beacon" / "artifact-language-policy.json",
         ROOT / "beacon" / "utils" / "artifact_language.py",
-        ROOT / "docs" / "beacon" / "v1.3.0" / "execution" / "artifact-language-contract.md",
+        ROOT / "docs" / "beacon" / "archive" / "v1.3.0" / "execution" / "artifact-language-contract.md",
     ]
     offenders = [
         str(path.relative_to(ROOT))

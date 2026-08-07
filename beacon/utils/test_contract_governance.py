@@ -54,13 +54,13 @@ TEST_CONTRACT_REASON_CODES = (
 )
 
 
-def test_contract_index_path(project_root: Path, version: str) -> Path:
+def contract_index_path(project_root: Path, version: str) -> Path:
     resolved_version = resolve_target_version(project_root, version)
     return machine_root(project_root, resolved_version) / "testing" / "test-contract-index.json"
 
 
 def load_test_contract_index(project_root: Path, *, version: str) -> dict[str, Any]:
-    payload = read_json(test_contract_index_path(project_root, version), {})
+    payload = read_json(contract_index_path(project_root, version), {})
     return payload if isinstance(payload, dict) else {}
 
 
@@ -552,10 +552,10 @@ def build_test_contract_index(project_root: Path, *, version: str, feature: str,
         "blocked": bool(structural_reason_codes),
         "reason_codes": sorted(set(structural_reason_codes)),
         "generated_at": now_iso(),
-        "index_path": str(test_contract_index_path(project_root, resolved_version).relative_to(project_root)),
+        "index_path": str(contract_index_path(project_root, resolved_version).relative_to(project_root)),
     }
     if write:
-        write_json(test_contract_index_path(project_root, resolved_version), payload)
+        write_json(contract_index_path(project_root, resolved_version), payload)
     return payload
 
 
@@ -610,7 +610,7 @@ def _release_reason_codes(project_root: Path, payload: dict[str, Any]) -> list[s
 
 def build_test_contract_gate_payload(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
-    path = test_contract_index_path(project_root, resolved_version)
+    path = contract_index_path(project_root, resolved_version)
     if not path.exists():
         return {
             "schema_version": "1.0",
