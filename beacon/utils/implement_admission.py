@@ -72,14 +72,46 @@ def is_real_git_worktree(path: Path | str) -> bool:
     return bool(head)
 
 
-def _writable_service_bindings(project_root: Path, *, version: str) -> list[dict[str, Any]]:
+def _truth_participating_services(project_root: Path, *, version: str, feature: str) -> list[str]:
+    """Prefer frozen truth frontmatter participating_services when present."""
+    slug = feature_slug(feature)
+    if not slug:
+        return []
+    try:
+        from beacon.utils.feature_package import _parse_frontmatter, package_paths
+    except Exception:  # noqa: BLE001
+        return []
+    try:
+        paths = package_paths(project_root, version=version, feature=slug)
+        truth_path = Path(paths["truth"]) if isinstance(paths, dict) and paths.get("truth") else Path()
+        if not truth_path.is_file():
+            return []
+        fm, _body, _errors = _parse_frontmatter(truth_path.read_text(encoding="utf-8"))
+    except Exception:  # noqa: BLE001
+        return []
+    raw = fm.get("participating_services") if isinstance(fm, dict) else None
+    if isinstance(raw, str):
+        return [p.strip().strip("'\"") for p in raw.strip("[]").split(",") if p.strip().strip("'\"")]
+    if isinstance(raw, list):
+        return [str(item).strip() for item in raw if str(item).strip()]
+    return []
+
+
+def _writable_service_bindings(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str = "",
+) -> list[dict[str, Any]]:
     from beacon.utils.project_metadata import resolve_project_metadata_view
 
     root = project_root.expanduser().resolve()
     view = resolve_project_metadata_view(root, version=version)
     bindings = view.get("service_bindings") if isinstance(view.get("service_bindings"), list) else []
     version_contract = view.get("version_contract") if isinstance(view.get("version_contract"), dict) else {}
-    participating = version_contract.get("participating_services")
+    # Feature truth scope wins over version-wide participating_services (lake ≠ whole version).
+    truth_services = _truth_participating_services(root, version=version, feature=feature) if feature else []
+    participating = truth_services or version_contract.get("participating_services")
     participating_set = {
         str(item).strip()
         for item in (participating if isinstance(participating, list) else [])
@@ -125,14 +157,19 @@ def _service_branch_map(project_root: Path, *, version: str, feature: str, defau
         if isinstance(version_contract.get("per_service_canonical_branch"), dict)
         else {}
     )
+    allowed = {
+        str(item.get("service_key") or "").strip()
+        for item in _writable_service_bindings(project_root, version=version, feature=feature)
+        if str(item.get("service_key") or "").strip()
+    }
     mapping: dict[str, str] = {}
     for key, value in per_service.items():
         k = str(key).strip()
         v = str(value).strip()
-        if k and v:
+        if k and v and (not allowed or k in allowed):
             mapping[k] = v
     if not mapping and default_branch:
-        for binding in _writable_service_bindings(project_root, version=version):
+        for binding in _writable_service_bindings(project_root, version=version, feature=feature):
             mapping[str(binding["service_key"])] = default_branch
     # Prefer feature leaf over aggregation when pattern present and value is program-level
     from beacon.utils.branch_ref_hierarchy import leaf_feature_branch
@@ -150,7 +187,13 @@ def _service_branch_map(project_root: Path, *, version: str, feature: str, defau
     return mapping
 
 
-def _service_baseline_map(project_root: Path, *, version: str, default_baseline: str) -> dict[str, str]:
+def _service_baseline_map(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str = "",
+    default_baseline: str,
+) -> dict[str, str]:
     from beacon.utils.project_metadata import resolve_project_metadata_view
 
     view = resolve_project_metadata_view(project_root, version=version)
@@ -160,14 +203,19 @@ def _service_baseline_map(project_root: Path, *, version: str, default_baseline:
         if isinstance(version_contract.get("per_service_baseline_branch"), dict)
         else {}
     )
+    allowed = {
+        str(item.get("service_key") or "").strip()
+        for item in _writable_service_bindings(project_root, version=version, feature=feature)
+        if str(item.get("service_key") or "").strip()
+    }
     mapping: dict[str, str] = {}
     for key, value in per_service.items():
         k = str(key).strip()
         v = str(value).strip()
-        if k and v:
+        if k and v and (not allowed or k in allowed):
             mapping[k] = v
     if not mapping and default_baseline:
-        for binding in _writable_service_bindings(project_root, version=version):
+        for binding in _writable_service_bindings(project_root, version=version, feature=feature):
             mapping[str(binding["service_key"])] = default_baseline
     return mapping
 
@@ -424,9 +472,11 @@ def _materialize_service_worktrees(
     topology = str(view.get("topology_kind") or "").strip().lower()
     version_contract = view.get("version_contract") if isinstance(view.get("version_contract"), dict) else {}
     path_pattern = str(version_contract.get("service_worktree_path_pattern") or "").strip()
-    bindings = _writable_service_bindings(root, version=version)
+    bindings = _writable_service_bindings(root, version=version, feature=feature)
     branch_map = _service_branch_map(root, version=version, feature=feature, default_branch=parent_branch)
-    baseline_map = _service_baseline_map(root, version=version, default_baseline=base_branch)
+    baseline_map = _service_baseline_map(
+        root, version=version, feature=feature, default_baseline=base_branch
+    )
     service_worktree_map: dict[str, str] = {}
     service_reconcile: dict[str, Any] = {}
     service_leases: dict[str, dict[str, Any]] = {}
@@ -523,26 +573,41 @@ def _materialize_service_worktrees(
                 "path": str(lane),
             }
             continue
-        # child baseline reconcile: merge per-service baseline when possible
-        merge = subprocess.run(
-            ["git", "merge", service_baseline, "--no-edit", "--ff"],
-            cwd=str(lane),
-            capture_output=True,
-            text=True,
-            timeout=30,
-            check=False,
-        )
-        if merge.returncode != 0:
+        # child baseline reconcile: merge per-service baseline when possible.
+        # Go services commonly use master while governance may say main — fall back.
+        baseline_candidates = [service_baseline]
+        if service_baseline == "main":
+            baseline_candidates.append("master")
+        elif service_baseline == "master":
+            baseline_candidates.append("main")
+        merge = None
+        used_baseline = service_baseline
+        for candidate in baseline_candidates:
+            if not git_output(lane, "rev-parse", "--verify", candidate):
+                continue
+            used_baseline = candidate
+            merge = subprocess.run(
+                ["git", "merge", candidate, "--no-edit", "--ff"],
+                cwd=str(lane),
+                capture_output=True,
+                text=True,
+                timeout=30,
+                check=False,
+            )
+            if merge.returncode == 0:
+                break
             subprocess.run(["git", "merge", "--abort"], cwd=str(lane), capture_output=True, timeout=15, check=False)
+        if merge is None or merge.returncode != 0:
             reason_codes.append(f"service_baseline_conflict:{key}")
             service_reconcile[key] = {
                 "status": "blocked",
                 "reason_code": REASON_MERGE_CONFLICT,
                 "path": str(lane),
-                "base_branch": service_baseline,
-                "stderr": str(merge.stderr or "").strip(),
+                "base_branch": used_baseline,
+                "stderr": str((merge.stderr if merge else "") or f"baseline refs missing: {baseline_candidates}").strip(),
             }
             continue
+        service_baseline = used_baseline
         head = git_output(lane, "rev-parse", "HEAD")
         service_worktree_map[key] = str(lane)
         service_reconcile[key] = {

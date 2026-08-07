@@ -562,31 +562,58 @@ def _merge_main_into_feature_branch(lane_root: Path, base_branch: str = "main") 
     Ensures implementation bases on main-frozen truth, not a stale dev copy.
     Returns {status: merged|conflict|up_to_date, base_branch, stdout/stderr}.
     """
-    base = str(base_branch or "main").strip() or "main"
-    try:
-        result = subprocess.run(
-            ["git", "merge", base, "--no-edit", "--ff"],
+    candidates: list[str] = []
+    for candidate in [base_branch, "master", "main"]:
+        c = str(candidate or "").strip()
+        if c and c not in candidates:
+            candidates.append(c)
+
+    last: dict[str, Any] = {"status": "conflict", "base_branch": candidates[0] if candidates else "main"}
+    for base in candidates:
+        # Skip missing local refs instead of treating them as merge conflicts.
+        probe = subprocess.run(
+            ["git", "rev-parse", "--verify", base],
             cwd=str(lane_root),
             capture_output=True,
             text=True,
-            timeout=30,
+            timeout=15,
             check=False,
         )
-    except Exception as exc:  # noqa: BLE001
-        return {"status": "conflict", "base_branch": base, "stderr": str(exc)}
-    stdout = str(result.stdout or "").strip()
-    stderr = str(result.stderr or "").strip()
-    if result.returncode == 0:
-        already = "Already up to date" in stdout
-        return {
-            "status": "up_to_date" if already else "merged",
-            "base_branch": base,
-            "stdout": stdout,
-            "stderr": stderr,
-        }
-    # conflict — abort to leave the lane clean
-    subprocess.run(["git", "merge", "--abort"], cwd=str(lane_root), capture_output=True, timeout=15, check=False)
-    return {"status": "conflict", "base_branch": base, "stdout": stdout, "stderr": stderr}
+        if probe.returncode != 0:
+            last = {
+                "status": "conflict",
+                "base_branch": base,
+                "stderr": str(probe.stderr or f"missing baseline ref: {base}").strip(),
+            }
+            continue
+        try:
+            result = subprocess.run(
+                ["git", "merge", base, "--no-edit", "--ff"],
+                cwd=str(lane_root),
+                capture_output=True,
+                text=True,
+                timeout=30,
+                check=False,
+            )
+        except Exception as exc:  # noqa: BLE001
+            last = {"status": "conflict", "base_branch": base, "stderr": str(exc)}
+            continue
+        stdout = str(result.stdout or "").strip()
+        stderr = str(result.stderr or "").strip()
+        if result.returncode == 0:
+            already = "Already up to date" in stdout
+            return {
+                "status": "up_to_date" if already else "merged",
+                "base_branch": base,
+                "stdout": stdout,
+                "stderr": stderr,
+            }
+        # conflict — abort to leave the lane clean, then try next candidate only if ref was wrong
+        subprocess.run(["git", "merge", "--abort"], cwd=str(lane_root), capture_output=True, timeout=15, check=False)
+        last = {"status": "conflict", "base_branch": base, "stdout": stdout, "stderr": stderr}
+        # Real content conflict: do not silently switch baselines.
+        break
+    return last
 
 
 def run_workspace_admit(

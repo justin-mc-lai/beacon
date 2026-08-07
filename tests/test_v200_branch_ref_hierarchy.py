@@ -32,6 +32,15 @@ def test_leaf_feature_branch() -> None:
     assert b == "beacon/v2.0.0/loom-git-worktree-implement-harness"
     b2 = leaf_feature_branch(version="v2.0.0", feature="x", pattern="beacon/v2.0.0")
     assert b2 == "beacon/v2.0.0/x"
+    # Monorepo shared feature/<ver> must not nest — escape to beacon leaf.
+    b3 = leaf_feature_branch(version="v2.3.5", feature="push-outbound-otel", pattern="feature/v2.3.5")
+    assert b3 == "beacon/v2.3.5/push-outbound-otel"
+    b4 = leaf_feature_branch(
+        version="v2.3.5",
+        feature="sms-trace-propagation",
+        pattern="beacon/<version>/<feature-slug>",
+    )
+    assert b4 == "beacon/v2.3.5/sms-trace-propagation"
 
 
 def test_resolve_feature_branch_always_leaf() -> None:

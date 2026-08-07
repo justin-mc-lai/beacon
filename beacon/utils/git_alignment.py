@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 import subprocess
 from pathlib import Path
 from typing import Any
@@ -746,10 +747,21 @@ def ensure_expected_worktree_lane(
         return _switch_or_already(root)
     if target_path.exists() and git_repo_exists(target_path):
         return _switch_or_already(target_path)
-    commands = [
+
+    # Go / legacy repos often use master while governance still says main (and vice versa).
+    baseline_candidates: list[str] = []
+    for candidate in [base_branch, "master", "main"]:
+        c = str(candidate or "").strip()
+        if c and c not in baseline_candidates:
+            baseline_candidates.append(c)
+
+    commands: list[list[str]] = [
         ["git", "worktree", "add", str(target_path), expected_branch],
-        ["git", "worktree", "add", "-b", expected_branch, str(target_path), base_branch],
     ]
+    for candidate in baseline_candidates:
+        commands.append(
+            ["git", "worktree", "add", "-b", expected_branch, str(target_path), candidate]
+        )
     attempts: list[dict[str, Any]] = []
     for command in commands:
         try:
@@ -778,7 +790,23 @@ def ensure_expected_worktree_lane(
                 "expected_branch": expected_branch,
                 "worktree_path": str(target_path),
                 "attempts": attempts,
+                "base_branch_used": command[-1] if len(command) >= 5 and command[2] == "-b" else "",
             }
+        # Shared version branch already checked out (e.g. sibling lake under .beacon/worktrees/<ver>/):
+        # reuse that worktree instead of inventing a second checkout of the same ref.
+        stderr = str(result.stderr or "")
+        m = re.search(r"already used by worktree at ['\"]?([^'\"]+)['\"]?", stderr)
+        if m:
+            other = Path(m.group(1)).expanduser().resolve()
+            if other.exists() and git_output(other, "branch", "--show-current") == expected_branch:
+                return {
+                    "status": "already",
+                    "expected_branch": expected_branch,
+                    "worktree_path": str(other),
+                    "reason": "branch_held_by_sibling_worktree",
+                    "requested_worktree_path": str(target_path),
+                    "attempts": attempts,
+                }
     return {
         "status": "failed",
         "expected_branch": expected_branch,

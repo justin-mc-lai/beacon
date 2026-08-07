@@ -78,12 +78,35 @@ def is_program_aggregation_branch(branch: str) -> bool:
     return ver.startswith("v") and any(ch.isdigit() for ch in ver)
 
 
+def _is_shared_feature_version_branch(branch: str) -> bool:
+    """True for monorepo shared lanes like feature/v2.3.5 (not feature/v2.3.5/<slug>)."""
+    parts = [p for p in str(branch or "").strip().split("/") if p]
+    if len(parts) != 2 or parts[0] != "feature":
+        return False
+    ver = parts[1]
+    return ver.startswith("v") and any(ch.isdigit() for ch in ver)
+
+
 def leaf_feature_branch(*, version: str, feature: str, pattern: str = "") -> str:
     """Always produce a leaf branch name (scheme A): beacon/<version>/<feature-slug>."""
     slug = feature_slug(feature)
+    ver = str(version or "").strip() or "v0.0.0"
     pat = str(pattern or "").strip()
     if pat:
-        rendered = pat.replace("<feature-slug>", slug).replace("{feature-slug}", slug)
+        rendered = (
+            pat.replace("<feature-slug>", slug)
+            .replace("{feature-slug}", slug)
+            .replace("<version>", ver)
+            .replace("{version}", ver)
+        )
+        # Monorepo shared version branch (feature/vX) must not nest a feature slug —
+        # git cannot host both feature/vX and feature/vX/<slug>. Use beacon leaf instead.
+        if (
+            "<feature" not in pat.lower()
+            and "{feature" not in pat.lower()
+            and _is_shared_feature_version_branch(rendered)
+        ):
+            return f"beacon/{ver}/{slug}" if slug else rendered
         # Pattern without slug placeholder that is aggregation-only → append slug
         if is_program_aggregation_branch(rendered) or (
             "<feature" not in pat.lower() and "{feature" not in pat.lower() and is_program_aggregation_branch(rendered)
@@ -100,7 +123,6 @@ def leaf_feature_branch(*, version: str, feature: str, pattern: str = "") -> str
         if "<feature" not in pat.lower() and "{feature" not in pat.lower() and slug not in rendered:
             return f"{rendered.rstrip('/')}/{slug}"
         return rendered
-    ver = str(version or "").strip() or "v0.0.0"
     return f"beacon/{ver}/{slug}"
 
 
@@ -143,16 +165,38 @@ def ensure_leaf_checkout_branch(
                     "collision": hit2,
                 }
     hit = hierarchy_collision(project_root, chosen)
-    # Creating a new leaf is OK even if parent doesn't exist; only block if children of chosen exist
+    # Parent refs (feature/vX when creating feature/vX/slug) and children both block.
     children = [c for c in (hit.get("conflicts") or []) if str(c).startswith(chosen + "/")]
-    if children:
+    parents = [c for c in (hit.get("conflicts") or []) if chosen.startswith(str(c) + "/")]
+    if parents and not children:
+        # Escape nested feature/<ver>/<slug> into beacon leaf when shared version branch exists.
+        safe = f"beacon/{version}/{feature_slug(feature)}"
+        if safe != chosen:
+            hit_safe = hierarchy_collision(project_root, safe)
+            safe_children = [
+                c for c in (hit_safe.get("conflicts") or []) if str(c).startswith(safe + "/")
+            ]
+            if not safe_children:
+                return {
+                    "ok": True,
+                    "reason_code": "",
+                    "feature_branch": safe,
+                    "aggregation_branch": cand if is_program_aggregation_branch(cand) else (
+                        f"beacon/{version}" if str(version).startswith("v") else ""
+                    ),
+                    "rewrote": True,
+                    "collision": {"collides": False, "conflicts": []},
+                    "escaped_from": chosen,
+                    "parent_conflicts": parents,
+                }
+    if children or parents:
         return {
             "ok": False,
             "reason_code": REASON_HIERARCHY,
             "feature_branch": chosen,
             "aggregation_branch": cand if is_program_aggregation_branch(cand) else "",
             "rewrote": rewrote,
-            "collision": {**hit, "conflicts": children},
+            "collision": {**hit, "conflicts": children or parents},
         }
     return {
         "ok": True,
