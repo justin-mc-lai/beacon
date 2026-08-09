@@ -2031,7 +2031,111 @@
       "created_at": "2026-07-28T12:12:29.387067+00:00",
       "updated_at": "2026-07-28T12:12:29.387067+00:00",
       "decision": "[release.check] version=v1.6.11 status=pass"
+    },
+    {
+      "memory_id": "59d8f363-be65-4d6f-ac3d-10696280b06b",
+      "type": "decision",
+      "status": "active",
+      "content": "[workflow.release-profile] run=repair-v1.6.12-20260809T051159963779Z0000 status=completed reason=doctor_repair_package",
+      "content_hash": "sha256:f6d69698cf47928069587aecb3f66ebf3f4dc7227146506fac03aee757f8141b",
+      "source_session_id": "repair-v1.6.12-20260809T051159963779Z0000",
+      "source": "workflow.release-profile",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/gate-report.json",
+        ".beacon/raw-command-log.jsonl",
+        ".beacon/runs/repair-v1.6.12-20260809T051159963779Z0000/state.json",
+        "docs/beacon/v1.6.12/.machine/execution/terminal.json",
+        "docs/beacon/v1.6.12/execution/boundaries.md"
+      ],
+      "reason_codes": [],
+      "confidence": 0.82,
+      "tags": [
+        "completed",
+        "release",
+        "workflow-loop"
+      ],
+      "created_at": "2026-08-09T05:12:00.443015+00:00",
+      "updated_at": "2026-08-09T05:12:00.443015+00:00",
+      "decision": "[workflow.release-profile] run=repair-v1.6.12-20260809T051159963779Z0000 status=completed reason=doctor_repair_package"
+    },
+    {
+      "memory_id": "507b4d68-628d-49fc-abce-abe01cfa1493",
+      "type": "decision",
+      "status": "active",
+      "content": "[release.check] version=v1.6.12 status=blocked",
+      "content_hash": "sha256:f22802115b591a96419dc6349faf9045f74561bc10ad519028866f844182f4b4",
+      "source_session_id": "release:v1.6.12",
+      "source": "release.check",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/gate-report.json",
+        "docs/beacon/v1.6.12/.machine/change/v1.6.12.json",
+        "docs/beacon/v1.6.12/change/v1.6.12.md"
+      ],
+      "reason_codes": [],
+      "confidence": 0.75,
+      "tags": [
+        "blocked",
+        "gate",
+        "release"
+      ],
+      "created_at": "2026-08-09T05:13:08.664412+00:00",
+      "updated_at": "2026-08-09T05:13:08.664412+00:00",
+      "decision": "[release.check] version=v1.6.12 status=blocked"
+    },
+    {
+      "memory_id": "a8bbda12-a3cb-406b-b21f-b182291be55f",
+      "type": "decision",
+      "status": "active",
+      "content": "[release.create] release checklist created for v1.6.12",
+      "content_hash": "sha256:e7458d2ee3d18f30b38e673223dc5e27e8ea7ce549dd266aa367b7f51af57e68",
+      "source_session_id": "release:v1.6.12",
+      "source": "release.create",
+      "evidence_ref": [
+        "docs/beacon/v1.6.12/release/checklist-v1.6.12.md",
+        "docs/beacon/v1.6.12/change/v1.6.12.md",
+        "docs/beacon/v1.6.12/.machine/change/v1.6.12.json"
+      ],
+      "reason_codes": [],
+      "confidence": 0.8,
+      "tags": [
+        "release",
+        "workflow-loop"
+      ],
+      "created_at": "2026-08-09T05:13:46.624687+00:00",
+      "updated_at": "2026-08-09T05:13:46.624687+00:00",
+      "decision": "[release.create] release checklist created for v1.6.12"
+    },
+    {
+      "memory_id": "a21b1c90-ab23-40a7-bf58-f3f2aab3c903",
+      "type": "decision",
+      "status": "active",
+      "content": "[release.check] version=v1.6.12 status=blocked",
+      "content_hash": "sha256:f22802115b591a96419dc6349faf9045f74561bc10ad519028866f844182f4b4",
+      "source_session_id": "release:v1.6.12",
+      "source": "release.check",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/gate-report.json",
+        "docs/beacon/v1.6.12/.machine/change/v1.6.12.json",
+        "docs/beacon/v1.6.12/change/v1.6.12.md"
+      ],
+      "reason_codes": [],
+      "confidence": 0.75,
+      "tags": [
+        "blocked",
+        "gate",
+        "release"
+      ],
+      "created_at": "2026-08-09T05:15:49.122610+00:00",
+      "updated_at": "2026-08-09T05:15:49.122610+00:00",
+      "decision": "[release.check] version=v1.6.12 status=blocked"
     }
   ],
-  "updated_at": "2026-07-28T12:12:29.387120+00:00"
+  "updated_at": "2026-08-09T05:15:49.122681+00:00"
 }

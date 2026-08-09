@@ -1,0 +1,335 @@
+{
+  "schema_version": "1.0",
+  "contract_kind": "beacon_test_contract_index",
+  "version": "v1.6.12",
+  "runtime_line": "v1.6.12",
+  "runtime_release_line": "v1.6.12",
+  "docs_line": "v1.6.12",
+  "feature": "beacon-goal-loopx-hybrid-v1612",
+  "feature_slug": "beacon-goal-loopx-hybrid-v1612",
+  "feature_line_status": "current_runtime_release",
+  "truth_refs": {
+    "truth": "docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/truth.md",
+    "tests": "docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
+    "tasks": "docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tasks.md",
+    "evidence": "docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/evidence.md",
+    "ac_matrix": "docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
+    "story_state": "docs/beacon/v1.6.12/.machine/user-story/beacon-goal-loopx-hybrid-v1612.json"
+  },
+  "source_hashes": {
+    "truth": "sha256:ca59370ff637e5e879573540ccba262a5d495ab0583fc1d5024c67b2872e7913",
+    "tests": "sha256:02b6b33c117ba2374df132d78bce59430eb13a953aa54f0b000d7cee4ad10c22",
+    "tasks": "sha256:21a26348ce02e1fd59aa962833ba3499f9dcaa5af55c39025c4f5af50ec5cc68",
+    "evidence": "sha256:187ec6bd66367e4010e759eb8d06f6e0f020ddf788f183d49087c050670b79ff",
+    "ac_matrix": "sha256:02b6b33c117ba2374df132d78bce59430eb13a953aa54f0b000d7cee4ad10c22",
+    "story_state": "sha256:171b788c2c38b541385e3d16fb9abbcd89941e56ca2224eac48ddcb537070487"
+  },
+  "lanes": {
+    "feature_release_facing": [
+      {
+        "tc_id": "TC-001",
+        "ac_id": "AC-001",
+        "ac_theme": "user",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest -q tests/test_v1612_goal_quota.py --tb=no",
+        "assertion": "exit 0",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-001/__RUN_ID__.json",
+        "evidence_status": "missing",
+        "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-002",
+        "ac_id": "AC-002",
+        "ac_theme": "user",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest -q tests/test_v1612_goal_todos.py --tb=no",
+        "assertion": "exit 0",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-002/__RUN_ID__.json",
+        "evidence_status": "missing",
+        "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-003",
+        "ac_id": "AC-003",
+        "ac_theme": "user",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest -q tests/test_v1612_goal_gates.py --tb=no",
+        "assertion": "exit 0",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-003/__RUN_ID__.json",
+        "evidence_status": "missing",
+        "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-004",
+        "ac_id": "AC-004",
+        "ac_theme": "user",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest -q tests/test_v1612_goal_budget.py --tb=no",
+        "assertion": "exit 0",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-004/__RUN_ID__.json",
+        "evidence_status": "missing",
+        "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-005",
+        "ac_id": "AC-005",
+        "ac_theme": "user",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest -q tests/test_v1612_goal_patterns.py --tb=no",
+        "assertion": "exit 0",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-005/__RUN_ID__.json",
+        "evidence_status": "missing",
+        "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-006",
+        "ac_id": "AC-006",
+        "ac_theme": "user",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest -q tests/test_doctor_context_commands.py tests/test_v169_version_defaults_dual_axis.py --tb=no",
+        "assertion": "无新增失败（生命周期护栏）",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-006/__RUN_ID__.json",
+        "evidence_status": "missing",
+        "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-007",
+        "ac_id": "AC-006",
+        "ac_theme": "user",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -c \"import json; s=json.load(open('.beacon/state/loop-goal/pgr-0dd73fcf5c9f.verification-bundle.json')); print('ok')\"",
+        "assertion": "旧状态文件可读（向后兼容）",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-007/__RUN_ID__.json",
+        "evidence_status": "missing",
+        "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-008",
+        "ac_id": "AC-003",
+        "ac_theme": "user",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest -q tests/test_v1612_goal_gates.py -k gate_resolve --tb=no",
+        "assertion": "illegal transition（gate 未 resolve 直接推进）被拒绝",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-008/__RUN_ID__.json",
+        "evidence_status": "missing",
+        "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      }
+    ],
+    "current_runtime_contract": [],
+    "generated_surface_sync": [],
+    "compatibility_contract": [],
+    "legacy_snapshot": [],
+    "browser_runtime_admission": []
+  },
+  "lane_counts": {
+    "feature_release_facing": 8,
+    "current_runtime_contract": 0,
+    "generated_surface_sync": 0,
+    "compatibility_contract": 0,
+    "legacy_snapshot": 0,
+    "browser_runtime_admission": 0
+  },
+  "canonical_lanes": [
+    "feature_release_facing",
+    "current_runtime_contract",
+    "generated_surface_sync",
+    "compatibility_contract",
+    "legacy_snapshot",
+    "browser_runtime_admission"
+  ],
+  "test_refs": [
+    {
+      "tc_id": "TC-001",
+      "ac_id": "AC-001",
+      "ac_theme": "user",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_v1612_goal_quota.py --tb=no",
+      "assertion": "exit 0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-001/__RUN_ID__.json",
+      "evidence_status": "missing",
+      "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-002",
+      "ac_id": "AC-002",
+      "ac_theme": "user",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_v1612_goal_todos.py --tb=no",
+      "assertion": "exit 0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-002/__RUN_ID__.json",
+      "evidence_status": "missing",
+      "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-003",
+      "ac_id": "AC-003",
+      "ac_theme": "user",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_v1612_goal_gates.py --tb=no",
+      "assertion": "exit 0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-003/__RUN_ID__.json",
+      "evidence_status": "missing",
+      "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-004",
+      "ac_id": "AC-004",
+      "ac_theme": "user",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_v1612_goal_budget.py --tb=no",
+      "assertion": "exit 0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-004/__RUN_ID__.json",
+      "evidence_status": "missing",
+      "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-005",
+      "ac_id": "AC-005",
+      "ac_theme": "user",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_v1612_goal_patterns.py --tb=no",
+      "assertion": "exit 0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-005/__RUN_ID__.json",
+      "evidence_status": "missing",
+      "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-006",
+      "ac_id": "AC-006",
+      "ac_theme": "user",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_doctor_context_commands.py tests/test_v169_version_defaults_dual_axis.py --tb=no",
+      "assertion": "无新增失败（生命周期护栏）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-006/__RUN_ID__.json",
+      "evidence_status": "missing",
+      "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-007",
+      "ac_id": "AC-006",
+      "ac_theme": "user",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -c \"import json; s=json.load(open('.beacon/state/loop-goal/pgr-0dd73fcf5c9f.verification-bundle.json')); print('ok')\"",
+      "assertion": "旧状态文件可读（向后兼容）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-007/__RUN_ID__.json",
+      "evidence_status": "missing",
+      "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-008",
+      "ac_id": "AC-003",
+      "ac_theme": "user",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_v1612_goal_gates.py -k gate_resolve --tb=no",
+      "assertion": "illegal transition（gate 未 resolve 直接推进）被拒绝",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-008/__RUN_ID__.json",
+      "evidence_status": "missing",
+      "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    }
+  ],
+  "ac_to_test_refs": {
+    "AC-001": [
+      "TC-001"
+    ],
+    "AC-002": [
+      "TC-002"
+    ],
+    "AC-003": [
+      "TC-003",
+      "TC-008"
+    ],
+    "AC-004": [
+      "TC-004"
+    ],
+    "AC-005": [
+      "TC-005"
+    ],
+    "AC-006": [
+      "TC-006",
+      "TC-007"
+    ]
+  },
+  "qa_order_contract": {
+    "sequence": [
+      "user_story_ac_order",
+      "scenario_divergence",
+      "current_round_execution",
+      "evidence_pack",
+      "coverage_current_gap",
+      "continue_decision",
+      "severe_blocker_stop_for_repair",
+      "repair_handoff",
+      "beacon_help_resume",
+      "next_qa_round_test_case_backfill",
+      "release_guidance"
+    ],
+    "source": "skills/beacon/references/usage-rules.md"
+  },
+  "deep_delta_policy": {
+    "owner": "deep",
+    "adoption_route": "test-case_or_supplemental_qa",
+    "executes_qa": false
+  },
+  "planning_line_safety": {
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "runtime_line": "v1.6.12",
+    "docs_default_line": "v1.6.12",
+    "current_runtime_release_line": "v1.6.12",
+    "feature_line_status": "current_runtime_release"
+  },
+  "status": "pass",
+  "blocked": false,
+  "reason_codes": [],
+  "generated_at": "2026-08-09T05:15:01.787159+00:00",
+  "index_path": "docs/beacon/v1.6.12/.machine/testing/test-contract-index.json"
+}

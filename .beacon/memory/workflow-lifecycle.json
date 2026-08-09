@@ -3665,7 +3665,88 @@
         "source_hash": "9bb12c8dd8df6bc0f2e0e2fed4a871cbd06340342c12f244d1704922c913ab7a",
         "projection_seq": "wf-9bb12c8dd8df6bc0"
       }
+    },
+    {
+      "event_id": "9d1da986-2d4a-437f-8565-9b748028c145",
+      "run_id": "release:v1.6.12",
+      "stage": "release",
+      "event": "release_decision_recorded",
+      "source": "workflow.release-profile",
+      "source_session_id": "release:v1.6.12",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/gate-report.json",
+        ".beacon/raw-command-log.jsonl",
+        ".beacon/runs/repair-v1.6.12-20260809T051159963779Z0000/state.json",
+        "docs/beacon/v1.6.12/.machine/execution/terminal.json",
+        "docs/beacon/v1.6.12/execution/boundaries.md"
+      ],
+      "ts": "2026-08-09T05:12:00.446956+00:00",
+      "details": {
+        "workflow_run_id": "repair-v1.6.12-20260809T051159963779Z0000",
+        "feature": "beacon-goal-loopx-hybrid-v1612",
+        "version": "v1.6.12",
+        "status": "completed",
+        "reason": "doctor_repair_package"
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "b41d470e-37af-4092-bcbf-106d0259bea9",
+      "run_id": "release:v1.6.12",
+      "stage": "release",
+      "event": "release_decision_recorded",
+      "source": "release.check",
+      "source_session_id": "release:v1.6.12",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/gate-report.json",
+        "docs/beacon/v1.6.12/.machine/change/v1.6.12.json",
+        "docs/beacon/v1.6.12/change/v1.6.12.md"
+      ],
+      "ts": "2026-08-09T05:13:08.667300+00:00",
+      "details": {
+        "action": "check",
+        "version": "v1.6.12",
+        "status": "blocked",
+        "failed_checks": [
+          "auto-test version matches release version",
+          "coverage summary version matches release version",
+          "acceptance projection transaction contract",
+          "version change markdown exists",
+          "version change payload exists",
+          "version change payload matches release version",
+          "version change document includes current feature",
+          "release scorecard ready",
+          "implement prompt boundary verdict pass"
+        ]
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "a9bf3f6d-d120-4e3e-bf96-d6be0d3a99c7",
+      "run_id": "release:v1.6.12",
+      "stage": "release",
+      "event": "release_decision_recorded",
+      "source": "release.create",
+      "source_session_id": "release:v1.6.12",
+      "evidence_ref": [
+        "docs/beacon/v1.6.12/release/checklist-v1.6.12.md",
+        "docs/beacon/v1.6.12/change/v1.6.12.md",
+        "docs/beacon/v1.6.12/.machine/change/v1.6.12.json"
+      ],
+      "ts": "2026-08-09T05:13:46.627722+00:00",
+      "details": {
+        "action": "create",
+        "version": "v1.6.12"
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
     }
   ],
-  "updated_at": "2026-07-28T12:09:03.220149+00:00"
+  "updated_at": "2026-08-09T05:13:46.627727+00:00"
 }
