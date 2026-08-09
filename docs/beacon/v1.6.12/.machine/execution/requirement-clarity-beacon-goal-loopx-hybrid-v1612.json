@@ -1,0 +1,690 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-goal-loopx-hybrid-v1612",
+  "feature_slug": "beacon-goal-loopx-hybrid-v1612",
+  "version": "v1.6.12",
+  "runtime_version": "v1.6.11",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.6.12/.machine/execution/requirement-clarity-beacon-goal-loopx-hybrid-v1612.json",
+  "report_markdown_path": "docs/beacon/v1.6.12/execution/requirement-clarity-beacon-goal-loopx-hybrid-v1612.md",
+  "state_path": ".beacon/state/requirement-clarity-beacon-goal-loopx-hybrid-v1612.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.12",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-08-09T04:13:45.480129+00:00",
+    "feature": "beacon-goal-loopx-hybrid-v1612",
+    "feature_slug": "beacon-goal-loopx-hybrid-v1612",
+    "prd_ref": "docs/beacon/v1.6.12/prd/beacon-goal-loopx-hybrid-v1612.md",
+    "user_story_ref": "docs/beacon/v1.6.12/user-story/beacon-goal-loopx-hybrid-v1612.md"
+  },
+  "domain_fsm_gate": {
+    "schema_version": "1.0",
+    "feature": "beacon-goal-loopx-hybrid-v1612",
+    "feature_slug": "beacon-goal-loopx-hybrid-v1612",
+    "version": "v1.6.12",
+    "truth_path": "docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/truth.md",
+    "tests_path": "docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
+    "required": true,
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "findings": [],
+    "requirement": {
+      "required": true,
+      "reason": "domain_section_present",
+      "explicit": false,
+      "partial": true,
+      "complexity": false,
+      "business_signal": false,
+      "version_supported": true
+    },
+    "projection": {
+      "schema_version": "1.0",
+      "domain_fsm_schema": "domain-fsm.v1",
+      "entity_precedence_schema": "entity-precedence.v1",
+      "frontmatter": {
+        "slug": "beacon-goal-loopx-hybrid-v1612",
+        "version": "v1.6.12",
+        "status": "draft",
+        "language": "zh",
+        "package_maturity": "filled",
+        "parser_contract": "beacon-feature-package-v2",
+        "truth_source_model": "feature_package_authoritative",
+        "materials_status": "current",
+        "canonical_refs": {
+          "prd": "docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/truth.md",
+          "user_story": "docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/truth.md",
+          "test_case": "docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md"
+        },
+        "humanizer_applied": "true"
+      },
+      "frontmatter_errors": [],
+      "has_domain_model_section": true,
+      "has_domain_fsm_section": true,
+      "has_illegal_transition_section": true,
+      "entities": [
+        {
+          "entity": "GoalQuota",
+          "key": "compute, window_hours, slot_minutes, ledger",
+          "precedence": "长程 run 的自动计算配额与 spend 账本",
+          "requires": "长程 run 的自动计算配额与 spend 账本"
+        },
+        {
+          "entity": "GoalTodo",
+          "key": "id, owner, claim, lease, successor, capability_gate",
+          "precedence": "任务级所有权与认领状态",
+          "requires": "任务级所有权与认领状态"
+        },
+        {
+          "entity": "UserGateCard",
+          "key": "decision_key, question, context, resume_action",
+          "precedence": "需要人判断的具体问题卡片",
+          "requires": "需要人判断的具体问题卡片"
+        },
+        {
+          "entity": "TurnBudget",
+          "key": "choose, deliver, validate, writeback, spend",
+          "precedence": "有界回合契约与交接预算",
+          "requires": "有界回合契约与交接预算"
+        },
+        {
+          "entity": "PatternCanary",
+          "key": "pattern_id, canary_test, status",
+          "precedence": "模式目录与 canary 绑定",
+          "requires": "模式目录与 canary 绑定"
+        }
+      ],
+      "entity_precedence": [
+        {
+          "entity": "GoalQuota",
+          "key": "compute, window_hours, slot_minutes, ledger",
+          "precedence": "长程 run 的自动计算配额与 spend 账本",
+          "requires": "长程 run 的自动计算配额与 spend 账本"
+        },
+        {
+          "entity": "GoalTodo",
+          "key": "id, owner, claim, lease, successor, capability_gate",
+          "precedence": "任务级所有权与认领状态",
+          "requires": "任务级所有权与认领状态"
+        },
+        {
+          "entity": "UserGateCard",
+          "key": "decision_key, question, context, resume_action",
+          "precedence": "需要人判断的具体问题卡片",
+          "requires": "需要人判断的具体问题卡片"
+        },
+        {
+          "entity": "TurnBudget",
+          "key": "choose, deliver, validate, writeback, spend",
+          "precedence": "有界回合契约与交接预算",
+          "requires": "有界回合契约与交接预算"
+        },
+        {
+          "entity": "PatternCanary",
+          "key": "pattern_id, canary_test, status",
+          "precedence": "模式目录与 canary 绑定",
+          "requires": "模式目录与 canary 绑定"
+        }
+      ],
+      "aggregates": [
+        {
+          "name": "GoalLoopxHybrid",
+          "states": [
+            "any non-terminal",
+            "blocked",
+            "gate_open",
+            "gate_resolved",
+            "loop_ready",
+            "pattern_pending",
+            "pattern_ready",
+            "quota_eligible",
+            "quota_spent",
+            "ready",
+            "todo_claimed",
+            "todo_open",
+            "todo_superseded",
+            "turning"
+          ],
+          "transitions": [
+            {
+              "from": "",
+              "to": "quota_eligible",
+              "guard": "health gates pass, quota > 0",
+              "initial": "true"
+            },
+            {
+              "from": "quota_eligible",
+              "to": "turning",
+              "guard": "turn selected within bound"
+            },
+            {
+              "from": "turning",
+              "to": "quota_spent",
+              "guard": "validated writeback accepted"
+            },
+            {
+              "from": "",
+              "to": "todo_open",
+              "guard": "unclaimed",
+              "initial": "true"
+            },
+            {
+              "from": "todo_open",
+              "to": "todo_claimed",
+              "guard": "claim valid, lease bound"
+            },
+            {
+              "from": "todo_claimed",
+              "to": "todo_superseded",
+              "guard": "successor valid, history kept"
+            },
+            {
+              "from": "",
+              "to": "gate_open",
+              "guard": "decision_key unanswered",
+              "initial": "true"
+            },
+            {
+              "from": "gate_open",
+              "to": "gate_resolved",
+              "guard": "answer recorded in cache"
+            },
+            {
+              "from": "pattern_pending",
+              "to": "pattern_ready",
+              "guard": "canary test green"
+            },
+            {
+              "from": "loop_ready",
+              "to": "ready",
+              "guard": "ready-score all checks pass"
+            },
+            {
+              "from": "any non-terminal",
+              "to": "blocked",
+              "guard": "gate unresolved / no claim / quota zero"
+            }
+          ]
+        }
+      ],
+      "illegal_transition_slots": [
+        {
+          "description": "GoalLoopxHybrid.todo_open → executing 未经过 claim",
+          "aggregate": "GoalLoopxHybrid",
+          "source": "truth"
+        },
+        {
+          "description": "GoalLoopxHybrid.gate_open → next_stage 未 resolve",
+          "aggregate": "GoalLoopxHybrid",
+          "source": "truth"
+        },
+        {
+          "description": "GoalLoopxHybrid.turning → quota_spent 无 validated writeback",
+          "aggregate": "GoalLoopxHybrid",
+          "source": "truth"
+        },
+        {
+          "description": "GoalLoopxHybrid.quota_zero → running（配额为 0 仍自动跑）",
+          "aggregate": "GoalLoopxHybrid",
+          "source": "truth"
+        },
+        {
+          "description": "GoalLoopxHybrid.lifecycle_gate_change 未经用户决策修改生命周期门禁",
+          "aggregate": "GoalLoopxHybrid",
+          "source": "truth"
+        }
+      ],
+      "acceptance_criteria": [
+        {
+          "ac_id": "AC-001",
+          "description": "GoalQuota.should_run 按 健康门禁→operator gate→证据等待→focus 等待→配额 顺序决策；focus/evidence 等待不 spend；恢复动作独立布尔；quota=0 时 visible 且不可跑"
+        },
+        {
+          "ac_id": "AC-002",
+          "description": "GoalTodo 支持 claim/release/supersede/update；同一 todo 重复 claim 被拒；supersede 保留历史；未 claim 不得执行"
+        },
+        {
+          "ac_id": "AC-003",
+          "description": "UserGateCard 输出 question/context/resume_action；决策缓存去重（同 decision_key 不二次提问）；resolve 后记录答案"
+        },
+        {
+          "ac_id": "AC-004",
+          "description": "TurnBudget 契约包含 choose→deliver→validate→writeback→spend；交接文本超 16 行/1800 字符被截断并记录；无 writeback 不 spend"
+        },
+        {
+          "ac_id": "AC-005",
+          "description": "patterns/ 目录含 IP-001/002/003/013/016 模式且每条配 canary 测试；ready-score 对 未冻结/未 admission/无配额 返回 blocked 明细；incidents/ 档案收录本次 5 条教训"
+        },
+        {
+          "ac_id": "AC-006",
+          "description": "生命周期门禁相关测试（truth/freeze/implement/qa/release/admission/双轴）全绿；新模块默认关闭（env 开启）；旧 goal 状态文件可读（新增字段可选）"
+        }
+      ],
+      "bound_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005"
+      ],
+      "orphan_ac_ids": [
+        "AC-006"
+      ],
+      "aggregates_missing_illegal_slots": [],
+      "raw_section_titles": [
+        "人话",
+        "User Intent Snapshot",
+        "用户旅程",
+        "Intent Coverage Matrix",
+        "Acceptance Criteria",
+        "Domain Model",
+        "Domain FSM GoalLoopxHybrid",
+        "FSM 五元组",
+        "invalid / illegal",
+        "Illegal transitions",
+        "Non-goals"
+      ]
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "required": true,
+      "blocked": false,
+      "status": "pass",
+      "reason_code": "",
+      "findings": [],
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "beacon-goal-loopx-hybrid-v1612",
+          "version": "v1.6.12",
+          "status": "draft",
+          "language": "zh",
+          "package_maturity": "filled",
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "materials_status": "current",
+          "canonical_refs": {
+            "prd": "docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/truth.md",
+            "user_story": "docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/truth.md",
+            "test_case": "docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md"
+          },
+          "humanizer_applied": "true"
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": true,
+        "has_domain_fsm_section": true,
+        "has_illegal_transition_section": true,
+        "entities": [
+          {
+            "entity": "GoalQuota",
+            "key": "compute, window_hours, slot_minutes, ledger",
+            "precedence": "长程 run 的自动计算配额与 spend 账本",
+            "requires": "长程 run 的自动计算配额与 spend 账本"
+          },
+          {
+            "entity": "GoalTodo",
+            "key": "id, owner, claim, lease, successor, capability_gate",
+            "precedence": "任务级所有权与认领状态",
+            "requires": "任务级所有权与认领状态"
+          },
+          {
+            "entity": "UserGateCard",
+            "key": "decision_key, question, context, resume_action",
+            "precedence": "需要人判断的具体问题卡片",
+            "requires": "需要人判断的具体问题卡片"
+          },
+          {
+            "entity": "TurnBudget",
+            "key": "choose, deliver, validate, writeback, spend",
+            "precedence": "有界回合契约与交接预算",
+            "requires": "有界回合契约与交接预算"
+          },
+          {
+            "entity": "PatternCanary",
+            "key": "pattern_id, canary_test, status",
+            "precedence": "模式目录与 canary 绑定",
+            "requires": "模式目录与 canary 绑定"
+          }
+        ],
+        "entity_precedence": [
+          {
+            "entity": "GoalQuota",
+            "key": "compute, window_hours, slot_minutes, ledger",
+            "precedence": "长程 run 的自动计算配额与 spend 账本",
+            "requires": "长程 run 的自动计算配额与 spend 账本"
+          },
+          {
+            "entity": "GoalTodo",
+            "key": "id, owner, claim, lease, successor, capability_gate",
+            "precedence": "任务级所有权与认领状态",
+            "requires": "任务级所有权与认领状态"
+          },
+          {
+            "entity": "UserGateCard",
+            "key": "decision_key, question, context, resume_action",
+            "precedence": "需要人判断的具体问题卡片",
+            "requires": "需要人判断的具体问题卡片"
+          },
+          {
+            "entity": "TurnBudget",
+            "key": "choose, deliver, validate, writeback, spend",
+            "precedence": "有界回合契约与交接预算",
+            "requires": "有界回合契约与交接预算"
+          },
+          {
+            "entity": "PatternCanary",
+            "key": "pattern_id, canary_test, status",
+            "precedence": "模式目录与 canary 绑定",
+            "requires": "模式目录与 canary 绑定"
+          }
+        ],
+        "aggregates": [
+          {
+            "name": "GoalLoopxHybrid",
+            "states": [
+              "any non-terminal",
+              "blocked",
+              "gate_open",
+              "gate_resolved",
+              "loop_ready",
+              "pattern_pending",
+              "pattern_ready",
+              "quota_eligible",
+              "quota_spent",
+              "ready",
+              "todo_claimed",
+              "todo_open",
+              "todo_superseded",
+              "turning"
+            ],
+            "transitions": [
+              {
+                "from": "",
+                "to": "quota_eligible",
+                "guard": "health gates pass, quota > 0",
+                "initial": "true"
+              },
+              {
+                "from": "quota_eligible",
+                "to": "turning",
+                "guard": "turn selected within bound"
+              },
+              {
+                "from": "turning",
+                "to": "quota_spent",
+                "guard": "validated writeback accepted"
+              },
+              {
+                "from": "",
+                "to": "todo_open",
+                "guard": "unclaimed",
+                "initial": "true"
+              },
+              {
+                "from": "todo_open",
+                "to": "todo_claimed",
+                "guard": "claim valid, lease bound"
+              },
+              {
+                "from": "todo_claimed",
+                "to": "todo_superseded",
+                "guard": "successor valid, history kept"
+              },
+              {
+                "from": "",
+                "to": "gate_open",
+                "guard": "decision_key unanswered",
+                "initial": "true"
+              },
+              {
+                "from": "gate_open",
+                "to": "gate_resolved",
+                "guard": "answer recorded in cache"
+              },
+              {
+                "from": "pattern_pending",
+                "to": "pattern_ready",
+                "guard": "canary test green"
+              },
+              {
+                "from": "loop_ready",
+                "to": "ready",
+                "guard": "ready-score all checks pass"
+              },
+              {
+                "from": "any non-terminal",
+                "to": "blocked",
+                "guard": "gate unresolved / no claim / quota zero"
+              }
+            ]
+          }
+        ],
+        "illegal_transition_slots": [
+          {
+            "description": "GoalLoopxHybrid.todo_open → executing 未经过 claim",
+            "aggregate": "GoalLoopxHybrid",
+            "source": "truth"
+          },
+          {
+            "description": "GoalLoopxHybrid.gate_open → next_stage 未 resolve",
+            "aggregate": "GoalLoopxHybrid",
+            "source": "truth"
+          },
+          {
+            "description": "GoalLoopxHybrid.turning → quota_spent 无 validated writeback",
+            "aggregate": "GoalLoopxHybrid",
+            "source": "truth"
+          },
+          {
+            "description": "GoalLoopxHybrid.quota_zero → running（配额为 0 仍自动跑）",
+            "aggregate": "GoalLoopxHybrid",
+            "source": "truth"
+          },
+          {
+            "description": "GoalLoopxHybrid.lifecycle_gate_change 未经用户决策修改生命周期门禁",
+            "aggregate": "GoalLoopxHybrid",
+            "source": "truth"
+          }
+        ],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-001",
+            "description": "GoalQuota.should_run 按 健康门禁→operator gate→证据等待→focus 等待→配额 顺序决策；focus/evidence 等待不 spend；恢复动作独立布尔；quota=0 时 visible 且不可跑"
+          },
+          {
+            "ac_id": "AC-002",
+            "description": "GoalTodo 支持 claim/release/supersede/update；同一 todo 重复 claim 被拒；supersede 保留历史；未 claim 不得执行"
+          },
+          {
+            "ac_id": "AC-003",
+            "description": "UserGateCard 输出 question/context/resume_action；决策缓存去重（同 decision_key 不二次提问）；resolve 后记录答案"
+          },
+          {
+            "ac_id": "AC-004",
+            "description": "TurnBudget 契约包含 choose→deliver→validate→writeback→spend；交接文本超 16 行/1800 字符被截断并记录；无 writeback 不 spend"
+          },
+          {
+            "ac_id": "AC-005",
+            "description": "patterns/ 目录含 IP-001/002/003/013/016 模式且每条配 canary 测试；ready-score 对 未冻结/未 admission/无配额 返回 blocked 明细；incidents/ 档案收录本次 5 条教训"
+          },
+          {
+            "ac_id": "AC-006",
+            "description": "生命周期门禁相关测试（truth/freeze/implement/qa/release/admission/双轴）全绿；新模块默认关闭（env 开启）；旧 goal 状态文件可读（新增字段可选）"
+          }
+        ],
+        "bound_ac_ids": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005"
+        ],
+        "orphan_ac_ids": [
+          "AC-006"
+        ],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "人话",
+          "User Intent Snapshot",
+          "用户旅程",
+          "Intent Coverage Matrix",
+          "Acceptance Criteria",
+          "Domain Model",
+          "Domain FSM GoalLoopxHybrid",
+          "FSM 五元组",
+          "invalid / illegal",
+          "Illegal transitions",
+          "Non-goals"
+        ]
+      },
+      "summary": {
+        "entity_count": 5,
+        "aggregate_count": 1,
+        "illegal_slot_count": 5,
+        "orphan_ac_count": 1,
+        "bound_ac_count": 5
+      }
+    },
+    "recommended_action": ""
+  },
+  "human_closure_contract": {
+    "required": false,
+    "research_path": "docs/beacon/v1.6.12/research/beacon-goal-loopx-hybrid-v1612.md",
+    "research_exists": false,
+    "source_architecture_path": "docs/beacon/v1.6.12/source-architecture/beacon-goal-loopx-hybrid-v1612.md",
+    "source_architecture_exists": false,
+    "required_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "missing_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "diagram_types": [],
+    "complexity_signals": []
+  },
+  "requirement_closure_contract": {
+    "required": true,
+    "chain_order": [
+      "research",
+      "prd",
+      "user_story",
+      "test_case",
+      "requirement_clarity",
+      "freeze"
+    ],
+    "human_closure_required": false,
+    "paths": {
+      "research": "docs/beacon/v1.6.12/research/beacon-goal-loopx-hybrid-v1612.md",
+      "prd": "docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/truth.md",
+      "user_story": "docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/truth.md",
+      "test_case": "docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md"
+    },
+    "exists": {
+      "research": false,
+      "prd": true,
+      "user_story": true,
+      "test_case": true
+    },
+    "required_research_sections": [],
+    "missing_research_sections": [],
+    "ac_projection": {
+      "prd_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006"
+      ],
+      "user_story_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006"
+      ],
+      "test_case_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006"
+      ],
+      "upstream_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006"
+      ],
+      "missing_test_case_ac_ids": []
+    }
+  },
+  "version_projection_truth_contract": {
+    "required": false,
+    "supported": true,
+    "projection_types": [],
+    "research_path": "docs/beacon/v1.6.12/research/beacon-goal-loopx-hybrid-v1612.md",
+    "research_exists": false,
+    "required_fields": [
+      "prd_refs",
+      "user_story_refs",
+      "test_case_refs",
+      "coverage_notes",
+      "out_of_scope_notes"
+    ],
+    "field_presence": {
+      "prd_refs": false,
+      "user_story_refs": false,
+      "test_case_refs": false,
+      "coverage_notes": false,
+      "out_of_scope_notes": false
+    },
+    "missing_fields": [],
+    "required_refs": {
+      "prd_refs": "docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/truth.md",
+      "user_story_refs": "docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/truth.md",
+      "test_case_refs": "docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md"
+    },
+    "missing_ref_targets": [],
+    "ready": false
+  },
+  "support_write_topology_contract": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "diagnostics": []
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/truth.md",
+    "docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
+    "docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tasks.md",
+    "docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/evidence.md"
+  ]
+}

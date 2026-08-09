@@ -26,9 +26,15 @@ User utterance: 确保 beacon 生命周期能力特性不受影响，完整把 l
 3. 不假交付：每个湖必须有 canary 测试 + 可验证 AC，禁止 docs-only 或 placeholder 闭环。
 4. LoopX 能力按“借用（接口对齐）”或“蒸馏（重新实现到 beacon 语义）”，不做整体代码搬运。
 
-## 湖拆分（feature 包粒度，每个湖独立 plan → truth → freeze）
+## 湖拆分（用户决定：5 个能力组合并为一个 feature 包，一次煮干）
 
-### Lake-1 `beacon-goal-quota-kernel-v1612`（P0）
+单一 feature：**`beacon-goal-loopx-hybrid-v1612`**
+
+- 一个 truth 包内 5 个能力组（CAP-1..CAP-5），对应 5 个 TASK 批次；
+- 每批独立 canary 测试 + AC；全包一次 plan → truth → freeze → implement → 验收；
+- 不再拆 5 个 lake，避免多包协调成本；护栏与 parity 矩阵不变。
+
+### CAP-1 Quota 内核（原 Lake-1，P0）
 
 - 借用：LoopX compute quota（占空比、window×slot 账本）、`quota should-run` 决策顺序
   （健康门禁 → operator gate → 证据等待 → focus 等待 → 配额）、spend-once、
@@ -37,7 +43,7 @@ User utterance: 确保 beacon 生命周期能力特性不受影响，完整把 l
   resume/status 输出增加 should-run 视图。
 - 验收：长程 run 在 focus/evidence 等待时不 spend；恢复路径独立布尔；quota=0 时可见不可跑。
 
-### Lake-2 `beacon-goal-todo-ownership-v1612`（P0）
+### CAP-2 Todo 所有权（原 Lake-2，P0）
 
 - 借用：IP-016 Task Lease、IP-019 Peer Scoped Continuation、IP-020 Claim/Supersede/
   Successor、IP-022 Claimed Todo Visibility、IP-021 Per-Todo Capability Gate。
@@ -45,7 +51,7 @@ User utterance: 确保 beacon 生命周期能力特性不受影响，完整把 l
   per-todo capability gate 绑定现有 workspace admission。
 - 验收：两个对等 agent 不能同时 claim 同一 todo；supersede 保留历史；无 claim 不执行。
 
-### Lake-3 `beacon-goal-user-gate-projection-v1612`（P0）
+### CAP-3 具体 user gate 投影（原 Lake-3，P0）
 
 - 借用：IP-004 Concrete User Todo Projection、IP-027 Deferred Gate Resume、
   IP-029 Handoff Todo Gate State、IP-014 Decision Write Preview And Append。
@@ -53,14 +59,14 @@ User utterance: 确保 beacon 生命周期能力特性不受影响，完整把 l
   （问题、上下文、可选恢复命令），并进入决策缓存（对齐 AC-033：同 key 不重复提问）。
 - 验收：每个阻断都有 gate todo + resume_action；重复决策不再二次提问。
 
-### Lake-4 `beacon-goal-bounded-turn-budget-v1612`（P0）
+### CAP-4 有界回合预算（原 Lake-4，P0）
 
 - 借用：IP-001 Bounded Delivery（选择→交付/阻塞→聚焦校验→持久 writeback→spend once）、
   handoff_budget（16 行/1800 字符）、interface_budget、turn_identity。
 - 落地：driver 回合契约化；交接文本上限；turn instance id 进入 run 历史。
 - 验收：driver turn 无 writeback 不 spend；交接超限截断且有记录。
 
-### Lake-5 `beacon-goal-pattern-catalog-v1612`（P1）
+### CAP-5 模式目录与事故档案（原 Lake-5，P1）
 
 - 借用：interaction-pattern-catalog + incidents 档案、IP-013 Advisory Dreaming vs
   Autonomous Replan、ready-score、IP-017 User Reward Lesson Promotion。
@@ -103,7 +109,6 @@ User utterance: 确保 beacon 生命周期能力特性不受影响，完整把 l
 
 ## 推荐路由
 
-- 本 program 已完成 P0（intent + plan_mode=auto）；P1–P4 按 Lake-1 → Lake-5 顺序推进。
-- 每个湖：`beacon truth`（gen-truth 语义）→ pln-review → freeze → goal implement admission
-  → worktree 实现 → 合并回 main。
-- 下一步 harness：`goal`（逐湖走 plan → truth → freeze）。
+- 本 program 已完成 P0（intent + plan_mode=auto）；单 feature 合并已确认。
+- 下一步：`beacon-goal` 对 `beacon-goal-loopx-hybrid-v1612` 走 plan → truth → freeze
+  → implement（worktree admission）→ 验收通过。

@@ -1,0 +1,198 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-08-09T04:13:46.553730+00:00",
+  "feature": "beacon-goal-loopx-hybrid-v1612",
+  "feature_slug": "beacon-goal-loopx-hybrid-v1612",
+  "version": "v1.6.12",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/truth.md",
+    "tests": "docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
+    "tasks": "docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tasks.md",
+    "evidence": "docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "ca59370ff637e5e879573540ccba262a5d495ab0583fc1d5024c67b2872e7913",
+    "tests": "02b6b33c117ba2374df132d78bce59430eb13a953aa54f0b000d7cee4ad10c22",
+    "tasks": "21a26348ce02e1fd59aa962833ba3499f9dcaa5af55c39025c4f5af50ec5cc68",
+    "evidence": "187ec6bd66367e4010e759eb8d06f6e0f020ddf788f183d49087c050670b79ff"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-goal-loopx-hybrid-v1612",
+    "version": "v1.6.12",
+    "status": "frozen",
+    "language": "zh",
+    "package_maturity": "filled",
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "materials_status": "current",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/truth.md",
+      "user_story": "docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/truth.md",
+      "test_case": "docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md"
+    },
+    "humanizer_applied": "true"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "GoalQuota.should_run 按 健康门禁→operator gate→证据等待→focus 等待→配额 顺序决策；focus/evidence 等待不 spend；恢复动作独立布尔；quota=0 时 visible 且不可跑",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "GoalTodo 支持 claim/release/supersede/update；同一 todo 重复 claim 被拒；supersede 保留历史；未 claim 不得执行",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "UserGateCard 输出 question/context/resume_action；决策缓存去重（同 decision_key 不二次提问）；resolve 后记录答案",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "TurnBudget 契约包含 choose→deliver→validate→writeback→spend；交接文本超 16 行/1800 字符被截断并记录；无 writeback 不 spend",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "patterns/ 目录含 IP-001/002/003/013/016 模式且每条配 canary 测试；ready-score 对 未冻结/未 admission/无配额 返回 blocked 明细；incidents/ 档案收录本次 5 条教训",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "生命周期门禁相关测试（truth/freeze/implement/qa/release/admission/双轴）全绿；新模块默认关闭（env 开启）；旧 goal 状态文件可读（新增字段可选）",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1612_goal_quota.py --tb=no`",
+      "assertion": "exit 0",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1612_goal_todos.py --tb=no`",
+      "assertion": "exit 0",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1612_goal_gates.py --tb=no`",
+      "assertion": "exit 0",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1612_goal_budget.py --tb=no`",
+      "assertion": "exit 0",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-005",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1612_goal_patterns.py --tb=no`",
+      "assertion": "exit 0",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-006",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_doctor_context_commands.py tests/test_v169_version_defaults_dual_axis.py --tb=no`",
+      "assertion": "无新增失败（生命周期护栏）",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-007",
+      "layer": "",
+      "command": "`python3 -c \"import json; s=json.load(open('.beacon/state/loop-goal/pgr-0dd73fcf5c9f.verification-bundle.json')); print('ok')\"`",
+      "assertion": "旧状态文件可读（向后兼容）",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-008",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_v1612_goal_gates.py -k gate_resolve --tb=no`",
+      "assertion": "illegal transition（gate 未 resolve 直接推进）被拒绝",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Implement AC-001: GoalQuota.should_run 按 健康门禁→operator gate→证据等待→focus 等待→配额 顺序决策；focus... · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-goal-loopx-hybrid-v1612/AC-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Implement AC-002: GoalTodo 支持 claim/release/supersede/update；同一 todo 重复 claim 被拒；supers... · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-goal-loopx-hybrid-v1612/AC-002.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Implement AC-003: UserGateCard 输出 question/context/resume_action；决策缓存去重（同 decision_key ... · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-goal-loopx-hybrid-v1612/AC-003.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Implement AC-004: TurnBudget 契约包含 choose→deliver→validate→writeback→spend；交接文本超 16 行/18... · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-goal-loopx-hybrid-v1612/AC-004.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Implement AC-005: patterns/ 目录含 IP-001/002/003/013/016 模式且每条配 canary 测试；ready-score 对 未... · ac=AC-005 · evidence=`.beacon/evidence/implement/beacon-goal-loopx-hybrid-v1612/AC-005.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Implement AC-006: 生命周期门禁相关测试（truth/freeze/implement/qa/release/admission/双轴）全绿；新模块默认关闭（... · ac=AC-006 · evidence=`.beacon/evidence/implement/beacon-goal-loopx-hybrid-v1612/AC-006.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-goal-loopx-hybrid-v1612/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-008",
+      "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-goal-loopx-hybrid-v1612/QA-MATRIX.json`",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "tests",
+      "authority": "acceptance_truth"
+    },
+    {
+      "surface": "tasks",
+      "authority": "requirement_truth"
+    },
+    {
+      "surface": "evidence",
+      "authority": "test_truth"
+    }
+  ]
+}
