@@ -51,3 +51,10 @@ def test_re_resolve_same_key_rejected() -> None:
     state["decision_cache"] = resolved["decision_cache"]
     again = resolve_gate(state, "key4", "b")
     assert again["reason_code"] == "already_resolved"
+
+
+def test_gate_resolve_illegal_transition_rejected() -> None:
+    """TC-008: gate_open -> next_stage without resolve is an illegal transition."""
+    guard = assert_gate_resolved({}, "tc8")
+    assert guard["blocked"] is True
+    assert guard["reason_code"] == "gate_unresolved"
