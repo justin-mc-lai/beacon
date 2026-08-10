@@ -8,7 +8,7 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
-TRUTH = ROOT / "docs/beacon/v1.6.1/features/beacon-loop-goal-closed-loop-orchestrator-v161/truth.md"
+TRUTH = ROOT / "docs/beacon/archive/v1.6.1/features/beacon-loop-goal-closed-loop-orchestrator-v161/truth.md"
 BEACON_RUN = ROOT / "packages/beacon-run"
 BEACON_LOOP = ROOT / "packages/beacon-loop"
 

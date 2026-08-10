@@ -2,12 +2,15 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from beacon.utils.loop_failure_catalog import catalog_path, validate_failure_catalog
+from beacon.utils.loop_failure_catalog import validate_failure_catalog
 from beacon.utils.loop_readiness import build_loop_readiness_audit
 
 
+ARCHIVE_CATALOG = Path(__file__).resolve().parents[1] / "docs/beacon/archive/v1.6.5/execution/loop-failure-modes.md"
+
+
 def test_catalog_file_has_severity_sections() -> None:
-    text = catalog_path(Path.cwd(), version="v1.6.5").read_text(encoding="utf-8")
+    text = ARCHIVE_CATALOG.read_text(encoding="utf-8")
     assert "## S1 Annoying" in text
     assert "## S2 Harmful" in text
     assert "## S3 Critical" in text
@@ -22,7 +25,7 @@ def test_catalog_required_fields(tmp_path: Path) -> None:
 
 
 def test_catalog_contains_baseline_modes() -> None:
-    result = validate_failure_catalog(catalog_path(Path.cwd(), version="v1.6.5"))
+    result = validate_failure_catalog(ARCHIVE_CATALOG)
     assert result["status"] == "pass"
     assert {"truth-drift", "git-alignment-blocked", "stale-evidence-manifest", "infinite-fix-loop", "protected-path-attempt"}.issubset(set(result["mode_ids"]))
 

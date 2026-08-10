@@ -2,8 +2,11 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from beacon.utils.loop_patterns import registry_path, validate_pattern_registry
+from beacon.utils.loop_patterns import validate_pattern_registry
 from beacon.utils.loop_readiness import build_loop_readiness_audit
+
+
+ARCHIVE_REGISTRY = Path(__file__).resolve().parents[1] / "docs/beacon/archive/v1.6.5/loop-patterns/registry.yaml"
 
 
 def _write_registry(path: Path, body: str) -> None:
@@ -12,7 +15,7 @@ def _write_registry(path: Path, body: str) -> None:
 
 
 def test_registry_file_contains_required_patterns() -> None:
-    result = validate_pattern_registry(registry_path(Path.cwd(), version="v1.6.5"))
+    result = validate_pattern_registry(ARCHIVE_REGISTRY)
     assert result["status"] == "pass"
     assert {"ralph", "team", "beacon-loop"}.issubset(set(result["pattern_ids"]))
 

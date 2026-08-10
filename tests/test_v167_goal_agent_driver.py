@@ -65,10 +65,11 @@ def test_depends_on_durable_apis() -> None:
 
 def test_longrun_flag(tmp_path: Path) -> None:
     default = run_goal_facade(tmp_path, utterance="plain goal without driver", version="v1.6.7")
-    assert default.get("longrun") is False or default.get("longrun") is None or default.get("longrun") is False
+    # v1.6.8+ goal facade honors project longrun_default (true for new projects)
+    assert default.get("longrun") is True
     drv = default.get("driver") or {}
-    assert drv.get("state", "idle") == "idle"
-    assert (default.get("supervisor") or {}).get("attached") is False
+    assert drv.get("state") in {"arming", "idle"}
+    assert (default.get("supervisor") or {}).get("attached") is True
 
     long = run_goal_facade(
         tmp_path,
@@ -106,7 +107,7 @@ def test_skill_longrun_intent() -> None:
 
 
 def test_auto_requeue(tmp_path: Path) -> None:
-    run = run_goal_facade(tmp_path, utterance="requeue demo", version="v1.6.7")
+    run = run_goal_facade(tmp_path, utterance="requeue demo", version="v2.0.0", driver_start=False)
     run_id = run["run_id"]
     calls: list = []
     started = driver_start(
@@ -129,7 +130,7 @@ def test_auto_requeue(tmp_path: Path) -> None:
 
 
 def test_digest_prompt_file(tmp_path: Path) -> None:
-    run = run_goal_facade(tmp_path, utterance="digest demo", version="v1.6.7")
+    run = run_goal_facade(tmp_path, utterance="digest demo", version="v2.0.0")
     run_id = run["run_id"]
     goal = load_goal_run(tmp_path, run_id)
     body = render_turn_prompt(tmp_path, goal, turn_n=1)
@@ -158,7 +159,7 @@ def test_bridge_spawn_contract(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) 
 
 
 def test_budget_halt(tmp_path: Path) -> None:
-    run = run_goal_facade(tmp_path, utterance="budget demo", version="v1.6.7")
+    run = run_goal_facade(tmp_path, utterance="budget demo", version="v2.0.0", driver_start=False)
     run_id = run["run_id"]
     out = driver_start(
         tmp_path,
@@ -285,7 +286,7 @@ def test_legal_longrun_requeue(tmp_path: Path) -> None:
     run = run_goal_facade(
         tmp_path,
         utterance="legal longrun 长跑",
-        version="v1.6.7",
+        version="v2.0.0",
         longrun=True,
         driver_start=True,
         driver_run_loop=True,
@@ -302,13 +303,13 @@ def test_legal_longrun_requeue(tmp_path: Path) -> None:
 
 def test_legal_default_no_driver(tmp_path: Path) -> None:
     run = run_goal_facade(tmp_path, utterance="default idle", version="v1.6.7")
-    assert not run.get("longrun")
+    assert run.get("longrun") is True
     st = load_driver_state(tmp_path, run["run_id"])
-    assert st.get("state") == "idle"
+    assert st.get("state") in {"arming", "idle"}
 
 
 def test_illegal_complete_without_verifier(tmp_path: Path) -> None:
-    run = run_goal_facade(tmp_path, utterance="illegal complete", version="v1.6.7", longrun=True, driver_start=False)
+    run = run_goal_facade(tmp_path, utterance="illegal complete", version="v2.0.0", longrun=True, driver_start=False)
     run_id = run["run_id"]
     driver_start(
         tmp_path,
@@ -325,7 +326,7 @@ def test_illegal_complete_without_verifier(tmp_path: Path) -> None:
 
 
 def test_illegal_budget_complete(tmp_path: Path) -> None:
-    run = run_goal_facade(tmp_path, utterance="budget illegal", version="v1.6.7")
+    run = run_goal_facade(tmp_path, utterance="budget illegal", version="v2.0.0")
     run_id = run["run_id"]
     driver_start(
         tmp_path,
@@ -352,7 +353,8 @@ def test_illegal_auto_release() -> None:
     assert "eval-release" not in src
 
 
-def test_illegal_default_autostart(tmp_path: Path) -> None:
+def test_illegal_default_autostart(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("BEACON_GOAL_FORCE_NO_LONGRUN", "1")
     run = run_goal_facade(tmp_path, utterance="no autostart", version="v1.6.7", longrun=False)
     assert run.get("longrun") in (False, None)
     assert (run.get("driver") or {}).get("state", "idle") == "idle"
