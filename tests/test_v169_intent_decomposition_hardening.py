@@ -50,7 +50,7 @@ def test_plan_artifact_carries_decomposition() -> None:
     assert gate["reason_code"] == "plan_journey_decomposition_incomplete"
 
 
-def test_mark_journeys_frozen_clears_block() -> None:
+def test_mark_journeys_frozen_clears_block_but_keeps_host_fill_advisory() -> None:
     dec = decompose_product_intent(OPEN_SAAS_UTT, lakes=["l1-identity", "l2-billing", "l4-plugin-v0"])
     ids = [j["id"] for j in dec["journeys"]]
     frozen = mark_journeys_frozen(
@@ -60,8 +60,17 @@ def test_mark_journeys_frozen_clears_block() -> None:
         domain_fsm_present=True,
         source_anchors=["oss-sync/saas/templates/get-saas"],
     )
-    assert frozen["truth_readiness"]["ready"] is True
-    assert frozen["truth_readiness"]["blocks_auto_tick_past_plan"] is False
+    # journey/AC/FSM/source items are cleared, but host LLM full-package fill and
+    # host agent skill authored advisory remain before truth readiness.
+    missing = frozen["truth_readiness"]["missing"]
+    assert "journey_detail_not_frozen" not in missing
+    assert "ac_matrix_not_materialized" not in missing
+    assert "domain_fsm_notes_missing" not in missing
+    assert "source_anchors_pending" not in missing
+    assert "host_llm_full_package_fill_pending" in missing
+    assert "host_agent_skill_authored_fill_pending" in missing
+    assert frozen["truth_readiness"]["ready"] is False
+    assert frozen["truth_readiness"]["blocks_auto_tick_past_plan"] is True
 
 
 def test_auto_tick_stops_at_plan_for_ocean() -> None:

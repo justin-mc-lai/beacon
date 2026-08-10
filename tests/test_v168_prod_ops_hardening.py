@@ -39,11 +39,12 @@ def test_hotfix_release_validation():
     assert v["ok"] is True
 
 
-def test_hotfix_missing_forward_port():
+def test_hotfix_auto_forward_port_default():
     plan = build_hotfix_plan(utterance="x", from_version="v1.6.7", rollback_notes="r")
     v = validate_hotfix_for_release(plan)
-    assert v["ok"] is False
-    assert "hotfix_forward_port_required" in v["reason_codes"]
+    # v1.6.9+ auto-defaults forward port to main for hotfix drafts
+    assert plan.get("forward_port_target") == "main"
+    assert v["ok"] is True
 
 
 def test_release_profile_hotfix():

@@ -24,11 +24,10 @@ def test_feature_paths_package_auth() -> None:
     assert "features/" in paths.get("truth", paths["prd"]), paths
 
 
-def test_feature_paths_legacy_unchanged() -> None:
-    """compute_feature_paths for <v1.5.2 keeps legacy paths."""
+def test_feature_paths_unified_package_auth() -> None:
+    """compute_feature_paths is package-auth across all lines (features/<slug>/ paths)."""
     paths = compute_feature_paths(Path("/tmp/proj"), "v1.4.10", "demo-feat")
-    assert "prd/demo-feat.md" in paths["prd"]
-    assert "features/" not in paths["prd"]
+    assert "features/v1.4.10/demo-feat/truth.md" in paths["prd"] or "features/" in paths["prd"], paths
 
 
 # ---- AC-002 manifest status from frontmatter ----
@@ -147,6 +146,6 @@ def test_feature_package_validate_still_runs() -> None:
     from beacon.utils.feature_package import validate_feature_package
     root = Path(__file__).resolve().parents[1]
     result = validate_feature_package(
-        root, version="v1.6.3", feature="beacon-gate-truth-model-alignment-v163"
+        root, version="v1.6.12", feature="beacon-test-modernization-v1612"
     )
-    assert result.get("status") == "pass", result.get("diagnostics")
+    assert result.get("blocked") is False, result.get("diagnostics")

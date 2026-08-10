@@ -52,8 +52,8 @@ def test_truth_change_detected(tmp_path: Path) -> None:
 
 # ---- AC-004 legacy compat ----
 
-def test_legacy_find_layer_files_unchanged(tmp_path: Path) -> None:
-    """<v1.5.2 _find_layer_files still scans legacy dirs."""
+def test_legacy_find_layer_files_ignored(tmp_path: Path) -> None:
+    """<v1.5.2 legacy dirs are no longer scanned (package-auth layers only)."""
     base = tmp_path / "docs" / "beacon" / "v1.4.10"
     (base / "user-story").mkdir(parents=True)
     (base / "user-story" / "legacy.md").write_text("# us\n", encoding="utf-8")
@@ -61,8 +61,8 @@ def test_legacy_find_layer_files_unchanged(tmp_path: Path) -> None:
     (base / "prd" / "legacy.md").write_text("# prd\n", encoding="utf-8")
     us_files = _find_layer_files(tmp_path, version="v1.4.10", layer="user_story")
     prd_files = _find_layer_files(tmp_path, version="v1.4.10", layer="prd")
-    assert any("user-story/legacy.md" in str(f) for f in us_files), us_files
-    assert any("prd/legacy.md" in str(f) for f in prd_files), prd_files
+    assert us_files == []
+    assert prd_files == []
 
 
 # ---- AC-005 test_case layer preserved ----
@@ -83,7 +83,7 @@ def test_no_regression_v163_release() -> None:
     """v1.6.3 release gate still passes after fingerprint regen."""
     root = Path(__file__).resolve().parents[1]
     # regenerate fingerprint for current state and verify it's consistent
-    fp = generate_spec_fingerprint(root, run_id="test-consistency", version="v1.6.3")
+    fp = generate_spec_fingerprint(root, run_id="test-consistency", version="v1.6.12")
     # user_story/prd layers must now have content (count > 0)
     layers = fp.get("layers", {})
     assert layers.get("user_story", {}).get("count", 0) > 0, layers

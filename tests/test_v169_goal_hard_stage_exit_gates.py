@@ -92,7 +92,8 @@ def test_implement_admission_requires_freeze(tmp_path: Path, monkeypatch: pytest
     gate = ensure_goal_implement_admission(tmp_path, payload, dry_run=True)
     assert gate["allow_implement"] is False
     assert gate["reason_code"] == ADM_FREEZE
-    assert gate.get("resume_action") == "await_freeze_ack"
+    assert gate.get("blocked") is True
+    assert "freeze" in str(gate.get("recommended_command") or "").lower()
 
     _write_truth(tmp_path, "v1.6.9", "lake-a", "frozen")
     # dry_run may still fail worktree but freeze should pass — freeze check returns before admit

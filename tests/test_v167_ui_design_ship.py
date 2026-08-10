@@ -73,7 +73,14 @@ def test_missing_design_blocks_ship(tmp_path: Path) -> None:
     assert gate["reason_code"] == REASON_DESIGN_MISSING
     assert gate["release_ready_allowed"] is False
     # with DESIGN baseline
-    (tmp_path / "DESIGN.md").write_text("# Design\n\ntokens\n", encoding="utf-8")
+    (tmp_path / "DESIGN.md").write_text(
+        "---\nname: ux-demo\n---\n\n# Design\n\n"
+        "## Overview\n\nCheckout flow.\n\n"
+        "## Colors\n\nprimary: #0055FF\n\n"
+        "## Typography\n\nfont-family: system-ui\n\n"
+        "## Components\n\nButton\n",
+        encoding="utf-8",
+    )
     gate2 = build_ui_design_ship_gate(
         tmp_path,
         version="v1.6.7",

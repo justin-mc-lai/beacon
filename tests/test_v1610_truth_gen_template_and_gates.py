@@ -21,7 +21,11 @@ from beacon.utils.truth_review_gate import (
 
 
 def _write_humanizer_stub(root: Path, *, lang: str = "zh") -> Path:
-    rel = "core-skills/Humanizer-zh/SKILL.md" if lang == "zh" else "core-skills/humanizer/SKILL.md"
+    rel = (
+        "core-skills/Humanizer-zh/SKILL.md.internal"
+        if lang == "zh"
+        else "core-skills/humanizer/SKILL.md.internal"
+    )
     path = root / "oss-sync" / rel
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(

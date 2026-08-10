@@ -78,7 +78,7 @@ parser_contract: {contract}
 
 # t
 
-- [ ] TC-001 do something (BLOCKED:Phase-A)
+- [ ] TASK-001 do something · ac=AC-001 · evidence=.beacon/evidence/demo-freeze-fix/AC-001.json
 """
 
 _EVIDENCE_TMPL = """\
@@ -333,7 +333,7 @@ def test_p03_package_no_regression() -> None:
     project_root = Path(__file__).resolve().parents[1]
     result = validate_feature_package(
         project_root,
-        version="v1.6.3",
-        feature="beacon-gate-truth-model-alignment-v163",
+        version="v1.6.12",
+        feature="beacon-test-modernization-v1612",
     )
     assert _codes(result) == []

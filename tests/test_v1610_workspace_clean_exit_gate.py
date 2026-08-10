@@ -235,7 +235,7 @@ def test_post_release_global_skills_use_permanent_skill_source(tmp_path: Path, m
     )
     monkeypatch.setattr(
         "beacon.utils.project_hooks._command_output",
-        lambda cmd: {"status": "pass", "stdout": "Beacon CLI v1.6.10", "stderr": ""},
+        lambda cmd: {"status": "pass", "stdout": "Beacon CLI v1.6.12", "stderr": ""},
     )
     monkeypatch.setattr("beacon.utils.project_hooks.is_live_runner_admitted", lambda *a, **k: False)
     monkeypatch.setattr("beacon.utils.agent_surface.SUPPORTED_HOST_AGENTS", ("codex",))
