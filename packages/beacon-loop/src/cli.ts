@@ -265,7 +265,7 @@ if (command === "spine") {
   if (sub === "show") {
     const payload = showSpine(
       projectRoot,
-      args[2] || option(args, "--run-id", ""),
+      option(args, "--run-id", ""),
     );
     if (!spineDocExists(projectRoot)) {
       payload.status = "blocked";

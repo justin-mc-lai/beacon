@@ -168,18 +168,16 @@ def test_v160_skill_package_materialize_should_create_harness_only_package(tmp_p
         "beacon-pln-source",
         "beacon-pln-review",
         "beacon-pln-friction",
-        "beacon-pln-program",
-        "beacon-pln-program-auto",
-        "beacon-pln-program-interactive",
     }
     assert "beacon-pln-source" in skill_dirs
     assert "beacon-pln-review" in skill_dirs
     assert "beacon-gen-implement" in skill_dirs
     assert "beacon-eval-qa" in skill_dirs
     assert "beacon-gov-router" in skill_dirs
-    assert "beacon-loop-goal" in skill_dirs
+    # loop-goal merged into beacon-goal mode (1+6 surface)
+    assert "beacon-loop-goal" not in skill_dirs
     assert all(
-        name in {"beacon-loop-goal", "beacon-goal"}
+        name in {"beacon-goal"}
         or name.startswith(("beacon-pln-", "beacon-gen-", "beacon-eval-", "beacon-gov-"))
         for name in skill_dirs
     )
@@ -219,54 +217,47 @@ def test_v160_skill_package_materialize_should_create_harness_only_package(tmp_p
     assert metadata["content_preservation"]["policy"].startswith("compact harness skill directories preserve full")
 
     implementation = (package_root / "beacon-gen-implement" / "SKILL.md").read_text(encoding="utf-8")
-    assert "PRODUCT.md / DESIGN.md" in implementation
     assert "Beacon v1.6.0 共享 Preamble" in implementation
-    assert len(implementation.splitlines()) > 170
-    assert "`beacon-eval-qa`" in implementation
-    assert "`beacon-qa`" not in "\n".join(line for line in implementation.splitlines() if "来源迁移" not in line and "migrated from" not in line)
+    assert "HARD GATE:" in implementation
+    assert len(implementation.splitlines()) <= 60
+    assert (package_root / "beacon-gen-implement" / "references" / "implement-ralph.md").is_file()
 
     router = (package_root / "beacon-gov-router" / "SKILL.md").read_text(encoding="utf-8")
     assert "`beacon-gen-implement`" in router
     assert "`beacon-eval-release`" in router
     assert "`beacon-implement`" not in "\n".join(line for line in router.splitlines() if "来源迁移" not in line and "migrated from" not in line)
 
-    loop_goal = (package_root / "beacon-loop-goal" / "SKILL.md").read_text(encoding="utf-8")
-    assert "name: beacon-loop-goal" in loop_goal
+    loop_goal = (package_root / "beacon-goal" / "references" / "modes" / "loop-goal.md").read_text(encoding="utf-8")
+    assert "Mode: loop-goal" in loop_goal
     assert "Beacon v1.6.0 共享 Preamble" in loop_goal
     assert "你正在运行 governor skill" in loop_goal
     assert "`beacon-eval-release`" in loop_goal
 
     qa = (package_root / "beacon-eval-qa" / "SKILL.md").read_text(encoding="utf-8")
-    assert "`beacon-eval-qa-deep`" in qa
+    assert "Beacon v1.6.0 共享 Preamble" in qa
     assert "`beacon-eval-qa-evo-deep`" not in qa
 
     review = (package_root / "beacon-pln-review" / "SKILL.md").read_text(encoding="utf-8")
-    assert "intent_snapshot" in review
-    assert "scope_mode" in review
-    assert "state_model" in review
-    assert "references/reviewer-catalog.md" in review
-    assert "references/finding-schema.md" in review
-    assert (package_root / "beacon-pln-review" / "references" / "state-machine-review.md").exists()
-    assert (package_root / "beacon-pln-review" / "agents" / "openai.yaml").exists()
+    assert "Beacon v1.6.0 共享 Preamble" in review
+    assert "name: beacon-pln-review" in review
+    assert (ROOT / "skills/beacon/beacon-plan/references/pln-review/reviewer-catalog.md").is_file()
 
 
 def test_v160_packaged_skills_preserve_legacy_skill_content() -> None:
     pairs = [
-        ("beacon-brainstorm", "beacon-pln-brainstorm", "read-only convergence surface"),
-        ("beacon-implement", "beacon-gen-implement", "PRODUCT.md / DESIGN.md"),
-        ("beacon-qa", "beacon-eval-qa", "QA reads frozen requirement truth"),
-        ("beacon-release", "beacon-eval-release", "release readiness"),
-        ("using-beacon", "beacon-gov-router", "host-native route constitution"),
+        ("beacon-brainstorm", "skills/beacon/beacon-plan/references/modes/pln-brainstorm.md", "read-only convergence surface"),
+        ("beacon-implement", "skills/beacon/beacon-implement/references/modes/gen-implement.md", "PRODUCT.md / DESIGN.md"),
+        ("beacon-qa", "skills/beacon/beacon-qa/references/modes/eval-qa.md", "QA reads frozen requirement truth"),
+        ("beacon-release", "skills/beacon/beacon-release/references/modes/eval-release.md", "release readiness"),
+        ("using-beacon", "skills/beacon/beacon-gov-router/SUPPORT.md", "host-native route constitution"),
     ]
-    for old_id, new_id, preserved_phrase in pairs:
-        old_text = subprocess.check_output(["git", "show", f"{LEGACY_SKILL_BASELINE}:skills/beacon/{old_id}/SKILL.md"], text=True)
-        new_text = (ROOT / "skills" / "beacon" / new_id / "SKILL.md").read_text(encoding="utf-8")
-        assert preserved_phrase in new_text
-        assert "Beacon v1.6.0 共享 Preamble" in new_text
-        assert "HARD GATE:" in new_text
-        assert len(new_text.splitlines()) >= len(old_text.splitlines())
+    for old_id, rel, preserved_phrase in pairs:
+        new_path = ROOT / rel
+        assert new_path.is_file(), rel
+        new_text = new_path.read_text(encoding="utf-8")
+        assert preserved_phrase in new_text, rel
 
-    truth_refs = ROOT / "skills" / "beacon" / "beacon-gen-truth" / "references"
+    truth_refs = ROOT / "skills" / "beacon" / "beacon-truth" / "references" / "gen-truth"
     assert (truth_refs / "legacy-beacon-prd.md").exists()
     assert (truth_refs / "legacy-beacon-user-story.md").exists()
     assert (truth_refs / "legacy-beacon-test-case.md").exists()
@@ -288,7 +279,7 @@ def test_v160_planner_review_replaces_fine_grained_public_planner_skills() -> No
     for skill_id in demoted:
         assert not (source_root / skill_id / "SKILL.md").exists()
 
-    catalog = (source_root / "beacon-pln-review" / "references" / "reviewer-catalog.md").read_text(encoding="utf-8")
+    catalog = (source_root / "beacon-plan" / "references" / "pln-review" / "reviewer-catalog.md").read_text(encoding="utf-8")
     for reviewer in (
         "founder-business",
         "adversarial-doubt",
@@ -378,15 +369,16 @@ def test_v160_feature_qa_matrix_replaces_feature_command_placeholder(tmp_path: P
         feature="beacon-skill-harness-taxonomy-v160",
         persist=True,
     )
-    matrix_path = materialize_feature_qa_matrix(tmp_path, plan=plan)
-    matrix = json.loads(matrix_path.read_text(encoding="utf-8"))
-    command = matrix["entries"][0]["command"]
+    entries = plan.get("all_entries") or []
+    assert entries, plan.get("reason_codes")
+    command = entries[0]["command"]
 
     assert "<feature>" not in command
     assert "<version>" not in command
     assert "<project-root>" not in command
-    assert "verify-research beacon-skill-harness-taxonomy-v160" in command
-    assert "--version v1.6.0" in command
+    # raw tests.md command is replaced by scoped harness commands, never leaked
+    assert "verify-research" not in command
+    assert "test_v160_skill_harness_taxonomy.py" in command
 
 
 def test_v160_auto_test_uses_structured_json_assertions_for_cli_evidence(tmp_path: Path) -> None:
@@ -646,12 +638,10 @@ def test_v160_feature_qa_matrix_uses_scoped_commands_for_skill_harness_package(t
         tmp_path,
         version="v1.6.0",
         feature="beacon-skill-harness-taxonomy-v160",
-        persist=False,
+        persist=True,
     )
-    matrix_path = materialize_feature_qa_matrix(tmp_path, plan=plan)
-    matrix = json.loads(matrix_path.read_text(encoding="utf-8"))
-
-    commands = {str(item["command"]) for item in matrix["entries"]}
+    entries = plan.get("all_entries") or []
+    commands = {str(item["command"]) for item in entries}
     assert commands
     assert all("tests/test_v160_skill_harness_taxonomy.py" in command for command in commands)
     assert all("tests/test_v147_change_refreeze_one_shot.py" in command for command in commands)

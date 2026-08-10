@@ -178,7 +178,12 @@ export function showSpine(projectRoot, runId = "") {
 }
 
 export function spineDocExists(projectRoot) {
-  return existsSync(
-    join(projectRoot, "docs/beacon/v1.6.0/execution/beacon-loop-state-spine.md"),
+  return (
+    existsSync(
+      join(projectRoot, "docs/beacon/v1.6.0/execution/beacon-loop-state-spine.md"),
+    ) ||
+    existsSync(
+      join(projectRoot, "docs/beacon/archive/v1.6.0/execution/beacon-loop-state-spine.md"),
+    )
   );
 }
