@@ -145,11 +145,11 @@ def test_root_help_should_prioritize_mainline_before_skill_surface():
     result = _invoke(["--help"])
     assert result.exit_code == 0
     lines = [line.strip() for line in result.stdout.splitlines()]
-    think_idx = next(i for i, line in enumerate(lines) if line.startswith("│ think"))
+    # 1+6 merge: `think` is hidden; mainline implement must still precede skill/debug.
     skill_idx = next(i for i, line in enumerate(lines) if line.startswith("│ skill"))
     implement_idx = next(i for i, line in enumerate(lines) if line.startswith("│ implement"))
     debug_idx = next(i for i, line in enumerate(lines) if line.startswith("│ debug"))
-    assert think_idx < skill_idx
+    assert implement_idx < skill_idx
     assert implement_idx < debug_idx
     assert "labs" not in result.stdout.lower()
 

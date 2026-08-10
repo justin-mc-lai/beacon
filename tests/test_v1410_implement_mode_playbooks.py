@@ -50,16 +50,14 @@ def _seed_frozen_feature(root: Path) -> None:
 
 def test_single_public_implement_entrypoint() -> None:
     for skill_path in (
-        Path("skills/beacon/beacon-gen-implement/SKILL.md"),
-        Path(".agents/skills/beacon-gen-implement/SKILL.md"),
+        Path("skills/beacon/beacon-implement/SKILL.md"),
+        Path(".agents/skills/beacon-implement/SKILL.md"),
     ):
         skill_text = skill_path.read_text(encoding="utf-8")
 
-        assert "name: beacon-gen-implement" in skill_text
-        assert "only public implementation entrypoint" in skill_text
-        assert "references/implement-single.md" in skill_text
-        assert "references/implement-team.md" in skill_text
-        assert "references/implement-ralph.md" in skill_text
+        assert "name: beacon-implement" in skill_text
+        assert "public_surface: true" in skill_text
+        assert "references/gen-implement/" in skill_text
         for forbidden in FORBIDDEN_PUBLIC_IMPLEMENT_MODE_SKILLS:
             assert f"name: {forbidden}" not in skill_text
 
@@ -67,8 +65,8 @@ def test_single_public_implement_entrypoint() -> None:
 def test_mode_playbooks_have_required_sections() -> None:
     for mode in ("single", "team", "ralph"):
         playbook = IMPLEMENT_MODE_PLAYBOOKS[mode]
-        source_path = Path(f"skills/beacon/beacon-gen-implement/references/implement-{mode}.md")
-        packaged_path = Path(f".agents/skills/beacon-gen-implement/references/implement-{mode}.md")
+        source_path = Path(f"skills/beacon/beacon-implement/references/gen-implement/implement-{mode}.md")
+        packaged_path = Path(f".agents/skills/beacon-implement/references/gen-implement/implement-{mode}.md")
         text = source_path.read_text(encoding="utf-8")
         assert packaged_path.read_text(encoding="utf-8") == text
         for field in ("purpose", "admission_conditions", "expected_evidence", "boundary"):

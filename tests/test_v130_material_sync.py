@@ -28,6 +28,53 @@ def _seed_friend_match_docs(root: Path, version: str = "v1.0.0") -> None:
     (base / "execution" / "index.md").write_text("# Execution\n", encoding="utf-8")
     (base / "execution" / "architecture-blueprint.md").write_text("# Architecture\n", encoding="utf-8")
     (base / "release" / f"{version}.md").write_text("# Release\n", encoding="utf-8")
+    # Package-authoritative truth (feature_package_authoritative is always on).
+    feat = base / "features" / "friend-match"
+    feat.mkdir(parents=True, exist_ok=True)
+    (feat / "truth.md").write_text(
+        f"""---
+slug: friend-match
+version: {version}
+status: frozen
+language: zh
+package_maturity: filled
+parser_contract: beacon-feature-package-v2
+canonical_refs:
+  prd: docs/beacon/{version}/features/friend-match/truth.md
+  user_story: docs/beacon/{version}/features/friend-match/truth.md
+  test_case: docs/beacon/{version}/features/friend-match/tests.md
+---
+# 人话
+
+好友匹配功能
+
+## Acceptance Criteria
+
+| AC ID | Description |
+|-------|-------------|
+| AC-001 | 用户可以创建比赛 |
+
+## FSM 五元组
+
+| State | Event | Guard | To | Action |
+|-------|-------|-------|-----|--------|
+| idle | create | ok | done | create match |
+""",
+        encoding="utf-8",
+    )
+    (feat / "tests.md").write_text(
+        "| TC ID | AC ID | Command | Assertion |\n|----|----|----|----|\n"
+        "| TC-001 | AC-001 | `python3 -m pytest -q -k match` | pass |\n",
+        encoding="utf-8",
+    )
+    (feat / "tasks.md").write_text(
+        "- [ ] TASK-001 Implement AC-001 · ac=AC-001 · evidence=.beacon/evidence/x.json\n",
+        encoding="utf-8",
+    )
+    (feat / "evidence.md").write_text(
+        "| surface | authority |\n|---|---|\n| tests | acceptance_truth |\n",
+        encoding="utf-8",
+    )
     (base / "user-story" / "friend-match.md").write_text(
         "\n".join(
             [

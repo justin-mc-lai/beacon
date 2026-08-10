@@ -359,14 +359,16 @@ def _source_paths(project_root: Path, version: str, slug: str) -> dict[str, Path
 
 
 def _package_matrix_entries(project_root: Path, *, version: str, feature: str) -> tuple[Path | None, list[dict[str, Any]]]:
-    from beacon.utils.feature_package import _extract_test_rows, validate_feature_package
+    from beacon.utils.feature_package import _extract_test_rows, package_paths, validate_feature_package
 
     validation = validate_feature_package(project_root, version=version, feature=feature)
     if bool(validation.get("blocked")):
         return None, []
-    source_paths = validation.get("source_paths") if isinstance(validation.get("source_paths"), dict) else {}
-    tests_rel = str(source_paths.get("tests") or "").strip()
-    tests_path = project_root / tests_rel if tests_rel else None
+    # validation.source_paths is only emitted for v1.5.1+; package authority is
+    # always on, so resolve the tests path directly from the package layout.
+    paths = package_paths(project_root, version=version, feature=feature)
+    tests_path = paths.get("tests") if isinstance(paths, dict) else None
+    tests_rel = str(tests_path.relative_to(project_root)) if tests_path and tests_path.exists() else ""
     if tests_path is None or not tests_path.exists():
         return tests_path, []
     rows = _extract_test_rows(tests_path.read_text(encoding="utf-8"))
@@ -385,7 +387,9 @@ def _package_matrix_entries(project_root: Path, *, version: str, feature: str) -
                 "assertion": str(row.get("assertion") or "").strip(),
                 "evidence_path": str(row.get("evidence_path") or f".beacon/evidence/qa-feature/{feature_slug(feature)}/{tc_id.lower()}/__RUN_ID__.json").strip(),
                 "status": "planned",
-                "source": f"feature-package:{tests_rel}",
+                # Optional Source column keeps advisory semantics (research:/requirement-deepening:)
+                # alive in the package-authoritative model instead of forcing every row blocking.
+                "source": str(row.get("source") or f"feature-package:{tests_rel}").strip(),
             }
         )
     return tests_path, entries

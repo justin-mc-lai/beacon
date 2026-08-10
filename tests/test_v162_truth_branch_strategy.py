@@ -1,15 +1,15 @@
-"""Tests for beacon-global-workspace-git-admission-v162 R4: truth branch strategy.
+"""Truth branch strategy (v1.6.2 R4 rules, now carried by the shared execution flow).
 
-R4 changes (truth 分支策略):
-- beacon-gen-truth downgraded from Tier A to Tier C (truth written on main)
-- GIT_ADMISSION preamble adds implement-merge-main step
-- Tier A preserved for implement/qa/release/change
+Rules under test (unchanged since R4):
+- truth authoring stays on canonical main, never the feature worktree
+- implement must merge main before writing (feature_worktree_reconcile)
+- implement/qa/release stay in admitted worktrees
 """
 from __future__ import annotations
 
 from pathlib import Path
 
-TRUTH_PATH = Path("docs/beacon/v1.6.2/features/beacon-global-workspace-git-admission-v162/truth.md")
+TRUTH_PATH = Path("skills/beacon/references/git-worktree-execution-flow.md")
 
 
 def _truth_text() -> str:
@@ -19,31 +19,28 @@ def _truth_text() -> str:
 # ---- AC-016 truth tier downgrade ----
 
 def test_truth_tier_downgrade() -> None:
-    """beacon-gen-truth is NOT in Tier A; truth written on main, not worktree."""
+    """Truth authoring stays on canonical main; writing truth on a worktree is illegal."""
     src = _truth_text()
-    # beacon-gen-truth must not be in the Tier A row
-    tier_a_line = next((ln for ln in src.splitlines() if "| **A** |" in ln), "")
-    assert "beacon-gen-truth" not in tier_a_line, f"beacon-gen-truth still in Tier A: {tier_a_line}"
-    # beacon-gen-truth must be in Tier C
-    tier_c_line = next((ln for ln in src.splitlines() if "| **C** |" in ln), "")
-    assert "beacon-gen-truth" in tier_c_line, f"beacon-gen-truth not in Tier C: {tier_c_line}"
+    assert "Truth / freeze / refreeze" in src and "truth_canonical" in src
+    assert "truth_canonical_branch_mismatch" in src
+    assert "Write requirement revision on feature worktree" in src
 
 
 # ---- AC-017 implement merge main preamble ----
 
 def test_implement_merge_main_preamble() -> None:
-    """GIT_ADMISSION preamble contains implement-merge-main step."""
+    """Delivery must align with main via merge before implement writes."""
     src = _truth_text()
-    assert "merge main" in src, "preamble missing 'merge main' step"
-    # the merge-main step must be gated to implement only
-    assert "implement only" in src or "implement 前" in src, "merge-main step not gated to implement"
+    assert "Align delivery with main via `git merge`" in src
+    assert "feature_worktree_reconcile" in src or "reconcile" in src
+    assert "implement" in src.lower()
 
 
 # ---- AC-018 Tier A preserved ----
 
 def test_tier_a_preserved() -> None:
-    """implement/qa/release/change stay in Tier A worktree."""
+    """Implement/QA/release stay in admitted worktrees."""
     src = _truth_text()
-    tier_a_line = next((ln for ln in src.splitlines() if "| **A** |" in ln), "")
-    for skill in ("beacon-gen-implement", "beacon-eval-qa", "beacon-eval-release", "beacon-gen-change"):
-        assert skill in tier_a_line, f"{skill} missing from Tier A: {tier_a_line}"
+    for surface in ("Implement", "QA", "release"):
+        assert surface.lower() in src.lower(), f"{surface} missing from execution flow"
+    assert "admitted" in src

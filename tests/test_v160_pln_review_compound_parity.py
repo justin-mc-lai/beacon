@@ -32,11 +32,12 @@ def _artifact(tmp_path: Path, prompt: str | None = None) -> dict:
 
 
 def test_compound_review_contract_reference_exists() -> None:
-    root = Path("skills/beacon/beacon-pln-review")
+    # 1+6 merge: pln-review materials live under the beacon-plan core.
+    root = Path("skills/beacon/beacon-plan")
     skill = (root / "SKILL.md").read_text(encoding="utf-8")
-    reference = (root / "references/compound-parity-review.md").read_text(encoding="utf-8")
+    reference = (root / "references/pln-review/compound-parity-review.md").read_text(encoding="utf-8")
 
-    assert "references/compound-parity-review.md" in skill
+    assert "references/pln-review/" in skill
     for field in (
         "intent_snapshot",
         "scope_mode",

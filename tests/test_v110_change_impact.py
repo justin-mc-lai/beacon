@@ -10,16 +10,12 @@ from beacon.utils.v110_baseline import record_baseline_snapshot
 
 
 def _seed_docs(root: Path) -> None:
-    (root / "docs" / "beacon" / "v1.1.0" / "user-story").mkdir(parents=True, exist_ok=True)
-    (root / "docs" / "beacon" / "v1.1.0" / "prd").mkdir(parents=True, exist_ok=True)
-    (root / "docs" / "beacon" / "v1.1.0" / "qa" / "test-cases").mkdir(parents=True, exist_ok=True)
-
-    (root / "docs" / "beacon" / "v1.1.0" / "user-story" / "feature.md").write_text("# US\n", encoding="utf-8")
-    (root / "docs" / "beacon" / "v1.1.0" / "prd" / "feature.md").write_text("# PRD\n", encoding="utf-8")
-    (root / "docs" / "beacon" / "v1.1.0" / "qa" / "test-cases" / "feature.ac-test-matrix.json").write_text(
-        json.dumps({"schema_version": "1.0", "entries": []}, ensure_ascii=False, indent=2),
-        encoding="utf-8",
-    )
+    # Package-authoritative truth (feature_package_authoritative is always on):
+    # user_story/prd read features/<slug>/truth.md, test_case reads tests.md.
+    feat = root / "docs" / "beacon" / "v1.1.0" / "features" / "debug-loop"
+    feat.mkdir(parents=True, exist_ok=True)
+    (feat / "truth.md").write_text("# Truth\n", encoding="utf-8")
+    (feat / "tests.md").write_text("# Tests\n", encoding="utf-8")
 
 
 def test_spec_change_should_enqueue_doc_chain_updates(tmp_path: Path):
@@ -33,7 +29,7 @@ def test_spec_change_should_enqueue_doc_chain_updates(tmp_path: Path):
         workflow_status="completed",
     )
 
-    prd_path = tmp_path / "docs" / "beacon" / "v1.1.0" / "prd" / "feature.md"
+    prd_path = tmp_path / "docs" / "beacon" / "v1.1.0" / "features" / "debug-loop" / "truth.md"
     prd_path.write_text("# PRD\n\n- changed\n", encoding="utf-8")
 
     second = record_baseline_snapshot(
@@ -63,7 +59,7 @@ def test_change_impact_should_be_consumed_when_stage_completed(tmp_path: Path):
         workflow_status="completed",
     )
 
-    prd_path = tmp_path / "docs" / "beacon" / "v1.1.0" / "prd" / "feature.md"
+    prd_path = tmp_path / "docs" / "beacon" / "v1.1.0" / "features" / "debug-loop" / "truth.md"
     prd_path.write_text("# PRD\n\n- changed\n", encoding="utf-8")
 
     record_baseline_snapshot(
@@ -80,6 +76,11 @@ def test_change_impact_should_be_consumed_when_stage_completed(tmp_path: Path):
     assert task_before.get("status") == "pending"
     assert payload_before.get("doc_chain_update_required") is True
 
+    _consume_change_impact_task(
+        tmp_path,
+        run_id="run-change-impact-consume-002",
+        stage="user-story",
+    )
     _consume_change_impact_task(
         tmp_path,
         run_id="run-change-impact-consume-002",

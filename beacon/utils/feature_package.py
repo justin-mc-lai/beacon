@@ -228,6 +228,7 @@ def _extract_test_rows(markdown: str) -> list[dict[str, str]]:
                     "command": row.get("command") or row.get("planned_command") or "",
                     "assertion": row.get("assertion") or "",
                     "evidence_path": row.get("evidence_path") or "",
+                    "source": row.get("source") or "",
                 }
             )
     return rows

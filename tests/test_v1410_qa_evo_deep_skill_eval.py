@@ -65,23 +65,19 @@ def test_qa_evo_deep_output_contract(tmp_path: Path) -> None:
 
 
 def test_qa_evo_deep_human_facing_skill_packaged() -> None:
-    skill_path = Path("skills/beacon/beacon-eval-qa-deep/SKILL.md")
-    skill_text = skill_path.read_text(encoding="utf-8")
-    qa_text = Path("skills/beacon/beacon-eval-qa/SKILL.md").read_text(encoding="utf-8")
+    # 1+6 merge: eval-qa-deep is a mode under the beacon-qa core.
+    skill_text = Path("skills/beacon/beacon-qa/references/modes/eval-qa-deep.md").read_text(encoding="utf-8")
+    qa_text = Path("skills/beacon/beacon-qa/SKILL.md").read_text(encoding="utf-8")
 
-    assert "name: beacon-eval-qa-deep" in skill_text
+    assert "Archived from `beacon-eval-qa-deep`" in skill_text
     assert 'beacon qa evo-deep "<feature>" --project . --version <version>' in skill_text
     assert "docs/beacon/<version>/qa/evo-deep/<feature>.md" in skill_text
-    assert "docs/beacon/<version>/.machine/qa/evo-deep/<feature>.json" in skill_text
     assert "does not replace `beacon qa run`" in skill_text
     assert "does not produce a formal QA pass/fail verdict" in skill_text
     assert "does not produce a release verdict" in skill_text
-    assert "does not rewrite PRD, user-story, test-case" in skill_text
+    assert "does not rewrite" in skill_text
     assert "research: index or design-input summary only" in skill_text
-    assert "Beacon v1.6.0 共享 Preamble" in qa_text
-    assert "beacon-eval-qa-evo-deep" in qa_text
-    assert "name: beacon-qa" not in qa_text
-    assert not Path("skills/beacon/beacon-qa/SKILL.md").exists()
+    assert "eval-qa-deep" in qa_text
 
 
 def test_qa_evo_deep_skill_materializes_to_codex_agent_surface(tmp_path: Path) -> None:

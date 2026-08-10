@@ -42,6 +42,53 @@ def _seed_story_docs(root: Path) -> None:
         encoding="utf-8",
     )
     (docs / "prd" / f"{SLUG}.md").write_text("# PRD\n", encoding="utf-8")
+    # Package-authoritative truth (feature_package_authoritative is always on).
+    feat = docs / "features" / SLUG
+    feat.mkdir(parents=True, exist_ok=True)
+    (feat / "truth.md").write_text(
+        f"""---
+slug: {SLUG}
+version: {VERSION}
+status: frozen
+language: zh
+package_maturity: filled
+parser_contract: beacon-feature-package-v2
+canonical_refs:
+  prd: docs/beacon/{VERSION}/features/{SLUG}/truth.md
+  user_story: docs/beacon/{VERSION}/features/{SLUG}/truth.md
+  test_case: docs/beacon/{VERSION}/features/{SLUG}/tests.md
+---
+# 人话
+
+browser story feature
+
+## Acceptance Criteria
+
+| AC ID | Description |
+|-------|-------------|
+| AC-001 | 用户可以通过页面登录并进入 dashboard |
+
+## FSM 五元组
+
+| State | Event | Guard | To | Action |
+|-------|-------|-------|-----|--------|
+| idle | login | ok | done | enter dashboard |
+""",
+        encoding="utf-8",
+    )
+    (feat / "tests.md").write_text(
+        "| TC ID | AC ID | Command | Assertion |\n|----|----|----|----|\n"
+        "| TC-001 | AC-001 | `sh browser-check.sh` | 登录后进入 dashboard |\n",
+        encoding="utf-8",
+    )
+    (feat / "tasks.md").write_text(
+        "- [ ] TASK-001 Implement AC-001 · ac=AC-001 · evidence=.beacon/evidence/x.json\n",
+        encoding="utf-8",
+    )
+    (feat / "evidence.md").write_text(
+        "| surface | authority |\n|---|---|\n| tests | acceptance_truth |\n",
+        encoding="utf-8",
+    )
 
 
 def _seed_feature_matrix(root: Path) -> None:

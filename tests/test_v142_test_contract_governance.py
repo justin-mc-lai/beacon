@@ -39,6 +39,81 @@ def _write_json(path: Path, payload: dict) -> None:
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
+def _seed_package(root: Path, version: str, slug: str, tc_rows: list[dict]) -> None:
+    """Seed a minimal package-authoritative feature package (valid for validation)."""
+    tc_rows = list(tc_rows) + [
+        {
+            "tc_id": "TC-BR-001",
+            "ac_id": "AC-013",
+            "command": "python3 -m pytest -q -k browser",
+            "assertion": "browser admission lane traceable",
+            "source": "",
+        }
+    ]
+    feat = root / "docs" / "beacon" / version / "features" / slug
+    feat.mkdir(parents=True, exist_ok=True)
+    (feat / "truth.md").write_text(
+        f"""---
+slug: {slug}
+version: {version}
+status: frozen
+language: zh
+package_maturity: filled
+parser_contract: beacon-feature-package-v2
+canonical_refs:
+  prd: docs/beacon/{version}/features/{slug}/truth.md
+  user_story: docs/beacon/{version}/features/{slug}/truth.md
+  test_case: docs/beacon/{version}/features/{slug}/tests.md
+---
+# 人话
+
+test fixture
+
+## Acceptance Criteria
+
+| AC ID | Description |
+|-------|-------------|
+| AC-001 | index contract works |
+| AC-002 | canonical lanes |
+| AC-003 | release mapping |
+
+## FSM 五元组
+
+| State | Event | Guard | To | Action |
+|-------|-------|-------|-----|--------|
+| idle | run | ok | done | do it |
+""",
+        encoding="utf-8",
+    )
+    has_source = any(str(row.get("source") or "").strip() for row in tc_rows)
+    header = "| TC ID | AC ID | Command | Assertion" + (" | Source |" if has_source else " |")
+    sep = "|----|----|----|----" + ("|----|" if has_source else "|")
+    rows = []
+    for row in tc_rows:
+        line = (
+            f"| {row['tc_id']} | {row['ac_id']} | `{row['command']}` | {row['assertion']}"
+            + (f" | {row.get('source', '')} |" if has_source else " |")
+        )
+        rows.append(line)
+    (feat / "tests.md").write_text(header + "\n" + sep + "\n" + "\n".join(rows) + "\n", encoding="utf-8")
+    (feat / "tasks.md").write_text(
+        "- [ ] TASK-001 Implement AC-001 · ac=AC-001 · evidence=.beacon/evidence/x.json\n",
+        encoding="utf-8",
+    )
+    (feat / "evidence.md").write_text(
+        "| surface | authority |\n|---|---|\n| tests | acceptance_truth |\n",
+        encoding="utf-8",
+    )
+    _write_json(
+        root / ".beacon" / "qa" / "status.json",
+        {
+            "schema_version": "1.0",
+            "feature": slug,
+            "qa9": {"tc_results": [{"tc_id": "TC-BR-001", "status": "passed"}]},
+        },
+    )
+
+
 def _seed_project(tmp_path: Path, *, include_evidence: bool = True) -> None:
     _write_json(
         tmp_path / "beacon" / "version-truth.json",
@@ -69,6 +144,11 @@ def _seed_project(tmp_path: Path, *, include_evidence: bool = True) -> None:
         path = version_root / rel
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(f"# {rel}\n", encoding="utf-8")
+    # Package-authoritative truth (feature_package_authoritative is always on).
+    feat = version_root / "features" / SLUG
+    feat.mkdir(parents=True, exist_ok=True)
+    (feat / "truth.md").write_text("# Truth\n", encoding="utf-8")
+    (feat / "tests.md").write_text("# Tests\n", encoding="utf-8")
     _write_json(
         version_root / ".machine" / "user-story" / f"{SLUG}.json",
         {
@@ -361,67 +441,41 @@ def test_requirement_deepening_coverage_entries_do_not_block_current_runtime_rel
         '__version__ = "1.4.6"\n__toolkit_version__ = "v1.4.6"\n',
         encoding="utf-8",
     )
-    version_root = tmp_path / "docs" / "beacon" / version
-    for rel in [
-        f"prd/{slug}.md",
-        f"user-story/{slug}.md",
-        f"qa/test-cases/{slug}.md",
-    ]:
-        path = version_root / rel
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(f"# {rel}\n", encoding="utf-8")
-    _write_json(
-        version_root / ".machine" / "user-story" / f"{slug}.json",
-        {
-            "schema_version": "1.0",
-            "feature": feature,
-            "feature_slug": slug,
-            "version": version,
-            "current_revision_id": "R1",
-            "stories": [
-                {
-                    "story_id": "US-001",
-                    "items": [
-                        {"id": "AC-001", "kind": "ac", "theme": "index-contract", "text": "Index contract"},
-                    ],
-                }
-            ],
-        },
+    _seed_package(
+        tmp_path,
+        version,
+        slug,
+        [
+            {
+                "tc_id": "TC-ADRIFT46-001",
+                "ac_id": "AC-001",
+                "command": "python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k contract",
+                "assertion": "key host-visible skills freeze contract",
+                "source": "",
+            },
+            {
+                "tc_id": "TC-011",
+                "ac_id": "AC-001",
+                "command": "python3 -m pytest -q -k unit",
+                "assertion": "coverage family happy remains executable",
+                "source": "requirement-deepening:coverage-family",
+            },
+        ],
     )
     _write_json(
-        version_root / ".machine" / "qa" / f"{slug}.ac-test-matrix.json",
+        tmp_path / ".beacon" / "qa" / "features" / slug / "matrix.qa9.json",
         {
-            "schema_version": "1.0",
-            "feature": feature,
-            "feature_slug": slug,
-            "version": version,
             "entries": [
                 {
                     "tc_id": "TC-ADRIFT46-001",
-                    "ac_id": "AC-001",
-                    "layer": "contract",
-                    "command": "python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k contract",
-                    "assertion": "key host-visible skills freeze contract",
-                    "evidence_path": f".beacon/evidence/test-results/{slug}/TC-ADRIFT46-001.json",
-                    "status": "pending",
-                    "source": f"qa:test-cases:docs/beacon/{version}/qa/test-cases/{slug}.md",
-                },
-                {
-                    "tc_id": "TC-011",
-                    "ac_id": "AC-001",
-                    "layer": "unit",
-                    "command": "python3 -m pytest -q -k unit",
-                    "assertion": "coverage family happy remains executable",
-                    "evidence_path": f".beacon/evidence/test-results/{slug}/TC-011.json",
-                    "status": "pending",
-                    "source": "requirement-deepening:coverage-family",
-                    "coverage_family": "happy",
-                },
-            ],
+                    "evidence_path": f".beacon/evidence/qa-feature/{slug}/tc-adrift46-001/__RUN_ID__.json",
+                    "last_run_id": "run-qa-001",
+                }
+            ]
         },
     )
     _write_json(
-        tmp_path / ".beacon" / "evidence" / "test-results" / slug / "TC-ADRIFT46-001.json",
+        tmp_path / ".beacon" / "evidence" / "qa-feature" / slug / "tc-adrift46-001" / "run-qa-001.json",
         {"status": "passed", "tc_id": "TC-ADRIFT46-001"},
     )
 
@@ -436,42 +490,41 @@ def test_requirement_deepening_coverage_entries_do_not_block_current_runtime_rel
 
 def test_research_projection_entries_do_not_block_release_until_adopted_into_test_case(tmp_path: Path) -> None:
     _seed_project(tmp_path, include_evidence=False)
-    story_path = tmp_path / "docs" / "beacon" / VERSION / ".machine" / "user-story" / f"{SLUG}.json"
-    story_payload = json.loads(story_path.read_text(encoding="utf-8"))
-    for story in story_payload["stories"]:
-        story["items"] = [
-            item
-            for item in story["items"]
-            if str(item.get("id") or "") in {"AC-001", "AC-002", "AC-003"}
-        ]
-    story_path.write_text(json.dumps(story_payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    matrix_path = tmp_path / "docs" / "beacon" / VERSION / ".machine" / "qa" / f"{SLUG}.ac-test-matrix.json"
-    matrix = json.loads(matrix_path.read_text(encoding="utf-8"))
-    matrix["entries"] = [
-        {
-            "tc_id": "TC-US003-001",
-            "ac_id": "AC-003",
-            "layer": "regression",
-            "command": "python3 -m pytest -q tests/test_v142_test_contract_index.py",
-            "assertion": "adopted release-facing mapping stays executable",
-            "evidence_path": f".beacon/evidence/test-results/{SLUG}/TC-US003-001.json",
-            "status": "pending",
-            "source": f"qa:test-cases:docs/beacon/{VERSION}/qa/test-cases/{SLUG}.md",
-        },
-        {
-            "tc_id": "TC-RESEARCH-001",
-            "ac_id": "AC-003",
-            "layer": "unit",
-            "command": "python3 -m pytest -q -k unit",
-            "assertion": "research projection remains visible but advisory",
-            "evidence_path": f".beacon/evidence/test-results/{SLUG}/TC-RESEARCH-001.json",
-            "status": "pending",
-            "source": f"research:docs/beacon/{VERSION}/research/{SLUG}.md",
-        },
-    ]
-    matrix_path.write_text(json.dumps(matrix, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    _seed_package(
+        tmp_path,
+        VERSION,
+        SLUG,
+        [
+            {
+                "tc_id": "TC-US003-001",
+                "ac_id": "AC-003",
+                "command": "python3 -m pytest -q tests/test_v142_test_contract_index.py",
+                "assertion": "adopted release-facing mapping stays executable",
+                "source": "",
+            },
+            {
+                "tc_id": "TC-RESEARCH-001",
+                "ac_id": "AC-003",
+                "command": "python3 -m pytest -q -k unit",
+                "assertion": "research projection remains visible but advisory",
+                "source": f"research:docs/beacon/{VERSION}/research/{SLUG}.md",
+            },
+        ],
+    )
     _write_json(
-        tmp_path / ".beacon" / "evidence" / "test-results" / SLUG / "TC-US003-001.json",
+        tmp_path / ".beacon" / "qa" / "features" / SLUG / "matrix.qa9.json",
+        {
+            "entries": [
+                {
+                    "tc_id": "TC-US003-001",
+                    "evidence_path": f".beacon/evidence/qa-feature/{SLUG}/tc-us003-001/__RUN_ID__.json",
+                    "last_run_id": "run-qa-001",
+                }
+            ]
+        },
+    )
+    _write_json(
+        tmp_path / ".beacon" / "evidence" / "qa-feature" / SLUG / "tc-us003-001" / "run-qa-001.json",
         {"status": "passed", "tc_id": "TC-US003-001"},
     )
 
@@ -487,6 +540,20 @@ def test_research_projection_entries_do_not_block_release_until_adopted_into_tes
 
 def test_feature_qa_placeholder_evidence_paths_resolve_to_feature_qa_artifacts(tmp_path: Path) -> None:
     _seed_project(tmp_path, include_evidence=False)
+    _seed_package(
+        tmp_path,
+        VERSION,
+        SLUG,
+        [
+            {
+                "tc_id": "TC-US003-001",
+                "ac_id": "AC-003",
+                "command": "python3 -m pytest -q tests/test_v142_test_contract_index.py",
+                "assertion": "adopted release-facing mapping stays executable",
+                "source": "",
+            }
+        ],
+    )
     feature_matrix_path = tmp_path / ".beacon" / "qa" / "features" / SLUG / "matrix.qa9.json"
     feature_matrix_path.parent.mkdir(parents=True, exist_ok=True)
     feature_matrix_path.write_text(

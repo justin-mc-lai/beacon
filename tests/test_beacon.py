@@ -547,7 +547,8 @@ class TestBeaconUISpec:
         """Test ui-spec create"""
         result = runner.invoke(app, ["ui-spec", "create", "详情页", "--project", str(tmp_path)])
         assert result.exit_code == 0
-        target = tmp_path / "docs" / "product" / "v1.0.0" / "design" / "ui-spec-详情页.md"
+        # External greenfield default is v0.0.1 (dual-axis rule); not v1.0.0.
+        target = tmp_path / "docs" / "product" / "v0.0.1" / "design" / "ui-spec-详情页.md"
         content = target.read_text(encoding="utf-8")
         assert "Apple-inspired UI 设计规范文档" in content
         assert "## 1. Visual Theme & Atmosphere" in content

@@ -179,11 +179,12 @@ def test_review_state_machine_contract_is_materialized(tmp_path: Path) -> None:
 
 
 def test_skill_reference_documents_multi_agent_runtime_contract() -> None:
-    root = Path("skills/beacon/beacon-pln-review")
+    # 1+6 merge: pln-review materials live under the beacon-plan core.
+    root = Path("skills/beacon/beacon-plan")
     skill = (root / "SKILL.md").read_text(encoding="utf-8")
-    reference = (root / "references/multi-agent-runtime.md").read_text(encoding="utf-8")
+    reference = (root / "references/pln-review/multi-agent-runtime.md").read_text(encoding="utf-8")
 
-    assert "references/multi-agent-runtime.md" in skill
+    assert "references/pln-review/" in skill
     assert "beacon planner-review run" in skill
     assert "single_process_multi_reviewer" in reference
     assert "not requirement truth" in reference
