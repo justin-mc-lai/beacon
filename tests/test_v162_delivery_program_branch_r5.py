@@ -41,8 +41,9 @@ def _seed_repo(root: Path) -> None:
 def _seed_sidepilot_fixture(root: Path, *, worktree: Path) -> None:
     _seed_repo(root)
     worktree.mkdir(parents=True, exist_ok=True)
-    _git(["git", "branch", "beacon/v0.0.9"], cwd=root)
-    _git(["git", "worktree", "add", str(worktree), "beacon/v0.0.9"], cwd=root)
+    leaf = f"beacon/{VERSION}/{FEATURE_LAKE}"
+    _git(["git", "branch", leaf], cwd=root)
+    _git(["git", "worktree", "add", str(worktree), leaf], cwd=root)
     governance = root / "docs" / "beacon" / "governance"
     governance.mkdir(parents=True, exist_ok=True)
     (governance / "project-version-governance.md").write_text(
@@ -94,7 +95,7 @@ def _seed_sidepilot_fixture(root: Path, *, worktree: Path) -> None:
     )
     _git(["git", "add", "docs"], cwd=root)
     _git(["git", "commit", "-m", "seed sidepilot fixture"], cwd=root)
-    _git(["git", "checkout", "beacon/v0.0.9"], cwd=worktree)
+    _git(["git", "checkout", leaf], cwd=worktree)
     _git(["git", "merge", "main", "-m", "sync main"], cwd=worktree)
 
 
@@ -109,9 +110,10 @@ def _seed_program_topology_fixture(
 ) -> None:
     _seed_repo(root)
     worktree.mkdir(parents=True, exist_ok=True)
-    branch = f"beacon/{version}"
-    _git(["git", "branch", branch], cwd=root)
-    _git(["git", "worktree", "add", str(worktree), branch], cwd=root)
+    aggregation = f"beacon/{version}"
+    leaf = f"beacon/{version}/{PROGRAM_LAKE_R6}"
+    _git(["git", "branch", leaf], cwd=root)
+    _git(["git", "worktree", "add", str(worktree), leaf], cwd=root)
     governance = root / "docs" / "beacon" / "governance"
     governance.mkdir(parents=True, exist_ok=True)
     version_contract_lines = [
@@ -121,10 +123,10 @@ def _seed_program_topology_fixture(
         "- branch_guard_mode: `strict`",
         "- validation_state: `active`",
         "- per_service_canonical_branch:",
-        f"  - `.`: `{branch}`",
+        f"  - `.`: `{aggregation}`",
         "- previous_version_baseline_branch: `main`",
         "- branch_resolution_mode: `program-level`",
-        f"- aggregation_branch: `{branch}`",
+        f"- aggregation_branch: `{aggregation}`",
         f"- program_slug: `{PROGRAM_SLUG_R6}`",
         "- worktree_mode: `dedicated`",
         f"- worktree_path: `{worktree}`",
@@ -215,7 +217,7 @@ def _seed_program_topology_fixture(
                     f"- feature: `{PROGRAM_SLUG_R6}`",
                     f"- version: `{version}`",
                     "- branch_resolution_mode: `program-level`",
-                    f"- expected_branch: `{branch}`",
+                    f"- expected_branch: `{aggregation}`",
                     f"- dedicated_worktree_path: `{worktree}`",
                     "",
                 ]
@@ -224,7 +226,7 @@ def _seed_program_topology_fixture(
         )
     _git(["git", "add", "docs"], cwd=root)
     _git(["git", "commit", "-m", "seed program topology"], cwd=root)
-    _git(["git", "checkout", branch], cwd=worktree)
+    _git(["git", "checkout", leaf], cwd=worktree)
     _git(["git", "merge", "main", "-m", "sync program topology"], cwd=worktree)
 
 
@@ -247,7 +249,8 @@ def test_ac019_program_level_admit_resolves_lake_slug(tmp_path: Path) -> None:
         root, version=VERSION, feature=FEATURE_LAKE, admission_contract={**contract, "version": VERSION}
     )
     assert targets["branch_resolution_mode"] == "program-level"
-    assert targets["feature_branch"] == "beacon/v0.0.9"
+    assert targets["feature_branch"] == "beacon/v0.0.9/cloud-llm-gateway"
+    assert targets["aggregation_branch"] == "beacon/v0.0.9"
     assert targets["worktree_path"] == str(worktree.resolve())
 
 
@@ -258,7 +261,7 @@ def test_ac019_workspace_admit_passes_for_lake_slug(tmp_path: Path) -> None:
     payload = run_workspace_admit(root, version=VERSION, feature=FEATURE_LAKE)
     assert payload.get("skipped") is not True
     assert payload["status"] == "pass"
-    assert payload["branch"] == "beacon/v0.0.9"
+    assert payload["branch"] == "beacon/v0.0.9/cloud-llm-gateway"
     assert payload["worktree_path"] == str(worktree.resolve())
 
 
@@ -308,8 +311,9 @@ def test_ac019_governance_only_program_level_without_git_workflow_md(tmp_path: P
     worktree = tmp_path / "cloud-platform"
     _seed_repo(root)
     worktree.mkdir(parents=True, exist_ok=True)
-    _git(["git", "branch", "beacon/v0.0.9"], cwd=root)
-    _git(["git", "worktree", "add", str(worktree), "beacon/v0.0.9"], cwd=root)
+    leaf = f"beacon/{VERSION}/{FEATURE_LAKE}"
+    _git(["git", "branch", leaf], cwd=root)
+    _git(["git", "worktree", "add", str(worktree), leaf], cwd=root)
     governance = root / "docs" / "beacon" / "governance"
     governance.mkdir(parents=True, exist_ok=True)
     (governance / "project-version-governance.md").write_text(
@@ -351,6 +355,7 @@ def test_ac019_governance_only_program_level_without_git_workflow_md(tmp_path: P
     assert targets["worktree_path"] == str(worktree.resolve())
     payload = run_workspace_admit(root, version=VERSION, feature=FEATURE_LAKE)
     assert payload["status"] == "pass"
+    assert payload["branch"] == "beacon/v0.0.9/cloud-llm-gateway"
     assert payload["worktree_path"] == str(worktree.resolve())
 
 
@@ -368,8 +373,9 @@ def test_r6_program_topology_without_git_workflow_resolves_aggregation_branch(tm
     )
 
     assert targets["branch_resolution_mode"] == "program-level"
-    assert targets["feature_branch"] == "beacon/v0.0.12"
-    assert targets["worktree_path"] == str(worktree.resolve())
+    assert targets["feature_branch"] == "beacon/v0.0.12/content-hub-foundation"
+    assert targets["aggregation_branch"] == "beacon/v0.0.12"
+    assert targets["worktree_path"] == str((worktree / PROGRAM_LAKE_R6).resolve())
     assert targets["program_slug"] == PROGRAM_SLUG_R6
     assert targets["source"] in {"project_governance", "program_topology"}
 
@@ -393,8 +399,9 @@ def test_r6_program_topology_resolves_program_slug_to_aggregation_branch(tmp_pat
     )
 
     assert targets["branch_resolution_mode"] == "program-level"
-    assert targets["feature_branch"] == "beacon/v0.0.12"
-    assert targets["worktree_path"] == str(worktree.resolve())
+    assert targets["feature_branch"] == "beacon/v0.0.12/sidepilot-pi-host"
+    assert targets["aggregation_branch"] == "beacon/v0.0.12"
+    assert targets["worktree_path"] == str((root / PROGRAM_SLUG_R6).resolve())
     assert targets["program_slug"] == PROGRAM_SLUG_R6
     assert targets["source"] == "program_topology"
 
@@ -418,12 +425,14 @@ def test_r6_program_topology_without_version_governance_block_resolves_aggregati
     )
     validation = validate_workspace_admission(worktree, version=VERSION_R6, feature=PROGRAM_LAKE_R6)
 
-    assert contract["require_workspace_admission"] is False
+    assert contract["require_workspace_admission"] is True
     assert targets["branch_resolution_mode"] == "program-level"
-    assert targets["feature_branch"] == "beacon/v0.0.12"
-    assert targets["worktree_path"] == str(worktree.resolve())
+    assert targets["feature_branch"] == "beacon/v0.0.12/content-hub-foundation"
+    assert targets["aggregation_branch"] == "beacon/v0.0.12"
+    assert targets["worktree_path"] == str((root / PROGRAM_LAKE_R6).resolve())
     assert targets["source"] == "program_topology"
-    assert validation["status"] == "pass"
+    assert validation["status"] == "blocked"
+    assert validation["reason_code"] == "workspace_admission_missing"
 
 
 def test_r6_program_topology_with_git_workflow_resolves_aggregation_branch(tmp_path: Path) -> None:
@@ -440,12 +449,13 @@ def test_r6_program_topology_with_git_workflow_resolves_aggregation_branch(tmp_p
     )
 
     assert targets["branch_resolution_mode"] == "program-level"
-    assert targets["feature_branch"] == "beacon/v0.0.12"
-    assert targets["worktree_path"] == str(worktree.resolve())
+    assert targets["feature_branch"] == "beacon/v0.0.12/content-hub-foundation"
+    assert targets["aggregation_branch"] == "beacon/v0.0.12"
+    assert targets["worktree_path"] == str((worktree / PROGRAM_LAKE_R6).resolve())
     assert targets["program_slug"] == PROGRAM_SLUG_R6
 
 
-def test_r6_qa_run_lake_accepts_aggregation_branch_after_admission(
+def test_r6_qa_run_lake_legacy_cutover_fail_closed_after_admission(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -454,7 +464,7 @@ def test_r6_qa_run_lake_accepts_aggregation_branch_after_admission(
     _seed_program_topology_fixture(root, worktree=worktree, include_git_workflow=False)
     admit = run_workspace_admit(worktree, version=VERSION_R6, feature=PROGRAM_LAKE_R6)
     assert admit["status"] == "pass"
-    assert admit["branch"] == "beacon/v0.0.12"
+    assert admit["branch"] == "beacon/v0.0.12/content-hub-foundation"
     assert admit["worktree_path"] == str(worktree.resolve())
 
     monkeypatch.setattr(qa_command, "build_requirement_package_gate", lambda *args, **kwargs: {"status": "pass"})
@@ -493,12 +503,13 @@ def test_r6_qa_run_lake_accepts_aggregation_branch_after_admission(
 
     assert exit_code == 2
     assert payload["status"] == "blocked"
-    assert payload["reason_codes"] == ["implementation_not_recorded"]
+    assert payload["reason_codes"] == ["legacy_cutover_required"]
     assert "workspace_admission" not in payload
     assert "branch_alignment_required" not in payload.get("reason_codes", [])
+    assert payload.get("legacy_cutover_preflight", {}).get("blocked") is True
 
 
-def test_r6_qa_run_program_slug_aggregates_lake_statuses(
+def test_r6_qa_run_program_slug_legacy_cutover_fail_closed(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -551,15 +562,13 @@ def test_r6_qa_run_program_slug_aggregates_lake_statuses(
     finally:
         os.chdir(previous)
 
-    assert exit_code == 0
-    assert payload["status"] == "passed"
-    assert payload["execution_mode"] == "program-level"
-    assert payload["program_qa_aggregation"]["lake_count"] == 1
-    assert payload["program_qa_aggregation"]["passed_lake_count"] == 1
-    assert "implementation_not_recorded" not in payload.get("reason_codes", [])
+    assert exit_code == 2
+    assert payload["status"] == "blocked"
+    assert payload["reason_codes"] == ["legacy_cutover_required"]
+    assert payload.get("legacy_cutover_preflight", {}).get("blocked") is True
 
 
-def test_ac020_soft_admission_branch_alignment_blocks(tmp_path: Path) -> None:
+def test_ac020_soft_admission_main_truth_canonical_passes(tmp_path: Path) -> None:
     root = tmp_path / "repo"
     worktree = tmp_path / "cloud-platform"
     _seed_sidepilot_fixture(root, worktree=worktree)
@@ -577,11 +586,12 @@ def test_ac020_soft_admission_branch_alignment_blocks(tmp_path: Path) -> None:
         cwd=root,
         contract=soft_contract,
     )
-    assert validation["status"] == "blocked"
-    assert "branch_alignment_required" in validation.get("reason_codes", [])
+    # soft admission accepts main when truth canonical is main (aggregation parent is not a git branch)
+    assert validation["status"] == "pass"
+    assert "branch_alignment_required" not in validation.get("reason_codes", [])
 
 
-def test_r6_soft_admission_still_blocks_wrong_aggregation_branch(tmp_path: Path) -> None:
+def test_r6_soft_admission_accepts_main_truth_canonical(tmp_path: Path) -> None:
     root = tmp_path / "repo"
     worktree = tmp_path / "sidepilot-v0.0.12"
     _seed_program_topology_fixture(root, worktree=worktree, require_admission=False)
@@ -593,7 +603,6 @@ def test_r6_soft_admission_still_blocks_wrong_aggregation_branch(tmp_path: Path)
         cwd=root,
     )
 
-    assert validation["status"] == "blocked"
-    assert validation["expected_branch"] == "beacon/v0.0.12"
-    assert validation["current_branch"] == "main"
-    assert "branch_alignment_required" in validation.get("reason_codes", [])
+    assert validation["status"] == "pass"
+    assert validation.get("skipped") is True
+    assert "branch_alignment_required" not in validation.get("reason_codes", [])
