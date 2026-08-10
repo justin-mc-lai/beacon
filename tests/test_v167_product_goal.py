@@ -24,7 +24,8 @@ def test_single_public_entry() -> None:
     assert contract["single_entry"] is True
     assert contract["public_primary"] == "beacon-goal"
     assert contract["dual_public_orchestration"] is False
-    assert "beacon-loop-goal" in contract["support_only"]
+    # loop-goal merged into beacon-goal mode; no separate support skill remains
+    assert "beacon-loop-goal" not in contract["support_only"]
 
 
 def test_docs_no_dual_call_path() -> None:
@@ -38,10 +39,10 @@ def test_docs_no_dual_call_path() -> None:
 
 
 def test_loop_goal_marked_support() -> None:
-    skill = ROOT / "skills/beacon/beacon-loop-goal/SKILL.md"
-    text = skill.read_text(encoding="utf-8") if skill.exists() else ""
+    mode = ROOT / "skills/beacon/beacon-goal/references/modes/loop-goal.md"
+    text = mode.read_text(encoding="utf-8") if mode.exists() else ""
     meta = loop_goal_support_metadata(text)
-    assert meta["marked_support"] is True, "beacon-loop-goal must be marked support"
+    assert meta["marked_support"] is True, "loop-goal mode must be marked support"
 
 
 def test_30s_example_exists() -> None:
@@ -103,7 +104,7 @@ def test_progressive_skill_load() -> None:
     assert qa_skills
     # not identical full dump
     assert set(plan_skills) != set(impl_skills)
-    assert "beacon-gen-implement" in impl_skills
+    assert "beacon-implement" in impl_skills
     assert any("qa" in s for s in qa_skills)
 
 

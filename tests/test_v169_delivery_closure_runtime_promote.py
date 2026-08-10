@@ -13,18 +13,18 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def test_ac_dc_001_version_truth_runtime_v169() -> None:
     vt = load_version_truth(ROOT)
-    assert vt.get("package_version") == "1.6.9"
-    assert str(vt.get("runtime_version") or "") in {"v1.6.9", "1.6.9"}
-    assert str(vt.get("docs_default_line") or "") in {"v1.6.9", "1.6.9"}
-    assert str(vt.get("current_runtime_release_line") or "") in {"v1.6.9", "1.6.9"}
+    assert vt.get("package_version") == "1.6.12"
+    assert str(vt.get("runtime_version") or "") in {"v1.6.12", "1.6.12"}
+    assert str(vt.get("docs_default_line") or "") in {"v1.6.12", "1.6.12"}
+    assert str(vt.get("current_runtime_release_line") or "") in {"v1.6.12", "1.6.12"}
     lines = vt.get("lines") if isinstance(vt.get("lines"), dict) else {}
-    st = (lines.get("v1.6.9") or {}).get("status") if isinstance(lines.get("v1.6.9"), dict) else ""
+    st = (lines.get("v1.6.12") or {}).get("status") if isinstance(lines.get("v1.6.12"), dict) else ""
     assert st == "current_runtime_release"
 
 
 def test_ac_dc_002_package_version_constant() -> None:
-    assert beacon.__version__ == "1.6.9"
-    assert str(getattr(beacon, "__toolkit_version__", "")).lstrip("v") == "1.6.9"
+    assert beacon.__version__ == "1.6.12"
+    assert str(getattr(beacon, "__toolkit_version__", "")).lstrip("v") == "1.6.12"
 
 
 def test_ac_dc_003_shells_have_progressive() -> None:

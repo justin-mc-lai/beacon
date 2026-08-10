@@ -28,7 +28,7 @@ def test_goal_inserts_design_stage_when_ux() -> None:
     names = [s["stage"] for s in stages]
     assert names == ["plan", "truth", "design", "implement", "qa", "release"]
     design = next(s for s in stages if s["stage"] == "design")
-    assert "beacon-gen-design" in design["skills"]
+    assert "beacon-design" in design["skills"] or "mode:gen-design" in design["skills"]
 
 
 def test_goal_no_design_stage_without_ux() -> None:

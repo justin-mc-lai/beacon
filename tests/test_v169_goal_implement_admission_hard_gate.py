@@ -232,7 +232,7 @@ def test_ac_gia_008_docs_registered() -> None:
     root = Path(__file__).resolve().parents[1]
     flow = (root / "skills/beacon/references/git-worktree-execution-flow.md").read_text(encoding="utf-8")
     assert "Goal implement admission hard gate" in flow
-    gov = (root / "skills/beacon/beacon-gov-branch/SKILL.md").read_text(encoding="utf-8")
+    gov = (root / "skills/beacon/beacon-gov-branch/SUPPORT.md").read_text(encoding="utf-8")
     assert "ensure_goal_implement_admission" in gov or "implement hard gate" in gov.lower()
     goal = (root / "skills/beacon/beacon-goal/SKILL.md").read_text(encoding="utf-8")
     assert "ensure_goal_implement_admission" in goal

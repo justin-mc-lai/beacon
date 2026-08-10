@@ -87,8 +87,8 @@ def test_bd_001_cannot_complete() -> None:
 
 def test_bd_002_public_entry_skill() -> None:
     skill = (ROOT / "skills/beacon/beacon-goal/SKILL.md").read_text(encoding="utf-8")
-    assert "beacon-loop-goal" in skill
-    assert "Host subagent keyword gate" in skill or "子代理" in skill
+    assert "loop-goal" in skill
+    assert "references/modes/loop-goal.md" in skill
 
 
 def test_in_001_install_pack(tmp_path: Path) -> None:

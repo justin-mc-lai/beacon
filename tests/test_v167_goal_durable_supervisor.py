@@ -40,11 +40,12 @@ from beacon.utils.product_goal_runtime import (
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_supervise_is_opt_in(tmp_path: Path) -> None:
+def test_supervise_default_on_goal_run(tmp_path: Path) -> None:
     run = run_goal_facade(tmp_path, utterance="durable goal demo", version="v1.6.7")
     sup = run.get("supervisor") or {}
-    assert sup.get("attached") is False
-    assert sup.get("state") == "detached"
+    # v1.6.8+ goal facade honors project longrun_default and auto-attaches supervisor.
+    assert sup.get("attached") is True
+    assert sup.get("state") == "active"
     assert run.get("heartbeat_interval_sec") == DEFAULT_HEARTBEAT_INTERVAL_SEC
 
 
@@ -191,7 +192,7 @@ def test_supervise_never_auto_release(tmp_path: Path) -> None:
 def test_no_second_public_entry() -> None:
     skill = (ROOT / "skills/beacon/beacon-goal/SKILL.md").read_text(encoding="utf-8")
     assert "supervise" in skill
-    assert "resume-pack" in skill
+    assert "progressive" in skill
     # must not advertise loop+goal dual public pipeline as required
     assert "唯一" in skill or "唯一公共入口" in skill or "public" in skill.lower()
     examples = (ROOT / "skills/beacon/examples/goal-one-shot-30s.md").read_text(encoding="utf-8")
@@ -224,11 +225,10 @@ def test_sqlite_fts_non_authoritative(tmp_path: Path) -> None:
     assert rejected["status"] != "completed"
 
 
-def test_skill_mentions_resume_pack() -> None:
+def test_skill_mentions_supervise() -> None:
     skill = (ROOT / "skills/beacon/beacon-goal/SKILL.md").read_text(encoding="utf-8")
-    assert "resume-pack" in skill
     assert "supervise" in skill
-    assert "120" in skill or "2 分钟" in skill or "2分钟" in skill
+    assert "Longrun/supervise only on goal" in skill
 
 
 def test_tests_md_has_legal_and_illegal() -> None:
@@ -271,7 +271,7 @@ def test_legal_walk_host_interrupt_resume(tmp_path: Path) -> None:
 def test_legal_walk_opt_in_supervise(tmp_path: Path) -> None:
     run = run_goal_facade(tmp_path, utterance="walk supervise", version="v1.6.7")
     run_id = run["run_id"]
-    assert (run.get("supervisor") or {}).get("attached") is False
+    assert (run.get("supervisor") or {}).get("attached") is True
     att = goal_supervise_attach(tmp_path, run_id, interval_sec=120, once=True)
     assert att["status"] == "active"
     assert att["opt_in"] is True
@@ -294,9 +294,9 @@ def test_illegal_interrupt_to_complete(tmp_path: Path) -> None:
     assert rejected["status"] != "completed"
 
 
-def test_illegal_auto_supervise_on_run(tmp_path: Path) -> None:
+def test_auto_supervise_default_on_goal_run(tmp_path: Path) -> None:
     run = run_goal_facade(tmp_path, utterance="no auto sup", version="v1.6.7")
-    assert (run.get("supervisor") or {}).get("attached") is not True
+    assert (run.get("supervisor") or {}).get("attached") is True
 
 
 def test_illegal_overwrite_jsonl(tmp_path: Path) -> None:

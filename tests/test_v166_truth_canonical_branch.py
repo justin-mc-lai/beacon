@@ -197,7 +197,7 @@ def test_delivery_skills_keep_worktree_admission_preamble() -> None:
 
 
 def test_loop_goal_skill_declares_truth_canonical_gate() -> None:
-    skill_path = Path(__file__).parent.parent / "skills" / "beacon" / "beacon-loop-goal" / "SKILL.md"
+    skill_path = Path(__file__).parent.parent / "skills" / "beacon" / "beacon-goal" / "references" / "modes" / "loop-goal.md"
     content = skill_path.read_text(encoding="utf-8")
     assert "truth_canonical_branch_mismatch" in content
     assert "governance `truth_canonical`" in content

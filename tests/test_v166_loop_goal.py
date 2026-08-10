@@ -251,10 +251,14 @@ class TestSkillRouting:
 
     def test_skill_md_exists_and_has_decision_tree(self):
         """Verify SKILL.md exists and contains key decision tree elements."""
-        skill_path = Path(__file__).parent.parent / ".agents" / "skills" / "beacon-loop-goal" / "SKILL.md"
+        skill_path = Path(__file__).parent.parent / "skills" / "beacon" / "beacon-goal" / "SKILL.md"
+        mode_path = Path(__file__).parent.parent / "skills" / "beacon" / "beacon-goal" / "references" / "modes" / "loop-goal.md"
         assert skill_path.is_file()
-        content = skill_path.read_text(encoding="utf-8")
-        assert "name: beacon-loop-goal" in content
+        assert mode_path.is_file()
+        assert "name: beacon-goal" in skill_path.read_text(encoding="utf-8")
+        assert "references/modes/loop-goal.md" in skill_path.read_text(encoding="utf-8")
+        content = mode_path.read_text(encoding="utf-8")
+        assert "Mode: loop-goal" in content
         assert "Beacon v1.6.0 共享 Preamble" in content
         assert "你正在运行 governor skill" in content
         assert "governance_precheck" in content
@@ -278,16 +282,12 @@ class TestReviewDecisionPacket:
     """AC-012..014: planner-review decision packet gates implement routing."""
 
     def test_review_routing_public_skill_contract(self):
-        skill_paths = [
-            Path(__file__).parent.parent / "skills" / "beacon" / "beacon-loop-goal" / "SKILL.md",
-            Path(__file__).parent.parent / ".agents" / "skills" / "beacon-loop-goal" / "SKILL.md",
-        ]
-        for skill_path in skill_paths:
-            content = skill_path.read_text(encoding="utf-8")
-            assert "review_routing" in content
-            assert "beacon-pln-review" in content
-            assert "Planner Review Decision Packet" in content
-            assert "record_review_decision" in content
+        mode_path = Path(__file__).parent.parent / "skills" / "beacon" / "beacon-goal" / "references" / "modes" / "loop-goal.md"
+        content = mode_path.read_text(encoding="utf-8")
+        assert "review_routing" in content
+        assert "beacon-pln-review" in content
+        assert "Planner Review Decision Packet" in content
+        assert "record_review_decision" in content
 
     def test_review_decision_packet_records_outputs(self, goal_project: Path):
         state = init(goal_project, version="v1.6.6", feature="f1", utterance="u1")
@@ -409,17 +409,13 @@ class TestHumanGateAlignment:
     """AC-027 / TC-LG-027: auto-decide table aligns with AC-007/AC-014."""
 
     def test_human_gate_alignment_skill_contract(self):
-        skill_paths = [
-            Path(__file__).parent.parent / "skills" / "beacon" / "beacon-loop-goal" / "SKILL.md",
-            Path(__file__).parent.parent / ".agents" / "skills" / "beacon-loop-goal" / "SKILL.md",
-        ]
-        for skill_path in skill_paths:
-            content = skill_path.read_text(encoding="utf-8")
-            assert "P1-only" in content or "Standalone P1" in content
-            assert "must human confirm" in content
-            assert "never" in content
-            assert "continue audit" in content or "auto-continue" in content
-            assert "HUMAN GATE" in content or "human confirm" in content.lower()
+        mode_path = Path(__file__).parent.parent / "skills" / "beacon" / "beacon-goal" / "references" / "modes" / "loop-goal.md"
+        content = mode_path.read_text(encoding="utf-8")
+        assert "P1-only" in content or "Standalone P1" in content
+        assert "human confirmation" in content or "HUMAN GATE" in content
+        assert "never" in content
+        assert "continue audit" in content or "auto-continue" in content
+        assert "HUMAN GATE" in content or "human confirm" in content.lower()
 
     def test_human_gate_alignment_p1_override_stops(self, goal_project: Path):
         state = init(
@@ -454,15 +450,11 @@ class TestSameSessionContinue:
     """AC-028 / TC-LG-028."""
 
     def test_same_session_continue_skill_contract(self):
-        skill_paths = [
-            Path(__file__).parent.parent / "skills" / "beacon" / "beacon-loop-goal" / "SKILL.md",
-            Path(__file__).parent.parent / ".agents" / "skills" / "beacon-loop-goal" / "SKILL.md",
-        ]
-        for skill_path in skill_paths:
-            content = skill_path.read_text(encoding="utf-8")
-            assert "Same-Session Continue" in content or "same-session" in content.lower()
-            assert "immediately load" in content.lower() or "同会话立即加载" in content
-            assert "print-only" in content.lower() or "only printing" in content.lower() or "只打印" in content
+        mode_path = Path(__file__).parent.parent / "skills" / "beacon" / "beacon-goal" / "references" / "modes" / "loop-goal.md"
+        content = mode_path.read_text(encoding="utf-8")
+        assert "Same-Session Continue" in content or "same-session" in content.lower()
+        assert "immediately load" in content.lower() or "同会话立即加载" in content
+        assert "print-only" in content.lower() or "only printing" in content.lower() or "只打印" in content
 
 
 class TestLoopGoalResume:
@@ -525,24 +517,20 @@ class TestStandardExecutionPrecheck:
     """AC-015..021: Standard Execution Flow gates implement routing."""
 
     def test_standard_execution_precheck_public_skill_contract(self):
-        skill_paths = [
-            Path(__file__).parent.parent / "skills" / "beacon" / "beacon-loop-goal" / "SKILL.md",
-            Path(__file__).parent.parent / ".agents" / "skills" / "beacon-loop-goal" / "SKILL.md",
-        ]
-        for skill_path in skill_paths:
-            content = skill_path.read_text(encoding="utf-8")
-            assert "implement_ready: standard_execution_precheck" in content
-            assert "standard_execution_precheck" in content
-            assert "pass: implement_routing" in content
-            assert "Standard Execution Precheck" in content
-            assert "record_standard_execution_precheck" in content
-            assert "standard-execution-precheck" in content
-            assert "verification_bundle_not_cli_owned" in content or "CLI-owned" in content
-            assert "truth_map verify" in content or "truth-map verify" in content
-            assert "verify-materials --strict" in content
-            assert "git diff --check" in content
-            assert "branch-governance verify" in content
-            assert "implement check-branch" in content or "workspace admission" in content
+        mode_path = Path(__file__).parent.parent / "skills" / "beacon" / "beacon-goal" / "references" / "modes" / "loop-goal.md"
+        content = mode_path.read_text(encoding="utf-8")
+        assert "implement_ready: standard_execution_precheck" in content
+        assert "standard_execution_precheck" in content
+        assert "pass: implement_routing" in content
+        assert "Standard Execution Precheck" in content
+        assert "record_standard_execution_precheck" in content
+        assert "standard-execution-precheck" in content
+        assert "verification_bundle_not_cli_owned" in content or "CLI-owned" in content
+        assert "truth_map verify" in content or "truth-map verify" in content
+        assert "verify-materials --strict" in content
+        assert "git diff --check" in content
+        assert "branch-governance verify" in content
+        assert "implement check-branch" in content or "workspace admission" in content
 
     def test_uncommitted_canonical_refreeze_blocks_implement(self, goal_project: Path):
         state = init(goal_project, version="v1.6.6", feature="f1", utterance="u1")

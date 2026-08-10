@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_loop_skill_support_meta() -> None:
-    text = (ROOT / "skills/beacon/beacon-loop-goal/SKILL.md").read_text(encoding="utf-8")
+    text = (ROOT / "skills/beacon/beacon-goal/references/modes/loop-goal.md").read_text(encoding="utf-8")
     lowered = text.lower()
     assert "support" in lowered
     assert "beacon-goal" in text or "$beacon-goal" in text
@@ -54,7 +54,7 @@ def test_loop_cannot_mark_complete() -> None:
 
 
 def test_loop_points_to_goal() -> None:
-    text = (ROOT / "skills/beacon/beacon-loop-goal/SKILL.md").read_text(encoding="utf-8")
+    text = (ROOT / "skills/beacon/beacon-goal/references/modes/loop-goal.md").read_text(encoding="utf-8")
     assert "beacon-goal" in text or "$beacon-goal" in text
     assert "交付" in text or "goal run" in text or "一句话" in text
 

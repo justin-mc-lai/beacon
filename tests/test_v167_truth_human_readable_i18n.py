@@ -94,7 +94,7 @@ def test_axis_mentions_lake():
 def test_validate_package_passes_self():
     from beacon.utils.feature_package import validate_feature_package
 
-    r = validate_feature_package(ROOT, version="v1.6.7", feature="beacon-truth-human-readable-i18n-v167")
+    r = validate_feature_package(ROOT, version="v1.6.12", feature="beacon-test-modernization-v1612")
     assert r.get("blocked") is False, r.get("diagnostics")
     codes = [d.get("code") for d in r.get("diagnostics") or []]
     assert any(c == "truth_human_l0_ok" or (isinstance(c, str) and c.startswith("truth_human")) for c in codes) or r.get("blocked") is False

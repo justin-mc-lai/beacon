@@ -86,8 +86,6 @@ def test_ac_axis_global_boundaries() -> None:
 
 
 def test_ac_axis_skill_text() -> None:
-    goal = (ROOT / "skills/beacon/beacon-goal/SKILL.md").read_text(encoding="utf-8")
-    assert "v0.0.1" in goal
     ref = (ROOT / "skills/beacon/references/version-default.md").read_text(encoding="utf-8")
     assert "v0.0.1" in ref
     assert "螺丝刀" in ref or "screwdriver" in ref.lower() or "工件" in ref

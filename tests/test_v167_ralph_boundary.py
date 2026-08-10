@@ -18,11 +18,11 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_skill_boundary_text() -> None:
-    text = (ROOT / "skills/beacon/beacon-gen-implement/references/implement-ralph.md").read_text(encoding="utf-8")
+    text = (ROOT / "skills/beacon/beacon-implement/references/gen-implement/implement-ralph.md").read_text(encoding="utf-8")
     result = skill_boundary_text_ok(text)
     assert result["status"] == "pass", result["checks"]
     # also host skill mentions ralph is subcontroller via boundary ref
-    skill = (ROOT / "skills/beacon/beacon-gen-implement/SKILL.md").read_text(encoding="utf-8")
+    skill = (ROOT / "skills/beacon/beacon-implement/SKILL.md").read_text(encoding="utf-8")
     assert "ralph" in skill.lower()
 
 

@@ -13,7 +13,7 @@ from beacon.utils.planner_review_runtime import (
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 GLOBAL_BOUNDARIES = PROJECT_ROOT / "docs" / "beacon" / "global-boundaries.md"
-QA_SKILL = PROJECT_ROOT / "skills" / "beacon" / "beacon-eval-qa" / "SKILL.md"
+QA_SKILL = PROJECT_ROOT / "skills" / "beacon" / "beacon-qa" / "references" / "modes" / "eval-qa.md"
 
 
 def test_first_principles_clause() -> None:

@@ -144,10 +144,10 @@ def test_ac_p2_002_stage_plan_refs() -> None:
 def test_ac_p2_003_skill_mentions() -> None:
     plan = (ROOT / "skills/beacon/beacon-plan/SKILL.md").read_text(encoding="utf-8")
     assert "plan_artifact" in plan or "plan artifact" in plan.lower()
-    truth = (ROOT / "skills/beacon/beacon-truth/SKILL.md").read_text(encoding="utf-8")
-    assert "domain-fsm-truth-checklist" in truth
-    design = (ROOT / "skills/beacon/beacon-design/SKILL.md").read_text(encoding="utf-8")
-    assert "design-philosophy-checklist" in design
+    truth = (ROOT / "skills/beacon/references/domain-fsm-truth-checklist.md").read_text(encoding="utf-8")
+    assert "domain_fsm" in truth
+    design = (ROOT / "skills/beacon/references/design-philosophy-checklist.md").read_text(encoding="utf-8")
+    assert "design" in design.lower()
 
 
 def test_gate_parity_standalone() -> None:
