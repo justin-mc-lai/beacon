@@ -6,6 +6,7 @@ from pathlib import Path
 from typer.testing import CliRunner
 
 from beacon.main import app
+from beacon.utils.project_governance import commit_governance_payload
 from beacon.utils.program_change_intent import append_change_intent_log, require_promotion_diff_before_refreeze
 from beacon.utils.program_change_intent import record_promotion_diff_review, rerun_program_freeze_after_structural_refreeze
 from beacon.utils.program_graph import (
@@ -18,6 +19,44 @@ from beacon.utils.program_graph import (
 
 runner = CliRunner()
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def _seed_governance(root: Path, *, version: str = "v1.6.1") -> None:
+    payload = {
+        "schema_version": "1.0",
+        "project_root": str(root),
+        "global_project_metadata": {
+            "project_root": str(root),
+            "topology_kind": "single_repo",
+            "default_execution_service": "beacon",
+            "service_bindings": [
+                {
+                    "service_key": "beacon",
+                    "repo_root": str(root),
+                    "repo_root_relative": ".",
+                    "role": "service",
+                    "writable": True,
+                    "worktree_path_policy": "follow-repo-root",
+                }
+            ],
+        },
+        "version_scoped_metadata": {
+            version: {
+                "version": version,
+                "participating_services": ["beacon"],
+                "per_service_canonical_branch": {"beacon": f"beacon/{version}"},
+                "branch_guard_mode": "strict",
+                "validation_state": "active",
+                "previous_version_baseline_branch": "main",
+                "next_version_feature_branch": f"beacon/{version}/<feature-slug>",
+                "worktree_mode": "dedicated",
+                "worktree_path": f".beacon/worktrees/{version}",
+                "require_workspace_admission": True,
+                "admission_invalidation": "dirty_only",
+            }
+        },
+    }
+    commit_governance_payload(root, payload, event_type="test-seed")
 
 
 def test_validate_graph_payload_required_fields():
@@ -51,6 +90,7 @@ def test_program_freeze_help():
 
 
 def test_plan_start_json_creates_manifest(tmp_path: Path):
+    _seed_governance(tmp_path)
     result = runner.invoke(
         app,
         [

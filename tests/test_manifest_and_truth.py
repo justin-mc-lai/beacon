@@ -86,11 +86,13 @@ class TestManifestCore:
 
     def test_verify_manifest_pass(self):
         add_feature(self.root, "v1.4.12", "test-feature", language="en")
-        # Create truth files on disk
-        base = self.root / "docs" / "beacon" / "v1.4.12"
-        (base / "prd" / "test-feature.md").write_text("# PRD", encoding="utf-8")
-        (base / "user-story" / "test-feature.md").write_text("# US", encoding="utf-8")
-        (base / "qa" / "test-cases" / "test-feature.md").write_text("# TC", encoding="utf-8")
+        # Create package-auth truth files on disk
+        pkg = self.root / "docs" / "beacon" / "v1.4.12" / "features" / "test-feature"
+        pkg.mkdir(parents=True, exist_ok=True)
+        (pkg / "truth.md").write_text("# TRUTH", encoding="utf-8")
+        (pkg / "tests.md").write_text("# TESTS", encoding="utf-8")
+        (pkg / "tasks.md").write_text("# TASKS", encoding="utf-8")
+        (pkg / "evidence.md").write_text("# EVIDENCE", encoding="utf-8")
         result = verify_manifest(self.root, "v1.4.12")
         assert result["status"] == "pass"
 
@@ -112,8 +114,7 @@ class TestManifestCore:
 
     def test_compute_feature_paths(self):
         paths = compute_feature_paths(self.root, "v1.4.12", "my-feature")
-        assert "prd" in paths
-        assert paths["prd"].endswith("my-feature.md")
+        assert "features/my-feature/truth.md" in paths["prd"]
         assert "v1.4.12" in paths["prd"]
 
 

@@ -7,7 +7,7 @@ from pathlib import Path
 from beacon import __toolkit_version__
 
 ROOT = Path(__file__).resolve().parents[1]
-CURRENT_SKILL_SURFACE = "1.6.10"
+CURRENT_SKILL_SURFACE = "1.6.12"
 
 
 def test_standard_skill_package_should_exist():

@@ -41,7 +41,7 @@ def test_setup_context_creates_context_files_with_beacon_markers(tmp_path: Path)
     assert (tmp_path / "docs" / "beacon" / "global-boundaries.md").exists()
     assert (tmp_path / ".gitignore").exists()
     onboarding = json.loads((tmp_path / ".beacon" / "state" / "project-onboarding.json").read_text(encoding="utf-8"))
-    assert "v1.3.1" in onboarding.get("runtime_capability_lines", [])
+    assert "v1.6.12" in onboarding.get("runtime_capability_lines", [])
     actions = result_payload.get("actions", [])
     assert len(actions) == 5
     assert any(item.get("file") == ".gitignore" for item in actions)

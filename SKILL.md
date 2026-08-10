@@ -181,6 +181,9 @@ beacon doctor verify-codex-hud-hook --project-root . --version v1.5.2 --json
 | `beacon prd` | `prd` |
 | `beacon qa` | `qa` |
 | `beacon orchestrate` | `orchestrate` |
+| `beacon plan` | `plan` |
+| `beacon program` | `program` |
+| `beacon planner-review` | `planner-review` |
 | `beacon ralph-bridge` | `ralph-bridge` |
 | `beacon real-project-validation` | `real-project-validation` |
 | `beacon recall` | `recall` |
@@ -245,6 +248,9 @@ beacon doctor verify-codex-hud-hook --project-root . --version v1.5.2 --json
 | `prd` | `beacon prd` |
 | `qa` | `beacon qa` |
 | `orchestrate` | `beacon orchestrate` |
+| `plan` | `beacon plan` |
+| `program` | `beacon program` |
+| `planner-review` | `beacon planner-review` |
 | `ralph-bridge` | `beacon ralph-bridge` |
 | `real-project-validation` | `beacon real-project-validation` |
 | `recall` | `beacon recall` |

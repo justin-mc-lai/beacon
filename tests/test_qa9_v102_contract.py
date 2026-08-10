@@ -28,16 +28,36 @@ def _extract_json_from_stdout(text: str) -> dict:
     return json.loads(text[start:])
 
 
+def _seed_feature_package(tmp_path: Path, *, slug: str) -> None:
+    """Seed a package-auth feature package (v1.0.2 line)."""
+    pkg = tmp_path / "docs" / "beacon" / "v1.0.2" / "features" / slug
+    pkg.mkdir(parents=True, exist_ok=True)
+    (pkg / "truth.md").write_text(
+        "---\n"
+        f"slug: {slug}\n"
+        "version: v1.0.2\n"
+        "status: draft\n"
+        "language: zh\n"
+        "parser_contract: beacon-feature-package-v2\n"
+        "---\n\n"
+        "# QA9 Feature\n\n"
+        "## 验收标准\n\n"
+        "| AC ID | Theme | Description |\n"
+        "|-------|-------|-------------|\n"
+        "| AC-001 | 功能 | 功能工作 |\n"
+        "| AC-002 | 接口 | 接口返回200 |\n",
+        encoding="utf-8",
+    )
+    (pkg / "tests.md").write_text("# Tests\n", encoding="utf-8")
+    (pkg / "tasks.md").write_text("# Tasks\n", encoding="utf-8")
+    (pkg / "evidence.md").write_text("# Evidence\n", encoding="utf-8")
+
+
 def test_test_case_create_should_generate_qa9_matrix(tmp_path: Path):
     feature = "QA9 Feature"
     slug = "qa9-feature"
 
-    us_dir = tmp_path / "docs" / "beacon" / "v1.0.2" / "user-story"
-    prd_dir = tmp_path / "docs" / "beacon" / "v1.0.2" / "prd"
-    us_dir.mkdir(parents=True, exist_ok=True)
-    prd_dir.mkdir(parents=True, exist_ok=True)
-    (us_dir / f"{slug}.md").write_text("| ID | 标准 |\n| AC-001 | 功能工作 |\n", encoding="utf-8")
-    (prd_dir / f"{slug}.md").write_text("| ID | 标准 |\n| AC-002 | 接口返回200 |\n", encoding="utf-8")
+    _seed_feature_package(tmp_path, slug=slug)
 
     result = runner.invoke(
         app,
@@ -58,15 +78,9 @@ def test_test_case_create_should_add_junit_to_explicit_pytest_commands(tmp_path:
     feature = "QA9 Feature"
     slug = "qa9-feature"
 
-    us_dir = tmp_path / "docs" / "beacon" / "v1.0.2" / "user-story"
-    prd_dir = tmp_path / "docs" / "beacon" / "v1.0.2" / "prd"
-    qa_dir = tmp_path / "docs" / "beacon" / "v1.0.2" / "qa" / "test-cases"
-    us_dir.mkdir(parents=True, exist_ok=True)
-    prd_dir.mkdir(parents=True, exist_ok=True)
-    qa_dir.mkdir(parents=True, exist_ok=True)
-    (us_dir / f"{slug}.md").write_text("| ID | 标准 |\n| AC-001 | 功能工作 |\n", encoding="utf-8")
-    (prd_dir / f"{slug}.md").write_text("| ID | 标准 |\n| AC-002 | 接口返回200 |\n", encoding="utf-8")
-    (qa_dir / f"{slug}.md").write_text(
+    _seed_feature_package(tmp_path, slug=slug)
+    tests_md = tmp_path / "docs" / "beacon" / "v1.0.2" / "features" / slug / "tests.md"
+    tests_md.write_text(
         "# Test Cases: QA9 Feature\n\n"
         "## Executable AC Test Matrix\n\n"
         "| AC ID | TC ID | Layer | Command | Assertion | Evidence Path |\n"

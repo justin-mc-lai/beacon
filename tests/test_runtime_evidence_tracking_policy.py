@@ -36,6 +36,7 @@ def test_runtime_evidence_tracking_policy_should_document_tracked_and_ignored_su
         ROOT
         / "docs"
         / "beacon"
+        / "archive"
         / "v1.1.10"
         / "execution"
         / "runtime-evidence-tracking-policy.md"

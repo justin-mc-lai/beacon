@@ -133,7 +133,7 @@ def test_setup_context_files_should_create_both_files_with_markers(tmp_path: Pat
         assert "BEACON:DOCS_VERSION:v0.0.1" in content
     assert "docs/beacon/<version>/` is the canonical source of truth" in claude
     assert "Use `docs/beacon/<version>/` as the canonical delivery tree." in agents
-    assert "跨版本全局约束" in global_boundaries
+    assert "原则性边界" in global_boundaries
     assert "docs/product/<version>" not in claude
     assert "docs/product/<version>" not in agents
 

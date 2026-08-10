@@ -73,18 +73,28 @@ def test_test_case_create_generates_ac_matrix(tmp_path: Path):
     feature = "Login Feature"
     slug = "login-feature"
 
-    us_dir = tmp_path / "docs" / "beacon" / "v1.0.0" / "user-story"
-    prd_dir = tmp_path / "docs" / "beacon" / "v1.0.0" / "prd"
-    us_dir.mkdir(parents=True, exist_ok=True)
-    prd_dir.mkdir(parents=True, exist_ok=True)
-    (us_dir / f"{slug}.md").write_text(
-        "| ID | 标准 |\n|----|------|\n| AC-001 | 登录成功 |\n| AC-002 | 注册成功 |\n",
+    pkg = tmp_path / "docs" / "beacon" / "v1.0.0" / "features" / slug
+    pkg.mkdir(parents=True, exist_ok=True)
+    (pkg / "truth.md").write_text(
+        "---\n"
+        f"slug: {slug}\n"
+        "version: v1.0.0\n"
+        "status: draft\n"
+        "language: zh\n"
+        "parser_contract: beacon-feature-package-v2\n"
+        "---\n\n"
+        "# Login Feature\n\n"
+        "## 验收标准\n\n"
+        "| AC ID | Theme | Description |\n"
+        "|-------|-------|-------------|\n"
+        "| AC-001 | 登录 | 登录成功 |\n"
+        "| AC-002 | 注册 | 注册成功 |\n"
+        "| AC-003 | 接口 | 接口返回 200 |\n",
         encoding="utf-8",
     )
-    (prd_dir / f"{slug}.md").write_text(
-        "| ID | 标准 |\n|----|------|\n| AC-003 | 接口返回 200 |\n",
-        encoding="utf-8",
-    )
+    (pkg / "tests.md").write_text("# Tests\n", encoding="utf-8")
+    (pkg / "tasks.md").write_text("# Tasks\n", encoding="utf-8")
+    (pkg / "evidence.md").write_text("# Evidence\n", encoding="utf-8")
 
     result = runner.invoke(app, ["test-case", "create", feature, "--project", str(tmp_path), "--version", "v1.0.0"])
     assert result.exit_code == 0

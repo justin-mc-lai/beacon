@@ -17,9 +17,10 @@ def test_change_impact_should_record_layers_and_tasks():
         feature="beacon-strict-config-governance",
         workflow_status="completed",
     )
-    path = ROOT / "docs" / "beacon" / "v1.1.1" / "execution" / "change-impact.json"
+    path = ROOT / "docs" / "beacon" / "v1.1.1" / ".machine" / "execution" / "change-impact.json"
     payload = json.loads(path.read_text(encoding="utf-8"))
     assert payload["changed_layers"]
     assert isinstance(payload["tasks"], list)
-    assert payload["research_converged"] is True
-    assert payload["main_chain_converged"] is True
+    # research is input-only; convergence flags require real machine evidence, not a seeded run
+    assert payload["research_converged"] is False
+    assert payload["main_chain_converged"] is False
