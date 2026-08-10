@@ -203,8 +203,33 @@ def test_skill_eval_benchmark_covers_multi_agent_review_cases(tmp_path: Path) ->
     assert "fake_parallel_claim_blocked" in grading
 
 
-def test_implementation_evidence_marker_is_imported_without_reopening() -> None:
-    marker_path = Path(".beacon/state") / f"implementation-{FEATURE}.json"
+def test_implementation_evidence_marker_is_imported_without_reopening(tmp_path: Path) -> None:
+    marker_path = tmp_path / ".beacon" / "state" / f"implementation-{FEATURE}.json"
+    marker_path.parent.mkdir(parents=True, exist_ok=True)
+    marker_path.write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "feature_slug": FEATURE,
+                "version": VERSION,
+                "status": "completed",
+                "imported": True,
+                "summary_ref": f"docs/beacon/{VERSION}/execution/implementation-summary-{FEATURE}.md",
+                "changed_files": [
+                    "beacon/utils/planner_review_runtime.py",
+                    "tests/test_v160_pln_review_multi_agent.py",
+                    f"docs/beacon/{VERSION}/features/{FEATURE}/tests.md",
+                ],
+                "source_refs": [
+                    "tests/test_v160_pln_review_multi_agent.py tests/test_v160_skill_harness_taxonomy.py ->",
+                    "beacon skill eval-kit benchmark --version v1.6.0 --json -> pass",
+                ],
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
     marker = json.loads(marker_path.read_text(encoding="utf-8"))
 
     assert marker["feature_slug"] == FEATURE

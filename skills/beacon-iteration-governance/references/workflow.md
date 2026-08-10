@@ -20,7 +20,7 @@ Keep Beacon source changes and current-version docs aligned.
 
 ### Quick
 
-- `python3 -m pytest -q tests/test_docs_current_contract.py tests/test_skill_standard_layout.py tests/test_v110_docs_examples_contract.py`
+- `python3 -m pytest -q tests/test_docs_current_contract.py tests/test_skill_standard_layout.py tests/test_skill_command_alignment.py`
 - `python3 -m beacon.main doctor verify-materials --project-root <root> --version <version> --json`
 
 ### Delivery

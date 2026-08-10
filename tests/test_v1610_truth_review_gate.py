@@ -198,7 +198,7 @@ invalid: a→z
     )
     # freeze.py no longer imports feature_package_authoritative/ready at module level
     # (v1.6.10 always-on package authority + TRG precheck).
-    monkeypatch.setattr(freeze_mod, "resolve_target_version", lambda root, v: version)
+    monkeypatch.setattr(freeze_mod, "resolve_target_version_guarded", lambda root, v, **kw: version)
 
     code = freeze_mod._freeze_impl(slug, str(tmp_path), version, json_output=True)
     assert code == 2

@@ -63,12 +63,19 @@ def normalize_python_invocation(command: str, *, project_root: Path | None = Non
     return _PYTHON_INVOCATION_RE.sub(f"{python} ", raw, count=1)
 
 
+_PYTEST_INVOKE_RE = re.compile(r"(^|[\s&|;])(pytest|python3?\s+-m\s+pytest)(\s|$)")
+
+
 def ensure_pytest_junit_command(command: str) -> str:
+    """Append the pytest junit default only for real pytest invocations.
+
+    Substring checks are unsafe: temp project paths such as ``pytest-of-apple``
+    contain the word ``pytest`` and must not turn ``go build`` into a pytest run.
+    """
     raw = str(command or "").strip()
-    if not raw:
+    if not raw or "--junitxml" in raw.lower():
         return raw
-    lowered = raw.lower()
-    if "pytest" not in lowered or "--junitxml" in lowered:
+    if not _PYTEST_INVOKE_RE.search(raw.lower()):
         return raw
     return f"{raw} {_BEACON_JUNIT_ARG}"
 

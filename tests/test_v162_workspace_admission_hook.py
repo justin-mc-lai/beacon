@@ -6,6 +6,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+import pytest
+
 from beacon.utils.project_governance import commit_governance_payload
 from beacon.utils.workspace_admission import run_workspace_admit, write_admission_artifact
 
@@ -124,6 +126,8 @@ def test_hook_no_ttl_deny(tmp_path: Path) -> None:
 
 def test_claude_hook_parity() -> None:
     assert CURSOR_HOOK.is_file()
+    if not CLAUDE_HOOK.is_file():
+        pytest.skip("claude hook not installed in this workspace (.claude/ is local-excluded)")
     assert CLAUDE_HOOK.is_file()
     assert CURSOR_HOOK.read_text(encoding="utf-8") == CLAUDE_HOOK.read_text(encoding="utf-8")
 

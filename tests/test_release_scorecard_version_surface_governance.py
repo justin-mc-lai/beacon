@@ -97,6 +97,33 @@ def _seed_release_contract_files(root: Path) -> None:
     docs_root = root / "docs" / "beacon" / VERSION
     (docs_root / ".machine" / "change").mkdir(parents=True, exist_ok=True)
     (docs_root / "change").mkdir(parents=True, exist_ok=True)
+    pkg = docs_root / "features" / FEATURE
+    pkg.mkdir(parents=True, exist_ok=True)
+    (pkg / "truth.md").write_text(
+        "---\n"
+        f"slug: {FEATURE}\n"
+        f"version: {VERSION}\n"
+        "status: frozen\n"
+        "language: en\n"
+        "parser_contract: beacon-feature-package-v2\n"
+        "---\n\n"
+        "# Feature A\n\n"
+        "## Acceptance Criteria\n\n"
+        "| AC ID | Desc |\n"
+        "|-------|------|\n"
+        "| AC-001 | works |\n",
+        encoding="utf-8",
+    )
+    (pkg / "tests.md").write_text(
+        "# Tests\n\n"
+        "## Executable AC Test Matrix\n\n"
+        "| AC ID | TC ID | Layer | Command | Assertion |\n"
+        "|-------|-------|-------|---------|-----------|\n"
+        '| AC-001 | TC-001 | contract | `python3 -m pytest -q tests/test_demo.py` | pass |\n',
+        encoding="utf-8",
+    )
+    (pkg / "tasks.md").write_text("# tasks\n", encoding="utf-8")
+    (pkg / "evidence.md").write_text("# evidence\n", encoding="utf-8")
     _write_json(
         docs_root / ".machine" / "change" / f"{VERSION}.json",
         {

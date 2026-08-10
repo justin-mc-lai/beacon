@@ -106,7 +106,7 @@ run_quick() {
     python3 -m pytest -q \
     tests/test_docs_current_contract.py \
     tests/test_skill_standard_layout.py \
-    tests/test_v110_docs_examples_contract.py
+    tests/test_skill_command_alignment.py
 
   run_step docs-material-audit \
     python3 -m beacon.main doctor verify-materials \

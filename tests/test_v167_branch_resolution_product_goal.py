@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import subprocess
 from pathlib import Path
 
 from beacon.utils.execution_branch_contract import (
@@ -47,13 +48,21 @@ def test_find_program_workflow_feature_aware() -> None:
     assert "v1.6.7" in branch or branch.startswith("beacon/")
 
 
-def test_main_accepted_for_product_goal_admission() -> None:
+def test_main_accepted_for_product_goal_admission(tmp_path: Path) -> None:
     """On main (truth_canonical), product-goal lakes must not fail branch_alignment."""
+    tmp_repo = tmp_path / "main-repo"
+    tmp_repo.mkdir()
+    subprocess.run(["git", "init", "-b", "main"], cwd=tmp_repo, check=True, capture_output=True, text=True)
+    subprocess.run(["git", "config", "user.email", "test@example.com"], cwd=tmp_repo, check=True, capture_output=True, text=True)
+    subprocess.run(["git", "config", "user.name", "Beacon Test"], cwd=tmp_repo, check=True, capture_output=True, text=True)
+    (tmp_repo / "README.md").write_text("ok\n", encoding="utf-8")
+    subprocess.run(["git", "add", "README.md"], cwd=tmp_repo, check=True, capture_output=True, text=True)
+    subprocess.run(["git", "commit", "-m", "init"], cwd=tmp_repo, check=True, capture_output=True, text=True)
     result = validate_workspace_admission(
         ROOT,
         version="v1.6.7",
         feature="beacon-domain-fsm-authority-v167",
-        cwd=ROOT,
+        cwd=tmp_repo,
     )
     assert result.get("valid") is True, result
     assert result.get("reason_code") != "branch_alignment_required"

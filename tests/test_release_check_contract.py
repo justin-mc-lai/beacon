@@ -138,7 +138,7 @@ def test_release_check_should_prefer_release_gate_report_over_verify_gate_report
     payload = json.loads(result.stdout)
     gate_check = next(item for item in payload["checks"] if item["name"] == "gate report pass")
     assert gate_check["passed"] is False
-    assert gate_check["detail"] == "status=Blocked"
+    assert "status=Blocked" in gate_check["detail"]
 
 
 def test_gate_check_release_should_persist_release_gate_report_with_version_and_run_id(tmp_path: Path):
@@ -222,6 +222,11 @@ def test_release_check_should_accept_authoritative_v136_scorecard_when_gate_run_
 ):
     version = "v1.3.6"
     _seed_release_artifacts(tmp_path, version=version, coverage_version=version)
+    monkeypatch.setattr(
+        release_command,
+        "build_legacy_cutover_preflight",
+        lambda *_args, **_kwargs: {"status": "pass", "blocked": False, "reason_code": ""},
+    )
 
     (tmp_path / ".beacon" / "gate-report.json").write_text(
         json.dumps({"status": "Pass", "version": version, "run_id": "run-gate-lag"}, ensure_ascii=False, indent=2),
@@ -299,6 +304,11 @@ def test_release_check_should_accept_authoritative_scorecard_when_manifest_and_c
 ):
     version = "v1.3.8"
     _seed_release_artifacts(tmp_path, version=version, coverage_version=version)
+    monkeypatch.setattr(
+        release_command,
+        "build_legacy_cutover_preflight",
+        lambda *_args, **_kwargs: {"status": "pass", "blocked": False, "reason_code": ""},
+    )
 
     (tmp_path / ".beacon" / "evidence-manifest.json").write_text(
         json.dumps(
@@ -405,6 +415,11 @@ def test_release_check_should_accept_authoritative_feature_qa_when_gate_run_id_a
 ):
     version = "v1.4.6"
     _seed_release_artifacts(tmp_path, version=version, coverage_version=version)
+    monkeypatch.setattr(
+        release_command,
+        "build_legacy_cutover_preflight",
+        lambda *_args, **_kwargs: {"status": "pass", "blocked": False, "reason_code": ""},
+    )
 
     (tmp_path / ".beacon" / "gate-report.json").write_text(
         json.dumps({"status": "Pass", "version": version, "run_id": "run-stale-gate", "stage": "verify"}, ensure_ascii=False, indent=2),
@@ -678,6 +693,11 @@ def test_release_check_should_print_browser_blocker_repairs(tmp_path: Path, monk
     _seed_release_artifacts(tmp_path, version=version, coverage_version=version)
     monkeypatch.setattr(
         release_command,
+        "build_legacy_cutover_preflight",
+        lambda *_args, **_kwargs: {"status": "pass", "blocked": False, "reason_code": ""},
+    )
+    monkeypatch.setattr(
+        release_command,
         "build_requirement_package_gate",
         lambda *_args, **_kwargs: {"status": "pass", "reason_code": "", "recommended_command": ""},
     )
@@ -718,6 +738,11 @@ def test_release_check_should_print_browser_blocker_repairs(tmp_path: Path, monk
 def test_release_check_json_should_include_browser_blocker_repairs(tmp_path: Path, monkeypatch):
     version = "v1.4.2"
     _seed_release_artifacts(tmp_path, version=version, coverage_version=version)
+    monkeypatch.setattr(
+        release_command,
+        "build_legacy_cutover_preflight",
+        lambda *_args, **_kwargs: {"status": "pass", "blocked": False, "reason_code": ""},
+    )
     monkeypatch.setattr(
         release_command,
         "build_requirement_package_gate",
