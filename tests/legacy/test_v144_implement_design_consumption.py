@@ -10,7 +10,7 @@ from beacon.main import app
 from beacon.utils.revision_state import freeze_revision_state
 from beacon.utils.story_state import freeze_story_state, sync_story_state_from_docs
 from beacon.utils.technical_review_contract import materialize_technical_review_contract
-from tests.test_v144_prototype_projection import FEATURE, SLUG, VERSION, _prepare_requirement_package
+from tests.legacy.test_v144_prototype_projection import FEATURE, SLUG, VERSION, _prepare_requirement_package
 
 
 runner = CliRunner()

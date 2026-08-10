@@ -58,6 +58,19 @@ markers = [
     "historical_fixture: Beacon historical artifact readability tests",
     "migration: Beacon auditable migration behavior tests",
     "deprecated: Beacon deprecated command/API callability tests",
+    "legacy: Historical-line (v1.0-v1.5) tests archived under tests/legacy/",
+]
+norecursedirs = [
+    "*.egg",
+    ".*",
+    "_darcs",
+    "build",
+    "CVS",
+    "dist",
+    "node_modules",
+    "venv",
+    "{arch}",
+    "tests/legacy",
 ]
 
 [tool.beacon]
