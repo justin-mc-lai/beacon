@@ -32,9 +32,16 @@ def _seed_repo(root: Path, *, branch: str = "main") -> None:
     _git(["git", "commit", "-m", "init"], cwd=root)
 
 
-def _seed_frozen_truth(root: Path, *, feature: str = FEATURE, version: str = VERSION) -> None:
+def _seed_frozen_truth(
+    root: Path,
+    *,
+    feature: str = FEATURE,
+    version: str = VERSION,
+    services: list[str] | None = None,
+) -> None:
     d = root / "docs" / "beacon" / version / "features" / feature
     d.mkdir(parents=True, exist_ok=True)
+    participating = ", ".join(services or ["beacon"])
     (d / "truth.md").write_text(
         f"""---
 slug: {feature}
@@ -43,7 +50,7 @@ status: frozen
 revision_id: R1
 language: en
 parser_contract: beacon-feature-package-v2
-participating_services: [beacon]
+participating_services: [{participating}]
 git_canonical_branch: main
 ---
 
@@ -208,7 +215,7 @@ def test_monorepo_materializes_every_writable_service_worktree(tmp_path: Path) -
         ],
         per_service={"svc_a": "feature/v1.6.10", "svc_b": "feature/v1.6.10"},
     )
-    _seed_frozen_truth(parent)
+    _seed_frozen_truth(parent, services=["svc_a", "svc_b"])
     gate = ensure_implement_admission(
         parent, version=VERSION, feature=FEATURE, execution_surface="direct"
     )
@@ -253,7 +260,7 @@ def test_monorepo_rejects_mkdir_only_and_empty_gitlink_services(tmp_path: Path) 
         ],
         per_service={"svc_fake": "feature/v1.6.10", "svc_empty": "feature/v1.6.10"},
     )
-    _seed_frozen_truth(parent)
+    _seed_frozen_truth(parent, services=["svc_fake", "svc_empty"])
     gate = ensure_implement_admission(
         parent, version=VERSION, feature=FEATURE, execution_surface="direct"
     )

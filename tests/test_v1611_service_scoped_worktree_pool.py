@@ -65,7 +65,7 @@ status: frozen
 revision_id: R0
 language: zh
 parser_contract: beacon-feature-package-v2
-participating_services: [beacon]
+participating_services: [svc_a, svc_b]
 git_canonical_branch: main
 ---
 
