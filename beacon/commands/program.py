@@ -14,6 +14,7 @@ from beacon.utils.program_freeze_gate import (
     write_program_freeze_gate,
 )
 from beacon.utils.program_graph import feature_graph_path, load_feature_graph
+from beacon.utils.program_orchestrator import build_program_orchestrator_state, write_program_orchestrator_state
 from beacon.utils.versioning import resolve_target_version
 
 app = typer.Typer(
@@ -158,4 +159,32 @@ def freeze_cmd(
     else:
         typer.echo(json.dumps({"status": gate["status"], "blocked": gate["blocked"]}, ensure_ascii=False))
     if gate["blocked"]:
+        raise typer.Exit(code=2)
+
+
+@app.command("orchestrate")
+def orchestrate_cmd(
+    program: str = typer.Argument(..., help="Program slug"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", "--project-root", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Docs version"),
+    write_state: bool = typer.Option(True, "--write-state/--status-only", help="Persist orchestrator fields into program-run-state.json"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON payload"),
+) -> None:
+    """Compute program-level phased-lake progress and next deterministic action."""
+    project_root = Path(project).resolve() if project else Path.cwd()
+    payload = build_program_orchestrator_state(project_root, version=version, program_slug=program)
+    if write_state and not payload.get("errors"):
+        out_path = write_program_orchestrator_state(project_root, payload)
+        payload["program_run_state_path"] = str(out_path.relative_to(project_root))
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(json.dumps({
+            "status": payload.get("status"),
+            "current_lake": payload.get("current_lake"),
+            "current_stage": payload.get("current_stage"),
+            "next_lake": payload.get("next_lake"),
+            "resume_action": payload.get("resume_action"),
+        }, ensure_ascii=False))
+    if payload.get("blocked"):
         raise typer.Exit(code=2)

@@ -1251,6 +1251,59 @@ def verify_global_agents_beacon_skills(
     }
 
 
+
+def resolve_global_agent_surface(
+    *,
+    agent: str,
+    runtime_version: str,
+    docs_version: str | None = None,
+    home: Path | None = None,
+) -> dict[str, Any]:
+    """Resolve whether a host already has a usable global Beacon 1+6 surface."""
+    normalized = str(agent or "").strip().lower()
+    if normalized == "winsurf":
+        normalized = "windsurf"
+    source_root = packaged_beacon_skill_root()
+    expected_ids = [item.id for item in _expected_skill_projections(source_root, runtime_version=runtime_version, docs_version=docs_version)]
+    if normalized == "codex":
+        result = verify_global_agents_beacon_skills(home=home, brands=("beacon",))
+        return {
+            "status": result.get("status", "fail"),
+            "ok": bool(result.get("ok")),
+            "resolution_mode": "global-first" if result.get("ok") else "project-copy-required",
+            "surface_root": str(result.get("skills_root") or global_agents_skills_root(home)),
+            "expected_ids": expected_ids,
+            "missing": list(result.get("missing") or []),
+            "wrong_target": list(result.get("wrong_target") or []),
+            "leak_package_roots": list(result.get("leak_package_roots") or []),
+            "source": "global_agents_beacon_skills",
+        }
+    if normalized == "claude":
+        result = verify_global_claude_beacon_skills(home=home)
+        return {
+            "status": result.get("status", "fail"),
+            "ok": bool(result.get("ok")),
+            "resolution_mode": "global-first" if result.get("ok") else "project-copy-required",
+            "surface_root": str(result.get("skills_root") or global_claude_skills_root(home)),
+            "expected_ids": expected_ids,
+            "missing": list(result.get("missing") or []),
+            "wrong_target": list(result.get("wrong_target") or []),
+            "leak_package_roots": list(result.get("leak_package_roots") or []),
+            "source": "global_claude_beacon_skills",
+        }
+    return {
+        "status": "not_applicable",
+        "ok": False,
+        "resolution_mode": "project-copy-required",
+        "surface_root": "",
+        "expected_ids": expected_ids,
+        "missing": expected_ids,
+        "wrong_target": [],
+        "leak_package_roots": [],
+        "source": "project_local_only",
+    }
+
+
 def _remove_global_canonical_beacon_duplicates(skills_root: Path, *, dry_run: bool) -> list[str]:
     """Drop materialized beacon-* copies when a global host root already keeps canonical `beacon`."""
     removed: list[str] = []
@@ -2240,16 +2293,24 @@ def setup_agent_surface(
     agent_state = agents_state.get(target.agent) if isinstance(agents_state.get(target.agent), dict) else {}
     previously_managed = _managed_skill_ids(agent_state)
     v160_taxonomy = _uses_v160_taxonomy(docs_version, runtime_version)
+    global_surface = resolve_global_agent_surface(
+        agent=target.agent,
+        runtime_version=runtime_version,
+        docs_version=docs_version,
+    )
 
     installed: list[dict[str, Any]] = []
     skipped: list[dict[str, Any]] = []
     removed: list[str] = []
     warnings: list[str] = []
 
-    if not dry_run:
+    use_global_surface = bool(global_surface.get("ok")) and not force
+
+    if not dry_run and not use_global_surface:
         target.skills_root.mkdir(parents=True, exist_ok=True)
 
-    removed.extend(_remove_beacon_skill_backup_dirs(target.skills_root, dry_run=dry_run))
+    if target.skills_root.exists():
+        removed.extend(_remove_beacon_skill_backup_dirs(target.skills_root, dry_run=dry_run))
 
     source_names = {item.id for item in source_skills}
     stale_ids = sorted(previously_managed - source_names)
@@ -2259,20 +2320,44 @@ def setup_agent_surface(
             for item in target.skills_root.iterdir()
             if item.is_dir() and item.name in _V160_OLD_ALIAS_IDS
         })
-    for skill_id in stale_ids:
-        stale_path = target.skills_root / skill_id
-        # Symlinks (common for host flat installs) must use unlink, not rmtree.
-        if not (stale_path.exists() or stale_path.is_symlink()):
-            continue
-        removed.append(str(stale_path))
-        if not dry_run:
-            _remove_skill_path(stale_path)
+    if not use_global_surface:
+        for skill_id in stale_ids:
+            stale_path = target.skills_root / skill_id
+            # Symlinks (common for host flat installs) must use unlink, not rmtree.
+            if not (stale_path.exists() or stale_path.is_symlink()):
+                continue
+            removed.append(str(stale_path))
+            if not dry_run:
+                _remove_skill_path(stale_path)
 
     installed_state: list[dict[str, Any]] = []
     for source_skill in source_skills:
         skill_id = source_skill.id
         destination = target.skills_root / skill_id
         source_hash = source_skill.source_hash
+        if use_global_surface:
+            global_path = Path(str(global_surface.get("surface_root") or "")) / skill_id
+            action = "unchanged" if global_path.exists() else ("planned" if dry_run else "linked")
+            installed.append(
+                {
+                    "id": skill_id,
+                    "path": str(global_path),
+                    "action": action,
+                    "source_hash": source_hash,
+                    "source_kind": "global_symlink_resolution",
+                }
+            )
+            installed_state.append(
+                {
+                    "id": skill_id,
+                    "path": str(global_path),
+                    "source_path": source_skill.source_path,
+                    "source_kind": "global_symlink_resolution",
+                    "source_hash": source_hash,
+                }
+            )
+            continue
+
         destination_exists = destination.exists()
         destination_hash = _hash_directory(destination) if destination_exists else ""
         managed_existing = skill_id in previously_managed
@@ -2320,6 +2405,8 @@ def setup_agent_surface(
 
     skill_ids = [item.id for item in source_skills]
     rules_result = _sync_rules_file(target, runtime_version, docs_version, skill_ids, dry_run=dry_run)
+    if use_global_surface:
+        warnings.append(f"using global-first Beacon surface at {global_surface.get('surface_root')}")
     state_payload = {
         **state,
         "updated_at": now_iso(),
@@ -2336,6 +2423,8 @@ def setup_agent_surface(
                     source_skills[0].source_kind if v160_taxonomy and source_skills else "packaged_skill_directory"
                 ),
                 "taxonomy_version": _V160_TAXONOMY_VERSION if v160_taxonomy else "",
+                "resolution_mode": str(global_surface.get("resolution_mode") if use_global_surface else "project-copy"),
+                "global_surface_root": str(global_surface.get("surface_root") or "") if use_global_surface else "",
                 "installed_skills": installed_state,
             },
         },
@@ -2351,6 +2440,8 @@ def setup_agent_surface(
         "skipped": skipped,
         "removed": removed,
         "warnings": warnings,
+        "resolution_mode": str(global_surface.get("resolution_mode") if use_global_surface else "project-copy"),
+        "global_surface": global_surface if use_global_surface else {},
         "state": state_result,
         "rules": rules_result,
     }
@@ -2371,16 +2462,23 @@ def verify_agent_surface(
     source_skills = _expected_skill_projections(source_root, runtime_version=runtime_version, docs_version=docs_version)
     expected_ids = [item.id for item in source_skills]
     v160_taxonomy = _uses_v160_taxonomy(docs_version, runtime_version)
+    global_surface = resolve_global_agent_surface(
+        agent=target.agent,
+        runtime_version=runtime_version,
+        docs_version=docs_version,
+    )
+    use_global_surface = bool(global_surface.get("ok"))
     missing: list[str] = []
     drifted: list[str] = []
 
-    for source_skill in source_skills:
-        destination = target.skills_root / source_skill.id
-        if not destination.exists():
-            missing.append(source_skill.id)
-            continue
-        if source_skill.source_hash != _hash_directory(destination):
-            drifted.append(source_skill.id)
+    if not use_global_surface:
+        for source_skill in source_skills:
+            destination = target.skills_root / source_skill.id
+            if not destination.exists():
+                missing.append(source_skill.id)
+                continue
+            if source_skill.source_hash != _hash_directory(destination):
+                drifted.append(source_skill.id)
 
     checks: list[dict[str, Any]] = [
         {
@@ -2390,18 +2488,30 @@ def verify_agent_surface(
         },
         {
             "name": "surface_root_present",
-            "status": "pass" if target.skills_root.exists() else "fail",
-            "details": {"path": str(target.skills_root), "exists": target.skills_root.exists()},
+            "status": "pass" if (target.skills_root.exists() or use_global_surface) else "fail",
+            "details": {
+                "path": str(target.skills_root),
+                "exists": target.skills_root.exists(),
+                "resolution_mode": global_surface.get("resolution_mode") if use_global_surface else "project-copy",
+                "global_surface_root": str(global_surface.get("surface_root") or "") if use_global_surface else "",
+            },
         },
         {
             "name": "host_visible_skills_present",
-            "status": "pass" if not missing else "fail",
-            "details": {"expected": expected_ids, "missing": missing},
+            "status": "pass" if (use_global_surface or not missing) else "fail",
+            "details": {
+                "expected": expected_ids,
+                "missing": [] if use_global_surface else missing,
+                "resolution_mode": global_surface.get("resolution_mode") if use_global_surface else "project-copy",
+            },
         },
         {
             "name": "host_visible_skills_drift",
-            "status": "pass" if not drifted else ("fail" if strict else "warn"),
-            "details": {"drifted": drifted},
+            "status": "pass" if (use_global_surface or not drifted) else ("fail" if strict else "warn"),
+            "details": {
+                "drifted": [] if use_global_surface else drifted,
+                "resolution_mode": global_surface.get("resolution_mode") if use_global_surface else "project-copy",
+            },
         },
     ]
 
@@ -2465,13 +2575,25 @@ def verify_agent_surface(
             }
         )
 
+    checks.append(
+        {
+            "name": "global_surface_resolution",
+            "status": "pass" if use_global_surface else "warn",
+            "details": global_surface,
+        }
+    )
+
     state_path = root / _STATE_PATH
     state_exists = state_path.exists()
     checks.append(
         {
             "name": "agent_surface_state_projection",
-            "status": "pass" if state_exists else ("fail" if strict else "warn"),
-            "details": {"path": str(state_path), "exists": state_exists},
+            "status": "pass" if (state_exists or use_global_surface) else ("fail" if strict else "warn"),
+            "details": {
+                "path": str(state_path),
+                "exists": state_exists,
+                "satisfied_by": "global_surface_resolution" if use_global_surface and not state_exists else "project_state",
+            },
         }
     )
 
@@ -2522,5 +2644,7 @@ def verify_agent_surface(
         "strict": strict,
         "status": status,
         "ok": status != "fail",
+        "resolution_mode": global_surface.get("resolution_mode") if use_global_surface else "project-copy",
+        "global_surface": global_surface if use_global_surface else {},
         "checks": checks,
     }

@@ -24,6 +24,7 @@ from beacon.utils.product_goal_runtime import (
     goal_memory_reindex,
     goal_memory_search,
     goal_resume_pack,
+    goal_continue_run,
     goal_supervise_attach,
     goal_supervise_detach,
     load_goal_run,
@@ -203,6 +204,19 @@ def goal_tick(
     json_output: bool = typer.Option(False, "--json"),
 ) -> None:
     payload = tick_goal_run(_root(project), run_id, note=note, execute=execute)
+    _emit(payload, json_output)
+    raise typer.Exit(0 if not payload.get("blocked") else 2)
+
+
+@app.command("continue")
+def goal_continue(
+    run_id: str = typer.Option(..., "--run-id"),
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p"),
+    execute: bool = typer.Option(False, "--execute", help="Continue and dispatch stage workers when allowed"),
+    note: str = typer.Option("", "--note"),
+    json_output: bool = typer.Option(False, "--json"),
+) -> None:
+    payload = goal_continue_run(_root(project), run_id, execute=execute, note=note)
     _emit(payload, json_output)
     raise typer.Exit(0 if not payload.get("blocked") else 2)
 
