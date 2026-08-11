@@ -70,6 +70,9 @@ def test_program_orchestrate_surfaces_current_lake_and_next_action(tmp_path: Pat
     assert payload["current_lake"] == "lake-a"
     assert payload["current_stage"] == "implement"
     assert payload["next_action"] == "beacon-gen-implement:lake-a"
+    assert payload["next_action_target"] == "lake-a"
+    assert payload["next_action_source"].endswith("program-run-state.json")
+    assert "beacon implement run \"lake-a\"" in payload["recommended_command"]
 
 
 def test_program_orchestrate_cli_writes_program_run_state(tmp_path: Path) -> None:
@@ -116,6 +119,7 @@ def test_program_orchestrate_cli_writes_program_run_state(tmp_path: Path) -> Non
     payload = json.loads(result.stdout)
     assert payload["current_lake"] == "lake-a"
     assert payload["program_run_state_path"].endswith("program-run-state.json")
+    assert payload["next_action_target"] == "lake-a"
 
 
 def test_goal_continue_routes_through_program_orchestrator(tmp_path: Path) -> None:
@@ -186,3 +190,61 @@ def test_goal_continue_routes_through_program_orchestrator(tmp_path: Path) -> No
     payload = json.loads(result.stdout)
     assert payload.get("program_orchestrator", {}).get("current_lake") == "lake-a"
     assert payload.get("program_orchestrator", {}).get("next_action") == "beacon-gen-implement:lake-a"
+    assert payload.get("next_action_target") == "lake-a"
+    assert payload.get("next_action_source", "").endswith("program-run-state.json")
+
+
+def test_program_orchestrate_recommends_upstream_dependency_first(tmp_path: Path) -> None:
+    version = "v1.6.12"
+    program = "demo-program"
+    program_root = tmp_path / "docs" / "beacon" / version / "programs" / program
+    program_root.mkdir(parents=True)
+    (program_root / "feature-graph.json").write_text(
+        json.dumps(
+            {
+                "program_slug": program,
+                "version": version,
+                "scope_mode": "full_parity",
+                "lakes": [
+                    {"slug": "lake-a", "feature_slug": "lake-a", "depends_on": [], "parity_subset": ["a"], "status": "frozen", "truth_status": "frozen"},
+                    {"slug": "lake-b", "feature_slug": "lake-b", "depends_on": ["lake-a"], "parity_subset": ["b"], "status": "frozen", "truth_status": "frozen"},
+                ],
+            },
+            ensure_ascii=False,
+            indent=2,
+        ) + "\n",
+        encoding="utf-8",
+    )
+    (program_root / "program-manifest.md").write_text(
+        "---\nprogram_slug: demo-program\nversion: v1.6.12\nprogram_plan_frozen: true\nlake_package_truth_frozen: true\n---\n",
+        encoding="utf-8",
+    )
+    (program_root / "program-truth-freeze.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "program_slug": program,
+                "version": version,
+                "status": "frozen",
+                "blocked": False,
+                "lakes": [
+                    {"slug": "lake-a", "feature_slug": "lake-a", "status": "frozen", "truth_promotion_complete": True},
+                    {"slug": "lake-b", "feature_slug": "lake-b", "status": "frozen", "truth_promotion_complete": True},
+                ],
+            },
+            ensure_ascii=False,
+            indent=2,
+        ) + "\n",
+        encoding="utf-8",
+    )
+    # Mark lake-a complete so orchestrator advances to lake-b implement/qa contracts naturally.
+    (tmp_path / ".beacon" / "state").mkdir(parents=True, exist_ok=True)
+    (tmp_path / ".beacon" / "state" / "implementation-lake-a.json").write_text(json.dumps({"status": "passed"}) + "\n", encoding="utf-8")
+    qa_dir = tmp_path / ".beacon" / "qa" / "features" / "lake-a"
+    qa_dir.mkdir(parents=True, exist_ok=True)
+    (qa_dir / "status.json").write_text(json.dumps({"status": "passed", "evidence_done": True, "release_ready": True}) + "\n", encoding="utf-8")
+
+    payload = build_program_orchestrator_state(tmp_path, version=version, program_slug=program)
+    assert payload["current_lake"] == "lake-b"
+    assert payload["next_action_target"] == "lake-b"
+    assert "beacon implement run \"lake-b\"" in payload["recommended_command"]

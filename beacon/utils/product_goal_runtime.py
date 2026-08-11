@@ -785,6 +785,9 @@ def sync_program_orchestrator_route(
     out["program_orchestrator"] = state
     out["resume_action"] = str(state.get("resume_action") or out.get("resume_action") or "")
     out["next_action"] = str(state.get("next_action") or out.get("next_action") or "")
+    out["next_action_target"] = str(state.get("next_action_target") or out.get("next_action_target") or "")
+    out["next_action_source"] = str(state.get("next_action_source") or out.get("next_action_source") or "")
+    out["recommended_command"] = str(state.get("recommended_command") or out.get("recommended_command") or "")
     if str(state.get("current_lake") or "").strip():
         out["current_lake"] = str(state.get("current_lake") or "")
     if persist_run_state and state.get("program_slug") and state.get("version"):

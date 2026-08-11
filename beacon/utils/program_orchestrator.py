@@ -58,10 +58,6 @@ def build_program_orchestrator_state(project_root: Path | str, *, version: str, 
             'graph_path': str(graph_path.relative_to(root)),
         }
 
-    lake_lookup = {
-        feature_slug(str(row.get('slug') or row.get('feature_slug') or '')): row
-        for row in lakes
-    }
     rows: list[dict[str, Any]] = []
     passed_lakes: list[str] = []
     blocked_lakes: list[str] = []
@@ -152,16 +148,30 @@ def build_program_orchestrator_state(project_root: Path | str, *, version: str, 
 
     sea_completion_status = 'all_lakes_complete' if len(passed_lakes) == len(rows) else 'in_progress'
     next_action = ''
+    next_action_target = current_lake
+    recommended_command = ''
     if current_lake:
         if current_stage == 'truth':
             next_action = f'beacon-truth:{current_lake}'
+            recommended_command = f'beacon truth review {current_lake} --project-root {root} --version {resolved_version} --json'
         elif current_stage == 'implement':
             next_action = f'beacon-gen-implement:{current_lake}'
+            recommended_command = f'beacon implement run "{current_lake}" --project {root} --version {resolved_version}'
         elif current_stage == 'qa':
             next_action = f'beacon-eval-qa:{current_lake}'
+            recommended_command = f'beacon qa run "{current_lake}" --project {root} --version {resolved_version}'
         else:
             next_action = f'beacon-release:{current_lake}'
+            recommended_command = f'beacon release create {resolved_version} --project {root}'
 
+    if reason_code == 'await_upstream_lake_closure':
+        upstream = []
+        if rows:
+            upstream = list(rows[0].get('unclosed_dependencies') or [])
+        if upstream:
+            recommended_command = f'beacon implement run "{upstream[0]}" --project {root} --version {resolved_version}'
+
+    next_action_source = str(_run_state_path(root, resolved_version, str(graph.get('program_slug') or program_slug)).relative_to(root))
     blocking_reason_codes = {'await_upstream_lake_closure'}
     blocked = reason_code in blocking_reason_codes
     status = 'blocked' if blocked else ('pass' if sea_completion_status == 'all_lakes_complete' else 'in_progress')
@@ -182,6 +192,9 @@ def build_program_orchestrator_state(project_root: Path | str, *, version: str, 
         'resume_action': resume_action,
         'sea_completion_status': sea_completion_status,
         'next_action': next_action,
+        'next_action_target': next_action_target,
+        'next_action_source': next_action_source,
+        'recommended_command': recommended_command,
         'passed_lake_count': len(passed_lakes),
         'lake_count': len(rows),
         'lakes': rows,
