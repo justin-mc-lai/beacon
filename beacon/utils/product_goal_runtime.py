@@ -56,6 +56,8 @@ from beacon.utils.goal_stage_exit_gates import (
     apply_stage_exit_block,
     evaluate_stage_exit,
 )
+from beacon.utils.program_admission import resolve_program_lake_topology
+from beacon.utils.program_orchestrator import build_program_orchestrator_state, write_program_orchestrator_state
 from beacon.utils.goal_agent_driver import (
     attach_longrun_to_goal_run,
     detect_longrun_intent,
@@ -751,6 +753,63 @@ def load_goal_run(project_root: Path, run_id: str) -> dict[str, Any]:
     return data if isinstance(data, dict) else {"status": "blocked", "reason_code": REASON_NOT_FOUND}
 
 
+def _goal_program_slug(project_root: Path, payload: dict[str, Any]) -> str:
+    explicit = str(payload.get("program_slug") or "").strip()
+    if explicit:
+        return explicit
+    feature = str(payload.get("feature") or "").strip()
+    if not feature:
+        return ""
+    topo = resolve_program_lake_topology(project_root, version=str(payload.get("version") or "auto"), feature=feature)
+    return str(topo.get("program_slug") or "").strip()
+
+
+def sync_program_orchestrator_route(
+    project_root: Path,
+    payload: dict[str, Any],
+    *,
+    persist_run_state: bool = True,
+) -> dict[str, Any]:
+    """Attach program orchestrator state to goal payload when run belongs to a program."""
+    root = Path(project_root).expanduser().resolve()
+    out = dict(payload)
+    program_slug = _goal_program_slug(root, out)
+    if not program_slug:
+        return out
+    state = build_program_orchestrator_state(
+        root,
+        version=str(out.get("version") or "auto"),
+        program_slug=program_slug,
+    )
+    out["program_slug"] = str(state.get("program_slug") or program_slug)
+    out["program_orchestrator"] = state
+    out["resume_action"] = str(state.get("resume_action") or out.get("resume_action") or "")
+    out["next_action"] = str(state.get("next_action") or out.get("next_action") or "")
+    if str(state.get("current_lake") or "").strip():
+        out["current_lake"] = str(state.get("current_lake") or "")
+    if persist_run_state and state.get("program_slug") and state.get("version"):
+        write_program_orchestrator_state(root, state)
+    return out
+
+
+def goal_continue_run(
+    project_root: Path,
+    run_id: str,
+    *,
+    execute: bool = False,
+    note: str = "",
+) -> dict[str, Any]:
+    """Continue goal by refreshing program route then ticking one step."""
+    root = Path(project_root).expanduser().resolve()
+    payload = load_goal_run(root, run_id)
+    if payload.get("reason_code") == REASON_NOT_FOUND:
+        return payload
+    payload = sync_program_orchestrator_route(root, payload, persist_run_state=True)
+    payload = _save(root, payload)
+    cont_note = note or "continue_with_program_orchestrator"
+    return tick_goal_run(root, run_id, note=cont_note, execute=execute)
+
+
 def _save(project_root: Path, payload: dict[str, Any]) -> dict[str, Any]:
     run_id = str(payload.get("run_id") or "")
     payload["updated_at"] = now_iso()
@@ -798,6 +857,7 @@ def tick_goal_run(
     payload = load_goal_run(project_root, run_id)
     if payload.get("reason_code") == REASON_NOT_FOUND:
         return payload
+    payload = sync_program_orchestrator_route(project_root, payload, persist_run_state=True)
     stages = payload.get("stages") if isinstance(payload.get("stages"), list) else []
     current = str(payload.get("current_stage") or "")
     idx = next((i for i, s in enumerate(stages) if isinstance(s, dict) and s.get("stage") == current), 0)
@@ -1378,6 +1438,7 @@ def run_goal_facade(
             bridge_cmd=bridge_cmd,
         )
         payload["longrun"] = True
+    payload = sync_program_orchestrator_route(project_root, payload, persist_run_state=True)
     payload["entry_contract"] = public_entry_contract()
     payload["recommended_next"] = {
         "human": "continue via $beacon-goal or beacon goal tick/resume",

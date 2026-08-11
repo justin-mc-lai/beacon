@@ -199,7 +199,13 @@ def classify_project(project_root: Path | str) -> dict[str, Any]:
 
 def _project_release_baseline(root: Path, *, docs_versions: list[str], onboarding_docs: str = "") -> str:
     """Best-effort current project delivery baseline (not toolkit runtime)."""
-    if onboarding_docs:
+    runtime = _toolkit_runtime(root)
+    collapsed_onboarding = bool(
+        onboarding_docs
+        and normalize_version(onboarding_docs) == normalize_version(runtime)
+        and not runtime_docs_override_enabled()
+    )
+    if onboarding_docs and not collapsed_onboarding:
         return onboarding_docs
     if not docs_versions:
         return GREENFIELD_DEFAULT

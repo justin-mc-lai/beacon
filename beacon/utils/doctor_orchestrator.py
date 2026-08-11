@@ -19,6 +19,7 @@ from beacon.utils.version_aggregate_projection import (
     write_version_aggregate_projection,
 )
 from beacon.utils.versioning import describe_project_version_context, resolve_target_version
+from beacon.utils.version_defaults import project_docs_baseline
 from beacon.utils.writeback import acceptance_projection_transaction_contract
 from beacon.utils.workflow_memory import backfill_workflow_memory
 
@@ -203,7 +204,7 @@ def _guard_doctor_external_docs_axis(
     command_name: str,
 ) -> tuple[str | None, dict[str, Any]]:
     """Return (error_message_or_None, version_context) for external dual-axis collapse."""
-    from beacon.utils.version_defaults import guard_external_docs_axis
+    from beacon.utils.version_defaults import guard_external_docs_axis, project_docs_baseline
 
     version_context = ctx.version_context or {}
     docs_version = str(version_context.get("docs_version") or "")
@@ -1250,7 +1251,7 @@ def run_agent_surface_setup(
     """Materialize project-local Beacon agent surface files."""
     ctx = build_doctor_execution_context(project_root, version=version or None, dry_run=dry_run)
     version_context = ctx.version_context or {}
-    docs_version = str(version_context.get("docs_version", "") or ctx.runtime_version)
+    docs_version = str(version_context.get("docs_version", "") or project_docs_baseline(ctx.project_root))
     result = run_doctor_handler(
         "host.setup.agent-surface",
         project_root=ctx.project_root,
@@ -1282,7 +1283,7 @@ def run_agent_surface_verify(
 ) -> DoctorExecutionResult:
     """Verify project-local Beacon agent surface files."""
     ctx = build_doctor_execution_context(project_root, version=version or None, strict=strict)
-    docs_version = str((ctx.version_context or {}).get("docs_version", "") or ctx.runtime_version)
+    docs_version = str((ctx.version_context or {}).get("docs_version", "") or project_docs_baseline(ctx.project_root))
     result = run_doctor_handler(
         "host.verify.agent-surface",
         project_root=ctx.project_root,
@@ -1317,7 +1318,7 @@ def run_legacy_beacon_skills_cleanup(
 ) -> DoctorExecutionResult:
     """Remove backup and pre-taxonomy Beacon skill directories from agent hosts."""
     ctx = build_doctor_execution_context(project_root, version=version or None, dry_run=dry_run)
-    docs_version = str((ctx.version_context or {}).get("docs_version", "") or ctx.runtime_version)
+    docs_version = str((ctx.version_context or {}).get("docs_version", "") or project_docs_baseline(ctx.project_root))
     result = run_doctor_handler(
         "host.cleanup.legacy-beacon-skills",
         project_root=ctx.project_root,
