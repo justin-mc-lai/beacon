@@ -3746,7 +3746,137 @@
       },
       "attempt_id": "release@attempt-1",
       "attempt_seq": 1
+    },
+    {
+      "event_id": "b9896ff1-8c5c-4bae-8646-29a8c949b727",
+      "run_id": "run-20260817T024007Z-a89e",
+      "stage": "workflow",
+      "event": "hud_rendered",
+      "source": "workflow.hud",
+      "source_session_id": "run-20260817T024007Z-a89e",
+      "evidence_ref": [
+        ".beacon/state/workflow-hud/run-20260817T024007Z-a89e.json"
+      ],
+      "ts": "2026-08-17T02:40:07.656045+00:00",
+      "details": {
+        "next_stage": "prd",
+        "closure_complete": false
+      }
+    },
+    {
+      "event_id": "bcf9444b-aa09-42ea-bdb1-a4daf8e430f8",
+      "run_id": "run-20260817T024007Z-a89e",
+      "stage": "workflow",
+      "event": "workflow_planned",
+      "source": "workflow.start",
+      "source_session_id": "run-20260817T024007Z-a89e",
+      "evidence_ref": [],
+      "ts": "2026-08-17T02:40:07.660431+00:00",
+      "details": {
+        "feature": "demo-feature",
+        "version": "v1.6.12",
+        "skip_stages": []
+      }
+    },
+    {
+      "event_id": "a64708ea-bc07-41aa-bc3d-ccf34b9a0893",
+      "run_id": "run-20260817T024007Z-a89e",
+      "stage": "workflow",
+      "event": "baseline_snapshot_recorded",
+      "source": "workflow.v110.baseline",
+      "source_session_id": "run-20260817T024007Z-a89e",
+      "evidence_ref": [
+        ".beacon/state/spec-fingerprints/v1.6.12/run-20260817T024007Z-a89e.json",
+        ".beacon/state/baselines/v1.6.12/bl-run-20260817T024007Z-a89e-001.json",
+        ".beacon/state/change-impact/run-20260817T024007Z-a89e.json"
+      ],
+      "ts": "2026-08-17T02:40:07.667944+00:00",
+      "details": {
+        "baseline_id": "bl-run-20260817T024007Z-a89e-001",
+        "changed_layers": []
+      }
+    },
+    {
+      "event_id": "41731b3b-75c2-41f1-8d62-794a4ea6111f",
+      "run_id": "run-20260817T024016Z-c2b1",
+      "stage": "workflow",
+      "event": "hud_rendered",
+      "source": "workflow.hud",
+      "source_session_id": "run-20260817T024016Z-c2b1",
+      "evidence_ref": [
+        ".beacon/state/workflow-hud/run-20260817T024016Z-c2b1.json"
+      ],
+      "ts": "2026-08-17T02:40:17.249761+00:00",
+      "details": {
+        "next_stage": "prd",
+        "closure_complete": false
+      }
+    },
+    {
+      "event_id": "2e9230d6-6106-4c75-9868-85f9b333f88d",
+      "run_id": "run-20260817T024016Z-c2b1",
+      "stage": "workflow",
+      "event": "workflow_planned",
+      "source": "workflow.start",
+      "source_session_id": "run-20260817T024016Z-c2b1",
+      "evidence_ref": [],
+      "ts": "2026-08-17T02:40:17.253911+00:00",
+      "details": {
+        "feature": "登录功能",
+        "version": "v1.6.12",
+        "skip_stages": []
+      }
+    },
+    {
+      "event_id": "9b62bb06-3add-4497-b9f5-167e89a4ecd5",
+      "run_id": "run-20260817T024016Z-c2b1",
+      "stage": "workflow",
+      "event": "baseline_snapshot_recorded",
+      "source": "workflow.v110.baseline",
+      "source_session_id": "run-20260817T024016Z-c2b1",
+      "evidence_ref": [
+        ".beacon/state/spec-fingerprints/v1.6.12/run-20260817T024016Z-c2b1.json",
+        ".beacon/state/baselines/v1.6.12/bl-run-20260817T024016Z-c2b1-001.json",
+        ".beacon/state/change-impact/run-20260817T024016Z-c2b1.json"
+      ],
+      "ts": "2026-08-17T02:40:17.261460+00:00",
+      "details": {
+        "baseline_id": "bl-run-20260817T024016Z-c2b1-001",
+        "changed_layers": []
+      }
+    },
+    {
+      "event_id": "7174b8ff-2cdc-4d62-b8f2-af8b24735177",
+      "run_id": "release:v1.6.12",
+      "stage": "release",
+      "event": "release_decision_recorded",
+      "source": "release.check",
+      "source_session_id": "release:v1.6.12",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.12/.machine/change/v1.6.12.json",
+        "docs/beacon/v1.6.12/change/v1.6.12.md"
+      ],
+      "ts": "2026-08-17T02:50:33.189968+00:00",
+      "details": {
+        "action": "check",
+        "version": "v1.6.12",
+        "status": "blocked",
+        "failed_checks": [
+          "legacy cutover preflight",
+          "gate report version matches release version",
+          "coverage artifact ready",
+          "acceptance projection transaction contract",
+          "release scorecard ready",
+          "implement prompt boundary verdict pass"
+        ]
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
     }
   ],
-  "updated_at": "2026-08-09T05:13:46.627727+00:00"
+  "updated_at": "2026-08-17T02:50:33.189977+00:00"
 }

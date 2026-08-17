@@ -1,0 +1,20 @@
+{
+  "schema": "implement-evidence.v1",
+  "feature": "beacon-goal-loopx-hybrid-v1612",
+  "version": "v1.6.12",
+  "status": "recorded",
+  "generated_at": "2026-08-17T02:04:34Z",
+  "ac": "AC-003",
+  "command": "python3 -m pytest -q tests/test_v1612_goal_gates.py --tb=no && python3 -m pytest -q tests/test_v1612_goal_gates.py -k gate_resolve --tb=no",
+  "assertion": "exit 0",
+  "keywords": [
+    "user_gate_card",
+    "decision_cache",
+    "gate_resolve",
+    "illegal_transition_rejected"
+  ],
+  "artifacts": [
+    "beacon/utils/goal_gates.py",
+    "tests/test_v1612_goal_gates.py"
+  ]
+}

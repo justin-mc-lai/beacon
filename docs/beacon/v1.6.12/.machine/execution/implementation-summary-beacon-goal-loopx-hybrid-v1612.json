@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-goal-loopx-hybrid-v1612",
+  "feature_slug": "beacon-goal-loopx-hybrid-v1612",
+  "version": "v1.6.12",
+  "status": "completed",
+  "verdict": "pass",
+  "run_id": "run-recovery-20260817T020434",
+  "generated_at": "2026-08-17T02:04:34Z",
+  "evidence_refs": [
+    ".beacon/evidence/implement/beacon-goal-loopx-hybrid-v1612/AC-001.json",
+    ".beacon/evidence/implement/beacon-goal-loopx-hybrid-v1612/AC-002.json",
+    ".beacon/evidence/implement/beacon-goal-loopx-hybrid-v1612/AC-003.json",
+    ".beacon/evidence/implement/beacon-goal-loopx-hybrid-v1612/AC-004.json",
+    ".beacon/evidence/implement/beacon-goal-loopx-hybrid-v1612/AC-005.json",
+    ".beacon/evidence/implement/beacon-goal-loopx-hybrid-v1612/AC-006.json",
+    ".beacon/evidence/implement/beacon-goal-loopx-hybrid-v1612/GATES.json"
+  ],
+  "commands": [
+    "python3 -m pytest -q tests/test_v1612_goal_quota.py --tb=no",
+    "python3 -m pytest -q tests/test_v1612_goal_todos.py --tb=no",
+    "python3 -m pytest -q tests/test_v1612_goal_gates.py --tb=no",
+    "python3 -m pytest -q tests/test_v1612_goal_budget.py --tb=no",
+    "python3 -m pytest -q tests/test_v1612_goal_patterns.py --tb=no",
+    "python3 -m pytest -q tests/test_doctor_context_commands.py tests/test_v169_version_defaults_dual_axis.py --tb=no"
+  ],
+  "assertion": "26 canary + 16 guardrail 全绿，exit 0"
+}

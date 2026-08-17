@@ -18,10 +18,10 @@
   },
   "source_hashes": {
     "truth": "sha256:ca59370ff637e5e879573540ccba262a5d495ab0583fc1d5024c67b2872e7913",
-    "tests": "sha256:02b6b33c117ba2374df132d78bce59430eb13a953aa54f0b000d7cee4ad10c22",
-    "tasks": "sha256:21a26348ce02e1fd59aa962833ba3499f9dcaa5af55c39025c4f5af50ec5cc68",
+    "tests": "sha256:ff8197f1326cc84c0ac13defac39e76849268d1607f7b6cc8462838821cb65d8",
+    "tasks": "sha256:0f12db0c997837d9d6aa0730b0733c4ac039ad2d8fc3d9981955a7c801434023",
     "evidence": "sha256:187ec6bd66367e4010e759eb8d06f6e0f020ddf788f183d49087c050670b79ff",
-    "ac_matrix": "sha256:02b6b33c117ba2374df132d78bce59430eb13a953aa54f0b000d7cee4ad10c22",
+    "ac_matrix": "sha256:ff8197f1326cc84c0ac13defac39e76849268d1607f7b6cc8462838821cb65d8",
     "story_state": "sha256:171b788c2c38b541385e3d16fb9abbcd89941e56ca2224eac48ddcb537070487"
   },
   "lanes": {
@@ -35,7 +35,7 @@
         "command": "python3 -m pytest -q tests/test_v1612_goal_quota.py --tb=no",
         "assertion": "exit 0",
         "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-001/__RUN_ID__.json",
-        "evidence_status": "missing",
+        "evidence_status": "passed",
         "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
@@ -49,7 +49,7 @@
         "command": "python3 -m pytest -q tests/test_v1612_goal_todos.py --tb=no",
         "assertion": "exit 0",
         "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-002/__RUN_ID__.json",
-        "evidence_status": "missing",
+        "evidence_status": "passed",
         "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
@@ -63,7 +63,7 @@
         "command": "python3 -m pytest -q tests/test_v1612_goal_gates.py --tb=no",
         "assertion": "exit 0",
         "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-003/__RUN_ID__.json",
-        "evidence_status": "missing",
+        "evidence_status": "passed",
         "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
@@ -77,7 +77,7 @@
         "command": "python3 -m pytest -q tests/test_v1612_goal_budget.py --tb=no",
         "assertion": "exit 0",
         "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-004/__RUN_ID__.json",
-        "evidence_status": "missing",
+        "evidence_status": "passed",
         "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
@@ -91,7 +91,7 @@
         "command": "python3 -m pytest -q tests/test_v1612_goal_patterns.py --tb=no",
         "assertion": "exit 0",
         "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-005/__RUN_ID__.json",
-        "evidence_status": "missing",
+        "evidence_status": "passed",
         "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
@@ -105,7 +105,7 @@
         "command": "python3 -m pytest -q tests/test_doctor_context_commands.py tests/test_v169_version_defaults_dual_axis.py --tb=no",
         "assertion": "无新增失败（生命周期护栏）",
         "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-006/__RUN_ID__.json",
-        "evidence_status": "missing",
+        "evidence_status": "passed",
         "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
@@ -116,10 +116,10 @@
         "ac_theme": "user",
         "lane": "feature_release_facing",
         "layer": "contract",
-        "command": "python3 -c \"import json; s=json.load(open('.beacon/state/loop-goal/pgr-0dd73fcf5c9f.verification-bundle.json')); print('ok')\"",
+        "command": "python3 -c \"import json; s=json.load(open('.beacon/state/loop-goal/pgr-35ca10598c49.verification-bundle.json')); print('ok')\"",
         "assertion": "旧状态文件可读（向后兼容）",
         "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-007/__RUN_ID__.json",
-        "evidence_status": "missing",
+        "evidence_status": "passed",
         "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
@@ -133,7 +133,7 @@
         "command": "python3 -m pytest -q tests/test_v1612_goal_gates.py -k gate_resolve --tb=no",
         "assertion": "illegal transition（gate 未 resolve 直接推进）被拒绝",
         "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-008/__RUN_ID__.json",
-        "evidence_status": "missing",
+        "evidence_status": "passed",
         "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
@@ -171,7 +171,7 @@
       "command": "python3 -m pytest -q tests/test_v1612_goal_quota.py --tb=no",
       "assertion": "exit 0",
       "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-001/__RUN_ID__.json",
-      "evidence_status": "missing",
+      "evidence_status": "passed",
       "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
@@ -185,7 +185,7 @@
       "command": "python3 -m pytest -q tests/test_v1612_goal_todos.py --tb=no",
       "assertion": "exit 0",
       "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-002/__RUN_ID__.json",
-      "evidence_status": "missing",
+      "evidence_status": "passed",
       "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
@@ -199,7 +199,7 @@
       "command": "python3 -m pytest -q tests/test_v1612_goal_gates.py --tb=no",
       "assertion": "exit 0",
       "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-003/__RUN_ID__.json",
-      "evidence_status": "missing",
+      "evidence_status": "passed",
       "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
@@ -213,7 +213,7 @@
       "command": "python3 -m pytest -q tests/test_v1612_goal_budget.py --tb=no",
       "assertion": "exit 0",
       "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-004/__RUN_ID__.json",
-      "evidence_status": "missing",
+      "evidence_status": "passed",
       "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
@@ -227,7 +227,7 @@
       "command": "python3 -m pytest -q tests/test_v1612_goal_patterns.py --tb=no",
       "assertion": "exit 0",
       "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-005/__RUN_ID__.json",
-      "evidence_status": "missing",
+      "evidence_status": "passed",
       "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
@@ -241,7 +241,7 @@
       "command": "python3 -m pytest -q tests/test_doctor_context_commands.py tests/test_v169_version_defaults_dual_axis.py --tb=no",
       "assertion": "无新增失败（生命周期护栏）",
       "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-006/__RUN_ID__.json",
-      "evidence_status": "missing",
+      "evidence_status": "passed",
       "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
@@ -252,10 +252,10 @@
       "ac_theme": "user",
       "lane": "feature_release_facing",
       "layer": "contract",
-      "command": "python3 -c \"import json; s=json.load(open('.beacon/state/loop-goal/pgr-0dd73fcf5c9f.verification-bundle.json')); print('ok')\"",
+      "command": "python3 -c \"import json; s=json.load(open('.beacon/state/loop-goal/pgr-35ca10598c49.verification-bundle.json')); print('ok')\"",
       "assertion": "旧状态文件可读（向后兼容）",
       "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-007/__RUN_ID__.json",
-      "evidence_status": "missing",
+      "evidence_status": "passed",
       "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
@@ -269,7 +269,7 @@
       "command": "python3 -m pytest -q tests/test_v1612_goal_gates.py -k gate_resolve --tb=no",
       "assertion": "illegal transition（gate 未 resolve 直接推进）被拒绝",
       "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-008/__RUN_ID__.json",
-      "evidence_status": "missing",
+      "evidence_status": "passed",
       "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
@@ -330,6 +330,6 @@
   "status": "pass",
   "blocked": false,
   "reason_codes": [],
-  "generated_at": "2026-08-09T05:15:01.787159+00:00",
+  "generated_at": "2026-08-17T02:50:27.460790+00:00",
   "index_path": "docs/beacon/v1.6.12/.machine/testing/test-contract-index.json"
 }

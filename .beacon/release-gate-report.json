@@ -2,22 +2,148 @@
   "stage": "release",
   "mode": "strict",
   "profile": "release-global",
-  "status": "Pass",
-  "issues": [],
+  "status": "Blocked",
+  "issues": [
+    {
+      "reason_code": "ac_tc_evidence_chain_broken",
+      "severity": "critical",
+      "message": "AC→TC→evidence chain broken for test cases: ['TC-001', 'TC-002', 'TC-003', 'TC-004', 'TC-005', 'TC-006', 'TC-007', 'TC-008']",
+      "blocked": true
+    },
+    {
+      "reason_code": "acceptance_projection_missing",
+      "blocked": true,
+      "message": "qa acceptance transaction is missing one or more sinks",
+      "details": {
+        "machine_ref": "docs/beacon/v1.6.12/.machine/execution/qa-acceptance-beacon-goal-loopx-hybrid-v1612.json",
+        "markdown_ref": "",
+        "runtime_projection_ref": ".beacon/transactions/qa-acceptance-beacon-goal-loopx-hybrid-v1612.json"
+      }
+    },
+    {
+      "reason_code": "coverage_incomplete",
+      "severity": "critical",
+      "message": "coverage is incomplete: story=0/0, ac=0/0, tc=0/0",
+      "blocked": true,
+      "details": {
+        "version": "v1.6.12",
+        "feature": "",
+        "planned_story": 0,
+        "implemented_story": 0,
+        "story_coverage": 0.0,
+        "total_ac": 0,
+        "tested_ac": 0,
+        "ac_coverage": 0.0,
+        "total_tc": 0,
+        "executed_tc": 0,
+        "tc_coverage": 0.0,
+        "full_coverage": false,
+        "matrix_errors": []
+      }
+    },
+    {
+      "reason_code": "technical_review_contract_missing",
+      "severity": "critical",
+      "message": "implementation plan gate blocked for feature beacon-goal-loopx-hybrid-v1612",
+      "blocked": true,
+      "details": {
+        "recommended_command": "docs/beacon/v1.6.12/.machine/execution/deterministic-implementation-contract-beacon-goal-loopx-hybrid-v1612.json",
+        "plan_path": "docs/beacon/v1.6.12/.machine/execution/implementation-plan-beacon-goal-loopx-hybrid-v1612.json",
+        "architecture_blueprint_projection_gate": {},
+        "technical_review_gate": {
+          "schema_version": "1.0",
+          "feature": "beacon-goal-loopx-hybrid-v1612",
+          "feature_slug": "beacon-goal-loopx-hybrid-v1612",
+          "version": "v1.6.12",
+          "runtime_version": "v1.6.12",
+          "runtime_capability_line": "v1.3.1",
+          "required": true,
+          "contract_json_path": "docs/beacon/v1.6.12/.machine/execution/deterministic-implementation-contract-beacon-goal-loopx-hybrid-v1612.json",
+          "contract_markdown_path": "docs/beacon/v1.6.12/execution/deterministic-implementation-contract-beacon-goal-loopx-hybrid-v1612.md",
+          "state_path": ".beacon/state/technical-review-contract-beacon-goal-loopx-hybrid-v1612.json",
+          "blocked": true,
+          "status": "blocked",
+          "reason_code": "technical_review_contract_missing"
+        }
+      }
+    },
+    {
+      "reason_code": "implement_prompt_boundary_missing",
+      "severity": "critical",
+      "message": "implement prompt boundary verdict is not release-safe for feature beacon-goal-loopx-hybrid-v1612: status=missing, classification=-, surface=-",
+      "blocked": true,
+      "details": {
+        "required": true,
+        "status": "missing",
+        "blocked": true,
+        "classification": "",
+        "reason_code": "implement_prompt_boundary_missing",
+        "next_action": "",
+        "recommended_command": "",
+        "surface": "",
+        "prompt": "",
+        "matched_signals": []
+      }
+    },
+    {
+      "reason_code": "technical_review_state_missing",
+      "severity": "critical",
+      "message": "technical review state missing for feature beacon-goal-loopx-hybrid-v1612",
+      "blocked": true
+    },
+    {
+      "reason_code": "technical_review_contract_missing",
+      "severity": "critical",
+      "message": "technical review gate blocked for feature beacon-goal-loopx-hybrid-v1612",
+      "blocked": true,
+      "details": {
+        "validation": {}
+      }
+    },
+    {
+      "reason_code": "technical_review_not_approved",
+      "severity": "critical",
+      "message": "technical review contract not approved for feature beacon-goal-loopx-hybrid-v1612",
+      "blocked": true
+    },
+    {
+      "reason_code": "release_confidence_below_threshold",
+      "severity": "critical",
+      "message": "release confidence floor 0.0 < 0.85",
+      "blocked": true
+    },
+    {
+      "reason_code": "acceptance_projection_missing",
+      "blocked": true,
+      "message": "qa acceptance transaction is missing one or more sinks",
+      "details": {
+        "machine_ref": "docs/beacon/v1.6.12/.machine/execution/qa-acceptance-beacon-goal-loopx-hybrid-v1612.json",
+        "markdown_ref": "",
+        "runtime_projection_ref": ".beacon/transactions/qa-acceptance-beacon-goal-loopx-hybrid-v1612.json"
+      }
+    },
+    {
+      "reason_code": "workflow_memory_transaction_missing",
+      "severity": "critical",
+      "message": "workflow memory transaction record missing for resolved run; completion truth absent",
+      "blocked": true,
+      "details": {}
+    }
+  ],
   "doc_impl_verdict": {
     "enabled": true,
-    "version": "v1.6.11",
+    "version": "v1.6.12",
     "status": "pass",
     "baseline_present": true,
-    "baseline_id": "bl-run-20260727T215019744016-004",
-    "expected_spec_fingerprint": "0d2dd1599c76d8edb70dff67c1319ae688923e162cde8ad96675c5d248470679",
-    "actual_spec_fingerprint": "0d2dd1599c76d8edb70dff67c1319ae688923e162cde8ad96675c5d248470679",
+    "baseline_id": "bl-run-20260817T024016Z-c2b1-001",
+    "expected_spec_fingerprint": "5a2faf10605e4fd7cbb6f0fba7f8b63538624481cb66065a9360f7d2fd4f7085",
+    "actual_spec_fingerprint": "5a2faf10605e4fd7cbb6f0fba7f8b63538624481cb66065a9360f7d2fd4f7085",
     "reason_codes": []
   },
-  "blocked_count": 0,
+  "blocked_count": 11,
   "force": false,
   "dry_run": false,
-  "version": "v1.6.11",
-  "run_id": "run-20260728T195316279234",
-  "updated_at": "2026-07-28T12:13:02.325886+00:00"
+  "version": "v1.6.12",
+  "run_id": "run-20260817T105011490444",
+  "updated_at": "2026-08-17T02:57:58.724945+00:00"
 }

@@ -1,0 +1,96 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-goal-loopx-hybrid-v1612",
+  "feature_slug": "beacon-goal-loopx-hybrid-v1612",
+  "version": "v1.6.12",
+  "generated_at": "2026-08-17T02:50:00Z",
+  "compiler": {
+    "requested_mode": "auto",
+    "effective_mode": "rule",
+    "generator_mode": "rule",
+    "fallback_reason": "",
+    "model": "beacon-test-case-compiler"
+  },
+  "entries": [
+    {
+      "tc_id": "TC-001",
+      "ac_id": "AC-001",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_v1612_goal_quota.py --tb=no",
+      "assertion": "exit 0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-001/run-recovery-20260817T020434.json",
+      "status": "pass",
+      "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md"
+    },
+    {
+      "tc_id": "TC-002",
+      "ac_id": "AC-002",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_v1612_goal_todos.py --tb=no",
+      "assertion": "exit 0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-002/run-recovery-20260817T020434.json",
+      "status": "pass",
+      "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md"
+    },
+    {
+      "tc_id": "TC-003",
+      "ac_id": "AC-003",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_v1612_goal_gates.py --tb=no",
+      "assertion": "exit 0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-003/run-recovery-20260817T020434.json",
+      "status": "pass",
+      "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md"
+    },
+    {
+      "tc_id": "TC-004",
+      "ac_id": "AC-004",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_v1612_goal_budget.py --tb=no",
+      "assertion": "exit 0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-004/run-recovery-20260817T020434.json",
+      "status": "pass",
+      "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md"
+    },
+    {
+      "tc_id": "TC-005",
+      "ac_id": "AC-005",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_v1612_goal_patterns.py --tb=no",
+      "assertion": "exit 0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-005/run-recovery-20260817T020434.json",
+      "status": "pass",
+      "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md"
+    },
+    {
+      "tc_id": "TC-006",
+      "ac_id": "AC-006",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_doctor_context_commands.py tests/test_v169_version_defaults_dual_axis.py --tb=no",
+      "assertion": "无新增失败（生命周期护栏）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-006/run-recovery-20260817T020434.json",
+      "status": "pass",
+      "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md"
+    },
+    {
+      "tc_id": "TC-007",
+      "ac_id": "AC-006",
+      "layer": "contract",
+      "command": "python3 -c \"import json; s=json.load(open('.beacon/state/loop-goal/pgr-35ca10598c49.verification-bundle.json')); print('ok')\"",
+      "assertion": "旧状态文件可读（向后兼容）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-007/run-recovery-20260817T020434.json",
+      "status": "pass",
+      "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md"
+    },
+    {
+      "tc_id": "TC-008",
+      "ac_id": "AC-003",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_v1612_goal_gates.py -k gate_resolve --tb=no",
+      "assertion": "illegal transition（gate 未 resolve 直接推进）被拒绝",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-goal-loopx-hybrid-v1612/tc-008/run-recovery-20260817T020434.json",
+      "status": "pass",
+      "source": "feature-package:docs/beacon/v1.6.12/features/beacon-goal-loopx-hybrid-v1612/tests.md"
+    }
+  ]
+}
