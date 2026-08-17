@@ -3,11 +3,11 @@
   "feature": "beacon-harness-program-plan-v161",
   "feature_slug": "beacon-harness-program-plan-v161",
   "version": "v1.6.1",
-  "status": "pass",
-  "blocked": false,
-  "reason_code": "",
-  "generated_at": "2026-06-26T09:35:31.503748+00:00",
-  "package_dir": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161",
+  "status": "blocked",
+  "blocked": true,
+  "reason_code": "feature_package_validation_failed",
+  "generated_at": "2026-08-17T02:43:18.083230+00:00",
+  "package_dir": "docs/beacon/archive/v1.6.1/features/beacon-harness-program-plan-v161",
   "truth_frontmatter": {
     "slug": "beacon-harness-program-plan-v161",
     "version": "v1.6.1",
@@ -17,9 +17,9 @@
     "language": "zh",
     "change_reason": "R4 implementation-first-reconciliation refreeze；承接 R3 真实 program FSM + goal 单入口 + loop v161 对接",
     "canonical_refs": {
-      "prd": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
-      "user_story": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
-      "test_case": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md"
+      "prd": "docs/beacon/archive/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
+      "user_story": "docs/beacon/archive/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
+      "test_case": "docs/beacon/archive/v1.6.1/features/beacon-harness-program-plan-v161/tests.md"
     },
     "parser_contract": "beacon-feature-package-v1",
     "truth_source_model": "feature_package_authoritative",
@@ -32,8 +32,312 @@
   "evidence_row_count": 11,
   "gate_authority": "canonical_surfaces_preserved",
   "checkbox_gate_bypass": false,
+  "task_evidence_gate": {
+    "pass": false,
+    "checked_ok": 0,
+    "checked_bad": 0,
+    "unbound": 21,
+    "findings": [
+      {
+        "kind": "task_binding_missing",
+        "text": "LINE-5 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+        "task_id": "LINE-5"
+      },
+      {
+        "kind": "task_binding_missing",
+        "text": "LINE-6 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+        "task_id": "LINE-6"
+      },
+      {
+        "kind": "task_binding_missing",
+        "text": "LINE-7 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+        "task_id": "LINE-7"
+      },
+      {
+        "kind": "task_binding_missing",
+        "text": "LINE-8 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+        "task_id": "LINE-8"
+      },
+      {
+        "kind": "task_binding_missing",
+        "text": "LINE-12 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+        "task_id": "LINE-12"
+      },
+      {
+        "kind": "task_binding_missing",
+        "text": "LINE-13 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+        "task_id": "LINE-13"
+      },
+      {
+        "kind": "task_binding_missing",
+        "text": "LINE-17 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+        "task_id": "LINE-17"
+      },
+      {
+        "kind": "task_binding_missing",
+        "text": "LINE-18 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+        "task_id": "LINE-18"
+      },
+      {
+        "kind": "task_binding_missing",
+        "text": "LINE-22 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+        "task_id": "LINE-22"
+      },
+      {
+        "kind": "task_binding_missing",
+        "text": "LINE-23 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+        "task_id": "LINE-23"
+      },
+      {
+        "kind": "task_binding_missing",
+        "text": "LINE-24 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+        "task_id": "LINE-24"
+      },
+      {
+        "kind": "task_binding_missing",
+        "text": "LINE-28 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+        "task_id": "LINE-28"
+      },
+      {
+        "kind": "task_binding_missing",
+        "text": "LINE-29 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+        "task_id": "LINE-29"
+      },
+      {
+        "kind": "task_binding_missing",
+        "text": "LINE-30 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+        "task_id": "LINE-30"
+      },
+      {
+        "kind": "task_binding_missing",
+        "text": "LINE-31 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+        "task_id": "LINE-31"
+      },
+      {
+        "kind": "task_binding_missing",
+        "text": "LINE-35 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+        "task_id": "LINE-35"
+      },
+      {
+        "kind": "task_binding_missing",
+        "text": "LINE-39 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+        "task_id": "LINE-39"
+      },
+      {
+        "kind": "task_binding_missing",
+        "text": "LINE-40 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+        "task_id": "LINE-40"
+      },
+      {
+        "kind": "task_binding_missing",
+        "text": "LINE-41 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+        "task_id": "LINE-41"
+      },
+      {
+        "kind": "task_binding_missing",
+        "text": "LINE-42 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+        "task_id": "LINE-42"
+      },
+      {
+        "kind": "task_binding_missing",
+        "text": "LINE-43 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+        "task_id": "LINE-43"
+      }
+    ],
+    "reason_code": "task_checkbox_evidence_failed"
+  },
   "evidence_gate_truth": false,
-  "diagnostics": [],
+  "diagnostics": [
+    {
+      "severity": "error",
+      "code": "task_binding_missing",
+      "path": "docs/beacon/archive/v1.6.1/features/beacon-harness-program-plan-v161/tasks.md",
+      "text": "LINE-5 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+      "task_id": "LINE-5",
+      "evidence_path": null,
+      "ac_id": null
+    },
+    {
+      "severity": "error",
+      "code": "task_binding_missing",
+      "path": "docs/beacon/archive/v1.6.1/features/beacon-harness-program-plan-v161/tasks.md",
+      "text": "LINE-6 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+      "task_id": "LINE-6",
+      "evidence_path": null,
+      "ac_id": null
+    },
+    {
+      "severity": "error",
+      "code": "task_binding_missing",
+      "path": "docs/beacon/archive/v1.6.1/features/beacon-harness-program-plan-v161/tasks.md",
+      "text": "LINE-7 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+      "task_id": "LINE-7",
+      "evidence_path": null,
+      "ac_id": null
+    },
+    {
+      "severity": "error",
+      "code": "task_binding_missing",
+      "path": "docs/beacon/archive/v1.6.1/features/beacon-harness-program-plan-v161/tasks.md",
+      "text": "LINE-8 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+      "task_id": "LINE-8",
+      "evidence_path": null,
+      "ac_id": null
+    },
+    {
+      "severity": "error",
+      "code": "task_binding_missing",
+      "path": "docs/beacon/archive/v1.6.1/features/beacon-harness-program-plan-v161/tasks.md",
+      "text": "LINE-12 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+      "task_id": "LINE-12",
+      "evidence_path": null,
+      "ac_id": null
+    },
+    {
+      "severity": "error",
+      "code": "task_binding_missing",
+      "path": "docs/beacon/archive/v1.6.1/features/beacon-harness-program-plan-v161/tasks.md",
+      "text": "LINE-13 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+      "task_id": "LINE-13",
+      "evidence_path": null,
+      "ac_id": null
+    },
+    {
+      "severity": "error",
+      "code": "task_binding_missing",
+      "path": "docs/beacon/archive/v1.6.1/features/beacon-harness-program-plan-v161/tasks.md",
+      "text": "LINE-17 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+      "task_id": "LINE-17",
+      "evidence_path": null,
+      "ac_id": null
+    },
+    {
+      "severity": "error",
+      "code": "task_binding_missing",
+      "path": "docs/beacon/archive/v1.6.1/features/beacon-harness-program-plan-v161/tasks.md",
+      "text": "LINE-18 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+      "task_id": "LINE-18",
+      "evidence_path": null,
+      "ac_id": null
+    },
+    {
+      "severity": "error",
+      "code": "task_binding_missing",
+      "path": "docs/beacon/archive/v1.6.1/features/beacon-harness-program-plan-v161/tasks.md",
+      "text": "LINE-22 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+      "task_id": "LINE-22",
+      "evidence_path": null,
+      "ac_id": null
+    },
+    {
+      "severity": "error",
+      "code": "task_binding_missing",
+      "path": "docs/beacon/archive/v1.6.1/features/beacon-harness-program-plan-v161/tasks.md",
+      "text": "LINE-23 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+      "task_id": "LINE-23",
+      "evidence_path": null,
+      "ac_id": null
+    },
+    {
+      "severity": "error",
+      "code": "task_binding_missing",
+      "path": "docs/beacon/archive/v1.6.1/features/beacon-harness-program-plan-v161/tasks.md",
+      "text": "LINE-24 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+      "task_id": "LINE-24",
+      "evidence_path": null,
+      "ac_id": null
+    },
+    {
+      "severity": "error",
+      "code": "task_binding_missing",
+      "path": "docs/beacon/archive/v1.6.1/features/beacon-harness-program-plan-v161/tasks.md",
+      "text": "LINE-28 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+      "task_id": "LINE-28",
+      "evidence_path": null,
+      "ac_id": null
+    },
+    {
+      "severity": "error",
+      "code": "task_binding_missing",
+      "path": "docs/beacon/archive/v1.6.1/features/beacon-harness-program-plan-v161/tasks.md",
+      "text": "LINE-29 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+      "task_id": "LINE-29",
+      "evidence_path": null,
+      "ac_id": null
+    },
+    {
+      "severity": "error",
+      "code": "task_binding_missing",
+      "path": "docs/beacon/archive/v1.6.1/features/beacon-harness-program-plan-v161/tasks.md",
+      "text": "LINE-30 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+      "task_id": "LINE-30",
+      "evidence_path": null,
+      "ac_id": null
+    },
+    {
+      "severity": "error",
+      "code": "task_binding_missing",
+      "path": "docs/beacon/archive/v1.6.1/features/beacon-harness-program-plan-v161/tasks.md",
+      "text": "LINE-31 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+      "task_id": "LINE-31",
+      "evidence_path": null,
+      "ac_id": null
+    },
+    {
+      "severity": "error",
+      "code": "task_binding_missing",
+      "path": "docs/beacon/archive/v1.6.1/features/beacon-harness-program-plan-v161/tasks.md",
+      "text": "LINE-35 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+      "task_id": "LINE-35",
+      "evidence_path": null,
+      "ac_id": null
+    },
+    {
+      "severity": "error",
+      "code": "task_binding_missing",
+      "path": "docs/beacon/archive/v1.6.1/features/beacon-harness-program-plan-v161/tasks.md",
+      "text": "LINE-39 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+      "task_id": "LINE-39",
+      "evidence_path": null,
+      "ac_id": null
+    },
+    {
+      "severity": "error",
+      "code": "task_binding_missing",
+      "path": "docs/beacon/archive/v1.6.1/features/beacon-harness-program-plan-v161/tasks.md",
+      "text": "LINE-40 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+      "task_id": "LINE-40",
+      "evidence_path": null,
+      "ac_id": null
+    },
+    {
+      "severity": "error",
+      "code": "task_binding_missing",
+      "path": "docs/beacon/archive/v1.6.1/features/beacon-harness-program-plan-v161/tasks.md",
+      "text": "LINE-41 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+      "task_id": "LINE-41",
+      "evidence_path": null,
+      "ac_id": null
+    },
+    {
+      "severity": "error",
+      "code": "task_binding_missing",
+      "path": "docs/beacon/archive/v1.6.1/features/beacon-harness-program-plan-v161/tasks.md",
+      "text": "LINE-42 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+      "task_id": "LINE-42",
+      "evidence_path": null,
+      "ac_id": null
+    },
+    {
+      "severity": "error",
+      "code": "task_binding_missing",
+      "path": "docs/beacon/archive/v1.6.1/features/beacon-harness-program-plan-v161/tasks.md",
+      "text": "LINE-43 missing ac=/evidence= binding — replan+freeze new truth (no old-shape compat; see global-boundaries §2.1)",
+      "task_id": "LINE-43",
+      "evidence_path": null,
+      "ac_id": null
+    }
+  ],
   "truth_map_contract": "beacon-truth-map-v1",
   "truth_source_model": "feature_package_authoritative",
   "truth_package_contract": "beacon-feature-package-v2",
@@ -42,16 +346,16 @@
   "truth_authority": "markdown_feature_package",
   "json_authority": false,
   "source_paths": {
-    "truth": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
-    "tests": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
-    "tasks": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tasks.md",
-    "evidence": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/evidence.md"
+    "truth": "docs/beacon/archive/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
+    "tests": "docs/beacon/archive/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
+    "tasks": "docs/beacon/archive/v1.6.1/features/beacon-harness-program-plan-v161/tasks.md",
+    "evidence": "docs/beacon/archive/v1.6.1/features/beacon-harness-program-plan-v161/evidence.md"
   },
   "source_hashes": {
-    "truth": "ee1d72bc76c07118270f6c8ec6c398b792db3b7841db5521e4aa8c6de0cbd0ee",
-    "tests": "cc2991f2d0686f16f7074abd3a20e6b7b1e00a9b9998775c64862494408c8232",
-    "tasks": "c3f2910099200f59f9440d2a2eb2976297323a3605d9286e49cbcdceeb1b3a6c",
-    "evidence": "e182072126cdedddad282f43549065b0c2ae18e0d16bfd3bbafbcc09228a315d"
+    "truth": "fd25d6164e187312d717d4628eba75acaf8382f7cab138a7cad2f4d5bfaab812",
+    "tests": "17fac5b62e647cc7cf8782f9dd10e031a0816d6367c3d2d85ef686d149ad6f9f",
+    "tasks": "393dc6389aae2b3f9a46b480d52e63bcddc5d103ed9f4522204809d79f501db3",
+    "evidence": "3c3af7e8ce772c630adad783bc22c640e37794d0048241d7375faa4b14cbd992"
   },
   "runtime_json_requires_markdown_twin": false
 }

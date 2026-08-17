@@ -22,4 +22,17 @@
 ### Pending (requires local git CLI — cannot be done via web editor)
 - Remove already-tracked generated artifacts: `git rm -r --cached test-results/ beacon.egg-info/ .reasonix/truncated-results/ .omc/sessions/`
 - Fix README.md version references: `sed -i 's/v1\.6\.0/v1\.6\.1/g' README.md && git commit -m "docs(p0): update README version v1.6.0 -> v1.6.1"`
+## [1.6.12] — 2026-08-17 · main delivery-surface recovery + goal LoopX acceptance closure
 
+### Fixed
+- Restore deleted `pyproject.toml`, `tests/` tree (484 files incl. 25 v1.6.12 goal canaries), and `scripts/` from the pre-checkpoint snapshot; main is installable and testable again.
+- Track the canonical `skills/beacon/` package (1+6 public surface + patterns/incidents) in git; remove implicit untracked symlink dependency.
+- Close the v1.6.12 goal feature acceptance: 26 canary + 16 life-cycle guardrail tests green on main, implement/QA evidence recorded, feature-graph + authenticated program freeze pass, program state aligned (`program_frozen`/all-lakes-complete).
+- Rebuild `test-contract-index` from frozen truth; fix TC-007 to reference the real tracked legacy state bundle.
+- Align version surfaces: onboarding/python/README to v1.6.12, catalog active window converged to v1.6.10/11/12, stale top-level delivery roots relocated to `docs/beacon/archive/`.
+- Add ignore rules for `packages/**` build artifacts and `*.egg-info/`; untrack generated backups and egg-info metadata.
+
+### Notes
+- Release gate: still awaits human confirmation on v1.6.12 (loop-goal release is human-gated).
+
+## [1.6.7] — 2026-07-16 · version-surface + catalog cutover

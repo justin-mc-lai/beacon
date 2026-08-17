@@ -15,7 +15,7 @@ Beacon 当前运行时发布口径是 **v1.6.12**。
 
 - **CLI 入口**：`beacon <subcommand>`
 - **标准 skill 包**：`skills/beacon/`
-- **当前包版本**：`1.6.7`
+- **当前包版本**：`1.6.12`
 - **最新已接受文档线**：`v1.6.12`
 - **文档主源**：`docs/beacon/<version>/`
 - **状态目录**：`.beacon/`

@@ -6,6 +6,7 @@
   "pass": true,
   "blocked": false,
   "review_gate_pass": true,
+  "abc_pass": true,
   "reason_code": "",
   "domain_required": true,
   "checks": {
@@ -202,6 +203,30 @@
           "TC-PAY-034"
         ]
       }
+    },
+    "C_domain_exec_layer": {
+      "pass": true,
+      "check": "C_exec",
+      "name": "domain_exec_layer",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "exec_tc_count": 1,
+      "exec_tc_ids": [
+        "TC-PAY-030"
+      ],
+      "domain_kind": "business"
+    },
+    "D_fill_depth": {
+      "pass": true,
+      "check": "D",
+      "name": "fill_depth",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "package_maturity": "unspecified",
+      "domain_kind": "business",
+      "business_domain": true
     }
   },
   "findings": [],
@@ -209,9 +234,10 @@
     "rule": "humanizer_only_after_abc_pass_before_freeze",
     "abc_pass": true,
     "allowed_now": true,
-    "note": "Polish L0/narrative only; preserve_machine_fields=true"
+    "fill_depth_pass": true,
+    "note": "Polish L0/narrative only after A/B/C; preserve_machine_fields=true; freeze needs D+exec too"
   },
-  "evaluated_at": "2026-07-22T03:50:45.326144+00:00",
+  "evaluated_at": "2026-08-17T02:42:42.696327+00:00",
   "paths": {
     "truth": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/truth.md",
     "tests": "docs/beacon/v1.6.10/features/truth-gold-order-pay-v1610/tests.md",
