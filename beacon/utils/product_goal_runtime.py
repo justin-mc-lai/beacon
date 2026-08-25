@@ -1343,6 +1343,38 @@ def complete_goal_run(project_root: Path, run_id: str, *, force: bool = False) -
     return _save(project_root, payload)
 
 
+def attach_program_takeover_hint(project_root: Path, payload: dict[str, Any]) -> dict[str, Any]:
+    """R5 (v1.6.12): prompt-level hint to continue with the next program lake.
+
+    Attached only when the program orchestrator route shows a pending next lake.
+    Prompt-level only — goal never auto-spawns the program driver.
+    """
+    route = payload.get("program_orchestrator") if isinstance(payload.get("program_orchestrator"), dict) else {}
+    next_lake = str(route.get("next_lake") or "").strip()
+    if not next_lake or str(route.get("sea_completion_status") or "") == "all_lakes_complete":
+        return payload
+    slug = str(route.get("program_slug") or payload.get("program_slug") or "").strip()
+    if not slug:
+        return payload
+    version = str(route.get("version") or payload.get("version") or "")
+    command = f"beacon program drive {slug} --project-root {project_root} --version {version}"
+    payload["program_takeover"] = {
+        "schema_version": "1.0",
+        "program_slug": slug,
+        "next_lake": next_lake,
+        "resume_action": str(route.get("resume_action") or ""),
+        "command": command,
+        "note": "prompt-level hint only; goal does not auto-spawn the program driver",
+    }
+    recommended = payload.get("recommended_next")
+    if isinstance(recommended, dict):
+        recommended.setdefault("program", f"{command}  # continue with next lake {next_lake}")
+    hist = list(payload.get("history") or [])
+    hist.append({"event": "program_takeover_hint", "program_slug": slug, "next_lake": next_lake, "at": now_iso()})
+    payload["history"] = hist
+    return payload
+
+
 def run_goal_facade(
     project_root: Path,
     *,
@@ -1449,6 +1481,7 @@ def run_goal_facade(
         "complete": "requires verifier refs (beacon-eval-qa evidence), then beacon goal complete",
         "release": "human gate via beacon-eval-release",
     }
+    payload = attach_program_takeover_hint(project_root, payload)
     return payload
 
 

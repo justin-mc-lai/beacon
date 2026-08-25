@@ -24,6 +24,10 @@
 - Fix README.md version references: `sed -i 's/v1\.6\.0/v1\.6\.1/g' README.md && git commit -m "docs(p0): update README version v1.6.0 -> v1.6.1"`
 ## [1.6.12] — 2026-08-17 · main delivery-surface recovery + goal LoopX acceptance closure
 
+### Added
+- Program-level lake driver: `beacon/utils/program_driver.py` + `beacon program drive <slug>` CLI. Consumes `build_program_orchestrator_state` routes and dispatches one lake-stage per turn (truth → implement → qa) to the host agent; release is never dispatched (human gate). Stops emit `reason_code` + `resume_action` (+ `recommended_command`) per AC-039, with blocked-streak (≥3) / turn-budget guards and filesystem-evidence crash resume. Drive state lives at `docs/beacon/<v>/programs/<slug>/program-drive-state.json`; lock at `.beacon/state/program-drive/<slug>.lock`.
+- Goal run terminal takeover hint (`program_takeover` in facade payload + `recommended_next.program`): when the program route has a pending next lake, goal output points to `beacon program drive`; prompt-level only, goal never auto-spawns the driver.
+
 ### Fixed
 - Restore deleted `pyproject.toml`, `tests/` tree (484 files incl. 25 v1.6.12 goal canaries), and `scripts/` from the pre-checkpoint snapshot; main is installable and testable again.
 - Track the canonical `skills/beacon/` package (1+6 public surface + patterns/incidents) in git; remove implicit untracked symlink dependency.

@@ -13,6 +13,7 @@ from beacon.utils.program_freeze_gate import (
     validate_program_freeze_authenticated,
     write_program_freeze_gate,
 )
+from beacon.utils.program_driver import program_drive_start, program_drive_status
 from beacon.utils.program_graph import feature_graph_path, load_feature_graph
 from beacon.utils.program_orchestrator import build_program_orchestrator_state, write_program_orchestrator_state
 from beacon.utils.versioning import resolve_target_version
@@ -187,4 +188,49 @@ def orchestrate_cmd(
             "resume_action": payload.get("resume_action"),
         }, ensure_ascii=False))
     if payload.get("blocked"):
+        raise typer.Exit(code=2)
+
+
+@app.command("drive")
+def drive_cmd(
+    program: str = typer.Argument(..., help="Program slug"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", "--project-root", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Docs version"),
+    status_only: bool = typer.Option(False, "--status-only", help="Show drive status without dispatching"),
+    max_turns: Optional[int] = typer.Option(None, "--max-turns", help="Max drive turns this run"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON payload"),
+) -> None:
+    """Drive program lakes: dispatch next lake-stage to the host agent until a stop condition.
+
+    Release is never dispatched (human gate). Stops emit reason_code + resume_action.
+    """
+    project_root = Path(project).resolve() if project else Path.cwd()
+    if status_only:
+        payload = program_drive_status(project_root, version=version, program_slug=program)
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(json.dumps({
+                "status": payload.get("state"),
+                "current_lake": (payload.get("orchestrator") or {}).get("current_lake"),
+                "resume_action": (payload.get("orchestrator") or {}).get("resume_action"),
+            }, ensure_ascii=False))
+        return
+    result = program_drive_start(
+        project_root,
+        version=version,
+        program_slug=program,
+        run_loop=True,
+        max_turns=max_turns,
+    )
+    if json_output:
+        typer.echo(json.dumps(result, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(json.dumps({
+            "status": result.get("status"),
+            "reason_code": result.get("reason_code"),
+            "resume_action": result.get("resume_action"),
+            "turn_n": (result.get("driver") or {}).get("turn_n"),
+        }, ensure_ascii=False))
+    if result.get("blocked"):
         raise typer.Exit(code=2)
