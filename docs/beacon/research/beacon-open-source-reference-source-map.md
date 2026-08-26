@@ -48,7 +48,7 @@
 | `memevolve` | `canonical` | `automation/autoresearch/memevolve` | `https://github.com/bingreeky/MemEvolve.git` | `docs/beacon/v1.1.6/research/memevolve/README.md`, `docs/beacon/v1.1.6/research/README.md` |
 | `autoagent` | `canonical` | `automation/autoresearch/autoagent` | `https://github.com/HKUDS/AutoAgent.git` | `docs/beacon/research/beacon-self-iteration-and-story-qa-coverage-study-awesome-design-md-autoagent.md` |
 | `statsclaw` | `canonical` | `automation/autoresearch/statsclaw` | `https://github.com/statsclaw/statsclaw.git` | `docs/beacon/v1.1.12/research/beacon-external-reference-study-statsclaw-awesome-design-md.md` |
-| `awesome-design-md` | `canonical` | `core-skills/awesome-design-md` | `https://github.com/VoltAgent/awesome-design-md.git` | `docs/beacon/research/beacon-self-iteration-and-story-qa-coverage-study-awesome-design-md-autoagent.md`, `docs/beacon/v1.1.12/research/beacon-external-reference-study-statsclaw-awesome-design-md.md` |
+| `awesome-design-md` | `canonical` | `design/skills/awesome-design-md` | `https://github.com/VoltAgent/awesome-design-md.git` | `docs/beacon/research/beacon-self-iteration-and-story-qa-coverage-study-awesome-design-md-autoagent.md`, `docs/beacon/v1.1.12/research/beacon-external-reference-study-statsclaw-awesome-design-md.md` |
 | `mempalace` | `canonical` | `memory/memory-systems/mempalace` | `https://github.com/mempalace/mempalace.git` | `docs/beacon/research/beacon-memory-asset-eval-plane-study-mempalace.md` |
 
 Absolute path rule:
@@ -300,7 +300,7 @@ Notes:
 ### `awesome-design-md`
 
 - Root:
-  `/Users/apple/Developer/Personal/oss-sync/core-skills/awesome-design-md`
+  `/Users/apple/Developer/Personal/oss-sync/design/skills/awesome-design-md`
 - Start here:
   - `README.md`
   - `CONTRIBUTING.md`
