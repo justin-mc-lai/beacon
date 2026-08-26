@@ -85,6 +85,12 @@ Rule of thumb:
 12. [Intent decomposition hardening (2026-07-21)](./intent-decomposition-hardening-2026-07-21.md)
    - Why it matters:
      prevents ocean goals from auto-ticking past plan without journey freeze; multi-signal plan_subintent + host 子代理 gate.
+13. [大厂 AI agent coding 方法论 —— Cursor 工程师 Lauren Tan 工作方法拆解](./beacon-agent-coding-methodology-cursor-poteto-2026-08.md)
+   - Why it matters:
+     一线实证「验证 > 生成 / feature map / 失败模式 skill 化 / agent 团队工程管理」，映射到 Beacon 的验证优先设计与 S4 预算等缺口。
+14. [Beacon 对齐第三方 spec skill 同步更新摘要（2026-08-26）](./beacon-oss-reference-sync-2026-08-26.md)
+   - Why it matters:
+     记录 oss-sync canonical mirror 与上游的对齐状态及更新要点（loopx quota、review 子 agent 护栏、skill 触发标准化），并修正 source map 的 `awesome-design-md` 路径。
 
 
 ---
