@@ -38,3 +38,36 @@ Added beacon program drive (host-agent rotation driver) consuming program_orches
 ### Next Steps
 
 - None - task complete
+
+
+## Session 2: P0 audit fixes: lake keying + binding diagnostics + closure backfill
+
+**Date**: 2026-08-26
+**Task**: P0 audit fixes: lake keying + binding diagnostics + closure backfill
+**Branch**: `main`
+
+### Summary
+
+Fixed 4 P0 audit findings from full beacon capability review: S1 receipt discovery accepts both lake-slug and feature-slug dirs; S2 orchestrator closure lookups canonicalized to feature_slug incl depends_on alias resolution; S3 additive program_binding diagnostics on goal payload for silent unbind; S4 complete-time backfill of implementation-summary/qa-acceptance markers citing only real verifier/QA refs. 17 new tests; failure set identical to HEAD baseline.
+
+### Main Changes
+
+(Add details)
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `be14266d` | (see git log) |
+
+### Testing
+
+- [OK] (Add test results)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
