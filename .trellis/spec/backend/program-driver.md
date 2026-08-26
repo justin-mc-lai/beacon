@@ -66,3 +66,36 @@ if lake in state["passed_lakes"]:   # trusting driver memory
 route = build_program_orchestrator_state(root, version=v, program_slug=slug)
 # advance strictly from recomputed filesystem evidence (route.lakes[*].complete / stage)
 ```
+
+---
+
+## Scenario: canonical lake keying, binding diagnostics, closure backfill (v1.6.12 P0 audit fixes)
+
+### 1. Canonical key convention (gotcha — this caused 3 production bugs)
+
+Graph rows may name a lake with `slug` (e.g. `L0-monorepo-shell`) that differs from its feature name (`feature_slug`, e.g. `monorepo-shell`). The **canonical evidence key is always `feature_slug(row.feature_slug or row.slug)`**:
+
+- `_implementation_closed` / `_qa_closed` lookups in `build_program_orchestrator_state` key on the canonical feature slug; row display fields (`lakes[*].lake`) keep the original slug.
+- `depends_on` entries may use either form; they are alias-resolved to the canonical key before closure checks.
+- Truth-promotion receipts: readers accept BOTH `programs/<slug>/lakes/<row-slug>/truth-promotion.json` and `.../lakes/<feature-slug>/truth-promotion.json` (`_lake_truth_promotion_complete` takes a slug list). The writer (`materialize_authenticated_lake_receipt`) keeps writing the feature-keyed path.
+- New code must NOT invent a third keying; reuse `resolve_program_lake_topology`'s dual-registration semantics.
+
+### 2. program_binding diagnostics (goal payload, add-only)
+
+`sync_program_orchestrator_route` attaches:
+- bound: `{"status": "bound", "program_slug": ...}` (+ existing `program_orchestrator` route);
+- unbound with feature and existing `docs/beacon/<v>/programs/`: `{"status": "unbound", "reason_code", "feature", "checked[]", "hint"}` where reason_code ∈ {`program_not_frozen`, `feature_not_in_graph`, `graph_invalid`} (precedence: feature-matched > graph_invalid > not_in_graph) and `checked[]` carries per-program `{program, graph_valid, errors?, feature_in_graph, frozen?}`;
+- unbound without programs dir or without a run feature: attaches nothing (payload unchanged).
+
+Never change routing/existing keys based on `program_binding` — it is diagnostics only.
+
+### 3. Complete-time closure backfill (no fabrication)
+
+On successful `complete_goal_run`, missing markers are materialized under `docs/beacon/<v>/.machine/execution/` citing real evidence only:
+- `implementation-summary-<slug>.json` (`status=passed`; refs = verifier refs — complete already requires them);
+- `qa-acceptance-<slug>.json` (`verdict=passed`) only when the goal qa stage is done; refs = stage artifact path + on-disk QA scorecard candidates + verifier refs.
+Existing files are never overwritten. When no real refs exist → skip + history event `closure_backfill_skipped:<reason>` (`no_verifier_refs` / `no_qa_evidence_refs`). Never write a marker that cites an invented path.
+
+### Tests Required
+
+- `tests/test_v1612_p0_audit_fixes.py`: receipt dual-location freeze pass; orchestrate closes feature-keyed evidence (incl. dep aliasing); three unbound reason_codes + bound + no-programs-dir; backfill happy path + both skip paths + no-overwrite.

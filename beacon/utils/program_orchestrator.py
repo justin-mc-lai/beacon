@@ -67,13 +67,30 @@ def build_program_orchestrator_state(project_root: Path | str, *, version: str, 
     resume_action = 'program_complete'
     reason_code = ''
 
+    # Evidence lookup keys follow feature_slug (canonical), while rows may store
+    # either the row slug or its feature_slug; resolve_program_lake_topology
+    # dual-registers both, so alias deps back to the canonical evidence key too.
+    alias_to_evidence: dict[str, str] = {}
+    for row in lakes:
+        key = feature_slug(str(row.get('feature_slug') or row.get('slug') or ''))
+        for alias in (row.get('slug'), row.get('feature_slug')):
+            normalized = feature_slug(str(alias or ''))
+            if key and normalized:
+                alias_to_evidence[normalized] = key
+
     for row in lakes:
         slug = feature_slug(str(row.get('slug') or row.get('feature_slug') or ''))
-        impl = _implementation_closed(root, version=resolved_version, feature=slug)
-        qa = _qa_closed(root, version=resolved_version, feature=slug)
-        deps = [feature_slug(str(item)) for item in row.get('depends_on', []) if str(item).strip()]
+        evidence_key = feature_slug(str(row.get('feature_slug') or row.get('slug') or ''))
+        impl = _implementation_closed(root, version=resolved_version, feature=evidence_key)
+        qa = _qa_closed(root, version=resolved_version, feature=evidence_key)
+        deps: list[str] = []
         unclosed_deps = []
-        for dep in deps:
+        for item in row.get('depends_on', []):
+            text = str(item).strip()
+            if not text:
+                continue
+            dep = alias_to_evidence.get(feature_slug(text), feature_slug(text))
+            deps.append(dep)
             dep_impl = _implementation_closed(root, version=resolved_version, feature=dep)
             dep_qa = _qa_closed(root, version=resolved_version, feature=dep)
             if not dep_impl.get('closed') or not dep_qa.get('closed'):

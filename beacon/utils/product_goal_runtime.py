@@ -764,6 +764,72 @@ def _goal_program_slug(project_root: Path, payload: dict[str, Any]) -> str:
     return str(topo.get("program_slug") or "").strip()
 
 
+def _program_binding_diagnostics(root: Path, payload: dict[str, Any]) -> dict[str, Any] | None:
+    """Why did program binding fail? Add-only diagnostics for unbound goal payloads.
+
+    Returns None when there is nothing meaningful to diagnose (no feature bound to
+    the run, or no programs/ directory for the resolved version).
+    """
+    from beacon.utils.program_admission import (
+        _is_program_frozen,
+        _lake_rows,
+        _read_frontmatter,
+        _read_json,
+    )
+    from beacon.utils.program_graph import load_feature_graph
+
+    feature = feature_slug(str(payload.get("feature") or ""))
+    if not feature:
+        return None
+    try:
+        resolved_version = resolve_target_version(root, str(payload.get("version") or "auto"))
+    except Exception:  # noqa: BLE001
+        return None
+    programs_root = root / "docs" / "beacon" / resolved_version / "programs"
+    if not programs_root.is_dir():
+        return None
+    checked: list[dict[str, Any]] = []
+    for program_dir in sorted(path for path in programs_root.iterdir() if path.is_dir()):
+        graph, errors = load_feature_graph(program_dir / "feature-graph.json")
+        entry: dict[str, Any] = {"program": program_dir.name, "graph_valid": bool(graph) and not errors}
+        if errors:
+            entry["errors"] = errors
+        lakes = _lake_rows(graph) if isinstance(graph, dict) else []
+        entry["feature_in_graph"] = any(
+            feature in {str(row.get("slug") or ""), str(row.get("feature_slug") or "")} for row in lakes
+        )
+        if isinstance(graph, dict):
+            entry["frozen"] = _is_program_frozen(
+                manifest=_read_frontmatter(program_dir / "program-manifest.md"),
+                graph=graph,
+                freeze=_read_json(program_dir / "program-truth-freeze.json"),
+            )
+        checked.append(entry)
+    matched = [entry for entry in checked if entry.get("feature_in_graph")]
+    if matched:
+        reason_code = "program_not_frozen"
+        hint = (
+            "program plan is not frozen; freeze it first "
+            "(program-truth-freeze.json status=frozen or graph/manifest program_plan_frozen=true)"
+        )
+    elif any(not entry.get("graph_valid") for entry in checked):
+        reason_code = "graph_invalid"
+        hint = "fix feature-graph.json validation errors (see checked[].errors)"
+    else:
+        reason_code = "feature_not_in_graph"
+        hint = (
+            f"add a lakes[] row containing '{feature}' to "
+            f"docs/beacon/{resolved_version}/programs/<slug>/feature-graph.json"
+        )
+    return {
+        "status": "unbound",
+        "reason_code": reason_code,
+        "feature": feature,
+        "checked": checked,
+        "hint": hint,
+    }
+
+
 def sync_program_orchestrator_route(
     project_root: Path,
     payload: dict[str, Any],
@@ -775,6 +841,9 @@ def sync_program_orchestrator_route(
     out = dict(payload)
     program_slug = _goal_program_slug(root, out)
     if not program_slug:
+        binding = _program_binding_diagnostics(root, out)
+        if binding is not None:
+            out["program_binding"] = binding
         return out
     state = build_program_orchestrator_state(
         root,
@@ -782,6 +851,7 @@ def sync_program_orchestrator_route(
         program_slug=program_slug,
     )
     out["program_slug"] = str(state.get("program_slug") or program_slug)
+    out["program_binding"] = {"status": "bound", "program_slug": out["program_slug"]}
     out["program_orchestrator"] = state
     out["resume_action"] = str(state.get("resume_action") or out.get("resume_action") or "")
     out["next_action"] = str(state.get("next_action") or out.get("next_action") or "")
@@ -1290,6 +1360,132 @@ def attach_verifier(
     return _save(project_root, payload)
 
 
+def _qa_stage_passed(payload: dict[str, Any]) -> bool:
+    for item in payload.get("stages") or []:
+        if isinstance(item, dict) and item.get("stage") == "qa":
+            return str(item.get("status") or "").strip().lower() in {"done", "pass", "passed", "ok", "completed"}
+    return False
+
+
+def _goal_qa_evidence_refs(root: Path, version: str, slug: str) -> list[str]:
+    """Real on-disk QA evidence paths (same candidates as the qa stage-exit gate)."""
+    base = root / "docs" / "beacon" / version
+    candidates = [
+        base / "features" / slug / "evidence.md",
+        base / "qa" / f"{slug}-scorecard.md",
+        base / "qa" / f"{slug}-ac-closure.md",
+        root / ".beacon" / "evidence" / "qa" / version / slug / "scorecard.json",
+        base / "qa" / "smoke-evidence.md",
+    ]
+    refs: list[str] = []
+    for path in candidates:
+        if path.is_file():
+            try:
+                refs.append(str(path.relative_to(root)))
+            except ValueError:
+                refs.append(str(path))
+    return refs
+
+
+def _backfill_closure_artifacts(project_root: Path, payload: dict[str, Any]) -> list[dict[str, Any]]:
+    """Materialize missing .machine execution closure markers citing real evidence only.
+
+    Never fabricates: every written ref comes from verifier refs, existing QA evidence
+    files, or a stage artifact path; otherwise the backfill is skipped with a history event.
+    """
+    root = Path(project_root).expanduser().resolve()
+    events: list[dict[str, Any]] = []
+    slug = feature_slug(str(payload.get("feature") or ""))
+    if not slug:
+        return events
+    version = str(payload.get("version") or "")
+    run_id = str(payload.get("run_id") or "")
+    exec_dir = root / "docs" / "beacon" / version / ".machine" / "execution"
+    verifier_refs = [
+        str(ref).strip()
+        for ref in ((payload.get("verifier") or {}).get("refs") or [])
+        if str(ref).strip()
+    ]
+
+    impl_path = exec_dir / f"implementation-summary-{slug}.json"
+    if not impl_path.exists():
+        if verifier_refs:
+            body = {
+                "schema_version": "1.0",
+                "feature": slug,
+                "status": "passed",
+                "run_id": run_id,
+                "generated_by": "goal_complete_closure_backfill",
+                "verifier_refs": verifier_refs,
+                "evidence_refs": verifier_refs,
+                "created_at": now_iso(),
+            }
+            impl_path.parent.mkdir(parents=True, exist_ok=True)
+            impl_path.write_text(json.dumps(body, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+            events.append(
+                {
+                    "event": "closure_backfilled",
+                    "kind": "implementation_summary",
+                    "artifact": str(impl_path.relative_to(root)),
+                    "at": now_iso(),
+                }
+            )
+        else:
+            events.append(
+                {
+                    "event": "closure_backfill_skipped",
+                    "kind": "implementation_summary",
+                    "reason_code": "no_verifier_refs",
+                    "at": now_iso(),
+                }
+            )
+
+    if not _qa_stage_passed(payload):
+        return events
+    qa_path = exec_dir / f"qa-acceptance-{slug}.json"
+    if qa_path.exists():
+        return events
+    artifact_ref = ""
+    for item in payload.get("stages") or []:
+        if isinstance(item, dict) and item.get("stage") == "qa":
+            value = item.get("artifact")
+            if isinstance(value, str) and value.strip():
+                artifact_ref = value.strip()
+    evidence_refs = ([artifact_ref] if artifact_ref else []) + _goal_qa_evidence_refs(root, version, slug) + verifier_refs
+    if not evidence_refs:
+        events.append(
+            {
+                "event": "closure_backfill_skipped",
+                "kind": "qa_acceptance",
+                "reason_code": "no_qa_evidence_refs",
+                "at": now_iso(),
+            }
+        )
+        return events
+    body = {
+        "schema_version": "1.0",
+        "feature": slug,
+        "status": "passed",
+        "verdict": "passed",
+        "run_id": run_id,
+        "generated_by": "goal_complete_closure_backfill",
+        "scorecard_ref": evidence_refs[0],
+        "evidence_refs": evidence_refs,
+        "created_at": now_iso(),
+    }
+    qa_path.parent.mkdir(parents=True, exist_ok=True)
+    qa_path.write_text(json.dumps(body, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    events.append(
+        {
+            "event": "closure_backfilled",
+            "kind": "qa_acceptance",
+            "artifact": str(qa_path.relative_to(root)),
+            "at": now_iso(),
+        }
+    )
+    return events
+
+
 def complete_goal_run(project_root: Path, run_id: str, *, force: bool = False) -> dict[str, Any]:
     """Mark complete only when verifier evidence is present (no self-certify)."""
     payload = load_goal_run(project_root, run_id)
@@ -1339,6 +1535,10 @@ def complete_goal_run(project_root: Path, run_id: str, *, force: bool = False) -
     payload["completed_at"] = now_iso()
     hist = list(payload.get("history") or [])
     hist.append({"event": "completed", "at": now_iso(), "force": force})
+    try:
+        hist.extend(_backfill_closure_artifacts(project_root, payload))
+    except Exception:  # noqa: BLE001
+        pass
     payload["history"] = hist
     return _save(project_root, payload)
 

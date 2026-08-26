@@ -23,25 +23,40 @@ def _parity_matrix_has_pending_defer(project_root: Path, version: str, program_s
     return "pending" in text and "user_decision" in text
 
 
-def _lake_truth_promotion_complete(project_root: Path, version: str, program_slug: str, lake_slug: str) -> bool:
-    promo = (
-        project_root
-        / "docs"
-        / "beacon"
-        / version
-        / "programs"
-        / program_slug
-        / "lakes"
-        / lake_slug
-        / "truth-promotion.json"
-    )
-    if not promo.exists():
-        return False
-    try:
-        payload = json.loads(promo.read_text(encoding="utf-8"))
-    except json.JSONDecodeError:
-        return False
-    return payload.get("status") == "complete"
+def _lake_truth_promotion_complete(
+    project_root: Path,
+    version: str,
+    program_slug: str,
+    lake_slugs: str | list[str] | tuple[str, ...],
+) -> bool:
+    """Receipt may live under either the row slug or its feature_slug (dual-key)."""
+    candidates = [lake_slugs] if isinstance(lake_slugs, str) else list(lake_slugs)
+    seen: set[str] = set()
+    for lake_slug in candidates:
+        slug = str(lake_slug or "").strip()
+        if not slug or slug in seen:
+            continue
+        seen.add(slug)
+        promo = (
+            project_root
+            / "docs"
+            / "beacon"
+            / version
+            / "programs"
+            / program_slug
+            / "lakes"
+            / slug
+            / "truth-promotion.json"
+        )
+        if not promo.exists():
+            continue
+        try:
+            payload = json.loads(promo.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            continue
+        if payload.get("status") == "complete":
+            return True
+    return False
 
 
 def build_program_freeze_gate(
@@ -68,16 +83,20 @@ def build_program_freeze_gate(
             if not isinstance(lake, dict):
                 continue
             slug = str(lake.get("slug") or "")
+            feature_key = str(lake.get("feature_slug") or slug)
+            truth_complete = _lake_truth_promotion_complete(
+                project_root, version, program_slug, [s for s in (slug, feature_key) if s]
+            )
             lake_rows.append(
                 {
                     "slug": slug,
                     "status": lake.get("status"),
-                    "truth_promotion_complete": _lake_truth_promotion_complete(project_root, version, program_slug, slug),
+                    "truth_promotion_complete": truth_complete,
                 }
             )
             if lake.get("status") != "frozen":
                 findings.append({"kind": "lake", "code": f"lake_not_frozen:{slug}"})
-            if not _lake_truth_promotion_complete(project_root, version, program_slug, slug):
+            if not truth_complete:
                 findings.append({"kind": "lake", "code": f"truth_promotion_missing:{slug}"})
     blocked = bool(findings)
     return {
