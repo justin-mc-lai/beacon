@@ -14,7 +14,7 @@ task_source: acceptance_criteria
 - [x] TASK-003 Implement AC-003: quiet skip / dry-run / preflight 不 spend（`spend_ledger` 计数不变）。 · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1613-d2-spend-ledger/AC-003.json`
 - [x] TASK-004 Implement AC-004: spend 幂等：同一 index 重放不重复扣（CAS on index digest，conflict 即拒绝）。 · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1613-d2-spend-ledger/AC-004.json`
 - [x] TASK-005 Implement AC-005: 配额（`max_drive_turns`/quota_limit）耗尽 → 状态 `halt_budget` + reason_code ... · ac=AC-005 · evidence=`.beacon/evidence/implement/beacon-v1613-d2-spend-ledger/AC-005.json`
-^- [x] TASK-006 Implement AC-006: 交接文本预算（handoff budget：16 行 / 1800 字符）保留且仍生效（回归）。 · ac=AC-006 · evidence=`.beacon/evidence/implement/beacon-v1613-d2-spend-ledger/AC-006.json`
+- [x] TASK-006 Implement AC-006: 交接文本预算（handoff budget：16 行 / 1800 字符）保留且仍生效（回归）。 · ac=AC-006 · evidence=`.beacon/evidence/implement/beacon-v1613-d2-spend-ledger/AC-006.json`
 - [ ] TASK-007 Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1613-d2-spend-ledger/GATES.json`
 - [ ] TASK-008 Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1613-d2-spend-ledger/QA-MATRIX.json`
 

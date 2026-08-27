@@ -3,10 +3,10 @@
   "feature": "beacon-v1613-d2-spend-ledger",
   "feature_slug": "beacon-v1613-d2-spend-ledger",
   "version": "v1.6.13",
-  "status": "pass",
-  "blocked": false,
-  "reason_code": "",
-  "generated_at": "2026-08-27T05:56:54.765952+00:00",
+  "status": "blocked",
+  "blocked": true,
+  "reason_code": "feature_package_validation_failed",
+  "generated_at": "2026-08-27T05:57:38.270253+00:00",
   "package_dir": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger",
   "truth_frontmatter": {
     "slug": "beacon-v1613-d2-spend-ledger",
@@ -27,16 +27,21 @@
   },
   "ac_count": 6,
   "test_count": 8,
-  "checkbox_count": 8,
+  "checkbox_count": 7,
   "evidence_row_count": 2,
   "gate_authority": "canonical_surfaces_preserved",
   "checkbox_gate_bypass": false,
   "task_evidence_gate": {
     "pass": true,
-    "checked_ok": 0,
+    "checked_ok": 5,
     "checked_bad": 0,
     "unbound": 0,
-    "findings": [],
+    "findings": [
+      {
+        "kind": "malformed_checkbox",
+        "text": "malformed_checkbox: line 17"
+      }
+    ],
     "reason_code": ""
   },
   "evidence_gate_truth": false,
@@ -49,6 +54,20 @@
       "l0_headings": [
         "## 人话"
       ]
+    },
+    {
+      "severity": "error",
+      "code": "malformed_checkbox: line 17",
+      "path": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/tasks.md"
+    },
+    {
+      "severity": "error",
+      "code": "malformed_checkbox",
+      "path": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/tasks.md",
+      "text": "malformed_checkbox: line 17",
+      "task_id": null,
+      "evidence_path": null,
+      "ac_id": null
     }
   ],
   "truth_map_contract": "beacon-truth-map-v1",
@@ -67,7 +86,7 @@
   "source_hashes": {
     "truth": "0d2e32ad3083c60e58c570bd0b68d2a5bb3662e2e5be81b75e0945e960c38f27",
     "tests": "d12584aca3bfb09e47c42e809a35458ce0990335c48fb7b842a3c5422ccc8b5a",
-    "tasks": "3785a3bbdd083c8bc71e1d80c7d2e90c830eddeb088f965b3d872f75088cd286",
+    "tasks": "0bcb192c63a0e4697836a60c86580b09e8d983d2abd2f53f83f740376b15ee53",
     "evidence": "2df6479010e8dfd07e7067b046a98e7b8e82f543c557385aeabaff69e5b15f73"
   },
   "runtime_json_requires_markdown_twin": false

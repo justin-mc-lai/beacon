@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-08-27T05:56:55.085187+00:00",
+  "generated_at": "2026-08-27T05:57:19.549948+00:00",
   "feature": "beacon-v1613-d2-spend-ledger",
   "feature_slug": "beacon-v1613-d2-spend-ledger",
   "version": "v1.6.13",
@@ -20,7 +20,7 @@
   "source_hashes": {
     "truth": "0d2e32ad3083c60e58c570bd0b68d2a5bb3662e2e5be81b75e0945e960c38f27",
     "tests": "d12584aca3bfb09e47c42e809a35458ce0990335c48fb7b842a3c5422ccc8b5a",
-    "tasks": "3785a3bbdd083c8bc71e1d80c7d2e90c830eddeb088f965b3d872f75088cd286",
+    "tasks": "0bcb192c63a0e4697836a60c86580b09e8d983d2abd2f53f83f740376b15ee53",
     "evidence": "2df6479010e8dfd07e7067b046a98e7b8e82f543c557385aeabaff69e5b15f73"
   },
   "truth_frontmatter": {
@@ -151,32 +151,27 @@
     {
       "id": "TASK-001",
       "title": "Implement AC-001: goal run 状态含持久化 `spend_ledger`（已花回合数、每笔 SpendEntry 的 index/source/spe... · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1613-d2-spend-ledger/AC-001.json`",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-002",
       "title": "Implement AC-002: spend 仅在 validated writeback 之后发生一次（保留 `spend_guard`：writeback 未验证 → ... · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1613-d2-spend-ledger/AC-002.json`",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-003",
       "title": "Implement AC-003: quiet skip / dry-run / preflight 不 spend（`spend_ledger` 计数不变）。 · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1613-d2-spend-ledger/AC-003.json`",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-004",
       "title": "Implement AC-004: spend 幂等：同一 index 重放不重复扣（CAS on index digest，conflict 即拒绝）。 · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1613-d2-spend-ledger/AC-004.json`",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-005",
       "title": "Implement AC-005: 配额（`max_drive_turns`/quota_limit）耗尽 → 状态 `halt_budget` + reason_code ... · ac=AC-005 · evidence=`.beacon/evidence/implement/beacon-v1613-d2-spend-ledger/AC-005.json`",
-      "status": "unchecked"
-    },
-    {
-      "id": "TASK-006",
-      "title": "Implement AC-006: 交接文本预算（handoff budget：16 行 / 1800 字符）保留且仍生效（回归）。 · ac=AC-006 · evidence=`.beacon/evidence/implement/beacon-v1613-d2-spend-ledger/AC-006.json`",
-      "status": "unchecked"
+      "status": "checked"
     },
     {
       "id": "TASK-007",
@@ -189,7 +184,9 @@
       "status": "unchecked"
     }
   ],
-  "checkbox_errors": [],
+  "checkbox_errors": [
+    "malformed_checkbox: line 17"
+  ],
   "evidence_rows": [
     {
       "surface": "package",
