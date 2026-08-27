@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-08-27T05:00:51.880839+00:00",
+  "generated_at": "2026-08-27T05:43:45.726137+00:00",
   "feature": "beacon-v1613-f4-plain-language-contract",
   "feature_slug": "beacon-v1613-f4-plain-language-contract",
   "version": "v1.6.13",
@@ -19,7 +19,7 @@
   },
   "source_hashes": {
     "truth": "2fad2096e4f0daa4046e4142da3fd9507cdf0fd921f653925989c1d991e04926",
-    "tests": "013f07492508d4f9e66de982ac74e63bb15bc4ae5228a5e37891ced680c61e77",
+    "tests": "972236570a14fbc985369e28ed70f98c007f9394b72f8d45ccfb4d2fc83e5042",
     "tasks": "45d4ae7ae5dd6bfae2159fbdf07f7f8c5225d933822df3a2a997396ef376ca0c",
     "evidence": "3c74c7d3400b2739ff266f2d86c1601b1dff4cfa50182a99402ded2b731cd8d7"
   },
@@ -68,7 +68,7 @@
       "ac_id": "AC-001",
       "tc_id": "TC-001",
       "layer": "",
-      "command": "`rg -l 'plain_language_delivery_summary' .claude/skills/beacon-{design,goal,implement,plan,qa,release,truth}/SKILL.md`",
+      "command": "`rg -l 'plain_language_delivery_summary' skills/beacon/beacon-{design,goal,implement,plan,qa,release,truth}/SKILL.md`",
       "assertion": "输出包含全部 7 个 SKILL.md（7 行）",
       "evidence_path": "",
       "source": ""
@@ -77,8 +77,8 @@
       "ac_id": "AC-002",
       "tc_id": "TC-002",
       "layer": "",
-      "command": "`rg -n 'plain_language_delivery_summary|人话|Plain language' .claude/skills/beacon-truth/SKILL.md`",
-      "assertion": "同时命中字段名与 L0 规范引用",
+      "command": "`rg -n 'plain_language_delivery_summary' skills/beacon/beacon-truth/SKILL.md`",
+      "assertion": "命中字段名",
       "evidence_path": "",
       "source": ""
     },
@@ -86,7 +86,7 @@
       "ac_id": "AC-003",
       "tc_id": "TC-003",
       "layer": "",
-      "command": "`rg -c 'mode_id|Intent Coverage Matrix|AC-' .claude/skills/beacon-plan/SKILL.md`",
+      "command": "`rg -c 'mode_id|Intent Coverage Matrix|AC-' skills/beacon/beacon-plan/SKILL.md`",
       "assertion": "机器字段仍存在（计数 ≥3）",
       "evidence_path": "",
       "source": ""
@@ -95,7 +95,7 @@
       "ac_id": "AC-004",
       "tc_id": "TC-004",
       "layer": "",
-      "command": "`rg -n 'truth_human_l0_missing|## 人话|## Plain language' .claude/skills/beacon-truth/references/modes/gen-truth.md`",
+      "command": "`rg -n 'truth_human_l0_missing|## 人话|## Plain language' skills/beacon/beacon-truth/references/modes/gen-truth.md`",
       "assertion": "命中 fail-closed 约束与 L0 标题",
       "evidence_path": "",
       "source": ""
