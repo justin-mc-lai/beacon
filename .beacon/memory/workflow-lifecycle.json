@@ -3902,7 +3902,2113 @@
       },
       "attempt_id": "release@attempt-1",
       "attempt_seq": 1
+    },
+    {
+      "event_id": "0ea6147b-76b1-48d0-b873-53e1b5bb4fd5",
+      "run_id": "release:v1.6.15",
+      "stage": "release",
+      "event": "release_decision_recorded",
+      "source": "release.check",
+      "source_session_id": "release:v1.6.15",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.15/.machine/change/v1.6.15.json",
+        "docs/beacon/v1.6.15/change/v1.6.15.md"
+      ],
+      "ts": "2026-08-27T13:05:02.236028+00:00",
+      "details": {
+        "action": "check",
+        "version": "v1.6.15",
+        "status": "blocked",
+        "failed_checks": [
+          "auto-test version matches release version",
+          "gate report pass",
+          "gate report version matches release version",
+          "coverage artifact ready",
+          "coverage summary version matches release version",
+          "acceptance projection transaction contract",
+          "version change markdown exists",
+          "version change payload exists",
+          "version change payload matches release version",
+          "version change document includes current feature",
+          "release scorecard ready",
+          "version surface governance pass",
+          "implement prompt boundary verdict pass"
+        ]
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "5b577dc0-8801-4f45-949e-1e7d7ae94e59",
+      "run_id": "release-v1.6.15",
+      "stage": "prd",
+      "event": "stage_started",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.15",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:06:45.052989+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "prd@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "965143c1-0599-430b-8aa6-2ddcfb10fbba",
+      "run_id": "release-v1.6.15",
+      "stage": "prd",
+      "event": "stage_context_injected",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.15",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:06:45.059798+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "prd@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "1a40835d-32ee-4be3-abfb-d1f3d09e8a42",
+      "run_id": "release-v1.6.15",
+      "stage": "prd",
+      "event": "stage_finished",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.15",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/gate-report.json",
+        ".beacon/coverage-summary.json",
+        "docs/beacon/v1.6.15/SUMMARY.md"
+      ],
+      "ts": "2026-08-27T13:06:45.070019+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "prd@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "b9ca999f-a801-463a-9b29-b6c5cf9e1632",
+      "run_id": "release-v1.6.15",
+      "stage": "prd",
+      "event": "memory_writeback",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.15",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/gate-report.json",
+        ".beacon/coverage-summary.json",
+        "docs/beacon/v1.6.15/SUMMARY.md"
+      ],
+      "ts": "2026-08-27T13:06:45.074464+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "prd@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "5165d262-6ba7-4e33-8dab-7a24be5fc642",
+      "run_id": "release-v1.6.15",
+      "stage": "user-story",
+      "event": "stage_started",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.15",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:06:45.079438+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "user-story@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "436b033a-4ea6-4d2e-82dd-2ec175472e25",
+      "run_id": "release-v1.6.15",
+      "stage": "user-story",
+      "event": "stage_context_injected",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.15",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:06:45.084567+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "user-story@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "a8764049-daa7-4f77-a5b9-16ecb6d9b781",
+      "run_id": "release-v1.6.15",
+      "stage": "user-story",
+      "event": "stage_finished",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.15",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/gate-report.json",
+        ".beacon/coverage-summary.json",
+        "docs/beacon/v1.6.15/SUMMARY.md"
+      ],
+      "ts": "2026-08-27T13:06:45.089061+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "user-story@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "74da27bd-6c21-4923-909c-cd43dce981d1",
+      "run_id": "release-v1.6.15",
+      "stage": "user-story",
+      "event": "memory_writeback",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.15",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/gate-report.json",
+        ".beacon/coverage-summary.json",
+        "docs/beacon/v1.6.15/SUMMARY.md"
+      ],
+      "ts": "2026-08-27T13:06:45.093482+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "user-story@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "879b3314-ac30-419b-84bd-c6b9598922ac",
+      "run_id": "release-v1.6.15",
+      "stage": "test-case",
+      "event": "stage_started",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.15",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:06:45.097710+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "test-case@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "45d16530-dcf6-41e3-90ae-20abf6862448",
+      "run_id": "release-v1.6.15",
+      "stage": "test-case",
+      "event": "stage_context_injected",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.15",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:06:45.104968+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "test-case@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "11f7ba8f-3c18-4c05-9c51-0bf114a72241",
+      "run_id": "release-v1.6.15",
+      "stage": "test-case",
+      "event": "stage_finished",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.15",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/gate-report.json",
+        ".beacon/coverage-summary.json",
+        "docs/beacon/v1.6.15/SUMMARY.md"
+      ],
+      "ts": "2026-08-27T13:06:45.118354+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "test-case@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "8af8634e-94a4-43b8-bba6-cb876376d54c",
+      "run_id": "release-v1.6.15",
+      "stage": "test-case",
+      "event": "memory_writeback",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.15",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/gate-report.json",
+        ".beacon/coverage-summary.json",
+        "docs/beacon/v1.6.15/SUMMARY.md"
+      ],
+      "ts": "2026-08-27T13:06:45.126515+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "test-case@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "77c5163a-7216-4ead-b2de-ce23d36b2b66",
+      "run_id": "release-v1.6.15",
+      "stage": "implement",
+      "event": "stage_started",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.15",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:06:45.131998+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "implement@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "f64e849b-6f39-44e2-b410-e960f403b1fb",
+      "run_id": "release-v1.6.15",
+      "stage": "implement",
+      "event": "stage_context_injected",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.15",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:06:45.136879+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "implement@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "704a7d20-c3c0-455e-934f-156e29441a60",
+      "run_id": "release-v1.6.15",
+      "stage": "implement",
+      "event": "stage_finished",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.15",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/gate-report.json",
+        ".beacon/coverage-summary.json",
+        "docs/beacon/v1.6.15/SUMMARY.md"
+      ],
+      "ts": "2026-08-27T13:06:45.141624+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "implement@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "3e09bae3-1380-4733-908c-f581976b8e2b",
+      "run_id": "release-v1.6.15",
+      "stage": "implement",
+      "event": "memory_writeback",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.15",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/gate-report.json",
+        ".beacon/coverage-summary.json",
+        "docs/beacon/v1.6.15/SUMMARY.md"
+      ],
+      "ts": "2026-08-27T13:06:45.146456+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "implement@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "ac126475-e5f5-44c9-b53b-54ec93b09d82",
+      "run_id": "release-v1.6.15",
+      "stage": "qa",
+      "event": "stage_started",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.15",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:06:45.151646+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "qa@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "07982ad0-8fd5-4cd6-8ded-1b8ed76d9f1e",
+      "run_id": "release-v1.6.15",
+      "stage": "qa",
+      "event": "stage_context_injected",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.15",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:06:45.157154+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "qa@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "2d04c7a6-183a-4fb7-84f9-45a41b4756e3",
+      "run_id": "release-v1.6.15",
+      "stage": "qa",
+      "event": "stage_finished",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.15",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/gate-report.json",
+        ".beacon/coverage-summary.json",
+        "docs/beacon/v1.6.15/SUMMARY.md"
+      ],
+      "ts": "2026-08-27T13:06:45.162167+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "qa@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "fc79e860-bcec-4360-abfa-d52d74fc77b6",
+      "run_id": "release-v1.6.15",
+      "stage": "qa",
+      "event": "memory_writeback",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.15",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/gate-report.json",
+        ".beacon/coverage-summary.json",
+        "docs/beacon/v1.6.15/SUMMARY.md"
+      ],
+      "ts": "2026-08-27T13:06:45.167248+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "qa@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "e626958e-8882-4e9d-bbaa-960f5b25e8a4",
+      "run_id": "release-v1.6.15",
+      "stage": "release",
+      "event": "stage_started",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.15",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:06:45.171943+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "399745bc-d3bd-438a-979f-8f8802a9ea36",
+      "run_id": "release-v1.6.15",
+      "stage": "release",
+      "event": "stage_context_injected",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.15",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:06:45.177058+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "7e521a94-80e6-4e3c-a387-ef252d77ca84",
+      "run_id": "release-v1.6.15",
+      "stage": "release",
+      "event": "stage_finished",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.15",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/gate-report.json",
+        ".beacon/coverage-summary.json",
+        "docs/beacon/v1.6.15/SUMMARY.md"
+      ],
+      "ts": "2026-08-27T13:06:45.182020+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "cf143fbc-236c-4c62-a4a0-38544fd07d2c",
+      "run_id": "release-v1.6.15",
+      "stage": "release",
+      "event": "memory_writeback",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.15",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/gate-report.json",
+        ".beacon/coverage-summary.json",
+        "docs/beacon/v1.6.15/SUMMARY.md"
+      ],
+      "ts": "2026-08-27T13:06:45.187590+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "5527c9d3-d24c-4a0b-8bb0-8b353d7f29fa",
+      "run_id": "release-v1.6.15",
+      "stage": "release",
+      "event": "memory_writeback",
+      "source": "workflow.memory.writeback",
+      "source_session_id": "release-v1.6.15",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/gate-report.json",
+        ".beacon/coverage-summary.json",
+        "docs/beacon/v1.6.15/SUMMARY.md"
+      ],
+      "ts": "2026-08-27T13:06:45.210144+00:00",
+      "details": {
+        "memory_id": "1c93a17a-2e95-4b89-a377-9afd4aa4b598",
+        "memory_type": "decision",
+        "transaction_id": "tx-wf-release-v1.6.15-release-memory_writeback-ae211f18b648",
+        "source_hash": "ae211f18b6481e3e1bb33a69d9588cc779f044084c31a5a5ae176aeac96207d9",
+        "projection_seq": "wf-ae211f18b6481e3e"
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "5ae5624e-fd3b-4d10-a3ad-b92c1e6c9946",
+      "run_id": "run-20260827T210519696107",
+      "stage": "prd",
+      "event": "stage_started",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T210519696107",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:07:01.152608+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "prd@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "ae76e2cf-1e6a-45eb-ae14-bf2759965a20",
+      "run_id": "run-20260827T210519696107",
+      "stage": "prd",
+      "event": "stage_context_injected",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T210519696107",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:07:01.157928+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "prd@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "756526ab-8a25-4410-b66e-edf9df8ac4b3",
+      "run_id": "run-20260827T210519696107",
+      "stage": "prd",
+      "event": "stage_finished",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T210519696107",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/gate-report.json",
+        ".beacon/coverage-summary.json",
+        "docs/beacon/v1.6.15/SUMMARY.md"
+      ],
+      "ts": "2026-08-27T13:07:01.164155+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "prd@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "80c7f5f0-02eb-43bf-85c8-ccb46adef34e",
+      "run_id": "run-20260827T210519696107",
+      "stage": "prd",
+      "event": "memory_writeback",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T210519696107",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/gate-report.json",
+        ".beacon/coverage-summary.json",
+        "docs/beacon/v1.6.15/SUMMARY.md"
+      ],
+      "ts": "2026-08-27T13:07:01.168928+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "prd@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "3ef6f3f3-cb53-40d2-9327-47d8330ddfcb",
+      "run_id": "run-20260827T210519696107",
+      "stage": "user-story",
+      "event": "stage_started",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T210519696107",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:07:01.174240+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "user-story@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "af2360e4-c31c-4e3f-924f-fc7c3558c880",
+      "run_id": "run-20260827T210519696107",
+      "stage": "user-story",
+      "event": "stage_context_injected",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T210519696107",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:07:01.179456+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "user-story@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "802e3640-af23-4c0d-a69f-90b18fcfea4a",
+      "run_id": "run-20260827T210519696107",
+      "stage": "user-story",
+      "event": "stage_finished",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T210519696107",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/gate-report.json",
+        ".beacon/coverage-summary.json",
+        "docs/beacon/v1.6.15/SUMMARY.md"
+      ],
+      "ts": "2026-08-27T13:07:01.184558+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "user-story@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "f2baa538-e813-4db3-beb8-e07137273ffd",
+      "run_id": "run-20260827T210519696107",
+      "stage": "user-story",
+      "event": "memory_writeback",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T210519696107",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/gate-report.json",
+        ".beacon/coverage-summary.json",
+        "docs/beacon/v1.6.15/SUMMARY.md"
+      ],
+      "ts": "2026-08-27T13:07:01.189778+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "user-story@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "efc74d44-e862-4f87-be9c-b7425f106a6f",
+      "run_id": "run-20260827T210519696107",
+      "stage": "test-case",
+      "event": "stage_started",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T210519696107",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:07:01.195028+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "test-case@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "2bd027a0-9bfd-4c6c-829d-efc013fc694a",
+      "run_id": "run-20260827T210519696107",
+      "stage": "test-case",
+      "event": "stage_context_injected",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T210519696107",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:07:01.200485+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "test-case@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "06995976-2560-4535-b762-80fb2b691d4c",
+      "run_id": "run-20260827T210519696107",
+      "stage": "test-case",
+      "event": "stage_finished",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T210519696107",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/gate-report.json",
+        ".beacon/coverage-summary.json",
+        "docs/beacon/v1.6.15/SUMMARY.md"
+      ],
+      "ts": "2026-08-27T13:07:01.206166+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "test-case@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "46c9a4dc-c266-4ac6-a9de-ac6f0ad91119",
+      "run_id": "run-20260827T210519696107",
+      "stage": "test-case",
+      "event": "memory_writeback",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T210519696107",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/gate-report.json",
+        ".beacon/coverage-summary.json",
+        "docs/beacon/v1.6.15/SUMMARY.md"
+      ],
+      "ts": "2026-08-27T13:07:01.212456+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "test-case@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "17a312b4-daaf-499d-bb9c-d4f32c3d8dda",
+      "run_id": "run-20260827T210519696107",
+      "stage": "implement",
+      "event": "stage_started",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T210519696107",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:07:01.218666+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "implement@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "455df003-1092-4d38-8e9b-86d0d6d03845",
+      "run_id": "run-20260827T210519696107",
+      "stage": "implement",
+      "event": "stage_context_injected",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T210519696107",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:07:01.224227+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "implement@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "1a175018-8bba-486a-a1fb-3b6c1a2bcb55",
+      "run_id": "run-20260827T210519696107",
+      "stage": "implement",
+      "event": "stage_finished",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T210519696107",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/gate-report.json",
+        ".beacon/coverage-summary.json",
+        "docs/beacon/v1.6.15/SUMMARY.md"
+      ],
+      "ts": "2026-08-27T13:07:01.230031+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "implement@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "8ea923b3-fd29-40ef-bdef-ae8b173f60fa",
+      "run_id": "run-20260827T210519696107",
+      "stage": "implement",
+      "event": "memory_writeback",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T210519696107",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/gate-report.json",
+        ".beacon/coverage-summary.json",
+        "docs/beacon/v1.6.15/SUMMARY.md"
+      ],
+      "ts": "2026-08-27T13:07:01.235947+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "implement@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "3cb7a293-1438-4ebf-8ad4-54769b28acfc",
+      "run_id": "run-20260827T210519696107",
+      "stage": "qa",
+      "event": "stage_started",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T210519696107",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:07:01.243442+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "qa@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "4e539ff9-590e-4d29-b765-5f76a38ff9a6",
+      "run_id": "run-20260827T210519696107",
+      "stage": "qa",
+      "event": "stage_context_injected",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T210519696107",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:07:01.248823+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "qa@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "7616f567-2045-41e4-bc24-23d4a2fafd78",
+      "run_id": "run-20260827T210519696107",
+      "stage": "qa",
+      "event": "stage_finished",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T210519696107",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/gate-report.json",
+        ".beacon/coverage-summary.json",
+        "docs/beacon/v1.6.15/SUMMARY.md"
+      ],
+      "ts": "2026-08-27T13:07:01.254583+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "qa@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "2d42c44f-acd3-4203-bbbf-2c0a0f2caa30",
+      "run_id": "run-20260827T210519696107",
+      "stage": "qa",
+      "event": "memory_writeback",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T210519696107",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/gate-report.json",
+        ".beacon/coverage-summary.json",
+        "docs/beacon/v1.6.15/SUMMARY.md"
+      ],
+      "ts": "2026-08-27T13:07:01.261286+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "qa@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "a1330135-2005-4289-9a82-158d7cafc27d",
+      "run_id": "run-20260827T210519696107",
+      "stage": "release",
+      "event": "stage_started",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T210519696107",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:07:01.267619+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "0fc7443b-2450-45f1-b747-4ef4ffc565b6",
+      "run_id": "run-20260827T210519696107",
+      "stage": "release",
+      "event": "stage_context_injected",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T210519696107",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:07:01.284906+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "98e4415c-7848-41b7-a3b8-f15f7d9a5cb7",
+      "run_id": "run-20260827T210519696107",
+      "stage": "release",
+      "event": "stage_finished",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T210519696107",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/gate-report.json",
+        ".beacon/coverage-summary.json",
+        "docs/beacon/v1.6.15/SUMMARY.md"
+      ],
+      "ts": "2026-08-27T13:07:01.291904+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "be20e5a8-6c7c-46c1-aa16-2b30c4680024",
+      "run_id": "run-20260827T210519696107",
+      "stage": "release",
+      "event": "memory_writeback",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T210519696107",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/gate-report.json",
+        ".beacon/coverage-summary.json",
+        "docs/beacon/v1.6.15/SUMMARY.md"
+      ],
+      "ts": "2026-08-27T13:07:01.297337+00:00",
+      "details": {
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "sync_source": "release"
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "d3b517d5-5edc-4b73-bb62-af574628dc71",
+      "run_id": "run-20260827T210519696107",
+      "stage": "release",
+      "event": "memory_writeback",
+      "source": "workflow.memory.writeback",
+      "source_session_id": "run-20260827T210519696107",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/gate-report.json",
+        ".beacon/coverage-summary.json",
+        "docs/beacon/v1.6.15/SUMMARY.md"
+      ],
+      "ts": "2026-08-27T13:07:01.310418+00:00",
+      "details": {
+        "memory_id": "0ab9e63b-2139-4e71-866e-d461af875257",
+        "memory_type": "decision",
+        "transaction_id": "tx-wf-run-20260827T210519696107-release-memory_writeback-21616762281d",
+        "source_hash": "21616762281df8626acca1da4135a60795d97ef358404809badf06f8d3c0dada",
+        "projection_seq": "wf-21616762281df862"
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "ff701cd9-5f80-4cd2-812d-88ef144658ab",
+      "run_id": "release:v1.6.15",
+      "stage": "release",
+      "event": "release_decision_recorded",
+      "source": "workflow.release-profile",
+      "source_session_id": "release:v1.6.15",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/gate-report.json",
+        ".beacon/raw-command-log.jsonl",
+        ".beacon/runs/run-20260827T210519696107/state.json",
+        "docs/beacon/v1.6.15/.machine/execution/terminal.json",
+        "docs/beacon/v1.6.15/execution/boundaries.md"
+      ],
+      "ts": "2026-08-27T13:08:00.958349+00:00",
+      "details": {
+        "workflow_run_id": "run-20260827T210519696107",
+        "feature": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "status": "completed",
+        "reason": "doctor_repair_package"
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "295d657d-8f5e-4159-951f-a6ecd9a85a2b",
+      "run_id": "release-v1.6.15",
+      "stage": "release",
+      "event": "release_decision_recorded",
+      "source": "release.gate",
+      "source_session_id": "release-v1.6.15",
+      "evidence_ref": [
+        "docs/beacon/v1.6.15/SUMMARY.md",
+        "docs/beacon/v1.6.15/.machine/execution/qa-acceptance-beacon-v1615-automerge-gate.json",
+        "docs/beacon/v1.6.15/.machine/execution/qa-acceptance-beacon-v1615-coverage-type-weighted.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-08-27T13:09:59.790421+00:00",
+      "details": {
+        "feature": "v1.6.15-batch-1",
+        "version": "v1.6.15",
+        "verdict": "human_gate_pending"
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "71e4bfab-fd2e-4542-9ec4-fc2951433271",
+      "run_id": "release:v1.6.16",
+      "stage": "release",
+      "event": "release_decision_recorded",
+      "source": "workflow.release-profile",
+      "source_session_id": "release:v1.6.16",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/gate-report.json",
+        ".beacon/raw-command-log.jsonl",
+        ".beacon/runs/run-20260827T215515248284/state.json",
+        "docs/beacon/v1.6.16/.machine/execution/terminal.json",
+        "docs/beacon/v1.6.16/execution/boundaries.md"
+      ],
+      "ts": "2026-08-27T13:56:15.747684+00:00",
+      "details": {
+        "workflow_run_id": "run-20260827T215515248284",
+        "feature": "beacon-v1616-live-skill-smoke",
+        "version": "v1.6.16",
+        "status": "completed",
+        "reason": "doctor_repair_package"
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "9a5ae3a2-a610-4d50-9015-b9fe5e602e2a",
+      "run_id": "release-v1.6.16",
+      "stage": "prd",
+      "event": "stage_started",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.16",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:57:19.455264+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "prd@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "b660184c-27cf-4004-b9a0-3e3966abf367",
+      "run_id": "release-v1.6.16",
+      "stage": "prd",
+      "event": "stage_context_injected",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.16",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:57:19.460509+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "prd@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "1f1aa801-d4ff-4749-85a3-c8b957f9ba5c",
+      "run_id": "release-v1.6.16",
+      "stage": "prd",
+      "event": "stage_finished",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.16",
+      "evidence_ref": [
+        "docs/beacon/v1.6.16/SUMMARY.md",
+        "docs/beacon/v1.6.16/.machine/execution/qa-acceptance-beacon-v1616-bad-merge-baseline.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-08-27T13:57:19.466054+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "prd@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "af7d7300-d857-4d68-96d6-ca4b1cf10a42",
+      "run_id": "release-v1.6.16",
+      "stage": "prd",
+      "event": "memory_writeback",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.16",
+      "evidence_ref": [
+        "docs/beacon/v1.6.16/SUMMARY.md",
+        "docs/beacon/v1.6.16/.machine/execution/qa-acceptance-beacon-v1616-bad-merge-baseline.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-08-27T13:57:19.471202+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "prd@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "4e3066e1-3a5f-462a-a641-e05f6b46ce06",
+      "run_id": "release-v1.6.16",
+      "stage": "user-story",
+      "event": "stage_started",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.16",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:57:19.476605+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "user-story@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "71ead6f1-7ec8-4709-a1ad-8d73f3edd8f7",
+      "run_id": "release-v1.6.16",
+      "stage": "user-story",
+      "event": "stage_context_injected",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.16",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:57:19.481938+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "user-story@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "ff448d4e-c62c-4eeb-9452-d140653ca177",
+      "run_id": "release-v1.6.16",
+      "stage": "user-story",
+      "event": "stage_finished",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.16",
+      "evidence_ref": [
+        "docs/beacon/v1.6.16/SUMMARY.md",
+        "docs/beacon/v1.6.16/.machine/execution/qa-acceptance-beacon-v1616-bad-merge-baseline.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-08-27T13:57:19.487377+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "user-story@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "169825fd-01db-42f5-ad76-e59fc4fbc283",
+      "run_id": "release-v1.6.16",
+      "stage": "user-story",
+      "event": "memory_writeback",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.16",
+      "evidence_ref": [
+        "docs/beacon/v1.6.16/SUMMARY.md",
+        "docs/beacon/v1.6.16/.machine/execution/qa-acceptance-beacon-v1616-bad-merge-baseline.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-08-27T13:57:19.492461+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "user-story@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "0c0cfb48-6bb8-420a-9d75-bd9918b0833d",
+      "run_id": "release-v1.6.16",
+      "stage": "test-case",
+      "event": "stage_started",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.16",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:57:19.498024+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "test-case@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "aa69ca79-b18a-4a93-980d-ae575fe793f1",
+      "run_id": "release-v1.6.16",
+      "stage": "test-case",
+      "event": "stage_context_injected",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.16",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:57:19.503146+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "test-case@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "d781b0ba-dcb3-465c-b187-0179f12702d8",
+      "run_id": "release-v1.6.16",
+      "stage": "test-case",
+      "event": "stage_finished",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.16",
+      "evidence_ref": [
+        "docs/beacon/v1.6.16/SUMMARY.md",
+        "docs/beacon/v1.6.16/.machine/execution/qa-acceptance-beacon-v1616-bad-merge-baseline.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-08-27T13:57:19.508960+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "test-case@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "f89a1f13-a0ec-49b3-b773-13f74e2fe8c4",
+      "run_id": "release-v1.6.16",
+      "stage": "test-case",
+      "event": "memory_writeback",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.16",
+      "evidence_ref": [
+        "docs/beacon/v1.6.16/SUMMARY.md",
+        "docs/beacon/v1.6.16/.machine/execution/qa-acceptance-beacon-v1616-bad-merge-baseline.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-08-27T13:57:19.520231+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "test-case@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "35b8ca23-9a1d-40f7-89d3-a3150d303ac5",
+      "run_id": "release-v1.6.16",
+      "stage": "implement",
+      "event": "stage_started",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.16",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:57:19.525628+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "implement@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "a7e42d81-d4ce-4161-87c3-86ac0b73e1a0",
+      "run_id": "release-v1.6.16",
+      "stage": "implement",
+      "event": "stage_context_injected",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.16",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:57:19.530814+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "implement@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "cbbd7c35-742b-443b-a21d-f93943f9b61b",
+      "run_id": "release-v1.6.16",
+      "stage": "implement",
+      "event": "stage_finished",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.16",
+      "evidence_ref": [
+        "docs/beacon/v1.6.16/SUMMARY.md",
+        "docs/beacon/v1.6.16/.machine/execution/qa-acceptance-beacon-v1616-bad-merge-baseline.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-08-27T13:57:19.536357+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "implement@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "a160b5fc-6001-474b-a5b4-07f46322b434",
+      "run_id": "release-v1.6.16",
+      "stage": "implement",
+      "event": "memory_writeback",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.16",
+      "evidence_ref": [
+        "docs/beacon/v1.6.16/SUMMARY.md",
+        "docs/beacon/v1.6.16/.machine/execution/qa-acceptance-beacon-v1616-bad-merge-baseline.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-08-27T13:57:19.541784+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "implement@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "d9ee3cfa-b959-495f-b506-c353966ee585",
+      "run_id": "release-v1.6.16",
+      "stage": "qa",
+      "event": "stage_started",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.16",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:57:19.547016+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "qa@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "145f08d3-0c4b-4090-b121-3fd6c131ac59",
+      "run_id": "release-v1.6.16",
+      "stage": "qa",
+      "event": "stage_context_injected",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.16",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:57:19.552444+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "qa@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "13ed227d-ee83-41c0-b5a9-7aacc882b019",
+      "run_id": "release-v1.6.16",
+      "stage": "qa",
+      "event": "stage_finished",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.16",
+      "evidence_ref": [
+        "docs/beacon/v1.6.16/SUMMARY.md",
+        "docs/beacon/v1.6.16/.machine/execution/qa-acceptance-beacon-v1616-bad-merge-baseline.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-08-27T13:57:19.557910+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "qa@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "f8b65402-7c14-4a24-9672-d2ba5d1926ea",
+      "run_id": "release-v1.6.16",
+      "stage": "qa",
+      "event": "memory_writeback",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.16",
+      "evidence_ref": [
+        "docs/beacon/v1.6.16/SUMMARY.md",
+        "docs/beacon/v1.6.16/.machine/execution/qa-acceptance-beacon-v1616-bad-merge-baseline.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-08-27T13:57:19.563736+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "qa@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "096b0461-9cf8-428c-97f7-971441e84139",
+      "run_id": "release-v1.6.16",
+      "stage": "release",
+      "event": "stage_started",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.16",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:57:19.569789+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "9007fabe-9daf-42d3-8053-88530a5494e1",
+      "run_id": "release-v1.6.16",
+      "stage": "release",
+      "event": "stage_context_injected",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.16",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:57:19.575757+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "faecf5ed-47d9-498a-b4ed-d553a7234ccf",
+      "run_id": "release-v1.6.16",
+      "stage": "release",
+      "event": "stage_finished",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.16",
+      "evidence_ref": [
+        "docs/beacon/v1.6.16/SUMMARY.md",
+        "docs/beacon/v1.6.16/.machine/execution/qa-acceptance-beacon-v1616-bad-merge-baseline.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-08-27T13:57:19.581669+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "3858ebde-54dc-42ea-8aac-c2a83c65acdf",
+      "run_id": "release-v1.6.16",
+      "stage": "release",
+      "event": "memory_writeback",
+      "source": "release.backfill",
+      "source_session_id": "release-v1.6.16",
+      "evidence_ref": [
+        "docs/beacon/v1.6.16/SUMMARY.md",
+        "docs/beacon/v1.6.16/.machine/execution/qa-acceptance-beacon-v1616-bad-merge-baseline.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-08-27T13:57:19.587705+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "5831d332-4281-4677-a4a9-6a2125770eb7",
+      "run_id": "release-v1.6.16",
+      "stage": "release",
+      "event": "memory_writeback",
+      "source": "workflow.memory.writeback",
+      "source_session_id": "release-v1.6.16",
+      "evidence_ref": [
+        "docs/beacon/v1.6.16/SUMMARY.md",
+        "docs/beacon/v1.6.16/.machine/execution/qa-acceptance-beacon-v1616-bad-merge-baseline.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-08-27T13:57:19.603092+00:00",
+      "details": {
+        "memory_id": "1cf46428-2b98-4d85-8695-b373648af9c7",
+        "memory_type": "decision",
+        "transaction_id": "tx-wf-release-v1.6.16-release-memory_writeback-8aed91b8e8d6",
+        "source_hash": "8aed91b8e8d68e4e6b0d2eb3fd53d9c41c617e4902ab7782daf434b01baa9977",
+        "projection_seq": "wf-8aed91b8e8d68e4e"
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "701af86f-536d-4f2b-808c-4adb1d536dd5",
+      "run_id": "run-20260827T215515248284",
+      "stage": "prd",
+      "event": "stage_started",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T215515248284",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:57:19.613134+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "prd@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "06eeb34a-2104-46ef-aa6f-47d6c87986ec",
+      "run_id": "run-20260827T215515248284",
+      "stage": "prd",
+      "event": "stage_context_injected",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T215515248284",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:57:19.626991+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "prd@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "3cf7e823-a162-4450-abcd-95dd22f086ec",
+      "run_id": "run-20260827T215515248284",
+      "stage": "prd",
+      "event": "stage_finished",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T215515248284",
+      "evidence_ref": [
+        "docs/beacon/v1.6.16/SUMMARY.md",
+        "docs/beacon/v1.6.16/.machine/execution/qa-acceptance-beacon-v1616-bad-merge-baseline.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-08-27T13:57:19.639637+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "prd@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "60a4053a-302c-4364-8d71-b7b19bfd52f2",
+      "run_id": "run-20260827T215515248284",
+      "stage": "prd",
+      "event": "memory_writeback",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T215515248284",
+      "evidence_ref": [
+        "docs/beacon/v1.6.16/SUMMARY.md",
+        "docs/beacon/v1.6.16/.machine/execution/qa-acceptance-beacon-v1616-bad-merge-baseline.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-08-27T13:57:19.649379+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "prd@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "3022e241-1cac-4fad-adf1-00fabf96cca0",
+      "run_id": "run-20260827T215515248284",
+      "stage": "user-story",
+      "event": "stage_started",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T215515248284",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:57:19.655583+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "user-story@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "be503499-b517-4975-9753-1902add12e46",
+      "run_id": "run-20260827T215515248284",
+      "stage": "user-story",
+      "event": "stage_context_injected",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T215515248284",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:57:19.662018+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "user-story@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "757f7558-d923-48c6-b627-56e0646101a6",
+      "run_id": "run-20260827T215515248284",
+      "stage": "user-story",
+      "event": "stage_finished",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T215515248284",
+      "evidence_ref": [
+        "docs/beacon/v1.6.16/SUMMARY.md",
+        "docs/beacon/v1.6.16/.machine/execution/qa-acceptance-beacon-v1616-bad-merge-baseline.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-08-27T13:57:19.676533+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "user-story@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "3c7d88b7-be7d-4bea-8a0e-297a6bc48e3a",
+      "run_id": "run-20260827T215515248284",
+      "stage": "user-story",
+      "event": "memory_writeback",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T215515248284",
+      "evidence_ref": [
+        "docs/beacon/v1.6.16/SUMMARY.md",
+        "docs/beacon/v1.6.16/.machine/execution/qa-acceptance-beacon-v1616-bad-merge-baseline.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-08-27T13:57:19.684909+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "user-story@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "2f12c83c-c0ef-45f1-9dd8-45b7367ad431",
+      "run_id": "run-20260827T215515248284",
+      "stage": "test-case",
+      "event": "stage_started",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T215515248284",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:57:19.713498+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "test-case@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "5bd91af0-1e25-4447-bf7b-63c0bf463725",
+      "run_id": "run-20260827T215515248284",
+      "stage": "test-case",
+      "event": "stage_context_injected",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T215515248284",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:57:19.730221+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "test-case@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "5c698d96-c18c-4f72-82c6-d0d514fdafa8",
+      "run_id": "run-20260827T215515248284",
+      "stage": "test-case",
+      "event": "stage_finished",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T215515248284",
+      "evidence_ref": [
+        "docs/beacon/v1.6.16/SUMMARY.md",
+        "docs/beacon/v1.6.16/.machine/execution/qa-acceptance-beacon-v1616-bad-merge-baseline.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-08-27T13:57:19.803704+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "test-case@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "b84fba85-663d-47ac-ad4f-d97f69ae33f9",
+      "run_id": "run-20260827T215515248284",
+      "stage": "test-case",
+      "event": "memory_writeback",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T215515248284",
+      "evidence_ref": [
+        "docs/beacon/v1.6.16/SUMMARY.md",
+        "docs/beacon/v1.6.16/.machine/execution/qa-acceptance-beacon-v1616-bad-merge-baseline.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-08-27T13:57:19.878310+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "test-case@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "f83325bf-be86-41e1-83e7-6ad12d29cdfd",
+      "run_id": "run-20260827T215515248284",
+      "stage": "implement",
+      "event": "stage_started",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T215515248284",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:57:19.884290+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "implement@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "41915aea-4669-47bf-b517-3a5be6a5fe62",
+      "run_id": "run-20260827T215515248284",
+      "stage": "implement",
+      "event": "stage_context_injected",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T215515248284",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:57:19.928176+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "implement@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "cb632175-92de-433d-aa3a-48003164cd0f",
+      "run_id": "run-20260827T215515248284",
+      "stage": "implement",
+      "event": "stage_finished",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T215515248284",
+      "evidence_ref": [
+        "docs/beacon/v1.6.16/SUMMARY.md",
+        "docs/beacon/v1.6.16/.machine/execution/qa-acceptance-beacon-v1616-bad-merge-baseline.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-08-27T13:57:19.934279+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "implement@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "88ad2005-c3d8-4b64-af49-c062c92afd83",
+      "run_id": "run-20260827T215515248284",
+      "stage": "implement",
+      "event": "memory_writeback",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T215515248284",
+      "evidence_ref": [
+        "docs/beacon/v1.6.16/SUMMARY.md",
+        "docs/beacon/v1.6.16/.machine/execution/qa-acceptance-beacon-v1616-bad-merge-baseline.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-08-27T13:57:19.940095+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "implement@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "bae559e1-90f7-4f0b-a19b-5d85173ba114",
+      "run_id": "run-20260827T215515248284",
+      "stage": "qa",
+      "event": "stage_started",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T215515248284",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:57:19.945952+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "qa@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "829703ec-6395-4e0f-ac7e-95e415d22ed5",
+      "run_id": "run-20260827T215515248284",
+      "stage": "qa",
+      "event": "stage_context_injected",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T215515248284",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:57:19.951878+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "qa@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "4e4b1840-a0ad-419c-a099-594a58fac628",
+      "run_id": "run-20260827T215515248284",
+      "stage": "qa",
+      "event": "stage_finished",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T215515248284",
+      "evidence_ref": [
+        "docs/beacon/v1.6.16/SUMMARY.md",
+        "docs/beacon/v1.6.16/.machine/execution/qa-acceptance-beacon-v1616-bad-merge-baseline.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-08-27T13:57:19.957682+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "qa@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "af7513cd-2180-4559-bd14-d4ccf659d497",
+      "run_id": "run-20260827T215515248284",
+      "stage": "qa",
+      "event": "memory_writeback",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T215515248284",
+      "evidence_ref": [
+        "docs/beacon/v1.6.16/SUMMARY.md",
+        "docs/beacon/v1.6.16/.machine/execution/qa-acceptance-beacon-v1616-bad-merge-baseline.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-08-27T13:57:19.963521+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "qa@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "b9bc3062-1241-4eaf-90fb-7fd9431c1945",
+      "run_id": "run-20260827T215515248284",
+      "stage": "release",
+      "event": "stage_started",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T215515248284",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:57:19.997805+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "f64468d0-434e-4144-9f3e-d9967a1ab399",
+      "run_id": "run-20260827T215515248284",
+      "stage": "release",
+      "event": "stage_context_injected",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T215515248284",
+      "evidence_ref": [],
+      "ts": "2026-08-27T13:57:20.012589+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "77086387-3562-4797-a51c-887354c1f4b1",
+      "run_id": "run-20260827T215515248284",
+      "stage": "release",
+      "event": "stage_finished",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T215515248284",
+      "evidence_ref": [
+        "docs/beacon/v1.6.16/SUMMARY.md",
+        "docs/beacon/v1.6.16/.machine/execution/qa-acceptance-beacon-v1616-bad-merge-baseline.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-08-27T13:57:20.041638+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "5f4b42c2-7bf0-48f2-837f-449ab85280bd",
+      "run_id": "run-20260827T215515248284",
+      "stage": "release",
+      "event": "memory_writeback",
+      "source": "release.backfill",
+      "source_session_id": "run-20260827T215515248284",
+      "evidence_ref": [
+        "docs/beacon/v1.6.16/SUMMARY.md",
+        "docs/beacon/v1.6.16/.machine/execution/qa-acceptance-beacon-v1616-bad-merge-baseline.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-08-27T13:57:20.047811+00:00",
+      "details": {
+        "feature": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "sync_source": "release"
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "69c63041-4570-4128-bebe-8166d401b6c8",
+      "run_id": "run-20260827T215515248284",
+      "stage": "release",
+      "event": "memory_writeback",
+      "source": "workflow.memory.writeback",
+      "source_session_id": "run-20260827T215515248284",
+      "evidence_ref": [
+        "docs/beacon/v1.6.16/SUMMARY.md",
+        "docs/beacon/v1.6.16/.machine/execution/qa-acceptance-beacon-v1616-bad-merge-baseline.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-08-27T13:57:20.059729+00:00",
+      "details": {
+        "memory_id": "2daa92b0-d735-4e46-851d-3eea13988af9",
+        "memory_type": "decision",
+        "transaction_id": "tx-wf-run-20260827T215515248284-release-memory_writeback-464bea1ddcef",
+        "source_hash": "464bea1ddcefba077095bbda7a877b81395f98e3a9d56d9ec832ec41d8d77559",
+        "projection_seq": "wf-464bea1ddcefba07"
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "6b213070-c110-4307-81d7-47ebcfb90cbf",
+      "run_id": "release-v1.6.16",
+      "stage": "release",
+      "event": "release_decision_recorded",
+      "source": "release.gate",
+      "source_session_id": "release-v1.6.16",
+      "evidence_ref": [
+        "docs/beacon/v1.6.16/SUMMARY.md",
+        "docs/beacon/v1.6.16/.machine/execution/qa-acceptance-beacon-v1616-bad-merge-baseline.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "ts": "2026-08-27T13:57:20.068428+00:00",
+      "details": {
+        "feature": "v1.6.16-batch-1",
+        "version": "v1.6.16",
+        "verdict": "human_gate_pending"
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
+    },
+    {
+      "event_id": "103e8b0f-f3e6-4d7c-9fa2-afab244c9ab2",
+      "run_id": "release:v1.6.16",
+      "stage": "release",
+      "event": "release_decision_recorded",
+      "source": "release.check",
+      "source_session_id": "release:v1.6.16",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.16/.machine/change/v1.6.16.json",
+        "docs/beacon/v1.6.16/change/v1.6.16.md"
+      ],
+      "ts": "2026-08-27T14:01:36.619458+00:00",
+      "details": {
+        "action": "check",
+        "version": "v1.6.16",
+        "status": "blocked",
+        "failed_checks": [
+          "version change payload exists",
+          "version change payload matches release version",
+          "version change document includes current feature",
+          "release scorecard ready"
+        ]
+      },
+      "attempt_id": "release@attempt-1",
+      "attempt_seq": 1
     }
   ],
-  "updated_at": "2026-08-27T09:47:49.649421+00:00"
+  "updated_at": "2026-08-27T14:01:36.619478+00:00"
 }
