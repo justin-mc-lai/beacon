@@ -94,6 +94,9 @@ Rule of thumb:
 15. [Beacon 优化方向提案（2026-08-27）—— X 方法论 × 第三方 spec 最新能力](./beacon-optimization-proposal-2026-08-27.md)
    - Why it matters:
      把 Cursor 工程师方法论、本日第三方同步能力与既有缺口（S4 预算、feature map、失败模式回归）交叉成 7 个 beacon 原生优化方向，首批锁定预算内核 + 失败模式 skill 回归库。
+16. [Beacon v1.6.13 规划源审计（2026-08-27）—— 7 优化方向 × OSS 能力对照 × skill 文案规范](./beacon-v1613-planning-source-audit-2026-08-27.md)
+   - Why it matters:
+     子代理锚定 oss-sync 源码核实 7 方向的第三方证据链（D2/D3 最强、D1/D5 弱、D7 不采纳），并审计 7 个 skill 文案规范性（F1-F5：共享块复制 bug、人话契约只在 truth、mode_id 前缀断裂），产出 v1.6.13 批次建议。
 
 
 ---
