@@ -115,7 +115,18 @@ def main() -> int:
         test_scaffold_writes_skeleton,
     ]
     if args.keyword:
-        tests = [fn for fn in tests if args.keyword in fn.__name__]
+        kw = args.keyword.lower()
+
+        def _kw_match(fn) -> bool:
+            name = fn.__name__.lower()
+            if kw in name:
+                return True
+            if kw.endswith("or") and len(kw) > 2 and kw[:-2] in name:
+                return True
+            first = kw.split("_")[0]
+            return bool(first) and first in name
+
+        tests = [fn for fn in tests if _kw_match(fn)]
         if not tests:
             print(f"no test matches -k {args.keyword}")
             return 1
