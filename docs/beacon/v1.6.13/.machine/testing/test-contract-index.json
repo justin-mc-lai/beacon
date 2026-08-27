@@ -1,0 +1,306 @@
+{
+  "schema_version": "1.0",
+  "contract_kind": "beacon_test_contract_index",
+  "version": "v1.6.13",
+  "runtime_line": "v1.6.13",
+  "runtime_release_line": "v1.6.12",
+  "docs_line": "v1.6.13",
+  "feature": "beacon-v1613-d3-failure-mode-catalog",
+  "feature_slug": "beacon-v1613-d3-failure-mode-catalog",
+  "feature_line_status": "active_delivery",
+  "truth_refs": {
+    "truth": "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/truth.md",
+    "tests": "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/tests.md",
+    "tasks": "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/tasks.md",
+    "evidence": "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/evidence.md",
+    "ac_matrix": "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/tests.md",
+    "story_state": "docs/beacon/v1.6.13/.machine/user-story/beacon-v1613-d3-failure-mode-catalog.json"
+  },
+  "source_hashes": {
+    "truth": "sha256:f288177f097d2d2811bde3a1e4c598bf068af59fb23ca00095dc6c4c3e8d7aab",
+    "tests": "sha256:94c2d7f0944e9a74627df48cfafd7893fd18562c9cc35437790f0dc3a88c59f5",
+    "tasks": "sha256:b98e3a90b20b2c7f7c2c5617e8597a32e5acfd3126d66e32dc42479fecd459de",
+    "evidence": "sha256:49d07915353655d6a276d1e5035c3f6646789e8eb23e494207df24c90603bbc6",
+    "ac_matrix": "sha256:94c2d7f0944e9a74627df48cfafd7893fd18562c9cc35437790f0dc3a88c59f5",
+    "story_state": "sha256:46c8698ccbb81fd28dc10b14efd67fe8cab61c671df32a71afe3fdfa4eaf648c"
+  },
+  "lanes": {
+    "feature_release_facing": [
+      {
+        "tc_id": "TC-001",
+        "ac_id": "AC-001",
+        "ac_theme": "D3：失败模式目录",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "rg -c '^## FM-|^### 模式' skills/beacon/beacon-qa/references/failure-mode-catalog.md",
+        "assertion": "目录条目 ≥ 5",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1613-d3-failure-mode-catalog/tc-001/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-002",
+        "ac_id": "AC-002",
+        "ac_theme": "每条带 rubric（判定标准）",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "rg -c 'rubric|判定标准' skills/beacon/beacon-qa/references/failure-mode-catalog.md",
+        "assertion": "每条含 rubric（命中数 ≥ 条目数）",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1613-d3-failure-mode-catalog/tc-002/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-003",
+        "ac_id": "AC-003",
+        "ac_theme": "用例可独立执行",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 tests/test_v1613_failure_mode_catalog.py",
+        "assertion": "exit 0：用例断言可独立执行",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1613-d3-failure-mode-catalog/tc-003/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-004",
+        "ac_id": "AC-004",
+        "ac_theme": "对抗式审查 gate 消费目录",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "rg -n 'failure-mode-catalog|失败模式目录' skills/beacon/beacon-qa/references/modes/eval-qa.md skills/beacon/beacon-qa/references/modes/eval-qa-deep.md",
+        "assertion": "审查模式引用目录",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1613-d3-failure-mode-catalog/tc-004/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-005",
+        "ac_id": "AC-005",
+        "ac_theme": "手册不自动判 pass（人裁决）",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "rg -n 'user decides|人裁决|不自动判' skills/beacon/beacon-qa/references/failure-mode-catalog.md",
+        "assertion": "明确批判式意见边界",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1613-d3-failure-mode-catalog/tc-005/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-EXEC",
+        "ac_id": "AC-001,AC-003",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 tests/test_v1613_failure_mode_catalog.py",
+        "assertion": "exit 0：目录存在 + 条目/rubric/引用断言通过",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1613-d3-failure-mode-catalog/tc-exec/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-ILLEGAL",
+        "ac_id": "AC-005",
+        "ac_theme": "手册不自动判 pass（人裁决）",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "rg -n \"目录自动判 pass|未引用目录仍声称\" docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/truth.md",
+        "assertion": "illegal（越权裁决/advisory 缺失）",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1613-d3-failure-mode-catalog/tc-illegal/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      }
+    ],
+    "current_runtime_contract": [],
+    "generated_surface_sync": [],
+    "compatibility_contract": [],
+    "legacy_snapshot": [],
+    "browser_runtime_admission": []
+  },
+  "lane_counts": {
+    "feature_release_facing": 7,
+    "current_runtime_contract": 0,
+    "generated_surface_sync": 0,
+    "compatibility_contract": 0,
+    "legacy_snapshot": 0,
+    "browser_runtime_admission": 0
+  },
+  "canonical_lanes": [
+    "feature_release_facing",
+    "current_runtime_contract",
+    "generated_surface_sync",
+    "compatibility_contract",
+    "legacy_snapshot",
+    "browser_runtime_admission"
+  ],
+  "test_refs": [
+    {
+      "tc_id": "TC-001",
+      "ac_id": "AC-001",
+      "ac_theme": "D3：失败模式目录",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "rg -c '^## FM-|^### 模式' skills/beacon/beacon-qa/references/failure-mode-catalog.md",
+      "assertion": "目录条目 ≥ 5",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1613-d3-failure-mode-catalog/tc-001/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-002",
+      "ac_id": "AC-002",
+      "ac_theme": "每条带 rubric（判定标准）",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "rg -c 'rubric|判定标准' skills/beacon/beacon-qa/references/failure-mode-catalog.md",
+      "assertion": "每条含 rubric（命中数 ≥ 条目数）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1613-d3-failure-mode-catalog/tc-002/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-003",
+      "ac_id": "AC-003",
+      "ac_theme": "用例可独立执行",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 tests/test_v1613_failure_mode_catalog.py",
+      "assertion": "exit 0：用例断言可独立执行",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1613-d3-failure-mode-catalog/tc-003/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-004",
+      "ac_id": "AC-004",
+      "ac_theme": "对抗式审查 gate 消费目录",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "rg -n 'failure-mode-catalog|失败模式目录' skills/beacon/beacon-qa/references/modes/eval-qa.md skills/beacon/beacon-qa/references/modes/eval-qa-deep.md",
+      "assertion": "审查模式引用目录",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1613-d3-failure-mode-catalog/tc-004/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-005",
+      "ac_id": "AC-005",
+      "ac_theme": "手册不自动判 pass（人裁决）",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "rg -n 'user decides|人裁决|不自动判' skills/beacon/beacon-qa/references/failure-mode-catalog.md",
+      "assertion": "明确批判式意见边界",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1613-d3-failure-mode-catalog/tc-005/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-EXEC",
+      "ac_id": "AC-001,AC-003",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 tests/test_v1613_failure_mode_catalog.py",
+      "assertion": "exit 0：目录存在 + 条目/rubric/引用断言通过",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1613-d3-failure-mode-catalog/tc-exec/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-ILLEGAL",
+      "ac_id": "AC-005",
+      "ac_theme": "手册不自动判 pass（人裁决）",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "rg -n \"目录自动判 pass|未引用目录仍声称\" docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/truth.md",
+      "assertion": "illegal（越权裁决/advisory 缺失）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1613-d3-failure-mode-catalog/tc-illegal/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    }
+  ],
+  "ac_to_test_refs": {
+    "AC-001": [
+      "TC-001"
+    ],
+    "AC-001,AC-003": [
+      "TC-EXEC"
+    ],
+    "AC-002": [
+      "TC-002"
+    ],
+    "AC-003": [
+      "TC-003"
+    ],
+    "AC-004": [
+      "TC-004"
+    ],
+    "AC-005": [
+      "TC-005",
+      "TC-ILLEGAL"
+    ]
+  },
+  "qa_order_contract": {
+    "sequence": [
+      "user_story_ac_order",
+      "scenario_divergence",
+      "current_round_execution",
+      "evidence_pack",
+      "coverage_current_gap",
+      "continue_decision",
+      "severe_blocker_stop_for_repair",
+      "repair_handoff",
+      "beacon_help_resume",
+      "next_qa_round_test_case_backfill",
+      "release_guidance"
+    ],
+    "source": "skills/beacon/references/usage-rules.md"
+  },
+  "deep_delta_policy": {
+    "owner": "deep",
+    "adoption_route": "test-case_or_supplemental_qa",
+    "executes_qa": false
+  },
+  "planning_line_safety": {
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "runtime_line": "v1.6.12",
+    "docs_default_line": "v1.6.13",
+    "current_runtime_release_line": "v1.6.12",
+    "feature_line_status": "active_delivery"
+  },
+  "status": "pass",
+  "blocked": false,
+  "reason_codes": [],
+  "generated_at": "2026-08-27T07:30:42.360710+00:00",
+  "index_path": "docs/beacon/v1.6.13/.machine/testing/test-contract-index.json"
+}

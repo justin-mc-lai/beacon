@@ -1,71 +1,79 @@
 {
   "schema_version": "1.0",
-  "feature": "beacon-v1613-d2-spend-ledger",
-  "feature_slug": "beacon-v1613-d2-spend-ledger",
+  "feature": "beacon-v1613-f4-plain-language-contract",
+  "feature_slug": "beacon-v1613-f4-plain-language-contract",
   "version": "v1.6.13",
-<<<<<<< HEAD
   "status": "blocked",
   "blocked": true,
   "reason_code": "feature_package_validation_failed",
-  "generated_at": "2026-08-27T05:57:38.270253+00:00",
-=======
-  "status": "pass",
-  "blocked": false,
-  "reason_code": "",
-<<<<<<< HEAD
-  "generated_at": "2026-08-27T05:59:36.377526+00:00",
->>>>>>> main
-=======
-  "generated_at": "2026-08-27T06:08:06.664716+00:00",
->>>>>>> main
-  "package_dir": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger",
+  "generated_at": "2026-08-27T07:26:44.717251+00:00",
+  "package_dir": "docs/beacon/v1.6.13/features/beacon-v1613-f4-plain-language-contract",
   "truth_frontmatter": {
-    "slug": "beacon-v1613-d2-spend-ledger",
+    "slug": "beacon-v1613-f4-plain-language-contract",
     "version": "v1.6.13",
     "status": "frozen",
     "language": "zh",
-    "domain_required": "true",
+    "domain_required": "false",
     "ux_required": "false",
     "parser_contract": "beacon-feature-package-v2",
     "truth_source_model": "feature_package_authoritative",
     "package_maturity": "filled",
     "materials_status": "current",
     "canonical_refs": {
-      "prd": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/truth.md",
-      "user_story": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/truth.md",
-      "test_case": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/tests.md"
+      "prd": "docs/beacon/v1.6.13/features/beacon-v1613-f4-plain-language-contract/truth.md",
+      "user_story": "docs/beacon/v1.6.13/features/beacon-v1613-f4-plain-language-contract/truth.md",
+      "test_case": "docs/beacon/v1.6.13/features/beacon-v1613-f4-plain-language-contract/tests.md"
     }
   },
-  "ac_count": 6,
-<<<<<<< HEAD
-  "test_count": 8,
-  "checkbox_count": 7,
-=======
-  "test_count": 9,
-  "checkbox_count": 8,
->>>>>>> main
+  "ac_count": 4,
+  "test_count": 6,
+  "checkbox_count": 6,
   "evidence_row_count": 2,
   "gate_authority": "canonical_surfaces_preserved",
   "checkbox_gate_bypass": false,
   "task_evidence_gate": {
-    "pass": true,
-    "checked_ok": 5,
-    "checked_bad": 0,
+    "pass": false,
+    "checked_ok": 0,
+    "checked_bad": 4,
     "unbound": 0,
     "findings": [
       {
-        "kind": "malformed_checkbox",
-        "text": "malformed_checkbox: line 17"
+        "kind": "checkbox_checked_without_evidence_file",
+        "text": "TASK-001 checked but evidence missing: .beacon/evidence/implement/beacon-v1613-f4-plain-language-contract/AC-001.json",
+        "task_id": "TASK-001",
+        "evidence_path": ".beacon/evidence/implement/beacon-v1613-f4-plain-language-contract/AC-001.json",
+        "ac_id": "AC-001"
+      },
+      {
+        "kind": "checkbox_checked_without_evidence_file",
+        "text": "TASK-002 checked but evidence missing: .beacon/evidence/implement/beacon-v1613-f4-plain-language-contract/AC-002.json",
+        "task_id": "TASK-002",
+        "evidence_path": ".beacon/evidence/implement/beacon-v1613-f4-plain-language-contract/AC-002.json",
+        "ac_id": "AC-002"
+      },
+      {
+        "kind": "checkbox_checked_without_evidence_file",
+        "text": "TASK-003 checked but evidence missing: .beacon/evidence/implement/beacon-v1613-f4-plain-language-contract/AC-003.json",
+        "task_id": "TASK-003",
+        "evidence_path": ".beacon/evidence/implement/beacon-v1613-f4-plain-language-contract/AC-003.json",
+        "ac_id": "AC-003"
+      },
+      {
+        "kind": "checkbox_checked_without_evidence_file",
+        "text": "TASK-004 checked but evidence missing: .beacon/evidence/implement/beacon-v1613-f4-plain-language-contract/AC-004.json",
+        "task_id": "TASK-004",
+        "evidence_path": ".beacon/evidence/implement/beacon-v1613-f4-plain-language-contract/AC-004.json",
+        "ac_id": "AC-004"
       }
     ],
-    "reason_code": ""
+    "reason_code": "task_checkbox_evidence_failed"
   },
   "evidence_gate_truth": false,
   "diagnostics": [
     {
       "severity": "info",
       "code": "truth_human_l0_ok",
-      "path": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/truth.md",
+      "path": "docs/beacon/v1.6.13/features/beacon-v1613-f4-plain-language-contract/truth.md",
       "language": "zh",
       "l0_headings": [
         "## 人话"
@@ -73,17 +81,39 @@
     },
     {
       "severity": "error",
-      "code": "malformed_checkbox: line 17",
-      "path": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/tasks.md"
+      "code": "checkbox_checked_without_evidence_file",
+      "path": "docs/beacon/v1.6.13/features/beacon-v1613-f4-plain-language-contract/tasks.md",
+      "text": "TASK-001 checked but evidence missing: .beacon/evidence/implement/beacon-v1613-f4-plain-language-contract/AC-001.json",
+      "task_id": "TASK-001",
+      "evidence_path": ".beacon/evidence/implement/beacon-v1613-f4-plain-language-contract/AC-001.json",
+      "ac_id": "AC-001"
     },
     {
       "severity": "error",
-      "code": "malformed_checkbox",
-      "path": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/tasks.md",
-      "text": "malformed_checkbox: line 17",
-      "task_id": null,
-      "evidence_path": null,
-      "ac_id": null
+      "code": "checkbox_checked_without_evidence_file",
+      "path": "docs/beacon/v1.6.13/features/beacon-v1613-f4-plain-language-contract/tasks.md",
+      "text": "TASK-002 checked but evidence missing: .beacon/evidence/implement/beacon-v1613-f4-plain-language-contract/AC-002.json",
+      "task_id": "TASK-002",
+      "evidence_path": ".beacon/evidence/implement/beacon-v1613-f4-plain-language-contract/AC-002.json",
+      "ac_id": "AC-002"
+    },
+    {
+      "severity": "error",
+      "code": "checkbox_checked_without_evidence_file",
+      "path": "docs/beacon/v1.6.13/features/beacon-v1613-f4-plain-language-contract/tasks.md",
+      "text": "TASK-003 checked but evidence missing: .beacon/evidence/implement/beacon-v1613-f4-plain-language-contract/AC-003.json",
+      "task_id": "TASK-003",
+      "evidence_path": ".beacon/evidence/implement/beacon-v1613-f4-plain-language-contract/AC-003.json",
+      "ac_id": "AC-003"
+    },
+    {
+      "severity": "error",
+      "code": "checkbox_checked_without_evidence_file",
+      "path": "docs/beacon/v1.6.13/features/beacon-v1613-f4-plain-language-contract/tasks.md",
+      "text": "TASK-004 checked but evidence missing: .beacon/evidence/implement/beacon-v1613-f4-plain-language-contract/AC-004.json",
+      "task_id": "TASK-004",
+      "evidence_path": ".beacon/evidence/implement/beacon-v1613-f4-plain-language-contract/AC-004.json",
+      "ac_id": "AC-004"
     }
   ],
   "truth_map_contract": "beacon-truth-map-v1",
@@ -94,25 +124,16 @@
   "truth_authority": "markdown_feature_package",
   "json_authority": false,
   "source_paths": {
-    "truth": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/truth.md",
-    "tests": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/tests.md",
-    "tasks": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/tasks.md",
-    "evidence": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/evidence.md"
+    "truth": "docs/beacon/v1.6.13/features/beacon-v1613-f4-plain-language-contract/truth.md",
+    "tests": "docs/beacon/v1.6.13/features/beacon-v1613-f4-plain-language-contract/tests.md",
+    "tasks": "docs/beacon/v1.6.13/features/beacon-v1613-f4-plain-language-contract/tasks.md",
+    "evidence": "docs/beacon/v1.6.13/features/beacon-v1613-f4-plain-language-contract/evidence.md"
   },
   "source_hashes": {
-    "truth": "0d2e32ad3083c60e58c570bd0b68d2a5bb3662e2e5be81b75e0945e960c38f27",
-<<<<<<< HEAD
-<<<<<<< HEAD
-    "tests": "d12584aca3bfb09e47c42e809a35458ce0990335c48fb7b842a3c5422ccc8b5a",
-    "tasks": "0bcb192c63a0e4697836a60c86580b09e8d983d2abd2f53f83f740376b15ee53",
-=======
-    "tests": "aa9ef80b77d6bff4552a3d3c13a4fe37dc969ee90feddbd94ddecd294dc73918",
-=======
-    "tests": "563b9a54b7b9b1daf76235eb01d5ea2b99037e689d75d89ac68c6ce2e2d72c73",
->>>>>>> main
-    "tasks": "3785a3bbdd083c8bc71e1d80c7d2e90c830eddeb088f965b3d872f75088cd286",
->>>>>>> main
-    "evidence": "2df6479010e8dfd07e7067b046a98e7b8e82f543c557385aeabaff69e5b15f73"
+    "truth": "2fad2096e4f0daa4046e4142da3fd9507cdf0fd921f653925989c1d991e04926",
+    "tests": "972236570a14fbc985369e28ed70f98c007f9394b72f8d45ccfb4d2fc83e5042",
+    "tasks": "58ddc10c9f904356bd6fa1949316ca07a34c2508057ffc256c1def38ff8e8e3e",
+    "evidence": "3c74c7d3400b2739ff266f2d86c1601b1dff4cfa50182a99402ded2b731cd8d7"
   },
   "runtime_json_requires_markdown_twin": false
 }
