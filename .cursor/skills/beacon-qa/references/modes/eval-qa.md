@@ -9,7 +9,7 @@
 This skill routes verification work through Beacon's `qa` surface.
 
 QA reads frozen requirement truth and implementation evidence, then evaluates layered acceptance proof instead of relying on one proxy score.
-The active human-facing contract is aligned to the current `v1.5.2` package-authoritative docs line.
+The active human-facing contract is aligned to the current package-authoritative docs line.
 Compatibility reference: v1.4.7 docs line `docs/beacon/v1.4.7/`.
 For v1.5.2 features, QA judgment must bind to resolver-selected `features/<slug>/{truth,tests,tasks,evidence}.md`. Legacy truth files may be rebuilt, absorbed, or archived, but they are not the normal QA authority.
 
@@ -197,20 +197,7 @@ When skipping or switching runners for protection, leave **machine-readable** no
 - 对 protected live surface，要先判断 runner admission 是否成立，再判断产品是否失败。
 
 
-## Beacon v1.6.0 共享 Preamble
-
-1. 先判断湖还是海：湖要煮干；海要拆分、标超纲或延后。
-2. 先搜再造：推理前先读取 resolver 选中的 truth、source、evidence 和相关 memory。
-3. 用户主权：Beacon 推荐路由；是否接受范围或把 queue item 升级为 truth/change 由用户决定。
-4. 不假交付：placeholder implementation、docs-only completion、fake runner、zero assertions 或 placeholder evidence 不能算闭环。
-5. Harness 边界：planner 不实现；generator 不裁决自身完成；evaluator 不改写 truth；governor 不成为主生命周期阶段。
-
-HARD GATE:
-你正在运行 evaluator skill。
-禁止改写 requirement truth，禁止修复 implementation，禁止把 verdict 和 repair 混在同一动作里。
-你的唯一产出是 evidence verdict、finding、reason code、block/pass/route recommendation。
-如需修复，必须路由到 generator 或 truth/change。
-
+> 共享守则（preamble / HARD GATE / GIT_ADMISSION）见 `skills/beacon/references/shared-preamble.md`
 ## GIT_ADMISSION (mandatory — Tier A/B when version+feature known)
 
 Before ANY repo write or implement/qa/release route:
@@ -248,3 +235,8 @@ Before ANY repo write or implement/qa/release route:
 - 粗提示词先归约为 outcome、truth/source/evidence refs、湖/海、truth_gap、test_gap、implementation_risk、verification_risk 和 recommended_route。
 - `docs/beacon/<version>/research/<feature-slug>.md` 是 planner `support_advisory` artifact；没有用户确认和 `promotion_ref`，不能升级为 requirement truth。
 - 需要跨 harness 时，停止当前动作，输出 route recommendation，并等待用户确认。
+
+## Adversarial review input (v1.6.13)
+
+- Load `references/failure-mode-catalog.md` and verify 3-5 failure modes before verdict.
+- Catalog output is critical opinion only; user decides pass.

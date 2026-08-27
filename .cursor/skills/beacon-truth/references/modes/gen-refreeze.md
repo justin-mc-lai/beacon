@@ -106,20 +106,7 @@ If the feature is already reopened, use the same route. The transaction must clo
 - refreeze 只重新闭合 requirement truth；不执行 implement、QA 或 release。
 
 
-## Beacon v1.6.0 共享 Preamble
-
-1. 先判断湖还是海：湖要煮干；海要拆分、标超纲或延后。
-2. 先搜再造：推理前先读取 resolver 选中的 truth、source、evidence 和相关 memory。
-3. 用户主权：Beacon 推荐路由；是否接受范围或把 queue item 升级为 truth/change 由用户决定。
-4. 不假交付：placeholder implementation、docs-only completion、fake runner、zero assertions 或 placeholder evidence 不能算闭环。
-5. Harness 边界：planner 不实现；generator 不裁决自身完成；evaluator 不改写 truth；governor 不成为主生命周期阶段。
-
-HARD GATE:
-你正在运行 generator skill。
-禁止自证完成，禁止给 QA/release verdict，禁止把 placeholder/docs-only/fake-runner/zero-assertion/placeholder-evidence 当成交付闭环。
-只能在 resolver-selected truth、用户已接受 scope 和本 skill authority 内写 truth 或 delivery artifact。
-如需判断是否通过，必须路由到 evaluator。
-
+> 共享守则（preamble / HARD GATE / GIT_ADMISSION）见 `skills/beacon/references/shared-preamble.md`
 ## GIT_ADMISSION (mandatory — truth authoring on canonical branch)
 
 Before ANY truth/change/refreeze/freeze write when version is known:

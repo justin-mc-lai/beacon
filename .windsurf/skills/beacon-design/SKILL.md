@@ -1,67 +1,79 @@
 ---
 name: beacon-design
 description: >
-  beacon public harness surface for `design`.
-  Progressive-loads internal skills without dropping capability.
-  Dual-install; does not replace the other brand. Longrun only on goal.
+  Public design harness (1+6 core). Design system, explore, polish, prototype, UX delivery. Triggers: 设计, design system, prototype, polish, UI/UX. Modes under references/modes/. No silent truth rewrite or implement.
 metadata:
-  version: "v1.6.9"
+  version: "v1.6.10"
   brand: Beacon
   public_surface: true
   public_id: "design"
-  harness: "design"
+  scheme: "A-1plus6-merged"
   progressive_map: skills/beacon/references/public-surface-progressive-map.v1.json
-  progressive_loads: ["beacon-gen-design", "beacon-gen-design-init", "beacon-gen-design-system", "beacon-gen-design-explore", "beacon-gen-design-polish", "beacon-gen-prototype"]
   dual_install_with: loom-design
   longrun: false
 ---
 
 # beacon-design
 
-**公开面（Scheme A）**：`design`  
-**渐进加载（能力不降级）**：`beacon-gen-design`, `beacon-gen-design-init`, `beacon-gen-design-system`, `beacon-gen-design-explore`, `beacon-gen-design-polish`, `beacon-gen-prototype`
+**Public surface**: `design` (Scheme A — only 1+6 host-visible cores)  
+**Brand**: beacon  
+**Capability home**: this package (`references/modes/` + nested refs). No separate fine-grained skill install required.
 
-本 skill **不**负责多小时 longrun；长程只用 `$beacon-goal` / `$loom-goal`。
+## HARD GATE
 
-## When to use
+Design/prototype artifacts only. Forbidden: silent truth rewrite, implement as design completion.
 
-- 需要 **design** 场景的稳定入口（host-visible 白名单内）
-- 细粒度旧名（如 gen-implement）仍可用作兼容，但默认安装不再暴露
+Shared preamble:
 
-## Progressive load
+1. Lake vs sea — boil lakes; split/defer seas.
+2. Search before invent — truth, source, evidence, memory first.
+3. User sovereignty on scope and freeze.
+4. No fake delivery (placeholder, docs-only, zero assertions).
+5. Harness boundaries — planner ≠ implement; generator ≠ self-certify; evaluator ≠ rewrite truth.
 
-按 `public-surface-progressive-map.v1.json` 加载内部 skill；**禁止**为了合并而跳过原有 HARD GATE。
+## Mandatory progressive load (do not skip)
 
-| Internal skill | Role |
-|----------------|------|
-| `beacon-gen-design` | progressive |
-| `beacon-gen-design-init` | progressive |
-| `beacon-gen-design-system` | progressive |
-| `beacon-gen-design-explore` | progressive |
-| `beacon-gen-design-polish` | progressive |
-| `beacon-gen-prototype` | progressive |
+1. Select **exactly one** primary `mode_id` from the table (use subintent/runtime when available).
+2. **Read the mode file completely** before acting.
+3. Open nested `references/<mode>/…` only when the mode file links them.
+4. Emit the mode output contract + `mode_id` + `recommended_next_harness`.
+5. Stop at harness boundary; route to another public core instead of stretching this one.
 
-## Boundary
+| mode_id | Load file | Purpose |
+|---------|-----------|---------|
+| `gen-design` | `references/modes/gen-design.md` | design delivery |
+| `gen-design-init` | `references/modes/gen-design-init.md` | design init |
+| `gen-design-system` | `references/modes/gen-design-system.md` | design system |
+| `gen-design-explore` | `references/modes/gen-design-explore.md` | explore variants |
+| `gen-design-polish` | `references/modes/gen-design-polish.md` | polish |
+| `gen-prototype` | `references/modes/gen-prototype.md` | prototype |
 
-- 不成为第二公共 goal 流水线
-- harness HARD GATE 继承被加载的内部 skill
-- gov/doctor 不由用户背名；goal 自愈带自动调度
+Index: `references/modes/INDEX.md`
 
-## Examples
+## Workflow
 
-见 `skills/beacon/examples/surface-design-30s.md`（若存在）与 `goal-one-shot-30s.md`。
+1. Classify request → primary mode.
+2. Read mode file + required nested references.
+3. Produce artifacts for that mode only.
+4. Recommend next public harness (`goal` pipeline order when long-run).
+5. Never claim completion of another harness's job.
 
-## Dual brand
+## Output contract (minimum)
 
-| Beacon | Loom |
-|--------|------|
-| `beacon-design` | `loom-design` |
+- `mode_id` (required)
+- `public_id`: `design`
+- `evidence_refs` (paths/commands used)
+- `recommended_next_harness` one of: goal|plan|truth|design|implement|qa|release|stop
+- `plain_language_delivery_summary` (required): 用一句普通人能看懂的话说明「这次做了什么」（人话，复用 truth L0 规范，不改机器字段）
+- Mode-specific fields (plan_artifact, findings, truth package paths, QA scorecard, release brief, …) per mode file
 
-## Design philosophy checklist (P2)
+## Evals
 
-Progressive load **must not** skip HARD GATE. Attach human checklist:
+Smoke + contract prompts: `evals/evals.json`  
+Examples (when present): `references/examples/`
 
-- `skills/beacon/references/design-philosophy-checklist.md`
+## Shared package refs
 
-Goal `build_stage_plan` also lists this under stage `references` when stage matches.
-
+- `skills/beacon/references/public-surface-1plus6.md`
+- `skills/beacon/references/public-surface-progressive-map.v1.json`
+- `skills/beacon/references/git-worktree-execution-flow.md`

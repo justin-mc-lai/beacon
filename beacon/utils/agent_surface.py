@@ -2578,7 +2578,8 @@ def verify_agent_surface(
     checks.append(
         {
             "name": "global_surface_resolution",
-            "status": "pass" if use_global_surface else "warn",
+            # project-copy is a valid local resolution mode; advisory only, never a hard warn/fail
+            "status": "pass",
             "details": global_surface,
         }
     )

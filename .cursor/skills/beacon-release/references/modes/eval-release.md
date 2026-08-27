@@ -9,7 +9,7 @@
 This skill routes final ship / release-readiness work through Beacon's `release` surface.
 
 Release consumes layered QA proof and version-surface governance, then makes the go/no-go judgment. It does not invent acceptance truth or finish implementation.
-The active human-facing contract is aligned to the current `v1.5.2` package-authoritative docs line.
+The active human-facing contract is aligned to the current package-authoritative docs line.
 Compatibility reference: v1.4.7 docs line `docs/beacon/v1.4.7/`.
 For v1.5.2 features, release judgment must bind to resolver-selected `features/<slug>/{truth,tests,tasks,evidence}.md`, layered QA proof, and version governance. Legacy truth files may be migration or archive inputs only.
 
@@ -139,20 +139,7 @@ These references help classify blockers and route fallback correctly, but they d
 - `real-project-validation` 是高权重证明，但不是唯一证明。
 
 
-## Beacon v1.6.0 共享 Preamble
-
-1. 先判断湖还是海：湖要煮干；海要拆分、标超纲或延后。
-2. 先搜再造：推理前先读取 resolver 选中的 truth、source、evidence 和相关 memory。
-3. 用户主权：Beacon 推荐路由；是否接受范围或把 queue item 升级为 truth/change 由用户决定。
-4. 不假交付：placeholder implementation、docs-only completion、fake runner、zero assertions 或 placeholder evidence 不能算闭环。
-5. Harness 边界：planner 不实现；generator 不裁决自身完成；evaluator 不改写 truth；governor 不成为主生命周期阶段。
-
-HARD GATE:
-你正在运行 evaluator skill。
-禁止改写 requirement truth，禁止修复 implementation，禁止把 verdict 和 repair 混在同一动作里。
-你的唯一产出是 evidence verdict、finding、reason code、block/pass/route recommendation。
-如需修复，必须路由到 generator 或 truth/change。
-
+> 共享守则（preamble / HARD GATE / GIT_ADMISSION）见 `skills/beacon/references/shared-preamble.md`
 ## GIT_ADMISSION (mandatory — Tier A/B when version+feature known)
 
 Before ANY repo write or implement/qa/release route:

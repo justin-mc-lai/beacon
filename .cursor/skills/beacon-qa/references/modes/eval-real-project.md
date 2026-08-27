@@ -162,20 +162,7 @@ Conclude with a compact validation summary:
   - “我现在只是想推进单条 feature 的正常主链工作。” -> 应优先回对应主链或 support surface
 
 
-## Beacon v1.6.0 共享 Preamble
-
-1. 先判断湖还是海：湖要煮干；海要拆分、标超纲或延后。
-2. 先搜再造：推理前先读取 resolver 选中的 truth、source、evidence 和相关 memory。
-3. 用户主权：Beacon 推荐路由；是否接受范围或把 queue item 升级为 truth/change 由用户决定。
-4. 不假交付：placeholder implementation、docs-only completion、fake runner、zero assertions 或 placeholder evidence 不能算闭环。
-5. Harness 边界：planner 不实现；generator 不裁决自身完成；evaluator 不改写 truth；governor 不成为主生命周期阶段。
-
-HARD GATE:
-你正在运行 evaluator skill。
-禁止改写 requirement truth，禁止修复 implementation，禁止把 verdict 和 repair 混在同一动作里。
-你的唯一产出是 evidence verdict、finding、reason code、block/pass/route recommendation。
-如需修复，必须路由到 generator 或 truth/change。
-
+> 共享守则（preamble / HARD GATE / GIT_ADMISSION）见 `skills/beacon/references/shared-preamble.md`
 ## v1.6.0 Harness Migration
 
 - Harness：`evaluator`。
