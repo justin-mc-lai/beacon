@@ -1,0 +1,502 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1616-bad-merge-baseline",
+  "feature_slug": "beacon-v1616-bad-merge-baseline",
+  "version": "v1.6.16",
+  "runtime_version": "v1.6.15",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.6.16/.machine/execution/requirement-clarity-beacon-v1616-bad-merge-baseline.json",
+  "report_markdown_path": "docs/beacon/v1.6.16/execution/requirement-clarity-beacon-v1616-bad-merge-baseline.md",
+  "state_path": ".beacon/state/requirement-clarity-beacon-v1616-bad-merge-baseline.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.16",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-08-27T13:33:21.771844+00:00",
+    "feature": "beacon-v1616-bad-merge-baseline",
+    "feature_slug": "beacon-v1616-bad-merge-baseline",
+    "prd_ref": "docs/beacon/v1.6.16/prd/beacon-v1616-bad-merge-baseline.md",
+    "user_story_ref": "docs/beacon/v1.6.16/user-story/beacon-v1616-bad-merge-baseline.md"
+  },
+  "domain_fsm_gate": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1616-bad-merge-baseline",
+    "feature_slug": "beacon-v1616-bad-merge-baseline",
+    "version": "v1.6.16",
+    "truth_path": "docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/truth.md",
+    "tests_path": "docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/tests.md",
+    "required": true,
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "findings": [],
+    "requirement": {
+      "required": true,
+      "reason": "domain_section_present",
+      "explicit": false,
+      "partial": true,
+      "complexity": false,
+      "business_signal": true,
+      "version_supported": true
+    },
+    "projection": {
+      "schema_version": "1.0",
+      "domain_fsm_schema": "domain-fsm.v1",
+      "entity_precedence_schema": "entity-precedence.v1",
+      "frontmatter": {
+        "slug": "beacon-v1616-bad-merge-baseline",
+        "version": "v1.6.16",
+        "status": "frozen",
+        "language": "zh",
+        "domain_required": "false",
+        "ux_required": "false",
+        "parser_contract": "beacon-feature-package-v2",
+        "truth_source_model": "feature_package_authoritative",
+        "package_maturity": "filled",
+        "materials_status": "current",
+        "canonical_refs": {
+          "prd": "docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/truth.md",
+          "user_story": "docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/truth.md",
+          "test_case": "docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/tests.md"
+        }
+      },
+      "frontmatter_errors": [],
+      "has_domain_model_section": true,
+      "has_domain_fsm_section": true,
+      "has_illegal_transition_section": true,
+      "entities": [
+        {
+          "entity": "MergeRecord",
+          "key": "commit, sha, date, branch",
+          "precedence": "合并记录",
+          "requires": "合并记录"
+        },
+        {
+          "entity": "RevertRecord",
+          "key": "commit, reverted_sha, date",
+          "precedence": "回滚记录",
+          "requires": "回滚记录"
+        },
+        {
+          "entity": "BadMergeRate",
+          "key": "merges, reverts, rate, window",
+          "precedence": "基线",
+          "requires": "基线"
+        }
+      ],
+      "entity_precedence": [
+        {
+          "entity": "MergeRecord",
+          "key": "commit, sha, date, branch",
+          "precedence": "合并记录",
+          "requires": "合并记录"
+        },
+        {
+          "entity": "RevertRecord",
+          "key": "commit, reverted_sha, date",
+          "precedence": "回滚记录",
+          "requires": "回滚记录"
+        },
+        {
+          "entity": "BadMergeRate",
+          "key": "merges, reverts, rate, window",
+          "precedence": "基线",
+          "requires": "基线"
+        }
+      ],
+      "aggregates": [
+        {
+          "name": "Order",
+          "states": [
+            "collected",
+            "computed",
+            "reported",
+            "scaffold",
+            "warned"
+          ],
+          "transitions": [
+            {
+              "from": "scaffold",
+              "to": "collected",
+              "guard": "git_ok"
+            },
+            {
+              "from": "collected",
+              "to": "computed",
+              "guard": "reverts_mapped"
+            },
+            {
+              "from": "computed",
+              "to": "reported",
+              "guard": "data_sufficient"
+            },
+            {
+              "from": "computed",
+              "to": "warned",
+              "guard": "data_sparse"
+            }
+          ]
+        }
+      ],
+      "illegal_transition_slots": [
+        {
+          "description": "数据不足仍硬算（无置信度）",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "revert 误判仍计入（数据失真）",
+          "aggregate": "",
+          "source": "truth"
+        }
+      ],
+      "acceptance_criteria": [
+        {
+          "ac_id": "AC-001",
+          "description": "collected 阶段：统计 v1.6.15 以来合并到 main 的提交数及 revert 数（git 分析）。"
+        },
+        {
+          "ac_id": "AC-002",
+          "description": "computed 阶段：计算 bad-merge 率（revert 数 / 合并数，按时间窗）。"
+        },
+        {
+          "ac_id": "AC-003",
+          "description": "reported 阶段：产出可对比基线报告（合并数/revert 数/比率/时间窗/置信度）。"
+        },
+        {
+          "ac_id": "AC-004",
+          "description": "warned 判定：统计不改变自动合入行为，数据不足标低置信度；数据不足时标低置信度不硬算。"
+        }
+      ],
+      "bound_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "orphan_ac_ids": [],
+      "aggregates_missing_illegal_slots": [],
+      "raw_section_titles": [
+        "人话",
+        "User Intent",
+        "User Intent Snapshot",
+        "Intent Coverage Matrix",
+        "用户旅程",
+        "First principles",
+        "Domain Model",
+        "Acceptance Criteria",
+        "FSM 五元组",
+        "Domain FSM Order",
+        "Illegal transitions",
+        "invalid / illegal",
+        "Non-goals",
+        "Freeze readiness",
+        "Gap vs gold (订单支付示例)",
+        "Source Excerpt",
+        "FSM mermaid（投影）"
+      ]
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "required": true,
+      "blocked": false,
+      "status": "pass",
+      "reason_code": "",
+      "findings": [],
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "beacon-v1616-bad-merge-baseline",
+          "version": "v1.6.16",
+          "status": "frozen",
+          "language": "zh",
+          "domain_required": "false",
+          "ux_required": "false",
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "package_maturity": "filled",
+          "materials_status": "current",
+          "canonical_refs": {
+            "prd": "docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/truth.md",
+            "user_story": "docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/truth.md",
+            "test_case": "docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/tests.md"
+          }
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": true,
+        "has_domain_fsm_section": true,
+        "has_illegal_transition_section": true,
+        "entities": [
+          {
+            "entity": "MergeRecord",
+            "key": "commit, sha, date, branch",
+            "precedence": "合并记录",
+            "requires": "合并记录"
+          },
+          {
+            "entity": "RevertRecord",
+            "key": "commit, reverted_sha, date",
+            "precedence": "回滚记录",
+            "requires": "回滚记录"
+          },
+          {
+            "entity": "BadMergeRate",
+            "key": "merges, reverts, rate, window",
+            "precedence": "基线",
+            "requires": "基线"
+          }
+        ],
+        "entity_precedence": [
+          {
+            "entity": "MergeRecord",
+            "key": "commit, sha, date, branch",
+            "precedence": "合并记录",
+            "requires": "合并记录"
+          },
+          {
+            "entity": "RevertRecord",
+            "key": "commit, reverted_sha, date",
+            "precedence": "回滚记录",
+            "requires": "回滚记录"
+          },
+          {
+            "entity": "BadMergeRate",
+            "key": "merges, reverts, rate, window",
+            "precedence": "基线",
+            "requires": "基线"
+          }
+        ],
+        "aggregates": [
+          {
+            "name": "Order",
+            "states": [
+              "collected",
+              "computed",
+              "reported",
+              "scaffold",
+              "warned"
+            ],
+            "transitions": [
+              {
+                "from": "scaffold",
+                "to": "collected",
+                "guard": "git_ok"
+              },
+              {
+                "from": "collected",
+                "to": "computed",
+                "guard": "reverts_mapped"
+              },
+              {
+                "from": "computed",
+                "to": "reported",
+                "guard": "data_sufficient"
+              },
+              {
+                "from": "computed",
+                "to": "warned",
+                "guard": "data_sparse"
+              }
+            ]
+          }
+        ],
+        "illegal_transition_slots": [
+          {
+            "description": "数据不足仍硬算（无置信度）",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "revert 误判仍计入（数据失真）",
+            "aggregate": "",
+            "source": "truth"
+          }
+        ],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-001",
+            "description": "collected 阶段：统计 v1.6.15 以来合并到 main 的提交数及 revert 数（git 分析）。"
+          },
+          {
+            "ac_id": "AC-002",
+            "description": "computed 阶段：计算 bad-merge 率（revert 数 / 合并数，按时间窗）。"
+          },
+          {
+            "ac_id": "AC-003",
+            "description": "reported 阶段：产出可对比基线报告（合并数/revert 数/比率/时间窗/置信度）。"
+          },
+          {
+            "ac_id": "AC-004",
+            "description": "warned 判定：统计不改变自动合入行为，数据不足标低置信度；数据不足时标低置信度不硬算。"
+          }
+        ],
+        "bound_ac_ids": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004"
+        ],
+        "orphan_ac_ids": [],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "人话",
+          "User Intent",
+          "User Intent Snapshot",
+          "Intent Coverage Matrix",
+          "用户旅程",
+          "First principles",
+          "Domain Model",
+          "Acceptance Criteria",
+          "FSM 五元组",
+          "Domain FSM Order",
+          "Illegal transitions",
+          "invalid / illegal",
+          "Non-goals",
+          "Freeze readiness",
+          "Gap vs gold (订单支付示例)",
+          "Source Excerpt",
+          "FSM mermaid（投影）"
+        ]
+      },
+      "summary": {
+        "entity_count": 3,
+        "aggregate_count": 1,
+        "illegal_slot_count": 2,
+        "orphan_ac_count": 0,
+        "bound_ac_count": 4
+      }
+    },
+    "recommended_action": ""
+  },
+  "human_closure_contract": {
+    "required": false,
+    "research_path": "docs/beacon/v1.6.16/research/beacon-v1616-bad-merge-baseline.md",
+    "research_exists": false,
+    "source_architecture_path": "docs/beacon/v1.6.16/source-architecture/beacon-v1616-bad-merge-baseline.md",
+    "source_architecture_exists": false,
+    "required_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "missing_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "diagram_types": [],
+    "complexity_signals": []
+  },
+  "requirement_closure_contract": {
+    "required": true,
+    "chain_order": [
+      "research",
+      "prd",
+      "user_story",
+      "test_case",
+      "requirement_clarity",
+      "freeze"
+    ],
+    "human_closure_required": false,
+    "paths": {
+      "research": "docs/beacon/v1.6.16/research/beacon-v1616-bad-merge-baseline.md",
+      "prd": "docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/truth.md",
+      "user_story": "docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/truth.md",
+      "test_case": "docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/tests.md"
+    },
+    "exists": {
+      "research": false,
+      "prd": true,
+      "user_story": true,
+      "test_case": true
+    },
+    "required_research_sections": [],
+    "missing_research_sections": [],
+    "ac_projection": {
+      "prd_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "user_story_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "test_case_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "upstream_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "missing_test_case_ac_ids": []
+    }
+  },
+  "version_projection_truth_contract": {
+    "required": false,
+    "supported": true,
+    "projection_types": [],
+    "research_path": "docs/beacon/v1.6.16/research/beacon-v1616-bad-merge-baseline.md",
+    "research_exists": false,
+    "required_fields": [
+      "prd_refs",
+      "user_story_refs",
+      "test_case_refs",
+      "coverage_notes",
+      "out_of_scope_notes"
+    ],
+    "field_presence": {
+      "prd_refs": false,
+      "user_story_refs": false,
+      "test_case_refs": false,
+      "coverage_notes": false,
+      "out_of_scope_notes": false
+    },
+    "missing_fields": [],
+    "required_refs": {
+      "prd_refs": "docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/truth.md",
+      "user_story_refs": "docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/truth.md",
+      "test_case_refs": "docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/tests.md"
+    },
+    "missing_ref_targets": [],
+    "ready": false
+  },
+  "support_write_topology_contract": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "diagnostics": []
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/truth.md",
+    "docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/tests.md",
+    "docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/tasks.md",
+    "docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/evidence.md"
+  ]
+}

@@ -1,0 +1,194 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-08-27T13:33:21.196709+00:00",
+  "feature": "beacon-v1616-failure-mode-expansion",
+  "feature_slug": "beacon-v1616-failure-mode-expansion",
+  "version": "v1.6.16",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.16/features/beacon-v1616-failure-mode-expansion/truth.md",
+    "tests": "docs/beacon/v1.6.16/features/beacon-v1616-failure-mode-expansion/tests.md",
+    "tasks": "docs/beacon/v1.6.16/features/beacon-v1616-failure-mode-expansion/tasks.md",
+    "evidence": "docs/beacon/v1.6.16/features/beacon-v1616-failure-mode-expansion/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "abd4965ecde1d5d028c851459c373f00e041dc211ea04fdecdf08b48eb18c82b",
+    "tests": "18a69c617c2bd9580f322907af01b559f9ccd030c172779e91cf9b2f518d3b5e",
+    "tasks": "cfa5428dbbe30d1ea1ab3861ec48198b9f2a3d7aff2f8175cedc7500c902659f",
+    "evidence": "f8815af9e527a70b049df6802d52ed89a102b864dcf5aae5dfea2ba53e16221d"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-v1616-failure-mode-expansion",
+    "version": "v1.6.16",
+    "status": "frozen",
+    "language": "zh",
+    "domain_required": "false",
+    "ux_required": "false",
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "package_maturity": "filled",
+    "materials_status": "current",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.16/features/beacon-v1616-failure-mode-expansion/truth.md",
+      "user_story": "docs/beacon/v1.6.16/features/beacon-v1616-failure-mode-expansion/truth.md",
+      "test_case": "docs/beacon/v1.6.16/features/beacon-v1616-failure-mode-expansion/tests.md"
+    }
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "cataloged 阶段：失败模式目录条目 ≥ 20（从 5 扩到 20+）。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "verified 阶段：每条条目带 source_ref（v1.6.13-15 真实失败记录）（来自 v1.6.13-15 真实失败记录），可追溯。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "authored 阶段：每条含完整 rubric（症状/判定/通过/拦截）：症状 / 判定规则 / 通过标准 / 拦截标准。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "cataloged→审查：目录可作为对抗式审查翻车点输入（QA/release 前）。",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "",
+      "command": "`python3 tests/test_v1616_failure_mode_expansion.py -k count`",
+      "assertion": "exit 0：目录条目 ≥ 20（从 5 扩到 20+）",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "",
+      "command": "`python3 tests/test_v1616_failure_mode_expansion.py -k source`",
+      "assertion": "exit 0：每条带 source_ref（v1.6.13-15 真实失败记录）",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "",
+      "command": "`python3 tests/test_v1616_failure_mode_expansion.py -k rubric`",
+      "assertion": "exit 0：每条含完整 rubric（症状/判定/通过/拦截）",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "",
+      "command": "`python3 tests/test_v1616_failure_mode_expansion.py -k adversarial`",
+      "assertion": "exit 0：目录可作为对抗式审查翻车点输入",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-EXEC",
+      "layer": "",
+      "command": "`python3 tests/test_v1616_failure_mode_expansion.py`",
+      "assertion": "exit 0：全断言通过",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-FSMW",
+      "layer": "",
+      "command": "`python3 tests/test_v1616_failure_mode_expansion.py -k fsm`",
+      "assertion": "exit 0：合法路径 scaffold→collected→authored→verified→cataloged 全走",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-ILLEGAL",
+      "layer": "",
+      "command": "`rg -n -e \"编造条目\" -e \"缺 rubric\" docs/beacon/v1.6.16/features/beacon-v1616-failure-mode-expansion/truth.md`",
+      "assertion": "illegal（无来源/缺 rubric 均被拒）",
+      "evidence_path": "",
+      "source": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Implement AC-001: cataloged 阶段：失败模式目录条目 ≥ 20（从 5 扩到 20+）。 · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1616-failure-mode-expansion/AC-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Implement AC-002: verified 阶段：每条条目带 source_ref（v1.6.13-15 真实失败记录）（来自 v1.6.13-15 真实失败记录）... · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1616-failure-mode-expansion/AC-002.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Implement AC-003: authored 阶段：每条含完整 rubric（症状/判定/通过/拦截）：症状 / 判定规则 / 通过标准 / 拦截标准。 · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1616-failure-mode-expansion/AC-003.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Implement AC-004: cataloged→审查：目录可作为对抗式审查翻车点输入（QA/release 前）。 · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1616-failure-mode-expansion/AC-004.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1616-failure-mode-expansion/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1616-failure-mode-expansion/QA-MATRIX.json`",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-deep",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.16/research/beacon-v1616-failure-mode-expansion.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "beacon-ceo-review",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.16/change/beacon-v1616-failure-mode-expansion.refreeze-summary.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "qa",
+      "authority": "qa_verdict",
+      "canonical_artifact": "docs/beacon/v1.6.16/.machine/qa/beacon-v1616-failure-mode-expansion.qa9-matrix.json",
+      "status": "linked",
+      "route": "qa"
+    },
+    {
+      "surface": "release",
+      "authority": "release_verdict",
+      "canonical_artifact": "docs/beacon/v1.6.16/release/",
+      "status": "linked",
+      "route": "release"
+    }
+  ]
+}

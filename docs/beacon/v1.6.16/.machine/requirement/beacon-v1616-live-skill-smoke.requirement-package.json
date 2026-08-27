@@ -1,0 +1,194 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-08-27T13:32:31.269172+00:00",
+  "feature": "beacon-v1616-live-skill-smoke",
+  "feature_slug": "beacon-v1616-live-skill-smoke",
+  "version": "v1.6.16",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.16/features/beacon-v1616-live-skill-smoke/truth.md",
+    "tests": "docs/beacon/v1.6.16/features/beacon-v1616-live-skill-smoke/tests.md",
+    "tasks": "docs/beacon/v1.6.16/features/beacon-v1616-live-skill-smoke/tasks.md",
+    "evidence": "docs/beacon/v1.6.16/features/beacon-v1616-live-skill-smoke/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "a8ea1af5548359009986f654b7456d17674f9c7e303bea94b8110739d074cc80",
+    "tests": "66dd7ee51fbaa6c4fb3909a33e1a945a49aecb53b00e79e5305b3ba0f0d83f57",
+    "tasks": "f6af21ded2193029932f7ba8ae85a9ec2fcf23d9b7c2b22eac12067528881731",
+    "evidence": "82728e36ecd1c7e30289d69e02d4ee3fd4ce25a5287f5cba7ea83c38d1a205e0"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-v1616-live-skill-smoke",
+    "version": "v1.6.16",
+    "status": "frozen",
+    "language": "zh",
+    "domain_required": "false",
+    "ux_required": "false",
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "package_maturity": "filled",
+    "materials_status": "current",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.16/features/beacon-v1616-live-skill-smoke/truth.md",
+      "user_story": "docs/beacon/v1.6.16/features/beacon-v1616-live-skill-smoke/truth.md",
+      "test_case": "docs/beacon/v1.6.16/features/beacon-v1616-live-skill-smoke/tests.md"
+    }
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "executing 阶段：eval benchmark 在 local_admitted tier 下对 37 个 skill 全量执行 host_behavior（非 ci_default 的 1-skill 冒烟）。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "traced→passed 后：live_skill_pass 从 1/37 提升到 ≥ 30/37（真实执行通过率）。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "traced 阶段：每个执行过的 skill 落盘 host_behavior 执行 trace（含 status/reason_code/route）。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "failed 判定：执行结果不伪造，失败 skill 标 fail + reason_code，不折算为 pass。",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "",
+      "command": "`python3 tests/test_v1616_live_skill_smoke.py -k tier`",
+      "assertion": "exit 0：local_admitted tier 下全量 skill 走 host_behavior",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "",
+      "command": "`python3 tests/test_v1616_live_skill_smoke.py -k pass_rate`",
+      "assertion": "exit 0：live_skill_pass ≥ 30/37（真实执行通过率）",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "",
+      "command": "`python3 tests/test_v1616_live_skill_smoke.py -k trace`",
+      "assertion": "exit 0：每 skill 有 host_behavior 执行 trace（status/reason_code/route）",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "",
+      "command": "`python3 tests/test_v1616_live_skill_smoke.py -k no_fake`",
+      "assertion": "exit 0：失败 skill 标 fail+reason_code，不折算 pass",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-EXEC",
+      "layer": "",
+      "command": "`python3 tests/test_v1616_live_skill_smoke.py`",
+      "assertion": "exit 0：全断言通过",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-FSMW",
+      "layer": "",
+      "command": "`python3 tests/test_v1616_live_skill_smoke.py -k fsm`",
+      "assertion": "exit 0：合法路径 scaffold→executing→traced→passed/failed 全走",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-ILLEGAL",
+      "layer": "",
+      "command": "`rg -n -e \"执行失败仍标\" -e \"表面检查冒充\" docs/beacon/v1.6.16/features/beacon-v1616-live-skill-smoke/truth.md`",
+      "assertion": "illegal（伪造/冒充均被拒）",
+      "evidence_path": "",
+      "source": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Implement AC-001: executing 阶段：eval benchmark 在 local_admitted tier 下对 37 个 skill 全量执行 ... · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1616-live-skill-smoke/AC-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Implement AC-002: traced→passed 后：live_skill_pass 从 1/37 提升到 ≥ 30/37（真实执行通过率）。 · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1616-live-skill-smoke/AC-002.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Implement AC-003: traced 阶段：每个执行过的 skill 落盘 host_behavior 执行 trace（含 status/reason_code... · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1616-live-skill-smoke/AC-003.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Implement AC-004: failed 判定：执行结果不伪造，失败 skill 标 fail + reason_code，不折算为 pass。 · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1616-live-skill-smoke/AC-004.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1616-live-skill-smoke/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1616-live-skill-smoke/QA-MATRIX.json`",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-deep",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.16/research/beacon-v1616-live-skill-smoke.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "beacon-ceo-review",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.16/change/beacon-v1616-live-skill-smoke.refreeze-summary.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "qa",
+      "authority": "qa_verdict",
+      "canonical_artifact": "docs/beacon/v1.6.16/.machine/qa/beacon-v1616-live-skill-smoke.qa9-matrix.json",
+      "status": "linked",
+      "route": "qa"
+    },
+    {
+      "surface": "release",
+      "authority": "release_verdict",
+      "canonical_artifact": "docs/beacon/v1.6.16/release/",
+      "status": "linked",
+      "route": "release"
+    }
+  ]
+}

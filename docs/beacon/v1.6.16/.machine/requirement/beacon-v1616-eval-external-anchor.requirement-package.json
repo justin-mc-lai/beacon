@@ -1,0 +1,194 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-08-27T13:33:17.664806+00:00",
+  "feature": "beacon-v1616-eval-external-anchor",
+  "feature_slug": "beacon-v1616-eval-external-anchor",
+  "version": "v1.6.16",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.16/features/beacon-v1616-eval-external-anchor/truth.md",
+    "tests": "docs/beacon/v1.6.16/features/beacon-v1616-eval-external-anchor/tests.md",
+    "tasks": "docs/beacon/v1.6.16/features/beacon-v1616-eval-external-anchor/tasks.md",
+    "evidence": "docs/beacon/v1.6.16/features/beacon-v1616-eval-external-anchor/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "903f0dfbc3948fe818224b0f1daf3943cf39866dc7895c6bd327b833c95d5432",
+    "tests": "a58c27310abfd8242bab3e79d68fea29db7d13c2e00e978ebd99250219896b39",
+    "tasks": "fd3500cd170817d211f663a0a821de497cc98ee1dd79563f70dcf5c51a691ba7",
+    "evidence": "fef3c697656dc108af4633edcd4cec42953df45c7b89d09c2f6fe77467ab58a6"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-v1616-eval-external-anchor",
+    "version": "v1.6.16",
+    "status": "frozen",
+    "language": "zh",
+    "domain_required": "false",
+    "ux_required": "false",
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "package_maturity": "filled",
+    "materials_status": "current",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.16/features/beacon-v1616-eval-external-anchor/truth.md",
+      "user_story": "docs/beacon/v1.6.16/features/beacon-v1616-eval-external-anchor/truth.md",
+      "test_case": "docs/beacon/v1.6.16/features/beacon-v1616-eval-external-anchor/tests.md"
+    }
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "collected 阶段：benchmark 案例集引入外部来源案例（真实失败案例/社区标准），不再全内置。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "verified 阶段：每个外部案例带 source_ref，伪称来源被拒（可追溯来源），伪称外部来源的案例被拒。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "executed 阶段：外部案例可被 benchmark 执行（prompt + expected_route 完整）。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "registered 兼容：系统内置案例保留（回归兼容），外部案例为增量。",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "",
+      "command": "`python3 tests/test_v1616_eval_external_anchor.py -k external`",
+      "assertion": "exit 0：benchmark 案例集含外部来源案例（非全内置）",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "",
+      "command": "`python3 tests/test_v1616_eval_external_anchor.py -k provenance`",
+      "assertion": "exit 0：外部案例带 source_ref，无来源冒充被拒",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "",
+      "command": "`python3 tests/test_v1616_eval_external_anchor.py -k runnable`",
+      "assertion": "exit 0：外部案例可执行（prompt+expected_route 完整）",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "",
+      "command": "`python3 tests/test_v1616_eval_external_anchor.py -k builtin`",
+      "assertion": "exit 0：内置案例保留（回归兼容）",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-EXEC",
+      "layer": "",
+      "command": "`python3 tests/test_v1616_eval_external_anchor.py`",
+      "assertion": "exit 0：全断言通过",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-FSMW",
+      "layer": "",
+      "command": "`python3 tests/test_v1616_eval_external_anchor.py -k fsm`",
+      "assertion": "exit 0：合法路径 scaffold→collected→registered→executed→verified 全走",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-ILLEGAL",
+      "layer": "",
+      "command": "`rg -n -e \"无来源案例冒充\" -e \"外部案例不执行\" docs/beacon/v1.6.16/features/beacon-v1616-eval-external-anchor/truth.md`",
+      "assertion": "illegal（伪称来源/只登记不执行均被拒）",
+      "evidence_path": "",
+      "source": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Implement AC-001: collected 阶段：benchmark 案例集引入外部来源案例（真实失败案例/社区标准），不再全内置。 · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/AC-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Implement AC-002: verified 阶段：每个外部案例带 source_ref，伪称来源被拒（可追溯来源），伪称外部来源的案例被拒。 · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/AC-002.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Implement AC-003: executed 阶段：外部案例可被 benchmark 执行（prompt + expected_route 完整）。 · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/AC-003.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Implement AC-004: registered 兼容：系统内置案例保留（回归兼容），外部案例为增量。 · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/AC-004.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/QA-MATRIX.json`",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-deep",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.16/research/beacon-v1616-eval-external-anchor.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "beacon-ceo-review",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.16/change/beacon-v1616-eval-external-anchor.refreeze-summary.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "qa",
+      "authority": "qa_verdict",
+      "canonical_artifact": "docs/beacon/v1.6.16/.machine/qa/beacon-v1616-eval-external-anchor.qa9-matrix.json",
+      "status": "linked",
+      "route": "qa"
+    },
+    {
+      "surface": "release",
+      "authority": "release_verdict",
+      "canonical_artifact": "docs/beacon/v1.6.16/release/",
+      "status": "linked",
+      "route": "release"
+    }
+  ]
+}

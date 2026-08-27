@@ -1,0 +1,194 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-08-27T13:33:22.822803+00:00",
+  "feature": "beacon-v1616-bad-merge-baseline",
+  "feature_slug": "beacon-v1616-bad-merge-baseline",
+  "version": "v1.6.16",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/truth.md",
+    "tests": "docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/tests.md",
+    "tasks": "docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/tasks.md",
+    "evidence": "docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "3adcfa47aa9b27c79780b78059214cc22420f945985a99ae38f5ad26ce9c2c34",
+    "tests": "fc69a282b79e2d287a0d7875d2e7cd086c46d55a048874824d6416956a10cc52",
+    "tasks": "a7a893285eee657c2141cc26b48e4c8b3158acc09269ac51cca75d8f834bfc50",
+    "evidence": "793b64e823915ddcf38867bef55f49c56f600a42e15bcb5e136aa8e0c494950a"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-v1616-bad-merge-baseline",
+    "version": "v1.6.16",
+    "status": "frozen",
+    "language": "zh",
+    "domain_required": "false",
+    "ux_required": "false",
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "package_maturity": "filled",
+    "materials_status": "current",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/truth.md",
+      "user_story": "docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/truth.md",
+      "test_case": "docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/tests.md"
+    }
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "collected 阶段：统计 v1.6.15 以来合并到 main 的提交数及 revert 数（git 分析）。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "computed 阶段：计算 bad-merge 率（revert 数 / 合并数，按时间窗）。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "reported 阶段：产出可对比基线报告（合并数/revert 数/比率/时间窗/置信度）。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "warned 判定：统计不改变自动合入行为，数据不足标低置信度；数据不足时标低置信度不硬算。",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "",
+      "command": "`python3 tests/test_v1616_bad_merge_baseline.py -k collect`",
+      "assertion": "exit 0：统计合并到 main 的提交 + revert（git 分析）",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "",
+      "command": "`python3 tests/test_v1616_bad_merge_baseline.py -k rate`",
+      "assertion": "exit 0：bad-merge 率 = revert/合并（按时间窗）",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "",
+      "command": "`python3 tests/test_v1616_bad_merge_baseline.py -k report`",
+      "assertion": "exit 0：产出基线报告（合并数/revert/比率/时间窗/置信度）",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "",
+      "command": "`python3 tests/test_v1616_bad_merge_baseline.py -k no_change`",
+      "assertion": "exit 0：统计不改变合并行为；数据不足标低置信度",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-EXEC",
+      "layer": "",
+      "command": "`python3 tests/test_v1616_bad_merge_baseline.py`",
+      "assertion": "exit 0：全断言通过",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-FSMW",
+      "layer": "",
+      "command": "`python3 tests/test_v1616_bad_merge_baseline.py -k fsm`",
+      "assertion": "exit 0：合法路径 scaffold→collected→computed→reported/warned 全走",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-ILLEGAL",
+      "layer": "",
+      "command": "`rg -n -e \"数据不足仍硬算\" -e \"revert 误判\" docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/truth.md`",
+      "assertion": "illegal（无置信度/数据失真均被拒）",
+      "evidence_path": "",
+      "source": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Implement AC-001: collected 阶段：统计 v1.6.15 以来合并到 main 的提交数及 revert 数（git 分析）。 · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1616-bad-merge-baseline/AC-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Implement AC-002: computed 阶段：计算 bad-merge 率（revert 数 / 合并数，按时间窗）。 · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1616-bad-merge-baseline/AC-002.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Implement AC-003: reported 阶段：产出可对比基线报告（合并数/revert 数/比率/时间窗/置信度）。 · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1616-bad-merge-baseline/AC-003.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Implement AC-004: warned 判定：统计不改变自动合入行为，数据不足标低置信度；数据不足时标低置信度不硬算。 · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1616-bad-merge-baseline/AC-004.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1616-bad-merge-baseline/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1616-bad-merge-baseline/QA-MATRIX.json`",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-deep",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.16/research/beacon-v1616-bad-merge-baseline.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "beacon-ceo-review",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.16/change/beacon-v1616-bad-merge-baseline.refreeze-summary.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "qa",
+      "authority": "qa_verdict",
+      "canonical_artifact": "docs/beacon/v1.6.16/.machine/qa/beacon-v1616-bad-merge-baseline.qa9-matrix.json",
+      "status": "linked",
+      "route": "qa"
+    },
+    {
+      "surface": "release",
+      "authority": "release_verdict",
+      "canonical_artifact": "docs/beacon/v1.6.16/release/",
+      "status": "linked",
+      "route": "release"
+    }
+  ]
+}

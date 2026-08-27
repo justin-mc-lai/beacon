@@ -1,0 +1,500 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1616-live-skill-smoke",
+  "feature_slug": "beacon-v1616-live-skill-smoke",
+  "version": "v1.6.16",
+  "runtime_version": "v1.6.15",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.6.16/.machine/execution/requirement-clarity-beacon-v1616-live-skill-smoke.json",
+  "report_markdown_path": "docs/beacon/v1.6.16/execution/requirement-clarity-beacon-v1616-live-skill-smoke.md",
+  "state_path": ".beacon/state/requirement-clarity-beacon-v1616-live-skill-smoke.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.16",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-08-27T13:32:29.998379+00:00",
+    "feature": "beacon-v1616-live-skill-smoke",
+    "feature_slug": "beacon-v1616-live-skill-smoke",
+    "prd_ref": "docs/beacon/v1.6.16/prd/beacon-v1616-live-skill-smoke.md",
+    "user_story_ref": "docs/beacon/v1.6.16/user-story/beacon-v1616-live-skill-smoke.md"
+  },
+  "domain_fsm_gate": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1616-live-skill-smoke",
+    "feature_slug": "beacon-v1616-live-skill-smoke",
+    "version": "v1.6.16",
+    "truth_path": "docs/beacon/v1.6.16/features/beacon-v1616-live-skill-smoke/truth.md",
+    "tests_path": "docs/beacon/v1.6.16/features/beacon-v1616-live-skill-smoke/tests.md",
+    "required": true,
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "findings": [],
+    "requirement": {
+      "required": true,
+      "reason": "domain_section_present",
+      "explicit": false,
+      "partial": true,
+      "complexity": false,
+      "business_signal": true,
+      "version_supported": true
+    },
+    "projection": {
+      "schema_version": "1.0",
+      "domain_fsm_schema": "domain-fsm.v1",
+      "entity_precedence_schema": "entity-precedence.v1",
+      "frontmatter": {
+        "slug": "beacon-v1616-live-skill-smoke",
+        "version": "v1.6.16",
+        "status": "frozen",
+        "language": "zh",
+        "domain_required": "false",
+        "ux_required": "false",
+        "parser_contract": "beacon-feature-package-v2",
+        "truth_source_model": "feature_package_authoritative",
+        "package_maturity": "filled",
+        "materials_status": "current",
+        "canonical_refs": {
+          "prd": "docs/beacon/v1.6.16/features/beacon-v1616-live-skill-smoke/truth.md",
+          "user_story": "docs/beacon/v1.6.16/features/beacon-v1616-live-skill-smoke/truth.md",
+          "test_case": "docs/beacon/v1.6.16/features/beacon-v1616-live-skill-smoke/tests.md"
+        }
+      },
+      "frontmatter_errors": [],
+      "has_domain_model_section": true,
+      "has_domain_fsm_section": true,
+      "has_illegal_transition_section": true,
+      "entities": [
+        {
+          "entity": "LiveSkillTrace",
+          "key": "skill_id, status, reason_code, mode",
+          "precedence": "每 skill 执行记录",
+          "requires": "每 skill 执行记录"
+        },
+        {
+          "entity": "EvalTier",
+          "key": "ci_default / local_admitted / release_hook",
+          "precedence": "决定执行深度",
+          "requires": "决定执行深度"
+        },
+        {
+          "entity": "LiveSkillMatrix",
+          "key": "entries, pass_count, total",
+          "precedence": "全量 skill 矩阵",
+          "requires": "全量 skill 矩阵"
+        }
+      ],
+      "entity_precedence": [
+        {
+          "entity": "LiveSkillTrace",
+          "key": "skill_id, status, reason_code, mode",
+          "precedence": "每 skill 执行记录",
+          "requires": "每 skill 执行记录"
+        },
+        {
+          "entity": "EvalTier",
+          "key": "ci_default / local_admitted / release_hook",
+          "precedence": "决定执行深度",
+          "requires": "决定执行深度"
+        },
+        {
+          "entity": "LiveSkillMatrix",
+          "key": "entries, pass_count, total",
+          "precedence": "全量 skill 矩阵",
+          "requires": "全量 skill 矩阵"
+        }
+      ],
+      "aggregates": [
+        {
+          "name": "Order",
+          "states": [
+            "executing",
+            "failed",
+            "passed",
+            "scaffold",
+            "traced"
+          ],
+          "transitions": [
+            {
+              "from": "scaffold",
+              "to": "executing",
+              "guard": "admitted"
+            },
+            {
+              "from": "executing",
+              "to": "traced",
+              "guard": "trace_written"
+            },
+            {
+              "from": "traced",
+              "to": "passed",
+              "guard": "exec_ok"
+            },
+            {
+              "from": "traced",
+              "to": "failed",
+              "guard": "exec_fail"
+            }
+          ]
+        }
+      ],
+      "illegal_transition_slots": [
+        {
+          "description": "执行失败仍标 pass（伪造）",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "表面检查冒充 host_behavior",
+          "aggregate": "",
+          "source": "truth"
+        }
+      ],
+      "acceptance_criteria": [
+        {
+          "ac_id": "AC-001",
+          "description": "executing 阶段：eval benchmark 在 local_admitted tier 下对 37 个 skill 全量执行 host_behavior（非 ci_default 的 1-skill 冒烟）。"
+        },
+        {
+          "ac_id": "AC-002",
+          "description": "traced→passed 后：live_skill_pass 从 1/37 提升到 ≥ 30/37（真实执行通过率）。"
+        },
+        {
+          "ac_id": "AC-003",
+          "description": "traced 阶段：每个执行过的 skill 落盘 host_behavior 执行 trace（含 status/reason_code/route）。"
+        },
+        {
+          "ac_id": "AC-004",
+          "description": "failed 判定：执行结果不伪造，失败 skill 标 fail + reason_code，不折算为 pass。"
+        }
+      ],
+      "bound_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "orphan_ac_ids": [],
+      "aggregates_missing_illegal_slots": [],
+      "raw_section_titles": [
+        "人话",
+        "User Intent",
+        "User Intent Snapshot",
+        "Intent Coverage Matrix",
+        "用户旅程",
+        "First principles",
+        "Domain Model",
+        "Acceptance Criteria",
+        "FSM 五元组",
+        "Domain FSM Order",
+        "Illegal transitions",
+        "invalid / illegal",
+        "Non-goals",
+        "Freeze readiness",
+        "Gap vs gold (订单支付示例)",
+        "Source Excerpt"
+      ]
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "required": true,
+      "blocked": false,
+      "status": "pass",
+      "reason_code": "",
+      "findings": [],
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "beacon-v1616-live-skill-smoke",
+          "version": "v1.6.16",
+          "status": "frozen",
+          "language": "zh",
+          "domain_required": "false",
+          "ux_required": "false",
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "package_maturity": "filled",
+          "materials_status": "current",
+          "canonical_refs": {
+            "prd": "docs/beacon/v1.6.16/features/beacon-v1616-live-skill-smoke/truth.md",
+            "user_story": "docs/beacon/v1.6.16/features/beacon-v1616-live-skill-smoke/truth.md",
+            "test_case": "docs/beacon/v1.6.16/features/beacon-v1616-live-skill-smoke/tests.md"
+          }
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": true,
+        "has_domain_fsm_section": true,
+        "has_illegal_transition_section": true,
+        "entities": [
+          {
+            "entity": "LiveSkillTrace",
+            "key": "skill_id, status, reason_code, mode",
+            "precedence": "每 skill 执行记录",
+            "requires": "每 skill 执行记录"
+          },
+          {
+            "entity": "EvalTier",
+            "key": "ci_default / local_admitted / release_hook",
+            "precedence": "决定执行深度",
+            "requires": "决定执行深度"
+          },
+          {
+            "entity": "LiveSkillMatrix",
+            "key": "entries, pass_count, total",
+            "precedence": "全量 skill 矩阵",
+            "requires": "全量 skill 矩阵"
+          }
+        ],
+        "entity_precedence": [
+          {
+            "entity": "LiveSkillTrace",
+            "key": "skill_id, status, reason_code, mode",
+            "precedence": "每 skill 执行记录",
+            "requires": "每 skill 执行记录"
+          },
+          {
+            "entity": "EvalTier",
+            "key": "ci_default / local_admitted / release_hook",
+            "precedence": "决定执行深度",
+            "requires": "决定执行深度"
+          },
+          {
+            "entity": "LiveSkillMatrix",
+            "key": "entries, pass_count, total",
+            "precedence": "全量 skill 矩阵",
+            "requires": "全量 skill 矩阵"
+          }
+        ],
+        "aggregates": [
+          {
+            "name": "Order",
+            "states": [
+              "executing",
+              "failed",
+              "passed",
+              "scaffold",
+              "traced"
+            ],
+            "transitions": [
+              {
+                "from": "scaffold",
+                "to": "executing",
+                "guard": "admitted"
+              },
+              {
+                "from": "executing",
+                "to": "traced",
+                "guard": "trace_written"
+              },
+              {
+                "from": "traced",
+                "to": "passed",
+                "guard": "exec_ok"
+              },
+              {
+                "from": "traced",
+                "to": "failed",
+                "guard": "exec_fail"
+              }
+            ]
+          }
+        ],
+        "illegal_transition_slots": [
+          {
+            "description": "执行失败仍标 pass（伪造）",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "表面检查冒充 host_behavior",
+            "aggregate": "",
+            "source": "truth"
+          }
+        ],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-001",
+            "description": "executing 阶段：eval benchmark 在 local_admitted tier 下对 37 个 skill 全量执行 host_behavior（非 ci_default 的 1-skill 冒烟）。"
+          },
+          {
+            "ac_id": "AC-002",
+            "description": "traced→passed 后：live_skill_pass 从 1/37 提升到 ≥ 30/37（真实执行通过率）。"
+          },
+          {
+            "ac_id": "AC-003",
+            "description": "traced 阶段：每个执行过的 skill 落盘 host_behavior 执行 trace（含 status/reason_code/route）。"
+          },
+          {
+            "ac_id": "AC-004",
+            "description": "failed 判定：执行结果不伪造，失败 skill 标 fail + reason_code，不折算为 pass。"
+          }
+        ],
+        "bound_ac_ids": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004"
+        ],
+        "orphan_ac_ids": [],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "人话",
+          "User Intent",
+          "User Intent Snapshot",
+          "Intent Coverage Matrix",
+          "用户旅程",
+          "First principles",
+          "Domain Model",
+          "Acceptance Criteria",
+          "FSM 五元组",
+          "Domain FSM Order",
+          "Illegal transitions",
+          "invalid / illegal",
+          "Non-goals",
+          "Freeze readiness",
+          "Gap vs gold (订单支付示例)",
+          "Source Excerpt"
+        ]
+      },
+      "summary": {
+        "entity_count": 3,
+        "aggregate_count": 1,
+        "illegal_slot_count": 2,
+        "orphan_ac_count": 0,
+        "bound_ac_count": 4
+      }
+    },
+    "recommended_action": ""
+  },
+  "human_closure_contract": {
+    "required": false,
+    "research_path": "docs/beacon/v1.6.16/research/beacon-v1616-live-skill-smoke.md",
+    "research_exists": false,
+    "source_architecture_path": "docs/beacon/v1.6.16/source-architecture/beacon-v1616-live-skill-smoke.md",
+    "source_architecture_exists": false,
+    "required_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "missing_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "diagram_types": [],
+    "complexity_signals": []
+  },
+  "requirement_closure_contract": {
+    "required": true,
+    "chain_order": [
+      "research",
+      "prd",
+      "user_story",
+      "test_case",
+      "requirement_clarity",
+      "freeze"
+    ],
+    "human_closure_required": false,
+    "paths": {
+      "research": "docs/beacon/v1.6.16/research/beacon-v1616-live-skill-smoke.md",
+      "prd": "docs/beacon/v1.6.16/features/beacon-v1616-live-skill-smoke/truth.md",
+      "user_story": "docs/beacon/v1.6.16/features/beacon-v1616-live-skill-smoke/truth.md",
+      "test_case": "docs/beacon/v1.6.16/features/beacon-v1616-live-skill-smoke/tests.md"
+    },
+    "exists": {
+      "research": false,
+      "prd": true,
+      "user_story": true,
+      "test_case": true
+    },
+    "required_research_sections": [],
+    "missing_research_sections": [],
+    "ac_projection": {
+      "prd_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "user_story_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "test_case_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "upstream_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "missing_test_case_ac_ids": []
+    }
+  },
+  "version_projection_truth_contract": {
+    "required": false,
+    "supported": true,
+    "projection_types": [],
+    "research_path": "docs/beacon/v1.6.16/research/beacon-v1616-live-skill-smoke.md",
+    "research_exists": false,
+    "required_fields": [
+      "prd_refs",
+      "user_story_refs",
+      "test_case_refs",
+      "coverage_notes",
+      "out_of_scope_notes"
+    ],
+    "field_presence": {
+      "prd_refs": false,
+      "user_story_refs": false,
+      "test_case_refs": false,
+      "coverage_notes": false,
+      "out_of_scope_notes": false
+    },
+    "missing_fields": [],
+    "required_refs": {
+      "prd_refs": "docs/beacon/v1.6.16/features/beacon-v1616-live-skill-smoke/truth.md",
+      "user_story_refs": "docs/beacon/v1.6.16/features/beacon-v1616-live-skill-smoke/truth.md",
+      "test_case_refs": "docs/beacon/v1.6.16/features/beacon-v1616-live-skill-smoke/tests.md"
+    },
+    "missing_ref_targets": [],
+    "ready": false
+  },
+  "support_write_topology_contract": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "diagnostics": []
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.6.16/features/beacon-v1616-live-skill-smoke/truth.md",
+    "docs/beacon/v1.6.16/features/beacon-v1616-live-skill-smoke/tests.md",
+    "docs/beacon/v1.6.16/features/beacon-v1616-live-skill-smoke/tasks.md",
+    "docs/beacon/v1.6.16/features/beacon-v1616-live-skill-smoke/evidence.md"
+  ]
+}

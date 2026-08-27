@@ -1,0 +1,194 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-08-27T13:33:41.724405+00:00",
+  "feature": "beacon-v1616-gate-independent-judge",
+  "feature_slug": "beacon-v1616-gate-independent-judge",
+  "version": "v1.6.16",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.16/features/beacon-v1616-gate-independent-judge/truth.md",
+    "tests": "docs/beacon/v1.6.16/features/beacon-v1616-gate-independent-judge/tests.md",
+    "tasks": "docs/beacon/v1.6.16/features/beacon-v1616-gate-independent-judge/tasks.md",
+    "evidence": "docs/beacon/v1.6.16/features/beacon-v1616-gate-independent-judge/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "8cdf9df6e4ecaab924a1744e86cf2d8bcf7b17b9e66d92854c60615bda85b8a3",
+    "tests": "5e91cdf0d7aedecc3db57dac21ff76eac6885671e59e4c77a7f01b166666cd2e",
+    "tasks": "8c9ad5f04964b7ab10b43a8a57e56dcb5f111095d1538dec77ff2651cf8a2e04",
+    "evidence": "553475646877db1a319d28782acc583365c4b6bc30f8b932c577a74860879a88"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-v1616-gate-independent-judge",
+    "version": "v1.6.16",
+    "status": "frozen",
+    "language": "zh",
+    "domain_required": "false",
+    "ux_required": "false",
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "package_maturity": "filled",
+    "materials_status": "current",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.16/features/beacon-v1616-gate-independent-judge/truth.md",
+      "user_story": "docs/beacon/v1.6.16/features/beacon-v1616-gate-independent-judge/truth.md",
+      "test_case": "docs/beacon/v1.6.16/features/beacon-v1616-gate-independent-judge/tests.md"
+    }
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "computed 阶段：coverage_rate 等关键 gate 值可由独立脚本重算（独立于系统判定逻辑）。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "compared 阶段：独立判定与系统判定比对：一致 → 标记可信；不一致 → 暴露偏差。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "flagged 阶段：偏差记录可审计（gate/系统值/独立值/diff）。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "verified 判定：独立裁判不改变 gate 业务规则，不判 pass/fail，只核验系统值可信度。",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "",
+      "command": "`python3 tests/test_v1616_gate_independent_judge.py -k recalc`",
+      "assertion": "exit 0：coverage_rate 可由独立脚本重算",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "",
+      "command": "`python3 tests/test_v1616_gate_independent_judge.py -k compare`",
+      "assertion": "exit 0：独立判定 vs 系统判定比对（一致/偏差）",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "",
+      "command": "`python3 tests/test_v1616_gate_independent_judge.py -k audit`",
+      "assertion": "exit 0：偏差记录可审计（gate/系统值/独立值/diff）",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "",
+      "command": "`python3 tests/test_v1616_gate_independent_judge.py -k no_verdict`",
+      "assertion": "exit 0：独立裁判不判 pass/fail，只核验可信度",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-EXEC",
+      "layer": "",
+      "command": "`python3 tests/test_v1616_gate_independent_judge.py`",
+      "assertion": "exit 0：全断言通过",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-FSMW",
+      "layer": "",
+      "command": "`python3 tests/test_v1616_gate_independent_judge.py -k fsm`",
+      "assertion": "exit 0：合法路径 scaffold→computed→compared→verified/flagged 全走",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-002,AC-003",
+      "tc_id": "TC-ILLEGAL",
+      "layer": "",
+      "command": "`rg -n -e \"偏差不暴露\" -e \"独立裁判缺数据\" docs/beacon/v1.6.16/features/beacon-v1616-gate-independent-judge/truth.md`",
+      "assertion": "illegal（掩盖/脑补均被拒）",
+      "evidence_path": "",
+      "source": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Implement AC-001: computed 阶段：coverage_rate 等关键 gate 值可由独立脚本重算（独立于系统判定逻辑）。 · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1616-gate-independent-judge/AC-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Implement AC-002: compared 阶段：独立判定与系统判定比对：一致 → 标记可信；不一致 → 暴露偏差。 · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1616-gate-independent-judge/AC-002.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Implement AC-003: flagged 阶段：偏差记录可审计（gate/系统值/独立值/diff）。 · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1616-gate-independent-judge/AC-003.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Implement AC-004: verified 判定：独立裁判不改变 gate 业务规则，不判 pass/fail，只核验系统值可信度。 · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1616-gate-independent-judge/AC-004.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1616-gate-independent-judge/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1616-gate-independent-judge/QA-MATRIX.json`",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-deep",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.16/research/beacon-v1616-gate-independent-judge.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "beacon-ceo-review",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.16/change/beacon-v1616-gate-independent-judge.refreeze-summary.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "qa",
+      "authority": "qa_verdict",
+      "canonical_artifact": "docs/beacon/v1.6.16/.machine/qa/beacon-v1616-gate-independent-judge.qa9-matrix.json",
+      "status": "linked",
+      "route": "qa"
+    },
+    {
+      "surface": "release",
+      "authority": "release_verdict",
+      "canonical_artifact": "docs/beacon/v1.6.16/release/",
+      "status": "linked",
+      "route": "release"
+    }
+  ]
+}

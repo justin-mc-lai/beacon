@@ -1,0 +1,502 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1616-gate-independent-judge",
+  "feature_slug": "beacon-v1616-gate-independent-judge",
+  "version": "v1.6.16",
+  "runtime_version": "v1.6.15",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.6.16/.machine/execution/requirement-clarity-beacon-v1616-gate-independent-judge.json",
+  "report_markdown_path": "docs/beacon/v1.6.16/execution/requirement-clarity-beacon-v1616-gate-independent-judge.md",
+  "state_path": ".beacon/state/requirement-clarity-beacon-v1616-gate-independent-judge.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.16",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-08-27T13:33:40.233542+00:00",
+    "feature": "beacon-v1616-gate-independent-judge",
+    "feature_slug": "beacon-v1616-gate-independent-judge",
+    "prd_ref": "docs/beacon/v1.6.16/prd/beacon-v1616-gate-independent-judge.md",
+    "user_story_ref": "docs/beacon/v1.6.16/user-story/beacon-v1616-gate-independent-judge.md"
+  },
+  "domain_fsm_gate": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1616-gate-independent-judge",
+    "feature_slug": "beacon-v1616-gate-independent-judge",
+    "version": "v1.6.16",
+    "truth_path": "docs/beacon/v1.6.16/features/beacon-v1616-gate-independent-judge/truth.md",
+    "tests_path": "docs/beacon/v1.6.16/features/beacon-v1616-gate-independent-judge/tests.md",
+    "required": true,
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "findings": [],
+    "requirement": {
+      "required": true,
+      "reason": "domain_section_present",
+      "explicit": false,
+      "partial": true,
+      "complexity": false,
+      "business_signal": true,
+      "version_supported": true
+    },
+    "projection": {
+      "schema_version": "1.0",
+      "domain_fsm_schema": "domain-fsm.v1",
+      "entity_precedence_schema": "entity-precedence.v1",
+      "frontmatter": {
+        "slug": "beacon-v1616-gate-independent-judge",
+        "version": "v1.6.16",
+        "status": "frozen",
+        "language": "zh",
+        "domain_required": "false",
+        "ux_required": "false",
+        "parser_contract": "beacon-feature-package-v2",
+        "truth_source_model": "feature_package_authoritative",
+        "package_maturity": "filled",
+        "materials_status": "current",
+        "canonical_refs": {
+          "prd": "docs/beacon/v1.6.16/features/beacon-v1616-gate-independent-judge/truth.md",
+          "user_story": "docs/beacon/v1.6.16/features/beacon-v1616-gate-independent-judge/truth.md",
+          "test_case": "docs/beacon/v1.6.16/features/beacon-v1616-gate-independent-judge/tests.md"
+        }
+      },
+      "frontmatter_errors": [],
+      "has_domain_model_section": true,
+      "has_domain_fsm_section": true,
+      "has_illegal_transition_section": true,
+      "entities": [
+        {
+          "entity": "GateVerdict",
+          "key": "gate, value, source",
+          "precedence": "系统判定",
+          "requires": "系统判定"
+        },
+        {
+          "entity": "IndependentJudge",
+          "key": "gate, value, algorithm",
+          "precedence": "独立重算",
+          "requires": "独立重算"
+        },
+        {
+          "entity": "JudgeComparison",
+          "key": "gate, match, diff",
+          "precedence": "比对结果",
+          "requires": "比对结果"
+        }
+      ],
+      "entity_precedence": [
+        {
+          "entity": "GateVerdict",
+          "key": "gate, value, source",
+          "precedence": "系统判定",
+          "requires": "系统判定"
+        },
+        {
+          "entity": "IndependentJudge",
+          "key": "gate, value, algorithm",
+          "precedence": "独立重算",
+          "requires": "独立重算"
+        },
+        {
+          "entity": "JudgeComparison",
+          "key": "gate, match, diff",
+          "precedence": "比对结果",
+          "requires": "比对结果"
+        }
+      ],
+      "aggregates": [
+        {
+          "name": "Order",
+          "states": [
+            "compared",
+            "computed",
+            "flagged",
+            "scaffold",
+            "verified"
+          ],
+          "transitions": [
+            {
+              "from": "scaffold",
+              "to": "computed",
+              "guard": "independent"
+            },
+            {
+              "from": "computed",
+              "to": "compared",
+              "guard": "both_present"
+            },
+            {
+              "from": "compared",
+              "to": "verified",
+              "guard": "consistent"
+            },
+            {
+              "from": "compared",
+              "to": "flagged",
+              "guard": "inconsistent"
+            }
+          ]
+        }
+      ],
+      "illegal_transition_slots": [
+        {
+          "description": "偏差不暴露仍 verified（掩盖）",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "独立裁判缺数据仍判一致（脑补）",
+          "aggregate": "",
+          "source": "truth"
+        }
+      ],
+      "acceptance_criteria": [
+        {
+          "ac_id": "AC-001",
+          "description": "computed 阶段：coverage_rate 等关键 gate 值可由独立脚本重算（独立于系统判定逻辑）。"
+        },
+        {
+          "ac_id": "AC-002",
+          "description": "compared 阶段：独立判定与系统判定比对：一致 → 标记可信；不一致 → 暴露偏差。"
+        },
+        {
+          "ac_id": "AC-003",
+          "description": "flagged 阶段：偏差记录可审计（gate/系统值/独立值/diff）。"
+        },
+        {
+          "ac_id": "AC-004",
+          "description": "verified 判定：独立裁判不改变 gate 业务规则，不判 pass/fail，只核验系统值可信度。"
+        }
+      ],
+      "bound_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "orphan_ac_ids": [],
+      "aggregates_missing_illegal_slots": [],
+      "raw_section_titles": [
+        "人话",
+        "User Intent",
+        "User Intent Snapshot",
+        "Intent Coverage Matrix",
+        "用户旅程",
+        "First principles",
+        "Domain Model",
+        "Acceptance Criteria",
+        "FSM 五元组",
+        "Domain FSM Order",
+        "Illegal transitions",
+        "invalid / illegal",
+        "Non-goals",
+        "Freeze readiness",
+        "Gap vs gold (订单支付示例)",
+        "Source Excerpt",
+        "FSM mermaid（投影）"
+      ]
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "required": true,
+      "blocked": false,
+      "status": "pass",
+      "reason_code": "",
+      "findings": [],
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "beacon-v1616-gate-independent-judge",
+          "version": "v1.6.16",
+          "status": "frozen",
+          "language": "zh",
+          "domain_required": "false",
+          "ux_required": "false",
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "package_maturity": "filled",
+          "materials_status": "current",
+          "canonical_refs": {
+            "prd": "docs/beacon/v1.6.16/features/beacon-v1616-gate-independent-judge/truth.md",
+            "user_story": "docs/beacon/v1.6.16/features/beacon-v1616-gate-independent-judge/truth.md",
+            "test_case": "docs/beacon/v1.6.16/features/beacon-v1616-gate-independent-judge/tests.md"
+          }
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": true,
+        "has_domain_fsm_section": true,
+        "has_illegal_transition_section": true,
+        "entities": [
+          {
+            "entity": "GateVerdict",
+            "key": "gate, value, source",
+            "precedence": "系统判定",
+            "requires": "系统判定"
+          },
+          {
+            "entity": "IndependentJudge",
+            "key": "gate, value, algorithm",
+            "precedence": "独立重算",
+            "requires": "独立重算"
+          },
+          {
+            "entity": "JudgeComparison",
+            "key": "gate, match, diff",
+            "precedence": "比对结果",
+            "requires": "比对结果"
+          }
+        ],
+        "entity_precedence": [
+          {
+            "entity": "GateVerdict",
+            "key": "gate, value, source",
+            "precedence": "系统判定",
+            "requires": "系统判定"
+          },
+          {
+            "entity": "IndependentJudge",
+            "key": "gate, value, algorithm",
+            "precedence": "独立重算",
+            "requires": "独立重算"
+          },
+          {
+            "entity": "JudgeComparison",
+            "key": "gate, match, diff",
+            "precedence": "比对结果",
+            "requires": "比对结果"
+          }
+        ],
+        "aggregates": [
+          {
+            "name": "Order",
+            "states": [
+              "compared",
+              "computed",
+              "flagged",
+              "scaffold",
+              "verified"
+            ],
+            "transitions": [
+              {
+                "from": "scaffold",
+                "to": "computed",
+                "guard": "independent"
+              },
+              {
+                "from": "computed",
+                "to": "compared",
+                "guard": "both_present"
+              },
+              {
+                "from": "compared",
+                "to": "verified",
+                "guard": "consistent"
+              },
+              {
+                "from": "compared",
+                "to": "flagged",
+                "guard": "inconsistent"
+              }
+            ]
+          }
+        ],
+        "illegal_transition_slots": [
+          {
+            "description": "偏差不暴露仍 verified（掩盖）",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "独立裁判缺数据仍判一致（脑补）",
+            "aggregate": "",
+            "source": "truth"
+          }
+        ],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-001",
+            "description": "computed 阶段：coverage_rate 等关键 gate 值可由独立脚本重算（独立于系统判定逻辑）。"
+          },
+          {
+            "ac_id": "AC-002",
+            "description": "compared 阶段：独立判定与系统判定比对：一致 → 标记可信；不一致 → 暴露偏差。"
+          },
+          {
+            "ac_id": "AC-003",
+            "description": "flagged 阶段：偏差记录可审计（gate/系统值/独立值/diff）。"
+          },
+          {
+            "ac_id": "AC-004",
+            "description": "verified 判定：独立裁判不改变 gate 业务规则，不判 pass/fail，只核验系统值可信度。"
+          }
+        ],
+        "bound_ac_ids": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004"
+        ],
+        "orphan_ac_ids": [],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "人话",
+          "User Intent",
+          "User Intent Snapshot",
+          "Intent Coverage Matrix",
+          "用户旅程",
+          "First principles",
+          "Domain Model",
+          "Acceptance Criteria",
+          "FSM 五元组",
+          "Domain FSM Order",
+          "Illegal transitions",
+          "invalid / illegal",
+          "Non-goals",
+          "Freeze readiness",
+          "Gap vs gold (订单支付示例)",
+          "Source Excerpt",
+          "FSM mermaid（投影）"
+        ]
+      },
+      "summary": {
+        "entity_count": 3,
+        "aggregate_count": 1,
+        "illegal_slot_count": 2,
+        "orphan_ac_count": 0,
+        "bound_ac_count": 4
+      }
+    },
+    "recommended_action": ""
+  },
+  "human_closure_contract": {
+    "required": false,
+    "research_path": "docs/beacon/v1.6.16/research/beacon-v1616-gate-independent-judge.md",
+    "research_exists": false,
+    "source_architecture_path": "docs/beacon/v1.6.16/source-architecture/beacon-v1616-gate-independent-judge.md",
+    "source_architecture_exists": false,
+    "required_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "missing_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "diagram_types": [],
+    "complexity_signals": []
+  },
+  "requirement_closure_contract": {
+    "required": true,
+    "chain_order": [
+      "research",
+      "prd",
+      "user_story",
+      "test_case",
+      "requirement_clarity",
+      "freeze"
+    ],
+    "human_closure_required": false,
+    "paths": {
+      "research": "docs/beacon/v1.6.16/research/beacon-v1616-gate-independent-judge.md",
+      "prd": "docs/beacon/v1.6.16/features/beacon-v1616-gate-independent-judge/truth.md",
+      "user_story": "docs/beacon/v1.6.16/features/beacon-v1616-gate-independent-judge/truth.md",
+      "test_case": "docs/beacon/v1.6.16/features/beacon-v1616-gate-independent-judge/tests.md"
+    },
+    "exists": {
+      "research": false,
+      "prd": true,
+      "user_story": true,
+      "test_case": true
+    },
+    "required_research_sections": [],
+    "missing_research_sections": [],
+    "ac_projection": {
+      "prd_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "user_story_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "test_case_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "upstream_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "missing_test_case_ac_ids": []
+    }
+  },
+  "version_projection_truth_contract": {
+    "required": false,
+    "supported": true,
+    "projection_types": [],
+    "research_path": "docs/beacon/v1.6.16/research/beacon-v1616-gate-independent-judge.md",
+    "research_exists": false,
+    "required_fields": [
+      "prd_refs",
+      "user_story_refs",
+      "test_case_refs",
+      "coverage_notes",
+      "out_of_scope_notes"
+    ],
+    "field_presence": {
+      "prd_refs": false,
+      "user_story_refs": false,
+      "test_case_refs": false,
+      "coverage_notes": false,
+      "out_of_scope_notes": false
+    },
+    "missing_fields": [],
+    "required_refs": {
+      "prd_refs": "docs/beacon/v1.6.16/features/beacon-v1616-gate-independent-judge/truth.md",
+      "user_story_refs": "docs/beacon/v1.6.16/features/beacon-v1616-gate-independent-judge/truth.md",
+      "test_case_refs": "docs/beacon/v1.6.16/features/beacon-v1616-gate-independent-judge/tests.md"
+    },
+    "missing_ref_targets": [],
+    "ready": false
+  },
+  "support_write_topology_contract": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "diagnostics": []
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.6.16/features/beacon-v1616-gate-independent-judge/truth.md",
+    "docs/beacon/v1.6.16/features/beacon-v1616-gate-independent-judge/tests.md",
+    "docs/beacon/v1.6.16/features/beacon-v1616-gate-independent-judge/tasks.md",
+    "docs/beacon/v1.6.16/features/beacon-v1616-gate-independent-judge/evidence.md"
+  ]
+}
