@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-08-27T12:43:48.793665+00:00",
+  "generated_at": "2026-08-27T13:03:29.879469+00:00",
   "feature": "beacon-v1615-automerge-gate",
   "feature_slug": "beacon-v1615-automerge-gate",
   "version": "v1.6.15",
@@ -19,7 +19,7 @@
   },
   "source_hashes": {
     "truth": "29f8c70e13a1848c402fd19104685a5e0143dc6e3792a44425e94a572563d3d0",
-    "tests": "fa60abee3dbb3eccb23cf566193b5108984e6401a057ffde808e579f83aec36e",
+    "tests": "421296b7acbfbae47bc983fa191cd5f2e6446bd7450285bad1e59a2c2c4590b5",
     "tasks": "654429a06b58333b060a3fc9dcfbe541a33fcf3211e98c6f48e95f03c0342262",
     "evidence": "e3eb56000416433ef75975c9b894c0826009d2538bed1d7fb56a64b73262904b"
   },
@@ -106,6 +106,15 @@
       "layer": "",
       "command": "`python3 tests/test_v1615_automerge_gate.py`",
       "assertion": "exit 0：全断言通过",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-FSMW",
+      "layer": "",
+      "command": "`python3 tests/test_v1615_automerge_gate.py -k fsm`",
+      "assertion": "exit 0：合法路径 qa_passed→coverage_checked→regression_checked→adversarial_checked→merged 全走（域 FSM legal walk）",
       "evidence_path": "",
       "source": ""
     },
