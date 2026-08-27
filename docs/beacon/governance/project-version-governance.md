@@ -144,6 +144,23 @@ parser_contract: "beacon-project-governance-v1"
 - merge_direction_policy: `master->beacon/v1.6.14`
 - merge_direction_policy: `beacon/v1.6.14->uat`
 - forbidden_directions: `uat->beacon/v1.6.14`
+
+### v1.6.15
+- participating_services: `beacon`
+- branch_guard_mode: `strict`
+- validation_state: `active`
+- per_service_canonical_branch:
+  - `beacon`: `beacon/v1.6.15`
+- truth_canonical: `main`
+- branch_governance_template: `standard-feature`
+- previous_version_baseline_branch: `main`
+- next_version_feature_branch: `beacon/v1.6.15/<feature-slug>`
+- worktree_mode: `dedicated`
+- worktree_path: `.beacon/worktrees/v1.6.15`
+- require_workspace_admission: `true`
+- merge_direction_policy: `master->beacon/v1.6.15`
+- merge_direction_policy: `beacon/v1.6.15->uat`
+- forbidden_directions: `uat->beacon/v1.6.15`
 - forbidden_directions: `uat_as_feature_base`
 
 ### v1.6.2
