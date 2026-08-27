@@ -1,0 +1,291 @@
+{
+  "schema_version": "1.0",
+  "run_id": "impl-beacon-v1613-d3-failure-mode-catalog-v1613",
+  "import_id": "impl-beacon-v1613-d3-failure-mode-catalog-v1613",
+  "feature": "beacon-v1613-d3-failure-mode-catalog",
+  "feature_slug": "beacon-v1613-d3-failure-mode-catalog",
+  "version": "v1.6.13",
+  "runner": "import-evidence",
+  "skill": "beacon-gen-implement",
+  "status": "completed",
+  "imported": true,
+  "source_refs": [
+    "tests/* (pytest exit 0)"
+  ],
+  "changed_files": [
+    "tests/*"
+  ],
+  "service_dirs": [],
+  "summary_ref": "tests",
+  "approved_by": "kunqi.lai",
+  "prompt_boundary": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1613-d3-failure-mode-catalog",
+    "feature_slug": "beacon-v1613-d3-failure-mode-catalog",
+    "version": "v1.6.13",
+    "required": true,
+    "prompt": "Import externally produced implementation evidence for the scoped Beacon feature. Read Beacon source of truth and bind the imported evidence to the frozen feature package truth. Implement only against the frozen feature package truth above. Evidence refs: tests/* (pytest exit 0), tests. Changed files or service directories: tests/*.",
+    "classification": "in_scope_implementation",
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "next_action": "",
+    "recommended_command": "",
+    "matched_signals": [],
+    "frozen_refs": [
+      "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/truth.md",
+      "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/tests.md",
+      "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/tasks.md",
+      "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/evidence.md"
+    ],
+    "surface": "import-evidence"
+  },
+  "created_at": "2026-08-27T05:44:41.018449+00:00",
+  "generated_at": "2026-08-27T05:44:41.018946+00:00",
+  "implementation_marker": ".beacon/state/implementation-beacon-v1613-d3-failure-mode-catalog.json",
+  "writeback": {
+    "updated_items": 11,
+    "story": {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "beacon-v1613-d3-failure-mode-catalog",
+      "priority": "medium",
+      "status": "implemented",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "D3：失败模式目录",
+          "text": "must",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-beacon-v1613-d3-failure-mode-catalog-v1613",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/truth.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "每条带 rubric（判定标准）",
+          "text": "must",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-beacon-v1613-d3-failure-mode-catalog-v1613",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/truth.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "用例可独立执行",
+          "text": "must",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-beacon-v1613-d3-failure-mode-catalog-v1613",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/truth.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "对抗式审查 gate 消费目录",
+          "text": "must",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-beacon-v1613-d3-failure-mode-catalog-v1613",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/truth.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "手册不自动判 pass（人裁决）",
+          "text": "must",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-beacon-v1613-d3-failure-mode-catalog-v1613",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/truth.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-beacon-v1613-d3-failure-mode-catalog-v1613",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — must",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-beacon-v1613-d3-failure-mode-catalog-v1613",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/truth.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — must",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-beacon-v1613-d3-failure-mode-catalog-v1613",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/truth.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — must",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-beacon-v1613-d3-failure-mode-catalog-v1613",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/truth.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — must",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-beacon-v1613-d3-failure-mode-catalog-v1613",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/truth.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — must",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-beacon-v1613-d3-failure-mode-catalog-v1613",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/truth.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-v1613-d3-failure-mode-catalog",
+        "version": "v1.6.13",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.13/research/beacon-v1613-d3-failure-mode-catalog.md",
+        "present": false,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      },
+      "feature": "beacon-v1613-d3-failure-mode-catalog",
+      "feature_slug": "beacon-v1613-d3-failure-mode-catalog",
+      "version": "v1.6.13",
+      "last_changed_files": [
+        "tests/*"
+      ]
+    },
+    "revision": {
+      "schema_version": "1.0",
+      "feature": "beacon-v1613-d3-failure-mode-catalog",
+      "feature_slug": "beacon-v1613-d3-failure-mode-catalog",
+      "version": "v1.6.13",
+      "revision_id": "R1",
+      "source_revision_id": "",
+      "reason": "freeze",
+      "doc_status": "frozen",
+      "delivery_status": "implemented",
+      "lifecycle_status": "idle",
+      "baseline_hash": "sha256:18d83a76d9498b5c0969b343505bb818170ac434982e5e4fada4729bc174e698",
+      "superseded_by": "",
+      "created_at": "2026-08-27T05:01:43.697038+00:00",
+      "frozen_at": "2026-08-27T05:43:48.354961+00:00",
+      "accepted_at": "",
+      "last_implementation_run_id": "impl-beacon-v1613-d3-failure-mode-catalog-v1613",
+      "changed_files": [
+        "tests/*"
+      ]
+    },
+    "implementation_plan": {}
+  },
+  "next_route": {
+    "target_surface": "beacon-eval-qa",
+    "command": "beacon qa run \"beacon-v1613-d3-failure-mode-catalog\" --project . --version v1.6.13"
+  },
+  "decision_surface": {
+    "stage": "implement",
+    "skill_ref": "skills/beacon/beacon-implement/SKILL.md",
+    "inputs_contract": [],
+    "decision_protocol": [],
+    "anti_inertia_notes": [],
+    "learning_notes": [],
+    "backstop_cli": [],
+    "primary_reason": "",
+    "recommended_command": "",
+    "reason_code": ""
+  },
+  "guardrail_contract": {
+    "stage": "implement",
+    "decision_owner": "skill_surface",
+    "enforcement_owner": "python_guardrail",
+    "blocked": false,
+    "reason_code": "",
+    "dual_read_required_before_cutover": true,
+    "fail_closed": true
+  },
+  "mode": "import-evidence",
+  "adapter_type": "external-evidence",
+  "request_path": "",
+  "result_path": ""
+}
