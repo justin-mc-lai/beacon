@@ -1,0 +1,80 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1613-d2-spend-ledger",
+  "feature_slug": "beacon-v1613-d2-spend-ledger",
+  "version": "v1.6.13",
+  "mode": "single-repo",
+  "expected_branch": "beacon/v1.6.13",
+  "branch_prefix": "beacon/",
+  "base_branch": "main",
+  "use_git_worktree": true,
+  "require_clean_worktree_for_switch": true,
+  "service_directories": [
+    "/Users/apple/Developer/Personal/products/beacon"
+  ],
+  "direct_delivery_services": [
+    "beacon"
+  ],
+  "git_roots": [
+    "/Users/apple/Developer/Personal/products/beacon"
+  ],
+  "worktree_root": "/Users/apple/Developer/Personal/products/beacon",
+  "implementation_preflight": [
+    "Before implementation, verify the target service belongs to: ..",
+    "Before implementation, verify every direct delivery service is on beacon/v1.6.13.",
+    "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+  ],
+  "source": "version_governance",
+  "generated_at": "2026-08-27T05:13:57.180008+00:00",
+  "service_branch_map": {
+    "beacon": "beacon/v1.6.13"
+  },
+  "worktree_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.13/beacon-v1613-d2-spend-ledger",
+  "branch_governance": {
+    "schema_version": "1.0",
+    "tool_name": "beacon-toolkit-branch-governance",
+    "feature": "beacon-v1613-d2-spend-ledger",
+    "version": "v1.6.13",
+    "template_name": "standard-feature",
+    "template_source": "project_metadata",
+    "service_key": "beacon",
+    "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+    "base_branch": "main",
+    "current_branch": "main",
+    "target_branch": "beacon/v1.6.13",
+    "worktree_mode": "dedicated-worktree",
+    "worktree_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.13/beacon-v1613-d2-spend-ledger",
+    "current_worktree_path": "/Users/apple/Developer/Personal/products/beacon",
+    "previous_version_baseline_branch": "main",
+    "next_version_feature_branch": "beacon/v1.6.13/<feature-slug>",
+    "hotfix_branch_naming_rule": "",
+    "allow_worktree_when_feature_dirty": false,
+    "merge_direction_policy": [
+      "master->beacon/v1.6.13",
+      "beacon/v1.6.13->uat"
+    ],
+    "forbidden_directions": [
+      "uat->beacon/v1.6.13",
+      "uat_as_feature_base"
+    ],
+    "evidence_contract": [],
+    "evidence": {},
+    "status": "blocked",
+    "blocked": true,
+    "reason_codes": [
+      "branch_governance_worktree_required",
+      "branch_governance_branch_mismatch"
+    ],
+    "blocked_reason": "governance requires a dedicated worktree lane before implementation",
+    "recommended_action": "enter the governed worktree at /Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.13/beacon-v1613-d2-spend-ledger",
+    "missing_evidence_fields": [],
+    "evidence_contract_status": "pass",
+    "human_markdown": "## Branch Governance\n\n- toolkit: `beacon-toolkit-branch-governance`\n- template_name: `standard-feature`\n- template_source: `project_metadata`\n- service_key: `beacon`\n- repo_root: `/Users/apple/Developer/Personal/products/beacon`\n- base_branch: `main`\n- current_branch: `main`\n- target_branch: `beacon/v1.6.13`\n- worktree_mode: `dedicated-worktree`\n- worktree_path: `/Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.13/beacon-v1613-d2-spend-ledger`\n- evidence_contract_status: `pass`\n- blocked_reason: `governance requires a dedicated worktree lane before implementation`\n- recommended_action: `enter the governed worktree at /Users/apple/Developer/Personal/products/beacon/.beacon/worktrees/v1.6.13/beacon-v1613-d2-spend-ledger`\n\n### Flow Diagram\n```text\nmain [current]\n    -> beacon/v1.6.13\n    -> uat\n```\n\n### Allowed Paths\n- `master->beacon/v1.6.13`\n- `beacon/v1.6.13->uat`\n\n### Forbidden Paths\n- `uat->beacon/v1.6.13`\n- `uat_as_feature_base`\n\n### Evidence Contract\n- none\n"
+  },
+  "baseline_id": "impl-delivery-baseline-v1.6.13-beacon-v1613-d2-spend-ledger-r0",
+  "transaction_id": "tx-b53b969026c72e9e2",
+  "source_hash": "sha256:07f30c14797a06c13dc7ac6e54cb65f7a8912258c486803500299aa1c2bef14f",
+  "projection_seq": 1,
+  "canonical_envelope_ref": "docs/beacon/v1.6.13/.machine/execution/implementation-delivery-baseline-beacon-v1613-d2-spend-ledger.json",
+  "projection_source": "implementation_delivery_baseline_envelope"
+}

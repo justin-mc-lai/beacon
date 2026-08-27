@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-08-27T05:01:44.215756+00:00",
+  "generated_at": "2026-08-27T05:54:08.277878+00:00",
   "feature": "beacon-v1613-d3-failure-mode-catalog",
   "feature_slug": "beacon-v1613-d3-failure-mode-catalog",
   "version": "v1.6.13",
@@ -19,7 +19,7 @@
   },
   "source_hashes": {
     "truth": "f288177f097d2d2811bde3a1e4c598bf068af59fb23ca00095dc6c4c3e8d7aab",
-    "tests": "d522232a62f37baf27ed3e66645a42d6eb6d2551aa9b9acf2cf04cc8b1d634f9",
+    "tests": "94c2d7f0944e9a74627df48cfafd7893fd18562c9cc35437790f0dc3a88c59f5",
     "tasks": "6fa8a320dfa587239ff84f8d0b12fccdfdb98eaeb8a0cb39326bed7f5ebec8eb",
     "evidence": "49d07915353655d6a276d1e5035c3f6646789e8eb23e494207df24c90603bbc6"
   },
@@ -73,7 +73,7 @@
       "ac_id": "AC-001",
       "tc_id": "TC-001",
       "layer": "",
-      "command": "`rg -c '^### FM-|^### 模式' .claude/skills/beacon-qa/references/failure-mode-catalog.md`",
+      "command": "`rg -c '^## FM-|^### 模式' skills/beacon/beacon-qa/references/failure-mode-catalog.md`",
       "assertion": "目录条目 ≥ 5",
       "evidence_path": "",
       "source": ""
@@ -82,7 +82,7 @@
       "ac_id": "AC-002",
       "tc_id": "TC-002",
       "layer": "",
-      "command": "`rg -c 'rubric|判定标准' .claude/skills/beacon-qa/references/failure-mode-catalog.md`",
+      "command": "`rg -c 'rubric|判定标准' skills/beacon/beacon-qa/references/failure-mode-catalog.md`",
       "assertion": "每条含 rubric（命中数 ≥ 条目数）",
       "evidence_path": "",
       "source": ""
@@ -91,7 +91,7 @@
       "ac_id": "AC-003",
       "tc_id": "TC-003",
       "layer": "",
-      "command": "`python3 -m pytest tests/test_v1613_failure_mode_catalog.py -q --tb=short`",
+      "command": "`python3 tests/test_v1613_failure_mode_catalog.py`",
       "assertion": "exit 0：用例断言可独立执行",
       "evidence_path": "",
       "source": ""
@@ -100,7 +100,7 @@
       "ac_id": "AC-004",
       "tc_id": "TC-004",
       "layer": "",
-      "command": "`rg -n 'failure-mode-catalog|失败模式目录' .claude/skills/beacon-qa/references/modes/eval-qa.md .claude/skills/beacon-qa/references/modes/eval-qa-deep.md`",
+      "command": "`rg -n 'failure-mode-catalog|失败模式目录' skills/beacon/beacon-qa/references/modes/eval-qa.md skills/beacon/beacon-qa/references/modes/eval-qa-deep.md`",
       "assertion": "审查模式引用目录",
       "evidence_path": "",
       "source": ""
@@ -109,7 +109,7 @@
       "ac_id": "AC-005",
       "tc_id": "TC-005",
       "layer": "",
-      "command": "`rg -n 'user decides|人裁决|不自动判' .claude/skills/beacon-qa/references/failure-mode-catalog.md`",
+      "command": "`rg -n 'user decides|人裁决|不自动判' skills/beacon/beacon-qa/references/failure-mode-catalog.md`",
       "assertion": "明确批判式意见边界",
       "evidence_path": "",
       "source": ""
@@ -118,7 +118,7 @@
       "ac_id": "AC-001,AC-003",
       "tc_id": "TC-EXEC",
       "layer": "",
-      "command": "`python3 -m pytest tests/test_v1613_failure_mode_catalog.py -q --tb=short`",
+      "command": "`python3 tests/test_v1613_failure_mode_catalog.py`",
       "assertion": "exit 0：目录存在 + 条目/rubric/引用断言通过",
       "evidence_path": "",
       "source": ""
