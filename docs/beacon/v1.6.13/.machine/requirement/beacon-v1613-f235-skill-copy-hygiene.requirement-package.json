@@ -1,0 +1,167 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-08-27T05:01:45.792754+00:00",
+  "feature": "beacon-v1613-f235-skill-copy-hygiene",
+  "feature_slug": "beacon-v1613-f235-skill-copy-hygiene",
+  "version": "v1.6.13",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.13/features/beacon-v1613-f235-skill-copy-hygiene/truth.md",
+    "tests": "docs/beacon/v1.6.13/features/beacon-v1613-f235-skill-copy-hygiene/tests.md",
+    "tasks": "docs/beacon/v1.6.13/features/beacon-v1613-f235-skill-copy-hygiene/tasks.md",
+    "evidence": "docs/beacon/v1.6.13/features/beacon-v1613-f235-skill-copy-hygiene/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "c002032a10c3ca02f65686c8ac7e413674ba5f540b1b31e7a958a48ce56a538d",
+    "tests": "567cc1f345e2ad4a58d4336264ce2d9ac26bab386e095a09c4b0b8bd649e09e5",
+    "tasks": "c28c5513f11d790772c5bbb2bb5ece9e8414c408c098c10a68e1c746907f7f48",
+    "evidence": "ffbec4c68cbce653da1fc6808d5324e82dc52417ef83bd5c500f1591fca9c8da"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-v1613-f235-skill-copy-hygiene",
+    "version": "v1.6.13",
+    "status": "frozen",
+    "language": "zh",
+    "domain_required": "false",
+    "ux_required": "false",
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "package_maturity": "filled",
+    "materials_status": "current",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.13/features/beacon-v1613-f235-skill-copy-hygiene/truth.md",
+      "user_story": "docs/beacon/v1.6.13/features/beacon-v1613-f235-skill-copy-hygiene/truth.md",
+      "test_case": "docs/beacon/v1.6.13/features/beacon-v1613-f235-skill-copy-hygiene/tests.md"
+    }
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "共享 preamble / HARD GATE / GIT_ADMISSION 抽到单一共享文件（`references/shared/`），~20 个 mode 文件改为引用，不再逐字复制——触发 `extract_shared` 进入 deduped 状态。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "deduped 状态要求：修复已知复制 bug（`pln-brainstorm.md` 三个同名 `beacon-gen-truth`、`gen-truth.md` 旧版自指残留），复制式残留清零。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "`fix_copy_bugs` 后：mode 文件内无硬编码过期版本号（v1.4.x/v1.5.x 等）；版本锚点单一来源（INDEX/package map），grep 过期版本计数为 0（保留历史归档除外）——进入 anchored 状态。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "`unify_prefix` 触发：`truth-review` 更名为 `eval-truth-review`（统一 eval-* 前缀），并保留 legacy alias 路由；旧引用可用——进入 closed 状态。",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "",
+      "command": "`rg -c 'references/shared/|共享 Preamble' .claude/skills/beacon-{plan,truth,implement,qa,release,design,goal}/references/modes/*.md`",
+      "assertion": "引用方式存在（命中 ≥1/文件）且无整块复制（`rg -c 'Beacon v1.6.0 共享 Preamble' <mode>` 每文件 ≤1）",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "",
+      "command": "`rg -n 'beacon-gen-truth.*beacon-gen-truth.*beacon-gen-truth|旧版自指' .claude/skills/beacon-{plan,truth}/references/modes/*.md`",
+      "assertion": "无输出（复制 bug 已修）",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "",
+      "command": "`rg -n 'v1\\.4\\.|v1\\.5\\.' .claude/skills/beacon-{plan,truth,implement,qa,release,design,goal}/references/modes/*.md`",
+      "assertion": "无输出（无硬编码过期版本）",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "",
+      "command": "`rg -n 'eval-truth-review|truth-review' .claude/skills/beacon-truth/SKILL.md .claude/skills/beacon-truth/references/modes/*.md`",
+      "assertion": "命中 `eval-truth-review` 且 `truth-review` 仅作为 legacy alias 出现",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-EXEC",
+      "layer": "",
+      "command": "`python3 tests/test_v1613_skill_copy_hygiene.py`",
+      "assertion": "exit 0（脚本断言共享引用/无复制 bug/无过期版本/前缀统一）",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-001,AC-003",
+      "tc_id": "TC-ILLEGAL",
+      "layer": "",
+      "command": "`rg -n \"共享块仍多份复制且漂移|写死过期版本\" docs/beacon/v1.6.13/features/beacon-v1613-f235-skill-copy-hygiene/truth.md`",
+      "assertion": "illegal（复制残留/锚点漂移）",
+      "evidence_path": "",
+      "source": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Implement AC-001: 共享 preamble / HARD GATE / GIT_ADMISSION 抽到单一共享文件（`references/shared/`... · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1613-f235-skill-copy-hygiene/AC-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Implement AC-002: deduped 状态要求：修复已知复制 bug（`pln-brainstorm.md` 三个同名 `beacon-gen-truth`、`... · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1613-f235-skill-copy-hygiene/AC-002.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Implement AC-003: `fix_copy_bugs` 后：mode 文件内无硬编码过期版本号（v1.4.x/v1.5.x 等）；版本锚点单一来源（INDEX/p... · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1613-f235-skill-copy-hygiene/AC-003.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Implement AC-004: `unify_prefix` 触发：`truth-review` 更名为 `eval-truth-review`（统一 eval-* 前缀... · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1613-f235-skill-copy-hygiene/AC-004.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1613-f235-skill-copy-hygiene/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1613-f235-skill-copy-hygiene/QA-MATRIX.json`",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "package",
+      "authority": "requirement_truth",
+      "path": "docs/beacon/v1.6.13/features/beacon-v1613-f235-skill-copy-hygiene/truth.md"
+    },
+    {
+      "surface": "tests",
+      "authority": "test_truth",
+      "path": "docs/beacon/v1.6.13/features/beacon-v1613-f235-skill-copy-hygiene/tests.md"
+    }
+  ]
+}

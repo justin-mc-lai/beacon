@@ -1,0 +1,186 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-08-27T05:01:44.215756+00:00",
+  "feature": "beacon-v1613-d3-failure-mode-catalog",
+  "feature_slug": "beacon-v1613-d3-failure-mode-catalog",
+  "version": "v1.6.13",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/truth.md",
+    "tests": "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/tests.md",
+    "tasks": "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/tasks.md",
+    "evidence": "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "f288177f097d2d2811bde3a1e4c598bf068af59fb23ca00095dc6c4c3e8d7aab",
+    "tests": "d522232a62f37baf27ed3e66645a42d6eb6d2551aa9b9acf2cf04cc8b1d634f9",
+    "tasks": "6fa8a320dfa587239ff84f8d0b12fccdfdb98eaeb8a0cb39326bed7f5ebec8eb",
+    "evidence": "49d07915353655d6a276d1e5035c3f6646789e8eb23e494207df24c90603bbc6"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-v1613-d3-failure-mode-catalog",
+    "version": "v1.6.13",
+    "status": "frozen",
+    "language": "zh",
+    "domain_required": "false",
+    "ux_required": "false",
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "package_maturity": "filled",
+    "materials_status": "current",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/truth.md",
+      "user_story": "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/truth.md",
+      "test_case": "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/tests.md"
+    }
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "建立失败模式目录 `beacon-qa/references/failure-mode-catalog.md`，每条含 模式/症状/判定规则/对应 skill 用例，首版 ≥ 5 条（含\"猜代码漏读\"\"只有文档没有可验证产出\"\"软断言 TC\"等已知模式）——触发 `build_catalog` 进入 filled 状态。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "filled 状态要求：每个用例含 rubric（coordinator 判定标准：什么证据算通过、什么算拦截）。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "filled 状态要求：用例可独立执行（命令 + 断言），且能在 CI/本地跑出确定结果。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "`wire_gate` 触发：QA/release 前的对抗式审查固定引用目录（从目录抽取 3-5 个翻车点），引用缺失时输出 advisory 提示——进入 wired 状态。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "`user_decides` 要求：手册输出为批判式意见（findings/evidence），不自动判 pass；最终 verdict 由人/既有 gate 决定——进入 closed 状态。",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "",
+      "command": "`rg -c '^### FM-|^### 模式' .claude/skills/beacon-qa/references/failure-mode-catalog.md`",
+      "assertion": "目录条目 ≥ 5",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "",
+      "command": "`rg -c 'rubric|判定标准' .claude/skills/beacon-qa/references/failure-mode-catalog.md`",
+      "assertion": "每条含 rubric（命中数 ≥ 条目数）",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "",
+      "command": "`python3 -m pytest tests/test_v1613_failure_mode_catalog.py -q --tb=short`",
+      "assertion": "exit 0：用例断言可独立执行",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "",
+      "command": "`rg -n 'failure-mode-catalog|失败模式目录' .claude/skills/beacon-qa/references/modes/eval-qa.md .claude/skills/beacon-qa/references/modes/eval-qa-deep.md`",
+      "assertion": "审查模式引用目录",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-005",
+      "layer": "",
+      "command": "`rg -n 'user decides|人裁决|不自动判' .claude/skills/beacon-qa/references/failure-mode-catalog.md`",
+      "assertion": "明确批判式意见边界",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-001,AC-003",
+      "tc_id": "TC-EXEC",
+      "layer": "",
+      "command": "`python3 -m pytest tests/test_v1613_failure_mode_catalog.py -q --tb=short`",
+      "assertion": "exit 0：目录存在 + 条目/rubric/引用断言通过",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-ILLEGAL",
+      "layer": "",
+      "command": "`rg -n \"目录自动判 pass|未引用目录仍声称\" docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/truth.md`",
+      "assertion": "illegal（越权裁决/advisory 缺失）",
+      "evidence_path": "",
+      "source": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Implement AC-001: 建立失败模式目录 `beacon-qa/references/failure-mode-catalog.md`，每条含 模式/症状/判定规... · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1613-d3-failure-mode-catalog/AC-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Implement AC-002: filled 状态要求：每个用例含 rubric（coordinator 判定标准：什么证据算通过、什么算拦截）。 · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1613-d3-failure-mode-catalog/AC-002.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Implement AC-003: filled 状态要求：用例可独立执行（命令 + 断言），且能在 CI/本地跑出确定结果。 · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1613-d3-failure-mode-catalog/AC-003.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Implement AC-004: `wire_gate` 触发：QA/release 前的对抗式审查固定引用目录（从目录抽取 3-5 个翻车点），引用缺失时输出 advis... · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1613-d3-failure-mode-catalog/AC-004.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Implement AC-005: `user_decides` 要求：手册输出为批判式意见（findings/evidence），不自动判 pass；最终 verdict ... · ac=AC-005 · evidence=`.beacon/evidence/implement/beacon-v1613-d3-failure-mode-catalog/AC-005.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1613-d3-failure-mode-catalog/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1613-d3-failure-mode-catalog/QA-MATRIX.json`",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "package",
+      "authority": "requirement_truth",
+      "path": "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/truth.md"
+    },
+    {
+      "surface": "tests",
+      "authority": "test_truth",
+      "path": "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/tests.md"
+    }
+  ]
+}

@@ -1,0 +1,180 @@
+{
+  "schema": "truth-review-gate.v1",
+  "schema_version": "1.0",
+  "feature": "beacon-v1613-d2-spend-ledger",
+  "version": "v1.6.13",
+  "pass": true,
+  "blocked": false,
+  "review_gate_pass": true,
+  "abc_pass": true,
+  "reason_code": "",
+  "domain_required": true,
+  "checks": {
+    "A_intent_coverage": {
+      "pass": true,
+      "check": "A",
+      "name": "intent_coverage",
+      "required": true,
+      "matrix_rows": 7,
+      "missing_must": [],
+      "reason": "",
+      "findings": [],
+      "matrix": [
+        {
+          "intent_id": "INT-001",
+          "source": "D2：持久化 spend ledger",
+          "strength": "must",
+          "landing": "AC-001",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-002",
+          "source": "只对 validated writeback 扣一次",
+          "strength": "must",
+          "landing": "AC-002",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-003",
+          "source": "quiet skip/dry-run 不扣",
+          "strength": "must",
+          "landing": "AC-003",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-004",
+          "source": "spend 幂等（CAS 重放不重扣）",
+          "strength": "must",
+          "landing": "AC-004",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-005",
+          "source": "配额耗尽 halt_budget",
+          "strength": "must",
+          "landing": "AC-005",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-006",
+          "source": "交接预算回归保留",
+          "strength": "should",
+          "landing": "AC-006",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-007",
+          "source": "按 goal 占空比配额（loopx slot 账本）",
+          "strength": "should",
+          "landing": "AC-005",
+          "status": "deferred-to-next"
+        }
+      ]
+    },
+    "B_fsm_audit": {
+      "pass": true,
+      "check": "B",
+      "name": "fsm_audit",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "fsm": {
+        "transition_count": 6,
+        "from_states": [
+          "any",
+          "choose",
+          "deliver",
+          "spend",
+          "validate",
+          "writeback"
+        ],
+        "hanging_states": [],
+        "terminals": [
+          "halt_budget",
+          "next_choose"
+        ],
+        "illegal_present": true,
+        "five_tuple_present": true
+      }
+    },
+    "C_testability": {
+      "pass": true,
+      "check": "C",
+      "name": "testability",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "ac_count": 6,
+      "tc_count": 8,
+      "missing_ac": [],
+      "covered": {
+        "AC-001": [
+          "TC-001",
+          "TC-EXEC"
+        ],
+        "AC-002": [
+          "TC-002",
+          "TC-ILLEGAL"
+        ],
+        "AC-003": [
+          "TC-003",
+          "TC-ILLEGAL"
+        ],
+        "AC-004": [
+          "TC-004",
+          "TC-ILLEGAL"
+        ],
+        "AC-005": [
+          "TC-005"
+        ],
+        "AC-006": [
+          "TC-006"
+        ]
+      }
+    },
+    "C_domain_exec_layer": {
+      "pass": true,
+      "check": "C_exec",
+      "name": "domain_exec_layer",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "exec_tc_count": 7,
+      "exec_tc_ids": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-EXEC"
+      ],
+      "domain_kind": "business"
+    },
+    "D_fill_depth": {
+      "pass": true,
+      "check": "D",
+      "name": "fill_depth",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "package_maturity": "filled",
+      "domain_kind": "business",
+      "business_domain": true
+    }
+  },
+  "findings": [],
+  "humanizer": {
+    "rule": "humanizer_only_after_abc_pass_before_freeze",
+    "abc_pass": true,
+    "allowed_now": true,
+    "fill_depth_pass": true,
+    "note": "Polish L0/narrative only after A/B/C; preserve_machine_fields=true; freeze needs D+exec too"
+  },
+  "evaluated_at": "2026-08-27T05:00:54.276861+00:00",
+  "paths": {
+    "truth": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/truth.md",
+    "tests": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/tests.md",
+    "report": "docs/beacon/v1.6.13/.machine/execution/beacon-v1613-d2-spend-ledger.truth-review-gate.json"
+  }
+}

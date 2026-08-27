@@ -1,0 +1,137 @@
+{
+  "schema": "truth-review-gate.v1",
+  "schema_version": "1.0",
+  "feature": "beacon-v1613-d3-failure-mode-catalog",
+  "version": "v1.6.13",
+  "pass": true,
+  "blocked": false,
+  "review_gate_pass": true,
+  "abc_pass": true,
+  "reason_code": "",
+  "domain_required": false,
+  "checks": {
+    "A_intent_coverage": {
+      "pass": true,
+      "check": "A",
+      "name": "intent_coverage",
+      "required": true,
+      "matrix_rows": 5,
+      "missing_must": [],
+      "reason": "",
+      "findings": [],
+      "matrix": [
+        {
+          "intent_id": "INT-001",
+          "source": "D3：失败模式目录",
+          "strength": "must",
+          "landing": "AC-001",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-002",
+          "source": "每条带 rubric（判定标准）",
+          "strength": "must",
+          "landing": "AC-002",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-003",
+          "source": "用例可独立执行",
+          "strength": "must",
+          "landing": "AC-003",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-004",
+          "source": "对抗式审查 gate 消费目录",
+          "strength": "must",
+          "landing": "AC-004",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-005",
+          "source": "手册不自动判 pass（人裁决）",
+          "strength": "must",
+          "landing": "AC-005",
+          "status": "covered"
+        }
+      ]
+    },
+    "B_fsm_audit": {
+      "pass": true,
+      "check": "B",
+      "name": "fsm_audit",
+      "required": false,
+      "skipped": true,
+      "reason": "",
+      "findings": []
+    },
+    "C_testability": {
+      "pass": true,
+      "check": "C",
+      "name": "testability",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "ac_count": 5,
+      "tc_count": 7,
+      "missing_ac": [],
+      "covered": {
+        "AC-001": [
+          "TC-001",
+          "TC-EXEC"
+        ],
+        "AC-002": [
+          "TC-002"
+        ],
+        "AC-003": [
+          "TC-003",
+          "TC-EXEC"
+        ],
+        "AC-004": [
+          "TC-004"
+        ],
+        "AC-005": [
+          "TC-005",
+          "TC-ILLEGAL"
+        ]
+      }
+    },
+    "C_domain_exec_layer": {
+      "pass": true,
+      "check": "C_exec",
+      "name": "domain_exec_layer",
+      "required": false,
+      "skipped": true,
+      "reason": "",
+      "findings": [],
+      "exec_tc_count": 0,
+      "domain_kind": "general"
+    },
+    "D_fill_depth": {
+      "pass": true,
+      "check": "D",
+      "name": "fill_depth",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "package_maturity": "filled",
+      "domain_kind": "general",
+      "business_domain": false
+    }
+  },
+  "findings": [],
+  "humanizer": {
+    "rule": "humanizer_only_after_abc_pass_before_freeze",
+    "abc_pass": true,
+    "allowed_now": true,
+    "fill_depth_pass": true,
+    "note": "Polish L0/narrative only after A/B/C; preserve_machine_fields=true; freeze needs D+exec too"
+  },
+  "evaluated_at": "2026-08-27T05:01:43.691769+00:00",
+  "paths": {
+    "truth": "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/truth.md",
+    "tests": "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/tests.md",
+    "report": "docs/beacon/v1.6.13/.machine/execution/beacon-v1613-d3-failure-mode-catalog.truth-review-gate.json"
+  }
+}

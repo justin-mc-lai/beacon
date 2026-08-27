@@ -1,0 +1,572 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1613-d2-spend-ledger",
+  "feature_slug": "beacon-v1613-d2-spend-ledger",
+  "version": "v1.6.13",
+  "runtime_version": "v1.6.12",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.6.13/.machine/execution/requirement-clarity-beacon-v1613-d2-spend-ledger.json",
+  "report_markdown_path": "docs/beacon/v1.6.13/execution/requirement-clarity-beacon-v1613-d2-spend-ledger.md",
+  "state_path": ".beacon/state/requirement-clarity-beacon-v1613-d2-spend-ledger.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.13",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-08-27T05:00:52.970202+00:00",
+    "feature": "beacon-v1613-d2-spend-ledger",
+    "feature_slug": "beacon-v1613-d2-spend-ledger",
+    "prd_ref": "docs/beacon/v1.6.13/prd/beacon-v1613-d2-spend-ledger.md",
+    "user_story_ref": "docs/beacon/v1.6.13/user-story/beacon-v1613-d2-spend-ledger.md"
+  },
+  "domain_fsm_gate": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1613-d2-spend-ledger",
+    "feature_slug": "beacon-v1613-d2-spend-ledger",
+    "version": "v1.6.13",
+    "truth_path": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/truth.md",
+    "tests_path": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/tests.md",
+    "required": true,
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "findings": [],
+    "requirement": {
+      "required": true,
+      "reason": "explicit_domain_mark",
+      "explicit": true,
+      "partial": true,
+      "complexity": false,
+      "business_signal": true,
+      "version_supported": true
+    },
+    "projection": {
+      "schema_version": "1.0",
+      "domain_fsm_schema": "domain-fsm.v1",
+      "entity_precedence_schema": "entity-precedence.v1",
+      "frontmatter": {
+        "slug": "beacon-v1613-d2-spend-ledger",
+        "version": "v1.6.13",
+        "status": "draft",
+        "language": "zh",
+        "domain_required": "true",
+        "ux_required": "false",
+        "parser_contract": "beacon-feature-package-v2",
+        "truth_source_model": "feature_package_authoritative",
+        "package_maturity": "filled",
+        "materials_status": "current",
+        "canonical_refs": {
+          "prd": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/truth.md",
+          "user_story": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/truth.md",
+          "test_case": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/tests.md"
+        }
+      },
+      "frontmatter_errors": [],
+      "has_domain_model_section": true,
+      "has_domain_fsm_section": true,
+      "has_illegal_transition_section": true,
+      "entities": [
+        {
+          "entity": "SpendLedger",
+          "key": "goal_id, entries[], spent, quota_limit",
+          "precedence": "持久化到 goal run state",
+          "requires": "持久化到 goal run state"
+        },
+        {
+          "entity": "SpendEntry",
+          "key": "index, source, spent_at, writeback_ref, digest",
+          "precedence": "每笔消费记录",
+          "requires": "每笔消费记录"
+        },
+        {
+          "entity": "QuotaAccount",
+          "key": "window_hours, slot_minutes, used_slots",
+          "precedence": "占空比配额（should，可下放）",
+          "requires": "占空比配额（should，可下放）"
+        }
+      ],
+      "entity_precedence": [
+        {
+          "entity": "SpendLedger",
+          "key": "goal_id, entries[], spent, quota_limit",
+          "precedence": "持久化到 goal run state",
+          "requires": "持久化到 goal run state"
+        },
+        {
+          "entity": "SpendEntry",
+          "key": "index, source, spent_at, writeback_ref, digest",
+          "precedence": "每笔消费记录",
+          "requires": "每笔消费记录"
+        },
+        {
+          "entity": "QuotaAccount",
+          "key": "window_hours, slot_minutes, used_slots",
+          "precedence": "占空比配额（should，可下放）",
+          "requires": "占空比配额（should，可下放）"
+        }
+      ],
+      "aggregates": [
+        {
+          "name": "Order",
+          "states": [
+            "any",
+            "choose",
+            "deliver",
+            "halt_budget",
+            "next_choose",
+            "spend",
+            "validate",
+            "writeback"
+          ],
+          "transitions": [
+            {
+              "from": "choose",
+              "to": "deliver",
+              "guard": "budget_ok"
+            },
+            {
+              "from": "deliver",
+              "to": "validate",
+              "guard": "outcome_valid"
+            },
+            {
+              "from": "validate",
+              "to": "writeback",
+              "guard": "valid"
+            },
+            {
+              "from": "writeback",
+              "to": "spend",
+              "guard": "durably_saved"
+            },
+            {
+              "from": "spend",
+              "to": "next_choose",
+              "guard": "index_cas_ok"
+            },
+            {
+              "from": "any",
+              "to": "halt_budget",
+              "guard": "quota_zero"
+            }
+          ]
+        }
+      ],
+      "illegal_transition_slots": [
+        {
+          "description": "writeback(未验证) → spend（spend_without_writeback）",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "spend 重放 → 重复扣（幂等违反）",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "quiet skip → spend（空转消费）",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "quota 耗尽后继续驱动（超预算运行）",
+          "aggregate": "",
+          "source": "truth"
+        }
+      ],
+      "acceptance_criteria": [
+        {
+          "ac_id": "AC-001",
+          "description": "goal run 状态含持久化 `spend_ledger`（已花回合数、每笔 SpendEntry 的 index/source/spent_at/writeback_ref），可跨进程读取。"
+        },
+        {
+          "ac_id": "AC-002",
+          "description": "spend 仅在 validated writeback 之后发生一次（保留 `spend_guard`：writeback 未验证 → `spend_without_writeback`，不 spend）。"
+        },
+        {
+          "ac_id": "AC-003",
+          "description": "quiet skip / dry-run / preflight 不 spend（`spend_ledger` 计数不变）。"
+        },
+        {
+          "ac_id": "AC-004",
+          "description": "spend 幂等：同一 index 重放不重复扣（CAS on index digest，conflict 即拒绝）。"
+        },
+        {
+          "ac_id": "AC-005",
+          "description": "配额（`max_drive_turns`/quota_limit）耗尽 → 状态 `halt_budget` + reason_code `program_drive_budget_exhausted`，不继续驱动。"
+        },
+        {
+          "ac_id": "AC-006",
+          "description": "交接文本预算（handoff budget：16 行 / 1800 字符）保留且仍生效（回归）。"
+        }
+      ],
+      "bound_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005"
+      ],
+      "orphan_ac_ids": [],
+      "aggregates_missing_illegal_slots": [],
+      "raw_section_titles": [
+        "人话",
+        "User Intent",
+        "User Intent Snapshot",
+        "Intent Coverage Matrix",
+        "用户旅程",
+        "First principles",
+        "Domain Model",
+        "Acceptance Criteria",
+        "Domain FSM Order",
+        "Illegal transitions",
+        "FSM 五元组",
+        "invalid / illegal",
+        "Non-goals",
+        "Freeze readiness",
+        "Gap vs gold (订单支付示例)",
+        "Source Excerpt"
+      ]
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "required": true,
+      "blocked": false,
+      "status": "pass",
+      "reason_code": "",
+      "findings": [],
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "beacon-v1613-d2-spend-ledger",
+          "version": "v1.6.13",
+          "status": "draft",
+          "language": "zh",
+          "domain_required": "true",
+          "ux_required": "false",
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "package_maturity": "filled",
+          "materials_status": "current",
+          "canonical_refs": {
+            "prd": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/truth.md",
+            "user_story": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/truth.md",
+            "test_case": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/tests.md"
+          }
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": true,
+        "has_domain_fsm_section": true,
+        "has_illegal_transition_section": true,
+        "entities": [
+          {
+            "entity": "SpendLedger",
+            "key": "goal_id, entries[], spent, quota_limit",
+            "precedence": "持久化到 goal run state",
+            "requires": "持久化到 goal run state"
+          },
+          {
+            "entity": "SpendEntry",
+            "key": "index, source, spent_at, writeback_ref, digest",
+            "precedence": "每笔消费记录",
+            "requires": "每笔消费记录"
+          },
+          {
+            "entity": "QuotaAccount",
+            "key": "window_hours, slot_minutes, used_slots",
+            "precedence": "占空比配额（should，可下放）",
+            "requires": "占空比配额（should，可下放）"
+          }
+        ],
+        "entity_precedence": [
+          {
+            "entity": "SpendLedger",
+            "key": "goal_id, entries[], spent, quota_limit",
+            "precedence": "持久化到 goal run state",
+            "requires": "持久化到 goal run state"
+          },
+          {
+            "entity": "SpendEntry",
+            "key": "index, source, spent_at, writeback_ref, digest",
+            "precedence": "每笔消费记录",
+            "requires": "每笔消费记录"
+          },
+          {
+            "entity": "QuotaAccount",
+            "key": "window_hours, slot_minutes, used_slots",
+            "precedence": "占空比配额（should，可下放）",
+            "requires": "占空比配额（should，可下放）"
+          }
+        ],
+        "aggregates": [
+          {
+            "name": "Order",
+            "states": [
+              "any",
+              "choose",
+              "deliver",
+              "halt_budget",
+              "next_choose",
+              "spend",
+              "validate",
+              "writeback"
+            ],
+            "transitions": [
+              {
+                "from": "choose",
+                "to": "deliver",
+                "guard": "budget_ok"
+              },
+              {
+                "from": "deliver",
+                "to": "validate",
+                "guard": "outcome_valid"
+              },
+              {
+                "from": "validate",
+                "to": "writeback",
+                "guard": "valid"
+              },
+              {
+                "from": "writeback",
+                "to": "spend",
+                "guard": "durably_saved"
+              },
+              {
+                "from": "spend",
+                "to": "next_choose",
+                "guard": "index_cas_ok"
+              },
+              {
+                "from": "any",
+                "to": "halt_budget",
+                "guard": "quota_zero"
+              }
+            ]
+          }
+        ],
+        "illegal_transition_slots": [
+          {
+            "description": "writeback(未验证) → spend（spend_without_writeback）",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "spend 重放 → 重复扣（幂等违反）",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "quiet skip → spend（空转消费）",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "quota 耗尽后继续驱动（超预算运行）",
+            "aggregate": "",
+            "source": "truth"
+          }
+        ],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-001",
+            "description": "goal run 状态含持久化 `spend_ledger`（已花回合数、每笔 SpendEntry 的 index/source/spent_at/writeback_ref），可跨进程读取。"
+          },
+          {
+            "ac_id": "AC-002",
+            "description": "spend 仅在 validated writeback 之后发生一次（保留 `spend_guard`：writeback 未验证 → `spend_without_writeback`，不 spend）。"
+          },
+          {
+            "ac_id": "AC-003",
+            "description": "quiet skip / dry-run / preflight 不 spend（`spend_ledger` 计数不变）。"
+          },
+          {
+            "ac_id": "AC-004",
+            "description": "spend 幂等：同一 index 重放不重复扣（CAS on index digest，conflict 即拒绝）。"
+          },
+          {
+            "ac_id": "AC-005",
+            "description": "配额（`max_drive_turns`/quota_limit）耗尽 → 状态 `halt_budget` + reason_code `program_drive_budget_exhausted`，不继续驱动。"
+          },
+          {
+            "ac_id": "AC-006",
+            "description": "交接文本预算（handoff budget：16 行 / 1800 字符）保留且仍生效（回归）。"
+          }
+        ],
+        "bound_ac_ids": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005"
+        ],
+        "orphan_ac_ids": [],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "人话",
+          "User Intent",
+          "User Intent Snapshot",
+          "Intent Coverage Matrix",
+          "用户旅程",
+          "First principles",
+          "Domain Model",
+          "Acceptance Criteria",
+          "Domain FSM Order",
+          "Illegal transitions",
+          "FSM 五元组",
+          "invalid / illegal",
+          "Non-goals",
+          "Freeze readiness",
+          "Gap vs gold (订单支付示例)",
+          "Source Excerpt"
+        ]
+      },
+      "summary": {
+        "entity_count": 3,
+        "aggregate_count": 1,
+        "illegal_slot_count": 4,
+        "orphan_ac_count": 0,
+        "bound_ac_count": 5
+      }
+    },
+    "recommended_action": ""
+  },
+  "human_closure_contract": {
+    "required": false,
+    "research_path": "docs/beacon/v1.6.13/research/beacon-v1613-d2-spend-ledger.md",
+    "research_exists": false,
+    "source_architecture_path": "docs/beacon/v1.6.13/source-architecture/beacon-v1613-d2-spend-ledger.md",
+    "source_architecture_exists": false,
+    "required_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "missing_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "diagram_types": [],
+    "complexity_signals": []
+  },
+  "requirement_closure_contract": {
+    "required": true,
+    "chain_order": [
+      "research",
+      "prd",
+      "user_story",
+      "test_case",
+      "requirement_clarity",
+      "freeze"
+    ],
+    "human_closure_required": false,
+    "paths": {
+      "research": "docs/beacon/v1.6.13/research/beacon-v1613-d2-spend-ledger.md",
+      "prd": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/truth.md",
+      "user_story": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/truth.md",
+      "test_case": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/tests.md"
+    },
+    "exists": {
+      "research": false,
+      "prd": true,
+      "user_story": true,
+      "test_case": true
+    },
+    "required_research_sections": [],
+    "missing_research_sections": [],
+    "ac_projection": {
+      "prd_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006"
+      ],
+      "user_story_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006"
+      ],
+      "test_case_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006"
+      ],
+      "upstream_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006"
+      ],
+      "missing_test_case_ac_ids": []
+    }
+  },
+  "version_projection_truth_contract": {
+    "required": false,
+    "supported": true,
+    "projection_types": [],
+    "research_path": "docs/beacon/v1.6.13/research/beacon-v1613-d2-spend-ledger.md",
+    "research_exists": false,
+    "required_fields": [
+      "prd_refs",
+      "user_story_refs",
+      "test_case_refs",
+      "coverage_notes",
+      "out_of_scope_notes"
+    ],
+    "field_presence": {
+      "prd_refs": false,
+      "user_story_refs": false,
+      "test_case_refs": false,
+      "coverage_notes": false,
+      "out_of_scope_notes": false
+    },
+    "missing_fields": [],
+    "required_refs": {
+      "prd_refs": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/truth.md",
+      "user_story_refs": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/truth.md",
+      "test_case_refs": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/tests.md"
+    },
+    "missing_ref_targets": [],
+    "ready": false
+  },
+  "support_write_topology_contract": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "diagnostics": []
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/truth.md",
+    "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/tests.md",
+    "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/tasks.md",
+    "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/evidence.md"
+  ]
+}

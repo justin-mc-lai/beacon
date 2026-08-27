@@ -1,0 +1,502 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1613-d3-failure-mode-catalog",
+  "feature_slug": "beacon-v1613-d3-failure-mode-catalog",
+  "version": "v1.6.13",
+  "runtime_version": "v1.6.12",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.6.13/.machine/execution/requirement-clarity-beacon-v1613-d3-failure-mode-catalog.json",
+  "report_markdown_path": "docs/beacon/v1.6.13/execution/requirement-clarity-beacon-v1613-d3-failure-mode-catalog.md",
+  "state_path": ".beacon/state/requirement-clarity-beacon-v1613-d3-failure-mode-catalog.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.13",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-08-27T05:01:42.701456+00:00",
+    "feature": "beacon-v1613-d3-failure-mode-catalog",
+    "feature_slug": "beacon-v1613-d3-failure-mode-catalog",
+    "prd_ref": "docs/beacon/v1.6.13/prd/beacon-v1613-d3-failure-mode-catalog.md",
+    "user_story_ref": "docs/beacon/v1.6.13/user-story/beacon-v1613-d3-failure-mode-catalog.md"
+  },
+  "domain_fsm_gate": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1613-d3-failure-mode-catalog",
+    "feature_slug": "beacon-v1613-d3-failure-mode-catalog",
+    "version": "v1.6.13",
+    "truth_path": "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/truth.md",
+    "tests_path": "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/tests.md",
+    "required": true,
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "findings": [],
+    "requirement": {
+      "required": true,
+      "reason": "domain_section_present",
+      "explicit": false,
+      "partial": true,
+      "complexity": false,
+      "business_signal": true,
+      "version_supported": true
+    },
+    "projection": {
+      "schema_version": "1.0",
+      "domain_fsm_schema": "domain-fsm.v1",
+      "entity_precedence_schema": "entity-precedence.v1",
+      "frontmatter": {
+        "slug": "beacon-v1613-d3-failure-mode-catalog",
+        "version": "v1.6.13",
+        "status": "draft",
+        "language": "zh",
+        "domain_required": "false",
+        "ux_required": "false",
+        "parser_contract": "beacon-feature-package-v2",
+        "truth_source_model": "feature_package_authoritative",
+        "package_maturity": "filled",
+        "materials_status": "current",
+        "canonical_refs": {
+          "prd": "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/truth.md",
+          "user_story": "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/truth.md",
+          "test_case": "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/tests.md"
+        }
+      },
+      "frontmatter_errors": [],
+      "has_domain_model_section": true,
+      "has_domain_fsm_section": true,
+      "has_illegal_transition_section": true,
+      "entities": [
+        {
+          "entity": "FailureMode",
+          "key": "id, symptom, judgment_rule, linked_skill_case",
+          "precedence": "目录条目",
+          "requires": "目录条目"
+        },
+        {
+          "entity": "SkillCase",
+          "key": "rubric, exec_command, assertion",
+          "precedence": "可执行用例",
+          "requires": "可执行用例"
+        },
+        {
+          "entity": "AdversarialReview",
+          "key": "mode, findings, evidence",
+          "precedence": "消费目录的审查",
+          "requires": "消费目录的审查"
+        }
+      ],
+      "entity_precedence": [
+        {
+          "entity": "FailureMode",
+          "key": "id, symptom, judgment_rule, linked_skill_case",
+          "precedence": "目录条目",
+          "requires": "目录条目"
+        },
+        {
+          "entity": "SkillCase",
+          "key": "rubric, exec_command, assertion",
+          "precedence": "可执行用例",
+          "requires": "可执行用例"
+        },
+        {
+          "entity": "AdversarialReview",
+          "key": "mode, findings, evidence",
+          "precedence": "消费目录的审查",
+          "requires": "消费目录的审查"
+        }
+      ],
+      "aggregates": [
+        {
+          "name": "Order",
+          "states": [
+            "closed",
+            "filled",
+            "scaffold",
+            "wired"
+          ],
+          "transitions": [
+            {
+              "from": "scaffold",
+              "to": "filled",
+              "guard": "≥5_modes"
+            },
+            {
+              "from": "filled",
+              "to": "wired",
+              "guard": "review_refs_catalog"
+            },
+            {
+              "from": "wired",
+              "to": "closed",
+              "guard": "user_decides"
+            }
+          ]
+        }
+      ],
+      "illegal_transition_slots": [
+        {
+          "description": "目录自动判 pass（越权裁决）",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "对抗式审查未引用目录仍声称\"已对抗\"（advisory 缺失）",
+          "aggregate": "",
+          "source": "truth"
+        }
+      ],
+      "acceptance_criteria": [
+        {
+          "ac_id": "AC-001",
+          "description": "建立失败模式目录 `beacon-qa/references/failure-mode-catalog.md`，每条含 模式/症状/判定规则/对应 skill 用例，首版 ≥ 5 条（含\"猜代码漏读\"\"只有文档没有可验证产出\"\"软断言 TC\"等已知模式）——触发 `build_catalog` 进入 filled 状态。"
+        },
+        {
+          "ac_id": "AC-002",
+          "description": "filled 状态要求：每个用例含 rubric（coordinator 判定标准：什么证据算通过、什么算拦截）。"
+        },
+        {
+          "ac_id": "AC-003",
+          "description": "filled 状态要求：用例可独立执行（命令 + 断言），且能在 CI/本地跑出确定结果。"
+        },
+        {
+          "ac_id": "AC-004",
+          "description": "`wire_gate` 触发：QA/release 前的对抗式审查固定引用目录（从目录抽取 3-5 个翻车点），引用缺失时输出 advisory 提示——进入 wired 状态。"
+        },
+        {
+          "ac_id": "AC-005",
+          "description": "`user_decides` 要求：手册输出为批判式意见（findings/evidence），不自动判 pass；最终 verdict 由人/既有 gate 决定——进入 closed 状态。"
+        }
+      ],
+      "bound_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005"
+      ],
+      "orphan_ac_ids": [],
+      "aggregates_missing_illegal_slots": [],
+      "raw_section_titles": [
+        "人话",
+        "User Intent",
+        "User Intent Snapshot",
+        "Intent Coverage Matrix",
+        "用户旅程",
+        "First principles",
+        "Domain Model",
+        "Acceptance Criteria",
+        "Domain FSM Order",
+        "Illegal transitions",
+        "FSM 五元组",
+        "invalid / illegal",
+        "Non-goals",
+        "Freeze readiness",
+        "Gap vs gold (订单支付示例)",
+        "Source Excerpt"
+      ]
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "required": true,
+      "blocked": false,
+      "status": "pass",
+      "reason_code": "",
+      "findings": [],
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "beacon-v1613-d3-failure-mode-catalog",
+          "version": "v1.6.13",
+          "status": "draft",
+          "language": "zh",
+          "domain_required": "false",
+          "ux_required": "false",
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "package_maturity": "filled",
+          "materials_status": "current",
+          "canonical_refs": {
+            "prd": "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/truth.md",
+            "user_story": "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/truth.md",
+            "test_case": "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/tests.md"
+          }
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": true,
+        "has_domain_fsm_section": true,
+        "has_illegal_transition_section": true,
+        "entities": [
+          {
+            "entity": "FailureMode",
+            "key": "id, symptom, judgment_rule, linked_skill_case",
+            "precedence": "目录条目",
+            "requires": "目录条目"
+          },
+          {
+            "entity": "SkillCase",
+            "key": "rubric, exec_command, assertion",
+            "precedence": "可执行用例",
+            "requires": "可执行用例"
+          },
+          {
+            "entity": "AdversarialReview",
+            "key": "mode, findings, evidence",
+            "precedence": "消费目录的审查",
+            "requires": "消费目录的审查"
+          }
+        ],
+        "entity_precedence": [
+          {
+            "entity": "FailureMode",
+            "key": "id, symptom, judgment_rule, linked_skill_case",
+            "precedence": "目录条目",
+            "requires": "目录条目"
+          },
+          {
+            "entity": "SkillCase",
+            "key": "rubric, exec_command, assertion",
+            "precedence": "可执行用例",
+            "requires": "可执行用例"
+          },
+          {
+            "entity": "AdversarialReview",
+            "key": "mode, findings, evidence",
+            "precedence": "消费目录的审查",
+            "requires": "消费目录的审查"
+          }
+        ],
+        "aggregates": [
+          {
+            "name": "Order",
+            "states": [
+              "closed",
+              "filled",
+              "scaffold",
+              "wired"
+            ],
+            "transitions": [
+              {
+                "from": "scaffold",
+                "to": "filled",
+                "guard": "≥5_modes"
+              },
+              {
+                "from": "filled",
+                "to": "wired",
+                "guard": "review_refs_catalog"
+              },
+              {
+                "from": "wired",
+                "to": "closed",
+                "guard": "user_decides"
+              }
+            ]
+          }
+        ],
+        "illegal_transition_slots": [
+          {
+            "description": "目录自动判 pass（越权裁决）",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "对抗式审查未引用目录仍声称\"已对抗\"（advisory 缺失）",
+            "aggregate": "",
+            "source": "truth"
+          }
+        ],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-001",
+            "description": "建立失败模式目录 `beacon-qa/references/failure-mode-catalog.md`，每条含 模式/症状/判定规则/对应 skill 用例，首版 ≥ 5 条（含\"猜代码漏读\"\"只有文档没有可验证产出\"\"软断言 TC\"等已知模式）——触发 `build_catalog` 进入 filled 状态。"
+          },
+          {
+            "ac_id": "AC-002",
+            "description": "filled 状态要求：每个用例含 rubric（coordinator 判定标准：什么证据算通过、什么算拦截）。"
+          },
+          {
+            "ac_id": "AC-003",
+            "description": "filled 状态要求：用例可独立执行（命令 + 断言），且能在 CI/本地跑出确定结果。"
+          },
+          {
+            "ac_id": "AC-004",
+            "description": "`wire_gate` 触发：QA/release 前的对抗式审查固定引用目录（从目录抽取 3-5 个翻车点），引用缺失时输出 advisory 提示——进入 wired 状态。"
+          },
+          {
+            "ac_id": "AC-005",
+            "description": "`user_decides` 要求：手册输出为批判式意见（findings/evidence），不自动判 pass；最终 verdict 由人/既有 gate 决定——进入 closed 状态。"
+          }
+        ],
+        "bound_ac_ids": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005"
+        ],
+        "orphan_ac_ids": [],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "人话",
+          "User Intent",
+          "User Intent Snapshot",
+          "Intent Coverage Matrix",
+          "用户旅程",
+          "First principles",
+          "Domain Model",
+          "Acceptance Criteria",
+          "Domain FSM Order",
+          "Illegal transitions",
+          "FSM 五元组",
+          "invalid / illegal",
+          "Non-goals",
+          "Freeze readiness",
+          "Gap vs gold (订单支付示例)",
+          "Source Excerpt"
+        ]
+      },
+      "summary": {
+        "entity_count": 3,
+        "aggregate_count": 1,
+        "illegal_slot_count": 2,
+        "orphan_ac_count": 0,
+        "bound_ac_count": 5
+      }
+    },
+    "recommended_action": ""
+  },
+  "human_closure_contract": {
+    "required": false,
+    "research_path": "docs/beacon/v1.6.13/research/beacon-v1613-d3-failure-mode-catalog.md",
+    "research_exists": false,
+    "source_architecture_path": "docs/beacon/v1.6.13/source-architecture/beacon-v1613-d3-failure-mode-catalog.md",
+    "source_architecture_exists": false,
+    "required_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "missing_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "diagram_types": [],
+    "complexity_signals": []
+  },
+  "requirement_closure_contract": {
+    "required": true,
+    "chain_order": [
+      "research",
+      "prd",
+      "user_story",
+      "test_case",
+      "requirement_clarity",
+      "freeze"
+    ],
+    "human_closure_required": false,
+    "paths": {
+      "research": "docs/beacon/v1.6.13/research/beacon-v1613-d3-failure-mode-catalog.md",
+      "prd": "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/truth.md",
+      "user_story": "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/truth.md",
+      "test_case": "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/tests.md"
+    },
+    "exists": {
+      "research": false,
+      "prd": true,
+      "user_story": true,
+      "test_case": true
+    },
+    "required_research_sections": [],
+    "missing_research_sections": [],
+    "ac_projection": {
+      "prd_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005"
+      ],
+      "user_story_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005"
+      ],
+      "test_case_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005"
+      ],
+      "upstream_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005"
+      ],
+      "missing_test_case_ac_ids": []
+    }
+  },
+  "version_projection_truth_contract": {
+    "required": false,
+    "supported": true,
+    "projection_types": [],
+    "research_path": "docs/beacon/v1.6.13/research/beacon-v1613-d3-failure-mode-catalog.md",
+    "research_exists": false,
+    "required_fields": [
+      "prd_refs",
+      "user_story_refs",
+      "test_case_refs",
+      "coverage_notes",
+      "out_of_scope_notes"
+    ],
+    "field_presence": {
+      "prd_refs": false,
+      "user_story_refs": false,
+      "test_case_refs": false,
+      "coverage_notes": false,
+      "out_of_scope_notes": false
+    },
+    "missing_fields": [],
+    "required_refs": {
+      "prd_refs": "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/truth.md",
+      "user_story_refs": "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/truth.md",
+      "test_case_refs": "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/tests.md"
+    },
+    "missing_ref_targets": [],
+    "ready": false
+  },
+  "support_write_topology_contract": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "diagnostics": []
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/truth.md",
+    "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/tests.md",
+    "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/tasks.md",
+    "docs/beacon/v1.6.13/features/beacon-v1613-d3-failure-mode-catalog/evidence.md"
+  ]
+}

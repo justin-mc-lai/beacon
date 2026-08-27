@@ -1,0 +1,167 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-08-27T05:00:51.880839+00:00",
+  "feature": "beacon-v1613-f4-plain-language-contract",
+  "feature_slug": "beacon-v1613-f4-plain-language-contract",
+  "version": "v1.6.13",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.13/features/beacon-v1613-f4-plain-language-contract/truth.md",
+    "tests": "docs/beacon/v1.6.13/features/beacon-v1613-f4-plain-language-contract/tests.md",
+    "tasks": "docs/beacon/v1.6.13/features/beacon-v1613-f4-plain-language-contract/tasks.md",
+    "evidence": "docs/beacon/v1.6.13/features/beacon-v1613-f4-plain-language-contract/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "2fad2096e4f0daa4046e4142da3fd9507cdf0fd921f653925989c1d991e04926",
+    "tests": "013f07492508d4f9e66de982ac74e63bb15bc4ae5228a5e37891ced680c61e77",
+    "tasks": "45d4ae7ae5dd6bfae2159fbdf07f7f8c5225d933822df3a2a997396ef376ca0c",
+    "evidence": "3c74c7d3400b2739ff266f2d86c1601b1dff4cfa50182a99402ded2b731cd8d7"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-v1613-f4-plain-language-contract",
+    "version": "v1.6.13",
+    "status": "frozen",
+    "language": "zh",
+    "domain_required": "false",
+    "ux_required": "false",
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "package_maturity": "filled",
+    "materials_status": "current",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.13/features/beacon-v1613-f4-plain-language-contract/truth.md",
+      "user_story": "docs/beacon/v1.6.13/features/beacon-v1613-f4-plain-language-contract/truth.md",
+      "test_case": "docs/beacon/v1.6.13/features/beacon-v1613-f4-plain-language-contract/tests.md"
+    }
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "7 个 beacon core skill（design/goal/implement/plan/qa/release/truth）的 `SKILL.md` Output contract 均含必填字段 `plain_language_delivery_summary`（普通人可懂的一句话交付总结）。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "该字段的语义与写法复用 truth 的 L0 `## 人话` / `## Plain language` 规范（truth-humanizer 口径），不另造一套。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "人话字段只附加不替换：AC ID、FSM、Intent Coverage Matrix、mode_id 等机器字段保持原样，不被\"人话化\"改写。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "frozen truth 缺失人话 L0（zh `## 人话` / en `## Plain language`）时 freeze fail-closed（reason_code `truth_human_l0_missing`），此约束在 7 个 skill 的 truth 面均生效。",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "",
+      "command": "`rg -l 'plain_language_delivery_summary' .claude/skills/beacon-{design,goal,implement,plan,qa,release,truth}/SKILL.md`",
+      "assertion": "输出包含全部 7 个 SKILL.md（7 行）",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "",
+      "command": "`rg -n 'plain_language_delivery_summary|人话|Plain language' .claude/skills/beacon-truth/SKILL.md`",
+      "assertion": "同时命中字段名与 L0 规范引用",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "",
+      "command": "`rg -c 'mode_id|Intent Coverage Matrix|AC-' .claude/skills/beacon-plan/SKILL.md`",
+      "assertion": "机器字段仍存在（计数 ≥3）",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "",
+      "command": "`rg -n 'truth_human_l0_missing|## 人话|## Plain language' .claude/skills/beacon-truth/references/modes/gen-truth.md`",
+      "assertion": "命中 fail-closed 约束与 L0 标题",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-EXEC",
+      "layer": "",
+      "command": "`python3 tests/test_v1613_plain_language_contract.py`",
+      "assertion": "exit_code 0（脚本断言 7 个 SKILL.md 均含字段）",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-ILLEGAL",
+      "layer": "",
+      "command": "`rg -n \"frozen truth without L0 人话|truth_human_l0_missing\" docs/beacon/v1.6.13/features/beacon-v1613-f4-plain-language-contract/truth.md`",
+      "assertion": "illegal（L0 缺失 freeze 被拦）",
+      "evidence_path": "",
+      "source": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Implement AC-001: 7 个 beacon core skill（design/goal/implement/plan/qa/release/truth）的 `... · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1613-f4-plain-language-contract/AC-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Implement AC-002: 该字段的语义与写法复用 truth 的 L0 `## 人话` / `## Plain language` 规范（truth-humaniz... · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1613-f4-plain-language-contract/AC-002.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Implement AC-003: 人话字段只附加不替换：AC ID、FSM、Intent Coverage Matrix、mode_id 等机器字段保持原样，不被\"人话化\"改写。 · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1613-f4-plain-language-contract/AC-003.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Implement AC-004: frozen truth 缺失人话 L0（zh `## 人话` / en `## Plain language`）时 freeze fai... · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1613-f4-plain-language-contract/AC-004.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1613-f4-plain-language-contract/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1613-f4-plain-language-contract/QA-MATRIX.json`",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "package",
+      "authority": "requirement_truth",
+      "path": "docs/beacon/v1.6.13/features/beacon-v1613-f4-plain-language-contract/truth.md"
+    },
+    {
+      "surface": "tests",
+      "authority": "test_truth",
+      "path": "docs/beacon/v1.6.13/features/beacon-v1613-f4-plain-language-contract/tests.md"
+    }
+  ]
+}

@@ -1,0 +1,205 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-08-27T05:00:54.760081+00:00",
+  "feature": "beacon-v1613-d2-spend-ledger",
+  "feature_slug": "beacon-v1613-d2-spend-ledger",
+  "version": "v1.6.13",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/truth.md",
+    "tests": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/tests.md",
+    "tasks": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/tasks.md",
+    "evidence": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "0d2e32ad3083c60e58c570bd0b68d2a5bb3662e2e5be81b75e0945e960c38f27",
+    "tests": "141bf6059924fababbd7ed907ae054bee5f35184a99615719ec15016f6d57ff0",
+    "tasks": "3785a3bbdd083c8bc71e1d80c7d2e90c830eddeb088f965b3d872f75088cd286",
+    "evidence": "2df6479010e8dfd07e7067b046a98e7b8e82f543c557385aeabaff69e5b15f73"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-v1613-d2-spend-ledger",
+    "version": "v1.6.13",
+    "status": "frozen",
+    "language": "zh",
+    "domain_required": "true",
+    "ux_required": "false",
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "package_maturity": "filled",
+    "materials_status": "current",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/truth.md",
+      "user_story": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/truth.md",
+      "test_case": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/tests.md"
+    }
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "goal run 状态含持久化 `spend_ledger`（已花回合数、每笔 SpendEntry 的 index/source/spent_at/writeback_ref），可跨进程读取。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "spend 仅在 validated writeback 之后发生一次（保留 `spend_guard`：writeback 未验证 → `spend_without_writeback`，不 spend）。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "quiet skip / dry-run / preflight 不 spend（`spend_ledger` 计数不变）。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "spend 幂等：同一 index 重放不重复扣（CAS on index digest，conflict 即拒绝）。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "配额（`max_drive_turns`/quota_limit）耗尽 → 状态 `halt_budget` + reason_code `program_drive_budget_exhausted`，不继续驱动。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "交接文本预算（handoff budget：16 行 / 1800 字符）保留且仍生效（回归）。",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "",
+      "command": "`python3 -m pytest tests/test_v1613_spend_ledger.py -k persisted_ledger -q --tb=short`",
+      "assertion": "exit 0：ledger 落盘后重读，字段完整",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "",
+      "command": "`python3 -m pytest tests/test_v1613_spend_ledger.py -k no_spend_without_writeback -q --tb=short`",
+      "assertion": "exit 0：writeback 未验证 → spend 拒绝（`spend_without_writeback`）",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "",
+      "command": "`python3 -m pytest tests/test_v1613_spend_ledger.py -k quiet_skip_no_spend -q --tb=short`",
+      "assertion": "exit 0：quiet skip/dry-run 后 spent 计数不变",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "",
+      "command": "`python3 -m pytest tests/test_v1613_spend_ledger.py -k idempotent_replay -q --tb=short`",
+      "assertion": "exit 0：同 index 重放不重复扣（CAS conflict）",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-005",
+      "layer": "",
+      "command": "`python3 -m pytest tests/test_v1613_spend_ledger.py -k halt_on_exhaust -q --tb=short`",
+      "assertion": "exit 0：配额耗尽 → halt_budget + `program_drive_budget_exhausted`",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-006",
+      "layer": "",
+      "command": "`python3 -m pytest tests/test_v1613_spend_ledger.py -k handoff_budget -q --tb=short`",
+      "assertion": "exit 0：交接文本超 16 行/1800 字符被拦（回归）",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-001..005",
+      "tc_id": "TC-EXEC",
+      "layer": "",
+      "command": "`python3 -m pytest tests/test_v1613_spend_ledger.py -q --tb=short`",
+      "assertion": "exit 0：全套 spend ledger 断言通过",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-002,AC-003,AC-004",
+      "tc_id": "TC-ILLEGAL",
+      "layer": "",
+      "command": "`rg -n \"writeback\\(未验证\\) → spend|spend 重放 → 重复扣|quiet skip → spend\" docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/truth.md`",
+      "assertion": "illegal（未验证/重放/skip 均不可 spend）",
+      "evidence_path": "",
+      "source": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Implement AC-001: goal run 状态含持久化 `spend_ledger`（已花回合数、每笔 SpendEntry 的 index/source/spe... · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1613-d2-spend-ledger/AC-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Implement AC-002: spend 仅在 validated writeback 之后发生一次（保留 `spend_guard`：writeback 未验证 → ... · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1613-d2-spend-ledger/AC-002.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Implement AC-003: quiet skip / dry-run / preflight 不 spend（`spend_ledger` 计数不变）。 · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1613-d2-spend-ledger/AC-003.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Implement AC-004: spend 幂等：同一 index 重放不重复扣（CAS on index digest，conflict 即拒绝）。 · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1613-d2-spend-ledger/AC-004.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Implement AC-005: 配额（`max_drive_turns`/quota_limit）耗尽 → 状态 `halt_budget` + reason_code ... · ac=AC-005 · evidence=`.beacon/evidence/implement/beacon-v1613-d2-spend-ledger/AC-005.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Implement AC-006: 交接文本预算（handoff budget：16 行 / 1800 字符）保留且仍生效（回归）。 · ac=AC-006 · evidence=`.beacon/evidence/implement/beacon-v1613-d2-spend-ledger/AC-006.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1613-d2-spend-ledger/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-008",
+      "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1613-d2-spend-ledger/QA-MATRIX.json`",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "package",
+      "authority": "requirement_truth",
+      "path": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/truth.md"
+    },
+    {
+      "surface": "tests",
+      "authority": "test_truth",
+      "path": "docs/beacon/v1.6.13/features/beacon-v1613-d2-spend-ledger/tests.md"
+    }
+  ]
+}
