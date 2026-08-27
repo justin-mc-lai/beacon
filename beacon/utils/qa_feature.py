@@ -1857,6 +1857,89 @@ def _collect_feature_scorecard_stop_reasons(
     return sorted({code for code in stop_reasons if str(code).strip()})
 
 
+def _compute_coverage_current(
+    *,
+    plan: dict[str, Any],
+    scenario_results: list[dict[str, Any]],
+    required_scenarios: int,
+    executed_scenarios: int,
+    exhaustiveness: dict[str, Any] | None = None,
+    families_by_ac_and_source_tc: dict[tuple[str, str], set[str]] | None = None,
+) -> dict[str, Any]:
+    """Type-weighted coverage (v1.6.15). coverage_rate is family-driven; quantity is secondary.
+
+    A lake testing happy path only reports < 1.0 when its negative/boundary families
+    are uncovered — quantity no longer masquerades as full coverage.
+    """
+    exhaustiveness = exhaustiveness or {}
+    families_by_ac_and_source_tc = families_by_ac_and_source_tc or {}
+    coverage_missing_families = list(exhaustiveness.get("missing_axes") or [])
+    family_names = {str(item.get("scenario_family") or "").strip() for item in scenario_results if str(item.get("scenario_family") or "").strip()}
+    required_families_set = {str(item) for item in (plan.get("required_scenario_families") or []) if str(item).strip()}
+    covered_scenario_families: set[str] = set()
+    for item in scenario_results:
+        if not bool(item.get("evidence_ref")):
+            continue
+        scenario_family = str(item.get("scenario_family") or "").strip()
+        if scenario_family:
+            covered_scenario_families.add(scenario_family)
+            continue
+        ac_id = str(item.get("ac_id") or "").strip()
+        source_tc_id = str(item.get("source_tc_id") or item.get("tc_id") or "").strip()
+        covered_scenario_families.update(families_by_ac_and_source_tc.get((ac_id, source_tc_id), set()))
+    # v1.6.15: missing families = required-but-uncovered ∪ exhaustiveness axes.
+    # A lake declaring happy/negative/boundary but only covering happy now reports
+    # negative + boundary as missing even without an exhaustiveness axis.
+    missing_scenario_families = sorted(
+        {
+            *[item for item in coverage_missing_families if item in family_names or item in required_families_set],
+            *(required_families_set - covered_scenario_families),
+        }
+    )
+    quantity_rate = round(float(executed_scenarios) / float(required_scenarios or 1), 4)
+    if required_families_set:
+        type_rate = round(
+            len(covered_scenario_families & required_families_set) / float(len(required_families_set)),
+            4,
+        )
+    else:
+        type_rate = quantity_rate
+    executed_source_tc_ids = {
+        str(row.get("source_tc_id") or row.get("tc_id") or "").strip()
+        for row in scenario_results
+        if str(row.get("source_tc_id") or row.get("tc_id") or "").strip()
+    }
+    required_source_tc_ids = sorted(
+        {
+            str(item)
+            for item in (plan.get("targeted_source_tc_ids") or plan.get("targeted_tc_ids") or [])
+            if str(item).strip()
+        }
+    )
+    missing_test_case_ids = sorted(
+        {
+            *[item for item in required_source_tc_ids if item not in executed_source_tc_ids],
+            *[
+                str(item.get("source_tc_id") or item.get("tc_id") or "").strip()
+                for item in scenario_results
+                if str(item.get("closure_outcome") or "").strip() not in {"accepted"}
+                and str(item.get("source_tc_id") or item.get("tc_id") or "").strip()
+            ],
+        }
+    )
+    return {
+        "required_scenarios": required_scenarios,
+        "executed_scenarios": executed_scenarios,
+        "coverage_rate": round(type_rate, 4),
+        "quantity_rate": quantity_rate,
+        "type_rate": round(type_rate, 4),
+        "required_scenario_families": sorted(required_families_set),
+        "covered_scenario_families": sorted(covered_scenario_families),
+        "missing_scenario_families": missing_scenario_families,
+        "missing_test_case_ids": missing_test_case_ids,
+    }
+
+
 def _build_feature_scorecard_coverage(
     *,
     plan: dict[str, Any],
@@ -1875,57 +1958,16 @@ def _build_feature_scorecard_coverage(
             or str(item.get("status") or "").strip().lower() in {"passed", "failed", "review_required"}
         ]
     )
-    required_source_tc_ids = sorted(
-        {
-            str(item)
-            for item in (plan.get("targeted_source_tc_ids") or plan.get("targeted_tc_ids") or [])
-            if str(item).strip()
-        }
+    coverage_current = _compute_coverage_current(
+        plan=plan,
+        scenario_results=scenario_results,
+        required_scenarios=required_scenarios,
+        executed_scenarios=executed_scenarios,
+        exhaustiveness=exhaustiveness,
+        families_by_ac_and_source_tc=families_by_ac_and_source_tc,
     )
-    executed_source_tc_ids = {
-        str(row.get("source_tc_id") or row.get("tc_id") or "").strip()
-        for row in scenario_results
-        if str(row.get("source_tc_id") or row.get("tc_id") or "").strip()
-    }
-    unexecuted_source_tc_ids = sorted(item for item in required_source_tc_ids if item not in executed_source_tc_ids)
-    unresolved_source_tc_ids = sorted(
-        {
-            str(item.get("source_tc_id") or item.get("tc_id") or "").strip()
-            for item in scenario_results
-            if str(item.get("closure_outcome") or "").strip() not in {"accepted"}
-            and str(item.get("source_tc_id") or item.get("tc_id") or "").strip()
-        }
-    )
-    missing_test_case_ids = sorted(
-        {
-            *unexecuted_source_tc_ids,
-            *unresolved_source_tc_ids,
-        }
-    )
-    coverage_missing_families = list(exhaustiveness.get("missing_axes") or [])
-    family_names = {str(item.get("scenario_family") or "").strip() for item in scenario_results if str(item.get("scenario_family") or "").strip()}
-    missing_scenario_families = sorted([item for item in coverage_missing_families if item in family_names or item in (plan.get("required_scenario_families") or [])])
-    covered_scenario_families: set[str] = set()
-    for item in scenario_results:
-        if not bool(item.get("evidence_ref")):
-            continue
-        scenario_family = str(item.get("scenario_family") or "").strip()
-        if scenario_family:
-            covered_scenario_families.add(scenario_family)
-            continue
-        ac_id = str(item.get("ac_id") or "").strip()
-        source_tc_id = str(item.get("source_tc_id") or item.get("tc_id") or "").strip()
-        covered_scenario_families.update(families_by_ac_and_source_tc.get((ac_id, source_tc_id), set()))
-
-    coverage_current = {
-        "required_scenarios": required_scenarios,
-        "executed_scenarios": executed_scenarios,
-        "coverage_rate": round(float(executed_scenarios) / float(required_scenarios or 1), 4),
-        "required_scenario_families": sorted({str(item) for item in (plan.get("required_scenario_families") or []) if str(item).strip()}),
-        "covered_scenario_families": sorted(covered_scenario_families),
-        "missing_scenario_families": missing_scenario_families,
-        "missing_test_case_ids": missing_test_case_ids,
-    }
+    missing_scenario_families = list(coverage_current.get("missing_scenario_families") or [])
+    missing_test_case_ids = list(coverage_current.get("missing_test_case_ids") or [])
     coverage_gap = {
         "missing_axes": list(exhaustiveness.get("missing_axes") or []),
         "missing_replay_scenarios": list(exhaustiveness.get("missing_replay_scenarios") or []),
