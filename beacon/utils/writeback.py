@@ -518,11 +518,12 @@ def record_verification_writeback(
     resolved_version = resolve_target_version(project_root, version)
     revision = load_revision_state(project_root, version=resolved_version, feature=feature, create_if_missing=True)
     story = load_story_state(project_root, version=resolved_version, feature=feature, create_if_missing=True, revision_id=str(revision.get("revision_id", "R1")))
+    story = story or {}
     verified_ids = _normalize_ids(verified_item_ids)
     failed_ids = _normalize_ids(failed_item_ids)
     verified = 0
     failed = 0
-    for item in story.get("items", []):
+    for item in (story or {}).get("items", []):
         if not isinstance(item, dict):
             continue
         item_id = str(item.get("id", "") or "").upper()
