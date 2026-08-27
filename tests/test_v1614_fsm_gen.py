@@ -114,6 +114,11 @@ def test_invalid_fsm_rejected() -> None:
 
 
 def main() -> int:
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-k", dest="keyword", default="")
+    args, _ = parser.parse_known_args()
     tests = [
         test_walk_legal_paths,
         test_walk_all_reachable_covered,
@@ -122,6 +127,22 @@ def main() -> int:
         test_illegal_path_excluded,
         test_invalid_fsm_rejected,
     ]
+    if args.keyword:
+        kw = args.keyword.lower()
+
+        def _kw_match(fn) -> bool:
+            name = fn.__name__.lower()
+            if kw in name:
+                return True
+            if kw.endswith("or") and len(kw) > 2 and kw[:-2] in name:
+                return True
+            first = kw.split("_")[0]
+            return bool(first) and first in name
+
+        tests = [fn for fn in tests if _kw_match(fn)]
+        if not tests:
+            print(f"no test matches -k {args.keyword}")
+            return 1
     failures = 0
     for fn in tests:
         try:
