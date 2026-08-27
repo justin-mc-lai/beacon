@@ -6,17 +6,6 @@
         "command": "python3 .cursor/hooks/beacon-workspace-admission-gate.py",
         "matcher": "Write|Edit|ApplyPatch",
         "timeout": 10
-      },
-      {
-        "command": "python3 .cursor/hooks/inject-subagent-context.py",
-        "matcher": "Task|Subagent",
-        "timeout": 30
-      }
-    ],
-    "beforeShellExecution": [
-      {
-        "command": "python3 .cursor/hooks/inject-shell-session-context.py",
-        "timeout": 5
       }
     ]
   }
