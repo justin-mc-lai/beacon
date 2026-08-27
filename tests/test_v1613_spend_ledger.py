@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 """L2 (v1.6.13) D2 spend ledger tests: persistence, validated-writeback-only,
 quiet-skip no-spend, idempotent replay, halt on exhaust, handoff regression."""
+import pathlib
 import sys
+
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
 
 from beacon.utils.goal_budget import (
     REASON_EXHAUSTED,
