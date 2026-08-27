@@ -219,4 +219,5 @@ When adding a new research note:
    - Why it matters:
      freezes the division of labor between Beacon (defines correctness, judges completion — truth/FSM/gates/verifier) and agent-delivery-bus (schedules and governs — approvals/idempotent dispatch/heartbeat quota/evidence reconciliation); documents the concrete coupling points (truth_gate adapter = beacon, worker binding embeds beacon skills, dual gates never substitute), the one-line boundary rule (standards/judgment → Beacon; dispatch/approval/quota/ledger → ADB; execution/creation → hermes/pi), and the future allocation of loop improvements across the two projects.
 
+- [QA 验证强度 × 自动合并审核增强](./beacon-qa-strength-auto-merge-2026-08-27.md)
 - [Auto-merge 第一性原理（M4 修正）](./beacon-automerge-first-principles-2026-08-27.md)
