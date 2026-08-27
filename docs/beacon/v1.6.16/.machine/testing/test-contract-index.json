@@ -1,0 +1,304 @@
+{
+  "schema_version": "1.0",
+  "contract_kind": "beacon_test_contract_index",
+  "version": "v1.6.16",
+  "runtime_line": "v1.6.16",
+  "runtime_release_line": "v1.6.16",
+  "docs_line": "v1.6.16",
+  "feature": "beacon-v1616-bad-merge-baseline",
+  "feature_slug": "beacon-v1616-bad-merge-baseline",
+  "feature_line_status": "active_delivery",
+  "truth_refs": {
+    "truth": "docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/truth.md",
+    "tests": "docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/tests.md",
+    "tasks": "docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/tasks.md",
+    "evidence": "docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/evidence.md",
+    "ac_matrix": "docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/tests.md",
+    "story_state": "docs/beacon/v1.6.16/.machine/user-story/beacon-v1616-bad-merge-baseline.json"
+  },
+  "source_hashes": {
+    "truth": "sha256:3adcfa47aa9b27c79780b78059214cc22420f945985a99ae38f5ad26ce9c2c34",
+    "tests": "sha256:fc69a282b79e2d287a0d7875d2e7cd086c46d55a048874824d6416956a10cc52",
+    "tasks": "sha256:a7a893285eee657c2141cc26b48e4c8b3158acc09269ac51cca75d8f834bfc50",
+    "evidence": "sha256:793b64e823915ddcf38867bef55f49c56f600a42e15bcb5e136aa8e0c494950a",
+    "ac_matrix": "sha256:fc69a282b79e2d287a0d7875d2e7cd086c46d55a048874824d6416956a10cc52",
+    "story_state": "sha256:f0d6936eee57454d7a364549a8eacc46bd43db4e09ec229de17bef375c7782c5"
+  },
+  "lanes": {
+    "feature_release_facing": [
+      {
+        "tc_id": "TC-001",
+        "ac_id": "AC-001",
+        "ac_theme": "统计合并/revert 数据",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 tests/test_v1616_bad_merge_baseline.py -k collect",
+        "assertion": "exit 0：统计合并到 main 的提交 + revert（git 分析）",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-bad-merge-baseline/tc-001/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-002",
+        "ac_id": "AC-002",
+        "ac_theme": "计算 bad-merge 率",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 tests/test_v1616_bad_merge_baseline.py -k rate",
+        "assertion": "exit 0：bad-merge 率 = revert/合并（按时间窗）",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-bad-merge-baseline/tc-002/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-003",
+        "ac_id": "AC-003",
+        "ac_theme": "产出可对比基线",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 tests/test_v1616_bad_merge_baseline.py -k report",
+        "assertion": "exit 0：产出基线报告（合并数/revert/比率/时间窗/置信度）",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-bad-merge-baseline/tc-003/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-004",
+        "ac_id": "AC-004",
+        "ac_theme": "不改自动合入行为",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 tests/test_v1616_bad_merge_baseline.py -k no_change",
+        "assertion": "exit 0：统计不改变合并行为；数据不足标低置信度",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-bad-merge-baseline/tc-004/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-EXEC",
+        "ac_id": "AC-001..004",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 tests/test_v1616_bad_merge_baseline.py",
+        "assertion": "exit 0：全断言通过",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-bad-merge-baseline/tc-exec/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-FSMW",
+        "ac_id": "AC-001..004",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 tests/test_v1616_bad_merge_baseline.py -k fsm",
+        "assertion": "exit 0：合法路径 scaffold→collected→computed→reported/warned 全走",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-bad-merge-baseline/tc-fsmw/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-ILLEGAL",
+        "ac_id": "AC-004",
+        "ac_theme": "不改自动合入行为",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "rg -n -e \"数据不足仍硬算\" -e \"revert 误判\" docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/truth.md",
+        "assertion": "illegal（无置信度/数据失真均被拒）",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-bad-merge-baseline/tc-illegal/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      }
+    ],
+    "current_runtime_contract": [],
+    "generated_surface_sync": [],
+    "compatibility_contract": [],
+    "legacy_snapshot": [],
+    "browser_runtime_admission": []
+  },
+  "lane_counts": {
+    "feature_release_facing": 7,
+    "current_runtime_contract": 0,
+    "generated_surface_sync": 0,
+    "compatibility_contract": 0,
+    "legacy_snapshot": 0,
+    "browser_runtime_admission": 0
+  },
+  "canonical_lanes": [
+    "feature_release_facing",
+    "current_runtime_contract",
+    "generated_surface_sync",
+    "compatibility_contract",
+    "legacy_snapshot",
+    "browser_runtime_admission"
+  ],
+  "test_refs": [
+    {
+      "tc_id": "TC-001",
+      "ac_id": "AC-001",
+      "ac_theme": "统计合并/revert 数据",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 tests/test_v1616_bad_merge_baseline.py -k collect",
+      "assertion": "exit 0：统计合并到 main 的提交 + revert（git 分析）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-bad-merge-baseline/tc-001/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-002",
+      "ac_id": "AC-002",
+      "ac_theme": "计算 bad-merge 率",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 tests/test_v1616_bad_merge_baseline.py -k rate",
+      "assertion": "exit 0：bad-merge 率 = revert/合并（按时间窗）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-bad-merge-baseline/tc-002/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-003",
+      "ac_id": "AC-003",
+      "ac_theme": "产出可对比基线",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 tests/test_v1616_bad_merge_baseline.py -k report",
+      "assertion": "exit 0：产出基线报告（合并数/revert/比率/时间窗/置信度）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-bad-merge-baseline/tc-003/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-004",
+      "ac_id": "AC-004",
+      "ac_theme": "不改自动合入行为",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 tests/test_v1616_bad_merge_baseline.py -k no_change",
+      "assertion": "exit 0：统计不改变合并行为；数据不足标低置信度",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-bad-merge-baseline/tc-004/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-EXEC",
+      "ac_id": "AC-001..004",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 tests/test_v1616_bad_merge_baseline.py",
+      "assertion": "exit 0：全断言通过",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-bad-merge-baseline/tc-exec/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-FSMW",
+      "ac_id": "AC-001..004",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 tests/test_v1616_bad_merge_baseline.py -k fsm",
+      "assertion": "exit 0：合法路径 scaffold→collected→computed→reported/warned 全走",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-bad-merge-baseline/tc-fsmw/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-ILLEGAL",
+      "ac_id": "AC-004",
+      "ac_theme": "不改自动合入行为",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "rg -n -e \"数据不足仍硬算\" -e \"revert 误判\" docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/truth.md",
+      "assertion": "illegal（无置信度/数据失真均被拒）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-bad-merge-baseline/tc-illegal/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-bad-merge-baseline/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    }
+  ],
+  "ac_to_test_refs": {
+    "AC-001": [
+      "TC-001"
+    ],
+    "AC-001..004": [
+      "TC-EXEC",
+      "TC-FSMW"
+    ],
+    "AC-002": [
+      "TC-002"
+    ],
+    "AC-003": [
+      "TC-003"
+    ],
+    "AC-004": [
+      "TC-004",
+      "TC-ILLEGAL"
+    ]
+  },
+  "qa_order_contract": {
+    "sequence": [
+      "user_story_ac_order",
+      "scenario_divergence",
+      "current_round_execution",
+      "evidence_pack",
+      "coverage_current_gap",
+      "continue_decision",
+      "severe_blocker_stop_for_repair",
+      "repair_handoff",
+      "beacon_help_resume",
+      "next_qa_round_test_case_backfill",
+      "release_guidance"
+    ],
+    "source": "skills/beacon/references/usage-rules.md"
+  },
+  "deep_delta_policy": {
+    "owner": "deep",
+    "adoption_route": "test-case_or_supplemental_qa",
+    "executes_qa": false
+  },
+  "planning_line_safety": {
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "runtime_line": "v1.6.16",
+    "docs_default_line": "v1.6.16",
+    "current_runtime_release_line": "v1.6.16",
+    "feature_line_status": "active_delivery"
+  },
+  "status": "pass",
+  "blocked": false,
+  "reason_codes": [],
+  "generated_at": "2026-08-27T14:01:57.043211+00:00",
+  "index_path": "docs/beacon/v1.6.16/.machine/testing/test-contract-index.json"
+}

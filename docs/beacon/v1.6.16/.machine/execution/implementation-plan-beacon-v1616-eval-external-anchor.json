@@ -1,0 +1,632 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-v1616-eval-external-anchor-r1",
+  "feature": "beacon-v1616-eval-external-anchor",
+  "feature_slug": "beacon-v1616-eval-external-anchor",
+  "version": "v1.6.16",
+  "revision_id": "R1",
+  "baseline_hash": "sha256:121dbeffd2547af679c8f1f593670ed0992bdf1b2602257c126f707b2bd0443a",
+  "plan_hash": "sha256:3a47350203fdb6e7fda9c0598c0387a4dfd38ed10d857d94e9b9f639784de49a",
+  "status": "planned",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.6.16/features/beacon-v1616-eval-external-anchor/truth.md",
+    "prd": "docs/beacon/v1.6.16/features/beacon-v1616-eval-external-anchor/truth.md",
+    "test_case": "docs/beacon/v1.6.16/features/beacon-v1616-eval-external-anchor/tests.md",
+    "truth": "docs/beacon/v1.6.16/features/beacon-v1616-eval-external-anchor/truth.md",
+    "tests": "docs/beacon/v1.6.16/features/beacon-v1616-eval-external-anchor/tests.md",
+    "tasks": "docs/beacon/v1.6.16/features/beacon-v1616-eval-external-anchor/tasks.md",
+    "evidence": "docs/beacon/v1.6.16/features/beacon-v1616-eval-external-anchor/evidence.md",
+    "source_of_truth_root": "docs/beacon/v1.6.16/features/beacon-v1616-eval-external-anchor",
+    "ac_matrix": "docs/beacon/v1.6.16/.machine/qa/beacon-v1616-eval-external-anchor.ac-test-matrix.json",
+    "research_projection": "docs/beacon/v1.6.16/.machine/user-story/beacon-v1616-eval-external-anchor.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.6.16/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006"
+      ]
+    }
+  ],
+  "task_mapping_source": "package-tasks",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.16",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-08-27T13:59:53.217427+00:00",
+    "feature": "beacon-v1616-eval-external-anchor",
+    "feature_slug": "beacon-v1616-eval-external-anchor",
+    "prd_ref": "docs/beacon/v1.6.16/prd/beacon-v1616-eval-external-anchor.md",
+    "user_story_ref": "docs/beacon/v1.6.16/user-story/beacon-v1616-eval-external-anchor.md"
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1616-eval-external-anchor",
+    "version": "v1.6.16",
+    "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.16/research/beacon-v1616-eval-external-anchor.md",
+    "present": false,
+    "section_count": 0,
+    "sections": {},
+    "derived_items": [],
+    "source_artifact": "docs/beacon/v1.6.16/.machine/user-story/beacon-v1616-eval-external-anchor.json"
+  },
+  "review_gates": [],
+  "qa_coverage_hints": [],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "TASK-001 Implement AC-001: collected 阶段：benchmark 案例集引入外部来源案例（真实失败案例/社区标准），不再全内置。 · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/AC-001.json`",
+      "description": "Implement AC-001: collected 阶段：benchmark 案例集引入外部来源案例（真实失败案例/社区标准），不再全内置。 · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/AC-001.json`",
+      "source_task_id": "TASK-001",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001"
+      ],
+      "mapped_test_ids": [
+        "TC-001"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "TASK-002 Implement AC-002: verified 阶段：每个外部案例带 source_ref，伪称来源被拒（可追溯来源），伪称外部来源的案例被拒。 · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/AC-002.json`",
+      "description": "Implement AC-002: verified 阶段：每个外部案例带 source_ref，伪称来源被拒（可追溯来源），伪称外部来源的案例被拒。 · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/AC-002.json`",
+      "source_task_id": "TASK-002",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TC-002",
+        "TC-ILLEGAL"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "TASK-003 Implement AC-003: executed 阶段：外部案例可被 benchmark 执行（prompt + expected_route 完整）。 · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/AC-003.json`",
+      "description": "Implement AC-003: executed 阶段：外部案例可被 benchmark 执行（prompt + expected_route 完整）。 · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/AC-003.json`",
+      "source_task_id": "TASK-003",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-003"
+      ],
+      "mapped_test_ids": [
+        "TC-003"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "TASK-004 Implement AC-004: registered 兼容：系统内置案例保留（回归兼容），外部案例为增量。 · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/AC-004.json`",
+      "description": "Implement AC-004: registered 兼容：系统内置案例保留（回归兼容），外部案例为增量。 · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/AC-004.json`",
+      "source_task_id": "TASK-004",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-004"
+      ],
+      "mapped_test_ids": [
+        "TC-004"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "TASK-005 Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/GATES.json`",
+      "description": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/GATES.json`",
+      "source_task_id": "TASK-005",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "TASK-006 Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/QA-MATRIX.json`",
+      "description": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/QA-MATRIX.json`",
+      "source_task_id": "TASK-006",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    }
+  ],
+  "task_alignment": {
+    "schema_version": "1.0",
+    "status": "aligned",
+    "blocked": false,
+    "reason_code": "",
+    "feature": "beacon-v1616-eval-external-anchor",
+    "feature_slug": "beacon-v1616-eval-external-anchor",
+    "version": "v1.6.16",
+    "authority": "markdown_feature_package",
+    "package_tasks_path": "docs/beacon/v1.6.16/features/beacon-v1616-eval-external-anchor/tasks.md",
+    "task_count": 6,
+    "resolved": true,
+    "alignment_mode": "package_tasks_to_implementation_plan",
+    "progress_write_target": "docs/beacon/<version>/.machine/execution and docs/beacon/<version>/execution",
+    "package_tasks_mutated": false,
+    "tasks": [
+      {
+        "task_id": "TASK-001",
+        "title": "Implement AC-001: collected 阶段：benchmark 案例集引入外部来源案例（真实失败案例/社区标准），不再全内置。 · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/AC-001.json`",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-002",
+        "title": "Implement AC-002: verified 阶段：每个外部案例带 source_ref，伪称来源被拒（可追溯来源），伪称外部来源的案例被拒。 · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/AC-002.json`",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-003",
+        "title": "Implement AC-003: executed 阶段：外部案例可被 benchmark 执行（prompt + expected_route 完整）。 · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/AC-003.json`",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-004",
+        "title": "Implement AC-004: registered 兼容：系统内置案例保留（回归兼容），外部案例为增量。 · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/AC-004.json`",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-005",
+        "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/GATES.json`",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-006",
+        "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/QA-MATRIX.json`",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      }
+    ],
+    "draft_implementation_tasks": [
+      {
+        "task_id": "ITASK-001",
+        "title": "Implement AC-001: collected 阶段：benchmark 案例集引入外部来源案例（真实失败案例/社区标准），不再全内置。 · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/AC-001.json`",
+        "description": "Implement AC-001: collected 阶段：benchmark 案例集引入外部来源案例（真实失败案例/社区标准），不再全内置。 · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/AC-001.json`",
+        "source_task_id": "TASK-001",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-002",
+        "title": "Implement AC-002: verified 阶段：每个外部案例带 source_ref，伪称来源被拒（可追溯来源），伪称外部来源的案例被拒。 · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/AC-002.json`",
+        "description": "Implement AC-002: verified 阶段：每个外部案例带 source_ref，伪称来源被拒（可追溯来源），伪称外部来源的案例被拒。 · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/AC-002.json`",
+        "source_task_id": "TASK-002",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-003",
+        "title": "Implement AC-003: executed 阶段：外部案例可被 benchmark 执行（prompt + expected_route 完整）。 · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/AC-003.json`",
+        "description": "Implement AC-003: executed 阶段：外部案例可被 benchmark 执行（prompt + expected_route 完整）。 · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/AC-003.json`",
+        "source_task_id": "TASK-003",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-004",
+        "title": "Implement AC-004: registered 兼容：系统内置案例保留（回归兼容），外部案例为增量。 · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/AC-004.json`",
+        "description": "Implement AC-004: registered 兼容：系统内置案例保留（回归兼容），外部案例为增量。 · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/AC-004.json`",
+        "source_task_id": "TASK-004",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-005",
+        "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/GATES.json`",
+        "description": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/GATES.json`",
+        "source_task_id": "TASK-005",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-006",
+        "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/QA-MATRIX.json`",
+        "description": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1616-eval-external-anchor/QA-MATRIX.json`",
+        "source_task_id": "TASK-006",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      }
+    ]
+  },
+  "revision_delta": {},
+  "revision_delta_ref": "",
+  "revision_delta_markdown_ref": "",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"beacon-v1616-eval-external-anchor\" --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.16",
+    "run_command": "beacon implement team-run \"beacon-v1616-eval-external-anchor\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.16",
+    "dev_run_command": "beacon implement dev-run \"beacon-v1616-eval-external-anchor\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.16",
+    "ralph_command": "beacon implement run \"beacon-v1616-eval-external-anchor\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.16 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"beacon-v1616-eval-external-anchor\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.16",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1616-eval-external-anchor",
+    "feature_slug": "beacon-v1616-eval-external-anchor",
+    "version": "v1.6.16",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.6.16/beacon-v1616-eval-external-anchor",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": "/Users/apple/Developer/Personal/products/beacon",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.6.16/beacon-v1616-eval-external-anchor.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-08-27T13:59:53.219531+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.6.16-beacon-v1616-eval-external-anchor-R1",
+    "transaction_id": "tx-3f809ec349d986231",
+    "source_hash": "sha256:f31ef3426c33953b9901cfd7720d6eacc9d2681685bb7aede24e4d701080bfd9",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.6.16/.machine/execution/implementation-delivery-baseline-beacon-v1616-eval-external-anchor.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.6.16/.machine/execution/git-workflow-beacon-v1616-eval-external-anchor.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.6.16/execution/git-workflow-beacon-v1616-eval-external-anchor.md",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.6.16/beacon-v1616-eval-external-anchor",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": "/Users/apple/Developer/Personal/products/beacon",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {},
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.6.16-beacon-v1616-eval-external-anchor-R1",
+    "transaction_id": "tx-3f809ec349d986231",
+    "source_hash": "sha256:f31ef3426c33953b9901cfd7720d6eacc9d2681685bb7aede24e4d701080bfd9",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.6.16/.machine/execution/implementation-delivery-baseline-beacon-v1616-eval-external-anchor.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.6.16/.machine/execution/implementation-delivery-baseline-beacon-v1616-eval-external-anchor.json",
+  "generated_at": "2026-08-27T13:59:53.372378+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.6.16-beacon-v1616-eval-external-anchor-R1",
+  "transaction_id": "tx-3f809ec349d986231",
+  "source_hash": "sha256:f31ef3426c33953b9901cfd7720d6eacc9d2681685bb7aede24e4d701080bfd9",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-08-27T13:59:53.372462+00:00"
+}

@@ -1,0 +1,102 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1616-gate-independent-judge",
+  "feature_slug": "beacon-v1616-gate-independent-judge",
+  "version": "v1.6.16",
+  "generated_at": "2026-08-27T13:51:58.560186+00:00",
+  "execution_mode": "feature-aware",
+  "source_matrix_path": "docs/beacon/v1.6.16/.machine/qa/beacon-v1616-gate-independent-judge.ac-test-matrix.json",
+  "story_scenario_map_path": ".beacon/qa/features/beacon-v1616-gate-independent-judge/story-scenario-map.json",
+  "reason_codes": [
+    "no_prior_feature_qa"
+  ],
+  "qa_types": [
+    "contract"
+  ],
+  "entries": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "unit",
+      "command": "python3 tests/test_v1616_gate_independent_judge.py -k recalc",
+      "assertion": "exit 0：coverage_rate 可由独立脚本重算",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-gate-independent-judge/tc-001/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-gate-independent-judge/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "unit",
+      "command": "python3 tests/test_v1616_gate_independent_judge.py -k compare",
+      "assertion": "exit 0：独立判定 vs 系统判定比对（一致/偏差）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-gate-independent-judge/tc-002/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-gate-independent-judge/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "unit",
+      "command": "python3 tests/test_v1616_gate_independent_judge.py -k audit",
+      "assertion": "exit 0：偏差记录可审计（gate/系统值/独立值/diff）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-gate-independent-judge/tc-003/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-gate-independent-judge/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "unit",
+      "command": "python3 tests/test_v1616_gate_independent_judge.py -k no_verdict",
+      "assertion": "exit 0：独立裁判不判 pass/fail，只核验可信度",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-gate-independent-judge/tc-004/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-gate-independent-judge/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-EXEC",
+      "layer": "unit",
+      "command": "python3 tests/test_v1616_gate_independent_judge.py",
+      "assertion": "exit 0：全断言通过",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-gate-independent-judge/tc-exec/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-gate-independent-judge/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-FSMW",
+      "layer": "unit",
+      "command": "python3 tests/test_v1616_gate_independent_judge.py -k fsm",
+      "assertion": "exit 0：合法路径 scaffold→computed→compared→verified/flagged 全走",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-gate-independent-judge/tc-fsmw/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-gate-independent-judge/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-002,AC-003",
+      "tc_id": "TC-ILLEGAL",
+      "layer": "unit",
+      "command": "rg -n -e \"偏差不暴露\" -e \"独立裁判缺数据\" docs/beacon/v1.6.16/features/beacon-v1616-gate-independent-judge/truth.md",
+      "assertion": "illegal（掩盖/脑补均被拒）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-gate-independent-judge/tc-illegal/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-gate-independent-judge/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    }
+  ]
+}

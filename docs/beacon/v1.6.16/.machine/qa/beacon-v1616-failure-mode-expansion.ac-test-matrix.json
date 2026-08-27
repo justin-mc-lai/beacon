@@ -1,0 +1,102 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1616-failure-mode-expansion",
+  "feature_slug": "beacon-v1616-failure-mode-expansion",
+  "version": "v1.6.16",
+  "generated_at": "2026-08-27T13:53:04.811211+00:00",
+  "execution_mode": "feature-aware",
+  "source_matrix_path": "docs/beacon/v1.6.16/.machine/qa/beacon-v1616-failure-mode-expansion.ac-test-matrix.json",
+  "story_scenario_map_path": ".beacon/qa/features/beacon-v1616-failure-mode-expansion/story-scenario-map.json",
+  "reason_codes": [
+    "no_prior_feature_qa"
+  ],
+  "qa_types": [
+    "contract"
+  ],
+  "entries": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "unit",
+      "command": "python3 tests/test_v1616_failure_mode_expansion.py -k count",
+      "assertion": "exit 0：目录条目 ≥ 20（从 5 扩到 20+）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-failure-mode-expansion/tc-001/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-failure-mode-expansion/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "unit",
+      "command": "python3 tests/test_v1616_failure_mode_expansion.py -k source",
+      "assertion": "exit 0：每条带 source_ref（v1.6.13-15 真实失败记录）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-failure-mode-expansion/tc-002/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-failure-mode-expansion/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "unit",
+      "command": "python3 tests/test_v1616_failure_mode_expansion.py -k rubric",
+      "assertion": "exit 0：每条含完整 rubric（症状/判定/通过/拦截）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-failure-mode-expansion/tc-003/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-failure-mode-expansion/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "unit",
+      "command": "python3 tests/test_v1616_failure_mode_expansion.py -k adversarial",
+      "assertion": "exit 0：目录可作为对抗式审查翻车点输入",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-failure-mode-expansion/tc-004/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-failure-mode-expansion/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-EXEC",
+      "layer": "unit",
+      "command": "python3 tests/test_v1616_failure_mode_expansion.py",
+      "assertion": "exit 0：全断言通过",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-failure-mode-expansion/tc-exec/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-failure-mode-expansion/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-FSMW",
+      "layer": "unit",
+      "command": "python3 tests/test_v1616_failure_mode_expansion.py -k fsm",
+      "assertion": "exit 0：合法路径 scaffold→collected→authored→verified→cataloged 全走",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-failure-mode-expansion/tc-fsmw/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-failure-mode-expansion/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-ILLEGAL",
+      "layer": "unit",
+      "command": "rg -n -e \"编造条目\" -e \"缺 rubric\" docs/beacon/v1.6.16/features/beacon-v1616-failure-mode-expansion/truth.md",
+      "assertion": "illegal（无来源/缺 rubric 均被拒）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-failure-mode-expansion/tc-illegal/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-failure-mode-expansion/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    }
+  ]
+}

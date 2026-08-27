@@ -1,0 +1,102 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1616-eval-external-anchor",
+  "feature_slug": "beacon-v1616-eval-external-anchor",
+  "version": "v1.6.16",
+  "generated_at": "2026-08-27T13:50:58.928015+00:00",
+  "execution_mode": "feature-aware",
+  "source_matrix_path": "docs/beacon/v1.6.16/.machine/qa/beacon-v1616-eval-external-anchor.ac-test-matrix.json",
+  "story_scenario_map_path": ".beacon/qa/features/beacon-v1616-eval-external-anchor/story-scenario-map.json",
+  "reason_codes": [
+    "no_prior_feature_qa"
+  ],
+  "qa_types": [
+    "contract"
+  ],
+  "entries": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "unit",
+      "command": "python3 tests/test_v1616_eval_external_anchor.py -k external",
+      "assertion": "exit 0：benchmark 案例集含外部来源案例（非全内置）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-eval-external-anchor/tc-001/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-eval-external-anchor/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "unit",
+      "command": "python3 tests/test_v1616_eval_external_anchor.py -k provenance",
+      "assertion": "exit 0：外部案例带 source_ref，无来源冒充被拒",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-eval-external-anchor/tc-002/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-eval-external-anchor/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "unit",
+      "command": "python3 tests/test_v1616_eval_external_anchor.py -k runnable",
+      "assertion": "exit 0：外部案例可执行（prompt+expected_route 完整）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-eval-external-anchor/tc-003/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-eval-external-anchor/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "unit",
+      "command": "python3 tests/test_v1616_eval_external_anchor.py -k builtin",
+      "assertion": "exit 0：内置案例保留（回归兼容）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-eval-external-anchor/tc-004/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-eval-external-anchor/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-EXEC",
+      "layer": "unit",
+      "command": "python3 tests/test_v1616_eval_external_anchor.py",
+      "assertion": "exit 0：全断言通过",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-eval-external-anchor/tc-exec/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-eval-external-anchor/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-FSMW",
+      "layer": "unit",
+      "command": "python3 tests/test_v1616_eval_external_anchor.py -k fsm",
+      "assertion": "exit 0：合法路径 scaffold→collected→registered→executed→verified 全走",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-eval-external-anchor/tc-fsmw/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-eval-external-anchor/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-ILLEGAL",
+      "layer": "unit",
+      "command": "rg -n -e \"无来源案例冒充\" -e \"外部案例不执行\" docs/beacon/v1.6.16/features/beacon-v1616-eval-external-anchor/truth.md",
+      "assertion": "illegal（伪称来源/只登记不执行均被拒）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-eval-external-anchor/tc-illegal/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-eval-external-anchor/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    }
+  ]
+}

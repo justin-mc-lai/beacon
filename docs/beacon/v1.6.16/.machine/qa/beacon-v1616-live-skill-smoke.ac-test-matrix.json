@@ -1,0 +1,102 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1616-live-skill-smoke",
+  "feature_slug": "beacon-v1616-live-skill-smoke",
+  "version": "v1.6.16",
+  "generated_at": "2026-08-27T13:49:50.551415+00:00",
+  "execution_mode": "feature-aware",
+  "source_matrix_path": "docs/beacon/v1.6.16/.machine/qa/beacon-v1616-live-skill-smoke.ac-test-matrix.json",
+  "story_scenario_map_path": ".beacon/qa/features/beacon-v1616-live-skill-smoke/story-scenario-map.json",
+  "reason_codes": [
+    "no_prior_feature_qa"
+  ],
+  "qa_types": [
+    "contract"
+  ],
+  "entries": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "unit",
+      "command": "python3 tests/test_v1616_live_skill_smoke.py -k admission",
+      "assertion": "exit 0：local_admitted tier 下全量 skill 走 host_behavior",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-live-skill-smoke/tc-001/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-live-skill-smoke/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "unit",
+      "command": "python3 tests/test_v1616_live_skill_smoke.py -k host_behavior",
+      "assertion": "exit 0：live_skill_pass ≥ 30/37（真实执行通过率）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-live-skill-smoke/tc-002/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-live-skill-smoke/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "unit",
+      "command": "python3 tests/test_v1616_live_skill_smoke.py -k host_behavior",
+      "assertion": "exit 0：每 skill 有 host_behavior 执行 trace（status/reason_code/route）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-live-skill-smoke/tc-003/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-live-skill-smoke/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "unit",
+      "command": "python3 tests/test_v1616_live_skill_smoke.py -k no_fake",
+      "assertion": "exit 0：失败 skill 标 fail+reason_code，不折算 pass",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-live-skill-smoke/tc-004/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-live-skill-smoke/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-EXEC",
+      "layer": "unit",
+      "command": "python3 tests/test_v1616_live_skill_smoke.py",
+      "assertion": "exit 0：全断言通过",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-live-skill-smoke/tc-exec/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-live-skill-smoke/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-FSMW",
+      "layer": "unit",
+      "command": "python3 tests/test_v1616_live_skill_smoke.py -k fsm",
+      "assertion": "exit 0：合法路径 scaffold→executing→traced→passed/failed 全走",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-live-skill-smoke/tc-fsmw/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-live-skill-smoke/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-ILLEGAL",
+      "layer": "unit",
+      "command": "rg -n -e \"执行失败仍标\" -e \"表面检查冒充\" docs/beacon/v1.6.16/features/beacon-v1616-live-skill-smoke/truth.md",
+      "assertion": "illegal（伪造/冒充均被拒）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1616-live-skill-smoke/tc-illegal/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.16/features/beacon-v1616-live-skill-smoke/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    }
+  ]
+}
