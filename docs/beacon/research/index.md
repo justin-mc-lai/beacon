@@ -91,6 +91,9 @@ Rule of thumb:
 14. [Beacon 对齐第三方 spec skill 同步更新摘要（2026-08-26）](./beacon-oss-reference-sync-2026-08-26.md)
    - Why it matters:
      记录 oss-sync canonical mirror 与上游的对齐状态及更新要点（loopx quota、review 子 agent 护栏、skill 触发标准化），并修正 source map 的 `awesome-design-md` 路径。
+15. [Beacon 优化方向提案（2026-08-27）—— X 方法论 × 第三方 spec 最新能力](./beacon-optimization-proposal-2026-08-27.md)
+   - Why it matters:
+     把 Cursor 工程师方法论、本日第三方同步能力与既有缺口（S4 预算、feature map、失败模式回归）交叉成 7 个 beacon 原生优化方向，首批锁定预算内核 + 失败模式 skill 回归库。
 
 
 ---
