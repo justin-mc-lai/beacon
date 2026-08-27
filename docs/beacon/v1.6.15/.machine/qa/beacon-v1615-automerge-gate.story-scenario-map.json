@@ -1,0 +1,899 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1615-automerge-gate",
+  "feature_slug": "beacon-v1615-automerge-gate",
+  "version": "v1.6.15",
+  "generated_at": "2026-08-27T13:02:37.482981+00:00",
+  "expansion_profile": "pua-web",
+  "scenario_depth": "standard",
+  "families_required": [
+    "happy",
+    "negative",
+    "boundary"
+  ],
+  "stories": [
+    {
+      "ac_id": "AC-001",
+      "theme": "合并前置门禁（类型覆盖+回归+对抗）",
+      "text": "must",
+      "scenario_ids": [
+        "SC-001",
+        "SC-002",
+        "SC-003",
+        "SC-004",
+        "SC-005",
+        "SC-006"
+      ],
+      "scenario_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "happy",
+        "negative",
+        "boundary"
+      ],
+      "required_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "happy",
+        "negative",
+        "boundary"
+      ],
+      "scenarios": [
+        {
+          "scenario_id": "SC-001",
+          "source_tc_id": "TC-001",
+          "tc_id": "TC-001-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-002",
+          "source_tc_id": "TC-001",
+          "tc_id": "TC-001-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-003",
+          "source_tc_id": "TC-001",
+          "tc_id": "TC-001-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-004",
+          "source_tc_id": "TC-ILLEGAL",
+          "tc_id": "TC-ILLEGAL-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-005",
+          "source_tc_id": "TC-ILLEGAL",
+          "tc_id": "TC-ILLEGAL-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-006",
+          "source_tc_id": "TC-ILLEGAL",
+          "tc_id": "TC-ILLEGAL-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "失败模式回归库接入合并前置",
+      "text": "must",
+      "scenario_ids": [
+        "SC-007",
+        "SC-008",
+        "SC-009"
+      ],
+      "scenario_families": [
+        "happy",
+        "negative",
+        "boundary"
+      ],
+      "required_families": [
+        "happy",
+        "negative",
+        "boundary"
+      ],
+      "scenarios": [
+        {
+          "scenario_id": "SC-007",
+          "source_tc_id": "TC-002",
+          "tc_id": "TC-002-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-008",
+          "source_tc_id": "TC-002",
+          "tc_id": "TC-002-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-009",
+          "source_tc_id": "TC-002",
+          "tc_id": "TC-002-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "对抗式审查通过作为合并前置",
+      "text": "must",
+      "scenario_ids": [
+        "SC-010",
+        "SC-011",
+        "SC-012"
+      ],
+      "scenario_families": [
+        "happy",
+        "negative",
+        "boundary"
+      ],
+      "required_families": [
+        "happy",
+        "negative",
+        "boundary"
+      ],
+      "scenarios": [
+        {
+          "scenario_id": "SC-010",
+          "source_tc_id": "TC-003",
+          "tc_id": "TC-003-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-011",
+          "source_tc_id": "TC-003",
+          "tc_id": "TC-003-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-012",
+          "source_tc_id": "TC-003",
+          "tc_id": "TC-003-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "release 人类 gate 不动",
+      "text": "must",
+      "scenario_ids": [
+        "SC-013",
+        "SC-014",
+        "SC-015"
+      ],
+      "scenario_families": [
+        "happy",
+        "negative",
+        "boundary"
+      ],
+      "required_families": [
+        "happy",
+        "negative",
+        "boundary"
+      ],
+      "scenarios": [
+        {
+          "scenario_id": "SC-013",
+          "source_tc_id": "TC-004",
+          "tc_id": "TC-004-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-014",
+          "source_tc_id": "TC-004",
+          "tc_id": "TC-004-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-015",
+          "source_tc_id": "TC-004",
+          "tc_id": "TC-004-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-001..004",
+      "theme": "",
+      "text": "exit 0：全断言通过",
+      "scenario_ids": [
+        "SC-AUTO-TC-EXEC",
+        "SC-AUTO-TC-FSMW"
+      ],
+      "scenario_families": [
+        "primary",
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-EXEC",
+          "source_tc_id": "TC-EXEC",
+          "tc_id": "TC-EXEC-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-AUTO-TC-FSMW",
+          "source_tc_id": "TC-FSMW",
+          "tc_id": "TC-FSMW-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "source_tc_id": "TC-001",
+      "tc_id": "TC-001-HAPPY",
+      "ac_id": "AC-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "happy",
+      "title": "AC-001 happy path :: exit 0：三条件任一不达标 → fail-closed stop_for_repair",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "happy",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 tests/test_v1615_automerge_gate.py -k three_conditions",
+      "assertion": "exit 0：三条件任一不达标 → fail-closed stop_for_repair (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1615-automerge-gate/tc-001/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-002",
+      "source_tc_id": "TC-001",
+      "tc_id": "TC-001-NEGATIVE",
+      "ac_id": "AC-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "negative",
+      "title": "AC-001 negative path :: exit 0：三条件任一不达标 → fail-closed stop_for_repair",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "negative",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [
+        "SC-001"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 tests/test_v1615_automerge_gate.py -k three_conditions",
+      "assertion": "exit 0：三条件任一不达标 → fail-closed stop_for_repair (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1615-automerge-gate/tc-001/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-003",
+      "source_tc_id": "TC-001",
+      "tc_id": "TC-001-BOUNDARY",
+      "ac_id": "AC-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "boundary",
+      "title": "AC-001 boundary path :: exit 0：三条件任一不达标 → fail-closed stop_for_repair",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "boundary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [
+        "SC-001"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 tests/test_v1615_automerge_gate.py -k three_conditions",
+      "assertion": "exit 0：三条件任一不达标 → fail-closed stop_for_repair (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1615-automerge-gate/tc-001/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-004",
+      "source_tc_id": "TC-ILLEGAL",
+      "tc_id": "TC-ILLEGAL-HAPPY",
+      "ac_id": "AC-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "happy",
+      "title": "AC-001 happy path :: illegal（gate 绕过/安全网失效均被拒）",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "happy",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "rg -n -e \"覆盖不足仍合并\" -e \"回归库命中仍合并\" -e \"对抗审查缺失仍合并\" docs/beacon/v1.6.15/features/beacon-v1615-automerge-gate/truth.md",
+      "assertion": "illegal（gate 绕过/安全网失效均被拒） (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1615-automerge-gate/tc-illegal/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-005",
+      "source_tc_id": "TC-ILLEGAL",
+      "tc_id": "TC-ILLEGAL-NEGATIVE",
+      "ac_id": "AC-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "negative",
+      "title": "AC-001 negative path :: illegal（gate 绕过/安全网失效均被拒）",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "negative",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [
+        "SC-004"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "rg -n -e \"覆盖不足仍合并\" -e \"回归库命中仍合并\" -e \"对抗审查缺失仍合并\" docs/beacon/v1.6.15/features/beacon-v1615-automerge-gate/truth.md",
+      "assertion": "illegal（gate 绕过/安全网失效均被拒） (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1615-automerge-gate/tc-illegal/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-006",
+      "source_tc_id": "TC-ILLEGAL",
+      "tc_id": "TC-ILLEGAL-BOUNDARY",
+      "ac_id": "AC-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "boundary",
+      "title": "AC-001 boundary path :: illegal（gate 绕过/安全网失效均被拒）",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "boundary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [
+        "SC-004"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "rg -n -e \"覆盖不足仍合并\" -e \"回归库命中仍合并\" -e \"对抗审查缺失仍合并\" docs/beacon/v1.6.15/features/beacon-v1615-automerge-gate/truth.md",
+      "assertion": "illegal（gate 绕过/安全网失效均被拒） (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1615-automerge-gate/tc-illegal/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-007",
+      "source_tc_id": "TC-002",
+      "tc_id": "TC-002-HAPPY",
+      "ac_id": "AC-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "happy",
+      "title": "AC-002 happy path :: exit 0：失败模式回归命中 > 0 → 合并被拦",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "happy",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 tests/test_v1615_automerge_gate.py -k regression_hit",
+      "assertion": "exit 0：失败模式回归命中 > 0 → 合并被拦 (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1615-automerge-gate/tc-002/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-008",
+      "source_tc_id": "TC-002",
+      "tc_id": "TC-002-NEGATIVE",
+      "ac_id": "AC-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "negative",
+      "title": "AC-002 negative path :: exit 0：失败模式回归命中 > 0 → 合并被拦",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "negative",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [
+        "SC-007"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 tests/test_v1615_automerge_gate.py -k regression_hit",
+      "assertion": "exit 0：失败模式回归命中 > 0 → 合并被拦 (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1615-automerge-gate/tc-002/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-009",
+      "source_tc_id": "TC-002",
+      "tc_id": "TC-002-BOUNDARY",
+      "ac_id": "AC-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "boundary",
+      "title": "AC-002 boundary path :: exit 0：失败模式回归命中 > 0 → 合并被拦",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "boundary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [
+        "SC-007"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 tests/test_v1615_automerge_gate.py -k regression_hit",
+      "assertion": "exit 0：失败模式回归命中 > 0 → 合并被拦 (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1615-automerge-gate/tc-002/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-010",
+      "source_tc_id": "TC-003",
+      "tc_id": "TC-003-HAPPY",
+      "ac_id": "AC-003",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "happy",
+      "title": "AC-003 happy path :: exit 0：对抗审查缺清单/证据 → 合并被拦",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "happy",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 tests/test_v1615_automerge_gate.py -k adversarial",
+      "assertion": "exit 0：对抗审查缺清单/证据 → 合并被拦 (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1615-automerge-gate/tc-003/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-011",
+      "source_tc_id": "TC-003",
+      "tc_id": "TC-003-NEGATIVE",
+      "ac_id": "AC-003",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "negative",
+      "title": "AC-003 negative path :: exit 0：对抗审查缺清单/证据 → 合并被拦",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "negative",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [
+        "SC-010"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 tests/test_v1615_automerge_gate.py -k adversarial",
+      "assertion": "exit 0：对抗审查缺清单/证据 → 合并被拦 (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1615-automerge-gate/tc-003/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-012",
+      "source_tc_id": "TC-003",
+      "tc_id": "TC-003-BOUNDARY",
+      "ac_id": "AC-003",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "boundary",
+      "title": "AC-003 boundary path :: exit 0：对抗审查缺清单/证据 → 合并被拦",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "boundary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [
+        "SC-010"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 tests/test_v1615_automerge_gate.py -k adversarial",
+      "assertion": "exit 0：对抗审查缺清单/证据 → 合并被拦 (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1615-automerge-gate/tc-003/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-013",
+      "source_tc_id": "TC-004",
+      "tc_id": "TC-004-HAPPY",
+      "ac_id": "AC-004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "happy",
+      "title": "AC-004 happy path :: exit 0：release 人类 gate 不变（不自动 tag/部署）",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "happy",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 tests/test_v1615_automerge_gate.py -k human_gate",
+      "assertion": "exit 0：release 人类 gate 不变（不自动 tag/部署） (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1615-automerge-gate/tc-004/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-014",
+      "source_tc_id": "TC-004",
+      "tc_id": "TC-004-NEGATIVE",
+      "ac_id": "AC-004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "negative",
+      "title": "AC-004 negative path :: exit 0：release 人类 gate 不变（不自动 tag/部署）",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "negative",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [
+        "SC-013"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 tests/test_v1615_automerge_gate.py -k human_gate",
+      "assertion": "exit 0：release 人类 gate 不变（不自动 tag/部署） (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1615-automerge-gate/tc-004/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-015",
+      "source_tc_id": "TC-004",
+      "tc_id": "TC-004-BOUNDARY",
+      "ac_id": "AC-004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "boundary",
+      "title": "AC-004 boundary path :: exit 0：release 人类 gate 不变（不自动 tag/部署）",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "boundary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [
+        "SC-013"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 tests/test_v1615_automerge_gate.py -k human_gate",
+      "assertion": "exit 0：release 人类 gate 不变（不自动 tag/部署） (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1615-automerge-gate/tc-004/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-EXEC",
+      "source_tc_id": "TC-EXEC",
+      "tc_id": "TC-EXEC-PRIMARY",
+      "ac_id": "AC-001..004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "exit 0：全断言通过",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 tests/test_v1615_automerge_gate.py",
+      "assertion": "exit 0：全断言通过",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1615-automerge-gate/tc-exec/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-FSMW",
+      "source_tc_id": "TC-FSMW",
+      "tc_id": "TC-FSMW-PRIMARY",
+      "ac_id": "AC-001..004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "exit 0：合法路径 qa_passed→coverage_checked→regression_checked→adversarial_checked→merged 全走（域 FSM legal walk）",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 tests/test_v1615_automerge_gate.py -k fsm",
+      "assertion": "exit 0：合法路径 qa_passed→coverage_checked→regression_checked→adversarial_checked→merged 全走（域 FSM legal walk）",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1615-automerge-gate/tc-fsmw/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
+}
