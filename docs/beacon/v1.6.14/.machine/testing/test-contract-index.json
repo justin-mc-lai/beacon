@@ -1,0 +1,304 @@
+{
+  "schema_version": "1.0",
+  "contract_kind": "beacon_test_contract_index",
+  "version": "v1.6.14",
+  "runtime_line": "v1.6.14",
+  "runtime_release_line": "v1.6.14",
+  "docs_line": "v1.6.14",
+  "feature": "beacon-v1614-feature-map",
+  "feature_slug": "beacon-v1614-feature-map",
+  "feature_line_status": "active_delivery",
+  "truth_refs": {
+    "truth": "docs/beacon/v1.6.14/features/beacon-v1614-feature-map/truth.md",
+    "tests": "docs/beacon/v1.6.14/features/beacon-v1614-feature-map/tests.md",
+    "tasks": "docs/beacon/v1.6.14/features/beacon-v1614-feature-map/tasks.md",
+    "evidence": "docs/beacon/v1.6.14/features/beacon-v1614-feature-map/evidence.md",
+    "ac_matrix": "docs/beacon/v1.6.14/features/beacon-v1614-feature-map/tests.md",
+    "story_state": "docs/beacon/v1.6.14/.machine/user-story/beacon-v1614-feature-map.json"
+  },
+  "source_hashes": {
+    "truth": "sha256:b1d569f1b6b3a11eb6c67d2a28c49ec95331133156a5f53d475cc5aca01583fb",
+    "tests": "sha256:495a4ac6fe8fd36f48a04ae9c320ba29c731d2e9c4c1d9a9d0a0ad976babc8c6",
+    "tasks": "sha256:18e8a22c02254080d167fc64eb4c5b06508eac55643e8e77f7d9eed0d889dc2b",
+    "evidence": "sha256:0321e7302cf61dc3223d0ff709e0a21710187c8615a6d62a9eaf0c74f8995a68",
+    "ac_matrix": "sha256:495a4ac6fe8fd36f48a04ae9c320ba29c731d2e9c4c1d9a9d0a0ad976babc8c6",
+    "story_state": "sha256:2223c95933b4132d33ede29adee8e44949190dd2b44dacbbe75b9d87596ae709"
+  },
+  "lanes": {
+    "feature_release_facing": [
+      {
+        "tc_id": "TC-001",
+        "ac_id": "AC-001",
+        "ac_theme": "骨架：entry_points + verification 绑定 AC",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "rg -n \"feature-map.md\" docs/beacon/v1.6.14/features/beacon-v1614-feature-map/truth.md",
+        "assertion": "骨架引用存在 + entry/verification 绑定 AC",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1614-feature-map/tc-001/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.14/features/beacon-v1614-feature-map/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-002",
+        "ac_id": "AC-002",
+        "ac_theme": "复现路由：模糊描述 → 定位",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 tests/test_v1614_feature_map.py -k reproduce",
+        "assertion": "exit 0：模糊描述路由到 entry/verification",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1614-feature-map/tc-002/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.14/features/beacon-v1614-feature-map/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-003",
+        "ac_id": "AC-003",
+        "ac_theme": "agent 自验证（code2truth 复用）",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 tests/test_v1614_feature_map.py -k self_verify",
+        "assertion": "exit 0：verification 命令可执行且信号可断言",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1614-feature-map/tc-003/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.14/features/beacon-v1614-feature-map/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-004",
+        "ac_id": "AC-004",
+        "ac_theme": "单向投影 + 不新增命令面",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 tests/test_v1614_feature_map.py -k one_way_projection",
+        "assertion": "exit 0：map 引用 truth 不反向改写；无命令面",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1614-feature-map/tc-004/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.14/features/beacon-v1614-feature-map/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-EXEC",
+        "ac_id": "AC-001..004",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 tests/test_v1614_feature_map.py",
+        "assertion": "exit 0：全断言通过",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1614-feature-map/tc-exec/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.14/features/beacon-v1614-feature-map/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-FSMW",
+        "ac_id": "AC-001..004",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 tests/test_v1614_feature_map.py -k scaffold",
+        "assertion": "exit 0：合法路径 scaffolded→filled→routable→self_verifying 全走（域 FSM legal walk）",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1614-feature-map/tc-fsmw/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.14/features/beacon-v1614-feature-map/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-ILLEGAL",
+        "ac_id": "AC-004",
+        "ac_theme": "单向投影 + 不新增命令面",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "rg -n -e \"反向改写\" -e \"投影越权\" docs/beacon/v1.6.14/features/beacon-v1614-feature-map/truth.md",
+        "assertion": "illegal（map 越权改 truth 被拒）",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1614-feature-map/tc-illegal/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.14/features/beacon-v1614-feature-map/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      }
+    ],
+    "current_runtime_contract": [],
+    "generated_surface_sync": [],
+    "compatibility_contract": [],
+    "legacy_snapshot": [],
+    "browser_runtime_admission": []
+  },
+  "lane_counts": {
+    "feature_release_facing": 7,
+    "current_runtime_contract": 0,
+    "generated_surface_sync": 0,
+    "compatibility_contract": 0,
+    "legacy_snapshot": 0,
+    "browser_runtime_admission": 0
+  },
+  "canonical_lanes": [
+    "feature_release_facing",
+    "current_runtime_contract",
+    "generated_surface_sync",
+    "compatibility_contract",
+    "legacy_snapshot",
+    "browser_runtime_admission"
+  ],
+  "test_refs": [
+    {
+      "tc_id": "TC-001",
+      "ac_id": "AC-001",
+      "ac_theme": "骨架：entry_points + verification 绑定 AC",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "rg -n \"feature-map.md\" docs/beacon/v1.6.14/features/beacon-v1614-feature-map/truth.md",
+      "assertion": "骨架引用存在 + entry/verification 绑定 AC",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1614-feature-map/tc-001/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.14/features/beacon-v1614-feature-map/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-002",
+      "ac_id": "AC-002",
+      "ac_theme": "复现路由：模糊描述 → 定位",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 tests/test_v1614_feature_map.py -k reproduce",
+      "assertion": "exit 0：模糊描述路由到 entry/verification",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1614-feature-map/tc-002/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.14/features/beacon-v1614-feature-map/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-003",
+      "ac_id": "AC-003",
+      "ac_theme": "agent 自验证（code2truth 复用）",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 tests/test_v1614_feature_map.py -k self_verify",
+      "assertion": "exit 0：verification 命令可执行且信号可断言",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1614-feature-map/tc-003/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.14/features/beacon-v1614-feature-map/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-004",
+      "ac_id": "AC-004",
+      "ac_theme": "单向投影 + 不新增命令面",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 tests/test_v1614_feature_map.py -k one_way_projection",
+      "assertion": "exit 0：map 引用 truth 不反向改写；无命令面",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1614-feature-map/tc-004/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.14/features/beacon-v1614-feature-map/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-EXEC",
+      "ac_id": "AC-001..004",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 tests/test_v1614_feature_map.py",
+      "assertion": "exit 0：全断言通过",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1614-feature-map/tc-exec/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.14/features/beacon-v1614-feature-map/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-FSMW",
+      "ac_id": "AC-001..004",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 tests/test_v1614_feature_map.py -k scaffold",
+      "assertion": "exit 0：合法路径 scaffolded→filled→routable→self_verifying 全走（域 FSM legal walk）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1614-feature-map/tc-fsmw/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.14/features/beacon-v1614-feature-map/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-ILLEGAL",
+      "ac_id": "AC-004",
+      "ac_theme": "单向投影 + 不新增命令面",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "rg -n -e \"反向改写\" -e \"投影越权\" docs/beacon/v1.6.14/features/beacon-v1614-feature-map/truth.md",
+      "assertion": "illegal（map 越权改 truth 被拒）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1614-feature-map/tc-illegal/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.14/features/beacon-v1614-feature-map/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    }
+  ],
+  "ac_to_test_refs": {
+    "AC-001": [
+      "TC-001"
+    ],
+    "AC-001..004": [
+      "TC-EXEC",
+      "TC-FSMW"
+    ],
+    "AC-002": [
+      "TC-002"
+    ],
+    "AC-003": [
+      "TC-003"
+    ],
+    "AC-004": [
+      "TC-004",
+      "TC-ILLEGAL"
+    ]
+  },
+  "qa_order_contract": {
+    "sequence": [
+      "user_story_ac_order",
+      "scenario_divergence",
+      "current_round_execution",
+      "evidence_pack",
+      "coverage_current_gap",
+      "continue_decision",
+      "severe_blocker_stop_for_repair",
+      "repair_handoff",
+      "beacon_help_resume",
+      "next_qa_round_test_case_backfill",
+      "release_guidance"
+    ],
+    "source": "skills/beacon/references/usage-rules.md"
+  },
+  "deep_delta_policy": {
+    "owner": "deep",
+    "adoption_route": "test-case_or_supplemental_qa",
+    "executes_qa": false
+  },
+  "planning_line_safety": {
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "runtime_line": "v1.6.14",
+    "docs_default_line": "v1.6.14",
+    "current_runtime_release_line": "v1.6.14",
+    "feature_line_status": "active_delivery"
+  },
+  "status": "pass",
+  "blocked": false,
+  "reason_codes": [],
+  "generated_at": "2026-08-27T10:41:37.905716+00:00",
+  "index_path": "docs/beacon/v1.6.14/.machine/testing/test-contract-index.json"
+}

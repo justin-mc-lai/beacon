@@ -1,0 +1,91 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1614-fsm-mermaid-validate",
+  "feature_slug": "beacon-v1614-fsm-mermaid-validate",
+  "version": "v1.6.14",
+  "generated_at": "2026-08-27T09:55:05.762391+00:00",
+  "execution_mode": "feature-aware",
+  "source_matrix_path": "docs/beacon/v1.6.14/.machine/qa/beacon-v1614-fsm-mermaid-validate.ac-test-matrix.json",
+  "story_scenario_map_path": ".beacon/qa/features/beacon-v1614-fsm-mermaid-validate/story-scenario-map.json",
+  "reason_codes": [
+    "no_prior_feature_qa"
+  ],
+  "qa_types": [
+    "contract"
+  ],
+  "entries": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "unit",
+      "command": "rg -n \"stateDiagram-v2\" docs/beacon/v1.6.14/features/beacon-v1614-fsm-mermaid-validate/truth.md",
+      "assertion": "mermaid 状态图存在",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1614-fsm-mermaid-validate/tc-001/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.14/features/beacon-v1614-fsm-mermaid-validate/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "unit",
+      "command": "python3 tests/test_v1614_fsm_validate.py -k validator",
+      "assertion": "exit 0：校验器解析 FSM，非法转移被拒",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1614-fsm-mermaid-validate/tc-002/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.14/features/beacon-v1614-fsm-mermaid-validate/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "unit",
+      "command": "python3 tests/test_v1614_fsm_validate.py -k digest",
+      "assertion": "exit 0：行为变化 digest 不同，措辞变化 digest 相同",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1614-fsm-mermaid-validate/tc-003/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.14/features/beacon-v1614-fsm-mermaid-validate/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "unit",
+      "command": "python3 tests/test_v1614_fsm_validate.py -k freeze_gate",
+      "assertion": "exit 0：FSM 不合法 → freeze 拦截（truth_fsm_invalid）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1614-fsm-mermaid-validate/tc-004/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.14/features/beacon-v1614-fsm-mermaid-validate/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-EXEC",
+      "layer": "unit",
+      "command": "python3 tests/test_v1614_fsm_validate.py",
+      "assertion": "exit 0：全断言通过",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1614-fsm-mermaid-validate/tc-exec/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.14/features/beacon-v1614-fsm-mermaid-validate/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-002,AC-004",
+      "tc_id": "TC-ILLEGAL",
+      "layer": "unit",
+      "command": "rg -n -e \"跳过校验冻结\" -e \"校验绕过\" docs/beacon/v1.6.14/features/beacon-v1614-fsm-mermaid-validate/truth.md",
+      "assertion": "illegal（跳校验/绕过 gate 均被拒）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1614-fsm-mermaid-validate/tc-illegal/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.14/features/beacon-v1614-fsm-mermaid-validate/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    }
+  ],
+  "compiler": "qa9-matrix"
+}

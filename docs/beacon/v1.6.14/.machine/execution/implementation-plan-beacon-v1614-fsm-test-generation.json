@@ -1,0 +1,645 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-v1614-fsm-test-generation-r1",
+  "feature": "beacon-v1614-fsm-test-generation",
+  "feature_slug": "beacon-v1614-fsm-test-generation",
+  "version": "v1.6.14",
+  "revision_id": "R1",
+  "baseline_hash": "sha256:ec94b8da65e0a8a2f8d3d6ead017a127b3790dc5f3ce2cd073b3026efa33449b",
+  "plan_hash": "sha256:1738b2fe893fb4653b6ae176f1b6bc58029a0093e39a86ee27eba307cbda59f6",
+  "status": "planned",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/truth.md",
+    "prd": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/truth.md",
+    "test_case": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/tests.md",
+    "truth": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/truth.md",
+    "tests": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/tests.md",
+    "tasks": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/tasks.md",
+    "evidence": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/evidence.md",
+    "source_of_truth_root": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation",
+    "story_scenario_map": "docs/beacon/v1.6.14/.machine/qa/beacon-v1614-fsm-test-generation.story-scenario-map.json",
+    "research_projection": "docs/beacon/v1.6.14/.machine/user-story/beacon-v1614-fsm-test-generation.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.6.14/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006"
+      ]
+    }
+  ],
+  "task_mapping_source": "package-tasks",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.14",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-08-27T10:30:13.484599+00:00",
+    "feature": "beacon-v1614-fsm-test-generation",
+    "feature_slug": "beacon-v1614-fsm-test-generation",
+    "prd_ref": "docs/beacon/v1.6.14/prd/beacon-v1614-fsm-test-generation.md",
+    "user_story_ref": "docs/beacon/v1.6.14/user-story/beacon-v1614-fsm-test-generation.md"
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1614-fsm-test-generation",
+    "version": "v1.6.14",
+    "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.14/research/beacon-v1614-fsm-test-generation.md",
+    "present": false,
+    "section_count": 0,
+    "sections": {},
+    "derived_items": [],
+    "source_artifact": "docs/beacon/v1.6.14/.machine/user-story/beacon-v1614-fsm-test-generation.json"
+  },
+  "review_gates": [],
+  "qa_coverage_hints": [],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "TASK-001 Implement AC-001: 从合法 truth FSM 自动生成 legal-walk 测试用例（覆盖从 initial 到 terminal 的合法路径，可达状态全走）。 · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/AC-001.json`",
+      "description": "Implement AC-001: 从合法 truth FSM 自动生成 legal-walk 测试用例（覆盖从 initial 到 terminal 的合法路径，可达状态全走）。 · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/AC-001.json`",
+      "source_task_id": "TASK-001",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001"
+      ],
+      "mapped_test_ids": [
+        "TEST-001",
+        "TC-001"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "TASK-002 Implement AC-002: 生成的用例作为 exec-layer TC 进 tests.md（可执行、断言退出码）。 · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/AC-002.json`",
+      "description": "Implement AC-002: 生成的用例作为 exec-layer TC 进 tests.md（可执行、断言退出码）。 · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/AC-002.json`",
+      "source_task_id": "TASK-002",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TEST-002",
+        "TC-002"
+      ],
+      "mapped_scenario_ids": [
+        "SC-002"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "TASK-003 Implement AC-003: 每个到达状态生成顶点断言（vertex=验证：进入该状态即断言成功）。 · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/AC-003.json`",
+      "description": "Implement AC-003: 每个到达状态生成顶点断言（vertex=验证：进入该状态即断言成功）。 · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/AC-003.json`",
+      "source_task_id": "TASK-003",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-003"
+      ],
+      "mapped_test_ids": [
+        "TEST-003",
+        "TC-003"
+      ],
+      "mapped_scenario_ids": [
+        "SC-003"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "TASK-004 Implement AC-004: illegal 转换路径不被生成（生成器排除 illegal，产出中无非法路径）。 · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/AC-004.json`",
+      "description": "Implement AC-004: illegal 转换路径不被生成（生成器排除 illegal，产出中无非法路径）。 · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/AC-004.json`",
+      "source_task_id": "TASK-004",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-004"
+      ],
+      "mapped_test_ids": [
+        "TEST-004",
+        "TC-004",
+        "TC-ILLEGAL"
+      ],
+      "mapped_scenario_ids": [
+        "SC-004",
+        "SC-005"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "TASK-005 Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/GATES.json`",
+      "description": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/GATES.json`",
+      "source_task_id": "TASK-005",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "TASK-006 Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/QA-MATRIX.json`",
+      "description": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/QA-MATRIX.json`",
+      "source_task_id": "TASK-006",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    }
+  ],
+  "task_alignment": {
+    "schema_version": "1.0",
+    "status": "aligned",
+    "blocked": false,
+    "reason_code": "",
+    "feature": "beacon-v1614-fsm-test-generation",
+    "feature_slug": "beacon-v1614-fsm-test-generation",
+    "version": "v1.6.14",
+    "authority": "markdown_feature_package",
+    "package_tasks_path": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/tasks.md",
+    "task_count": 6,
+    "resolved": true,
+    "alignment_mode": "package_tasks_to_implementation_plan",
+    "progress_write_target": "docs/beacon/<version>/.machine/execution and docs/beacon/<version>/execution",
+    "package_tasks_mutated": false,
+    "tasks": [
+      {
+        "task_id": "TASK-001",
+        "title": "Implement AC-001: 从合法 truth FSM 自动生成 legal-walk 测试用例（覆盖从 initial 到 terminal 的合法路径，可达状态全走）。 · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/AC-001.json`",
+        "requirement_checkbox_state": "completed",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-002",
+        "title": "Implement AC-002: 生成的用例作为 exec-layer TC 进 tests.md（可执行、断言退出码）。 · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/AC-002.json`",
+        "requirement_checkbox_state": "completed",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-003",
+        "title": "Implement AC-003: 每个到达状态生成顶点断言（vertex=验证：进入该状态即断言成功）。 · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/AC-003.json`",
+        "requirement_checkbox_state": "completed",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-004",
+        "title": "Implement AC-004: illegal 转换路径不被生成（生成器排除 illegal，产出中无非法路径）。 · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/AC-004.json`",
+        "requirement_checkbox_state": "completed",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-005",
+        "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/GATES.json`",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-006",
+        "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/QA-MATRIX.json`",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      }
+    ],
+    "draft_implementation_tasks": [
+      {
+        "task_id": "ITASK-001",
+        "title": "Implement AC-001: 从合法 truth FSM 自动生成 legal-walk 测试用例（覆盖从 initial 到 terminal 的合法路径，可达状态全走）。 · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/AC-001.json`",
+        "description": "Implement AC-001: 从合法 truth FSM 自动生成 legal-walk 测试用例（覆盖从 initial 到 terminal 的合法路径，可达状态全走）。 · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/AC-001.json`",
+        "source_task_id": "TASK-001",
+        "source_task_status": "completed",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-002",
+        "title": "Implement AC-002: 生成的用例作为 exec-layer TC 进 tests.md（可执行、断言退出码）。 · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/AC-002.json`",
+        "description": "Implement AC-002: 生成的用例作为 exec-layer TC 进 tests.md（可执行、断言退出码）。 · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/AC-002.json`",
+        "source_task_id": "TASK-002",
+        "source_task_status": "completed",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-003",
+        "title": "Implement AC-003: 每个到达状态生成顶点断言（vertex=验证：进入该状态即断言成功）。 · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/AC-003.json`",
+        "description": "Implement AC-003: 每个到达状态生成顶点断言（vertex=验证：进入该状态即断言成功）。 · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/AC-003.json`",
+        "source_task_id": "TASK-003",
+        "source_task_status": "completed",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-004",
+        "title": "Implement AC-004: illegal 转换路径不被生成（生成器排除 illegal，产出中无非法路径）。 · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/AC-004.json`",
+        "description": "Implement AC-004: illegal 转换路径不被生成（生成器排除 illegal，产出中无非法路径）。 · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/AC-004.json`",
+        "source_task_id": "TASK-004",
+        "source_task_status": "completed",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-005",
+        "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/GATES.json`",
+        "description": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/GATES.json`",
+        "source_task_id": "TASK-005",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-006",
+        "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/QA-MATRIX.json`",
+        "description": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/QA-MATRIX.json`",
+        "source_task_id": "TASK-006",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      }
+    ]
+  },
+  "revision_delta": {},
+  "revision_delta_ref": "",
+  "revision_delta_markdown_ref": "",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"beacon-v1614-fsm-test-generation\" --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.14",
+    "run_command": "beacon implement team-run \"beacon-v1614-fsm-test-generation\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.14",
+    "dev_run_command": "beacon implement dev-run \"beacon-v1614-fsm-test-generation\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.14",
+    "ralph_command": "beacon implement run \"beacon-v1614-fsm-test-generation\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.14 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"beacon-v1614-fsm-test-generation\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.14",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1614-fsm-test-generation",
+    "feature_slug": "beacon-v1614-fsm-test-generation",
+    "version": "v1.6.14",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.6.14/beacon-v1614-fsm-test-generation",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": "/Users/apple/Developer/Personal/products/beacon",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.6.14/beacon-v1614-fsm-test-generation.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-08-27T10:30:13.486504+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.6.14-beacon-v1614-fsm-test-generation-R1",
+    "transaction_id": "tx-d1bec89dc31c31e03",
+    "source_hash": "sha256:6a2716e6571e18c473bebb4abd745858e8a8f9f8c0f5e0696655f412ae50c3e6",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.6.14/.machine/execution/implementation-delivery-baseline-beacon-v1614-fsm-test-generation.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.6.14/.machine/execution/git-workflow-beacon-v1614-fsm-test-generation.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.6.14/execution/git-workflow-beacon-v1614-fsm-test-generation.md",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.6.14/beacon-v1614-fsm-test-generation",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": "/Users/apple/Developer/Personal/products/beacon",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {},
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.6.14-beacon-v1614-fsm-test-generation-R1",
+    "transaction_id": "tx-d1bec89dc31c31e03",
+    "source_hash": "sha256:6a2716e6571e18c473bebb4abd745858e8a8f9f8c0f5e0696655f412ae50c3e6",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.6.14/.machine/execution/implementation-delivery-baseline-beacon-v1614-fsm-test-generation.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.6.14/.machine/execution/implementation-delivery-baseline-beacon-v1614-fsm-test-generation.json",
+  "generated_at": "2026-08-27T10:30:13.628529+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.6.14-beacon-v1614-fsm-test-generation-R1",
+  "transaction_id": "tx-d1bec89dc31c31e03",
+  "source_hash": "sha256:6a2716e6571e18c473bebb4abd745858e8a8f9f8c0f5e0696655f412ae50c3e6",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-08-27T10:30:13.628610+00:00"
+}

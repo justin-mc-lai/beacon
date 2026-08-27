@@ -1,0 +1,91 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1614-fsm-test-generation",
+  "feature_slug": "beacon-v1614-fsm-test-generation",
+  "version": "v1.6.14",
+  "generated_at": "2026-08-27T09:56:35.921541+00:00",
+  "execution_mode": "feature-aware",
+  "source_matrix_path": "docs/beacon/v1.6.14/.machine/qa/beacon-v1614-fsm-test-generation.ac-test-matrix.json",
+  "story_scenario_map_path": ".beacon/qa/features/beacon-v1614-fsm-test-generation/story-scenario-map.json",
+  "reason_codes": [
+    "no_prior_feature_qa"
+  ],
+  "qa_types": [
+    "contract"
+  ],
+  "entries": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "unit",
+      "command": "python3 tests/test_v1614_fsm_gen.py -k walk",
+      "assertion": "exit 0：从合法 FSM 生成 legal-walk 用例，可达状态全走",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1614-fsm-test-generation/tc-001/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "unit",
+      "command": "python3 tests/test_v1614_fsm_gen.py -k exec_tc",
+      "assertion": "exit 0：生成用例可执行（进 exec-layer TC）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1614-fsm-test-generation/tc-002/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "unit",
+      "command": "python3 tests/test_v1614_fsm_gen.py -k vertex_assert",
+      "assertion": "exit 0：每到达状态生成顶点断言",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1614-fsm-test-generation/tc-003/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "unit",
+      "command": "python3 tests/test_v1614_fsm_gen.py -k illegal_excluded",
+      "assertion": "exit 0：illegal 路径未被生成",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1614-fsm-test-generation/tc-004/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-EXEC",
+      "layer": "unit",
+      "command": "python3 tests/test_v1614_fsm_gen.py",
+      "assertion": "exit 0：全断言通过",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1614-fsm-test-generation/tc-exec/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-ILLEGAL",
+      "layer": "unit",
+      "command": "rg -n -e \"illegal 路径被生成\" -e \"跳过校验\" docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/truth.md",
+      "assertion": "illegal（安全网失效被拒）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1614-fsm-test-generation/tc-illegal/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    }
+  ],
+  "compiler": "qa9-matrix"
+}

@@ -1,0 +1,103 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1614-feature-map",
+  "feature_slug": "beacon-v1614-feature-map",
+  "version": "v1.6.14",
+  "generated_at": "2026-08-27T09:59:24.158552+00:00",
+  "execution_mode": "feature-aware",
+  "source_matrix_path": "docs/beacon/v1.6.14/.machine/qa/beacon-v1614-feature-map.ac-test-matrix.json",
+  "story_scenario_map_path": ".beacon/qa/features/beacon-v1614-feature-map/story-scenario-map.json",
+  "reason_codes": [
+    "no_prior_feature_qa"
+  ],
+  "qa_types": [
+    "contract"
+  ],
+  "entries": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "unit",
+      "command": "rg -n \"feature-map.md\" docs/beacon/v1.6.14/features/beacon-v1614-feature-map/truth.md",
+      "assertion": "骨架引用存在 + entry/verification 绑定 AC",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1614-feature-map/tc-001/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.14/features/beacon-v1614-feature-map/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "unit",
+      "command": "python3 tests/test_v1614_feature_map.py -k reproduce",
+      "assertion": "exit 0：模糊描述路由到 entry/verification",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1614-feature-map/tc-002/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.14/features/beacon-v1614-feature-map/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "unit",
+      "command": "python3 tests/test_v1614_feature_map.py -k self_verify",
+      "assertion": "exit 0：verification 命令可执行且信号可断言",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1614-feature-map/tc-003/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.14/features/beacon-v1614-feature-map/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "unit",
+      "command": "python3 tests/test_v1614_feature_map.py -k one_way_projection",
+      "assertion": "exit 0：map 引用 truth 不反向改写；无命令面",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1614-feature-map/tc-004/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.14/features/beacon-v1614-feature-map/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-EXEC",
+      "layer": "unit",
+      "command": "python3 tests/test_v1614_feature_map.py",
+      "assertion": "exit 0：全断言通过",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1614-feature-map/tc-exec/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.14/features/beacon-v1614-feature-map/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-FSMW",
+      "layer": "unit",
+      "command": "python3 tests/test_v1614_feature_map.py -k scaffold",
+      "assertion": "exit 0：合法路径 scaffolded→filled→routable→self_verifying 全走（域 FSM legal walk）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1614-feature-map/tc-fsmw/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.14/features/beacon-v1614-feature-map/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-ILLEGAL",
+      "layer": "unit",
+      "command": "rg -n -e \"反向改写\" -e \"投影越权\" docs/beacon/v1.6.14/features/beacon-v1614-feature-map/truth.md",
+      "assertion": "illegal（map 越权改 truth 被拒）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1614-feature-map/tc-illegal/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.14/features/beacon-v1614-feature-map/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    }
+  ],
+  "compiler": "qa9-matrix"
+}
