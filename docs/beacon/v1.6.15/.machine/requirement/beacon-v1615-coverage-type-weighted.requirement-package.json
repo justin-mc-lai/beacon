@@ -1,0 +1,185 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-08-27T12:43:47.156520+00:00",
+  "feature": "beacon-v1615-coverage-type-weighted",
+  "feature_slug": "beacon-v1615-coverage-type-weighted",
+  "version": "v1.6.15",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/truth.md",
+    "tests": "docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/tests.md",
+    "tasks": "docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/tasks.md",
+    "evidence": "docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "80decc70bd7ce5163f69bacad376cf3d36693635bb2ebcb3ff08ef6f5cadc3d8",
+    "tests": "f8dda43f3e9e3efff24aa93f6ca467dfca06ffc9be5662af251537211d96c684",
+    "tasks": "e92a8a7ae7efbe619372df2cb6da1c43124c64178150f40e142125c2809bf365",
+    "evidence": "e76bbc772b20100e2d928c7cef8cbd17d3aeae1a3177b3bdc4a57208ea3e3118"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-v1615-coverage-type-weighted",
+    "version": "v1.6.15",
+    "status": "frozen",
+    "language": "zh",
+    "domain_required": "false",
+    "ux_required": "false",
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "package_maturity": "filled",
+    "materials_status": "current",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/truth.md",
+      "user_story": "docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/truth.md",
+      "test_case": "docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/tests.md"
+    }
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "`coverage_rate` 按类型族加权：required_families 缺一类 → 状态 assessed 时 rate < 1.0（非数量覆盖）。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "非浏览器（contract/docs/unit）场景在 weighted 阶段展开类型 family（默认 happy+negative+boundary），不再固定 primary-only。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "coverage 输出在 reported 阶段列出 missing_families（缺哪类），供 QA 与自动合入门禁审计。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "兼容既有 lake：已通过 QA 的 lake 语义不变，仅覆盖计算方式变化（gated 判定更新），不引入新命令面。",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "",
+      "command": "`python3 tests/test_v1615_coverage_type_weighted.py -k weighted_rate`",
+      "assertion": "exit 0：只测 happy → rate < 1.0（类型加权生效）",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "",
+      "command": "`python3 tests/test_v1615_coverage_type_weighted.py -k non_browser_families`",
+      "assertion": "exit 0：非浏览器场景展开 happy+negative+boundary",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "",
+      "command": "`python3 tests/test_v1615_coverage_type_weighted.py -k missing_families`",
+      "assertion": "exit 0：输出列出 missing_families",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "",
+      "command": "`python3 tests/test_v1615_coverage_type_weighted.py -k compat`",
+      "assertion": "exit 0：既有 lake 语义兼容、无新命令面",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-EXEC",
+      "layer": "",
+      "command": "`python3 tests/test_v1615_coverage_type_weighted.py`",
+      "assertion": "exit 0：全断言通过",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-001,AC-002",
+      "tc_id": "TC-ILLEGAL",
+      "layer": "",
+      "command": "`rg -n -e \"数量全绿仍报\" -e \"primary-only\" docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/truth.md`",
+      "assertion": "illegal（类型缺口被掩盖/跳过均被拒）",
+      "evidence_path": "",
+      "source": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Implement AC-001: `coverage_rate` 按类型族加权：required_families 缺一类 → 状态 assessed 时 rate < 1... · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/AC-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Implement AC-002: 非浏览器（contract/docs/unit）场景在 weighted 阶段展开类型 family（默认 happy+negative+... · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/AC-002.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Implement AC-003: coverage 输出在 reported 阶段列出 missing_families（缺哪类），供 QA 与自动合入门禁审计。 · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/AC-003.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Implement AC-004: 兼容既有 lake：已通过 QA 的 lake 语义不变，仅覆盖计算方式变化（gated 判定更新），不引入新命令面。 · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/AC-004.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/QA-MATRIX.json`",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-deep",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.15/research/beacon-v1615-coverage-type-weighted.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "beacon-ceo-review",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.15/change/beacon-v1615-coverage-type-weighted.refreeze-summary.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "qa",
+      "authority": "qa_verdict",
+      "canonical_artifact": "docs/beacon/v1.6.15/.machine/qa/beacon-v1615-coverage-type-weighted.qa9-matrix.json",
+      "status": "linked",
+      "route": "qa"
+    },
+    {
+      "surface": "release",
+      "authority": "release_verdict",
+      "canonical_artifact": "docs/beacon/v1.6.15/release/",
+      "status": "linked",
+      "route": "release"
+    }
+  ]
+}

@@ -1,0 +1,502 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1615-coverage-type-weighted",
+  "feature_slug": "beacon-v1615-coverage-type-weighted",
+  "version": "v1.6.15",
+  "runtime_version": "v1.6.14",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.6.15/.machine/execution/requirement-clarity-beacon-v1615-coverage-type-weighted.json",
+  "report_markdown_path": "docs/beacon/v1.6.15/execution/requirement-clarity-beacon-v1615-coverage-type-weighted.md",
+  "state_path": ".beacon/state/requirement-clarity-beacon-v1615-coverage-type-weighted.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.15",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-08-27T12:43:45.592870+00:00",
+    "feature": "beacon-v1615-coverage-type-weighted",
+    "feature_slug": "beacon-v1615-coverage-type-weighted",
+    "prd_ref": "docs/beacon/v1.6.15/prd/beacon-v1615-coverage-type-weighted.md",
+    "user_story_ref": "docs/beacon/v1.6.15/user-story/beacon-v1615-coverage-type-weighted.md"
+  },
+  "domain_fsm_gate": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1615-coverage-type-weighted",
+    "feature_slug": "beacon-v1615-coverage-type-weighted",
+    "version": "v1.6.15",
+    "truth_path": "docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/truth.md",
+    "tests_path": "docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/tests.md",
+    "required": true,
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "findings": [],
+    "requirement": {
+      "required": true,
+      "reason": "domain_section_present",
+      "explicit": false,
+      "partial": true,
+      "complexity": false,
+      "business_signal": true,
+      "version_supported": true
+    },
+    "projection": {
+      "schema_version": "1.0",
+      "domain_fsm_schema": "domain-fsm.v1",
+      "entity_precedence_schema": "entity-precedence.v1",
+      "frontmatter": {
+        "slug": "beacon-v1615-coverage-type-weighted",
+        "version": "v1.6.15",
+        "status": "frozen",
+        "language": "zh",
+        "domain_required": "false",
+        "ux_required": "false",
+        "parser_contract": "beacon-feature-package-v2",
+        "truth_source_model": "feature_package_authoritative",
+        "package_maturity": "filled",
+        "materials_status": "current",
+        "canonical_refs": {
+          "prd": "docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/truth.md",
+          "user_story": "docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/truth.md",
+          "test_case": "docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/tests.md"
+        }
+      },
+      "frontmatter_errors": [],
+      "has_domain_model_section": true,
+      "has_domain_fsm_section": true,
+      "has_illegal_transition_section": true,
+      "entities": [
+        {
+          "entity": "CoverageTypeWeight",
+          "key": "family, weight",
+          "precedence": "happy/negative/boundary/recovery/compatibility 权重",
+          "requires": "happy/negative/boundary/recovery/compatibility 权重"
+        },
+        {
+          "entity": "ScenarioFamily",
+          "key": "family, covered, required",
+          "precedence": "类型族覆盖状态",
+          "requires": "类型族覆盖状态"
+        },
+        {
+          "entity": "TypeWeightedRate",
+          "key": "rate, missing_families",
+          "precedence": "类型加权覆盖率",
+          "requires": "类型加权覆盖率"
+        }
+      ],
+      "entity_precedence": [
+        {
+          "entity": "CoverageTypeWeight",
+          "key": "family, weight",
+          "precedence": "happy/negative/boundary/recovery/compatibility 权重",
+          "requires": "happy/negative/boundary/recovery/compatibility 权重"
+        },
+        {
+          "entity": "ScenarioFamily",
+          "key": "family, covered, required",
+          "precedence": "类型族覆盖状态",
+          "requires": "类型族覆盖状态"
+        },
+        {
+          "entity": "TypeWeightedRate",
+          "key": "rate, missing_families",
+          "precedence": "类型加权覆盖率",
+          "requires": "类型加权覆盖率"
+        }
+      ],
+      "aggregates": [
+        {
+          "name": "Order",
+          "states": [
+            "assessed",
+            "gated",
+            "reported",
+            "scaffold",
+            "weighted"
+          ],
+          "transitions": [
+            {
+              "from": "scaffold",
+              "to": "weighted",
+              "guard": "families_expanded"
+            },
+            {
+              "from": "weighted",
+              "to": "assessed",
+              "guard": "rate_computed"
+            },
+            {
+              "from": "assessed",
+              "to": "reported",
+              "guard": "missing_listed"
+            },
+            {
+              "from": "reported",
+              "to": "gated",
+              "guard": "rate_ok"
+            }
+          ]
+        }
+      ],
+      "illegal_transition_slots": [
+        {
+          "description": "数量全绿仍报 rate=1.0（类型缺口被掩盖）",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "非浏览器 lake 仍 primary-only（类型覆盖被跳过）",
+          "aggregate": "",
+          "source": "truth"
+        }
+      ],
+      "acceptance_criteria": [
+        {
+          "ac_id": "AC-001",
+          "description": "`coverage_rate` 按类型族加权：required_families 缺一类 → 状态 assessed 时 rate < 1.0（非数量覆盖）。"
+        },
+        {
+          "ac_id": "AC-002",
+          "description": "非浏览器（contract/docs/unit）场景在 weighted 阶段展开类型 family（默认 happy+negative+boundary），不再固定 primary-only。"
+        },
+        {
+          "ac_id": "AC-003",
+          "description": "coverage 输出在 reported 阶段列出 missing_families（缺哪类），供 QA 与自动合入门禁审计。"
+        },
+        {
+          "ac_id": "AC-004",
+          "description": "兼容既有 lake：已通过 QA 的 lake 语义不变，仅覆盖计算方式变化（gated 判定更新），不引入新命令面。"
+        }
+      ],
+      "bound_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "orphan_ac_ids": [],
+      "aggregates_missing_illegal_slots": [],
+      "raw_section_titles": [
+        "人话",
+        "User Intent",
+        "User Intent Snapshot",
+        "Intent Coverage Matrix",
+        "用户旅程",
+        "First principles",
+        "Domain Model",
+        "Acceptance Criteria",
+        "FSM 五元组",
+        "Domain FSM Order",
+        "Illegal transitions",
+        "invalid / illegal",
+        "Non-goals",
+        "Freeze readiness",
+        "Gap vs gold (订单支付示例)",
+        "Source Excerpt",
+        "FSM mermaid（投影）"
+      ]
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "required": true,
+      "blocked": false,
+      "status": "pass",
+      "reason_code": "",
+      "findings": [],
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "beacon-v1615-coverage-type-weighted",
+          "version": "v1.6.15",
+          "status": "frozen",
+          "language": "zh",
+          "domain_required": "false",
+          "ux_required": "false",
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "package_maturity": "filled",
+          "materials_status": "current",
+          "canonical_refs": {
+            "prd": "docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/truth.md",
+            "user_story": "docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/truth.md",
+            "test_case": "docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/tests.md"
+          }
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": true,
+        "has_domain_fsm_section": true,
+        "has_illegal_transition_section": true,
+        "entities": [
+          {
+            "entity": "CoverageTypeWeight",
+            "key": "family, weight",
+            "precedence": "happy/negative/boundary/recovery/compatibility 权重",
+            "requires": "happy/negative/boundary/recovery/compatibility 权重"
+          },
+          {
+            "entity": "ScenarioFamily",
+            "key": "family, covered, required",
+            "precedence": "类型族覆盖状态",
+            "requires": "类型族覆盖状态"
+          },
+          {
+            "entity": "TypeWeightedRate",
+            "key": "rate, missing_families",
+            "precedence": "类型加权覆盖率",
+            "requires": "类型加权覆盖率"
+          }
+        ],
+        "entity_precedence": [
+          {
+            "entity": "CoverageTypeWeight",
+            "key": "family, weight",
+            "precedence": "happy/negative/boundary/recovery/compatibility 权重",
+            "requires": "happy/negative/boundary/recovery/compatibility 权重"
+          },
+          {
+            "entity": "ScenarioFamily",
+            "key": "family, covered, required",
+            "precedence": "类型族覆盖状态",
+            "requires": "类型族覆盖状态"
+          },
+          {
+            "entity": "TypeWeightedRate",
+            "key": "rate, missing_families",
+            "precedence": "类型加权覆盖率",
+            "requires": "类型加权覆盖率"
+          }
+        ],
+        "aggregates": [
+          {
+            "name": "Order",
+            "states": [
+              "assessed",
+              "gated",
+              "reported",
+              "scaffold",
+              "weighted"
+            ],
+            "transitions": [
+              {
+                "from": "scaffold",
+                "to": "weighted",
+                "guard": "families_expanded"
+              },
+              {
+                "from": "weighted",
+                "to": "assessed",
+                "guard": "rate_computed"
+              },
+              {
+                "from": "assessed",
+                "to": "reported",
+                "guard": "missing_listed"
+              },
+              {
+                "from": "reported",
+                "to": "gated",
+                "guard": "rate_ok"
+              }
+            ]
+          }
+        ],
+        "illegal_transition_slots": [
+          {
+            "description": "数量全绿仍报 rate=1.0（类型缺口被掩盖）",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "非浏览器 lake 仍 primary-only（类型覆盖被跳过）",
+            "aggregate": "",
+            "source": "truth"
+          }
+        ],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-001",
+            "description": "`coverage_rate` 按类型族加权：required_families 缺一类 → 状态 assessed 时 rate < 1.0（非数量覆盖）。"
+          },
+          {
+            "ac_id": "AC-002",
+            "description": "非浏览器（contract/docs/unit）场景在 weighted 阶段展开类型 family（默认 happy+negative+boundary），不再固定 primary-only。"
+          },
+          {
+            "ac_id": "AC-003",
+            "description": "coverage 输出在 reported 阶段列出 missing_families（缺哪类），供 QA 与自动合入门禁审计。"
+          },
+          {
+            "ac_id": "AC-004",
+            "description": "兼容既有 lake：已通过 QA 的 lake 语义不变，仅覆盖计算方式变化（gated 判定更新），不引入新命令面。"
+          }
+        ],
+        "bound_ac_ids": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004"
+        ],
+        "orphan_ac_ids": [],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "人话",
+          "User Intent",
+          "User Intent Snapshot",
+          "Intent Coverage Matrix",
+          "用户旅程",
+          "First principles",
+          "Domain Model",
+          "Acceptance Criteria",
+          "FSM 五元组",
+          "Domain FSM Order",
+          "Illegal transitions",
+          "invalid / illegal",
+          "Non-goals",
+          "Freeze readiness",
+          "Gap vs gold (订单支付示例)",
+          "Source Excerpt",
+          "FSM mermaid（投影）"
+        ]
+      },
+      "summary": {
+        "entity_count": 3,
+        "aggregate_count": 1,
+        "illegal_slot_count": 2,
+        "orphan_ac_count": 0,
+        "bound_ac_count": 4
+      }
+    },
+    "recommended_action": ""
+  },
+  "human_closure_contract": {
+    "required": false,
+    "research_path": "docs/beacon/v1.6.15/research/beacon-v1615-coverage-type-weighted.md",
+    "research_exists": false,
+    "source_architecture_path": "docs/beacon/v1.6.15/source-architecture/beacon-v1615-coverage-type-weighted.md",
+    "source_architecture_exists": false,
+    "required_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "missing_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "diagram_types": [],
+    "complexity_signals": []
+  },
+  "requirement_closure_contract": {
+    "required": true,
+    "chain_order": [
+      "research",
+      "prd",
+      "user_story",
+      "test_case",
+      "requirement_clarity",
+      "freeze"
+    ],
+    "human_closure_required": false,
+    "paths": {
+      "research": "docs/beacon/v1.6.15/research/beacon-v1615-coverage-type-weighted.md",
+      "prd": "docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/truth.md",
+      "user_story": "docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/truth.md",
+      "test_case": "docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/tests.md"
+    },
+    "exists": {
+      "research": false,
+      "prd": true,
+      "user_story": true,
+      "test_case": true
+    },
+    "required_research_sections": [],
+    "missing_research_sections": [],
+    "ac_projection": {
+      "prd_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "user_story_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "test_case_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "upstream_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "missing_test_case_ac_ids": []
+    }
+  },
+  "version_projection_truth_contract": {
+    "required": false,
+    "supported": true,
+    "projection_types": [],
+    "research_path": "docs/beacon/v1.6.15/research/beacon-v1615-coverage-type-weighted.md",
+    "research_exists": false,
+    "required_fields": [
+      "prd_refs",
+      "user_story_refs",
+      "test_case_refs",
+      "coverage_notes",
+      "out_of_scope_notes"
+    ],
+    "field_presence": {
+      "prd_refs": false,
+      "user_story_refs": false,
+      "test_case_refs": false,
+      "coverage_notes": false,
+      "out_of_scope_notes": false
+    },
+    "missing_fields": [],
+    "required_refs": {
+      "prd_refs": "docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/truth.md",
+      "user_story_refs": "docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/truth.md",
+      "test_case_refs": "docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/tests.md"
+    },
+    "missing_ref_targets": [],
+    "ready": false
+  },
+  "support_write_topology_contract": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "diagnostics": []
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/truth.md",
+    "docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/tests.md",
+    "docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/tasks.md",
+    "docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/evidence.md"
+  ]
+}

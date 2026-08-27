@@ -1,0 +1,512 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1615-automerge-gate",
+  "feature_slug": "beacon-v1615-automerge-gate",
+  "version": "v1.6.15",
+  "runtime_version": "v1.6.14",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.6.15/.machine/execution/requirement-clarity-beacon-v1615-automerge-gate.json",
+  "report_markdown_path": "docs/beacon/v1.6.15/execution/requirement-clarity-beacon-v1615-automerge-gate.md",
+  "state_path": ".beacon/state/requirement-clarity-beacon-v1615-automerge-gate.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.15",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-08-27T12:43:47.730973+00:00",
+    "feature": "beacon-v1615-automerge-gate",
+    "feature_slug": "beacon-v1615-automerge-gate",
+    "prd_ref": "docs/beacon/v1.6.15/prd/beacon-v1615-automerge-gate.md",
+    "user_story_ref": "docs/beacon/v1.6.15/user-story/beacon-v1615-automerge-gate.md"
+  },
+  "domain_fsm_gate": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1615-automerge-gate",
+    "feature_slug": "beacon-v1615-automerge-gate",
+    "version": "v1.6.15",
+    "truth_path": "docs/beacon/v1.6.15/features/beacon-v1615-automerge-gate/truth.md",
+    "tests_path": "docs/beacon/v1.6.15/features/beacon-v1615-automerge-gate/tests.md",
+    "required": true,
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "findings": [],
+    "requirement": {
+      "required": true,
+      "reason": "domain_section_present",
+      "explicit": false,
+      "partial": true,
+      "complexity": false,
+      "business_signal": true,
+      "version_supported": true
+    },
+    "projection": {
+      "schema_version": "1.0",
+      "domain_fsm_schema": "domain-fsm.v1",
+      "entity_precedence_schema": "entity-precedence.v1",
+      "frontmatter": {
+        "slug": "beacon-v1615-automerge-gate",
+        "version": "v1.6.15",
+        "status": "frozen",
+        "language": "zh",
+        "domain_required": "false",
+        "ux_required": "false",
+        "parser_contract": "beacon-feature-package-v2",
+        "truth_source_model": "feature_package_authoritative",
+        "package_maturity": "filled",
+        "materials_status": "current",
+        "canonical_refs": {
+          "prd": "docs/beacon/v1.6.15/features/beacon-v1615-automerge-gate/truth.md",
+          "user_story": "docs/beacon/v1.6.15/features/beacon-v1615-automerge-gate/truth.md",
+          "test_case": "docs/beacon/v1.6.15/features/beacon-v1615-automerge-gate/tests.md"
+        }
+      },
+      "frontmatter_errors": [],
+      "has_domain_model_section": true,
+      "has_domain_fsm_section": true,
+      "has_illegal_transition_section": true,
+      "entities": [
+        {
+          "entity": "AutomergeGate",
+          "key": "coverage_ok, regression_ok, adversarial_ok",
+          "precedence": "三条件",
+          "requires": "三条件"
+        },
+        {
+          "entity": "RegressionHit",
+          "key": "failure_mode_id, hits",
+          "precedence": "失败模式回归库命中",
+          "requires": "失败模式回归库命中"
+        },
+        {
+          "entity": "AdversarialReview",
+          "key": "checklist, evidence",
+          "precedence": "3-5 翻车点 + 验证证据",
+          "requires": "3-5 翻车点 + 验证证据"
+        }
+      ],
+      "entity_precedence": [
+        {
+          "entity": "AutomergeGate",
+          "key": "coverage_ok, regression_ok, adversarial_ok",
+          "precedence": "三条件",
+          "requires": "三条件"
+        },
+        {
+          "entity": "RegressionHit",
+          "key": "failure_mode_id, hits",
+          "precedence": "失败模式回归库命中",
+          "requires": "失败模式回归库命中"
+        },
+        {
+          "entity": "AdversarialReview",
+          "key": "checklist, evidence",
+          "precedence": "3-5 翻车点 + 验证证据",
+          "requires": "3-5 翻车点 + 验证证据"
+        }
+      ],
+      "aggregates": [
+        {
+          "name": "Order",
+          "states": [
+            "adversarial_checked",
+            "coverage_checked",
+            "merged",
+            "qa_passed",
+            "regression_checked"
+          ],
+          "transitions": [
+            {
+              "from": "qa_passed",
+              "to": "coverage_checked",
+              "guard": "coverage_ok"
+            },
+            {
+              "from": "coverage_checked",
+              "to": "regression_checked",
+              "guard": "regression_zero"
+            },
+            {
+              "from": "regression_checked",
+              "to": "adversarial_checked",
+              "guard": "adversarial_ok"
+            },
+            {
+              "from": "adversarial_checked",
+              "to": "merged",
+              "guard": "all_ok"
+            }
+          ]
+        }
+      ],
+      "illegal_transition_slots": [
+        {
+          "description": "覆盖不足仍合并（gate 绕过）",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "回归库命中仍合并（安全网失效）",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "对抗审查缺失仍合并（无翻车点清单）",
+          "aggregate": "",
+          "source": "truth"
+        }
+      ],
+      "acceptance_criteria": [
+        {
+          "ac_id": "AC-001",
+          "description": "merge 回 main 前 gate 检查三条件（类型覆盖达标 + 失败模式回归命中 0 + 对抗式审查通过）；任一不达标 → coverage_checked/regression_checked/adversarial_checked 任一状态 fail-closed（stop_for_repair）。"
+        },
+        {
+          "ac_id": "AC-002",
+          "description": "失败模式回归库（v1.6.13 D3 已建）作为合并前置输入：在 regression_checked 阶段命中 > 0 → 合并被拦。"
+        },
+        {
+          "ac_id": "AC-003",
+          "description": "对抗式审查（global-boundaries §5）作为合并前置：在 adversarial_checked 阶段缺翻车点清单/验证证据 → 合并被拦。"
+        },
+        {
+          "ac_id": "AC-004",
+          "description": "release 人类 gate 保持不变：auto-merge 不自动打 tag/部署/发布（merged 后仍须人类确认）；`manual_confirmation_required` 仍须人工确认。"
+        }
+      ],
+      "bound_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "orphan_ac_ids": [],
+      "aggregates_missing_illegal_slots": [],
+      "raw_section_titles": [
+        "人话",
+        "User Intent",
+        "User Intent Snapshot",
+        "Intent Coverage Matrix",
+        "用户旅程",
+        "First principles",
+        "Domain Model",
+        "Acceptance Criteria",
+        "FSM 五元组",
+        "Domain FSM Order",
+        "Illegal transitions",
+        "invalid / illegal",
+        "Non-goals",
+        "Freeze readiness",
+        "Gap vs gold (订单支付示例)",
+        "Source Excerpt",
+        "FSM mermaid（投影）"
+      ]
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "required": true,
+      "blocked": false,
+      "status": "pass",
+      "reason_code": "",
+      "findings": [],
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "beacon-v1615-automerge-gate",
+          "version": "v1.6.15",
+          "status": "frozen",
+          "language": "zh",
+          "domain_required": "false",
+          "ux_required": "false",
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "package_maturity": "filled",
+          "materials_status": "current",
+          "canonical_refs": {
+            "prd": "docs/beacon/v1.6.15/features/beacon-v1615-automerge-gate/truth.md",
+            "user_story": "docs/beacon/v1.6.15/features/beacon-v1615-automerge-gate/truth.md",
+            "test_case": "docs/beacon/v1.6.15/features/beacon-v1615-automerge-gate/tests.md"
+          }
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": true,
+        "has_domain_fsm_section": true,
+        "has_illegal_transition_section": true,
+        "entities": [
+          {
+            "entity": "AutomergeGate",
+            "key": "coverage_ok, regression_ok, adversarial_ok",
+            "precedence": "三条件",
+            "requires": "三条件"
+          },
+          {
+            "entity": "RegressionHit",
+            "key": "failure_mode_id, hits",
+            "precedence": "失败模式回归库命中",
+            "requires": "失败模式回归库命中"
+          },
+          {
+            "entity": "AdversarialReview",
+            "key": "checklist, evidence",
+            "precedence": "3-5 翻车点 + 验证证据",
+            "requires": "3-5 翻车点 + 验证证据"
+          }
+        ],
+        "entity_precedence": [
+          {
+            "entity": "AutomergeGate",
+            "key": "coverage_ok, regression_ok, adversarial_ok",
+            "precedence": "三条件",
+            "requires": "三条件"
+          },
+          {
+            "entity": "RegressionHit",
+            "key": "failure_mode_id, hits",
+            "precedence": "失败模式回归库命中",
+            "requires": "失败模式回归库命中"
+          },
+          {
+            "entity": "AdversarialReview",
+            "key": "checklist, evidence",
+            "precedence": "3-5 翻车点 + 验证证据",
+            "requires": "3-5 翻车点 + 验证证据"
+          }
+        ],
+        "aggregates": [
+          {
+            "name": "Order",
+            "states": [
+              "adversarial_checked",
+              "coverage_checked",
+              "merged",
+              "qa_passed",
+              "regression_checked"
+            ],
+            "transitions": [
+              {
+                "from": "qa_passed",
+                "to": "coverage_checked",
+                "guard": "coverage_ok"
+              },
+              {
+                "from": "coverage_checked",
+                "to": "regression_checked",
+                "guard": "regression_zero"
+              },
+              {
+                "from": "regression_checked",
+                "to": "adversarial_checked",
+                "guard": "adversarial_ok"
+              },
+              {
+                "from": "adversarial_checked",
+                "to": "merged",
+                "guard": "all_ok"
+              }
+            ]
+          }
+        ],
+        "illegal_transition_slots": [
+          {
+            "description": "覆盖不足仍合并（gate 绕过）",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "回归库命中仍合并（安全网失效）",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "对抗审查缺失仍合并（无翻车点清单）",
+            "aggregate": "",
+            "source": "truth"
+          }
+        ],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-001",
+            "description": "merge 回 main 前 gate 检查三条件（类型覆盖达标 + 失败模式回归命中 0 + 对抗式审查通过）；任一不达标 → coverage_checked/regression_checked/adversarial_checked 任一状态 fail-closed（stop_for_repair）。"
+          },
+          {
+            "ac_id": "AC-002",
+            "description": "失败模式回归库（v1.6.13 D3 已建）作为合并前置输入：在 regression_checked 阶段命中 > 0 → 合并被拦。"
+          },
+          {
+            "ac_id": "AC-003",
+            "description": "对抗式审查（global-boundaries §5）作为合并前置：在 adversarial_checked 阶段缺翻车点清单/验证证据 → 合并被拦。"
+          },
+          {
+            "ac_id": "AC-004",
+            "description": "release 人类 gate 保持不变：auto-merge 不自动打 tag/部署/发布（merged 后仍须人类确认）；`manual_confirmation_required` 仍须人工确认。"
+          }
+        ],
+        "bound_ac_ids": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004"
+        ],
+        "orphan_ac_ids": [],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "人话",
+          "User Intent",
+          "User Intent Snapshot",
+          "Intent Coverage Matrix",
+          "用户旅程",
+          "First principles",
+          "Domain Model",
+          "Acceptance Criteria",
+          "FSM 五元组",
+          "Domain FSM Order",
+          "Illegal transitions",
+          "invalid / illegal",
+          "Non-goals",
+          "Freeze readiness",
+          "Gap vs gold (订单支付示例)",
+          "Source Excerpt",
+          "FSM mermaid（投影）"
+        ]
+      },
+      "summary": {
+        "entity_count": 3,
+        "aggregate_count": 1,
+        "illegal_slot_count": 3,
+        "orphan_ac_count": 0,
+        "bound_ac_count": 4
+      }
+    },
+    "recommended_action": ""
+  },
+  "human_closure_contract": {
+    "required": false,
+    "research_path": "docs/beacon/v1.6.15/research/beacon-v1615-automerge-gate.md",
+    "research_exists": false,
+    "source_architecture_path": "docs/beacon/v1.6.15/source-architecture/beacon-v1615-automerge-gate.md",
+    "source_architecture_exists": false,
+    "required_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "missing_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "diagram_types": [],
+    "complexity_signals": []
+  },
+  "requirement_closure_contract": {
+    "required": true,
+    "chain_order": [
+      "research",
+      "prd",
+      "user_story",
+      "test_case",
+      "requirement_clarity",
+      "freeze"
+    ],
+    "human_closure_required": false,
+    "paths": {
+      "research": "docs/beacon/v1.6.15/research/beacon-v1615-automerge-gate.md",
+      "prd": "docs/beacon/v1.6.15/features/beacon-v1615-automerge-gate/truth.md",
+      "user_story": "docs/beacon/v1.6.15/features/beacon-v1615-automerge-gate/truth.md",
+      "test_case": "docs/beacon/v1.6.15/features/beacon-v1615-automerge-gate/tests.md"
+    },
+    "exists": {
+      "research": false,
+      "prd": true,
+      "user_story": true,
+      "test_case": true
+    },
+    "required_research_sections": [],
+    "missing_research_sections": [],
+    "ac_projection": {
+      "prd_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "user_story_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "test_case_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "upstream_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "missing_test_case_ac_ids": []
+    }
+  },
+  "version_projection_truth_contract": {
+    "required": false,
+    "supported": true,
+    "projection_types": [],
+    "research_path": "docs/beacon/v1.6.15/research/beacon-v1615-automerge-gate.md",
+    "research_exists": false,
+    "required_fields": [
+      "prd_refs",
+      "user_story_refs",
+      "test_case_refs",
+      "coverage_notes",
+      "out_of_scope_notes"
+    ],
+    "field_presence": {
+      "prd_refs": false,
+      "user_story_refs": false,
+      "test_case_refs": false,
+      "coverage_notes": false,
+      "out_of_scope_notes": false
+    },
+    "missing_fields": [],
+    "required_refs": {
+      "prd_refs": "docs/beacon/v1.6.15/features/beacon-v1615-automerge-gate/truth.md",
+      "user_story_refs": "docs/beacon/v1.6.15/features/beacon-v1615-automerge-gate/truth.md",
+      "test_case_refs": "docs/beacon/v1.6.15/features/beacon-v1615-automerge-gate/tests.md"
+    },
+    "missing_ref_targets": [],
+    "ready": false
+  },
+  "support_write_topology_contract": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "diagnostics": []
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.6.15/features/beacon-v1615-automerge-gate/truth.md",
+    "docs/beacon/v1.6.15/features/beacon-v1615-automerge-gate/tests.md",
+    "docs/beacon/v1.6.15/features/beacon-v1615-automerge-gate/tasks.md",
+    "docs/beacon/v1.6.15/features/beacon-v1615-automerge-gate/evidence.md"
+  ]
+}
