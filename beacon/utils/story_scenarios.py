@@ -19,6 +19,14 @@ DEFAULT_BROWSER_FAMILIES: tuple[str, ...] = (
     "recovery",
     "compatibility",
 )
+# Non-browser (contract/docs/unit) scenarios also need type coverage, not just
+# happy path. v1.6.15: happy + negative + boundary by default so a docs-only or
+# contract lake can no longer claim full coverage by testing happy path only.
+DEFAULT_CONTRACT_FAMILIES: tuple[str, ...] = (
+    "happy",
+    "negative",
+    "boundary",
+)
 BROWSER_QA_TYPES: set[str] = {"functional", "compatibility", "smoke"}
 _BROWSER_HINT_TOKENS: tuple[str, ...] = (
     "ui",
@@ -174,12 +182,13 @@ def _scenario_assertion(assertion: str, qa_type: str, family: str) -> str:
 
 def _scenario_families(browser_required: bool, scenario_depth: str) -> list[str]:
     if not browser_required:
-        return ["primary"]
-    families = list(DEFAULT_BROWSER_FAMILIES)
+        families = list(DEFAULT_CONTRACT_FAMILIES)
+    else:
+        families = list(DEFAULT_BROWSER_FAMILIES)
     depth = str(scenario_depth or "standard").strip().lower()
     if depth == "minimal":
         families = families[:2]
-    elif depth == "deep":
+    elif depth == "deep" and browser_required:
         families.extend(["alternate", "permission", "state-data"])
     out: list[str] = []
     for family in families:
@@ -298,11 +307,15 @@ def expand_story_scenarios(
                 "required_families": [
                     row["scenario_family"]
                     for row in story_scenarios
-                    if bool(row.get("browser_required"))
+                    if row["scenario_family"] != "primary"
                 ],
                 "scenarios": story_scenarios,
             }
         )
+
+    families_required = list(DEFAULT_CONTRACT_FAMILIES)
+    if any(bool(row.get("browser_required")) for row in scenarios):
+        families_required = list(DEFAULT_BROWSER_FAMILIES)
 
     return {
         "schema_version": SCENARIO_MAP_SCHEMA,
@@ -312,7 +325,7 @@ def expand_story_scenarios(
         "generated_at": now_iso(),
         "expansion_profile": expansion_profile,
         "scenario_depth": scenario_depth,
-        "families_required": list(DEFAULT_BROWSER_FAMILIES),
+        "families_required": families_required,
         "stories": story_rows,
         "scenarios": scenarios,
     }
