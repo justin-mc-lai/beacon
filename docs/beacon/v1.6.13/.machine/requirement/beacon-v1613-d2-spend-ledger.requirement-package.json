@@ -5,7 +5,11 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
+<<<<<<< HEAD
   "generated_at": "2026-08-27T05:57:19.549948+00:00",
+=======
+  "generated_at": "2026-08-27T05:59:36.660954+00:00",
+>>>>>>> main
   "feature": "beacon-v1613-d2-spend-ledger",
   "feature_slug": "beacon-v1613-d2-spend-ledger",
   "version": "v1.6.13",
@@ -19,8 +23,13 @@
   },
   "source_hashes": {
     "truth": "0d2e32ad3083c60e58c570bd0b68d2a5bb3662e2e5be81b75e0945e960c38f27",
+<<<<<<< HEAD
     "tests": "d12584aca3bfb09e47c42e809a35458ce0990335c48fb7b842a3c5422ccc8b5a",
     "tasks": "0bcb192c63a0e4697836a60c86580b09e8d983d2abd2f53f83f740376b15ee53",
+=======
+    "tests": "aa9ef80b77d6bff4552a3d3c13a4fe37dc969ee90feddbd94ddecd294dc73918",
+    "tasks": "3785a3bbdd083c8bc71e1d80c7d2e90c830eddeb088f965b3d872f75088cd286",
+>>>>>>> main
     "evidence": "2df6479010e8dfd07e7067b046a98e7b8e82f543c557385aeabaff69e5b15f73"
   },
   "truth_frontmatter": {
@@ -78,7 +87,7 @@
       "ac_id": "AC-001",
       "tc_id": "TC-001",
       "layer": "",
-      "command": "`python3 tests/test_v1613_spend_ledger.py -k persisted_ledger -q --tb=short`",
+      "command": "`python3 tests/test_v1613_spend_ledger.py -q --tb=short`",
       "assertion": "exit 0：ledger 落盘后重读，字段完整",
       "evidence_path": "",
       "source": ""
@@ -87,7 +96,7 @@
       "ac_id": "AC-002",
       "tc_id": "TC-002",
       "layer": "",
-      "command": "`python3 tests/test_v1613_spend_ledger.py -k no_spend_without_writeback -q --tb=short`",
+      "command": "`python3 tests/test_v1613_spend_ledger.py -q --tb=short`",
       "assertion": "exit 0：writeback 未验证 → spend 拒绝（`spend_without_writeback`）",
       "evidence_path": "",
       "source": ""
@@ -96,7 +105,7 @@
       "ac_id": "AC-003",
       "tc_id": "TC-003",
       "layer": "",
-      "command": "`python3 tests/test_v1613_spend_ledger.py -k quiet_skip_no_spend -q --tb=short`",
+      "command": "`python3 tests/test_v1613_spend_ledger.py -q --tb=short`",
       "assertion": "exit 0：quiet skip/dry-run 后 spent 计数不变",
       "evidence_path": "",
       "source": ""
@@ -105,7 +114,7 @@
       "ac_id": "AC-004",
       "tc_id": "TC-004",
       "layer": "",
-      "command": "`python3 tests/test_v1613_spend_ledger.py -k idempotent_replay -q --tb=short`",
+      "command": "`python3 tests/test_v1613_spend_ledger.py -q --tb=short`",
       "assertion": "exit 0：同 index 重放不重复扣（CAS conflict）",
       "evidence_path": "",
       "source": ""
@@ -114,7 +123,7 @@
       "ac_id": "AC-005",
       "tc_id": "TC-005",
       "layer": "",
-      "command": "`python3 tests/test_v1613_spend_ledger.py -k halt_on_exhaust -q --tb=short`",
+      "command": "`python3 tests/test_v1613_spend_ledger.py -q --tb=short`",
       "assertion": "exit 0：配额耗尽 → halt_budget + `program_drive_budget_exhausted`",
       "evidence_path": "",
       "source": ""
@@ -123,7 +132,7 @@
       "ac_id": "AC-006",
       "tc_id": "TC-006",
       "layer": "",
-      "command": "`python3 tests/test_v1613_spend_ledger.py -k handoff_budget -q --tb=short`",
+      "command": "`python3 tests/test_v1613_spend_ledger.py -q --tb=short`",
       "assertion": "exit 0：交接文本超 16 行/1800 字符被拦（回归）",
       "evidence_path": "",
       "source": ""
