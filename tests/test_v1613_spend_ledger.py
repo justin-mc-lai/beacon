@@ -78,3 +78,24 @@ if __name__ == "__main__":
     test_halt_on_exhaust()
     test_handoff_budget()
     sys.exit(1 if FAILURES else 0)
+
+
+def test_spend_guard_contract():
+    from beacon.utils.goal_budget import spend_guard, TURN_STEPS
+    assert TURN_STEPS == ("choose", "deliver", "validate", "writeback", "spend")
+    g = spend_guard(True)
+    assert g["ok"] and not g["blocked"]
+
+
+def test_fsm_legal_walk():
+    """Domain FSM legal walk: choose->deliver->validate->writeback->spend->next, then halt."""
+    led = new_ledger("g6", quota_limit=2)
+    assert not quota_exhausted(led)
+    r1 = spend_eligible(led, source="delivery_completion", writeback_validated=True, index_digest="w1")
+    assert r1["ok"]
+    commit_spend(led, source="delivery_completion", index_digest="w1", writeback_ref="wb")
+    r2 = spend_eligible(led, source="delivery_completion", writeback_validated=True, index_digest="w2")
+    assert r2["ok"]
+    commit_spend(led, source="delivery_completion", index_digest="w2", writeback_ref="wb")
+    assert quota_exhausted(led)
+    assert halt_on_exhaust(led)["state"] == "halt_budget"
