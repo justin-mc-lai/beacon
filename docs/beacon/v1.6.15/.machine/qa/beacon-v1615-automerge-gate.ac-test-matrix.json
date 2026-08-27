@@ -1,0 +1,102 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1615-automerge-gate",
+  "feature_slug": "beacon-v1615-automerge-gate",
+  "version": "v1.6.15",
+  "generated_at": "2026-08-27T13:03:53.293646+00:00",
+  "execution_mode": "feature-aware",
+  "source_matrix_path": "docs/beacon/v1.6.15/.machine/qa/beacon-v1615-automerge-gate.ac-test-matrix.json",
+  "story_scenario_map_path": ".beacon/qa/features/beacon-v1615-automerge-gate/story-scenario-map.json",
+  "reason_codes": [
+    "no_prior_feature_qa"
+  ],
+  "qa_types": [
+    "contract"
+  ],
+  "entries": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "unit",
+      "command": "python3 tests/test_v1615_automerge_gate.py -k three_conditions",
+      "assertion": "exit 0：三条件任一不达标 → fail-closed stop_for_repair",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1615-automerge-gate/tc-001/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.15/features/beacon-v1615-automerge-gate/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "unit",
+      "command": "python3 tests/test_v1615_automerge_gate.py -k regression_hit",
+      "assertion": "exit 0：失败模式回归命中 > 0 → 合并被拦",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1615-automerge-gate/tc-002/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.15/features/beacon-v1615-automerge-gate/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "unit",
+      "command": "python3 tests/test_v1615_automerge_gate.py -k adversarial",
+      "assertion": "exit 0：对抗审查缺清单/证据 → 合并被拦",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1615-automerge-gate/tc-003/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.15/features/beacon-v1615-automerge-gate/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "unit",
+      "command": "python3 tests/test_v1615_automerge_gate.py -k human_gate",
+      "assertion": "exit 0：release 人类 gate 不变（不自动 tag/部署）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1615-automerge-gate/tc-004/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.15/features/beacon-v1615-automerge-gate/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-EXEC",
+      "layer": "unit",
+      "command": "python3 tests/test_v1615_automerge_gate.py",
+      "assertion": "exit 0：全断言通过",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1615-automerge-gate/tc-exec/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.15/features/beacon-v1615-automerge-gate/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-FSMW",
+      "layer": "unit",
+      "command": "python3 tests/test_v1615_automerge_gate.py -k fsm",
+      "assertion": "exit 0：合法路径 qa_passed→coverage_checked→regression_checked→adversarial_checked→merged 全走（域 FSM legal walk）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1615-automerge-gate/tc-fsmw/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.15/features/beacon-v1615-automerge-gate/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-ILLEGAL",
+      "layer": "unit",
+      "command": "rg -n -e \"覆盖不足仍合并\" -e \"回归库命中仍合并\" -e \"对抗审查缺失仍合并\" docs/beacon/v1.6.15/features/beacon-v1615-automerge-gate/truth.md",
+      "assertion": "illegal（gate 绕过/安全网失效均被拒）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1615-automerge-gate/tc-illegal/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.15/features/beacon-v1615-automerge-gate/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    }
+  ]
+}

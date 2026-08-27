@@ -1,0 +1,630 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-v1615-coverage-type-weighted-r1",
+  "feature": "beacon-v1615-coverage-type-weighted",
+  "feature_slug": "beacon-v1615-coverage-type-weighted",
+  "version": "v1.6.15",
+  "revision_id": "R1",
+  "baseline_hash": "sha256:ac6c6a2fc162d7d5c9538fd5a2b993c053bd00e8244ccdda3d22c22a4cbddbed",
+  "plan_hash": "sha256:537f330c29739f7d8adc2f71450e7e8889eef536c0eafc2f13e518ee855b1bed",
+  "status": "planned",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/truth.md",
+    "prd": "docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/truth.md",
+    "test_case": "docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/tests.md",
+    "truth": "docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/truth.md",
+    "tests": "docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/tests.md",
+    "tasks": "docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/tasks.md",
+    "evidence": "docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/evidence.md",
+    "source_of_truth_root": "docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted",
+    "research_projection": "docs/beacon/v1.6.15/.machine/user-story/beacon-v1615-coverage-type-weighted.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.6.15/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006"
+      ]
+    }
+  ],
+  "task_mapping_source": "package-tasks",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.15",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-08-27T13:06:21.479937+00:00",
+    "feature": "beacon-v1615-coverage-type-weighted",
+    "feature_slug": "beacon-v1615-coverage-type-weighted",
+    "prd_ref": "docs/beacon/v1.6.15/prd/beacon-v1615-coverage-type-weighted.md",
+    "user_story_ref": "docs/beacon/v1.6.15/user-story/beacon-v1615-coverage-type-weighted.md"
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1615-coverage-type-weighted",
+    "version": "v1.6.15",
+    "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.15/research/beacon-v1615-coverage-type-weighted.md",
+    "present": false,
+    "section_count": 0,
+    "sections": {},
+    "derived_items": [],
+    "source_artifact": "docs/beacon/v1.6.15/.machine/user-story/beacon-v1615-coverage-type-weighted.json"
+  },
+  "review_gates": [],
+  "qa_coverage_hints": [],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "TASK-001 Implement AC-001: `coverage_rate` 按类型族加权：required_families 缺一类 → 状态 assessed 时 rate < 1... · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/AC-001.json`",
+      "description": "Implement AC-001: `coverage_rate` 按类型族加权：required_families 缺一类 → 状态 assessed 时 rate < 1... · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/AC-001.json`",
+      "source_task_id": "TASK-001",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001"
+      ],
+      "mapped_test_ids": [
+        "TEST-001"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "TASK-002 Implement AC-002: 非浏览器（contract/docs/unit）场景在 weighted 阶段展开类型 family（默认 happy+negative+... · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/AC-002.json`",
+      "description": "Implement AC-002: 非浏览器（contract/docs/unit）场景在 weighted 阶段展开类型 family（默认 happy+negative+... · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/AC-002.json`",
+      "source_task_id": "TASK-002",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TEST-002"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "TASK-003 Implement AC-003: coverage 输出在 reported 阶段列出 missing_families（缺哪类），供 QA 与自动合入门禁审计。 · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/AC-003.json`",
+      "description": "Implement AC-003: coverage 输出在 reported 阶段列出 missing_families（缺哪类），供 QA 与自动合入门禁审计。 · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/AC-003.json`",
+      "source_task_id": "TASK-003",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-003"
+      ],
+      "mapped_test_ids": [
+        "TEST-003"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "TASK-004 Implement AC-004: 兼容既有 lake：已通过 QA 的 lake 语义不变，仅覆盖计算方式变化（gated 判定更新），不引入新命令面。 · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/AC-004.json`",
+      "description": "Implement AC-004: 兼容既有 lake：已通过 QA 的 lake 语义不变，仅覆盖计算方式变化（gated 判定更新），不引入新命令面。 · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/AC-004.json`",
+      "source_task_id": "TASK-004",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-004"
+      ],
+      "mapped_test_ids": [
+        "TEST-004"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "TASK-005 Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/GATES.json`",
+      "description": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/GATES.json`",
+      "source_task_id": "TASK-005",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "TASK-006 Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/QA-MATRIX.json`",
+      "description": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/QA-MATRIX.json`",
+      "source_task_id": "TASK-006",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    }
+  ],
+  "task_alignment": {
+    "schema_version": "1.0",
+    "status": "aligned",
+    "blocked": false,
+    "reason_code": "",
+    "feature": "beacon-v1615-coverage-type-weighted",
+    "feature_slug": "beacon-v1615-coverage-type-weighted",
+    "version": "v1.6.15",
+    "authority": "markdown_feature_package",
+    "package_tasks_path": "docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/tasks.md",
+    "task_count": 6,
+    "resolved": true,
+    "alignment_mode": "package_tasks_to_implementation_plan",
+    "progress_write_target": "docs/beacon/<version>/.machine/execution and docs/beacon/<version>/execution",
+    "package_tasks_mutated": false,
+    "tasks": [
+      {
+        "task_id": "TASK-001",
+        "title": "Implement AC-001: `coverage_rate` 按类型族加权：required_families 缺一类 → 状态 assessed 时 rate < 1... · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/AC-001.json`",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-002",
+        "title": "Implement AC-002: 非浏览器（contract/docs/unit）场景在 weighted 阶段展开类型 family（默认 happy+negative+... · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/AC-002.json`",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-003",
+        "title": "Implement AC-003: coverage 输出在 reported 阶段列出 missing_families（缺哪类），供 QA 与自动合入门禁审计。 · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/AC-003.json`",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-004",
+        "title": "Implement AC-004: 兼容既有 lake：已通过 QA 的 lake 语义不变，仅覆盖计算方式变化（gated 判定更新），不引入新命令面。 · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/AC-004.json`",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-005",
+        "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/GATES.json`",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-006",
+        "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/QA-MATRIX.json`",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      }
+    ],
+    "draft_implementation_tasks": [
+      {
+        "task_id": "ITASK-001",
+        "title": "Implement AC-001: `coverage_rate` 按类型族加权：required_families 缺一类 → 状态 assessed 时 rate < 1... · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/AC-001.json`",
+        "description": "Implement AC-001: `coverage_rate` 按类型族加权：required_families 缺一类 → 状态 assessed 时 rate < 1... · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/AC-001.json`",
+        "source_task_id": "TASK-001",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-002",
+        "title": "Implement AC-002: 非浏览器（contract/docs/unit）场景在 weighted 阶段展开类型 family（默认 happy+negative+... · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/AC-002.json`",
+        "description": "Implement AC-002: 非浏览器（contract/docs/unit）场景在 weighted 阶段展开类型 family（默认 happy+negative+... · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/AC-002.json`",
+        "source_task_id": "TASK-002",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-003",
+        "title": "Implement AC-003: coverage 输出在 reported 阶段列出 missing_families（缺哪类），供 QA 与自动合入门禁审计。 · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/AC-003.json`",
+        "description": "Implement AC-003: coverage 输出在 reported 阶段列出 missing_families（缺哪类），供 QA 与自动合入门禁审计。 · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/AC-003.json`",
+        "source_task_id": "TASK-003",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-004",
+        "title": "Implement AC-004: 兼容既有 lake：已通过 QA 的 lake 语义不变，仅覆盖计算方式变化（gated 判定更新），不引入新命令面。 · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/AC-004.json`",
+        "description": "Implement AC-004: 兼容既有 lake：已通过 QA 的 lake 语义不变，仅覆盖计算方式变化（gated 判定更新），不引入新命令面。 · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/AC-004.json`",
+        "source_task_id": "TASK-004",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-005",
+        "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/GATES.json`",
+        "description": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/GATES.json`",
+        "source_task_id": "TASK-005",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-006",
+        "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/QA-MATRIX.json`",
+        "description": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1615-coverage-type-weighted/QA-MATRIX.json`",
+        "source_task_id": "TASK-006",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      }
+    ]
+  },
+  "revision_delta": {},
+  "revision_delta_ref": "",
+  "revision_delta_markdown_ref": "",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"beacon-v1615-coverage-type-weighted\" --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.15",
+    "run_command": "beacon implement team-run \"beacon-v1615-coverage-type-weighted\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.15",
+    "dev_run_command": "beacon implement dev-run \"beacon-v1615-coverage-type-weighted\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.15",
+    "ralph_command": "beacon implement run \"beacon-v1615-coverage-type-weighted\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.15 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"beacon-v1615-coverage-type-weighted\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.15",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1615-coverage-type-weighted",
+    "feature_slug": "beacon-v1615-coverage-type-weighted",
+    "version": "v1.6.15",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.6.15/beacon-v1615-coverage-type-weighted",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": "/Users/apple/Developer/Personal/products/beacon",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.6.15/beacon-v1615-coverage-type-weighted.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-08-27T13:06:21.482358+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.6.15-beacon-v1615-coverage-type-weighted-R1",
+    "transaction_id": "tx-660a20be4f2771f45",
+    "source_hash": "sha256:67c23df3b9cba490fd54552d16f7cbaa8c1ec5e9a0f10494cb3386cd11165b10",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.6.15/.machine/execution/implementation-delivery-baseline-beacon-v1615-coverage-type-weighted.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.6.15/.machine/execution/git-workflow-beacon-v1615-coverage-type-weighted.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.6.15/execution/git-workflow-beacon-v1615-coverage-type-weighted.md",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.6.15/beacon-v1615-coverage-type-weighted",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": "/Users/apple/Developer/Personal/products/beacon",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {},
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.6.15-beacon-v1615-coverage-type-weighted-R1",
+    "transaction_id": "tx-660a20be4f2771f45",
+    "source_hash": "sha256:67c23df3b9cba490fd54552d16f7cbaa8c1ec5e9a0f10494cb3386cd11165b10",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.6.15/.machine/execution/implementation-delivery-baseline-beacon-v1615-coverage-type-weighted.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.6.15/.machine/execution/implementation-delivery-baseline-beacon-v1615-coverage-type-weighted.json",
+  "generated_at": "2026-08-27T13:06:21.613030+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.6.15-beacon-v1615-coverage-type-weighted-R1",
+  "transaction_id": "tx-660a20be4f2771f45",
+  "source_hash": "sha256:67c23df3b9cba490fd54552d16f7cbaa8c1ec5e9a0f10494cb3386cd11165b10",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-08-27T13:06:21.613119+00:00"
+}

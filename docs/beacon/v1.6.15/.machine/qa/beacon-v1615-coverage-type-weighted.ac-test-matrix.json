@@ -1,0 +1,102 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1615-coverage-type-weighted",
+  "feature_slug": "beacon-v1615-coverage-type-weighted",
+  "version": "v1.6.15",
+  "generated_at": "2026-08-27T13:01:16.968001+00:00",
+  "execution_mode": "feature-aware",
+  "source_matrix_path": "docs/beacon/v1.6.15/.machine/qa/beacon-v1615-coverage-type-weighted.ac-test-matrix.json",
+  "story_scenario_map_path": ".beacon/qa/features/beacon-v1615-coverage-type-weighted/story-scenario-map.json",
+  "reason_codes": [
+    "no_prior_feature_qa"
+  ],
+  "qa_types": [
+    "contract"
+  ],
+  "entries": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "unit",
+      "command": "python3 tests/test_v1615_coverage_type_weighted.py -k weighted_rate",
+      "assertion": "exit 0：只测 happy → rate < 1.0（类型加权生效）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1615-coverage-type-weighted/tc-001/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "unit",
+      "command": "python3 tests/test_v1615_coverage_type_weighted.py -k non_browser_families",
+      "assertion": "exit 0：非浏览器场景展开 happy+negative+boundary",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1615-coverage-type-weighted/tc-002/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "unit",
+      "command": "python3 tests/test_v1615_coverage_type_weighted.py -k missing_families",
+      "assertion": "exit 0：输出列出 missing_families",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1615-coverage-type-weighted/tc-003/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "unit",
+      "command": "python3 tests/test_v1615_coverage_type_weighted.py -k compat",
+      "assertion": "exit 0：既有 lake 语义兼容、无新命令面",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1615-coverage-type-weighted/tc-004/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-EXEC",
+      "layer": "unit",
+      "command": "python3 tests/test_v1615_coverage_type_weighted.py",
+      "assertion": "exit 0：全断言通过",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1615-coverage-type-weighted/tc-exec/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-FSMW",
+      "layer": "unit",
+      "command": "python3 tests/test_v1615_coverage_type_weighted.py -k fsm",
+      "assertion": "exit 0：合法路径 weighted→assessed→reported→gated 全走（域 FSM legal walk）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1615-coverage-type-weighted/tc-fsmw/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-001,AC-002",
+      "tc_id": "TC-ILLEGAL",
+      "layer": "unit",
+      "command": "rg -n -e \"数量全绿仍报\" -e \"primary-only\" docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/truth.md",
+      "assertion": "illegal（类型缺口被掩盖/跳过均被拒）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1615-coverage-type-weighted/tc-illegal/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.15/features/beacon-v1615-coverage-type-weighted/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    }
+  ]
+}
