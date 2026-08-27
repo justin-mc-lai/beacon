@@ -1,0 +1,119 @@
+{
+  "schema_version": "1.0",
+  "action": "run",
+  "run_id": "run-20260827T104719Z-c04a",
+  "hook_id": "post-release",
+  "version": "v1.6.14",
+  "feature": "",
+  "dry_run": false,
+  "confirmed": false,
+  "status": "blocked",
+  "blocked": true,
+  "reason_code": "hook_admission_blocked",
+  "plan": {
+    "schema_version": "1.0",
+    "action": "plan",
+    "hook_id": "post-release",
+    "version": "v1.6.14",
+    "feature": "",
+    "status": "blocked",
+    "blocked": true,
+    "admission": {
+      "schema_version": "1.0",
+      "hook_id": "post-release",
+      "hook_code": "",
+      "feature": "",
+      "path": "docs/beacon/hooks/post-release.md",
+      "status": "blocked",
+      "blocked": true,
+      "reason_codes": [
+        "hook_file_missing",
+        "hook_id_mismatch",
+        "unknown_hook_code",
+        "hook_disabled",
+        "invalid_trigger_policy",
+        "invalid_failure_route",
+        "hook_invocation_missing",
+        "required_evidence_missing",
+        "section_missing_purpose",
+        "section_missing_admission",
+        "section_missing_evidence",
+        "section_missing_failure"
+      ],
+      "diagnostics": [
+        {
+          "reason_code": "hook_file_missing",
+          "message": "hook_file_missing"
+        },
+        {
+          "reason_code": "hook_id_mismatch",
+          "message": "hook_id must match file name"
+        },
+        {
+          "reason_code": "unknown_hook_code",
+          "message": "hook_code is not allowed"
+        },
+        {
+          "reason_code": "hook_disabled",
+          "message": "hook is disabled or missing enabled: true"
+        },
+        {
+          "reason_code": "invalid_trigger_policy",
+          "message": "trigger_policy is not allowed"
+        },
+        {
+          "reason_code": "invalid_failure_route",
+          "message": "failure_route is not allowed"
+        },
+        {
+          "reason_code": "hook_invocation_missing",
+          "message": "skill or command_template is required"
+        },
+        {
+          "reason_code": "required_evidence_missing",
+          "message": "produces_evidence is required"
+        },
+        {
+          "reason_code": "section_missing_purpose",
+          "message": "missing body section: purpose"
+        },
+        {
+          "reason_code": "section_missing_admission",
+          "message": "missing body section: admission"
+        },
+        {
+          "reason_code": "section_missing_evidence",
+          "message": "missing body section: evidence"
+        },
+        {
+          "reason_code": "section_missing_failure",
+          "message": "missing body section: failure"
+        }
+      ],
+      "contract": {
+        "hook_id": "",
+        "hook_code": "",
+        "enabled": false,
+        "trigger_policy": "",
+        "skill": "",
+        "command_template": "",
+        "produces_evidence": [],
+        "failure_route": ""
+      }
+    },
+    "evidence_policy": "runtime_evidence_only",
+    "truth_authority": false,
+    "evidence_paths": {
+      "runtime_root": ".beacon/state/hooks/post-release",
+      "latest_read_model": "docs/beacon/.machine/hooks/post-release.latest.json"
+    }
+  },
+  "side_effect_executed": false,
+  "runtime_evidence_only": true,
+  "truth_authority": false,
+  "written_at": "2026-08-27T10:47:19.159981+00:00",
+  "evidence_paths": {
+    "runtime": ".beacon/state/hooks/post-release/run-20260827T104719Z-c04a.json",
+    "latest_read_model": "docs/beacon/.machine/hooks/post-release.latest.json"
+  }
+}
