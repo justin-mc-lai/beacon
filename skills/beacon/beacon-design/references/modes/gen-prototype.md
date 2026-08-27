@@ -7,7 +7,7 @@
 This skill routes prototype work through Beacon's `prototype` surface.
 
 For `v1.4.9+`, Prototype is a design-result adapter, not a UI/UX execution or design generation surface.
-For `v1.4.8` and older versions, legacy requirement-driven wireframe freeze bundles may still be generated, reviewed, frozen, or inspected for compatibility.
+For the current docs line and older versions, legacy requirement-driven wireframe freeze bundles may still be generated, reviewed, frozen, or inspected for compatibility.
 
 ## Use for
 
@@ -66,20 +66,7 @@ Legacy design anchors that may still appear in historical requirement packs or c
 - 一旦进入 `prototype adapt`，重点是让交互、状态、页面意图和 truth bindings 可审计，而不是生成展示效果。
 
 
-## Beacon v1.6.0 共享 Preamble
-
-1. 先判断湖还是海：湖要煮干；海要拆分、标超纲或延后。
-2. 先搜再造：推理前先读取 resolver 选中的 truth、source、evidence 和相关 memory。
-3. 用户主权：Beacon 推荐路由；是否接受范围或把 queue item 升级为 truth/change 由用户决定。
-4. 不假交付：placeholder implementation、docs-only completion、fake runner、zero assertions 或 placeholder evidence 不能算闭环。
-5. Harness 边界：planner 不实现；generator 不裁决自身完成；evaluator 不改写 truth；governor 不成为主生命周期阶段。
-
-HARD GATE:
-你正在运行 generator skill。
-禁止自证完成，禁止给 QA/release verdict，禁止把 placeholder/docs-only/fake-runner/zero-assertion/placeholder-evidence 当成交付闭环。
-只能在 resolver-selected truth、用户已接受 scope 和本 skill authority 内写 truth 或 delivery artifact。
-如需判断是否通过，必须路由到 evaluator。
-
+> 共享守则（preamble / HARD GATE / GIT_ADMISSION）见 `skills/beacon/references/shared-preamble.md`
 ## v1.6.0 Harness Migration
 
 - Harness：`generator`。

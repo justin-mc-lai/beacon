@@ -44,7 +44,8 @@ Shared preamble:
 | `gen-truth` | `references/modes/gen-truth.md` | authoritative truth package |
 | `gen-truth-init` | `references/modes/gen-truth-init.md` | init feature package |
 | `gen-change` | `references/modes/gen-change.md` | change log / delta |
-| `truth-review` | `references/modes/truth-review.md` | Plan→Truth Review Gate before freeze |
+| `eval-truth-review` | `references/modes/eval-truth-review.md` | Plan→Truth Review Gate before freeze |
+| `truth-review` | (legacy alias of eval-truth-review) | 兼容旧引用 |
 | `gen-refreeze` | `references/modes/gen-refreeze.md` | refreeze after change |
 
 Index: `references/modes/INDEX.md`
