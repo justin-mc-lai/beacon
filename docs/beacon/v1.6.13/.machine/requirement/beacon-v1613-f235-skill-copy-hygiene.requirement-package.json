@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-08-27T05:01:45.792754+00:00",
+  "generated_at": "2026-08-27T05:43:52.046651+00:00",
   "feature": "beacon-v1613-f235-skill-copy-hygiene",
   "feature_slug": "beacon-v1613-f235-skill-copy-hygiene",
   "version": "v1.6.13",
@@ -19,7 +19,7 @@
   },
   "source_hashes": {
     "truth": "c002032a10c3ca02f65686c8ac7e413674ba5f540b1b31e7a958a48ce56a538d",
-    "tests": "567cc1f345e2ad4a58d4336264ce2d9ac26bab386e095a09c4b0b8bd649e09e5",
+    "tests": "8af6018fc2dabcaa4e511d3259afd4e501c39ef1bdd127f9e4a3f49d2fb0be3c",
     "tasks": "c28c5513f11d790772c5bbb2bb5ece9e8414c408c098c10a68e1c746907f7f48",
     "evidence": "ffbec4c68cbce653da1fc6808d5324e82dc52417ef83bd5c500f1591fca9c8da"
   },
@@ -68,7 +68,7 @@
       "ac_id": "AC-001",
       "tc_id": "TC-001",
       "layer": "",
-      "command": "`rg -c 'references/shared/|共享 Preamble' .claude/skills/beacon-{plan,truth,implement,qa,release,design,goal}/references/modes/*.md`",
+      "command": "`rg -c 'references/shared/|共享 Preamble' skills/beacon/beacon-{plan,truth,implement,qa,release,design,goal}/references/modes/*.md`",
       "assertion": "引用方式存在（命中 ≥1/文件）且无整块复制（`rg -c 'Beacon v1.6.0 共享 Preamble' <mode>` 每文件 ≤1）",
       "evidence_path": "",
       "source": ""
@@ -77,7 +77,7 @@
       "ac_id": "AC-002",
       "tc_id": "TC-002",
       "layer": "",
-      "command": "`rg -n 'beacon-gen-truth.*beacon-gen-truth.*beacon-gen-truth|旧版自指' .claude/skills/beacon-{plan,truth}/references/modes/*.md`",
+      "command": "`rg -n 'beacon-gen-truth.*beacon-gen-truth.*beacon-gen-truth|旧版自指' skills/beacon/beacon-{plan,truth}/references/modes/*.md`",
       "assertion": "无输出（复制 bug 已修）",
       "evidence_path": "",
       "source": ""
@@ -86,7 +86,7 @@
       "ac_id": "AC-003",
       "tc_id": "TC-003",
       "layer": "",
-      "command": "`rg -n 'v1\\.4\\.|v1\\.5\\.' .claude/skills/beacon-{plan,truth,implement,qa,release,design,goal}/references/modes/*.md`",
+      "command": "`rg -n 'v1\\.4\\.|v1\\.5\\.' skills/beacon/beacon-{plan,truth,implement,qa,release,design,goal}/references/modes/*.md`",
       "assertion": "无输出（无硬编码过期版本）",
       "evidence_path": "",
       "source": ""
@@ -95,7 +95,7 @@
       "ac_id": "AC-004",
       "tc_id": "TC-004",
       "layer": "",
-      "command": "`rg -n 'eval-truth-review|truth-review' .claude/skills/beacon-truth/SKILL.md .claude/skills/beacon-truth/references/modes/*.md`",
+      "command": "`rg -n 'eval-truth-review|truth-review' skills/beacon/beacon-truth/SKILL.md skills/beacon/beacon-truth/references/modes/*.md`",
       "assertion": "命中 `eval-truth-review` 且 `truth-review` 仅作为 legacy alias 出现",
       "evidence_path": "",
       "source": ""
