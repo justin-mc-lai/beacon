@@ -395,6 +395,36 @@ def load_runner_admission(project_root: Path, *, version: str = AGENT_EVAL_VERSI
     return payload if isinstance(payload, dict) else {}
 
 
+def materialize_live_runner_admission(
+    project_root: Path,
+    *,
+    version: str = AGENT_EVAL_VERSION,
+    host: str = "local",
+    timeout_seconds: float = 300,
+    default_live_tier: str = "local_admitted",
+) -> dict[str, Any]:
+    """Generate a live-runner admission config (P1: full-skill host_behavior).
+
+    Without an admission file, `is_live_runner_admitted` returns False and every
+    skill is blocked (live_skill_pass 0). Materializing one with
+    default_live_tier=local_admitted lets `_execute_live_per_skill` run all
+    skills in host_behavior mode instead of the ci_default 1-skill smoke.
+    """
+    payload = {
+        "schema_version": "1.0",
+        "admitted": True,
+        "host": host,
+        "trace_format": "jsonl",
+        "timeout_seconds": float(timeout_seconds),
+        "default_live_tier": default_live_tier,
+        "live_execution_tiers": ["local_admitted", "release_hook", "ci_default"],
+    }
+    path = admission_path(project_root, version)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    write_json(path, payload)
+    return {"status": "pass", "path": str(path), "admission": payload}
+
+
 def _qa_negative_live_admission_override() -> bool:
     """TC-AE-008 runs with admission on disk but must still observe blocked live runner."""
     import os
