@@ -13,6 +13,7 @@ materials_status: current
 | TC-003 | AC-003 | `python3 tests/test_v1614_feature_map.py -k self_verify` | exit 0：verification 命令可执行且信号可断言 |
 | TC-004 | AC-004 | `python3 tests/test_v1614_feature_map.py -k one_way_projection` | exit 0：map 引用 truth 不反向改写；无命令面 |
 | TC-EXEC | AC-001..004 | `python3 tests/test_v1614_feature_map.py` | exit 0：全断言通过 |
+| TC-FSMW | AC-001..004 | `python3 tests/test_v1614_feature_map.py -k scaffold` | exit 0：合法路径 scaffolded→filled→routable→self_verifying 全走（域 FSM legal walk） |
 | TC-ILLEGAL | AC-004 | `rg -n -e "反向改写" -e "投影越权" docs/beacon/v1.6.14/features/beacon-v1614-feature-map/truth.md` | illegal（map 越权改 truth 被拒） |
 
 ## Validation Note
