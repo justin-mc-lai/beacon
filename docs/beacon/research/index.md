@@ -100,6 +100,10 @@ Rule of thumb:
 
 
 ---
+17. [Feature Map 设计（2026-08-27）—— 需求真相 × 代码锚定的功能地图](./beacon-feature-map-design-2026-08-27.md)
+   - Why it matters:
+     把方法论 M2 的 feature map 与 beacon 需求真相结合：truth 讲"做什么"，feature-map 讲"在哪改/怎么验证/看什么"，agent 固定走「读 truth→读 map→实现→自证」，分三阶段建设（骨架→复现路由→agent 自验证）。
+
 
 ## 3. Version-bound research entrypoints
 
