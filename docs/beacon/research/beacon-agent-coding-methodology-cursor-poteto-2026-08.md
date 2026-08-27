@@ -42,7 +42,7 @@ AI coding 最大的问题不是生成代码，而是 **验证代码**。若 agen
 | M1 验证 > 生成 | `qa` evidence-first（verifier 完成制、Illegal: auto-complete without verifier）| 基本对齐：Beacon 已是验证优先 |
 | M2 agent 验证能力 + feature map | `implement` 浏览器 QA（v1.3.2 起迭代式浏览器验收）；`eval-real-project` | **feature map 是明确缺口**：Beacon 没有“功能在哪/怎么进入”的持久索引，agent 依赖研究笔记而非可查询地图 |
 | M3 失败模式 → skill + skill 测试 | `beacon-qa` skill eval kit；`beacon-plan` evals/；Trellis spec 沉淀 | 方向对齐；但“失败模式入库”目前主要靠研究文档，缺少结构化 skill 回归库 |
-| M4 自动合入 | beacon 无 auto-merge 语义；release 永远不可 auto 覆盖（AC-027） | 有意为之：release 保留人类 gate 是 Beacon 设计边界，不照搬 |
+| M4 自动合入 | beacon 合并（worktree→main）已由 agent 自动执行；release verdict 保留人类 gate | **2026-08-27 修正**：auto-merge（合入层）与 release gate（发布层）不冲突，部分采纳——见 `beacon-automerge-first-principles-2026-08-27.md` |
 | M5 工程管理 = 环境/流程/验收先行 | Beacon 7 段主流程 + program/truth 冻结 + gate | 高度同构：Beacon 就是“先设计流程再并行执行”的产物 |
 
 ## 4. 可持续演进行动建议（供后续版本线评估）
@@ -54,4 +54,6 @@ AI coding 最大的问题不是生成代码，而是 **验证代码**。若 agen
 
 ## 5. 结论
 
-Lauren Tan 的方法论与 Beacon 设计高度同构（验证优先、流程先行、agent 团队工程化），最值得借鉴的是 **feature map** 与 **失败模式 skill 化回归** 两个尚未在 Beacon 显式物化的机制；auto-merge 属于与 Beacon release gate 相冲突的部分，仅记录不采纳。
+Lauren Tan 的方法论与 Beacon 设计高度同构（验证优先、流程先行、agent 团队工程化），最值得借鉴的是 **feature map** 与 **失败模式 skill 化回归** 两个尚未在 Beacon 显式物化的机制。
+
+**M4 auto-merge 结论已修正（2026-08-27）**：第一性原理拆解表明「合入（merge）」与「发布（release）」是两层动作——合入可逆、已有验证背书时交给 agent 是安全且正确的；人类 gate 的正确位置只在「发布判定」。Beacon 事实上已自动合并，下一步是显式化该形态为设计契约 + 用失败模式回归库强化合并前证据。详见 `beacon-automerge-first-principles-2026-08-27.md`。
