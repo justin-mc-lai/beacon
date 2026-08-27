@@ -8,7 +8,7 @@ materials_status: current
 
 | TC ID | AC ID | Command | Assertion |
 |-------|-------|---------|-----------|
-| TC-001 | AC-001 | `rg -c '^### FM-|^### 模式' skills/beacon/beacon-qa/references/failure-mode-catalog.md` | 目录条目 ≥ 5 |
+| TC-001 | AC-001 | `rg -c '^## FM-|^### 模式' skills/beacon/beacon-qa/references/failure-mode-catalog.md` | 目录条目 ≥ 5 |
 | TC-002 | AC-002 | `rg -c 'rubric|判定标准' skills/beacon/beacon-qa/references/failure-mode-catalog.md` | 每条含 rubric（命中数 ≥ 条目数） |
 | TC-003 | AC-003 | `python3 -m pytest tests/test_v1613_failure_mode_catalog.py -q --tb=short` | exit 0：用例断言可独立执行 |
 | TC-004 | AC-004 | `rg -n 'failure-mode-catalog|失败模式目录' skills/beacon/beacon-qa/references/modes/eval-qa.md skills/beacon/beacon-qa/references/modes/eval-qa-deep.md` | 审查模式引用目录 |
