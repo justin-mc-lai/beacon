@@ -1,3 +1,4 @@
+> 共享守则（preamble / HARD GATE / GIT_ADMISSION）见 `skills/beacon/references/shared-preamble.md`
 # Mode: pln-program
 
 > Archived from `beacon-pln-program` during 1+6 merge. This is progressive disclosure content for `beacon-plan`.

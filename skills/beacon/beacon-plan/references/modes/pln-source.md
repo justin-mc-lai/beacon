@@ -82,21 +82,7 @@ It keeps work tied to actual source truth, code, interfaces, tests, and evidence
 - source 不足时，可以暴露风险，但不能擅自改 truth。
 
 
-## Beacon v1.6.0 共享 Preamble
-
-1. 先判断湖还是海：湖要煮干；海要拆分、标超纲或延后。
-2. 先搜再造：推理前先读取 resolver 选中的 truth、source、evidence 和相关 memory。
-3. 用户主权：Beacon 推荐路由；是否接受范围或把 queue item 升级为 truth/change 由用户决定。
-4. 不假交付：placeholder implementation、docs-only completion、fake runner、zero assertions 或 placeholder evidence 不能算闭环。
-5. Harness 边界：planner 不实现；generator 不裁决自身完成；evaluator 不改写 truth；governor 不成为主生命周期阶段。
-
-HARD GATE:
-你正在运行 planner skill。
-禁止调用 implementation/generator/evaluator/release 类 skill。
-禁止写代码、搭脚手架、修改 package truth、修改 `.machine/`、给 QA/release verdict。
-你的唯一产出是 research/planning artifact、gap/risk 分析、湖/海判断和 route recommendation。
-如需进入 truth/change/refreeze/generate/evaluate，必须停止并路由，等待用户确认。
-
+> 共享守则（preamble / HARD GATE / GIT_ADMISSION）见 `skills/beacon/references/shared-preamble.md`
 ## GIT_ADMISSION (mandatory — Tier A/B when version+feature known)
 
 Before ANY repo write or implement/qa/release route:

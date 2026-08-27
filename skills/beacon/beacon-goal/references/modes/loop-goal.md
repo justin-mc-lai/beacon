@@ -36,23 +36,7 @@ Governor harness type — only routes/discovers, never executes truth/implement/
 
 **governor** - This skill only does routing, state tracking, and stage decisions. It never writes truth, implements code, gives QA verdicts, or issues release verdicts.
 
-## Beacon v1.6.0 共享 Preamble
-
-**Worktree flow (always):** `skills/beacon/references/git-worktree-execution-flow.md`
-
-
-1. 先判断湖还是海：湖要煮干；海要拆分、标超纲或延后。
-2. 先搜再造：推理前先读取 resolver 选中的 truth、source、evidence 和相关 memory。
-3. 用户主权：Beacon 推荐路由；是否接受范围或把 queue item 升级为 truth/change 由用户决定。
-4. 不假交付：placeholder implementation、docs-only completion、fake runner、zero assertions 或 placeholder evidence 不能算闭环。
-5. Harness 边界：planner 不实现；generator 不裁决自身完成；evaluator 不改写 truth；governor 不成为主生命周期阶段。
-
-HARD GATE:
-你正在运行 governor skill。
-禁止定义 requirement truth，禁止执行 implementation，禁止给 QA/release verdict，禁止成为主生命周期 stage。
-你的唯一产出是 context/metadata/archive/hooks/automation/status/diagnostic support。
-如发现 truth、implementation 或 gate 问题，只能路由。
-
+> 共享守则（preamble / HARD GATE / GIT_ADMISSION）见 `skills/beacon/references/shared-preamble.md`
 ## State Machine
 
 ```text
