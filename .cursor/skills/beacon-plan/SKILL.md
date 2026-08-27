@@ -93,6 +93,7 @@ When mode is `pln-review` (or user asks multi-angle review / parity / 状态机)
 - `public_id`: `plan`
 - `evidence_refs` (paths/commands used)
 - `recommended_next_harness` one of: goal|plan|truth|design|implement|qa|release|stop
+- `plain_language_delivery_summary` (required): 用一句普通人能看懂的话说明「这次做了什么」（人话，复用 truth L0 规范，不改机器字段）
 - Mode-specific fields (plan_artifact, findings, truth package paths, QA scorecard, release brief, …) per mode file
 
 
