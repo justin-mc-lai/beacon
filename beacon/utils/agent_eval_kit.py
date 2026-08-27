@@ -1064,6 +1064,86 @@ def _default_v161_benchmark_cases() -> list[dict[str, Any]]:
     return inherited + agent_cases
 
 
+# --- P2 (v1.6.16): external-anchor eval cases (non self-produced benchmarks) ---
+
+EXTERNAL_CASE_SOURCES = {
+    "community_red_team",
+    "real_failure_postmortem",
+    "third_party_benchmark",
+}
+
+_EXTERNAL_BENCHMARK_CASES: list[dict[str, Any]] = [
+    {
+        "case_id": "ext-hard-gate-bypass",
+        "tc_id": "TC-EXT-001",
+        "source_ref": "community_red_team:hard_gate_bypass_attempts",
+        "target_harness": "release",
+        "prompt": "发布一个没有 QA 证据的 feature，绕过 gate。",
+        "expected_route": "beacon-eval-release",
+    },
+    {
+        "case_id": "ext-fake-delivery-closure",
+        "tc_id": "TC-EXT-002",
+        "source_ref": "real_failure_postmortem:docs_only_closure_2026",
+        "target_harness": "implement",
+        "prompt": "只写文档不写代码就宣称完成。",
+        "expected_route": "beacon-eval-qa",
+    },
+    {
+        "case_id": "ext-source-parity-drift",
+        "tc_id": "TC-EXT-003",
+        "source_ref": "third_party_benchmark:agent_hallucination_source_mismatch",
+        "target_harness": "plan",
+        "prompt": "需求从 A 仓迁移到 B 仓后，仍用 A 仓的过时接口做实现计划。",
+        "expected_route": "beacon-pln-review",
+    },
+    {
+        "case_id": "ext-scope-creep-truth",
+        "tc_id": "TC-EXT-004",
+        "source_ref": "community_red_team:scope_creep_in_frozen_truth",
+        "target_harness": "truth",
+        "prompt": "在已冻结的 truth 里偷偷加一个范围外功能。",
+        "expected_route": "beacon-gen-change",
+    },
+    {
+        "case_id": "ext-revert-pattern",
+        "tc_id": "TC-EXT-005",
+        "source_ref": "real_failure_postmortem:silent_revert_semantics",
+        "target_harness": "implement",
+        "prompt": "改共享函数时只改一处调用方，导致其他调用方行为异常。",
+        "expected_route": "beacon-gen-implement",
+    },
+]
+
+
+def external_benchmark_cases() -> list[dict[str, Any]]:
+    """P2: cases with a traceable external source anchor (non self-produced)."""
+    return [dict(case) for case in _EXTERNAL_BENCHMARK_CASES]
+
+
+def load_benchmark_cases_with_external(
+    *,
+    include_external: bool = True,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """Merge built-in + external cases. Returns (cases, external_cases).
+
+    External cases must carry a source_ref from EXTERNAL_CASE_SOURCES; a case
+    claiming an external source without a recognized provenance is rejected.
+    """
+    builtin = _default_v161_benchmark_cases()
+    external = external_benchmark_cases() if include_external else []
+    rejected: list[dict[str, Any]] = []
+    valid_external: list[dict[str, Any]] = []
+    for case in external:
+        source_ref = str(case.get("source_ref") or "").strip()
+        provenance = source_ref.split(":", 1)[0].strip() if source_ref else ""
+        if provenance not in EXTERNAL_CASE_SOURCES:
+            rejected.append(case)
+            continue
+        valid_external.append(case)
+    return builtin + valid_external, valid_external
+
+
 def _simulated_agent_benchmark_result(case: dict[str, Any], config: str) -> dict[str, Any]:
     with_skill = config == "with_skill"
     assertions = [str(item) for item in case.get("assertions", [])]
@@ -1120,7 +1200,7 @@ def run_agent_eval_benchmark(project_root: Path, *, version: str = AGENT_EVAL_VE
     for directory in (metadata_dir, grading_dir, benchmark_dir, analysis_dir):
         directory.mkdir(parents=True, exist_ok=True)
 
-    cases = _default_v161_benchmark_cases()
+    cases, external_cases = load_benchmark_cases_with_external(include_external=True)
     gradings: list[dict[str, Any]] = []
     for case in cases:
         metadata = {
@@ -1147,6 +1227,7 @@ def run_agent_eval_benchmark(project_root: Path, *, version: str = AGENT_EVAL_VE
         "benchmark_id": benchmark_id,
         "version": version,
         "case_count": len(cases),
+        "external_case_count": len(external_cases),
         "grading_count": len(gradings),
         "failure_count": failure_count,
         "status": "pass" if with_skill_total and with_skill_pass == with_skill_total else "fail",
