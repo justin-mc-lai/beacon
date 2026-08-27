@@ -13,6 +13,7 @@ materials_status: current
 | TC-003 | AC-003 | `python3 tests/test_v1615_automerge_gate.py -k adversarial` | exit 0：对抗审查缺清单/证据 → 合并被拦 |
 | TC-004 | AC-004 | `python3 tests/test_v1615_automerge_gate.py -k human_gate` | exit 0：release 人类 gate 不变（不自动 tag/部署）|
 | TC-EXEC | AC-001..004 | `python3 tests/test_v1615_automerge_gate.py` | exit 0：全断言通过 |
+| TC-FSMW | AC-001..004 | `python3 tests/test_v1615_automerge_gate.py -k fsm` | exit 0：合法路径 qa_passed→coverage_checked→regression_checked→adversarial_checked→merged 全走（域 FSM legal walk）|
 | TC-ILLEGAL | AC-001 | `rg -n -e "覆盖不足仍合并" -e "回归库命中仍合并" -e "对抗审查缺失仍合并" docs/beacon/v1.6.15/features/beacon-v1615-automerge-gate/truth.md` | illegal（gate 绕过/安全网失效均被拒）|
 
 ## Validation Note

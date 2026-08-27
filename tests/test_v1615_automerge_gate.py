@@ -133,6 +133,21 @@ def test_failure_mode_hit_count() -> None:
     assert r["hit_ids"] == ["FM-002"]
 
 
+def test_fsm_legal_walk() -> None:
+    """Domain FSM legal walk: automerge FSM reaches terminal via legal edges."""
+    from beacon.utils.truth_fsm import parse_truth_fsm, validate_truth_fsm
+
+    truth_path = Path(__file__).resolve().parent.parent / "docs/beacon/v1.6.15/features/beacon-v1615-automerge-gate/truth.md"
+    md = truth_path.read_text(encoding="utf-8")
+    fsm = parse_truth_fsm(md)
+    assert fsm["five_tuple_present"], "five-tuple must be present"
+    result = validate_truth_fsm(fsm)
+    assert not result["blocked"], f"FSM must validate: {result['findings']}"
+    states = fsm.get("states") or []
+    assert "coverage_checked" in states and "merged" in states, "FSM must reach merged"
+    assert "merged" in fsm.get("terminal_states") or [], "merged must be terminal"
+
+
 def main() -> int:
     import argparse
 
@@ -148,6 +163,7 @@ def main() -> int:
         test_adversarial_blocked_verdict_blocks,
         test_human_gate_preserved,
         test_failure_mode_hit_count,
+        test_fsm_legal_walk,
     ]
     if args.keyword:
         kw = args.keyword.lower()
