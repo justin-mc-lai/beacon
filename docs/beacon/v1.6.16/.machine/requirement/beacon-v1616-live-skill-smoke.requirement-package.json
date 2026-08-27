@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-08-27T13:32:31.269172+00:00",
+  "generated_at": "2026-08-27T13:49:15.235657+00:00",
   "feature": "beacon-v1616-live-skill-smoke",
   "feature_slug": "beacon-v1616-live-skill-smoke",
   "version": "v1.6.16",
@@ -19,7 +19,7 @@
   },
   "source_hashes": {
     "truth": "a8ea1af5548359009986f654b7456d17674f9c7e303bea94b8110739d074cc80",
-    "tests": "66dd7ee51fbaa6c4fb3909a33e1a945a49aecb53b00e79e5305b3ba0f0d83f57",
+    "tests": "986f9fdd052edfcfdca05efdaf815bb94008d1307c3627d48f749cf7a8747574",
     "tasks": "f6af21ded2193029932f7ba8ae85a9ec2fcf23d9b7c2b22eac12067528881731",
     "evidence": "82728e36ecd1c7e30289d69e02d4ee3fd4ce25a5287f5cba7ea83c38d1a205e0"
   },
@@ -68,7 +68,7 @@
       "ac_id": "AC-001",
       "tc_id": "TC-001",
       "layer": "",
-      "command": "`python3 tests/test_v1616_live_skill_smoke.py -k tier`",
+      "command": "`python3 tests/test_v1616_live_skill_smoke.py -k admission`",
       "assertion": "exit 0：local_admitted tier 下全量 skill 走 host_behavior",
       "evidence_path": "",
       "source": ""
@@ -77,7 +77,7 @@
       "ac_id": "AC-002",
       "tc_id": "TC-002",
       "layer": "",
-      "command": "`python3 tests/test_v1616_live_skill_smoke.py -k pass_rate`",
+      "command": "`python3 tests/test_v1616_live_skill_smoke.py -k host_behavior`",
       "assertion": "exit 0：live_skill_pass ≥ 30/37（真实执行通过率）",
       "evidence_path": "",
       "source": ""
@@ -86,7 +86,7 @@
       "ac_id": "AC-003",
       "tc_id": "TC-003",
       "layer": "",
-      "command": "`python3 tests/test_v1616_live_skill_smoke.py -k trace`",
+      "command": "`python3 tests/test_v1616_live_skill_smoke.py -k host_behavior`",
       "assertion": "exit 0：每 skill 有 host_behavior 执行 trace（status/reason_code/route）",
       "evidence_path": "",
       "source": ""
