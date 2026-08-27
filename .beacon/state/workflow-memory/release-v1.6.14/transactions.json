@@ -1,0 +1,171 @@
+{
+  "schema_version": "1.0",
+  "items": [
+    {
+      "run_id": "release-v1.6.14",
+      "stage": "qa",
+      "action": "stage_context",
+      "feature": "beacon-v1614-fsm-mermaid-validate",
+      "version": "v1.6.14",
+      "evidence_ref": [],
+      "requirement_refs": [
+        "docs/beacon/v1.6.14/release/v1.6.14.md"
+      ],
+      "decision_trace": [],
+      "blockers": [],
+      "attempt_seq": 1,
+      "previous_transaction_id": "",
+      "lineage_ids": [],
+      "transaction_id": "tx-wf-release-v1.6.14-qa-stage_context-974cf86e7ad8",
+      "source_hash": "974cf86e7ad8d2660b133fcfef797e1b7ca9bc02bcdb63ae2a87d423f5856ae8",
+      "projection_seq": "wf-974cf86e7ad8d266",
+      "occurred_at": "2026-08-27T10:24:59.340766+00:00",
+      "status": "applied",
+      "committed_at": "2026-08-27T10:24:59.354255+00:00",
+      "sink_paths": {
+        "context_pack": ".beacon/state/workflow-memory/release-v1.6.14/qa-context.json",
+        "workflow_lifecycle": ".beacon/memory/workflow-lifecycle.json"
+      },
+      "sink_checksums": {
+        "context_pack": "d6d332fe98a252e6957c47fb089bca2baedb94cf17c789f03e0f5284f47a942c",
+        "workflow_lifecycle": "da329a2d48dae12df0c84615f492738fda760572319d07410185399a15f652e1"
+      },
+      "event_id": "0a449203-9069-4498-a193-fbd3ccc06434"
+    },
+    {
+      "run_id": "release-v1.6.14",
+      "stage": "qa",
+      "action": "memory_writeback",
+      "feature": "beacon-v1614-fsm-mermaid-validate",
+      "version": "v1.6.14",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/status.json"
+      ],
+      "requirement_refs": [
+        "docs/beacon/v1.6.14/release/v1.6.14.md"
+      ],
+      "decision_trace": [],
+      "blockers": [],
+      "attempt_seq": 1,
+      "previous_transaction_id": "tx-wf-release-v1.6.14-qa-stage_context-974cf86e7ad8",
+      "lineage_ids": [
+        "tx-wf-release-v1.6.14-qa-stage_context-974cf86e7ad8"
+      ],
+      "transaction_id": "tx-wf-release-v1.6.14-qa-memory_writeback-aa3cd0fe44f4",
+      "source_hash": "aa3cd0fe44f4ce113041303fd3eed2254681415e8b29f97c7a79b0074875d00a",
+      "projection_seq": "wf-aa3cd0fe44f4ce11",
+      "occurred_at": "2026-08-27T10:24:59.362416+00:00",
+      "status": "applied",
+      "committed_at": "2026-08-27T10:24:59.370679+00:00",
+      "memory_id": "f69b1ea3-149a-4007-a310-1421b51248a7",
+      "event_id": "3fdb12d7-8815-45c9-a101-a026652d2c1d",
+      "sink_paths": {
+        "memory_v1": ".beacon/memory/memory-v1.json",
+        "legacy_projection": ".beacon/memory/decisions.json",
+        "workflow_lifecycle": ".beacon/memory/workflow-lifecycle.json"
+      },
+      "sink_checksums": {
+        "memory_v1": "cad3311ac7d8762aff4e46327a63315136fc150806f320f9cb215a7a4e559826",
+        "legacy_projection": "e5a9c7427d9f0ab93d52818c4a1d71301463af983a04eba3572c4915ef92e555",
+        "workflow_lifecycle": "14ea440111c33ea6a89a3b01c6ab0fd8c482fc8ef01fcf998f4849e7f772497b"
+      }
+    },
+    {
+      "run_id": "release-v1.6.14",
+      "stage": "release",
+      "action": "stage_context",
+      "feature": "beacon-v1614-fsm-mermaid-validate",
+      "version": "v1.6.14",
+      "evidence_ref": [],
+      "requirement_refs": [
+        "docs/beacon/v1.6.14/release/v1.6.14.md"
+      ],
+      "decision_trace": [
+        {
+          "memory_id": "f69b1ea3-149a-4007-a310-1421b51248a7",
+          "summary": "[qa] beacon-v1614-fsm-mermaid-validate => completed",
+          "source": "workflow.qa.writeback",
+          "updated_at": "2026-08-27T10:24:59.362837+00:00"
+        }
+      ],
+      "blockers": [],
+      "attempt_seq": 1,
+      "previous_transaction_id": "tx-wf-release-v1.6.14-qa-memory_writeback-aa3cd0fe44f4",
+      "lineage_ids": [
+        "tx-wf-release-v1.6.14-qa-stage_context-974cf86e7ad8",
+        "tx-wf-release-v1.6.14-qa-memory_writeback-aa3cd0fe44f4"
+      ],
+      "transaction_id": "tx-wf-release-v1.6.14-release-stage_context-a8b7ab2dc1bb",
+      "source_hash": "a8b7ab2dc1bbe27ad5753c99aeb86bc49e79010620c39f5afcc901896d18ac81",
+      "projection_seq": "wf-a8b7ab2dc1bbe27a",
+      "occurred_at": "2026-08-27T10:24:59.380808+00:00",
+      "status": "applied",
+      "committed_at": "2026-08-27T10:24:59.390363+00:00",
+      "sink_paths": {
+        "context_pack": ".beacon/state/workflow-memory/release-v1.6.14/release-context.json",
+        "workflow_lifecycle": ".beacon/memory/workflow-lifecycle.json"
+      },
+      "sink_checksums": {
+        "context_pack": "76f61bb3c6bb1ba421c1824110926ee773743d36043d02eb1e6ca3fbadfaaa5f",
+        "workflow_lifecycle": "80aa627aefe901a630d5781b9c1aca5f226fd3dadd0d1c3e8021ef5387ee5949"
+      },
+      "event_id": "658a2f01-4104-491c-a389-e44f795bdea8"
+    },
+    {
+      "run_id": "release-v1.6.14",
+      "stage": "release",
+      "action": "memory_writeback",
+      "feature": "beacon-v1614-fsm-mermaid-validate",
+      "version": "v1.6.14",
+      "evidence_ref": [
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/gate-report.json",
+        ".beacon/runs/release-v1.6.14/state.json",
+        "docs/beacon/v1.6.14/.machine/change/v1.6.14.json",
+        "docs/beacon/v1.6.14/change/v1.6.14.md",
+        "docs/beacon/v1.6.14/execution/boundaries.md"
+      ],
+      "requirement_refs": [
+        "docs/beacon/v1.6.14/release/v1.6.14.md"
+      ],
+      "decision_trace": [
+        {
+          "memory_id": "f69b1ea3-149a-4007-a310-1421b51248a7",
+          "summary": "[qa] beacon-v1614-fsm-mermaid-validate => completed",
+          "source": "workflow.qa.writeback",
+          "updated_at": "2026-08-27T10:24:59.362837+00:00"
+        }
+      ],
+      "blockers": [],
+      "attempt_seq": 1,
+      "previous_transaction_id": "tx-wf-release-v1.6.14-release-stage_context-a8b7ab2dc1bb",
+      "lineage_ids": [
+        "tx-wf-release-v1.6.14-qa-stage_context-974cf86e7ad8",
+        "tx-wf-release-v1.6.14-qa-memory_writeback-aa3cd0fe44f4",
+        "tx-wf-release-v1.6.14-release-stage_context-a8b7ab2dc1bb"
+      ],
+      "transaction_id": "tx-wf-release-v1.6.14-release-memory_writeback-e24bd9e16600",
+      "source_hash": "e24bd9e16600b2701dde446e4d8d1e67fe0ba49ddd17517d83119569eccfafd3",
+      "projection_seq": "wf-e24bd9e16600b270",
+      "occurred_at": "2026-08-27T10:24:59.398987+00:00",
+      "status": "applied",
+      "committed_at": "2026-08-27T10:24:59.406744+00:00",
+      "memory_id": "88b5b44b-4767-45d4-8761-82f9e33180ed",
+      "event_id": "8eb726b0-7106-49c4-bf23-d58418913788",
+      "sink_paths": {
+        "memory_v1": ".beacon/memory/memory-v1.json",
+        "legacy_projection": ".beacon/memory/decisions.json",
+        "workflow_lifecycle": ".beacon/memory/workflow-lifecycle.json"
+      },
+      "sink_checksums": {
+        "memory_v1": "294987bea34e17d1731fe57e9cf97c6e43a49cc0b564a71de409609ce5f28287",
+        "legacy_projection": "e5a9c7427d9f0ab93d52818c4a1d71301463af983a04eba3572c4915ef92e555",
+        "workflow_lifecycle": "624bf42149645117f8c2c77f9280dae61cbbc34c6132732b38ab8f0c007aea4a"
+      }
+    }
+  ],
+  "updated_at": "2026-08-27T10:24:59.407333+00:00"
+}
