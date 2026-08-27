@@ -18,6 +18,7 @@ from beacon.utils.requirement_clarity import (
 from beacon.utils.revision_delta import materialize_revision_delta
 from beacon.utils.revision_state import freeze_revision_state
 from beacon.utils.story_state import freeze_story_state, feature_slug
+from beacon.utils.truth_fsm import build_truth_fsm_gate_payload
 from beacon.utils.truth_integrity import build_truth_integrity_gate
 from beacon.utils.truth_review_gate import build_truth_review_gate_payload
 from beacon.utils.truth_map import rebuild_machine_json
@@ -166,6 +167,41 @@ def _freeze_impl(feature: str, project: Optional[str], version: str, json_output
         else:
             typer.echo("Beacon freeze blocked: truth review gate failed")
             for f in (truth_review.get("findings") or [])[:12]:
+                if isinstance(f, dict):
+                    typer.echo(f"  - [{f.get('kind')}] {f.get('text')}")
+        return 2
+
+    # v1.6.14: FSM five-tuple machine validation (mermaid + validate + digest), fail-closed.
+    from beacon.utils.feature_package import _read_text, package_paths
+    from beacon.utils.truth_fsm import attach_fsm_mermaid, build_truth_fsm_gate_payload
+
+    _fsm_paths = package_paths(project_root, version=resolved_version, feature=feature_slug(feature))
+    _fsm_md = _read_text(_fsm_paths["truth"])
+    _fsm_attach = attach_fsm_mermaid(_fsm_md)
+    if _fsm_attach.get("changed"):
+        _fsm_paths["truth"].write_text(_fsm_attach["markdown"], encoding="utf-8")
+    truth_fsm_gate = build_truth_fsm_gate_payload(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+    )
+    if bool(truth_fsm_gate.get("blocked")):
+        payload = {
+            "schema_version": "1.0",
+            "feature": feature,
+            "version": resolved_version,
+            "status": "blocked",
+            "reason_code": str(truth_fsm_gate.get("reason_code") or "truth_fsm_invalid"),
+            "truth_fsm_gate": truth_fsm_gate,
+            "truth_review_gate": truth_review,
+            "truth_integrity_gate": integrity_gate,
+            "feature_package_validation": post_validation,
+        }
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo("Beacon freeze blocked: truth FSM validation failed")
+            for f in (truth_fsm_gate.get("findings") or [])[:12]:
                 if isinstance(f, dict):
                     typer.echo(f"  - [{f.get('kind')}] {f.get('text')}")
         return 2

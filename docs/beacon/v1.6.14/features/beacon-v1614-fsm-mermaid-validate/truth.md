@@ -141,3 +141,15 @@ beacon-v1614-fsm-mermaid-validate
 调研：statespec（pypi.org/project/statespec/）——声明式状态机单源：Mermaid 渲染 + validate + 语义 digest
 beacon 现状：truth FSM 五元组为纯表格，无自动 mermaid、无机器校验、无 digest
 ```
+
+## FSM mermaid（投影）
+
+```mermaid
+stateDiagram-v2
+    [*] --> scaffold
+    scaffold --> rendered : render (fsm_present)
+    rendered --> validated : validate (states_ok ∧ transitions_ok ∧ illegal_ok)
+    validated --> digest_bound : digest (behavior_stable)
+    digest_bound --> frozen : freeze (gate_ok)
+    frozen --> [*]
+```
