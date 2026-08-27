@@ -1,0 +1,172 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-08-27T09:06:02.134533+00:00",
+  "feature": "beacon-v1614-fsm-test-generation",
+  "feature_slug": "beacon-v1614-fsm-test-generation",
+  "version": "v1.6.14",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/truth.md",
+    "tests": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/tests.md",
+    "tasks": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/tasks.md",
+    "evidence": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "b11eb1dec909f96f3cf492de027871fd88aa7eb232e27028c4ad74f0e6b7f5c3",
+    "tests": "56d6e3d693e97f6bad2a713d3c3bcde19888189a22177523649061167bb6421c",
+    "tasks": "8da02b7a168335cb4cc181c55f4f45056f4a5d3299c680ae725a287bcf1374b3",
+    "evidence": "01003617df5022bb19f73e5835a5faa8704565df48f3d148af36ce29db0175bf"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-v1614-fsm-test-generation",
+    "version": "v1.6.14",
+    "status": "frozen",
+    "language": "zh",
+    "domain_required": "false",
+    "ux_required": "false",
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "package_maturity": "filled",
+    "materials_status": "current",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/truth.md",
+      "user_story": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/truth.md",
+      "test_case": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/tests.md"
+    }
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "从合法 truth FSM 自动生成 legal-walk 测试用例（覆盖从 initial 到 terminal 的合法路径，可达状态全走）。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "生成的用例作为 exec-layer TC 进 tests.md（可执行、断言退出码）。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "每个到达状态生成顶点断言（vertex=验证：进入该状态即断言成功）。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "illegal 转换路径不被生成（生成器排除 illegal，产出中无非法路径）。",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "",
+      "command": "`python3 tests/test_v1614_fsm_gen.py -k walk`",
+      "assertion": "exit 0：从合法 FSM 生成 legal-walk 用例，可达状态全走",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "",
+      "command": "`python3 tests/test_v1614_fsm_gen.py -k exec_tc`",
+      "assertion": "exit 0：生成用例可执行（进 exec-layer TC）",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "",
+      "command": "`python3 tests/test_v1614_fsm_gen.py -k vertex_assert`",
+      "assertion": "exit 0：每到达状态生成顶点断言",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "",
+      "command": "`python3 tests/test_v1614_fsm_gen.py -k illegal_excluded`",
+      "assertion": "exit 0：illegal 路径未被生成",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-EXEC",
+      "layer": "",
+      "command": "`python3 tests/test_v1614_fsm_gen.py`",
+      "assertion": "exit 0：全断言通过",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-ILLEGAL",
+      "layer": "",
+      "command": "`rg -n \"illegal 路径被生成\\|跳过校验\" docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/truth.md`",
+      "assertion": "illegal（安全网失效被拒）",
+      "evidence_path": "",
+      "source": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Implement AC-001: 从合法 truth FSM 自动生成 legal-walk 测试用例（覆盖从 initial 到 terminal 的合法路径，可达状态全走）。 · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/AC-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Implement AC-002: 生成的用例作为 exec-layer TC 进 tests.md（可执行、断言退出码）。 · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/AC-002.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Implement AC-003: 每个到达状态生成顶点断言（vertex=验证：进入该状态即断言成功）。 · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/AC-003.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Implement AC-004: illegal 转换路径不被生成（生成器排除 illegal，产出中无非法路径）。 · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/AC-004.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-test-generation/QA-MATRIX.json`",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "package",
+      "authority": "requirement_truth",
+      "path": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/truth.md"
+    },
+    {
+      "surface": "tests",
+      "authority": "test_truth",
+      "path": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/tests.md"
+    },
+    {
+      "surface": "truth_review_gate",
+      "authority": "support_advisory",
+      "path": "docs/beacon/v1.6.14/.machine/execution/beacon-v1614-fsm-test-generation.truth-review-gate.json"
+    }
+  ]
+}

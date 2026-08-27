@@ -1,0 +1,172 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-08-27T09:06:04.120405+00:00",
+  "feature": "beacon-v1614-feature-map",
+  "feature_slug": "beacon-v1614-feature-map",
+  "version": "v1.6.14",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.14/features/beacon-v1614-feature-map/truth.md",
+    "tests": "docs/beacon/v1.6.14/features/beacon-v1614-feature-map/tests.md",
+    "tasks": "docs/beacon/v1.6.14/features/beacon-v1614-feature-map/tasks.md",
+    "evidence": "docs/beacon/v1.6.14/features/beacon-v1614-feature-map/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "b1d569f1b6b3a11eb6c67d2a28c49ec95331133156a5f53d475cc5aca01583fb",
+    "tests": "da4505d06238303a6f84a5f849bd5721bf2ade779de01f4fa23693f9753f007d",
+    "tasks": "51c0d180c9c7fed146f76575b6460af64877866644fce799c26bb82d079dac4b",
+    "evidence": "0321e7302cf61dc3223d0ff709e0a21710187c8615a6d62a9eaf0c74f8995a68"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-v1614-feature-map",
+    "version": "v1.6.14",
+    "status": "frozen",
+    "language": "zh",
+    "domain_required": "false",
+    "ux_required": "false",
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "package_maturity": "filled",
+    "materials_status": "current",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.14/features/beacon-v1614-feature-map/truth.md",
+      "user_story": "docs/beacon/v1.6.14/features/beacon-v1614-feature-map/truth.md",
+      "test_case": "docs/beacon/v1.6.14/features/beacon-v1614-feature-map/tests.md"
+    }
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "每个 feature 有 `feature-map.md` 骨架：entry_points + verification_commands 均绑定 AC ID；骨架随 truth 冻结派生。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "复现路由：map 含 `reproduce[]`（symptom_hint → 定位 steps），模糊 bug 描述可路由到对应 entry/verification。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "agent 自验证：map 的 verification 命令可被 agent 执行（复用 code2truth 资产），输出可观测信号供断言。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "单向投影：map 引用 truth（AC），不反向改 truth；不新增命令面；AC 变化时 map 漂移可检测。",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "",
+      "command": "`rg -n \"feature-map.md\" docs/beacon/v1.6.14/features/beacon-v1614-feature-map/truth.md`",
+      "assertion": "骨架引用存在 + entry/verification 绑定 AC",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "",
+      "command": "`python3 tests/test_v1614_feature_map.py -k reproduce`",
+      "assertion": "exit 0：模糊描述路由到 entry/verification",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "",
+      "command": "`python3 tests/test_v1614_feature_map.py -k self_verify`",
+      "assertion": "exit 0：verification 命令可执行且信号可断言",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "",
+      "command": "`python3 tests/test_v1614_feature_map.py -k one_way_projection`",
+      "assertion": "exit 0：map 引用 truth 不反向改写；无命令面",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-EXEC",
+      "layer": "",
+      "command": "`python3 tests/test_v1614_feature_map.py`",
+      "assertion": "exit 0：全断言通过",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-ILLEGAL",
+      "layer": "",
+      "command": "`rg -n \"反向改写\\|投影越权\" docs/beacon/v1.6.14/features/beacon-v1614-feature-map/truth.md`",
+      "assertion": "illegal（map 越权改 truth 被拒）",
+      "evidence_path": "",
+      "source": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Implement AC-001: 每个 feature 有 `feature-map.md` 骨架：entry_points + verification_commands... · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1614-feature-map/AC-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Implement AC-002: 复现路由：map 含 `reproduce[]`（symptom_hint → 定位 steps），模糊 bug 描述可路由到对应 ent... · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1614-feature-map/AC-002.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Implement AC-003: agent 自验证：map 的 verification 命令可被 agent 执行（复用 code2truth 资产），输出可观测信号供断言。 · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1614-feature-map/AC-003.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Implement AC-004: 单向投影：map 引用 truth（AC），不反向改 truth；不新增命令面；AC 变化时 map 漂移可检测。 · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1614-feature-map/AC-004.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1614-feature-map/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1614-feature-map/QA-MATRIX.json`",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "package",
+      "authority": "requirement_truth",
+      "path": "docs/beacon/v1.6.14/features/beacon-v1614-feature-map/truth.md"
+    },
+    {
+      "surface": "tests",
+      "authority": "test_truth",
+      "path": "docs/beacon/v1.6.14/features/beacon-v1614-feature-map/tests.md"
+    },
+    {
+      "surface": "truth_review_gate",
+      "authority": "support_advisory",
+      "path": "docs/beacon/v1.6.14/.machine/execution/beacon-v1614-feature-map.truth-review-gate.json"
+    }
+  ]
+}

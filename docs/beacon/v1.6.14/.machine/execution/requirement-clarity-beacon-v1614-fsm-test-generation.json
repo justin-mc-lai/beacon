@@ -1,0 +1,514 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1614-fsm-test-generation",
+  "feature_slug": "beacon-v1614-fsm-test-generation",
+  "version": "v1.6.14",
+  "runtime_version": "v1.6.12",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.6.14/.machine/execution/requirement-clarity-beacon-v1614-fsm-test-generation.json",
+  "report_markdown_path": "docs/beacon/v1.6.14/execution/requirement-clarity-beacon-v1614-fsm-test-generation.md",
+  "state_path": ".beacon/state/requirement-clarity-beacon-v1614-fsm-test-generation.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.14",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-08-27T09:06:01.011738+00:00",
+    "feature": "beacon-v1614-fsm-test-generation",
+    "feature_slug": "beacon-v1614-fsm-test-generation",
+    "prd_ref": "docs/beacon/v1.6.14/prd/beacon-v1614-fsm-test-generation.md",
+    "user_story_ref": "docs/beacon/v1.6.14/user-story/beacon-v1614-fsm-test-generation.md"
+  },
+  "domain_fsm_gate": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1614-fsm-test-generation",
+    "feature_slug": "beacon-v1614-fsm-test-generation",
+    "version": "v1.6.14",
+    "truth_path": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/truth.md",
+    "tests_path": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/tests.md",
+    "required": true,
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "findings": [],
+    "requirement": {
+      "required": true,
+      "reason": "domain_section_present",
+      "explicit": false,
+      "partial": true,
+      "complexity": false,
+      "business_signal": true,
+      "version_supported": true
+    },
+    "projection": {
+      "schema_version": "1.0",
+      "domain_fsm_schema": "domain-fsm.v1",
+      "entity_precedence_schema": "entity-precedence.v1",
+      "frontmatter": {
+        "slug": "beacon-v1614-fsm-test-generation",
+        "version": "v1.6.14",
+        "status": "draft",
+        "language": "zh",
+        "domain_required": "false",
+        "ux_required": "false",
+        "parser_contract": "beacon-feature-package-v2",
+        "truth_source_model": "feature_package_authoritative",
+        "package_maturity": "filled",
+        "materials_status": "current",
+        "canonical_refs": {
+          "prd": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/truth.md",
+          "user_story": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/truth.md",
+          "test_case": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/tests.md"
+        }
+      },
+      "frontmatter_errors": [],
+      "has_domain_model_section": true,
+      "has_domain_fsm_section": true,
+      "has_illegal_transition_section": true,
+      "entities": [
+        {
+          "entity": "FsmModel",
+          "key": "states, transitions, initial, terminal, illegal",
+          "precedence": "输入",
+          "requires": "输入"
+        },
+        {
+          "entity": "LegalPathWalker",
+          "key": "walk from initial to terminal, visited states",
+          "precedence": "生成器",
+          "requires": "生成器"
+        },
+        {
+          "entity": "GeneratedTc",
+          "key": "tc_id, path, per-state assertion",
+          "precedence": "产物",
+          "requires": "产物"
+        },
+        {
+          "entity": "IllegalExcluder",
+          "key": "illegal transitions filtered",
+          "precedence": "安全网",
+          "requires": "安全网"
+        }
+      ],
+      "entity_precedence": [
+        {
+          "entity": "FsmModel",
+          "key": "states, transitions, initial, terminal, illegal",
+          "precedence": "输入",
+          "requires": "输入"
+        },
+        {
+          "entity": "LegalPathWalker",
+          "key": "walk from initial to terminal, visited states",
+          "precedence": "生成器",
+          "requires": "生成器"
+        },
+        {
+          "entity": "GeneratedTc",
+          "key": "tc_id, path, per-state assertion",
+          "precedence": "产物",
+          "requires": "产物"
+        },
+        {
+          "entity": "IllegalExcluder",
+          "key": "illegal transitions filtered",
+          "precedence": "安全网",
+          "requires": "安全网"
+        }
+      ],
+      "aggregates": [
+        {
+          "name": "Order",
+          "states": [
+            "covered",
+            "fsm_valid",
+            "generated",
+            "released",
+            "tc_bound"
+          ],
+          "transitions": [
+            {
+              "from": "fsm_valid",
+              "to": "generated",
+              "guard": "walk_ok"
+            },
+            {
+              "from": "generated",
+              "to": "tc_bound",
+              "guard": "ac_bind"
+            },
+            {
+              "from": "tc_bound",
+              "to": "covered",
+              "guard": "all_reachable_visited"
+            },
+            {
+              "from": "covered",
+              "to": "released",
+              "guard": "qa_pass"
+            }
+          ]
+        }
+      ],
+      "illegal_transition_slots": [
+        {
+          "description": "fsm 不合法仍生成（跳过校验）",
+          "aggregate": "",
+          "source": "truth"
+        }
+      ],
+      "acceptance_criteria": [
+        {
+          "ac_id": "AC-001",
+          "description": "从合法 truth FSM 自动生成 legal-walk 测试用例（覆盖从 initial 到 terminal 的合法路径，可达状态全走）。"
+        },
+        {
+          "ac_id": "AC-002",
+          "description": "生成的用例作为 exec-layer TC 进 tests.md（可执行、断言退出码）。"
+        },
+        {
+          "ac_id": "AC-003",
+          "description": "每个到达状态生成顶点断言（vertex=验证：进入该状态即断言成功）。"
+        },
+        {
+          "ac_id": "AC-004",
+          "description": "illegal 转换路径不被生成（生成器排除 illegal，产出中无非法路径）。"
+        }
+      ],
+      "bound_ac_ids": [
+        "AC-004"
+      ],
+      "orphan_ac_ids": [
+        "AC-001",
+        "AC-003"
+      ],
+      "aggregates_missing_illegal_slots": [],
+      "raw_section_titles": [
+        "人话",
+        "User Intent",
+        "User Intent Snapshot",
+        "Intent Coverage Matrix",
+        "用户旅程",
+        "First principles",
+        "Domain Model",
+        "Acceptance Criteria",
+        "Domain FSM Order",
+        "Illegal transitions",
+        "FSM 五元组",
+        "invalid / illegal",
+        "Non-goals",
+        "Freeze readiness",
+        "Gap vs gold (订单支付示例)",
+        "Source Excerpt"
+      ]
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "required": true,
+      "blocked": false,
+      "status": "pass",
+      "reason_code": "",
+      "findings": [],
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "beacon-v1614-fsm-test-generation",
+          "version": "v1.6.14",
+          "status": "draft",
+          "language": "zh",
+          "domain_required": "false",
+          "ux_required": "false",
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "package_maturity": "filled",
+          "materials_status": "current",
+          "canonical_refs": {
+            "prd": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/truth.md",
+            "user_story": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/truth.md",
+            "test_case": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/tests.md"
+          }
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": true,
+        "has_domain_fsm_section": true,
+        "has_illegal_transition_section": true,
+        "entities": [
+          {
+            "entity": "FsmModel",
+            "key": "states, transitions, initial, terminal, illegal",
+            "precedence": "输入",
+            "requires": "输入"
+          },
+          {
+            "entity": "LegalPathWalker",
+            "key": "walk from initial to terminal, visited states",
+            "precedence": "生成器",
+            "requires": "生成器"
+          },
+          {
+            "entity": "GeneratedTc",
+            "key": "tc_id, path, per-state assertion",
+            "precedence": "产物",
+            "requires": "产物"
+          },
+          {
+            "entity": "IllegalExcluder",
+            "key": "illegal transitions filtered",
+            "precedence": "安全网",
+            "requires": "安全网"
+          }
+        ],
+        "entity_precedence": [
+          {
+            "entity": "FsmModel",
+            "key": "states, transitions, initial, terminal, illegal",
+            "precedence": "输入",
+            "requires": "输入"
+          },
+          {
+            "entity": "LegalPathWalker",
+            "key": "walk from initial to terminal, visited states",
+            "precedence": "生成器",
+            "requires": "生成器"
+          },
+          {
+            "entity": "GeneratedTc",
+            "key": "tc_id, path, per-state assertion",
+            "precedence": "产物",
+            "requires": "产物"
+          },
+          {
+            "entity": "IllegalExcluder",
+            "key": "illegal transitions filtered",
+            "precedence": "安全网",
+            "requires": "安全网"
+          }
+        ],
+        "aggregates": [
+          {
+            "name": "Order",
+            "states": [
+              "covered",
+              "fsm_valid",
+              "generated",
+              "released",
+              "tc_bound"
+            ],
+            "transitions": [
+              {
+                "from": "fsm_valid",
+                "to": "generated",
+                "guard": "walk_ok"
+              },
+              {
+                "from": "generated",
+                "to": "tc_bound",
+                "guard": "ac_bind"
+              },
+              {
+                "from": "tc_bound",
+                "to": "covered",
+                "guard": "all_reachable_visited"
+              },
+              {
+                "from": "covered",
+                "to": "released",
+                "guard": "qa_pass"
+              }
+            ]
+          }
+        ],
+        "illegal_transition_slots": [
+          {
+            "description": "fsm 不合法仍生成（跳过校验）",
+            "aggregate": "",
+            "source": "truth"
+          }
+        ],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-001",
+            "description": "从合法 truth FSM 自动生成 legal-walk 测试用例（覆盖从 initial 到 terminal 的合法路径，可达状态全走）。"
+          },
+          {
+            "ac_id": "AC-002",
+            "description": "生成的用例作为 exec-layer TC 进 tests.md（可执行、断言退出码）。"
+          },
+          {
+            "ac_id": "AC-003",
+            "description": "每个到达状态生成顶点断言（vertex=验证：进入该状态即断言成功）。"
+          },
+          {
+            "ac_id": "AC-004",
+            "description": "illegal 转换路径不被生成（生成器排除 illegal，产出中无非法路径）。"
+          }
+        ],
+        "bound_ac_ids": [
+          "AC-004"
+        ],
+        "orphan_ac_ids": [
+          "AC-001",
+          "AC-003"
+        ],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "人话",
+          "User Intent",
+          "User Intent Snapshot",
+          "Intent Coverage Matrix",
+          "用户旅程",
+          "First principles",
+          "Domain Model",
+          "Acceptance Criteria",
+          "Domain FSM Order",
+          "Illegal transitions",
+          "FSM 五元组",
+          "invalid / illegal",
+          "Non-goals",
+          "Freeze readiness",
+          "Gap vs gold (订单支付示例)",
+          "Source Excerpt"
+        ]
+      },
+      "summary": {
+        "entity_count": 4,
+        "aggregate_count": 1,
+        "illegal_slot_count": 1,
+        "orphan_ac_count": 2,
+        "bound_ac_count": 1
+      }
+    },
+    "recommended_action": ""
+  },
+  "human_closure_contract": {
+    "required": false,
+    "research_path": "docs/beacon/v1.6.14/research/beacon-v1614-fsm-test-generation.md",
+    "research_exists": false,
+    "source_architecture_path": "docs/beacon/v1.6.14/source-architecture/beacon-v1614-fsm-test-generation.md",
+    "source_architecture_exists": false,
+    "required_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "missing_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "diagram_types": [],
+    "complexity_signals": []
+  },
+  "requirement_closure_contract": {
+    "required": true,
+    "chain_order": [
+      "research",
+      "prd",
+      "user_story",
+      "test_case",
+      "requirement_clarity",
+      "freeze"
+    ],
+    "human_closure_required": false,
+    "paths": {
+      "research": "docs/beacon/v1.6.14/research/beacon-v1614-fsm-test-generation.md",
+      "prd": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/truth.md",
+      "user_story": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/truth.md",
+      "test_case": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/tests.md"
+    },
+    "exists": {
+      "research": false,
+      "prd": true,
+      "user_story": true,
+      "test_case": true
+    },
+    "required_research_sections": [],
+    "missing_research_sections": [],
+    "ac_projection": {
+      "prd_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "user_story_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "test_case_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "upstream_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "missing_test_case_ac_ids": []
+    }
+  },
+  "version_projection_truth_contract": {
+    "required": false,
+    "supported": true,
+    "projection_types": [],
+    "research_path": "docs/beacon/v1.6.14/research/beacon-v1614-fsm-test-generation.md",
+    "research_exists": false,
+    "required_fields": [
+      "prd_refs",
+      "user_story_refs",
+      "test_case_refs",
+      "coverage_notes",
+      "out_of_scope_notes"
+    ],
+    "field_presence": {
+      "prd_refs": false,
+      "user_story_refs": false,
+      "test_case_refs": false,
+      "coverage_notes": false,
+      "out_of_scope_notes": false
+    },
+    "missing_fields": [],
+    "required_refs": {
+      "prd_refs": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/truth.md",
+      "user_story_refs": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/truth.md",
+      "test_case_refs": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/tests.md"
+    },
+    "missing_ref_targets": [],
+    "ready": false
+  },
+  "support_write_topology_contract": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "diagnostics": []
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/truth.md",
+    "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/tests.md",
+    "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/tasks.md",
+    "docs/beacon/v1.6.14/features/beacon-v1614-fsm-test-generation/evidence.md"
+  ]
+}

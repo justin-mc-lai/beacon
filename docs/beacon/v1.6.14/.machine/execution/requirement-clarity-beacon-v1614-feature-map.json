@@ -1,0 +1,528 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1614-feature-map",
+  "feature_slug": "beacon-v1614-feature-map",
+  "version": "v1.6.14",
+  "runtime_version": "v1.6.12",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.6.14/.machine/execution/requirement-clarity-beacon-v1614-feature-map.json",
+  "report_markdown_path": "docs/beacon/v1.6.14/execution/requirement-clarity-beacon-v1614-feature-map.md",
+  "state_path": ".beacon/state/requirement-clarity-beacon-v1614-feature-map.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.14",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-08-27T09:06:02.875263+00:00",
+    "feature": "beacon-v1614-feature-map",
+    "feature_slug": "beacon-v1614-feature-map",
+    "prd_ref": "docs/beacon/v1.6.14/prd/beacon-v1614-feature-map.md",
+    "user_story_ref": "docs/beacon/v1.6.14/user-story/beacon-v1614-feature-map.md"
+  },
+  "domain_fsm_gate": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1614-feature-map",
+    "feature_slug": "beacon-v1614-feature-map",
+    "version": "v1.6.14",
+    "truth_path": "docs/beacon/v1.6.14/features/beacon-v1614-feature-map/truth.md",
+    "tests_path": "docs/beacon/v1.6.14/features/beacon-v1614-feature-map/tests.md",
+    "required": true,
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "findings": [],
+    "requirement": {
+      "required": true,
+      "reason": "domain_section_present",
+      "explicit": false,
+      "partial": true,
+      "complexity": false,
+      "business_signal": true,
+      "version_supported": true
+    },
+    "projection": {
+      "schema_version": "1.0",
+      "domain_fsm_schema": "domain-fsm.v1",
+      "entity_precedence_schema": "entity-precedence.v1",
+      "frontmatter": {
+        "slug": "beacon-v1614-feature-map",
+        "version": "v1.6.14",
+        "status": "draft",
+        "language": "zh",
+        "domain_required": "false",
+        "ux_required": "false",
+        "parser_contract": "beacon-feature-package-v2",
+        "truth_source_model": "feature_package_authoritative",
+        "package_maturity": "filled",
+        "materials_status": "current",
+        "canonical_refs": {
+          "prd": "docs/beacon/v1.6.14/features/beacon-v1614-feature-map/truth.md",
+          "user_story": "docs/beacon/v1.6.14/features/beacon-v1614-feature-map/truth.md",
+          "test_case": "docs/beacon/v1.6.14/features/beacon-v1614-feature-map/tests.md"
+        }
+      },
+      "frontmatter_errors": [],
+      "has_domain_model_section": true,
+      "has_domain_fsm_section": true,
+      "has_illegal_transition_section": true,
+      "entities": [
+        {
+          "entity": "FeatureMap",
+          "key": "slug, entry_points[], verification[], reproduce[]",
+          "precedence": "`features/<slug>/feature-map.md`",
+          "requires": "`features/<slug>/feature-map.md`"
+        },
+        {
+          "entity": "EntryPoint",
+          "key": "ac_id, type(route/function/file/ui), path, how_to_enter",
+          "precedence": "功能入口",
+          "requires": "功能入口"
+        },
+        {
+          "entity": "Verification",
+          "key": "ac_id, command, assertion, signal",
+          "precedence": "验证命令 + 信号",
+          "requires": "验证命令 + 信号"
+        },
+        {
+          "entity": "ReproduceRoute",
+          "key": "symptom_hint, steps[]",
+          "precedence": "模糊描述 → 定位",
+          "requires": "模糊描述 → 定位"
+        }
+      ],
+      "entity_precedence": [
+        {
+          "entity": "FeatureMap",
+          "key": "slug, entry_points[], verification[], reproduce[]",
+          "precedence": "`features/<slug>/feature-map.md`",
+          "requires": "`features/<slug>/feature-map.md`"
+        },
+        {
+          "entity": "EntryPoint",
+          "key": "ac_id, type(route/function/file/ui), path, how_to_enter",
+          "precedence": "功能入口",
+          "requires": "功能入口"
+        },
+        {
+          "entity": "Verification",
+          "key": "ac_id, command, assertion, signal",
+          "precedence": "验证命令 + 信号",
+          "requires": "验证命令 + 信号"
+        },
+        {
+          "entity": "ReproduceRoute",
+          "key": "symptom_hint, steps[]",
+          "precedence": "模糊描述 → 定位",
+          "requires": "模糊描述 → 定位"
+        }
+      ],
+      "aggregates": [
+        {
+          "name": "Order",
+          "states": [
+            "agent_verified",
+            "filled",
+            "implement",
+            "reproduce_added",
+            "routable",
+            "scaffolded",
+            "self_verifying",
+            "truth_frozen"
+          ],
+          "transitions": [
+            {
+              "from": "truth_frozen",
+              "to": "scaffolded",
+              "guard": "ac_bind"
+            },
+            {
+              "from": "implement",
+              "to": "filled",
+              "guard": "source_anchored"
+            },
+            {
+              "from": "reproduce_added",
+              "to": "routable",
+              "guard": "hints_bound"
+            },
+            {
+              "from": "agent_verified",
+              "to": "self_verifying",
+              "guard": "signals_ok"
+            }
+          ]
+        }
+      ],
+      "illegal_transition_slots": [
+        {
+          "description": "map → truth（反向改写）",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "map 不绑定 AC 仍填充（无锚）",
+          "aggregate": "",
+          "source": "truth"
+        }
+      ],
+      "acceptance_criteria": [
+        {
+          "ac_id": "AC-001",
+          "description": "每个 feature 有 `feature-map.md` 骨架：entry_points + verification_commands 均绑定 AC ID；骨架随 truth 冻结派生。"
+        },
+        {
+          "ac_id": "AC-002",
+          "description": "复现路由：map 含 `reproduce[]`（symptom_hint → 定位 steps），模糊 bug 描述可路由到对应 entry/verification。"
+        },
+        {
+          "ac_id": "AC-003",
+          "description": "agent 自验证：map 的 verification 命令可被 agent 执行（复用 code2truth 资产），输出可观测信号供断言。"
+        },
+        {
+          "ac_id": "AC-004",
+          "description": "单向投影：map 引用 truth（AC），不反向改 truth；不新增命令面；AC 变化时 map 漂移可检测。"
+        }
+      ],
+      "bound_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003"
+      ],
+      "orphan_ac_ids": [],
+      "aggregates_missing_illegal_slots": [],
+      "raw_section_titles": [
+        "人话",
+        "User Intent",
+        "User Intent Snapshot",
+        "Intent Coverage Matrix",
+        "用户旅程",
+        "First principles",
+        "Domain Model",
+        "Acceptance Criteria",
+        "Domain FSM Order",
+        "Illegal transitions",
+        "FSM 五元组",
+        "invalid / illegal",
+        "Non-goals",
+        "Freeze readiness",
+        "Gap vs gold (订单支付示例)",
+        "Source Excerpt"
+      ]
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "required": true,
+      "blocked": false,
+      "status": "pass",
+      "reason_code": "",
+      "findings": [],
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "beacon-v1614-feature-map",
+          "version": "v1.6.14",
+          "status": "draft",
+          "language": "zh",
+          "domain_required": "false",
+          "ux_required": "false",
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "package_maturity": "filled",
+          "materials_status": "current",
+          "canonical_refs": {
+            "prd": "docs/beacon/v1.6.14/features/beacon-v1614-feature-map/truth.md",
+            "user_story": "docs/beacon/v1.6.14/features/beacon-v1614-feature-map/truth.md",
+            "test_case": "docs/beacon/v1.6.14/features/beacon-v1614-feature-map/tests.md"
+          }
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": true,
+        "has_domain_fsm_section": true,
+        "has_illegal_transition_section": true,
+        "entities": [
+          {
+            "entity": "FeatureMap",
+            "key": "slug, entry_points[], verification[], reproduce[]",
+            "precedence": "`features/<slug>/feature-map.md`",
+            "requires": "`features/<slug>/feature-map.md`"
+          },
+          {
+            "entity": "EntryPoint",
+            "key": "ac_id, type(route/function/file/ui), path, how_to_enter",
+            "precedence": "功能入口",
+            "requires": "功能入口"
+          },
+          {
+            "entity": "Verification",
+            "key": "ac_id, command, assertion, signal",
+            "precedence": "验证命令 + 信号",
+            "requires": "验证命令 + 信号"
+          },
+          {
+            "entity": "ReproduceRoute",
+            "key": "symptom_hint, steps[]",
+            "precedence": "模糊描述 → 定位",
+            "requires": "模糊描述 → 定位"
+          }
+        ],
+        "entity_precedence": [
+          {
+            "entity": "FeatureMap",
+            "key": "slug, entry_points[], verification[], reproduce[]",
+            "precedence": "`features/<slug>/feature-map.md`",
+            "requires": "`features/<slug>/feature-map.md`"
+          },
+          {
+            "entity": "EntryPoint",
+            "key": "ac_id, type(route/function/file/ui), path, how_to_enter",
+            "precedence": "功能入口",
+            "requires": "功能入口"
+          },
+          {
+            "entity": "Verification",
+            "key": "ac_id, command, assertion, signal",
+            "precedence": "验证命令 + 信号",
+            "requires": "验证命令 + 信号"
+          },
+          {
+            "entity": "ReproduceRoute",
+            "key": "symptom_hint, steps[]",
+            "precedence": "模糊描述 → 定位",
+            "requires": "模糊描述 → 定位"
+          }
+        ],
+        "aggregates": [
+          {
+            "name": "Order",
+            "states": [
+              "agent_verified",
+              "filled",
+              "implement",
+              "reproduce_added",
+              "routable",
+              "scaffolded",
+              "self_verifying",
+              "truth_frozen"
+            ],
+            "transitions": [
+              {
+                "from": "truth_frozen",
+                "to": "scaffolded",
+                "guard": "ac_bind"
+              },
+              {
+                "from": "implement",
+                "to": "filled",
+                "guard": "source_anchored"
+              },
+              {
+                "from": "reproduce_added",
+                "to": "routable",
+                "guard": "hints_bound"
+              },
+              {
+                "from": "agent_verified",
+                "to": "self_verifying",
+                "guard": "signals_ok"
+              }
+            ]
+          }
+        ],
+        "illegal_transition_slots": [
+          {
+            "description": "map → truth（反向改写）",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "map 不绑定 AC 仍填充（无锚）",
+            "aggregate": "",
+            "source": "truth"
+          }
+        ],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-001",
+            "description": "每个 feature 有 `feature-map.md` 骨架：entry_points + verification_commands 均绑定 AC ID；骨架随 truth 冻结派生。"
+          },
+          {
+            "ac_id": "AC-002",
+            "description": "复现路由：map 含 `reproduce[]`（symptom_hint → 定位 steps），模糊 bug 描述可路由到对应 entry/verification。"
+          },
+          {
+            "ac_id": "AC-003",
+            "description": "agent 自验证：map 的 verification 命令可被 agent 执行（复用 code2truth 资产），输出可观测信号供断言。"
+          },
+          {
+            "ac_id": "AC-004",
+            "description": "单向投影：map 引用 truth（AC），不反向改 truth；不新增命令面；AC 变化时 map 漂移可检测。"
+          }
+        ],
+        "bound_ac_ids": [
+          "AC-001",
+          "AC-002",
+          "AC-003"
+        ],
+        "orphan_ac_ids": [],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "人话",
+          "User Intent",
+          "User Intent Snapshot",
+          "Intent Coverage Matrix",
+          "用户旅程",
+          "First principles",
+          "Domain Model",
+          "Acceptance Criteria",
+          "Domain FSM Order",
+          "Illegal transitions",
+          "FSM 五元组",
+          "invalid / illegal",
+          "Non-goals",
+          "Freeze readiness",
+          "Gap vs gold (订单支付示例)",
+          "Source Excerpt"
+        ]
+      },
+      "summary": {
+        "entity_count": 4,
+        "aggregate_count": 1,
+        "illegal_slot_count": 2,
+        "orphan_ac_count": 0,
+        "bound_ac_count": 3
+      }
+    },
+    "recommended_action": ""
+  },
+  "human_closure_contract": {
+    "required": false,
+    "research_path": "docs/beacon/v1.6.14/research/beacon-v1614-feature-map.md",
+    "research_exists": false,
+    "source_architecture_path": "docs/beacon/v1.6.14/source-architecture/beacon-v1614-feature-map.md",
+    "source_architecture_exists": false,
+    "required_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "missing_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "diagram_types": [],
+    "complexity_signals": []
+  },
+  "requirement_closure_contract": {
+    "required": true,
+    "chain_order": [
+      "research",
+      "prd",
+      "user_story",
+      "test_case",
+      "requirement_clarity",
+      "freeze"
+    ],
+    "human_closure_required": false,
+    "paths": {
+      "research": "docs/beacon/v1.6.14/research/beacon-v1614-feature-map.md",
+      "prd": "docs/beacon/v1.6.14/features/beacon-v1614-feature-map/truth.md",
+      "user_story": "docs/beacon/v1.6.14/features/beacon-v1614-feature-map/truth.md",
+      "test_case": "docs/beacon/v1.6.14/features/beacon-v1614-feature-map/tests.md"
+    },
+    "exists": {
+      "research": false,
+      "prd": true,
+      "user_story": true,
+      "test_case": true
+    },
+    "required_research_sections": [],
+    "missing_research_sections": [],
+    "ac_projection": {
+      "prd_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "user_story_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "test_case_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "upstream_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "missing_test_case_ac_ids": []
+    }
+  },
+  "version_projection_truth_contract": {
+    "required": false,
+    "supported": true,
+    "projection_types": [],
+    "research_path": "docs/beacon/v1.6.14/research/beacon-v1614-feature-map.md",
+    "research_exists": false,
+    "required_fields": [
+      "prd_refs",
+      "user_story_refs",
+      "test_case_refs",
+      "coverage_notes",
+      "out_of_scope_notes"
+    ],
+    "field_presence": {
+      "prd_refs": false,
+      "user_story_refs": false,
+      "test_case_refs": false,
+      "coverage_notes": false,
+      "out_of_scope_notes": false
+    },
+    "missing_fields": [],
+    "required_refs": {
+      "prd_refs": "docs/beacon/v1.6.14/features/beacon-v1614-feature-map/truth.md",
+      "user_story_refs": "docs/beacon/v1.6.14/features/beacon-v1614-feature-map/truth.md",
+      "test_case_refs": "docs/beacon/v1.6.14/features/beacon-v1614-feature-map/tests.md"
+    },
+    "missing_ref_targets": [],
+    "ready": false
+  },
+  "support_write_topology_contract": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "diagnostics": []
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.6.14/features/beacon-v1614-feature-map/truth.md",
+    "docs/beacon/v1.6.14/features/beacon-v1614-feature-map/tests.md",
+    "docs/beacon/v1.6.14/features/beacon-v1614-feature-map/tasks.md",
+    "docs/beacon/v1.6.14/features/beacon-v1614-feature-map/evidence.md"
+  ]
+}

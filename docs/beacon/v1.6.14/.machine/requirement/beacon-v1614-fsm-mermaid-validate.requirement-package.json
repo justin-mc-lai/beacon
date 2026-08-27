@@ -1,0 +1,172 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-08-27T09:06:00.323301+00:00",
+  "feature": "beacon-v1614-fsm-mermaid-validate",
+  "feature_slug": "beacon-v1614-fsm-mermaid-validate",
+  "version": "v1.6.14",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-mermaid-validate/truth.md",
+    "tests": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-mermaid-validate/tests.md",
+    "tasks": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-mermaid-validate/tasks.md",
+    "evidence": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-mermaid-validate/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "cc7c9f04833304fa88249248c8cea05b620b48c3df49e9247b77149fd952ed32",
+    "tests": "2d5bd7eb6ba410fce8f9c93c80b40980d0d9e5e46e426f6d789dee6916c0aefa",
+    "tasks": "3893142498f66dbab17fd0bde4ea6f7053832a15e1bc4be234e511543b715ecd",
+    "evidence": "e18e9c34214702466be719e8d44a2310b3ddfe178576aed0960515b2c0b9e718"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-v1614-fsm-mermaid-validate",
+    "version": "v1.6.14",
+    "status": "frozen",
+    "language": "zh",
+    "domain_required": "false",
+    "ux_required": "false",
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "package_maturity": "filled",
+    "materials_status": "current",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-mermaid-validate/truth.md",
+      "user_story": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-mermaid-validate/truth.md",
+      "test_case": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-mermaid-validate/tests.md"
+    }
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "truth 生成/冻结时，FSM 段自动附带 `stateDiagram-v2` mermaid 块（状态+转移），文档可渲染。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "FSM 机器校验：校验器可解析 truth FSM 表，检查 状态存在 / 转移合法 / illegal 转换被拒，输出结构化 findings。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "FSM 行为变化可检测：同一 FSM 的 states/transitions 变化产生不同 behavior digest，仅措辞变化不改变 digest。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "FSM 校验进入 freeze 门禁：FSM 不合法（如非法转移未声明）→ freeze fail-closed（reason_code `truth_fsm_invalid`）。",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "",
+      "command": "`rg -n \"stateDiagram-v2\" docs/beacon/v1.6.14/features/beacon-v1614-fsm-mermaid-validate/truth.md`",
+      "assertion": "mermaid 状态图存在",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "",
+      "command": "`python3 tests/test_v1614_fsm_validate.py -k validator`",
+      "assertion": "exit 0：校验器解析 FSM，非法转移被拒",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "",
+      "command": "`python3 tests/test_v1614_fsm_validate.py -k digest`",
+      "assertion": "exit 0：行为变化 digest 不同，措辞变化 digest 相同",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "",
+      "command": "`python3 tests/test_v1614_fsm_validate.py -k freeze_gate`",
+      "assertion": "exit 0：FSM 不合法 → freeze 拦截（truth_fsm_invalid）",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-EXEC",
+      "layer": "",
+      "command": "`python3 tests/test_v1614_fsm_validate.py`",
+      "assertion": "exit 0：全断言通过",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-002,AC-004",
+      "tc_id": "TC-ILLEGAL",
+      "layer": "",
+      "command": "`rg -n \"跳过校验冻结\\|校验绕过\" docs/beacon/v1.6.14/features/beacon-v1614-fsm-mermaid-validate/truth.md`",
+      "assertion": "illegal（跳校验/绕过 gate 均被拒）",
+      "evidence_path": "",
+      "source": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Implement AC-001: truth 生成/冻结时，FSM 段自动附带 `stateDiagram-v2` mermaid 块（状态+转移），文档可渲染。 · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-mermaid-validate/AC-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Implement AC-002: FSM 机器校验：校验器可解析 truth FSM 表，检查 状态存在 / 转移合法 / illegal 转换被拒，输出结构化 findi... · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-mermaid-validate/AC-002.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Implement AC-003: FSM 行为变化可检测：同一 FSM 的 states/transitions 变化产生不同 behavior digest，仅措辞变化不... · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-mermaid-validate/AC-003.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Implement AC-004: FSM 校验进入 freeze 门禁：FSM 不合法（如非法转移未声明）→ freeze fail-closed（reason_code ... · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-mermaid-validate/AC-004.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-mermaid-validate/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1614-fsm-mermaid-validate/QA-MATRIX.json`",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "package",
+      "authority": "requirement_truth",
+      "path": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-mermaid-validate/truth.md"
+    },
+    {
+      "surface": "tests",
+      "authority": "test_truth",
+      "path": "docs/beacon/v1.6.14/features/beacon-v1614-fsm-mermaid-validate/tests.md"
+    },
+    {
+      "surface": "truth_review_gate",
+      "authority": "support_advisory",
+      "path": "docs/beacon/v1.6.14/.machine/execution/beacon-v1614-fsm-mermaid-validate.truth-review-gate.json"
+    }
+  ]
+}
