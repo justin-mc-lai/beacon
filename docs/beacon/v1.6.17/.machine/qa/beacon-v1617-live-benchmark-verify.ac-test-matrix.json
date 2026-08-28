@@ -1,0 +1,103 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1617-live-benchmark-verify",
+  "feature_slug": "beacon-v1617-live-benchmark-verify",
+  "version": "v1.6.17",
+  "generated_at": "2026-08-28T03:11:36.404529+00:00",
+  "execution_mode": "feature-aware",
+  "source_matrix_path": "docs/beacon/v1.6.17/.machine/qa/beacon-v1617-live-benchmark-verify.ac-test-matrix.json",
+  "story_scenario_map_path": ".beacon/qa/features/beacon-v1617-live-benchmark-verify/story-scenario-map.json",
+  "reason_codes": [
+    "previous_feature_qa_not_passed",
+    "source_matrix_changed"
+  ],
+  "qa_types": [
+    "contract"
+  ],
+  "entries": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "unit",
+      "command": "python3 tests/test_v1617_live_benchmark.py -k fixtures",
+      "assertion": "exit 0：34 skill 的 prompt fixture 存在且含 ROUTE:",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-live-benchmark-verify/tc-001/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "unit",
+      "command": "python3 tests/test_v1617_live_benchmark.py -k surface",
+      "assertion": "exit 0：mode 子能力解析到主 SKILL.md（无 skill_surface_missing）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-live-benchmark-verify/tc-002/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "unit",
+      "command": "python3 tests/test_v1617_live_benchmark.py -k surface",
+      "assertion": "exit 0：live scorecard 跑通，每 skill 有 host_behavior trace",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-live-benchmark-verify/tc-003/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "unit",
+      "command": "python3 tests/test_v1617_live_benchmark.py -k fixtures",
+      "assertion": "exit 0：live_skill_pass ≥ 30/37（真实执行）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-live-benchmark-verify/tc-004/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-EXEC",
+      "layer": "unit",
+      "command": "python3 tests/test_v1617_live_benchmark.py",
+      "assertion": "exit 0：全断言通过",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-live-benchmark-verify/tc-exec/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-FSMW",
+      "layer": "unit",
+      "command": "python3 tests/test_v1617_live_benchmark.py -k fsm",
+      "assertion": "exit 0：合法路径 scaffold→materialized→resolved→executing→traced→passed/failed",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-live-benchmark-verify/tc-fsmw/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-ILLEGAL",
+      "layer": "unit",
+      "command": "rg -n -e \"执行失败仍标\" -e \"fixture 缺失仍执行\" docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/truth.md",
+      "assertion": "illegal（伪造/占位冒充均被拒）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-live-benchmark-verify/tc-illegal/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    }
+  ]
+}

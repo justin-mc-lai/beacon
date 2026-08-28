@@ -1,0 +1,304 @@
+{
+  "schema_version": "1.0",
+  "contract_kind": "beacon_test_contract_index",
+  "version": "v1.6.17",
+  "runtime_line": "v1.6.17",
+  "runtime_release_line": "v1.6.17",
+  "docs_line": "v1.6.17",
+  "feature": "beacon-v1617-layering-audit",
+  "feature_slug": "beacon-v1617-layering-audit",
+  "feature_line_status": "active_delivery",
+  "truth_refs": {
+    "truth": "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/truth.md",
+    "tests": "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tests.md",
+    "tasks": "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tasks.md",
+    "evidence": "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/evidence.md",
+    "ac_matrix": "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tests.md",
+    "story_state": "docs/beacon/v1.6.17/.machine/user-story/beacon-v1617-layering-audit.json"
+  },
+  "source_hashes": {
+    "truth": "sha256:ef9275d93f41fa0a54bf7b25c8ae73ed491e5366b5d4b4cc3be8d04eaee7e350",
+    "tests": "sha256:0200cfd324ad29a1137f19f5c607e1aee43b8365fdc3f3a8b2f70b9b01fa6e07",
+    "tasks": "sha256:1ef81a19cb22ad146ab906c7f7be7f5ca2dd6d18349aee39b4c76c70dc3a429c",
+    "evidence": "sha256:ebb0194ae559f74dfbd9bd1c9380755896bc77f964f747ef23e8fdba70d15e11",
+    "ac_matrix": "sha256:0200cfd324ad29a1137f19f5c607e1aee43b8365fdc3f3a8b2f70b9b01fa6e07",
+    "story_state": "sha256:98d7761ceaae741a7e4f8e661c0e534f3965f6e1dfd25251aca841c9055aa38b"
+  },
+  "lanes": {
+    "feature_release_facing": [
+      {
+        "tc_id": "TC-001",
+        "ac_id": "AC-001",
+        "ac_theme": "生成 import 依赖图",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 tests/test_v1617_layering_audit.py -k graph",
+        "assertion": "exit 0：生成 import 依赖图（模块×依赖）",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-001/__RUN_ID__.json",
+        "evidence_status": "missing",
+        "source": "feature-package:docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-002",
+        "ac_id": "AC-002",
+        "ac_theme": "识别 God Module（>2000 行）",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 tests/test_v1617_layering_audit.py -k god",
+        "assertion": "exit 0：列出 >2000 行 God Module",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-002/__RUN_ID__.json",
+        "evidence_status": "missing",
+        "source": "feature-package:docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-003",
+        "ac_id": "AC-003",
+        "ac_theme": "识别越界引用",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 tests/test_v1617_layering_audit.py -k violation",
+        "assertion": "exit 0：识别越界引用（command→utils 越界）",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-003/__RUN_ID__.json",
+        "evidence_status": "missing",
+        "source": "feature-package:docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-004",
+        "ac_id": "AC-004",
+        "ac_theme": "产出可维护性风险判断",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 tests/test_v1617_layering_audit.py -k report",
+        "assertion": "exit 0：产出可维护性风险判断",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-004/__RUN_ID__.json",
+        "evidence_status": "missing",
+        "source": "feature-package:docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-EXEC",
+        "ac_id": "AC-001..004",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 tests/test_v1617_layering_audit.py",
+        "assertion": "exit 0：全断言通过",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-exec/__RUN_ID__.json",
+        "evidence_status": "missing",
+        "source": "feature-package:docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-FSMW",
+        "ac_id": "AC-001..004",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 tests/test_v1617_layering_audit.py -k fsm",
+        "assertion": "exit 0：合法路径 scaffold→scanned→sized→classified→reported 全走",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-fsmw/__RUN_ID__.json",
+        "evidence_status": "missing",
+        "source": "feature-package:docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-ILLEGAL",
+        "ac_id": "AC-004",
+        "ac_theme": "产出可维护性风险判断",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "rg -n -e \"扫描不全仍 report\" -e \"越界引用不识别\" docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/truth.md",
+        "assertion": "illegal（数据不实/掩盖均被拒）",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-illegal/__RUN_ID__.json",
+        "evidence_status": "missing",
+        "source": "feature-package:docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      }
+    ],
+    "current_runtime_contract": [],
+    "generated_surface_sync": [],
+    "compatibility_contract": [],
+    "legacy_snapshot": [],
+    "browser_runtime_admission": []
+  },
+  "lane_counts": {
+    "feature_release_facing": 7,
+    "current_runtime_contract": 0,
+    "generated_surface_sync": 0,
+    "compatibility_contract": 0,
+    "legacy_snapshot": 0,
+    "browser_runtime_admission": 0
+  },
+  "canonical_lanes": [
+    "feature_release_facing",
+    "current_runtime_contract",
+    "generated_surface_sync",
+    "compatibility_contract",
+    "legacy_snapshot",
+    "browser_runtime_admission"
+  ],
+  "test_refs": [
+    {
+      "tc_id": "TC-001",
+      "ac_id": "AC-001",
+      "ac_theme": "生成 import 依赖图",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 tests/test_v1617_layering_audit.py -k graph",
+      "assertion": "exit 0：生成 import 依赖图（模块×依赖）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-001/__RUN_ID__.json",
+      "evidence_status": "missing",
+      "source": "feature-package:docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-002",
+      "ac_id": "AC-002",
+      "ac_theme": "识别 God Module（>2000 行）",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 tests/test_v1617_layering_audit.py -k god",
+      "assertion": "exit 0：列出 >2000 行 God Module",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-002/__RUN_ID__.json",
+      "evidence_status": "missing",
+      "source": "feature-package:docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-003",
+      "ac_id": "AC-003",
+      "ac_theme": "识别越界引用",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 tests/test_v1617_layering_audit.py -k violation",
+      "assertion": "exit 0：识别越界引用（command→utils 越界）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-003/__RUN_ID__.json",
+      "evidence_status": "missing",
+      "source": "feature-package:docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-004",
+      "ac_id": "AC-004",
+      "ac_theme": "产出可维护性风险判断",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 tests/test_v1617_layering_audit.py -k report",
+      "assertion": "exit 0：产出可维护性风险判断",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-004/__RUN_ID__.json",
+      "evidence_status": "missing",
+      "source": "feature-package:docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-EXEC",
+      "ac_id": "AC-001..004",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 tests/test_v1617_layering_audit.py",
+      "assertion": "exit 0：全断言通过",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-exec/__RUN_ID__.json",
+      "evidence_status": "missing",
+      "source": "feature-package:docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-FSMW",
+      "ac_id": "AC-001..004",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 tests/test_v1617_layering_audit.py -k fsm",
+      "assertion": "exit 0：合法路径 scaffold→scanned→sized→classified→reported 全走",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-fsmw/__RUN_ID__.json",
+      "evidence_status": "missing",
+      "source": "feature-package:docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-ILLEGAL",
+      "ac_id": "AC-004",
+      "ac_theme": "产出可维护性风险判断",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "rg -n -e \"扫描不全仍 report\" -e \"越界引用不识别\" docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/truth.md",
+      "assertion": "illegal（数据不实/掩盖均被拒）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-illegal/__RUN_ID__.json",
+      "evidence_status": "missing",
+      "source": "feature-package:docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    }
+  ],
+  "ac_to_test_refs": {
+    "AC-001": [
+      "TC-001"
+    ],
+    "AC-001..004": [
+      "TC-EXEC",
+      "TC-FSMW"
+    ],
+    "AC-002": [
+      "TC-002"
+    ],
+    "AC-003": [
+      "TC-003"
+    ],
+    "AC-004": [
+      "TC-004",
+      "TC-ILLEGAL"
+    ]
+  },
+  "qa_order_contract": {
+    "sequence": [
+      "user_story_ac_order",
+      "scenario_divergence",
+      "current_round_execution",
+      "evidence_pack",
+      "coverage_current_gap",
+      "continue_decision",
+      "severe_blocker_stop_for_repair",
+      "repair_handoff",
+      "beacon_help_resume",
+      "next_qa_round_test_case_backfill",
+      "release_guidance"
+    ],
+    "source": "skills/beacon/references/usage-rules.md"
+  },
+  "deep_delta_policy": {
+    "owner": "deep",
+    "adoption_route": "test-case_or_supplemental_qa",
+    "executes_qa": false
+  },
+  "planning_line_safety": {
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "runtime_line": "v1.6.17",
+    "docs_default_line": "v1.6.17",
+    "current_runtime_release_line": "v1.6.17",
+    "feature_line_status": "active_delivery"
+  },
+  "status": "pass",
+  "blocked": false,
+  "reason_codes": [],
+  "generated_at": "2026-08-28T03:15:39.498804+00:00",
+  "index_path": "docs/beacon/v1.6.17/.machine/testing/test-contract-index.json"
+}

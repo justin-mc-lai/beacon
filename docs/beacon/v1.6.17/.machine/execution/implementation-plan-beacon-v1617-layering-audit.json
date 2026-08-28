@@ -1,0 +1,652 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-v1617-layering-audit-r1",
+  "feature": "beacon-v1617-layering-audit",
+  "feature_slug": "beacon-v1617-layering-audit",
+  "version": "v1.6.17",
+  "revision_id": "R1",
+  "baseline_hash": "sha256:920232ab301086492c15a545a3256c7bac9739686845fdd9c381f4fb15d260c1",
+  "plan_hash": "sha256:e0cf28a3ee6e09de826b8b773288b544e7106a29d4174210ed29a81c44af5ca7",
+  "status": "planned",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/truth.md",
+    "prd": "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/truth.md",
+    "test_case": "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tests.md",
+    "truth": "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/truth.md",
+    "tests": "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tests.md",
+    "tasks": "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tasks.md",
+    "evidence": "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/evidence.md",
+    "source_of_truth_root": "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit",
+    "ac_matrix": "docs/beacon/v1.6.17/.machine/qa/beacon-v1617-layering-audit.ac-test-matrix.json",
+    "story_scenario_map": "docs/beacon/v1.6.17/.machine/qa/beacon-v1617-layering-audit.story-scenario-map.json",
+    "research_projection": "docs/beacon/v1.6.17/.machine/user-story/beacon-v1617-layering-audit.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.6.17/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006"
+      ]
+    }
+  ],
+  "task_mapping_source": "package-tasks",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.17",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-08-28T03:14:52.916613+00:00",
+    "feature": "beacon-v1617-layering-audit",
+    "feature_slug": "beacon-v1617-layering-audit",
+    "prd_ref": "docs/beacon/v1.6.17/prd/beacon-v1617-layering-audit.md",
+    "user_story_ref": "docs/beacon/v1.6.17/user-story/beacon-v1617-layering-audit.md"
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1617-layering-audit",
+    "version": "v1.6.17",
+    "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.17/research/beacon-v1617-layering-audit.md",
+    "present": false,
+    "section_count": 0,
+    "sections": {},
+    "derived_items": [],
+    "source_artifact": "docs/beacon/v1.6.17/.machine/user-story/beacon-v1617-layering-audit.json"
+  },
+  "review_gates": [],
+  "qa_coverage_hints": [],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "TASK-001 Implement AC-001: scanned 阶段：生成 beacon/utils + commands 的 import 依赖图（模块 × 依赖列表）。 · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/AC-001.json`",
+      "description": "Implement AC-001: scanned 阶段：生成 beacon/utils + commands 的 import 依赖图（模块 × 依赖列表）。 · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/AC-001.json`",
+      "source_task_id": "TASK-001",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001"
+      ],
+      "mapped_test_ids": [
+        "TC-001"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001",
+        "SC-002",
+        "SC-003"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "TASK-002 Implement AC-002: sized 阶段：列出所有 >2000 行的 God Module（含行数）（含行数）。 · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/AC-002.json`",
+      "description": "Implement AC-002: sized 阶段：列出所有 >2000 行的 God Module（含行数）（含行数）。 · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/AC-002.json`",
+      "source_task_id": "TASK-002",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TC-002"
+      ],
+      "mapped_scenario_ids": [
+        "SC-004",
+        "SC-005",
+        "SC-006"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "TASK-003 Implement AC-003: classified 阶段：识别越界引用（command 层 → 不应依赖的 utils）（command 层 → 不应依赖的 utils... · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/AC-003.json`",
+      "description": "Implement AC-003: classified 阶段：识别越界引用（command 层 → 不应依赖的 utils）（command 层 → 不应依赖的 utils... · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/AC-003.json`",
+      "source_task_id": "TASK-003",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-003"
+      ],
+      "mapped_test_ids": [
+        "TC-003"
+      ],
+      "mapped_scenario_ids": [
+        "SC-007",
+        "SC-008",
+        "SC-009"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "TASK-004 Implement AC-004: reported 阶段：产出可维护性风险判断（分层缺失/God Module 风险等级）。 · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/AC-004.json`",
+      "description": "Implement AC-004: reported 阶段：产出可维护性风险判断（分层缺失/God Module 风险等级）。 · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/AC-004.json`",
+      "source_task_id": "TASK-004",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-004"
+      ],
+      "mapped_test_ids": [
+        "TC-004",
+        "TC-ILLEGAL"
+      ],
+      "mapped_scenario_ids": [
+        "SC-010",
+        "SC-011",
+        "SC-012",
+        "SC-013",
+        "SC-014",
+        "SC-015"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "TASK-005 Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/GATES.json`",
+      "description": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/GATES.json`",
+      "source_task_id": "TASK-005",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "TASK-006 Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/QA-MATRIX.json`",
+      "description": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/QA-MATRIX.json`",
+      "source_task_id": "TASK-006",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    }
+  ],
+  "task_alignment": {
+    "schema_version": "1.0",
+    "status": "aligned",
+    "blocked": false,
+    "reason_code": "",
+    "feature": "beacon-v1617-layering-audit",
+    "feature_slug": "beacon-v1617-layering-audit",
+    "version": "v1.6.17",
+    "authority": "markdown_feature_package",
+    "package_tasks_path": "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tasks.md",
+    "task_count": 6,
+    "resolved": true,
+    "alignment_mode": "package_tasks_to_implementation_plan",
+    "progress_write_target": "docs/beacon/<version>/.machine/execution and docs/beacon/<version>/execution",
+    "package_tasks_mutated": false,
+    "tasks": [
+      {
+        "task_id": "TASK-001",
+        "title": "Implement AC-001: scanned 阶段：生成 beacon/utils + commands 的 import 依赖图（模块 × 依赖列表）。 · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/AC-001.json`",
+        "requirement_checkbox_state": "completed",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-002",
+        "title": "Implement AC-002: sized 阶段：列出所有 >2000 行的 God Module（含行数）（含行数）。 · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/AC-002.json`",
+        "requirement_checkbox_state": "completed",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-003",
+        "title": "Implement AC-003: classified 阶段：识别越界引用（command 层 → 不应依赖的 utils）（command 层 → 不应依赖的 utils... · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/AC-003.json`",
+        "requirement_checkbox_state": "completed",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-004",
+        "title": "Implement AC-004: reported 阶段：产出可维护性风险判断（分层缺失/God Module 风险等级）。 · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/AC-004.json`",
+        "requirement_checkbox_state": "completed",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-005",
+        "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/GATES.json`",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-006",
+        "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/QA-MATRIX.json`",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      }
+    ],
+    "draft_implementation_tasks": [
+      {
+        "task_id": "ITASK-001",
+        "title": "Implement AC-001: scanned 阶段：生成 beacon/utils + commands 的 import 依赖图（模块 × 依赖列表）。 · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/AC-001.json`",
+        "description": "Implement AC-001: scanned 阶段：生成 beacon/utils + commands 的 import 依赖图（模块 × 依赖列表）。 · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/AC-001.json`",
+        "source_task_id": "TASK-001",
+        "source_task_status": "completed",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-002",
+        "title": "Implement AC-002: sized 阶段：列出所有 >2000 行的 God Module（含行数）（含行数）。 · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/AC-002.json`",
+        "description": "Implement AC-002: sized 阶段：列出所有 >2000 行的 God Module（含行数）（含行数）。 · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/AC-002.json`",
+        "source_task_id": "TASK-002",
+        "source_task_status": "completed",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-003",
+        "title": "Implement AC-003: classified 阶段：识别越界引用（command 层 → 不应依赖的 utils）（command 层 → 不应依赖的 utils... · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/AC-003.json`",
+        "description": "Implement AC-003: classified 阶段：识别越界引用（command 层 → 不应依赖的 utils）（command 层 → 不应依赖的 utils... · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/AC-003.json`",
+        "source_task_id": "TASK-003",
+        "source_task_status": "completed",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-004",
+        "title": "Implement AC-004: reported 阶段：产出可维护性风险判断（分层缺失/God Module 风险等级）。 · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/AC-004.json`",
+        "description": "Implement AC-004: reported 阶段：产出可维护性风险判断（分层缺失/God Module 风险等级）。 · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/AC-004.json`",
+        "source_task_id": "TASK-004",
+        "source_task_status": "completed",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-005",
+        "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/GATES.json`",
+        "description": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/GATES.json`",
+        "source_task_id": "TASK-005",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-006",
+        "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/QA-MATRIX.json`",
+        "description": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/QA-MATRIX.json`",
+        "source_task_id": "TASK-006",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      }
+    ]
+  },
+  "revision_delta": {},
+  "revision_delta_ref": "",
+  "revision_delta_markdown_ref": "",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"beacon-v1617-layering-audit\" --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.17",
+    "run_command": "beacon implement team-run \"beacon-v1617-layering-audit\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.17",
+    "dev_run_command": "beacon implement dev-run \"beacon-v1617-layering-audit\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.17",
+    "ralph_command": "beacon implement run \"beacon-v1617-layering-audit\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.17 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"beacon-v1617-layering-audit\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.17",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1617-layering-audit",
+    "feature_slug": "beacon-v1617-layering-audit",
+    "version": "v1.6.17",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.6.17/beacon-v1617-layering-audit",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": "/Users/apple/Developer/Personal/products/beacon",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.6.17/beacon-v1617-layering-audit.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-08-28T03:14:52.918617+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.6.17-beacon-v1617-layering-audit-R1",
+    "transaction_id": "tx-239d0592bc83a31d4",
+    "source_hash": "sha256:efa390c5d18c895e2a024e3db74f5440b7781aeb9f9c4b0af6293e8147dc9f72",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.6.17/.machine/execution/implementation-delivery-baseline-beacon-v1617-layering-audit.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.6.17/.machine/execution/git-workflow-beacon-v1617-layering-audit.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.6.17/execution/git-workflow-beacon-v1617-layering-audit.md",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.6.17/beacon-v1617-layering-audit",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": "/Users/apple/Developer/Personal/products/beacon",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {},
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.6.17-beacon-v1617-layering-audit-R1",
+    "transaction_id": "tx-239d0592bc83a31d4",
+    "source_hash": "sha256:efa390c5d18c895e2a024e3db74f5440b7781aeb9f9c4b0af6293e8147dc9f72",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.6.17/.machine/execution/implementation-delivery-baseline-beacon-v1617-layering-audit.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.6.17/.machine/execution/implementation-delivery-baseline-beacon-v1617-layering-audit.json",
+  "generated_at": "2026-08-28T03:14:53.106745+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.6.17-beacon-v1617-layering-audit-R1",
+  "transaction_id": "tx-239d0592bc83a31d4",
+  "source_hash": "sha256:efa390c5d18c895e2a024e3db74f5440b7781aeb9f9c4b0af6293e8147dc9f72",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-08-28T03:14:53.106810+00:00"
+}

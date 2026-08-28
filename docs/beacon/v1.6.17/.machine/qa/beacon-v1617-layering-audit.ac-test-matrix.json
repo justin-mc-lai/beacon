@@ -1,0 +1,102 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1617-layering-audit",
+  "feature_slug": "beacon-v1617-layering-audit",
+  "version": "v1.6.17",
+  "generated_at": "2026-08-28T03:12:25.237650+00:00",
+  "execution_mode": "feature-aware",
+  "source_matrix_path": "docs/beacon/v1.6.17/.machine/qa/beacon-v1617-layering-audit.ac-test-matrix.json",
+  "story_scenario_map_path": ".beacon/qa/features/beacon-v1617-layering-audit/story-scenario-map.json",
+  "reason_codes": [
+    "no_prior_feature_qa"
+  ],
+  "qa_types": [
+    "contract"
+  ],
+  "entries": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "unit",
+      "command": "python3 tests/test_v1617_layering_audit.py -k graph",
+      "assertion": "exit 0：生成 import 依赖图（模块×依赖）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-001/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "unit",
+      "command": "python3 tests/test_v1617_layering_audit.py -k god",
+      "assertion": "exit 0：列出 >2000 行 God Module",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-002/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "unit",
+      "command": "python3 tests/test_v1617_layering_audit.py -k violation",
+      "assertion": "exit 0：识别越界引用（command→utils 越界）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-003/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "unit",
+      "command": "python3 tests/test_v1617_layering_audit.py -k report",
+      "assertion": "exit 0：产出可维护性风险判断",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-004/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-EXEC",
+      "layer": "unit",
+      "command": "python3 tests/test_v1617_layering_audit.py",
+      "assertion": "exit 0：全断言通过",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-exec/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-FSMW",
+      "layer": "unit",
+      "command": "python3 tests/test_v1617_layering_audit.py -k fsm",
+      "assertion": "exit 0：合法路径 scaffold→scanned→sized→classified→reported 全走",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-fsmw/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-ILLEGAL",
+      "layer": "unit",
+      "command": "rg -n -e \"扫描不全仍 report\" -e \"越界引用不识别\" docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/truth.md",
+      "assertion": "illegal（数据不实/掩盖均被拒）",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-illegal/__RUN_ID__.json",
+      "status": "planned",
+      "source": "feature-package:docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tests.md",
+      "qa_type": "unit",
+      "automation": "auto"
+    }
+  ]
+}

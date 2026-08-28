@@ -134,20 +134,6 @@
 - gates must block if projection metadata or service/branch/worktree fields drift.
 <!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:beacon-v1614-fsm-test-generation:END -->
 
-<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:START -->
-## Implementation Delivery Host
-
-- version: `v1.6.14`
-- feature_count: `3`
-- transaction_id: `tx-8ff32650166a37917`
-- source_hash: `sha256:afccf023e5e96212f4251dd5e6d1bbd12a9782886adb73f8fd5fd3096bb68dd3`
-
-### Registered Feature Baselines
-- `beacon-v1614-feature-map` | revision=`R1` | branch=`beacon/v1.6.14/beacon-v1614-feature-map` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.14/.machine/execution/implementation-delivery-baseline-beacon-v1614-feature-map.json`
-- `beacon-v1614-fsm-mermaid-validate` | revision=`R1` | branch=`beacon/v1.6.14/beacon-v1614-fsm-mermaid-validate` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.14/.machine/execution/implementation-delivery-baseline-beacon-v1614-fsm-mermaid-validate.json`
-- `beacon-v1614-fsm-test-generation` | revision=`R1` | branch=`beacon/v1.6.14/beacon-v1614-fsm-test-generation` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.14/.machine/execution/implementation-delivery-baseline-beacon-v1614-fsm-test-generation.json`
-<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:END -->
-
 <!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:beacon-v1614-feature-map:START -->
 ## Technical Delta Blueprint
 
@@ -214,3 +200,150 @@
 - deterministic implementation contract, git workflow contract, and implementation plan are projections.
 - gates must block if projection metadata or service/branch/worktree fields drift.
 <!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:beacon-v1614-feature-map:END -->
+
+<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:beacon-v1617-live-benchmark-verify:START -->
+## Technical Delta Blueprint
+
+- project_mode: `greenfield`
+- feature: `beacon-v1617-live-benchmark-verify`
+- version: `v1.6.17`
+
+### Source Refs
+- none
+
+### Delivery Change Surface
+- none
+### Available Entry Surfaces
+- none
+### Current Service Facts
+- none
+
+### Must Change
+- none
+
+### Can Reuse
+- none
+
+### No-Expand Guardrails
+- none
+
+### Compatibility Rules
+- none
+
+### Delivery Constraints
+- none
+
+### Implement Handoff
+- none
+<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:beacon-v1617-live-benchmark-verify:END -->
+
+<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:beacon-v1617-live-benchmark-verify:START -->
+## Implementation Delivery Baseline
+
+- baseline_id: `impl-delivery-baseline-v1.6.17-beacon-v1617-live-benchmark-verify-R1`
+- transaction_id: `tx-b04df1fda81dcad22`
+- source_hash: `sha256:2df51f8a7debc5f9276dbbbd4baf6d770767f07074abfff582b48fb9a6edb71c`
+- projection_seq: `1`
+- version: `v1.6.17`
+- feature: `beacon-v1617-live-benchmark-verify`
+- lifecycle_role: `pre-implement delivery blueprint projection`
+- projection_refresh_trigger: `implement plan against the active frozen revision`
+- branch_strategy: `single-branch`
+- base_branch: `main`
+- default_target_branch: `beacon/v1.6.17/beacon-v1617-live-benchmark-verify`
+- branch_prefix: `beacon/`
+- use_git_worktree: `False`
+- worktree_root: `/Users/apple/Developer/Personal/products/beacon`
+- workspace_root: `/Users/apple/Developer/Personal/products/beacon`
+
+### Delivery Service Scope
+- direct_delivery_services: .
+- writable_services: .
+- reference_only_services: docs
+- depends_on_features: -
+
+### Plan-Time Gate Contract
+- canonical envelope is the only delivery baseline source.
+- deterministic implementation contract, git workflow contract, and implementation plan are projections.
+- gates must block if projection metadata or service/branch/worktree fields drift.
+<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:beacon-v1617-live-benchmark-verify:END -->
+
+<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:START -->
+## Implementation Delivery Host
+
+- version: `v1.6.17`
+- feature_count: `2`
+- transaction_id: `tx-7586aafc3510fb826`
+- source_hash: `sha256:0bde80e582a2191ef5b7621b75e8a83c68c17b63bfa6be7041e8b35136314150`
+
+### Registered Feature Baselines
+- `beacon-v1617-layering-audit` | revision=`R1` | branch=`beacon/v1.6.17/beacon-v1617-layering-audit` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.17/.machine/execution/implementation-delivery-baseline-beacon-v1617-layering-audit.json`
+- `beacon-v1617-live-benchmark-verify` | revision=`R1` | branch=`beacon/v1.6.17/beacon-v1617-live-benchmark-verify` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.6.17/.machine/execution/implementation-delivery-baseline-beacon-v1617-live-benchmark-verify.json`
+<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:END -->
+
+<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:beacon-v1617-layering-audit:START -->
+## Technical Delta Blueprint
+
+- project_mode: `greenfield`
+- feature: `beacon-v1617-layering-audit`
+- version: `v1.6.17`
+
+### Source Refs
+- none
+
+### Delivery Change Surface
+- none
+### Available Entry Surfaces
+- none
+### Current Service Facts
+- none
+
+### Must Change
+- none
+
+### Can Reuse
+- none
+
+### No-Expand Guardrails
+- none
+
+### Compatibility Rules
+- none
+
+### Delivery Constraints
+- none
+
+### Implement Handoff
+- none
+<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:beacon-v1617-layering-audit:END -->
+
+<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:beacon-v1617-layering-audit:START -->
+## Implementation Delivery Baseline
+
+- baseline_id: `impl-delivery-baseline-v1.6.17-beacon-v1617-layering-audit-R1`
+- transaction_id: `tx-239d0592bc83a31d4`
+- source_hash: `sha256:efa390c5d18c895e2a024e3db74f5440b7781aeb9f9c4b0af6293e8147dc9f72`
+- projection_seq: `1`
+- version: `v1.6.17`
+- feature: `beacon-v1617-layering-audit`
+- lifecycle_role: `pre-implement delivery blueprint projection`
+- projection_refresh_trigger: `implement plan against the active frozen revision`
+- branch_strategy: `single-branch`
+- base_branch: `main`
+- default_target_branch: `beacon/v1.6.17/beacon-v1617-layering-audit`
+- branch_prefix: `beacon/`
+- use_git_worktree: `False`
+- worktree_root: `/Users/apple/Developer/Personal/products/beacon`
+- workspace_root: `/Users/apple/Developer/Personal/products/beacon`
+
+### Delivery Service Scope
+- direct_delivery_services: .
+- writable_services: .
+- reference_only_services: docs
+- depends_on_features: -
+
+### Plan-Time Gate Contract
+- canonical envelope is the only delivery baseline source.
+- deterministic implementation contract, git workflow contract, and implementation plan are projections.
+- gates must block if projection metadata or service/branch/worktree fields drift.
+<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:beacon-v1617-layering-audit:END -->
