@@ -46,6 +46,10 @@ event_type: "catalog-bootstrap"
 - validation_state: `active`
 - truth_root: `docs/beacon/v1.6.16`
 
+### v1.6.17
+- validation_state: `active`
+- truth_root: `docs/beacon/v1.6.17`
+
 ## Archived Versions
 
 ### v0.0.1-debug
