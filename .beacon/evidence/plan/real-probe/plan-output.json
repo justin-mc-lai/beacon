@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0",
+  "dispatch_id": "adb_4fc2533b13ff4a04a679",
+  "stage": "plan",
+  "feature": "real-probe",
+  "project_slug": "beacon",
+  "version": "v1.6.12",
+  "mode_id": "pln-program",
+  "public_id": "plan",
+  "intent_snapshot": {
+    "utterance": "real-probe",
+    "interpretation": "program-level sea intent: real-project probing / validation capability for the Beacon public surface (see beacon real-project-validation command family)",
+    "confidence": "low",
+    "source_refs": []
+  },
+  "scope_mode": "full_parity",
+  "lake_or_ocean": "海",
+  "plan_mode": "auto-detect",
+  "plan_mode_reason": "low_confidence_needs_one_question",
+  "program_phase": "P0",
+  "fsm_state": "program_intent_captured",
+  "governance_precheck": {
+    "status": "pass",
+    "blocked": false,
+    "version": "v1.6.12",
+    "truth_canonical": "main"
+  },
+  "parity_matrix": {
+    "status": "blocked",
+    "reason": "no source URL or parity reference supplied in utterance; full_parity honored but cannot enumerate without source anchor"
+  },
+  "deferral_ledger": [],
+  "findings": [
+    {
+      "severity": "P0",
+      "finding": "plan_mode classifier returned low-confidence auto-detect; per pln-program contract the umbrella must ask exactly one multiple-choice question (auto vs interactive) before P0 profile diverges",
+      "evidence": "plan_mode_classification.confidence=40, reason=low_confidence_needs_one_question"
+    },
+    {
+      "severity": "P0",
+      "finding": "utterance 'real-probe' carries no source URL, no full-parity signals, and no brainstorm signals; program inventory cannot start without a source anchor or explicit scope decision",
+      "evidence": "classify_plan_mode() in beacon/utils/program_plan_runtime.py"
+    },
+    {
+      "severity": "P2",
+      "finding": "governance precheck passed: v1.6.12 registered with truth_canonical=main; program artifacts scaffolded under docs/beacon/v1.6.12/programs/real-probe/",
+      "evidence": "beacon plan start --json -> governance_precheck.status=pass"
+    }
+  ],
+  "clarifying_questions": [
+    "Q1: plan_mode — 自动拆解（auto：有源码/清单可扫描）还是交互探讨（interactive：先对齐范围再拆湖）？",
+    "Q2: real-probe 的探测对象/范围是什么——真实外部项目（real-project-validation 命令面）、oss-sync 镜像仓、还是 beacon 自身 surface 探针？",
+    "Q3: 是否提供 --source 锚点（URL 或本地仓路径）以便 P0 自动盘点？"
+  ],
+  "recommended_next_harness": "plan",
+  "recommended_next_harness_explanation": "stay in plan harness until human answers the single plan_mode question (auto vs interactive) and supplies a source anchor; then re-run plan start with --mode and --source before P1 module-map",
+  "evidence_refs": [
+    "docs/beacon/v1.6.12/programs/real-probe/program-manifest.md",
+    "docs/beacon/v1.6.12/programs/real-probe/program-run-state.json",
+    "beacon plan start \"real-probe\" --project . --version v1.6.12 --json",
+    "docs/beacon/archive/v1.6.1/execution/program-plan-contract.md"
+  ],
+  "plain_language_delivery_summary": "这次把「real-probe」这个海级意图立了项：在 v1.6.12 文档线建好 program 骨架并确认 v1.6.12 已在治理登记（truth 以 main 为准）。意图本身还太粗，需要你回答一个问题（自动拆解 vs 交互探讨）并给一个探测范围/源码锚点，才能继续拆湖。",
+  "generated_at": "2026-08-28T00:04:00+00:00"
+}

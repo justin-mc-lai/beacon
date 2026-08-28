@@ -22,17 +22,17 @@ status: derived
 |  | file | .agents/skills/beacon-release/SKILL.md |  |
 |  | file | .agents/skills/beacon-truth/SKILL.md |  |
 |  | file | .agents/skills/runtime-skill-admission-smoke/SKILL.md |  |
-|  | file | .cursor/skills/beacon-design/SKILL.md |  |
-|  | file | .cursor/skills/beacon-implement/SKILL.md |  |
-|  | file | .cursor/skills/beacon-plan/SKILL.md |  |
-|  | file | .cursor/skills/beacon-qa/SKILL.md |  |
-|  | file | .cursor/skills/beacon-qa/scripts/eval-real-project/run_real_project_board_validation.sh |  |
-|  | file | .cursor/skills/beacon-release/SKILL.md |  |
-|  | file | .cursor/skills/beacon-truth/SKILL.md |  |
-|  | file | .trae/skills/beacon-design/SKILL.md |  |
-|  | file | .trae/skills/beacon-implement/SKILL.md |  |
-|  | file | .trae/skills/beacon-plan/SKILL.md |  |
-|  | file | .trae/skills/beacon-qa/SKILL.md |  |
+|  | file | .beacon/state/agent-eval/runs/agent-eval-20260713t073156z/traces/live-skills/transcripts/beacon-eval-agent.transcript.txt |  |
+|  | file | .beacon/state/agent-eval/runs/agent-eval-20260713t073156z/traces/live-skills/transcripts/beacon-eval-qa-deep.transcript.txt |  |
+|  | file | .beacon/state/agent-eval/runs/agent-eval-20260713t073156z/traces/live-skills/transcripts/beacon-eval-qa.transcript.txt |  |
+|  | file | .beacon/state/agent-eval/runs/agent-eval-20260713t073156z/traces/live-skills/transcripts/beacon-eval-real-project.transcript.txt |  |
+|  | file | .beacon/state/agent-eval/runs/agent-eval-20260713t073156z/traces/live-skills/transcripts/beacon-eval-release.transcript.txt |  |
+|  | file | .beacon/state/agent-eval/runs/agent-eval-20260713t073156z/traces/live-skills/transcripts/beacon-gen-change.transcript.txt |  |
+|  | file | .beacon/state/agent-eval/runs/agent-eval-20260713t073156z/traces/live-skills/transcripts/beacon-gen-design-explore.transcript.txt |  |
+|  | file | .beacon/state/agent-eval/runs/agent-eval-20260713t073156z/traces/live-skills/transcripts/beacon-gen-design-init.transcript.txt |  |
+|  | file | .beacon/state/agent-eval/runs/agent-eval-20260713t073156z/traces/live-skills/transcripts/beacon-gen-design-polish.transcript.txt |  |
+|  | file | .beacon/state/agent-eval/runs/agent-eval-20260713t073156z/traces/live-skills/transcripts/beacon-gen-design-system.transcript.txt |  |
+|  | file | .beacon/state/agent-eval/runs/agent-eval-20260713t073156z/traces/live-skills/transcripts/beacon-gen-design.transcript.txt |  |
 
 ## 验证命令（Verification Commands）
 
