@@ -1,0 +1,795 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1617-layering-audit",
+  "feature_slug": "beacon-v1617-layering-audit",
+  "version": "v1.6.17",
+  "generated_at": "2026-08-28T03:12:25.225597+00:00",
+  "expansion_profile": "pua-web",
+  "scenario_depth": "standard",
+  "families_required": [
+    "happy",
+    "negative",
+    "boundary"
+  ],
+  "stories": [
+    {
+      "ac_id": "AC-001",
+      "theme": "生成 import 依赖图",
+      "text": "must",
+      "scenario_ids": [
+        "SC-001",
+        "SC-002",
+        "SC-003"
+      ],
+      "scenario_families": [
+        "happy",
+        "negative",
+        "boundary"
+      ],
+      "required_families": [
+        "happy",
+        "negative",
+        "boundary"
+      ],
+      "scenarios": [
+        {
+          "scenario_id": "SC-001",
+          "source_tc_id": "TC-001",
+          "tc_id": "TC-001-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-002",
+          "source_tc_id": "TC-001",
+          "tc_id": "TC-001-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-003",
+          "source_tc_id": "TC-001",
+          "tc_id": "TC-001-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "识别 God Module（>2000 行）",
+      "text": "must",
+      "scenario_ids": [
+        "SC-004",
+        "SC-005",
+        "SC-006"
+      ],
+      "scenario_families": [
+        "happy",
+        "negative",
+        "boundary"
+      ],
+      "required_families": [
+        "happy",
+        "negative",
+        "boundary"
+      ],
+      "scenarios": [
+        {
+          "scenario_id": "SC-004",
+          "source_tc_id": "TC-002",
+          "tc_id": "TC-002-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-005",
+          "source_tc_id": "TC-002",
+          "tc_id": "TC-002-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-006",
+          "source_tc_id": "TC-002",
+          "tc_id": "TC-002-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "识别越界引用",
+      "text": "must",
+      "scenario_ids": [
+        "SC-007",
+        "SC-008",
+        "SC-009"
+      ],
+      "scenario_families": [
+        "happy",
+        "negative",
+        "boundary"
+      ],
+      "required_families": [
+        "happy",
+        "negative",
+        "boundary"
+      ],
+      "scenarios": [
+        {
+          "scenario_id": "SC-007",
+          "source_tc_id": "TC-003",
+          "tc_id": "TC-003-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-008",
+          "source_tc_id": "TC-003",
+          "tc_id": "TC-003-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-009",
+          "source_tc_id": "TC-003",
+          "tc_id": "TC-003-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "产出可维护性风险判断",
+      "text": "must",
+      "scenario_ids": [
+        "SC-010",
+        "SC-011",
+        "SC-012",
+        "SC-013",
+        "SC-014",
+        "SC-015"
+      ],
+      "scenario_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "happy",
+        "negative",
+        "boundary"
+      ],
+      "required_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "happy",
+        "negative",
+        "boundary"
+      ],
+      "scenarios": [
+        {
+          "scenario_id": "SC-010",
+          "source_tc_id": "TC-004",
+          "tc_id": "TC-004-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-011",
+          "source_tc_id": "TC-004",
+          "tc_id": "TC-004-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-012",
+          "source_tc_id": "TC-004",
+          "tc_id": "TC-004-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-013",
+          "source_tc_id": "TC-ILLEGAL",
+          "tc_id": "TC-ILLEGAL-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-014",
+          "source_tc_id": "TC-ILLEGAL",
+          "tc_id": "TC-ILLEGAL-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-015",
+          "source_tc_id": "TC-ILLEGAL",
+          "tc_id": "TC-ILLEGAL-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "source_tc_id": "TC-001",
+      "tc_id": "TC-001-HAPPY",
+      "ac_id": "AC-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "happy",
+      "title": "AC-001 happy path :: exit 0：生成 import 依赖图（模块×依赖）",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "happy",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 tests/test_v1617_layering_audit.py -k graph",
+      "assertion": "exit 0：生成 import 依赖图（模块×依赖） (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-001/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-002",
+      "source_tc_id": "TC-001",
+      "tc_id": "TC-001-NEGATIVE",
+      "ac_id": "AC-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "negative",
+      "title": "AC-001 negative path :: exit 0：生成 import 依赖图（模块×依赖）",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "negative",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [
+        "SC-001"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 tests/test_v1617_layering_audit.py -k graph",
+      "assertion": "exit 0：生成 import 依赖图（模块×依赖） (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-001/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-003",
+      "source_tc_id": "TC-001",
+      "tc_id": "TC-001-BOUNDARY",
+      "ac_id": "AC-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "boundary",
+      "title": "AC-001 boundary path :: exit 0：生成 import 依赖图（模块×依赖）",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "boundary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [
+        "SC-001"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 tests/test_v1617_layering_audit.py -k graph",
+      "assertion": "exit 0：生成 import 依赖图（模块×依赖） (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-001/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-004",
+      "source_tc_id": "TC-002",
+      "tc_id": "TC-002-HAPPY",
+      "ac_id": "AC-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "happy",
+      "title": "AC-002 happy path :: exit 0：列出 >2000 行 God Module",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "happy",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 tests/test_v1617_layering_audit.py -k god",
+      "assertion": "exit 0：列出 >2000 行 God Module (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-002/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-005",
+      "source_tc_id": "TC-002",
+      "tc_id": "TC-002-NEGATIVE",
+      "ac_id": "AC-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "negative",
+      "title": "AC-002 negative path :: exit 0：列出 >2000 行 God Module",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "negative",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [
+        "SC-004"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 tests/test_v1617_layering_audit.py -k god",
+      "assertion": "exit 0：列出 >2000 行 God Module (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-002/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-006",
+      "source_tc_id": "TC-002",
+      "tc_id": "TC-002-BOUNDARY",
+      "ac_id": "AC-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "boundary",
+      "title": "AC-002 boundary path :: exit 0：列出 >2000 行 God Module",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "boundary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [
+        "SC-004"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 tests/test_v1617_layering_audit.py -k god",
+      "assertion": "exit 0：列出 >2000 行 God Module (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-002/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-007",
+      "source_tc_id": "TC-003",
+      "tc_id": "TC-003-HAPPY",
+      "ac_id": "AC-003",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "happy",
+      "title": "AC-003 happy path :: exit 0：识别越界引用（command→utils 越界）",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "happy",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 tests/test_v1617_layering_audit.py -k violation",
+      "assertion": "exit 0：识别越界引用（command→utils 越界） (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-003/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-008",
+      "source_tc_id": "TC-003",
+      "tc_id": "TC-003-NEGATIVE",
+      "ac_id": "AC-003",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "negative",
+      "title": "AC-003 negative path :: exit 0：识别越界引用（command→utils 越界）",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "negative",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [
+        "SC-007"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 tests/test_v1617_layering_audit.py -k violation",
+      "assertion": "exit 0：识别越界引用（command→utils 越界） (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-003/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-009",
+      "source_tc_id": "TC-003",
+      "tc_id": "TC-003-BOUNDARY",
+      "ac_id": "AC-003",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "boundary",
+      "title": "AC-003 boundary path :: exit 0：识别越界引用（command→utils 越界）",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "boundary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [
+        "SC-007"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 tests/test_v1617_layering_audit.py -k violation",
+      "assertion": "exit 0：识别越界引用（command→utils 越界） (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-003/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-010",
+      "source_tc_id": "TC-004",
+      "tc_id": "TC-004-HAPPY",
+      "ac_id": "AC-004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "happy",
+      "title": "AC-004 happy path :: exit 0：产出可维护性风险判断",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "happy",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 tests/test_v1617_layering_audit.py -k report",
+      "assertion": "exit 0：产出可维护性风险判断 (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-004/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-011",
+      "source_tc_id": "TC-004",
+      "tc_id": "TC-004-NEGATIVE",
+      "ac_id": "AC-004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "negative",
+      "title": "AC-004 negative path :: exit 0：产出可维护性风险判断",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "negative",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [
+        "SC-010"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 tests/test_v1617_layering_audit.py -k report",
+      "assertion": "exit 0：产出可维护性风险判断 (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-004/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-012",
+      "source_tc_id": "TC-004",
+      "tc_id": "TC-004-BOUNDARY",
+      "ac_id": "AC-004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "boundary",
+      "title": "AC-004 boundary path :: exit 0：产出可维护性风险判断",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "boundary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [
+        "SC-010"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 tests/test_v1617_layering_audit.py -k report",
+      "assertion": "exit 0：产出可维护性风险判断 (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-004/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-013",
+      "source_tc_id": "TC-ILLEGAL",
+      "tc_id": "TC-ILLEGAL-HAPPY",
+      "ac_id": "AC-004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "happy",
+      "title": "AC-004 happy path :: illegal（数据不实/掩盖均被拒）",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "happy",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "rg -n -e \"扫描不全仍 report\" -e \"越界引用不识别\" docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/truth.md",
+      "assertion": "illegal（数据不实/掩盖均被拒） (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-illegal/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-014",
+      "source_tc_id": "TC-ILLEGAL",
+      "tc_id": "TC-ILLEGAL-NEGATIVE",
+      "ac_id": "AC-004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "negative",
+      "title": "AC-004 negative path :: illegal（数据不实/掩盖均被拒）",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "negative",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [
+        "SC-013"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "rg -n -e \"扫描不全仍 report\" -e \"越界引用不识别\" docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/truth.md",
+      "assertion": "illegal（数据不实/掩盖均被拒） (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-illegal/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-015",
+      "source_tc_id": "TC-ILLEGAL",
+      "tc_id": "TC-ILLEGAL-BOUNDARY",
+      "ac_id": "AC-004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "boundary",
+      "title": "AC-004 boundary path :: illegal（数据不实/掩盖均被拒）",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "boundary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [
+        "SC-013"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "rg -n -e \"扫描不全仍 report\" -e \"越界引用不识别\" docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/truth.md",
+      "assertion": "illegal（数据不实/掩盖均被拒） (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-layering-audit/tc-illegal/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
+}
