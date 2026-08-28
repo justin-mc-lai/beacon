@@ -1,0 +1,502 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1617-layering-audit",
+  "feature_slug": "beacon-v1617-layering-audit",
+  "version": "v1.6.17",
+  "runtime_version": "v1.6.16",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.6.17/.machine/execution/requirement-clarity-beacon-v1617-layering-audit.json",
+  "report_markdown_path": "docs/beacon/v1.6.17/execution/requirement-clarity-beacon-v1617-layering-audit.md",
+  "state_path": ".beacon/state/requirement-clarity-beacon-v1617-layering-audit.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.17",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-08-28T03:04:16.928540+00:00",
+    "feature": "beacon-v1617-layering-audit",
+    "feature_slug": "beacon-v1617-layering-audit",
+    "prd_ref": "docs/beacon/v1.6.17/prd/beacon-v1617-layering-audit.md",
+    "user_story_ref": "docs/beacon/v1.6.17/user-story/beacon-v1617-layering-audit.md"
+  },
+  "domain_fsm_gate": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1617-layering-audit",
+    "feature_slug": "beacon-v1617-layering-audit",
+    "version": "v1.6.17",
+    "truth_path": "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/truth.md",
+    "tests_path": "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tests.md",
+    "required": true,
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "findings": [],
+    "requirement": {
+      "required": true,
+      "reason": "domain_section_present",
+      "explicit": false,
+      "partial": true,
+      "complexity": false,
+      "business_signal": true,
+      "version_supported": true
+    },
+    "projection": {
+      "schema_version": "1.0",
+      "domain_fsm_schema": "domain-fsm.v1",
+      "entity_precedence_schema": "entity-precedence.v1",
+      "frontmatter": {
+        "slug": "beacon-v1617-layering-audit",
+        "version": "v1.6.17",
+        "status": "frozen",
+        "language": "zh",
+        "domain_required": "false",
+        "ux_required": "false",
+        "parser_contract": "beacon-feature-package-v2",
+        "truth_source_model": "feature_package_authoritative",
+        "package_maturity": "filled",
+        "materials_status": "current",
+        "canonical_refs": {
+          "prd": "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/truth.md",
+          "user_story": "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/truth.md",
+          "test_case": "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tests.md"
+        }
+      },
+      "frontmatter_errors": [],
+      "has_domain_model_section": true,
+      "has_domain_fsm_section": true,
+      "has_illegal_transition_section": true,
+      "entities": [
+        {
+          "entity": "ImportGraph",
+          "key": "module, depends_on[]",
+          "precedence": "依赖图",
+          "requires": "依赖图"
+        },
+        {
+          "entity": "GodModule",
+          "key": "module, lines",
+          "precedence": ">2000 行模块",
+          "requires": ">2000 行模块"
+        },
+        {
+          "entity": "LayerViolation",
+          "key": "from_module, to_module",
+          "precedence": "越界引用",
+          "requires": "越界引用"
+        }
+      ],
+      "entity_precedence": [
+        {
+          "entity": "ImportGraph",
+          "key": "module, depends_on[]",
+          "precedence": "依赖图",
+          "requires": "依赖图"
+        },
+        {
+          "entity": "GodModule",
+          "key": "module, lines",
+          "precedence": ">2000 行模块",
+          "requires": ">2000 行模块"
+        },
+        {
+          "entity": "LayerViolation",
+          "key": "from_module, to_module",
+          "precedence": "越界引用",
+          "requires": "越界引用"
+        }
+      ],
+      "aggregates": [
+        {
+          "name": "Order",
+          "states": [
+            "classified",
+            "reported",
+            "scaffold",
+            "scanned",
+            "sized"
+          ],
+          "transitions": [
+            {
+              "from": "scaffold",
+              "to": "scanned",
+              "guard": "imports_parsed"
+            },
+            {
+              "from": "scanned",
+              "to": "sized",
+              "guard": "lines_counted"
+            },
+            {
+              "from": "sized",
+              "to": "classified",
+              "guard": "violations_found"
+            },
+            {
+              "from": "classified",
+              "to": "reported",
+              "guard": "audit_done"
+            }
+          ]
+        }
+      ],
+      "illegal_transition_slots": [
+        {
+          "description": "扫描不全仍 report（数据不实）",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "越界引用不识别仍判低风险（掩盖）",
+          "aggregate": "",
+          "source": "truth"
+        }
+      ],
+      "acceptance_criteria": [
+        {
+          "ac_id": "AC-001",
+          "description": "scanned 阶段：生成 beacon/utils + commands 的 import 依赖图（模块 × 依赖列表）。"
+        },
+        {
+          "ac_id": "AC-002",
+          "description": "sized 阶段：列出所有 >2000 行的 God Module（含行数）（含行数）。"
+        },
+        {
+          "ac_id": "AC-003",
+          "description": "classified 阶段：识别越界引用（command 层 → 不应依赖的 utils）（command 层 → 不应依赖的 utils；utils 内部跨层引用）。"
+        },
+        {
+          "ac_id": "AC-004",
+          "description": "reported 阶段：产出可维护性风险判断（分层缺失/God Module 风险等级）。"
+        }
+      ],
+      "bound_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "orphan_ac_ids": [],
+      "aggregates_missing_illegal_slots": [],
+      "raw_section_titles": [
+        "人话",
+        "User Intent",
+        "User Intent Snapshot",
+        "Intent Coverage Matrix",
+        "用户旅程",
+        "First principles",
+        "Domain Model",
+        "Acceptance Criteria",
+        "FSM 五元组",
+        "Domain FSM Order",
+        "Illegal transitions",
+        "invalid / illegal",
+        "Non-goals",
+        "Freeze readiness",
+        "Gap vs gold (订单支付示例)",
+        "Source Excerpt",
+        "FSM mermaid（投影）"
+      ]
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "required": true,
+      "blocked": false,
+      "status": "pass",
+      "reason_code": "",
+      "findings": [],
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "beacon-v1617-layering-audit",
+          "version": "v1.6.17",
+          "status": "frozen",
+          "language": "zh",
+          "domain_required": "false",
+          "ux_required": "false",
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "package_maturity": "filled",
+          "materials_status": "current",
+          "canonical_refs": {
+            "prd": "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/truth.md",
+            "user_story": "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/truth.md",
+            "test_case": "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tests.md"
+          }
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": true,
+        "has_domain_fsm_section": true,
+        "has_illegal_transition_section": true,
+        "entities": [
+          {
+            "entity": "ImportGraph",
+            "key": "module, depends_on[]",
+            "precedence": "依赖图",
+            "requires": "依赖图"
+          },
+          {
+            "entity": "GodModule",
+            "key": "module, lines",
+            "precedence": ">2000 行模块",
+            "requires": ">2000 行模块"
+          },
+          {
+            "entity": "LayerViolation",
+            "key": "from_module, to_module",
+            "precedence": "越界引用",
+            "requires": "越界引用"
+          }
+        ],
+        "entity_precedence": [
+          {
+            "entity": "ImportGraph",
+            "key": "module, depends_on[]",
+            "precedence": "依赖图",
+            "requires": "依赖图"
+          },
+          {
+            "entity": "GodModule",
+            "key": "module, lines",
+            "precedence": ">2000 行模块",
+            "requires": ">2000 行模块"
+          },
+          {
+            "entity": "LayerViolation",
+            "key": "from_module, to_module",
+            "precedence": "越界引用",
+            "requires": "越界引用"
+          }
+        ],
+        "aggregates": [
+          {
+            "name": "Order",
+            "states": [
+              "classified",
+              "reported",
+              "scaffold",
+              "scanned",
+              "sized"
+            ],
+            "transitions": [
+              {
+                "from": "scaffold",
+                "to": "scanned",
+                "guard": "imports_parsed"
+              },
+              {
+                "from": "scanned",
+                "to": "sized",
+                "guard": "lines_counted"
+              },
+              {
+                "from": "sized",
+                "to": "classified",
+                "guard": "violations_found"
+              },
+              {
+                "from": "classified",
+                "to": "reported",
+                "guard": "audit_done"
+              }
+            ]
+          }
+        ],
+        "illegal_transition_slots": [
+          {
+            "description": "扫描不全仍 report（数据不实）",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "越界引用不识别仍判低风险（掩盖）",
+            "aggregate": "",
+            "source": "truth"
+          }
+        ],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-001",
+            "description": "scanned 阶段：生成 beacon/utils + commands 的 import 依赖图（模块 × 依赖列表）。"
+          },
+          {
+            "ac_id": "AC-002",
+            "description": "sized 阶段：列出所有 >2000 行的 God Module（含行数）（含行数）。"
+          },
+          {
+            "ac_id": "AC-003",
+            "description": "classified 阶段：识别越界引用（command 层 → 不应依赖的 utils）（command 层 → 不应依赖的 utils；utils 内部跨层引用）。"
+          },
+          {
+            "ac_id": "AC-004",
+            "description": "reported 阶段：产出可维护性风险判断（分层缺失/God Module 风险等级）。"
+          }
+        ],
+        "bound_ac_ids": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004"
+        ],
+        "orphan_ac_ids": [],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "人话",
+          "User Intent",
+          "User Intent Snapshot",
+          "Intent Coverage Matrix",
+          "用户旅程",
+          "First principles",
+          "Domain Model",
+          "Acceptance Criteria",
+          "FSM 五元组",
+          "Domain FSM Order",
+          "Illegal transitions",
+          "invalid / illegal",
+          "Non-goals",
+          "Freeze readiness",
+          "Gap vs gold (订单支付示例)",
+          "Source Excerpt",
+          "FSM mermaid（投影）"
+        ]
+      },
+      "summary": {
+        "entity_count": 3,
+        "aggregate_count": 1,
+        "illegal_slot_count": 2,
+        "orphan_ac_count": 0,
+        "bound_ac_count": 4
+      }
+    },
+    "recommended_action": ""
+  },
+  "human_closure_contract": {
+    "required": false,
+    "research_path": "docs/beacon/v1.6.17/research/beacon-v1617-layering-audit.md",
+    "research_exists": false,
+    "source_architecture_path": "docs/beacon/v1.6.17/source-architecture/beacon-v1617-layering-audit.md",
+    "source_architecture_exists": false,
+    "required_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "missing_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "diagram_types": [],
+    "complexity_signals": []
+  },
+  "requirement_closure_contract": {
+    "required": true,
+    "chain_order": [
+      "research",
+      "prd",
+      "user_story",
+      "test_case",
+      "requirement_clarity",
+      "freeze"
+    ],
+    "human_closure_required": false,
+    "paths": {
+      "research": "docs/beacon/v1.6.17/research/beacon-v1617-layering-audit.md",
+      "prd": "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/truth.md",
+      "user_story": "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/truth.md",
+      "test_case": "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tests.md"
+    },
+    "exists": {
+      "research": false,
+      "prd": true,
+      "user_story": true,
+      "test_case": true
+    },
+    "required_research_sections": [],
+    "missing_research_sections": [],
+    "ac_projection": {
+      "prd_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "user_story_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "test_case_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "upstream_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "missing_test_case_ac_ids": []
+    }
+  },
+  "version_projection_truth_contract": {
+    "required": false,
+    "supported": true,
+    "projection_types": [],
+    "research_path": "docs/beacon/v1.6.17/research/beacon-v1617-layering-audit.md",
+    "research_exists": false,
+    "required_fields": [
+      "prd_refs",
+      "user_story_refs",
+      "test_case_refs",
+      "coverage_notes",
+      "out_of_scope_notes"
+    ],
+    "field_presence": {
+      "prd_refs": false,
+      "user_story_refs": false,
+      "test_case_refs": false,
+      "coverage_notes": false,
+      "out_of_scope_notes": false
+    },
+    "missing_fields": [],
+    "required_refs": {
+      "prd_refs": "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/truth.md",
+      "user_story_refs": "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/truth.md",
+      "test_case_refs": "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tests.md"
+    },
+    "missing_ref_targets": [],
+    "ready": false
+  },
+  "support_write_topology_contract": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "diagnostics": []
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/truth.md",
+    "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tests.md",
+    "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tasks.md",
+    "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/evidence.md"
+  ]
+}

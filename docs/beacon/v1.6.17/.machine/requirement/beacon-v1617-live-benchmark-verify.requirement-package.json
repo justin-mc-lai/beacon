@@ -1,0 +1,194 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-08-28T03:04:06.514160+00:00",
+  "feature": "beacon-v1617-live-benchmark-verify",
+  "feature_slug": "beacon-v1617-live-benchmark-verify",
+  "version": "v1.6.17",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/truth.md",
+    "tests": "docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/tests.md",
+    "tasks": "docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/tasks.md",
+    "evidence": "docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "584ac496c07fc5bdbff84acf08e3bfc124cf7b14bff5e0fa30ade95edaf7bfc6",
+    "tests": "11c1cc2357e1ae25f9283ba0cc87183d85d63aba554104820672943f303cd6ae",
+    "tasks": "c9a3634c5bb2a719de59ff5aa3eb20ce25bc2b15862f4aa41711f2b3f9fe68a1",
+    "evidence": "c5386c3a6ed2d39896b08cb9516f0659cfb6dccd90458850b9cd554ceb896318"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-v1617-live-benchmark-verify",
+    "version": "v1.6.17",
+    "status": "frozen",
+    "language": "zh",
+    "domain_required": "false",
+    "ux_required": "false",
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "package_maturity": "filled",
+    "materials_status": "current",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/truth.md",
+      "user_story": "docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/truth.md",
+      "test_case": "docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/tests.md"
+    }
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "materialized 阶段：34 个 live skill 的 prompt fixture 文件真实存在（非空、含 ROUTE: 行）。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "resolved 阶段：skill surface 解析修正（mode 子能力映射到主 SKILL.md）：mode 子能力（如 beacon-gen-design-explore）能解析到主 SKILL.md（含 HARD GATE），不再 skill_surface_missing。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "executing 阶段：`beacon eval scorecard --runner live --live-tier local_admitted` 跑通，产出每 skill host_behavior trace。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "passed 判定：live_skill_pass ≥ 30/37（真实执行），失败 skill 有真实 reason_code（不折算 pass）。",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "",
+      "command": "`python3 tests/test_v1617_live_benchmark.py -k fixtures`",
+      "assertion": "exit 0：34 skill 的 prompt fixture 存在且含 ROUTE:",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "",
+      "command": "`python3 tests/test_v1617_live_benchmark.py -k surface`",
+      "assertion": "exit 0：mode 子能力解析到主 SKILL.md（无 skill_surface_missing）",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "",
+      "command": "`python3 tests/test_v1617_live_benchmark.py -k run`",
+      "assertion": "exit 0：live scorecard 跑通，每 skill 有 host_behavior trace",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "",
+      "command": "`python3 tests/test_v1617_live_benchmark.py -k pass_rate`",
+      "assertion": "exit 0：live_skill_pass ≥ 30/37（真实执行）",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-EXEC",
+      "layer": "",
+      "command": "`python3 tests/test_v1617_live_benchmark.py`",
+      "assertion": "exit 0：全断言通过",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-FSMW",
+      "layer": "",
+      "command": "`python3 tests/test_v1617_live_benchmark.py -k fsm`",
+      "assertion": "exit 0：合法路径 scaffold→materialized→resolved→executing→traced→passed/failed",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-ILLEGAL",
+      "layer": "",
+      "command": "`rg -n -e \"执行失败仍标\" -e \"fixture 缺失仍执行\" docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/truth.md`",
+      "assertion": "illegal（伪造/占位冒充均被拒）",
+      "evidence_path": "",
+      "source": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Implement AC-001: materialized 阶段：34 个 live skill 的 prompt fixture 文件真实存在（非空、含 ROUTE: 行）。 · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1617-live-benchmark-verify/AC-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Implement AC-002: resolved 阶段：skill surface 解析修正（mode 子能力映射到主 SKILL.md）：mode 子能力（如 beac... · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1617-live-benchmark-verify/AC-002.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Implement AC-003: executing 阶段：`beacon eval scorecard --runner live --live-tier local_a... · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1617-live-benchmark-verify/AC-003.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Implement AC-004: passed 判定：live_skill_pass ≥ 30/37（真实执行），失败 skill 有真实 reason_code（不折算 ... · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1617-live-benchmark-verify/AC-004.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1617-live-benchmark-verify/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1617-live-benchmark-verify/QA-MATRIX.json`",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-deep",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.17/research/beacon-v1617-live-benchmark-verify.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "beacon-ceo-review",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.17/change/beacon-v1617-live-benchmark-verify.refreeze-summary.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "qa",
+      "authority": "qa_verdict",
+      "canonical_artifact": "docs/beacon/v1.6.17/.machine/qa/beacon-v1617-live-benchmark-verify.qa9-matrix.json",
+      "status": "linked",
+      "route": "qa"
+    },
+    {
+      "surface": "release",
+      "authority": "release_verdict",
+      "canonical_artifact": "docs/beacon/v1.6.17/release/",
+      "status": "linked",
+      "route": "release"
+    }
+  ]
+}

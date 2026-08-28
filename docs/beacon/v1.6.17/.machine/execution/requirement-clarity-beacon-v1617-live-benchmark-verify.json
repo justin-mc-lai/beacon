@@ -1,0 +1,524 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1617-live-benchmark-verify",
+  "feature_slug": "beacon-v1617-live-benchmark-verify",
+  "version": "v1.6.17",
+  "runtime_version": "v1.6.16",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.6.17/.machine/execution/requirement-clarity-beacon-v1617-live-benchmark-verify.json",
+  "report_markdown_path": "docs/beacon/v1.6.17/execution/requirement-clarity-beacon-v1617-live-benchmark-verify.md",
+  "state_path": ".beacon/state/requirement-clarity-beacon-v1617-live-benchmark-verify.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.17",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-08-28T03:04:05.256448+00:00",
+    "feature": "beacon-v1617-live-benchmark-verify",
+    "feature_slug": "beacon-v1617-live-benchmark-verify",
+    "prd_ref": "docs/beacon/v1.6.17/prd/beacon-v1617-live-benchmark-verify.md",
+    "user_story_ref": "docs/beacon/v1.6.17/user-story/beacon-v1617-live-benchmark-verify.md"
+  },
+  "domain_fsm_gate": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1617-live-benchmark-verify",
+    "feature_slug": "beacon-v1617-live-benchmark-verify",
+    "version": "v1.6.17",
+    "truth_path": "docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/truth.md",
+    "tests_path": "docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/tests.md",
+    "required": true,
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "findings": [],
+    "requirement": {
+      "required": true,
+      "reason": "domain_section_present",
+      "explicit": false,
+      "partial": true,
+      "complexity": false,
+      "business_signal": true,
+      "version_supported": true
+    },
+    "projection": {
+      "schema_version": "1.0",
+      "domain_fsm_schema": "domain-fsm.v1",
+      "entity_precedence_schema": "entity-precedence.v1",
+      "frontmatter": {
+        "slug": "beacon-v1617-live-benchmark-verify",
+        "version": "v1.6.17",
+        "status": "frozen",
+        "language": "zh",
+        "domain_required": "false",
+        "ux_required": "false",
+        "parser_contract": "beacon-feature-package-v2",
+        "truth_source_model": "feature_package_authoritative",
+        "package_maturity": "filled",
+        "materials_status": "current",
+        "canonical_refs": {
+          "prd": "docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/truth.md",
+          "user_story": "docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/truth.md",
+          "test_case": "docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/tests.md"
+        }
+      },
+      "frontmatter_errors": [],
+      "has_domain_model_section": true,
+      "has_domain_fsm_section": true,
+      "has_illegal_transition_section": true,
+      "entities": [
+        {
+          "entity": "PromptFixture",
+          "key": "skill_id, path, route",
+          "precedence": "测试题目文件",
+          "requires": "测试题目文件"
+        },
+        {
+          "entity": "SkillSurface",
+          "key": "skill_id, SKILL.md, mode_map",
+          "precedence": "surface 解析",
+          "requires": "surface 解析"
+        },
+        {
+          "entity": "LiveTrace",
+          "key": "skill_id, status, reason",
+          "precedence": "执行记录",
+          "requires": "执行记录"
+        }
+      ],
+      "entity_precedence": [
+        {
+          "entity": "PromptFixture",
+          "key": "skill_id, path, route",
+          "precedence": "测试题目文件",
+          "requires": "测试题目文件"
+        },
+        {
+          "entity": "SkillSurface",
+          "key": "skill_id, SKILL.md, mode_map",
+          "precedence": "surface 解析",
+          "requires": "surface 解析"
+        },
+        {
+          "entity": "LiveTrace",
+          "key": "skill_id, status, reason",
+          "precedence": "执行记录",
+          "requires": "执行记录"
+        }
+      ],
+      "aggregates": [
+        {
+          "name": "Order",
+          "states": [
+            "executing",
+            "failed",
+            "materialized",
+            "passed",
+            "resolved",
+            "scaffold",
+            "traced"
+          ],
+          "transitions": [
+            {
+              "from": "scaffold",
+              "to": "materialized",
+              "guard": "fixture_ok"
+            },
+            {
+              "from": "materialized",
+              "to": "resolved",
+              "guard": "surface_ok"
+            },
+            {
+              "from": "resolved",
+              "to": "executing",
+              "guard": "admitted"
+            },
+            {
+              "from": "executing",
+              "to": "traced",
+              "guard": "trace_written"
+            },
+            {
+              "from": "traced",
+              "to": "passed",
+              "guard": "exec_ok"
+            },
+            {
+              "from": "traced",
+              "to": "failed",
+              "guard": "exec_fail"
+            }
+          ]
+        }
+      ],
+      "illegal_transition_slots": [
+        {
+          "description": "执行失败仍标 pass（伪造）",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "fixture 缺失仍执行（占位冒充）",
+          "aggregate": "",
+          "source": "truth"
+        }
+      ],
+      "acceptance_criteria": [
+        {
+          "ac_id": "AC-001",
+          "description": "materialized 阶段：34 个 live skill 的 prompt fixture 文件真实存在（非空、含 ROUTE: 行）。"
+        },
+        {
+          "ac_id": "AC-002",
+          "description": "resolved 阶段：skill surface 解析修正（mode 子能力映射到主 SKILL.md）：mode 子能力（如 beacon-gen-design-explore）能解析到主 SKILL.md（含 HARD GATE），不再 skill_surface_missing。"
+        },
+        {
+          "ac_id": "AC-003",
+          "description": "executing 阶段：`beacon eval scorecard --runner live --live-tier local_admitted` 跑通，产出每 skill host_behavior trace。"
+        },
+        {
+          "ac_id": "AC-004",
+          "description": "passed 判定：live_skill_pass ≥ 30/37（真实执行），失败 skill 有真实 reason_code（不折算 pass）。"
+        }
+      ],
+      "bound_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "orphan_ac_ids": [],
+      "aggregates_missing_illegal_slots": [],
+      "raw_section_titles": [
+        "人话",
+        "User Intent",
+        "User Intent Snapshot",
+        "Intent Coverage Matrix",
+        "用户旅程",
+        "First principles",
+        "Domain Model",
+        "Acceptance Criteria",
+        "FSM 五元组",
+        "Domain FSM Order",
+        "Illegal transitions",
+        "invalid / illegal",
+        "Non-goals",
+        "Freeze readiness",
+        "Gap vs gold (订单支付示例)",
+        "Source Excerpt"
+      ]
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "required": true,
+      "blocked": false,
+      "status": "pass",
+      "reason_code": "",
+      "findings": [],
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "beacon-v1617-live-benchmark-verify",
+          "version": "v1.6.17",
+          "status": "frozen",
+          "language": "zh",
+          "domain_required": "false",
+          "ux_required": "false",
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "package_maturity": "filled",
+          "materials_status": "current",
+          "canonical_refs": {
+            "prd": "docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/truth.md",
+            "user_story": "docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/truth.md",
+            "test_case": "docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/tests.md"
+          }
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": true,
+        "has_domain_fsm_section": true,
+        "has_illegal_transition_section": true,
+        "entities": [
+          {
+            "entity": "PromptFixture",
+            "key": "skill_id, path, route",
+            "precedence": "测试题目文件",
+            "requires": "测试题目文件"
+          },
+          {
+            "entity": "SkillSurface",
+            "key": "skill_id, SKILL.md, mode_map",
+            "precedence": "surface 解析",
+            "requires": "surface 解析"
+          },
+          {
+            "entity": "LiveTrace",
+            "key": "skill_id, status, reason",
+            "precedence": "执行记录",
+            "requires": "执行记录"
+          }
+        ],
+        "entity_precedence": [
+          {
+            "entity": "PromptFixture",
+            "key": "skill_id, path, route",
+            "precedence": "测试题目文件",
+            "requires": "测试题目文件"
+          },
+          {
+            "entity": "SkillSurface",
+            "key": "skill_id, SKILL.md, mode_map",
+            "precedence": "surface 解析",
+            "requires": "surface 解析"
+          },
+          {
+            "entity": "LiveTrace",
+            "key": "skill_id, status, reason",
+            "precedence": "执行记录",
+            "requires": "执行记录"
+          }
+        ],
+        "aggregates": [
+          {
+            "name": "Order",
+            "states": [
+              "executing",
+              "failed",
+              "materialized",
+              "passed",
+              "resolved",
+              "scaffold",
+              "traced"
+            ],
+            "transitions": [
+              {
+                "from": "scaffold",
+                "to": "materialized",
+                "guard": "fixture_ok"
+              },
+              {
+                "from": "materialized",
+                "to": "resolved",
+                "guard": "surface_ok"
+              },
+              {
+                "from": "resolved",
+                "to": "executing",
+                "guard": "admitted"
+              },
+              {
+                "from": "executing",
+                "to": "traced",
+                "guard": "trace_written"
+              },
+              {
+                "from": "traced",
+                "to": "passed",
+                "guard": "exec_ok"
+              },
+              {
+                "from": "traced",
+                "to": "failed",
+                "guard": "exec_fail"
+              }
+            ]
+          }
+        ],
+        "illegal_transition_slots": [
+          {
+            "description": "执行失败仍标 pass（伪造）",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "fixture 缺失仍执行（占位冒充）",
+            "aggregate": "",
+            "source": "truth"
+          }
+        ],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-001",
+            "description": "materialized 阶段：34 个 live skill 的 prompt fixture 文件真实存在（非空、含 ROUTE: 行）。"
+          },
+          {
+            "ac_id": "AC-002",
+            "description": "resolved 阶段：skill surface 解析修正（mode 子能力映射到主 SKILL.md）：mode 子能力（如 beacon-gen-design-explore）能解析到主 SKILL.md（含 HARD GATE），不再 skill_surface_missing。"
+          },
+          {
+            "ac_id": "AC-003",
+            "description": "executing 阶段：`beacon eval scorecard --runner live --live-tier local_admitted` 跑通，产出每 skill host_behavior trace。"
+          },
+          {
+            "ac_id": "AC-004",
+            "description": "passed 判定：live_skill_pass ≥ 30/37（真实执行），失败 skill 有真实 reason_code（不折算 pass）。"
+          }
+        ],
+        "bound_ac_ids": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004"
+        ],
+        "orphan_ac_ids": [],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "人话",
+          "User Intent",
+          "User Intent Snapshot",
+          "Intent Coverage Matrix",
+          "用户旅程",
+          "First principles",
+          "Domain Model",
+          "Acceptance Criteria",
+          "FSM 五元组",
+          "Domain FSM Order",
+          "Illegal transitions",
+          "invalid / illegal",
+          "Non-goals",
+          "Freeze readiness",
+          "Gap vs gold (订单支付示例)",
+          "Source Excerpt"
+        ]
+      },
+      "summary": {
+        "entity_count": 3,
+        "aggregate_count": 1,
+        "illegal_slot_count": 2,
+        "orphan_ac_count": 0,
+        "bound_ac_count": 4
+      }
+    },
+    "recommended_action": ""
+  },
+  "human_closure_contract": {
+    "required": false,
+    "research_path": "docs/beacon/v1.6.17/research/beacon-v1617-live-benchmark-verify.md",
+    "research_exists": false,
+    "source_architecture_path": "docs/beacon/v1.6.17/source-architecture/beacon-v1617-live-benchmark-verify.md",
+    "source_architecture_exists": false,
+    "required_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "missing_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "diagram_types": [],
+    "complexity_signals": []
+  },
+  "requirement_closure_contract": {
+    "required": true,
+    "chain_order": [
+      "research",
+      "prd",
+      "user_story",
+      "test_case",
+      "requirement_clarity",
+      "freeze"
+    ],
+    "human_closure_required": false,
+    "paths": {
+      "research": "docs/beacon/v1.6.17/research/beacon-v1617-live-benchmark-verify.md",
+      "prd": "docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/truth.md",
+      "user_story": "docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/truth.md",
+      "test_case": "docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/tests.md"
+    },
+    "exists": {
+      "research": false,
+      "prd": true,
+      "user_story": true,
+      "test_case": true
+    },
+    "required_research_sections": [],
+    "missing_research_sections": [],
+    "ac_projection": {
+      "prd_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "user_story_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "test_case_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "upstream_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "missing_test_case_ac_ids": []
+    }
+  },
+  "version_projection_truth_contract": {
+    "required": false,
+    "supported": true,
+    "projection_types": [],
+    "research_path": "docs/beacon/v1.6.17/research/beacon-v1617-live-benchmark-verify.md",
+    "research_exists": false,
+    "required_fields": [
+      "prd_refs",
+      "user_story_refs",
+      "test_case_refs",
+      "coverage_notes",
+      "out_of_scope_notes"
+    ],
+    "field_presence": {
+      "prd_refs": false,
+      "user_story_refs": false,
+      "test_case_refs": false,
+      "coverage_notes": false,
+      "out_of_scope_notes": false
+    },
+    "missing_fields": [],
+    "required_refs": {
+      "prd_refs": "docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/truth.md",
+      "user_story_refs": "docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/truth.md",
+      "test_case_refs": "docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/tests.md"
+    },
+    "missing_ref_targets": [],
+    "ready": false
+  },
+  "support_write_topology_contract": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "diagnostics": []
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/truth.md",
+    "docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/tests.md",
+    "docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/tasks.md",
+    "docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/evidence.md"
+  ]
+}

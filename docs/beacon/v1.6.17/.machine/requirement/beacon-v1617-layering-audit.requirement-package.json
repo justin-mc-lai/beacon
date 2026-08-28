@@ -1,0 +1,194 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-08-28T03:04:17.877582+00:00",
+  "feature": "beacon-v1617-layering-audit",
+  "feature_slug": "beacon-v1617-layering-audit",
+  "version": "v1.6.17",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/truth.md",
+    "tests": "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tests.md",
+    "tasks": "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tasks.md",
+    "evidence": "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "ef9275d93f41fa0a54bf7b25c8ae73ed491e5366b5d4b4cc3be8d04eaee7e350",
+    "tests": "0200cfd324ad29a1137f19f5c607e1aee43b8365fdc3f3a8b2f70b9b01fa6e07",
+    "tasks": "281f1d9a54ec374a8113ab5ae75ca9f3819de643520bb442ffe24749190f32b5",
+    "evidence": "ebb0194ae559f74dfbd9bd1c9380755896bc77f964f747ef23e8fdba70d15e11"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-v1617-layering-audit",
+    "version": "v1.6.17",
+    "status": "frozen",
+    "language": "zh",
+    "domain_required": "false",
+    "ux_required": "false",
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "package_maturity": "filled",
+    "materials_status": "current",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/truth.md",
+      "user_story": "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/truth.md",
+      "test_case": "docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/tests.md"
+    }
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "scanned 阶段：生成 beacon/utils + commands 的 import 依赖图（模块 × 依赖列表）。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "sized 阶段：列出所有 >2000 行的 God Module（含行数）（含行数）。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "classified 阶段：识别越界引用（command 层 → 不应依赖的 utils）（command 层 → 不应依赖的 utils；utils 内部跨层引用）。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "reported 阶段：产出可维护性风险判断（分层缺失/God Module 风险等级）。",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "",
+      "command": "`python3 tests/test_v1617_layering_audit.py -k graph`",
+      "assertion": "exit 0：生成 import 依赖图（模块×依赖）",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "",
+      "command": "`python3 tests/test_v1617_layering_audit.py -k god`",
+      "assertion": "exit 0：列出 >2000 行 God Module",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "",
+      "command": "`python3 tests/test_v1617_layering_audit.py -k violation`",
+      "assertion": "exit 0：识别越界引用（command→utils 越界）",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "",
+      "command": "`python3 tests/test_v1617_layering_audit.py -k report`",
+      "assertion": "exit 0：产出可维护性风险判断",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-EXEC",
+      "layer": "",
+      "command": "`python3 tests/test_v1617_layering_audit.py`",
+      "assertion": "exit 0：全断言通过",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-001..004",
+      "tc_id": "TC-FSMW",
+      "layer": "",
+      "command": "`python3 tests/test_v1617_layering_audit.py -k fsm`",
+      "assertion": "exit 0：合法路径 scaffold→scanned→sized→classified→reported 全走",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-ILLEGAL",
+      "layer": "",
+      "command": "`rg -n -e \"扫描不全仍 report\" -e \"越界引用不识别\" docs/beacon/v1.6.17/features/beacon-v1617-layering-audit/truth.md`",
+      "assertion": "illegal（数据不实/掩盖均被拒）",
+      "evidence_path": "",
+      "source": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Implement AC-001: scanned 阶段：生成 beacon/utils + commands 的 import 依赖图（模块 × 依赖列表）。 · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/AC-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Implement AC-002: sized 阶段：列出所有 >2000 行的 God Module（含行数）（含行数）。 · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/AC-002.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Implement AC-003: classified 阶段：识别越界引用（command 层 → 不应依赖的 utils）（command 层 → 不应依赖的 utils... · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/AC-003.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Implement AC-004: reported 阶段：产出可维护性风险判断（分层缺失/God Module 风险等级）。 · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/AC-004.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-v1617-layering-audit/QA-MATRIX.json`",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-deep",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.17/research/beacon-v1617-layering-audit.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "beacon-ceo-review",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.17/change/beacon-v1617-layering-audit.refreeze-summary.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "qa",
+      "authority": "qa_verdict",
+      "canonical_artifact": "docs/beacon/v1.6.17/.machine/qa/beacon-v1617-layering-audit.qa9-matrix.json",
+      "status": "linked",
+      "route": "qa"
+    },
+    {
+      "surface": "release",
+      "authority": "release_verdict",
+      "canonical_artifact": "docs/beacon/v1.6.17/release/",
+      "status": "linked",
+      "route": "release"
+    }
+  ]
+}
