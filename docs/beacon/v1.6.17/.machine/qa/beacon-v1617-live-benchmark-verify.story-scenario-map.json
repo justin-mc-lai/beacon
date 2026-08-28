@@ -1,0 +1,899 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1617-live-benchmark-verify",
+  "feature_slug": "beacon-v1617-live-benchmark-verify",
+  "version": "v1.6.17",
+  "generated_at": "2026-08-28T03:10:36.301878+00:00",
+  "expansion_profile": "pua-web",
+  "scenario_depth": "standard",
+  "families_required": [
+    "happy",
+    "negative",
+    "boundary"
+  ],
+  "stories": [
+    {
+      "ac_id": "AC-001",
+      "theme": "补齐 prompt fixture（34 个 live skill）",
+      "text": "must",
+      "scenario_ids": [
+        "SC-001",
+        "SC-002",
+        "SC-003"
+      ],
+      "scenario_families": [
+        "happy",
+        "negative",
+        "boundary"
+      ],
+      "required_families": [
+        "happy",
+        "negative",
+        "boundary"
+      ],
+      "scenarios": [
+        {
+          "scenario_id": "SC-001",
+          "source_tc_id": "TC-001",
+          "tc_id": "TC-001-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-002",
+          "source_tc_id": "TC-001",
+          "tc_id": "TC-001-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-003",
+          "source_tc_id": "TC-001",
+          "tc_id": "TC-001-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "修正 skill surface 解析（mode→主 SKILL.md）",
+      "text": "must",
+      "scenario_ids": [
+        "SC-004",
+        "SC-005",
+        "SC-006"
+      ],
+      "scenario_families": [
+        "happy",
+        "negative",
+        "boundary"
+      ],
+      "required_families": [
+        "happy",
+        "negative",
+        "boundary"
+      ],
+      "scenarios": [
+        {
+          "scenario_id": "SC-004",
+          "source_tc_id": "TC-002",
+          "tc_id": "TC-002-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-005",
+          "source_tc_id": "TC-002",
+          "tc_id": "TC-002-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-006",
+          "source_tc_id": "TC-002",
+          "tc_id": "TC-002-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "跑全量 live benchmark",
+      "text": "must",
+      "scenario_ids": [
+        "SC-007",
+        "SC-008",
+        "SC-009"
+      ],
+      "scenario_families": [
+        "happy",
+        "negative",
+        "boundary"
+      ],
+      "required_families": [
+        "happy",
+        "negative",
+        "boundary"
+      ],
+      "scenarios": [
+        {
+          "scenario_id": "SC-007",
+          "source_tc_id": "TC-003",
+          "tc_id": "TC-003-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-008",
+          "source_tc_id": "TC-003",
+          "tc_id": "TC-003-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-009",
+          "source_tc_id": "TC-003",
+          "tc_id": "TC-003-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "live_skill_pass ≥ 30/37 且证据真实",
+      "text": "must",
+      "scenario_ids": [
+        "SC-010",
+        "SC-011",
+        "SC-012",
+        "SC-013",
+        "SC-014",
+        "SC-015"
+      ],
+      "scenario_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "happy",
+        "negative",
+        "boundary"
+      ],
+      "required_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "happy",
+        "negative",
+        "boundary"
+      ],
+      "scenarios": [
+        {
+          "scenario_id": "SC-010",
+          "source_tc_id": "TC-004",
+          "tc_id": "TC-004-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-011",
+          "source_tc_id": "TC-004",
+          "tc_id": "TC-004-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-012",
+          "source_tc_id": "TC-004",
+          "tc_id": "TC-004-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-013",
+          "source_tc_id": "TC-ILLEGAL",
+          "tc_id": "TC-ILLEGAL-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-014",
+          "source_tc_id": "TC-ILLEGAL",
+          "tc_id": "TC-ILLEGAL-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-015",
+          "source_tc_id": "TC-ILLEGAL",
+          "tc_id": "TC-ILLEGAL-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-001..004",
+      "theme": "",
+      "text": "exit 0：全断言通过",
+      "scenario_ids": [
+        "SC-AUTO-TC-EXEC",
+        "SC-AUTO-TC-FSMW"
+      ],
+      "scenario_families": [
+        "primary",
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-EXEC",
+          "source_tc_id": "TC-EXEC",
+          "tc_id": "TC-EXEC-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-AUTO-TC-FSMW",
+          "source_tc_id": "TC-FSMW",
+          "tc_id": "TC-FSMW-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "source_tc_id": "TC-001",
+      "tc_id": "TC-001-HAPPY",
+      "ac_id": "AC-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "happy",
+      "title": "AC-001 happy path :: exit 0：34 skill 的 prompt fixture 存在且含 ROUTE:",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "happy",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 tests/test_v1617_live_benchmark.py -k fixtures",
+      "assertion": "exit 0：34 skill 的 prompt fixture 存在且含 ROUTE: (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-live-benchmark-verify/tc-001/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-002",
+      "source_tc_id": "TC-001",
+      "tc_id": "TC-001-NEGATIVE",
+      "ac_id": "AC-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "negative",
+      "title": "AC-001 negative path :: exit 0：34 skill 的 prompt fixture 存在且含 ROUTE:",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "negative",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [
+        "SC-001"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 tests/test_v1617_live_benchmark.py -k fixtures",
+      "assertion": "exit 0：34 skill 的 prompt fixture 存在且含 ROUTE: (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-live-benchmark-verify/tc-001/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-003",
+      "source_tc_id": "TC-001",
+      "tc_id": "TC-001-BOUNDARY",
+      "ac_id": "AC-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "boundary",
+      "title": "AC-001 boundary path :: exit 0：34 skill 的 prompt fixture 存在且含 ROUTE:",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "boundary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [
+        "SC-001"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 tests/test_v1617_live_benchmark.py -k fixtures",
+      "assertion": "exit 0：34 skill 的 prompt fixture 存在且含 ROUTE: (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-live-benchmark-verify/tc-001/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-004",
+      "source_tc_id": "TC-002",
+      "tc_id": "TC-002-HAPPY",
+      "ac_id": "AC-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "happy",
+      "title": "AC-002 happy path :: exit 0：mode 子能力解析到主 SKILL.md（无 skill_surface_missing）",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "happy",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 tests/test_v1617_live_benchmark.py -k surface",
+      "assertion": "exit 0：mode 子能力解析到主 SKILL.md（无 skill_surface_missing） (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-live-benchmark-verify/tc-002/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-005",
+      "source_tc_id": "TC-002",
+      "tc_id": "TC-002-NEGATIVE",
+      "ac_id": "AC-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "negative",
+      "title": "AC-002 negative path :: exit 0：mode 子能力解析到主 SKILL.md（无 skill_surface_missing）",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "negative",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [
+        "SC-004"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 tests/test_v1617_live_benchmark.py -k surface",
+      "assertion": "exit 0：mode 子能力解析到主 SKILL.md（无 skill_surface_missing） (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-live-benchmark-verify/tc-002/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-006",
+      "source_tc_id": "TC-002",
+      "tc_id": "TC-002-BOUNDARY",
+      "ac_id": "AC-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "boundary",
+      "title": "AC-002 boundary path :: exit 0：mode 子能力解析到主 SKILL.md（无 skill_surface_missing）",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "boundary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [
+        "SC-004"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 tests/test_v1617_live_benchmark.py -k surface",
+      "assertion": "exit 0：mode 子能力解析到主 SKILL.md（无 skill_surface_missing） (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-live-benchmark-verify/tc-002/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-007",
+      "source_tc_id": "TC-003",
+      "tc_id": "TC-003-HAPPY",
+      "ac_id": "AC-003",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "happy",
+      "title": "AC-003 happy path :: exit 0：live scorecard 跑通，每 skill 有 host_behavior trace",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "happy",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 tests/test_v1617_live_benchmark.py -k surface",
+      "assertion": "exit 0：live scorecard 跑通，每 skill 有 host_behavior trace (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-live-benchmark-verify/tc-003/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-008",
+      "source_tc_id": "TC-003",
+      "tc_id": "TC-003-NEGATIVE",
+      "ac_id": "AC-003",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "negative",
+      "title": "AC-003 negative path :: exit 0：live scorecard 跑通，每 skill 有 host_behavior trace",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "negative",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [
+        "SC-007"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 tests/test_v1617_live_benchmark.py -k surface",
+      "assertion": "exit 0：live scorecard 跑通，每 skill 有 host_behavior trace (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-live-benchmark-verify/tc-003/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-009",
+      "source_tc_id": "TC-003",
+      "tc_id": "TC-003-BOUNDARY",
+      "ac_id": "AC-003",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "boundary",
+      "title": "AC-003 boundary path :: exit 0：live scorecard 跑通，每 skill 有 host_behavior trace",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "boundary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [
+        "SC-007"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 tests/test_v1617_live_benchmark.py -k surface",
+      "assertion": "exit 0：live scorecard 跑通，每 skill 有 host_behavior trace (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-live-benchmark-verify/tc-003/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-010",
+      "source_tc_id": "TC-004",
+      "tc_id": "TC-004-HAPPY",
+      "ac_id": "AC-004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "happy",
+      "title": "AC-004 happy path :: exit 0：live_skill_pass ≥ 30/37（真实执行）",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "happy",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 tests/test_v1617_live_benchmark.py -k fixtures",
+      "assertion": "exit 0：live_skill_pass ≥ 30/37（真实执行） (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-live-benchmark-verify/tc-004/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-011",
+      "source_tc_id": "TC-004",
+      "tc_id": "TC-004-NEGATIVE",
+      "ac_id": "AC-004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "negative",
+      "title": "AC-004 negative path :: exit 0：live_skill_pass ≥ 30/37（真实执行）",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "negative",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [
+        "SC-010"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 tests/test_v1617_live_benchmark.py -k fixtures",
+      "assertion": "exit 0：live_skill_pass ≥ 30/37（真实执行） (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-live-benchmark-verify/tc-004/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-012",
+      "source_tc_id": "TC-004",
+      "tc_id": "TC-004-BOUNDARY",
+      "ac_id": "AC-004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "boundary",
+      "title": "AC-004 boundary path :: exit 0：live_skill_pass ≥ 30/37（真实执行）",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "boundary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [
+        "SC-010"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 tests/test_v1617_live_benchmark.py -k fixtures",
+      "assertion": "exit 0：live_skill_pass ≥ 30/37（真实执行） (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-live-benchmark-verify/tc-004/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-013",
+      "source_tc_id": "TC-ILLEGAL",
+      "tc_id": "TC-ILLEGAL-HAPPY",
+      "ac_id": "AC-004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "happy",
+      "title": "AC-004 happy path :: illegal（伪造/占位冒充均被拒）",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "happy",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "rg -n -e \"执行失败仍标\" -e \"fixture 缺失仍执行\" docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/truth.md",
+      "assertion": "illegal（伪造/占位冒充均被拒） (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-live-benchmark-verify/tc-illegal/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-014",
+      "source_tc_id": "TC-ILLEGAL",
+      "tc_id": "TC-ILLEGAL-NEGATIVE",
+      "ac_id": "AC-004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "negative",
+      "title": "AC-004 negative path :: illegal（伪造/占位冒充均被拒）",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "negative",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [
+        "SC-013"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "rg -n -e \"执行失败仍标\" -e \"fixture 缺失仍执行\" docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/truth.md",
+      "assertion": "illegal（伪造/占位冒充均被拒） (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-live-benchmark-verify/tc-illegal/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-015",
+      "source_tc_id": "TC-ILLEGAL",
+      "tc_id": "TC-ILLEGAL-BOUNDARY",
+      "ac_id": "AC-004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "boundary",
+      "title": "AC-004 boundary path :: illegal（伪造/占位冒充均被拒）",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "boundary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [
+        "SC-013"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "rg -n -e \"执行失败仍标\" -e \"fixture 缺失仍执行\" docs/beacon/v1.6.17/features/beacon-v1617-live-benchmark-verify/truth.md",
+      "assertion": "illegal（伪造/占位冒充均被拒） (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-live-benchmark-verify/tc-illegal/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-EXEC",
+      "source_tc_id": "TC-EXEC",
+      "tc_id": "TC-EXEC-PRIMARY",
+      "ac_id": "AC-001..004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "exit 0：全断言通过",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 tests/test_v1617_live_benchmark.py",
+      "assertion": "exit 0：全断言通过",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-live-benchmark-verify/tc-exec/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-FSMW",
+      "source_tc_id": "TC-FSMW",
+      "tc_id": "TC-FSMW-PRIMARY",
+      "ac_id": "AC-001..004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "exit 0：合法路径 scaffold→materialized→resolved→executing→traced→passed/failed",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 tests/test_v1617_live_benchmark.py -k fsm",
+      "assertion": "exit 0：合法路径 scaffold→materialized→resolved→executing→traced→passed/failed",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1617-live-benchmark-verify/tc-fsmw/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
+}
