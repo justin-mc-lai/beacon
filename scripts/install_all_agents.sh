@@ -34,12 +34,12 @@ mkdir -p "${HOME}/.agents/skills"
 rm -rf "${HOME}/.codex/skills/beacon"
 rm -f "${HOME}/.codex/skills/beacon.bak-"*
 # Prefer Python installer (handles package-root removal + loom dual-track)
-python3 - <<PY
+BEACON_ROOT="${BEACON_ROOT}" python3 - <<'PY'
 from beacon.utils.agent_surface import (
     install_global_agents_beacon_skills,
     verify_global_agents_beacon_skills,
 )
-print(install_global_agents_beacon_skills(beacon_root="${BEACON_ROOT}", dry_run=False))
+print(install_global_agents_beacon_skills(beacon_root=os.environ["BEACON_ROOT"], dry_run=False))
 print(verify_global_agents_beacon_skills())
 PY
 echo

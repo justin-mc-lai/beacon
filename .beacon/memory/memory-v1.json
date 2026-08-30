@@ -2790,7 +2790,171 @@
       ],
       "created_at": "2026-08-28T00:31:25.625119+00:00",
       "updated_at": "2026-08-28T00:31:25.625119+00:00"
+    },
+    {
+      "memory_id": "5296e49c-7cca-44e5-8f6d-2491123ceb14",
+      "type": "decision",
+      "status": "active",
+      "content": "[workflow.release-profile] run=run-20260828T111324876829 status=completed reason=doctor_repair_package",
+      "content_hash": "sha256:9d3278dd9dfaa4798f91040683d8537f3174b96a8bbabe5a3baa4de9a55ffb24",
+      "source_session_id": "run-20260828T111324876829",
+      "source": "workflow.release-profile",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/gate-report.json",
+        ".beacon/raw-command-log.jsonl",
+        ".beacon/runs/run-20260828T111324876829/state.json",
+        "docs/beacon/v1.6.17/.machine/execution/terminal.json",
+        "docs/beacon/v1.6.17/execution/boundaries.md"
+      ],
+      "reason_codes": [],
+      "confidence": 0.82,
+      "tags": [
+        "completed",
+        "release",
+        "workflow-loop"
+      ],
+      "created_at": "2026-08-28T03:13:35.847128+00:00",
+      "updated_at": "2026-08-28T03:13:35.847128+00:00",
+      "decision": "[workflow.release-profile] run=run-20260828T111324876829 status=completed reason=doctor_repair_package"
+    },
+    {
+      "memory_id": "b7f76b36-8c97-4c4a-ad1c-422f09d5a5be",
+      "type": "decision",
+      "status": "active",
+      "content": "[release] beacon-v1617-layering-audit => completed",
+      "content_hash": "sha256:990c3bb09e9f0bc430f64e23e2e742e315b209b8de6c3b242647f591bd8c542f",
+      "source_session_id": "release-v1.6.17",
+      "source": "workflow.release.writeback",
+      "evidence_ref": [],
+      "reason_codes": [],
+      "confidence": 0.8,
+      "tags": [
+        "completed",
+        "release",
+        "workflow-lifecycle"
+      ],
+      "created_at": "2026-08-28T03:14:09.235905+00:00",
+      "updated_at": "2026-08-28T03:14:09.235905+00:00",
+      "decision": "[release] beacon-v1617-layering-audit => completed",
+      "run_id": "release-v1.6.17",
+      "stage": "release",
+      "feature": "beacon-v1617-layering-audit",
+      "version": "",
+      "transaction_id": "tx-wf-release-v1.6.17-release-memory_writeback-438d95294e8a",
+      "source_hash": "438d95294e8ac8fffad8e4b9fd8e1fd5d3a89b637c8be604451961c343108334",
+      "projection_seq": "wf-438d95294e8ac8ff",
+      "attempt_seq": 1
+    },
+    {
+      "memory_id": "646690ad-fada-4e48-ad37-51e11bea2960",
+      "type": "decision",
+      "status": "active",
+      "content": "[release] beacon-v1617-layering-audit => completed",
+      "content_hash": "sha256:990c3bb09e9f0bc430f64e23e2e742e315b209b8de6c3b242647f591bd8c542f",
+      "source_session_id": "run-20260828T111324876829",
+      "source": "workflow.release.writeback",
+      "evidence_ref": [],
+      "reason_codes": [],
+      "confidence": 0.8,
+      "tags": [
+        "completed",
+        "release",
+        "workflow-lifecycle"
+      ],
+      "created_at": "2026-08-28T03:14:09.595395+00:00",
+      "updated_at": "2026-08-28T03:14:09.595395+00:00",
+      "decision": "[release] beacon-v1617-layering-audit => completed",
+      "run_id": "run-20260828T111324876829",
+      "stage": "release",
+      "feature": "beacon-v1617-layering-audit",
+      "version": "",
+      "transaction_id": "tx-wf-run-20260828T111324876829-release-memory_writeback-b7e11ccc2b7a",
+      "source_hash": "b7e11ccc2b7ad084a293f394adb1d25b613961fe8513267ce1047a11303f21c1",
+      "projection_seq": "wf-b7e11ccc2b7ad084",
+      "attempt_seq": 1
+    },
+    {
+      "memory_id": "ede89c94-cdd7-44a8-baaf-25767309ff18",
+      "type": "decision",
+      "status": "active",
+      "content": "[release.check] version=v1.6.17 status=blocked",
+      "content_hash": "sha256:d8dbee4b6f2102d8354c45e4b88ae330abbe34d26f9f8ecc206e37d0fdac0218",
+      "source_session_id": "release:v1.6.17",
+      "source": "release.check",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.17/.machine/change/v1.6.17.json",
+        "docs/beacon/v1.6.17/change/v1.6.17.md"
+      ],
+      "reason_codes": [],
+      "confidence": 0.75,
+      "tags": [
+        "blocked",
+        "gate",
+        "release"
+      ],
+      "created_at": "2026-08-28T03:15:28.691915+00:00",
+      "updated_at": "2026-08-28T03:15:28.691915+00:00",
+      "decision": "[release.check] version=v1.6.17 status=blocked"
+    },
+    {
+      "memory_id": "dd2b5976-ba54-4ade-befb-ab57fe9d0592",
+      "type": "decision",
+      "status": "active",
+      "content": "[release.check] version=v1.6.17 status=pass",
+      "content_hash": "sha256:cc366b787196546fcc8e5b8249919142f1770fb69adb494242f89bec3c494661",
+      "source_session_id": "release:v1.6.17",
+      "source": "release.check",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.17/.machine/change/v1.6.17.json",
+        "docs/beacon/v1.6.17/change/v1.6.17.md"
+      ],
+      "reason_codes": [],
+      "confidence": 0.75,
+      "tags": [
+        "gate",
+        "pass",
+        "release"
+      ],
+      "created_at": "2026-08-28T03:15:46.532200+00:00",
+      "updated_at": "2026-08-28T03:15:46.532200+00:00",
+      "decision": "[release.check] version=v1.6.17 status=pass"
+    },
+    {
+      "memory_id": "d3373661-102d-4961-aad8-3ac13f03ceb1",
+      "type": "decision",
+      "status": "active",
+      "content": "[release.check] version=v1.6.17 status=pass",
+      "content_hash": "sha256:cc366b787196546fcc8e5b8249919142f1770fb69adb494242f89bec3c494661",
+      "source_session_id": "release:v1.6.17",
+      "source": "release.check",
+      "evidence_ref": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        "docs/beacon/v1.6.17/.machine/change/v1.6.17.json",
+        "docs/beacon/v1.6.17/change/v1.6.17.md"
+      ],
+      "reason_codes": [],
+      "confidence": 0.75,
+      "tags": [
+        "gate",
+        "pass",
+        "release"
+      ],
+      "created_at": "2026-08-28T03:36:17.299894+00:00",
+      "updated_at": "2026-08-28T03:36:17.299894+00:00",
+      "decision": "[release.check] version=v1.6.17 status=pass"
     }
   ],
-  "updated_at": "2026-08-28T00:31:25.625164+00:00"
+  "updated_at": "2026-08-28T03:36:17.300367+00:00"
 }
