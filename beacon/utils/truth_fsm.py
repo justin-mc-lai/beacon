@@ -36,6 +36,7 @@ _ILLEGAL_SECTION_TITLES = (
 )
 _ILLEGAL_ARROW_RE = re.compile(r"([A-Za-z][A-Za-z0-9_]*)\s*(?:->|→|-->)\s*([A-Za-z][A-Za-z0-9_]*)")
 _TERMINAL_RE = re.compile(r"(?:终态|terminal(?:\s+states?)?)[:：\s]+([^\n]+)", re.IGNORECASE)
+_MERMAID_TERM_RE = re.compile(r"^\s*([A-Za-z0-9_]+)\s*-->\s*\[\*\]\s*$", re.MULTILINE)
 
 
 def _extract_sections(markdown: str) -> list[dict[str, str]]:
@@ -99,6 +100,11 @@ def _parse_terminal_states(truth_md: str) -> set[str]:
             tok = tok.strip().strip("`*")
             if tok and len(tok) < 40:
                 terminals.add(tok)
+    # ponytail: mermaid `frozen --> [*]` is the display truth for terminal; treat it as declared terminal
+    for m in _MERMAID_TERM_RE.finditer(truth_md):
+        tok = m.group(1).strip()
+        if tok and len(tok) < 40:
+            terminals.add(tok)
     return terminals
 
 
