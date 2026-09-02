@@ -206,6 +206,29 @@ def _freeze_impl(feature: str, project: Optional[str], version: str, json_output
                     typer.echo(f"  - [{f.get('kind')}] {f.get('text')}")
         return 2
 
+    # v1.6.17 batch2: architecture blueprint gate (issue #19) — fail-closed when blueprint is placeholder
+    from beacon.utils.architecture_blueprint_gate import check_architecture_blueprint
+
+    arch_gate = check_architecture_blueprint(project_root, version=resolved_version)
+    if bool(arch_gate.get("blocked")):
+        payload = {
+            "schema_version": "1.0",
+            "feature": feature,
+            "version": resolved_version,
+            "status": "blocked",
+            "reason_code": str(arch_gate.get("reason_code") or "architecture_blueprint_incomplete"),
+            "architecture_blueprint_gate": arch_gate,
+            "truth_fsm_gate": truth_fsm_gate,
+        }
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo("Beacon freeze blocked: architecture blueprint incomplete")
+            for f in (arch_gate.get("findings") or [])[:8]:
+                if isinstance(f, dict):
+                    typer.echo(f"  - [{f.get('kind')}] {f.get('text')}")
+        return 2
+
     revision = freeze_revision_state(project_root, version=resolved_version, feature=feature)
     freeze_story_state(project_root, version=resolved_version, feature=feature)
     truth_frontmatter_sync = sync_truth_frontmatter_status(
