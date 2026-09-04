@@ -1,0 +1,137 @@
+{
+  "schema": "truth-review-gate.v1",
+  "schema_version": "1.0",
+  "feature": "beacon-plan-persistent-goal",
+  "version": "v1.6.17",
+  "pass": true,
+  "blocked": false,
+  "review_gate_pass": true,
+  "abc_pass": true,
+  "reason_code": "",
+  "domain_required": false,
+  "checks": {
+    "A_intent_coverage": {
+      "pass": true,
+      "check": "A",
+      "name": "intent_coverage",
+      "required": true,
+      "matrix_rows": 5,
+      "missing_must": [],
+      "reason": "",
+      "findings": [],
+      "matrix": [
+        {
+          "intent_id": "INT-001",
+          "source": "plan 产持久目标（objective/status/budget/fingerprint 对齐 ThreadGoal）",
+          "strength": "must",
+          "landing": "AC-001",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-002",
+          "source": "goal 运行时持久化并跨阶段不丢（utterance→goal_objective）",
+          "strength": "must",
+          "landing": "AC-002",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-003",
+          "source": "跨轮自动续跑（continuation 注入含 objective/tokens_used/remaining）",
+          "strength": "must",
+          "landing": "AC-003",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-004",
+          "source": "预算收尾不硬拦（budget_limit 模板收尾而非 blocked）",
+          "strength": "should",
+          "landing": "AC-004",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-005",
+          "source": "planner only 边界（不写 frozen truth/不自证完成）",
+          "strength": "must",
+          "landing": "AC-005",
+          "status": "covered"
+        }
+      ]
+    },
+    "B_fsm_audit": {
+      "pass": true,
+      "check": "B",
+      "name": "fsm_audit",
+      "required": false,
+      "skipped": true,
+      "reason": "",
+      "findings": []
+    },
+    "C_testability": {
+      "pass": true,
+      "check": "C",
+      "name": "testability",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "ac_count": 5,
+      "tc_count": 8,
+      "missing_ac": [],
+      "covered": {
+        "AC-001": [
+          "TC-001",
+          "TC-EXEC-CLI"
+        ],
+        "AC-002": [
+          "TC-002",
+          "TC-EXEC-PYTEST"
+        ],
+        "AC-003": [
+          "TC-003"
+        ],
+        "AC-004": [
+          "TC-004"
+        ],
+        "AC-005": [
+          "TC-005",
+          "TC-ILLEGAL"
+        ]
+      }
+    },
+    "C_domain_exec_layer": {
+      "pass": true,
+      "check": "C_exec",
+      "name": "domain_exec_layer",
+      "required": false,
+      "skipped": true,
+      "reason": "",
+      "findings": [],
+      "exec_tc_count": 0,
+      "domain_kind": "general"
+    },
+    "D_fill_depth": {
+      "pass": true,
+      "check": "D",
+      "name": "fill_depth",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "package_maturity": "filled",
+      "domain_kind": "general",
+      "business_domain": false
+    }
+  },
+  "findings": [],
+  "humanizer": {
+    "rule": "humanizer_only_after_abc_pass_before_freeze",
+    "abc_pass": true,
+    "allowed_now": true,
+    "fill_depth_pass": true,
+    "note": "Polish L0/narrative only after A/B/C; preserve_machine_fields=true; freeze needs D+exec too"
+  },
+  "evaluated_at": "2026-09-04T03:28:57.523446+00:00",
+  "paths": {
+    "truth": "docs/beacon/v1.6.17/features/beacon-plan-persistent-goal/truth.md",
+    "tests": "docs/beacon/v1.6.17/features/beacon-plan-persistent-goal/tests.md",
+    "report": "docs/beacon/v1.6.17/.machine/execution/beacon-plan-persistent-goal.truth-review-gate.json"
+  }
+}

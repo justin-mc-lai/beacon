@@ -1,0 +1,576 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-plan-persistent-goal",
+  "feature_slug": "beacon-plan-persistent-goal",
+  "version": "v1.6.17",
+  "runtime_version": "v1.6.17",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.6.17/.machine/execution/requirement-clarity-beacon-plan-persistent-goal.json",
+  "report_markdown_path": "docs/beacon/v1.6.17/execution/requirement-clarity-beacon-plan-persistent-goal.md",
+  "state_path": ".beacon/state/requirement-clarity-beacon-plan-persistent-goal.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.17",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-09-04T03:28:56.788386+00:00",
+    "feature": "beacon-plan-persistent-goal",
+    "feature_slug": "beacon-plan-persistent-goal",
+    "prd_ref": "docs/beacon/v1.6.17/prd/beacon-plan-persistent-goal.md",
+    "user_story_ref": "docs/beacon/v1.6.17/user-story/beacon-plan-persistent-goal.md"
+  },
+  "domain_fsm_gate": {
+    "schema_version": "1.0",
+    "feature": "beacon-plan-persistent-goal",
+    "feature_slug": "beacon-plan-persistent-goal",
+    "version": "v1.6.17",
+    "truth_path": "docs/beacon/v1.6.17/features/beacon-plan-persistent-goal/truth.md",
+    "tests_path": "docs/beacon/v1.6.17/features/beacon-plan-persistent-goal/tests.md",
+    "required": true,
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "findings": [],
+    "requirement": {
+      "required": true,
+      "reason": "domain_section_present",
+      "explicit": false,
+      "partial": true,
+      "complexity": false,
+      "business_signal": true,
+      "version_supported": true
+    },
+    "projection": {
+      "schema_version": "1.0",
+      "domain_fsm_schema": "domain-fsm.v1",
+      "entity_precedence_schema": "entity-precedence.v1",
+      "frontmatter": {
+        "slug": "beacon-plan-persistent-goal",
+        "version": "v1.6.17",
+        "status": "frozen",
+        "language": "zh",
+        "domain_required": "false",
+        "ux_required": "false",
+        "parser_contract": "beacon-feature-package-v2",
+        "truth_source_model": "feature_package_authoritative",
+        "package_maturity": "filled",
+        "materials_status": "current",
+        "canonical_refs": {
+          "prd": "docs/beacon/v1.6.17/features/beacon-plan-persistent-goal/truth.md",
+          "user_story": "docs/beacon/v1.6.17/features/beacon-plan-persistent-goal/truth.md",
+          "test_case": "docs/beacon/v1.6.17/features/beacon-plan-persistent-goal/tests.md"
+        }
+      },
+      "frontmatter_errors": [],
+      "has_domain_model_section": true,
+      "has_domain_fsm_section": true,
+      "has_illegal_transition_section": true,
+      "entities": [
+        {
+          "entity": "PersistentGoal",
+          "key": "objective, status(Active/Paused/Blocked/BudgetLimited/Complete), token_budget, objective_fingerprint, source",
+          "precedence": "plan_artifact 产出，对齐 codex ThreadGoal，存于 payload.goal_objective",
+          "requires": "plan_artifact 产出，对齐 codex ThreadGoal，存于 payload.goal_objective"
+        },
+        {
+          "entity": "PlanArtifact",
+          "key": "persistent_goal, surface_ask, deep_want, intent_decomposition, journeys",
+          "precedence": "plan_artifact.v1 扩展",
+          "requires": "plan_artifact.v1 扩展"
+        },
+        {
+          "entity": "GoalSteering",
+          "key": "continuation, budget_limit, objective_updated templates",
+          "precedence": "beacon/utils/goal_steering.py 已有三模板",
+          "requires": "beacon/utils/goal_steering.py 已有三模板"
+        },
+        {
+          "entity": "GoalPayload",
+          "key": "goal_objective, goal_status, goal_budget, last_objective_fp",
+          "precedence": "product_goal_runtime 持久化",
+          "requires": "product_goal_runtime 持久化"
+        }
+      ],
+      "entity_precedence": [
+        {
+          "entity": "PersistentGoal",
+          "key": "objective, status(Active/Paused/Blocked/BudgetLimited/Complete), token_budget, objective_fingerprint, source",
+          "precedence": "plan_artifact 产出，对齐 codex ThreadGoal，存于 payload.goal_objective",
+          "requires": "plan_artifact 产出，对齐 codex ThreadGoal，存于 payload.goal_objective"
+        },
+        {
+          "entity": "PlanArtifact",
+          "key": "persistent_goal, surface_ask, deep_want, intent_decomposition, journeys",
+          "precedence": "plan_artifact.v1 扩展",
+          "requires": "plan_artifact.v1 扩展"
+        },
+        {
+          "entity": "GoalSteering",
+          "key": "continuation, budget_limit, objective_updated templates",
+          "precedence": "beacon/utils/goal_steering.py 已有三模板",
+          "requires": "beacon/utils/goal_steering.py 已有三模板"
+        },
+        {
+          "entity": "GoalPayload",
+          "key": "goal_objective, goal_status, goal_budget, last_objective_fp",
+          "precedence": "product_goal_runtime 持久化",
+          "requires": "product_goal_runtime 持久化"
+        }
+      ],
+      "aggregates": [
+        {
+          "name": "Order",
+          "states": [
+            "budget_limited",
+            "completed",
+            "continued",
+            "failed",
+            "persisted",
+            "planned",
+            "scaffold"
+          ],
+          "transitions": [
+            {
+              "from": "scaffold",
+              "to": "planned",
+              "guard": "utterance_ok"
+            },
+            {
+              "from": "planned",
+              "to": "persisted",
+              "guard": "goal_ok"
+            },
+            {
+              "from": "persisted",
+              "to": "continued",
+              "guard": "not_halted"
+            },
+            {
+              "from": "continued",
+              "to": "budget_limited",
+              "guard": "budget_exhausted"
+            },
+            {
+              "from": "continued",
+              "to": "completed",
+              "guard": "all_lakes_done"
+            },
+            {
+              "from": "persisted",
+              "to": "failed",
+              "guard": "invalid_utterance"
+            }
+          ]
+        }
+      ],
+      "illegal_transition_slots": [
+        {
+          "description": "未经 `plan` 直接 `persist` 持久目标",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "`budgetLimited` 当作 `complete` 宣告完成",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "在 `truth` 阶段现编持久目标（绕过 planner）",
+          "aggregate": "",
+          "source": "truth"
+        },
+        {
+          "description": "`ephemeral` 场景强建持久目标",
+          "aggregate": "",
+          "source": "truth"
+        }
+      ],
+      "acceptance_criteria": [
+        {
+          "ac_id": "AC-001",
+          "description": "plan 阶段：`build_plan_artifact(utterance)` 产出 `persistent_goal{objective=status=active, token_budget, objective_fingerprint, source=plan_artifact.v1}`，`objective` 为 `utterance.strip()` 非空即持久化。"
+        },
+        {
+          "ac_id": "AC-002",
+          "description": "goal 运行时：`create_goal_run` 将 `persistent_goal` 写入 `payload{goal_objective, goal_status, goal_budget, last_objective_fp}`，且 `tick`/`goal_continue_run` 后仍为初值（跨 `plan→truth→implement` 不丢）。"
+        },
+        {
+          "ac_id": "AC-003",
+          "description": "续跑：`goal_steering.render_steering` 在 `halt_budget=false` 时选 `continuation` 模板，注入 `objective/tokens_used/remaining`，下一阶段可见持久目标。"
+        },
+        {
+          "ac_id": "AC-004",
+          "description": "预算收尾：`goal_steering.select_template_id(halt_budget=true)` 选 `budget_limit` 模板，不直接 `blocked`，提示总结与下一步。"
+        },
+        {
+          "ac_id": "AC-005",
+          "description": "边界：`beacon-plan` 仅产 `programs/<slug>/` 咨询产物，不写 `features/<slug>/truth.md` frozen truth，不自证 QA/release。"
+        }
+      ],
+      "bound_ac_ids": [
+        "AC-002"
+      ],
+      "orphan_ac_ids": [],
+      "aggregates_missing_illegal_slots": [],
+      "raw_section_titles": [
+        "人话",
+        "User Intent",
+        "User Intent Snapshot",
+        "Intent Coverage Matrix",
+        "用户旅程",
+        "First principles",
+        "Domain Model",
+        "Acceptance Criteria",
+        "FSM 五元组",
+        "Domain FSM Order",
+        "Illegal transitions",
+        "invalid / illegal",
+        "Non-goals",
+        "Freeze readiness",
+        "Gap vs gold (订单支付示例)",
+        "Source Excerpt",
+        "FSM mermaid（投影）"
+      ]
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "required": true,
+      "blocked": false,
+      "status": "pass",
+      "reason_code": "",
+      "findings": [],
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "beacon-plan-persistent-goal",
+          "version": "v1.6.17",
+          "status": "frozen",
+          "language": "zh",
+          "domain_required": "false",
+          "ux_required": "false",
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "package_maturity": "filled",
+          "materials_status": "current",
+          "canonical_refs": {
+            "prd": "docs/beacon/v1.6.17/features/beacon-plan-persistent-goal/truth.md",
+            "user_story": "docs/beacon/v1.6.17/features/beacon-plan-persistent-goal/truth.md",
+            "test_case": "docs/beacon/v1.6.17/features/beacon-plan-persistent-goal/tests.md"
+          }
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": true,
+        "has_domain_fsm_section": true,
+        "has_illegal_transition_section": true,
+        "entities": [
+          {
+            "entity": "PersistentGoal",
+            "key": "objective, status(Active/Paused/Blocked/BudgetLimited/Complete), token_budget, objective_fingerprint, source",
+            "precedence": "plan_artifact 产出，对齐 codex ThreadGoal，存于 payload.goal_objective",
+            "requires": "plan_artifact 产出，对齐 codex ThreadGoal，存于 payload.goal_objective"
+          },
+          {
+            "entity": "PlanArtifact",
+            "key": "persistent_goal, surface_ask, deep_want, intent_decomposition, journeys",
+            "precedence": "plan_artifact.v1 扩展",
+            "requires": "plan_artifact.v1 扩展"
+          },
+          {
+            "entity": "GoalSteering",
+            "key": "continuation, budget_limit, objective_updated templates",
+            "precedence": "beacon/utils/goal_steering.py 已有三模板",
+            "requires": "beacon/utils/goal_steering.py 已有三模板"
+          },
+          {
+            "entity": "GoalPayload",
+            "key": "goal_objective, goal_status, goal_budget, last_objective_fp",
+            "precedence": "product_goal_runtime 持久化",
+            "requires": "product_goal_runtime 持久化"
+          }
+        ],
+        "entity_precedence": [
+          {
+            "entity": "PersistentGoal",
+            "key": "objective, status(Active/Paused/Blocked/BudgetLimited/Complete), token_budget, objective_fingerprint, source",
+            "precedence": "plan_artifact 产出，对齐 codex ThreadGoal，存于 payload.goal_objective",
+            "requires": "plan_artifact 产出，对齐 codex ThreadGoal，存于 payload.goal_objective"
+          },
+          {
+            "entity": "PlanArtifact",
+            "key": "persistent_goal, surface_ask, deep_want, intent_decomposition, journeys",
+            "precedence": "plan_artifact.v1 扩展",
+            "requires": "plan_artifact.v1 扩展"
+          },
+          {
+            "entity": "GoalSteering",
+            "key": "continuation, budget_limit, objective_updated templates",
+            "precedence": "beacon/utils/goal_steering.py 已有三模板",
+            "requires": "beacon/utils/goal_steering.py 已有三模板"
+          },
+          {
+            "entity": "GoalPayload",
+            "key": "goal_objective, goal_status, goal_budget, last_objective_fp",
+            "precedence": "product_goal_runtime 持久化",
+            "requires": "product_goal_runtime 持久化"
+          }
+        ],
+        "aggregates": [
+          {
+            "name": "Order",
+            "states": [
+              "budget_limited",
+              "completed",
+              "continued",
+              "failed",
+              "persisted",
+              "planned",
+              "scaffold"
+            ],
+            "transitions": [
+              {
+                "from": "scaffold",
+                "to": "planned",
+                "guard": "utterance_ok"
+              },
+              {
+                "from": "planned",
+                "to": "persisted",
+                "guard": "goal_ok"
+              },
+              {
+                "from": "persisted",
+                "to": "continued",
+                "guard": "not_halted"
+              },
+              {
+                "from": "continued",
+                "to": "budget_limited",
+                "guard": "budget_exhausted"
+              },
+              {
+                "from": "continued",
+                "to": "completed",
+                "guard": "all_lakes_done"
+              },
+              {
+                "from": "persisted",
+                "to": "failed",
+                "guard": "invalid_utterance"
+              }
+            ]
+          }
+        ],
+        "illegal_transition_slots": [
+          {
+            "description": "未经 `plan` 直接 `persist` 持久目标",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "`budgetLimited` 当作 `complete` 宣告完成",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "在 `truth` 阶段现编持久目标（绕过 planner）",
+            "aggregate": "",
+            "source": "truth"
+          },
+          {
+            "description": "`ephemeral` 场景强建持久目标",
+            "aggregate": "",
+            "source": "truth"
+          }
+        ],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-001",
+            "description": "plan 阶段：`build_plan_artifact(utterance)` 产出 `persistent_goal{objective=status=active, token_budget, objective_fingerprint, source=plan_artifact.v1}`，`objective` 为 `utterance.strip()` 非空即持久化。"
+          },
+          {
+            "ac_id": "AC-002",
+            "description": "goal 运行时：`create_goal_run` 将 `persistent_goal` 写入 `payload{goal_objective, goal_status, goal_budget, last_objective_fp}`，且 `tick`/`goal_continue_run` 后仍为初值（跨 `plan→truth→implement` 不丢）。"
+          },
+          {
+            "ac_id": "AC-003",
+            "description": "续跑：`goal_steering.render_steering` 在 `halt_budget=false` 时选 `continuation` 模板，注入 `objective/tokens_used/remaining`，下一阶段可见持久目标。"
+          },
+          {
+            "ac_id": "AC-004",
+            "description": "预算收尾：`goal_steering.select_template_id(halt_budget=true)` 选 `budget_limit` 模板，不直接 `blocked`，提示总结与下一步。"
+          },
+          {
+            "ac_id": "AC-005",
+            "description": "边界：`beacon-plan` 仅产 `programs/<slug>/` 咨询产物，不写 `features/<slug>/truth.md` frozen truth，不自证 QA/release。"
+          }
+        ],
+        "bound_ac_ids": [
+          "AC-002"
+        ],
+        "orphan_ac_ids": [],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "人话",
+          "User Intent",
+          "User Intent Snapshot",
+          "Intent Coverage Matrix",
+          "用户旅程",
+          "First principles",
+          "Domain Model",
+          "Acceptance Criteria",
+          "FSM 五元组",
+          "Domain FSM Order",
+          "Illegal transitions",
+          "invalid / illegal",
+          "Non-goals",
+          "Freeze readiness",
+          "Gap vs gold (订单支付示例)",
+          "Source Excerpt",
+          "FSM mermaid（投影）"
+        ]
+      },
+      "summary": {
+        "entity_count": 4,
+        "aggregate_count": 1,
+        "illegal_slot_count": 4,
+        "orphan_ac_count": 0,
+        "bound_ac_count": 1
+      }
+    },
+    "recommended_action": ""
+  },
+  "human_closure_contract": {
+    "required": false,
+    "research_path": "docs/beacon/v1.6.17/research/beacon-plan-persistent-goal.md",
+    "research_exists": false,
+    "source_architecture_path": "docs/beacon/v1.6.17/source-architecture/index.md",
+    "source_architecture_exists": true,
+    "required_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "missing_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "diagram_types": [],
+    "complexity_signals": []
+  },
+  "requirement_closure_contract": {
+    "required": true,
+    "chain_order": [
+      "research",
+      "prd",
+      "user_story",
+      "test_case",
+      "requirement_clarity",
+      "freeze"
+    ],
+    "human_closure_required": false,
+    "paths": {
+      "research": "docs/beacon/v1.6.17/research/beacon-plan-persistent-goal.md",
+      "prd": "docs/beacon/v1.6.17/features/beacon-plan-persistent-goal/truth.md",
+      "user_story": "docs/beacon/v1.6.17/features/beacon-plan-persistent-goal/truth.md",
+      "test_case": "docs/beacon/v1.6.17/features/beacon-plan-persistent-goal/tests.md"
+    },
+    "exists": {
+      "research": false,
+      "prd": true,
+      "user_story": true,
+      "test_case": true
+    },
+    "required_research_sections": [],
+    "missing_research_sections": [],
+    "ac_projection": {
+      "prd_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005"
+      ],
+      "user_story_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005"
+      ],
+      "test_case_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005"
+      ],
+      "upstream_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005"
+      ],
+      "missing_test_case_ac_ids": []
+    }
+  },
+  "version_projection_truth_contract": {
+    "required": false,
+    "supported": true,
+    "projection_types": [],
+    "research_path": "docs/beacon/v1.6.17/research/beacon-plan-persistent-goal.md",
+    "research_exists": false,
+    "required_fields": [
+      "prd_refs",
+      "user_story_refs",
+      "test_case_refs",
+      "coverage_notes",
+      "out_of_scope_notes"
+    ],
+    "field_presence": {
+      "prd_refs": false,
+      "user_story_refs": false,
+      "test_case_refs": false,
+      "coverage_notes": false,
+      "out_of_scope_notes": false
+    },
+    "missing_fields": [],
+    "required_refs": {
+      "prd_refs": "docs/beacon/v1.6.17/features/beacon-plan-persistent-goal/truth.md",
+      "user_story_refs": "docs/beacon/v1.6.17/features/beacon-plan-persistent-goal/truth.md",
+      "test_case_refs": "docs/beacon/v1.6.17/features/beacon-plan-persistent-goal/tests.md"
+    },
+    "missing_ref_targets": [],
+    "ready": false
+  },
+  "support_write_topology_contract": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "diagnostics": []
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.6.17/features/beacon-plan-persistent-goal/truth.md",
+    "docs/beacon/v1.6.17/features/beacon-plan-persistent-goal/tests.md",
+    "docs/beacon/v1.6.17/features/beacon-plan-persistent-goal/tasks.md",
+    "docs/beacon/v1.6.17/features/beacon-plan-persistent-goal/evidence.md"
+  ]
+}

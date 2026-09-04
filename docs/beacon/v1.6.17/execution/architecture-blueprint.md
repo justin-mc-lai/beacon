@@ -289,33 +289,80 @@
 - version: `v1.6.17`
 
 ### Source Refs
-- none
+- `beacon/utils/layering_audit.py` + worktree traces `beacon-v1617-layering-audit`
 
 ### Delivery Change Surface
-- none
+- `beacon/utils/layering_audit.py` 新增 + `docs/beacon/v1.6.17/features/beacon-v1617-layering-audit`
+
 ### Available Entry Surfaces
-- none
+- `beacon plan` / `beacon goal run`
+
 ### Current Service Facts
-- none
+- single_repo, `docs/beacon/v1.6.17`
 
 ### Must Change
-- none
+- `beacon/utils/layering_audit.py`（分层审计）
 
 ### Can Reuse
-- none
+- 现有 `plan_artifact` / `goal` 基础设施
 
 ### No-Expand Guardrails
-- none
+- 不扩张主链
 
 ### Compatibility Rules
-- none
+- 新增湖，不改既有 truth 形状
 
 ### Delivery Constraints
-- none
+- planner only executable
 
 ### Implement Handoff
-- none
+- worktree `beacon/v1.6.17/beacon-v1617-layering-audit`
 <!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:beacon-v1617-layering-audit:END -->
+
+<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:beacon-plan-persistent-goal:START -->
+## Technical Delta Blueprint
+
+- project_mode: `greenfield`
+- feature: `beacon-plan-persistent-goal`
+- version: `v1.6.17`
+
+### Source Refs
+- `beacon/utils/plan_artifact.py:136 build_plan_artifact` + `beacon/utils/product_goal_runtime.py:476 create_goal_run` + `beacon/utils/goal_steering.py:14` + `codex-rs/protocol/src/protocol.rs:4067 ThreadGoal` + `codex-rs/state/src/runtime/goals.rs:30`
+
+### Delivery Change Surface
+- `plan_artifact.v1` 新增 `persistent_goal{objective,status,token_budget,fingerprint,source}` + `product_goal_runtime` 消费并跨 `tick` 不丢
+
+### Available Entry Surfaces
+- `beacon plan start "<utterance>" --version v1.6.17` / `beacon goal run "<utterance>" --feature beacon-plan-persistent-goal --version v1.6.17`
+
+### Current Service Facts
+- single_repo, `docs/beacon/v1.6.17`, `beacon-plan` 为 planner only（不写 frozen truth）
+
+### Must Change
+- `beacon/utils/plan_artifact.py` 产 `persistent_goal` 对象（对齐 `ThreadGoal` 4态映射）
+- `beacon/utils/product_goal_runtime.py` 将 `persistent_goal` 写入 `payload.goal_objective/goal_status/goal_budget` 并在 `tick` 后保持
+
+### Can Reuse
+- `beacon/utils/goal_steering.py` 的 `continuation/budget_limit/objective_updated` 三模板（已存在，仅需在 `goal run` 默认路径接线）
+- `beacon/utils/goal_agent_driver.py` 的 `objective_fingerprint` / `halt_budget` / `max_agent_turns` 机制
+
+### No-Expand Guardrails
+- 不新建 SQLite `thread_goals` 表（复用 `product_goal_runtime` payload）
+- 不为 `ephemeral thread` 强加 goal（codex 亦拒绝）
+- 不把 `--tokens` 做成正式 CLI 参数
+- 不修改 `truth.md` 的 LLM 实现真相段
+
+### Compatibility Rules
+- `codex` `ThreadGoal` 6态（Active/Paused/Blocked/BudgetLimited/UsageLimited/Complete）映射为 beacon 4态（active/paused/blocked/complete + budget_limited 收尾），`plan_artifact.v1` 向后兼容（无 `persistent_goal` 时旧包仍可用）
+- `utterance.strip()` 为空时 `persistent_goal.objective` 为空但不阻断 plan（与 codex `validate_thread_goal_objective` 一致）
+
+### Delivery Constraints
+- planner only：`beacon-plan` 仅产 `programs/<slug>/` 咨询产物，不得写 `features/<slug>/truth.md` frozen truth
+- goal 消费仅经 `product_goal_runtime`，不得在 `truth` 阶段现编持久目标
+
+### Implement Handoff
+- worktree `beacon/v1.6.17/beacon-plan-persistent-goal`（single-branch），`beacon/utils/plan_artifact.py` + `beacon/utils/product_goal_runtime.py` + `tests/test_plan_persistent_goal.py`
+<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:beacon-plan-persistent-goal:END -->
 
 <!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:beacon-v1617-layering-audit:START -->
 ## Implementation Delivery Baseline

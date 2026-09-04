@@ -1,0 +1,213 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-09-04T03:28:57.935004+00:00",
+  "feature": "beacon-plan-persistent-goal",
+  "feature_slug": "beacon-plan-persistent-goal",
+  "version": "v1.6.17",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.17/features/beacon-plan-persistent-goal/truth.md",
+    "tests": "docs/beacon/v1.6.17/features/beacon-plan-persistent-goal/tests.md",
+    "tasks": "docs/beacon/v1.6.17/features/beacon-plan-persistent-goal/tasks.md",
+    "evidence": "docs/beacon/v1.6.17/features/beacon-plan-persistent-goal/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "d73848c0b4cdf4213e1ffad03941f46a2cc7b9655f580c050c1715df381821b7",
+    "tests": "bb52ed30c54d3ecbc140cdf8d3843a9375329f6be6e3b2948b413c0b970b48f6",
+    "tasks": "320e87b0fb161ff83ed0cd72e9ff4ebd0db7992115bc31e520111ff6a2b6d409",
+    "evidence": "1b564d4feb992e470edcbe951cc3a7e90e88d9bb6e535f7b2f33742fa48382b9"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-plan-persistent-goal",
+    "version": "v1.6.17",
+    "status": "frozen",
+    "language": "zh",
+    "domain_required": "false",
+    "ux_required": "false",
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "package_maturity": "filled",
+    "materials_status": "current",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.17/features/beacon-plan-persistent-goal/truth.md",
+      "user_story": "docs/beacon/v1.6.17/features/beacon-plan-persistent-goal/truth.md",
+      "test_case": "docs/beacon/v1.6.17/features/beacon-plan-persistent-goal/tests.md"
+    }
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "plan 阶段：`build_plan_artifact(utterance)` 产出 `persistent_goal{objective=status=active, token_budget, objective_fingerprint, source=plan_artifact.v1}`，`objective` 为 `utterance.strip()` 非空即持久化。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "goal 运行时：`create_goal_run` 将 `persistent_goal` 写入 `payload{goal_objective, goal_status, goal_budget, last_objective_fp}`，且 `tick`/`goal_continue_run` 后仍为初值（跨 `plan→truth→implement` 不丢）。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "续跑：`goal_steering.render_steering` 在 `halt_budget=false` 时选 `continuation` 模板，注入 `objective/tokens_used/remaining`，下一阶段可见持久目标。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "预算收尾：`goal_steering.select_template_id(halt_budget=true)` 选 `budget_limit` 模板，不直接 `blocked`，提示总结与下一步。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "边界：`beacon-plan` 仅产 `programs/<slug>/` 咨询产物，不写 `features/<slug>/truth.md` frozen truth，不自证 QA/release。",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "",
+      "command": "`python3 -c \"from beacon.utils.plan_artifact import build_plan_artifact; a=build_plan_artifact('用 Computer Use 复刻天气', subintent_payload={'subintent':'program'}); assert 'persistent_goal' in a and a['persistent_goal']['objective']=='用 Computer Use 复刻天气'\"`",
+      "assertion": "persistent_goal_in_plan_artifact",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "",
+      "command": "`python3 -c \"from pathlib import Path; from beacon.utils.product_goal_runtime import create_goal_run; p=create_goal_run(Path('.'), utterance='复刻天气', version='v1.6.17', feature='beacon-plan-persistent-goal'); assert p['goal_objective']=='复刻天气' and p['goal_status']=='active'\"`",
+      "assertion": "goal_persisted_across_tick",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "",
+      "command": "`python3 -c \"from beacon.utils.goal_steering import render_steering; s=render_steering({'utterance':'复刻天气','token_budget':1000,'tokens_used':10}, {}); assert '复刻天气' in s\"`",
+      "assertion": "continuation_injected",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "",
+      "command": "`python3 -c \"from beacon.utils.goal_steering import select_template_id; assert select_template_id(halt_budget=True)=='budget_limit'\"`",
+      "assertion": "budget_limit_not_blocked",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-005",
+      "layer": "",
+      "command": "`rg -n \"writes_truth.*false|may_implement.*false\" beacon/utils/plan_artifact.py`",
+      "assertion": "planner_only_boundary",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-EXEC-CLI",
+      "layer": "",
+      "command": "`python3 -c 'import beacon; print(chr(111)+chr(107))'`",
+      "assertion": "import_beacon_ok",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-EXEC-PYTEST",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_plan_persistent_goal.py --tb=no -k persistent`",
+      "assertion": "pytest_persistent_goal",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-ILLEGAL",
+      "layer": "",
+      "command": "`rg -n -e \"未经.*plan.*直接.*persist\" -e \"budgetLimited.*complete\" docs/beacon/v1.6.17/features/beacon-plan-persistent-goal/truth.md`",
+      "assertion": "illegal（未plan直接persist/预算当完成均被拒）",
+      "evidence_path": "",
+      "source": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Implement AC-001: plan 阶段：`build_plan_artifact(utterance)` 产出 `persistent_goal{objectiv... · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-plan-persistent-goal/AC-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Implement AC-002: goal 运行时：`create_goal_run` 将 `persistent_goal` 写入 `payload{goal_objec... · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-plan-persistent-goal/AC-002.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Implement AC-003: 续跑：`goal_steering.render_steering` 在 `halt_budget=false` 时选 `continua... · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-plan-persistent-goal/AC-003.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Implement AC-004: 预算收尾：`goal_steering.select_template_id(halt_budget=true)` 选 `budget_l... · ac=AC-004 · evidence=`.beacon/evidence/implement/beacon-plan-persistent-goal/AC-004.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Implement AC-005: 边界：`beacon-plan` 仅产 `programs/<slug>/` 咨询产物，不写 `features/<slug>/truth... · ac=AC-005 · evidence=`.beacon/evidence/implement/beacon-plan-persistent-goal/AC-005.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-plan-persistent-goal/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-plan-persistent-goal/QA-MATRIX.json`",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-deep",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.17/research/beacon-plan-persistent-goal.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "beacon-ceo-review",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.17/change/beacon-plan-persistent-goal.refreeze-summary.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "qa",
+      "authority": "qa_verdict",
+      "canonical_artifact": "docs/beacon/v1.6.17/.machine/qa/beacon-plan-persistent-goal.qa9-matrix.json",
+      "status": "linked",
+      "route": "qa"
+    },
+    {
+      "surface": "release",
+      "authority": "release_verdict",
+      "canonical_artifact": "docs/beacon/v1.6.17/release/",
+      "status": "linked",
+      "route": "release"
+    }
+  ]
+}
