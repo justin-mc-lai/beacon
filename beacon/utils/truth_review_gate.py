@@ -27,6 +27,7 @@ REASON_TRUTH_MISSING = "truth_missing"
 REASON_PACKAGE_INCOMPLETE = "feature_package_incomplete"
 REASON_SCAFFOLD = "truth_scaffold_not_filled"
 REASON_EXEC_TC = "domain_exec_tc_missing"
+REASON_VAGUE = "ac_vague_disjunction"
 
 _AC_ID_RE = re.compile(r"\b(AC-[A-Z0-9]+(?:-[A-Z0-9]+)*)\b", re.IGNORECASE)
 _TC_ID_RE = re.compile(r"\b(TC-[A-Z0-9]+(?:-[A-Z0-9]+)*)\b", re.IGNORECASE)
@@ -639,6 +640,53 @@ def check_d_fill_depth(truth_md: str, *, domain_required: bool = False, frontmat
     }
 
 
+def check_e_vague(truth_md: str) -> dict[str, Any]:
+    """Block vague AC: 或者/至少/等 / at least/at most/etc/or — prevents LLM drift."""
+    acs = extract_acceptance_criteria(truth_md)
+    # ponytail: AC 必须是确定性断言，分支词直接导致实现漂移
+    patterns = [
+        (r"或者", "或者"),
+        (r"至少", "至少"),
+        (r"不少于", "不少于"),
+        (r"等[，。、]|等等", "等"),
+        (r"(?:^|[^a-zA-Z0-9_])或(?:[^a-zA-Z0-9_]|$)", "或"),
+        (r"若干", "若干"),
+        (r"视情况", "视情况"),
+        # English — mirror ZH semantics
+        (r"\bat\s+least\b", "at least"),
+        (r"\bat\s+most\b", "at most"),
+        (r"\betc\.?\b", "etc"),
+        (r"\band\s+so\s+on\b", "and so on"),
+        (r"\bor\b", "or"),
+    ]
+    findings: list[dict[str, str]] = []
+    for ac in acs:
+        desc = ac.get("description") or ""
+        # strip code ticks to avoid flagging code
+        plain = re.sub(r"`[^`]*`", "", desc)
+        for pat, label in patterns:
+            if re.search(pat, plain, re.IGNORECASE):
+                # allowlist: "or" inside fixed phrase "more or less" is still vague — keep blocked
+                findings.append(
+                    {
+                        "kind": "ac_vague_disjunction",
+                        "text": f"{ac['ac_id']} 含模糊词 '{label}': {plain.strip()[:80]}",
+                    }
+                )
+                break
+    ok = not findings
+    return {
+        "pass": ok,
+        "check": "E",
+        "name": "vague_disjunction",
+        "required": True,
+        "reason": "" if ok else REASON_VAGUE,
+        "findings": findings,
+        "ac_count": len(acs),
+        "vague_hits": len(findings),
+    }
+
+
 def check_c_domain_exec_layer(
     truth_md: str,
     tests_md: str,
@@ -719,8 +767,9 @@ def evaluate_truth_review_gate(
     check_c = check_c_testability(truth_md, tests_md)
     check_c_exec = check_c_domain_exec_layer(truth_md, tests_md, domain_required=bool(domain_required), frontmatter=fm)
     check_d = check_d_fill_depth(truth_md, domain_required=bool(domain_required), frontmatter=fm)
+    check_e = check_e_vague(truth_md)
 
-    checks = [check_a, check_b, check_c, check_c_exec, check_d]
+    checks = [check_a, check_b, check_c, check_c_exec, check_d, check_e]
     overall = all(bool(c.get("pass")) for c in checks)
     abc_pass = all(bool(c.get("pass")) for c in (check_a, check_b, check_c))
     findings: list[dict[str, str]] = []
@@ -763,6 +812,7 @@ def evaluate_truth_review_gate(
             "C_testability": check_c,
             "C_domain_exec_layer": check_c_exec,
             "D_fill_depth": check_d,
+            "E_vague_disjunction": check_e,
         },
         "findings": findings,
         "humanizer": humanizer_order,
