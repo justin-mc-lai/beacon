@@ -10,6 +10,7 @@ import re
 from typing import Any
 
 from beacon.utils.runtime import now_iso
+import hashlib
 
 SCHEMA = "plan_artifact.v1"
 
@@ -192,10 +193,20 @@ def build_plan_artifact(
     )
 
     missing = [k for k, ok in completeness.items() if not ok and k != "evidence_anchors_ok"]
+    # ponytail: persistent goal — plan产持久目标对象，对齐 codex ThreadGoal，最小闭环
+    _obj = str(utterance or "").strip()
+    persistent_goal = {
+        "objective": _obj,
+        "status": "active",
+        "token_budget": None,
+        "objective_fingerprint": hashlib.sha256(_obj.encode()).hexdigest()[:12] if _obj else "",
+        "source": SCHEMA,
+    }
 
     return {
         "schema": SCHEMA,
         "surface_ask": str(utterance or "").strip(),
+        "persistent_goal": persistent_goal,
         "deep_want": deep_want,
         "non_goals": _infer_non_goals(sub),
         "methodology_track": sub,
