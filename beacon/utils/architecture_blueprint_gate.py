@@ -26,9 +26,12 @@ def check_architecture_blueprint(project_root: Path, *, version: str = "auto") -
     text = _read_blueprint(root, ver)
     if not text:
         return {"blocked": False, "status":"not_required", "reason_code":"", "findings":[]}
-    # ponytail: treat all-none blueprint as incomplete; real blueprint must fill at least one field
-    none_count = sum(1 for f in BLUEPRINT_FIELDS if re.search(rf"###\s*{re.escape(f)}\s*\n- none", text, re.I))
-    if none_count >= len(BLUEPRINT_FIELDS):
-        return {"blocked": True, "status":"blocked", "reason_code": REASON_ARCH_INCOMPLETE,
-                "findings":[{"kind":"blueprint_placeholder","text":"architecture-blueprint.md is placeholder (all none)"}]}
-    return {"blocked": False, "status":"pass", "reason_code":"", "findings":[]}
+    # ponytail: per-feature check — at least one blueprint block must be complete, not global all-none
+    blocks = re.findall(r"<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:.*?:START -->(.*?)<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:.*?:END -->", text, re.S | re.I)
+    candidates = blocks if blocks else [text]
+    for block in candidates:
+        none_count = sum(1 for f in BLUEPRINT_FIELDS if re.search(rf"###\s*{re.escape(f)}\s*\n- none", block, re.I))
+        if none_count < len(BLUEPRINT_FIELDS):
+            return {"blocked": False, "status":"pass", "reason_code":"", "findings":[]}
+    return {"blocked": True, "status":"blocked", "reason_code": REASON_ARCH_INCOMPLETE,
+            "findings":[{"kind":"blueprint_placeholder","text":"architecture-blueprint.md is placeholder (all none)"}]}

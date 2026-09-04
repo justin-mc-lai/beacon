@@ -537,6 +537,15 @@ def create_goal_run(
     default_done = ["domain_fsm", "evidence_chain", "continuous_qa"]
     if ux_required:
         default_done = ["design_baseline", "design_md_lint", "domain_fsm", "evidence_chain", "continuous_qa"]
+    # ponytail: persistent goal — plan产持久目标，编排复刻 codex ThreadGoal 最小闭环
+    _pg = (_plan_art.get("persistent_goal") if isinstance(_plan_art, dict) else {}) or {}
+    _goal_objective = str(_pg.get("objective") or utterance or "").strip()
+    _goal_status = str(_pg.get("status") or "active").strip() or "active"
+    _goal_fingerprint = str(_pg.get("objective_fingerprint") or "").strip()
+    if _goal_objective and not _goal_fingerprint:
+        import hashlib as _hl
+        _goal_fingerprint = _hl.sha256(_goal_objective.encode()).hexdigest()[:12]
+
     payload = {
         "schema_version": SCHEMA_VERSION,
         "run_id": run_id,
@@ -545,6 +554,10 @@ def create_goal_run(
         "blocked": False,
         "reason_code": "",
         "utterance": str(utterance or "").strip(),
+        "goal_objective": _goal_objective,
+        "goal_status": _goal_status,
+        "goal_budget": _pg.get("token_budget"),
+        "goal_fingerprint": _goal_fingerprint,
         "version": resolved_version,
         "version_resolve": version_resolve_meta,
         "feature": feature_slug(feature) if feature else "",
