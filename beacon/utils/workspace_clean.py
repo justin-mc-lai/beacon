@@ -35,6 +35,10 @@ DIRTY_MANIFEST: dict[str, dict[str, Any]] = {
             "docs/beacon/*/features/*/tests.md",
             "docs/beacon/*/features/*/tasks.md",
             "docs/beacon/*/features/*/evidence.md",
+            # Change/refreeze records are written by `beacon change`/`freeze`
+            # and are tracked history, so a dirty one means "commit", not
+            # "unclassified business change" (#29).
+            "docs/beacon/*/change/*.md",
         ],
     },
     "formal_evidence": {
@@ -50,6 +54,11 @@ DIRTY_MANIFEST: dict[str, dict[str, Any]] = {
             ".beacon/transactions/**",
             ".beacon/evidence/implement/**",
             ".beacon/evidence/test-results/**",
+            # Per-feature QA verdicts and the design-lint evidence are tracked
+            # gate output: a dirty one means "commit the verdict", never
+            # "unclassified business change" (#29).
+            ".beacon/qa/features/**",
+            ".beacon/evidence/design-md-lint/**",
             "docs/beacon/*/qa/**",
         ],
     },
@@ -82,6 +91,10 @@ DIRTY_MANIFEST: dict[str, dict[str, Any]] = {
             ".beacon/memory/**",
             ".beacon/tasks/**",
             ".beacon/raw-command-log.jsonl",
+            # Rolling local runtime state, declared ignorable by
+            # gitignore_policy("Rolling local runtime state"). A clean-exit must
+            # not block on a file only Beacon rewrites (#29).
+            ".beacon/flaky-history.json",
         ],
     },
     "forbidden": {
@@ -95,6 +108,20 @@ DIRTY_MANIFEST: dict[str, dict[str, Any]] = {
         ],
     },
 }
+
+
+# Gate-written paths that must never surface as `unclassified`, split by what
+# the operator is supposed to do with them. `GATE_FORMAL_PATTERNS` are tracked
+# verdicts (commit); `GATE_ROLLING_PATTERNS` are ignorable local state and must
+# stay declared in gitignore_policy, else the two lists drift again (#29).
+GATE_FORMAL_PATTERNS: tuple[str, ...] = (
+    ".beacon/qa/features/*",
+    ".beacon/evidence/design-md-lint/*",
+    "docs/beacon/*/change/*.md",
+)
+GATE_ROLLING_PATTERNS: tuple[str, ...] = (
+    ".beacon/flaky-history.json",
+)
 
 
 def _run_git(project_root: Path, args: list[str], *, text: bool = True) -> subprocess.CompletedProcess[Any]:
