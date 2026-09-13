@@ -51,8 +51,32 @@ def git_branch_exists(project_root: Path, branch: str) -> bool:
     return result.returncode == 0
 
 
+def resolve_default_branch(project_root: Path) -> str:
+    """Resolve a repo's default/baseline branch from git reality (local-only).
+
+    Order: origin/HEAD -> existing main -> existing master -> "main".
+    No network calls, so it is safe in offline and test environments. Never
+    falls back to the current HEAD, which is not a reliable "default" branch.
+    """
+    root = project_root.expanduser().resolve()
+    remote_head = git_output(root, "symbolic-ref", "--short", "refs/remotes/origin/HEAD")
+    if remote_head.startswith("origin/"):
+        candidate = remote_head.split("/", 1)[1].strip()
+        if candidate:
+            return candidate
+    if git_branch_exists(root, "main"):
+        return "main"
+    if git_branch_exists(root, "master"):
+        return "master"
+    return "main"
+
+
 def resolve_truth_canonical_branch(project_root: Path, *, version: str) -> str:
-    """Resolve governance truth_canonical branch, defaulting to main or master."""
+    """Resolve governance truth_canonical branch.
+
+    An explicit governance declaration always wins; otherwise fall back to the
+    repository's git-reality default branch (never a blind hardcoded "main").
+    """
     from beacon.utils.project_governance import load_governance_payload
     from beacon.utils.versioning import resolve_target_version
 
@@ -67,11 +91,7 @@ def resolve_truth_canonical_branch(project_root: Path, *, version: str) -> str:
             return truth_canonical
     except Exception:  # noqa: BLE001
         pass
-    if git_branch_exists(root, "main"):
-        return "main"
-    if git_branch_exists(root, "master"):
-        return "master"
-    return "main"
+    return resolve_default_branch(root)
 
 
 def check_truth_authoring_branch(

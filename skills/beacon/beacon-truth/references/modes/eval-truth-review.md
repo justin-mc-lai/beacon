@@ -1,5 +1,5 @@
 > 共享守则（preamble / HARD GATE / GIT_ADMISSION）见 `skills/beacon/references/shared-preamble.md`
-# Mode: truth-review
+# Mode: eval-truth-review
 
 > Progressive disclosure for `beacon-truth` (Scheme A 1+6). Implements Plan→Truth **Mandatory Review Gate** (v1.6.10+).
 

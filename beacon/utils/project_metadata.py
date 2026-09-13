@@ -281,6 +281,7 @@ def _upsert_service_binding(service_bindings: list[dict[str, Any]], binding: dic
 def _upsert_version_contract(
     version_map: dict[str, Any],
     *,
+    root: Path,
     version: str,
     service_key: str,
     branch: str,
@@ -345,10 +346,15 @@ def _upsert_version_contract(
         )
     )
     resolved_truth_canonical = str(
-        truth_canonical or contract.get("truth_canonical") or ""
+        truth_canonical
+        or current_governance.get("truth_canonical")
+        or contract.get("truth_canonical")
+        or ""
     ).strip()
     if not resolved_truth_canonical and (service_key or branch or not contract):
-        resolved_truth_canonical = "main"
+        from beacon.utils.git_alignment import resolve_default_branch
+
+        resolved_truth_canonical = resolve_default_branch(root)
     version_map[version] = {
         "version": version,
         "participating_services": services,
@@ -434,6 +440,7 @@ def create_or_update_project_metadata(
     if version:
         versions = _upsert_version_contract(
             versions,
+            root=root,
             version=version,
             service_key=service_key,
             branch=branch,
@@ -543,7 +550,35 @@ def ensure_version_contract_from_feature_package(
             "branch": branch,
             "git_canonical_branch": git_canonical,
         }
-    summary: dict[str, Any] = {"services": [], "branch": branch, "truth_canonical": "main"}
+    versions_map = current.get("version_scoped_metadata") if isinstance(current.get("version_scoped_metadata"), dict) else {}
+    existing = versions_map.get(version) if isinstance(versions_map.get(version), dict) else {}
+    existing_governance = existing.get("branch_governance") if isinstance(existing.get("branch_governance"), dict) else {}
+    from beacon.utils.git_alignment import resolve_default_branch
+
+    git_default = resolve_default_branch(root)
+    declared_truth = str(existing.get("truth_canonical") or "").strip()
+    declared_baseline = str(
+        existing.get("previous_version_baseline_branch")
+        or existing_governance.get("previous_version_baseline_branch")
+        or ""
+    ).strip()
+    # Explicit declaration wins; fall back to git reality only when absent.
+    resolved_truth_canonical = declared_truth or git_default
+    resolved_baseline = declared_baseline or declared_truth or git_default
+    summary: dict[str, Any] = {
+        "services": [],
+        "branch": branch,
+        "truth_canonical": resolved_truth_canonical,
+        "truth_canonical_source": "existing" if declared_truth else "git_default",
+    }
+    if declared_truth and declared_truth != git_default:
+        # Never silently downgrade an explicit canonical branch; surface the conflict.
+        summary["truth_canonical_conflict"] = {
+            "declared": declared_truth,
+            "git_default": git_default,
+            "reason_code": "truth_canonical_conflicts_with_git_default",
+            "resolution": "preserved_declared",
+        }
     last_result: dict[str, Any] = {}
     for service_key in services:
         last_result = create_or_update_project_metadata(
@@ -551,13 +586,13 @@ def ensure_version_contract_from_feature_package(
             version=version,
             service_key=service_key,
             branch=branch,
-            truth_canonical="main",
+            truth_canonical=resolved_truth_canonical,
             branch_guard_mode="strict",
             validation_state="active",
             branch_governance_template="standard-feature",
             merge_direction_policy=[f"master->{branch}", f"{branch}->uat"],
             forbidden_directions=[f"uat->{branch}", "uat_as_feature_base"],
-            previous_version_baseline_branch="main",
+            previous_version_baseline_branch=resolved_baseline,
             next_version_feature_branch=(
                 f"feature/{version}" if topology == "monorepo" else f"beacon/{version}/<feature-slug>"
             ),

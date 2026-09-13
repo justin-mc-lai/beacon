@@ -229,8 +229,9 @@ def test_v160_skill_package_materialize_should_create_harness_only_package(tmp_p
 
     loop_goal = (package_root / "beacon-goal" / "references" / "modes" / "loop-goal.md").read_text(encoding="utf-8")
     assert "Mode: loop-goal" in loop_goal
-    assert "Beacon v1.6.0 共享 Preamble" in loop_goal
-    assert "你正在运行 governor skill" in loop_goal
+    # v1.6.13 skill-copy hygiene: mode preambles are a shared reference, not inlined text
+    assert "shared-preamble.md" in loop_goal
+    assert "governor skill" in loop_goal
     assert "`beacon-eval-release`" in loop_goal
 
     qa = (package_root / "beacon-eval-qa" / "SKILL.md").read_text(encoding="utf-8")

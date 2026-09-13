@@ -1675,6 +1675,9 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
                 "implement_to_qa_handoff": handoff,
                 "design_truth_verdict": design_truth_verdict,
             }
+            # Issue #24: distinguish a reused verdict from an executed pass.
+            prior_reason_codes = payload.get("reason_codes") if isinstance(payload.get("reason_codes"), list) else []
+            payload["reason_codes"] = list(dict.fromkeys([*prior_reason_codes, "qa_verdict_reused"]))
             if bool(design_truth_verdict.get("blocked")):
                 payload["status"] = "blocked"
                 payload["evidence_done"] = False

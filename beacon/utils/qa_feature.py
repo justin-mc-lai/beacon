@@ -981,6 +981,7 @@ def _previous_evidence_done(
     implementation_run_id: str,
     source_matrix_path: str,
     source_matrix_hash: str = "",
+    implementation_git_head: str = "",
 ) -> bool:
     if not isinstance(previous, dict) or not previous:
         return False
@@ -993,6 +994,12 @@ def _previous_evidence_done(
     if str(previous.get("source_matrix_path") or "") != source_matrix_path:
         return False
     if str(previous.get("source_matrix_hash") or "") != source_matrix_hash:
+        return False
+    # Issue #24: a stale-code verdict must not be reused. If the previous pass
+    # recorded a git HEAD, the current HEAD must match (backward compatible:
+    # older statuses without the field are skipped).
+    recorded_head = str(previous.get("implementation_git_head") or "").strip()
+    if recorded_head and implementation_git_head and recorded_head != implementation_git_head:
         return False
     feature_scorecard = previous.get("feature_scorecard")
     if not isinstance(feature_scorecard, dict) or not feature_scorecard:
@@ -1015,6 +1022,7 @@ def _targeted_entries(
     source_matrix_hash: str,
     technical_archive: dict[str, Any],
     blocking_updates: list[dict[str, Any]],
+    implementation_git_head: str = "",
 ) -> tuple[str, list[str], list[dict[str, Any]]]:
     if not derived_entries:
         return "blocked", ["no_matrix_entries"], []
@@ -1042,6 +1050,7 @@ def _targeted_entries(
         implementation_run_id=implementation_run_id,
         source_matrix_path=source_matrix_path,
         source_matrix_hash=source_matrix_hash,
+        implementation_git_head=implementation_git_head,
     ):
         return "up_to_date", [], []
 
@@ -1105,6 +1114,9 @@ def build_feature_qa_plan(
     spec_hash = _spec_hash(project_root, version=resolved_version, revision=revision)
     previous_status = load_feature_qa_status(project_root, feature=feature)
     source_matrix_rel = str(source_matrix_path.relative_to(project_root))
+    from beacon.utils.git_alignment import git_output
+
+    implementation_git_head = git_output(project_root, "rev-parse", "HEAD")
     status, reason_codes, targeted_source_entries = _targeted_entries(
         derived_entries=derived_entries,
         previous_status=previous_status,
@@ -1114,6 +1126,7 @@ def build_feature_qa_plan(
         source_matrix_hash=source_matrix_hash,
         technical_archive=archive_payload,
         blocking_updates=blocking_updates,
+        implementation_git_head=implementation_git_head,
     )
     story_sequence = _story_sequence(story, derived_entries)
     scenario_map = _build_story_scenario_map(
@@ -1210,6 +1223,7 @@ def build_feature_qa_plan(
         "current_spec_fingerprint_hash": spec_hash,
         "current_baseline_hash": str(revision.get("baseline_hash") or "").strip(),
         "implementation_run_id": implementation_run_id,
+        "implementation_git_head": implementation_git_head,
         "source_matrix_path": source_matrix_rel,
         "source_matrix_hash": source_matrix_hash,
         "derived_matrix_path": str(feature_qa_matrix_path(project_root, feature=feature).relative_to(project_root)),

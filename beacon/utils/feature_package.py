@@ -306,6 +306,26 @@ def parse_task_ac_evidence_binding(title: str) -> dict[str, str]:
     }
 
 
+def _evidence_width_mismatch_hint(ev_path: Path) -> str:
+    """If a same-numbered evidence file exists at a different id width, name it.
+
+    The AC evidence filename contract is ``AC-<index:03d>.json`` (issue #25).
+    """
+    name = ev_path.name
+    match = re.match(r"^(?P<prefix>AC-)(?P<num>\d+)(?P<suffix>\.json)$", name)
+    if not match:
+        return ""
+    width = len(match.group("num"))
+    number = int(match.group("num"))
+    for alt in (3, 4):
+        if alt == width:
+            continue
+        candidate = f"{match.group('prefix')}{number:0{alt}d}{match.group('suffix')}"
+        if (ev_path.parent / candidate).is_file():
+            return f"{name} expected but {candidate} found (evidence id contract: AC-<index:03d>.json)"
+    return ""
+
+
 def evaluate_task_ac_evidence_bindings(
     project_root: Path,
     *,
@@ -357,13 +377,20 @@ def evaluate_task_ac_evidence_bindings(
                 ev_path = root / ev
             if not ev_path.is_file() or ev_path.stat().st_size < 2:
                 checked_bad += 1
+                width_hint = _evidence_width_mismatch_hint(ev_path)
+                detail = (
+                    f"{task_id} checked but evidence filename width mismatch: {width_hint}"
+                    if width_hint
+                    else f"{task_id} checked but evidence missing: {ev}"
+                )
                 findings.append(
                     {
                         "kind": "checkbox_checked_without_evidence_file",
-                        "text": f"{task_id} checked but evidence missing: {ev}",
+                        "text": detail,
                         "task_id": task_id,
                         "evidence_path": ev,
                         "ac_id": ac_id,
+                        "evidence_width_hint": width_hint,
                     }
                 )
             else:

@@ -48,14 +48,6 @@ beacon plan auto --program <slug> ...
 - deferrals go to program parity matrix + deferral ledger; **no pending**
 - after P4 ack, return control to umbrella → route `beacon-gen-truth` per lake
 
-## Beacon v1.6.0 共享 Preamble
-
-1. 先判断湖还是海：湖要煮干；海要拆分、标超纲或延后。
-2. 先搜再造：推理前先读取 resolver 选中的 truth、source、evidence 和相关 memory。
-3. 用户主权：Beacon 推荐路由；是否接受范围或把 queue item 升级为 truth/change 由用户决定。
-4. 不假交付：placeholder implementation、docs-only completion、fake runner、zero assertions 或 placeholder evidence 不能算闭环。
-5. Harness 边界：planner 不实现；generator 不裁决自身完成；evaluator 不改写 truth；governor 不成为主生命周期阶段。
-
 HARD GATE:
 你正在运行 planner skill。
 禁止调用 implementation/generator/evaluator/release 类 skill。

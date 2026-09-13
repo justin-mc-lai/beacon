@@ -114,13 +114,18 @@ def _feature_scorecard_coverage_metrics(
     scorecard = _read_json(project_root / ".beacon" / "qa" / "features" / feature_key / "scorecard.json")
     if not scorecard:
         return None
-    if not bool(scorecard.get("release_ready", False)):
-        return None
-    if str(scorecard.get("continue_decision") or "").strip() != "ready_for_release":
-        return None
-    unresolved = [str(item).strip() for item in (scorecard.get("unresolved_closure_outcomes") or []) if str(item).strip()]
-    if unresolved:
-        return None
+    # Issue #23: coverage is a reporting signal, not a release verdict. When a
+    # specific feature is requested, report its scorecard coverage even when the
+    # feature is not yet release_ready. The aggregate (feature-less) path keeps
+    # the release gates for backward compatibility.
+    if not feature:
+        if not bool(scorecard.get("release_ready", False)):
+            return None
+        if str(scorecard.get("continue_decision") or "").strip() != "ready_for_release":
+            return None
+        unresolved = [str(item).strip() for item in (scorecard.get("unresolved_closure_outcomes") or []) if str(item).strip()]
+        if unresolved:
+            return None
     if planned_story <= 0 and feature_key:
         feature_package_truth = project_root / "docs" / "beacon" / version / "features" / feature_key / "truth.md"
         if feature_package_truth.exists():
@@ -166,6 +171,7 @@ def _feature_scorecard_coverage_metrics(
         "tc_coverage": tc_coverage,
         "full_coverage": full_coverage,
         "matrix_errors": [],
+        "release_ready": bool(scorecard.get("release_ready", False)),
         "source": "feature_qa_scorecard",
     }
 
