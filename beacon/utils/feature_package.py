@@ -119,13 +119,25 @@ def package_paths(project_root: Path, *, version: str, feature: str) -> dict[str
     }
 
 
+def _ends_contract_scan(line: str, *, in_table: bool) -> bool:
+    """Decide whether a non-table line ends Markdown contract-table extraction.
+
+    A blank line only *pauses* the current table segment: the same logical
+    contract is often written as several visually separated segments, and every
+    segment must still yield its rows (#28). Real prose (headings, sentences)
+    does end the scan, so unrelated tables further down the document are never
+    mistaken for the contract table.
+    """
+    return in_table and bool(line.strip())
+
+
 def _extract_ac_rows(markdown: str) -> list[dict[str, str]]:
     rows: list[dict[str, str]] = []
     in_table = False
     for line in markdown.splitlines():
         stripped = line.strip()
         if not stripped.startswith("|"):
-            if in_table:
+            if _ends_contract_scan(stripped, in_table=in_table):
                 break
             continue
         cells = [cell.strip() for cell in stripped.strip("|").split("|")]
@@ -175,7 +187,7 @@ def _extract_test_rows(markdown: str) -> list[dict[str, str]]:
     for line in markdown.splitlines():
         stripped = line.strip()
         if not stripped.startswith("|"):
-            if in_table:
+            if _ends_contract_scan(stripped, in_table=in_table):
                 break
             continue
         cells = [cell.strip() for cell in stripped.strip("|").split("|")]
@@ -414,7 +426,7 @@ def _extract_evidence_rows(markdown: str) -> list[dict[str, str]]:
     for line in markdown.splitlines():
         stripped = line.strip()
         if not stripped.startswith("|"):
-            if in_table:
+            if _ends_contract_scan(stripped, in_table=in_table):
                 break
             continue
         cells = [cell.strip() for cell in stripped.strip("|").split("|")]
