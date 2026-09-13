@@ -572,6 +572,80 @@ def ensure_runtime_projection_schema(conn: sqlite3.Connection) -> None:
     conn.commit()
 
 
+def ensure_project_metadata_schema(conn: sqlite3.Connection) -> None:
+    """Ensure the project_metadata_* tables exist on both read and write paths.
+
+    These tables are written by ``project_metadata`` but read via the shared
+    ``_connect()``; without this the read path raises on a fresh runtime ledger
+    (`no such table: project_metadata_current`, issue #22).
+    """
+    existing = {
+        str(row[0])
+        for row in conn.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()
+    }
+    if {"project_metadata_current", "project_metadata_events"} <= existing:
+        # Cheap common path: schema already present.
+        return
+    conn.executescript(
+        """
+        CREATE TABLE IF NOT EXISTS project_metadata_current (
+            project_root TEXT PRIMARY KEY,
+            topology_kind TEXT NOT NULL,
+            default_execution_service TEXT NOT NULL,
+            transaction_id TEXT NOT NULL,
+            committed_at TEXT NOT NULL,
+            source_hash TEXT NOT NULL,
+            payload_json TEXT NOT NULL
+        );
+
+        CREATE TABLE IF NOT EXISTS project_metadata_events (
+            transaction_id TEXT PRIMARY KEY,
+            project_root TEXT NOT NULL,
+            event_type TEXT NOT NULL,
+            committed_at TEXT NOT NULL,
+            source_hash TEXT NOT NULL DEFAULT '',
+            payload_json TEXT NOT NULL
+        );
+        """
+    )
+    _ensure_columns(conn, "project_metadata_events", {"source_hash": "TEXT NOT NULL DEFAULT ''"})
+    conn.commit()
+
+
+def runtime_ledger_probe() -> dict[str, Any]:
+    """Non-raising health probe for the runtime ledger (issues #22 / #26).
+
+    Distinguishes an unwritable ledger root from a missing table so callers can
+    emit a specific reason code instead of an unhandled traceback.
+    """
+    if _sqlite_disabled():
+        return {
+            "ledger_reason_code": "runtime_ledger_disabled",
+            "ledger_hint": "BEACON_RUNTIME_LEDGER_DISABLE_SQLITE is set",
+        }
+    root = runtime_ledger_root()
+    try:
+        root.mkdir(parents=True, exist_ok=True)
+        probe = root / ".beacon-ledger-write-probe"
+        probe.write_text("", encoding="utf-8")
+        probe.unlink()
+    except OSError:
+        return {
+            "ledger_reason_code": "runtime_ledger_unwritable",
+            "ledger_hint": f"set BEACON_RUNTIME_LEDGER_ROOT to a writable dir (current: {root})",
+        }
+    try:
+        with _connect() as conn:
+            ensure_project_metadata_schema(conn)
+            conn.execute("SELECT 1 FROM project_metadata_current LIMIT 1").fetchone()
+    except (sqlite3.Error, RuntimeError) as exc:
+        return {
+            "ledger_reason_code": "runtime_ledger_schema_missing",
+            "ledger_hint": f"runtime ledger schema incomplete at {runtime_ledger_db_path()}: {exc}",
+        }
+    return {"ledger_reason_code": "", "ledger_hint": ""}
+
+
 def preflight_projection_write(envelope: dict[str, Any]) -> dict[str, Any]:
     projection = envelope.get("projection") if isinstance(envelope.get("projection"), dict) else {}
     preflight = projection.get("preflight") if isinstance(projection.get("preflight"), dict) else {}

@@ -510,14 +510,22 @@ def read_governance_md_source_hash(project_root: Path) -> str:
 
 
 def read_sqlite_projection_hash(project_root: Path) -> str:
-    from beacon.utils.runtime_projection_store import _connect
+    import sqlite3
+
+    from beacon.utils.runtime_projection_store import _connect, ensure_project_metadata_schema
 
     root = str(project_root.expanduser().resolve())
-    with _connect() as conn:
-        row = conn.execute(
-            "SELECT source_hash FROM project_metadata_current WHERE project_root = ?",
-            (root,),
-        ).fetchone()
+    try:
+        with _connect() as conn:
+            # Read path must not assume a table that only the write path creates.
+            ensure_project_metadata_schema(conn)
+            row = conn.execute(
+                "SELECT source_hash FROM project_metadata_current WHERE project_root = ?",
+                (root,),
+            ).fetchone()
+    except (sqlite3.Error, RuntimeError):
+        # Fresh / unwritable ledger: degrade instead of raising (issues #22 / #26).
+        return ""
     if not row:
         return ""
     return str(row[0] or "").strip()
@@ -537,11 +545,17 @@ def verify_governance_projection(project_root: Path) -> dict[str, Any]:
             "details": {"issue": "governance_md_missing_source_hash"},
         }
     if not sqlite_hash:
+        from beacon.utils.runtime_projection_store import runtime_ledger_probe
+
         return {
             "status": "fail",
             "blocked": True,
             "reason_code": "governance_projection_drift",
-            "details": {"issue": "sqlite_projection_missing", "md_source_hash": md_hash},
+            "details": {
+                "issue": "sqlite_projection_missing",
+                "md_source_hash": md_hash,
+                **runtime_ledger_probe(),
+            },
         }
     if md_hash != sqlite_hash:
         return {

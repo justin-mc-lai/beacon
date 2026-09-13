@@ -79,6 +79,7 @@ features/<slug>/{truth,tests,tasks,evidence}.md
    不得在旧 truth 上打补丁式“兼容读取”冒充合规。
 4. **引导话术**：旧项目不满足现行 package 规范时，系统与 skill 必须引导 **重新 plan 并冻结新 truth**，而不是静默沿用旧形状继续 implement/qa/release。
 5. **实现后果**：不得为旧形状堆积长期兼容分支；发现仅服务旧形状的代码路径应删除或改为 **显式 upgrade/replan 阻断**（reason_code 指向 plan/truth）。
+6. **AC evidence 文件名契约**：`.beacon/evidence/implement/<feature-slug>/AC-<index:03d>.json`（3 位零填充，例如 `AC-018.json`）。宽度不符（如 `AC-0018.json`）等同缺失并 fail-closed；诊断须点名期望文件名，而不是只说"evidence missing"。
 
 ### 不是什么
 
