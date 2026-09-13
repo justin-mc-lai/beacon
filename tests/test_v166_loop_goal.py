@@ -259,8 +259,9 @@ class TestSkillRouting:
         assert "references/modes/loop-goal.md" in skill_path.read_text(encoding="utf-8")
         content = mode_path.read_text(encoding="utf-8")
         assert "Mode: loop-goal" in content
-        assert "Beacon v1.6.0 共享 Preamble" in content
-        assert "你正在运行 governor skill" in content
+        # v1.6.13 skill-copy hygiene: mode preambles are a shared reference, not inlined text
+        assert "shared-preamble.md" in content
+        assert "governor skill" in content
         assert "governance_precheck" in content
         assert "truth_routing" in content
         assert "review_routing" in content
