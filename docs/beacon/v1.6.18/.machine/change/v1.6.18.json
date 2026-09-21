@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0",
+  "version": "v1.6.18",
+  "status": "generated",
+  "artifact_role": "version_aggregate_projection",
+  "projection_role": {
+    "artifact_role": "version_aggregate_projection",
+    "truth_source": false,
+    "gate_source": false,
+    "lifecycle_stage": false,
+    "release_publish_action": false
+  },
+  "truth_authority": false,
+  "lifecycle_stage": false,
+  "release_publish_action": false,
+  "feature_count": 1,
+  "features": [
+    {
+      "feature": "beacon-truth-fsm-terminal-unification",
+      "feature_slug": "beacon-truth-fsm-terminal-unification",
+      "summary": "Maintains release-facing version aggregate projection guards so QA accepted features are included in version change scope before release check.",
+      "status": "completed"
+    }
+  ],
+  "implementation_order": {
+    "status": "analyzed",
+    "feature_count": 1,
+    "ordered_feature_slugs": [
+      "beacon-truth-fsm-terminal-unification"
+    ],
+    "waves": [
+      {
+        "wave": 1,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "beacon-truth-fsm-terminal-unification",
+            "feature_slug": "beacon-truth-fsm-terminal-unification",
+            "depends_on_features": [],
+            "direct_delivery_services": [],
+            "writable_services": [],
+            "parallelizable": true,
+            "reason_code": "parallel_no_conflict"
+          }
+        ]
+      }
+    ]
+  },
+  "added": [
+    "[beacon-truth-fsm-terminal-unification] Feature-level release projection input for QA accepted current feature",
+    "[beacon-truth-fsm-terminal-unification] Version aggregate projection inclusion guard and repair metadata",
+    "[beacon-truth-fsm-terminal-unification] Repair-only projection rebuild path for release preflight artifacts"
+  ],
+  "removed": [
+    "[beacon-truth-fsm-terminal-unification] Manual-only version aggregate projection repair before release check"
+  ],
+  "fixed": [
+    "[beacon-truth-fsm-terminal-unification] Release check can route missing current feature projection to an actionable repair path",
+    "[beacon-truth-fsm-terminal-unification] Version aggregate projection remains a read model instead of requirement truth"
+  ],
+  "traceability_refs": [
+    "docs/beacon/v1.6.18/change/beacon-truth-fsm-terminal-unification.md",
+    "docs/beacon/v1.6.18/prd/beacon-truth-fsm-terminal-unification.md",
+    "docs/beacon/v1.6.18/user-story/beacon-truth-fsm-terminal-unification.md",
+    "docs/beacon/v1.6.18/qa/test-cases/beacon-truth-fsm-terminal-unification.md",
+    "docs/beacon/v1.6.18/.machine/execution/beacon-truth-fsm-terminal-unification.revision.json",
+    "docs/beacon/v1.6.18/.machine/execution/qa-acceptance-beacon-truth-fsm-terminal-unification.json",
+    "docs/beacon/v1.6.18/.machine/change/beacon-truth-fsm-terminal-unification.json"
+  ],
+  "generated_at": "2026-09-21 14:31"
+}
