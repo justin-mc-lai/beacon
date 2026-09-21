@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0",
+  "version": "v1.6.19",
+  "status": "generated",
+  "artifact_role": "version_aggregate_projection",
+  "projection_role": {
+    "artifact_role": "version_aggregate_projection",
+    "truth_source": false,
+    "gate_source": false,
+    "lifecycle_stage": false,
+    "release_publish_action": false
+  },
+  "truth_authority": false,
+  "lifecycle_stage": false,
+  "release_publish_action": false,
+  "feature_count": 1,
+  "features": [
+    {
+      "feature": "beacon-precheck-stage-and-bundle-freshness",
+      "feature_slug": "beacon-precheck-stage-and-bundle-freshness",
+      "summary": "Maintains release-facing version aggregate projection guards so QA accepted features are included in version change scope before release check.",
+      "status": "completed"
+    }
+  ],
+  "implementation_order": {
+    "status": "analyzed",
+    "feature_count": 1,
+    "ordered_feature_slugs": [
+      "beacon-precheck-stage-and-bundle-freshness"
+    ],
+    "waves": [
+      {
+        "wave": 1,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "beacon-precheck-stage-and-bundle-freshness",
+            "feature_slug": "beacon-precheck-stage-and-bundle-freshness",
+            "depends_on_features": [],
+            "direct_delivery_services": [],
+            "writable_services": [],
+            "parallelizable": true,
+            "reason_code": "parallel_no_conflict"
+          }
+        ]
+      }
+    ]
+  },
+  "added": [
+    "[beacon-precheck-stage-and-bundle-freshness] Feature-level release projection input for QA accepted current feature",
+    "[beacon-precheck-stage-and-bundle-freshness] Version aggregate projection inclusion guard and repair metadata",
+    "[beacon-precheck-stage-and-bundle-freshness] Repair-only projection rebuild path for release preflight artifacts"
+  ],
+  "removed": [
+    "[beacon-precheck-stage-and-bundle-freshness] Manual-only version aggregate projection repair before release check"
+  ],
+  "fixed": [
+    "[beacon-precheck-stage-and-bundle-freshness] Release check can route missing current feature projection to an actionable repair path",
+    "[beacon-precheck-stage-and-bundle-freshness] Version aggregate projection remains a read model instead of requirement truth"
+  ],
+  "traceability_refs": [
+    "docs/beacon/v1.6.19/change/beacon-precheck-stage-and-bundle-freshness.md",
+    "docs/beacon/v1.6.19/prd/beacon-precheck-stage-and-bundle-freshness.md",
+    "docs/beacon/v1.6.19/user-story/beacon-precheck-stage-and-bundle-freshness.md",
+    "docs/beacon/v1.6.19/qa/test-cases/beacon-precheck-stage-and-bundle-freshness.md",
+    "docs/beacon/v1.6.19/.machine/execution/beacon-precheck-stage-and-bundle-freshness.revision.json",
+    "docs/beacon/v1.6.19/.machine/execution/qa-acceptance-beacon-precheck-stage-and-bundle-freshness.json",
+    "docs/beacon/v1.6.19/.machine/change/beacon-precheck-stage-and-bundle-freshness.json"
+  ],
+  "generated_at": "2026-09-21 17:16"
+}
