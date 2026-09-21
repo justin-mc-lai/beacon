@@ -1,0 +1,295 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-precheck-stage-and-bundle-freshness",
+  "feature_slug": "beacon-precheck-stage-and-bundle-freshness",
+  "version": "v1.6.19",
+  "runtime_version": "v1.6.18",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.6.19/.machine/execution/requirement-clarity-beacon-precheck-stage-and-bundle-freshness.json",
+  "report_markdown_path": "docs/beacon/v1.6.19/execution/requirement-clarity-beacon-precheck-stage-and-bundle-freshness.md",
+  "state_path": ".beacon/state/requirement-clarity-beacon-precheck-stage-and-bundle-freshness.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.19",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-09-21T09:13:09.659683+00:00",
+    "feature": "beacon-precheck-stage-and-bundle-freshness",
+    "feature_slug": "beacon-precheck-stage-and-bundle-freshness",
+    "prd_ref": "docs/beacon/v1.6.19/prd/beacon-precheck-stage-and-bundle-freshness.md",
+    "user_story_ref": "docs/beacon/v1.6.19/user-story/beacon-precheck-stage-and-bundle-freshness.md"
+  },
+  "domain_fsm_gate": {
+    "schema_version": "1.0",
+    "feature": "beacon-precheck-stage-and-bundle-freshness",
+    "feature_slug": "beacon-precheck-stage-and-bundle-freshness",
+    "version": "v1.6.19",
+    "truth_path": "docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/truth.md",
+    "tests_path": "docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/tests.md",
+    "required": false,
+    "blocked": false,
+    "status": "not_required",
+    "reason_code": "",
+    "findings": [],
+    "requirement": {
+      "required": false,
+      "reason": "not_required",
+      "explicit": false,
+      "partial": false,
+      "complexity": false,
+      "business_signal": false,
+      "version_supported": true
+    },
+    "projection": {
+      "schema_version": "1.0",
+      "domain_fsm_schema": "domain-fsm.v1",
+      "entity_precedence_schema": "entity-precedence.v1",
+      "frontmatter": {
+        "slug": "beacon-precheck-stage-and-bundle-freshness",
+        "version": "v1.6.19",
+        "status": "draft",
+        "language": "zh",
+        "domain_required": "false",
+        "ux_required": "false",
+        "parser_contract": "beacon-feature-package-v2",
+        "truth_source_model": "feature_package_authoritative",
+        "package_maturity": "filled",
+        "materials_status": "current",
+        "canonical_refs": {
+          "prd": "docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/truth.md",
+          "user_story": "docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/truth.md",
+          "test_case": "docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/tests.md"
+        }
+      },
+      "frontmatter_errors": [],
+      "has_domain_model_section": false,
+      "has_domain_fsm_section": false,
+      "has_illegal_transition_section": false,
+      "entities": [],
+      "entity_precedence": [],
+      "aggregates": [],
+      "illegal_transition_slots": [],
+      "acceptance_criteria": [
+        {
+          "ac_id": "AC-001",
+          "description": "阶段分级：`build_material_audit(stage=\"implement\")` 中 `formal_release_present` 的 `required` 为 false 且状态为 pass；`build_material_audit(stage=\"\")`（release 阶段）中该检查为 fail 且 `required` 为 true，补上 release 文档后转为 pass。"
+        },
+        {
+          "ac_id": "AC-002",
+          "description": "判定内容寻址：precheck bundle 写入 `inputs_digest`；`precheck_inputs_digest` 在 feature 包内容变化、release 文档变化时随之改变；`bundle_is_fresh` 对无 digest、digest 不符、输入已变化的 bundle 均返回 False。"
+        },
+        {
+          "ac_id": "AC-003",
+          "description": "陈旧即重算：`record_standard_execution_precheck` 加载到的 CLI bundle 若 `bundle_is_fresh` 为假，则重跑 `run_standard_execution_precheck` 并用新结果覆盖，而不是信任陈旧判定。"
+        }
+      ],
+      "bound_ac_ids": [],
+      "orphan_ac_ids": [],
+      "aggregates_missing_illegal_slots": [],
+      "raw_section_titles": [
+        "人话",
+        "User Intent Snapshot",
+        "用户旅程",
+        "First principles",
+        "Intent Coverage Matrix",
+        "Acceptance Criteria",
+        "FSM 五元组",
+        "invalid / illegal",
+        "Non-goals",
+        "Freeze readiness"
+      ]
+    },
+    "validation": {
+      "schema_version": "1.0",
+      "required": false,
+      "blocked": false,
+      "status": "not_required",
+      "reason_code": "",
+      "findings": [],
+      "projection": {
+        "schema_version": "1.0",
+        "domain_fsm_schema": "domain-fsm.v1",
+        "entity_precedence_schema": "entity-precedence.v1",
+        "frontmatter": {
+          "slug": "beacon-precheck-stage-and-bundle-freshness",
+          "version": "v1.6.19",
+          "status": "draft",
+          "language": "zh",
+          "domain_required": "false",
+          "ux_required": "false",
+          "parser_contract": "beacon-feature-package-v2",
+          "truth_source_model": "feature_package_authoritative",
+          "package_maturity": "filled",
+          "materials_status": "current",
+          "canonical_refs": {
+            "prd": "docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/truth.md",
+            "user_story": "docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/truth.md",
+            "test_case": "docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/tests.md"
+          }
+        },
+        "frontmatter_errors": [],
+        "has_domain_model_section": false,
+        "has_domain_fsm_section": false,
+        "has_illegal_transition_section": false,
+        "entities": [],
+        "entity_precedence": [],
+        "aggregates": [],
+        "illegal_transition_slots": [],
+        "acceptance_criteria": [
+          {
+            "ac_id": "AC-001",
+            "description": "阶段分级：`build_material_audit(stage=\"implement\")` 中 `formal_release_present` 的 `required` 为 false 且状态为 pass；`build_material_audit(stage=\"\")`（release 阶段）中该检查为 fail 且 `required` 为 true，补上 release 文档后转为 pass。"
+          },
+          {
+            "ac_id": "AC-002",
+            "description": "判定内容寻址：precheck bundle 写入 `inputs_digest`；`precheck_inputs_digest` 在 feature 包内容变化、release 文档变化时随之改变；`bundle_is_fresh` 对无 digest、digest 不符、输入已变化的 bundle 均返回 False。"
+          },
+          {
+            "ac_id": "AC-003",
+            "description": "陈旧即重算：`record_standard_execution_precheck` 加载到的 CLI bundle 若 `bundle_is_fresh` 为假，则重跑 `run_standard_execution_precheck` 并用新结果覆盖，而不是信任陈旧判定。"
+          }
+        ],
+        "bound_ac_ids": [],
+        "orphan_ac_ids": [],
+        "aggregates_missing_illegal_slots": [],
+        "raw_section_titles": [
+          "人话",
+          "User Intent Snapshot",
+          "用户旅程",
+          "First principles",
+          "Intent Coverage Matrix",
+          "Acceptance Criteria",
+          "FSM 五元组",
+          "invalid / illegal",
+          "Non-goals",
+          "Freeze readiness"
+        ]
+      }
+    },
+    "recommended_action": ""
+  },
+  "human_closure_contract": {
+    "required": false,
+    "research_path": "docs/beacon/v1.6.19/research/beacon-precheck-stage-and-bundle-freshness.md",
+    "research_exists": false,
+    "source_architecture_path": "docs/beacon/v1.6.19/source-architecture/beacon-precheck-stage-and-bundle-freshness.md",
+    "source_architecture_exists": false,
+    "required_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "missing_sections": [
+      "architecture",
+      "business_flow"
+    ],
+    "diagram_types": [],
+    "complexity_signals": []
+  },
+  "requirement_closure_contract": {
+    "required": true,
+    "chain_order": [
+      "research",
+      "prd",
+      "user_story",
+      "test_case",
+      "requirement_clarity",
+      "freeze"
+    ],
+    "human_closure_required": false,
+    "paths": {
+      "research": "docs/beacon/v1.6.19/research/beacon-precheck-stage-and-bundle-freshness.md",
+      "prd": "docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/truth.md",
+      "user_story": "docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/truth.md",
+      "test_case": "docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/tests.md"
+    },
+    "exists": {
+      "research": false,
+      "prd": true,
+      "user_story": true,
+      "test_case": true
+    },
+    "required_research_sections": [],
+    "missing_research_sections": [],
+    "ac_projection": {
+      "prd_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003"
+      ],
+      "user_story_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003"
+      ],
+      "test_case_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003"
+      ],
+      "upstream_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003"
+      ],
+      "missing_test_case_ac_ids": []
+    }
+  },
+  "version_projection_truth_contract": {
+    "required": false,
+    "supported": true,
+    "projection_types": [],
+    "research_path": "docs/beacon/v1.6.19/research/beacon-precheck-stage-and-bundle-freshness.md",
+    "research_exists": false,
+    "required_fields": [
+      "prd_refs",
+      "user_story_refs",
+      "test_case_refs",
+      "coverage_notes",
+      "out_of_scope_notes"
+    ],
+    "field_presence": {
+      "prd_refs": false,
+      "user_story_refs": false,
+      "test_case_refs": false,
+      "coverage_notes": false,
+      "out_of_scope_notes": false
+    },
+    "missing_fields": [],
+    "required_refs": {
+      "prd_refs": "docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/truth.md",
+      "user_story_refs": "docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/truth.md",
+      "test_case_refs": "docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/tests.md"
+    },
+    "missing_ref_targets": [],
+    "ready": false
+  },
+  "support_write_topology_contract": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "diagnostics": []
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/truth.md",
+    "docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/tests.md",
+    "docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/tasks.md",
+    "docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/evidence.md"
+  ]
+}
