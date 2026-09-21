@@ -219,9 +219,13 @@ def build_material_audit(
     version: str | None = None,
     strict: bool = False,
     feature: str = "",
+    stage: str = "",
 ) -> dict[str, Any]:
     root = Path(project_root)
     resolved_version = resolve_target_version(root, version)
+    # Release-stage artifacts (release brief/notes) only exist after implement+qa.
+    # A pre-implement gate must not require them, or it deadlocks itself (#31 P1).
+    release_docs_required = str(stage or "").strip().lower() not in {"implement", "implement-precheck", "pre-implement"}
     requires_minimum_closure = _parse_semver_tuple(resolved_version) >= (1, 1, 3)
     requires_change_loop_dual_write = _parse_semver_tuple(resolved_version) >= (1, 3, 10)
     requires_prd_mirror_dual_write = _parse_semver_tuple(resolved_version) >= (1, 3, 11)
@@ -707,8 +711,8 @@ def build_material_audit(
     checks.append(
         {
             "name": "formal_release_present",
-            "status": "pass" if release_docs else "fail",
-            "details": {"count": len(release_docs), "documents": release_docs},
+            "status": "pass" if (release_docs or not release_docs_required) else "fail",
+            "details": {"count": len(release_docs), "documents": release_docs, "required": release_docs_required},
         }
     )
 

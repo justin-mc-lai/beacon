@@ -1,0 +1,213 @@
+{
+  "schema_version": "1.0",
+  "contract_kind": "beacon_test_contract_index",
+  "version": "v1.6.19",
+  "runtime_line": "v1.6.19",
+  "runtime_release_line": "v1.6.19",
+  "docs_line": "v1.6.19",
+  "feature": "beacon-precheck-stage-and-bundle-freshness",
+  "feature_slug": "beacon-precheck-stage-and-bundle-freshness",
+  "feature_line_status": "active_delivery",
+  "truth_refs": {
+    "truth": "docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/truth.md",
+    "tests": "docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/tests.md",
+    "tasks": "docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/tasks.md",
+    "evidence": "docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/evidence.md",
+    "ac_matrix": "docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/tests.md",
+    "story_state": "docs/beacon/v1.6.19/.machine/user-story/beacon-precheck-stage-and-bundle-freshness.json"
+  },
+  "source_hashes": {
+    "truth": "sha256:53b1929bfc154dd7732ebd4d1e2b096a9b3203ad25b829b5ce982c1a9818c60d",
+    "tests": "sha256:b2b60d0762ad6c253dae66dffcd47c2414ec34637c6e2d47388e80d16a838be6",
+    "tasks": "sha256:e95a64d90824f6a996b4a6d9e901a5b9bf9befc7275c11554b0562987b2c1074",
+    "evidence": "sha256:c565b18ee0ea89701f20fe7b0079c18d5171fe1f32004211c6c53c6d1a388137",
+    "ac_matrix": "sha256:b2b60d0762ad6c253dae66dffcd47c2414ec34637c6e2d47388e80d16a838be6",
+    "story_state": "sha256:813f1043b07adfa8451f636fb5caf392b0ea03e949a6e5872f2b1ac02195bdde"
+  },
+  "lanes": {
+    "feature_release_facing": [
+      {
+        "tc_id": "TC-001",
+        "ac_id": "AC-001",
+        "ac_theme": "prompt",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest -q tests/test_standard_execution_precheck_stage_and_freshness.py -k stage --tb=no",
+        "assertion": "stage_scoped_release_docs",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-precheck-stage-and-bundle-freshness/tc-001/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-002",
+        "ac_id": "AC-002",
+        "ac_theme": "prompt",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest -q tests/test_standard_execution_precheck_stage_and_freshness.py -k \"digest or freshness\" --tb=no",
+        "assertion": "bundle_content_addressed",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-precheck-stage-and-bundle-freshness/tc-002/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-003",
+        "ac_id": "AC-003",
+        "ac_theme": "prompt",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -c \"import inspect; from beacon.utils import loop_goal_state as m; s=inspect.getsource(m.record_standard_execution_precheck); assert 'bundle_is_fresh' in s and 'run_standard_execution_precheck' in s\"",
+        "assertion": "stale_bundle_triggers_recompute",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-precheck-stage-and-bundle-freshness/tc-003/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-EXEC-PYTEST",
+        "ac_id": "AC-001",
+        "ac_theme": "prompt",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest -q tests/test_standard_execution_precheck_stage_and_freshness.py --tb=no",
+        "assertion": "precheck_fix_suite_green",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-precheck-stage-and-bundle-freshness/tc-exec-pytest/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      }
+    ],
+    "current_runtime_contract": [],
+    "generated_surface_sync": [],
+    "compatibility_contract": [],
+    "legacy_snapshot": [],
+    "browser_runtime_admission": []
+  },
+  "lane_counts": {
+    "feature_release_facing": 4,
+    "current_runtime_contract": 0,
+    "generated_surface_sync": 0,
+    "compatibility_contract": 0,
+    "legacy_snapshot": 0,
+    "browser_runtime_admission": 0
+  },
+  "canonical_lanes": [
+    "feature_release_facing",
+    "current_runtime_contract",
+    "generated_surface_sync",
+    "compatibility_contract",
+    "legacy_snapshot",
+    "browser_runtime_admission"
+  ],
+  "test_refs": [
+    {
+      "tc_id": "TC-001",
+      "ac_id": "AC-001",
+      "ac_theme": "prompt",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_standard_execution_precheck_stage_and_freshness.py -k stage --tb=no",
+      "assertion": "stage_scoped_release_docs",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-precheck-stage-and-bundle-freshness/tc-001/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-002",
+      "ac_id": "AC-002",
+      "ac_theme": "prompt",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_standard_execution_precheck_stage_and_freshness.py -k \"digest or freshness\" --tb=no",
+      "assertion": "bundle_content_addressed",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-precheck-stage-and-bundle-freshness/tc-002/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-003",
+      "ac_id": "AC-003",
+      "ac_theme": "prompt",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -c \"import inspect; from beacon.utils import loop_goal_state as m; s=inspect.getsource(m.record_standard_execution_precheck); assert 'bundle_is_fresh' in s and 'run_standard_execution_precheck' in s\"",
+      "assertion": "stale_bundle_triggers_recompute",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-precheck-stage-and-bundle-freshness/tc-003/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-EXEC-PYTEST",
+      "ac_id": "AC-001",
+      "ac_theme": "prompt",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_standard_execution_precheck_stage_and_freshness.py --tb=no",
+      "assertion": "precheck_fix_suite_green",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-precheck-stage-and-bundle-freshness/tc-exec-pytest/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    }
+  ],
+  "ac_to_test_refs": {
+    "AC-001": [
+      "TC-001",
+      "TC-EXEC-PYTEST"
+    ],
+    "AC-002": [
+      "TC-002"
+    ],
+    "AC-003": [
+      "TC-003"
+    ]
+  },
+  "qa_order_contract": {
+    "sequence": [
+      "user_story_ac_order",
+      "scenario_divergence",
+      "current_round_execution",
+      "evidence_pack",
+      "coverage_current_gap",
+      "continue_decision",
+      "severe_blocker_stop_for_repair",
+      "repair_handoff",
+      "beacon_help_resume",
+      "next_qa_round_test_case_backfill",
+      "release_guidance"
+    ],
+    "source": "skills/beacon/references/usage-rules.md"
+  },
+  "deep_delta_policy": {
+    "owner": "deep",
+    "adoption_route": "test-case_or_supplemental_qa",
+    "executes_qa": false
+  },
+  "planning_line_safety": {
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "runtime_line": "v1.6.19",
+    "docs_default_line": "v1.6.19",
+    "current_runtime_release_line": "v1.6.19",
+    "feature_line_status": "active_delivery"
+  },
+  "status": "pass",
+  "blocked": false,
+  "reason_codes": [],
+  "generated_at": "2026-09-21T09:16:26.187885+00:00",
+  "index_path": "docs/beacon/v1.6.19/.machine/testing/test-contract-index.json"
+}
