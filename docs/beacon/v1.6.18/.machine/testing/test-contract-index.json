@@ -1,0 +1,304 @@
+{
+  "schema_version": "1.0",
+  "contract_kind": "beacon_test_contract_index",
+  "version": "v1.6.18",
+  "runtime_line": "v1.6.18",
+  "runtime_release_line": "v1.6.17",
+  "docs_line": "v1.6.18",
+  "feature": "beacon-truth-fsm-terminal-unification",
+  "feature_slug": "beacon-truth-fsm-terminal-unification",
+  "feature_line_status": "planning_only",
+  "truth_refs": {
+    "truth": "docs/beacon/v1.6.18/features/beacon-truth-fsm-terminal-unification/truth.md",
+    "tests": "docs/beacon/v1.6.18/features/beacon-truth-fsm-terminal-unification/tests.md",
+    "tasks": "docs/beacon/v1.6.18/features/beacon-truth-fsm-terminal-unification/tasks.md",
+    "evidence": "docs/beacon/v1.6.18/features/beacon-truth-fsm-terminal-unification/evidence.md",
+    "ac_matrix": "docs/beacon/v1.6.18/features/beacon-truth-fsm-terminal-unification/tests.md",
+    "story_state": "docs/beacon/v1.6.18/.machine/user-story/beacon-truth-fsm-terminal-unification.json"
+  },
+  "source_hashes": {
+    "truth": "sha256:e7084b327b61a93e72fd9a3b41f89f193df9278db81b276a596d02280ff79d41",
+    "tests": "sha256:c8fdfbd7901870751471e498d2b0b855619c3b8eb944d5835099ac2b92458cbd",
+    "tasks": "sha256:a6705729c6f819bea23b40537c420e6c22cb07842af7cedb4e1abd91531333af",
+    "evidence": "sha256:417bc87da5ff925860efcd5ad0012eb5ae9d1f7c8cc3255c963d66a35c41ae21",
+    "ac_matrix": "sha256:c8fdfbd7901870751471e498d2b0b855619c3b8eb944d5835099ac2b92458cbd",
+    "story_state": "sha256:4467f3b90007a94be500f4bed5582a0eb54d4ec6e8c900ee76c9e270a607090e"
+  },
+  "lanes": {
+    "feature_release_facing": [
+      {
+        "tc_id": "TC-001",
+        "ac_id": "AC-001",
+        "ac_theme": "prompt",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest -q tests/test_v1610_truth_gen_template_and_gates.py -k own_fsm_gate --tb=no",
+        "assertion": "generated_scaffolds_pass_own_fsm_gate",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-fsm-terminal-unification/tc-001/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.18/features/beacon-truth-fsm-terminal-unification/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-002",
+        "ac_id": "AC-002",
+        "ac_theme": "prompt",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest -q tests/test_v1610_truth_review_gate.py -k one_fsm_rule --tb=no",
+        "assertion": "review_and_freeze_one_rule",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-fsm-terminal-unification/tc-002/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.18/features/beacon-truth-fsm-terminal-unification/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-003",
+        "ac_id": "AC-003",
+        "ac_theme": "prompt",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest -q tests/test_v1614_fsm_validate.py -k \"undeclared_terminal or blank_transition_target\" --tb=no",
+        "assertion": "structural_terminal_warn_and_blank_target_block",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-fsm-terminal-unification/tc-003/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.18/features/beacon-truth-fsm-terminal-unification/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-004",
+        "ac_id": "AC-004",
+        "ac_theme": "prompt",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest -q tests/test_v1614_fsm_validate.py -k \"illegal_prose or illegal_declared\" --tb=no",
+        "assertion": "illegal_prose_not_machine_edge",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-fsm-terminal-unification/tc-004/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.18/features/beacon-truth-fsm-terminal-unification/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-005",
+        "ac_id": "AC-005",
+        "ac_theme": "prompt",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest -q tests/test_v1614_fsm_validate.py -k \"unrelated_mermaid or stale_projection\" --tb=no",
+        "assertion": "projection_resync_without_collateral_write",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-fsm-terminal-unification/tc-005/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.18/features/beacon-truth-fsm-terminal-unification/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-EXEC-CLI",
+        "ac_id": "AC-001",
+        "ac_theme": "prompt",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -c \"from beacon.utils.truth_fsm import parse_truth_fsm, validate_truth_fsm; md='## FSM 五元组\\n\\n|State|Event|Guard|To|Action|\\n|---|---|---|---|---|\\n|a|go|ok|b|x|\\n\\n### invalid / illegal\\n\\n- illegal: a -> a\\n'; assert validate_truth_fsm(parse_truth_fsm(md), truth_markdown=md)['blocked'] is False\"",
+        "assertion": "structural_terminal_accepted_no_block",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-fsm-terminal-unification/tc-exec-cli/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.18/features/beacon-truth-fsm-terminal-unification/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-EXEC-PYTEST",
+        "ac_id": "AC-005",
+        "ac_theme": "prompt",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest -q tests/test_v1614_fsm_validate.py tests/test_v1610_truth_review_gate.py tests/test_v1610_truth_gen_template_and_gates.py --tb=no",
+        "assertion": "fsm_suite_green",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-fsm-terminal-unification/tc-exec-pytest/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.18/features/beacon-truth-fsm-terminal-unification/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      }
+    ],
+    "current_runtime_contract": [],
+    "generated_surface_sync": [],
+    "compatibility_contract": [],
+    "legacy_snapshot": [],
+    "browser_runtime_admission": []
+  },
+  "lane_counts": {
+    "feature_release_facing": 7,
+    "current_runtime_contract": 0,
+    "generated_surface_sync": 0,
+    "compatibility_contract": 0,
+    "legacy_snapshot": 0,
+    "browser_runtime_admission": 0
+  },
+  "canonical_lanes": [
+    "feature_release_facing",
+    "current_runtime_contract",
+    "generated_surface_sync",
+    "compatibility_contract",
+    "legacy_snapshot",
+    "browser_runtime_admission"
+  ],
+  "test_refs": [
+    {
+      "tc_id": "TC-001",
+      "ac_id": "AC-001",
+      "ac_theme": "prompt",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_v1610_truth_gen_template_and_gates.py -k own_fsm_gate --tb=no",
+      "assertion": "generated_scaffolds_pass_own_fsm_gate",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-fsm-terminal-unification/tc-001/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.18/features/beacon-truth-fsm-terminal-unification/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-002",
+      "ac_id": "AC-002",
+      "ac_theme": "prompt",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_v1610_truth_review_gate.py -k one_fsm_rule --tb=no",
+      "assertion": "review_and_freeze_one_rule",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-fsm-terminal-unification/tc-002/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.18/features/beacon-truth-fsm-terminal-unification/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-003",
+      "ac_id": "AC-003",
+      "ac_theme": "prompt",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_v1614_fsm_validate.py -k \"undeclared_terminal or blank_transition_target\" --tb=no",
+      "assertion": "structural_terminal_warn_and_blank_target_block",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-fsm-terminal-unification/tc-003/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.18/features/beacon-truth-fsm-terminal-unification/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-004",
+      "ac_id": "AC-004",
+      "ac_theme": "prompt",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_v1614_fsm_validate.py -k \"illegal_prose or illegal_declared\" --tb=no",
+      "assertion": "illegal_prose_not_machine_edge",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-fsm-terminal-unification/tc-004/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.18/features/beacon-truth-fsm-terminal-unification/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-005",
+      "ac_id": "AC-005",
+      "ac_theme": "prompt",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_v1614_fsm_validate.py -k \"unrelated_mermaid or stale_projection\" --tb=no",
+      "assertion": "projection_resync_without_collateral_write",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-fsm-terminal-unification/tc-005/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.18/features/beacon-truth-fsm-terminal-unification/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-EXEC-CLI",
+      "ac_id": "AC-001",
+      "ac_theme": "prompt",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -c \"from beacon.utils.truth_fsm import parse_truth_fsm, validate_truth_fsm; md='## FSM 五元组\\n\\n|State|Event|Guard|To|Action|\\n|---|---|---|---|---|\\n|a|go|ok|b|x|\\n\\n### invalid / illegal\\n\\n- illegal: a -> a\\n'; assert validate_truth_fsm(parse_truth_fsm(md), truth_markdown=md)['blocked'] is False\"",
+      "assertion": "structural_terminal_accepted_no_block",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-fsm-terminal-unification/tc-exec-cli/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.18/features/beacon-truth-fsm-terminal-unification/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-EXEC-PYTEST",
+      "ac_id": "AC-005",
+      "ac_theme": "prompt",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_v1614_fsm_validate.py tests/test_v1610_truth_review_gate.py tests/test_v1610_truth_gen_template_and_gates.py --tb=no",
+      "assertion": "fsm_suite_green",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-fsm-terminal-unification/tc-exec-pytest/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.18/features/beacon-truth-fsm-terminal-unification/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    }
+  ],
+  "ac_to_test_refs": {
+    "AC-001": [
+      "TC-001",
+      "TC-EXEC-CLI"
+    ],
+    "AC-002": [
+      "TC-002"
+    ],
+    "AC-003": [
+      "TC-003"
+    ],
+    "AC-004": [
+      "TC-004"
+    ],
+    "AC-005": [
+      "TC-005",
+      "TC-EXEC-PYTEST"
+    ]
+  },
+  "qa_order_contract": {
+    "sequence": [
+      "user_story_ac_order",
+      "scenario_divergence",
+      "current_round_execution",
+      "evidence_pack",
+      "coverage_current_gap",
+      "continue_decision",
+      "severe_blocker_stop_for_repair",
+      "repair_handoff",
+      "beacon_help_resume",
+      "next_qa_round_test_case_backfill",
+      "release_guidance"
+    ],
+    "source": "skills/beacon/references/usage-rules.md"
+  },
+  "deep_delta_policy": {
+    "owner": "deep",
+    "adoption_route": "test-case_or_supplemental_qa",
+    "executes_qa": false
+  },
+  "planning_line_safety": {
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "runtime_line": "v1.6.17",
+    "docs_default_line": "v1.6.17",
+    "current_runtime_release_line": "v1.6.17",
+    "feature_line_status": "planning_only"
+  },
+  "status": "pass",
+  "blocked": false,
+  "reason_codes": [],
+  "generated_at": "2026-09-21T06:31:12.466745+00:00",
+  "index_path": "docs/beacon/v1.6.18/.machine/testing/test-contract-index.json"
+}

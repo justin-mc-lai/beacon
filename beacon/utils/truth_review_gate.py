@@ -417,15 +417,26 @@ def check_b_fsm_audit(truth_md: str, *, domain_required: bool) -> dict[str, Any]
             "reason": "",
             "findings": [],
         }
-    fsm = extract_fsm_five_tuple(truth_md)
-    findings: list[dict[str, str]] = []
-    if not fsm["five_tuple_present"]:
-        findings.append({"kind": "fsm_five_tuple_missing", "text": "State|Event|Guard|To|Action table missing"})
-    if not fsm["illegal_present"]:
-        findings.append({"kind": "illegal_list_missing", "text": "invalid/illegal transition list missing"})
-    for st in fsm.get("hanging_states") or []:
-        findings.append({"kind": "fsm_hanging_state", "text": f"non-terminal or unknown state without outgoing event: {st}"})
-    ok = not findings
+    # One rule for review and freeze: delegate to the FSM validator instead of
+    # keeping a second, lenient terminal heuristic that can disagree with freeze (#30).
+    from beacon.utils.truth_fsm import parse_truth_fsm, validate_truth_fsm
+
+    projection = parse_truth_fsm(truth_md)
+    validation = validate_truth_fsm(projection, truth_markdown=truth_md)
+    findings = [
+        {
+            "kind": str(item.get("kind") or ""),
+            "severity": str(item.get("severity") or "error"),
+            "text": str(item.get("text") or ""),
+        }
+        for item in validation.get("findings") or []
+    ]
+    if not projection.get("five_tuple_present"):
+        findings.insert(
+            0,
+            {"kind": "fsm_five_tuple_missing", "severity": "error", "text": "State|Event|Guard|To|Action table missing"},
+        )
+    ok = not any(item.get("severity") == "error" for item in findings)
     return {
         "pass": ok,
         "check": "B",
@@ -434,12 +445,12 @@ def check_b_fsm_audit(truth_md: str, *, domain_required: bool) -> dict[str, Any]
         "reason": "fsm_audit_failed" if not ok else "",
         "findings": findings,
         "fsm": {
-            "transition_count": len(fsm.get("transitions") or []),
-            "from_states": fsm.get("from_states"),
-            "hanging_states": fsm.get("hanging_states"),
-            "terminals": fsm.get("terminals"),
-            "illegal_present": fsm.get("illegal_present"),
-            "five_tuple_present": fsm.get("five_tuple_present"),
+            "transition_count": len(projection.get("transitions") or []),
+            "from_states": sorted({str(t.get("state") or "") for t in projection.get("transitions") or []}),
+            "hanging_states": [],
+            "terminals": projection.get("terminal_states") or [],
+            "illegal_present": bool(projection.get("illegal") or projection.get("illegal_present")),
+            "five_tuple_present": bool(projection.get("five_tuple_present")),
         },
     }
 

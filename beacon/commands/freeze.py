@@ -178,13 +178,15 @@ def _freeze_impl(feature: str, project: Optional[str], version: str, json_output
     _fsm_paths = package_paths(project_root, version=resolved_version, feature=feature_slug(feature))
     _fsm_md = _read_text(_fsm_paths["truth"])
     _fsm_attach = attach_fsm_mermaid(_fsm_md)
-    if _fsm_attach.get("changed"):
-        _fsm_paths["truth"].write_text(_fsm_attach["markdown"], encoding="utf-8")
+    _fsm_projected = _fsm_attach.get("markdown") if _fsm_attach.get("changed") else _fsm_md
     truth_fsm_gate = build_truth_fsm_gate_payload(
         project_root,
         version=resolved_version,
         feature=feature,
+        truth_markdown=_fsm_projected,
     )
+    if _fsm_attach.get("changed") and not bool(truth_fsm_gate.get("blocked")):
+        _fsm_paths["truth"].write_text(str(_fsm_projected), encoding="utf-8")
     if bool(truth_fsm_gate.get("blocked")):
         payload = {
             "schema_version": "1.0",

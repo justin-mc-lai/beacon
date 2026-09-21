@@ -258,3 +258,58 @@ def test_release_materials_gate_missing_report_recheck(tmp_path: Path):
         assert gate.get("reason_codes")
     else:
         assert gate.get("pass") is True
+
+
+def test_rendered_scaffolds_pass_own_fsm_gate(tmp_path: Path):
+    """Closure (issue #30): beacon's generated skeleton must pass beacon's own FSM gate.
+
+    Generator and validator must not disagree — a fresh scaffold is the first thing
+    every user runs, so a self-block here costs the whole truth/review/freeze loop.
+    """
+    from beacon.utils.intent_first import capture_intents_from_utterance, render_intent_first_truth
+    from beacon.utils.truth_fsm import parse_truth_fsm, validate_truth_fsm
+
+    gold = render_truth_package(tmp_path, version="v1.6.10", feature="order-pay")
+    gold_result = validate_truth_fsm(parse_truth_fsm(gold), truth_markdown=gold)
+    assert gold_result["blocked"] is False, f"gold scaffold self-blocks: {gold_result['findings']}"
+
+    utterance = "导出 CSV 报告，必须支持按时间范围筛选"
+    intents = capture_intents_from_utterance(utterance)
+    intent_first = render_intent_first_truth("csv-report", "v1.6.10", intents, utterance)
+    if_result = validate_truth_fsm(parse_truth_fsm(intent_first), truth_markdown=intent_first)
+    assert if_result["blocked"] is False, f"intent-first scaffold self-blocks: {if_result['findings']}"
+
+
+def test_attach_resyncs_stale_projection():
+    """A frozen mermaid projection must follow the table, including after edits (#30 B)."""
+    from beacon.utils.truth_fsm import attach_fsm_mermaid
+
+    base = """## FSM 五元组
+
+| State | Event | Guard | To | Action |
+|-------|-------|-------|-----|--------|
+| draft | submit | ok | in_review | x |
+| in_review | pass | ok | frozen | x |
+
+**终态：** frozen
+"""
+    first = attach_fsm_mermaid(base)
+    assert first["changed"] and "frozen --> [*]" in first["markdown"]
+
+    edited = (
+        first["markdown"]
+        .replace(
+            "| in_review | pass | ok | frozen | x |",
+            "| in_review | pass | ok | frozen | x |\n| frozen | archive | ok | archived | y |",
+        )
+        .replace("**终态：** frozen", "**终态：** archived")
+    )
+    second = attach_fsm_mermaid(edited)
+    assert second["changed"] is True
+    assert second["reason_code"] == "mermaid_resynced"
+    assert "frozen --> archived" in second["markdown"]
+    assert "archived --> [*]" in second["markdown"]
+    assert "frozen --> [*]" not in second["markdown"]
+
+    third = attach_fsm_mermaid(second["markdown"])
+    assert third["changed"] is False, "resynced projection must be idempotent"
