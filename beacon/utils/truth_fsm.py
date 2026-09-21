@@ -16,7 +16,7 @@ import re
 from pathlib import Path
 from typing import Any
 
-from beacon.utils.feature_package import _read_text, package_paths
+from beacon.utils.feature_package import _parse_frontmatter, _read_text, package_paths
 from beacon.utils.story_state import feature_slug
 from beacon.utils.truth_review_gate import extract_fsm_five_tuple
 from beacon.utils.versioning import resolve_target_version
@@ -31,11 +31,28 @@ _ILLEGAL_SECTION_TITLES = (
     "illegal transitions",
     "非法转移",
     "非法状态转移",
+    "非法转换",
     "invalid / illegal",
     "invalid or illegal",
 )
+# Short headings that mean the illegal-transition section. Exact match only, so a
+# prose section such as `## Invalid inputs` is not mistaken for it.
+_ILLEGAL_SECTION_EXACT_TITLES = ("invalid", "illegal")
 _ILLEGAL_ARROW_RE = re.compile(r"([A-Za-z][A-Za-z0-9_]*)\s*(?:->|→|-->)\s*([A-Za-z][A-Za-z0-9_]*)")
-_TERMINAL_RE = re.compile(r"(?:终态|terminal(?:\s+states?)?)[:：\s]+([^\n]+)", re.IGNORECASE)
+# Only explicit `illegal: from -> to` (or a from|to table row) is machine syntax.
+# Free prose in the illegal section is documentation and must never be parsed as
+# an edge — describing an illegal bypass often names a legal pair (#31 P3).
+_ILLEGAL_EXPLICIT_RE = re.compile(r"^(?:illegal|非法)\s*[:：]\s*(.+)$", re.IGNORECASE)
+_ILLEGAL_TABLE_HEADER_CELLS = {"from", "state", "源", "从", "起始", "起始状态"}
+_TERMINAL_RE = re.compile(
+    r"(?:(?<!非)终态|(?<![A-Za-z-])terminal(?:\s+states?)?)\s*[:：]\s*([^\n]+)",
+    re.IGNORECASE,
+)
+# Chinese suffix form: `closed/refunded 为终态。` — the canonical gold example uses this.
+_TERMINAL_SUFFIX_RE = re.compile(
+    r"([A-Za-z][A-Za-z0-9_]*(?:\s*[/、,，]\s*[A-Za-z][A-Za-z0-9_]*)*)\s*为(?:最终状态|终态)",
+    re.IGNORECASE,
+)
 _MERMAID_TERM_RE = re.compile(r"^\s*([A-Za-z0-9_]+)\s*-->\s*\[\*\]\s*$", re.MULTILINE)
 
 
@@ -63,25 +80,41 @@ def _normalize_heading(title: str) -> str:
 
 
 def _parse_illegal_slots(truth_md: str) -> list[dict[str, str]]:
+    """Collect illegal-transition entries.
+
+    Every entry is kept as documentation. `from`/`to` is populated only for
+    explicit machine syntax — `- illegal: a -> b` or a `| a | b | reason |` row —
+    so prose describing a bypass never becomes a phantom illegal edge (#31 P3).
+    """
     slots: list[dict[str, str]] = []
     for section in _extract_sections(truth_md):
-        if not any(token in _normalize_heading(section["title"]) for token in _ILLEGAL_SECTION_TITLES):
+        title = _normalize_heading(section["title"])
+        if title not in _ILLEGAL_SECTION_EXACT_TITLES and not any(
+            token in title for token in _ILLEGAL_SECTION_TITLES
+        ):
             continue
         for line in section["body"].splitlines():
             stripped = line.strip()
+            if stripped.startswith("|"):
+                cells = [cell.strip() for cell in stripped.strip("|").split("|")]
+                if len(cells) < 2 or not cells[0]:
+                    continue
+                if set(cells[0]) <= {"-", ":"} or cells[0].lower() in _ILLEGAL_TABLE_HEADER_CELLS:
+                    continue
+                slots.append({"description": " | ".join(cells), "from": cells[0], "to": cells[1]})
+                continue
             if not stripped.startswith(("-", "*", "•")):
                 continue
             text = stripped.lstrip("-*• ").strip()
             if not text or set(text) <= {"-", ":", " ", ">"}:
                 continue
-            m = _ILLEGAL_ARROW_RE.search(text)
-            slots.append(
-                {
-                    "description": text,
-                    "from": m.group(1) if m else "",
-                    "to": m.group(2) if m else "",
-                }
-            )
+            from_id = to_id = ""
+            explicit = _ILLEGAL_EXPLICIT_RE.match(text)
+            if explicit:
+                m = _ILLEGAL_ARROW_RE.search(explicit.group(1))
+                if m:
+                    from_id, to_id = m.group(1), m.group(2)
+            slots.append({"description": text, "from": from_id, "to": to_id})
     seen: set[str] = set()
     uniq: list[dict[str, str]] = []
     for item in slots:
@@ -93,13 +126,21 @@ def _parse_illegal_slots(truth_md: str) -> list[dict[str, str]]:
     return uniq
 
 
+def _collect_terminal_tokens(chunk: str) -> set[str]:
+    terminals: set[str] = set()
+    for tok in re.split(r"[,/|，、\s]+", chunk):
+        tok = tok.strip().strip("`*。；;，,、")
+        if tok and len(tok) < 40:
+            terminals.add(tok)
+    return terminals
+
+
 def _parse_terminal_states(truth_md: str) -> set[str]:
     terminals: set[str] = set()
     for m in _TERMINAL_RE.finditer(truth_md):
-        for tok in re.split(r"[,/|，、\s]+", m.group(1)):
-            tok = tok.strip().strip("`*")
-            if tok and len(tok) < 40:
-                terminals.add(tok)
+        terminals |= _collect_terminal_tokens(m.group(1))
+    for m in _TERMINAL_SUFFIX_RE.finditer(truth_md):
+        terminals |= _collect_terminal_tokens(m.group(1))
     # ponytail: mermaid `frozen --> [*]` is the display truth for terminal; treat it as declared terminal
     for m in _MERMAID_TERM_RE.finditer(truth_md):
         tok = m.group(1).strip()
@@ -141,7 +182,9 @@ def render_fsm_mermaid(fsm: dict[str, Any]) -> str:
     lines = ["stateDiagram-v2"]
     states = list(fsm.get("states") or [])
     initial = list(fsm.get("initial_states") or [])
-    terminals = set(fsm.get("terminal_states") or [])
+    source_states = {str(t.get("state") or "").strip() for t in fsm.get("transitions") or []}
+    # Terminal is structural: declared terminals plus any state with no outgoing.
+    terminals = set(fsm.get("terminal_states") or []) | {st for st in states if st and st not in source_states}
     seen_edges: set[str] = set()
     for t in fsm.get("transitions") or []:
         src = str(t.get("state") or "").strip()
@@ -162,26 +205,48 @@ def render_fsm_mermaid(fsm: dict[str, Any]) -> str:
         if st in states:
             lines.insert(1, f"    [*] --> {st}")
     for st in sorted(terminals):
-        if st in states:
+        # A state with outgoing transitions is not a terminal, even if a stale
+        # projection or prose once called it one. Keeps the projection table-derived.
+        if st in states and st not in source_states:
             lines.append(f"    {st} --> [*]")
     return "\n".join(lines)
 
 
 def attach_fsm_mermaid(truth_markdown: str) -> dict[str, Any]:
-    """Attach the mermaid projection block to truth markdown (idempotent, AC-001)."""
+    """Attach or re-sync the mermaid projection block (idempotent, AC-001).
+
+    The projection must follow the five-tuple. A pre-existing block is not a reason
+    to skip: a stale projection contradicts the table it is supposed to display.
+    """
     md = str(truth_markdown or "")
-    if _MERMAID_HEADING.search(md) and _MERMAID_BLOCK_START.search(md):
-        return {"changed": False, "reason_code": "mermaid_already_present", "markdown": md}
     fsm = parse_truth_fsm(md)
     if not fsm["five_tuple_present"]:
         return {"changed": False, "reason_code": "no_fsm_five_tuple", "markdown": md}
     block = render_fsm_mermaid(fsm)
+    heading = _MERMAID_HEADING.search(md)
+    # Only the block that follows the FSM heading is ours to rewrite — never an
+    # earlier architecture/diagram mermaid block elsewhere in the document.
+    if heading:
+        fenced = re.compile(r"```\s*mermaid\s*\n.*?\n?```", re.IGNORECASE | re.DOTALL)
+        m = fenced.search(md, heading.end())
+        if m:
+            current = re.sub(r"^```\s*mermaid\s*\n|\n?```$", "", m.group(0), flags=re.IGNORECASE).strip()
+            if current == block.strip():
+                return {"changed": False, "reason_code": "mermaid_already_present", "markdown": md}
+            resynced = md[: m.start()] + f"```mermaid\n{block}\n```" + md[m.end():]
+            return {"changed": True, "reason_code": "mermaid_resynced", "markdown": resynced}
     attached = f"{md.rstrip()}\n\n## FSM mermaid（投影）\n\n```mermaid\n{block}\n```\n"
     return {"changed": True, "reason_code": "mermaid_attached", "markdown": attached}
 
 
 def validate_truth_fsm(fsm: dict[str, Any], *, truth_markdown: str = "") -> dict[str, Any]:
-    """Machine validation: states exist, transitions legal, illegal blocked (AC-002/004)."""
+    """Machine validation: states exist, transitions legal, illegal blocked (AC-002/004).
+
+    A state with no outgoing transition *is* terminal by definition. Declaring it
+    explicitly is a completeness acknowledgement, so an undeclared terminal is a
+    warning, not a hard block — otherwise the gate rejects the natural way FSMs are
+    written and false-blocks packages whose content is correct (#30 / #31 P3).
+    """
     findings: list[dict[str, Any]] = []
     if not fsm["five_tuple_present"]:
         return {
@@ -194,14 +259,27 @@ def validate_truth_fsm(fsm: dict[str, Any], *, truth_markdown: str = "") -> dict
         }
     states = {str(s).strip() for s in fsm.get("states") or []}
     source_states = {str(t.get("state") or "").strip() for t in fsm.get("transitions") or []}
-    terminal_states = set(fsm.get("terminal_states") or [])
+    declared_terminals = set(fsm.get("terminal_states") or [])
+    structural_terminals = {st for st in states if st and st not in source_states}
     for t in fsm.get("transitions") or []:
         src = str(t.get("state") or "").strip()
         dst = str(t.get("to") or "").strip()
+        if not dst:
+            findings.append(
+                {
+                    "kind": "transition_target_missing",
+                    "severity": "error",
+                    "reason_code": REASON_TRUTH_FSM_INVALID,
+                    "text": f"transition from '{src or '?'}' has no destination state",
+                    "state": src,
+                }
+            )
+            continue
         if src and src not in states:
             findings.append(
                 {
                     "kind": "state_undefined",
+                    "severity": "error",
                     "reason_code": REASON_TRUTH_FSM_INVALID,
                     "text": f"transition source state '{src}' is not declared in FSM states",
                     "state": src,
@@ -211,17 +289,22 @@ def validate_truth_fsm(fsm: dict[str, Any], *, truth_markdown: str = "") -> dict
             findings.append(
                 {
                     "kind": "state_undefined",
+                    "severity": "error",
                     "reason_code": REASON_TRUTH_FSM_INVALID,
                     "text": f"transition destination state '{dst}' is not declared in FSM states",
                     "state": dst,
                 }
             )
-        if dst and dst not in source_states and dst not in terminal_states:
+        if dst and dst not in source_states and dst not in declared_terminals:
             findings.append(
                 {
-                    "kind": "state_undefined",
-                    "reason_code": REASON_TRUTH_FSM_INVALID,
-                    "text": f"destination state '{dst}' has no outgoing transition and is not a declared terminal state",
+                    "kind": "terminal_undeclared",
+                    "severity": "warning",
+                    "reason_code": "",
+                    "text": (
+                        f"state '{dst}' ends the flow but is not declared terminal; "
+                        f"add an illegal-transition entry or declare it (终态: {dst} / {dst} --> [*])"
+                    ),
                     "state": dst,
                 }
             )
@@ -229,15 +312,37 @@ def validate_truth_fsm(fsm: dict[str, Any], *, truth_markdown: str = "") -> dict
             findings.append(
                 {
                     "kind": "transition_event_missing",
+                    "severity": "error",
                     "reason_code": REASON_TRUTH_FSM_INVALID,
                     "text": f"transition {src or '?'} -> {dst or '?'} has no event",
                 }
             )
+    for declared in sorted(declared_terminals):
+        if declared and declared not in states:
+            findings.append(
+                {
+                    "kind": "terminal_undefined",
+                    "severity": "warning",
+                    "reason_code": "",
+                    "text": f"declared terminal '{declared}' is not a state in the FSM five-tuple (typo?)",
+                    "state": declared,
+                }
+            )
+    if states and not (structural_terminals or declared_terminals):
+        findings.append(
+            {
+                "kind": "fsm_terminal_missing",
+                "severity": "warning",
+                "reason_code": "",
+                "text": "no state can end the flow and no terminal state is declared (event-driven workflows may cycle on purpose)",
+            }
+        )
     illegal = fsm.get("illegal") or []
     if not illegal:
         findings.append(
             {
                 "kind": "illegal_slot_missing",
+                "severity": "error",
                 "reason_code": REASON_TRUTH_FSM_INVALID,
                 "text": "FSM five-tuple requires an Illegal transitions section (fail-closed on missing illegal)",
             }
@@ -250,17 +355,19 @@ def validate_truth_fsm(fsm: dict[str, Any], *, truth_markdown: str = "") -> dict
                 findings.append(
                     {
                         "kind": "illegal_declared_as_legal",
+                        "severity": "error",
                         "reason_code": REASON_TRUTH_FSM_INVALID,
-                        "text": f"illegal transition {src} -> {dst} is also declared as a legal transition",
+                        "text": f"explicit illegal transition {src} -> {dst} is also declared as a legal transition",
                         "from": src,
                         "to": dst,
                     }
                 )
+    blocked = any(str(f.get("severity") or "error") == "error" for f in findings)
     return {
         "schema": SCHEMA_TRUTH_FSM,
-        "blocked": bool(findings),
-        "status": "blocked" if findings else "pass",
-        "reason_code": REASON_TRUTH_FSM_INVALID if findings else "",
+        "blocked": blocked,
+        "status": "blocked" if blocked else "pass",
+        "reason_code": REASON_TRUTH_FSM_INVALID if blocked else "",
         "findings": findings,
         "projection": fsm,
         "summary": {
@@ -294,30 +401,81 @@ def compute_fsm_digest(fsm: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def domain_required_from_frontmatter(frontmatter: dict[str, Any] | None) -> bool:
+    """Single source for the domain opt-in flag shared by truth review and freeze."""
+    raw = (frontmatter or {}).get("domain_required")
+    if isinstance(raw, bool):
+        return raw
+    return str(raw or "").strip().lower() in {"1", "true", "yes", "on", "required"}
+
+
 def build_truth_fsm_gate_payload(
     project_root: Path,
     *,
     version: str = "auto",
     feature: str,
+    truth_markdown: str | None = None,
 ) -> dict[str, Any]:
-    """Freeze gate payload (AC-004). Fail-closed with reason_code truth_fsm_invalid."""
+    """Freeze gate payload (AC-004). Fail-closed with reason_code truth_fsm_invalid.
+
+    The FSM contract is required only for `domain_required: true` packages, matching
+    `truth review` Check B — otherwise review and freeze disagree on the same package.
+    `truth_markdown` lets callers validate an in-memory variant (e.g. the projected
+    mermaid) before persisting it, so a blocked freeze never mutates the package.
+    """
     project_root = Path(project_root).expanduser().resolve()
     resolved_version = resolve_target_version(project_root, version)
     slug = feature_slug(feature)
     paths = package_paths(project_root, version=resolved_version, feature=slug)
-    truth_md = _read_text(paths["truth"])
+    truth_path = str(paths["truth"].relative_to(project_root)) if paths["truth"].exists() else ""
+    truth_md = _read_text(paths["truth"]) if truth_markdown is None else str(truth_markdown)
     if not truth_md.strip():
         return {
             "schema": SCHEMA_TRUTH_FSM,
             "feature": feature,
             "feature_slug": slug,
             "version": resolved_version,
+            "truth_path": truth_path,
             "blocked": False,
             "status": "skipped_no_truth",
             "reason_code": "",
             "findings": [],
         }
+    frontmatter, _body, _errs = _parse_frontmatter(truth_md)
+    if not domain_required_from_frontmatter(frontmatter):
+        return {
+            "schema": SCHEMA_TRUTH_FSM,
+            "feature": feature,
+            "feature_slug": slug,
+            "version": resolved_version,
+            "truth_path": truth_path,
+            "blocked": False,
+            "status": "skipped_not_domain",
+            "reason_code": "",
+            "findings": [],
+            "recommended_action": "",
+        }
     fsm = parse_truth_fsm(truth_md)
+    if not fsm["five_tuple_present"]:
+        finding = {
+            "kind": "fsm_five_tuple_missing",
+            "severity": "error",
+            "reason_code": REASON_TRUTH_FSM_INVALID,
+            "text": "domain package requires an FSM five-tuple (State|Event|Guard|To|Action)",
+        }
+        return {
+            "schema": SCHEMA_TRUTH_FSM,
+            "feature": feature,
+            "feature_slug": slug,
+            "version": resolved_version,
+            "truth_path": truth_path,
+            "blocked": True,
+            "status": "blocked",
+            "reason_code": REASON_TRUTH_FSM_INVALID,
+            "findings": [finding],
+            "projection": fsm,
+            "recommended_action": "author_domain_fsm_five_tuple_before_freeze",
+        }
     validation = validate_truth_fsm(fsm, truth_markdown=truth_md)
     digest = compute_fsm_digest(fsm)
     return {
@@ -325,7 +483,7 @@ def build_truth_fsm_gate_payload(
         "feature": feature,
         "feature_slug": slug,
         "version": resolved_version,
-        "truth_path": str(paths["truth"].relative_to(project_root)),
+        "truth_path": truth_path,
         "blocked": bool(validation.get("blocked")),
         "status": str(validation.get("status") or "pass"),
         "reason_code": str(validation.get("reason_code") or ""),

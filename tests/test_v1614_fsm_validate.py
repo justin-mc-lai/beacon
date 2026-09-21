@@ -48,6 +48,32 @@ INVALID_FSM = """## FSM 五元组
 **终态：** rendered
 """
 
+# Valid shape, but the end state is only implicit (no explicit declaration) and the
+# illegal section is present: must NOT block, only warn (#30 decision).
+UNDECLARED_TERMINAL_FSM = """## FSM 五元组
+
+| State | Event | Guard | To | Action |
+|-------|-------|-------|-----|--------|
+| draft | submit | ok | in_review | x |
+| in_review | pass | ok | frozen | x |
+
+### invalid / illegal
+
+- illegal: draft → frozen
+"""
+
+NO_TERMINAL_FSM = """## FSM 五元组
+
+| State | Event | Guard | To | Action |
+|-------|-------|-------|-----|--------|
+| a | go | ok | b | x |
+| b | back | ok | a | x |
+
+### invalid / illegal
+
+- illegal: a → a
+"""
+
 
 def test_mermaid_render() -> None:
     fsm = parse_truth_fsm(VALID_FSM)
@@ -74,12 +100,53 @@ def test_validate_legal() -> None:
     assert result["status"] == "pass"
 
 
-def test_validate_undefined_state() -> None:
-    fsm = parse_truth_fsm(INVALID_FSM)
-    result = validate_truth_fsm(fsm)
-    assert result["blocked"], "FSM with undefined destination should block"
-    kinds = {f["kind"] for f in result["findings"]}
-    assert "state_undefined" in kinds, f"expected state_undefined finding: {result['findings']}"
+def test_undeclared_terminal_warns_not_blocks() -> None:
+    result = validate_truth_fsm(parse_truth_fsm(UNDECLARED_TERMINAL_FSM), truth_markdown=UNDECLARED_TERMINAL_FSM)
+    assert not result["blocked"], f"undeclared terminal must not block: {result['findings']}"
+    warn = [f for f in result["findings"] if f["kind"] == "terminal_undeclared"]
+    assert warn and warn[0]["severity"] == "warning", result["findings"]
+
+
+def test_no_terminal_state_warns() -> None:
+    result = validate_truth_fsm(parse_truth_fsm(NO_TERMINAL_FSM), truth_markdown=NO_TERMINAL_FSM)
+    assert not result["blocked"], f"non-absorbing FSM must warn, not block: {result['findings']}"
+    missing = [f for f in result["findings"] if f["kind"] == "fsm_terminal_missing"]
+    assert missing and missing[0]["severity"] == "warning", result["findings"]
+
+
+def test_illegal_prose_is_not_a_machine_edge() -> None:
+    md = """## FSM 五元组
+
+| State | Event | Guard | To | Action |
+|-------|-------|-------|-----|--------|
+| a | go | ok | b | act |
+
+### invalid / illegal
+
+- a → b without guard（未过校验直接跳转）
+"""
+    result = validate_truth_fsm(parse_truth_fsm(md), truth_markdown=md)
+    assert not result["blocked"], f"prose must not become an illegal edge: {result['findings']}"
+
+
+def test_terminal_suffix_form_is_recognized() -> None:
+    md = """## FSM 五元组
+
+| State | Event | Guard | To | Action |
+|-------|-------|-------|-----|--------|
+| created | pay | ok | paid | x |
+| created | timeout | ok | closed | x |
+
+悬空检查：created 有转出；closed/paid 为终态。
+
+### invalid / illegal
+
+- illegal: paid → created
+"""
+    result = validate_truth_fsm(parse_truth_fsm(md), truth_markdown=md)
+    assert not result["blocked"], result["findings"]
+    warn = [f for f in result["findings"] if f["kind"] == "terminal_undeclared"]
+    assert warn == [], f"closed/paid declared via 为终态: {result['findings']}"
 
 
 def test_validate_illegal_missing() -> None:
@@ -101,7 +168,7 @@ def test_illegal_declared_as_legal() -> None:
 
 ## Illegal transitions
 
-- a -> b
+- illegal: a -> b
 """
     )
     result = validate_truth_fsm(fsm)
@@ -130,16 +197,103 @@ def test_digest_behavior_vs_wording() -> None:
 
 
 def test_freeze_gate_fail_closed(tmp_path=None) -> None:
-    """AC-004: FSM invalid => freeze gate blocked with reason_code truth_fsm_invalid."""
+    """AC-004: FSM invalid => freeze gate blocked; non-domain packages skip."""
     from beacon.utils.truth_fsm import build_truth_fsm_gate_payload
 
-    gate = build_truth_fsm_gate_payload(Path(__file__).resolve().parent.parent, version="v1.6.14", feature="beacon-v1614-fsm-mermaid-validate")
+    root = Path(__file__).resolve().parent.parent
+    gate = build_truth_fsm_gate_payload(root, version="v1.6.14", feature="beacon-v1614-fsm-mermaid-validate")
     assert not gate["blocked"], f"legal FSM gate should pass: {gate['findings']}"
-    assert gate["status"] == "pass"
 
-    invalid = parse_truth_fsm(INVALID_FSM)
-    bad_gate = {"blocked": True, "reason_code": "truth_fsm_invalid", "status": "blocked"}
-    assert bad_gate["blocked"] and bad_gate["reason_code"] == "truth_fsm_invalid"
+    header = "---\nslug: x\nversion: v1.6.14\ndomain_required: true\n---\n\n"
+    ok_gate = build_truth_fsm_gate_payload(root, version="v1.6.14", feature="x", truth_markdown=header + VALID_FSM)
+    assert not ok_gate["blocked"], ok_gate["findings"]
+    bad_gate = build_truth_fsm_gate_payload(root, version="v1.6.14", feature="x", truth_markdown=header + "no fsm table here")
+    assert bad_gate["blocked"] and bad_gate["reason_code"] == "truth_fsm_invalid", bad_gate
+
+
+def test_attach_does_not_touch_unrelated_mermaid() -> None:
+    md = """## Architecture
+
+```mermaid
+sequenceDiagram
+  A->>B: hello
+```
+
+## FSM 五元组
+
+| State | Event | Guard | To | Action |
+|-------|-------|-------|-----|--------|
+| draft | submit | ok | frozen | x |
+
+**终态：** frozen
+
+## FSM mermaid（投影）
+
+```mermaid
+stateDiagram-v2
+    draft --> STALE : submit (ok)
+```
+"""
+    out = attach_fsm_mermaid(md)
+    assert out["changed"] and out["reason_code"] == "mermaid_resynced"
+    assert "sequenceDiagram" in out["markdown"], "unrelated mermaid must be preserved"
+    assert "draft --> frozen" in out["markdown"]
+    assert "STALE" not in out["markdown"]
+
+
+def test_declared_terminal_absent_warns() -> None:
+    md = """## FSM 五元组
+
+| State | Event | Guard | To | Action |
+|-------|-------|-------|-----|--------|
+| draft | submit | ok | in_review | x |
+| in_review | pass | ok | frozn | x |
+
+**终态：** frozen
+
+### invalid / illegal
+
+- illegal: draft → frozn
+"""
+    result = validate_truth_fsm(parse_truth_fsm(md), truth_markdown=md)
+    assert not result["blocked"], f"declared-terminal typo is advisory: {result['findings']}"
+    assert any(f["kind"] == "terminal_undefined" and f["severity"] == "warning" for f in result["findings"])
+
+
+def test_blank_transition_target_blocks() -> None:
+    md = """## FSM 五元组
+
+| State | Event | Guard | To | Action |
+|-------|-------|-------|-----|--------|
+| a | go | ok |  | act |
+
+**终态：** a
+
+### invalid / illegal
+
+- illegal: a → a
+"""
+    result = validate_truth_fsm(parse_truth_fsm(md), truth_markdown=md)
+    assert result["blocked"], result["findings"]
+    assert any(f["kind"] == "transition_target_missing" for f in result["findings"])
+
+
+def test_unrelated_invalid_section_is_not_illegal_transitions() -> None:
+    md = """## FSM 五元组
+
+| State | Event | Guard | To | Action |
+|-------|-------|-------|-----|--------|
+| a | go | ok | b | x |
+
+**终态：** b
+
+## Invalid inputs
+
+- reject malformed payload
+"""
+    result = validate_truth_fsm(parse_truth_fsm(md), truth_markdown=md)
+    assert result["blocked"], "missing illegal-transition section must block"
+    assert any(f["kind"] == "illegal_slot_missing" for f in result["findings"])
 
 
 def test_freezed_truth_has_mermaid() -> None:
@@ -161,7 +315,14 @@ def main() -> int:
         test_mermaid_render,
         test_attach_idempotent,
         test_validate_legal,
-        test_validate_undefined_state,
+        test_undeclared_terminal_warns_not_blocks,
+        test_no_terminal_state_warns,
+        test_illegal_prose_is_not_a_machine_edge,
+        test_terminal_suffix_form_is_recognized,
+        test_attach_does_not_touch_unrelated_mermaid,
+        test_declared_terminal_absent_warns,
+        test_blank_transition_target_blocks,
+        test_unrelated_invalid_section_is_not_illegal_transitions,
         test_validate_illegal_missing,
         test_illegal_declared_as_legal,
         test_digest_behavior_vs_wording,

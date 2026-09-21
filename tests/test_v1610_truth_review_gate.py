@@ -65,7 +65,9 @@ parser_contract: beacon-feature-package-v2
 | paying | Success | ok | paid | once |
 | paying | Timeout | elapsed | closed | release |
 
-invalid: created→paid
+### invalid / illegal
+
+- illegal: created → paid（skip paying）
 
 """
 
@@ -133,6 +135,25 @@ def test_evaluate_hanging_and_ac_gap():
     result = evaluate_truth_review_gate(truth_md=GOLD_TRUTH, tests_md=tests_gap, version="v1.6.10", feature="x")
     assert result["pass"] is False
     assert "AC-002" in (result["checks"]["C_testability"].get("missing_ac") or [])
+
+
+def test_review_and_freeze_use_one_fsm_rule():
+    """#30: review and freeze must never disagree on the same package."""
+    from beacon.utils.truth_review_gate import check_b_fsm_audit
+    from beacon.utils.truth_fsm import parse_truth_fsm, validate_truth_fsm
+
+    cases = [
+        GOLD_TRUTH,
+        GOLD_TRUTH.replace("### invalid / illegal", "### notes"),
+        GOLD_TRUTH.replace(
+            "| paying | Success | ok | paid | once |\n| paying | Timeout | elapsed | closed | release |",
+            "",
+        ),
+    ]
+    for md in cases:
+        review_pass = check_b_fsm_audit(md, domain_required=True)["pass"]
+        freeze_blocked = validate_truth_fsm(parse_truth_fsm(md), truth_markdown=md)["blocked"]
+        assert review_pass == (not freeze_blocked), (review_pass, freeze_blocked, md)
 
 
 def test_run_against_gold_package():
