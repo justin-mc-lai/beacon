@@ -2,11 +2,13 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import subprocess
 from pathlib import Path
 from typing import Any
 
+from beacon.utils.feature_package import package_paths
 from beacon.utils.git_alignment import git_output, resolve_truth_canonical_branch
 from beacon.utils.runtime import now_iso, write_json
 from beacon.utils.story_state import feature_slug
@@ -69,6 +71,7 @@ def _verify_materials_strict(project_root: Path, *, version: str) -> dict[str, A
             project_root=str(project_root),
             version=version,
             strict=True,
+            stage="implement",
         )
         payload = execution.payload if hasattr(execution, "payload") else {}
     except Exception as exc:  # noqa: BLE001
@@ -175,6 +178,39 @@ def default_artifact_ref(run_id: str) -> str:
     return f".beacon/state/loop-goal/{slug}.verification-bundle.json"
 
 
+def precheck_inputs_digest(project_root: Path, *, version: str, feature: str) -> str:
+    """Fingerprint the inputs a precheck verdict is valid for (#31 P2).
+
+    A stored verdict is only meaningful for the exact workspace it was computed
+    on: git HEAD, the feature package, and the release surface presence. A later
+    write (e.g. adding the release brief) must invalidate the cached bundle.
+    """
+    root = project_root.expanduser().resolve()
+    parts = [f"head={git_output(root, 'rev-parse', 'HEAD') or ''}"]
+    try:
+        paths = package_paths(root, version=version, feature=feature)
+    except Exception:  # noqa: BLE001
+        paths = {}
+    for key in ("truth", "tests", "tasks", "evidence"):
+        path = paths.get(key)
+        digest = hashlib.sha256(path.read_bytes()).hexdigest() if path and path.exists() else ""
+        parts.append(f"{key}={digest}")
+    release_dir = root / "docs" / "beacon" / version / "release"
+    release_docs = sorted(path.name for path in release_dir.glob("*.md")) if release_dir.exists() else []
+    parts.append("release=" + ",".join(release_docs))
+    return hashlib.sha256("\n".join(parts).encode("utf-8")).hexdigest()[:16]
+
+
+def bundle_is_fresh(project_root: Path, bundle: dict[str, Any] | None, *, version: str, feature: str) -> bool:
+    """True when a CLI bundle matches the current workspace inputs."""
+    if not isinstance(bundle, dict):
+        return False
+    stored = str(bundle.get("inputs_digest") or "").strip()
+    if not stored:
+        return False
+    return stored == precheck_inputs_digest(project_root, version=version, feature=feature)
+
+
 
 
 def _topology_gate_check(
@@ -235,6 +271,7 @@ def run_standard_execution_precheck(
         "feature": feature,
         "feature_slug": slug,
         "run_id": run,
+        "inputs_digest": precheck_inputs_digest(root, version=resolved_version, feature=feature),
         "verification_bundle_ref": ref,
         "workspace_admission_ref": workspace_ref,
         "topology_gate_ref": topology_ref,

@@ -495,6 +495,7 @@ def run_materials_verify(
     project_root: str,
     version: str,
     strict: bool,
+    stage: str = "",
 ) -> DoctorExecutionResult:
     """Run the material verify handler through the doctor registry."""
     ctx = build_doctor_execution_context(project_root, version=version or None, strict=strict)
@@ -503,6 +504,7 @@ def run_materials_verify(
         project_root=ctx.project_root,
         version=version or None,
         strict=strict,
+        stage=stage,
     )
     payload = {
         "schema_version": "2.0",

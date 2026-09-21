@@ -165,8 +165,9 @@ def _materials_verify(
     project_root: Path,
     version: str | None,
     strict: bool,
+    stage: str = "",
 ) -> dict[str, Any]:
-    return build_material_audit(project_root, version=version, strict=strict)
+    return build_material_audit(project_root, version=version, strict=strict, stage=stage)
 
 
 def _diagnostics_diagnose(

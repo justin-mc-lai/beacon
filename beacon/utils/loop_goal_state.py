@@ -808,9 +808,31 @@ def record_standard_execution_precheck(
 
     # AC-025: verification evidence must be CLI-owned. Agent-fabricated pass without
     # a CLI artifact is rejected fail-closed.
-    from beacon.utils.standard_execution_precheck import load_cli_owned_bundle
+    from beacon.utils.standard_execution_precheck import (
+        bundle_is_fresh,
+        load_cli_owned_bundle,
+        run_standard_execution_precheck,
+    )
 
     cli_bundle = load_cli_owned_bundle(root, outputs["verification_bundle_ref"])
+    if cli_bundle and not bundle_is_fresh(
+        root,
+        cli_bundle,
+        version=str(cli_bundle.get("version") or state.get("version") or ""),
+        feature=str(cli_bundle.get("feature") or ""),
+    ):
+        # #31 P2: a stored verdict is only valid for the workspace it was computed
+        # on. On input drift, recompute instead of trusting the stale bundle.
+        _bundle_version = str(cli_bundle.get("version") or state.get("version") or "")
+        _bundle_feature = str(cli_bundle.get("feature") or "")
+        if _bundle_feature:
+            cli_bundle = run_standard_execution_precheck(
+                root,
+                version=_bundle_version,
+                feature=_bundle_feature,
+                run_id=run_id,
+                artifact_ref=outputs["verification_bundle_ref"],
+            )
     if not cli_bundle:
         return _standard_execution_block(
             root,
