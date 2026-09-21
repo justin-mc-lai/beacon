@@ -1,0 +1,157 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-09-21T09:13:10.959628+00:00",
+  "feature": "beacon-precheck-stage-and-bundle-freshness",
+  "feature_slug": "beacon-precheck-stage-and-bundle-freshness",
+  "version": "v1.6.19",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/truth.md",
+    "tests": "docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/tests.md",
+    "tasks": "docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/tasks.md",
+    "evidence": "docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "53b1929bfc154dd7732ebd4d1e2b096a9b3203ad25b829b5ce982c1a9818c60d",
+    "tests": "b2b60d0762ad6c253dae66dffcd47c2414ec34637c6e2d47388e80d16a838be6",
+    "tasks": "e95a64d90824f6a996b4a6d9e901a5b9bf9befc7275c11554b0562987b2c1074",
+    "evidence": "c565b18ee0ea89701f20fe7b0079c18d5171fe1f32004211c6c53c6d1a388137"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-precheck-stage-and-bundle-freshness",
+    "version": "v1.6.19",
+    "status": "frozen",
+    "language": "zh",
+    "domain_required": "false",
+    "ux_required": "false",
+    "parser_contract": "beacon-feature-package-v2",
+    "truth_source_model": "feature_package_authoritative",
+    "package_maturity": "filled",
+    "materials_status": "current",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/truth.md",
+      "user_story": "docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/truth.md",
+      "test_case": "docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/tests.md"
+    }
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "阶段分级：`build_material_audit(stage=\"implement\")` 中 `formal_release_present` 的 `required` 为 false 且状态为 pass；`build_material_audit(stage=\"\")`（release 阶段）中该检查为 fail 且 `required` 为 true，补上 release 文档后转为 pass。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "判定内容寻址：precheck bundle 写入 `inputs_digest`；`precheck_inputs_digest` 在 feature 包内容变化、release 文档变化时随之改变；`bundle_is_fresh` 对无 digest、digest 不符、输入已变化的 bundle 均返回 False。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "陈旧即重算：`record_standard_execution_precheck` 加载到的 CLI bundle 若 `bundle_is_fresh` 为假，则重跑 `run_standard_execution_precheck` 并用新结果覆盖，而不是信任陈旧判定。",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_standard_execution_precheck_stage_and_freshness.py -k stage --tb=no`",
+      "assertion": "stage_scoped_release_docs",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_standard_execution_precheck_stage_and_freshness.py -k \"digest or freshness\" --tb=no`",
+      "assertion": "bundle_content_addressed",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "",
+      "command": "`python3 -c \"import inspect; from beacon.utils import loop_goal_state as m; s=inspect.getsource(m.record_standard_execution_precheck); assert 'bundle_is_fresh' in s and 'run_standard_execution_precheck' in s\"`",
+      "assertion": "stale_bundle_triggers_recompute",
+      "evidence_path": "",
+      "source": ""
+    },
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-EXEC-PYTEST",
+      "layer": "",
+      "command": "`python3 -m pytest -q tests/test_standard_execution_precheck_stage_and_freshness.py --tb=no`",
+      "assertion": "precheck_fix_suite_green",
+      "evidence_path": "",
+      "source": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Implement AC-001: 阶段分级：`build_material_audit(stage=\"implement\")` 中 `formal_release_pres... · ac=AC-001 · evidence=`.beacon/evidence/implement/beacon-precheck-stage-and-bundle-freshness/AC-001.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Implement AC-002: 判定内容寻址：precheck bundle 写入 `inputs_digest`；`precheck_inputs_digest` 在 ... · ac=AC-002 · evidence=`.beacon/evidence/implement/beacon-precheck-stage-and-bundle-freshness/AC-002.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Implement AC-003: 陈旧即重算：`record_standard_execution_precheck` 加载到的 CLI bundle 若 `bundle_... · ac=AC-003 · evidence=`.beacon/evidence/implement/beacon-precheck-stage-and-bundle-freshness/AC-003.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Validate package gates (truth review + freeze ack) · ac=GATES · evidence=`.beacon/evidence/implement/beacon-precheck-stage-and-bundle-freshness/GATES.json`",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Run QA against AC↔TC matrix + exec-layer evidence · ac=QA · evidence=`.beacon/evidence/implement/beacon-precheck-stage-and-bundle-freshness/QA-MATRIX.json`",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/truth.md",
+      "status": "linked",
+      "route": "truth"
+    },
+    {
+      "surface": "tests",
+      "authority": "test_truth",
+      "canonical_artifact": "docs/beacon/v1.6.19/features/beacon-precheck-stage-and-bundle-freshness/tests.md",
+      "status": "linked",
+      "route": "qa"
+    },
+    {
+      "surface": "qa",
+      "authority": "qa_verdict",
+      "canonical_artifact": "docs/beacon/v1.6.19/.machine/qa/beacon-precheck-stage-and-bundle-freshness.qa9-matrix.json",
+      "status": "linked",
+      "route": "qa"
+    },
+    {
+      "surface": "release",
+      "authority": "release_verdict",
+      "canonical_artifact": "docs/beacon/v1.6.19/release/",
+      "status": "linked",
+      "route": "release"
+    }
+  ]
+}
