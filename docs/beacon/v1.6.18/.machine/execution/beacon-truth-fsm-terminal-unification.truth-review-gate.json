@@ -1,0 +1,153 @@
+{
+  "schema": "truth-review-gate.v1",
+  "schema_version": "1.0",
+  "feature": "beacon-truth-fsm-terminal-unification",
+  "version": "v1.6.18",
+  "pass": true,
+  "blocked": false,
+  "review_gate_pass": true,
+  "abc_pass": true,
+  "reason_code": "",
+  "domain_required": false,
+  "checks": {
+    "A_intent_coverage": {
+      "pass": true,
+      "check": "A",
+      "name": "intent_coverage",
+      "required": true,
+      "matrix_rows": 6,
+      "missing_must": [],
+      "reason": "",
+      "findings": [],
+      "matrix": [
+        {
+          "intent_id": "INT-001",
+          "source": "prompt",
+          "strength": "must",
+          "landing": "AC-001",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-002",
+          "source": "prompt",
+          "strength": "must",
+          "landing": "AC-002",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-003",
+          "source": "prompt",
+          "strength": "must",
+          "landing": "AC-003",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-004",
+          "source": "prompt",
+          "strength": "must",
+          "landing": "AC-004",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-005",
+          "source": "prompt",
+          "strength": "must",
+          "landing": "AC-005",
+          "status": "covered"
+        },
+        {
+          "intent_id": "INT-EDGE-optional",
+          "source": "vision",
+          "strength": "should",
+          "landing": "Non-goal: deferred explicit-state-list hard check",
+          "status": "deferred"
+        }
+      ]
+    },
+    "B_fsm_audit": {
+      "pass": true,
+      "check": "B",
+      "name": "fsm_audit",
+      "required": false,
+      "skipped": true,
+      "reason": "",
+      "findings": []
+    },
+    "C_testability": {
+      "pass": true,
+      "check": "C",
+      "name": "testability",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "ac_count": 5,
+      "tc_count": 7,
+      "missing_ac": [],
+      "covered": {
+        "AC-001": [
+          "TC-001",
+          "TC-EXEC-CLI"
+        ],
+        "AC-002": [
+          "TC-002"
+        ],
+        "AC-003": [
+          "TC-003"
+        ],
+        "AC-004": [
+          "TC-004"
+        ],
+        "AC-005": [
+          "TC-005",
+          "TC-EXEC-PYTEST"
+        ]
+      }
+    },
+    "C_domain_exec_layer": {
+      "pass": true,
+      "check": "C_exec",
+      "name": "domain_exec_layer",
+      "required": false,
+      "skipped": true,
+      "reason": "",
+      "findings": [],
+      "exec_tc_count": 0,
+      "domain_kind": "general"
+    },
+    "D_fill_depth": {
+      "pass": true,
+      "check": "D",
+      "name": "fill_depth",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "package_maturity": "filled",
+      "domain_kind": "general",
+      "business_domain": false
+    },
+    "E_vague_disjunction": {
+      "pass": true,
+      "check": "E",
+      "name": "vague_disjunction",
+      "required": true,
+      "reason": "",
+      "findings": [],
+      "ac_count": 5,
+      "vague_hits": 0
+    }
+  },
+  "findings": [],
+  "humanizer": {
+    "rule": "humanizer_only_after_abc_pass_before_freeze",
+    "abc_pass": true,
+    "allowed_now": true,
+    "fill_depth_pass": true,
+    "note": "Polish L0/narrative only after A/B/C; preserve_machine_fields=true; freeze needs D+exec too"
+  },
+  "evaluated_at": "2026-09-21T06:08:57.852781+00:00",
+  "paths": {
+    "truth": "docs/beacon/v1.6.18/features/beacon-truth-fsm-terminal-unification/truth.md",
+    "tests": "docs/beacon/v1.6.18/features/beacon-truth-fsm-terminal-unification/tests.md",
+    "report": "docs/beacon/v1.6.18/.machine/execution/beacon-truth-fsm-terminal-unification.truth-review-gate.json"
+  }
+}
