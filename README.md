@@ -9,14 +9,14 @@
 
 ## 1. 当前版本是什么
 
-Beacon 当前运行时发布口径是 **v1.6.17**。
+Beacon 当前运行时发布口径是 **v1.6.18**。
 
-> 当前发布线：`v1.6.17`
+> 当前发布线：`v1.6.18`
 
 - **CLI 入口**：`beacon <subcommand>`
 - **标准 skill 包**：`skills/beacon/`
-- **当前包版本**：`1.6.17`
-- **最新已接受文档线**：`v1.6.17`
+- **当前包版本**：`1.6.18`
+- **最新已接受文档线**：`v1.6.18`
 - **文档主源**：`docs/beacon/<version>/`
 - **状态目录**：`.beacon/`
 
@@ -25,12 +25,12 @@ Beacon 当前运行时发布口径是 **v1.6.17**。
 - `docs/beacon/` 是唯一维护的信息源
 - `.beacon/` 是运行时状态，不替代正式交付文档
 - 新生成的 AGENTS / CLAUDE managed block 也遵循以上口径
-- 当前发布请优先以 `docs/beacon/v1.6.17/` 为准
-- 当前架构、命令与 release 说明统一以 `docs/beacon/v1.6.17/` 为准
+- 当前发布请优先以 `docs/beacon/v1.6.18/` 为准
+- 当前架构、命令与 release 说明统一以 `docs/beacon/v1.6.18/` 为准
 
 如果你只记一条：
 
-> **Beacon 现在是 v1.6.17，写文档看 `docs/beacon/v1.6.17/`，执行命令用 `beacon <subcommand>`。**
+> **Beacon 现在是 v1.6.18，写文档看 `docs/beacon/v1.6.18/`，执行命令用 `beacon <subcommand>`。**
 
 ---
 
@@ -51,6 +51,15 @@ Beacon 当前运行时发布口径是 **v1.6.17**。
 - 直接替代生产运维 / 发布平台
 - 在 core surface 中公开 team / Ralph / bridge 细节
 - 把外部 skill runner 当作默认 onboarding 路径
+
+### v1.6.18 为什么重要
+
+`v1.6.18` 收口 Beacon 自身 truth 需求物料门禁的自锁与误判：
+
+- 生成器对自己的门禁封闭：`truth gen` 生成的骨架直接通过 `truth review` 与 `freeze`。
+- `truth review` Check B 与 `freeze` 共用同一 FSM 校验函数，不再各判一套。
+- 终态按结构判定（无转出边即终态），非法转移只解析显式结构化语法。
+- `freeze` 先验后写，过期 mermaid 投影自动重算。
 
 ### v1.6.17 为什么重要
 
