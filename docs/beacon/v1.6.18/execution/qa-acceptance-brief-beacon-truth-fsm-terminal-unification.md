@@ -4,7 +4,7 @@
 - feature: `beacon-truth-fsm-terminal-unification`
 - revision_id: `R1`
 - verdict: `passed`
-- accepted_at: `2026-09-21T06:30:31.604744+00:00`
+- accepted_at: `2026-09-21T06:42:56.868116+00:00`
 - accepted_by: `qa`
 
 ## Summary
