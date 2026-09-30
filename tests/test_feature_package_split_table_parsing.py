@@ -93,3 +93,23 @@ def test_single_segment_table_is_unchanged() -> None:
     rows = _extract_test_rows(markdown)
 
     assert [row["tc_id"] for row in rows] == ["TC-001", "TC-002"]
+
+
+def test_markdown_pipe_escape_renders_as_literal_pipe() -> None:
+    """`\\|` inside a command cell must render as a literal pipe (issue: QA
+    matrix commands kept the backslash, so `rg ... \\|wc -l` tried to open a
+    file named `|wc`)."""
+    markdown = TC_HEADER + _tc("TC-001", "AC-001", "rg -q 'a\\|b' f.md && x \\| wc -l")
+
+    rows = _extract_test_rows(markdown)
+
+    assert rows[0]["command"] == "`rg -q 'a|b' f.md && x | wc -l`"
+
+
+def test_raw_unescaped_pipes_still_rejoin() -> None:
+    """Raw `|` inside a command cell keeps the legacy split-then-rejoin path."""
+    markdown = TC_HEADER + _tc("TC-001", "AC-001", 'rg -n "Lake B|Prism" doc.md')
+
+    rows = _extract_test_rows(markdown)
+
+    assert rows[0]["command"] == '`rg -n "Lake B|Prism" doc.md`'

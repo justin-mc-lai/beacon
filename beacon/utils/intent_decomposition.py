@@ -13,6 +13,14 @@ from beacon.utils.runtime import now_iso
 
 SCHEMA = "intent_decomposition.v1"
 
+# Host-fill markers appended by the task-closure advisory below. They are
+# ADVISORY at plan stage: fill+freeze is hard-enforced at truth stage exit
+# (scaffold/draft/freeze-ack), so plan_to_truth_gate must not block on them.
+ADVISORY_FILL_PENDING_KEYS: tuple[str, ...] = (
+    "host_llm_full_package_fill_pending",
+    "host_agent_skill_authored_fill_pending",
+)
+
 # Capability / product surface cues
 _CAPABILITY = (
     "认证",

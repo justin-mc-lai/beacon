@@ -190,7 +190,11 @@ def _extract_test_rows(markdown: str) -> list[dict[str, str]]:
             if _ends_contract_scan(stripped, in_table=in_table):
                 break
             continue
-        cells = [cell.strip() for cell in stripped.strip("|").split("|")]
+        # Markdown table pipe-escape: `\|` renders as a literal pipe inside a
+        # cell; mask it before splitting so escaped pipes never break a column
+        # (unescaped pipes still split and are rejoined below for raw-pipe cells).
+        masked = stripped.replace("\\|", "\x00")
+        cells = [cell.strip().replace("\x00", "|") for cell in masked.strip("|").split("|")]
         lowered = [cell.lower() for cell in cells]
         if "ac id" in lowered and "tc id" in lowered:
             in_table = True

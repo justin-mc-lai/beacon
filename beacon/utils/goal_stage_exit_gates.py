@@ -191,7 +191,13 @@ def evaluate_stage_exit(
         gate = plan_to_truth_gate(art if art else None)
         blocks = bool(gate.get("blocks_auto_tick_past_plan") or gate.get("blocked"))
         if isinstance(tr, dict) and tr.get("blocks_auto_tick_past_plan"):
-            blocks = True
+            # Advisory fill-pending markers alone must not hard-block plan exit:
+            # fill+freeze is enforced at truth stage exit (scaffold/frozen gates).
+            from beacon.utils.intent_decomposition import ADVISORY_FILL_PENDING_KEYS
+
+            blocking = [m for m in tr.get("missing") or [] if m not in ADVISORY_FILL_PENDING_KEYS]
+            if blocking:
+                blocks = True
         if blocks:
             base.update(
                 {

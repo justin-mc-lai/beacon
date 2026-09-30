@@ -117,7 +117,13 @@ def select_reviewers(
 
 
 def _route_for_reviewer(reviewer: str, blob: str) -> str:
-    if reviewer in {"intent-fidelity", "scope-mode", "source-parity", "source-parity-reviewer", "state-machine"}:
+    # intent-fidelity / scope-mode / state-machine are always-on verification
+    # REQUESTS, not verified drift: their template findings read no package
+    # content, so routing them to beacon-gen-change made every deterministic
+    # review drift-block (loop-goal could never reach implement). Drift and
+    # user-decision authority stay with the signal-gated conditional lanes
+    # (deferral-sovereignty, source-parity, security, ...).
+    if reviewer in {"source-parity", "source-parity-reviewer"}:
         return "beacon-gen-change"
     if reviewer in {"route-boundary", "deferral-sovereignty"}:
         return "beacon-gen-change" if "truth" in blob or "freeze" in blob or "mvp" in blob else "beacon-pln-friction"
@@ -224,7 +230,9 @@ def _finding_for_lane(
         "affected_truth_surface": dedup_surface,
         "affected_surface": dedup_surface,
         "recommended_route": route,
-        "user_decision_required": reviewer in {"intent-fidelity", "scope-mode", "source-parity", "source-parity-reviewer", "deferral-sovereignty"},
+        # User-decision authority belongs to the signal-gated conditional lanes;
+        # always-on verification requests must not hard-stop every run.
+        "user_decision_required": reviewer in {"source-parity", "source-parity-reviewer", "deferral-sovereignty"},
         "autofix_allowed": False,
         "owner": owner,
         "autofix_class": autofix_class,

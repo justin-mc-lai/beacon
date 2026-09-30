@@ -841,6 +841,7 @@ def _run_layer_command(
                 command,
                 cwd=project_root,
                 shell=True,
+                executable="/bin/bash",  # TC commands are bash-dialect (e.g. <(...)); /bin/sh rejects them
                 text=True,
                 capture_output=True,
                 env=run_env,

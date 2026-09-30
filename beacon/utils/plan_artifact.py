@@ -256,10 +256,14 @@ def plan_to_truth_gate(plan_artifact: dict[str, Any] | None) -> dict[str, Any]:
     tr = art.get("truth_readiness") if isinstance(art.get("truth_readiness"), dict) else {}
     if not tr and isinstance(art.get("intent_decomposition"), dict):
         tr = (art.get("intent_decomposition") or {}).get("truth_readiness") or {}
-    missing = list(tr.get("missing") or [])
-    blocks_auto = bool(tr.get("blocks_auto_tick_past_plan")) or bool(
-        (art.get("recommended_next") or {}).get("blocks_auto_tick_past_plan")
-    )
+    from beacon.utils.intent_decomposition import ADVISORY_FILL_PENDING_KEYS
+
+    # Host-fill markers are advisory at plan (intent_decomposition calls them
+    # exactly that): fill+freeze is hard-enforced at truth stage exit
+    # (scaffold/frozen gates). Blocking plan on them deadlocks every
+    # task-closure goal, because nothing ever clears them from the artifact —
+    # the precomputed blocks_auto flag is advisory-driven once journeys freeze.
+    missing = [m for m in list(tr.get("missing") or []) if m not in ADVISORY_FILL_PENDING_KEYS]
     if high and not deep_ok:
         return {
             "status": "warn",
@@ -280,7 +284,7 @@ def plan_to_truth_gate(plan_artifact: dict[str, Any] | None) -> dict[str, Any]:
             "blocks_auto_tick_past_plan": True,
             "missing": missing or list(art.get("missing_fields") or []),
         }
-    if blocks_auto or missing:
+    if missing:
         return {
             "status": "ok",
             "blocked": False,

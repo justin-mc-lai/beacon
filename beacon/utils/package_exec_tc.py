@@ -59,6 +59,7 @@ def _run_command(command: str, *, cwd: Path, timeout_s: float = 120.0) -> dict[s
         proc = subprocess.run(
             cmd,
             shell=True,
+            executable="/bin/bash",  # same bash-dialect contract as auto_test executor
             cwd=str(cwd),
             capture_output=True,
             text=True,
