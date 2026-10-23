@@ -2416,6 +2416,45 @@ def _qa9_commands_from_matrix(matrix_payload: dict[str, Any]) -> dict[str, str]:
     return out
 
 
+_TEST_RUNNER_COMMAND_HINTS = (
+    "pytest",
+    "python -m unittest",
+    "python3 -m unittest",
+    "node --test",
+    "vitest",
+    "jest",
+    "mocha",
+    "go test",
+    "cargo test",
+    "dotnet test",
+    "npm test",
+    "pnpm test",
+    "yarn test",
+    "rspec",
+    "phpunit",
+    "mvn test",
+    "gradle test",
+    "beacon skill eval-kit",
+)
+
+
+def _layer_uses_test_runner(layer: dict[str, Any]) -> bool:
+    """A layer needs junit/assertion evidence only when it actually runs a test runner.
+
+    Contract layers are often plain CLI checks (``wrangler deploy --dry-run``,
+    ``tsc --noEmit``). Demanding junit from those turns a green build into a
+    failed QA run, which then blocks every later run via
+    ``previous_feature_qa_not_passed``.
+    """
+    if bool(layer.get("junit_valid")) or int(layer.get("assertion_count", 0) or 0) > 0:
+        return True
+    command = " ".join(str(layer.get("command") or "").lower().split())
+    if not command:
+        # Unknown provenance: keep the strict gate rather than assuming a CLI.
+        return True
+    return any(hint in command for hint in _TEST_RUNNER_COMMAND_HINTS)
+
+
 def _collect_required_file_issues(
     *,
     project_root: Path,
@@ -2430,7 +2469,20 @@ def _collect_required_file_issues(
         if status != "passed":
             continue
         name = normalize_qa_type(str(layer.get("layer", "")))
-        if require_assertion_count and name in junit_layers and int(layer.get("assertion_count", 0) or 0) <= 0:
+        if name not in junit_layers:
+            continue
+        if not _layer_uses_test_runner(layer):
+            # CLI/contract check: exit code + captured evidence is the assertion.
+            if not (layer.get("evidence_ref") or []):
+                issues.append(
+                    {
+                        "layer": name,
+                        "reason_code": "command_evidence_missing",
+                        "message": f"layer {name} passed without captured command evidence",
+                    }
+                )
+            continue
+        if require_assertion_count and int(layer.get("assertion_count", 0) or 0) <= 0:
             issues.append(
                 {
                     "layer": name,
