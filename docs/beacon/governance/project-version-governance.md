@@ -3,9 +3,9 @@ schema_version: "1.0"
 project_root: "/Users/apple/Developer/Personal/products/beacon"
 topology_kind: "single_repo"
 default_execution_service: "beacon"
-transaction_id: "tx-project-governance-93fdaec8def23823"
-committed_at: "2026-09-04T03:28:57.960454+00:00"
-source_hash: "93fdaec8def2382368317838ae9c0a4d91dda1644cb2d880addcf4e6e89b2c61"
+transaction_id: "tx-project-governance-12cd92670fec70e1"
+committed_at: "2026-09-21T09:13:11.014231+00:00"
+source_hash: "12cd92670fec70e1523eae22ac2ede4bf07b7efcd358cad0a70cbc779162ecb1"
 event_type: "freeze-version-contract"
 parser_contract: "beacon-project-governance-v1"
 ---
@@ -197,6 +197,42 @@ parser_contract: "beacon-project-governance-v1"
 - merge_direction_policy: `master->beacon/v1.6.17`
 - merge_direction_policy: `beacon/v1.6.17->uat`
 - forbidden_directions: `uat->beacon/v1.6.17`
+- forbidden_directions: `uat_as_feature_base`
+
+### v1.6.18
+- participating_services: `beacon`
+- branch_guard_mode: `strict`
+- validation_state: `active`
+- per_service_canonical_branch:
+  - `beacon`: `beacon/v1.6.18`
+- truth_canonical: `main`
+- branch_governance_template: `standard-feature`
+- previous_version_baseline_branch: `main`
+- next_version_feature_branch: `beacon/v1.6.18/<feature-slug>`
+- worktree_mode: `dedicated`
+- worktree_path: `.beacon/worktrees/v1.6.18`
+- require_workspace_admission: `true`
+- merge_direction_policy: `master->beacon/v1.6.18`
+- merge_direction_policy: `beacon/v1.6.18->uat`
+- forbidden_directions: `uat->beacon/v1.6.18`
+- forbidden_directions: `uat_as_feature_base`
+
+### v1.6.19
+- participating_services: `beacon`
+- branch_guard_mode: `strict`
+- validation_state: `active`
+- per_service_canonical_branch:
+  - `beacon`: `beacon/v1.6.19`
+- truth_canonical: `main`
+- branch_governance_template: `standard-feature`
+- previous_version_baseline_branch: `main`
+- next_version_feature_branch: `beacon/v1.6.19/<feature-slug>`
+- worktree_mode: `dedicated`
+- worktree_path: `.beacon/worktrees/v1.6.19`
+- require_workspace_admission: `true`
+- merge_direction_policy: `master->beacon/v1.6.19`
+- merge_direction_policy: `beacon/v1.6.19->uat`
+- forbidden_directions: `uat->beacon/v1.6.19`
 - forbidden_directions: `uat_as_feature_base`
 
 ### v1.6.2
