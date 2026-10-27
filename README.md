@@ -378,3 +378,13 @@ printf '%s' '{"hook_event_name":"UserPromptSubmit","prompt":"继续推进 Beacon
 ---
 
 **版本**: v1.6.0
+
+## License
+
+[MIT](LICENSE) © 2026 Kunqi Lai
+
+## Maintainer
+
+**Kunqi Lai** (<goodlive.lkq1128@gmail.com>)
+- GitHub: [@justin-mc-lai](https://github.com/justin-mc-lai)
+
